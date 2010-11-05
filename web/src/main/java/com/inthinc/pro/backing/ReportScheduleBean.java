@@ -84,8 +84,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     }
     List<User> fullUserList; 
     public List<User> getFullUserList() {
-        if (fullUserList == null)
-            fullUserList = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
+        if (fullUserList == null) 
+                fullUserList = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
         return fullUserList;
     }
 
@@ -221,7 +221,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public void reportGroupChangeAction() {
         allGroupUsers = null;
         getItem().setGroupIDList(null);
-        getItem().setGroupIDSelectList(null);
+//        getItem().setGroupIDSelectList(null);
         getItem().setGroupID(null);
         getItem().setDriverID(null);
         getItem().setVehicleID(null);
@@ -284,15 +284,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
         return createReportScheduleView(reportSchedule);
     }
-    @Override
-    public String edit() {
-        
-        ReportScheduleView reportScheduleView = super.getItem();
-        if (reportScheduleView != null)
-            reportScheduleView.setGroupIDSelectList(reportScheduleView.selectListFromGroupIDList());
-
-        return super.edit();
-    }
 
     @Override
     protected void doDelete(List<ReportScheduleView> deleteItems) {
@@ -340,7 +331,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 }
                 reportSchedule.setStartDate(now.getTime());
             }
-            reportSchedule.setGroupIDList(reportSchedule.groupIDListFromSelectList());
 
             // Get rid of all end dates
             reportSchedule.setEndDate(null);
@@ -364,7 +354,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             }
             if (reportSchedule.getGroupIDList() != null) {
                 StringBuffer buffer = new StringBuffer();
-                for (Integer  grpID : reportSchedule.getGroupIDList()) {
+                for (Object  grpIDObj : reportSchedule.getGroupIDList()) {
+                    Integer grpID = Integer.valueOf(grpIDObj.toString());
                     Group group = this.getGroupHierarchy().getGroup(grpID);
                     if (group != null) {
                         if (buffer.length() > 0)
@@ -576,7 +567,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             }
             reportScheduleView.setGroupName(buffer.toString());
         }
-        else reportScheduleView.setGroupIDSelectList(new ArrayList<String>());
+//        else reportScheduleView.setGroupIDSelectList(new ArrayList<String>());
         if (reportSchedule.getStartDate() != null && reportSchedule.getOccurrence().equals(Occurrence.MONTHLY)) {
             Calendar calendar = Calendar.getInstance(getUtcTimeZone());
             calendar.setTime(reportSchedule.getStartDate());
@@ -651,8 +642,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         private ReportGroup report;
         @Column(updateable = true)
         private Integer dayOfMonth;
-        @Column(updateable = false)
-        private List<String> groupIDSelectList;
 
         @Override
         public boolean isSelected() {
@@ -710,40 +699,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
         public Integer getDayOfMonth() {
             return dayOfMonth;
-        }
-        public List<String> getGroupIDSelectList() {
-            return groupIDSelectList;
-        }
-
-        public void setGroupIDSelectList(List<String> groupIDSelectList) {
-            this.groupIDSelectList = groupIDSelectList;
-        }
-
-        public List<Integer> groupIDListFromSelectList() {
-            if (groupIDSelectList == null)
-                return null;
-            
-            List<Integer> groupIDList = new ArrayList<Integer>();
-            for (String groupIDStr : groupIDSelectList) {
-                try {
-                    groupIDList.add(Integer.valueOf(groupIDStr));
-                }
-                catch (NumberFormatException ex) {
-                    logger.error(ex);
-                    
-                }
-            }
-            return groupIDList;
-        }
-        public List<String> selectListFromGroupIDList() {
-            List<String> groupIDSelectList = new ArrayList<String>();
-            if (getGroupIDList() == null)
-                return groupIDSelectList;
-            
-            for (Integer groupID : getGroupIDList()) {
-                groupIDSelectList.add(groupID.toString());
-            }
-            return groupIDSelectList;
         }
     }
 }

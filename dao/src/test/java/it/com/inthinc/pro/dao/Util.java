@@ -69,7 +69,14 @@ public class Util
                 }
                 else if (value1 == null)
                 {
-                    assertNotNull(value2.getClass().getSimpleName() + " Field: " + key + " expected value is null, but returned value is not", value1 );
+                    if (List.class.isInstance(value2)){
+                        List<?>  value2List = (List<?>) value2;
+                        if (value2List.size() != 0)
+                            assertNotNull(value2.getClass().getSimpleName() + " Field: " + key + " expected value is null, but returned value is not and is not a zero sized List", value1 );
+                        else continue;
+                        
+                    }
+                    else assertNotNull(value2.getClass().getSimpleName() + " Field: " + key + " expected value is null, but returned value is not", value1 );
                 }
                 else if (value2 == null)
                 {

@@ -72,6 +72,7 @@ import com.inthinc.pro.model.Occurrence;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
@@ -158,15 +159,6 @@ public class SiloServiceTest {
         TESTING_VEHICLE_ID = vehicle.getVehicleID();
     }
     
-    @Test
-    @Ignore
-    public void testDeviceSensitivityMapping() {
-        for (SettingType type : SettingType.values()) {
-            assertNotNull(DeviceSensitivityMapping.getForwardCommand(type, 1));
-        }
-    }
-
-
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
 
@@ -500,6 +492,7 @@ public class SiloServiceTest {
         System.out.println("Admin - devices done");
     	
         // forward commands to devices
+// TODO:FIX        
         forwardCommands();
         System.out.println("Admin - forward commands done");
     	
@@ -1137,7 +1130,7 @@ public class SiloServiceTest {
         deviceDAO.queueForwardCommand(device.getDeviceID(), noDataCmd);
         List<ForwardCommand> queuedCommands = deviceDAO.getForwardCommands(device.getDeviceID(), ForwardCommandStatus.STATUS_QUEUED);
         assertEquals("queued forward commands", 3 + initialQueueSize, queuedCommands.size());
-        String ignoreFields[] = { "modified", "fwdID" };
+        String ignoreFields[] = { "modified", "fwdID", "created" };
         for (ForwardCommand forwardCommand : queuedCommands) {
             if (forwardCommand.getCmd().equals(ForwardCommandID.SET_GPRS_APN)) {
                 Util.compareObjects(stringDataCmd, forwardCommand, ignoreFields);
@@ -1405,7 +1398,12 @@ public class SiloServiceTest {
         reportScheduleMonthly.setName("Report Schedule 2");  
         reportScheduleMonthly.setOccurrence(Occurrence.MONTHLY); 
         reportScheduleMonthly.setUserID(userID); 
-        reportScheduleMonthly.setGroupID(groupID);  
+        reportScheduleMonthly.setIftaOnly(Boolean.TRUE);
+        reportScheduleMonthly.setParamType(ReportParamType.GROUPS);
+//        reportScheduleMonthly.setGroupID(groupID);
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(groupID);
+        reportScheduleMonthly.setGroupIDList(groupIDList);
         reportScheduleMonthly.setReportID(10);    
         reportScheduleMonthly.setAccountID(acctID);      
         
