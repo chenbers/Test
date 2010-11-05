@@ -248,16 +248,15 @@ public class WaysmartReportsBean extends ReportsBean {
     }	
 	
 	private boolean hasWaysmartDevice(Group group) {
-        List<Driver> drivers = getDriverDAO().getDrivers(group.getGroupID());
-        for (Driver driver : drivers) {
-            Integer accountID = driver.getPerson().getAcctID();
-            List<Device> devices = getDeviceDAO().getDevicesByAcctID(accountID);
+	    if(group != null){    
+	        Integer accountID = group.getAccountID();
+    	    List<Device> devices = getDeviceDAO().getDevicesByAcctID(accountID);
             for (Device device : devices) {
                 if (device.isWaySmart()) {
                     return true;
                 }
             }
-        }
+	    }
         return false;
 	}
 
