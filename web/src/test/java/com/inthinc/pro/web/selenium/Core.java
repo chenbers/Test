@@ -10,7 +10,7 @@ import com.thoughtworks.selenium.SeleniumException;
 
 public class Core extends DefaultSelenium{
 
-	private Error_Catcher errors = new Error_Catcher();
+	private static Error_Catcher errors = new Error_Catcher();
 	
 	public Core(CommandProcessor processor) {
 		super(processor);
@@ -46,7 +46,7 @@ public class Core extends DefaultSelenium{
 		try{
 			assertTrue( isElementPresent(element));
 		}catch(AssertionError e){
-			errors.Error(error_name, e);
+			errors.Error(error_name, "Failed");
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
 		}catch(Exception e){
@@ -58,7 +58,7 @@ public class Core extends DefaultSelenium{
 		try{
 			assertFalse( isElementPresent(element));
 		}catch(AssertionError e){
-			errors.Error(error_name, e);
+			errors.Error(error_name, "Failed");
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
 		}catch(Exception e){
@@ -68,7 +68,7 @@ public class Core extends DefaultSelenium{
 	
 	public void getText(String locator, String expected, String error_name){
 		try{
-			assertFalse( getText(locator)==expected);
+			assertFalse(getText(locator)==expected);
 		}catch(AssertionError e){
 			errors.Error(error_name, getText(locator));
 			errors.Expected(error_name, expected);
@@ -83,7 +83,7 @@ public class Core extends DefaultSelenium{
 		try{
 			assertFalse( getTable(locator)==expected);
 		}catch(AssertionError e){
-			errors.Error(error_name, getText(locator));
+			errors.Error(error_name, getTable(locator));
 			errors.Expected(error_name, expected);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);

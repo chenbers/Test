@@ -5,12 +5,11 @@ import java.util.HashMap;
 import com.thoughtworks.selenium.SeleniumException;
 
 
-
 public class Error_Catcher {
 	
 	
-	private HashMap<String, HashMap<String, Object>> errors = new HashMap<String, HashMap<String, Object>>();
-	private HashMap<String, Object> errorList;
+	private static HashMap<String, HashMap<String, Object>> errors = new HashMap<String, HashMap<String, Object>>();
+	private static HashMap<String, Object> errorList;
 	
 	public void Error(String name, AssertionError error){
 		

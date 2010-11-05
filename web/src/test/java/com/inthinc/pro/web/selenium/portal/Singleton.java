@@ -1,6 +1,7 @@
 package com.inthinc.pro.web.selenium.portal;
 
-import com.thoughtworks.selenium.*;
+import com.inthinc.pro.web.selenium.Core;
+
 
 
 
@@ -10,9 +11,9 @@ public class Singleton {
     // semantics for volatile changed in Java 5.
     private volatile static Singleton singleton;
 
-    private Selenium selenium;
+    private Core selenium;
     
-    public Selenium getSelenium(){
+    public Core getSelenium(){
     	
     	return selenium;
     }
@@ -31,7 +32,7 @@ public class Singleton {
                     try {
                     	singleton = new Singleton();
 						//singleton.selenium = (Selenium) new SeleniumServer();
-						singleton.selenium = new DefaultSelenium("localhost", 4444, "*iexplore", "https://qa.tiwipro.com:8423/tiwipro/");
+						singleton.selenium = new Core("localhost", 4444, "*iexplore", "https://qa.tiwipro.com:8423/tiwipro/");
 						singleton.selenium.start();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

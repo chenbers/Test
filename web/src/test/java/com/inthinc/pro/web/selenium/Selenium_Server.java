@@ -3,12 +3,12 @@ package com.inthinc.pro.web.selenium;
 import org.junit.*;
 import org.openqa.selenium.server.SeleniumServer;
 
-import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.Selenium;
+import com.inthinc.pro.web.selenium.portal.Singleton;
+
 
 public class Selenium_Server {
 	
-	protected static Selenium selenium;
+	protected static Core selenium;
 	private static SeleniumServer seleniumServer;
 	
 	@BeforeClass
@@ -18,7 +18,7 @@ public class Selenium_Server {
 	}
 
 	public static void startSeleniumClient() throws Exception {
-		selenium = new DefaultSelenium("localhost", 4444, "*iexplore", "https://qa.tiwipro.com:8423/tiwipro/");
+		selenium = Singleton.getSingleton().getSelenium();
 		selenium.start();
 	}
 
@@ -29,6 +29,7 @@ public class Selenium_Server {
 	
 	public static void stopSeleniumClient() throws Exception {
 		if (selenium != null) {
+			selenium.close();
 			selenium.stop();
 			selenium = null;
 		}
