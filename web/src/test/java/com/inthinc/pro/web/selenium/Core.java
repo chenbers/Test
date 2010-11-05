@@ -21,6 +21,16 @@ public class Core extends DefaultSelenium{
 		super(serverHost, serverPort, browserStartCommand, browserURL);
 	}
 	
+	public void open(String locator,String error_name){
+		try{
+			open(locator);
+		}catch(SeleniumException e){
+			errors.Error(error_name, e);
+		}catch(Exception e){
+			errors.Error(error_name, e);
+		}
+	}
+
 	
 	public void click(String locator, String error_name) {
 		try{
