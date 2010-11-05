@@ -19,7 +19,6 @@ public class Selenium_Server {
 
 	public static void startSeleniumClient() throws Exception {
 		selenium = Singleton.getSingleton().getSelenium();
-		selenium.start();
 	}
 
 	public static void startSeleniumServer() throws Exception {

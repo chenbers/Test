@@ -8,7 +8,7 @@ import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 import com.inthinc.pro.web.selenium.portal.Singleton;
 
 
-public class loginScreen extends Selenium_Server {
+public class Login extends Selenium_Server {
 	
 	private final String change_password_form_id = "//form[@id='changePasswordForm']/";
 	private final String login_form_id = "//form[@id='loginForm']/";
@@ -64,15 +64,15 @@ public class loginScreen extends Selenium_Server {
 	
 	
 	
-	public loginScreen(){
+	public Login(){
 		this(Singleton.getSingleton());
 	}
 	
-	public loginScreen(Singleton tvar ){
+	public Login(Singleton tvar ){
 		this(tvar.getSelenium());
 	}
 	
-	public loginScreen( Core sel ){
+	public Login( Core sel ){
 		selenium = sel;
 	}
 	
@@ -82,6 +82,15 @@ public class loginScreen extends Selenium_Server {
 		selenium.open("login");  
 		//Verify Home Screen is displayed
 		ck_login_page();
+	}
+	
+	public void login_to_portal(String username, String password){
+		if (selenium.getLocation().indexOf("/tiwipro/login")==-1){open_login();}
+		type_username(username);
+		type_password(password);
+		click_login();
+		selenium.waitForPageToLoad("30000", "Log In to Portal wait");
+		selenium.getLocation("/tiwipro/app/dashboard/", "Log In to Portal function");
 	}
 
 
@@ -245,13 +254,13 @@ public class loginScreen extends Selenium_Server {
 	
 	public static void main( String[] args){
 		try {
-			loginScreen.setUp();
+			Login.setUp();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		loginScreen login;
-		login = new loginScreen();
+		Login login;
+		login = new Login();
 		login.test_self();
 		Object errors = "";
 		errors = login.get_errors().get_errors();

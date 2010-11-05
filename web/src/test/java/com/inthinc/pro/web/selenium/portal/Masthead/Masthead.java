@@ -5,138 +5,226 @@ package com.inthinc.pro.web.selenium.portal.Masthead;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
-import org.openqa.selenium.server.SeleniumServer;
+import java.util.Calendar;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
+import com.inthinc.pro.web.selenium.Core;
+import com.inthinc.pro.web.selenium.Selenium_Server;
+import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 import com.inthinc.pro.web.selenium.portal.Singleton;
-import com.thoughtworks.selenium.*;
+import com.inthinc.pro.web.selenium.portal.Login.Login;
 
-@SuppressWarnings("unused")
-public class Masthead
-{	//define local vars
-	Singleton tvar = Singleton.getSingleton() ; 
-	Selenium selenium = tvar.getSelenium();
+
+public class Masthead extends Selenium_Server{	
+	
+
+	private final String footer_form = "//form[@id='footerForm']";
+	private final String header_form = "//form[@id='headerForm']";
+	private final String header_nav = "/div[@id='horz_nav']";
+	
+	private final String help_loc="1", messages_loc="2", account_loc="3", logout_loc="4";
+	private final String copyright_loc="1", privacy_loc="3", legal_loc="5", support_loc="7", version_loc="2"; 
 	
 	
-	//Maintain the keyword Count
-	private int KeywordCount;
+	private final String account_id = "headerForm:headerMyAccount";
+	private final String account_class = "tb-account";
+	private final String account_href = "/tiwipro/app/account";
+	private final String account_xpath = header_form+header_nav+"/ul/li["+account_loc+"]/a";
+	private final String account_xpath_direct = "//a[@href='"+account_href+"']";
+	private final String account_link = "link=My Account";
+		
+	private final Calendar cal = Calendar.getInstance();
+	private final String copyright_class = "first";
+	private final String copyright_xpath = footer_form+"/ul/li["+copyright_loc+"]";
+	private final String copyright_xpath_direct = "//li[@class='"+copyright_class+"']";
+//	private final String copyright_text = StringEscapeUtils.unescapeHtml("&#169;" + String.valueOf(cal.get(Calendar.YEAR)) + " inthinc");
+	private final String copyright_text = StringEscapeUtils.unescapeHtml("&copy;2009 inthinc");
+	
+	private final String help_class = "tb-help";
+	private final String help_href = "/tiwipro/secured/lochelp/en/en/";
+	private final String help_xpath = header_form+header_nav+"/ul/li["+help_loc+"]/a";
+	private final String help_xpath_partial = "//a[@href='"+help_href;
+	private final String help_link = "link=Help";
+		
+	private final String legal_id = "footerForm:legal";
+	private final String legal_title = "Legal Notice";
+	private final String legal_link = "link="+legal_title;
+	private final String legal_xpath = footer_form+"/ul/li["+legal_loc+"]/a";
+	private final String legal_xpath_direct = "//a[@id='"+legal_id+"']";
+	
+	private final String login_logo_id = "login_logo";
+	private final String login_logo_xpath = "//body/div[1]/div/img";
+	private final String login_logo_xpath_direct = "//div[@id='"+login_logo_id+"']";
+	
+	private final String logo_id = "headerForm:headerInitDashboard";
+	private final String logo_href = "/tiwipro/app/dashboard/";
+	private final String logo_xpath = header_form+"/div[@id='logo']/a/img";
+	private final String logo_xpath_direct = "//a[@id='"+logo_id+"']/img";
+	
+	private final String logout_class = "tb-logout";
+	private final String logout_href = "/tiwipro/logout";
+	private final String logout_xpath = header_form+header_nav+"/ul/li["+logout_loc+"]/a";
+	private final String logout_xpath_direct = "//a[@href='"+logout_href+"']";
+	private final String logout_link = "link=Log Out";
+	
+	private final String messages_id = "headerForm:headerMyMessages";
+	private final String messages_class = "tb-messages";
+	private final String messages_href = "/tiwipro/app/messages/";
+	private final String messages_xpath = header_form+header_nav+"/ul/li["+messages_loc+"]/a";
+	private final String messages_xpath_direct = "//a[@href='"+messages_href+"']";
+	private final String messages_link = "link=My Messages";
+	
+	private final String privacy_id = "footerForm:privacy";
+	private final String privacy_title = "Privacy Policy";
+	private final String privacy_link = "link="+privacy_title;
+	private final String privacy_xpath = footer_form+"/ul/li["+privacy_loc+"]/a";
+	private final String privacy_xpath_direct = "//a[@title='"+privacy_title+"']";
+	
+	private final String support_id = "footerForm:customerSupport";
+	private final String support_title = "Support";
+	private final String support_link = "link="+support_title;
+	private final String support_xpath = footer_form+"/ul/li["+support_loc+"]";
+	private final String support_xpath_direct = "//a[@id='"+support_id+"']";
+	
+	private final String version_id = "footerForm:version";
+	private final String version_class = "last";
+	private final String version_xpath = footer_form+"/ul/li["+version_loc+"']";
+	private final String version_xpath_class = footer_form+"/ul/li[@class='"+version_class+"']";
+	private final String version_xpath_direct = "//span[@id='"+version_id+"";
 	
 	
-	public int getKeywordCount(){
-		return KeywordCount;
+	
+	private String version_text;
+	private String copyright_text_actual;
+	
+	protected static Core selenium;
+	
+	public Masthead(){
+		this(Singleton.getSingleton());
 	}
 	
-@Test
-public void mainMenuItem(String screen){
+	public Masthead(Singleton tvar ){
+		this(tvar.getSelenium());
+	}
+	
+	public Masthead( Core sel ){
+		selenium = sel;
+	}
+	
+	
+	public String get_version(){
+		version_text = selenium.getText(version_id, "Version return");
+		return version_text;	
+	}
+	
+	public String get_copyright(){
+		copyright_text_actual = selenium.getText(copyright_xpath, copyright_text, "Copyright text");
+		return copyright_text_actual;
+	}
+	
+	public void click_my_account(){
+		selenium.click(account_link, "My Account click");
+		selenium.waitForPageToLoad("30000", "My Account click");
+		selenium.getLocation();
 		
-		if (screen.contentEquals("Reports)")){
-		//select Reports
-		selenium.open("/tiwipro/app/dashboard/");
-		selenium.click("//a[@id='navigation:layout-navigationReports']/span");
-		selenium.waitForPageToLoad("30000");
-		assertTrue(selenium.isTextPresent("Driver Report"));
-		}else if (screen.contentEquals("Notifications")){
-			//select Notifications
-			selenium.click("//a[@id='navigation:layout-navigationNotifications']/span");
-			selenium.waitForPageToLoad("30000");
-			assertTrue(selenium.isTextPresent("Red Flags"));
-			selenium.open("/tiwipro/app/notifications/");
-		}else if (screen.contentEquals("LiveFleet")){
-			//select Live Fleet
-			selenium.click("//a[@id='navigation:layout-navigationLiveFleet']/span");
-			selenium.waitForPageToLoad("30000");
-			assertTrue(selenium.isTextPresent("Live Fleet"));
-			selenium.open("/tiwipro/app/liveFleet");
-		}else if (screen.contentEquals("Admin")){
-			//select Admin
-			selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
-			selenium.waitForPageToLoad("30000");
-			assertTrue(selenium.isTextPresent("exact:Admin: Users"));
-			selenium.open("/tiwipro/app/admin/");
+	}
+	
+	public void click_support(){
+		selenium.click(support_link, "Support click");
+	}
+	
+	public void click_legal(){
+		selenium.click(legal_link, "Legal Notice click");
+	}
+	
+	public void click_privacy(){
+		selenium.click(privacy_link, "Privacy Policy click");
+	}
+	
+	public void click_help(String help_page, String timeout){
+		if (help_page.indexOf(".htm")== -1){help_page += ".htm";}
+		selenium.click(help_link+help_page, "Help click");
+		selenium.waitForPageToLoad(timeout, "Help click");
+	}
+	
+	
+
+	public void ck_header(){
+		selenium.isElementPresent(logo_id, "Logo element present");
+		selenium.isElementPresent(help_link, "Help link present");
+		selenium.isElementPresent(messages_id, "My Messages element present");
+		selenium.isElementPresent(account_id, "My Account element present");
+		selenium.isElementPresent(logout_link, "Log Out link present");
+		
+		selenium.getText(help_link, "Help", "Help link text");
+		selenium.getText(messages_id, "My Messages", "My Messages link text");
+		selenium.getText(account_id, "My Account", "My Account text");
+		selenium.getText(logout_link, "Log Out", "Log Out text");
+	}
+	
+	public void ck_footer(){
+		selenium.isElementPresent(copyright_xpath, "Copyright element present");
+		selenium.isElementPresent(privacy_id, "Privacy Policy element present");
+		selenium.isElementPresent(legal_id, "Legal Notice element present");
+		selenium.isElementPresent(support_id, "Support element present");
+		selenium.isElementPresent(version_id, "Version element present");
+		
+		selenium.getText(copyright_xpath, copyright_text, "Copyright text");
+		selenium.getText(privacy_id, privacy_title, "Privacy Policy text");
+		selenium.getText(legal_id, legal_title, "Legal Notice text");
+		selenium.getText(support_id, support_title, "Support text");
+	}
+	
+	public void test_self_before_login(){
+		if (selenium.getLocation().indexOf("/tiwipro/login")==-1){selenium.open("login", "Open login page");}
+		ck_footer();
+	}
+	
+	public void test_self_after_login(){
+		ck_footer();
+		ck_header();
+	}
+	
+
+	public Error_Catcher get_errors(){
+		return selenium.getErrors();
+	}
+	
+	public Core get_selenium(){
+		return selenium;
+	}
+	
+	public static void main( String[] args ){
+		String errors = "";
+		try {
+			Masthead.setUp();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try{
+			Masthead masthead = new Masthead();
+			Login login = new Login(masthead.get_selenium());
+			
+			masthead.test_self_before_login();
+			login.login_to_portal("Automation1", "password");
+			masthead.test_self_after_login();
+			System.out.println(masthead.get_version());
+			System.out.println(masthead.get_copyright());
+			
+			errors = masthead.get_errors().get_errors().toString();
+			System.out.println(errors);	
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+			tearDown();
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
+		assertTrue(errors=="{}");
 	}
-	
-	@Test
-	public void Select_Link(String linkname, String checktext, String PopuporTab)
-	{
-		selenium.open("/tiwipro/app/dashboard/");
-		selenium.click(linkname);
-			//get popup window name and attach
-			String feedWinId = selenium.getEval("{var windowId; for(var x in selenium.browserbot.openedWindows ) {windowId=x;} }");
-			selenium.selectWindow(feedWinId);
-			selenium.windowFocus();
-			if (PopuporTab.contentEquals("Popup")){
-				checkPopup(checktext);
-			} else if (PopuporTab.contentEquals("NewTab")) {
-				checktab(checktext);
-			}
-		// select original window
-		selenium.selectWindow(null);
-		
-	}
-	
-	public void checktab(String texttocheck){
-		//This function verifies text on new tab 
-		if (texttocheck.contentEquals("Customer Support")){
-			assertEquals(selenium.getTitle(), "tiwiPRO");
-		} else {
-		assertTrue(selenium.isTextPresent(texttocheck));
-	}}
-	
-	public void checkPopup(String texttocheck){
-		//This function verifies text on pop up window 
-		//"Actual New window not new tab.
-		if (texttocheck.contentEquals("LEGAL NOTICE")){
-			selenium.open("/tiwipro/html/inthincCustomerTermsOfService.html");
-		}else if (texttocheck.contentEquals("Privacy Policy")){
-			selenium.open("/tiwipro/html/inthincPrivacyPolicy.html");
-		}
-		assertEquals(selenium.getText("//b"), texttocheck);
-	}
-	
-	@Test
-	public void ValidateScreen(){
-		//Validate Home Screen
-		selenium.open("/tiwipro/app/dashboard/");
-		assertEquals(selenium.getTitle(), "tiwiPRO");
-		assertTrue(selenium.isTextPresent(""));
-		assertTrue(selenium.isTextPresent("Help"));
-		assertTrue(selenium.isElementPresent("link=Help"));
-		assertTrue(selenium.isTextPresent("My Messages"));
-		assertTrue(selenium.isElementPresent("headerForm:headerMyMessages"));
-		assertTrue(selenium.isTextPresent("My Account"));
-		assertTrue(selenium.isElementPresent("headerForm:headerMyAccount"));
-		assertTrue(selenium.isTextPresent("Log Out"));
-		assertTrue(selenium.isElementPresent("link=Log Out"));
-		assertTrue(selenium.isTextPresent("2009 inthinc"));
-		assertTrue(selenium.isTextPresent("Privacy Policy"));
-		assertTrue(selenium.isElementPresent("footerForm:privacy"));
-		assertTrue(selenium.isTextPresent("Legal Notice"));
-		assertTrue(selenium.isElementPresent("footerForm:legal"));
-		assertTrue(selenium.isTextPresent("Support"));
-		assertTrue(selenium.isElementPresent("footerForm:customerSupport"));
-		assertTrue(selenium.isElementPresent("//span[@id='tree_link']/span/small"));
-		assertTrue(selenium.isTextPresent("Reports"));
-		assertTrue(selenium.isElementPresent("//a[@id='navigation:layout-navigationReports']/span"));
-		assertTrue(selenium.isTextPresent("Notifications"));
-		assertTrue(selenium.isElementPresent("//a[@id='navigation:layout-navigationNotifications']/span"));
-		assertTrue(selenium.isTextPresent("Live Fleet"));
-		assertTrue(selenium.isElementPresent("//a[@id='navigation:layout-navigationLiveFleet']/span"));
-		assertTrue(selenium.isTextPresent("Admin"));
-		assertTrue(selenium.isElementPresent("//a[@id='navigation:layout-navigationAdmin']/span"));
-		assertTrue(selenium.isTextPresent("Home"));
-		assertEquals(selenium.getValue("navigation:layout-redirectSearch"), "");
-		assertTrue(selenium.isElementPresent("navigation:layout-redirectSearch"));
-		assertTrue(selenium.isTextPresent("Drivers Devices Idling Vehicles Waysmart"));
-		assertTrue(selenium.isElementPresent("navigation:layout-navigationRedirectTo"));
-		assertEquals(selenium.getValue("navigation:layout-navigation_search_button"), "");
-		assertTrue(selenium.isElementPresent("navigation:layout-navigation_search_button"));
-	}
-	
-	
-	
-	
 }
 
 
