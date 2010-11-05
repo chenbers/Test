@@ -101,7 +101,7 @@ public class Masthead extends Selenium_Server{
 	protected static Core selenium;
 	
 	public Masthead(){
-		this(Singleton.getSingleton());
+		this(Singleton.getSingleton().getSelenium());
 	}
 	
 	public Masthead(Singleton tvar ){
@@ -209,8 +209,6 @@ public class Masthead extends Selenium_Server{
 			masthead.test_self_before_login();
 			login.login_to_portal("Automation1", "password");
 			masthead.test_self_after_login();
-			System.out.println(masthead.get_version());
-			System.out.println(masthead.get_copyright());
 			
 			errors = masthead.get_errors().get_errors().toString();
 			System.out.println(errors);	

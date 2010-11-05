@@ -65,7 +65,7 @@ public class Login extends Selenium_Server {
 	
 	
 	public Login(){
-		this(Singleton.getSingleton());
+		this(Singleton.getSingleton().getSelenium());
 	}
 	
 	public Login(Singleton tvar ){
