@@ -89,7 +89,7 @@ public class EmailReportJob extends QuartzJobBean {
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
         for (Account account : accounts) {
             Account a = accountDAO.findByID(account.getAcctID());
-            if (a != null && !a.getStatus().equals(Status.DELETED))
+            if (a != null && a.getStatus() != null && !a.getStatus().equals(Status.DELETED))
                 reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAcctID()));
             else {
                 if (a == null) {
