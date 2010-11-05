@@ -260,6 +260,9 @@ public enum ReportGroup
         
         return false;
     }
+    public boolean isExcelSupport() {
+        return (this != HOS_DAILY_DRIVER_LOG_REPORT);
+    }
     
     public String getMessageKey(){
     	

@@ -56,7 +56,7 @@
 			</span>	
 			<span title="#{messages.reports_exportExcel}">
 				<h:commandLink id="#{context}_excelIcon" action="#{reportsBean.excel}"  ajaxSingle="true" 
-								rendered="#{reportsBean.selected != null and reportsBean.params.valid}" 
+							rendered="#{reportsBean.params.reportGroup != null and reportsBean.params.reportGroup.excelSupport and reportsBean.params.valid}" 
 							styleClass="exportExcel"> 
     					<h:outputText value="#{messages.reports_exportExcelLink}"/>
 				</h:commandLink>    
