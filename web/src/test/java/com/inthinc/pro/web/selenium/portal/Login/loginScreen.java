@@ -1,8 +1,5 @@
 package com.inthinc.pro.web.selenium.portal.Login;
 
-import java.util.Calendar;
-
-import org.apache.commons.lang.StringEscapeUtils;
 import static org.junit.Assert.*;
 
 import com.inthinc.pro.web.selenium.Core;
@@ -61,14 +58,6 @@ public class loginScreen extends Selenium_Server {
 	private final String username_xpath = login_form_id+ "table/tbody/tr[1]/td[2]/input";
 	private final String username_xpath_alt = "//input[@id='"+username_id+"']";
 	
-
-	private final String version_loc = "//li[@class='last']";
-	
-	
-	private final Calendar cal = Calendar.getInstance();
-	private final String copyright_title = StringEscapeUtils.unescapeHtml("&#169;" + String.valueOf(cal.get(Calendar.YEAR)) + " inthinc");
-//	private final String copyright_title = StringEscapeUtils.unescapeHtml("&#169;2009 inthinc");
-	private final String copyright_loc = "//form[@id='footerForm']/ul/li[@class='first']";
 	
 	protected static Core selenium;
 
@@ -185,9 +174,6 @@ public class loginScreen extends Selenium_Server {
 		selenium.getText("//ul[@id='grid_nav']/li[2]", "Message Sent Successfully", "Message Sent Successfully text");
 	}
 	
-	public Error_Catcher get_errors(){
-		return selenium.getErrors();
-	}
 	
 	
 	
@@ -241,6 +227,11 @@ public class loginScreen extends Selenium_Server {
 		}
 	}
 	
+	
+
+	public Error_Catcher get_errors(){
+		return selenium.getErrors();
+	}
 	
 	
 	public void test_self(){
