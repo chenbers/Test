@@ -173,7 +173,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
@@ -186,7 +186,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right">
-					<font fontName="Arial"/>
+					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{timeStr}]]></textFieldExpression>
 			</textField>

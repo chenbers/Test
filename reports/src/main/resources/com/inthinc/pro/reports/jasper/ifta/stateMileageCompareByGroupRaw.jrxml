@@ -8,8 +8,8 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="PageFooter" fontName="Arial" fontSize="12" isBold="true"/>
-	<style name="PageHeader" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="PageFooter" fontName="SansSerif" fontSize="12" isBold="true"/>
+	<style name="PageHeader" fontName="SansSerif" fontSize="12" isBold="true"/>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false">
 		<parameterDescription><![CDATA[Company logo gif file path.]]></parameterDescription>
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
