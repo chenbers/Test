@@ -14,9 +14,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -31,7 +29,6 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 	protected DateTimeFormatter dateTimeFormatter;
 	protected DateTimeFormatter dayFormatter;
 
-	protected GroupDAO groupDAO;
 	protected DriverDAO driverDAO;
 	protected WaysmartDAO waysmartDAO;
 
@@ -58,8 +55,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 				return groupNamesComparison;
 		}}
 	
-	void initDataSet(GroupHierarchy groupHierarchy, Interval interval,
-			Map<Driver, List<DriverHoursRecord>> recordMap) {
+	void initDataSet(GroupHierarchy groupHierarchy, Map<Driver, List<DriverHoursRecord>> recordMap) {
 
 		List<DriverHours> driverHoursList = new ArrayList<DriverHours>();
 
@@ -81,27 +77,21 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 		setMainDataset(driverHoursList);
 	}
 
-	public void init(Integer groupID, Interval interval) {
-		Group topGroup = groupDAO.findByID(groupID);
-		List<Driver> driverList = driverDAO.getAllDrivers(groupID);
-		List<Group> groupList = groupDAO.getGroupHierarchy(topGroup
-				.getAccountID(), topGroup.getGroupID());
+	public void init(GroupHierarchy groupHierarchy, Integer groupID, Interval interval) {
+        addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));
+        addParameter(DriverHoursReportCriteria.END_DATE_PARAM,  dateTimeFormatter.print(interval.getEnd()));
+        
+        List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+
 		Map<Driver, List<DriverHoursRecord>> driverHoursRecordMap = new HashMap<Driver, List<DriverHoursRecord>>();
 		for (Driver driver : driverList) {
-		    if (driver == null) {
-		        continue;
+		    if (driver != null) {
+	            List<DriverHoursRecord> driverHoursList = waysmartDAO.getDriverHours(driver, interval);
+	            driverHoursRecordMap.put(driver, driverHoursList);
 		    }
-			List<DriverHoursRecord> driverHoursList = waysmartDAO.getDriverHours(driver, interval);
-			driverHoursRecordMap.put(driver, driverHoursList);
 		}
-		addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));
-		addParameter(DriverHoursReportCriteria.END_DATE_PARAM,	dateTimeFormatter.print(interval.getEnd()));
 
-		initDataSet(new GroupHierarchy(groupList), interval, driverHoursRecordMap);
-	}
-
-	public void setGroupDAO(GroupDAO groupDAO) {
-		this.groupDAO = groupDAO;
+		initDataSet(groupHierarchy, driverHoursRecordMap);
 	}
 
 	public void setDriverDAO(DriverDAO driverDAO) {

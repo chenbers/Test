@@ -9,7 +9,6 @@ import java.util.Locale;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
@@ -29,27 +28,12 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
     }
 
     /**
-     * Initiate the DataSet and the parameters for the report.
-     * 
-     * @param groupId
-     *            the groupId chosen by the user
-     * @param interval
-     *            the date period
-     * @param iftaOnly
-     *            the flag to consider only DOT/IFTA
+     * {@inheritDoc}
+     * @see com.inthinc.pro.reports.ifta.DOTReportCriteria#getDataByGroup(java.lang.Integer, org.joda.time.Interval, boolean)
      */
     @Override
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly) {
-        super.init(accountGroupHierarchy, groupIDList, interval, dotOnly);
-
-        List<StateMileage> dataList = new ArrayList<StateMileage>();
-        for (Integer groupID : groupIDList) {
-            List<StateMileage> list = stateMileageDAO.getStateMileageByGroup(groupID, interval, dotOnly);
-            if (list != null) {
-                dataList.addAll(list);
-            }
-        }
-        initDataSet(dataList);
+    List<StateMileage> getDataByGroup(Integer groupID, Interval interval, boolean dotOnly) {
+        return stateMileageDAO.getStateMileageByGroup(groupID, interval, dotOnly);
     }
 
     /**

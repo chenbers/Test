@@ -98,7 +98,7 @@ public class DriverHoursReportCriteriaDataTest extends BaseUnitTest {
             driverHoursRecordMap.put(dataEntry.getKey(), driverHoursList);
         }
         DriverHoursReportCriteria criteria = new DriverHoursReportCriteria(Locale.US);
-        criteria.initDataSet(testData.getGroupHierarchy(), testData.interval, driverHoursRecordMap);
+        criteria.initDataSet(testData.getGroupHierarchy(), driverHoursRecordMap);
         
         List<DriverHours> dataList = criteria.getMainDataset();
         DecimalFormat hoursFormatter = new DecimalFormat("###0.00"); 

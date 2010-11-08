@@ -88,11 +88,11 @@ public class VehicleUsageReportCriteria extends ReportCriteria {
      */
     public void init(Integer id, Interval interval, boolean group)
     {
-        List<Driver> driverList;
-        Map<Driver, List<VehicleUsageRecord>> vehicleUsageRecordMap = new HashMap<Driver, List<VehicleUsageRecord>> ();
-        
         addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
         addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
+        
+        List<Driver> driverList;
+        Map<Driver, List<VehicleUsageRecord>> vehicleUsageRecordMap = new HashMap<Driver, List<VehicleUsageRecord>> ();
         
         if(group) {
             Group topGroup = groupDAO.findByID(id);

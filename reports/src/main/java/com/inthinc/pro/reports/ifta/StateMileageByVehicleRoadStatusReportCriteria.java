@@ -5,13 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+
 import org.joda.time.Interval;
-import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.StateMileageDAO;
+
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.StateMileage;
-import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 
@@ -32,36 +30,20 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends DOTReportCrit
     }
 
     /**
-     * Setter for Group DAO. 
-     * @param groupDAO
+     * {@inheritDoc}
+     * @see com.inthinc.pro.reports.ifta.DOTReportCriteria#getDataByGroup(java.lang.Integer, org.joda.time.Interval, boolean)
      */
-    public void setGroupDAO(GroupDAO groupDAO) {
-        this.groupDAO = groupDAO;
+    @Override
+    List<StateMileage> getDataByGroup(Integer groupID, Interval interval, boolean dotOnly) {
+        return stateMileageDAO.getStateMileageByVehicleRoad(groupID, interval, dotOnly);
     }
 
     /**
-     * Initiate the DataSet and the parameters for the report.
-     * @param groupId the groupId chosen by the user
-     * @param interval the date period
-     * @param iftaOnly the flag to consider only IFTA 
-     */
-    public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly) {
-        super.init(accountGroupHierarchy, groupIDList, interval, dotOnly);
-        List<StateMileage> list = new ArrayList<StateMileage>();
-        for (Integer groupID : groupIDList) {
-            List<StateMileage> listTmp = stateMileageDAO.getStateMileageByVehicleRoad(groupID, interval, dotOnly);
-            if (listTmp != null)
-                list.addAll(listTmp);
-        }      
-        initDataSet(interval, list);
-    }
-
-    /**
-     * Populate the dataset with data.
+     * Populate the DataSet with data.
      * @param interval
      * @param recordMap
      */
-    void initDataSet(Interval interval, List<StateMileage> backendBeanList)
+    void initDataSet(List<StateMileage> backendBeanList)
     {   
         List<StateMileageByVehicleRoadStatus> dataList = new ArrayList<StateMileageByVehicleRoadStatus>();
         String roadStatus = "";
@@ -98,12 +80,4 @@ public class StateMileageByVehicleRoadStatusReportCriteria extends DOTReportCrit
            return comparaison;
        }
    }
-
-    /**
-     * The StateMileageDAO setter.
-     * @param stateMileageDAO the DAO to set
-     */
-    public void setStateMileageDAO(StateMileageDAO stateMileageDAO) {
-        this.stateMileageDAO = stateMileageDAO;
-    }   
 }

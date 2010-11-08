@@ -717,14 +717,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * @return criteria All report criteria including layout and data 
      */ 
     @Override
-    public ReportCriteria getTenHoursDayViolationsCriteria(Integer groupID, Interval interval, Locale locale) {
+    public ReportCriteria getTenHoursDayViolationsCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale) {
         TenHoursViolationReportCriteria criteria = new TenHoursViolationReportCriteria(locale);
-        criteria.setAccountDAO(accountDAO);
         criteria.setDriverDAO(driverDAO);
-        criteria.setGroupDAO(groupDAO);
         criteria.setWaysmartDAO(waysmartDAO);
                
-        criteria.init(groupID, interval);
+        criteria.init(accountGroupHierarchy, groupID, interval);
         return criteria;
     }
     
@@ -733,13 +731,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getDriverHoursReportCriteria(java.lang.Integer, org.joda.time.Interval, java.util.Locale)
      */
     @Override
-    public ReportCriteria getDriverHoursReportCriteria(Integer groupID, Interval interval, Locale locale) {
+    public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale) {
     	DriverHoursReportCriteria criteria = new DriverHoursReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
-        criteria.setGroupDAO(groupDAO);
         criteria.setWaysmartDAO(waysmartDAO);
                
-        criteria.init(groupID, interval);
+        criteria.init(accountGroupHierarchy,groupID, interval);
         return criteria;
     }
 
@@ -851,11 +848,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
      * @see com.inthinc.pro.reports.service.ReportCriteriaService#getWarrantyListReportCriteria(java.lang.Integer, java.util.Locale, boolean)
      */
     @Override
-    public ReportCriteria getWarrantyListReportCriteria(Integer groupID, Integer accountID, String accountName, Locale locale, boolean expiredOnly) {
+    public ReportCriteria getWarrantyListReportCriteria(GroupHierarchy accountGroupHierarchy, 
+            Integer groupID, Integer accountID, String accountName, Locale locale, boolean expiredOnly) {
         WarrantyListReportCriteria criteria = new WarrantyListReportCriteria(locale);
         criteria.setGroupDAO(groupDAO);
         criteria.setWaysmartDAO(waysmartDAO);
-        criteria.init(groupID, accountID, accountName, expiredOnly);
+        criteria.init(accountGroupHierarchy, groupID, accountID, accountName, expiredOnly);
         return criteria;
     }
     

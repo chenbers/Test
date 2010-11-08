@@ -13,10 +13,6 @@ import javax.faces.model.SelectItemGroup;
 import org.ajax4jsf.model.KeepAlive;
 
 import com.inthinc.pro.backing.ui.ReportParams;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.reports.ReportCategory;
@@ -69,7 +65,7 @@ public class WaysmartReportsBean extends ReportsBean {
         
         switch (reportGroup.getReports()[0]) {
             case TEN_HOUR_DAY_VIOLATIONS:
-                reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
             case PAYROLL_SUMMARY:
@@ -90,7 +86,7 @@ public class WaysmartReportsBean extends ReportsBean {
                 break;
             
             case DRIVER_HOURS:
-                reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
                         params.getLocale()));
                 break;
                 
@@ -135,7 +131,8 @@ public class WaysmartReportsBean extends ReportsBean {
                 break;
             
             case WARRANTY_LIST:
-                reportCriteriaList.add(getReportCriteriaService().getWarrantyListReportCriteria(params.getGroupID(), getAccountID(),
+                reportCriteriaList.add(getReportCriteriaService().getWarrantyListReportCriteria(
+                        getAccountGroupHierarchy(), params.getGroupID(), getAccountID(),
                         getAccountName(), params.getLocale(), params.getIsExpired()));
                 break;
 
@@ -209,24 +206,25 @@ public class WaysmartReportsBean extends ReportsBean {
         return new SelectItemGroup("","",false,items);		
 	}
 
-	/**
+	/*
 	 * {@inheritDoc}
 	 * Filter the Groups for WaySmart device. 
 	 * @see com.inthinc.pro.backing.BaseBean#getGroupHierarchy()
 	 */
+	/*// As decided - Tek removes the code filtering the group and show all the groups (because configuration can change)
 	@Override
     public GroupHierarchy getGroupHierarchy() {
         GroupHierarchy full = super.getGroupHierarchy();
 	    List<Group> filtered = checkGroupForWaysmart(full, full.getTopGroup());
         return new GroupHierarchy(filtered);
-    }
+    }*/
 	
     /*
      * Returns a list of the group and its subgroups if have WaySmart device.
      * @param hierarchy The GroupHierarchy to use to get children
      * @param group The current group to check
      * @return THe list with all the children and the parent having WaySmart device
-     */
+     * /
     private List<Group> checkGroupForWaysmart(GroupHierarchy hierarchy, Group group) {
         List<Group> checkedList = new ArrayList<Group>();
         List<Group> children = hierarchy.getChildren(group);
@@ -258,6 +256,6 @@ public class WaysmartReportsBean extends ReportsBean {
             }
 	    }
         return false;
-	}
+	} */
 
 }

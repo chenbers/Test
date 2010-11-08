@@ -66,15 +66,14 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
 
         final Interval interval = new Interval(new Date().getTime() - 3000, new Date().getTime());
 
-        serviceSUT.getDriverHoursReportCriteria(mockGroupId, interval, Locale.US);
+        serviceSUT.getDriverHoursReportCriteria(groupHierarchy, mockGroupId, interval, Locale.US);
 
         new VerificationsInOrder() {
             {
                 new DriverHoursReportCriteria(Locale.US);
                 criteriaMock.setDriverDAO((DriverDAO) any);
-                criteriaMock.setGroupDAO((GroupDAO) any);
                 criteriaMock.setWaysmartDAO((WaysmartDAO) any);
-                criteriaMock.init(mockGroupId, interval);
+                criteriaMock.init(groupHierarchy, mockGroupId, interval);
 
             }
         };

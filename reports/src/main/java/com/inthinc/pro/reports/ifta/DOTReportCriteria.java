@@ -3,6 +3,7 @@
  */
 package com.inthinc.pro.reports.ifta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,15 +13,18 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.StateMileage;
+import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 
 /**
  * ReportCriteria parent class for DOT/IFTA reports.
  */
-public abstract class DOTReportCriteria extends ReportCriteria {
+public abstract class DOTReportCriteria extends GroupListReportCriteria {
     protected DateTimeFormatter dateTimeFormatter; 
     protected String units;
     protected GroupDAO groupDAO;
@@ -32,7 +36,7 @@ public abstract class DOTReportCriteria extends ReportCriteria {
      * @param locale the user Locale
      */
     public DOTReportCriteria(ReportType reportType, Locale locale) {
-        super(reportType, "", locale);
+        super(reportType, locale);
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
         setMeasurementType(MeasurementType.ENGLISH);
     }
@@ -75,8 +79,22 @@ public abstract class DOTReportCriteria extends ReportCriteria {
         addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
         addParameter("units", units);
         this.accountGroupHierarchy = accountGroupHierarchy;
+        
+        List<StateMileage> dataList = new ArrayList<StateMileage>();
+        List<Group> groupList = getReportGroupList(groupIDList, accountGroupHierarchy);
+        for (Group group : groupList) {
+            List<StateMileage> list = getDataByGroup(group.getGroupID(), interval, dotOnly);
+            if (list != null) {
+                dataList.addAll(list);
+            }
+        }      
+        initDataSet(dataList);
     }
 
+    abstract void initDataSet(List<StateMileage> list);
+    
+    abstract List<StateMileage> getDataByGroup(Integer groupID, Interval interval, boolean dotOnly);
+    
     /**
      * The StateMileageDAO setter.
      * @param stateMileageDAO the DAO to set

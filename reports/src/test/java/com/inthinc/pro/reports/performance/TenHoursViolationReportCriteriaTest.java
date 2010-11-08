@@ -22,9 +22,7 @@ import org.joda.time.Interval;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
@@ -36,7 +34,6 @@ import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
     
     // Constant values
-    private final Integer ACCOUNT_ID = new Integer(1);
     private final Integer GROUP_ID = new Integer(2);
     private final String VEHICLE_NAME = "Stub Vehicle Name";
     private final Double HOURS_THIS_DAY = new Double(15);
@@ -45,11 +42,10 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
     private final Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
     
     // JMockit mocks
-    @Mocked private Group groupMock;
     @NonStrict @Cascading private Driver driverMock;
     @Mocked private DriverDAO driverDAOMock; 
-    @Mocked private GroupDAO groupDAOMock; 
     @Mocked private WaysmartDAO waysmartDAOMock; 
+    @Mocked private GroupHierarchy groupHierarchyMock;
     
 	// The System Under Test
 	private TenHoursViolationReportCriteria reportCriteriaSUT = new TenHoursViolationReportCriteria(LOCALE); 
@@ -58,12 +54,12 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
 	/**
 	 * Tests the init method of the TenHoursViolationReportCriteria class.
 	 */
-	@Test
+	@SuppressWarnings("unchecked")
+    @Test
     public void testInit(){
 
 		// General initializations
         reportCriteriaSUT.setDriverDAO(driverDAOMock);
-        reportCriteriaSUT.setGroupDAO(groupDAOMock);
         reportCriteriaSUT.setWaysmartDAO(waysmartDAOMock);
 
         // JMockit Documentation:
@@ -80,26 +76,19 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         	// In that case, execution and order must be verified in the Verifications() block.
         	// In this example we have one @NonStrict Mock object: driverMock
         	
-        	GroupHierarchy groupHierarchyMock; 
+        	 
         	  // Local mock, only used in the Expectations block
         	  // Some other mocks in this example could also be local
         
            {
-              groupDAOMock.findByID(GROUP_ID); returns(groupMock);
 
               List<Driver> driverList = new ArrayList<Driver>(); driverList.add(driverMock);
               driverDAOMock.getAllDrivers(GROUP_ID); returns(driverList);
 
-        	  groupMock.getAccountID();  returns(ACCOUNT_ID);
-        	  groupMock.getGroupID();  returns(GROUP_ID);
-        	  List<Group> groupList = new ArrayList<Group>();
-              groupDAOMock.getGroupHierarchy(ACCOUNT_ID, GROUP_ID); returns(groupList);
-
               waysmartDAOMock.getTenHoursViolations(driverMock, INTERVAL); returns(getViolationList());
 
-              new GroupHierarchy(groupList); // We expect this constructor to be called,
               driverMock.getGroupID(); returns(GROUP_ID); 
-              groupHierarchyMock.getShortGroupName(GROUP_ID, ReportCriteria.SLASH_GROUP_SEPERATOR); returns(GROUP_FULL_NAME); // and then this method.
+              groupHierarchyMock.getShortGroupName(GROUP_ID, ReportCriteria.SLASH_GROUP_SEPERATOR); returns(GROUP_FULL_NAME);
            }
            
            // Helper method
@@ -117,7 +106,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
         
         //------------------------------------------------------------------
         // 2. Second, we run the actual method to be tested
-        reportCriteriaSUT.init(GROUP_ID, INTERVAL);
+        reportCriteriaSUT.init(groupHierarchyMock, GROUP_ID, INTERVAL);
     	
         //------------------------------------------------------------------
         // 3. Third we verify the results

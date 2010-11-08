@@ -6,7 +6,6 @@ import java.util.Locale;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
-import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
@@ -59,11 +58,11 @@ public interface ReportCriteriaService
     ReportCriteria getPayrollSignoffReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale);
 //    ReportCriteria getPayrollSummaryReportCriteria(Integer groupID, Interval interval, Locale locale);
     ReportCriteria getPayrollSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale);
-    ReportCriteria getTenHoursDayViolationsCriteria(Integer groupID, Interval interval, Locale locale);
-    ReportCriteria getDriverHoursReportCriteria(Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getTenHoursDayViolationsCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale);
+    ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale);
     ReportCriteria getVehicleUsageReportCriteria(Integer id, Interval interval, Locale locale, boolean group);
     
     // Asset
-    ReportCriteria getWarrantyListReportCriteria(Integer groupID, Integer accountID, String accountName, Locale locale, boolean expiredOnly);
+    ReportCriteria getWarrantyListReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Integer accountID, String accountName, Locale locale, boolean expiredOnly);
     
 }

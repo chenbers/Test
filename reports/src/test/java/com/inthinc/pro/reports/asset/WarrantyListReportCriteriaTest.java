@@ -13,14 +13,15 @@ import java.util.List;
 import java.util.Locale;
 
 import mockit.Expectations;
+import mockit.Mocked;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.assets.AssetWarrantyRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -39,10 +40,12 @@ public class WarrantyListReportCriteriaTest extends BaseUnitTest {
 	private final String ACCOUNT_NAME = "Customer Name";
     private final String VEHICLE_NAME = "Vehicle Name";
 	private final String IMEI = "IMEI";
+	private final String GROUP_NAME = "Parent Group/Child 2 group";
 	
 	private final Integer CHILD1_GROUP_ID = new Integer(11);
 	private final Integer CHILD2_GROUP_ID = new Integer(12);
 	
+	@Mocked private GroupHierarchy groupHierarchyMock;
 	private final DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(LOCALE);
 
 
@@ -57,29 +60,27 @@ public class WarrantyListReportCriteriaTest extends BaseUnitTest {
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testInit(final GroupDAO groupDAOMock,
-						 final WaysmartDAO waysmartDAOMock){
+	public void testInit(final WaysmartDAO waysmartDAOMock){
 		
 		// inject the mocks
-	    reportCriteriaSUT.setGroupDAO(groupDAOMock);
 	    reportCriteriaSUT.setWaysmartDAO(waysmartDAOMock);
 		
 	    final List<AssetWarrantyRecord> warrantyList = getWarrantyList();
 	    
 		new Expectations(){
 			{
-				Group parentGroup = getGroup(PARENT_GROUP_ID);
-				groupDAOMock.findByID(PARENT_GROUP_ID); returns(parentGroup);
-				groupDAOMock.getGroupHierarchy(parentGroup.getAccountID(), parentGroup.getGroupID()); returns(getGroupList());
+			    groupHierarchyMock.getSubGroupList(PARENT_GROUP_ID); returns(getGroupList());
 
 				// Test the two paths in the Group for loop
 				waysmartDAOMock.getWarrantyList(CHILD1_GROUP_ID, true); returns(null);
 				waysmartDAOMock.getWarrantyList(CHILD2_GROUP_ID, true); returns(warrantyList); 
+				
+				groupHierarchyMock.getShortGroupName(CHILD2_GROUP_ID, ReportCriteria.SLASH_GROUP_SEPERATOR);returns(GROUP_NAME);
 			}
 		};
 		
 		// Run the test
-		reportCriteriaSUT.init(PARENT_GROUP_ID, ACCOUNT_ID, ACCOUNT_NAME, true);
+		reportCriteriaSUT.init(groupHierarchyMock, PARENT_GROUP_ID, ACCOUNT_ID, ACCOUNT_NAME, true);
 		
 		assertEquals(reportCriteriaSUT.getParameter(reportCriteriaSUT.CUSTOMER_NAME_KEY), ACCOUNT_NAME);
 		assertEquals(reportCriteriaSUT.getParameter(reportCriteriaSUT.CUSTOMER_ID_KEY), ACCOUNT_ID.toString());
@@ -134,7 +135,5 @@ public class WarrantyListReportCriteriaTest extends BaseUnitTest {
 		warrantyList.add(getWarrantyRecord(2));
 		return warrantyList;
 		
-	}
-	
-	
+	}	
 }

@@ -11,7 +11,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.assets.AssetWarrantyRecord;
@@ -50,10 +49,11 @@ public class WarrantyListReportCriteria extends ReportCriteria {
      * @param accountName The customer account name.
      * @param expiredOnly True to show expired warranties only.
      */
-    public void init(Integer groupID, Integer accountID, String accountName, boolean expiredOnly) {
-        Group topGroup = groupDAO.findByID(groupID);
-        List<Group> groupList = groupDAO.getGroupHierarchy(topGroup
-                .getAccountID(), topGroup.getGroupID());
+    public void init(GroupHierarchy accountGroupHierarchy, Integer groupID, 
+            Integer accountID, String accountName, boolean expiredOnly) {
+        
+        List<Group> groupList = accountGroupHierarchy.getSubGroupList(groupID);
+        
         Map<Integer, List<AssetWarrantyRecord>> recordMap = 
             new HashMap<Integer, List<AssetWarrantyRecord>>();
         for (Group group : groupList) {            
@@ -65,7 +65,7 @@ public class WarrantyListReportCriteria extends ReportCriteria {
         // Add all parameters
         addParameter(CUSTOMER_NAME_KEY, accountName);
         addParameter(CUSTOMER_ID_KEY, accountID.toString());
-        initDataSet(new GroupHierarchy(groupList), recordMap);
+        initDataSet(accountGroupHierarchy, recordMap);
     }
     
     /**
