@@ -1,53 +1,19 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
+import org.junit.Test;
+
 import com.inthinc.pro.web.selenium.portal.*;
-import com.inthinc.pro.web.selenium.portal.Masthead.Masthead;
-import com.inthinc.pro.web.selenium.portal.Notifications.Notifications;
 import com.inthinc.pro.web.selenium.portal.Login.*;
-import com.thoughtworks.selenium.*;
 
 
 
-public class LoginScreen_HP extends SeleneseTestCase {
-	//define local vars
-	
-	
-	
+public class LoginScreen_HP extends NAVIGATE {
 
-	
-	/**
-	 * @throws Exception
-	 */
-	public static void main() throws Exception {
-	//create instance of library objects
-		Singleton tvar = Singleton.getSingleton() ; 
-		Selenium selenium = tvar.getSelenium();
-	
-//	
-//	NAVIGATE navto;
-//	navto = new NAVIGATE();
-//	
-//	Masthead mast;
-//	mast = new Masthead();
-//	
-//	Notifications N;
-//	N = new Notifications();
-//
-//	loginScreen login;
-//	login = new loginScreen();
-//
-//	navto.setUp();
-//	login.login_screen();
-//
-//	login.ck_login_page();
-//	login.ForgotPassword();
-//	
-//	
-	
-//	navto.tearDown();	//perform tear down tasks
-	
+	@Test
+	public void testme(){
+		
+		Login l = new Login();		
+		l.login_to_portal("larrington", "tekpass");
+
 	}
 }
-
-
-

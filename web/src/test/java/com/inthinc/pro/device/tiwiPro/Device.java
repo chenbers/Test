@@ -302,6 +302,12 @@ public class Device {
             Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.QA_MCM_PORT.getCode());
             Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.QA_MCM.getCode());
         }
+        
+        else if (server == "qa2"){
+            Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.QA2_MCM_PORT.getCode());
+            Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.QA2_MCM.getCode());
+        }
+        
         else if (server == "prod"){
             Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.PROD_MCM_PORT.getCode());
             Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.PROD_MCM.getCode());

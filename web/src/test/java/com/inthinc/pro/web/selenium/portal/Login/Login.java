@@ -129,6 +129,14 @@ public class Login extends Selenium_Server {
 	
 	public void click_login(){
 		selenium.click(login_id, "Login button click");
+		selenium.waitForPageToLoad("30000", "Login button click");
+		selenium.getLocation("tiwipro/app", "Login button click");
+	}
+	
+	public void click_login(String error_name){
+		selenium.click(login_id, error_name);
+		selenium.waitForPageToLoad("30000", error_name);
+		selenium.getLocation("tiwipro/app", error_name);
 	}
 	
 	public void type_username(String username){
@@ -145,7 +153,7 @@ public class Login extends Selenium_Server {
 	
 	public void ck_forgot_password(Boolean visible) {
 		
-		if (visible)
+		if (visible){
 		selenium.isTextPresent("Forgot User Name or Password?", "Forgot Pop Up Title text present");
 		selenium.getText(forgot_email_label_xpath, "E-mail Address label", "E-mail Address");
 		selenium.isElementPresent(forgot_email_field_id, "Email text field");
@@ -153,6 +161,9 @@ public class Login extends Selenium_Server {
 		selenium.getText(forgot_cancel_id, "Forgot Cancel button", "Cancel");
 		selenium.isElementPresent(forgot_close_xpath, "Forgot Close button" );
 		selenium.getText(forgot_message_xpath, "Forgot message", forgot_message_text);
+		}else if (!visible){
+			
+		}
 	}
 	
 

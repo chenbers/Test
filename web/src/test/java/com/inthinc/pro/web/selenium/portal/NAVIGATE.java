@@ -3,30 +3,38 @@
 package com.inthinc.pro.web.selenium.portal;
 
 
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.server.SeleniumServer;
 
 
-import com.thoughtworks.selenium.*;
+import com.inthinc.pro.web.selenium.Core;
 
 public class NAVIGATE
 {
 	
-	Selenium selenium;
-	SeleniumServer seleniumserver;
+	Core selenium;
+	static SeleniumServer seleniumserver;
+	
 	
 	
 	@BeforeClass
-	public void setUp() throws Exception {
-		seleniumserver=new SeleniumServer();
-		//Set up tasks for all Tiwipro navigation functions
-	    seleniumserver.boot();
+	public static void start_server() throws Exception {
+		seleniumserver = new SeleniumServer();
         seleniumserver.start();
+        
 	}//end setup
 	
 	
+	@Before
+	public void start_selenium(){
+		selenium = Singleton.getSingleton().getSelenium();        
+	}
 	
-	public void set_selenium(Selenium sel ){
+	
+	public void set_selenium(Core sel ){
 		selenium = sel;		
 	}
 	
@@ -99,10 +107,16 @@ public class NAVIGATE
 	}
 	
 	
-		//@AfterClass //Close and destroy all objects and files created
-		public void tearDown(){
+	@AfterClass //Close and destroy all objects and files created
+	public static void stop_server(){
 		 seleniumserver.stop();
-		}//tear down
+		
+	}//tear down
+	
+	@After
+	public void stop_selenium(){
+		selenium.stop();
+	}
 
 }
 

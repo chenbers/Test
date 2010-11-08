@@ -11,6 +11,11 @@ public enum Addresses {
     QA_PORT("8199"),
     QA_MCM("qa.tiwipro.com"),
     QA_MCM_PORT("8190"),
+    
+    QA2_PORTAL("qa2.tiwipro.com"),
+    QA2_PORT("8299"),
+    QA2_MCM("qa2.tiwipro.com"),
+    QA2_MCM_PORT("8290"),
 
     TEEN_MCM_QA("192.168.1.215"),
     TEEN_MCM_PORT_QA("8090"),

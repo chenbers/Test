@@ -80,6 +80,7 @@ public class Masthead extends Selenium_Server{
 	private final String privacy_link = "link="+privacy_title;
 	private final String privacy_xpath = footer_form+"/ul/li["+privacy_loc+"]/a";
 	private final String privacy_xpath_direct = "//a[@title='"+privacy_title+"']";
+	private final String privacy_policy = "We at inthinc take your privacy very seriously. This Privacy Policy describes how we handle personally identifiable information (“Personal Information”) and other information that we collect or receive through the operation of inthinc products and services, any websites, portals, telecommunications, technical or customer service support or information and as part of any of our other business activities.  “Personal Information” in this context is information that is identifiable to a particular person, including when the information is combined with other information about that individual.  We endeavor to carefully guard and protect the privacy of any Personal Information that we collect or otherwise receive.";
 	
 	private final String support_id = "footerForm:customerSupport";
 	private final String support_title = "Support";
@@ -132,14 +133,21 @@ public class Masthead extends Selenium_Server{
 	
 	public void click_support(){
 		selenium.click(support_link, "Support click");
+		
 	}
 	
 	public void click_legal(){
 		selenium.click(legal_link, "Legal Notice click");
+		selenium.waitForPopUp("popup", "30000");
+		
 	}
 	
 	public void click_privacy(){
 		selenium.click(privacy_link, "Privacy Policy click");
+		selenium.waitForPopUp("popup", "30000");
+		selenium.selectPopUp("");
+		selenium.getText("//p[4]", privacy_policy, "Privacy Policy text");
+		selenium.close();
 	}
 	
 	public void click_help(String help_page, String timeout){
