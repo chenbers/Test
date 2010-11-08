@@ -64,6 +64,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final String REDIRECT_REPORT_SCHEDULE = "pretty:adminReportSchedule";
     private static final String REDIRECT_EDIT_REPORT_SCHEDULE = "pretty:adminEditReportSchedule";
     private List<SelectItem> reportGroups;
+    private List<Driver> driverList;
+    protected final static String BLANK_SELECTION = " ";
 
     /*
      * Spring managed beans
@@ -198,24 +200,56 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return SelectItemUtil.toList(Status.class, false, Status.DELETED);
     }
 
-    @SuppressWarnings("unchecked")
-    public Map<String, Integer> getDrivers() {
-        Map<String, Integer> driverMap = new HashedMap();
-        driverMap.put("", null);
-    	Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
-    	User owner = null;
-    	if (!ownerID.equals(getUserID()))
-    		owner = userDAO.findByID(ownerID);
-    	else owner = getUser();
-
-//        List<Driver> driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
-        List<Driver> driverList = driverDAO.getAllDrivers(owner.getGroupID());
-        for (Driver driver : driverList) {
-            driverMap.put(driver.getPerson().getFullName(), driver.getDriverID());
+//    @SuppressWarnings("unchecked")
+//    public Map<String, Integer> getDrivers() {
+//        Map<String, Integer> driverMap = new HashedMap();
+//        driverMap.put("", null);
+//    	Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
+//    	User owner = null;
+//    	if (!ownerID.equals(getUserID()))
+//    		owner = userDAO.findByID(ownerID);
+//    	else owner = getUser();
+//
+////        List<Driver> driverList = driverDAO.getAllDrivers(getGroupHierarchy().getTopGroup().getGroupID());
+//        List<Driver> driverList = driverDAO.getAllDrivers(owner.getGroupID());
+//        for (Driver driver : driverList) {
+//            driverMap.put(driver.getPerson().getFullName(), driver.getDriverID());
+//        }
+//        return driverMap;
+//    }
+    
+    public List<SelectItem> getDrivers() {
+        List<SelectItem> drivers = new ArrayList<SelectItem>();
+        if (getDriverList() == null)
+            return drivers;
+        drivers.add(new SelectItem(null, BLANK_SELECTION));
+        for (Driver driver : getDriverList()) {
+            drivers.add(new SelectItem(driver.getDriverID(), driver.getPerson().getFullName()));
         }
-        return driverMap;
+        sort(drivers);
+        return drivers;
     }
+    
+    public List<Driver> getDriverList() {
+        if (driverList == null) {
+            Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
+            User owner = null;
+            if (!ownerID.equals(getUserID()))
+                owner = userDAO.findByID(ownerID);
+            else owner = getUser();
+            driverList = driverDAO.getAllDrivers(owner.getGroupID());
+        }
+        return driverList;
+    }
+
+    public void setDriverList(List<Driver> driverList) {
+        this.driverList = driverList;
+    }
+
+
+    
     public void ownerChangedAction() {
+        driverList = null;
     }
     
     public void reportGroupChangeAction() {

@@ -309,7 +309,7 @@
 									</td>
 								</tr>
 							</h:outputText>
-							<h:outputText id="driverInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER' or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_OR_DRIVER' and reportScheduleBean.item.paramType eq 'DRIVER') or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER' and reportScheduleBean.item.paramType eq 'DRIVER')}">
+							<h:outputText id="driverInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER' or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_OR_DRIVER' and (reportScheduleBean.item.paramType eq 'DRIVER' or reportScheduleBean.item.paramType eq null)) or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER' and (reportScheduleBean.item.paramType eq 'DRIVER' or reportScheduleBean.item.paramType eq null)) }">
 									<tr>
 										<td width="100" valign="top">
 											<h:outputText value="#{messages.reportSchedule_driver}"/>

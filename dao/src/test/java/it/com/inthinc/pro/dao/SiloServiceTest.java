@@ -1433,13 +1433,16 @@ public class SiloServiceTest {
         assertTrue(checkTypes("monthly",reportSchedules));
         
         // find 
-        // TODO: Check on startDate, endDate (they are 12 hours off)
         String[] ignoreFields = { "modified", 
-        		"emailToString",	// list might be in different order (could extract and test)
-        		"endDate",			// not sure why this is different
-        		"startDate" };		// not sure why this is different
+                "emailToString",    // list might be in different order (could extract and test)
+                "endDate",          // not sure why this is different
+                "startDate" };      // not sure why this is different
 
-        ReportSchedule reportSchedule = reportScheduleHessianDAO.findByID(weeklyId);
+        ReportSchedule reportSchedule = reportScheduleHessianDAO.findByID(monthlyId);
+        Util.compareObjects(reportScheduleMonthly, reportSchedule, ignoreFields);
+
+
+        reportSchedule = reportScheduleHessianDAO.findByID(weeklyId);
         Util.compareObjects(reportScheduleWeekly, reportSchedule, ignoreFields);
 
 //        System.out.println("startDateDiff = " + (reportSchedule.getStartDate().getTime() - reportScheduleWeekly.getStartDate().getTime()));

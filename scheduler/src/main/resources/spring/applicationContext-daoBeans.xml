@@ -25,6 +25,7 @@
     	<property name="zoneDAO"      ref="zoneDAO"></property>
     	<property name="addressLookup" ref="${addressLookup2}"></property>
     </bean>
+    <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO" parent="genericDAO"></bean>
     <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
     <bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO" parent="genericDAO"></bean>
