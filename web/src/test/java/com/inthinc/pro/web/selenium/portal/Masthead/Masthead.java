@@ -38,8 +38,8 @@ public class Masthead extends Selenium_Server{
 	private final String copyright_class = "first";
 	private final String copyright_xpath = footer_form+"/ul/li["+copyright_loc+"]";
 	private final String copyright_xpath_direct = "//li[@class='"+copyright_class+"']";
-//	private final String copyright_text = StringEscapeUtils.unescapeHtml("&#169;" + String.valueOf(cal.get(Calendar.YEAR)) + " inthinc");
-	private final String copyright_text = StringEscapeUtils.unescapeHtml("&copy;2009 inthinc");
+	private final String copyright_text = StringEscapeUtils.unescapeHtml("&#169;" + String.valueOf(cal.get(Calendar.YEAR)) + " inthinc");
+//	private final String copyright_text = StringEscapeUtils.unescapeHtml("&copy;2009 inthinc");
 	
 	private final String help_class = "tb-help";
 	private final String help_href = "/tiwipro/secured/lochelp/en/en/";
@@ -52,6 +52,7 @@ public class Masthead extends Selenium_Server{
 	private final String legal_link = "link="+legal_title;
 	private final String legal_xpath = footer_form+"/ul/li["+legal_loc+"]/a";
 	private final String legal_xpath_direct = "//a[@id='"+legal_id+"']";
+	private final String legal_notice = "THE MATERIAL AND INFORMATION ON THIS WEBSITE ARE BEING PROVIDED FOR YOUR INFORMATION ONLY, \"AS IS, WHERE IS,\" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY WARRANTY FOR INFORMATION, SERVICES OR PRODUCTS PROVIDED BY OR THROUGH THIS WEBSITE. INTHINC EXPRESSLY DISCLAIMS ANY IMPLIED WARRANTY FOR MERCHANTABILITY, SATISFACTORY QUALITY, FITNESS FOR A PARTICULAR PURPOSE, EXPECTATION OF PRIVACY OR NON-INFRINGEMENT.  YOU MAY USE THIS WEBSITE AT YOUR OWN RISK. EXCEPT AS REQUIRED BY LAW, INTHINC WILL NOT BE RESPONSIBLE OR LIABLE FOR ANY DAMAGE OR INJURY CAUSED BY, AMONG OTHER THINGS, ANY FAILURE OF PERFORMANCE; ERROR, OMISSION, INTERRUPTION, DELETION, DEFECT OR DELAY IN OPERATION OR TRANSMISSION; COMPUTER VIRUS; COMMUNICATION LINE FAILURE; THEFT, DESTRUCTION OR UNAUTHORIZED ACCESS TO, ALTERATION OF OR USE OF ANY DATA. YOU, NOT INTHINC, ASSUME THE ENTIRE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION DUE TO YOUR USE OF THIS WEBSITE.  INTHINC WILL NOT BE LIABLE FOR THE ACTIONS OF THIRD PARTIES.";
 	
 	private final String login_logo_id = "login_logo";
 	private final String login_logo_xpath = "//body/div[1]/div/img";
@@ -127,18 +128,36 @@ public class Masthead extends Selenium_Server{
 	public void click_my_account(){
 		selenium.click(account_link, "My Account click");
 		selenium.waitForPageToLoad("30000", "My Account click");
-		selenium.getLocation();
-		
+		selenium.getLocation("tiwipro/app/account","My Account click");		
+	}
+	
+	public void click_my_messages(){
+		selenium.click(messages_link, "My Messages click");
+		selenium.waitForPageToLoad("30000", "My Messages click");
+		selenium.getLocation("tiwipro/app/messages/", "My Messages click");
+	}
+	
+	public void click_logout(){
+		selenium.click(logout_link, "Logout click");
+		selenium.waitForPageToLoad("30000", "Logout click");
+		selenium.getLocation("tiwipro/login", "Logout click");
 	}
 	
 	public void click_support(){
 		selenium.click(support_link, "Support click");
-		
+		String feedWinId = selenium.getEval("{var windowId; for(var x in selenium.browserbot.openedWindows ) {windowId=x;} }");
+		selenium.selectWindow(feedWinId);
+		selenium.close();
+		selenium.selectWindow(null);
 	}
 	
 	public void click_legal(){
 		selenium.click(legal_link, "Legal Notice click");
 		selenium.waitForPopUp("popup", "30000");
+		selenium.selectPopUp("");
+		selenium.getText("//p[8]", legal_notice, "Legal Notice click");
+		selenium.close();
+		selenium.selectWindow(null);
 		
 	}
 	
@@ -148,6 +167,7 @@ public class Masthead extends Selenium_Server{
 		selenium.selectPopUp("");
 		selenium.getText("//p[4]", privacy_policy, "Privacy Policy text");
 		selenium.close();
+		selenium.selectWindow(null);
 	}
 	
 	public void click_help(String help_page, String timeout){
@@ -169,6 +189,9 @@ public class Masthead extends Selenium_Server{
 		selenium.getText(messages_id, "My Messages", "My Messages link text");
 		selenium.getText(account_id, "My Account", "My Account text");
 		selenium.getText(logout_link, "Log Out", "Log Out text");
+		
+		click_my_account();
+		click_my_messages();
 	}
 	
 	public void ck_footer(){
@@ -182,6 +205,10 @@ public class Masthead extends Selenium_Server{
 		selenium.getText(privacy_id, privacy_title, "Privacy Policy text");
 		selenium.getText(legal_id, legal_title, "Legal Notice text");
 		selenium.getText(support_id, support_title, "Support text");
+		
+		click_legal();
+		click_privacy();
+		click_support();
 	}
 	
 	public void test_self_before_login(){
@@ -192,6 +219,8 @@ public class Masthead extends Selenium_Server{
 	public void test_self_after_login(){
 		ck_footer();
 		ck_header();
+		
+		click_logout();
 	}
 	
 
@@ -220,6 +249,7 @@ public class Masthead extends Selenium_Server{
 			
 			errors = masthead.get_errors().get_errors().toString();
 			System.out.println(errors);	
+			Masthead.selenium.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}

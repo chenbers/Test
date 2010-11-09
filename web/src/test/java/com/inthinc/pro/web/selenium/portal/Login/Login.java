@@ -2,6 +2,8 @@ package com.inthinc.pro.web.selenium.portal.Login;
 
 import static org.junit.Assert.*;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import com.inthinc.pro.web.selenium.Core;
 import com.inthinc.pro.web.selenium.Selenium_Server;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
@@ -12,6 +14,20 @@ public class Login extends Selenium_Server {
 	
 	private final String change_password_form_id = "//form[@id='changePasswordForm']/";
 	private final String login_form_id = "//form[@id='loginForm']/";
+
+	private final String error_button_id = "loginErrorForm:loginOk";
+	private final String error_button_xpath = "//form[@id='loginErrorForm']/div/button";
+	private final String error_button_text_xpath = "//form[@id='loginErrorForm']/div/button/span";
+	
+	private final String error_close_onclick = "Richfaces.hideModalPanel('errorPanel')";
+	private final String error_close_xpath = "//div[@id='errorPanelContentDiv']/div";
+	private final String error_close_img = "//div[@id='errorPanelContentDiv']/div/img";
+	
+	private final String error_header_id = "errorPanelHeader";
+	private final String error_header_xpath = "//table[@id='errorPanelContentTable']/tbody/tr[1]/td/div";
+	
+	private final String error_message_xpath = "//p";
+	private final String error_message_text = StringEscapeUtils.unescapeHtml("Incorrect user name or password<br/><br/>Please try again.");
 	
 	private final String forgot_error_id = "changePasswordForm:j_id37";
 	private final String forgot_error_xpath = change_password_form_id+ "div[1]/div/span[@id='" +forgot_error_id+ "']/span";
@@ -24,8 +40,7 @@ public class Login extends Selenium_Server {
 	private final String forgot_email_field_id = "changePasswordForm:email";
 	private final String forgot_email_field_xpath = change_password_form_id+ "div[1]/input";
 	private final String forgot_email_field_xpath_alt = "//input[@id='"+forgot_email_field_id+"']";
-	
-	
+		
 	private final String forgot_email_label_xpath = change_password_form_id+ "div[1]";
 
 	private final String forgot_close_xpath = "//div[@id='forgotPasswordPanelContentDiv']/div/img";
@@ -89,8 +104,6 @@ public class Login extends Selenium_Server {
 		type_username(username);
 		type_password(password);
 		click_login();
-		selenium.waitForPageToLoad("30000", "Log In to Portal wait");
-		selenium.getLocation("/tiwipro/app/dashboard/", "Log In to Portal function");
 	}
 
 
@@ -130,7 +143,18 @@ public class Login extends Selenium_Server {
 	public void click_login(){
 		selenium.click(login_id, "Login button click");
 		selenium.waitForPageToLoad("30000", "Login button click");
-		selenium.getLocation("tiwipro/app", "Login button click");
+		String location = selenium.getLocation("tiwipro/app", "Login button click");
+		if (location.indexOf("tiwipro/app") == -1){
+			ck_error_msg();
+		}
+	}
+	
+	public void error_ok(){
+		selenium.click(error_button_id, "Login Error OK button click");
+	}
+	
+	public void error_close(){
+		selenium.click(error_close_xpath,"Login Error X button click");
 	}
 	
 	public void click_login(String error_name){
@@ -151,19 +175,33 @@ public class Login extends Selenium_Server {
 		ck_forgot_password(true);
 	}
 	
+	/**
+	 * @param visible
+	 */
 	public void ck_forgot_password(Boolean visible) {
 		
 		if (visible){
 		selenium.isTextPresent("Forgot User Name or Password?", "Forgot Pop Up Title text present");
-		selenium.getText(forgot_email_label_xpath, "E-mail Address label", "E-mail Address");
+		selenium.getText(forgot_email_label_xpath, "E-mail Address:", "E-mail Address label");
 		selenium.isElementPresent(forgot_email_field_id, "Email text field");
-		selenium.getText(forgot_send_id, "Fogot Send button", "Send");
-		selenium.getText(forgot_cancel_id, "Forgot Cancel button", "Cancel");
+		selenium.getText(forgot_send_id, "Send", "Fogot Send button");
+		selenium.getText(forgot_cancel_id, "Cancel", "Forgot Cancel button");
 		selenium.isElementPresent(forgot_close_xpath, "Forgot Close button" );
-		selenium.getText(forgot_message_xpath, "Forgot message", forgot_message_text);
+		selenium.getText(forgot_message_xpath, forgot_message_text, "Forgot message");
 		}else if (!visible){
 			
 		}
+	}
+	
+	private void ck_error_msg(){
+		selenium.isVisible(error_header_xpath);
+		selenium.isElementPresent(error_close_xpath, "Login Error X close element present");
+		selenium.isElementPresent(error_button_id, "Login Error OK button present");
+		selenium.isElementPresent(error_header_id, "Login Error header present");
+		
+		selenium.getText(error_header_xpath, "Log In Error", "Login Error header text");
+		selenium.getText(error_message_xpath, error_message_text, "Login Error message text");
+		selenium.getText(error_button_text_xpath, "OK", "Login Error OK Button text");
 	}
 	
 
@@ -254,7 +292,7 @@ public class Login extends Selenium_Server {
 	}
 	
 	
-	public void test_self(){
+	private void test_self(){
 		
 		open_login();
 		ck_login_page();
