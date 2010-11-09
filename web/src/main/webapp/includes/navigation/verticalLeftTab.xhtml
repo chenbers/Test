@@ -18,18 +18,18 @@
        <dl class="#{(tabSelected == 'true') ? 'vl_tab_on' : 'vl_tab_off'}">
          <dt></dt>
          <dd>
-         	<pretty:link id="#{context}" mappingId="#{mappingId}">
             <table>
                <tr>
                   <td align="center" valign="top">
                      <img src="#{facesContext.externalContext.request.contextPath}/images/#{iconFileName}" align="left" />
                   </td>
                   <td>
+                     <pretty:link id="#{context}" mappingId="#{mappingId}">
                         <h:outputText value="#{value}"/>
+                     </pretty:link>
                   </td>
                </tr>
             </table>
-            </pretty:link>
          </dd>
        </dl>
           
