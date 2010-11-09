@@ -59,12 +59,15 @@
 									<ul id="grid_nav" style="margin: 0;">
 										<li class="l panel_title vcentered"
 											style="background-image: none;">#{messages.txtMsg_filterTitle}</li>
-										<li class="l vcentered"><h:selectOneMenu
-											value="#{messagesBean.selectedGroupID}"
-											id="#{context}_groupID"
+										<li class="l vcentered">
+											<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID"
 											style="width:75px;size:auto;margin-top:7px;float:right;">
 											<f:selectItems value="#{messagesBean.teams}" />
-										</h:selectOneMenu></li>
+											</h:selectOneMenu>
+											<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     			 								<ui:param name="selectBoxID" value="display-form:#{context}_groupID" />
+											</ui:include>
+										</li>
 										<li class="l vcentered">#{messages.drivertrip_legend_start}:
 										<a4j:outputPanel id="calendarStart" layout="inline">
 											<rich:calendar value="#{messagesBean.startDate}"
