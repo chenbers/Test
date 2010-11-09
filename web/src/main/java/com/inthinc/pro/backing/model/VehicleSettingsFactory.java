@@ -62,14 +62,16 @@ public class VehicleSettingsFactory {
     }
     public VehicleSettingManager getSettingManager(ProductType productType, Integer vehicleID){
         
+        if (productType == null) return new UnknownSettingManager(configuratorDAO,null);
         switch (productType){
             case WS820:
                return  new WaySmartSettingManager(configuratorDAO,productType,new VehicleSetting());
             case TIWIPRO_R71:
             case TIWIPRO_R74:
                 return new TiwiproSettingManager(configuratorDAO, productType,new VehicleSetting());
-        }
-        return new UnknownSettingManager(configuratorDAO,null);
+            default:
+                return new UnknownSettingManager(configuratorDAO,new VehicleSetting());
+       }
     }
     public ConfiguratorDAO getConfiguratorDAO() {
         return configuratorDAO;
