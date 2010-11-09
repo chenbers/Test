@@ -1,6 +1,5 @@
 package com.inthinc.pro.configurator.ui;
 
-import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.configurator.model.Configuration;
