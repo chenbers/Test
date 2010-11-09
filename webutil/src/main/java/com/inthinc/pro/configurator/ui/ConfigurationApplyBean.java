@@ -1,8 +1,11 @@
 package com.inthinc.pro.configurator.ui;
 
+import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.configurator.model.Configuration;
+import com.inthinc.pro.configurator.model.VehicleSettingIterator;
+import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class ConfigurationApplyBean extends VehicleFilterBean{
 	
@@ -23,9 +26,12 @@ public class ConfigurationApplyBean extends VehicleFilterBean{
 	}
 	public Object applySettingsToTargetVehicles(Configuration selectedConfiguration, String reason){
     	
-       	for(Integer vehicleID : getVehicleIDsForMakeModelYear()){
-    		
-			configuratorDAO.updateVehicleSettings(vehicleID, selectedConfiguration.getLatestDesiredValues(), 
+        VehicleSettingIterator vehicleSettingIterator = new VehicleSettingIterator(this);
+        while (vehicleSettingIterator.hasNext()) {
+
+            VehicleSetting vehicleSetting = vehicleSettingIterator.next();
+
+	 		configuratorDAO.updateVehicleSettings(vehicleSetting.getVehicleID(), selectedConfiguration.getLatestDesiredValues(), 
 													 getBaseBean().getProUser().getUser().getUserID(), 
 													 reason);
     	}

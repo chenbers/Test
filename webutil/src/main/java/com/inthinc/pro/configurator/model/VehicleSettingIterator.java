@@ -2,31 +2,31 @@ package com.inthinc.pro.configurator.model;
 
 import java.util.Iterator;
 
-import com.inthinc.pro.configurator.ui.ConfigurationSelectionBean;
+import com.inthinc.pro.configurator.ui.VehicleFilterBean;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class VehicleSettingIterator implements Iterator<VehicleSetting> {
     
-    private ConfigurationSelectionBean configurationSelectionBean;
+    private VehicleFilterBean vehicleFilterBean;
     private VehicleSetting nextVehicleSetting;
     
-    public VehicleSettingIterator(ConfigurationSelectionBean configurationSelectionBean) {
+    public VehicleSettingIterator(VehicleFilterBean vehicleFilterBean) {
         super();
-        this.configurationSelectionBean = configurationSelectionBean;
+        this.vehicleFilterBean = vehicleFilterBean;
         
-        configurationSelectionBean.setupVehicleIterator();
+        vehicleFilterBean.setupVehicleIterator();
     }
 
     @Override
     public boolean hasNext() {
-        Boolean hasNextVehicle =  configurationSelectionBean.hasNextVehicle();       
+        Boolean hasNextVehicle =  vehicleFilterBean.hasNextVehicle();       
         return hasNextVehicle;
     }
 
     @Override
     public VehicleSetting next() {
         
-        nextVehicleSetting = configurationSelectionBean.getNextVehicle();
+        nextVehicleSetting = vehicleFilterBean.getNextVehicle();
 
         return nextVehicleSetting;
     }
