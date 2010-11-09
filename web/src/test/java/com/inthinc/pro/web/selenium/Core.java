@@ -283,4 +283,33 @@ public class Core extends DefaultSelenium{
 			e.printStackTrace();
 		}
 	}
+	
+	public void selectGroup(String group_name, String error_name){
+		group_name = "//div[text()=\""+group_name+"\"]";
+		click(group_name, error_name);
+		Pause(5);
+	}
+	
+	public void wait_for_element_present(String watch_for){
+		wait_for_element_present(watch_for, "link");
+	}
+	public void wait_for_element_present(String watch_for, String type){
+		Integer x = 0;
+		while (true){
+			x++;
+			try{
+				if (type.compareToIgnoreCase("link")==0){
+					if ( isElementPresent("link="+watch_for)) break;
+				}else if(type.compareToIgnoreCase("text")==0){
+					if ( isTextPresent(watch_for))break;
+				}else if (type.compareToIgnoreCase("element")==0){
+					if ( isElementPresent(watch_for))break;
+				}
+			}catch(Exception e){
+				continue;
+			}
+			Pause(2);
+			if (x==60)break;
+		}
+	}
 }

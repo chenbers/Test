@@ -142,19 +142,24 @@ public class Login extends Selenium_Server {
 	
 	public void click_login(){
 		selenium.click(login_id, "Login button click");
-		selenium.waitForPageToLoad("30000", "Login button click");
+		selenium.wait_for_element_present("Admin", "link");
 		String location = selenium.getLocation("tiwipro/app", "Login button click");
 		if (location.indexOf("tiwipro/app") == -1){
 			ck_error_msg();
+			error_ok();
 		}
 	}
 	
 	public void error_ok(){
 		selenium.click(error_button_id, "Login Error OK button click");
+		selenium.Pause(2);
+		selenium.isNotVisible(error_header_id, "Login Error closed by OK button");
 	}
 	
 	public void error_close(){
 		selenium.click(error_close_xpath,"Login Error X button click");
+		selenium.Pause(2);
+		selenium.isNotVisible(error_header_id, "Login Error closed by X button");
 	}
 	
 	public void click_login(String error_name){
@@ -171,30 +176,22 @@ public class Login extends Selenium_Server {
 		selenium.type(password_id, password, "Password type text");
 	}
 
-	public void ck_forgot_password(){
-		ck_forgot_password(true);
-	}
-	
-	/**
-	 * @param visible
-	 */
-	public void ck_forgot_password(Boolean visible) {
+	public void ck_forgot_password() {
+		selenium.isVisible(forgot_title, "Forgot Pop Up element visible");
 		
-		if (visible){
-		selenium.isTextPresent("Forgot User Name or Password?", "Forgot Pop Up Title text present");
-		selenium.getText(forgot_email_label_xpath, "E-mail Address:", "E-mail Address label");
 		selenium.isElementPresent(forgot_email_field_id, "Email text field");
+		selenium.isElementPresent(forgot_close_xpath, "Forgot Close button" );
+		
+		selenium.getText(forgot_title, "Forgot User Name or Password?", "Forgot Pop Up Title text present");
+		selenium.getText(forgot_message_xpath, forgot_message_text, "Forgot message");
 		selenium.getText(forgot_send_id, "Send", "Fogot Send button");
 		selenium.getText(forgot_cancel_id, "Cancel", "Forgot Cancel button");
-		selenium.isElementPresent(forgot_close_xpath, "Forgot Close button" );
-		selenium.getText(forgot_message_xpath, forgot_message_text, "Forgot message");
-		}else if (!visible){
-			
-		}
+		selenium.getText(forgot_email_label_xpath, "E-mail Address:", "E-mail Address label");
 	}
 	
 	private void ck_error_msg(){
 		selenium.isVisible(error_header_xpath);
+		
 		selenium.isElementPresent(error_close_xpath, "Login Error X close element present");
 		selenium.isElementPresent(error_button_id, "Login Error OK button present");
 		selenium.isElementPresent(error_header_id, "Login Error header present");

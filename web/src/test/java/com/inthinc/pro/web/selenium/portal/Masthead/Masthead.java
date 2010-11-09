@@ -145,9 +145,6 @@ public class Masthead extends Selenium_Server{
 	
 	public void click_support(){
 		selenium.click(support_link, "Support click");
-		String feedWinId = selenium.getEval("{var windowId; for(var x in selenium.browserbot.openedWindows ) {windowId=x;} }");
-		selenium.selectWindow(feedWinId);
-		selenium.close();
 		selenium.selectWindow(null);
 	}
 	
@@ -158,7 +155,6 @@ public class Masthead extends Selenium_Server{
 		selenium.getText("//p[8]", legal_notice, "Legal Notice click");
 		selenium.close();
 		selenium.selectWindow(null);
-		
 	}
 	
 	public void click_privacy(){
@@ -170,10 +166,10 @@ public class Masthead extends Selenium_Server{
 		selenium.selectWindow(null);
 	}
 	
-	public void click_help(String help_page, String timeout){
+	public void click_help(String help_page){
 		if (help_page.indexOf(".htm")== -1){help_page += ".htm";}
 		selenium.click(help_link+help_page, "Help click");
-		selenium.waitForPageToLoad(timeout, "Help click");
+		selenium.waitForPageToLoad("30000", "Help click");
 	}
 	
 	
@@ -189,9 +185,6 @@ public class Masthead extends Selenium_Server{
 		selenium.getText(messages_id, "My Messages", "My Messages link text");
 		selenium.getText(account_id, "My Account", "My Account text");
 		selenium.getText(logout_link, "Log Out", "Log Out text");
-		
-		click_my_account();
-		click_my_messages();
 	}
 	
 	public void ck_footer(){
@@ -205,10 +198,6 @@ public class Masthead extends Selenium_Server{
 		selenium.getText(privacy_id, privacy_title, "Privacy Policy text");
 		selenium.getText(legal_id, legal_title, "Legal Notice text");
 		selenium.getText(support_id, support_title, "Support text");
-		
-		click_legal();
-		click_privacy();
-		click_support();
 	}
 	
 	public void test_self_before_login(){
