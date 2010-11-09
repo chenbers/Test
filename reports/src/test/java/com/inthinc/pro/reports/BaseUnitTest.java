@@ -51,12 +51,11 @@ public class BaseUnitTest {
 
         if (!DUMP_TO_FILE)
             return;
-        
-        String ext = ((formatType == FormatType.PDF) ? ".pdf" : ((formatType == FormatType.EXCEL) ? ".xls" : ".html"));
+//        String ext = ((formatType == FormatType.PDF) ? ".pdf" : ((formatType == FormatType.EXCEL) ? ".xls" : ".html"));
         
         OutputStream out = null;
         try {
-            out = new FileOutputStream(BASE_PATH + prefix + testCaseCnt + ext);
+            out = new FileOutputStream(BASE_PATH + prefix + testCaseCnt + formatType.getSuffix());
             report.exportReportToStream(formatType, out);
             out.flush();
             out.close();

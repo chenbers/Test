@@ -9,7 +9,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -17,8 +19,8 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.model.VehicleSettingsFactory;
 import com.inthinc.pro.backing.model.VehicleSettingManager;
+import com.inthinc.pro.backing.model.VehicleSettingsFactory;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
@@ -49,7 +51,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     private static final Map<String, String>      YEARS;
     private static final Map<String, State>       STATES;
-//    private Map<Integer, Device>                  devices;
 
     static
     {
@@ -107,10 +108,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private List<Driver>                          drivers;
     private TreeMap<Integer, Boolean>             driverAssigned;
     
-    private ProductType   batchProductChoice;
+    private String                                batchProductChoice;
     
     // Stuff to do with vehicleSettings for the device
-    private VehicleSettingsFactory                        vehicleSettingsFactory;
+    private VehicleSettingsFactory              vehicleSettingsFactory;
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
 
     private CacheBean cacheBean;
@@ -131,7 +132,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             
             for(VehicleView vehicleView : filteredItems){
                                    
-                vehicleView.setSelected(selectAll && vehicleView.editableVehicleSettings.getProductType().equals(batchProductChoice));
+                vehicleView.setSelected(selectAll && vehicleView.editableVehicleSettings.getProductType().getName().equals(batchProductChoice));
             }
         }
     }
@@ -147,7 +148,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 
             for(VehicleView vehicleView : filteredItems){
                 
-                if (!vehicleView.isSelected() && vehicleView.editableVehicleSettings.getProductType().equals(batchProductChoice))
+                if (!vehicleView.isSelected() && vehicleView.editableVehicleSettings.getProductType().getName().equals(batchProductChoice))
                     return false;
             }
             return true;
@@ -155,7 +156,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     public boolean isBatchProductChoice(ProductType productType){
         
-        return batchProductChoice == null || batchProductChoice.equals(productType);
+        return batchProductChoice == null || batchProductChoice.equals(productType.getName());
     }
     public CacheBean getCacheBean() {
 		return cacheBean;
@@ -198,15 +199,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         // Get all the vehicles
         final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
         
-        // Get all the devices
-//        final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
-//       
-//        // Map all devices by deviceID
-//        devices = new HashMap<Integer, Device>();
-//        for (final Device device : plainDevices)
-//        {
-//            devices.put(device.getDeviceID(), device);
-//        }
        // Get all the settings 
         
         vehicleSettingManagers = vehicleSettingsFactory.retrieveVehicleSettings(getUser().getGroupID());
@@ -219,7 +211,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             checkForSettings(vehicle.getVehicleID());
             vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
 
-//            vehicleView.setDevice(devices.get(vehicle.getDeviceID()));
             items.add(vehicleView);   
         }
 
@@ -234,7 +225,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             }
             else {
                 
-                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(batchProductChoice,vehicleID));
+                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(ProductType.valueOfByName(batchProductChoice),vehicleID));
             }
         }
     }
@@ -242,8 +233,23 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public Map<Integer, VehicleSettingManager> getVehicleSettingManagers() {
         return vehicleSettingManagers;
     }
+    public Set<Integer> getKeySet(){
+        
+        return vehicleSettingManagers.keySet();
+    }
 
-
+    public List<String> getClassTypes(){
+        
+        List<String> classNames = new ArrayList<String>();
+        if(vehicleSettingManagers.get(null) == null){
+            vehicleSettingManagers.put(null, new TiwiproSettingManager(null, ProductType.valueOfByName(batchProductChoice), null));
+        }
+        for (Entry<Integer,VehicleSettingManager> vsm : vehicleSettingManagers.entrySet()){
+            
+            classNames.add(vsm.getValue().getClass().toString());
+        }
+        return classNames;
+    }
     public VehicleSettingsFactory getVehicleSettingsFactory() {
         return vehicleSettingsFactory;
     }
@@ -348,9 +354,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicle.setStatus(Status.ACTIVE);
         //TODO decide how to create add item
         VehicleView vehicleView = createVehicleView(vehicle);
-        //TODO vehicleID is null - has to be for createVehicle
-        checkForSettings(vehicle.getVehicleID());
-        vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
+        createSettingManagerForCreateItem();
+        vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
         return vehicleView;
     }
 
@@ -358,17 +363,17 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public String batchEdit()
     {
         final String redirect = super.batchEdit();
-//        if (getItem().getDevice() == null)
-//            for (final VehicleView vehicle : getSelectedItems())
-//                if (vehicle.getDevice() != null)
-//                {
-//                    final Device device = new Device();
-//                    getItem().device = device;
-//                    break;
-//                }
+        
+        if(isBatchEdit()){
+            getItem().setVehicleID(-1);
+        }
         return redirect;
     }
 
+    private void createSettingManagerForCreateItem(){
+                        
+        vehicleSettingManagers.put(-1, vehicleSettingsFactory.getSettingManager(ProductType.valueOfByName(batchProductChoice),-1));
+    }
     @Override
     public String cancelEdit()
     {
@@ -450,34 +455,34 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         // prefix the sensitivity settings with "device." x
         // prefix the sensitivity settings with "editableVehicleSettings."
-        final Map<String, Boolean> updateField = getUpdateField();
-        Map<String,Boolean> tempUpdateField = new HashMap<String, Boolean>();
-        
-        
-        if (updateField != null)
-        {
-            for (final String key : updateField.keySet())
-            {
-                if (key.startsWith("hard"))
-                {
-                    tempUpdateField.put("editableVehicleSettings." + key,  updateField.get(key));
-                }
-            }
-            
-            for(final String key : tempUpdateField.keySet())
-            {
-                updateField.put(key, tempUpdateField.get(key));
-            }
-        }
-        
-        updateField.put("device.speedSettings", false);
-        updateField.put("device.deviceID", false);
-        updateField.put("device.accountID", false);
-        updateField.put("device.vehicleID", false);
-        updateField.put("device.status", false);
-        updateField.put("device.name", false);
-        updateField.put("device.imei", false);
-        updateField.put("device.sim", false);
+//        final Map<String, Boolean> updateField = getUpdateField();
+//        Map<String,Boolean> tempUpdateField = new HashMap<String, Boolean>();
+//        
+//        
+//        if (updateField != null)
+//        {
+//            for (final String key : updateField.keySet())
+//            {
+//                if (key.startsWith("hard"))
+//                {
+//                    tempUpdateField.put("editableVehicleSettings." + key,  updateField.get(key));
+//                }
+//            }
+//            
+//            for(final String key : tempUpdateField.keySet())
+//            {
+//                updateField.put(key, tempUpdateField.get(key));
+//            }
+//        }
+//        
+//        updateField.put("device.speedSettings", false);
+//        updateField.put("device.deviceID", false);
+//        updateField.put("device.accountID", false);
+//        updateField.put("device.vehicleID", false);
+//        updateField.put("device.status", false);
+//        updateField.put("device.name", false);
+//        updateField.put("device.imei", false);
+//        updateField.put("device.sim", false);
 
         // if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
         // getItem().getDevice().invertSensitivities();
@@ -557,40 +562,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             if (create){
                 
                 vehicle.setVehicleID(vehicleDAO.create(vehicle.getGroupID(), vehicle));
-//                vehicleSettingManagers.get(vehicle.getVehicleID()).setVehicleSettings(vehicle.getVehicleID(),
-//                                                         vehicle.getEditableVehicleSettings(), 
-//                                                         this.getUserID(), "portal update");
             }
             else{
+                
                 vehicleDAO.update(vehicle);
-                vehicleSettingManagers.get(vehicle.getVehicleID()).updateVehicleSettings(isBatchEdit(),getUpdateField(),vehicle.getVehicleID(),vehicle.getEditableVehicleSettings(),
+                
+                dealWithSpeedSettings(vehicle);
+                vehicleSettingManagers.get(vehicle.getVehicleID()).updateVehicleSettings(vehicle.getVehicleID(),vehicle.getEditableVehicleSettings(),
                                                             this.getUserID(), "portal update");
             }
             vehicle.setOldGroupID(vehicle.getGroupID());
 
             if (vehicle.isDriverChanged())
                 assignDriver(vehicle);
-            
-//      For configurator need to work out which values have changed
-            
-//            if (vehicle.getDevice() != null && vehicle.getDeviceID() != null && vehicle.getDeviceID() != 0)
-//            {
-                // if batch editing, copy individual speed settings by hand
-//                if (isBatchEdit())
-//                {
-//                    final Map<String, Boolean> updateField = getUpdateField();
-//                    for (final String key : updateField.keySet())
-//                        if (key.startsWith("speed") && (key.length() <= 7) && (updateField.get(key) == true))
-//                        {
-//                            final int index = Integer.parseInt(key.substring(5));
-//                            vehicle.geteditableVehicleSettings().getSpeedSettings()[index] = getItem().geteditableVehicleSettings().getSpeedSettings()[index];
-//                        }
-//                }
-
-//                vehicle.getDevice().setDeviceID(vehicle.getDeviceID()); //TODO Patch Work - why isn't the device id already there????
-//                deviceDAO.update(vehicle.getDevice());
-//            }
-            
+                        
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "vehicle_added" : "vehicle_updated", vehicle.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -599,7 +584,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         drivers = null;
     }
-
+    private void dealWithSpeedSettings(VehicleView vehicle){
+        
+        if (isBatchEdit() && vehicle.getEditableVehicleSettings() instanceof TiwiproEditableVehicleSettings){
+            final Map<String, Boolean> updateField = getUpdateField();
+            String keyBase = "speed";
+            for (int i=0; i< 15;i++){
+                Boolean isSpeedFieldUpdated = updateField.get(keyBase+i);
+                if(isSpeedFieldUpdated != null && isSpeedFieldUpdated){
+                    ((TiwiproEditableVehicleSettings)vehicle.getEditableVehicleSettings()).getSpeedSettings()[i] = 
+                        ((TiwiproEditableVehicleSettings)getItem().getEditableVehicleSettings()).getSpeedSettings()[i];
+                }
+            }
+        }
+    }
     private void assignDriver(final VehicleView vehicleView)
     {
         vehicleDAO.setVehicleDriver(vehicleView.getVehicleID(), vehicleView.getDriverID());
@@ -637,20 +635,26 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return SelectItemUtil.toList(VehicleType.class, false);
     }
 
+    protected final static String BLANK_SELECTION = "&#160;";
     public List<SelectItem> getProductTypesSelectItems(){
         
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+
+        SelectItem blankItem = new SelectItem("", BLANK_SELECTION);
+        blankItem.setEscape(false);
+        selectItemList.add(blankItem);
+
         for (ProductType e : EnumSet.allOf(ProductType.class))
         {
-               selectItemList.add(new SelectItem(e,e.getName()));
+             selectItemList.add(new SelectItem(e.getName(),e.getName()));
         }
-        selectItemList.add(0, new SelectItem(null,MessageUtil.getMessageString("VehicleSelectProduct")));
+        
         return selectItemList;
     }
-    public ProductType getBatchProductChoice() {
+    public String getBatchProductChoice() {
         return batchProductChoice;
     }
-    public void setBatchProductChoice(ProductType batchProductChoice) {
+    public void setBatchProductChoice(String batchProductChoice) {
         this.batchProductChoice = batchProductChoice;
     }
     public List<SelectItem> getZoneTypeSelectItems()
@@ -721,6 +725,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         @Column(updateable = false)
         private boolean           selected;
 
+        
+        public VehicleView() {
+            super();
+//            editableVehicleSettings = new UnknownEditableVehicleSettings();
+        }
+        public VehicleView(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, Integer year, String color, VehicleType vtype, String vin, Integer weight,
+                String license, State state) {
+            super(vehicleID, groupID, status, name, make, model, year, color, vtype, vin, weight, license, state);
+//            editableVehicleSettings = new UnknownEditableVehicleSettings();
+        }
         public void setEditableVehicleSettings(EditableVehicleSettings editableVehicleSettings) {
             this.editableVehicleSettings = editableVehicleSettings;
         }

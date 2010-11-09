@@ -251,18 +251,17 @@
                           <f:selectItem itemValue="" itemLabel="#{messages.editRedFlag_notype}" />
                           <f:selectItem itemValue="ALERT_TYPE_SPEEDING" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_SPEEDING']}" />
                           <f:selectItem itemValue="ALERT_TYPE_AGGRESSIVE_DRIVING" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_SEATBELT" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_SEATBELT']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_COMPLIANCE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_COMPLIANCE']}" />
                           <f:selectItem itemValue="ALERT_TYPE_CRASH" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_CRASH']}" />
                           <f:selectItem itemValue="ALERT_TYPE_TAMPERING" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_TAMPERING']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_LOW_BATTERY" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_LOW_BATTERY']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_NO_DRIVER" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_NO_DRIVER']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_OFFHOUR" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_OFFHOUR']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_HOS_VIOLATON" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_HOS_VIOLATON']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_THEFT" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_THEFT']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_RPM" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_RPM']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_HEADLIGHT" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_HEADLIGHT']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_EMERGENCY" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_EMERGENCY']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_ZONES" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_ZONES']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_VEHICLE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_VEHICLE']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_HOS" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_HOS']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_TEXT_MESSAGE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_TEXT_MESSAGE']}" />
                           <f:selectItem itemValue="ALERT_TYPE_WIRELINE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_WIRELINE']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_SEEING_MACHINES" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_SEEING_MACHINES']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_FATIGUE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_FATIGUE']}" />
+                          <f:selectItem itemValue="ALERT_TYPE_INSTALLATION" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_INSTALLATION']}" />
                         </h:selectOneMenu>
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
@@ -391,8 +390,32 @@
                           </h:panelGroup>
                         </a4j:outputPanel>
 
+                        <a4j:outputPanel id="editRedFlag-compliance">
+                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type eq 'ALERT_TYPE_COMPLIANCE'}">
+
+                            <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
+                              <tr>
+                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                              </tr>
+                              <tr class="tableEven">
+                                <td>
+                                  <c:set var="mp" value="editRedFlag_#{redFlagAlertsBean.item.type.description}" />
+                                  <h:outputText value="#{messages[mp]}" />
+                                </td>
+                              </tr>
+<!--                                <tr class="tableOdd">-->
+<!--                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">-->
+<!--                                    <h:selectBooleanCheckbox id="seatbeltSelected" value="#{redFlagAlertsBean.item.}" onchange="checkMultiple('type')" />-->
+<!--                                    <c:set var="sensitivityLabel" value="editDevice_#{sensitivityItem}" />-->
+<!--                                    <h:outputText value="#{messages[sensitivityLabel]}" />-->
+<!--                                  </td>-->
+                            </table>
+
+                          </h:panelGroup>
+                        </a4j:outputPanel>
+
                         <a4j:outputPanel id="editRedFlag-other">
-                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type != 'ALERT_TYPE_SPEEDING' and redFlagAlertsBean.item.type != 'ALERT_TYPE_AGGRESSIVE_DRIVING' and redFlagAlertsBean.item.type != null}">
+                          <h:panelGroup rendered="#{redFlagAlertsBean.item.type != 'ALERT_TYPE_SPEEDING' and redFlagAlertsBean.item.type != 'ALERT_TYPE_AGGRESSIVE_DRIVING' and redFlagAlertsBean.item.type != 'ALERT_TYPE_COMPLIANCE' and redFlagAlertsBean.item.type != null}">
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>

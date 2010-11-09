@@ -38,11 +38,21 @@ public abstract class BaseAlert extends BaseEntity
     private List<Integer>       vehicleIDs;
     private List<VehicleType>   vehicleTypes;
 	private List<Integer>       notifyPersonIDs;
+	
     private List<String>        emailTo;
-    private Status  status;
+    private Status              status;
 
     @Column(updateable = false)
     private String 				fullName;
+
+    private List<Integer>       voiceEscalationPersonIDs;
+    private Integer             emailEscalationPersonID;
+    private Integer             maxEscalationTries;
+    private Integer             maxEscalationTryTime;
+    private Integer             escalationTimeBetweenRetries;
+
+    private Integer             timeoutUnits; //calls or minutes
+    
 
     public BaseAlert()
     {
@@ -249,5 +259,53 @@ public abstract class BaseAlert extends BaseEntity
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
+	
+    public List<Integer> getVoiceEscalationPersonIDs() {
+        return voiceEscalationPersonIDs;
+    }
+
+    public void setVoiceEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs) {
+        this.voiceEscalationPersonIDs = voiceEscalationPersonIDs;
+    }
+
+    public Integer getEmailEscalationPersonID() {
+        return emailEscalationPersonID;
+    }
+
+    public void setEmailEscalationPersonID(Integer emailEscalationPersonID) {
+        this.emailEscalationPersonID = emailEscalationPersonID;
+    }
+    public Integer getMaxEscalationTries() {
+        return maxEscalationTries;
+    }
+
+    public void setMaxEscalationTries(Integer maxEscalationTries) {
+        this.maxEscalationTries = maxEscalationTries;
+    }
+
+    public Integer getMaxEscalationTryTime() {
+        return maxEscalationTryTime;
+    }
+
+    public void setMaxEscalationTryTime(Integer maxEscalationTryTime) {
+        this.maxEscalationTryTime = maxEscalationTryTime;
+    }
+
+    public Integer getEscalationTimeBetweenRetries() {
+        return escalationTimeBetweenRetries;
+    }
+
+    public void setEscalationTimeBetweenRetries(Integer escalationTimeBetweenRetries) {
+        this.escalationTimeBetweenRetries = escalationTimeBetweenRetries;
+    }
+
+    public Integer getTimeoutUnits() {
+        return timeoutUnits;
+    }
+
+    public void setTimeoutUnits(Integer timeoutUnits) {
+        this.timeoutUnits = timeoutUnits;
+    }
+    
 
 }

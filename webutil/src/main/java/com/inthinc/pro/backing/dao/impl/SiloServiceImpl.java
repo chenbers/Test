@@ -1082,5 +1082,12 @@ public class SiloServiceImpl implements SiloService {
 	public List<Map<String, Object>> getSensitivitySliderValues() {
 		return null;
 	}
+    @Override
+    @MethodDescription(description = "Fetches the list of escalation items for an alert.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.AlertEscalationItem.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
+    public List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID) {
+        return null;
+    }
+    
 	
 }

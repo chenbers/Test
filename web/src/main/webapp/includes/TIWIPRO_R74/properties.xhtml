@@ -9,11 +9,11 @@
 
     <tr>
      <td width="100"><h:outputText value="#{messages.editDevice_ephone}" /></td>
-     <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.self.ephone}" /></td>
+     <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.ephone}" /></td>
    </tr>
    <tr>
      <td width="100"><h:outputText value="#{messages.editDevice_autoLogoff}" /></td>
-     <td><c:set var="autoLogoff" value="#{vehiclesBean.item.editableVehicleSettings.self.autoLogoffSlider eq 0?'AutologoffSetting_disabled':vehiclesBean.item.editableVehicleSettings.self.autoLogoffSlider}" /><h:outputText value="#{messages[autoLogoff]}" /></td>
+     <td><c:set var="autoLogoff" value="#{vehiclesBean.item.editableVehicleSettings.autoLogoffSlider eq 0?'AutologoffSetting_disabled':vehiclesBean.item.editableVehicleSettings.autoLogoffSlider}" /><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.autologoffDisplayString}" /></td>
    </tr>
  
 </ui:composition>

@@ -6,6 +6,7 @@ import java.util.List;
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.RedFlagsAlertMapper;
+import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.RedFlagAlert;
 
 
@@ -46,4 +47,13 @@ public class RedFlagAlertHessianDAO extends GenericHessianDAO<RedFlagAlert, Inte
             return Collections.emptyList();
         }
     }
+    @Override
+    public List<AlertEscalationItem> getAlertEscalationItemsByAlert(Integer alertID) {
+        try {
+            return getMapper().convertToModelObject(getSiloService().getAlertEscalationItemsByAlert(alertID), AlertEscalationItem.class);
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }
+    }
+
 }

@@ -38,6 +38,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     private List<SelectItem>   allDrivers;
     private ListPicker         assignPicker;
     private AutocompletePicker peoplePicker;
+    private AutocompletePicker escalationPeoplePicker;
     private T                  oldItem;
     private String             oldEmailToString;
 
@@ -257,9 +258,28 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return peoplePicker;
     }
     
-    @Override
+    public AutocompletePicker getEscalationPeoplePicker()
+    {
+        if (escalationPeoplePicker == null)
+        {
+            //final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
+            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
+            for (final Person person : people) 
+                allUsers.add(new SelectItem(person.getPersonID(), person.getFirst() + " " + person.getLast()));
+            MiscUtil.sortSelectItems(allUsers);
+
+            final ArrayList<SelectItem> notifyPeople = getNotifyPicked();
+
+            escalationPeoplePicker = new AutocompletePicker(allUsers, notifyPeople);
+        }
+        return escalationPeoplePicker;
+    }
+    
+   @Override
     public void resetList() {
     	peoplePicker = null; //Reset the list of people to be assigned to an alert. 
+    	escalationPeoplePicker = null;
     	allVehicles = null;
     	allDrivers = null;
     	super.resetList();
@@ -573,5 +593,12 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         
         public void setFullName(String fullName);
         
+        public List<Integer> getVoiceEscalationPersonIDs();
+        
+        public void setVoiceEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs);
+
+        public Integer getEmailEscalationPersonID();
+
+        public void setEmailEscalationPersonID(Integer emailEscalationPersonID);
     }
 }

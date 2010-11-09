@@ -47,5 +47,4 @@ public abstract class EditableVehicleSettings {
     	return true;
     }
     
-    public abstract EditableVehicleSettings getSelf();
 }

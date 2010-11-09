@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.inthinc.pro.backing.model.VehicleSettingManager;
+import com.inthinc.pro.backing.ui.AutologoffSetting;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
-import com.inthinc.pro.model.configurator.SliderType;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
@@ -26,11 +26,11 @@ public class TiwiproSettingManager extends VehicleSettingManager{
     public EditableVehicleSettings createDefaultValues(Integer vehicleID){
         
         String ephone = "";
-        Integer autoLogoffSeconds = 0;
-        Integer hardVertical = getDefaultSettings().get(SliderType.HARD_BUMP_SLIDER);
-        Integer hardTurn =  getDefaultSettings().get(SliderType.HARD_TURN_SLIDER);
-        Integer hardAcceleration =  getDefaultSettings().get(SliderType.HARD_ACCEL_SLIDER);
-        Integer hardBrake = getDefaultSettings().get(SliderType.HARD_BRAKE_SLIDER);
+        Integer autoLogoffSeconds = AutologoffSetting.HOURSMAX.getSeconds();
+        Integer hardVertical = vehicleSensitivitySliders.getHardVerticalSlider().getDefaultValueIndex();
+        Integer hardTurn = vehicleSensitivitySliders.getHardTurnSlider().getDefaultValueIndex();
+        Integer hardAcceleration =  vehicleSensitivitySliders.getHardAccelerationSlider().getDefaultValueIndex();
+        Integer hardBrake = vehicleSensitivitySliders.getHardBrakeSlider().getDefaultValueIndex();
         Integer[] speedSettings = convertFromSpeedSettings(TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SET);
                 
         return new TiwiproEditableVehicleSettings(vehicleID==null?-1:vehicleID, ephone, autoLogoffSeconds, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical);
@@ -40,14 +40,13 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         
         String ephone = vs.getCombined(SettingType.EPHONE_SETTING.getSettingID());
         Integer autoLogoffSeconds = NumberUtil.convertString(vs.getCombined(SettingType.AUTOLOGOFF_SETTING.getSettingID()));
-        Integer hardVertical = extractSliderValue(SliderType.HARD_BUMP_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_BUMP_SLIDER)));
-        Integer hardTurn = extractSliderValue(SliderType.HARD_TURN_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_TURN_SLIDER)));
-        Integer hardAcceleration = extractSliderValue(SliderType.HARD_ACCEL_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_ACCEL_SLIDER)));
-        Integer hardBrake = extractSliderValue(SliderType.HARD_BRAKE_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_BRAKE_SLIDER)));
+        Integer hardVertical = extractHardVerticalValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardVerticalSlider()));
+        Integer hardTurn = extractHardTurnValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardTurnSlider()));
+        Integer hardAcceleration = extractHardAccelerationValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardAccelerationSlider()));
+        Integer hardBrake = extractHardBrakeValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardBrakeSlider()));
         Integer[] speedSettings = convertFromSpeedSettings(vs.getCombined(SettingType.SPEED_SETTING.getSettingID()));        
 
-        adjustedSettingCounts = vehicleSensitivitySliders.adjustedSettingCountsToAllowForCustomValues(hardVertical,hardTurn,hardAcceleration,hardBrake);
-        
+        adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
         return new TiwiproEditableVehicleSettings(vs.getVehicleID(),ephone, autoLogoffSeconds, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical);
     }
     
@@ -72,9 +71,9 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         }
         return speedSettings;
     }
-    private String getHardVerticalValue(Integer sliderValue){
+    private String getCompleteHardVerticalValue(Integer sliderValue){
        
-       Map<Integer,String> settingValues = vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_BUMP_SLIDER).getSettingValuesFromSliderValue(sliderValue);
+       Map<Integer,String> settingValues = vehicleSensitivitySliders.getHardVerticalSlider().getSettingValuesFromSliderValue(sliderValue);
        if (settingValues.isEmpty()) return null;
        
        String value = settingValues.get(SettingType.HARD_VERT_SETTING.getSettingID());
@@ -82,7 +81,21 @@ public class TiwiproSettingManager extends VehicleSettingManager{
        value +=settingValues.get(SettingType.SEVERE_PEAK_2_PEAK.getSettingID());
        return value;
    }
-   
+    public String getSpeedSettingsString(Integer[] speedSettings){
+        
+        StringBuilder speedSet = new StringBuilder();
+        
+        for (int i = 0; i<TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1;i++){
+            
+           speedSet.append(speedSettings[i]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[i]);
+           speedSet.append(' '); 
+        }
+        speedSet.append(speedSettings[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]+TiwiproSpeedingConstants.INSTANCE.SPEED_LIMITS[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS-1]);
+        
+        return speedSet.toString();
+     }
+
+  
    @Override
    public Map<Integer, String> evaluateSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings){
 	   
@@ -102,21 +115,21 @@ public class TiwiproSettingManager extends VehicleSettingManager{
 	                                  ""+tiwiproEditableVehicleSettings.getAutologoffSeconds(), 
 	                                  vehicleSetting.getCombined(SettingType.AUTOLOGOFF_SETTING.getSettingID()));
 	       newSettings.addSliderIfNeeded(SettingType.HARD_VERT_SETTING,
-                                      getHardVerticalValue(tiwiproEditableVehicleSettings.getHardVertical()),
+	                                  getCompleteHardVerticalValue(tiwiproEditableVehicleSettings.getHardVertical()),
                                       vehicleSetting.getCombined(SettingType.HARD_VERT_SETTING.getSettingID()));
 	       newSettings.addSliderIfNeeded(SettingType.HARD_TURN_SETTING, 
-	                                  getSensitivityValue(SliderType.HARD_TURN_SLIDER,tiwiproEditableVehicleSettings.getHardTurn()).get(SettingType.HARD_TURN_SETTING.getSettingID()), 
+	                                  getHardTurnValue(tiwiproEditableVehicleSettings.getHardTurn()).get(SettingType.HARD_TURN_SETTING.getSettingID()), 
 	                                  vehicleSetting.getCombined(SettingType.HARD_TURN_SETTING.getSettingID()));
 	       newSettings.addSliderIfNeeded(SettingType.HARD_ACCEL_SETTING, 
-	                                  getSensitivityValue(SliderType.HARD_ACCEL_SLIDER,tiwiproEditableVehicleSettings.getHardAcceleration()).get(SettingType.HARD_TURN_SETTING.getSettingID()), 
+	                                  getHardAccelerationValue(tiwiproEditableVehicleSettings.getHardAcceleration()).get(SettingType.HARD_TURN_SETTING.getSettingID()), 
 	                                  vehicleSetting.getCombined(SettingType.HARD_ACCEL_SETTING.getSettingID()));
 	       newSettings.addSliderIfNeeded(SettingType.HARD_BRAKE_SETTING, 
-	                                  getSensitivityValue(SliderType.HARD_BRAKE_SLIDER,tiwiproEditableVehicleSettings.getHardBrake()).get(SettingType.HARD_TURN_SETTING.getSettingID()), 
+	                                  getHardBrakeValue(tiwiproEditableVehicleSettings.getHardBrake()).get(SettingType.HARD_TURN_SETTING.getSettingID()), 
 	                                  vehicleSetting.getCombined(SettingType.HARD_BRAKE_SETTING.getSettingID()));
 	       newSettings.addSettingIfNeeded(SettingType.SPEED_SETTING, 
 	                                  tiwiproEditableVehicleSettings.getSpeedSettingsString(), 
 	                                  vehicleSetting.getCombined(SettingType.SPEED_SETTING.getSettingID()));
-	       
+
 	       return newSettings.getDesiredSettings();
        }
        catch(IllegalArgumentException iae){
@@ -125,7 +138,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
        }
    }
    @Override
-   public Map<Integer, String> evaluateChangedSettings(Boolean batchEdit, Map<String, Boolean> updateField,Integer vehicleID, EditableVehicleSettings editableVehicleSettings){
+   public Map<Integer, String> evaluateChangedSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings){
        
 	   try{
 	       TiwiproEditableVehicleSettings tiwiproEditableVehicleSettings = downCastEditableVehicleSettings(editableVehicleSettings);
@@ -134,7 +147,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
 	           
 	           vehicleSetting = createVehicleSetting(vehicleID);
 	       }
-	       ChangedSettings changedSettings = new ChangedSettings(batchEdit,updateField);
+	       ChangedSettings changedSettings = new ChangedSettings();
 	       
 	       // Only get if different and if batchEdit is requested
 	       changedSettings.addSettingIfNeeded(SettingType.EPHONE_SETTING,
@@ -144,21 +157,20 @@ public class TiwiproSettingManager extends VehicleSettingManager{
     		   								  ""+tiwiproEditableVehicleSettings.getAutologoffSeconds(),
     		   								  vehicleSetting.getCombined(SettingType.AUTOLOGOFF_SETTING.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.HARD_VERT_SETTING, 
-    		   								  getHardVerticalValue(tiwiproEditableVehicleSettings.getHardVertical()),
+	                                          getCompleteHardVerticalValue(tiwiproEditableVehicleSettings.getHardVertical()),
     		   								  vehicleSetting.getCombined(SettingType.HARD_VERT_SETTING.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.HARD_TURN_SETTING,
-    		   								  getSensitivityValue(SliderType.HARD_TURN_SLIDER,tiwiproEditableVehicleSettings.getHardTurn()).get(SettingType.HARD_TURN_SETTING.getSettingID()),
+	                                          getHardTurnValue(tiwiproEditableVehicleSettings.getHardTurn()).get(SettingType.HARD_TURN_SETTING.getSettingID()),
     		   								  vehicleSetting.getCombined(SettingType.HARD_TURN_SETTING.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.HARD_ACCEL_SETTING,
-    		   								  getSensitivityValue(SliderType.HARD_ACCEL_SLIDER,tiwiproEditableVehicleSettings.getHardAcceleration()).get(SettingType.HARD_TURN_SETTING.getSettingID()),
+	                                          getHardAccelerationValue(tiwiproEditableVehicleSettings.getHardAcceleration()).get(SettingType.HARD_TURN_SETTING.getSettingID()),
     		   								  vehicleSetting.getCombined(SettingType.HARD_ACCEL_SETTING.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.HARD_BRAKE_SETTING,
-    		   								  getSensitivityValue(SliderType.HARD_BRAKE_SLIDER,tiwiproEditableVehicleSettings.getHardBrake()).get(SettingType.HARD_TURN_SETTING.getSettingID()),
+	                                          getHardBrakeValue(tiwiproEditableVehicleSettings.getHardBrake()).get(SettingType.HARD_TURN_SETTING.getSettingID()),
     		   								  vehicleSetting.getCombined(SettingType.HARD_BRAKE_SETTING.getSettingID()));
-	       changedSettings.addSettingIfNeeded(SettingType.SPEED_SETTING,
-    		   								  tiwiproEditableVehicleSettings.getSpeedSettingsString(),
-    		   								  vehicleSetting.getCombined(SettingType.SPEED_SETTING.getSettingID()));
-	       
+	       changedSettings.addSettingIfNeeded(SettingType.SPEED_SETTING, 
+                                              tiwiproEditableVehicleSettings.getSpeedSettingsString(), 
+                                              vehicleSetting.getCombined(SettingType.SPEED_SETTING.getSettingID()));	       
 	       return changedSettings.getDesiredSettings();
        }
        catch(IllegalArgumentException iae){
@@ -189,13 +201,14 @@ public class TiwiproSettingManager extends VehicleSettingManager{
   public void setVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason){
       
       Map<Integer, String> setMap = evaluateSettings(vehicleID,editableVehicleSettings);
+      if (vehicleID == -1) vehicleID = null;
       configuratorDAO.setVehicleSettings(vehicleID, setMap, userID, reason);
   }
   
   @Override
-  public void updateVehicleSettings(boolean batchEdit, Map<String, Boolean> updateField,Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason){
+  public void updateVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason){
      
-      Map<Integer, String> setMap = evaluateChangedSettings(batchEdit, updateField, vehicleID,editableVehicleSettings);
+      Map<Integer, String> setMap = evaluateChangedSettings(vehicleID,editableVehicleSettings);
       configuratorDAO.updateVehicleSettings(vehicleID, setMap, userID, reason);
   }
   

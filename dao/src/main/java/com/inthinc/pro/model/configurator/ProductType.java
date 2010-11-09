@@ -17,12 +17,14 @@ public enum ProductType implements BaseEnum
     
     private static final Map<Integer, ProductType> lookupByCode = new HashMap<Integer, ProductType>();
     private static final Map<Integer, ProductType> lookupByVersion = new HashMap<Integer, ProductType>();
+    private static final Map<String, ProductType> lookupByName = new HashMap<String, ProductType>();
     static
     {
         for (ProductType p : EnumSet.allOf(ProductType.class))
         {
             lookupByCode.put(p.code, p);
             lookupByVersion.put(p.version, p);
+            lookupByName.put(p.name, p);
         }
     }
     public static ProductType valueOf(Integer code)
@@ -30,6 +32,10 @@ public enum ProductType implements BaseEnum
         return lookupByCode.get(code);
     }
    
+    public static ProductType valueOfByName(String name)
+    {
+        return lookupByName.get(name);
+    }
     public static ProductType valueOfByCode(Integer code)
     {
         return lookupByCode.get(code);

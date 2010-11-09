@@ -309,8 +309,8 @@ public class Vehicle extends BaseEntity
                 ", dot="+dot+
                 ", ifta="+ifta+
                 ", zoneType="+zoneType+
-                ", warrantyStart="+warrantyStart.toString()+
-                ", warrantyStop="+warrantyStop.toString()+
+//                ", warrantyStart="+warrantyStart==null?"":warrantyStart.toString()+
+//                ", warrantyStop="+warrantyStop==null?"":warrantyStop.toString()+
                "]";
     }
 }

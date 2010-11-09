@@ -8,7 +8,6 @@ import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
-import com.inthinc.pro.model.configurator.SliderType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class WaySmartSettingManager extends VehicleSettingManager {
@@ -29,10 +28,10 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Integer speedLimit = 5;
         Integer speedBuffer = 10;
         Integer severeSpeed = 15;
-        Integer hardVertical = getDefaultSettings().get(SliderType.HARD_BUMP_SLIDER);
-        Integer hardTurn =  getDefaultSettings().get(SliderType.HARD_TURN_SLIDER);
-        Integer hardAcceleration =  getDefaultSettings().get(SliderType.HARD_ACCEL_SLIDER);
-        Integer hardBrake = getDefaultSettings().get(SliderType.HARD_BRAKE_SLIDER);
+        Integer hardVertical = vehicleSensitivitySliders.getHardVerticalSlider().getDefaultValueIndex();
+        Integer hardTurn = vehicleSensitivitySliders.getHardTurnSlider().getDefaultValueIndex();
+        Integer hardAcceleration =  vehicleSensitivitySliders.getHardAccelerationSlider().getDefaultValueIndex();
+        Integer hardBrake = vehicleSensitivitySliders.getHardBrakeSlider().getDefaultValueIndex();
         
         return new WaySmartEditableVehicleSettings(vehicleID==null?-1:vehicleID, speedLimit,speedBuffer,severeSpeed,
                                         hardAcceleration, hardBrake, hardTurn,hardVertical);
@@ -44,18 +43,19 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Integer speedBuffer = NumberUtil.convertString(vs.getCombined(SettingType.SPEED_BUFFER.getSettingID()));
         Integer severeSpeed = NumberUtil.convertString(vs.getCombined(SettingType.SEVERE_SPEED.getSettingID()));
  
-        Integer hardVertical = extractSliderValue(SliderType.HARD_BUMP_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_BUMP_SLIDER)));
-        Integer hardTurn = extractSliderValue(SliderType.HARD_TURN_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_TURN_SLIDER)));
-        Integer hardAcceleration = extractSliderValue(SliderType.HARD_ACCEL_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_ACCEL_SLIDER)));
-        Integer hardBrake = extractSliderValue(SliderType.HARD_BRAKE_SLIDER,getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getSensitivitySliderSettings(SliderType.HARD_BRAKE_SLIDER)));
+        Integer hardVertical = extractHardVerticalValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardVerticalSlider()));
+        Integer hardTurn = extractHardTurnValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardTurnSlider()));
+        Integer hardAcceleration = extractHardAccelerationValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardAccelerationSlider()));
+        Integer hardBrake = extractHardBrakeValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardBrakeSlider()));
 
-        adjustedSettingCounts = vehicleSensitivitySliders.adjustedSettingCountsToAllowForCustomValues(hardVertical,hardTurn,hardAcceleration,hardBrake);
+        adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
+
         return new WaySmartEditableVehicleSettings(vs.getVehicleID(), speedLimit,speedBuffer,severeSpeed, 
                                           hardAcceleration, hardBrake, hardTurn,hardVertical);
     }
     
     @Override
-    public Map<Integer, String> evaluateChangedSettings(Boolean batchEdit, Map<String, Boolean> updateField, Integer vehicleID, EditableVehicleSettings editableVehicleSettings) {
+    public Map<Integer, String> evaluateChangedSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings) {
 
     	try{
     		
@@ -65,7 +65,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 	            
 	            vehicleSetting = createVehicleSetting(vehicleID);
 	        }
-	        ChangedSettings changedSettings = new ChangedSettings(batchEdit,updateField);
+	        ChangedSettings changedSettings = new ChangedSettings();
 
 	        //need to get individual settings from sliders and fields
             changedSettings.addSettingIfNeeded(SettingType.SPEED_LIMIT,
@@ -130,7 +130,8 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     }
     private void getSliderValuesForHardVertical(DesiredSettings desiredSettings,WaySmartEditableVehicleSettings waySmartEditableVehicleSettings){
         
-        Map<Integer,String> settingValues = getSensitivityValue(SliderType.HARD_BUMP_SLIDER,waySmartEditableVehicleSettings.getHardVertical());
+        Map<Integer,String> settingValues = 
+            vehicleSensitivitySliders.getHardVerticalSlider().getSettingValuesFromSliderValue(waySmartEditableVehicleSettings.getHardVertical());
 
     	desiredSettings.addSettingIfNeeded(SettingType.SEVERE_HARDVERT_LEVEL, 
     	                                   settingValues.get(SettingType.SEVERE_HARDVERT_LEVEL.getSettingID()), 
@@ -144,7 +145,8 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     }
     private void getSliderValuesForHardTurn(DesiredSettings desiredSettings,WaySmartEditableVehicleSettings waySmartEditableVehicleSettings){
         	
-    	Map<Integer, String> hardTurn = getSensitivityValue(SliderType.HARD_TURN_SLIDER,waySmartEditableVehicleSettings.getHardVertical());
+        Map<Integer,String> hardTurn = 
+            vehicleSensitivitySliders.getHardVerticalSlider().getSettingValuesFromSliderValue(waySmartEditableVehicleSettings.getHardTurn());
     	desiredSettings.addSettingIfNeeded(SettingType.DVY, 
     	                                   hardTurn.get(SettingType.DVY), 
     	                                   vehicleSetting.getCombined(SettingType.DVY.getSettingID()));
@@ -154,7 +156,8 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     }
     private  void getSliderValuesForHardAcceleration(DesiredSettings desiredSettings,WaySmartEditableVehicleSettings waySmartEditableVehicleSettings){
         
-        Map<Integer, String> hardAcceleration = getSensitivityValue(SliderType.HARD_ACCEL_SLIDER,waySmartEditableVehicleSettings.getHardAcceleration());
+        Map<Integer,String> hardAcceleration = 
+            vehicleSensitivitySliders.getHardAccelerationSlider().getSettingValuesFromSliderValue(waySmartEditableVehicleSettings.getHardAcceleration());
         desiredSettings.addSettingIfNeeded(SettingType.HARD_ACCEL_LEVEL, 
                                            hardAcceleration.get(SettingType.HARD_ACCEL_LEVEL), 
                                            vehicleSetting.getCombined(SettingType.HARD_ACCEL_LEVEL.getSettingID()));
@@ -164,7 +167,8 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     }
     private  void getSliderValuesForHardBrake(DesiredSettings desiredSettings,WaySmartEditableVehicleSettings waySmartEditableVehicleSettings){
 
-        Map<Integer, String> hardBrake = getSensitivityValue(SliderType.HARD_BRAKE_SLIDER,waySmartEditableVehicleSettings.getHardVertical());
+        Map<Integer,String> hardBrake = 
+            vehicleSensitivitySliders.getHardBrakeSlider().getSettingValuesFromSliderValue(waySmartEditableVehicleSettings.getHardBrake());
         desiredSettings.addSettingIfNeeded(SettingType.X_ACCEL, 
 	                                       hardBrake.get(SettingType.X_ACCEL), 
 	                                       vehicleSetting.getCombined(SettingType.X_ACCEL.getSettingID()));
@@ -190,9 +194,9 @@ public class WaySmartSettingManager extends VehicleSettingManager {
        configuratorDAO.setVehicleSettings(vehicleID, setMap, userID, reason);
    }
    @Override
-   public void updateVehicleSettings(boolean batchEdit, Map<String, Boolean> updateField,Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason){
+   public void updateVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason){
       
-       Map<Integer, String> setMap = evaluateChangedSettings(batchEdit, updateField, vehicleID,editableVehicleSettings);
+       Map<Integer, String> setMap = evaluateChangedSettings(vehicleID,editableVehicleSettings);
        configuratorDAO.updateVehicleSettings(vehicleID, setMap, userID, reason);
    }
     public class Properties extends HashMap<String,Object>{

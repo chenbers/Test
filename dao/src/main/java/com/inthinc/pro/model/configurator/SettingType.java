@@ -18,9 +18,10 @@ public enum SettingType implements BaseEnum
     HARD_TURN_SETTING(3,159,10,5, "hardTurn"),
     HARD_VERT_SETTING(4,160,15,10, "hardVertical"),
     SEVERE_PEAK_2_PEAK(5,0,15,10, ""),
-    AUTOLOGOFF_SETTING(6,138,29,0, "autoLogoffSeconds"),
+    AUTOLOGOFF_SETTING(6,138,29,0, "autologoffSeconds"),
     SPEED_SETTING(7,85,0,0, "speedSettings"),
     EPHONE_SETTING(8,60,0,0, "ephone"),
+    
     
     //Hard vertical
     RMS_LEVEL(9,1224,0,0,"rms_level"),
@@ -47,7 +48,24 @@ public enum SettingType implements BaseEnum
     WS_HARD_ACCEL_SETTING(21,0,10,5, "hardAcceleration"),
     WS_HARD_BRAKE_SETTING(22,0,10,5, "hardBrake"),
     WS_HARD_TURN_SETTING(23,0,10,5, "hardTurn"),
-    WS_HARD_VERT_SETTING(24,0,15,10, "hardVertical");
+    WS_HARD_VERT_SETTING(24,0,15,10, "hardVertical"),
+    
+    //individual speed settings
+    SPEED_0(25,0,10,5,"speed0"),
+    SPEED_1(26,0,10,10,"speed1"),
+    SPEED_2(27,0,10,15,"speed2"),
+    SPEED_3(28,0,10,20,"speed3"),
+    SPEED_4(29,0,10,25,"speed4"),
+    SPEED_5(30,0,10,30,"speed5"),
+    SPEED_6(31,0,10,35,"speed6"),
+    SPEED_7(32,0,10,40,"speed7"),
+    SPEED_8(33,0,10,45,"speed8"),
+    SPEED_9(34,0,10,50,"speed9"),
+    SPEED_10(35,0,10,55,"speed10"),
+    SPEED_11(36,0,10,60,"speed11"),
+    SPEED_12(37,0,10,65,"speed12"),
+    SPEED_13(38,0,10,70,"speed13"),
+    SPEED_14(39,0,10,75,"speed14");
     
     private Integer       settingsCount; //This is how many possible values there are for this device setting
     private Integer       settingID; //SettingID in settingDefs table

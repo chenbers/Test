@@ -133,22 +133,27 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
     }
     public Integer getAutoLogoffSlider(){
     	
+        if (autologoffSeconds == null) return AutologoffSetting.OFF.getSlider();
         return AutologoffSetting.findBySeconds(autologoffSeconds).getSlider();
     }
     public String getAutologoffDisplayString(){
         
+        if (autologoffSeconds == null || autologoffSeconds == 0){
+           
+            return MessageUtil.getMessageString(AutologoffSetting.OFF.getUnit());
+        }
+        if (autologoffSeconds == AutologoffSetting.HOURSMAX.getSeconds()){
+            
+            return MessageUtil.getMessageString(AutologoffSetting.HOURSMAX.getUnit());
+        }
 	    for (AutologoffSetting setting :  EnumSet.allOf(AutologoffSetting.class)){
 	        
-	        if (autologoffSeconds == 0){
-	            
-	             return MessageUtil.getMessageString(setting.getUnit());
-	        }
 	        if (autologoffSeconds <= setting.getSeconds()){
 	            
 	            return setting.getValue()+" "+MessageUtil.getMessageString(setting.getUnit());
 	        }
 	    }
-	    return MessageUtil.getMessageString(AutologoffSetting.HOURSMAX.getUnit());
+        return MessageUtil.getMessageString(AutologoffSetting.OFF.getUnit());
     }
     public boolean validateSaveItems(FacesContext context, boolean isBatchEdit, Map<String, Boolean> updateField){
         
@@ -180,9 +185,5 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
         context.addMessage("edit-form:editDevice-ephone", message);
 
-    }
-    
-    public TiwiproEditableVehicleSettings getSelf(){
-        return this;
     }
 }

@@ -10,7 +10,6 @@ import com.inthinc.pro.model.SensitivitySliderValues;
 
 public class Slider {
     
-    private static final Integer CUSTOM_SLIDER_VALUE = 99;
     private Map<Integer,SensitivitySliderValues> settingsForThisSlider;
     private int sliderPositionCount;
     private int defaultValueIndex;
