@@ -66,16 +66,19 @@ public class Core extends DefaultSelenium{
 		}
 	}
 	
-	public void getLocation(String expected, String error_name){
+	public String getLocation(String expected, String error_name){
 		Integer truefalse = -1;
+		String location = "Could not get location";
 		try{
-			truefalse = getLocation().indexOf(expected);
+			location = getLocation();
+			truefalse = location.indexOf(expected);
 			AssertNotEqual(truefalse, -1, error_name);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
+		return location;
 	}
 	
 	public String getText(String locator, String expected, String error_name){
@@ -168,6 +171,30 @@ public class Core extends DefaultSelenium{
 		}
 	}
 	
+	public void isVisible( String element, String error_name ){
+		try{
+			assertTrue( isVisible(element));
+		}catch(AssertionError e){
+			errors.Error(error_name, e);
+		}catch(SeleniumException e){
+			errors.Error(error_name, e);
+		}catch(Exception e){
+			errors.Error(error_name, e);
+		}
+	}
+	
+	public void isNotVisible( String element, String error_name ){
+		try{
+			assertFalse( isVisible(element) );
+		}catch(AssertionError e){
+			errors.Error(error_name, e);
+		}catch(SeleniumException e){
+			errors.Error(error_name, e);
+		}catch(Exception e){
+			errors.Error(error_name, e);
+		}
+	}
+	
 	public void waitForPageToLoad(String timeout, String error_name){
 		try{
 			waitForPageToLoad(timeout);
@@ -245,6 +272,15 @@ public class Core extends DefaultSelenium{
 			errors.Error(error_name, "False");
 		}catch(Exception e){
 			errors.Error(error_name, e);
+		}
+	}
+	
+	public void Pause( Integer timeout_in_secs ){
+		try{
+			Thread.currentThread();
+			Thread.sleep((long)(timeout_in_secs * 1000));
+		}catch(InterruptedException e){
+			e.printStackTrace();
 		}
 	}
 }
