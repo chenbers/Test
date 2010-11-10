@@ -24,11 +24,7 @@ public class VoiceAckServiceImpl implements VoiceAckService {
         String response = StringUtil.convertInputStreamToString(stream);
         response=String.format(response, getVoxeoAudioURL());
         
-        //TODO Ack msgID here
-        alertMessageDAO.acknowledgeMessage(msgID);
-        System.out.println(msgID);
-        
-        if (true)
+        if (alertMessageDAO.acknowledgeMessage(msgID))
             return Response.ok(response).build();
         return Response.status(Status.NOT_FOUND).build();
     }
