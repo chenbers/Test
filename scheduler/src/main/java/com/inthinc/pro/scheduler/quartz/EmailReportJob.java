@@ -232,6 +232,47 @@ public class EmailReportJob extends QuartzJobBean {
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
                             user.getPerson().getLocale()));
                     break;
+                    
+                    
+                case TEN_HOUR_DAY_VIOLATIONS:
+                	reportCriteriaList.add(reportCriteriaService.getTenHoursDayViolationsCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), user.getPerson().getLocale()));
+                	break;
+                	
+                case DRIVER_HOURS:
+                	reportCriteriaList.add(reportCriteriaService.getDriverHoursReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), user.getPerson().getLocale()));
+                	break;
+                	
+                case MILEAGE_BY_VEHICLE:
+                	reportCriteriaList.add(reportCriteriaService.getMileageByVehicleReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
+                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                	break;
+                case STATE_MILEAGE_BY_VEHICLE:
+                	reportCriteriaList.add(reportCriteriaService.getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
+                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                	break;
+                case STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS:
+                	reportCriteriaList.add(reportCriteriaService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
+                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                	break;
+                case STATE_MILEAGE_COMPARE_BY_GROUP:
+                	reportCriteriaList.add(reportCriteriaService.getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
+                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                	break;
+                case STATE_MILEAGE_BY_MONTH:
+                	reportCriteriaList.add(reportCriteriaService.getStateMileageByMonthReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
+                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                	break;
+                case STATE_MILEAGE_FUEL_BY_VEHICLE:
+                	reportCriteriaList.add(reportCriteriaService.getStateMileageFuelByVehicleReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
+                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                	break;
+
                 default:
                     break;
 
