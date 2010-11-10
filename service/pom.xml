@@ -229,5 +229,30 @@
     	<groupId>org.jasypt</groupId>
     	<artifactId>jasypt</artifactId>
     </dependency>
+	<dependency>
+	  <groupId>commons-httpclient</groupId>
+	  <artifactId>commons-httpclient</artifactId>
+	  <version>3.1</version>
+	  <scope>test</scope>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.httpcomponents</groupId>
+	  <artifactId>httpcore</artifactId>
+	  <version>4.0.1</version>
+	  <scope>test</scope>
+	</dependency>
+	<dependency>
+	  <groupId>org.apache.httpcomponents</groupId>
+	  <artifactId>httpclient</artifactId>
+	  <version>4.0.3</version>
+	  <scope>test</scope>
+	</dependency>
+	<dependency>
+	  <groupId>javax.annotation</groupId>
+	  <artifactId>jsr250-api</artifactId>
+	  <version>1.0 </version>
+	  <scope>compile</scope>
+	</dependency>
+    
   </dependencies>
 </project>
