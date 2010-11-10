@@ -8,19 +8,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class AlertMessageBuilder
 {
-    private Integer alertMessageID;
+    private Integer alertID;
+    private Integer messageID;
     private Locale  locale;
     private String  address;
     private AlertMessageType alertMessageType;
     private List<String> paramterList;
+    private Boolean acknowledge;
     
-    public void setAlertMessageID(Integer alertMessageID)
+    public void setAlertID(Integer alertID)
     {
-        this.alertMessageID = alertMessageID;
+        this.alertID = alertID;
     }
-    public Integer getAlertMessageID()
+    public Integer getAlertID()
     {
-        return alertMessageID;
+        return alertID;
+    }
+    public void setMessageID(Integer messageID)
+    {
+        this.messageID = messageID;
+    }
+    public Integer getMessageID()
+    {
+        return messageID;
     }
     public void setAlertMessageType(AlertMessageType alertMessageType)
     {
@@ -53,6 +63,12 @@ public class AlertMessageBuilder
     public Locale getLocale()
     {
         return locale;
+    }
+    public Boolean getAcknowledge() {
+        return acknowledge;
+    }
+    public void setAcknowledge(Boolean acknowledge) {
+        this.acknowledge = acknowledge;
     }
 
 }

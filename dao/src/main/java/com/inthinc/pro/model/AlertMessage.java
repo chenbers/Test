@@ -41,7 +41,7 @@ public class AlertMessage
     
     private Integer zoneID;
     
-
+    private Boolean acknowledge;
     
     
     public AlertMessage(Integer messageID, AlertMessageDeliveryType alertMessageDeliveryType, AlertMessageType alertMessageType, String address, String message)
@@ -137,6 +137,10 @@ public class AlertMessage
     {
         this.personID = personID;
     }
-
-    
+    public Boolean getAcknowledge() {
+        return acknowledge;
+    }
+    public void setAcknowledge(Boolean acknowledge) {
+        this.acknowledge = acknowledge;
+    }
 }

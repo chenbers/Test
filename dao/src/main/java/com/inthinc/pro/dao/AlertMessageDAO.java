@@ -19,5 +19,5 @@ public interface AlertMessageDAO extends GenericDAO<AlertMessage, Integer>
      */
     List<AlertMessageBuilder> getMessageBuilders(AlertMessageDeliveryType messageType);
     
-    void acknowledgeMessage(Integer msgID);
+    Boolean acknowledgeMessage(Integer msgID);
 }

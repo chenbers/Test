@@ -174,7 +174,8 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder();
         alertMessageBuilder.setLocale(locale);
         alertMessageBuilder.setAddress(alertMessage.getAddress());
-        alertMessageBuilder.setAlertMessageID(alertMessage.getAlertID());
+        alertMessageBuilder.setAlertID(alertMessage.getAlertID());
+        alertMessageBuilder.setMessageID(alertMessage.getMessageID());
         alertMessageBuilder.setAlertMessageType(alertMessage.getAlertMessageType());
         List<String> parameterList = new ArrayList<String>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
@@ -283,8 +284,8 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     }
 
     @Override
-    public void acknowledgeMessage(Integer msgID) {
+    public Boolean acknowledgeMessage(Integer msgID) {
         // TODO Auto-generated method stub
-        
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-package it.com.inthinc.pro.dao;
+package it.com.inthinc.pro.dao.jdbc;
 
 // The tests in this file  can fail sporadically when the scheduler is running on the same
 // server that is is hitting (usually dev).  If this becomes a problem, we can mark them as Ignore.  
@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
+import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import it.util.EventGenerator;
 import it.util.MCMSimulator;
@@ -38,6 +39,7 @@ import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
+import com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO;
 import com.inthinc.pro.map.GeonamesAddressLookup;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessageBuilder;
@@ -62,7 +64,7 @@ import com.inthinc.pro.model.event.ZoneDepartureEvent;
 import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.States;
 
-public class AlertMessagesTest {
+public class AlertMessagesTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
     private static SiloService siloService;
     private static MCMSimulator mcmSim;
@@ -74,7 +76,7 @@ public class AlertMessagesTest {
     private static final int GROUPS = 4;
     private static final int CONTACT_INFO = 5;
     private static final int ANY_TIME = 6;
-    private static AlertMessageHessianDAO alertMessageDAO;
+    private static AlertMessageJDBCDAO alertMessageDAO;
     private static EventHessianDAO eventDAO;
     private static DriverHessianDAO driverDAO;
     private static GroupHessianDAO groupDAO;
@@ -142,6 +144,12 @@ public class AlertMessagesTest {
     	}
     }
 
+    @Test
+    public void phoneAlert()
+    {
+        List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.PHONE);
+    }
+    
     @Test
     public void zoneAlerts() {
     	for (ZoneAlert zoneAlert : zoneAlerts) {
@@ -569,8 +577,8 @@ public class AlertMessagesTest {
 
     private static void initDAOs()
     {
-        alertMessageDAO = new AlertMessageHessianDAO();
-        alertMessageDAO.setSiloService(siloService);
+        alertMessageDAO = new AlertMessageJDBCDAO();
+        ((AlertMessageJDBCDAO)alertMessageDAO).setDataSource(new ITDataSource().getRealDataSource());
         eventDAO = new EventHessianDAO();
         driverDAO = new DriverHessianDAO();
         groupDAO = new GroupHessianDAO();
@@ -591,14 +599,14 @@ public class AlertMessagesTest {
         zoneHessianDAO.setSiloService(siloService);
         zoneAlertHessianDAO.setSiloService(siloService);
         redFlagAlertHessianDAO.setSiloService(siloService);
-
+    
         alertMessageDAO.setDriverDAO(driverDAO);
         alertMessageDAO.setVehicleDAO(vehicleDAO);
         alertMessageDAO.setEventDAO(eventDAO);
-        alertMessageDAO.setGroupDAO(groupDAO);
         alertMessageDAO.setPersonDAO(personDAO);
         alertMessageDAO.setZoneDAO(zoneHessianDAO);
         alertMessageDAO.setAddressLookup(addressLookup);
+
     }
     
     private boolean pollForMessages(String description) {
@@ -626,6 +634,10 @@ public class AlertMessagesTest {
                 assertNotNull(description, msg);
                 assertNotNull(description, msg.getAddress());
                 assertNotNull(description, msg.getParamterList());
+                for(AlertMessageBuilder amb:msgList)
+                {
+                    alertMessageDAO.acknowledgeMessage(amb.getMessageID());
+                }
 //                System.out.println(msg.getAlertMessageType() + " " + description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList() + " ");
                 // logger.debug(description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList());
                 return true;
