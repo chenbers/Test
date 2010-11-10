@@ -235,11 +235,11 @@ public class EmailReportJob extends QuartzJobBean {
                     
                     
                 case TEN_HOUR_DAY_VIOLATIONS:
-                	reportCriteriaList.add(reportCriteriaService.getTenHoursDayViolationsCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), user.getPerson().getLocale()));
+                	reportCriteriaList.add(reportCriteriaService.getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),reportSchedule.getGroupID(), timeFrame.getInterval(), user.getPerson().getLocale()));
                 	break;
                 	
                 case DRIVER_HOURS:
-                	reportCriteriaList.add(reportCriteriaService.getDriverHoursReportCriteria(reportSchedule.getGroupID(), timeFrame.getInterval(), user.getPerson().getLocale()));
+                	reportCriteriaList.add(reportCriteriaService.getDriverHoursReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),reportSchedule.getGroupID(), timeFrame.getInterval(), user.getPerson().getLocale()));
                 	break;
                 	
                 case MILEAGE_BY_VEHICLE:
