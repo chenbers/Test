@@ -99,7 +99,11 @@ function setHighlight(element, errors) {
                     <f:facet name="header">
                     	<h:outputText styleClass="headerText" value="Desired" />
                     </f:facet>
-  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{not setting.hasChoices}">
+  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{!setting.include}">
+                    	<h:outputText styleClass="headerText" value="#{vehicleSettingsBean.selectedVehicleSetting.desired[setting.settingID]}" />
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+					</h:panelGrid>					
+  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{not setting.hasChoices and setting.include}">
 					 	<rich:inplaceInput id="input"  value="#{vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value}" 
 					 				 showControls="true" selectOnEdit="true" 
 					 				 style="background-color:#{setting.errorColor[vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value]}"
@@ -110,7 +114,7 @@ function setHighlight(element, errors) {
 					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
  					 		<rich:message id="message" for="input" style="color:red" rendered="true" value="ok"/>
 					</h:panelGrid>					
-				 	<h:panelGrid columns="2" title="#{setting.description}.  #{setting.varType.name}" rendered="#{setting.hasChoices}">
+				 	<h:panelGrid columns="2" title="#{setting.description}.  #{setting.varType.name}" rendered="#{setting.hasChoices and setting.include}">
 					 	<rich:inplaceSelect id="select" value="#{vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value}">
 	
 							<f:selectItems value="#{choiceSelectItems.selectItems[setting.settingID]}" />
