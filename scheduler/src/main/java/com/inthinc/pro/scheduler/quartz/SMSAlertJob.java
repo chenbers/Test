@@ -21,9 +21,10 @@ public class SMSAlertJob extends BaseAlertJob
 
         for (AlertMessageBuilder message : messageList)
         {
-            logger.debug("MessageID: " + message.getAlertMessageID() + " Emailed to: " + message.getAddress());
+            logger.debug("MessageID: " + message.getMessageID() + " Emailed to: " + message.getAddress());
             String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
             getMailDispatcher().send(message.getAddress(), getSubject(message),text);
+            getAlertMessageDAO().acknowledgeMessage(message.getMessageID());
         }
         logger.debug("SMSAlertJob: END");
 

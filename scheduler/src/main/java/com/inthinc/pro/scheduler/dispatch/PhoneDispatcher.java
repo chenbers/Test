@@ -12,8 +12,13 @@ public class PhoneDispatcher
     
     private static Logger logger = Logger.getLogger(PhoneDispatcher.class);
 
-    public void send(String phoneNumber, String messageText)
+    public void send(String phoneNumber, String messageText, Boolean acknowledge)
     {
+        Integer ack = 0;
+        if (acknowledge)
+            ack=1;
+        //TODO HTTPS!!!!
+        String url = "http://api.voxeo.net/VoiceXML.start?tokenid=724abefcafa4be428524109528252d18defe555564874cd59aed73e84cf16fc6817d99ce6fde0f5aef118e94&callerid=14074181800&numbertodial=8019383589&msgID=99&msg=Hello World&ack="+ack;
         try 
         {
             String[] cmdLine = new String[3];
