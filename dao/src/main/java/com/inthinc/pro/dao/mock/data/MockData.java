@@ -63,14 +63,11 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
-import com.inthinc.pro.model.event.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.IdleEvent;
-import com.inthinc.pro.model.event.LowBatteryEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
-import com.inthinc.pro.model.event.TamperingEvent;
 
 public class MockData {
 
@@ -592,7 +589,7 @@ public class MockData {
 
     private int addWarnings(Driver driver, Vehicle vehicle, LatLng loc, int idOffset) {
         Date date = DateUtil.convertTimeInSecondsToDate(baseTimeSec - randomInt(1, 2880));
-        Event event = new LowBatteryEvent((long) idOffset + 1, vehicle.getVehicleID(), NoteType.LOW_BATTERY, date, randomInt(15, 70), randomInt(10, 50), loc
+        Event event = new Event((long) idOffset + 1, vehicle.getVehicleID(), NoteType.LOW_BATTERY, date, randomInt(15, 70), randomInt(10, 50), loc
                 .getLat(), loc.getLng());
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
@@ -606,7 +603,7 @@ public class MockData {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
         }
-        event = new DeviceLowBatteryEvent((long) idOffset + 2, vehicle.getVehicleID(), NoteType.LOW_TIWI_BATTERY, date, randomInt(15, 70), randomInt(10, 50), loc
+        event = new Event((long) idOffset + 2, vehicle.getVehicleID(), NoteType.LOW_TIWI_BATTERY, date, randomInt(15, 70), randomInt(10, 50), loc
                 .getLat(), loc.getLng());
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);
@@ -620,7 +617,7 @@ public class MockData {
             unitTestStats.totalRedFlags++;
             unitTestStats.totalWarningRedFlags++;
         }
-        event = new TamperingEvent((long) idOffset + 3, vehicle.getVehicleID(), NoteType.UNPLUGGED, date, randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc
+        event = new Event((long) idOffset + 3, vehicle.getVehicleID(), NoteType.UNPLUGGED, date, randomInt(15, 70), randomInt(10, 50), loc.getLat(), loc
                 .getLng());
         event.setDriverID(driver.getDriverID());
         event.setDriver(driver);

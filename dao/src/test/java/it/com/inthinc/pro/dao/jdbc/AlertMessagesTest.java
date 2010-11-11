@@ -11,18 +11,15 @@ import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import it.util.EventGenerator;
 import it.util.MCMSimulator;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
@@ -50,16 +47,12 @@ import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.FullEvent;
-import com.inthinc.pro.model.event.LowBatteryEvent;
-import com.inthinc.pro.model.event.NoDriverEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
-import com.inthinc.pro.model.event.TamperingEvent;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
 import com.inthinc.pro.model.event.ZoneDepartureEvent;
 
-@Ignore
 public class AlertMessagesTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
     private static SiloService siloService;
@@ -140,11 +133,6 @@ public class AlertMessagesTest extends BaseJDBCTest{
     	}
     }
 
-    @Test
-    public void phoneAlert()
-    {
-        List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.PHONE);
-    }
     
     @Test
     public void zoneAlerts() {
@@ -268,6 +256,13 @@ public class AlertMessagesTest extends BaseJDBCTest{
     	}
     }
 
+    @Test
+    public void escalationPhoneTest()
+    {
+        List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.PHONE);
+        assertTrue(msgList!=null);
+    }
+    
     private EventType getEventType(ZoneAlert zoneAlert) {
     	if (zoneAlert.getArrival())
     		return EventType.ZONES_ARRIVAL;
@@ -503,13 +498,13 @@ public class AlertMessagesTest extends BaseJDBCTest{
 			event = new FullEvent(0l, 0, NoteType.FULLEVENT, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f), 80, 24, -22, -21);
     	else if (eventType.equals(EventType.TAMPERING) )
-			event = new TamperingEvent(0l, 0, NoteType.UNPLUGGED, new Date(), 60, 1000, 
+			event = new Event(0l, 0, NoteType.UNPLUGGED, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f));
     	else if (eventType.equals(EventType.LOW_BATTERY) )
-			event = new LowBatteryEvent(0l, 0, NoteType.LOW_BATTERY, new Date(), 60, 1000, 
+			event = new Event(0l, 0, NoteType.LOW_BATTERY, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f));
     	else if (eventType.equals(EventType.NO_DRIVER) )
-			event = new NoDriverEvent(0l, 0, NoteType.NO_DRIVER, new Date(), 60, 1000, 
+			event = new Event(0l, 0, NoteType.NO_DRIVER, new Date(), 60, 1000, 
 					new Double(40.704246f), new Double(-111.948613f));
     	else if (eventType.equals(EventType.SPEEDING) )
 			event = new SpeedingEvent(0l, 0, NoteType.SPEEDING_EX3, new Date(), 100, 1000, 

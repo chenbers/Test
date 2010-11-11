@@ -10,17 +10,14 @@ import java.util.List;
 
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
-import com.inthinc.pro.model.event.DeviceLowBatteryEvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.FullEvent;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.IgnitionOffEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.event.LowBatteryEvent;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
-import com.inthinc.pro.model.event.TamperingEvent;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
 import com.inthinc.pro.model.event.ZoneDepartureEvent;
 import com.inthinc.pro.model.event.ZoneEvent;
@@ -207,15 +204,15 @@ public class EventGenerator
         	if (includeExtraEvents && isExtraEventIndex(i)) {
         		switch (i) {
 	        		case ReportTestConst.TAMPER_EVENT_IDX:
-	        			event = new TamperingEvent(0l, 0, NoteType.UNPLUGGED, eventTime, 0, odometer, 
+	        			event = new Event(0l, 0, NoteType.UNPLUGGED, eventTime, 0, odometer, 
 	        					locations[i].getLat(), locations[i].getLng());
 	        			break;
 					case ReportTestConst.TAMPER2_EVENT_IDX:
-	        			event = new TamperingEvent(0l, 0, NoteType.UNPLUGGED_ASLEEP, eventTime, 0, odometer, 
+	        			event = new Event(0l, 0, NoteType.UNPLUGGED_ASLEEP, eventTime, 0, odometer, 
 	        					locations[i].getLat(), locations[i].getLng());
 	        			break;
 					case ReportTestConst.LOW_BATTERY_EVENT_IDX:
-	        			event = new LowBatteryEvent(0l, 0, NoteType.LOW_BATTERY, eventTime, 0, odometer, 
+	        			event = new Event(0l, 0, NoteType.LOW_BATTERY, eventTime, 0, odometer, 
 	        					locations[i].getLat(), locations[i].getLng());
 	        			break;
 					case ReportTestConst.ZONE_ENTER_EVENT_IDX:
@@ -423,17 +420,17 @@ public class EventGenerator
             }
             else if (i == (locCnt-1))
             {
-                event = new DeviceLowBatteryEvent(0l, 0, NoteType.LOW_TIWI_BATTERY, eventTime, 0, odometer, locations[i].getLat(), locations[i].getLng());
+                event = new Event(0l, 0, NoteType.LOW_TIWI_BATTERY, eventTime, 0, odometer, locations[i].getLat(), locations[i].getLng());
                 
             }
             else if (i == (locCnt-2))
             {
-                event = new LowBatteryEvent(0l, 0, NoteType.LOW_BATTERY, eventTime, 0, odometer, locations[i].getLat(), locations[i].getLng());
+                event = new Event(0l, 0, NoteType.LOW_BATTERY, eventTime, 0, odometer, locations[i].getLat(), locations[i].getLng());
                 
             }
             else if (i == (locCnt-3))
             {
-                event = new TamperingEvent(0l, 0, NoteType.UNPLUGGED, eventTime, 0, odometer, locations[i].getLat(), locations[i].getLng());
+                event = new Event(0l, 0, NoteType.UNPLUGGED, eventTime, 0, odometer, locations[i].getLat(), locations[i].getLng());
                 
             }
             else

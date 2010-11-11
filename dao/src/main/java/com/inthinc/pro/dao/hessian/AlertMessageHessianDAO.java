@@ -27,17 +27,11 @@ import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.event.LowBatteryEvent;
 import com.inthinc.pro.model.NoAddressFoundException;
-import com.inthinc.pro.model.event.NoDriverEvent;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
-import com.inthinc.pro.model.event.TamperingEvent;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.event.ZoneArrivalEvent;
-import com.inthinc.pro.model.event.ZoneDepartureEvent;
 
 public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Integer> implements AlertMessageDAO {
     
@@ -118,43 +112,8 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     }
 
     private AlertMessageBuilder getMessageBuilder(AlertMessage alertMessage) {
-        Event event = null;
-        switch (alertMessage.getAlertMessageType()) {
-            case ALERT_TYPE_SPEEDING:
-                event = eventDAO.getEventByType(alertMessage.getNoteID(), SpeedingEvent.class);
-                break;
-            case ALERT_TYPE_AGGRESSIVE_DRIVING: // Not using anymore @deprecated
-                break;
-            case ALERT_TYPE_ENTER_ZONE:
-                event = eventDAO.getEventByType(alertMessage.getNoteID(), ZoneArrivalEvent.class);
-                break;
-            case ALERT_TYPE_TAMPERING:
-                event = eventDAO.getEventByType(alertMessage.getNoteID(), TamperingEvent.class);
-                break;
-            case ALERT_TYPE_EXIT_ZONE:
-                event = eventDAO.getEventByType(alertMessage.getNoteID(), ZoneDepartureEvent.class);
-                break;
-            case ALERT_TYPE_LOW_BATTERY:
-                event = eventDAO.getEventByType(alertMessage.getNoteID(), LowBatteryEvent.class);
-                break;
-            case ALERT_TYPE_SEATBELT:
-                event = eventDAO.getEventByType(alertMessage.getNoteID(), SeatBeltEvent.class);
-                break;
-            case ALERT_TYPE_UNKNOWN:
-                break;
-            case ALERT_TYPE_CRASH:
-                event = eventDAO.getEventByType(alertMessage.getNoteID(), Event.class);
-                break;
-            case ALERT_TYPE_HARD_ACCELL:
-            case ALERT_TYPE_HARD_BRAKE:
-            case ALERT_TYPE_HARD_BUMP:
-            case ALERT_TYPE_HARD_TURN:
-                event = eventDAO.getEventByType(alertMessage.getNoteID(), AggressiveDrivingEvent.class);
-                break;
-            case ALERT_TYPE_NO_DRIVER:
-                event = eventDAO.getEventByType(alertMessage.getNoteID(), NoDriverEvent.class);
-                break;
-        }
+        Event event = eventDAO.findByID(alertMessage.getNoteID());
+
         AlertMessageBuilder alertMessageBuilder = createAlertMessageBuilder(alertMessage, event);
         return alertMessageBuilder;
     }
