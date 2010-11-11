@@ -24,6 +24,7 @@ public class GoogleAddressLookup extends AddressLookup {
 //	private GoogleMapKeyFinder googleMapKeyFinder;
     private String googleMapGeoUrl;
     private MeasurementType measurementType = MeasurementType.ENGLISH;
+    private boolean debugMode = false;
 	
 	private LatLng latLng;
 	private enum ResultType {
@@ -35,22 +36,29 @@ public class GoogleAddressLookup extends AddressLookup {
 		setAddressFormat(AddressLookup.AddressFormat.ADDRESS);
 	}
 
-    public String getClosestTownString(LatLng latLng, MeasurementType measurementType) throws NoAddressFoundException {
-        setMeasurementType(measurementType);
-        this.latLng = latLng;
-
-        StringBuilder request = new StringBuilder(googleMapGeoUrl).append(latLng.getLat()).append(",").append(latLng.getLng()).append("&output=xml");
-
-        String address = null;
-        try {
-            address = sendRequest(new URL(request.toString()), ResultType.CLOSEST_TOWN);
-            if ((address == null) || address.isEmpty()) {
-                throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
+	public String getClosestTownString(LatLng latLng, MeasurementType measurementType) throws NoAddressFoundException {
+	    return getClosestTownString(latLng, measurementType, false);
+	}
+    public String getClosestTownString(LatLng latLng, MeasurementType measurementType, boolean debugMode) throws NoAddressFoundException {
+        if(latLng != null){
+            this.debugMode = debugMode;
+            setMeasurementType(measurementType);
+            this.latLng = latLng;
+    
+            StringBuilder request = new StringBuilder(googleMapGeoUrl).append(latLng.getLat()).append(",").append(latLng.getLng()).append("&output=xml");
+    
+            String address = null;
+            try {
+                address = sendRequest(new URL(request.toString()), ResultType.CLOSEST_TOWN);
+                if ((address == null) || address.isEmpty()) {
+                    throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
+                }
+            } catch (MalformedURLException murle) {
+                throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
             }
-        } catch (MalformedURLException murle) {
-            throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
+            return address;
         }
-        return address;
+        throw new NoAddressFoundException(null, null, NoAddressFoundException.reasons.CLIENTSIDE);
     }
 
 	@Override
@@ -144,8 +152,8 @@ public class GoogleAddressLookup extends AddressLookup {
 	            {
 	                switch (resultType) {
 	                    case ADDRESS:      return parseAddress(httpConn.getInputStream());
-	                    case CLOSEST_TOWN: return getPlacemarks(httpConn.getInputStream());
-	                    default: throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.UNRECOGNISED_RESULTTYPE);
+	                    case CLOSEST_TOWN: return describeBestPlacemark(getPlacemarks(httpConn.getInputStream()));
+	                    default: throw new NoAddressFoundException(latLng.getLat(), latLng.getLng(), NoAddressFoundException.reasons.CLIENTSIDE_UNRECOGNISED_RESULTTYPE);
 	                }
 	            }
 	            else {	
@@ -230,8 +238,8 @@ public class GoogleAddressLookup extends AddressLookup {
         this.googleMapGeoUrl = googleMapGeoUrl;
     }
 
-    private String getPlacemarks(InputStream is) { // TODO: jwimmer: should return a list or map of placemarks?
-        ArrayList<Placemark> results = new ArrayList<Placemark>();// TODO: jwimmer: potential issue if more than one town is the SAME distance away?
+    private ArrayList<Placemark> getPlacemarks(InputStream is) { // TODO: jwimmer: should return a list or map of placemarks?
+        ArrayList<Placemark> results = new ArrayList<Placemark>();// TODO: jwimmer: potential issue if more than one town is EXACTLY the same distance away?
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLStreamReader reader = null;
         StringBuffer text = new StringBuffer();;
@@ -242,15 +250,6 @@ public class GoogleAddressLookup extends AddressLookup {
             HashMap<String, String> attributes = new HashMap<String, String>();
             String name = "NOT YET SET";
             while (reader.hasNext()) {
-                // printEventType(eventType);
-                // printName(reader,eventType);
-                // printText(reader);
-                // if (reader.isStartElement()) {
-                // getAttributes(reader);
-                // }
-                // printPIData(reader);
-                //System.out.println("-                         -");
-
                 event = reader.next();
 
                 if (event == XMLStreamConstants.END_ELEMENT) {
@@ -265,9 +264,6 @@ public class GoogleAddressLookup extends AddressLookup {
                 if (event == XMLStreamConstants.START_ELEMENT) {
                     name = reader.getLocalName();
                     attributes.putAll(getAttributes(reader));
-                    // risky? merely adding more attributes means that old attributes are being overwritten ??? possibly before they are
-                    // being used? this might not be a problem because of the KML format where parents and children don't end up with
-                    // identical attributes???
                 }
                 if (name == null) {
                     continue;
@@ -282,10 +278,11 @@ public class GoogleAddressLookup extends AddressLookup {
                             placemark.setAccuracy(Integer.parseInt(attributes.get("Accuracy")));
                         } else {
                             //not finding accuracy is a problem, but because there are typicaly multiple results we don't want to Throw an exception
-                            System.out.println("there was a problem... accuracy was not found?");
+                            System.out.println("there was a problem... accuracy was not found on ONE of the placemarks?");
                         }
                     } else if ("address".equalsIgnoreCase(name)) {
-                        placemark.setAddress(nextText);
+                        if(placemark.getAddress() == null)//TODO: catching weird artifacts on address, looks like it's because of the newline?
+                            placemark.setAddress(nextText);
                     } else if ("LocalityName".equalsIgnoreCase(name)) {
                         placemark.setLocality(nextText);
                     } else if ("coordinates".equalsIgnoreCase(name)) {
@@ -302,7 +299,7 @@ public class GoogleAddressLookup extends AddressLookup {
             }
         } catch (XMLStreamException e) {
             //System.out.println("XMLStreamException: "+e);
-            return "";
+            return results; //return what you have
         } finally {
             try {
                 if (reader != null) {
@@ -313,32 +310,32 @@ public class GoogleAddressLookup extends AddressLookup {
                 reader = null;
             }
         }
-        for (Placemark p : results) {
-            //example of generating a static map with multiple markers
-            //http://maps.google.com/maps/api/staticmap?center=70.2218,-148.435
-            //&markers=color:blue|label:p1|70.2226411,-148.4208799
-            //&markers=color:green|label:p2|70.3255556,-148.7113889
-            //&markers=color:red|color:red|label:p3|69.0578758,-152.8628274
-            //&sensor=false
-
-            if(p.getAccuracy()>5){
-                text.append( p.getLocality() +", "+ p.getState());
-            }
-            if(p.getAccuracy() == 4){
-                //TODO: jwimmer: externalize string
-                text = new StringBuffer();
-                //text.append("; ");
-                if(5< p.getDistanceFromTarget()){
-                    text.append(String.format("%.2f",p.getDistanceFromTarget()) +" "+getDistanceType()+" "+p.getHeadingToTarget()+" of ");
+       return results;
+    }
+    public String describeBestPlacemark(ArrayList<Placemark> placemarks){
+        StringBuffer text = new StringBuffer();
+        double tempLat = 0d;
+        double tempLng = 0d;
+        int bestPlacemarkAccuracy =0;
+        for (Placemark p : placemarks) {
+            if(p != null && p.getAccuracy() != null) {
+                if(p.getAccuracy()>bestPlacemarkAccuracy){
+                    bestPlacemarkAccuracy = p.getAccuracy();
+                    if(5< p.getDistanceFromTarget()){
+                        text.append(String.format("%.2f",p.getDistanceFromTarget()) +" "+getDistanceType()+" "+p.getHeadingToTarget()+" of ");
+                    }
+                    text.append( p.getLocality() +", "+ p.getState());
+                    tempLat = p.getLatLng().getLat();
+                    tempLng = p.getLatLng().getLng();
+                    if(p.getAccuracy()>=8 && p.getLocality() != null && !p.getLocality().equals(""))
+                        break;
                 }
-                
-                text.append(p.getLocality()+", "+p.getState());
-                break;
             }
         }
+        if(this.debugMode)
+            System.out.println("http://maps.google.com/maps?f=d&source=s_d&saddr="+this.getLatLng().getLat()+","+this.getLatLng().getLng()+"&daddr="+tempLat+","+tempLng+"&geocode=&hl=en&mra=ls&vps=4&ie=UTF8");
         return text.toString();
     }
-
     public class KMLElement{
         HashMap<String, String> attributes;
         String name;
@@ -380,7 +377,7 @@ public class GoogleAddressLookup extends AddressLookup {
                     Math.sin(orig.getLat())*Math.cos(orig.getLat())*Math.cos(deltaLong);
             double bearing = Math.toDegrees(Math.atan2(y, x));
             double north = 360; //or full circle in degrees
-            String[] directionals = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+            String[] directionals = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"};
             double bearingDegreesDelta = 360; //starting at zero and the farthest bearing couldn't be more than 360 degrees away
             for(int i = 0; i < directionals.length; i++){
                 double degrees = (north/directionals.length)*i;   
@@ -420,7 +417,6 @@ public class GoogleAddressLookup extends AddressLookup {
             return address;
         }
         public void setAddress(String address) {
-            if(this.address == null) //TODO: catching weird artifacts on address, looks like it's because of the newline?
                 this.address = address;
         }
         public Integer getAccuracy() {
