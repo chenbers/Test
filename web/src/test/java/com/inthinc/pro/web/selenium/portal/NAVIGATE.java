@@ -127,10 +127,8 @@ public class NAVIGATE
 		selenium.stop();
 	}
 	
-	
-	
-	public String get_data(String file_name, String test_case, String sheet, String header){
-		String value = "";
+	public String set_test_case(String file_name, String test_case){
+		String success = "Success";
 		if (data_file==null){
 			data_file = new Data_Reader();	
 		}
@@ -141,7 +139,12 @@ public class NAVIGATE
 			System.out.println("That Test Case ID was not found in the file.");
 			return "That Test Case ID was not found in the file.";
 		}
-		
+		return success;
+	}
+	
+	public String get_data( String sheet, String header){
+		String value = "";
+				
 		try{
 			value = testCase.get(sheet).get(header); 
 		}catch(NullPointerException e){
