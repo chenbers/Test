@@ -28,6 +28,9 @@
 	<bean id="genericDAO" class="com.inthinc.pro.dao.hessian.GenericHessianDAO" abstract="true">
 		<property name="siloService" ref="siloServiceBean" />
 	</bean>
+    <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
 	<bean id="abstractReportDAO" class="com.inthinc.pro.dao.hessian.report.AbstractReportHessianDAO" abstract="true">
 		<property name="reportService" ref="reportServiceBean" />
 	</bean>
@@ -59,7 +62,7 @@
 	<bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" parent="abstractReportDAO" />
-	<bean id="alertMessageDAO" class="com.inthinc.pro.dao.hessian.AlertMessageDAO"></bean>
+	<bean id="alertMessageDAO" class="com.inthinc.pro.dao.JDBC.AlertMessageDAO"></bean>
 
 	<!-- Address Lookup -->
 	<bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
