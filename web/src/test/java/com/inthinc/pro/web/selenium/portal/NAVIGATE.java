@@ -3,6 +3,11 @@
 package com.inthinc.pro.web.selenium.portal;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -11,9 +16,13 @@ import org.openqa.selenium.server.SeleniumServer;
 
 
 import com.inthinc.pro.web.selenium.Core;
+import com.inthinc.pro.web.selenium.Data_Reader;
 
 public class NAVIGATE
 {
+	
+	private static HashMap<String, HashMap<String, String>> testCase;
+	private static Data_Reader data_file;
 	
 	Core selenium;
 	static SeleniumServer seleniumserver;
@@ -117,7 +126,34 @@ public class NAVIGATE
 	public void stop_selenium(){
 		selenium.stop();
 	}
-
+	
+	
+	
+	public String get_data(String file_name, String test_case, String sheet, String header){
+		String value = "";
+		if (data_file==null){
+			data_file = new Data_Reader();	
+		}
+		
+		try{
+			testCase = data_file.get_testcase_data(file_name, test_case);
+		}catch(NullPointerException e){
+			System.out.println("That Test Case ID was not found in the file.");
+			return "That Test Case ID was not found in the file.";
+		}
+		
+		try{
+			value = testCase.get(sheet).get(header); 
+		}catch(NullPointerException e){
+			System.out.println("That Entry was not found on the specified sheet");
+			return "That Entry was not found on the specified sheet";
+		}
+		
+		return value; 
+	}
+	
+	
+	
 }
 
 /* This is an example of a functional area class and its supporting keyword subclasses

@@ -3,6 +3,9 @@ package com.inthinc.pro.web.selenium;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 import com.thoughtworks.selenium.CommandProcessor;
 import com.thoughtworks.selenium.DefaultSelenium;
@@ -286,7 +289,7 @@ public class Core extends DefaultSelenium{
 	
 	public void select(String locator, String label, String error_name){
 		try{
-			label = "label" + label;
+			label = "label=" + label;
 			select(locator, label);
 			Pause(5);
 		}catch(SeleniumException e){
@@ -296,10 +299,10 @@ public class Core extends DefaultSelenium{
 		}
 	}
 	
-		
-	public void selectGroup(String group_name, String error_name){
-		group_name = "//div[text()=\""+group_name+"\"]";
-		click(group_name, error_name);
+	
+	public void selectDhxCombo(String entry_name, String error_name){
+		entry_name = "//div[text()=\""+entry_name+"\"]";
+		click(entry_name, error_name);
 		Pause(5);
 	}
 	
