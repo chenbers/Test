@@ -451,7 +451,7 @@ public class MessagesBean extends BaseBean {
             sendDevice(item.getDeviceID());
         }
         if(this.sendMessageList.size()<1){
-            this.sendMessageList.add(resourceMessages.getString("txtMsg_sendMsgSuccess"));
+            this.sendMessageList.add(resourceMessages.getString("txtMsg_noMsgSent"));
         }
         // Prep for next interaction
         this.messageToSend = "";
