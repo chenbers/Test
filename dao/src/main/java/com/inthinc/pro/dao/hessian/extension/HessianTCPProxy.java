@@ -8,7 +8,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,6 +21,7 @@ import com.caucho.hessian.io.HessianDebugInputStream;
 import com.caucho.hessian.io.HessianDebugOutputStream;
 import com.caucho.hessian.io.HessianProtocolException;
 import com.inthinc.pro.dao.hessian.exceptions.HessianExceptionConverter;
+import com.inthinc.pro.dao.util.UserLogUtil;
 
 public class HessianTCPProxy implements InvocationHandler
 {
@@ -138,7 +138,7 @@ public class HessianTCPProxy implements InvocationHandler
      */
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable
     {
-
+        UserLogUtil.logBeforeMethodWithUser(method, args, proxy);
         String methodName = method.getName();
 //        Date traceStartTime = null;
 //        if (profileLog.isInfoEnabled())
@@ -211,6 +211,8 @@ public class HessianTCPProxy implements InvocationHandler
             }
         }
     }
+    
+   
 
     protected Socket sendRequest(String methodName, Object[] args) throws IOException
     {
