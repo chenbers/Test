@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -38,6 +40,8 @@ public class Account extends BaseEntity implements Comparable<Account>
     private Address                   address;
     
     private AccountHOSType            hos;
+    
+    private Date    zonePublishDate;                      
 
     public Account()
     {
@@ -142,6 +146,14 @@ public class Account extends BaseEntity implements Comparable<Account>
 
     public void setHos(AccountHOSType hos) {
         this.hos = hos;
+    }
+
+    public Date getZonePublishDate() {
+        return zonePublishDate;
+    }
+
+    public void setZonePublishDate(Date zonePublishDate) {
+        this.zonePublishDate = zonePublishDate;
     }
 
     

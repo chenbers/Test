@@ -22,6 +22,7 @@ import org.ajax4jsf.model.KeepAlive;
 import com.inthinc.pro.backing.zone.ZonePublish;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
 import com.inthinc.pro.model.zone.option.ZoneOption;
@@ -43,6 +44,8 @@ public class ZonesBean extends BaseBean
     private ZoneDAO              zoneDAO;
     private ZoneAlertDAO         zoneAlertDAO;
     private String               helpFile = "Zones.htm";
+    private Boolean enablePublish  = Boolean.valueOf(true);
+
 
     public void setZoneDAO(ZoneDAO zoneDAO)
     {
@@ -67,7 +70,7 @@ public class ZonesBean extends BaseBean
             zoneIDs.add(new SelectItem(zone.getZoneID(),zone.getName()));
         }
         //zoneIDs.add(0,new SelectItem(null,""));
-        
+        initEnablePublish();
     }
     
     public List<Zone> getZones()
@@ -195,6 +198,7 @@ public class ZonesBean extends BaseBean
         helpFile = "Zones.htm";
 
         reloadZones();
+        setEnablePublish(true);
 
         return "adminZones";
 }
@@ -426,12 +430,50 @@ public class ZonesBean extends BaseBean
         getProUser().setZones(zones);
         
     }
+
+
+    public Boolean getEnablePublish() {
+        return enablePublish;
+    }
     
+    private void initEnablePublish() {
+        Account account = getAccountDAO().findByID(getAccountID());
+        Date lastPublishDate = (account.getZonePublishDate() == null) ? new Date(0) : account.getZonePublishDate();
+
+        setEnablePublish(false);
+        
+        for (Zone zone : getZones()) {
+            if ((zone.getCreated() != null && zone.getCreated().after(lastPublishDate)) || 
+                (zone.getModified() != null && zone.getModified().after(lastPublishDate)))
+                setEnablePublish(true);
+        }
+    }
+    public void setEnablePublish(Boolean enablePublish) {
+        this.enablePublish = enablePublish;
+    }
+    
+    public void publish() throws IOException {
+        ZonePublish zonePublish = new ZonePublish();
+
+        for (ZoneVehicleType zoneVehicleType : ZoneVehicleType.values()) {
+            byte[] published = zonePublish.publish(getZones(),  zoneVehicleType);
+            
+            // to do save in db
+        }
+        
+        // update account
+        Account account = getAccountDAO().findByID(getAccountID());
+        account.setZonePublishDate(new Date());
+        getAccountDAO().update(account);
+        
+        setEnablePublish(false);
+        
+    }
+
     public void download() throws IOException {
         // temporary
-        
+        // TODO: retrieve from db
         ZonePublish zonePublish = new ZonePublish();
-        
         byte[] published = zonePublish.publish(this.getZones(),  ZoneVehicleType.ALL);
         
         FacesContext facesContext = FacesContext.getCurrentInstance();

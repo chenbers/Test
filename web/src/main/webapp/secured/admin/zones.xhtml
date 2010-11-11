@@ -22,6 +22,31 @@
   			width: 20%;
   			vertical-align:top;
   		}
+  		.publish_nav {
+              padding:5px;
+              height:15px;
+              border-right:1px solid #E1E1E1;
+              font: 10px Veranda,Arial,Heletica,sans-serif;
+        }
+  		
+  		.publish_nav a.download {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../../images/ico_admin.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+				float:right;
+		}
+		
+  		.publish_nav a.publish {
+				padding: 6px 10px 7px 20px;
+				background: transparent url(../../images/ico_zones.png) no-repeat center left;
+				text-decoration: none;
+				color: #000;
+				margin: 0 0 0 8px;
+				float:right;
+		}
+  		
   	</style>
     <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
     <a4j:loadScript src="/js/mapGeocode.js" />
@@ -62,6 +87,23 @@
             </div>
 
             <div class="panel_w">
+       		  <a4j:outputPanel styleClass="publish_nav" id="publishNav" layout="block">
+              <a4j:form id="publishForm" style="padding:0;">
+              	<span title="#{messages.zones_download}">
+					<h:commandLink id="downloadIcon" action="#{zonesBean.download}" styleClass="download"> 
+    					<h:outputText value="#{messages.zones_download}"/>
+					</h:commandLink>    
+				</span>	
+              	<span title="#{messages.zones_publish}">
+					<a4j:commandLink  id="publishLink" reRender="publishNav" action="#{zonesBean.publish}" rendered="#{zonesBean.enablePublish}" styleClass="publish" >
+   						<h:outputText value="#{messages.zones_publish}"/>
+					</a4j:commandLink>    
+				</span>	
+				<ui:fragment rendered="#{!zonesBean.enablePublish}" id="publishMsg">
+						<h:outputText value="#{messages.zones_publishMsg}" />
+				</ui:fragment>
+              </a4j:form>
+              </a4j:outputPanel>
               <div class="panel_content">
 
                 <a4j:form id="zones-form">
