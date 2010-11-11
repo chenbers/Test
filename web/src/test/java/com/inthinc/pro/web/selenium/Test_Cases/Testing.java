@@ -18,6 +18,10 @@ public class Testing extends NAVIGATE {
 
 	@Test
 	public void test_me(){
+		set_test_case("c:/Tiwi_data.xls", "TC1187");
+		System.out.println(get_data("Login", "USERNAME"));
+		System.out.println(get_data("Login", "PASSWORD"));
+		System.out.println(get_data("Login", "EMAIL_ADDR"));
 		l.open_login();
 		m.ck_footer();
 		l.ck_login_page();
@@ -28,7 +32,7 @@ public class Testing extends NAVIGATE {
 		m.click_logout();
 	}
 	
-	@Test
+//	@Test
 	public void test_again(){
 		l.open_login();
 		l.login_to_portal("Automation1", "password");
