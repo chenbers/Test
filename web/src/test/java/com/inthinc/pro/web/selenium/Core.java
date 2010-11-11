@@ -289,7 +289,6 @@ public class Core extends DefaultSelenium{
 	
 	public void select(String locator, String label, String error_name){
 		try{
-			label = "label=" + label;
 			select(locator, label);
 			Pause(5);
 		}catch(SeleniumException e){
