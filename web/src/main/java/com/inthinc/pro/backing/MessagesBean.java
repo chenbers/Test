@@ -165,17 +165,22 @@ public class MessagesBean extends BaseBean {
     }
 
     public List<SelectItem> getDriverSelectFromList() {
-        
+
         // Do filter here to check for associated device to be waysmart?
-        //TODO: jwimmer: question: do we want to filter the list so that non-textMsg drivers and vehicles don't even appear?
-        if ( this.driverSelectFromList.size() == 0 ) {
+        // TODO: jwimmer: question: do we want to filter the list so that non-textMsg drivers and vehicles don't even appear?
+        if (this.driverSelectFromList.size() == 0) {
             List<Driver> drivers = driverDAO.getAllDrivers(this.getProUser().getGroupHierarchy().getTopGroup().getGroupID());
-            
-            for ( Driver d: drivers ) {
-                SelectItem si = new SelectItem();
-                si.setLabel(d.getPerson().getFullName()!=null?d.getPerson().getFullName(): resourceMessages.getString("unknown_driver"));
-                si.setValue(d.getDriverID());
-                driverSelectFromList.add(si);
+
+            for (Driver d : drivers) {
+                if (d != null) {
+                    Vehicle v = vehicleDAO.findByDriverID(d.getDriverID());
+                    if (v != null && deviceDAO.findByID(v.getDeviceID()).isTextMsgReceiveCapable()) {
+                        SelectItem si = new SelectItem();
+                        si.setLabel(d.getPerson().getFullName() != null ? d.getPerson().getFullName() : resourceMessages.getString("unknown_driver"));
+                        si.setValue(d.getDriverID());
+                        driverSelectFromList.add(si);
+                    }
+                }
             }
         }
         return driverSelectFromList;
@@ -186,17 +191,22 @@ public class MessagesBean extends BaseBean {
     }
 
     public List<SelectItem> getVehicleSelectFromList() {
-        
-        // Do filter here to check for associated device to be waysmart? 
-        //TODO: jwimmer: question: do we want to filter the list so that non-textMsg drivers and vehicles don't even appear?
-        if ( this.vehicleSelectFromList.size() == 0 ) {
+
+        // Do filter here to check for associated device to be waysmart?
+        // TODO: jwimmer: question: do we want to filter the list so that non-textMsg drivers and vehicles don't even appear?
+        if (this.vehicleSelectFromList.size() == 0) {
             List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(this.getProUser().getGroupHierarchy().getTopGroup().getGroupID());
-            
-            for (Vehicle v: vehicles ) {
-                SelectItem si = new SelectItem();
-                si.setLabel(v.getFullName() != null?v.getFullName(): resourceMessages.getString("unknown_vehicle"));
-                si.setValue(v.getVehicleID());
-                vehicleSelectFromList.add(si);
+
+            for (Vehicle v : vehicles) {
+                if (v != null) {
+                    Device d = deviceDAO.findByID(v.getDeviceID());
+                    if (d!=null && d.isTextMsgReceiveCapable()) {
+                        SelectItem si = new SelectItem();
+                        si.setLabel(v.getFullName() != null ? v.getFullName() : resourceMessages.getString("unknown_vehicle"));
+                        si.setValue(v.getVehicleID());
+                        vehicleSelectFromList.add(si);
+                    }
+                }
             }
         }
         return vehicleSelectFromList;
@@ -423,14 +433,17 @@ public class MessagesBean extends BaseBean {
             Device dev = deviceDAO.findByID(devID);
             if (dev != null) {
                 Vehicle v = vehicleDAO.findByID(dev.getVehicleID());
-                Driver d = driverDAO.findByID(v.getDriverID());
+                Driver d = null;
+                if(v != null){
+                    d = driverDAO.findByID(v.getDriverID());
+                }
                 if (dev.isTextMsgReceiveCapable()) {
                     ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED, getUser().getPersonID(), v.getDriverID(), v.getVehicleID());
                     deviceDAO.queueForwardCommand(devID, fwdCmd);
                     
-                    this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgSuccess"), d.getPerson().getFullName(), v.getFullName(), dev.getName() ));
+                    this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgSuccess"), (d!=null)?d.getPerson().getFullName():resourceMessages.getString("unknown_driver"), (v!=null)?v.getFullName():resourceMessages.getString("unknown_vehicle"), dev.getName() ));
                 } else {
-                    this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgNotCapable"), dev.getName() , d.getPerson().getFullName(), v.getFullName()));
+                    this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgNotCapable"), dev.getName() , (d!=null)?d.getPerson().getFullName():resourceMessages.getString("unknown_driver"), (v!=null)?v.getFullName():resourceMessages.getString("unknown_vehicle")));
                 }
                 success = true;
             }
