@@ -60,6 +60,9 @@
 											<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:75px;size:auto;margin-top:7px;float:right;">
 												<f:selectItems value="#{messagesBean.teams}" />
 											</h:selectOneMenu>
+											<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+     			 								<ui:param name="selectBoxID" value="display-form:#{context}_groupID" />
+											</ui:include>
 										</li>
 										<li class="l vcentered">#{messages.drivertrip_legend_start}:
 											<a4j:outputPanel id="calendarStart" layout="inline">
