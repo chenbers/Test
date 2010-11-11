@@ -125,7 +125,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             statement.executeUpdate();
             uid=statement.getLastInsertID();
 
-//TODO the backend needs to insert escalations with status=3 and escalationOrdinal=0 and should copy a.escalationCallDelay to m.escalationCallDelay
+//TODO the backend needs to insert escalations with status=3 and escalationOrdinal=1
 
 
             statement = (PreparedStatement) conn.prepareStatement(
@@ -142,8 +142,8 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                 statement = (PreparedStatement) conn.prepareStatement(
                     "UPDATE message" 
                         + " JOIN alert ON alert.alertID=message.alertID"
-                        + " SET message.owner=?, message.escalationTryTime=utc_timestamp(), message.escalationTryCount=message.escalationTryCount+1, message.modified=utc_timestamp()"
-                        + " WHERE message.status=3 AND message.deliveryMethodID = ? AND (message.owner=0 OR DATE_ADD(message.escalationTryTime, INTERVAL alert.escalationCallDelay SECOND) > utc_timestamp())");
+                        + " SET message.owner=?, message.escalationTryTime=utc_timestamp(), message.escalationTryCount=message.escalationTryCount+1, message.modified=utc_timestamp(), message.escalationStartTime=IF(ISNULL(message.escalationStartTime),utc_timestamp(),message.escalationStartTime)"
+                        + " WHERE message.status=3 AND message.deliveryMethodID = ? AND (message.owner=0 OR DATE_ADD(message.escalationTryTime, INTERVAL alert.escalationCallDelay SECOND) < utc_timestamp())");
                 statement.setLong(1, uid);
                 statement.setInt(2, messageType.getCode());
                 numEscalationMsgs=statement.executeUpdate();               
@@ -154,14 +154,14 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                     statement = (PreparedStatement) conn.prepareStatement(
                             "UPDATE message "
                                 + " JOIN alert ON alert.alertID=message.alertID"
-                                + " JOIN alertEscalationPersons nextPerson ON message.alertID=nextPerson.alertID AND message.escalationOrdinal+1 = nextPerson.escalationOrder"
+                                + " LEFT JOIN alertEscalationPersons nextPerson ON message.alertID=nextPerson.alertID AND message.escalationOrdinal+1 = nextPerson.escalationOrder"
                                 + " JOIN alertEscalationPersons mailPerson ON message.alertID=mailPerson.alertID AND mailPerson.escalationOrder = -1"
-                                + " SET message.escalationStartTime=utc_timestamp(), message.escalationTryCount=1, message.modified=utc_timestamp()"
-                                + " , message.personID = IF(nextPerson.personID<>NULL, nextPerson.personID, mailPerson.personID)"
-                                + " , message.deliveryMethodID = IF(nextPerson.personID<>NULL, message.deliveryMethodID, 3)"
-                                + " WHERE message.status=3 AND message.owner = ? AND nextPerson.personID <> NULL"
-                                + " AND (DATE_ADD(message.escalationStartTime, INTERVAL alert.escalationTryTimeLimit SECOND) > utc_timestamp()"
-                                + "        OR message.escalationTryCount>alert.escalationTryLimit)");
+                                + " SET message.escalationStartTime=utc_timestamp(), message.escalationTryCount=1, message.modified=utc_timestamp(), message.escalationOrdinal=message.escalationOrdinal+1"
+                                + " , message.personID = IF(ISNULL(nextPerson.personID), mailPerson.personID, nextPerson.personID)"
+                                + " , message.deliveryMethodID = IF(ISNULL(nextPerson.personID), 3, message.deliveryMethodID)"
+                                + " WHERE message.status=3 AND message.owner = ? "
+                                + " AND (((alert.escalationTryTimeLimit IS NOT NULL) AND DATE_ADD(message.escalationStartTime, INTERVAL alert.escalationTryTimeLimit SECOND) < utc_timestamp())"
+                                + "        OR ((alert.escalationTryLimit IS NOT NULL) AND message.escalationTryCount > alert.escalationTryLimit))");
                     statement.setLong(1, uid);
                     statement.executeUpdate(); 
                 }
