@@ -284,6 +284,19 @@ public class Core extends DefaultSelenium{
 		}
 	}
 	
+	public void select(String locator, String label, String error_name){
+		try{
+			label = "label" + label;
+			select(locator, label);
+			Pause(5);
+		}catch(SeleniumException e){
+			errors.Error(error_name, e);
+		}catch(Exception e){
+			errors.Error(error_name, e);
+		}
+	}
+	
+		
 	public void selectGroup(String group_name, String error_name){
 		group_name = "//div[text()=\""+group_name+"\"]";
 		click(group_name, error_name);
