@@ -74,6 +74,7 @@ public class DaoUtilBeanTest {
         new Param("mailID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),   
         new Param("billID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),   
         new Param("hos", com.inthinc.pro.model.AccountHOSType.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(0)),   
+        new Param("zonePublishDate", Date.class, 1, com.inthinc.pro.model.Account.class, new Date()),   
 	};
 	
 	List<String>modelClassExcludeList = Arrays.asList(
