@@ -71,6 +71,7 @@
 		<jsf.version>1.2_14</jsf.version>
 		<facelets.version>1.1.15</facelets.version>
 		<joda.version>1.6</joda.version>
+		<geotools.version>2.6.5</geotools.version>
 	</properties>
 	<build>
 		<finalName>pro</finalName>

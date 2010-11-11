@@ -53,4 +53,9 @@ public enum OffOn implements OptionValue {
     static public OptionValue valueOf(Integer value) {
         return lookup.get(value);
     }
+
+    @Override
+    public Boolean getBooleanValue() {
+        return this == ON;
+    }
 }

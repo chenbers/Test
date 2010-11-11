@@ -53,4 +53,12 @@ public enum OffOnDevice implements OptionValue {
     static public OptionValue valueOf(Integer value) {
         return lookup.get(value);
     }
+    
+    @Override
+    public Boolean getBooleanValue() {
+        if (this == DEVICE)
+            return null;
+        return this == ON;
+    }
+
 }

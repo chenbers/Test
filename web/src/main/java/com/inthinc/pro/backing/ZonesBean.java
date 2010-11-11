@@ -1,5 +1,8 @@
 package com.inthinc.pro.backing;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,9 +15,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIForm;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.model.KeepAlive;
 
+import com.inthinc.pro.backing.zone.ZonePublish;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.model.Zone;
@@ -419,6 +424,41 @@ public class ZonesBean extends BaseBean
         
         // reload the zones for the account that are carried by proUser
         getProUser().setZones(zones);
+        
+    }
+    
+    public void download() throws IOException {
+        // temporary
+        
+        ZonePublish zonePublish = new ZonePublish();
+        
+        byte[] published = zonePublish.publish(this.getZones(),  ZoneVehicleType.ALL);
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        
+        HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
+        
+        response.setContentType("application/octet-stream");
+        response.addHeader("Content-Disposition", "attachment; filename=\"Zones.md5_download.bin\"");
+
+        OutputStream out = null;
+        DataOutputStream dataOut = null;
+
+        try
+        {
+            out = response.getOutputStream();
+            dataOut = new DataOutputStream(out);
+            dataOut.write(published);
+            dataOut.flush();
+            out.flush();
+            facesContext.responseComplete();
+        }
+        finally
+        {
+            out.close();
+        }
+        
+
         
     }
 }

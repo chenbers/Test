@@ -32,5 +32,9 @@ public class SpeedValue implements OptionValue {
     static public OptionValue valueOf(Integer value) {
         return new SpeedValue(value);
     }
+    @Override
+    public Boolean getBooleanValue() {
+        return null;
+    }
 
 }
