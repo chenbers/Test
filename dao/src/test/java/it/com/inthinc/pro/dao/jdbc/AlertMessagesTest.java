@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.hessian.AlertMessageHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
@@ -41,29 +40,26 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO;
 import com.inthinc.pro.map.GeonamesAddressLookup;
-import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
-import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.model.ZoneAlert;
+import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.FullEvent;
 import com.inthinc.pro.model.event.LowBatteryEvent;
 import com.inthinc.pro.model.event.NoDriverEvent;
 import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.model.RedFlagAlert;
-import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.event.TamperingEvent;
-import com.inthinc.pro.model.VehicleType;
-import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
 import com.inthinc.pro.model.event.ZoneDepartureEvent;
-import com.inthinc.pro.model.app.DeviceSensitivityMapping;
-import com.inthinc.pro.model.app.States;
 
+@Ignore
 public class AlertMessagesTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
     private static SiloService siloService;
