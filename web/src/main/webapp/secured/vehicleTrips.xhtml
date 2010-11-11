@@ -562,9 +562,9 @@
 
 														<!-- Data -->
 														<rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">
-																<h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 208}" title="#{messages[item.eventType]}" />
-																<h:graphicImage value="/images/ico_tampering.png" rendered="#{item.type eq 202}" title="#{messages[item.eventType]}" />
-																<h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 208 and item.type ne 202}" title="#{messages[item.eventType]}" />
+								                                <h:graphicImage value="/images/ico_idle.png" rendered="#{item.type eq 'IDLE'}" title="#{messages[item.eventType]}" />
+								                                <h:graphicImage value="/images/ico_tampering.png" rendered="#{item.type eq 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
+								                                <h:graphicImage value="/images/ico_violation.png" rendered="#{item.type ne 'IDLE' and item.type ne 'UNPLUGGED'}" title="#{messages[item.eventType]}" />
 														</rich:column>
 
 														<rich:column id="address_column" sortBy="#{item.addressStr}" style="cursor: pointer;">
