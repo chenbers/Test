@@ -16,8 +16,10 @@
     <bean id="genericDAO" class="com.inthinc.pro.dao.hessian.GenericHessianDAO" abstract="true">
         <property name="siloService" ref="siloServiceBean" />
     </bean>
-    <bean id="alertMessageDAO" class="com.inthinc.pro.dao.hessian.AlertMessageHessianDAO" parent="genericDAO">
-    	<property name="groupDAO"      ref="groupDAO"></property>
+    <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
+    <bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO">
     	<property name="personDAO"     ref="personDAO"></property>
     	<property name="driverDAO"     ref="driverDAO"></property>
     	<property name="vehicleDAO"    ref="vehicleDAO"></property>
