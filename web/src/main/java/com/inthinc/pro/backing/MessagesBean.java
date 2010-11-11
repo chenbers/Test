@@ -165,20 +165,20 @@ public class MessagesBean extends BaseBean {
     }
 
     public List<SelectItem> getDriverSelectFromList() {
-
-        // Do filter here to check for associated device to be waysmart?
-        // TODO: jwimmer: question: do we want to filter the list so that non-textMsg drivers and vehicles don't even appear?
         if (this.driverSelectFromList.size() == 0) {
             List<Driver> drivers = driverDAO.getAllDrivers(this.getProUser().getGroupHierarchy().getTopGroup().getGroupID());
 
             for (Driver d : drivers) {
                 if (d != null) {
                     Vehicle v = vehicleDAO.findByDriverID(d.getDriverID());
-                    if (v != null && deviceDAO.findByID(v.getDeviceID()).isTextMsgReceiveCapable()) {
-                        SelectItem si = new SelectItem();
-                        si.setLabel(d.getPerson().getFullName() != null ? d.getPerson().getFullName() : resourceMessages.getString("unknown_driver"));
-                        si.setValue(d.getDriverID());
-                        driverSelectFromList.add(si);
+                    if (v != null) {
+                        Device device = deviceDAO.findByID(v.getDeviceID());
+                        if(device != null && device.isTextMsgReceiveCapable()) {
+                            SelectItem si = new SelectItem();
+                            si.setLabel(d.getPerson().getFullName() != null ? d.getPerson().getFullName() : resourceMessages.getString("unknown_driver"));
+                            si.setValue(d.getDriverID());
+                            driverSelectFromList.add(si);
+                        }
                     }
                 }
             }
@@ -191,9 +191,6 @@ public class MessagesBean extends BaseBean {
     }
 
     public List<SelectItem> getVehicleSelectFromList() {
-
-        // Do filter here to check for associated device to be waysmart?
-        // TODO: jwimmer: question: do we want to filter the list so that non-textMsg drivers and vehicles don't even appear?
         if (this.vehicleSelectFromList.size() == 0) {
             List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(this.getProUser().getGroupHierarchy().getTopGroup().getGroupID());
 
@@ -337,12 +334,12 @@ public class MessagesBean extends BaseBean {
         this.selectAll=Boolean.FALSE;
     }
        
-    private Set<Integer> getDevicesForDrivers() {
-        Set<Integer> results = new HashSet<Integer>();
+    private Set<SendListItem> getDevicesForDrivers() {
+        Set<SendListItem> results = new HashSet<SendListItem>();
         for (Integer d : this.driverSelectedList) {
             Vehicle v = vehicleDAO.findByDriverID(d);
             if (v != null && v.getDeviceID() != null) {
-                results.add(v.getDeviceID());
+                results.add(new SendListItem(v.getDeviceID(), v.getDriverID(), v.getVehicleID(), v.getFullName()));
             }
             else
             {   
@@ -352,12 +349,12 @@ public class MessagesBean extends BaseBean {
         return results;
     }
 
-    private Set<Integer> getDevicesForVehicles() {
-        Set<Integer> results = new HashSet<Integer>();
+    private Set<SendListItem> getDevicesForVehicles() {
+        Set<SendListItem> results = new HashSet<SendListItem>();
         for (Integer vID : this.vehicleSelectedList) {
             Vehicle v = vehicleDAO.findByID(vID);
             if (v != null && v.getDeviceID() != null) {
-                results.add(v.getDeviceID());
+                results.add(new SendListItem(v.getDeviceID(), v.getDriverID(), v.getVehicleID(), v.getFullName()));
             }
             else
             {
@@ -367,8 +364,8 @@ public class MessagesBean extends BaseBean {
         return results;
     }
 
-    private Set<Integer> getDevicesForGroups() {
-        Set<Integer> results = new HashSet<Integer>();
+    private Set<SendListItem> getDevicesForGroups() {
+        Set<SendListItem> results = new HashSet<SendListItem>();
         for (Integer grp : this.groupSelectedList) {
             List<Group> sub = groupDAO.getGroupHierarchy(this.getProUser().getUser().getPerson().getAcctID(), grp);
             for (Group subGrp : sub) {
@@ -378,43 +375,84 @@ public class MessagesBean extends BaseBean {
                 for (Driver d : grpDrv) {
                     Vehicle v = vehicleDAO.findByDriverID(d.getDriverID());
                     if (v != null && v.getDeviceID() != null) {
-                        results.add(v.getDeviceID());
+                        results.add(new SendListItem(v.getDeviceID(), v.getDriverID(), v.getVehicleID(), v.getFullName()));
                     }
                 }
                 // Vehicles
                 List<Vehicle> grpVeh = vehicleDAO.getVehiclesInGroup(subGrp.getGroupID());
                 for (Vehicle v : grpVeh) {
                     if (v != null && v.getDeviceID() != null) {
-                        results.add(v.getDeviceID());
+                        results.add(new SendListItem(v.getDeviceID(), v.getDriverID(), v.getVehicleID(), v.getFullName()));
                     }
                 }
             }
         }
         return results;
     }
-
+    private class SendListItem {
+        private Integer deviceID;
+        private Integer driverID;
+        private Integer vehicleID;
+        private String  vehicleName;
+        public SendListItem(Integer deviceID, Integer driverID, Integer vehicleID, String vehicleName) {
+            super();
+            
+            this.deviceID = deviceID;
+            this.driverID = driverID;
+            this.vehicleID = vehicleID;
+            this.vehicleName = vehicleName;
+        }
+        public Integer getDeviceID() {
+            return deviceID;
+        }
+        public void setDeviceID(Integer deviceID) {
+            this.deviceID = deviceID;
+        }
+        public Integer getDriverID() {
+            return driverID;
+        }
+        public void setDriverID(Integer driverID) {
+            this.driverID = driverID;
+        }
+        public Integer getVehicleID() {
+            return vehicleID;
+        }
+        public void setVehicleID(Integer vehicleID) {
+            this.vehicleID = vehicleID;
+        }
+        public String getVehicleName() {
+            return vehicleName;
+        }
+        public void setVehicleName(String vehicleName) {
+            this.vehicleName = vehicleName;
+        }
+    }
     /**
      * Sends <code>this.messageToSend</code> once to each device for all selected drivers/vehicles/groups.
      */
     public void sendMessage() {
         Set<Integer> deviceSendList = new HashSet<Integer>();
+        Set<SendListItem> sendList = new HashSet<SendListItem>();
 
         // Send the message by way of forward command to the device
         this.sendMessageList.clear();
 
         // Drivers
-        deviceSendList.addAll(getDevicesForDrivers());
+        sendList.addAll(getDevicesForDrivers());
 
         // Vehicles
-        deviceSendList.addAll(getDevicesForVehicles());
+        sendList.addAll(getDevicesForVehicles());
 
         // Groups, careful here, need to recurse the group hierarchy
-        deviceSendList.addAll(getDevicesForGroups());
+        sendList.addAll(getDevicesForGroups());
+        
         // send to each device
-        for (Integer devID : deviceSendList) {
-            sendDevice(devID);
+        for (SendListItem item : sendList) {
+            sendDevice(item.getDeviceID());
         }
-
+        if(this.sendMessageList.size()<1){
+            this.sendMessageList.add(resourceMessages.getString("txtMsg_sendMsgSuccess"));
+        }
         // Prep for next interaction
         this.messageToSend = "";
         this.driverSelectedList = new ArrayList<Integer>();
@@ -422,6 +460,27 @@ public class MessagesBean extends BaseBean {
         this.groupSelectedList = new ArrayList<Integer>();
     }
      
+    /**
+     * Sends <code>this.messageToSend</code> to the device with <code>sendTo.getDeviceIDdev</code>. Adds <code>this.sendMessageList</code> notifications for each device.
+     * NOTE: this method was created in an attempt to cut down on Hessian calls, but potentially sending textMsgs to non-capable devices is currently(20101111) a bigger concern.
+     * 
+     * @param sendTo.getDeviceID() MUST be capable of receiving txt msgs
+     */
+    private void sendDevice(SendListItem sendTo) {
+        boolean success = false;
+        if (sendTo.getDeviceID() != null) {
+                ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED, getUser().getPersonID(), sendTo.getDriverID(), sendTo.getVehicleID());
+                deviceDAO.queueForwardCommand(sendTo.getDeviceID(), fwdCmd);
+                
+                this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgSuccess"), (sendTo.getVehicleName()!=null)?sendTo.getVehicleName():resourceMessages.getString("unknown_vehicle") ));
+                success = true;
+        }
+
+        if (!success) {
+            this.sendMessageList.add(resourceMessages.getString("txtMsg_noDevice")); 
+        }
+    }
+    
     /**
      * Sends <code>this.messageToSend</code> to the device with <code>devID</code>. Adds <code>this.sendMessageList</code> notifications for each device.
      * 
@@ -448,7 +507,6 @@ public class MessagesBean extends BaseBean {
                 success = true;
             }
         }
-
         if (!success) {
             this.sendMessageList.add(resourceMessages.getString("txtMsg_noDevice")); 
         }
