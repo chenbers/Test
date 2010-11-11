@@ -23,7 +23,7 @@ public class UserLogUtil {
         log = LogFactory.getLog(target.getClass());
 
         // log to file
-        String message = method.toGenericString() + " with param values (" + argsToString(args) + ") called by " + findUserName();
+        String message = method.getName()+"("+argsToString(args)+") [" + findUserName()+"] ; ";
         log.info(message);// log using the class to which the method belongs
         logger.info(message);// specific to user.log
 
