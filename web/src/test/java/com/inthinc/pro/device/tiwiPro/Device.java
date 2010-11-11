@@ -45,24 +45,20 @@ public class Device {
     private ArrayList<byte[]> note_queue = new ArrayList<byte[]>();
     private ArrayList<Double[][]> speed_points = new ArrayList<Double[][]>();
         
-    private String IMEI;
+    private String imei;
     
     
-    public Device( String imei, String server, HashMap<Integer, String> settings ){
-        IMEI = imei;
+    public Device( String IMEI, String server, HashMap<Integer, String> settings ){
+        this.imei = IMEI;
         Settings = settings;
     }
     
-    public Device( String imei, String server ){
-        Settings = Defaults.get_defaults();
-        IMEI = imei;
-        
-        
+    public Device( String IMEI, String server ){
+    	this(IMEI, server, Defaults.get_defaults());
     }
 
     public Device( String IMEI ){
-        Settings = Defaults.get_defaults();
-        String Server = "QA";
+    	this(IMEI, "QA", Defaults.get_defaults());
     }
     
     public void add_location(){
@@ -79,7 +75,7 @@ public class Device {
             attrs.put( Constants.ATTR_TYPE_VIOLATION_FLAGS.getCode(), Constants.VIOLATION_MASK_SEATBELT.getCode() );
         }
         
-        //TODO construct_note( Constants.NOTE_TYPE_LOCATION, attrs );
+        construct_note( Constants.NOTE_TYPE_LOCATION.getCode(), attrs );
     
     }
     
@@ -92,12 +88,12 @@ public class Device {
         speed_points = new ArrayList<Double[][]>();
         clear_internal_settings();
         
-//        TODO get_time();
-//        TODO set_server();
+        get_time();
+        set_server();
 //        TODO get_server();
 
 
-//        TODO set_satelites( 8 );
+        set_satelites( 8 );
 //        TODO set_location( 0.0, 0.0 );
         set_WMP( 17014 );
         set_MSP( 50 );
@@ -120,6 +116,10 @@ public class Device {
         note_queue.add(packaged);
         check_queue();
         
+    }
+    
+    public void construct_note(Integer type, HashMap<Integer, Integer> attrs){
+    	
     }
     
     public void change_IMEI( String imei, String server, HashMap<Integer, String> settings){
@@ -181,7 +181,7 @@ public class Device {
     
     private void set_IMEI( String imei ){
         
-        IMEI = imei;
+        this.imei = imei;
     }
 
     
