@@ -252,6 +252,14 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                 valid = false;
         	}
         }
+        else if (AlertMessageType.ALERT_TYPE_OFFHOUR.equals(saveItem.getType())){
+            if (saveItem.isAnytime()) {
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeOffHourMessage"), null);
+                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+                
+                valid = false;
+            }
+        }
          
         return valid;
     }
