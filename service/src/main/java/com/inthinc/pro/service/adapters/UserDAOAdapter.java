@@ -5,6 +5,8 @@ package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.User;
@@ -21,8 +23,7 @@ public class UserDAOAdapter extends BaseDAOAdapter<User> {
 	
 	@Override
 	public List<User> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+        return userDAO.getUsersInGroupHierarchy(getGroupID());
 	}
 
 	@Override
@@ -46,5 +47,16 @@ public class UserDAOAdapter extends BaseDAOAdapter<User> {
 	protected Integer getResourceID(User user) {
 		return user.getUserID();
 	}
-	
+
+	// Specialized methods ----------------------------------------------------
+
+    public User findByUserName(String userName) {
+    	return userDAO.findByUserName(userName);
+    }	
+
+    public User login(String userName, String password) {
+    	// Advice will take care of verifying user credentials
+    	return userDAO.findByUserName(userName);
+    }    
+    
 }

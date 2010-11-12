@@ -3,11 +3,22 @@
  */
 package com.inthinc.pro.service.adapters;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GenericDAO;
+import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.aggregation.Score;
+import com.inthinc.pro.model.aggregation.Trend;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.util.SecureGroupDAO;
+import com.inthinc.pro.util.SecurePersonDAO;
 
 /**
  * Adapter for the Driver resources.
@@ -17,11 +28,14 @@ import com.inthinc.pro.model.Driver;
 public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
  
 	private DriverDAO driverDAO;
+    private DriverReportDAO driverReportDAO;
+    private EventDAO eventDAO;
+    private SecureGroupDAO groupDAO;
+    private SecurePersonDAO personDAO;
 	
 	@Override
 	public List<Driver> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return driverDAO.getAllDrivers(getGroupID());
 	}
 
 	@Override
@@ -45,4 +59,23 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 	protected Integer getResourceID(Driver driver) {
 		return driver.getDriverID();
 	}
+
+	// Specialized methods ----------------------------------------------------
+
+    public Score getScore(Integer driverID, Duration duration) {
+        return driverReportDAO.getScore(driverID, duration);
+    }
+
+    public List<Event> getSpeedingEvents(Integer driverID) {
+        DateTime dateTime = new DateTime();
+        return eventDAO.getViolationEventsForDriver(driverID, dateTime.minusMonths(1).toDate(), dateTime.toDate(), 1);
+    }    
+
+    public List<Trend> getTrend(Integer driverID, Duration duration) {
+        return driverReportDAO.getTrend(driverID, duration);
+    }    
+    
+	// Getters and setters -----------------------------------------------------
+    
+    
 }

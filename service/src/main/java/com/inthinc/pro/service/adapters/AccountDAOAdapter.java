@@ -28,8 +28,7 @@ public class AccountDAOAdapter extends BaseDAOAdapter<Account> {
 	
 	@Override
 	public List<Account> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return accountDAO.getAllAcctIDs();
 	}
 
 	@Override
@@ -37,6 +36,12 @@ public class AccountDAOAdapter extends BaseDAOAdapter<Account> {
 		return accountDAO;
 	}
 
+
+	@Override
+	protected Integer getResourceID(Account account) {
+		return account.getAcctID();
+	}
+	
 	/**
 	 * @param accountDAO the accountDAO to set
 	 */
@@ -51,9 +56,5 @@ public class AccountDAOAdapter extends BaseDAOAdapter<Account> {
 		return accountDAO;
 	}
 
-	@Override
-	protected Integer getResourceID(Account account) {
-		return account.getAcctID();
-	}
 
 }

@@ -27,9 +27,6 @@ public abstract class BaseDAOAdapter<R> {
 	 */
     public abstract List<R> getAll();
 
-
-    // Methods to be called back in the children
-    
     /**
      * Returns the DAO that will handle the actual back end calls
      */
@@ -38,7 +35,7 @@ public abstract class BaseDAOAdapter<R> {
     /**
      * Returns the resource ID.
      */
-    // We can get rid of this method if we make all entities implement a getID method
+    // We could get rid of this method if we make all entities implement a getID method
     protected abstract Integer getResourceID(R resource);
     
     
@@ -52,13 +49,27 @@ public abstract class BaseDAOAdapter<R> {
 	 * @return The ID to be used during creation of the resource
 	 */
     protected Integer getResourceCreationID(R resource){
-		// Will be replaced by TiwiProPrincipal
-		// getUser().getPerson().getAcctID();    	
-      return null;	
+      return getAccountID();	
     }
 
-	
-    /**
+	/**
+	 * Returns the account ID corresponding to this resource
+	 * 
+	 * @return account ID.
+	 */
+    protected Integer getAccountID() {
+		// Will be obtained from TiwiProPrincipal
+		// getUser().getPerson().getAcctID();    	
+		return null;
+	}
+
+    public Integer getGroupID() {
+		// Will be obtained from TiwiProPrincipal
+		// getUser().getGroupID();    	
+        return null;
+    }    
+
+	/**
      * Create a resource.
      * 
      * @param resource The resource to be created

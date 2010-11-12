@@ -20,8 +20,7 @@ public class PersonDAOAdapter extends BaseDAOAdapter<Person> {
     
 	@Override
 	public List<Person> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+        return personDAO.getPeopleInGroupHierarchy(getGroupID());
 	}
 
 	@Override
@@ -33,5 +32,11 @@ public class PersonDAOAdapter extends BaseDAOAdapter<Person> {
 	protected Integer getResourceID(Person person) {
 		return person.getPersonID();
 	}
+	
+	// Specialized methods ----------------------------------------------------
+	
+    public Integer create(Integer accountID, Person person) {
+        return personDAO.create(accountID, person);
+    }	
 
 }

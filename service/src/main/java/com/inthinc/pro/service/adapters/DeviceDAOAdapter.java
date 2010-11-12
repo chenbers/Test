@@ -23,8 +23,7 @@ public class DeviceDAOAdapter extends BaseDAOAdapter<Device> {
 	
 	@Override
 	public List<Device> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return deviceDAO.getDevicesByAcctID(getAccountID());
 	}
 
 	@Override
@@ -45,7 +44,7 @@ public class DeviceDAOAdapter extends BaseDAOAdapter<Device> {
         throw new NotImplementedException();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see com.inthinc.pro.service.adapters.BaseDAOAdapter#delete(java.lang.Integer)
 	 */
 	@Override
@@ -53,4 +52,14 @@ public class DeviceDAOAdapter extends BaseDAOAdapter<Device> {
         throw new NotImplementedException();
 	}
 
+	// Specialized methods ----------------------------------------------------
+	
+    public Device findByIMEI(String imei) {
+        return deviceDAO.findByIMEI(imei);
+    }	
+
+    public Device findBySerialNum(String serialNum) {
+        return deviceDAO.findBySerialNum(serialNum);
+    }    
+    
 }
