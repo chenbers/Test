@@ -1,4 +1,4 @@
-package com.inthinc.pro.adapters;
+package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class AccountDAOAdapter extends BaseDAOAdapter<Account> {
     /**
      * Creates an Account entity
      * 
-	 * @see com.inthinc.pro.adapters.BaseDAOAdapter#create(java.lang.Object)
+	 * @see com.inthinc.pro.service.adapters.BaseDAOAdapter#create(java.lang.Object)
 	 */
 	@Override
 	public Integer create(Account account) {

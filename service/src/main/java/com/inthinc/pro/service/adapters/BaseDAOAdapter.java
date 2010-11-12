@@ -1,4 +1,4 @@
-package com.inthinc.pro.adapters;
+package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
