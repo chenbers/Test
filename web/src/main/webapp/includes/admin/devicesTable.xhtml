@@ -27,6 +27,23 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
+    <rich:column id="productVersion" custFilterBy="#{item.productVer.name}" filterValue="#{devicesBean.batchProductChoice}">
+      <f:facet name="header">
+        <h:panelGroup>
+		<h:outputText value="#{messages.devicesHeader_productVer}" />
+       	<rich:spacer style="display:block" height="2"/>
+       	<h:selectOneMenu value="#{devicesBean.batchProductChoice}"  id="editDevice-productChoice" style="width:120px;size:auto;margin-top:3px;">
+           	<f:selectItems value="#{devicesBean.productTypesSelectItems}" />
+           	<a4j:support event="onchange" 
+           		reRender="devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable_dataTableScroller" />
+       	</h:selectOneMenu>
+		<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+		 	<ui:param name="selectBoxID" value="admin-table-form:devicesTable:editDevice-productChoice" />
+		</ui:include>
+                </h:panelGroup>
+      </f:facet>
+      <h:outputText value="#{item.productVer.name}" />
+    </rich:column>
     <rich:column id="imei" rendered="#{devicesBean.tableColumns['imei'].visible}" sortBy="#{item.imei}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_imei}" /></f:facet>
       <h:outputText value="#{item.imei}" />
@@ -43,10 +60,6 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_phone}" /></f:facet>
       <h:outputText value="#{item.phone}" />
     </rich:column>
-    <rich:column id="ephone" rendered="#{devicesBean.tableColumns['ephone'].visible}" sortBy="#{item.ephone}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_ephone}" /></f:facet>
-      <h:outputText value="#{item.ephone}" />
-    </rich:column>
     <rich:column id="activated" rendered="#{devicesBean.tableColumns['activated'].visible}" sortBy="#{item.activated}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_activated}" /></f:facet>
       <h:outputText value="#{item.activated}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText>
@@ -54,6 +67,14 @@
     <rich:column id="status" rendered="#{devicesBean.tableColumns['status'].visible}" sortBy="#{item.status.description}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_status}" /></f:facet>
       <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
+    </rich:column>
+    <rich:column id="waySmartSerialNumber" rendered="#{devicesBean.tableColumns['waySmartSerialNumber'].visible}" sortBy="#{item.waySmartSerialNumber}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_waySmartSerialNumber}" /></f:facet>
+      <h:outputText value="#{item.waySmartSerialNumber}" />
+    </rich:column>
+    <rich:column id="iridiumImei" rendered="#{devicesBean.tableColumns['iridiumImei'].visible}" sortBy="#{item.iridiumImei}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_iridiumImei}" /></f:facet>
+      <h:outputText value="#{item.iridiumImei}" />
     </rich:column>
   </ui:define>
 

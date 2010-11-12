@@ -15,6 +15,7 @@ import javax.faces.validator.ValidatorException;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
+import com.inthinc.pro.backing.ui.ProductTypeSelectItems;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
@@ -22,6 +23,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -32,7 +34,7 @@ import com.inthinc.pro.util.SelectItemUtil;
 public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
     private static final List<String> AVAILABLE_COLUMNS;
-    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 5, 6 };
+    private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 5, 6};
     static
     {
         // available columns
@@ -43,13 +45,16 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("sim");
         AVAILABLE_COLUMNS.add("serialNum");
         AVAILABLE_COLUMNS.add("phone");
-//        AVAILABLE_COLUMNS.add("ephone");
         AVAILABLE_COLUMNS.add("status");
+        AVAILABLE_COLUMNS.add("waysmartSerialNumber");
+        AVAILABLE_COLUMNS.add("iridiumIMEI");
         
     }
     private DeviceDAO deviceDAO;
     private VehicleDAO vehicleDAO;
     private VehiclesBean vehiclesBean;
+
+    private String batchProductChoice;
 
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
@@ -66,14 +71,16 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         this.vehiclesBean = vehiclesBean;
     }
     
-//    public List<SensitivityType> getSensitivityTypes(){
-//        List<SensitivityType> sensitivityTypeList = new ArrayList<SensitivityType>();
-//        sensitivityTypeList.add(SensitivityType.HARD_VERT_SETTING);
-//        sensitivityTypeList.add(SensitivityType.HARD_ACCEL_SETTING);
-//        sensitivityTypeList.add(SensitivityType.HARD_BRAKE_SETTING);
-//        sensitivityTypeList.add(SensitivityType.HARD_TURN_SETTING);
-//        return sensitivityTypeList;
-//    }
+    public List<SelectItem> getProductTypesSelectItems(){
+        
+        return ProductTypeSelectItems.INSTANCE.getSelectItems();
+    }
+    public String getBatchProductChoice() {
+        return batchProductChoice;
+    }
+    public void setBatchProductChoice(String batchProductChoice) {
+        this.batchProductChoice = batchProductChoice;
+    }
 
     @Override
     protected List<DeviceView> loadItems()
@@ -103,8 +110,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setSelected(false);
         if (device.getPhone() != null)
             deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
-//        if (device.getEphone() != null)
-//            deviceView.setEphone(MiscUtil.formatPhone(device.getEphone()));
         return deviceView;
     }
 
@@ -155,12 +160,15 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
 
     @Override
+    public String add() {
+         return getFinishedRedirect();
+    }
+    @Override
     protected DeviceView createAddItem()
     {
         final Device device = new Device();
-        device.setStatus(DeviceStatus.NEW);
+        device.setStatus(DeviceStatus.ACTIVE);
         device.setAccountID(getAccountID());
-        // device.setSpeedSettings(new Integer[Device.NUM_SPEEDS]);
         return createDeviceView(device);
     }
 
@@ -227,25 +235,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         boolean valid = true;
         final String required = "required";
-//        // Ephone
-//        if (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("ephone")))
-//        {
-//            if (deviceView.getEphone() == null || deviceView.getEphone().equals(""))
-//            {
-//                valid = false;
-//                final String summary = MessageUtil.getMessageString(required);
-//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-//                getFacesContext().addMessage("edit-form:editDevice-ephone", message);
-//            }
-//            else if(deviceView.getEphone() != null && 
-//            		((deviceView.getEphone().length() >22) || (MiscUtil.unformatPhone(deviceView.getEphone()).length() > 15)) )
-//            {
-//                valid = false;
-//                final String summary = MessageUtil.getMessageString("editDevice_phoneFormat");
-//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-//                getFacesContext().addMessage("edit-form:editDevice-ephone", message);
-//            }
-//        }
         // Name
         if ((deviceView.getName() == null || deviceView.getName().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))
         {
@@ -300,8 +289,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 getFacesContext().addMessage("edit-form:editDevice-phone", message);
             }
-//            else if (deviceView.getPhone() != null && !deviceView.getPhone().matches("\\D?\\d{3}\\D*\\d{3}\\D?\\d{4}")
-//            		&& !deviceView.getPhone().matches("\\+\\d*"))
             else if(deviceView.getPhone() != null &&             		
                     ((deviceView.getPhone().length() > 22) || (MiscUtil.unformatPhone(deviceView.getPhone()).length() > 15)) )                
             {
@@ -409,18 +396,12 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         return SelectItemUtil.toList(DeviceStatus.class, false, DeviceStatus.DELETED);
     }
 
-//    public List<SelectItem> getAutoLogoffs()
-//    {
-//        return SelectItemUtil.toList(AutoLogoff.class, false);
-//    }
-    
     @Override
     public void resetList()
     {
         super.resetList();
         vehiclesBean.resetList();
     }
-
     public static class DeviceView extends Device implements EditItem
     {
         @Column(updateable = false)
@@ -489,4 +470,42 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             this.selected = selected;
         }
     }
+    @Override
+    public void doSelectAll() {
+
+        if (batchProductChoice == null){
+            
+             super.doSelectAll();
+        }
+        else{
+            
+            for(DeviceView deviceView : filteredItems){
+                                   
+                deviceView.setSelected(selectAll && deviceView.getProductVer().getName().equals(batchProductChoice));
+            }
+        }
+    }
+
+    @Override
+    public boolean isSelectAll() {
+        
+         if (batchProductChoice == null || getFilteredItems().size() == 0){
+        
+            return super.isSelectAll();
+        }
+        else{
+                
+            for(DeviceView deviceView : filteredItems){
+                
+                if (!deviceView.isSelected() && deviceView.getProductVer().getName().equals(batchProductChoice))
+                    return false;
+            }
+            return true;
+        }
+    }
+    public boolean isBatchProductChoice(ProductType productType){
+        
+        return batchProductChoice == null || batchProductChoice.equals(productType.getName());
+    }
+
 }

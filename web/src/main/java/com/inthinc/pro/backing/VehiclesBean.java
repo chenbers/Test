@@ -21,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.backing.model.VehicleSettingsFactory;
+import com.inthinc.pro.backing.ui.ProductTypeSelectItems;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
@@ -47,7 +48,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private static final long                     serialVersionUID       = 1L;
 
     private static final List<String>             AVAILABLE_COLUMNS;
-    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12, 13 };
+    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12, 13};
 
     private static final Map<String, String>      YEARS;
     private static final Map<String, State>       STATES;
@@ -72,7 +73,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("deviceID");
         AVAILABLE_COLUMNS.add("odometer");
         AVAILABLE_COLUMNS.add("ephone");
-        AVAILABLE_COLUMNS.add("productVersion");
         AVAILABLE_COLUMNS.add("DOT");
         AVAILABLE_COLUMNS.add("IFTA");
         AVAILABLE_COLUMNS.add("zoneType");
@@ -635,21 +635,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return SelectItemUtil.toList(VehicleType.class, false);
     }
 
-    protected final static String BLANK_SELECTION = "&#160;";
     public List<SelectItem> getProductTypesSelectItems(){
         
-        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-
-        SelectItem blankItem = new SelectItem("", BLANK_SELECTION);
-        blankItem.setEscape(false);
-        selectItemList.add(blankItem);
-
-        for (ProductType e : EnumSet.allOf(ProductType.class))
-        {
-             selectItemList.add(new SelectItem(e.getName(),e.getName()));
-        }
-        
-        return selectItemList;
+        return ProductTypeSelectItems.INSTANCE.getSelectItems();
     }
     public String getBatchProductChoice() {
         return batchProductChoice;

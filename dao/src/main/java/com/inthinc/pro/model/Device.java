@@ -14,22 +14,6 @@ public class Device extends BaseEntity
     @Column(updateable = false)
     private static final long serialVersionUID = 2865030663439253720L;
 
-//    @Column(updateable = false)
-//    public static final int NUM_SPEEDS = 15;
-//
-//    @Column(updateable = false)
-//    public static final Integer DEFAULT_SPEED_SETTING = 0;
-//    
-//    @Column(updateable = false)
-//    public static final String DEFAULT_SPEED_SET = "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0";
-
-
-    // yep, a high number means a low sensitivity; a low number means a high sensitivity
-//    @Column(updateable = false)
-//    public static final int   MIN_SENSITIVITY  = 90;
-//    @Column(updateable = false)
-//    public static final int   MAX_SENSITIVITY  = 20;
-
     @ID
     private Integer           deviceID;
     @Column(name = "acctID")
@@ -43,38 +27,36 @@ public class Device extends BaseEntity
     private String            sim;
     private String			  serialNum;
     private String            phone;
-//    private String            ephone;
     private Date              activated;
-//    private String            speedSet;
-//    @Column(updateable = false)
-//    private Integer[]         speedSettings;
-//    @Column(updateable = false)
-//    private boolean           sensitivitiesInverted;
-    
-//    private String  accel;
-//    private String  brake;
-//    private String  turn;
-//    private String  vert;
-    
-//    @Column(updateable = false)
-//    private Integer           hardAcceleration;
-//    @Column(updateable = false)
-//    private Integer           hardBrake;
-//    @Column(updateable = false)
-//    private Integer           hardTurn;
-//    @Column(updateable = false)
-//    private Integer           hardVertical;
     private Integer           baseID;
-//    private AutoLogoff		  autoLogoff;
     
     @Column(name="firmVer", updateable = false)
     private Integer	firmwareVersion;
     @Column(name="witnessVer", updateable = false)
     private Integer	witnessVersion;
     private String emuMd5;
-    private Integer productVer;
+    private ProductType productVer;
     
+    //Waysmart data
+    private String waySmartSerialNumber;
+    private String iridiumImei;
+    
+/* 
+ * waySmartSerialNumber
+ * 
+ * MCM[0-9][0-9][0-9][0-9][0-9][0-9]
 
+ * The Iridium IMEI will match this rule:
+
+ * List of valid prefixes:
+ * 30000300
+ * 30003401
+ * 30012400
+ * 30012401
+ * 30023401
+
+ * followed by 7 digits 
+ */
 	public Device()
     {
         super();
@@ -163,16 +145,6 @@ public class Device extends BaseEntity
         this.phone = phone;
     }
 
-//    public String getEphone()
-//    {
-//        return ephone;
-//    }
-//
-//    public void setEphone(String ephone)
-//    {
-//        this.ephone = ephone;
-//    }
-
     public Date getActivated()
     {
         return activated;
@@ -183,89 +155,6 @@ public class Device extends BaseEntity
         this.activated = activated;
     }
 
-//    public String getSpeedSet()
-//    {
-//        if (speedSet == null)
-//        {
-//            speedSet = new String(DEFAULT_SPEED_SET);
-//        }
-//        return speedSet;
-//    }
-/*
-    public boolean isSensitivitiesInverted()
-    {
-        return sensitivitiesInverted;
-    }
-*/
-//    public Integer getHardAcceleration()
-//    {
-//        if (hardAcceleration == null)
-//            return SensitivityType.HARD_ACCEL_SETTING.getDefaultSetting();
-//        return hardAcceleration;
-//    }
-//
-//    public void setHardAcceleration(Integer hardAcceleration)
-//    {
-//        this.hardAcceleration = hardAcceleration;
-//    }
-//
-//    public Integer getHardBrake()
-//    {
-//        if (hardBrake == null)
-//            return SensitivityType.HARD_BRAKE_SETTING.getDefaultSetting();
-//        return hardBrake;
-//    }
-//
-//    public void setHardBrake(Integer hardBrake)
-//    {
-//        this.hardBrake = hardBrake;
-//    }
-//
-//    public Integer getHardTurn()
-//    {
-//        if (hardTurn == null)
-//            return SensitivityType.HARD_TURN_SETTING.getDefaultSetting();
-//        return hardTurn;
-//    }
-//
-//    public void setHardTurn(Integer hardTurn)
-//    {
-//        this.hardTurn = hardTurn;
-//    }
-//
-//    public Integer getHardVertical()
-//    {
-//        if (hardVertical == null)
-//            return SensitivityType.HARD_VERT_SETTING.getDefaultSetting();
-//        return hardVertical;
-//    }
-//
-//    public void setHardVertical(Integer hardVertical)
-//    {
-//        this.hardVertical = hardVertical;
-//    }
-//
-//    public void setSpeedSet(String speedSet)
-//    {
-//        this.speedSet = speedSet;
-//    }
-//
-//    public Integer[] getSpeedSettings()
-//    {
-//        if (speedSettings == null)
-//        {
-//            speedSettings = new Integer[NUM_SPEEDS];
-//            for (int i = 0; i < NUM_SPEEDS; i++)
-//                speedSettings[i] = DEFAULT_SPEED_SETTING; 
-//                
-//        }
-//        return speedSettings;
-//    }
-//
-//    public void setSpeedSettings(Integer[] speedSettings)
-//    {
-//        this.speedSettings = speedSettings;
-//    }
     public String getImei()
     {
         return imei;
@@ -290,49 +179,6 @@ public class Device extends BaseEntity
     {
         this.baseID = baseID;
     }
-//    public String getAccel()
-//    {
-//        return accel;
-//    }
-//    public void setAccel(String accel)
-//    {
-//        this.accel = accel;
-//    }
-//    public String getBrake()
-//    {
-//        return brake;
-//    }
-//    public void setBrake(String brake)
-//    {
-//        this.brake = brake;
-//    }
-//    public String getTurn()
-//    {
-//        return turn;
-//    }
-//    public void setTurn(String turn)
-//    {
-//        this.turn = turn;
-//    }
-//    public String getVert()
-//    {
-//        return vert;
-//    }
-//    public void setVert(String vert)
-//    {
-//        this.vert = vert;
-//    }
-//	public AutoLogoff getAutoLogoff() {
-//		if (autoLogoff == null)
-//		{
-//			autoLogoff = AutoLogoff.OFF;
-//		}
-//		return autoLogoff;
-//	}
-//	public void setAutoLogoff(AutoLogoff autoLogoff) {
-//		this.autoLogoff = autoLogoff;
-//	}
-
 	public Integer getFirmwareVersion() {
 		return firmwareVersion;
 	}
@@ -361,25 +207,36 @@ public class Device extends BaseEntity
         // TODO: jwimmer: this is a stopgap until a better way to determine device capabilities is implemented
 
         //TODO: Jacquie added this to temporarily get the tests to pass - will make this always retrn false
-        this.productVer = ProductType.TIWIPRO_R74.getCode();
+        this.productVer = ProductType.TIWIPRO_R74;
         
-        return (this.productVer != null && this.productVer.equals(ProductType.WS820.getCode()));
+        return (this.productVer != null && this.productVer.equals(ProductType.WS820));
     }
     
     public boolean isCrashTraceAppletCapable(){
         //TODO: jwimmer: another stopgap until a better way to determine device capabilities is implemented
-        return (this.productVer != null && this.productVer.equals(ProductType.WS820.getCode()));
+        return (this.productVer != null && this.productVer.equals(ProductType.WS820));
     }
 
-    public void setProductVer(Integer productVer) {
-        this.productVer = productVer;
-    }
-
-    public Integer getProductVer() {
-        return productVer;
-    }
     
     public boolean isWaySmart() {
         return true;// ProductType.WS820.getCode().equals(this.productVer);
+    }
+    public String getWaySmartSerialNumber() {
+        return waySmartSerialNumber;
+    }
+    public void setWaySmartSerialNumber(String waySmartSerialNumber) {
+        this.waySmartSerialNumber = waySmartSerialNumber;
+    }
+    public String getIridiumImei() {
+        return iridiumImei;
+    }
+    public void setIridiumImei(String iridiumImei) {
+        this.iridiumImei = iridiumImei;
+    }
+    public ProductType getProductVer() {
+        return ProductType.WS820;
+    }
+    public void setProductVer(ProductType productVer) {
+        this.productVer = productVer;
     }
 }

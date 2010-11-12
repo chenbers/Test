@@ -65,9 +65,18 @@
                   
                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
+                                <td width="100" valign="top">
+                                  <h:outputText value="#{messages.editDevice_productVer}" />
+                                </td>
+                                <td width="100" valign="top">
+                                  <h:outputText value="#{devicesBean.item.productVer}" />
+                                </td>
+                              </tr>
+                              <tr>
                                 <td width="100"><h:outputText value="#{messages.editDevice_name}" /></td>
                                 <td><h:outputText value="#{devicesBean.item.name}" /></td>
                               </tr>
+                              <ui:fragment rendered="#{devicesBean.item.productVer eq 'TIWIPRO_R74' or devicesBean.item.productVer eq 'TIWIPRO_R71'}">
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editDevice_imei}" /></td>
                                 <td><h:outputText value="#{devicesBean.item.imei}" /></td>
@@ -84,10 +93,17 @@
                                 <td width="100"><h:outputText value="#{messages.editDevice_phone}" /></td>
                                 <td><h:outputText value="#{devicesBean.item.phone}" /></td>
                               </tr>
-<!--                              <tr>-->
-<!--                                <td width="100"><h:outputText value="#{messages.editDevice_ephone}" /></td>-->
-<!--                                <td><h:outputText value="#{devicesBean.item.ephone}" /></td>-->
-<!--                              </tr>-->
+                              </ui:fragment>
+                             <ui:fragment rendered="#{devicesBean.item.productVer eq 'WS820'}">
+                              <tr>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_waySmartSerialNumber}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.waySmartSerialNumber}" /></td>
+ 							  </tr> 
+                              <tr>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_iridiumImei}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.iridiumImei}" /></td>
+ 							  </tr> 
+                              </ui:fragment>
                             </table>
 
                           </td>
