@@ -18,18 +18,18 @@ public class Testing extends NAVIGATE {
 
 	@Test
 	public void test_me(){
-		set_test_case("c:/Tiwi_data.xls", "TC1187");
+		set_test_case("src/test/resources/Test/Tiwi_data.xls", "TC1187");
 		System.out.println(get_data("Login", "USERNAME"));
 		System.out.println(get_data("Login", "PASSWORD"));
 		System.out.println(get_data("Login", "EMAIL_ADDR"));
-		l.open_login();
-		m.ck_footer();
-		l.ck_login_page();
-		l.type_username("Automation1");
-		l.type_password("password");
-		l.click_login();
-		m.ck_header();
-		m.click_logout();
+//		l.open_login();
+//		m.ck_footer();
+//		l.ck_login_page();
+//		l.type_username("Automation1");
+//		l.type_password("password");
+//		l.click_login();
+//		m.ck_header();
+//		m.click_logout();
 	}
 	
 //	@Test
