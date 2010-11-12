@@ -38,12 +38,12 @@ public class ZonePublishJDBCDAOTest extends BaseJDBCTest {
         siloService = new SiloServiceCreator(host, port).getService();
     }
     
-    private Account createTestAccount() {
+    private Account createTestAccount(int id) {
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
         Account account = new Account(null, Status.ACTIVE);
         String timeStamp = Calendar.getInstance().getTime().toString();
-        account.setAcctName(timeStamp);
+        account.setAcctName(timeStamp + "_" + id);
         account.setHos(AccountHOSType.NONE);
         // create
         Integer siloID = TESTING_SILO;
@@ -56,7 +56,7 @@ public class ZonePublishJDBCDAOTest extends BaseJDBCTest {
     @Test
     public void publishZone() {
         
-        Account testAccount = createTestAccount();
+        Account testAccount = createTestAccount(1);
         assertNotNull("test Account was not successfully created", testAccount);
         
         // simplest case -- no vehicle
@@ -98,7 +98,7 @@ System.out.println("acct id " + testAccount.getAcctID());
     @Test
     public void publishZoneCrud() {
         
-        Account testAccount = createTestAccount();
+        Account testAccount = createTestAccount(2);
         assertNotNull("test Account was not successfully created", testAccount);
         
         // simplest case -- no vehicle
