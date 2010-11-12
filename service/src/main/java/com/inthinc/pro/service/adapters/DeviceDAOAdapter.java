@@ -45,4 +45,12 @@ public class DeviceDAOAdapter extends BaseDAOAdapter<Device> {
         throw new NotImplementedException();
 	}
 
+	/* (non-Javadoc)
+	 * @see com.inthinc.pro.service.adapters.BaseDAOAdapter#delete(java.lang.Integer)
+	 */
+	@Override
+	public Integer delete(Integer id) {
+        throw new NotImplementedException();
+	}
+
 }

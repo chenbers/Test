@@ -80,6 +80,25 @@ public abstract class BaseDAOAdapter<R> {
         return null;    
     };
     
-  
+    /**
+     * Deletes a resource
+     * 
+     * @param id The ID of the resource to be deleted
+     * @return 1 if successful, 0 if failed.
+     */
+    public Integer delete(Integer id){
+    	return getDAO().deleteByID(id);
+    }; 
+
+    /**
+     * Finds and retrieves a resource by ID.
+     * 
+     * @param id The ID of the resource to find
+     * @return The resource, or null if not found.
+     */
+    public R findByID(Integer id){
+    	return getDAO().findByID(id);	
+    }
+    
     
 }
