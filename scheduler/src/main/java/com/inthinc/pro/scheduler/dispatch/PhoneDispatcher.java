@@ -4,6 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.log4j.Logger;
 
 public class PhoneDispatcher
@@ -12,24 +17,54 @@ public class PhoneDispatcher
     
     private static Logger logger = Logger.getLogger(PhoneDispatcher.class);
 
-    public void send(String phoneNumber, String messageText, Boolean acknowledge)
+    public boolean send(String phoneNumber, String messageText, Integer msgID, Boolean acknowledge)
     {
-        Integer ack = 0;
-        if (acknowledge)
-            ack=1;
+
+        HttpClient httpClient = new HttpClient();
+        
+        //TODO dispatch to specfic data center based on country code??
+        //London Datacenters:
+        //http://api.lon.voxeo.net/SessionControl/VoiceXML.start 
+        //EU Datacenters:
+        //http://session.lon.voxeo.net/SessionControl/4.5.40/VoiceXML.start 
+
+        GetMethod httpMethod = new GetMethod("http://api.voxeo.net/VoiceXML.start");
+        NameValuePair[] params=new NameValuePair[7];
+        
+        params[0] = new NameValuePair("tokenid","724abefcafa4be428524109528252d18defe555564874cd59aed73e84cf16fc6817d99ce6fde0f5aef118e94");
+        params[1] = new NameValuePair("callerid","8018662255");
+        params[2] = new NameValuePair("numbertodial",phoneNumber);
+        params[3] = new NameValuePair("msgID",msgID.toString());
+        params[4] = new NameValuePair("msg",messageText);
+        params[5] = new NameValuePair("ack",acknowledge?"1":"0");
+        params[6] = new NameValuePair("calltimeout","35"); //in seconds, time waits for answer (and blocks!!)
+        
+        httpMethod.setQueryString(params);
         //TODO HTTPS!!!!
-        String url = "http://api.voxeo.net/VoiceXML.start?tokenid=724abefcafa4be428524109528252d18defe555564874cd59aed73e84cf16fc6817d99ce6fde0f5aef118e94&callerid=14074181800&numbertodial=8019383589&msgID=99&msg=Hello World&ack="+ack;
+
         try 
         {
-            String[] cmdLine = new String[3];
-            cmdLine[0] = getAsteriskScript();
-            cmdLine[1] = phoneNumber;
-            cmdLine[2] = messageText;
-            runProcess(cmdLine);
+            boolean callOK=true;
+            int httpCode = httpClient.executeMethod(httpMethod);
+            if (httpCode!=200)
+            {
+                callOK = false;
+                logger.error("PhoneMessageJob Http Error " + httpCode);
+            }
+            else
+            {
+                //warning, this returns "success" even if the service fails to return vxml!
+                String body=httpMethod.getResponseBodyAsString();
+                logger.debug(body);
+                if (!body.startsWith("success"))
+                    callOK=false;
+            }
+            return callOK;
         }
         catch (Throwable e) 
         {
             logger.error("PhoneMessageJob Error " + e);
+            return false;
         }
     }
     

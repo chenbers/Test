@@ -23,7 +23,7 @@ public class MailDispatcher
         this.mailSender = mailSender;
     }
     
-    public void send(String emailAddress, String subjectText, String messageText)
+    public boolean send(String emailAddress, String subjectText, String messageText)
     {
         logger.debug("sendEmail: [" + emailAddress + "] [" + subjectText + "] [" + messageText + "]");
         
@@ -40,8 +40,10 @@ public class MailDispatcher
         catch (Exception e)
         {
             logger.error("sendEmail FAILED: [" + emailAddress + "] [" + subjectText + "] [" + messageText + "]", e);
+            return false;
         }
         logger.debug("sendEmail - Complete");
+        return true;
     }
 
 	public String getFrom() {

@@ -23,8 +23,8 @@ public class EmailAlertJob extends BaseAlertJob
         {
             logger.debug("MessageID: " + message.getMessageID() + " Emailed to: " + message.getAddress());
             String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
-            getMailDispatcher().send(message.getAddress(), getSubject(message), text);
-            getAlertMessageDAO().acknowledgeMessage(message.getMessageID());
+            if(getMailDispatcher().send(message.getAddress(), getSubject(message), text))
+                getAlertMessageDAO().acknowledgeMessage(message.getMessageID());
         }
         logger.debug("EmailAlertJob: END");
 

@@ -13,6 +13,8 @@ import java.util.Properties;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.scheduler.dispatch.PhoneDispatcher;
+
 public class MessagesTest {
 
 	
@@ -59,7 +61,14 @@ public class MessagesTest {
 		
 		
 	}
-
+	
+	@Ignore
+	public void testPhoneCall()
+	{
+	    PhoneDispatcher pd = new PhoneDispatcher();
+	    pd.send("8019383589", "hello Dave", 22, true);
+	}
+	
 	private Properties getProperties(String propFile) {
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propFile);
         
