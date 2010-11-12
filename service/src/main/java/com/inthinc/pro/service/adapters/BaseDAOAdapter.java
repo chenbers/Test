@@ -9,7 +9,10 @@ import com.inthinc.pro.dao.GenericDAO;
  * The classes deriving from it implement an Adapter pattern 
  * between the Service Layer and the Hessian DAO layer</br>
  * 
- * It also encapsulates common functionality.
+ *  The methods implemented in this class use the Template Method pattern 
+ *  to delegate specifics to the children.
+ * 
+ * It encapsulates the CRUD methods and other common functionality.
  * 
  * @param <R> The Resource being handled by the concrete Adapter.
  * 
@@ -32,15 +35,23 @@ public abstract class BaseDAOAdapter<R> {
      */
     protected abstract GenericDAO<R, Integer> getDAO();
 
+    /**
+     * Returns the resource ID.
+     */
+    // We can get rid of this method if we make all entities implement a getID method
+    protected abstract Integer getResourceID(R resource);
+    
+    
 	/**
-	 * Returns the ID of the resource.
-	 * By default, this is the Account ID.
+	 * Returns the ID to be used during resource creation.</br>
+	 * Note that this ID is NOT the Resource ID. 
+	 * In fact, by default it is the Account ID. </br>
 	 * Child classes can overwrite this method if needed.
 	 * 
 	 * @param resource The resource to get the ID from
-	 * @return The ID of the resource
+	 * @return The ID to be used during creation of the resource
 	 */
-    protected Integer getResourceID(R resource){
+    protected Integer getResourceCreationID(R resource){
 		// Will be replaced by TiwiProPrincipal
 		// getUser().getPerson().getAcctID();    	
       return null;	
@@ -54,8 +65,21 @@ public abstract class BaseDAOAdapter<R> {
      * @return The resource ID or null if creation failed.
      */
     public Integer create(R resource){
-		return getDAO().create(getResourceID(resource), resource);
+		return getDAO().create(getResourceCreationID(resource), resource);
     }
+    
+    /**
+     * Update a resource.
+     * 
+     * @param resource The resource to be updated
+     * @return The updated resource or null if creation failed.
+     */
+    public R update(R resource){
+        if (getDAO().update(resource) != 0)
+            return getDAO().findByID(getResourceID(resource));
+        return null;    
+    };
+    
   
     
 }

@@ -51,4 +51,9 @@ public class AccountDAOAdapter extends BaseDAOAdapter<Account> {
 		return accountDAO;
 	}
 
+	@Override
+	protected Integer getResourceID(Account account) {
+		return account.getAcctID();
+	}
+
 }

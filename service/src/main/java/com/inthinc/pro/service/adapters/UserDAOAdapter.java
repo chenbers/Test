@@ -31,16 +31,20 @@ public class UserDAOAdapter extends BaseDAOAdapter<User> {
 	}
 
     /**
-     * Retrieve the ID for the user. </br>
-     * Overriding because the ID for the user is the Person ID, not the account ID.</br>
+     * Retrieve the ID to be used in the creation of the user. </br>
+     * Overriding because we need the Person ID, not the account ID (default).</br>
      * The create() method from BaseDAOAdapter will call this overriden method.</br>
      * 
-     * @see com.inthinc.pro.service.adapters.BaseDAOAdapter#getResourceID(java.lang.Object)
+     * @see com.inthinc.pro.service.adapters.BaseDAOAdapter#getResourceCreationID(java.lang.Object)
 	 */
 	@Override
-	protected Integer getResourceID(User user) {
+	protected Integer getResourceCreationID(User user) {
 		return user.getPersonID();
 	}
-	
+
+	@Override
+	protected Integer getResourceID(User user) {
+		return user.getUserID();
+	}
 	
 }

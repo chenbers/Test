@@ -31,15 +31,20 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
 	}
 
     /**
-     * Retrieve the ID for the vehicle. </br>
-     * Overriding because the ID for the vehicle is the Group ID, not the account ID.</br>
+     * Retrieve the ID to be used in the creation of the vehicle. </br>
+     * Overriding because we need the Group ID, not the account ID (default).</br>
      * The create() method from BaseDAOAdapter will call this overriden method.</br>
      * 
-     * @see com.inthinc.pro.service.adapters.BaseDAOAdapter#getResourceID(java.lang.Object)
+     * @see com.inthinc.pro.service.adapters.BaseDAOAdapter#getResourceCreationID(java.lang.Object)
 	 */
 	@Override
-	protected Integer getResourceID(Vehicle vehicle) {
+	protected Integer getResourceCreationID(Vehicle vehicle) {
 		return vehicle.getGroupID();
+	}
+
+	@Override
+	protected Integer getResourceID(Vehicle vehicle) {
+		return vehicle.getVehicleID();
 	}	
 	
 }

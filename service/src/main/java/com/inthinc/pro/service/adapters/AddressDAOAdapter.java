@@ -27,5 +27,10 @@ public class AddressDAOAdapter extends BaseDAOAdapter<Address> {
 		return addressDAO;
 	}
 
+	@Override
+	protected Integer getResourceID(Address address) {
+		return address.getAddrID();
+	}
+
 	
 }

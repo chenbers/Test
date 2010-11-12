@@ -29,4 +29,9 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
 		return groupDAO;
 	}
 
+	@Override
+	protected Integer getResourceID(Group group) {
+		return group.getGroupID();
+	}
+
 }

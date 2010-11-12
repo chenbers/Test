@@ -29,4 +29,9 @@ public class PersonDAOAdapter extends BaseDAOAdapter<Person> {
 		return personDAO;
 	}
 
+	@Override
+	protected Integer getResourceID(Person person) {
+		return person.getPersonID();
+	}
+
 }
