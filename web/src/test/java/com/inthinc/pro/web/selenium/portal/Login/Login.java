@@ -94,7 +94,7 @@ public class Login extends Selenium_Server {
 	public void open_login(){
 		
 		//go to login screen
-		selenium.open("login");  
+		selenium.open("logout");  
 		//Verify Home Screen is displayed
 		ck_login_page();
 	}
