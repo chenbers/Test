@@ -388,10 +388,11 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             }
             if (reportSchedule.getGroupIDList() != null) {
                 StringBuffer buffer = new StringBuffer();
+logger.error("grpIDList type: " + reportSchedule.getGroupIDList().getClass().getName());                    
                 for (Object  grpIDObj : reportSchedule.getGroupIDList()) {
-logger.info("grpIDObj: " + grpIDObj.toString());                    
+logger.error("grpIDObj: " + grpIDObj.toString());                    
                     Integer grpID = Integer.valueOf(grpIDObj.toString());
-logger.info("grpID Integer: " + grpID);                    
+logger.error("grpID Integer: " + grpID);                    
                     Group group = this.getGroupHierarchy().getGroup(grpID);
                     if (group != null) {
                         if (buffer.length() > 0)
