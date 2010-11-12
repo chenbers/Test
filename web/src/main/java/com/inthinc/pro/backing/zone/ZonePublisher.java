@@ -37,7 +37,7 @@ import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LinearRing;
 
-public class ZonePublish {
+public class ZonePublisher {
     
     private static final String SHP_FILE  = "Zones.shp";
     private static final String SHX_FILE = "Zones.shx";

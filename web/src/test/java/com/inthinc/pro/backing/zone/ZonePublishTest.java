@@ -40,7 +40,7 @@ public class ZonePublishTest {
     @Test
     public void dbfFile() throws IOException {
         List<Zone> zoneList = getMockZoneList();
-        ZonePublish zonePublish = new ZonePublish();
+        ZonePublisher zonePublish = new ZonePublisher();
         
         byte[] published = zonePublish.publish(zoneList, ZoneVehicleType.ALL);
         assertNotNull("publish failed", published);
@@ -51,7 +51,7 @@ public class ZonePublishTest {
     @Test
     public void gainDataDBF() throws IOException, URISyntaxException {
         List<Zone> zoneList = getGainZoneList();
-        ZonePublish zonePublish = new ZonePublish();
+        ZonePublisher zonePublish = new ZonePublisher();
 
         ByteArrayOutputStream dbfOS = new ByteArrayOutputStream();
         int cnt = zonePublish.getDbase(zoneList, dbfOS, ZoneVehicleType.HEAVY);
@@ -64,7 +64,7 @@ public class ZonePublishTest {
     @Test
     public void gainDataSHPSHX() throws IOException, URISyntaxException {
         List<Zone> zoneList = getGainZoneList();
-        ZonePublish zonePublish = new ZonePublish();
+        ZonePublisher zonePublish = new ZonePublisher();
         ByteArrayOutputStream shpOS = new ByteArrayOutputStream();
         ByteArrayOutputStream shxOS = new ByteArrayOutputStream();
         
@@ -90,7 +90,7 @@ public class ZonePublishTest {
     @Test
     public void gainDataPublish() throws IOException {
         List<Zone> zoneList = getGainZoneList();
-        ZonePublish zonePublish = new ZonePublish();
+        ZonePublisher zonePublish = new ZonePublisher();
         
         byte[] publishBytes = zonePublish.publish(zoneList, ZoneVehicleType.HEAVY);
         assertNotNull("publish failed", publishBytes);

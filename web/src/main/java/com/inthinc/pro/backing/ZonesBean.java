@@ -19,11 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.model.KeepAlive;
 
-import com.inthinc.pro.backing.zone.ZonePublish;
+import com.inthinc.pro.backing.zone.ZonePublisher;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
+import com.inthinc.pro.dao.ZonePublishDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.zone.ZonePublish;
 import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
 import com.inthinc.pro.model.zone.option.ZoneOption;
 import com.inthinc.pro.model.zone.option.type.OffOn;
@@ -43,8 +45,13 @@ public class ZonesBean extends BaseBean
     private boolean              editing;
     private ZoneDAO              zoneDAO;
     private ZoneAlertDAO         zoneAlertDAO;
+    private ZonePublishDAO       zonePublishDAO;
     private String               helpFile = "Zones.htm";
     private Boolean enablePublish  = Boolean.valueOf(true);
+    private ZoneVehicleType      downloadType;
+    private String              message;
+
+
 
 
     public void setZoneDAO(ZoneDAO zoneDAO)
@@ -56,6 +63,14 @@ public class ZonesBean extends BaseBean
     {
         this.zoneAlertDAO = zoneAlertDAO;
     }
+    public ZonePublishDAO getZonePublishDAO() {
+        return zonePublishDAO;
+    }
+
+    public void setZonePublishDAO(ZonePublishDAO zonePublishDAO) {
+        this.zonePublishDAO = zonePublishDAO;
+    }
+
 
     public void loadZones()
     {
@@ -453,12 +468,16 @@ public class ZonesBean extends BaseBean
     }
     
     public void publish() throws IOException {
-        ZonePublish zonePublish = new ZonePublish();
+        setMessage(null);        
+        ZonePublisher zonePublisher = new ZonePublisher();
 
         for (ZoneVehicleType zoneVehicleType : ZoneVehicleType.values()) {
-            byte[] published = zonePublish.publish(getZones(),  zoneVehicleType);
             
-            // to do save in db
+            ZonePublish zonePublish = new ZonePublish();
+            zonePublish.setAcctID(getAccountID());
+            zonePublish.setZoneVehicleType(zoneVehicleType);
+            zonePublish.setPublishZoneData(zonePublisher.publish(getZones(),  zoneVehicleType));
+            zonePublishDAO.publishZone(zonePublish);
         }
         
         // update account
@@ -467,15 +486,17 @@ public class ZonesBean extends BaseBean
         getAccountDAO().update(account);
         
         setEnablePublish(false);
+        setMessage("zones_publishMsg");
         
     }
 
     public void download() throws IOException {
-        // temporary
-        // TODO: retrieve from db
-        ZonePublish zonePublish = new ZonePublish();
-        byte[] published = zonePublish.publish(this.getZones(),  ZoneVehicleType.ALL);
-        
+        setMessage(null);        
+        ZonePublish zonePublish = zonePublishDAO.getPublishedZone(getAccountID(), getDownloadType());
+        if (zonePublish == null || zonePublish.getPublishZoneData() == null) {
+            setMessage("zones_downloadError");
+            return;
+        }
         FacesContext facesContext = FacesContext.getCurrentInstance();
         
         HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
@@ -490,7 +511,7 @@ public class ZonesBean extends BaseBean
         {
             out = response.getOutputStream();
             dataOut = new DataOutputStream(out);
-            dataOut.write(published);
+            dataOut.write(zonePublish.getPublishZoneData());
             dataOut.flush();
             out.flush();
             facesContext.responseComplete();
@@ -500,7 +521,23 @@ public class ZonesBean extends BaseBean
             out.close();
         }
         
+    }
+    
+    public ZoneVehicleType getDownloadType() {
+        if (downloadType == null)
+            return ZoneVehicleType.ALL;
+        return downloadType;
+    }
 
-        
+    public void setDownloadType(ZoneVehicleType downloadType) {
+        this.downloadType = downloadType;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

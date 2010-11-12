@@ -32,16 +32,15 @@
   		.publish_nav a.download {
 				padding: 6px 10px 7px 20px;
 				background: transparent url(../../images/ico_admin.png) no-repeat center left;
-				text-decoration: none;
+				text-decoration: underline;
 				color: #000;
 				margin: 0 0 0 8px;
-				float:right;
 		}
 		
   		.publish_nav a.publish {
 				padding: 6px 10px 7px 20px;
 				background: transparent url(../../images/ico_zones.png) no-repeat center left;
-				text-decoration: none;
+				text-decoration: underline;
 				color: #000;
 				margin: 0 0 0 8px;
 				float:right;
@@ -89,19 +88,22 @@
             <div class="panel_w">
        		  <a4j:outputPanel styleClass="publish_nav" id="publishNav" layout="block">
               <a4j:form id="publishForm" style="padding:0;">
-              	<span title="#{messages.zones_download}">
+                <div style="float:right">
+              	<span title="#{messages.zones_download}" style="margin-top: 5px; float: left;">
 					<h:commandLink id="downloadIcon" action="#{zonesBean.download}" styleClass="download"> 
     					<h:outputText value="#{messages.zones_download}"/>
+						<a4j:support event="onclick" reRender="zonesMsgPopup" />
 					</h:commandLink>    
 				</span>	
+				<h:selectOneMenu value="#{zonesBean.downloadType}" id="downloadType" style="float:right;">
+						<f:selectItems value="#{zonesBean.vehicleTypeSelectItems}" />
+                </h:selectOneMenu>
+                </div>
               	<span title="#{messages.zones_publish}">
-					<a4j:commandLink  id="publishLink" reRender="publishNav" action="#{zonesBean.publish}" rendered="#{zonesBean.enablePublish}" styleClass="publish" >
+					<a4j:commandLink  id="publishLink" reRender="msgPanel, publishNav" action="#{zonesBean.publish}" rendered="#{zonesBean.enablePublish}" styleClass="publish" >
    						<h:outputText value="#{messages.zones_publish}"/>
 					</a4j:commandLink>    
 				</span>	
-				<ui:fragment rendered="#{!zonesBean.enablePublish}" id="publishMsg">
-						<h:outputText value="#{messages.zones_publishMsg}" />
-				</ui:fragment>
               </a4j:form>
               </a4j:outputPanel>
               <div class="panel_content">
@@ -276,6 +278,37 @@
       </tr>
     </table>
 	</a4j:region>
+	
+		<rich:modalPanel id="msgPanel" headerClass="popupHeader" controlsClass="popupControls" 
+				showWhenRendered="#{not empty zonesBean.message}"  
+				 height="50" autosized="true" resizeable="false" zindex="2000" width="300"
+				onshow="document.getElementById('msgForm:loginOk').focus();">
+		    <f:facet name="header">
+		      <h:outputText value="#{messages.zones_msg_title}"/>
+		    </f:facet>
+			<f:facet name="controls">
+				<h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('errorPanel')" />
+			</f:facet>
+		    <p>
+		      <h:outputText value="#{messages[zonesBean.message]}" escape="false"/>
+		    </p>
+		    
+			<a4j:form id="msgForm">
+				<div class="popupactions">
+		        <a4j:commandButton id="loginOk" 
+            		oncomplete="Richfaces.hideModalPanel('msgPanel');" 
+            		styleClass="left">
+            		<span class="ok">
+              			<h:outputText value="#{messages.button_ok}" />
+            		</span>
+          		</a4j:commandButton>
+        		</div>
+	      </a4j:form>
+		</rich:modalPanel> 
+        
+	
   </ui:define>
+
+
 
 </ui:composition>
