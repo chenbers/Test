@@ -293,4 +293,7 @@ public enum NoteType implements BaseEnum {
         this.eventType = eventType;
     }
 
+    public String getName() {
+        return name();
+    }
 }

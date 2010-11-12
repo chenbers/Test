@@ -37,6 +37,7 @@ public class EventAttr
         
         
         
+        
         // Attribute Id (128->191 have two byte values)
         mapping.put(129, "distance");
         mapping.put(130, "maxRPM");
@@ -71,8 +72,9 @@ public class EventAttr
 
         // Attribute Id (255) has a stringId byte,  followed by a null terminate string.
         mapping.put(255, "string");
-        
-
+        mapping.put(8272, "xcatData");
+        mapping.put(8273, "xcatEvent");
+        mapping.put(24577, "TextMsg");
     }
     
     public static String getFieldName(Integer key)
