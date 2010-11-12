@@ -14,6 +14,12 @@
 		<constructor-arg value="${proxy.siloDataAccessHost}" />
 		<constructor-arg value="${proxy.siloDataAccessPort}" />
 	</bean>
+	<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
+	  <property name="url" value="${jdbc.mysql.url}"/>
+	  <property name="username" value="${jdbc.mysql.username}"/>
+	  <property name="password" value="${jdbc.mysql.password}"/>
+	</bean>
 	<!--
 		<bean id="mcmServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.MCMServiceCreator"> <constructor-arg value="${proxy.mcmDataAccessHost}" /> <constructor-arg
 		value="${proxy.mcmDataAccessPort}" /> </bean>
@@ -62,7 +68,7 @@
 	<bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" parent="abstractReportDAO" />
-	<bean id="alertMessageDAO" class="com.inthinc.pro.dao.JDBC.AlertMessageDAO"></bean>
+	<bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO"></bean>
 
 	<!-- Address Lookup -->
 	<bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
