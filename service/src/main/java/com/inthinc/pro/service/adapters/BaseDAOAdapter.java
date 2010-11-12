@@ -26,15 +26,26 @@ public abstract class BaseDAOAdapter<R> {
 
 
     // Methods to be called back in the children
+    
+    /**
+     * Returns the DAO that will handle the actual back end calls
+     */
     protected abstract GenericDAO<R, Integer> getDAO();
 
-    
-    protected Integer getAccountID(R resource){
+	/**
+	 * Returns the ID of the resource.
+	 * By default, this is the Account ID.
+	 * Child classes can overwrite this method if needed.
+	 * 
+	 * @param resource The resource to get the ID from
+	 * @return The ID of the resource
+	 */
+    protected Integer getResourceID(R resource){
 		// Will be replaced by TiwiProPrincipal
-		//getUser().getPerson().getAcctID();
-		return null;
-	};
-	
+		// getUser().getPerson().getAcctID();    	
+      return null;	
+    }
+
 	
     /**
      * Create a resource.
@@ -43,7 +54,7 @@ public abstract class BaseDAOAdapter<R> {
      * @return The resource ID or null if creation failed.
      */
     public Integer create(R resource){
-		return getDAO().create(getAccountID(resource), resource);
+		return getDAO().create(getResourceID(resource), resource);
     }
   
     

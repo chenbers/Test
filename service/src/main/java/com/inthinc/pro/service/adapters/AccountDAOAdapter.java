@@ -17,7 +17,7 @@ public class AccountDAOAdapter extends BaseDAOAdapter<Account> {
 	private AccountDAO accountDAO;	
 	
     /**
-     * Creates an Account entity
+     * Creates an Account entity.
      * 
 	 * @see com.inthinc.pro.service.adapters.BaseDAOAdapter#create(java.lang.Object)
 	 */
