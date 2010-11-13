@@ -13,7 +13,9 @@ import org.apache.log4j.Logger;
 
 public class PhoneDispatcher
 {
-    private String asteriskScript;
+    private String callerID;
+    private String phoneServerURL;
+    private String tokenID;
     
     private static Logger logger = Logger.getLogger(PhoneDispatcher.class);
 
@@ -28,11 +30,11 @@ public class PhoneDispatcher
         //EU Datacenters:
         //http://session.lon.voxeo.net/SessionControl/4.5.40/VoiceXML.start 
 
-        GetMethod httpMethod = new GetMethod("http://api.voxeo.net/VoiceXML.start");
+        GetMethod httpMethod = new GetMethod(getPhoneServerURL());
         NameValuePair[] params=new NameValuePair[7];
         
-        params[0] = new NameValuePair("tokenid","724abefcafa4be428524109528252d18defe555564874cd59aed73e84cf16fc6817d99ce6fde0f5aef118e94");
-        params[1] = new NameValuePair("callerid","8018662255");
+        params[0] = new NameValuePair("tokenid",getTokenID());
+        params[1] = new NameValuePair("callerid",getCallerID());
         params[2] = new NameValuePair("numbertodial",phoneNumber);
         params[3] = new NameValuePair("msgID",msgID.toString());
         params[4] = new NameValuePair("msg",messageText);
@@ -67,47 +69,28 @@ public class PhoneDispatcher
             return false;
         }
     }
-    
-    protected void runProcess(String cmdLine[])
-    {
-        try 
-        {
-            String str;
 
-            Process proc = Runtime.getRuntime().exec(cmdLine);
-
-            // get its output (your input) stream
-            // TODO: is this needed???
-            BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-
-            try 
-            {
-                while ((str = reader.readLine()) != null) 
-                {
-                    logger.debug(str);
-                }
-            } 
-            catch (IOException e) 
-            {
-                logger.debug(e);
-            }
-        }
-        catch (Exception ex)
-        {
-            logger.debug(ex);
-        }
-    }
-    
-    
-    public String getAsteriskScript()
-    {
-        return asteriskScript;
+    public String getCallerID() {
+        return callerID;
     }
 
-    public void setAsteriskScript(String asteriskScript)
-    {
-        this.asteriskScript = asteriskScript;
+    public void setCallerID(String callerID) {
+        this.callerID = callerID;
     }
 
+    public String getPhoneServerURL() {
+        return phoneServerURL;
+    }
 
+    public void setPhoneServerURL(String phoneServerURL) {
+        this.phoneServerURL = phoneServerURL;
+    }
+
+    public String getTokenID() {
+        return tokenID;
+    }
+
+    public void setTokenID(String tokenid) {
+        this.tokenID = tokenid;
+    }
 }

@@ -30,7 +30,9 @@
 	</bean>
 
    <bean id="phoneDispatcher"	class="com.inthinc.pro.scheduler.dispatch.PhoneDispatcher">
-         <property name="asteriskScript" value="${asterisk.script}" />
+         <property name="callerID" value="${voxeo.callerID}" />
+         <property name="tokenID" value="${voxeo.tokenID}" />
+         <property name="phoneServerURL" value="${voxeo.phoneServerURL}" />
 	</bean>
    
    <!--  QUARTZ (jobs and triggers) -->
