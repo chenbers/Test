@@ -52,9 +52,10 @@ public class WaysmartReportsBean extends ReportsBean {
 
         itemGroups.add(getBlankGroup());
         
-        // right now all performance reports are using HOS data, so removing...
-//        itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
-//        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
+        // right now all performance reports are using HOS data, so removing category on non-hos account
+        if (getAccountIsHOS())
+            itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
+        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
         
         itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
         		ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));

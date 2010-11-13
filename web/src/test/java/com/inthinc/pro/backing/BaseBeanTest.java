@@ -183,6 +183,7 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         
         Account account = accountDAO.findByID(acctID);
         proUser.setAccountAttributes(account.getProps());
+        proUser.setAccountHOSType(account.getHos());
         
     }
 

@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountAttributes;
+import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
@@ -166,6 +167,7 @@ public class MockData {
     private void addAccountData(Integer accountID) {
         Account account = new Account(accountID, Status.ACTIVE);
         account.setAcctName("United States Fleet");
+        account.setHos(AccountHOSType.HOS_SUPPORT);
         AccountAttributes attribs = new AccountAttributes();
         attribs.setSupportContact1(UnitTestStats.ACCOUNT_CONTACT1);
         attribs.setSupportContact2(UnitTestStats.ACCOUNT_CONTACT2);

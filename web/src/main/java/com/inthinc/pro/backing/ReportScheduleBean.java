@@ -684,11 +684,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 for (Integer id : getGroupIDList()) {
                     groupIDSelectList.add(id.toString());
                 }
-                System.out.println("getGroupIDSelectList -- " + groupIDSelectList.size());            
             }
             else {
-                System.out.println("getGroupIDSelectList -- null");            
-                
                 groupIDSelectList = null;
             }
             
@@ -696,13 +693,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
 
         public void setGroupIDSelectList(List<String> groupIDSelectList) {
-  //          this.groupIDSelectList = groupIDSelectList;
             if (groupIDSelectList == null) {
-                System.out.println("setGroupIDSelectList -- null");            
                 setGroupIDList(null);
                 return;
             }
-            System.out.println("setGroupIDSelectList -- " + groupIDSelectList.size());            
             
             List<Integer> groupIDList = new ArrayList<Integer>();
             for (String groupIDStr : groupIDSelectList) {
@@ -774,35 +768,5 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         public Integer getDayOfMonth() {
             return dayOfMonth;
         }
-/*        
-        @Override
-        public List<Integer> getGroupIDList() {
-            if (groupIDSelectList == null)
-                return null;
-            
-            List<Integer> groupIDList = new ArrayList<Integer>();
-            for (String groupIDStr : groupIDSelectList) {
-                try {
-                    groupIDList.add(Integer.valueOf(groupIDStr));
-                }
-                catch (NumberFormatException ex) {
-                    logger.error(ex);
-                    
-                }
-            }
-            return groupIDList;
-        }
-        @Override
-        public void setGroupIDList(List<Integer> groupIDList) {
-            super.setGroupIDList(groupIDList);
-            if (groupIDList != null) {
-                groupIDSelectList = new ArrayList<String>();
-                for (Integer id : groupIDList) {
-                    groupIDSelectList.add(id.toString());
-                }
-            }
-            else groupIDSelectList = null;
-        }
-*/        
     }
 }

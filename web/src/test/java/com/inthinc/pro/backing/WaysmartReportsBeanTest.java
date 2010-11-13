@@ -3,9 +3,6 @@
  */
 package com.inthinc.pro.backing;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +14,7 @@ import javax.faces.model.SelectItemGroup;
 
 import org.junit.Test;
 
+import com.inthinc.pro.dao.mock.data.UnitTestStats;
 import com.inthinc.pro.reports.ReportCategory;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.reports.util.MessageUtil;
@@ -24,7 +22,7 @@ import com.inthinc.pro.reports.util.MessageUtil;
 /**
  * Unit Test for WaysmartReportsBean
  */
-public class WaysmartReportsBeanTest{
+public class WaysmartReportsBeanTest extends BaseBeanTest {
 
     // The SUT
     private WaysmartReportsBean waysmartReportsBeanSUT = new WaysmartReportsBean(); 
@@ -34,6 +32,9 @@ public class WaysmartReportsBeanTest{
      */
     @Test
     public void testGetReportGroups(){
+        loginUser(UnitTestStats.UNIT_TEST_LOGIN);
+        
+
         List<SelectItemGroup> groupList = waysmartReportsBeanSUT.getReportGroups();
         
         // The first group must have a single blank item
@@ -44,14 +45,13 @@ public class WaysmartReportsBeanTest{
         assertTrue("".equals(blankItems[0].getLabel()));
         
         // The second group includes the Performance items
-        // removed from waysmart menu on non-hos account since all require hos data
-//        checkGroupIncludesOnlyCategory(groupList.get(1), ReportCategory.Performance);
+        checkGroupIncludesOnlyCategory(groupList.get(1), ReportCategory.Performance);
 
         // The third group includes the DOT/IFTA items
-        checkGroupIncludesOnlyCategory(groupList.get(1), ReportCategory.IFTA);
+        checkGroupIncludesOnlyCategory(groupList.get(2), ReportCategory.IFTA);
 
         // The fourth group includes the Asset items
-        checkGroupIncludesOnlyCategory(groupList.get(2), ReportCategory.Asset);
+        checkGroupIncludesOnlyCategory(groupList.get(3), ReportCategory.Asset);
     
     }
     
