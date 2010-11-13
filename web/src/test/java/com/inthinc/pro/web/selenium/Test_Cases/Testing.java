@@ -1,8 +1,12 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import org.junit.Test;
 
 //import com.inthinc.pro.web.selenium.Core;
+import com.inthinc.pro.web.selenium.XsdDatetimeFormat;
 import com.inthinc.pro.web.selenium.portal.NAVIGATE;
 //import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
@@ -15,6 +19,7 @@ public class Testing extends NAVIGATE {
 
 	Login l = new Login();
 	Masthead m = new Masthead();
+	private static Calendar c;
 
 	@Test
 	public void test_me(){
@@ -41,14 +46,24 @@ public class Testing extends NAVIGATE {
 		m.ck_footer();
 	}
 	
-//	public static void main( String[] args){
-//		Core selenium = Singleton.getSingleton().getSelenium();
-//		Login l = new Login();
-//		l.login_to_portal("Automation1", "password");
-//		selenium.click("link=Notifications");
-//		selenium.waitForPageToLoad("30000");
-//		selenium.selectDhxCombo("Top", "Group select");
-//		selenium.close();
-//		selenium.stop();
-//	}
+	public static void main( String[] args){
+		
+		c = Calendar.getInstance(TimeZone.getTimeZone("PST"));
+        c.set(Calendar.YEAR, 2050);
+        c.set(Calendar.MONTH, 11); //months start from zero!
+        c.set(Calendar.DAY_OF_MONTH, 6);
+        c.set(Calendar.HOUR_OF_DAY, 21);
+        c.set(Calendar.MINUTE, 30);
+        c.set(Calendar.SECOND, 15);
+        c.set(Calendar.MILLISECOND, 0);
+        
+		XsdDatetimeFormat xdf = new XsdDatetimeFormat ();
+        xdf.setTimeZone("MST");
+        
+        System.out.println(c.toString());
+        String s = xdf.format(c.getTime());
+        System.out.println(s);
+        assert("2050-12-06T21:30:15-08:00".compareTo(s)==0);
+		
+	}
 }
