@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +11,7 @@ import javax.faces.model.SelectItemGroup;
 
 import org.ajax4jsf.model.KeepAlive;
 
-import com.inthinc.pro.backing.ui.ReportParams;
-import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.reports.ReportCategory;
-import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -42,115 +37,6 @@ public class WaysmartReportsBean extends ReportsBean {
         this.reportGroupMap = reportGroupMap;
     }    
     
-    /**
-     * {@inheritDoc}
-     * @see com.inthinc.pro.backing.ReportsBean#genReportCriteria()
-     */
-    @Override
-    public void genReportCriteria()
-    {
-        ReportParams params = getParams();        
-        if (getSelected() == null || !params.getValid()) {
-            setReportCriteriaList(null);
-            setViewType("");
-            return;
-        }
-        if (getReportCriteriaList() != null && params.equals(getPreviousParams()))
-            return;
-        
-        setPreviousParams(params.clone());
-        
-        ReportGroup reportGroup = reportGroupMap.get(getSelected());
-        List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
-        
-        switch (reportGroup.getReports()[0]) {
-            case TEN_HOUR_DAY_VIOLATIONS:
-                reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
-                break;
-            case PAYROLL_SUMMARY:
-                reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
-                break;
-            case PAYROLL_DETAIL:
-                reportCriteriaList.add(getReportCriteriaService().getPayrollDetailReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
-                break;
-            case PAYROLL_SIGNOFF:
-                if (params.getParamType() == ReportParamType.DRIVER )
-                    reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
-                else
-                    reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
-                            params.getLocale()));
-                break;
-            
-            case DRIVER_HOURS:
-                reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
-                        params.getLocale()));
-                break;
-                
-            case VEHICLE_USAGE:
-                if (params.getParamType() == ReportParamType.DRIVER )
-                    reportCriteriaList.add(getReportCriteriaService().getVehicleUsageReportCriteria(params.getDriverID(), params.getDateRange().getInterval(),  
-                        params.getLocale(), false ));
-                else
-                    reportCriteriaList.add(getReportCriteriaService().getVehicleUsageReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
-                            params.getLocale(), true ));
-                break;
-                
-            case MILEAGE_BY_VEHICLE:
-                    reportCriteriaList.add(getReportCriteriaService().getMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                            params.getLocale(), getUser().getPerson().getMeasurementType(), true));
-                break;
-
-            case STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale(), getUser().getPerson().getMeasurementType() , params.getIsIfta() ));
-                break;
-
-            case STATE_MILEAGE_BY_VEHICLE:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
-                break;
-
-            case STATE_MILEAGE_FUEL_BY_VEHICLE:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageFuelByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
-                break;                     
-            
-            case STATE_MILEAGE_COMPARE_BY_GROUP:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                        params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
-                break;  
-                
-            case STATE_MILEAGE_BY_MONTH:
-                reportCriteriaList.add(getReportCriteriaService().getStateMileageByMonthReportCriteria(
-                        getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), params.getLocale(), 
-                        getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
-                break;
-            
-            case WARRANTY_LIST:
-                reportCriteriaList.add(getReportCriteriaService().getWarrantyListReportCriteria(
-                        getAccountGroupHierarchy(), params.getGroupID(), getAccountID(),
-                        getAccountName(), params.getLocale(), params.getIsExpired()));
-                break;
-
-            default:
-                break;
-        }
-        
-        for (ReportCriteria reportCriteria : reportCriteriaList) {
-            reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
-            reportCriteria.setLocale(getUser().getPerson().getLocale());
-            reportCriteria.setUseMetric((getUser().getPerson().getMeasurementType() != null && getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
-            reportCriteria.setMeasurementType(getUser().getPerson().getMeasurementType());
-            reportCriteria.setFuelEfficiencyType(getUser().getPerson().getFuelEfficiencyType());
-        }
-        
-        setReportCriteriaList(reportCriteriaList);
-
-    }
 
     /**
      * {@inheritDoc}
@@ -166,11 +52,12 @@ public class WaysmartReportsBean extends ReportsBean {
 
         itemGroups.add(getBlankGroup());
         
-        itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
-        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
+        // right now all performance reports are using HOS data, so removing...
+//        itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
+//        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
         
         itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
-        		ReportCategory.Performance.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));
+        		ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));
 
         itemGroups.add(new SelectItemGroup(ReportCategory.Asset.getLabel(), 
                 ReportCategory.Asset.getDescription(), false, getItemsByCategory(ReportCategory.Asset)));
@@ -188,24 +75,13 @@ public class WaysmartReportsBean extends ReportsBean {
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
             if (!rt.isCategory(category)) continue;
+            if (rt.getRequiresHOSAccount() && !getAccountIsHOS())
+                continue;
             items.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
             reportGroupMap.put(rt.getCode(), rt);
         }
 		return items.toArray(new SelectItem[0]);
 	}
-	
-	/**
-	 * Produces an group with a single item, which is a blank item.
-	 * In the UI it shows as one blank line.
-	 * 
-	 * @return A group with one blank item.
-	 */
-	private SelectItemGroup getBlankGroup(){
-        SelectItem[] items = new SelectItem[1]; 
-        items[0] = new SelectItem(null, "");
-        return new SelectItemGroup("","",false,items);		
-	}
-
 	/*
 	 * {@inheritDoc}
 	 * Filter the Groups for WaySmart device. 

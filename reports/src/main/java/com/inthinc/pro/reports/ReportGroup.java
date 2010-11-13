@@ -37,44 +37,61 @@ public enum ReportGroup
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.TEAM},
             ReportType.TEAM_STATISTICS_REPORT),
-    // HOS -- will need to figure out some sort of role/acct thing
-/*
- *  TODO: NOT SURE WHERE THESE WILL FIT IN     
-    NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report","nonDOTViolations.jrxml", "nonDOTViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.nonDOTViolations"),
-    DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report","drivingTimeViolations.jrxml", "drivingTimeViolationsRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.drivingTimeViolations"),
-    NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "NON_DOT_VIOLATIONS_DETAIL"),
-    DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report","violationsDetail.jrxml", "violationsDetailRaw.jrxml", "hos", "com.inthinc.pro.reports.jasper.hos.i18n.violationsDetail", "DRIVING_TIME_VIOLATIONS_DETAIL"),
-            
- */
     HOS_DAILY_DRIVER_LOG_REPORT("HOS Daily Driver Log Report",7,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM},
-            ReportCategory.HOS,
+            ReportCategory.HOS, Boolean.TRUE,
             ReportType.HOS_DAILY_DRIVER_LOG_REPORT),
      HOS_VIOLATIONS_SUMMARY_REPORT("HOS Violations Summary Report",8,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+            Boolean.TRUE,
             ReportType.HOS_VIOLATIONS_SUMMARY_REPORT),
      HOS_VIOLATIONS_DETAIL_REPORT("HOS Violations Detail Report",9,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+             Boolean.TRUE,
              ReportType.HOS_VIOLATIONS_DETAIL_REPORT),
      HOS_DRIVER_DOT_LOG_REPORT("HOS Driver DOT Log Report",10,EntityType.ENTITY_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+            Boolean.TRUE,
             ReportType.HOS_DRIVER_DOT_LOG_REPORT),
      DOT_HOURS_REMAINING("DOT Time Remaining Report",11,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+            Boolean.TRUE,
             ReportType.DOT_HOURS_REMAINING),
      HOS_ZERO_MILES("HOS Zero Miles Report",12,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+            Boolean.TRUE,
             ReportType.HOS_ZERO_MILES),
      HOS_EDITS("HOS Edits",13,EntityType.ENTITY_GROUP_LIST,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+             Boolean.TRUE,
              ReportType.HOS_EDITS),
+     NON_DOT_VIOLATIONS_SUMMARY_REPORT("NON-DOT Violations Summary Report",30,EntityType.ENTITY_GROUP_LIST,
+             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+             Boolean.TRUE,
+             ReportType.NON_DOT_VIOLATIONS_SUMMARY_REPORT),
+     NON_DOT_VIOLATIONS_DETAIL_REPORT("NON-DOT Violations Detail Report",31,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
+              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.HOS,
+              Boolean.TRUE,
+              ReportType.NON_DOT_VIOLATIONS_DETAIL_REPORT),
+     DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT("Driving Time Violations Summary Report",32,EntityType.ENTITY_GROUP_LIST,
+              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+              Boolean.TRUE,
+              ReportType.DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT),
+     DRIVING_TIME_VIOLATIONS_DETAIL_REPORT("Driving Time Violations Detail Report",33,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
+               new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+               new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+               Boolean.TRUE,
+               ReportType.DRIVING_TIME_VIOLATIONS_DETAIL_REPORT),
              
              
     // IFTA
@@ -113,23 +130,28 @@ public enum ReportGroup
      PAYROLL_SUMMARY("Payroll Report Summary",14,EntityType.ENTITY_GROUP_LIST,
                      new CriteriaType[]{CriteriaType.TIMEFRAME}, 
                      new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+                     Boolean.TRUE,
                      ReportType.PAYROLL_SUMMARY),
      PAYROLL_DETAIL("Payroll Report Driver Detail",15,EntityType.ENTITY_GROUP_LIST,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+            Boolean.TRUE,
             ReportType.PAYROLL_DETAIL),
      PAYROLL_SIGNOFF("Payroll Report Driver Signoff",16,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{}, ReportCategory.Performance,
+             Boolean.TRUE,
              ReportType.PAYROLL_SIGNOFF),       
      
      TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+             Boolean.TRUE,
              ReportType.TEN_HOUR_DAY_VIOLATIONS),
     DRIVER_HOURS("Driver Hours", 18, EntityType.ENTITY_GROUP,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+            Boolean.TRUE,
             ReportType.DRIVER_HOURS),
    
     /* VEHICLE_USAGE("Vehicle usage", 19, EntityType.ENTITY_GROUP_OR_DRIVER,
@@ -150,6 +172,7 @@ public enum ReportGroup
     private EntityType entityType; //Type of entity this report is bound to
     private CriteriaType[] criterias;
     private ReportCategory reportCategory;
+    private Boolean requiresHOSAccount;
 
     //GroupTypes These are used to indicate which groups have access to the report as well as which type of groups that this report can be ran against
     private GroupType[] groupTypes; 
@@ -165,6 +188,10 @@ public enum ReportGroup
      * @param reportCategory - Category of the report
      */
     
+    private ReportGroup(String label, Integer code,EntityType entityType,CriteriaType[] criterias,GroupType[] groupTypes,ReportCategory reportCategory, Boolean requiresHOSAccount, ReportType... reports){
+        this(label, code, entityType, criterias, groupTypes, reportCategory, reports);
+        this.requiresHOSAccount = requiresHOSAccount;
+    }
     private ReportGroup(String label, Integer code,EntityType entityType,CriteriaType[] criterias,GroupType[] groupTypes,ReportCategory reportCategory, ReportType... reports){
         this(label, code, entityType, criterias, groupTypes, reports);
         this.reportCategory = reportCategory;
@@ -177,6 +204,7 @@ public enum ReportGroup
         this.criterias = criterias;
         this.groupTypes = groupTypes;
         this.entityType = entityType;
+        this.requiresHOSAccount = Boolean.FALSE;
     }
     
     /**
@@ -300,4 +328,12 @@ public enum ReportGroup
     	return (category == this.getReportCategory());
     }
     
+    public Boolean getRequiresHOSAccount() {
+        return requiresHOSAccount;
+    }
+
+    public void setRequiresHOSAccount(Boolean requiresHOSAccount) {
+        this.requiresHOSAccount = requiresHOSAccount;
+    }
+
 }

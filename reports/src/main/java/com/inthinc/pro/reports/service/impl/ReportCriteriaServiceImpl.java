@@ -50,12 +50,16 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.asset.WarrantyListReportCriteria;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.hos.DotHoursRemainingReportCriteria;
+import com.inthinc.pro.reports.hos.DrivingTimeViolationsDetailReportCriteria;
+import com.inthinc.pro.reports.hos.DrivingTimeViolationsSummaryReportCriteria;
 import com.inthinc.pro.reports.hos.HosDailyDriverLogReportCriteria;
 import com.inthinc.pro.reports.hos.HosDriverDOTLogReportCriteria;
 import com.inthinc.pro.reports.hos.HosEditsReportCriteria;
 import com.inthinc.pro.reports.hos.HosViolationsDetailReportCriteria;
 import com.inthinc.pro.reports.hos.HosViolationsSummaryReportCriteria;
 import com.inthinc.pro.reports.hos.HosZeroMilesReportCriteria;
+import com.inthinc.pro.reports.hos.NonDOTViolationsDetailReportCriteria;
+import com.inthinc.pro.reports.hos.NonDOTViolationsSummaryReportCriteria;
 import com.inthinc.pro.reports.ifta.MileageByVehicleReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByMonthReportCriteria;
 import com.inthinc.pro.reports.ifta.StateMileageByVehicleReportCriteria;
@@ -1031,6 +1035,78 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     public Locale getLocale()
     {
         return locale;
+    }
+
+
+    @Override
+    public ReportCriteria getDrivingTimeViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
+        DrivingTimeViolationsDetailReportCriteria criteria = new DrivingTimeViolationsDetailReportCriteria (locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(accountGroupHierarchy, driverID, interval);
+        return criteria;
+    }
+
+
+    @Override
+    public ReportCriteria getDrivingTimeViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        DrivingTimeViolationsDetailReportCriteria criteria = new DrivingTimeViolationsDetailReportCriteria (locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }
+
+
+    @Override
+    public ReportCriteria getDrivingTimeViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        DrivingTimeViolationsSummaryReportCriteria criteria = new DrivingTimeViolationsSummaryReportCriteria (locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }
+
+
+    @Override
+    public ReportCriteria getNonDOTViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Locale locale) {
+        NonDOTViolationsDetailReportCriteria criteria = new NonDOTViolationsDetailReportCriteria (locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(accountGroupHierarchy, driverID, interval);
+        return criteria;
+    }
+
+
+    @Override
+    public ReportCriteria getNonDOTViolationsDetailReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        NonDOTViolationsDetailReportCriteria criteria = new NonDOTViolationsDetailReportCriteria (locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
+    }
+
+
+    @Override
+    public ReportCriteria getNonDOTViolationsSummaryReportCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale) {
+        NonDOTViolationsSummaryReportCriteria criteria = new NonDOTViolationsSummaryReportCriteria (locale);
+        criteria.setDriverDAO(driverDAO);
+        criteria.setGroupDAO(groupDAO);
+        criteria.setHosDAO(hosDAO);
+               
+        criteria.init(accountGroupHierarchy, groupIDList, interval);
+        return criteria;
     }
 
 }

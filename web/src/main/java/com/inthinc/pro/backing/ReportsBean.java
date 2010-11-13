@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -9,6 +11,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 
 import org.richfaces.model.Ordering;
 
@@ -17,6 +20,8 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
@@ -53,10 +58,193 @@ public abstract class ReportsBean extends BaseBean {
     private List<ColumnHeader> columnSummaryHeaders;
     
     Map<Integer, ReportGroup> reportGroupMap;
+    protected void genReportCriteria()
+    {
+        ReportParams params = getParams();
+        if (getSelected() == null || !params.getValid()) {
+            setReportCriteriaList(null);
+            setViewType("");
+            return;
+        }
+        if (getReportCriteriaList() != null && params.equals(getPreviousParams()))
+            return;
+        
+        setPreviousParams(params.clone());
+        
+        ReportGroup reportGroup = reportGroupMap.get(getSelected());
+        List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
+        
+        switch (reportGroup.getReports()[0]) {
+            case HOS_DAILY_DRIVER_LOG_REPORT:
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), 
+                        params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
+                else
+                    reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(),  
+                            params.getGroupIDList(), 
+                            params.getDateRange().getInterval(), params.getLocale(), getUser().getPerson().getMeasurementType() == MeasurementType.METRIC));
+                break;
+            case HOS_VIOLATIONS_SUMMARY_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                        params.getLocale()));
+                break;
+            case HOS_VIOLATIONS_DETAIL_REPORT:
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.add(getReportCriteriaService().getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
+                       params.getDriverID(), params.getDateRange().getInterval(), 
+                        params.getLocale()));
+                else
+                    reportCriteriaList.add(getReportCriteriaService().getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
+                            params.getGroupIDList(), params.getDateRange().getInterval(), 
+                            params.getLocale()));
+                break;
+            case HOS_DRIVER_DOT_LOG_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getHosDriverDOTLogReportCriteria(params.getDriverID(), params.getDateRange().getInterval(), 
+                        params.getLocale()));
+                break;
+            case DOT_HOURS_REMAINING:
+                reportCriteriaList.add(getReportCriteriaService().getDotHoursRemainingReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(),  
+                        params.getLocale()));
+                break;
+            case HOS_ZERO_MILES:
+                reportCriteriaList.add(getReportCriteriaService().getHosZeroMilesReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
+            case HOS_EDITS:
+                reportCriteriaList.add(getReportCriteriaService().getHosEditsReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
+            case DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                        params.getLocale()));
+                break;
+            case DRIVING_TIME_VIOLATIONS_DETAIL_REPORT:
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
+                       params.getDriverID(), params.getDateRange().getInterval(), 
+                        params.getLocale()));
+                else
+                    reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
+                            params.getGroupIDList(), params.getDateRange().getInterval(), 
+                            params.getLocale()));
+                break;
 
+            
+            case NON_DOT_VIOLATIONS_SUMMARY_REPORT:
+                reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                        params.getLocale()));
+                break;
+            case NON_DOT_VIOLATIONS_DETAIL_REPORT:
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
+                       params.getDriverID(), params.getDateRange().getInterval(), 
+                        params.getLocale()));
+                else
+                    reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsDetailReportCriteria(getAccountGroupHierarchy(), 
+                            params.getGroupIDList(), params.getDateRange().getInterval(), 
+                            params.getLocale()));
+                break;
+            
+            case TEN_HOUR_DAY_VIOLATIONS:
+                reportCriteriaList.add(getReportCriteriaService().getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
+            case PAYROLL_SUMMARY:
+                reportCriteriaList.add(getReportCriteriaService().getPayrollSummaryReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
+            case PAYROLL_DETAIL:
+                reportCriteriaList.add(getReportCriteriaService().getPayrollDetailReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
+            case PAYROLL_SIGNOFF:
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getDriverID(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                else
+                    reportCriteriaList.add(getReportCriteriaService().getPayrollSignoffReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(),  
+                            params.getLocale()));
+                break;
+            
+            case DRIVER_HOURS:
+                reportCriteriaList.add(getReportCriteriaService().getDriverHoursReportCriteria(getAccountGroupHierarchy(), params.getGroupID(), params.getDateRange().getInterval(),  
+                        params.getLocale()));
+                break;
+                
+            case VEHICLE_USAGE:
+                if (params.getParamType() == ReportParamType.DRIVER )
+                    reportCriteriaList.add(getReportCriteriaService().getVehicleUsageReportCriteria(params.getDriverID(), params.getDateRange().getInterval(),  
+                        params.getLocale(), false ));
+                else
+                    reportCriteriaList.add(getReportCriteriaService().getVehicleUsageReportCriteria(params.getGroupID(), params.getDateRange().getInterval(),  
+                            params.getLocale(), true ));
+                break;
+                
+            case MILEAGE_BY_VEHICLE:
+                    reportCriteriaList.add(getReportCriteriaService().getMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                            params.getLocale(), getUser().getPerson().getMeasurementType(), true));
+                break;
+
+            case STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS:
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                        params.getLocale(), getUser().getPerson().getMeasurementType() , params.getIsIfta() ));
+                break;
+
+            case STATE_MILEAGE_BY_VEHICLE:
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                        params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
+                break;
+
+            case STATE_MILEAGE_FUEL_BY_VEHICLE:
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageFuelByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                        params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
+                break;                     
+            
+            case STATE_MILEAGE_COMPARE_BY_GROUP:
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
+                        params.getLocale(), getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
+                break;  
+                
+            case STATE_MILEAGE_BY_MONTH:
+                reportCriteriaList.add(getReportCriteriaService().getStateMileageByMonthReportCriteria(
+                        getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), params.getLocale(), 
+                        getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
+                break;
+            
+            case WARRANTY_LIST:
+                reportCriteriaList.add(getReportCriteriaService().getWarrantyListReportCriteria(
+                        getAccountGroupHierarchy(), params.getGroupID(), getAccountID(),
+                        getAccountName(), params.getLocale(), params.getIsExpired()));
+                break;
+            default:
+                break;
+
+        }
+        for (ReportCriteria reportCriteria : reportCriteriaList) {
+            reportCriteria.setReportDate(new Date(), getUser().getPerson().getTimeZone());
+            reportCriteria.setLocale(getUser().getPerson().getLocale());
+            reportCriteria.setUseMetric((getUser().getPerson().getMeasurementType() != null && getUser().getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
+            reportCriteria.setMeasurementType(getUser().getPerson().getMeasurementType());
+            reportCriteria.setFuelEfficiencyType(getUser().getPerson().getFuelEfficiencyType());
+
+        }
+        
+        setReportCriteriaList(reportCriteriaList);
+    }
     
-    protected abstract void genReportCriteria();
     
+    /**
+     * Produces an group with a single item, which is a blank item.
+     * In the UI it shows as one blank line.
+     * 
+     * @return A group with one blank item.
+     */
+    protected SelectItemGroup getBlankGroup(){
+        SelectItem[] items = new SelectItem[1]; 
+        items[0] = new SelectItem(null, "");
+        return new SelectItemGroup("","",false,items);      
+    }
+
     /**
      * Returns the Items to be shown in the Reports Item List.
      * These items can be divided in groups by using SelectItemGroup.

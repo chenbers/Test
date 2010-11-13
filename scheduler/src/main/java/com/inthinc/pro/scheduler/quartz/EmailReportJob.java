@@ -272,6 +272,39 @@ public class EmailReportJob extends QuartzJobBean {
                 			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
                 			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
+                case DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT:
+                    reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                            user.getPerson().getLocale()));
+                    break;
+                case DRIVING_TIME_VIOLATIONS_DETAIL_REPORT:
+                    if (reportSchedule.getParamType() == ReportParamType.DRIVER )
+                        reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                                reportSchedule.getDriverID(), timeFrame.getInterval(), 
+                                user.getPerson().getLocale()));
+                    else
+                        reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                                reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                                user.getPerson().getLocale()));
+                    break;
+
+                
+                case NON_DOT_VIOLATIONS_SUMMARY_REPORT:
+                    reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
+                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                            user.getPerson().getLocale()));
+                    break;
+                case NON_DOT_VIOLATIONS_DETAIL_REPORT:
+                    if (reportSchedule.getParamType() == ReportParamType.DRIVER )
+                        reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                                reportSchedule.getDriverID(), timeFrame.getInterval(), 
+                                user.getPerson().getLocale()));
+                    else
+                        reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                                reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                                user.getPerson().getLocale()));
+                    break;
+                
 
                 default:
                     break;

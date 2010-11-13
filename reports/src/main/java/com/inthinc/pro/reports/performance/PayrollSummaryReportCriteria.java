@@ -86,12 +86,11 @@ public class PayrollSummaryReportCriteria  extends PayrollReportCriteria {
 
     @Override
     public List<List<Result>> getTableRows() {
-        List<List<Result>> driverRecords = super.getTableRows();
-        if (driverRecords.size() == 0)
-            return driverRecords;
-        
-        
         List<List<Result>>records = new ArrayList<List<Result>>();
+
+        List<List<Result>> driverRecords = super.getTableRows();
+        if (driverRecords == null || driverRecords.size() == 0) 
+            return records;
 
         List<Result> summaryRow = null;
         String driver = null;
