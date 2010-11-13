@@ -257,7 +257,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public void reportGroupChangeAction() {
         allGroupUsers = null;
         getItem().setGroupIDList(null);
-//        getItem().setGroupIDSelectList(null);
         getItem().setGroupID(null);
         getItem().setDriverID(null);
         getItem().setVehicleID(null);
@@ -390,11 +389,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             }
             if (reportSchedule.getGroupIDList() != null) {
                 StringBuffer buffer = new StringBuffer();
-logger.error("grpIDList type: " + reportSchedule.getGroupIDList().getClass().getName());                    
-                for (Object  grpIDObj : reportSchedule.getGroupIDList()) {
-logger.error("grpIDObj: " + grpIDObj.toString());                    
-                    Integer grpID = Integer.valueOf(grpIDObj.toString());
-logger.error("grpID Integer: " + grpID);                    
+                for (Integer grpID : reportSchedule.getGroupIDList()) {
                     Group group = this.getGroupHierarchy().getGroup(grpID);
                     if (group != null) {
                         if (buffer.length() > 0)
@@ -681,6 +676,46 @@ logger.error("grpID Integer: " + grpID);
         private ReportGroup report;
         @Column(updateable = true)
         private Integer dayOfMonth;
+        private List<String> groupIDSelectList;
+
+        public List<String> getGroupIDSelectList() {
+            if (getGroupIDList() != null) {
+                groupIDSelectList = new ArrayList<String>();
+                for (Integer id : getGroupIDList()) {
+                    groupIDSelectList.add(id.toString());
+                }
+                System.out.println("getGroupIDSelectList -- " + groupIDSelectList.size());            
+            }
+            else {
+                System.out.println("getGroupIDSelectList -- null");            
+                
+                groupIDSelectList = null;
+            }
+            
+            return groupIDSelectList;
+        }
+
+        public void setGroupIDSelectList(List<String> groupIDSelectList) {
+  //          this.groupIDSelectList = groupIDSelectList;
+            if (groupIDSelectList == null) {
+                System.out.println("setGroupIDSelectList -- null");            
+                setGroupIDList(null);
+                return;
+            }
+            System.out.println("setGroupIDSelectList -- " + groupIDSelectList.size());            
+            
+            List<Integer> groupIDList = new ArrayList<Integer>();
+            for (String groupIDStr : groupIDSelectList) {
+                try {
+                    groupIDList.add(Integer.valueOf(groupIDStr));
+                }
+                catch (NumberFormatException ex) {
+                    logger.error(ex);
+                    
+                }
+            }
+            setGroupIDList(groupIDList);
+        }
 
         @Override
         public boolean isSelected() {
@@ -739,5 +774,35 @@ logger.error("grpID Integer: " + grpID);
         public Integer getDayOfMonth() {
             return dayOfMonth;
         }
+/*        
+        @Override
+        public List<Integer> getGroupIDList() {
+            if (groupIDSelectList == null)
+                return null;
+            
+            List<Integer> groupIDList = new ArrayList<Integer>();
+            for (String groupIDStr : groupIDSelectList) {
+                try {
+                    groupIDList.add(Integer.valueOf(groupIDStr));
+                }
+                catch (NumberFormatException ex) {
+                    logger.error(ex);
+                    
+                }
+            }
+            return groupIDList;
+        }
+        @Override
+        public void setGroupIDList(List<Integer> groupIDList) {
+            super.setGroupIDList(groupIDList);
+            if (groupIDList != null) {
+                groupIDSelectList = new ArrayList<String>();
+                for (Integer id : groupIDList) {
+                    groupIDSelectList.add(id.toString());
+                }
+            }
+            else groupIDSelectList = null;
+        }
+*/        
     }
 }
