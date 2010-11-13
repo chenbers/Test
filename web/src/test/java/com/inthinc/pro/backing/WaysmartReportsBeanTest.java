@@ -44,13 +44,14 @@ public class WaysmartReportsBeanTest{
         assertTrue("".equals(blankItems[0].getLabel()));
         
         // The second group includes the Performance items
-        checkGroupIncludesOnlyCategory(groupList.get(1), ReportCategory.Performance);
+        // removed from waysmart menu on non-hos account since all require hos data
+//        checkGroupIncludesOnlyCategory(groupList.get(1), ReportCategory.Performance);
 
         // The third group includes the DOT/IFTA items
-        checkGroupIncludesOnlyCategory(groupList.get(2), ReportCategory.IFTA);
+        checkGroupIncludesOnlyCategory(groupList.get(1), ReportCategory.IFTA);
 
         // The fourth group includes the Asset items
-        checkGroupIncludesOnlyCategory(groupList.get(3), ReportCategory.Asset);
+        checkGroupIncludesOnlyCategory(groupList.get(2), ReportCategory.Asset);
     
     }
     
