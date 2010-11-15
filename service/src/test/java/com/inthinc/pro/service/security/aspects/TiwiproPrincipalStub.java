@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * TODO Temporary place holder until the final spec of the class is defined.
  */
 @Component
-public class TiwiproPrincipal {
+public class TiwiproPrincipalStub {
 
     private boolean inthincUser;
     

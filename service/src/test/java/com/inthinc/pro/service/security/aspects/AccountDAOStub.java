@@ -55,8 +55,13 @@ public class AccountDAOStub implements AccountDAO {
      */
     @Override
     public Account findByID(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+        if (id == 23) {
+            return new Account(666, null);
+        } else if (id == 25) {
+            return new Account(10, null);
+        }
+        
+        else return null;
     }
 
     /* (non-Javadoc)

@@ -8,7 +8,6 @@ import junit.framework.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -48,7 +47,7 @@ public class BaseAuthorizationAdviceTest {
 
     @Test
     // TODO Finish this test when final pieces are in place.
-    public void testGrantsAccessToUser() {
+    public void testGrantsAccessToUpdate() {
         AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
         adapter.setAccountDAO(new AccountDAOStub());
         Account account = new Account();
@@ -61,7 +60,7 @@ public class BaseAuthorizationAdviceTest {
 
     @Test
     // TODO Finish this test when final pieces are in place.
-    public void testDeniesAccessToUser() {
+    public void testDeniesAccessToUpdate() {
         try {
             AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
             BaseAuthorizationAdvice advice = (BaseAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, BaseAuthorizationAdvice.class);
@@ -74,6 +73,67 @@ public class BaseAuthorizationAdviceTest {
             adapter.update(account);
             Assert.fail("Should have thrown exception " + AccessDeniedException.class + ". Ids should not match. Principal id = " + advice.getPrincipal().getAccountID() + " resource id = "
                     + account.getAccountID());
+        } catch (AccessDeniedException e) {
+            // Ok, exception should have been raised.
+        }
+    }
+    
+    @Test
+    // TODO Finish this test when final pieces are in place.
+    public void testGrantsAccessToCreate() {
+        AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
+        adapter.setAccountDAO(new AccountDAOStub());
+        Account account = new Account();
+        // TODO Change this test once principal class is ready.
+        // The principal stub id is 10.
+        account.setAcctID(10);
+        
+        adapter.create(account);
+    }
+    
+    @Test
+    // TODO Finish this test when final pieces are in place.
+    public void testDeniesAccessToCreate() {
+        try {
+            AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
+            BaseAuthorizationAdvice advice = (BaseAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, BaseAuthorizationAdvice.class);
+            adapter.setAccountDAO(new AccountDAOStub());
+            Account account = new Account();
+            // TODO Change this test once principal class is ready.
+            // The principal stub id is 10.
+            account.setAcctID(99);
+            
+            adapter.create(account);
+            Assert.fail("Should have thrown exception " + AccessDeniedException.class + ". Ids should not match. Principal id = " + advice.getPrincipal().getAccountID() + " resource id = "
+                    + account.getAccountID());
+        } catch (AccessDeniedException e) {
+            // Ok, exception should have been raised.
+        }
+    }
+
+    @Test
+    // TODO Finish this test when final pieces are in place.
+    public void testGrantsAccessToFindById() {
+        try {
+            AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
+            adapter.setAccountDAO(new AccountDAOStub());
+            Account account = adapter.findByID(25);
+            
+            assertNotNull(account);
+        } catch (AccessDeniedException e) {
+            // Ok, exception should have been raised.
+        }
+    }
+
+    @Test
+    // TODO Finish this test when final pieces are in place.
+    public void testDeniesAccessToFindById() {
+        try {
+            AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
+            adapter.setAccountDAO(new AccountDAOStub());
+            adapter.findByID(23);
+
+            Assert.fail("Should have thrown exception " + AccessDeniedException.class + ".");
         } catch (AccessDeniedException e) {
             // Ok, exception should have been raised.
         }

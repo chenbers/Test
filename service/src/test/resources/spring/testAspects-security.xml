@@ -19,4 +19,5 @@
   <aop:aspectj-autoproxy/>
   
   <beans:bean id="accountDaoAdapter" class="com.inthinc.pro.service.adapters.AccountDAOAdapter"/>
+  <beans:bean id="addressDaoAdapter" class="com.inthinc.pro.service.adapters.AddressDAOAdapter"/>
 </beans:beans>
