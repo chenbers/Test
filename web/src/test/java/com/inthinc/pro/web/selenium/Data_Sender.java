@@ -4,7 +4,7 @@ import java.io.*;
 
 public class Data_Sender {
 
-public static OutputStreamWriter OpenOutputStream( String path,String message) {
+public static OutputStreamWriter OpenOutputStream( String path) {
 	//Open OutStream to be used for test output
 	try {
 		OutputStream fout = new FileOutputStream(path);
@@ -34,7 +34,7 @@ public static void writeLine (OutputStreamWriter ostream, String message){
 		}
 }
 
-public static void closeOutputSteam (OutputStreamWriter ostream){
+public void closeOutputSteam (OutputStreamWriter ostream){
 	//Close Stream 
 	try {
 	ostream.flush();
