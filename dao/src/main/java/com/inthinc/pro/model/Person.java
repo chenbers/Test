@@ -6,14 +6,13 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 
 @XmlRootElement
-public class Person extends BaseEntity implements Comparable<Person> {
+public class Person extends BaseEntity implements Comparable<Person>, HasAccountId {
 
     @Column(updateable = false)
     private static final long serialVersionUID = -7162580776394490873L;
@@ -403,7 +402,16 @@ public class Person extends BaseEntity implements Comparable<Person> {
         this.status = status;
     }
 
-    public Integer getAcctID() {
+    public Integer getAcctID()
+    {
+        return acctID;
+    }
+
+    /*
+     * Note: The getAcctID() method should be flagged as deprecated and this method should be used instead.
+     */
+    public Integer getAccountID()
+    {
         return acctID;
     }
 

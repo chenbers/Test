@@ -2,14 +2,14 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.configurator.ProductType;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 @XmlRootElement
-public class Device extends BaseEntity
+public class Device extends BaseEntity implements HasAccountId
 {
     @Column(updateable = false)
     private static final long serialVersionUID = 2865030663439253720L;

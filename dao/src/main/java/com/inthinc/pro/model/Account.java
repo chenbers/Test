@@ -10,7 +10,7 @@ import com.inthinc.pro.dao.annotations.SimpleName;
 
 @XmlRootElement
 @SimpleName(simpleName="Acct")
-public class Account extends BaseEntity implements Comparable<Account> 
+public class Account extends BaseEntity implements Comparable<Account>, HasAccountId 
 {
 
     /**
@@ -74,6 +74,14 @@ public class Account extends BaseEntity implements Comparable<Account>
     }    
 
     public Integer getAcctID()
+    {
+        return acctID;
+    }
+
+    /*
+     * Note: The getAcctID() method should be flagged as deprecated and this method should be used instead.
+     */
+    public Integer getAccountID()
     {
         return acctID;
     }

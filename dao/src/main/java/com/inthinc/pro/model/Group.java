@@ -9,7 +9,7 @@ import com.inthinc.pro.dao.annotations.ID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Group extends BaseEntity
+public class Group extends BaseEntity implements HasAccountId
 {
 
     @Column(updateable = false)

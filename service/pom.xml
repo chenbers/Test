@@ -231,6 +231,13 @@
 			<groupId>org.jasypt</groupId>
 			<artifactId>jasypt</artifactId>
 		</dependency>
+		
+		<!-- AspectJ weaver for Aspect security ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+	    <dependency>
+	        <groupId>org.aspectj</groupId>
+	        <artifactId>aspectjweaver</artifactId>
+	        <version>1.6.5</version>
+	    </dependency>
 	</dependencies>
 	<reporting>
 		<plugins>

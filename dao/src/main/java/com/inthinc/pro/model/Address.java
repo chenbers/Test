@@ -1,14 +1,14 @@
 package com.inthinc.pro.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.annotations.SimpleName;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 @XmlRootElement
 @SimpleName(simpleName = "Addr")
-public class Address extends BaseEntity {
+public class Address extends BaseEntity implements HasAccountId {
 
     /**
      * 

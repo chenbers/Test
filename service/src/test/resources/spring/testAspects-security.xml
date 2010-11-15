@@ -17,28 +17,6 @@
   <context:component-scan base-package="com.inthinc.pro.service.security.aspects"/>
   <context:component-scan base-package="com.inthinc.pro.service.adapters"/>
   <aop:aspectj-autoproxy/>
-
-  <http auto-config="true" create-session="never" session-fixation-protection="newSession">
-    <intercept-url pattern="/api/**" access="ROLE_ADMIN" />
-    <http-basic />
-  </http>
   
-  <authentication-provider user-service-ref="userDetailsService">
-    <password-encoder ref="passwordEncoder" />
-  </authentication-provider>
-  
-  <beans:bean id="userDetailsService" class="com.inthinc.pro.security.userdetails.ProUserServiceImpl">
-    <beans:property name="userDAO" ref="userDAO" />
-    <beans:property name="groupDAO" ref="groupDAO" />
-    <beans:property name="roleDAO" ref="roleDAO" />
-  </beans:bean>
-
-  <!--  Password encryption  -->
-  <beans:bean id="jasyptPasswordEncryptor" class="org.jasypt.util.password.StrongPasswordEncryptor" />
-  <beans:bean id="passwordEncoder" class="org.jasypt.spring.security2.PasswordEncoder">
-    <beans:property name="passwordEncryptor">
-      <beans:ref bean="jasyptPasswordEncryptor" />
-    </beans:property>
-  </beans:bean>
-
+  <beans:bean id="accountDaoAdapter" class="com.inthinc.pro.service.adapters.AccountDAOAdapter"/>
 </beans:beans>
