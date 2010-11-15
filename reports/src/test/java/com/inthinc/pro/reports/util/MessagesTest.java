@@ -2,10 +2,16 @@ package com.inthinc.pro.reports.util;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.TreeMap;
@@ -62,16 +68,67 @@ public class MessagesTest {
 		nonTranslatedMap_ro.put("report.vehicle.odometer", "not_translated");// Odometer
 	}
 	
-	@Test
-	@Ignore
-	public void roTest(){
+	String reportI18nPath[] = {
+	        "com/inthinc/pro/reports/jasper/asset/i18n/",    
+            "com/inthinc/pro/reports/jasper/hos/i18n/",    
+            "com/inthinc/pro/reports/jasper/ifta/i18n/",    
+            "com/inthinc/pro/reports/jasper/performance/i18n/"    
+	};
+	
+    @Test
+    @Ignore
+    public void roLangTest() {
+    
+        int errorCount = langTest("com/inthinc/pro/", "ReportMessages", "ro", nonTranslatedMap_ro);
+        
+        // reports that have specific i18n files
+        for (String path : reportI18nPath ) {
+            List<String> bundleNames = getBundles(path);
+            for (String bundle : bundleNames) {
+                System.out.println(bundle);
+                errorCount += langTest(path, bundle, "ro", null);
+            }
+        }
+
+    
+        assertEquals("total ro messages need translations", 0, errorCount);
+
+    }
+
+    
+    private List<String> getBundles(String string) {
+        List<String> bundles = new ArrayList<String>();
+        try {
+            Enumeration<URL> enumer = Thread.currentThread().getContextClassLoader().getResources(string);
+            while (enumer.hasMoreElements()) {
+                URL url = enumer.nextElement();
+                File dir = new File(url.toURI());
+                if (dir.isDirectory()) {
+                    String[] propFiles = dir.list(new PropertiesFileFilter());
+                    for (String propFile : propFiles)
+                        bundles.add(propFile.substring(0, propFile.length()-11)); //.properties
+                }
+                
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return bundles;
+    }
+
+
+    public int langTest(String path, String bundleName, String lang, Map<String, String> langNonTranslatedMap){
 		
-		Properties english = getProperties("com/inthinc/pro/ReportMessages.properties");
-		Properties translated = getProperties("com/inthinc/pro/ReportMessages_ro.properties");
+		Properties english = getProperties(path + bundleName + ".properties");
+		Properties translated = getProperties(path + bundleName + "_" + lang + ".properties");
 
 		int errorCount =  0;
 			
-		System.out.println("Checking Language: ro");
+		System.out.println("Checking Language: " + lang);
 		Map<String, String> needTrans = new TreeMap<String, String>();
 
 		Enumeration<?> propNames = english.propertyNames(); 
@@ -93,9 +150,9 @@ public class MessagesTest {
 				continue;
 			else if (nonTranslatedMap.containsKey(key))
 				continue;
-			else if (nonTranslatedMap_ro.containsKey(key))
+			else if (langNonTranslatedMap != null && langNonTranslatedMap.containsKey(key))
 				continue;
-			else if (langValue.trim().equalsIgnoreCase(value.trim()) || langValue.contains("(ro)")) { 
+			else if (langValue.trim().equalsIgnoreCase(value.trim()) || langValue.contains("(" + lang+ ")")) { 
 //				System.out.println("NOT TRANSLATED: " + key + " en: " + value + " ro: " + langValue);
 //				System.out.println(key + " = " + value);
 				needTrans.put(key, value);
@@ -105,29 +162,48 @@ public class MessagesTest {
 		}
 		
 		if (needTrans.size() > 0) {
+            System.out.println("*** " + path + bundleName + " ***");
 			for (String key : needTrans.keySet()) 
 				System.out.println(key + " = " + needTrans.get(key));
 		}
 
 				
-		assertEquals("ro messages need translations", 0, errorCount);
+//		assertEquals("ro messages need translations", 0, errorCount);
+		return errorCount;
 		
 		
 	}
 
 	private Properties getProperties(String propFile) {
+	    System.out.println("propFile: " + propFile);
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propFile);
-        
         Properties properties = new Properties();
-        try {
-			properties.load(stream);
-		} catch (IOException e) {
-			System.out.println("ERROR loading: " + propFile);
-			e.printStackTrace();
-		}
+        if (stream != null) {
+            try {
+    			properties.load(stream);
+    		} catch (IOException e) {
+    			System.out.println("ERROR loading: " + propFile);
+    			e.printStackTrace();
+    		}
+        }
 
 		return properties;
 	}
 	
+	
+	class PropertiesFileFilter implements FilenameFilter {
+
+        @Override
+        public boolean accept(File dir, String name) {
+System.out.println("filter " + name);            
+            if (name.contains("_"))
+                return false;
+            if (name.contains(".properties"))
+                return true;
+            
+            return false;
+        }
+	    
+	}
 	
 }
