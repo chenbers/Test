@@ -1454,4 +1454,10 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return null;
     }
 
+    @Override
+    public Map<String, Object> publishZones(Integer accountID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
