@@ -40,4 +40,11 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
     {
         return new String[] { "name", "model" };
     }
+
+    @Override
+    public void checkBatchEditId(BaseAdminBean<VehicleView> adminBean) {
+
+        assertEquals(adminBean.getItem().getId().intValue(), -1);
+    }
+    
 }

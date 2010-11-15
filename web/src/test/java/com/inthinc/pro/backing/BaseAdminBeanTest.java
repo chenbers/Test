@@ -254,7 +254,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
 
         // edit item
         assertNotNull(adminBean.getItem());
-        assertNull(adminBean.getItem().getId());
+        
+        checkBatchEditId(adminBean);
 
         // cancel edit
         assertEquals(adminBean.cancelEdit(), adminBean.getFinishedRedirect());
@@ -316,5 +317,11 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         count = adminBean.getItemCount();
         assertEquals(adminBean.delete(), adminBean.getFinishedRedirect());
         assertEquals(adminBean.getItemCount(), count - 1);
+    }
+    
+    public void checkBatchEditId(BaseAdminBean<T> adminBean){
+        
+        assertNull(adminBean.getItem().getId());
+
     }
 }
