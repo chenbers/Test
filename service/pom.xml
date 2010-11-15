@@ -1,226 +1,273 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <parent>
-    <artifactId>root</artifactId>
-    <groupId>com.inthinc.pro</groupId>
-    <version>1.2.6-SNAPSHOT</version>
-  </parent>
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.inthinc.pro.service</groupId>
-  <artifactId>service</artifactId>
-  <packaging>war</packaging>
-  <name>Pro Portal - Services</name>
-  <version>1.2.6-SNAPSHOT</version>
-  <build>
-    <finalName>service</finalName>
-    <plugins>
-      <!--
-        <plugin> <groupId>org.mortbay.jetty</groupId> <artifactId>maven-jetty-plugin</artifactId> <version>6.1.21</version> <configuration> <scanIntervalSeconds>0</scanIntervalSeconds>
-        <stopKey>service</stopKey> <stopPort>9966</stopPort> <connectors> <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector"> <port>9676</port> <maxIdleTime>60000</maxIdleTime>
-        </connector> </connectors> </configuration> <executions> <execution> <id>start-jetty</id> <phase>pre-integration-test</phase> <goals> <goal>run</goal> </goals> <configuration>
-        <scanIntervalSeconds>0</scanIntervalSeconds> <daemon>true</daemon> </configuration> </execution> <execution> <id>stop-jetty</id> <phase>post-integration-test</phase> <goals> <goal>stop</goal>
-        </goals> </execution> </executions> </plugin>
-      -->
-    </plugins>
-  </build>
-  <dependencies>
-	<dependency>
-		<!-- JMockit MUST appear before JUnit and spring-test -->
-		<groupId>mockit</groupId>
-		<artifactId>jmockit</artifactId>
-	</dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-    </dependency>
-    <!-- added for spring junit tests -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-beans</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context-support</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-core</artifactId>
-      <classifier>tests</classifier>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-core-tiger</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-core</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-support</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-taglibs</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.aspectj</groupId>
-      <artifactId>aspectjrt</artifactId>
-      <version>1.6.5</version>
-    </dependency>
-    <dependency>
-      <groupId>com.inthinc.pro.dao</groupId>
-      <artifactId>dao</artifactId>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>mail</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.iwi</groupId>
-      <artifactId>teenserverdao</artifactId>
-      <version>1.0.17</version>
-      <scope>compile</scope>
-    </dependency>
-			<dependency>
-				<groupId>postgresql</groupId>
-				<artifactId>postgresql</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>postgres</groupId>
-				<artifactId>postgis</artifactId>
-			</dependency>
-    <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymock</artifactId>
-      <version>2.4</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.easymock</groupId>
-      <artifactId>easymockclassextension</artifactId>
-      <version>2.4</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.opensymphony.quartz</groupId>
-      <artifactId>quartz</artifactId>
-      <version>1.6.1</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <scope>provided</scope>
-    </dependency><!--
-    <dependency>
-      <groupId>tjws</groupId>
-      <artifactId>webserver</artifactId>
-      <version>1.3.3</version>
-      <scope>test</scope>
-    </dependency>
-    -->
-    <dependency>
-      <groupId>org.scannotation</groupId>
-      <artifactId>scannotation</artifactId>
-      <version>1.0.2</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-    </dependency>
-    
-    <!-- RestEasy ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-    <dependency>
-    	<!-- Core Library -->
-    	<groupId>org.jboss.resteasy</groupId>
-    	<artifactId>resteasy-jaxrs</artifactId>
-    	<version>2.0.1.GA</version>
-    	<scope>compile</scope>
-    	<exclusions>
-    		<exclusion>
-    			<artifactId>slf4j-simple</artifactId>
-    			<groupId>org.slf4j</groupId>
-    		</exclusion>
-    	</exclusions>
-    </dependency> 
-    <dependency>
-    	<!-- JAX-RS API -->
-    	<groupId>org.jboss.resteasy</groupId>
-    	<artifactId>jaxrs-api</artifactId>
-    	<version>2.0.1.GA</version>
-    	<scope>compile</scope>
-    </dependency>
-        
-       <!-- optional modules -->
-    
-    <dependency>
-    	<!-- JAXB support -->
-    	<groupId>org.jboss.resteasy</groupId>
-    	<artifactId>resteasy-jaxb-provider</artifactId>
-    	<version>2.0.1.GA</version>
-    	<scope>compile</scope>
-    </dependency>    
-    <dependency>
-        <!-- Spring integration -->
-    	<groupId>org.jboss.resteasy</groupId>
-    	<artifactId>resteasy-spring</artifactId>
-    	<version>2.0.1.GA</version>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-        <!-- RestEasy Server Cache -->
-    	<groupId>org.jboss.resteasy</groupId>
-    	<artifactId>resteasy-cache-core</artifactId>
-    	<version>2.0.1.GA</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <!-- RestEasy ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
-    
-    
-    <dependency>
-    	<groupId>org.slf4j</groupId>
-    	<artifactId>slf4j-log4j12</artifactId>
-    	<version>1.5.8</version>
-    	<type>jar</type>
-    	<scope>compile</scope>
-    </dependency>
-    <dependency>
-    	<groupId>org.jasypt</groupId>
-    	<artifactId>jasypt</artifactId>
-    </dependency>
-  </dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>root</artifactId>
+		<groupId>com.inthinc.pro</groupId>
+		<version>1.2.6-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.inthinc.pro.service</groupId>
+	<artifactId>service</artifactId>
+	<packaging>war</packaging>
+	<name>Pro Portal - Services</name>
+	<version>1.2.6-SNAPSHOT</version>
+	<build>
+		<finalName>service</finalName>
+		<plugins>
+			<!--
+				<plugin> <groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.21</version> <configuration>
+				<scanIntervalSeconds>0</scanIntervalSeconds>
+				<stopKey>service</stopKey> <stopPort>9966</stopPort> <connectors>
+				<connector
+				implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+				<port>9676</port> <maxIdleTime>60000</maxIdleTime> </connector>
+				</connectors> </configuration> <executions> <execution>
+				<id>start-jetty</id> <phase>pre-integration-test</phase> <goals>
+				<goal>run</goal> </goals> <configuration>
+				<scanIntervalSeconds>0</scanIntervalSeconds> <daemon>true</daemon>
+				</configuration> </execution> <execution> <id>stop-jetty</id>
+				<phase>post-integration-test</phase> <goals> <goal>stop</goal>
+				</goals> </execution> </executions> </plugin>
+			-->
+		</plugins>
+	</build>
+	<dependencies>
+		<dependency>
+			<!-- JMockit MUST appear before JUnit and spring-test -->
+			<groupId>mockit</groupId>
+			<artifactId>jmockit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+		<!-- added for spring junit tests -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<classifier>tests</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core-tiger</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-support</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.6.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.inthinc.pro.dao</groupId>
+			<artifactId>dao</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.iwi</groupId>
+			<artifactId>teenserverdao</artifactId>
+			<version>1.0.17</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>postgres</groupId>
+			<artifactId>postgis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>2.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymockclassextension</artifactId>
+			<version>2.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.opensymphony.quartz</groupId>
+			<artifactId>quartz</artifactId>
+			<version>1.6.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<!--
+			<dependency> <groupId>tjws</groupId>
+			<artifactId>webserver</artifactId> <version>1.3.3</version>
+			<scope>test</scope> </dependency>
+		-->
+		<dependency>
+			<groupId>org.scannotation</groupId>
+			<artifactId>scannotation</artifactId>
+			<version>1.0.2</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+
+		<!-- RestEasy ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+		<dependency>
+			<!-- Core Library -->
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>2.0.1.GA</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>slf4j-simple</artifactId>
+					<groupId>org.slf4j</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<!-- JAX-RS API -->
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>jaxrs-api</artifactId>
+			<version>2.0.1.GA</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- optional modules -->
+
+		<dependency>
+			<!-- JAXB support -->
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxb-provider</artifactId>
+			<version>2.0.1.GA</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<!-- Spring integration -->
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-spring</artifactId>
+			<version>2.0.1.GA</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<!-- RestEasy Server Cache -->
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-cache-core</artifactId>
+			<version>2.0.1.GA</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<!-- RestEasy ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.5.8</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+		</dependency>
+	</dependencies>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<reportSets>
+					<reportSet>
+						<id>html</id>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+					<reportSet>
+						<configuration>
+							<doclet>com.lunatech.doclets.jax.jaxrs.JAXRSDoclet</doclet>
+							<docletArtifacts>
+								<docletArtifact>
+									<groupId>com.lunatech.jax-doclets</groupId>
+									<artifactId>doclets</artifactId>
+									<version>0.8.1</version>
+								</docletArtifact>
+							</docletArtifacts>
+							<destDir>jaxrsdocs</destDir>
+							<name>JaxRSDocs</name>
+							<description>RESTful API documentation.</description>
+							<links>
+								<link>..\apidocs</link>
+							</links>
+						</configuration>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
