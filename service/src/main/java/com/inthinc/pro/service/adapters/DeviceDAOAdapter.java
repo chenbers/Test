@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.inthinc.pro.service.adapters;
 
 import java.util.List;
@@ -60,6 +57,23 @@ public class DeviceDAOAdapter extends BaseDAOAdapter<Device> {
 
     public Device findBySerialNum(String serialNum) {
         return deviceDAO.findBySerialNum(serialNum);
-    }    
+    }
+
+	// Getters and setters -------------------------------------------------
+    
+    /**
+	 * @return the deviceDAO
+	 */
+	public DeviceDAO getDeviceDAO() {
+		return deviceDAO;
+	}
+
+	/**
+	 * @param deviceDAO the deviceDAO to set
+	 */
+	public void setDeviceDAO(DeviceDAO deviceDAO) {
+		this.deviceDAO = deviceDAO;
+	}  
+    
     
 }

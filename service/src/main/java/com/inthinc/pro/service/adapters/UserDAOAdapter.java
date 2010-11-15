@@ -1,11 +1,6 @@
-/**
- * 
- */
 package com.inthinc.pro.service.adapters;
 
 import java.util.List;
-
-import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.UserDAO;
@@ -57,6 +52,22 @@ public class UserDAOAdapter extends BaseDAOAdapter<User> {
     public User login(String userName, String password) {
     	// Advice will take care of verifying user credentials
     	return userDAO.findByUserName(userName);
-    }    
+    }
+
+	// Getters and setters -----------------------------------------------------
+    
+	/**
+	 * @return the userDAO
+	 */
+	public UserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	/**
+	 * @param userDAO the userDAO to set
+	 */
+	public void setUserDAO(UserDAO userDAO) {
+		this.userDAO = userDAO;
+	}    
     
 }

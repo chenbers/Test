@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.inthinc.pro.service.adapters;
 
 import java.util.List;
@@ -37,6 +34,25 @@ public class PersonDAOAdapter extends BaseDAOAdapter<Person> {
 	
     public Integer create(Integer accountID, Person person) {
         return personDAO.create(accountID, person);
-    }	
+    }
+
+	// Getters and setters -----------------------------------------------------
+    
+	/**
+	 * @return the personDAO
+	 */
+	public PersonDAO getPersonDAO() {
+		return personDAO;
+	}
+
+	/**
+	 * @param personDAO the personDAO to set
+	 */
+	public void setPersonDAO(PersonDAO personDAO) {
+		this.personDAO = personDAO;
+	}	
+
+    
+    
 
 }

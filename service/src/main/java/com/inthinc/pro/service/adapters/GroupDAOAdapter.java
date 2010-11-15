@@ -1,9 +1,5 @@
-/**
- * 
- */
 package com.inthinc.pro.service.adapters;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.inthinc.pro.dao.GenericDAO;
@@ -56,5 +52,35 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
     
     public List<DriverVehicleScoreWrapper> getVehicleScores(Integer groupID, Duration duration) {
         return groupReportDAO.getVehicleScores(groupID, duration);
-    }    
+    }
+
+	// Getters and setters -----------------------------------------------------
+    
+	/**
+	 * @return the groupDAO
+	 */
+	public GroupDAO getGroupDAO() {
+		return groupDAO;
+	}
+
+	/**
+	 * @param groupDAO the groupDAO to set
+	 */
+	public void setGroupDAO(GroupDAO groupDAO) {
+		this.groupDAO = groupDAO;
+	}
+
+	/**
+	 * @return the groupReportDAO
+	 */
+	public GroupReportDAO getGroupReportDAO() {
+		return groupReportDAO;
+	}
+
+	/**
+	 * @param groupReportDAO the groupReportDAO to set
+	 */
+	public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
+		this.groupReportDAO = groupReportDAO;
+	}    
 }

@@ -33,5 +33,21 @@ public class AddressDAOAdapter extends BaseDAOAdapter<Address> {
 		return address.getAddrID();
 	}
 
+	// Getters and setters -------------------------------------------------
+    
+	/**
+	 * @return the addressDAO
+	 */
+	public AddressDAO getAddressDAO() {
+		return addressDAO;
+	}
+
+	/**
+	 * @param addressDAO the addressDAO to set
+	 */
+	public void setAddressDAO(AddressDAO addressDAO) {
+		this.addressDAO = addressDAO;
+	}
+
 	
 }

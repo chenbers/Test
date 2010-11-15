@@ -42,6 +42,8 @@ public class AccountDAOAdapter extends BaseDAOAdapter<Account> {
 		return account.getAcctID();
 	}
 	
+	// Getters and setters -------------------------------------------------
+	
 	/**
 	 * @param accountDAO the accountDAO to set
 	 */

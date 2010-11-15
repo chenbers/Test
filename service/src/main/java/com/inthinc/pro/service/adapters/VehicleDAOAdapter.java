@@ -1,9 +1,5 @@
-/**
- * 
- */
 package com.inthinc.pro.service.adapters;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -92,5 +88,49 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
     
     public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
         return vehicleDAO.getTrips(vehicleID, startDate, endDate);
-    }    
+    }
+
+	// Getters and setters -----------------------------------------------------
+    
+	/**
+	 * @return the vehicleDAO
+	 */
+	public VehicleDAO getVehicleDAO() {
+		return vehicleDAO;
+	}
+
+	/**
+	 * @param vehicleDAO the vehicleDAO to set
+	 */
+	public void setVehicleDAO(VehicleDAO vehicleDAO) {
+		this.vehicleDAO = vehicleDAO;
+	}
+
+	/**
+	 * @return the eventDAO
+	 */
+	public EventDAO getEventDAO() {
+		return eventDAO;
+	}
+
+	/**
+	 * @param eventDAO the eventDAO to set
+	 */
+	public void setEventDAO(EventDAO eventDAO) {
+		this.eventDAO = eventDAO;
+	}
+
+	/**
+	 * @return the vehicleReportDAO
+	 */
+	public VehicleReportDAO getVehicleReportDAO() {
+		return vehicleReportDAO;
+	}
+
+	/**
+	 * @param vehicleReportDAO the vehicleReportDAO to set
+	 */
+	public void setVehicleReportDAO(VehicleReportDAO vehicleReportDAO) {
+		this.vehicleReportDAO = vehicleReportDAO;
+	}    
 }
