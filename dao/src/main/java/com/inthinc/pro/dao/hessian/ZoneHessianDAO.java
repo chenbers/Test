@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
@@ -27,5 +28,9 @@ public class ZoneHessianDAO extends GenericHessianDAO<Zone, Integer> implements 
             return Collections.emptyList();
         }
         
+    }
+    @Override
+    public Integer publishZones(Integer accountID) {
+        return getChangedCount(getSiloService().publishZones(accountID));
     }
 }

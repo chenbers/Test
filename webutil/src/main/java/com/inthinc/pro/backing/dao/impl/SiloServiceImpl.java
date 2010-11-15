@@ -1088,6 +1088,12 @@ public class SiloServiceImpl implements SiloService {
     public List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID) {
         return null;
     }
+
+    @Override
+   @MethodDescription(description = "Sends an UPDATE_ZONES forward command to all devices.", crudType=CrudType.UPDATE)
+   public Map<String, Object> publishZones(@DaoParam(name = "accountID", isAccountID=true) Integer accountID) {
+        return null;
+    }
     
 	
 }

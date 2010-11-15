@@ -47,7 +47,7 @@ public class ZonesBean extends BaseBean
     private ZoneAlertDAO         zoneAlertDAO;
     private ZonePublishDAO       zonePublishDAO;
     private String               helpFile = "Zones.htm";
-    private Boolean enablePublish  = Boolean.valueOf(true);
+    private Boolean             enablePublish;
     private ZoneVehicleType      downloadType;
     private String              message;
 
@@ -84,8 +84,6 @@ public class ZonesBean extends BaseBean
         {
             zoneIDs.add(new SelectItem(zone.getZoneID(),zone.getName()));
         }
-        //zoneIDs.add(0,new SelectItem(null,""));
-        initEnablePublish();
     }
     
     public List<Zone> getZones()
@@ -448,6 +446,8 @@ public class ZonesBean extends BaseBean
 
 
     public Boolean getEnablePublish() {
+        if (enablePublish == null)
+            initEnablePublish();
         return enablePublish;
     }
     
@@ -480,10 +480,7 @@ public class ZonesBean extends BaseBean
             zonePublishDAO.publishZone(zonePublish);
         }
         
-        // update account
-        Account account = getAccountDAO().findByID(getAccountID());
-        account.setZonePublishDate(new Date());
-        getAccountDAO().update(account);
+        zoneDAO.publishZones(getAccountID());
         
         setEnablePublish(false);
         setMessage("zones_publishMsg");
