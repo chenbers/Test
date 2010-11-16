@@ -40,8 +40,8 @@ public class BaseAuthorizationAdvice {
      * <p/>
      * This pointcut will match the findByID(java.lang.Integer) method on any class in the adapters package.
      */
-    @Pointcut("execution(* com.inthinc.pro.service.adapters.*.findByID(java.lang.Integer))")
-    public void findByIdJoinPoint() {}
+    @Pointcut("execution(* com.inthinc.pro.service.adapters.*.findBy*(..))")
+    public void findByJoinPoint() {}
     
     /**
      * Pointcut definition.
@@ -91,8 +91,8 @@ public class BaseAuthorizationAdvice {
      * <p/>
      * Note that AspectJ will only invoke this advice if the returning object is of type {@link HasAccountId}.
      */
-    @AfterReturning(value = "findByIdJoinPoint()", returning = "retVal", argNames = "retVal")
-    public void doFindByIdAccessCheck(HasAccountId retVal) {
+    @AfterReturning(value = "findByJoinPoint()", returning = "retVal", argNames = "retVal")
+    public void doFindByAccessCheck(HasAccountId retVal) {
         doAccessCheck(retVal);
     }
 
