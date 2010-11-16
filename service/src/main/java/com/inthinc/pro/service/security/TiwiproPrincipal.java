@@ -1,34 +1,62 @@
-/**
- * 
- */
 package com.inthinc.pro.service.security;
 
+import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-/**
- * TODO Temporary place holder until the final spec of the class is defined.
- */
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.User;
+import com.inthinc.pro.security.userdetails.ProUser;
+
 @Component
 public class TiwiproPrincipal {
 
-    private boolean inthincUser;
-    
     /**
-     * @return
+     * The ProUser getter.
+     * @return the ProUser
      */
-    public boolean isInthincUser() {
-        return inthincUser;
+    private ProUser getProUser() {
+        return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     /**
-     * @return
+     * The User getter.
+     * @return the current User
+     */
+    public User getUser() {
+        return getProUser().getUser();
+    }
+
+    /**
+     * The Person getter.
+     * @return the Person
+     */
+    public Person getPerson() {
+        return getUser().getPerson();
+    }
+
+    /**
+     * The GroupID getter.
+     * @return the GroupID
+     */
+    public Integer getGroupID() {
+        return getUser().getGroupID();
+    }
+
+    /**
+     * The AccountID getter.
+     * @return the AccountID
      */
     public Integer getAccountID() {
-        // TODO Temporary stub for testing.
-        return 10;
+        return getUser().getPerson().getAcctID();
     }
-
-    public void setInthincUser(boolean inthincUser) {
-        this.inthincUser = inthincUser;
+    
+    /**
+     * The getter for Inthinc user flag.
+     * @return true if the user is InthincUser
+     */
+    public boolean isInthincUser() {
+        //TODO: for now, don't allow inthinc role, 
+        //need to determine how to allow for an inthinc role at a later time
+        return false;//getUser().getUsername().equalsIgnoreCase("admin");
     }
 }
