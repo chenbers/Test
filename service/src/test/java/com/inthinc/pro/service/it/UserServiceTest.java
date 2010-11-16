@@ -17,9 +17,9 @@ public class UserServiceTest extends BaseTest {
 //        }
 //    }
 //    
-//    @Test
-//    public void testUser() {
-//        System.out.println(service.get(159));
-//    }
+    @Test
+    public void testUser() {
+        //System.out.println(service.get(159));
+    }
 
 }
