@@ -199,7 +199,7 @@ public class Device extends BaseEntity implements HasAccountId
 	}
 
     /**
-     * Is this device capable of receiving a text message?
+     * Determine if this device is capable of receiving a text message?
      * 
      * @return true if device can receive a text message, otherwise false
      */
@@ -208,10 +208,15 @@ public class Device extends BaseEntity implements HasAccountId
 
         //TODO: Jacquie added this to temporarily get the tests to pass - will make this always retrn false
         this.productVer = ProductType.TIWIPRO_R74;
-        
+
         return (this.productVer != null && this.productVer.equals(ProductType.WS820));
     }
     
+    /**
+     * Determine if this device is capable of producing a Waysmart (accelerometer based???) crash trace.
+     * 
+     * @return true if device can produce a Waysmart (accelerometer based???) crash trace, otherwise false.
+     */
     public boolean isCrashTraceAppletCapable(){
         //TODO: jwimmer: another stopgap until a better way to determine device capabilities is implemented
         return (this.productVer != null && this.productVer.equals(ProductType.WS820));
