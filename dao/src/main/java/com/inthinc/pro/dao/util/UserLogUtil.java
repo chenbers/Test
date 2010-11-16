@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
+import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.User;
 
@@ -42,18 +43,9 @@ public class UserLogUtil {
     private static String findUserName() {
         String userName;
         Object userObject = null;
-        User user = null;
-        try {
-            userObject = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            user = (User) userObject;
-            userName = user.getUsername();
-        } catch (NullPointerException npe) {
-            userName = "noPersonFound";
-            // do nothing... not being able to determine the user happens in a number of legitimate situations
-        } catch (Exception e) {
-            userName = "noPersonFound";
-            log.error(e);
-        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        userObject = (auth!=null)?auth.getPrincipal():null;
+        userName = (userObject!=null)?((User)userObject).getUsername():"noPersonFound";
         return userName;
     }
 
