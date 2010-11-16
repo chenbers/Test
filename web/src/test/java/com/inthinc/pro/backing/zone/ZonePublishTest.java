@@ -155,14 +155,16 @@ public class ZonePublishTest {
 
     private DBF expectedDbase3File(String filename) throws IOException, URISyntaxException {
         
-        File file = new File(Thread.currentThread().getContextClassLoader().getResource("\\zonePublish\\" + filename).toURI());
+        String path = File.separator + "zonePublish" + File.separator;
+        File file = new File(Thread.currentThread().getContextClassLoader().getResource(path + filename).toURI());
         FileChannel in = new FileInputStream(file).getChannel();
         return parseDbase3File(in);
     }
 
     private byte[] dumpFile(String filename) throws IOException, URISyntaxException {
         
-        File file = new File(Thread.currentThread().getContextClassLoader().getResource("\\zonePublish\\" + filename).toURI());
+        String path = File.separator + "zonePublish" + File.separator;
+        File file = new File(Thread.currentThread().getContextClassLoader().getResource(path + filename).toURI());
         
         StringBuffer expectedString = new StringBuffer();
         try {
