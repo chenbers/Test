@@ -116,8 +116,8 @@
                                 <td>
                                   <h:message for="editDevice-sim" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
                                   <h:inputText value="#{devicesBean.item.sim}" id="editDevice-sim" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="19"  validatorMessage="#{messages.editDevice_simFormat}">
-                                    <f:validateLength minimum="19" maximum="19" />
+                                    maxlength="20"  validatorMessage="#{messages.editDevice_simFormat}">
+                                    <f:validateLength minimum="19" maximum="20" />
                                     <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                                     <f:attribute name="regex" value="[0-9]+" />
                                   </h:inputText>
