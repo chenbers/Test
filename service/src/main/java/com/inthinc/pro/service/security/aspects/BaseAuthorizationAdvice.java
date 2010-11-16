@@ -42,7 +42,7 @@ public class BaseAuthorizationAdvice {
      */
     @Pointcut("execution(* com.inthinc.pro.service.adapters.*.findBy*(..))")
     public void findByJoinPoint() {}
-    
+
     /**
      * Pointcut definition.
      * <p/>
@@ -72,12 +72,10 @@ public class BaseAuthorizationAdvice {
      * <p/>
      * Note the argNames attribute in the @Before aspect. This is required since there's no guarantee the code will be compiled with debug information or with the AspectJ compiler.
      */
-    // TODO Use correct TiwiproPrincipal object once it is created.
     @Before(value = "inAdaptersLayer() && receivesHasAccountIdObjectAsFirstArgument() && args(entity)", argNames = "entity")
     public void doAccessCheck(HasAccountId entity) {
         if (entity != null) {
             if (!principal.isInthincUser() && !principal.getAccountID().equals(entity.getAccountID())) {
-                // TODO Come up with good exception message.
                 throw new AccessDeniedException("Principal does not have the proper permission to access the resource.");
             }
         }
