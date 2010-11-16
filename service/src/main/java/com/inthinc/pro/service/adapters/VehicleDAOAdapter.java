@@ -3,6 +3,8 @@ package com.inthinc.pro.service.adapters;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.VehicleDAO;
@@ -21,6 +23,7 @@ import com.inthinc.pro.model.event.Event;
  * @author dcueva
  *
  */
+@Component
 public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
 
     private VehicleDAO vehicleDAO;

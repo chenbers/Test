@@ -3,6 +3,7 @@ package com.inthinc.pro.service.adapters;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
@@ -19,6 +20,7 @@ import com.inthinc.pro.model.event.Event;
  *  
  * @author dcueva
  */
+@Component
 public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
  
 	private DriverDAO driverDAO;

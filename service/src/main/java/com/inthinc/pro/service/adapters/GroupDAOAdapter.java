@@ -2,6 +2,8 @@ package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
@@ -16,6 +18,7 @@ import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
  *  
  * @author dcueva
  */
+@Component
 public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
 
     private GroupDAO groupDAO;	

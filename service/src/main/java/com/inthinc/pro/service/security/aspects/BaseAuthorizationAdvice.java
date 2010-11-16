@@ -9,6 +9,8 @@ import org.springframework.security.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.HasAccountId;
+import com.inthinc.pro.service.adapters.BaseDAOAdapter;
+import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 /**
  * Base authorization advice for DAO adapters which will only grant access to objects belonging to the same account as the currently logged user.
@@ -40,6 +42,27 @@ public class BaseAuthorizationAdvice {
      */
     @Pointcut("execution(* com.inthinc.pro.service.adapters.*.findByID(java.lang.Integer))")
     public void findByIdJoinPoint() {}
+    
+    /**
+     * Pointcut definition.
+     * <p/>
+     * This pointcut will match the delete(Integer) method in any class in the adapters package.
+     * <p/>
+     * Note: AspectJ (in Spring 2.5, at least) does not check for inherited methods. So any execution pointcut will only match the methods actually declared in a class.<br/>
+     * This join point must be combined with a join point for the specific class which does not override delete() from {@link BaseDAOAdapter} for it to be applied.
+     */
+    @Pointcut("execution(* com.inthinc.pro.service.adapters.*.delete(java.lang.Integer))")
+    public void deleteJoinPoint() {}
+
+    /**
+     * Pointcut definition.
+     * <p/>
+     * This pointcut will match the getAll method in any class in the adapters package.
+     * <p/>
+     * Please check the documentation on {@link BaseAuthorizationAdvice#deleteJoinPoint()} for caveats when defining pointcuts in Spring AspectJ.
+     */
+    @Pointcut("execution(* com.inthinc.pro.service.adapters.*.getAll())")
+    public void getAllJoinPoint() {}
 
     /**
      * Advice definition.

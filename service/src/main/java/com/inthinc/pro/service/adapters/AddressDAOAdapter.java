@@ -3,6 +3,7 @@ package com.inthinc.pro.service.adapters;
 import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.GenericDAO;
@@ -14,6 +15,7 @@ import com.inthinc.pro.model.Address;
  * @author dcueva
  *
  */
+@Component
 public class AddressDAOAdapter extends BaseDAOAdapter<Address> {
 
     private AddressDAO addressDAO;

@@ -15,9 +15,8 @@
             http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
   <context:component-scan base-package="com.inthinc.pro.service.security.aspects"/>
+  <context:component-scan base-package="com.inthinc.pro.service.security.stubs"/>
+  <context:component-scan base-package="com.inthinc.pro.service.adapters"/>
   <context:component-scan base-package="com.inthinc.pro.service.adapters"/>
   <aop:aspectj-autoproxy/>
-  
-  <beans:bean id="accountDaoAdapter" class="com.inthinc.pro.service.adapters.AccountDAOAdapter"/>
-  <beans:bean id="addressDaoAdapter" class="com.inthinc.pro.service.adapters.AddressDAOAdapter"/>
 </beans:beans>

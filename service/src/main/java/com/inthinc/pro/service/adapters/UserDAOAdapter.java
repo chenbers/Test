@@ -2,6 +2,8 @@ package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.User;
@@ -12,6 +14,7 @@ import com.inthinc.pro.model.User;
  * @author dcueva
  *
  */
+@Component
 public class UserDAOAdapter extends BaseDAOAdapter<User> {
 
 	private UserDAO userDAO;	

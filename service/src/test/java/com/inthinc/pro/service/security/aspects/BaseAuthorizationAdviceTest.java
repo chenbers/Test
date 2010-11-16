@@ -4,8 +4,10 @@
 package com.inthinc.pro.service.security.aspects;
 
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.fail;
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactoryUtils;
@@ -15,6 +17,9 @@ import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.service.adapters.AccountDAOAdapter;
+import com.inthinc.pro.service.security.TiwiproPrincipal;
+import com.inthinc.pro.service.security.stubs.AccountDAOStub;
+import com.inthinc.pro.service.security.stubs.TiwiproPrincipalStub;
 
 /**
  * @author dfreitas
@@ -23,6 +28,10 @@ import com.inthinc.pro.service.adapters.AccountDAOAdapter;
 public class BaseAuthorizationAdviceTest {
 
     private static ApplicationContext applicationContext;
+    private BaseAuthorizationAdvice baseAdvice;
+    private AccountDAOAdapter adapter;
+    private TiwiproPrincipalStub principal;
+    private AccountDAOStub accountDaoStub;
 
     /**
      * @throws java.lang.Exception
@@ -32,79 +41,89 @@ public class BaseAuthorizationAdviceTest {
         applicationContext = new ClassPathXmlApplicationContext("/spring/testAspects-security.xml");
     }
 
+    @Before
+    public void setUpTests() throws Exception {
+        baseAdvice = (BaseAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, BaseAuthorizationAdvice.class);
+        adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
+        principal = (TiwiproPrincipalStub) BeanFactoryUtils.beanOfType(applicationContext, TiwiproPrincipal.class);
+        accountDaoStub = new AccountDAOStub();
+        adapter.setAccountDAO(accountDaoStub);
+    }
+
     @Test
-    // TODO Finish this test when final pieces are in place.
-    public void testAspectIntantiation() {
-        TiwiproPrincipal principal = (TiwiproPrincipal) BeanFactoryUtils.beanOfType(applicationContext, TiwiproPrincipal.class);
+    public void testAspectInstantiation() {
         assertNotNull(principal);
-
-        BaseAuthorizationAdvice baseAdvice = (BaseAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, BaseAuthorizationAdvice.class);
         assertNotNull(baseAdvice);
-
-        AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
         assertNotNull(adapter);
     }
 
     @Test
-    // TODO Finish this test when final pieces are in place.
     public void testGrantsAccessToUpdate() {
-        AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
-        adapter.setAccountDAO(new AccountDAOStub());
+        // Test against same accountId
+        principal.setAccountID(10);
+        principal.setInthincUser(false);
         Account account = new Account();
-        // TODO Change this test once principal class is ready.
-        // The principal stub id is 10.
-        account.setAcctID(10);
+        account.setAcctID(10); // Set account id the same as the principal.
+
+        adapter.update(account);
+
+        // Test against Inthinc user
+        principal.setAccountID(12);
+        account.setAcctID(13); // Set account id different than the principal's.
+        principal.setInthincUser(true); // But flags user as Inthinc
 
         adapter.update(account);
     }
 
     @Test
-    // TODO Finish this test when final pieces are in place.
     public void testDeniesAccessToUpdate() {
         try {
-            AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
-            BaseAuthorizationAdvice advice = (BaseAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, BaseAuthorizationAdvice.class);
-            adapter.setAccountDAO(new AccountDAOStub());
+            principal.setAccountID(12);
+
             Account account = new Account();
-            // TODO Change this test once principal class is ready.
-            // The principal stub id is 10.
-            account.setAcctID(99);
+            account.setAcctID(13); // Set account id different than the principal's.
+            principal.setInthincUser(false); // And user is not Inthinc
 
             adapter.update(account);
-            Assert.fail("Should have thrown exception " + AccessDeniedException.class + ". Ids should not match. Principal id = " + advice.getPrincipal().getAccountID() + " resource id = "
+            Assert.fail("Should have thrown exception " + AccessDeniedException.class + ". Ids should not match. Principal account id = " + principal.getAccountID() + " resource account id = "
                     + account.getAccountID());
         } catch (AccessDeniedException e) {
             // Ok, exception should have been raised.
         }
     }
-    
+
+    /*
+     * It seems odd, but the create access check for an account has the same logic as the update.
+     */
     @Test
-    // TODO Finish this test when final pieces are in place.
     public void testGrantsAccessToCreate() {
-        AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
-        adapter.setAccountDAO(new AccountDAOStub());
+        // Test against same accountId
+        principal.setAccountID(10);
+        principal.setInthincUser(false);
         Account account = new Account();
-        // TODO Change this test once principal class is ready.
-        // The principal stub id is 10.
-        account.setAcctID(10);
-        
+        account.setAcctID(10); // Set account id the same as the principal.
+
+        adapter.create(account);
+
+        // Test against Inthinc user
+        principal.setAccountID(12);
+        account.setAcctID(13); // Set account id different than the principal's.
+        principal.setInthincUser(true); // But flags user as Inthinc
+
         adapter.create(account);
     }
-    
+
     @Test
-    // TODO Finish this test when final pieces are in place.
     public void testDeniesAccessToCreate() {
         try {
-            AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
-            BaseAuthorizationAdvice advice = (BaseAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, BaseAuthorizationAdvice.class);
-            adapter.setAccountDAO(new AccountDAOStub());
+            principal.setAccountID(12);
+
             Account account = new Account();
-            // TODO Change this test once principal class is ready.
-            // The principal stub id is 10.
-            account.setAcctID(99);
-            
+            account.setAcctID(13); // Set account id different than the principal's.
+            principal.setInthincUser(false); // And user is not Inthinc
+
             adapter.create(account);
-            Assert.fail("Should have thrown exception " + AccessDeniedException.class + ". Ids should not match. Principal id = " + advice.getPrincipal().getAccountID() + " resource id = "
+            Assert.fail("Should have thrown exception " + AccessDeniedException.class + ". Ids should not match. Principal account id = " + principal.getAccountID() + " resource account id = "
                     + account.getAccountID());
         } catch (AccessDeniedException e) {
             // Ok, exception should have been raised.
@@ -113,29 +132,49 @@ public class BaseAuthorizationAdviceTest {
 
     @Test
     // TODO Finish this test when final pieces are in place.
-    public void testGrantsAccessToFindById() {
+    public void testGrantsFindById() {
+        Account account = new Account();
+        accountDaoStub.setExpectedaccount(account);
+
+        // Test acceptance by same account ID.
         try {
-            AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
-            adapter.setAccountDAO(new AccountDAOStub());
-            Account account = adapter.findByID(25);
-            
-            assertNotNull(account);
+            account.setAcctID(10); // Make account id same as principal account id.
+            principal.setAccountID(10);
+            principal.setInthincUser(false);
+
+            adapter.findByID(23);
         } catch (AccessDeniedException e) {
-            // Ok, exception should have been raised.
+            fail("Method delete should not have thrown exception " + AccessDeniedException.class);
+        }
+
+        // Test acceptance by Inthinc user.
+        try {
+            principal.setAccountID(99);
+            account.setAcctID(88); // Make address account id different than principal account id.
+            principal.setInthincUser(true); // But flags principal as Inthinc user
+
+            adapter.findByID(23);
+        } catch (AccessDeniedException e) {
+            fail("Method delete should not have thrown exception " + AccessDeniedException.class);
         }
     }
 
     @Test
     // TODO Finish this test when final pieces are in place.
-    public void testDeniesAccessToFindById() {
-        try {
-            AccountDAOAdapter adapter = (AccountDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, AccountDAOAdapter.class);
-            adapter.setAccountDAO(new AccountDAOStub());
-            adapter.findByID(23);
+    public void testDeniesFindById() {
+        Account address = new Account();
+        accountDaoStub.setExpectedaccount(address);
 
-            Assert.fail("Should have thrown exception " + AccessDeniedException.class + ".");
+        // Test rejects if different ID and not Inthinc user.
+        try {
+            principal.setAccountID(10);
+            principal.setInthincUser(false);
+            address.setAcctID(11); // Make address account id same as principal account id.
+
+            adapter.findByID(23);
+            fail("Test should have thrown exception " + AccessDeniedException.class);
         } catch (AccessDeniedException e) {
-            // Ok, exception should have been raised.
+            // Ok. Exception is expected.
         }
     }
 }
