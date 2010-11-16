@@ -89,7 +89,7 @@ public abstract class BaseDAOAdapter<R> {
      * @return The updated resource or null if creation failed.
      */
     public R update(R resource){
-        if (getDAO().update(resource) != 0)
+        if (getDAO().update(resource) != 0) // number of updated records
             return getDAO().findByID(getResourceID(resource));
         return null;    
     };
