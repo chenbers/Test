@@ -524,7 +524,7 @@ public class DaoUtilBean extends BaseBean
 			PrintStream out = new PrintStream(outStream);
 			StringBuilder buffer = new StringBuilder();
 			for (String columnHeader : columnHeaders) {
-				buffer.append(columnHeader);
+				buffer.append(csvItem(columnHeader));
 				buffer.append(",");
 				
 			}
@@ -532,7 +532,7 @@ public class DaoUtilBean extends BaseBean
 			for (List<Result> row : records) {
 				buffer = new StringBuilder();
 				for (Result col : row) {
-					buffer.append(col.getDisplay());
+					buffer.append(csvItem(col.getDisplay()));
 					buffer.append(",");
 				}
 				out.println(buffer.toString());
@@ -545,7 +545,14 @@ public class DaoUtilBean extends BaseBean
 		return true;
 	}
 
-	public void setParamList(List<Param> paramList)
+	private String csvItem(String display) {
+	    if (display == null)
+	        return "";
+	    if (display.contains(","))
+	        return "\"" + display + "\"";
+        return display;
+    }
+    public void setParamList(List<Param> paramList)
     {
         this.paramList = paramList;
     }
