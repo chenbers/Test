@@ -28,7 +28,7 @@ public class BaseAuthorizationAdvice {
     /**
      * Pointcut definition.
      * <p/>
-     * This pointcut will match any joinpoints (methods) which receives a runtime instance of HasAccountId.
+     * This pointcut will match any joinpoints (methods) which receives a runtime instance of HasAccountId as the first parameter.
      */
     @Pointcut("args(com.inthinc.pro.model.HasAccountId,..)")
     public void receivesHasAccountIdObjectAsFirstArgument() {}
@@ -36,7 +36,7 @@ public class BaseAuthorizationAdvice {
     /**
      * Pointcut definition.
      * <p/>
-     * This pointcut will match the findByID(java.lang.Integer) method.
+     * This pointcut will match the findByID(java.lang.Integer) method on any class in the adapters package.
      */
     @Pointcut("execution(* com.inthinc.pro.service.adapters.*.findByID(java.lang.Integer))")
     public void findByIdJoinPoint() {}
@@ -44,7 +44,8 @@ public class BaseAuthorizationAdvice {
     /**
      * Advice definition.
      * <p/>
-     * Before advice which checks if the user has access to the entity. Access is granted if the entity has the same account id as the currently logged user.
+     * Before advice which checks if the user has permissions to access a {@link HasAccountId} entity. Access is granted if the entity has the same account id as the currently
+     * logged user.
      * <p/>
      * Note the argNames attribute in the @Before aspect. This is required since there's no guarantee the code will be compiled with debug information or with the AspectJ compiler.
      */
@@ -62,15 +63,16 @@ public class BaseAuthorizationAdvice {
     /**
      * Advice definition.
      * <p/>
-     * AfterReturning advice which checks if the user has access to the entity. Access is granted if the entity has the same account id as the currently logged user.
+     * AfterReturning advice which checks if the user has access to the returned {@link HasAccountId} instance of the findById() method. Access is granted if the entity has the
+     * same account id as the currently logged user.
      * <p/>
-     * Note that AspectJ is smart enough to only invoke this advice if the returning object is of type {@link HasAccountId}.
+     * Note that AspectJ will only invoke this advice if the returning object is of type {@link HasAccountId}.
      */
     @AfterReturning(value = "findByIdJoinPoint()", returning = "retVal", argNames = "retVal")
     public void doFindByIdAccessCheck(HasAccountId retVal) {
         doAccessCheck(retVal);
     }
-    
+
     @Autowired
     private TiwiproPrincipal principal;
 
