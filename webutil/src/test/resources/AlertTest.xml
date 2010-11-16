@@ -305,9 +305,6 @@
   <void property="emuMd5"> 
    <string>696d6acbc199d607a5704642c67f4d86</string> 
   </void> 
-  <void property="ephone"> 
-   <string>5555559876</string> 
-  </void> 
   <void property="imei"> 
    <string>915063244644218</string> 
   </void> 
@@ -442,9 +439,6 @@
   <void property="emuMd5"> 
    <string>696d6acbc199d607a5704642c67f4d86</string> 
   </void> 
-  <void property="ephone"> 
-   <string>5555559876</string> 
-  </void> 
   <void property="imei"> 
    <string>915070143958451</string> 
   </void> 
@@ -573,9 +567,6 @@
   </void> 
   <void property="emuMd5"> 
    <string>696d6acbc199d607a5704642c67f4d86</string> 
-  </void> 
-  <void property="ephone"> 
-   <string>5555559876</string> 
   </void> 
   <void property="imei"> 
    <string>915081260831977</string> 
