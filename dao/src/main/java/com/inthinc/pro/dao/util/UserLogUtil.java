@@ -57,7 +57,7 @@ public class UserLogUtil {
      */
     private static String argsToString(Object[] args) {
         StringBuffer params = new StringBuffer("");
-        if (args != null) {
+        if (args != null && args.length > 0) {
             for (int i = 0; i < args.length; i++) {
                 params.append(", " + args[i]);
             }
