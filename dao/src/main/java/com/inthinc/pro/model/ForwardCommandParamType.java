@@ -7,7 +7,8 @@ import java.util.Map;
 public enum ForwardCommandParamType implements BaseEnum {
 	NONE(0),
 	INTEGER(1),
-	STRING(2);
+	STRING(2),
+    BINARY(3);
 
 	Integer code;
 	private ForwardCommandParamType(Integer code)

@@ -8,30 +8,31 @@ public class ForwardCommandSpool extends BaseEntity {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private Integer forwardCommandSpoolID;
+
+    private Integer fwdID;
+    ForwardCommandParamType dataType;
     private Integer deviceID;
     private String address;
-    private Integer forwardCommandID;
     private Integer command;
     private byte[] data;
     private String strData;
     private Integer intData;
-    Boolean processed;
-    Date timeSubmitted;
-    Date timeProcessed;
+    private Integer processed;
+    private Date created;
+    private Date modified;
 
     
     public ForwardCommandSpool() 
     {
     }
     
-    public ForwardCommandSpool(Integer forwardCommandID, String strData, Integer command, String address) 
+    public ForwardCommandSpool(String strData, Integer command, String address) 
     {
-        this.forwardCommandID = forwardCommandID;
         this.command = command;
         this.address = address;
         this.strData = strData;
         this.intData = null;
+        this.dataType = ForwardCommandParamType.STRING; 
         
         if (strData != null)
         {
@@ -45,18 +46,18 @@ public class ForwardCommandSpool extends BaseEntity {
             }
             dataBytes[len] = 0x0;
             
-            this.data = dataBytes;
+            this.data = dataBytes; 
             
         }
     }
 
-    public ForwardCommandSpool(Integer forwardCommandID, Integer intData, Integer command, String address) 
+    public ForwardCommandSpool(Integer intData, Integer command, String address) 
     {
-        this.forwardCommandID = forwardCommandID;
         this.command = command;
         this.address = address;
         this.intData = intData;
         this.strData = null;
+        this.dataType = ForwardCommandParamType.INTEGER; 
         
         if (intData != null)
         {
@@ -72,25 +73,33 @@ public class ForwardCommandSpool extends BaseEntity {
         }
     }
 
-    public ForwardCommandSpool(Integer forwardCommandID, byte[] data, Integer command, String address) 
+    public ForwardCommandSpool(byte[] data, Integer command, String address) 
     {
-        this.forwardCommandID = forwardCommandID;
         this.command = command;
         this.address = address;
         this.intData = null;
         this.strData = null;
         this.data = data;
+        this.dataType = ForwardCommandParamType.BINARY; 
     }
 
     
-    public Integer getForwardCommandSpoolID() {
-        return forwardCommandSpoolID;
+    public Integer getFwdID() {
+        return fwdID;
     }
 
-    public void setForwardCommandSpoolID(Integer forwardCommandSpoolID) {
-        this.forwardCommandSpoolID = forwardCommandSpoolID;
+    public void setFwdID(Integer fwdID) {
+        this.fwdID = fwdID;
     }
     
+    public ForwardCommandParamType getDataType() {
+        return dataType;
+    }
+
+    public void setDataType(ForwardCommandParamType dataType) {
+        this.dataType = dataType;
+    }
+
     public String getStrData() {
         return strData;
     }
@@ -123,13 +132,6 @@ public class ForwardCommandSpool extends BaseEntity {
         this.deviceID = deviceID;
     }
 
-    public Integer getForwardCommandID() {
-        return forwardCommandID;
-    }
-
-    public void setForwardCommandID(Integer forwardCommandID) {
-        this.forwardCommandID = forwardCommandID;
-    }
 
     public Integer getCommand() {
         return command;
@@ -148,27 +150,27 @@ public class ForwardCommandSpool extends BaseEntity {
     }
 
 
-    public Boolean getProcessed() {
+    public Integer getProcessed() {
         return processed;
     }
 
-    public void setProcessed(Boolean processed) {
+    public void setProcessed(Integer processed) {
         this.processed = processed;
     }
 
-    public Date getTimeSubmitted() {
-        return timeSubmitted;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setTimeSubmitted(Date timeSubmitted) {
-        this.timeSubmitted = timeSubmitted;
+    public void setCreated(Date created) {
+        this.created = created;
     }
 
-    public Date getTimeProcessed() {
-        return timeProcessed;
+    public Date getModified() {
+        return modified;
     }
 
-    public void setTimeProcessed(Date timeProcessed) {
-        this.timeProcessed = timeProcessed;
+    public void setModified(Date modified) {
+        this.modified = modified;
     }
 }
