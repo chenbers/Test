@@ -75,12 +75,11 @@ public class FwdCmdSpoolWSHttpJDBCDAO  extends GenericJDBCDAO {
             {
                 record = new ForwardCommandSpool();
                 
-                record.setForwardCommandSpoolID(resultSet.getInt(1));
+                record.setFwdID(resultSet.getInt(1));
                 record.setDeviceID(resultSet.getInt(2));
                 record.setCommand(resultSet.getInt(3));
                 record.setIntData(resultSet.getInt(4));
                 record.setStrData(resultSet.getString(5));
-                record.setTimeSubmitted(resultSet.getTimestamp(6));
 
                 recordList.add(record);
                 
@@ -103,7 +102,7 @@ public class FwdCmdSpoolWSHttpJDBCDAO  extends GenericJDBCDAO {
         return recordList;
     }
 
-    public void update(Integer forwardCommandSpoolID, Boolean processedSuccessfully) {
+    public void update(Integer fwdID, Boolean processedSuccessfully) {
         Connection conn = null;
         CallableStatement statement = null;
 
@@ -111,7 +110,7 @@ public class FwdCmdSpoolWSHttpJDBCDAO  extends GenericJDBCDAO {
         {
             conn = getConnection();
             statement = conn.prepareCall("{call ws_updateHttpForwardCommandSpool(?, ?)}");
-            statement.setInt(1, forwardCommandSpoolID);
+            statement.setInt(1, fwdID);
             statement.setBoolean(2, processedSuccessfully);
             
             statement.executeUpdate();

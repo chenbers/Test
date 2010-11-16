@@ -28,8 +28,8 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
         {
             conn = getConnection();
             statement = conn.prepareCall("{call ws_addIridiumForwardCommandSpool(?, ?, ?, ?)}");
-            statement.setInt(1, forwardCommandSpool.getForwardCommandID());
-            statement.setBytes(2, forwardCommandSpool.getData());
+            statement.setBytes(1, forwardCommandSpool.getData());
+            statement.setInt(2, forwardCommandSpool.getDataType().getCode());
             statement.setInt(3, forwardCommandSpool.getCommand());
             statement.setString(4, forwardCommandSpool.getAddress());
             
@@ -75,11 +75,9 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
             {
                 record = new ForwardCommandSpool();
                 
-                record.setForwardCommandSpoolID(resultSet.getInt(1));
-                record.setForwardCommandID(resultSet.getInt(2));
-                record.setCommand(resultSet.getInt(3));
-                record.setData(resultSet.getBytes(4));
-                record.setTimeSubmitted(resultSet.getTimestamp(6));
+                record.setFwdID(resultSet.getInt(1));
+                record.setCommand(resultSet.getInt(2));
+                record.setData(resultSet.getBytes(3));
 
                 recordList.add(record);
                 
@@ -102,7 +100,7 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
         return recordList;
     }
 
-    public void update(Integer iridiumForwardCommandSpoolID, Boolean processedSuccessfully) {
+    public void update(Integer fwdID, Boolean processedSuccessfully) {
         Connection conn = null;
         CallableStatement statement = null;
 
@@ -110,7 +108,7 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
         {
             conn = getConnection();
             statement = conn.prepareCall("{call ws_updateIridiumForwardCommandSpool(?, ?)}");
-            statement.setInt(1, iridiumForwardCommandSpoolID);
+            statement.setInt(1, fwdID);
             statement.setBoolean(2, processedSuccessfully);
             
             statement.executeUpdate();
