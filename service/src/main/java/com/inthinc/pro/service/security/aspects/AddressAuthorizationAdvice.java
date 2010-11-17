@@ -11,7 +11,7 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.service.adapters.AddressDAOAdapter;
 
 /**
- * Base authorization advice for DAO adapters which will only grant access to objects belonging to the same account as the currently logged user.
+ * Authorization advice for AddressDAOAdapter.
  */
 @Aspect
 @Component

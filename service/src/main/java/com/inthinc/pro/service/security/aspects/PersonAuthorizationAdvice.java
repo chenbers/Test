@@ -15,7 +15,7 @@ import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 /**
- * Base authorization advice for DAO adapters which will only grant access to objects belonging to the same account as the currently logged user.
+ * Authorization advice for PersonDAOAdapter.
  */
 @Aspect
 @Component

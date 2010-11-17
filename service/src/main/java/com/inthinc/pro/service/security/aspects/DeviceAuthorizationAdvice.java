@@ -9,7 +9,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.service.adapters.DeviceDAOAdapter;
 
 /**
- * Base authorization advice for DAO adapters which will only grant access to objects belonging to the same account as the currently logged user.
+ * Authorization advice for DeviceDAOAdapter.
  */
 @Aspect
 @Component
