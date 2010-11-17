@@ -70,6 +70,8 @@ public class PersonAuthorizationAdvice {
      * Advice definition.
      * <p/>
      * Access to Person entities also require that the address passes validation.
+     * <p/>
+     * It needs a distinct joinpoint and advice for delete so it does not conflict with other methods which receives an Integer.
      */
     @Before(value = "inPersonDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.deleteJoinPoint() && args(entityId)", argNames = "entityId")
     public void doDeleteAccessCheck(JoinPoint jp, Integer entityId) {

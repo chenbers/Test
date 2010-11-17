@@ -131,7 +131,6 @@ public class BaseAuthorizationAdviceTest {
     }
 
     @Test
-    // TODO Finish this test when final pieces are in place.
     public void testGrantsFindById() {
         Account account = new Account();
         accountDaoStub.setExpectedaccount(account);
@@ -160,7 +159,6 @@ public class BaseAuthorizationAdviceTest {
     }
 
     @Test
-    // TODO Finish this test when final pieces are in place.
     public void testDeniesFindById() {
         Account address = new Account();
         accountDaoStub.setExpectedaccount(address);

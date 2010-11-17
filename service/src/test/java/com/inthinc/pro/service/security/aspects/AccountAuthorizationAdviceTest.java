@@ -47,14 +47,14 @@ public class AccountAuthorizationAdviceTest {
         adapter.setAccountDAO(accountDaoStub);
     }
 
-    //@Test
+    @Test
     public void testGrantsAccessGetAll() {
         // Only Inthinc users are allowed to access all accounts.
         principal.setInthincUser(true);
         adapter.getAll();
     }
 
-    //@Test
+    @Test
     public void testDeniesAccessGetAll() {
         try {
             principal.setInthincUser(false);
@@ -183,7 +183,7 @@ public class AccountAuthorizationAdviceTest {
         }
     }
 
-   // @Test
+    @Test
     public void testGrantsAccessToDelete() {
 
         // Only inthinc users can delete accounts.
@@ -196,7 +196,7 @@ public class AccountAuthorizationAdviceTest {
         adapter.delete(11);
     }
 
-   // @Test
+    @Test
     public void testDeniesAccessToDelete() {
         // Test with different IDs and not Inthinc user.
         try {
