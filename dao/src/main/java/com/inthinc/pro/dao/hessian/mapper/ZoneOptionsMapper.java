@@ -50,6 +50,19 @@ public class ZoneOptionsMapper extends AbstractMapper {
         }
     }
 
+    
+    @ConvertColumnToField(columnName = "optionsMap")
+    public void optionsMapToModel(Zone zone, Object value)
+    {
+        return;
+    }
+
+    @ConvertFieldToColumn(fieldName = "optionsMap")
+    public void optionsMapToColumn(Zone zone, Object value)
+    {
+        return;
+    }
+
     class Option implements Serializable{
         int option;
         int value;
