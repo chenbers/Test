@@ -170,6 +170,7 @@
 	                        <tr>
 	                          <td width="160" valign="center">
 				                <h:outputText value="#{messages[option.name]}:" />
+				                <h:outputText value="*" rendered="#{option == 'SPEED_LIMIT'}"/>
 	                          </td>
 	                          <td>
 	                            <h:selectOneMenu value="#{zonesBean.item.optionsMap[option]}" id="vehicleType" 
@@ -191,6 +192,13 @@
                             	</h:selectOneMenu>   
 	                          </td>
 	                        </tr>
+	                        <ui:fragment rendered="#{option == 'SPEED_LIMIT'}">
+                    		<tr>
+                    		<td colspan="2">
+							<h:outputText value="#{messages.zoneOptionSpeedLimitDesc}" style="color:gray;font:italic 10px Verdana,Tahoma,Arial,sans-serif;"/>
+                    		</td>
+                    		</tr>
+                    		</ui:fragment>
                     	</a4j:repeat>
                     	</table>
 					</h:panelGroup>

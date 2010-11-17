@@ -163,6 +163,8 @@ public class ZonesBean extends BaseBean
         helpFile = "Zones.htm";
         if (isAdd())
             item = null;
+        if(item != null)
+            item.setOptionsMap(null);
         
         UIComponent uiComponent = FacesContext.getCurrentInstance().getViewRoot().findComponent("zones-form");
         FormUtil.resetForm((UIForm)uiComponent);

@@ -256,7 +256,7 @@ public class ZonePublishTest {
         
         if (zoneOpt.getOptionType() == ZoneOptionType.OFF_ON)
             return (opt) ? OffOn.ON : OffOn.OFF;
-        return (opt) ? OffOnDevice.ON : OffOnDevice.OFF;
+        return (opt) ? OffOnDevice.DEVICE : OffOnDevice.OFF;
     }
 
     private List<LatLng> getPoints(String pointStr) {

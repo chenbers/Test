@@ -32,7 +32,8 @@ public class Zone extends BaseEntity implements Cloneable
     private Integer           groupID;
     
     private List<ZoneOption>    options;
-    
+    @Column(updateable=false)
+    private Map<ZoneAvailableOption, OptionValue> optionsMap;
     
     public Zone()
     {
@@ -167,21 +168,26 @@ public class Zone extends BaseEntity implements Cloneable
     
 
     public Map<ZoneAvailableOption, OptionValue> getOptionsMap() {
-        Map<ZoneAvailableOption, OptionValue> optionsMap = new HashMap<ZoneAvailableOption, OptionValue>();
-        List<ZoneOption> options = getOptions();
-        for (ZoneAvailableOption availOption : ZoneAvailableOption.values())
-        {
-            OptionValue value = availOption.getDefaultValue();
-            if (options != null) {
-                for (ZoneOption zoneOption : options) {
-                    if (zoneOption.getOption() == availOption) {
-                        value = ZoneAvailableOption.convertOptionValue(availOption.getOptionType(), zoneOption.getValue().getValue());
+        if (optionsMap == null) {
+            optionsMap = new HashMap<ZoneAvailableOption, OptionValue>();
+            List<ZoneOption> options = getOptions();
+            for (ZoneAvailableOption availOption : ZoneAvailableOption.values())
+            {
+                OptionValue value = availOption.getDefaultValue();
+                if (options != null) {
+                    for (ZoneOption zoneOption : options) {
+                        if (zoneOption.getOption() == availOption) {
+                            value = ZoneAvailableOption.convertOptionValue(availOption.getOptionType(), zoneOption.getValue().getValue());
+                        }
                     }
                 }
+                optionsMap.put(availOption, value);
             }
-            optionsMap.put(availOption, value);
         }
         return optionsMap;
+    }
+    public void setOptionsMap(Map<ZoneAvailableOption, OptionValue> optionsMap) {
+        this.optionsMap = optionsMap;
     }
     
 

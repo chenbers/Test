@@ -6,7 +6,6 @@ import java.util.Map;
 
 public enum OffOnDevice implements OptionValue {
     OFF(0, "OFF"),
-    ON(1, "ON"),
     DEVICE(2, "DEVICE");
     
     private int code;
@@ -56,9 +55,7 @@ public enum OffOnDevice implements OptionValue {
     
     @Override
     public Boolean getBooleanValue() {
-        if (this == DEVICE)
-            return null;
-        return this == ON;
+        return this == DEVICE;
     }
 
 }
