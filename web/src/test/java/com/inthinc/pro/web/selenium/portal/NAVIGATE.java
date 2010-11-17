@@ -3,43 +3,63 @@
 package com.inthinc.pro.web.selenium.portal;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.runner.notification.StoppedByUserException;
+
 import org.openqa.selenium.server.SeleniumServer;
 
 
 import com.inthinc.pro.web.selenium.Core;
 import com.inthinc.pro.web.selenium.Data_Reader;
+import com.inthinc.pro.web.selenium.Rally_API;
 
 public class NAVIGATE
 {
 	
 	private static HashMap<String, HashMap<String, String>> testCase;
 	private static Data_Reader data_file;
+	private static Rally_API rally;
 	
-	Core selenium;
+	private String testCaseID;
+	private String testVersion="No Version Found";
+	private String testVerdict="Error";
+	
+	private final static String username = "dtanner@inthinc.com";
+	private final static String password = "aOURh7PL5v";
+	private final static String workspace = "Inthinc";
+	
+	private static Core selenium;
 	static SeleniumServer seleniumserver;
 	
 	
 	
 	@BeforeClass
-	public static void start_server() throws Exception {
-		seleniumserver = new SeleniumServer();
-        seleniumserver.start();
+	public static void start_server(){
+		System.out.println("BeforeClass executed");
+		try{
+			seleniumserver = new SeleniumServer();
+	        seleniumserver.start();
+			rally = new Rally_API(username, password);
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new StoppedByUserException();
+		}
         
 	}//end setup
 	
 	
 	@Before
 	public void start_selenium(){
-		selenium = Singleton.getSingleton().getSelenium();        
+		System.out.println("Before executed");
+		selenium = Singleton.getSingleton().getSelenium();
+		selenium.start();
 	}
 	
 	
@@ -115,26 +135,36 @@ public class NAVIGATE
 //		assertTrue(selenium.isTextPresent("Overview"));
 	}
 	
+
+	@After
+	public void stop_selenium(){
+		System.out.println("After executed");
+		selenium.stop();
+		record_results();
+		data_file=null;
+		testCase=null;
+	}
 	
-	@AfterClass //Close and destroy all objects and files created
+	
+	@AfterClass
 	public static void stop_server(){
-		 seleniumserver.stop();
+		System.out.println("AfterClass executed");
+		seleniumserver.stop();
 		
 	}//tear down
 	
-	@After
-	public void stop_selenium(){
-		selenium.stop();
-	}
 	
 	public String set_test_case(String file_name, String test_case){
 		String success = "Success";
+		testCaseID=test_case;
+		file_name = "src/test/resources/Data/" + file_name;
+		
 		if (data_file==null){
 			data_file = new Data_Reader();	
 		}
 		
 		try{
-			testCase = data_file.get_testcase_data(file_name, test_case);
+			testCase = data_file.get_testcase_data(file_name, testCaseID);
 		}catch(NullPointerException e){
 			System.out.println("That Test Case ID was not found in the file.");
 			return "That Test Case ID was not found in the file.";
@@ -155,8 +185,22 @@ public class NAVIGATE
 		return value; 
 	}
 	
-	
-	
+	public void record_results(){
+		String errors = selenium.getErrors().get_errors().toString();
+		if (errors.compareTo("")==0)testVerdict = "Pass";
+		else if (errors.compareTo("")!=0)testVerdict = "Fail";
+		try{
+			rally.createJSON(workspace, testCaseID, testVersion, (GregorianCalendar) GregorianCalendar.getInstance(), errors, testVerdict);
+		}catch(Exception e){
+			e.printStackTrace();
+			try {
+				//TODO Add a data writer in case the rally call fails
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}	
 }
 
 /* This is an example of a functional area class and its supporting keyword subclasses

@@ -1,6 +1,7 @@
 package com.inthinc.pro.web.selenium;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.GregorianCalendar;
 
 import org.apache.commons.httpclient.Credentials;
@@ -109,18 +110,21 @@ public class Rally_API {
      * @throws JSONException 
      * @throws IOException 
      * @throws HttpException 
+     * @throws Exception 
      */
-    public void createJSON(String workspace, String testCase, String build, GregorianCalendar date, String notes, String verdict ) throws JSONException, HttpException, IOException{
+    public Boolean createJSON(String workspace, String testCase, String build, GregorianCalendar date, String notes, String verdict ) throws JSONException, HttpException, IOException {
+    	Boolean results = false;
     	this.testCase = new JSONObject();
-    	
     	testCaseResults = new JSONObject();
-    		setWorkspace(workspace);
-    		getTestCase(testCase);
-    		setBuild(build);
-    		setDate(date);
-    		setNotes(notes);
-    		setVerdict(verdict);
-    		this.testCase.put("TestCaseResult", testCaseResults);
+		setWorkspace(workspace);
+		getTestCase(testCase);
+		setBuild(build);
+		setDate(date);
+		setNotes(notes);
+		setVerdict(verdict);
+		this.testCase.put("TestCaseResult", testCaseResults);
+		results = sendTestCaseResults();
+		return results;
     }    
     
     
@@ -183,6 +187,7 @@ public class Rally_API {
     	query += "&query="+("( FormattedID = "+testCase+" )").replace(" ", "%20").replace("=", "%3d");
     	query += "&pagesize=20";
     	query += "&start=1";
+    	System.out.println(get_testCase.getURI());
     	get_testCase.setQueryString(query);
     	
     	httpRequest(get_testCase);
@@ -258,18 +263,6 @@ public class Rally_API {
     }
     
     /**
-     * Method setDuration (optional)
-     * 
-     * add the duration to our testCaseResult JSONObject
-     * 
-     * @param duration
-     * @throws JSONException
-     */
-    public void setDuration(Double duration) throws JSONException{
-    	testCaseResults.put("Duration", duration);
-    }
-    
-    /**
      * Method sendTestCaseResults()
      * 
      * Create a post method using the host and final address for imports.
@@ -280,15 +273,18 @@ public class Rally_API {
      * Then add the JSON string as a StringRequestEntity to the post method
      * Set the entity
      * Call httpRequest to send our post
-     * 
+     * @throws IOException 
+     * @throws HttpException 
      * @throws Exception
      */
-    public final void sendTestCaseResults() throws Exception {
+    private final Boolean sendTestCaseResults() throws HttpException, IOException{
+    	Boolean results = false;
     	post_test_case_results = new PostMethod(hostname+import_result);
         RequestEntity requestEntity = new StringRequestEntity(testCase.toString(), "application/json", "UTF-8");
         post_test_case_results.setRequestEntity(requestEntity);
         httpRequest(post_test_case_results);
         
+        return results;
     }
    
     
@@ -321,7 +317,6 @@ public class Rally_API {
     	Rally_API rally = new Rally_API("dtanner@inthinc.com", "aOURh7PL5v");    	
     	try {
     		rally.createJSON("Sand Box", "TC158", "3.0", (GregorianCalendar) GregorianCalendar.getInstance(), "This was done in Java<br>We successfully sent the results", "Pass");
-			rally.sendTestCaseResults();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

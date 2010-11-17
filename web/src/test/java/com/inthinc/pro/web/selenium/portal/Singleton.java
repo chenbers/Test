@@ -33,7 +33,6 @@ public class Singleton {
                     	singleton = new Singleton();
 						//singleton.selenium = (Selenium) new SeleniumServer();
 						singleton.selenium = new Core("localhost", 4444, "*firefox", "https://qa.tiwipro.com:8423/tiwipro/");
-						singleton.selenium.start();
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
