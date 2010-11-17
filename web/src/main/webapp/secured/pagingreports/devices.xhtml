@@ -129,13 +129,6 @@
       													<ui:param name="status" value="status#{item.deviceStatus.code}" />
       													<h:outputText value="#{messages[status]}" />
                                     				</rich:column>  
-                                    				<rich:column id="ephone" rendered="#{tableColumns['device_ephone'].visible}" 
-                                    					sortBy="#{item.deviceEPhone}" filterBy="#{item.deviceEPhone}">
-                                      					<f:facet name="header">
-                                      						<h:outputText value="#{messages.reports_ecallphonenbr}" />
-                                      					</f:facet>
-                                      					<h:outputText value="#{item.deviceEPhone}" />
-                                    				</rich:column>   		
                                     			</rich:dataTable>    	
                                 			</div>
             	                    <div class="spacer"></div>

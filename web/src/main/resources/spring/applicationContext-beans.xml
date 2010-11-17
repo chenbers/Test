@@ -279,6 +279,7 @@
         <ref local="vehiclesBean" />
         <ref local="zoneAlertsBean" />
         <ref local="redFlagAlertsBean" />
+        <ref local="redFlagOrZoneAlertsBean" />
       </list>
     </property>
   </bean>
@@ -297,6 +298,7 @@
   <bean id="zoneAlertsBean" class="com.inthinc.pro.backing.ZoneAlertsBean" scope="session" init-method="initBean"/>
 
   <bean id="redFlagAlertsBean" class="com.inthinc.pro.backing.RedFlagAlertsBean" scope="session" init-method="initBean"/>
+  <bean id="redFlagOrZoneAlertsBean" class="com.inthinc.pro.backing.RedFlagOrZoneAlertsBean" scope="session" init-method="initBean"/>
   
   <bean id="messagesBean" class="com.inthinc.pro.backing.MessagesBean" scope="session">
   	<property name="personDAO" ref="personDAO"></property>  

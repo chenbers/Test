@@ -7,6 +7,7 @@ import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 
+@SuppressWarnings("serial")
 public class RedFlagsAlertMapper extends AbstractMapper
 {
     @ConvertColumnToField(columnName = "speedSettings")

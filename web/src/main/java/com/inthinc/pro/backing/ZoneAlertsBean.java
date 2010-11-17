@@ -20,6 +20,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.util.MessageUtil;
 
+@SuppressWarnings("serial")
 public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlertView>
 {
     private static final List<String> AVAILABLE_COLUMNS;

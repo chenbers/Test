@@ -67,6 +67,36 @@
                    </ui:fragment>
                   <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
+                  <div class="spacer"></div>
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                    <td>
+                  <div class="add_section_title">
+                  <ui:include src="../../includes/admin/inputLabel.xhtml">
+                     <ui:param name="required" value="false"/>
+                     <ui:param name="for" value="alertType"/>
+                     <ui:param name="fieldName" value="alertType"/>
+                     <ui:param name="editBean" value="#{redFlagAlertsBean}"/>
+                     <ui:param name="label" value="#{messages.editRedFlag_redFlagType}"/>
+        			<ui:param name="context" value="editRedFlagType" />
+                  </ui:include>
+                  </div>
+                  	  <div class="spacer"></div>
+                      <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    	<tr>
+                		<td width="160" valign="top">
+                        <h:selectOneMenu id="alertType" value="#{redFlagAlertsBean.item.type}" onchange="checkMultiple(this)">
+                          <a4j:support event="onclick" reRender="editRedFlagType" limitToList="true" />
+                          <f:selectItems value="#{redFlagAlertsBean.alertTypeSelectItems}" />
+                        </h:selectOneMenu>
+                      	</td>
+                		</tr>
+                		</table>
+                	</td>
+                	</tr>
+                </table>
+                  <div class="spacer"></div>
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="390" valign="top">
@@ -230,42 +260,21 @@
 
                   <div class="spacer"></div>
 
-                  <div class="add_section_title">
-                  <ui:include src="../../includes/admin/inputLabel.xhtml">
-                     <ui:param name="required" value="false"/>
-                     <ui:param name="for" value="type"/>
-                     <ui:param name="fieldName" value="type"/>
-                     <ui:param name="editBean" value="#{redFlagAlertsBean}"/>
-                     <ui:param name="label" value="#{messages.editRedFlag_redFlagType}"/>
-        			<ui:param name="context" value="editRedFlagType" />
-                  </ui:include>
-                  </div>
+<!--                  <div class="add_section_title">-->
+<!--                  <ui:include src="../../includes/admin/inputLabel.xhtml">-->
+<!--                     <ui:param name="required" value="false"/>-->
+<!--                     <ui:param name="for" value="type"/>-->
+<!--                     <ui:param name="fieldName" value="type"/>-->
+<!--                     <ui:param name="editBean" value="#{redFlagAlertsBean}"/>-->
+<!--                     <ui:param name="label" value="#{messages.editRedFlag_redFlagType}"/>-->
+<!--        			<ui:param name="context" value="editRedFlagType" />-->
+<!--                  </ui:include>-->
+<!--                  </div>-->
 
                   <div class="spacer"></div>
 
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                      <td width="160" valign="top">
-                        <h:selectOneMenu id="type" value="#{redFlagAlertsBean.item.type}" onchange="checkMultiple('type')">
-                          <a4j:support event="onclick" reRender="editRedFlagType" limitToList="true" />
-                          <f:selectItem itemValue="" itemLabel="#{messages.editRedFlag_notype}" />
-                          <f:selectItem itemValue="ALERT_TYPE_SPEEDING" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_SPEEDING']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_AGGRESSIVE_DRIVING" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_COMPLIANCE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_COMPLIANCE']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_CRASH" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_CRASH']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_TAMPERING" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_TAMPERING']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_EMERGENCY" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_EMERGENCY']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_ZONES" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_ZONES']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_VEHICLE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_VEHICLE']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_HOS" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_HOS']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_TEXT_MESSAGE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_TEXT_MESSAGE']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_WIRELINE_ALARM" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_WIRELINE_ALARM']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_FATIGUE" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_FATIGUE']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_INSTALLATION" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_INSTALLATION']}" />
-                          <f:selectItem itemValue="ALERT_TYPE_OFFHOUR" itemLabel="#{messages['AlertMessageType.ALERT_TYPE_OFFHOUR']}" />
-                        </h:selectOneMenu>
-                      </td>
-                      <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="650" valign="top">
                         <rich:message id="message" for="editRedFlagType" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 						<a4j:outputPanel id="editRedFlagType">

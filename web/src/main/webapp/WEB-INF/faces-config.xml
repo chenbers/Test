@@ -494,6 +494,12 @@
  </navigation-rule>
  <navigation-rule>
   <navigation-case>
+   <from-outcome>go_adminRedFlagsOrZones</from-outcome>
+   <to-view-id>/secured/admin/redFlagsAndZones.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
    <from-outcome>go_adminRedFlag</from-outcome>
    <to-view-id>/secured/admin/redFlag.xhtml</to-view-id>
   </navigation-case>

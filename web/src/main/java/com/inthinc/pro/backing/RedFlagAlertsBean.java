@@ -9,9 +9,11 @@ import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.ui.AlertTypeSelectItems;
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.AlertMessageType;
@@ -42,6 +44,10 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
     }
     private RedFlagAlertDAO redFlagAlertDAO;
+
+    public List<SelectItem> getAlertTypeSelectItems() {
+        return AlertTypeSelectItems.INSTANCE.getSelectItems();
+    }
 
     public void setRedFlagAlertDAO(RedFlagAlertDAO redFlagAlertDAO) {
         this.redFlagAlertDAO = redFlagAlertDAO;

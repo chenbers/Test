@@ -399,6 +399,25 @@
 		<view-id>/secured/admin/redFlag.faces</view-id>
 		<action>#{redFlagAlertsBean.view}</action>
 	</url-mapping>
+	<url-mapping id="adminredFlagOrZoneAlertsAccess">
+		<pattern>/app/admin/redFlagOrZoneAlerts</pattern>
+		<view-id>/secured/admin/redFlagOrZoneAlerts.faces</view-id>
+		<action onPostback="false">#{redFlagOrZoneAlertsBean.resetList}</action>
+	</url-mapping>
+	<url-mapping id="adminRedFlagsAndZones">
+		<pattern>/app/admin/redFlagAndZoneAlerts</pattern>
+		<view-id>/secured/admin/redFlags.faces</view-id>
+		<action onPostback="false">#{redFlagOrZoneAlertsBean.resetList}</action>
+	</url-mapping>
+	<url-mapping id="adminEditRedFlagOrZone">
+		<pattern>/app/admin/editRedFlagOrZoneAlert</pattern>
+		<view-id>/secured/admin/editRedFlagOrZoneAlert.faces</view-id>
+	</url-mapping>
+	<url-mapping id="adminRedFlagOrZone">
+		<pattern>/app/admin/redFlagOrZoneAlert/#{redFlagOrZoneAlertsBean.itemID}</pattern>
+		<view-id>/secured/admin/zoneAlert.faces</view-id>
+		<action>#{redFlagOrZoneAlertsBean.view}</action>
+	</url-mapping>
 	
 	<url-mapping id="adminreportsAccess">
 		<pattern>/app/admin/reports</pattern>

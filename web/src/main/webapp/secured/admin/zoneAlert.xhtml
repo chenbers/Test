@@ -37,12 +37,12 @@
 
           <a4j:form id="zoneAlertForm">
 
-            <h:inputHidden id="zonePoints" value="#{zoneAlertsBean.item.zone.pointsString}" />
+            <h:inputHidden id="zonePoints" value="#{redFlagOrZoneAlertsBean.item.zone.pointsString}" />
 
             <div class="">
               <div class="panel_nw">
                 <div class="panel_title">
-                  <span class="admin"><h:outputFormat value="#{messages.adminHeader_zoneAlertDetails}"><f:param value="#{zoneAlertsBean.item.name}" /></h:outputFormat></span>
+                  <span class="admin"><h:outputFormat value="#{messages.adminHeader_zoneAlertDetails}"><f:param value="#{redFlagOrZoneAlertsBean.item.name}" /></h:outputFormat></span>
                   <span class="panel_links"></span>
                 </div>
               </div>
@@ -52,10 +52,10 @@
                 <div class="panel_content">
 
                   <ul id="grid_nav" style="margin: 0;">
-                    <li class="l text"><a4j:htmlCommandLink id="zoneAlertCancel" action="#{zoneAlertsBean.cancelDisplay}" value="#{messages.zoneAlert_backToZoneAlerts}" /></li>
+                    <li class="l text"><a4j:htmlCommandLink id="zoneAlertCancel" action="#{redFlagOrZoneAlertsBean.cancelDisplay}" value="#{messages.zoneAlert_backToZoneAlerts}" /></li>
                     <li class="r">
                       <a4j:commandButton id="zoneAlertDelete" styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                      <h:outputText value=" " /><h:commandButton id="zoneAlertEdit" action="#{zoneAlertsBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                      <h:outputText value=" " /><h:commandButton id="zoneAlertEdit" action="#{redFlagOrZoneAlertsBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
                     </li>
                   </ul>
 
@@ -72,32 +72,32 @@
                         <table width="100%" border="0" cellspacing="2" cellpadding="4" style="background-color: #f2efe9; border: 1px solid #acacac;">
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editZoneAlert_zone}" /></td>
-                            <td><h:outputText value="#{zoneAlertsBean.item.zone.name}" /></td>
+                            <td><h:outputText value="#{redFlagOrZoneAlertsBean.item.zone.name}" /></td>
                           </tr>
                         </table>
 
                         <table width="100%" border="0" cellspacing="2" cellpadding="4">
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editAlerts_name}" /></td>
-                            <td><h:outputText value="#{zoneAlertsBean.item.name}" /></td>
+                            <td><h:outputText value="#{redFlagOrZoneAlertsBean.item.name}" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editAlerts_description}" /></td>
-                            <td><h:outputText value="#{zoneAlertsBean.item.description}" /></td>
+                            <td><h:outputText value="#{redFlagOrZoneAlertsBean.item.description}" /></td>
                           </tr>
                           <tr>
 								<td width="100" valign="top">
 									<h:outputText value="#{messages.editAlerts_status}" />
 								</td>
 								<td>
-									<h:outputText value="#{messages[zoneAlertsBean.item.status]}"/>
+									<h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.status]}"/>
 								</td>
 						 </tr>
                           <tr>
                             <td width="100" valign="top"><h:outputText value="#{messages.editAlerts_dayOfWeek}" /></td>
                             <td>
                               <ui:include src="../../includes/dayPicker.xhtml">
-                                <ui:param name="days" value="#{zoneAlertsBean.item.dayOfWeek}" />
+                                <ui:param name="days" value="#{redFlagOrZoneAlertsBean.item.dayOfWeek}" />
                                 <ui:param name="disabled" value="true" />
         						<ui:param name="context" value="zoneAlert" />
                               </ui:include>
@@ -106,25 +106,25 @@
                           <tr>
                             <td width="100" valign="top"><h:outputText value="#{messages.editAlerts_timeframe}" /></td>
                             <td>
-                              <h:outputText rendered="#{zoneAlertsBean.item.anytime}" value="#{messages.editAlerts_timeframeAnytime}" />
-                              <ui:fragment rendered="#{not zoneAlertsBean.item.anytime}">
+                              <h:outputText rendered="#{redFlagOrZoneAlertsBean.item.anytime}" value="#{messages.editAlerts_timeframeAnytime}" />
+                              <ui:fragment rendered="#{not redFlagOrZoneAlertsBean.item.anytime}">
                                 <h:outputText value="#{messages.editAlerts_timeframeBetween}" />
                                 <h:outputText value=" " />
-                                <c:set var="hours" value="#{((zoneAlertsBean.item.startTOD - (zoneAlertsBean.item.startTOD % 60)) / 60 % 12)}" />
+                                <c:set var="hours" value="#{((redFlagOrZoneAlertsBean.item.startTOD - (redFlagOrZoneAlertsBean.item.startTOD % 60)) / 60 % 12)}" />
                                 <c:if test="#{hours == 0}">
                                   <c:set var="hours" value="12" />
                                 </c:if>
-                                <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{zoneAlertsBean.item.startTOD % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
-                                <h:outputText value="#{(zoneAlertsBean.item.startTOD ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
+                                <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{redFlagOrZoneAlertsBean.item.startTOD % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
+                                <h:outputText value="#{(redFlagOrZoneAlertsBean.item.startTOD ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
                                 <h:outputText value=" " />
                                 <h:outputText value="#{messages.editAlerts_betweenAnd}" />
                                 <h:outputText value=" " />
-                                <c:set var="hours" value="#{((zoneAlertsBean.item.stopTOD - (zoneAlertsBean.item.stopTOD % 60)) / 60 % 12)}" />
+                                <c:set var="hours" value="#{((redFlagOrZoneAlertsBean.item.stopTOD - (redFlagOrZoneAlertsBean.item.stopTOD % 60)) / 60 % 12)}" />
                                 <c:if test="#{hours == 0}">
                                   <c:set var="hours" value="12" />
                                 </c:if>
-                                <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{zoneAlertsBean.item.stopTOD % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
-                                <h:outputText value="#{(zoneAlertsBean.item.stopTOD ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
+                                <h:outputText value="#{hours}"><f:convertNumber integerOnly="true" /></h:outputText>:<h:outputText value="#{redFlagOrZoneAlertsBean.item.stopTOD % 60}"><f:convertNumber integerOnly="true" minIntegerDigits="2" maxIntegerDigits="2" /></h:outputText>
+                                <h:outputText value="#{(redFlagOrZoneAlertsBean.item.stopTOD ge 720) ? messages.timePicker_pm : messages.timePicker_am}" />
                               </ui:fragment>
                             </td>
                           </tr>
@@ -149,11 +149,11 @@
                         <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.arrival}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{redFlagOrZoneAlertsBean.item.arrival}" disabled="true" />
                               <h:outputText value="#{messages.editZoneAlert_arrival}" />
                             </td>
                             <td width="50%">
-                              <h:selectBooleanCheckbox value="#{zoneAlertsBean.item.departure}" disabled="true" />
+                              <h:selectBooleanCheckbox value="#{redFlagOrZoneAlertsBean.item.departure}" disabled="true" />
                               <h:outputText value="#{messages.editZoneAlert_departure}" />
                             </td>
                           </tr>
@@ -165,14 +165,14 @@
                   
                         <div class="add_section_title"><h:outputText value="#{messages.editAlerts_assignTo}" /></div>
 
-                        <ui:repeat value="#{zoneAlertsBean.assignPicker.picked}" var="item">
+                        <ui:repeat value="#{redFlagOrZoneAlertsBean.assignPicker.picked}" var="item">
                           <h:outputText value="#{item.label}" /><br />
                         </ui:repeat>
                         <table width="380" border="0" align="left">
 						  <tr><td>&#160;</td></tr>                        	
                           <tr>
                             <td width="30%"><h:outputText value="#{messages.editAlerts_owner}"/></td>
-                           	<td><h:outputText value="#{zoneAlertsBean.item.fullName}" /></td>
+                           	<td><h:outputText value="#{redFlagOrZoneAlertsBean.item.fullName}" /></td>
                     	   </tr>
                     	</table>
                     	</td>
@@ -188,8 +188,8 @@
                         <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByName}" /></div>
 
                         <div>
-                          <h:outputText value="#{zoneAlertsBean.peoplePicker.picked[0].label}" />
-                          <ui:repeat value="#{zoneAlertsBean.peoplePicker.picked}" var="person" offset="1">
+                          <h:outputText value="#{redFlagOrZoneAlertsBean.peoplePicker.picked[0].label}" />
+                          <ui:repeat value="#{redFlagOrZoneAlertsBean.peoplePicker.picked}" var="person" offset="1">
                             <h:outputText value=", " />
                             <h:outputText value="#{person.label}" />
                           </ui:repeat>
@@ -202,8 +202,8 @@
                            <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>
    
                            <div>
-                             <a href="mailto:#{email}"><h:outputText value="#{zoneAlertsBean.item.emailTo[0]}" /></a>
-                             <ui:repeat value="#{zoneAlertsBean.item.emailTo}" var="email" offset="1">
+                             <a href="mailto:#{email}"><h:outputText value="#{redFlagOrZoneAlertsBean.item.emailTo[0]}" /></a>
+                             <ui:repeat value="#{redFlagOrZoneAlertsBean.item.emailTo}" var="email" offset="1">
                                <h:outputText value=", " />
                                <a href="mailto:#{email}"><h:outputText value="#{email}" /></a>
                              </ui:repeat>
@@ -259,7 +259,7 @@
     </table>
 
     <ui:include src="../../includes/confirmDelete.xhtml">
-      <ui:param name="deleteBean" value="#{zoneAlertsBean}" />
+      <ui:param name="deleteBean" value="#{redFlagOrZoneAlertsBean}" />
       <ui:param name="explanation" value="#{messages.zoneAlert_confirmDelete}" />
       <ui:param name="supportRedirect" value="#{true}" />
       <ui:param name="context" value="zoneAlert" />

@@ -239,7 +239,7 @@ public class Device extends BaseEntity implements HasAccountId
         this.iridiumImei = iridiumImei;
     }
     public ProductType getProductVer() {
-        return ProductType.WS820;
+        return productVer;
     }
     public void setProductVer(ProductType productVer) {
         this.productVer = productVer;

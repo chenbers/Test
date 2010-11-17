@@ -4,23 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
-import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.mapper.RedFlagHessianMapper;
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
+@SuppressWarnings("serial")
 public class RedFlagHessianDAO extends GenericHessianDAO<RedFlag, Integer> implements RedFlagDAO
 {
     private static final Logger logger = Logger.getLogger(RedFlagHessianDAO.class);

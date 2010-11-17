@@ -8,10 +8,13 @@ import com.inthinc.pro.dao.annotations.ID;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class ZoneAlert extends BaseAlert
+public class ZoneAlert extends RedFlagOrZoneAlert
 {
+
     @Column(updateable = false)
     private static final long serialVersionUID = 3066238032590993441L;
+    @Column(updateable = false)
+    public static final Integer DEFAULT_BUMP_LEVEL = 3;
 
     @ID
     @Column(name="alertID")
@@ -75,6 +78,18 @@ public class ZoneAlert extends BaseAlert
         this.arrival = arrival;
     }
 
+    @Override
+    public Integer getId() {
+
+        return zoneAlertID;
+    }
+
+    @Override
+    public void setId(Integer id) {
+
+        zoneAlertID = id;
+    }
+
     public Boolean getDeparture()
     {
         return departure;
@@ -84,4 +99,11 @@ public class ZoneAlert extends BaseAlert
     {
         this.departure = departure;
     }
+    
+    @Override
+    public AlertMessageType getType() {
+
+        return null;
+    }
+
 }

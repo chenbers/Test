@@ -98,19 +98,6 @@
             </ui:include>
           </td>
         </tr>
-<!--        <ui:fragment rendered="#{parentAction == 'go_adminDevices'}">-->
-<!--          <tr>-->
-<!--            <td valign="top" class="sub_wrapper">-->
-<!--              <ui:include src="verticalLeftSubTab.xhtml">-->
-<!--                  <ui:param name="iconFileName" value="ico_add_tiwi.png"/>-->
-<!--                  <ui:param name="actionBean" value="#{devicesBean}"/>-->
-<!--                  <ui:param name="action" value="add"/>-->
-<!--                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddDevice') ? 'true' : 'false'}"/>-->
-<!--                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddDevice}"/>-->
-<!--              </ui:include>-->
-<!--            </td>-->
-<!--          </tr>-->
-<!--        </ui:fragment>-->
         </security:authorize>
         <!-- Zones -->
      	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ZONESACCESS">
@@ -174,7 +161,7 @@
             <td valign="top" class="sub_wrapper">
               <ui:include src="verticalLeftSubTab.xhtml">
                   <ui:param name="iconFileName" value="ico_add_redflag.png"/>
-                  <ui:param name="actionBean" value="#{redFlagAlertsBean}"/>
+                  <ui:param name="actionBean" value="#{redFlagOrZoneAlertsBean}"/>
                   <ui:param name="action" value="add"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddRedFlag') ? 'true' : 'false'}"/>
                   <ui:param name="value" value="#{messages.adminSideNav_go_adminAddRedFlag}"/>

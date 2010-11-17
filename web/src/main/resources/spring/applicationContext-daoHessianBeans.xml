@@ -34,6 +34,7 @@ default-autowire="byName">
   <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO"/>
   <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO"/>
   <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO"/>
+  <bean id="redFlagAndZoneAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAndZoneAlertHessianDAO"></bean>
   
   <!-- Address Lookup -->
   <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">

@@ -10,7 +10,7 @@ import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 
 @XmlRootElement
-public class RedFlagAlert extends BaseAlert {
+public class RedFlagAlert extends RedFlagOrZoneAlert {
 
     @Column(updateable = false)
     private static final long serialVersionUID = -1621262257747114161L;
@@ -55,6 +55,16 @@ public class RedFlagAlert extends BaseAlert {
         return redFlagAlertID;
     }
 
+    @Override
+    public Integer getId() {
+        return redFlagAlertID;
+    }
+
+    @Override
+    public void setId(Integer id) {
+        this.redFlagAlertID = id;
+    }
+
     public void setRedFlagAlertID(Integer redFlagAlertID) {
         this.redFlagAlertID = redFlagAlertID;
     }
@@ -67,6 +77,7 @@ public class RedFlagAlert extends BaseAlert {
         this.severityLevel = severityLevel;
     }
 
+    @Override
     public AlertMessageType getType() {
         return type;
     }
