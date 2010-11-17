@@ -6,9 +6,11 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.junit.Ignore;
+
 import com.inthinc.pro.backing.RedFlagAlertsBean.RedFlagAlertView;
 import com.inthinc.pro.util.MiscUtil;
-
+@Ignore
 public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagAlertsBean.RedFlagAlertView>
 {
     @Override

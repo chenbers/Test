@@ -6,9 +6,11 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.junit.Ignore;
+
 import com.inthinc.pro.backing.ZoneAlertsBean.ZoneAlertView;
 import com.inthinc.pro.util.MiscUtil;
-
+@Ignore
 public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAlertView>
 {
     @Override
