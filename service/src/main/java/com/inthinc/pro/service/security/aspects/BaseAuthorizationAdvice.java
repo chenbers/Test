@@ -36,6 +36,15 @@ public class BaseAuthorizationAdvice {
     public void receivesHasAccountIdObjectAsFirstArgument() {}
 
     /**
+     * 
+     * Pointcut definition.
+     * <p/>
+     * This pointcut will match all methods which receives a Integer as first argument.
+     */
+    @Pointcut("execution(* com.inthinc.pro.service.adapters.*.*(java.lang.Integer,..))")
+    public void receivesIntegerAs1stArgumentJoinPoint() {}
+    
+    /**
      * Pointcut definition.
      * <p/>
      * This pointcut will match the findByID(java.lang.Integer) method on any class in the adapters package.

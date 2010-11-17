@@ -51,15 +51,6 @@ public class DriverAuthorizationAdvice {
     public void receivesDriverObjectAsFirstArgument() {}
 
     /**
-     * 
-     * Pointcut definition.
-     * <p/>
-     * This pointcut will match all methods which receives a Integer as first argument and does not return a Driver (to avoid conflicts with findById).
-     */
-    @Pointcut("execution(* com.inthinc.pro.service.adapters.*.*(java.lang.Integer,..))")
-    public void receivesIntegerAs1stArgumentJoinPoint() {}
-
-    /**
      * Advice definition.
      * <p/>
      * AfterReturning advice which checks if the user has access to the returned {@link Driver} instance. Access check to Driver entities are performed through Group and Person.
@@ -74,7 +65,7 @@ public class DriverAuthorizationAdvice {
      * <p/>
      * AfterReturning advice which checks if the user has access to the returned {@link Driver} instance. Access check to Driver entities are performed through Group and Person.
      */
-    @Before(value = "inDriverDAOAdapter() && receivesIntegerAs1stArgumentJoinPoint() && !com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()")
+    @Before(value = "inDriverDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesIntegerAs1stArgumentJoinPoint() && !com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()")
     public void doAccessCheck(JoinPoint jp) {
         Driver driver = ((DriverDAOAdapter) jp.getTarget()).findByID((Integer) jp.getArgs()[0]);
         doAccessCheck(driver);
