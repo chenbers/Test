@@ -17,7 +17,7 @@ import com.inthinc.pro.service.security.TiwiproPrincipal;
 @Component
 public class AccountAuthorizationAdvice {
 
-    @Autowired
+   // @Autowired
     private TiwiproPrincipal principal;
 
     /**

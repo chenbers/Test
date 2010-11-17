@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.model.User;
 
-public class UserServiceTest extends BaseTest {
+public class UserServiceTest {
     
 //    @Test
 //    public void testUsers() {

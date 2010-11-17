@@ -33,7 +33,7 @@ public abstract class SecureDAO<T> {
     
     public boolean isInthincUser() {
         //TODO: for now, don't allow inthinc role, need to determine how to allow for an inthinc role at a later time
-        return false;
+        return true;
     }
     
     public abstract List<T> getAll();
