@@ -53,6 +53,7 @@ public class AccountDAOAdapterTest {
 	@Test
 	public void testGetAll(){
 		final List<Account> accountList = new ArrayList<Account>(); 
+		accountList.add(account);
 		
 		new Expectations(){{
 			accountDAOMock.getAllAcctIDs(); returns(accountList);
