@@ -2,12 +2,14 @@ package com.inthinc.pro.web.selenium.Test_Cases;
 
 import org.junit.Test;
 import java.io.*;
+import java.util.GregorianCalendar;
 
 import com.inthinc.pro.web.selenium.portal.NAVIGATE;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.Data_Reader;
 import com.inthinc.pro.web.selenium.Data_Sender;
-import com.inthinc.pro.web.selenium.portal.Masthead.*;;
+import com.inthinc.pro.web.selenium.portal.Masthead.*;
+import com.inthinc.pro.web.selenium.Rally_API;
 
 public class TP_Login extends NAVIGATE {
 	//instantiate var for data reader
@@ -43,9 +45,17 @@ public class TP_Login extends NAVIGATE {
 		//exit Portal
 		mh.click_logout();
 		
-		OutputStreamWriter oout = Data_Sender.OpenOutputStream("C:/Program Files/Eclipse_maven/eclipse_win32/eclipse/workspace/root/web/src/test/resources/Data/Tiwi_output.xls");
-		Data_Sender.writeLine(oout, "TC1247 executed successfully");
-		out.closeOutputSteam(oout);
+		Rally_API rally = new Rally_API("dtanner@inthinc.com", "aOURh7PL5v");    
+    	rally.createJSON("Inthinc", "TC4631", "3.0", (GregorianCalendar) GregorianCalendar.getInstance(), "TC1247", "Pass");
+    	try {
+			rally.sendTestCaseResults();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+//		OutputStreamWriter oout = Data_Sender.OpenOutputStream("/Tiwi_output.xls");
+//		Data_Sender.writeLine(oout, "TC1247 executed successfully");
+//		out.closeOutputSteam(oout);
 	}
 	
 	
@@ -59,11 +69,18 @@ public class TP_Login extends NAVIGATE {
 			//verify login screen is displayed correctly
 			l.ck_login_page();
 			
+			Rally_API rally = new Rally_API("dtanner@inthinc.com", "aOURh7PL5v");    
+	    	rally.createJSON("Inthinc", "TC4632", "3.0", (GregorianCalendar) GregorianCalendar.getInstance(), "TC1250", "Pass");
+	    	try {
+				rally.sendTestCaseResults();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
-			OutputStreamWriter oout = Data_Sender.OpenOutputStream("C:/Program Files/Eclipse_maven/eclipse_win32/eclipse/workspace/root/web/src/test/resources/Data/Tiwi_output.xls");
-			Data_Sender.writeLine(oout, "TC1250 executed successfully");
-			out.closeOutputSteam(oout);
-			
+//			OutputStreamWriter oout = Data_Sender.OpenOutputStream("C:/Program Files/Eclipse_maven/eclipse_win32/eclipse/workspace/root/web/src/test/resources/Data/Tiwi_output.xls");
+//			Data_Sender.writeLine(oout, "TC1250 executed successfully");
+//			out.closeOutputSteam(oout);
+//			
 			
 		}
 	
