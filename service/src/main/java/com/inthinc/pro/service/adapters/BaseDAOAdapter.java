@@ -2,9 +2,11 @@ package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.GenericDAO;
+import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 /**
  * This class is the base for all adapters.</br>
@@ -22,7 +24,10 @@ import com.inthinc.pro.dao.GenericDAO;
  */
 @Component
 public abstract class BaseDAOAdapter<R> {
-
+    
+    @Autowired
+    TiwiproPrincipal tiwiProPrincipal;
+    
 	/**
 	 * Retrieve all the resources of type <R>.
 	 * 
@@ -61,15 +66,13 @@ public abstract class BaseDAOAdapter<R> {
 	 * @return account ID.
 	 */
     protected Integer getAccountID() {
-		// Will be obtained from TiwiProPrincipal
-		// getUser().getPerson().getAcctID();    	
-		return null;
+		// obtained from TiwiProPrincipal
+		return tiwiProPrincipal.getAccountID();
 	}
 
     public Integer getGroupID() {
-		// Will be obtained from TiwiProPrincipal
-		// getUser().getGroupID();    	
-        return null;
+		// obtained from TiwiProPrincipal
+        return tiwiProPrincipal.getGroupID();
     }    
 
 	/**
