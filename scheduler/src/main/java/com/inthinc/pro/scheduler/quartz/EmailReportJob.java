@@ -112,12 +112,18 @@ public class EmailReportJob extends QuartzJobBean {
                         logger.debug("-------BEGIN PROCESSING REPORT-------");
                         logger.debug(reportSchedule.toString());
                     }
-                    processReportSchedule(reportSchedule);
-                    reportSchedule.setLastDate(todaysDate.getTime());
-                    Integer modified = reportScheduleDAO.update(reportSchedule);
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("UPDATE RESULT " + modified);
-                        logger.debug("-------------END REPORT-------------");
+                    try {
+                        processReportSchedule(reportSchedule);
+                        reportSchedule.setLastDate(todaysDate.getTime());
+                        Integer modified = reportScheduleDAO.update(reportSchedule);
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("UPDATE RESULT " + modified);
+                            logger.debug("-------------END REPORT-------------");
+                        }
+                    }
+                    catch (Throwable t) {
+                        // log the exception, but keep processing the rest of the the reports
+                        logger.error(t);
                     }
                 }
             }
