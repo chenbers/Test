@@ -86,21 +86,23 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
      * @return The new RedFlagOrZoneAlertView object.
      */
     private RedFlagOrZoneAlertView createRedFlagOrZoneAlertView(RedFlagOrZoneAlert flag) {
-        final RedFlagOrZoneAlertView flagView = new RedFlagOrZoneAlertView();
-        flagView.setAnytime(true);
-        flagView.setHardAccelerationSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardAccelerationNull());
-        flagView.setHardBrakeSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardBrakeNull());
-        flagView.setHardTurnSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardTurnNull());
-        flagView.setHardVerticalSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardVerticalNull());
-        BeanUtils.copyProperties(flag, flagView);
-        if (flagView.getStartTOD() == null)
-            flagView.setStartTOD(BaseAlert.MIN_TOD);
-        if (flagView.getStopTOD() == null)
-            flagView.setStopTOD(BaseAlert.MIN_TOD);
-        flagView.setAnytime(isAnytime(flagView));
-        flagView.setSelected(false);
-        flagView.setId(flag.getId());
-        return flagView;
+        final RedFlagOrZoneAlertView alertView = new RedFlagOrZoneAlertView();
+        alertView.setAnytime(true);
+        alertView.setHardAccelerationSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardAccelerationNull());
+        alertView.setHardBrakeSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardBrakeNull());
+        alertView.setHardTurnSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardTurnNull());
+        alertView.setHardVerticalSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardVerticalNull());
+        BeanUtils.copyProperties(flag, alertView);
+        if (alertView.getStartTOD() == null)
+            alertView.setStartTOD(BaseAlert.MIN_TOD);
+        if (alertView.getStopTOD() == null)
+            alertView.setStopTOD(BaseAlert.MIN_TOD);
+        alertView.setAnytime(isAnytime(alertView));
+        alertView.setSelected(false);
+        alertView.setRedFlagOrZoneAlertsBean(this);
+
+        alertView.setId(flag.getId());
+        return alertView;
     }
 
     @Override
@@ -138,6 +140,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     protected RedFlagOrZoneAlertView createAddItem() {
 
 //will it be RedFlagAlert
+        
         final RedFlagAlert redFlag = new RedFlagAlert();
         RedFlagOrZoneAlertView RedFlagOrZoneAlertView = createRedFlagOrZoneAlertView(redFlag);
         RedFlagOrZoneAlertView.setAccountID(getAccountID());
@@ -339,7 +342,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     @Override
     protected String getDisplayRedirect() {
-        return "pretty:adminRedFlagOrZone";
+        
+        if (getItem().getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
+          
+             return "pretty:adminZone";
+        }
+        return "pretty:adminRedFlag";
     }
 
     @Override
@@ -506,9 +514,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             return zone;
         }
         public String getZoneName(){
-            
-            if (getZoneID() != null){
-                return getZone().getName();
+            if (getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
+                if (getZoneID() != null){
+                    return getZone().getName();
+                }
             }
             return null;
         }

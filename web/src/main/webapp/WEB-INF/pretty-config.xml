@@ -395,7 +395,7 @@
 		<view-id>/secured/admin/editRedFlag.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminRedFlag">
-		<pattern>/app/admin/redFlag/#{redFlagAlertsBean.itemID}</pattern>
+		<pattern>/app/admin/redFlag/#{redFlagOrZoneAlertsBean.itemID}</pattern>
 		<view-id>/secured/admin/redFlag.faces</view-id>
 		<action>#{redFlagAlertsBean.view}</action>
 	</url-mapping>
@@ -413,7 +413,7 @@
 		<pattern>/app/admin/editRedFlagOrZoneAlert</pattern>
 		<view-id>/secured/admin/editRedFlagOrZoneAlert.faces</view-id>
 	</url-mapping>
-	<url-mapping id="adminRedFlagOrZone">
+	<url-mapping id="adminZone">
 		<pattern>/app/admin/redFlagOrZoneAlert/#{redFlagOrZoneAlertsBean.itemID}</pattern>
 		<view-id>/secured/admin/zoneAlert.faces</view-id>
 		<action>#{redFlagOrZoneAlertsBean.view}</action>

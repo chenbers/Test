@@ -19,29 +19,24 @@ public class ZoneAlert extends RedFlagOrZoneAlert
     @ID
     @Column(name="alertID")
     private Integer           zoneAlertID;
-    private Integer           zoneID;
-    private Boolean           arrival;
-    private Boolean           departure;
 
     public ZoneAlert(Integer accountID, Integer userID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
             List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo,
             Integer zoneAlertID, Integer zoneID, Boolean arrival, Boolean departure)
     {
-        super(accountID, userID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, driverIDs, vehicleIDs, vehicleTypes, notifyPersonIDs, emailTo);
+        super(AlertMessageType.ALERT_TYPE_ZONES,accountID, userID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, driverIDs, vehicleIDs, vehicleTypes, notifyPersonIDs, emailTo, null,
+                null, null, null, null,null,zoneID, arrival, departure);
         this.zoneAlertID = zoneAlertID;
-        this.zoneID = zoneID;
-        this.arrival = arrival;
-        this.departure = departure;
     }
 
-    public ZoneAlert(Integer zoneAlertID, Integer zoneID, Boolean arrival, Boolean departure)
-    {
-        super();
-        this.zoneAlertID = zoneAlertID;
-        this.zoneID = zoneID;
-        this.arrival = arrival;
-        this.departure = departure;
-    }
+//    public ZoneAlert(Integer zoneAlertID, Integer zoneID, Boolean arrival, Boolean departure)
+//    {
+//        super();
+//        this.zoneAlertID = zoneAlertID;
+//        this.zoneID = zoneID;
+//        this.arrival = arrival;
+//        this.departure = departure;
+//    }
 
     public ZoneAlert()
     {
@@ -58,25 +53,6 @@ public class ZoneAlert extends RedFlagOrZoneAlert
         this.zoneAlertID = zoneAlertID;
     }
 
-    public Integer getZoneID()
-    {
-        return zoneID;
-    }
-
-    public void setZoneID(Integer zoneID)
-    {
-        this.zoneID = zoneID;
-    }
-
-    public Boolean getArrival()
-    {
-        return arrival;
-    }
-
-    public void setArrival(Boolean arrival)
-    {
-        this.arrival = arrival;
-    }
 
     @Override
     public Integer getId() {
@@ -89,21 +65,11 @@ public class ZoneAlert extends RedFlagOrZoneAlert
 
         zoneAlertID = id;
     }
-
-    public Boolean getDeparture()
-    {
-        return departure;
-    }
-
-    public void setDeparture(Boolean departure)
-    {
-        this.departure = departure;
-    }
     
     @Override
     public AlertMessageType getType() {
 
-        return null;
+        return AlertMessageType.ALERT_TYPE_ZONES;
     }
 
 }
