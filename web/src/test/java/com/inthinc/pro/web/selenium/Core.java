@@ -3,9 +3,6 @@ package com.inthinc.pro.web.selenium;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 import com.thoughtworks.selenium.CommandProcessor;
 import com.thoughtworks.selenium.DefaultSelenium;

@@ -22,7 +22,8 @@ import com.inthinc.pro.web.selenium.Rally_API;
 public class NAVIGATE
 {
 	
-	private static HashMap<String, HashMap<String, String>> testCase;
+	private GregorianCalendar currentTime;
+	private static HashMap<String, HashMap<String, String>> testCase, errors;
 	private static Data_Reader data_file;
 	private static Rally_API rally;
 	
@@ -41,7 +42,6 @@ public class NAVIGATE
 	
 	@BeforeClass
 	public static void start_server(){
-		System.out.println("BeforeClass executed");
 		try{
 			seleniumserver = new SeleniumServer();
 	        seleniumserver.start();
@@ -57,9 +57,9 @@ public class NAVIGATE
 	
 	@Before
 	public void start_selenium(){
-		System.out.println("Before executed");
 		selenium = Singleton.getSingleton().getSelenium();
 		selenium.start();
+		currentTime = (GregorianCalendar) GregorianCalendar.getInstance();
 	}
 	
 	
@@ -138,17 +138,21 @@ public class NAVIGATE
 
 	@After
 	public void stop_selenium(){
-		System.out.println("After executed");
+		try{
+			testVersion = selenium.getText("footerForm:version", "Getting version from Portal");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		selenium.stop();
 		record_results();
 		data_file=null;
 		testCase=null;
+		currentTime=null;
 	}
 	
 	
 	@AfterClass
 	public static void stop_server(){
-		System.out.println("AfterClass executed");
 		seleniumserver.stop();
 		
 	}//tear down
@@ -186,18 +190,18 @@ public class NAVIGATE
 	}
 	
 	public void record_results(){
-		String errors = selenium.getErrors().get_errors().toString();
-		if (errors.compareTo("")==0)testVerdict = "Pass";
-		else if (errors.compareTo("")!=0)testVerdict = "Fail";
+		errors = selenium.getErrors().get_errors();
+		if (errors.isEmpty())testVerdict = "Pass";
+		else if (errors.isEmpty())testVerdict = "Fail";
 		try{
-			rally.createJSON(workspace, testCaseID, testVersion, (GregorianCalendar) GregorianCalendar.getInstance(), errors, testVerdict);
-		}catch(Exception e){
-			e.printStackTrace();
+			rally.createJSON(workspace, testCaseID, testVersion, currentTime, errors, testVerdict);
+		}catch(Exception e1){
+			e1.printStackTrace();
 			try {
-				//TODO Add a data writer in case the rally call fails
-			} catch (Exception e1) {
+				// TODO Add a data writer in case the rally call fails
+			} catch (Exception e2) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e2.printStackTrace();
 			}
 		}
 	}	

@@ -1,8 +1,10 @@
 package com.inthinc.pro.web.selenium;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
@@ -112,7 +114,16 @@ public class Rally_API {
      * @throws HttpException 
      * @throws Exception 
      */
-    public Boolean createJSON(String workspace, String testCase, String build, GregorianCalendar date, String notes, String verdict ) throws JSONException, HttpException, IOException {
+    public void createJSON(String workspace, 
+    		String testCase, String build, GregorianCalendar date, 
+    		HashMap<String, HashMap<String, String>> errors, String verdict ) throws JSONException, HttpException, IOException {
+    	createJSON(workspace, testCase,build,date,formatString(errors),verdict);
+    }
+    
+    public Boolean createJSON(String workspace, 
+    		String testCase, String build, GregorianCalendar date, 
+    		String notes, String verdict ) throws JSONException, HttpException, IOException {
+    	
     	Boolean results = false;
     	this.testCase = new JSONObject();
     	testCaseResults = new JSONObject();
@@ -125,7 +136,7 @@ public class Rally_API {
 		this.testCase.put("TestCaseResult", testCaseResults);
 		results = sendTestCaseResults();
 		return results;
-    }    
+    } 
     
     
     /**
@@ -187,7 +198,6 @@ public class Rally_API {
     	query += "&query="+("( FormattedID = "+testCase+" )").replace(" ", "%20").replace("=", "%3d");
     	query += "&pagesize=20";
     	query += "&start=1";
-    	System.out.println(get_testCase.getURI());
     	get_testCase.setQueryString(query);
     	
     	httpRequest(get_testCase);
@@ -262,6 +272,26 @@ public class Rally_API {
     	testCaseResults.put("Verdict", verdict);
     }
     
+
+
+	public String formatString(HashMap<String, HashMap<String, String>> errors){
+		String errorString = "";
+		Set<String> outerKeys = errors.keySet();
+		Iterator<String> outerItr = outerKeys.iterator();
+		while (outerItr.hasNext()){
+			String outerKey = outerItr.next();
+			errorString += (outerKey + "<br />");
+			Set<String> innerKeys = errors.get(outerKey).keySet();
+			Iterator<String> innerItr = innerKeys.iterator();
+			while (innerItr.hasNext()){
+				String innerKey = innerItr.next();
+				errorString += ("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+innerKey+"<br />");
+				errorString += ("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+errors.get(outerKey).get(innerKey)+"<br /><br />");
+			}
+		}
+		return errorString;
+	}
+    
     /**
      * Method sendTestCaseResults()
      * 
@@ -321,5 +351,6 @@ public class Rally_API {
 			e.printStackTrace();
 		}
     }
+
 
 }

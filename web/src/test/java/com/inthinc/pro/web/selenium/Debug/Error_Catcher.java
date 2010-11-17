@@ -8,8 +8,8 @@ import com.thoughtworks.selenium.SeleniumException;
 public class Error_Catcher {
 	
 	
-	private static HashMap<String, HashMap<String, Object>> errors = new HashMap<String, HashMap<String, Object>>();
-	private static HashMap<String, Object> errorList;
+	private static HashMap<String, HashMap<String, String>> errors = new HashMap<String, HashMap<String, String>>();
+	private static HashMap<String, String> errorList;
 	
 	public void Error(String name, AssertionError error){
 		
@@ -17,7 +17,7 @@ public class Error_Catcher {
 			add_error(name);
 		}
 		
-		errors.get(name).put("AssertionError", error);
+		errors.get(name).put("AssertionError", error.getStackTrace().toString());
 	}
 	
 	public void Error(String name, SeleniumException error){
@@ -26,7 +26,7 @@ public class Error_Catcher {
 			add_error(name);
 		}
 		
-		errors.get(name).put("SeleniumException", error);
+		errors.get(name).put("SeleniumException", error.getStackTrace().toString());
 	}
 	
 	
@@ -36,7 +36,7 @@ public class Error_Catcher {
 			add_error(name);
 		}
 		
-		errors.get(name).put("Exception", error);
+		errors.get(name).put("Exception", error.getStackTrace().toString());
 	}
 	
 	
@@ -59,12 +59,12 @@ public class Error_Catcher {
 	}
 	
 	public void add_error(String name){
-		errorList  = new HashMap<String, Object>();
+		errorList  = new HashMap<String, String>();
 		errors.put(name, errorList);
 		
 	}
 	
-	public HashMap<String, HashMap<String, Object>> get_errors(){
+	public HashMap<String, HashMap<String, String>> get_errors(){
 		
 		return errors;
 	}

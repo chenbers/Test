@@ -22,8 +22,6 @@ public class TP_Login extends NAVIGATE {
 //	}
 	@Test
 	public void TC1247() {
-		System.out.println("TC1247 executed");
-		
 		//create instance of library objects
 		Login l = new Login();
 		Masthead mh = new Masthead();
@@ -52,7 +50,6 @@ public class TP_Login extends NAVIGATE {
 	
 	@Test
 	public void TC1250() {
-		System.out.println("TC1250 executed");
 		//create instance of library objects
 		Login l = new Login();
 		//Set up test data
