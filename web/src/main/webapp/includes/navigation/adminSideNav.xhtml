@@ -113,36 +113,6 @@
           </td>
         </tr>
         </security:authorize>
-        <!-- Zone Alerts -->
-        <security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_ZONEALERTSACCESS">
-        <tr>
-          <td valign="top">
-            <ui:include src="verticalLeftTab.xhtml">
-               <ui:param name="iconFileName" value="ico_zone_alerts.png"/>
-               <ui:param name="mappingId" value="adminZoneAlerts"/>
-               <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminZoneAlerts') ? 'true' : 'false'}"/>
-               <ui:param name="value" value="#{messages.adminSideNav_go_adminZoneAlerts}"/>
-               <ui:param name="context" value="#{context}-vlt-zoneAlerts"/>
-            </ui:include>
-          </td>
-        </tr>
-        <ui:fragment rendered="#{parentAction == 'go_adminZoneAlerts'}">
-          <tr>
-            <td valign="top" class="sub_wrapper">
-               <ui:include src="verticalLeftSubTab.xhtml">
-                  <ui:param name="iconFileName" value="ico_add_zone_alerts.png"/>
-                  <ui:param name="actionBean" value="#{zoneAlertsBean}"/>
-                  <ui:param name="action" value="add"/>
-                  <ui:param name="tabSelected" value="#{(selectedAction == 'go_adminAddZoneAlert') ? 'true' : 'false'}"/>
-                  <ui:param name="value" value="#{messages.adminSideNav_go_adminAddZoneAlert}"/>
-<!--                  <ui:param name="linkId" value="verticalLeftSubTableAct3"/>-->
-				  <ui:param name="context" value="#{context}-vlst-zoneAlerts"/>
-				  
-               </ui:include>
-            </td>
-          </tr>
-        </ui:fragment>
-        </security:authorize>
         <!-- Red Flags -->
        	<security:authorize ifAnyGranted="ROLE_ADMIN,ROLE_REDFLAGSACCESS">
         <tr>
