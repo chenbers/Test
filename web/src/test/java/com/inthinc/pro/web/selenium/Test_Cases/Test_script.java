@@ -1,14 +1,13 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
-import com.inthinc.pro.web.selenium.portal.*;
-import com.inthinc.pro.web.selenium.portal.Login.Login;
-import com.inthinc.pro.web.selenium.portal.Notifications.Notifications;
-import com.thoughtworks.selenium.*;
+import org.junit.Ignore;
+
+import com.inthinc.pro.web.selenium.portal.NAVIGATE;
 
 
 
-
-public class Test_script extends SeleneseTestCase {
+@Ignore
+public class Test_script extends NAVIGATE{
 	//define local vars
 	
 	

@@ -10,7 +10,7 @@ import com.thoughtworks.selenium.SeleniumException;
 
 public class Core extends DefaultSelenium{
 
-	private static Error_Catcher errors = new Error_Catcher();
+	private static Error_Catcher errors;
 	
 	public Core(CommandProcessor processor) {
 		super(processor);
@@ -323,5 +323,11 @@ public class Core extends DefaultSelenium{
 			Pause(2);
 			if (x==60)break;
 		}
+	}
+	
+	@Override
+	public void start(){
+		errors = new Error_Catcher();
+		super.start();
 	}
 }

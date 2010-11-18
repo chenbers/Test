@@ -1,6 +1,7 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.web.selenium.portal.NAVIGATE;
@@ -8,7 +9,7 @@ import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.portal.Masthead.Masthead;
 
 
-
+@Ignore
 public class Testing extends NAVIGATE {
 	
 

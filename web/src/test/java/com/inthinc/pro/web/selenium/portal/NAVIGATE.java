@@ -148,6 +148,7 @@ public class NAVIGATE
 		data_file=null;
 		testCase=null;
 		currentTime=null;
+		
 	}
 	
 	
@@ -176,6 +177,10 @@ public class NAVIGATE
 		return success;
 	}
 	
+	public void set_test_case(String test_case){
+		testCaseID=test_case;
+	}
+	
 	public String get_data( String sheet, String header){
 		String value = "";
 				
@@ -192,7 +197,7 @@ public class NAVIGATE
 	public void record_results(){
 		errors = selenium.getErrors().get_errors();
 		if (errors.isEmpty())testVerdict = "Pass";
-		else if (errors.isEmpty())testVerdict = "Fail";
+		else if (!errors.isEmpty())testVerdict = "Fail";
 		try{
 			rally.createJSON(workspace, testCaseID, testVersion, currentTime, errors, testVerdict);
 		}catch(Exception e1){
