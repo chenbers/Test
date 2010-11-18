@@ -30,6 +30,12 @@ public interface VehicleService {
     @Path("/vehicle/{id}")
     public Response get(@PathParam("id") Integer id);
 
+	/**
+	 * Get Vehilce by VIN
+	 * @param vin The VIN of the vehicle to find.
+     * @returnWrapped Vehicle Returns a vehicle found by VIN.
+	 * @HTTP HTTP 404 - if the vehicle is not found by VIN.
+	 */
     @GET
     @Path("/vehicle/vin/{vin}")
     public Response findByVIN(@PathParam("vin") String vin);
