@@ -1,4 +1,4 @@
-<ui:composition template="/layout/layout.xhtml" 
+<ui:composition template="/layout/layout.xhtml"
               xmlns="http://www.w3.org/1999/xhtml" 
               xmlns:ui="http://java.sun.com/jsf/facelets"
               xmlns:h="http://java.sun.com/jsf/html"
@@ -32,6 +32,10 @@
           <!-- START PANEL -->
 
           <a4j:form id="edit-form">
+          
+			<h:panelGroup id="zonePoints-panel" >
+           		<h:inputHidden  id="editZoneAlert-zonePoints" value="#{redFlagOrZoneAlertsBean.item.zone.pointsString}" rendered="#{redFlagOrZoneAlertsBean.item.zone ne null}" />
+            </h:panelGroup>
 
             <div class="">
               <div class="panel_nw">
@@ -424,8 +428,51 @@
                           </h:panelGroup>
                         </a4j:outputPanel>
 
+                        <a4j:outputPanel id="zoneAlerts">
+                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.type == 'ALERT_TYPE_ZONES'}">
+                  <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_nameDescriptionZone}" /></div>
+
+                  <div class="spacer"></div>
+
+                  <table width="790" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td width="390" valign="top">
+
+                        <table width="100%" border="0" cellspacing="2" cellpadding="4" style="background-color: #f2efe9; border: 1px solid #acacac;">
+                          <tr>
+                            <td width="105" valign="top">
+                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+                                 <ui:param name="required" value="TRUE"/>
+                                 <ui:param name="for" value="zoneID"/>
+                                 <ui:param name="fieldName" value="zoneID"/>
+                                 <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+                                 <ui:param name="label" value="#{messages.editZoneAlert_zone}"/>
+								<ui:param name="context" value="editZoneAlertZoneId"/>
+                              </ui:include>
+                            </td>
+                            <td>
+                              <rich:message for="editZoneAlert-zoneID" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                              <h:selectOneMenu id="editZoneAlert-zoneID" value="#{redFlagOrZoneAlertsBean.item.zoneID}" required="#{(not redFlagOrZoneAlertsBean.batchEdit) or redFlagOrZoneAlertsBean.updateField['zoneID']}"  requiredMessage="#{messages.required}" style="width: 200px">
+                                <a4j:support event="onchange" reRender="zonePoints-panel" limitToList="true" ajaxSingle="true" onsubmit="checkMultiple(this)" oncomplete="showZone()"/>
+                                <f:selectItems value="#{redFlagOrZoneAlertsBean.zones}" />
+                              </h:selectOneMenu>
+                            </td>
+                          </tr>
+                        </table>
+
+                        
+                      </td>
+                      <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+                      <td width="390" valign="top" style="background-color: #f2efe9; border: 1px solid #acacac;">
+                        <div id="map-canvas" style="height:100%;height:220px;border:0"></div>
+                      </td>
+                    </tr>
+                  </table>
+                          </h:panelGroup>
+                        </a4j:outputPanel>
+
                         <a4j:outputPanel id="editRedFlag-other">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.type != 'ALERT_TYPE_SPEEDING' and redFlagOrZoneAlertsBean.item.type != 'ALERT_TYPE_AGGRESSIVE_DRIVING' and redFlagOrZoneAlertsBean.item.type != 'ALERT_TYPE_COMPLIANCE' and redFlagOrZoneAlertsBean.item.type != null}">
+                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.type != 'ALERT_TYPE_ZONES' and redFlagOrZoneAlertsBean.item.type != 'ALERT_TYPE_SPEEDING' and redFlagOrZoneAlertsBean.item.type != 'ALERT_TYPE_AGGRESSIVE_DRIVING' and redFlagOrZoneAlertsBean.item.type != 'ALERT_TYPE_COMPLIANCE' and redFlagOrZoneAlertsBean.item.type != null}">
 
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>
@@ -520,6 +567,14 @@
 
       function bodyLoad()
       {
+          if (GBrowserIsCompatible())
+          {
+            map = new GMap2(document.getElementById("map-canvas"));
+            map.disableDragging();
+            map.disableDoubleClickZoom();
+            map.disableInfoWindow();
+            showZone();
+          }
         document.getElementById("editRedFlag-timeframePickers").style.display = (document.getElementById("edit-form:editRedFlag-timeframe:0").checked ? 'none' : '');
 
         var elements = document.getElementById("edit-form").elements;
@@ -531,6 +586,26 @@
               return;
             }
       }
+      function showZone()
+      {
+        map.clearOverlays();
+        if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
+        { 
+           
+	        var outline = fromOutlineString(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
+	        if (outline)
+	        {
+	          centerMapAtZone(getLatLngBounds(outline));
+	          loadZone(outline, false);
+	        }
+        }
+      }
+
+      function bodyUnload()
+      {
+        GUnload();
+      }
+
     </script>
 
   </ui:define>
