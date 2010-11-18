@@ -157,6 +157,9 @@ public class ZonePublishTest {
         
         String path = File.separator + "zonePublish" + File.separator;
         File file = new File(Thread.currentThread().getContextClassLoader().getResource(path + filename).toURI());
+        if (file == null) {
+            System.out.println(path+filename + " results in null file");
+        }
         FileChannel in = new FileInputStream(file).getChannel();
         return parseDbase3File(in);
     }
@@ -165,6 +168,9 @@ public class ZonePublishTest {
         
         String path = File.separator + "zonePublish" + File.separator;
         File file = new File(Thread.currentThread().getContextClassLoader().getResource(path + filename).toURI());
+        if (file == null) {
+            System.out.println(path+filename + " results in null file");
+        }
         
         StringBuffer expectedString = new StringBuffer();
         try {
