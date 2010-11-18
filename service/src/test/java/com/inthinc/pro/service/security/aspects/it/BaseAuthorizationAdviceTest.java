@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.aspects;
+package com.inthinc.pro.service.security.aspects.it;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.fail;
@@ -18,6 +18,7 @@ import org.springframework.security.AccessDeniedException;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.service.adapters.AccountDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
+import com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice;
 import com.inthinc.pro.service.security.stubs.AccountDAOStub;
 import com.inthinc.pro.service.security.stubs.TiwiproPrincipalStub;
 

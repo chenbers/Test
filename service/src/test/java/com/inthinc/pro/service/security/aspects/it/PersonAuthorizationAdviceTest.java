@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.aspects;
+package com.inthinc.pro.service.security.aspects.it;
 
 import static junit.framework.Assert.fail;
 import junit.framework.Assert;

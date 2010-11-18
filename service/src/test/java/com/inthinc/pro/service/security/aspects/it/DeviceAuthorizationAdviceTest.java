@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.aspects;
+package com.inthinc.pro.service.security.aspects.it;
 
 import junit.framework.Assert;
 
