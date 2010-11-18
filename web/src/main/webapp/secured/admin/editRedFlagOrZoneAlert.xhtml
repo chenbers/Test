@@ -14,6 +14,12 @@
   <ui:param name="title" value="#{redFlagOrZoneAlertsBean.add ? messages.adminHeader_addRedFlag : (redFlagOrZoneAlertsBean.batchEdit ? messages.adminHeader_editRedFlags : messages.adminHeader_editRedFlag)}"/>
   
   <ui:define name="scripts">
+    <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
+    <script src="#{facesContext.externalContext.requestContextPath}/js/mapGeocode.js" type="text/javascript"></script>
+    <script src="#{facesContext.externalContext.requestContextPath}/js/drawZone.js" type="text/javascript"></script>
+    <script type="text/javascript">    
+      var map;
+    </script>
       <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
   </ui:define>
   
@@ -34,7 +40,7 @@
           <a4j:form id="edit-form">
           
 			<h:panelGroup id="zonePoints-panel" >
-           		<h:inputHidden  id="editZoneAlert-zonePoints" value="#{redFlagOrZoneAlertsBean.item.zone.pointsString}" rendered="#{redFlagOrZoneAlertsBean.item.zone ne null}" />
+           		<h:inputHidden  id="editZoneAlert-zonePoints" value="#{redFlagOrZoneAlertsBean.item.zone.pointsString}" />
             </h:panelGroup>
 
             <div class="">
@@ -264,19 +270,6 @@
 
                   <div class="spacer"></div>
 
-<!--                  <div class="add_section_title">-->
-<!--                  <ui:include src="../../includes/admin/inputLabel.xhtml">-->
-<!--                     <ui:param name="required" value="false"/>-->
-<!--                     <ui:param name="for" value="type"/>-->
-<!--                     <ui:param name="fieldName" value="type"/>-->
-<!--                     <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>-->
-<!--                     <ui:param name="label" value="#{messages.editRedFlag_redFlagType}"/>-->
-<!--        			<ui:param name="context" value="editRedFlagType" />-->
-<!--                  </ui:include>-->
-<!--                  </div>-->
-
-                  <div class="spacer"></div>
-
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="650" valign="top">
@@ -430,14 +423,14 @@
 
                         <a4j:outputPanel id="zoneAlerts">
                           <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.type == 'ALERT_TYPE_ZONES'}">
-                  <div class="add_section_title"><h:outputText value="#{messages.editZoneAlert_nameDescriptionZone}" /></div>
 
                   <div class="spacer"></div>
 
                   <table width="790" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                       <td width="390" valign="top">
-
+						<table width="390px">
+						<tr><td>
                         <table width="100%" border="0" cellspacing="2" cellpadding="4" style="background-color: #f2efe9; border: 1px solid #acacac;">
                           <tr>
                             <td width="105" valign="top">
@@ -458,9 +451,26 @@
                               </h:selectOneMenu>
                             </td>
                           </tr>
-                        </table>
+                          </table></td></tr>
+                          <tr>
+                          <td>
+                          <rich:message for="editZoneAlert-arrival" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 
-                        
+                        <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
+                          <tr>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox id="editZoneAlert-arrival" value="#{redFlagOrZoneAlertsBean.item.arrival}" onchange="checkMultiple('defineAlerts')" />
+                              <h:outputText value="#{messages.editZoneAlert_arrival}" />
+                            </td>
+                            <td width="50%">
+                              <h:selectBooleanCheckbox id="editZoneAlert-departure" value="#{redFlagOrZoneAlertsBean.item.departure}" onchange="checkMultiple('defineAlerts')" />
+                              <h:outputText value="#{messages.editZoneAlert_departure}" />
+                            </td>
+                          </tr>
+                        </table>
+                          </td>
+                          </tr>
+                        </table>
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top" style="background-color: #f2efe9; border: 1px solid #acacac;">
