@@ -1,11 +1,13 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.event.Event;
@@ -17,6 +19,7 @@ import com.inthinc.pro.model.pagination.TableFilterField;
  * @author dfreitas
  * 
  */
+@Component
 public class EventDaoStub implements EventDAO {
 
     @Override

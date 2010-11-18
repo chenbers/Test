@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
 
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.model.Device;
@@ -14,6 +16,7 @@ import com.inthinc.pro.model.ForwardCommandStatus;
  * @author dfreitas
  * 
  */
+@Component
 public class DeviceDaoStub implements DeviceDAO {
     private Device expectedDevice;
 

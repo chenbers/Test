@@ -1,7 +1,9 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
+
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.model.Address;
@@ -10,6 +12,7 @@ import com.inthinc.pro.model.Address;
  * @author dfreitas
  *
  */
+@Component
 public class AddressDAOStub implements AddressDAO {
     private Address expectedAddress;
 

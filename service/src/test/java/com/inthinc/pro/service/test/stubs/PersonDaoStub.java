@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
 
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.model.Person;
@@ -12,6 +14,7 @@ import com.inthinc.pro.model.Person;
  * @author dfreitas
  * 
  */
+@Component
 public class PersonDaoStub implements PersonDAO {
 
     private Person expectedPerson;

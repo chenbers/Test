@@ -8,14 +8,14 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.service.adapters.DeviceDAOAdapter;
-import com.inthinc.pro.service.adapters.DriverDAOAdapter;
-import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
 
 /**
@@ -35,13 +35,13 @@ public class VehicleAuthorizationAdvice {
     private DriverAuthorizationAdvice driverAuthorizationAdvice;
 
     @Autowired
-    private GroupDAOAdapter groupDAOAdapter;
+    private GroupDAO groupDAO;
 
     @Autowired
-    private DeviceDAOAdapter deviceDAOAdapter;
+    private DeviceDAO deviceDAO;
 
     @Autowired
-    private DriverDAOAdapter driverDAOAdapter;
+    private DriverDAO driverDAO;
 
     /**
      * Pointcut definition.
@@ -106,7 +106,7 @@ public class VehicleAuthorizationAdvice {
      */
     @Before(value = "assignDeviceJoinPoint()")
     public void doAssignDeviceAccessCheck(JoinPoint jp) {
-        Device device = deviceDAOAdapter.findByID((Integer) jp.getArgs()[1]);
+        Device device = deviceDAO.findByID((Integer) jp.getArgs()[1]);
         baseAuthorizationAdvice.doAccessCheck(device);
     }
 
@@ -119,7 +119,7 @@ public class VehicleAuthorizationAdvice {
      */
     @Before(value = "assignDriverJoinPoint()")
     public void doAssignDriverAccessCheck(JoinPoint jp) {
-        Driver driver = driverDAOAdapter.findByID((Integer) jp.getArgs()[1]);
+        Driver driver = driverDAO.findByID((Integer) jp.getArgs()[1]);
         driverAuthorizationAdvice.doAccessCheck(driver);
     }
 
@@ -144,7 +144,7 @@ public class VehicleAuthorizationAdvice {
          * TODO Use the DAOs directly. If using the adapter, they will be advised as well, making unnecessary additional calls to the validation framework. Optionally, just use the
          * adapters to do findById and the access rules will automatically be applied. First approach is best though as there are no guarantees that the adapters are being advised.
          */
-        Group group = groupDAOAdapter.findByID(entity.getGroupID());
+        Group group = groupDAO.findByID(entity.getGroupID());
 
         groupAuthorizationAdvice.doAccessCheck(group);
     }

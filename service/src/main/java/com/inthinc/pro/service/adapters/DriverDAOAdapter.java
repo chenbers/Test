@@ -3,6 +3,7 @@ package com.inthinc.pro.service.adapters;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -23,8 +24,11 @@ import com.inthinc.pro.model.event.Event;
 @Component
 public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
  
+    @Autowired
 	private DriverDAO driverDAO;
+    @Autowired
     private DriverReportDAO driverReportDAO;
+    @Autowired
     private EventDAO eventDAO;
 	
 	@Override

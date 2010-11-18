@@ -1,9 +1,11 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
 
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.model.Duration;
@@ -14,6 +16,7 @@ import com.inthinc.pro.model.aggregation.Trend;
  * @author dfreitas
  * 
  */
+@Component
 public class DriverReportDaoStub implements DriverReportDAO {
 
     @Override

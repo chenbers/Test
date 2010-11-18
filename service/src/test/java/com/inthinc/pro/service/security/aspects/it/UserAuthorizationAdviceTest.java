@@ -16,10 +16,10 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.adapters.UserDAOAdapter;
-import com.inthinc.pro.service.security.stubs.GroupDaoStub;
-import com.inthinc.pro.service.security.stubs.PersonDaoStub;
-import com.inthinc.pro.service.security.stubs.TiwiproPrincipalStub;
-import com.inthinc.pro.service.security.stubs.UserDaoStub;
+import com.inthinc.pro.service.test.stubs.GroupDaoStub;
+import com.inthinc.pro.service.test.stubs.PersonDaoStub;
+import com.inthinc.pro.service.test.stubs.TiwiproPrincipalStub;
+import com.inthinc.pro.service.test.stubs.UserDaoStub;
 
 /**
  * @author dfreitas
@@ -32,6 +32,8 @@ public class UserAuthorizationAdviceTest {
     private GroupDAOAdapter groupAdapter;
     private PersonDAOAdapter personAdapter;
     private TiwiproPrincipalStub tiwiproPrincipal;
+    private GroupDaoStub groupDaoStub;
+    private PersonDaoStub personDaoStub;
 
     /**
      * @throws java.lang.Exception
@@ -46,17 +48,14 @@ public class UserAuthorizationAdviceTest {
         userAdapter = (UserDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, UserDAOAdapter.class);
         groupAdapter = (GroupDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, GroupDAOAdapter.class);
         personAdapter = (PersonDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, PersonDAOAdapter.class);
+        groupDaoStub = (GroupDaoStub) BeanFactoryUtils.beanOfType(applicationContext, GroupDaoStub.class);
+        personDaoStub = (PersonDaoStub) BeanFactoryUtils.beanOfType(applicationContext, PersonDaoStub.class);
         tiwiproPrincipal = (TiwiproPrincipalStub) BeanFactoryUtils.beanOfType(applicationContext, TiwiproPrincipalStub.class);
     }
 
     @Test
     public void testJoinoints() {
         userAdapter.setUserDAO(new UserDaoStub());
-        PersonDaoStub personDAO = new PersonDaoStub();
-
-        personAdapter.setPersonDAO(personDAO);
-        GroupDaoStub groupDAO = new GroupDaoStub();
-        groupAdapter.setGroupDAO(groupDAO);
 
         User user = new User();
         Group group = new Group();
@@ -66,8 +65,8 @@ public class UserAuthorizationAdviceTest {
         group.setAccountID(10);
         person.setAcctID(10);
 
-        personDAO.setExpectedPerson(person);
-        groupDAO.setExpectedGroup(group);
+        personDaoStub.setExpectedPerson(person);
+        groupDaoStub.setExpectedGroup(group);
 
         // Manual test of the aspects. These calls should all route through the DriverAuthorizationAdvice.
         userAdapter.create(user);

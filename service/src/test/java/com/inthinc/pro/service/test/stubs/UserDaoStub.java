@@ -1,10 +1,12 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.User;
@@ -13,6 +15,7 @@ import com.inthinc.pro.model.User;
  * @author dfreitas
  *
  */
+@Component
 public class UserDaoStub implements UserDAO {
 
     /* (non-Javadoc)

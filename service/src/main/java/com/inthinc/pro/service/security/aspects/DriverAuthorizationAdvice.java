@@ -8,12 +8,12 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.adapters.DriverDAOAdapter;
-import com.inthinc.pro.service.adapters.GroupDAOAdapter;
-import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 
 /**
  * Authorization advice for DriverDAOAdapter.
@@ -29,10 +29,10 @@ public class DriverAuthorizationAdvice {
     private PersonAuthorizationAdvice personAuthorizationAdvice;
 
     @Autowired
-    private GroupDAOAdapter groupDAOAdapter;
+    private GroupDAO groupDAO;
 
     @Autowired
-    private PersonDAOAdapter personDAOAdapter;
+    private PersonDAO personDAO;
 
     /**
      * Pointcut definition.
@@ -82,8 +82,8 @@ public class DriverAuthorizationAdvice {
          * TODO Use the DAOs directly. If using the adapter, they will be advised as well, making unnecessary additional calls to the validation framework. Optionally, just use the
          * adapters to do findById and the access rules will automatically be applied. First approach is best though as there are no guarantees that the adapters are being advised.
          */
-        Group group = groupDAOAdapter.findByID(entity.getGroupID());
-        Person person = personDAOAdapter.findByID(entity.getPersonID());
+        Group group = groupDAO.findByID(entity.getGroupID());
+        Person person = personDAO.findByID(entity.getPersonID());
 
         groupAuthorizationAdvice.doAccessCheck(group);
         personAuthorizationAdvice.doAccessCheck(person);

@@ -1,12 +1,13 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
 
 import java.util.Date;
 import java.util.List;
 
 import org.joda.time.Interval;
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
@@ -19,6 +20,7 @@ import com.inthinc.pro.model.Trip;
  * @author dfreitas
  * 
  */
+@Component
 public class DriverDaoStub implements DriverDAO {
 
     @Override

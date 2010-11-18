@@ -1,10 +1,11 @@
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
 
 import java.util.Collections;
 import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
@@ -22,6 +23,7 @@ import com.inthinc.pro.model.aggregation.Score;
  * 
  * @author dfreitas
  */
+@Component
 public class GroupDaoStub implements GroupDAO, GroupReportDAO {
 
     private Group expectedGroup;

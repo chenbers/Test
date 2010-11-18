@@ -1,11 +1,13 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.DriverLocation;
@@ -17,6 +19,7 @@ import com.inthinc.pro.model.Vehicle;
  * @author dfreitas
  *
  */
+@Component
 public class VehicleDaoStub implements VehicleDAO {
 
     /* (non-Javadoc)

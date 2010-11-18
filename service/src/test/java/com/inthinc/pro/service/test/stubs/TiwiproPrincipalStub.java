@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.inthinc.pro.service.security.stubs;
+package com.inthinc.pro.service.test.stubs;
 
 import org.springframework.stereotype.Component;
 

@@ -28,12 +28,12 @@ import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
-import com.inthinc.pro.service.security.stubs.DeviceDaoStub;
-import com.inthinc.pro.service.security.stubs.DriverDaoStub;
-import com.inthinc.pro.service.security.stubs.GroupDaoStub;
-import com.inthinc.pro.service.security.stubs.PersonDaoStub;
-import com.inthinc.pro.service.security.stubs.TiwiproPrincipalStub;
-import com.inthinc.pro.service.security.stubs.VehicleDaoStub;
+import com.inthinc.pro.service.test.stubs.DeviceDaoStub;
+import com.inthinc.pro.service.test.stubs.DriverDaoStub;
+import com.inthinc.pro.service.test.stubs.GroupDaoStub;
+import com.inthinc.pro.service.test.stubs.PersonDaoStub;
+import com.inthinc.pro.service.test.stubs.TiwiproPrincipalStub;
+import com.inthinc.pro.service.test.stubs.VehicleDaoStub;
 
 /**
  * @author dfreitas
@@ -49,6 +49,10 @@ public class VehicleAuthorizationAdviceTest {
     private DeviceDAOAdapter deviceDaoAdapter;
     private DriverDAOAdapter driverDaoAdapter;
     private PersonDAOAdapter personDaoAdapter;
+    private GroupDaoStub groupDaoStub;
+    private DeviceDaoStub deviceDaoStub;
+    private DriverDaoStub driverDaoStub;
+    private PersonDaoStub personDaoStub;
 
     /**
      * @throws java.lang.Exception
@@ -66,6 +70,10 @@ public class VehicleAuthorizationAdviceTest {
         deviceDaoAdapter = (DeviceDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, DeviceDAOAdapter.class);
         driverDaoAdapter = (DriverDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, DriverDAOAdapter.class);
         personDaoAdapter = (PersonDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, PersonDAOAdapter.class);
+        groupDaoStub = (GroupDaoStub) BeanFactoryUtils.beanOfType(applicationContext, GroupDaoStub.class);
+        deviceDaoStub = (DeviceDaoStub) BeanFactoryUtils.beanOfType(applicationContext, DeviceDaoStub.class);
+        driverDaoStub = (DriverDaoStub) BeanFactoryUtils.beanOfType(applicationContext, DriverDaoStub.class);
+        personDaoStub = (PersonDaoStub) BeanFactoryUtils.beanOfType(applicationContext, PersonDaoStub.class);
         principal = (TiwiproPrincipalStub) BeanFactoryUtils.beanOfType(applicationContext, TiwiproPrincipal.class);
         vehicleDaoAdapter.setVehicleDAO(vehicleDaoStub);
     }
@@ -74,21 +82,16 @@ public class VehicleAuthorizationAdviceTest {
     public void testJoinoints() {
         Group group = new Group();
 
-        GroupDaoStub groupDaoStub = new GroupDaoStub();
         groupDaoStub.setExpectedGroup(group);
 
         Device device = new Device();
 
-        DeviceDaoStub deviceDaoStub = new DeviceDaoStub();
         deviceDaoStub.setExpectedDevice(device);
-
-        DriverDaoStub driverDaoStub = new DriverDaoStub();
 
         Person person = new Person();
         Address address = new Address();
         person.setAddress(address);
 
-        PersonDaoStub personDaoStub = new PersonDaoStub();
         personDaoStub.setExpectedPerson(person);
 
         groupDaoAdapter.setGroupDAO(groupDaoStub);

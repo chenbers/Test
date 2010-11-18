@@ -61,7 +61,7 @@ public class PersonAuthorizationAdvice {
      * Access to Person entities also require that the address passes validation. Aspects are additive. So we only require to define the check for Address, since the check on
      * person is done by the BaseAuthenticationAspect.
      */
-    @Before(value = "com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesHasAccountIdObjectAsFirstArgument() && args(entity)", argNames = "entity")
+    @Before(value = "inPersonDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesHasAccountIdObjectAsFirstArgument() && args(entity)", argNames = "entity")
     public void doAccessCheck(Person entity) {
         baseAuthorizationAdvice.doAccessCheck(entity.getAddress());
     }

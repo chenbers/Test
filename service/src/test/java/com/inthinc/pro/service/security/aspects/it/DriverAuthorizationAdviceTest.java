@@ -14,14 +14,9 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.adapters.DriverDAOAdapter;
-import com.inthinc.pro.service.adapters.GroupDAOAdapter;
-import com.inthinc.pro.service.adapters.PersonDAOAdapter;
-import com.inthinc.pro.service.security.stubs.DriverDaoStub;
-import com.inthinc.pro.service.security.stubs.DriverReportDaoStub;
-import com.inthinc.pro.service.security.stubs.EventDaoStub;
-import com.inthinc.pro.service.security.stubs.GroupDaoStub;
-import com.inthinc.pro.service.security.stubs.PersonDaoStub;
-import com.inthinc.pro.service.security.stubs.TiwiproPrincipalStub;
+import com.inthinc.pro.service.test.stubs.GroupDaoStub;
+import com.inthinc.pro.service.test.stubs.PersonDaoStub;
+import com.inthinc.pro.service.test.stubs.TiwiproPrincipalStub;
 
 /**
  * @author dfreitas
@@ -31,9 +26,9 @@ public class DriverAuthorizationAdviceTest {
 
     private static ApplicationContext applicationContext;
     private DriverDAOAdapter driverAdapter;
-    private GroupDAOAdapter groupAdapter;
-    private PersonDAOAdapter personAdapter;
     private TiwiproPrincipalStub tiwiproPrincipal;
+    private PersonDaoStub personDaoStub;
+    private GroupDaoStub groupDaoStub;
 
     /**
      * @throws java.lang.Exception
@@ -46,21 +41,13 @@ public class DriverAuthorizationAdviceTest {
     @Before
     public void setUpTests() throws Exception {
         driverAdapter = (DriverDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, DriverDAOAdapter.class);
-        groupAdapter = (GroupDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, GroupDAOAdapter.class);
-        personAdapter = (PersonDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, PersonDAOAdapter.class);
+        groupDaoStub = (GroupDaoStub) BeanFactoryUtils.beanOfType(applicationContext, GroupDaoStub.class);
+        personDaoStub = (PersonDaoStub) BeanFactoryUtils.beanOfType(applicationContext, PersonDaoStub.class);
         tiwiproPrincipal = (TiwiproPrincipalStub) BeanFactoryUtils.beanOfType(applicationContext, TiwiproPrincipalStub.class);
     }
 
     @Test
     public void testJoinoints() {
-        driverAdapter.setDriverDAO(new DriverDaoStub());
-        driverAdapter.setDriverReportDAO(new DriverReportDaoStub());
-        EventDaoStub eventDAO = new EventDaoStub();
-        driverAdapter.setEventDAO(eventDAO);
-        PersonDaoStub personDAO = new PersonDaoStub();
-        personAdapter.setPersonDAO(personDAO);
-        GroupDaoStub groupDAO = new GroupDaoStub();
-        groupAdapter.setGroupDAO(groupDAO);
 
         Driver driver = new Driver();
         Group group = new Group();
@@ -70,8 +57,8 @@ public class DriverAuthorizationAdviceTest {
         group.setAccountID(10);
         person.setAcctID(10);
 
-        personDAO.setExpectedPerson(person);
-        groupDAO.setExpectedGroup(group);
+        personDaoStub.setExpectedPerson(person);
+        groupDaoStub.setExpectedGroup(group);
 
         // Manual test of the aspects. These calls should all route through the DriverAuthorizationAdvice.
         driverAdapter.create(driver);
