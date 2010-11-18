@@ -1,4 +1,8 @@
-//Maintained as .JAVA
+/****************************************************************************************
+ * Purpose: ?????
+ * @author larringt , dtanner
+ * Last Update:  11/18/Added comments and made changes to adhere to Java Coding Standards
+ */
 
 package com.inthinc.pro.web.selenium.portal;
 
