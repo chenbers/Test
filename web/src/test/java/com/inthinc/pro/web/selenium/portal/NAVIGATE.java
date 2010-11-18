@@ -2,19 +2,14 @@
 
 package com.inthinc.pro.web.selenium.portal;
 
-
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.notification.StoppedByUserException;
-
 import org.openqa.selenium.server.SeleniumServer;
-
-
 import com.inthinc.pro.web.selenium.Core;
 import com.inthinc.pro.web.selenium.Data_Reader;
 import com.inthinc.pro.web.selenium.Rally_API;
@@ -38,8 +33,6 @@ public class NAVIGATE
 	private static Core selenium;
 	static SeleniumServer seleniumserver;
 	
-	
-	
 	@BeforeClass
 	public static void start_server(){
 		try{
@@ -54,7 +47,6 @@ public class NAVIGATE
         
 	}//end setup
 	
-	
 	@Before
 	public void start_selenium(){
 		selenium = Singleton.getSingleton().getSelenium();
@@ -62,11 +54,9 @@ public class NAVIGATE
 		currentTime = (GregorianCalendar) GregorianCalendar.getInstance();
 	}
 	
-	
 	public void set_selenium(Core sel ){
 		selenium = sel;		
-	}
-	
+	}//end before
 	
 	public void fforward(int times){
 		selenium.open("/tiwipro/app/admin/vehicles");
@@ -102,47 +92,25 @@ public class NAVIGATE
 		selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'first'});\"]");
 		//selenium.waitForPageToLoad("10000");
 	}
-		
 			
-	public void login(String user,String pass) {
-		//Login to Tiwipro Application
-		selenium.open("login");  
-		selenium.waitForPageToLoad("10000");
-		selenium.type("j_username", user);
-		selenium.type("j_password", pass);
-//		assertTrue(selenium.isElementPresent("loginLogin"));
-		selenium.click("loginLogin");
-		selenium.waitForPageToLoad("40000");
-	}//end login
-	
-	
-
-	
 	public void logout(){
 		//logout of Tiwipro Application
 		selenium.click("link=Log Out");
-		selenium.waitForPageToLoad("30000");	
-//		assertEquals(selenium.getTitle(), "tiwiPRO");
-//		assertTrue(selenium.isTextPresent("Log In"));
+		selenium.waitForPageToLoad("30000");
+		stop_selenium();
+		stop_server();
 	}//end logout
-	
-	public void homescreen(){
-		//navigate to home screen by selecting 
-		//Inthinc logo in upper left corner
-		selenium.open("/tiwipro/app/dashboard/");
-		selenium.click("//a[@id='headerForm:headerInitDashboard']/img");
-		selenium.waitForPageToLoad("35000");
-//		assertTrue(selenium.isTextPresent("Overview"));
-	}
 	
 
 	@After
 	public void stop_selenium(){
 		try{
+			//get version
 			testVersion = selenium.getText("footerForm:version", "Getting version from Portal");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		//rest output vars for next test and record results for execute test
 		selenium.stop();
 		record_results();
 		data_file=null;
@@ -151,39 +119,42 @@ public class NAVIGATE
 		
 	}
 	
-	
 	@AfterClass
 	public static void stop_server(){
 		seleniumserver.stop();
 		
 	}//tear down
 	
-	
 	public String set_test_case(String file_name, String test_case){
+		//takes data file and test case Id as entries
+		//then builds HASHMap for the test case passed into method
 		String success = "Success";
 		testCaseID=test_case;
+		//append system path to file name
 		file_name = "src/test/resources/Data/" + file_name;
 		
 		if (data_file==null){
+			//instantiate data reader if needed
 			data_file = new Data_Reader();	
 		}
 		
 		try{
+			//build test case HASHmap 
 			testCase = data_file.get_testcase_data(file_name, testCaseID);
 		}catch(NullPointerException e){
 			System.out.println("That Test Case ID was not found in the file.");
 			return "That Test Case ID was not found in the file.";
 		}
 		return success;
-	}
+	}//end set test case
 	
 	public void set_test_case(String test_case){
 		testCaseID=test_case;
 	}
 	
 	public String get_data( String sheet, String header){
-		String value = "";
-				
+		//used to pull test data from HASHMap Variable Type
+		String value = "";		
 		try{
 			value = testCase.get(sheet).get(header); 
 		}catch(NullPointerException e){
@@ -192,13 +163,15 @@ public class NAVIGATE
 		}
 		
 		return value; 
-	}
+	}//end set test case
 	
 	public void record_results(){
 		errors = selenium.getErrors().get_errors();
-		if (errors.isEmpty())testVerdict = "Pass";
-		else if (!errors.isEmpty())testVerdict = "Fail";
+		//check error var for entries
+		if (errors.isEmpty())testVerdict = "Pass"; //no errors = pass
+			else if (!errors.isEmpty())testVerdict = "Fail"; //errors = fail
 		try{
+			//send test result to Rally
 			rally.createJSON(workspace, testCaseID, testVersion, currentTime, errors, testVerdict);
 		}catch(Exception e1){
 			e1.printStackTrace();
@@ -209,28 +182,6 @@ public class NAVIGATE
 				e2.printStackTrace();
 			}
 		}
-	}	
+	}//end record results
 }
 
-/* This is an example of a functional area class and its supporting keyword subclasses
- * As new functional areas and keywords are created they should follow this template.
- * 
- * Every functional area will be in the FUnctional_Area package
- * Every functional area will have the same variable name for KeywordCount
- * Every functional area will have the same function names and argument names for:
- * - knums
- * - keywordSelect
- * - getKeywordCount
- * 
- * As keywords are initialized internally to the class they will simply be referred to in sequence
- * number, i.e. key1, key2, key3
- * 
- * Every keyword class will be named for the Keyword it represents
- * Every keyword class will have the same three functions, each of which is updated
- * as necessary for that class:
- *  - name
- *  - description
- *  - runKey
- *  
- * 
- */
