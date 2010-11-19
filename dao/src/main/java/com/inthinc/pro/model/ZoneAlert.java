@@ -18,7 +18,7 @@ public class ZoneAlert extends RedFlagOrZoneAlert
 
     @ID
     @Column(name="alertID")
-    private Integer           zoneAlertID;
+    private Integer           alertID;
 
     public ZoneAlert(Integer accountID, Integer userID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
             List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo,
@@ -26,7 +26,7 @@ public class ZoneAlert extends RedFlagOrZoneAlert
     {
         super(AlertMessageType.ALERT_TYPE_ZONES,accountID, userID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, driverIDs, vehicleIDs, vehicleTypes, notifyPersonIDs, emailTo, null,
                 null, null, null, null,null,zoneID, arrival, departure);
-        this.zoneAlertID = zoneAlertID;
+        setAlertID(zoneAlertID);
     }
 
 //    public ZoneAlert(Integer zoneAlertID, Integer zoneID, Boolean arrival, Boolean departure)
@@ -42,30 +42,18 @@ public class ZoneAlert extends RedFlagOrZoneAlert
     {
         super();
     }
-    
-    public Integer getZoneAlertID()
-    {
-        return zoneAlertID;
-    }
-
-    public void setZoneAlertID(Integer zoneAlertID)
-    {
-        this.zoneAlertID = zoneAlertID;
-    }
-
-
     @Override
-    public Integer getId() {
-
-        return zoneAlertID;
+    public Integer getAlertID()
+    {
+        return alertID;
     }
 
-    @Override
-    public void setId(Integer id) {
-
-        zoneAlertID = id;
+    public void setAlertID(Integer alertID)
+    {
+        this.alertID = alertID;
     }
-    
+
+
     @Override
     public AlertMessageType getType() {
 

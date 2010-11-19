@@ -770,7 +770,7 @@ public class MockData {
             final ZoneAlert alert = new ZoneAlert();
             alert.setAccountID(accountID);
             alert.setZoneID(zoneID);
-            alert.setZoneAlertID(id);
+            alert.setAlertID(id);
             alert.setCreated(new Date());
             alert.setName("Zone Alert " + id);
             alert.setDescription("Toolin' around the zone");
@@ -828,7 +828,7 @@ public class MockData {
             int id = idOffset + i + 1;
             RedFlagAlert flag = new RedFlagAlert();
             flag.setAccountID(accountID);
-            flag.setRedFlagAlertID(id);
+            flag.setAlertID(id);
             flag.setCreated(new Date());
             flag.setName("RedFlagAlert" + id);
             flag.setDescription("Don't step on my blue suede shoes!");

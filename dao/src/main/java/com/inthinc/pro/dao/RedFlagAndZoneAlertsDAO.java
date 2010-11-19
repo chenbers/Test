@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.RedFlagOrZoneAlert;
+import com.inthinc.pro.model.ZoneAlert;
 
 public interface RedFlagAndZoneAlertsDAO extends GenericDAO<RedFlagOrZoneAlert, Integer>{
     
@@ -12,6 +13,13 @@ public interface RedFlagAndZoneAlertsDAO extends GenericDAO<RedFlagOrZoneAlert, 
     List<RedFlagOrZoneAlert> getRedFlagAndZoneAlertsByUserIDDeep(Integer userID);
     
     Integer deleteByEntity(RedFlagOrZoneAlert redFlagOrZoneAlert);
+    
+    List<ZoneAlert> getZoneAlerts(Integer accountID);
+    List<ZoneAlert> getZoneAlertsByUserID(Integer userID);
+    List<ZoneAlert> getZoneAlertsByUserIDDeep(Integer userID);
+
+    Integer deleteByZoneID(Integer zoneID);
+
 
     List<AlertEscalationItem> getAlertEscalationItemsByAlert(Integer alertID);
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.RedFlagAndZoneAlertsDAO;
 import com.inthinc.pro.dao.ZoneAlertDAO;
+import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagOrZoneAlert;
@@ -58,6 +59,44 @@ public class RedFlagAndZoneAlertHessianDAO extends GenericHessianDAO<RedFlagOrZo
         return combineAndSort(redFlagAlerts,zoneAlerts);
     }
 
+    @Override
+    public List<ZoneAlert> getZoneAlerts(Integer accountID)
+    {
+        try
+        {
+            return getMapper().convertToModelObject(getSiloService().getZoneAlertsByAcctID(accountID), ZoneAlert.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+        
+    }
+
+    @Override
+    public List<ZoneAlert> getZoneAlertsByUserID(Integer userID) {
+        try {
+            return getMapper().convertToModelObject(getSiloService().getZoneAlertsByUserID(userID), ZoneAlert.class);
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public List<ZoneAlert> getZoneAlertsByUserIDDeep(Integer userID) {
+        try {
+            return getMapper().convertToModelObject(getSiloService().getZoneAlertsByUserIDDeep(userID), ZoneAlert.class);
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public Integer deleteByZoneID(Integer zoneID)
+    {
+        return getChangedCount(getSiloService().deleteZoneAlertsByZoneID(zoneID));
+    }
+
     private List<RedFlagOrZoneAlert> combineAndSort(List<RedFlagAlert> redFlagAlerts,List<ZoneAlert> zoneAlerts){
 
         List<RedFlagOrZoneAlert> redFlagAndZoneAlerts = new ArrayList<RedFlagOrZoneAlert>(redFlagAlerts);
@@ -100,11 +139,11 @@ public class RedFlagAndZoneAlertHessianDAO extends GenericHessianDAO<RedFlagOrZo
         
         if(redFlagOrZoneAlert instanceof RedFlagAlert){
             
-            return redFlagAlertDAO.deleteByID(((RedFlagAlert)redFlagOrZoneAlert).getRedFlagAlertID());
+            return redFlagAlertDAO.deleteByID(((RedFlagAlert)redFlagOrZoneAlert).getAlertID());
         }
         if(redFlagOrZoneAlert instanceof ZoneAlert){
             
-            return zoneAlertDAO.deleteByID(((ZoneAlert)redFlagOrZoneAlert).getZoneAlertID());
+            return zoneAlertDAO.deleteByID(((ZoneAlert)redFlagOrZoneAlert).getAlertID());
         }
         return null;
         

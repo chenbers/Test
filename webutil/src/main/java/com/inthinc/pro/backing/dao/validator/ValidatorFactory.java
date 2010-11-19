@@ -119,7 +119,7 @@ public class ValidatorFactory {
 		return redFlagAlertIDValidator;
 	}
 
-	public void setRedFlagAlertIDValidator(
+	public void setIdValidator(
 			RedFlagAlertIDValidator redFlagAlertIDValidator) {
 		this.redFlagAlertIDValidator = redFlagAlertIDValidator;
 	}
@@ -128,7 +128,7 @@ public class ValidatorFactory {
 		return zoneAlertIDValidator;
 	}
 
-	public void setZoneAlertIDValidator(ZoneAlertIDValidator zoneAlertIDValidator) {
+	public void setIdValidator(ZoneAlertIDValidator zoneAlertIDValidator) {
 		this.zoneAlertIDValidator = zoneAlertIDValidator;
 	}
 

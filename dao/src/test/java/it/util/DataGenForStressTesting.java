@@ -301,7 +301,7 @@ public class DataGenForStressTesting {
             null, // emailTo
             null, null,
             null, null, null,
-            RedFlagLevel.NONE);
+            RedFlagLevel.NONE,null);
     	return redFlagAlert;
     }
 	private void addRedFlagAlert(RedFlagAlert redFlagAlert,
@@ -309,7 +309,7 @@ public class DataGenForStressTesting {
 		
         Integer redFlagAlertID = redFlagAlertDAO.create(account.getAcctID(), redFlagAlert);
         assertNotNull(redFlagAlertID);
-        redFlagAlert.setRedFlagAlertID(redFlagAlertID);
+        redFlagAlert.setAlertID(redFlagAlertID);
 	}
 
 
@@ -328,7 +328,7 @@ public class DataGenForStressTesting {
                 0, zone.getZoneID(), true, true);
         Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
         assertNotNull(zoneAlertID);
-        zoneAlert.setZoneAlertID(zoneAlertID);
+        zoneAlert.setAlertID(zoneAlertID);
 
 	}
 
@@ -430,7 +430,7 @@ public class DataGenForStressTesting {
                 0, zoneID, true, true);
         zoneAlert.setNotifyPersonIDs(notifyPersonIDList);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
-        zoneAlert.setZoneAlertID(zoneAlertID);
+        zoneAlert.setAlertID(zoneAlertID);
     }
 
     private static void redFlagAlert(Integer acctID, Integer groupID) {
@@ -461,10 +461,10 @@ public class DataGenForStressTesting {
                 null,
                 emailList, // emailTo
                 null, null, null, null, null,
-                RedFlagLevel.CRITICAL);
+                RedFlagLevel.CRITICAL, null);
         
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
-        redFlagAlert.setRedFlagAlertID(redFlagAlertID);
+        redFlagAlert.setAlertID(redFlagAlertID);
     }
 
     private void createAddress(Integer acctID)

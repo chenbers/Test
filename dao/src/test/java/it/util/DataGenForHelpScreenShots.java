@@ -254,7 +254,7 @@ public class DataGenForHelpScreenShots {
                 0, zoneID, true, true);
         zoneAlert.setNotifyPersonIDs(notifyPersonIDList);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
-        zoneAlert.setZoneAlertID(zoneAlertID);
+        zoneAlert.setAlertID(zoneAlertID);
     }
 
     private static void redFlagAlert(Integer acctID, Integer groupID) {
@@ -285,10 +285,10 @@ public class DataGenForHelpScreenShots {
                 null,
                 emailList, // emailTo
                 null, null, null, null, null,
-                RedFlagLevel.CRITICAL);
+                RedFlagLevel.CRITICAL, null);
         
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
-        redFlagAlert.setRedFlagAlertID(redFlagAlertID);
+        redFlagAlert.setAlertID(redFlagAlertID);
     }
 
     private void createAddress(Integer acctID)

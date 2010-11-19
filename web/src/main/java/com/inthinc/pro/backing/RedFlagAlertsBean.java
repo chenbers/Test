@@ -146,7 +146,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
     protected void doDelete(List<RedFlagAlertView> deleteItems) {
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final RedFlagAlertView flag : deleteItems) {
-            redFlagAlertDAO.deleteByID(flag.getRedFlagAlertID());
+            redFlagAlertDAO.deleteByID(flag.getAlertID());
             // add a message
             final String summary = MessageUtil.formatMessageString("redFlag_deleted", flag.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -203,7 +203,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
     @Override
     protected RedFlagAlertView revertItem(RedFlagAlertView editItem) {
-        return createRedFlagAlertView(redFlagAlertDAO.findByID(editItem.getRedFlagAlertID()));
+        return createRedFlagAlertView(redFlagAlertDAO.findByID(editItem.getAlertID()));
     }
 
     @Override
@@ -295,7 +295,7 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
                 flag.setSpeedSettings(null);
             }
             if (create)
-                flag.setRedFlagAlertID(redFlagAlertDAO.create(getAccountID(), flag));
+                flag.setAlertID(redFlagAlertDAO.create(getAccountID(), flag));
             else
                 redFlagAlertDAO.update(flag);
             // add a message
@@ -344,9 +344,6 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
         @Column(updateable = false)
         private Boolean hardVerticalSelected;
 
-        public Integer getId() {
-            return getRedFlagAlertID();
-        }
 
         public boolean isAnytime() {
             return anytime;
@@ -433,6 +430,12 @@ public class RedFlagAlertsBean extends BaseAdminAlertsBean<RedFlagAlertsBean.Red
 
         public void setSelected(boolean selected) {
             this.selected = selected;
+        }
+
+        @Override
+        public Integer getId() {
+            // TODO Auto-generated method stub
+            return getAlertID();
         }
     }
 }

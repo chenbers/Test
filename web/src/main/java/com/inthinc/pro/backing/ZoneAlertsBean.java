@@ -181,7 +181,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
 
         for (final ZoneAlertView alert : deleteItems)
         {
-            zoneAlertDAO.deleteByID(alert.getZoneAlertID());
+            zoneAlertDAO.deleteByID(alert.getAlertID());
 
             // add a message
             final String summary = MessageUtil.formatMessageString("zoneAlert_deleted", alert.getName());
@@ -264,7 +264,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
 	@Override
     protected ZoneAlertView revertItem(ZoneAlertView editItem)
     {
-        return createZoneAlertView(zoneAlertDAO.findByID(editItem.getZoneAlertID()));
+        return createZoneAlertView(zoneAlertDAO.findByID(editItem.getAlertID()));
     }
 
     @Override
@@ -281,7 +281,7 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
             }
             
             if (create)
-                alert.setZoneAlertID(zoneAlertDAO.create(getAccountID(), alert));
+                alert.setAlertID(zoneAlertDAO.create(getAccountID(), alert));
             else
                 zoneAlertDAO.update(alert);
 
@@ -360,9 +360,10 @@ public class ZoneAlertsBean extends BaseAdminAlertsBean<ZoneAlertsBean.ZoneAlert
         @Column(updateable = false)
         private boolean           selected;
 
-        public Integer getId()
-        {
-            return getZoneAlertID();
+        @Override
+        public Integer getId() {
+            // TODO Auto-generated method stub
+            return getAlertID();
         }
 
         void setZoneAlertsBean(ZoneAlertsBean zoneAlertsBean)

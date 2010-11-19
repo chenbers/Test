@@ -18,36 +18,31 @@ public class RedFlagAlert extends RedFlagOrZoneAlert {
     public static final Integer DEFAULT_BUMP_LEVEL = 3;
     @ID
     @Column(name = "alertID")
-    private Integer redFlagAlertID;
+    private Integer alertID;
     
     public RedFlagAlert() {
     }
 
     public RedFlagAlert(AlertMessageType type, Integer accountID, Integer userID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
             List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo, Integer[] speedSettings,
-            Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, RedFlagLevel severityLevel
+            Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, RedFlagLevel severityLevel, Integer redFlagAlertID
             ) {
         super(type,accountID, userID, name, description, startTOD, stopTOD, dayOfWeek, groupIDs, driverIDs, vehicleIDs, vehicleTypes, notifyPersonIDs, emailTo, speedSettings,
                 hardAcceleration, hardBrake, hardTurn, hardVertical,severityLevel, null, null, null);
-    }
+        setAlertID(redFlagAlertID);
 
-    public Integer getRedFlagAlertID() {
-        return redFlagAlertID;
     }
 
     @Override
-    public Integer getId() {
-        return redFlagAlertID;
+    public Integer getAlertID() {
+        return alertID;
     }
 
     @Override
-    public void setId(Integer id) {
-        this.redFlagAlertID = id;
+    public void setAlertID(Integer alertID) {
+        this.alertID = alertID;
     }
 
-    public void setRedFlagAlertID(Integer redFlagAlertID) {
-        this.redFlagAlertID = redFlagAlertID;
-    }
 
 
 }

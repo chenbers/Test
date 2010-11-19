@@ -33,7 +33,7 @@ public abstract class RedFlagOrZoneAlert extends BaseAlert implements Comparable
     private Integer           zoneID;
     private Boolean           arrival;
     private Boolean           departure;
-
+    
    public RedFlagOrZoneAlert() {
     }
 
@@ -56,7 +56,7 @@ public abstract class RedFlagOrZoneAlert extends BaseAlert implements Comparable
     @Override
     public int compareTo(RedFlagOrZoneAlert o) {
 
-        return this.getId().compareTo(o.getId());
+        return this.getAlertID().compareTo(o.getAlertID());
     }
 
     
@@ -170,10 +170,10 @@ public abstract class RedFlagOrZoneAlert extends BaseAlert implements Comparable
     public String toString() {
         return "RedFlagOrZoneAlert [type=" + type + ", severityLevel=" + severityLevel + ", hardAcceleration=" + hardAcceleration + ", hardBrake="
                 + hardBrake + ", hardTurn=" + hardTurn + ", hardVertical=" + hardVertical
-                + ", redFlagOrZoneAlertID=" + getId() +  ", speedLevels="
+                + ", redFlagOrZoneAlertID=" + getAlertID() +  ", speedLevels="
                 + ", speedSettings=" + Arrays.toString(speedSettings) + "]";
     }
 
-    public abstract Integer getId();
-    public abstract void setId(Integer id);
+    public abstract Integer getAlertID();
+    public abstract void setAlertID(Integer alertID);
 }

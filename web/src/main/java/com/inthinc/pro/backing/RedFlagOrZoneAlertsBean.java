@@ -102,7 +102,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         alertView.setSelected(false);
         alertView.setRedFlagOrZoneAlertsBean(this);
 
-        alertView.setId(flag.getId());
+        alertView.setAlertID(flag.getAlertID());
         return alertView;
     }
 
@@ -239,7 +239,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     @Override
     protected RedFlagOrZoneAlertView revertItem(RedFlagOrZoneAlertView editItem) {
-        return createRedFlagOrZoneAlertView(redFlagAndZoneAlertsDAO.findByID(editItem.getId()));
+        return createRedFlagOrZoneAlertView(redFlagAndZoneAlertsDAO.findByID(editItem.getAlertID()));
     }
 
     @Override
@@ -331,7 +331,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 flag.setSpeedSettings(null);
             }
             if (create)
-                flag.setId(redFlagAndZoneAlertsDAO.create(getAccountID(), flag));
+                flag.setAlertID(redFlagAndZoneAlertsDAO.create(getAccountID(), flag));
             else
                 redFlagAndZoneAlertsDAO.update(flag);
             // add a message
@@ -407,18 +407,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         private RedFlagOrZoneAlertsBean    redFlagOrZoneAlertsBean;
         @Column(updateable = false)
         private Zone              zone;
-        private Integer     id;
+        
+        private Integer alertID;
         
         @Override
         public Integer getId() {
-            return id;
+            // TODO Auto-generated method stub
+            return getAlertID();
         }
-
-        @Override
-        public void setId(Integer id) {
-            this.id = id;
-        }
-
         public boolean isAnytime() {
             return anytime;
         }
@@ -531,6 +527,17 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             return null;
         }
         public void setZonePoints(){
+            
+        }
+
+        @Override
+        public Integer getAlertID() {
+            return alertID;
+        }
+
+        @Override
+        public void setAlertID(Integer alertID) {
+            this.alertID = alertID;
             
         }
     }

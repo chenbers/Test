@@ -17,7 +17,6 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.hos.model.RuleSetType;
@@ -85,11 +84,9 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
-import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
-import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
@@ -121,6 +118,7 @@ public class SiloServiceTest {
     private static final Integer PERSON_COUNT = 3;
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
     private static final String SPEEDRACER = "speedracer";
+    @SuppressWarnings("unused")
     private static final String SPEEDRACER_RFID = "speedRacerRFID";
     private static Integer TESTING_DRIVER_ID; // speedracer
     private static Integer TESTING_VEHICLE_ID = 1; // speedracer
@@ -591,10 +589,10 @@ public class SiloServiceTest {
                 null, // vehicleTypeIDs
                 notifyPersonIDs,
                 null, // emailTo
-                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL);
+                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null);
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
-        redFlagAlert.setRedFlagAlertID(redFlagAlertID);
+        redFlagAlert.setAlertID(redFlagAlertID);
 
         String ignoreFields[] = { "modified", "fullName" };
 
@@ -647,9 +645,9 @@ public class SiloServiceTest {
                 null, // vehicleTypeIDs
                 notifyPersonIDs,
                 null, // emailTo
-                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL);
+                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null);
         Integer fleetRedFlagAlertID = redFlagAlertDAO.create(acctID, fleetRedFlagAlert);
-        fleetRedFlagAlert.setRedFlagAlertID(fleetRedFlagAlertID);
+        fleetRedFlagAlert.setAlertID(fleetRedFlagAlertID);
         userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(fleetUserID);
         assertEquals(1, userRedFlagAlertList.size());
         Util.compareObjects(fleetRedFlagAlert, userRedFlagAlertList.get(0), ignoreFields);
@@ -662,7 +660,7 @@ public class SiloServiceTest {
         fleetRedFlagAlert.setGroupIDs(fleetRedFlagAlert.getGroupIDs());
         changedCount = redFlagAlertDAO.update(fleetRedFlagAlert);
         assertEquals("Red flag update count", Integer.valueOf(1), changedCount);
-        RedFlagAlert updatedRedFlagAlert = redFlagAlertDAO.findByID(fleetRedFlagAlert.getRedFlagAlertID());
+        RedFlagAlert updatedRedFlagAlert = redFlagAlertDAO.findByID(fleetRedFlagAlert.getAlertID());
         Util.compareObjects(fleetRedFlagAlert, updatedRedFlagAlert, ignoreFields);
         
         // check counts
@@ -697,7 +695,7 @@ public class SiloServiceTest {
         zoneAlertDAO.setSiloService(siloService);
         
         ZoneAlert zoneAlert = createZoneAlert(acctID, userID, zoneID, zoneAlertDAO);
-        Integer zoneAlertID = zoneAlert.getZoneAlertID();
+        Integer zoneAlertID = zoneAlert.getAlertID();
         
         // find
         String ignoreFields[] = { "modified", "fullName" };
@@ -750,7 +748,7 @@ public class SiloServiceTest {
         fleetZoneAlert.setGroupIDs(zoneAlert.getGroupIDs());
         changedCount = zoneAlertDAO.update(fleetZoneAlert);
         assertEquals("Zone update count", Integer.valueOf(1), changedCount);
-        ZoneAlert updatedZoneAlert = zoneAlertDAO.findByID(fleetZoneAlert.getZoneAlertID());
+        ZoneAlert updatedZoneAlert = zoneAlertDAO.findByID(fleetZoneAlert.getAlertID());
         Util.compareObjects(fleetZoneAlert, updatedZoneAlert, ignoreFields);
         
         // check counts
@@ -799,7 +797,7 @@ public class SiloServiceTest {
                 0, zoneID, true, true);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         assertNotNull(zoneAlertID);
-        zoneAlert.setZoneAlertID(zoneAlertID);
+        zoneAlert.setAlertID(zoneAlertID);
         return zoneAlert;
     }
 

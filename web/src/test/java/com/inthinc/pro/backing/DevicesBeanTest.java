@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.backing.DevicesBean.DeviceView;
 import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.configurator.ProductType;
 
 public class DevicesBeanTest extends BaseAdminBeanTest<DevicesBean.DeviceView>
 {
@@ -31,7 +32,7 @@ public class DevicesBeanTest extends BaseAdminBeanTest<DevicesBean.DeviceView>
         editItem.setImei("123456");
         editItem.setSim("123456789");
         editItem.setPhone("123-456-7890");
-//        editItem.setEphone("098-765-4321");
+        editItem.setProductVer(ProductType.TIWIPRO_R74);
         editItem.setActivated(new Date());
     }
 

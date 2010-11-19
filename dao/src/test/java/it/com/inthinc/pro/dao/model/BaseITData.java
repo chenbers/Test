@@ -371,7 +371,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
             null, // emailTo
             null,
             null, null, null, null,
-            RedFlagLevel.WARNING);
+            RedFlagLevel.WARNING,null);
     	return redFlagAlert;
     }
     
@@ -382,7 +382,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
 		
         Integer redFlagAlertID = redFlagAlertDAO.create(account.getAcctID(), redFlagAlert);
         assertNotNull(redFlagAlertID);
-        redFlagAlert.setRedFlagAlertID(redFlagAlertID);
+        redFlagAlert.setAlertID(redFlagAlertID);
     	xml.writeObject(redFlagAlert);
 	}
 
@@ -401,7 +401,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
                 0, zone.getZoneID(), true, true);
         Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
         assertNotNull(zoneAlertID);
-        zoneAlert.setZoneAlertID(zoneAlertID);
+        zoneAlert.setAlertID(zoneAlertID);
     	xml.writeObject(zoneAlert);
 
 	}

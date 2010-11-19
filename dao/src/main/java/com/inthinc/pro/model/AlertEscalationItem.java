@@ -10,10 +10,10 @@ public class AlertEscalationItem {
     private Integer ordinal;
     private AlertMessageDeliveryType alertMessageDeliveryType;
     
-    public Integer getRedFlagAlertID() {
+    public Integer getId() {
         return redFlagAlertID;
     }
-    public void setRedFlagAlertID(Integer redFlagAlertID) {
+    public void setId(Integer redFlagAlertID) {
         this.redFlagAlertID = redFlagAlertID;
     }
     public Integer getPersonID() {
