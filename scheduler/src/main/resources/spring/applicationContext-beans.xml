@@ -33,7 +33,6 @@
          <property name="callerID" value="${voxeo.callerID}" />
          <property name="tokenID" value="${voxeo.tokenID}" />
          <property name="maxThreads" value="${voxeo.maxThreads}" />
-         <property name="alertMessageDAO" ref="alertMessageDAO" />
 	</bean>
    
    <!--  QUARTZ (jobs and triggers) -->

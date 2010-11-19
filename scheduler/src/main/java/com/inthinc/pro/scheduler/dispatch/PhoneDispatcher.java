@@ -15,7 +15,6 @@ public class PhoneDispatcher {
     private String callerID;
     private String phoneServerURL;
     private String tokenID;
-    private AlertMessageDAO alertMessageDAO;
     private Integer maxThreads;
     private ExecutorService executorService;
 
@@ -54,14 +53,6 @@ public class PhoneDispatcher {
         this.tokenID = tokenid;
     }
 
-    public AlertMessageDAO getAlertMessageDAO() {
-        return alertMessageDAO;
-    }
-
-    public void setAlertMessageDAO(AlertMessageDAO alertMessageDAO) {
-        this.alertMessageDAO = alertMessageDAO;
-    }
-    
     public Integer getMaxThreads() {
         return maxThreads;
     }
@@ -117,12 +108,9 @@ public class PhoneDispatcher {
                 } else {
                     // warning, this returns "success" even if the service fails to return vxml!
                     String body = httpMethod.getResponseBodyAsString();
-                    logger.debug(body);
                     if (!body.startsWith("success"))
-                        callOK = false;
+                        logger.debug(body+" " + msgID);
                 }
-                if (callOK && !acknowledge) // ack now if not an wait for user ack message
-                    getAlertMessageDAO().acknowledgeMessage(msgID);
             } catch (Throwable e) {
                 logger.error("PhoneMessageJob Error " + e);
             }

@@ -66,7 +66,6 @@ public class MessagesTest {
 	public void testPhoneCall()
 	{
 	    PhoneDispatcher pd = new PhoneDispatcher();
-	    pd.setAlertMessageDAO(null);
 	    pd.setCallerID("8018662255");
 	    pd.setTokenID("724abefcafa4be428524109528252d18defe555564874cd59aed73e84cf16fc6817d99ce6fde0f5aef118e94");
 	    pd.setPhoneServerURL("http://api.voxeo.net/VoiceXML.start");
