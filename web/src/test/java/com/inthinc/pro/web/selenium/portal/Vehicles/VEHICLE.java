@@ -1,7 +1,8 @@
 //Maintained as .JAVA
 
-package com.inthinc.pro.web.selenium.portal;
+package com.inthinc.pro.web.selenium.portal.Vehicles;
 
+import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.thoughtworks.selenium.*;
 
 

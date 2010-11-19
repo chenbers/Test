@@ -17,7 +17,7 @@ import org.junit.runner.notification.StoppedByUserException;
 import org.openqa.selenium.server.SeleniumServer;
 import com.inthinc.pro.web.selenium.*;
 
-public class InthincTest
+public abstract class InthincTest
 {
 	
 	private GregorianCalendar currentTime;
