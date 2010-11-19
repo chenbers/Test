@@ -34,20 +34,20 @@ public class CrashTrace extends BaseEntity {
     }
     
     
-    public CrashTrace getMockObject() throws IOException{
+    public CrashTrace getMockObject(String path) throws IOException{
         CrashTrace result = new CrashTrace();
         result.setEventID("D6FB4857-E6B6-4813-9DB6-2E41C5392D9D");//example of an actual eventID
-        result.setBinaryTraceData(getMockBlob());
-        result.setBinaryTraceData_ba(getMockByteArray());
+        result.setBinaryTraceData(getMockBlob(path));
+        result.setBinaryTraceData_ba(getMockByteArray(path));
            
         return result;
     }
     
-    public static byte[] getMockByteArray() throws IOException {
+    public static byte[] getMockByteArray(String path) throws IOException {
         InputStream is = null;
-        byte[] result = null;
+        byte[] result = null; 
         try{
-            is = new URL("http://localhost:8080/web/images/mockCrashTrace.bin").openStream(); //TODO: needs replaced with ?hessian stuff? to get BLOB out of DB (not media server)
+            is = new URL(path+"/applets/mockCrashTrace.bin").openStream(); //TODO: needs replaced with ?hessian stuff? to get BLOB out of DB (not media server)
 
             byte[] buf = new byte[32 * 1024]; // 32k buffer
             int nRead = 0;
@@ -65,11 +65,11 @@ public class CrashTrace extends BaseEntity {
         return result;
     }
     
-    public static Blob getMockBlob() throws IOException {
+    public static Blob getMockBlob(String path) throws IOException {
         InputStream is = null;
         Blob result = null;
         try{
-            is = new URL("http://localhost:8080/web/images/mockCrashTrace.bin").openStream(); //TODO: needs replaced with ?hessian stuff? to get BLOB out of DB (not media server)
+            is = new URL(path+"/applets/mockCrashTrace.bin").openStream(); //TODO: needs replaced with ?hessian stuff? to get BLOB out of DB (not media server)
 
             byte[] buf = new byte[32 * 1024]; // 32k buffer
             int nRead = 0;
