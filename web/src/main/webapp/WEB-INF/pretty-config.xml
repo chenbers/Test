@@ -259,7 +259,7 @@
         <pattern>/app/sendMail/</pattern>
         <view-id>/secured/sendMail.faces</view-id>
         <action onPostback="false">#{messagesBean.loadMailingList}</action>
-    </url-mapping>   
+    </url-mapping>    
     <url-mapping id="forwardMail">
         <pattern>/app/forwardMail/</pattern>
         <view-id>/secured/forwardMail.faces</view-id>
@@ -268,7 +268,10 @@
         <pattern>/app/sentMail/</pattern>
         <view-id>/secured/sentMail.faces</view-id>
     </url-mapping>    
-  
+    <url-mapping id="crashTrace">
+        <pattern>/app/crashTrace/#{crashReportBean.crashTraceEventID}</pattern>
+        <view-id>#{crashReportBean.serveCrashTrace}</view-id>
+    </url-mapping>  
     
     <!-- ADMIN MAPPING RULES -->
     
