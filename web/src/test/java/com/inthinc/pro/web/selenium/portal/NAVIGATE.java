@@ -30,6 +30,8 @@ public class NAVIGATE
 	private String testVersion="No Version Found";
 	private String testVerdict="Error";
 	
+	private Boolean skip = false;
+	
 	private final static String username = "dtanner@inthinc.com";
 	private final static String password = "aOURh7PL5v";
 	private final static String workspace = "Inthinc";
@@ -54,8 +56,14 @@ public class NAVIGATE
 	@Before
 	public void start_selenium(){
 		selenium = Singleton.getSingleton().getSelenium();
-		selenium.start();
-		currentTime = (GregorianCalendar) GregorianCalendar.getInstance();
+		try{
+			selenium.start();
+			currentTime = (GregorianCalendar) GregorianCalendar.getInstance();
+		}catch(Exception e){
+			skip = true;
+			throw new StoppedByUserException();
+		}
+		
 	}
 	
 	public void set_selenium(Core sel ){
@@ -108,15 +116,17 @@ public class NAVIGATE
 
 	@After
 	public void stop_selenium(){
-		try{
-			//get version
-			testVersion = selenium.getText("footerForm:version", "Getting version from Portal");
-		}catch(Exception e){
-			e.printStackTrace();
+		if (!skip){
+			try{
+				//get version
+				testVersion = selenium.getText("footerForm:version", "Getting version from Portal");
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			//rest output vars for next test and record results for execute test
+			selenium.stop();
+			record_results();
 		}
-		//rest output vars for next test and record results for execute test
-		selenium.stop();
-		record_results();
 		data_file=null;
 		testCase=null;
 		currentTime=null;
