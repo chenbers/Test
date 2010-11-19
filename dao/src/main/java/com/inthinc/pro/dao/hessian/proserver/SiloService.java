@@ -400,11 +400,11 @@ public interface SiloService extends HessianService
     
     Map<String, Object> unforgiveCrash(Integer groupID) throws ProDAOException;    
 
-    //List<Map<String, Object>> getCrashTraces(String eventID) throws ProDAOException;
+    List<Map<String, Object>> getCrashTraces(String eventID) throws ProDAOException;
     
-    //Map<String, Object> getCrashTraceCount(String eventID, Long startDate, Long stopDate, List<Map<String, Object>> filterList);
+    Map<String, Object> getCrashTraceCount(String eventID, Long startDate, Long stopDate, List<Map<String, Object>> filterList);
     
-    //List<Map<String, Object>> getCrashTracePage(String eventID, Long startDate, Long stopDate, List<Map<String, Object>> filterList, Map<String, Object> pageParams);
+    List<Map<String, Object>> getCrashTracePage(String eventID, Long startDate, Long stopDate, List<Map<String, Object>> filterList, Map<String, Object> pageParams);
     
     // Live fleet map on executive dashboard
     
