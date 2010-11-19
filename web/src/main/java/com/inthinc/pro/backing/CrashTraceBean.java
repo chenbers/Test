@@ -26,7 +26,7 @@ public class CrashTraceBean extends BaseBean implements ServableFileObject {
 
     public CrashTraceBean(String eventID) {
         logger.fatal("public WaysmartCrashTrace(String " + eventID + ") is not ready for public consumption");
-        crashTraceDAO.getCrashTraceByEventID(eventID);// TODO: jwimmer: throwing null probably because of the inner class!!!
+        crashTraceDAO.getCrashTraces(eventID);// TODO: jwimmer: throwing null probably because of the inner class!!!
     }
 
     public CrashTraceBean getMockObject() throws IOException {
