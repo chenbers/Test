@@ -31,7 +31,7 @@ public class ForwardCommandSpool extends BaseEntity {
         this.command = command;
         this.address = address;
         this.strData = strData;
-        this.intData = null;
+        this.intData = -1;
         this.dataType = ForwardCommandParamType.STRING; 
         
         if (strData != null)

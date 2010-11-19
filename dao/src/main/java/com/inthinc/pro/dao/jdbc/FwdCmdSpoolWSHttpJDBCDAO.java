@@ -23,11 +23,13 @@ public class FwdCmdSpoolWSHttpJDBCDAO  extends GenericJDBCDAO {
         CallableStatement statement = null;
         ResultSet resultSet = null;
 
+
         Integer id = 0;
         try
         {
             conn = getConnection();
             statement = conn.prepareCall("{call ws_addHttpForwardCommandSpool(?, ?, ?, ?)}");
+
             statement.setInt(1, forwardCommandSpool.getIntData());
             statement.setString(2, forwardCommandSpool.getStrData());
             statement.setInt(3, forwardCommandSpool.getCommand());
