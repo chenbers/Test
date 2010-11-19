@@ -6,12 +6,14 @@ import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.ZonePublishDAO;
 import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 import com.inthinc.pro.model.zone.ZonePublish;
 import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.CallableStatement;
 
 public class ZonePublishJDBCDAO extends GenericJDBCDAO implements ZonePublishDAO {
 
@@ -68,6 +70,42 @@ public class ZonePublishJDBCDAO extends GenericJDBCDAO implements ZonePublishDAO
         
         return null;
     }
+    @Override
+    public ZonePublish getPublishedZone(String mcmId) {
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            conn = getConnection();
+            statement = (CallableStatement) conn.prepareCall("{call zonepublish_fetchForMcmId(?)}");
+            statement.setString(1, mcmId);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                ZonePublish zonePublish = new ZonePublish();
+                zonePublish.setAcctID(resultSet.getInt(1));
+                zonePublish.setZoneVehicleType((ZoneVehicleType)ZoneVehicleType.valueOf(resultSet.getInt(2)));
+                zonePublish.setPublishZoneData(resultSet.getBytes(3));
+                zonePublish.setZonePublishDate(new Date(resultSet.getLong(4)));
+                
+                return zonePublish;
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally   
+        
+        return null;
+    }
+
     @Override
     public Integer create(Integer id, ZonePublish zonePublish) {
         publishZoneInsert(zonePublish);

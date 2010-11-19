@@ -1,5 +1,7 @@
 package com.inthinc.pro.model.zone;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -20,6 +22,7 @@ public class ZonePublish extends BaseEntity implements Cloneable
     private Integer acctID;
     private ZoneVehicleType zoneVehicleType;
     private byte[] publishZoneData;
+    private Date zonePublishDate;
     
     public ZonePublish() {
         super();
@@ -49,9 +52,12 @@ public class ZonePublish extends BaseEntity implements Cloneable
     public void setPublishZoneData(byte[] publishZoneData) {
         this.publishZoneData = publishZoneData;
     }
-    
-    
-    
-    
 
+    public Date getZonePublishDate() {
+        return zonePublishDate;
+    }
+
+    public void setZonePublishDate(Date zonePublishDate) {
+        this.zonePublishDate = zonePublishDate;
+    }
 }

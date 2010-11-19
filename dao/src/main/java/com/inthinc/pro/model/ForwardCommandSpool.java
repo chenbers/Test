@@ -37,7 +37,7 @@ public class ForwardCommandSpool extends BaseEntity {
         if (strData != null)
         {
             int len = strData.getBytes().length;
-            byte[] dataBytes = new byte[len];
+            byte[] dataBytes = new byte[len + 1];
             
             byte[] strDataBytes = strData.getBytes(); 
             for (int i = 0; i < len; i++)

@@ -133,12 +133,12 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return recordList;
     }
     
-    public List<HOSOccupantHistory> getHOSOccupantLogs(String commAddress, String employeeId) {
+    public List<HOSOccupantHistory> getHOSOccupantHistory(String commAddress, String employeeId) {
         HOSDriverLogin driverLogin = getDriverForEmpid(commAddress, employeeId);
-        return getHOSOccupantLogs(driverLogin);
+        return getHOSOccupantHistory(driverLogin);
     }
 
-    public List<HOSOccupantHistory> getHOSOccupantLogs(HOSDriverLogin driverLogin) {
+    public List<HOSOccupantHistory> getHOSOccupantHistory(HOSDriverLogin driverLogin) {
         final RuleSetType dotType = driverLogin.getDriverDotType();
 
         final int daysback = ( dotType == RuleSetType.CANADA_2007_OIL  || dotType == RuleSetType.CANADA_2007_60_DEGREES_OIL) ? -24 : -14;
@@ -360,7 +360,6 @@ System.out.println("statment: " + statement.toString());
             statement.setInt(1, driverID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
-System.out.println("statement " + statement.toString());            
             resultSet = statement.executeQuery();
 
             long stopOdometer;
@@ -591,7 +590,6 @@ System.out.println("statement " + statement.toString());
             statement.setInt(5, odometer);
             
             resultSet = statement.executeQuery();
-
             
             if (resultSet.next()) {
                 driverLogin.setAcctID(resultSet.getInt(1));
