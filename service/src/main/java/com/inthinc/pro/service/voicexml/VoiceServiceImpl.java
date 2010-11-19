@@ -10,6 +10,7 @@ import org.springframework.security.Authentication;
 import org.springframework.security.context.SecurityContextHolder;
 import javax.servlet.http.HttpServletRequest;
 
+import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.service.VoiceService;
 import com.inthinc.pro.util.StringUtil;
 
@@ -19,6 +20,7 @@ public class VoiceServiceImpl implements VoiceService {
     private static final String VXML_ACK_FILE = "vxml/voicealertvxml.xml";
     private static final String VXML_NOACK_FILE = "vxml/voicealertnoackvxml.xml";
     private String voxeoAudioURL;
+    private AlertMessageDAO alertMessageDAO;
     
     @Override
     public Response get(HttpServletRequest context, Integer msgID, String msg, Integer ack) throws IOException {
@@ -41,6 +43,7 @@ public class VoiceServiceImpl implements VoiceService {
         {
             InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(VXML_NOACK_FILE);
             response = String.format(StringUtil.convertInputStreamToString(stream), getVoxeoAudioURL(), msg);
+            getAlertMessageDAO().acknowledgeMessage(msgID);
         }
         return Response.ok(response).build();
     }
@@ -52,5 +55,13 @@ public class VoiceServiceImpl implements VoiceService {
     public void setVoxeoAudioURL(String voxeoAudioURL) {
         this.voxeoAudioURL = voxeoAudioURL;
 
+    }
+
+    public AlertMessageDAO getAlertMessageDAO() {
+        return alertMessageDAO;
+    }
+
+    public void setAlertMessageDAO(AlertMessageDAO alertMessageDAO) {
+        this.alertMessageDAO = alertMessageDAO;
     }
 }

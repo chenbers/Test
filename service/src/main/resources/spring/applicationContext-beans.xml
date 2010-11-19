@@ -101,6 +101,7 @@
   </bean>  
   <bean id="voiceService" class="com.inthinc.pro.service.voicexml.VoiceServiceImpl">
     <property name="voxeoAudioURL" value="${voxeoAudioURL}" />
+    <property name="alertMessageDAO" ref="alertMessageDAO" />
   </bean>  
   <bean id="voiceAckService" class="com.inthinc.pro.service.voicexml.VoiceAckServiceImpl">
     <property name="voxeoAudioURL" value="${voxeoAudioURL}" />
