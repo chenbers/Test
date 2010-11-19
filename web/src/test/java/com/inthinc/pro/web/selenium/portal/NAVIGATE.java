@@ -40,13 +40,13 @@ public class NAVIGATE
 	@BeforeClass
 	public static void start_server(){
 		try{
-			seleniumserver = new SeleniumServer();
-	        seleniumserver.start();
-			rally = new Rally_API(username, password);
-		}catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new StoppedByUserException();
+				seleniumserver = new SeleniumServer();
+		        seleniumserver.start();
+				rally = new Rally_API(username, password);
+			}catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new StoppedByUserException();
 		}
         
 	}//end setup
