@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileReader;
 import org.junit.Test;
@@ -36,6 +37,8 @@ import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 
 public class ZonePublishTest {
     
+    private static final Logger logger = Logger.getLogger(ZonePublishTest.class);
+
     
     @Test
     public void dbfFile() throws IOException {
@@ -156,10 +159,9 @@ public class ZonePublishTest {
     private DBF expectedDbase3File(String filename) throws IOException, URISyntaxException {
         
         String path = File.separator + "zonePublish" + File.separator;
+        logger.info("expected dbf path " + (path + filename));
+        logger.info("expected dbf URL " + Thread.currentThread().getContextClassLoader().getResource(path + filename));
         File file = new File(Thread.currentThread().getContextClassLoader().getResource(path + filename).toURI());
-        if (file == null) {
-            System.out.println(path+filename + " results in null file");
-        }
         FileChannel in = new FileInputStream(file).getChannel();
         return parseDbase3File(in);
     }
