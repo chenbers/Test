@@ -1,6 +1,9 @@
 package com.inthinc.pro.backing;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -8,23 +11,27 @@ import java.util.List;
 import java.util.TimeZone;
 
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.CrashReportDAO;
+import com.inthinc.pro.dao.CrashTraceDAO;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
@@ -44,9 +51,11 @@ public class CrashReportBean extends BaseBean {
 
     private EditState editState;
 
+    private DeviceDAO deviceDAO;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private CrashReportDAO crashReportDAO;
+    private CrashTraceDAO crashTraceDAO;
     private EventDAO eventDAO;
     private List<Trip> tripList;
     private Trip selectedTrip;
@@ -55,12 +64,52 @@ public class CrashReportBean extends BaseBean {
     private EntityType selectedEntityType = EntityType.ENTITY_DRIVER;
 
     private CrashReport crashReport;
+    private String crashTraceEventID;
+    private CrashTraceBean crashTraceBean;
     private Integer crashTime;
     private Integer crashReportID; // Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
     private Trip crashReportTrip;
+    private File crashTraceFile;
+    private FileUploadBean fileUploadBean;
     
+    public void serveCrashTrace() {
+        System.out.println("public void serveCrashTrace()");
+        HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
+
+        OutputStream out = null;
+        try {
+            out = response.getOutputStream();
+            //TODO: jwimmer: populate crashTrace from this.getCrashTraceEventID()
+            System.out.println("crashTraceEventID: "+this.getCrashTraceEventID());
+            if(crashTraceBean == null) {
+                //TODO: jwimmer: add logic to check if eventID is null, if not load REAL crash trace
+                if(this.getCrashTraceEventID() != null && !("".equalsIgnoreCase(this.getCrashTraceEventID()))) {
+                    crashTraceBean = new CrashTraceBean(this.getCrashTraceEventID());
+                } else {
+                    crashTraceBean = new CrashTraceBean();
+                }
+            }
+            crashTraceBean.getMockObject().write(out);
+            //crashTraceBean.write(out);//TODO: jwimmer: when MOCK crashtrace is not needed anymore this line represents the RIGHT way to do this
+
+            out.flush();
+            getFacesContext().responseComplete();
+        } catch (IOException e) {
+            logger.error(e);
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                logger.error(e);
+            }
+        }
+    }
     private Driver unkDriver = null;
 
+    public String getUnits() {
+        return MessageUtil.getMessageString(getPerson().getMeasurementType()+"_miles");
+    }
+    
     public List<SelectItem> getCrashReportStatusAsSelectItems() {
         return SelectItemUtil.toList(CrashReportStatus.class, true, CrashReportStatus.DELETED);
     }
@@ -178,6 +227,17 @@ public class CrashReportBean extends BaseBean {
             }
         }
         return IdentifiableEntityBeanList;
+    }
+    
+    public Device getDevice() {
+        //TODO: jwimmer: determine if THIS is OK or if Device should be added to the CrashReport object (involves backend guys who have TONS of work)
+        //System.out.println(" :"+ crashReport);
+        //System.out.println(" :"+ crashReport.getVehicle());
+        //System.out.println(" :"+ crashReport.getVehicleID());
+        //System.out.println(" :"+ crashReport.getVehicle().getDeviceID());
+        //System.out.println(" :"+ deviceDAO.findByID(crashReport.getVehicle().getDeviceID()));
+        //System.out.println(" :"+ deviceDAO.findByID(crashReport.getVehicle().getDeviceID()).getName());
+        return deviceDAO.findByID(crashReport.getVehicle().getDeviceID());
     }
 
     private void loadVehicles() {
@@ -477,6 +537,38 @@ public class CrashReportBean extends BaseBean {
 
     public EventDAO getEventDAO() {
         return eventDAO;
+    }
+
+    public File getCrashTraceFile() {
+        return crashTraceFile;
+    }
+
+    public void setCrashTraceFile(File crashTraceFile) {
+        this.crashTraceFile = crashTraceFile;
+    }
+
+    public FileUploadBean getFileUploadBean() {
+        return fileUploadBean;
+    }
+
+    public void setFileUploadBean(FileUploadBean fileUploadBean) {
+        this.fileUploadBean = fileUploadBean;
+    }
+
+    public String getCrashTraceEventID() {
+        return crashTraceEventID;
+    }
+
+    public void setCrashTraceEventID(String crashTraceEventID) {
+        this.crashTraceEventID = crashTraceEventID;
+    }
+
+    public void setCrashTraceBean(CrashTraceBean crashTraceBean) {
+        this.crashTraceBean = crashTraceBean;
+    }
+
+    public CrashTraceBean getCrashTraceBean() {
+        return crashTraceBean;
     }
 
 }
