@@ -397,5 +397,10 @@
    			<artifactId>gt-metadata</artifactId>
    			<version>${geotools.version}</version>
  			</dependency>
+		 <dependency>
+		   <groupId>com.inthinc</groupId>
+   			<artifactId>iwi_viewer</artifactId>
+   			<version>1.0</version>
+ 		 </dependency> 			
 	</dependencies>
 </project>
