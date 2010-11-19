@@ -15,7 +15,7 @@ public interface CrashTraceDAO extends GenericDAO<CrashTrace, Integer>{
      * @param eventID
      * @return
      */
-    List<CrashTrace> getCrashTraceByEventID(String eventID);
+    List<CrashTrace> getCrashTraces(String eventID);
     
     /**
      * Retrieve the total count of filtered list sublist of Crash Traces for the given eventId, time frame, and pageParams.
