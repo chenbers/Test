@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -19,7 +21,7 @@ public class CrashTraceBean extends BaseBean implements ServableFileObject {
 
     public CrashTraceBean() {
         super();
-        logger.fatal("public CrashTraceBean() ");
+        logger.info("public CrashTraceBean() ");
     }
 
     public CrashTraceBean(String eventID) {
@@ -28,8 +30,13 @@ public class CrashTraceBean extends BaseBean implements ServableFileObject {
     }
 
     public CrashTraceBean getMockObject() throws IOException {
-        CrashTraceBean results = new CrashTraceBean();
-        CrashTrace ct = crashTrace.getMockObject();
+        CrashTraceBean results = new CrashTraceBean(); 
+        StringBuffer URL = ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURL();
+        System.out.println(URL.toString());
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        String server = ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getServerName();
+        Integer port =  ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getLocalPort(); 
+        CrashTrace ct = crashTrace.getMockObject("http://"+server+":"+port+path);
         ct.setBinaryTraceData(ct.getBinaryTraceData());
         ct.setBinaryTraceData_ba(ct.getBinaryTraceData_ba());
         ct.setEventID(ct.getEventID());
