@@ -157,8 +157,9 @@ public class ZonePublishTest {
     }
 
     private DBF expectedDbase3File(String filename) throws IOException, URISyntaxException {
-        
-        String path = File.separator + "zonePublish" + File.separator;
+        ///zonePublish/Zones.dbf
+
+        String path = "zonePublish" + File.separator;
         logger.info("expected dbf path " + (path + filename));
         logger.info("expected dbf URL " + Thread.currentThread().getContextClassLoader().getResource(path + filename));
         File file = new File(Thread.currentThread().getContextClassLoader().getResource(path + filename).toURI());
@@ -168,7 +169,7 @@ public class ZonePublishTest {
 
     private byte[] dumpFile(String filename) throws IOException, URISyntaxException {
         
-        String path = File.separator + "zonePublish" + File.separator;
+        String path = "zonePublish" + File.separator;
         File file = new File(Thread.currentThread().getContextClassLoader().getResource(path + filename).toURI());
         if (file == null) {
             System.out.println(path+filename + " results in null file");
