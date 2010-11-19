@@ -270,7 +270,11 @@
 
   <bean id="liveFleetBean" class="com.inthinc.pro.backing.LiveFleetBean" scope="request" parent="baseBean" init-method="initBean"/>
 
-  <bean id="crashReportBean" class="com.inthinc.pro.backing.CrashReportBean" scope="request" parent="baseBean"/>
+  <bean id="crashReportBean"        class="com.inthinc.pro.backing.CrashReportBean" scope="request" parent="baseBean">
+    <property name="crashTraceBean">
+    	<bean id="crashTraceBean" class="com.inthinc.pro.backing.CrashTraceBean"/>
+  	</property>
+  </bean>
 
   <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session" init-method="initBean">
     <property name="passwordEncryptor" ref="jasyptPasswordEncryptor"></property>
