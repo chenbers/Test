@@ -9,6 +9,7 @@ import com.inthinc.pro.web.selenium.Data_Reader;
 import com.inthinc.pro.web.selenium.Data_Sender;
 import com.inthinc.pro.web.selenium.portal.Masthead.*;
 
+@Ignore
 public class LoginTest extends InthincTest {
 	//instantiate var for data reader
 	Data_Reader testdata = new Data_Reader();

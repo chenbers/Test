@@ -1,12 +1,12 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
-import org.junit.Test;
+import org.junit.*;
 import com.inthinc.pro.web.selenium.portal.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.portal.Masthead.*;
 
 
-
+@Ignore
 public class Log_In extends InthincTest {
 	//create instance of library objects
 	Login l;

@@ -7,7 +7,7 @@ import com.inthinc.pro.web.selenium.portal.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.portal.Masthead.Masthead;
 
-
+@Ignore
 public class Testing extends InthincTest {
 	
 
