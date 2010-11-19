@@ -1,11 +1,15 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
+import org.junit.Ignore;
 import org.junit.Test;
+
 import com.inthinc.pro.web.selenium.portal.NAVIGATE;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.Data_Reader;
 import com.inthinc.pro.web.selenium.portal.Masthead.*;
 import com.inthinc.pro.web.selenium.portal.Notifications.*;
+
+@Ignore
 public class NotificationTest extends NAVIGATE {
 	//instantiate var for data reader
 	Data_Reader testdata = new Data_Reader();
