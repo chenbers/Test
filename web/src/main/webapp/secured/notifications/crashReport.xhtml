@@ -82,7 +82,7 @@
 			function initMap() {
 				
 				if (GBrowserIsCompatible()) {					
-					GUnload();
+					//GUnload();//causing problems with java applet in page
 					//var point = new GLatLng(#{crashReportBean.crashReport.lat},#{crashReportBean.crashReport.lng})
 					map = new GMap2(document.getElementById("map-canvas"));						
 					map.addControl(new GLargeMapControl());
@@ -430,6 +430,118 @@
 					            <div class="panel_statusbar"/>
 					        </div>
 						</h:panelGroup>
+
+
+
+						<f:facet name="footer" rendered="#{crashReportBean.device.isCrashTraceAppletCapable}">//TODO: jwimmer: rendered attribute is EXAMPLE only needs implemented !!!
+							<h:panelGroup>
+								<div class="panel_nw">
+								<div class="panel_title" style="z-index: #{zorder}">
+								#{messages.crashReport_crashTrace}</div>
+								</div>
+			
+								<div class="panel_w">
+								<div class="panel_content crash_panel_content"
+									id="crashPanelContent" style="height: 570px;">
+								<div align="center" id="realEventViewer">
+								<blockquote><font class="topic_text"> To
+								calculate event data select the time period (click and drag) of the
+								incident on the chart below. Single click anywhere on the chart to
+								select the entire time period. </font></blockquote>
+								
+								
+								
+								<!--<ui:include src="/includes/fileUpload.xhtml">
+							            <ui:param name="fileAction" value="uploadTrace" />
+							            <ui:param name="bean" value="#{crashReportBean.fileUploadBean}" />
+							            <ui:param name="context" value="crashReport" />
+								</ui:include>-->
+								<br/>
+																
+								<applet code="com.iwi.viewer.IWIViewer.class" mayscript="mayscript"
+									name="iwi_viewer" width="95%" height="400" hspace="0" vspace="0"
+									archive="/web/iwi_viewer.jar" imageFetcherOpts="null" >
+									<!--  <param name="file" value="//web/images/staticEventFile.do" />  -->
+									<!--  <param name="file" value="//web/secured/eventFile.jsp" /> -->
+									<param name="file" value="//web/app/crashTrace/test" />
+									<param name="event_index" value="1" />
+									<!-- param name="chart_type" value="linear_acceleration"/ -->
+									<param name="start_time" value="0.0" />
+									<param name="stop_time" value="0.0" />
+									<param name="english_units" value="true" />
+									<param name="visualization_type" value="sedan" />
+									<param name="zeroX" value="0.0" />
+									<param name="slopeX" value="0.0" />
+									<param name="zeroY" value="0.0" />
+									<param name="slopeY" value="0.0" />
+									<param name="zeroZ" value="0.0" />
+									<param name="slopeZ" value="0.0" />
+									<param name="autoZero" value="true" />
+									<param name="certified" value="false" />
+									<param name="witnessIIITrace" value="false" />
+									BROWSER IGNORING APPLET TAG??? 
+								</applet>
+			
+								<div align="center" id="realEventValues">
+								<form name="eventForm">
+								<table cellspacing="0" cellpadding="5" border="0">
+									<tr>
+										<td valign="top" align="right">DeltaV X #{crashReportBean.units}</td>
+										<td valign="top"><input type="text" property="deltaVX" name="deltaVX" size="10" onchange="updateValues()" /></td>
+			
+										<td valign="top" align="right">DeltaV Y #{crashReportBean.units}</td>
+										<td valign="top"><input type="text" property="deltaVY" name="deltaVY" size="10" onchange="updateValues()" /></td>
+			
+										<td valign="top" align="right">DeltaV Z #{crashReportBean.units}</td>
+										<td valign="top"><input type="text" property="deltaVZ" name="deltaVZ" size="10" onchange="updateValues()" /></td>
+									</tr>
+			
+									<tr>
+										<td valign="top" align="right">Rho #{crashReportBean.units}</td>
+										<td valign="top"><input type="text" property="rho" name="rho" size="10" onchange="updateValues()" /></td>
+			
+										<td valign="top" align="right">Theta (deg)</td>
+										<td valign="top"><input property="theta" name="theta" size="10" /></td>
+			
+										<td valign="top" align="right">Phi (deg)</td>
+										<td valign="top"><input property="phi" name="phi" size="10" /></td>
+									</tr>
+			
+									<tr>
+										<td valign="top" align="right">Peak G X (g)</td>
+										<td valign="top"><input property="peakGX" name="peakGX" size="10" /></td>
+			
+										<td valign="top" align="right">Peak G Y (g)</td>
+										<td valign="top"><input property="peakGY" name="peakGY" size="10" /></td>
+			
+										<td valign="top" align="right">Peak G Z (g)</td>
+										<td valign="top"><input property="peakGZ" name="peakGZ" size="10" /></td>
+									</tr>
+			
+									<tr>
+										<td valign="top" align="right">Start Time (sec)</td>
+										<td valign="top"><input property="t1" name="t1" size="10" /></td>
+			
+										<td valign="top" align="right">Stop Time (sec)</td>
+										<td valign="top"><input property="t2" name="t2" size="10" /></td>
+									</tr>
+								</table>
+								<input type="hidden" name="_deltaVX" value="0.0" />
+								<input type="hidden" name="_deltaVY" value="0.0" />
+								<input type="hidden" name="_deltaVZ" value="0.0" />
+								<input type="hidden" name="_rho" value="0.0" />
+								
+								</form>
+								</div><!-- end realEventValues -->
+								</div><!-- end realEventViewer -->
+								</div><!-- end crashPanelContent -->
+								</div><!-- end panel_w -->
+			
+								<div class="panel_sw">
+								<div class="panel_statusbar" />
+								</div><!-- end panel_sw -->
+							</h:panelGroup>
+						</f:facet>
 					</h:panelGrid>
 					
 				    <p> <span id="eventinfo"></span></p>
@@ -507,10 +619,133 @@
 			    });
 
 				jQuery("#legend > table > tbody > tr").append("<td class='legendColorBox'><div style='border: 1px solid #CCCCCC; padding: 1px;'><div style='border: 5px solid #CB4B4B; overflow: hidden; width: 4px; height: 0pt;'/></div></td><td style='width: 100px'>#{messages.crashReport_crashPoint}</td>");
-	            /*]]>*/
+	            
 			});
+				            /*]]>*/
 		</script>
+		<script language="javascript" type="text/javascript">
+			/*<![CDATA[*/
+var MPS_TO_MPH = (60.0 * 60.0 / 1609.34);
+var englishUnits = true;
+function iwiRound(x, dpls)
+{
+	var lt1=false;
+	var res="";
 
-		
+	// Work with absolute value
+	var absx=Math.abs(x);
+	
+	// Nasty fix to deal with numbers < 1 and problems with leading zeros!
+	if ((absx < 1) && (absx > 0)){
+		lt1 = true;
+		absx+=10;
+	}
+
+	// Get postion of decimal point
+	var pt_pos = absx.toString().indexOf(".");
+	if ( pt_pos == -1){
+		res+= absx;
+		res+= ".";
+		for (var i = 0; i < dpls; i++){
+			res += 0;
+		}  
+	}
+	else{
+		res = Math.round(absx * Math.pow(10,dpls));
+		res=res.toString();
+		if (res.length == 
+			Math.round(Math.floor(absx * Math.pow(10,dpls))).toString().length){ 
+			res = res.substring(0,pt_pos) + "." + 
+			res.substring(pt_pos,res.length);
+		}
+		else{
+			pt_pos++;
+			res = res.substring(0,pt_pos) + "." + 
+			res.substring(pt_pos,res.length);
+		} 
+
+		// Remove leading 1 from  numbers < 1 (Nasty fix!)
+		if (lt1) {
+			res=res.substring(1,res.length);
+		}
+	}
+	
+	// Reinsert - sign for negative numbers
+	if (x < 0) {
+		res = "-"+res;
+	}
+	
+	return res;
+}
+
+function setDeltaV(startTime, stopTime, deltaVX, deltaVY, deltaVZ, rho, theta, phi, peakGX, peakGY, peakGZ, zeroX, slopeX, zeroY, slopeY, zeroZ, slopeZ, autoZero)
+{
+	document.eventForm.t1.value = iwiRound(startTime, 3);
+	document.eventForm.t2.value = iwiRound(stopTime, 3);
+	document.eventForm.theta.value = iwiRound(theta, 2);
+	document.eventForm.phi.value = iwiRound(phi, 2);
+	document.eventForm.peakGX.value = iwiRound(peakGX, 2);
+	document.eventForm.peakGY.value = iwiRound(peakGY, 2);
+	document.eventForm.peakGZ.value = iwiRound(peakGZ, 2);
+
+	document.eventForm.deltaVX.value = iwiRound(deltaVX, 2);
+	document.eventForm.deltaVY.value = iwiRound(deltaVY, 2);
+	document.eventForm.deltaVZ.value = iwiRound(deltaVZ, 2);
+	document.eventForm.rho.value = iwiRound(rho, 2);
+
+	if (englishUnits){
+		document.eventForm._deltaVX.value = deltaVX / MPS_TO_MPH;
+		document.eventForm._deltaVY.value = deltaVY / MPS_TO_MPH;
+		document.eventForm._deltaVZ.value = deltaVZ / MPS_TO_MPH;
+		document.eventForm._rho.value = rho / MPS_TO_MPH;
+	}
+	else {
+		document.eventForm._deltaVX.value = deltaVX;
+		document.eventForm._deltaVY.value = deltaVY;
+		document.eventForm._deltaVZ.value = deltaVZ;
+		document.eventForm._rho.value = rho;
+	}
+}
+function updateValues()
+{
+	if (englishUnits){
+		document.eventForm.deltaVX.value = document.eventForm._deltaVX.value / MPS_TO_MPH;
+		document.eventForm.deltaVY.value = document.eventForm._deltaVY.value / MPS_TO_MPH;
+		document.eventForm.deltaVZ.value = document.eventForm._deltaVZ.value / MPS_TO_MPH;
+		document.eventForm.rho.value = document.eventForm._rho.value / MPS_TO_MPH;
+	}
+	else {
+		document.eventForm.deltaVX.value = document.eventForm._deltaVX.value;
+		document.eventForm.deltaVY.value = document.eventForm._deltaVY.value;
+		document.eventForm.deltaVZ.value = document.eventForm._deltaVZ.value;
+		document.eventForm.rho.value = document.eventForm._rho.value;
+	}
+}
+
+function initializeValues()
+{
+	document.eventForm.t1.value = iwiRound(document.eventForm.t1.value, 3);
+	document.eventForm.t2.value = iwiRound(document.eventForm.t2.value, 3);
+	document.eventForm.theta.value = iwiRound(document.eventForm.theta.value, 2);
+	document.eventForm.phi.value = iwiRound(document.eventForm.phi.value, 2);
+	document.eventForm.peakGX.value = iwiRound(document.eventForm.peakGX.value, 2);
+	document.eventForm.peakGY.value = iwiRound(document.eventForm.peakGY.value, 2);
+	document.eventForm.peakGZ.value = iwiRound(document.eventForm.peakGZ.value, 2);
+
+	if (englishUnits){
+		document.eventForm._deltaVX.value = iwiRound(document.eventForm.deltaVX.value * MPS_TO_MPH, 2);
+		document.eventForm._deltaVY.value = iwiRound(document.eventForm.deltaVY.value * MPS_TO_MPH, 2);
+		document.eventForm._deltaVZ.value = iwiRound(document.eventForm.deltaVZ.value * MPS_TO_MPH, 2);
+		document.eventForm._rho.value = iwiRound(document.eventForm.rho.value * MPS_TO_MPH, 2);
+	}
+	else {
+		document.eventForm._deltaVX.value = iwiRound(document.eventForm.deltaVX.value, 2);
+		document.eventForm._deltaVY.value = iwiRound(document.eventForm.deltaVY.value, 2);
+		document.eventForm._deltaVZ.value = iwiRound(document.eventForm.deltaVZ.value, 2);
+		document.eventForm._rho.value = iwiRound(document.eventForm.rho.value, 2);
+	}
+}
+			/*]]>*/
+		</script>
 	</ui:define>
 </ui:composition>
