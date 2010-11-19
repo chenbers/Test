@@ -19,8 +19,51 @@
     <script src="#{facesContext.externalContext.requestContextPath}/js/drawZone.js" type="text/javascript"></script>
     <script type="text/javascript">    
       var map;
+      function bodyLoad()
+      {
+    	  loadMap();
+          document.getElementById("editRedFlag-timeframePickers").style.display = (document.getElementById("edit-form:editRedFlag-timeframe:0").checked ? 'none' : '');
+
+        var elements = document.getElementById("edit-form").elements;
+        for (var i = 0; i &lt; elements.length; i++)
+          for (var j = 0; j &lt; formElements.length; j++)
+            if (elements[i].getAttribute("type") == formElements[j])
+            {
+              elements[i].focus();
+              return;
+            }
+      }
+      function loadMap(){
+          if (GBrowserIsCompatible())
+          {
+            map = new GMap2(document.getElementById("map-canvas"));
+            map.disableDragging();
+            map.disableDoubleClickZoom();
+            map.disableInfoWindow();
+            showZone();
+          }
+      }    
+      function showZone()
+      {
+        map.clearOverlays();
+        if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
+        { 
+           
+	        var outline = fromOutlineString(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
+	        if (outline)
+	        {
+	          centerMapAtZone(getLatLngBounds(outline));
+	          loadZone(outline, false);
+	        }
+        }
+      }
+
+      function bodyUnload()
+      {
+        GUnload();
+      }
     </script>
-      <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
+    <script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/js/adminEdit.js"></script>
   </ui:define>
   
   <ui:define name="content">
@@ -40,7 +83,7 @@
           <a4j:form id="edit-form">
           
 			<h:panelGroup id="zonePoints-panel" >
-           		<h:inputHidden  id="editZoneAlert-zonePoints" value="#{redFlagOrZoneAlertsBean.item.zone.pointsString}" />
+           		<h:inputHidden  id="editZoneAlert-zonePoints" value="#{redFlagOrZoneAlertsBean.item.zonePoints}" />
             </h:panelGroup>
 
             <div class="">
@@ -97,7 +140,7 @@
                     	<tr>
                 		<td width="160" valign="top">
                         <h:selectOneMenu id="alertType" value="#{redFlagOrZoneAlertsBean.item.type}" onchange="checkMultiple(this)">
-                          <a4j:support event="onclick" reRender="editRedFlagType" limitToList="true" />
+                          <a4j:support event="onclick" reRender="editRedFlagType" limitToList="true" oncomplete="loadMap()"/>
                           <f:selectItems value="#{redFlagOrZoneAlertsBean.alertTypeSelectItems}" />
                         </h:selectOneMenu>
                       	</td>
@@ -421,8 +464,8 @@
                           </h:panelGroup>
                         </a4j:outputPanel>
 
-                        <a4j:outputPanel id="zoneAlerts">
-                          <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.type == 'ALERT_TYPE_ZONES'}">
+                <a4j:outputPanel id="zoneAlerts">
+                  <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.type == 'ALERT_TYPE_ZONES'}">
 
                   <div class="spacer"></div>
 
@@ -574,48 +617,6 @@
     
     <script type="text/javascript">
       var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
-
-      function bodyLoad()
-      {
-          if (GBrowserIsCompatible())
-          {
-            map = new GMap2(document.getElementById("map-canvas"));
-            map.disableDragging();
-            map.disableDoubleClickZoom();
-            map.disableInfoWindow();
-            showZone();
-          }
-        document.getElementById("editRedFlag-timeframePickers").style.display = (document.getElementById("edit-form:editRedFlag-timeframe:0").checked ? 'none' : '');
-
-        var elements = document.getElementById("edit-form").elements;
-        for (var i = 0; i &lt; elements.length; i++)
-          for (var j = 0; j &lt; formElements.length; j++)
-            if (elements[i].getAttribute("type") == formElements[j])
-            {
-              elements[i].focus();
-              return;
-            }
-      }
-      function showZone()
-      {
-        map.clearOverlays();
-        if(document.getElementById("edit-form:editZoneAlert-zonePoints") != null)
-        { 
-           
-	        var outline = fromOutlineString(document.getElementById("edit-form:editZoneAlert-zonePoints").value);
-	        if (outline)
-	        {
-	          centerMapAtZone(getLatLngBounds(outline));
-	          loadZone(outline, false);
-	        }
-        }
-      }
-
-      function bodyUnload()
-      {
-        GUnload();
-      }
-
     </script>
 
   </ui:define>

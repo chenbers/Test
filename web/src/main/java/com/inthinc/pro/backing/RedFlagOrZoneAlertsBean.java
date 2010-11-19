@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.RedFlagAndZoneAlertsDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.BaseAlert;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.RedFlagOrZoneAlert;
@@ -509,7 +510,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         public Zone getZone()
         {
-            if (zone == null && getZoneID() != null)
+            if (/*zone == null && */getZoneID() != null)
                 zone = redFlagOrZoneAlertsBean.getZoneByID(getZoneID());
             return zone;
         }
@@ -520,6 +521,17 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 }
             }
             return null;
+        }
+        public String getZonePoints(){
+            if (getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
+                if (getZoneID() != null){
+                    return getZone().getPointsString();
+                }
+            }
+            return null;
+        }
+        public void setZonePoints(){
+            
         }
     }
 }
