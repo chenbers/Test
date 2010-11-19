@@ -29,7 +29,7 @@ public class Package_Note {
     
     public Package_Note(Integer type, Integer time, Integer Sats, Integer Heading, Integer Maprev, Double Lat, Double Lng, Integer speed, Integer Odometer, HashMap<Integer, Integer> Attrs){
         nType = type;
-        if ( time > System.currentTimeMillis()/100 ){ nTime = (int)( time/1000 ); }
+        if ( time > (int)(System.currentTimeMillis()/100 )) nTime = (int)( time/1000 );
         else{ nTime = time; }
         sats = Sats;
         heading = Heading;
@@ -44,7 +44,7 @@ public class Package_Note {
     
     public Package_Note( Integer type, HashMap<Integer, Integer> Attrs ){
         nType = type;
-        nTime = (int)System.currentTimeMillis()/1000;
+        nTime = (int)(System.currentTimeMillis()/1000);
         sats = 0;
         heading = 0;
         maprev = 0;
@@ -58,7 +58,7 @@ public class Package_Note {
     
     public Package_Note(){
         nType = Constants.NOTE_TYPE_LOCATION.getCode();
-        nTime = (int)System.currentTimeMillis()/1000;
+        nTime = (int)(System.currentTimeMillis()/1000);
         sats = 0;
         heading = 0;
         maprev = 0;
@@ -68,11 +68,12 @@ public class Package_Note {
         odometer = 0;
         attrs = new HashMap<Integer, Integer>();
         
+        
     }
         
         
     public long DateToLong( String datetime ){
-        long epoch_time = System.currentTimeMillis()/1000;
+        long epoch_time = (int)(System.currentTimeMillis()/1000);
         
         try {
             Date date ; 
@@ -86,6 +87,16 @@ public class Package_Note {
         
         return epoch_time;
         
+    }
+    
+    public String noteToString(){
+    	String note = "";
+    	try{
+    		note = String.format("DeviceNote(nType=%d, nTime=\"%s\", sats=%d, heading=%d, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d)", nType, nTime, sats, heading, maprev, lat, lng, Speed, odometer);
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}
+    	return note;
     }
     
     
