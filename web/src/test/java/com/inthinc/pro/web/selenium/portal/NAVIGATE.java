@@ -17,6 +17,7 @@ import org.openqa.selenium.server.SeleniumServer;
 import com.inthinc.pro.web.selenium.Core;
 import com.inthinc.pro.web.selenium.Data_Reader;
 import com.inthinc.pro.web.selenium.Rally_API;
+import com.thoughtworks.selenium.SeleniumException;
 
 public class NAVIGATE
 {
@@ -60,6 +61,7 @@ public class NAVIGATE
 			selenium.start();
 			currentTime = (GregorianCalendar) GregorianCalendar.getInstance();
 		}catch(Exception e){
+			e.printStackTrace();
 			skip = true;
 			throw new StoppedByUserException();
 		}
