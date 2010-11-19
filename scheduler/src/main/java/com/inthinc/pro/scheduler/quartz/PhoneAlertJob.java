@@ -23,9 +23,7 @@ public class PhoneAlertJob extends BaseAlertJob
         {
             String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
             logger.debug("PHONE Message: " + message.getAddress() + " " + text);
-            boolean callOK = getPhoneDispatcher().send(message.getAddress(),text, message.getMessageID(), message.getAcknowledge());
-            if (callOK && !message.getAcknowledge()) //ack now if not an wait for user ack message
-                getAlertMessageDAO().acknowledgeMessage(message.getMessageID());
+            getPhoneDispatcher().send(message.getAddress(),text, message.getMessageID(), message.getAcknowledge());
         }
         logger.debug("PhoneAlertJob: END");
     }

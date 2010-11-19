@@ -66,7 +66,15 @@ public class MessagesTest {
 	public void testPhoneCall()
 	{
 	    PhoneDispatcher pd = new PhoneDispatcher();
-	    pd.send("8019383589", "hello Dave", 22, true);
+	    pd.setAlertMessageDAO(null);
+	    pd.setCallerID("8018662255");
+	    pd.setTokenID("724abefcafa4be428524109528252d18defe555564874cd59aed73e84cf16fc6817d99ce6fde0f5aef118e94");
+	    pd.setPhoneServerURL("http://api.voxeo.net/VoiceXML.start");
+	    pd.setMaxThreads(1);
+        pd.init();
+	    pd.send("8019383589", "hello Dave", 22, false);
+        pd.send("8019383589", "hello Juliana", 22, false);
+        pd.send("8019383589", "hello Judy", 22, false);
 	}
 	
 	private Properties getProperties(String propFile) {
