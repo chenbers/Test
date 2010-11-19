@@ -1,5 +1,10 @@
-//Master Heading Window 
-//Maintained as .JAVA
+/****************************************************************************************
+ * Purpose: Used to process links selected on the Master Heading screen 
+ * most functions are used regardless of what Main menu item is selected 
+ * as Master Heading screen does not change. 
+ * @author larringt , dtanner
+ * Last Update:  11/18/Added comments and made changes to adhere to Java Coding Standards
+ */
 
 package com.inthinc.pro.web.selenium.portal.Masthead;
 
@@ -103,123 +108,122 @@ public class Masthead extends Selenium_Server{
 	protected static Core selenium;
 	
 	public Masthead(){
-		this(Singleton.getSingleton().getSelenium());
-	}
+			this(Singleton.getSingleton().getSelenium());
+		}
 	
 	public Masthead(Singleton tvar ){
-		this(tvar.getSelenium());
-	}
+			this(tvar.getSelenium());
+		}
 	
 	public Masthead( Core sel ){
-		selenium = sel;
-	}
+			selenium = sel;
+		}
 	
 	
 	public String get_version(){
-		version_text = selenium.getText(version_id, "Version return");
-		return version_text;	
-	}
+			version_text = selenium.getText(version_id, "Version return");
+			return version_text;	
+		}
 	
 	public String get_copyright(){
-		copyright_text_actual = selenium.getText(copyright_xpath, copyright_text, "Copyright text");
-		return copyright_text_actual;
-	}
+			copyright_text_actual = selenium.getText(copyright_xpath, copyright_text, "Copyright text");
+			return copyright_text_actual;
+		}
 	
 	public void click_my_account(){
-		selenium.click(account_link, "My Account click");
-		selenium.waitForPageToLoad("30000", "My Account click");
-		selenium.getLocation("tiwipro/app/account","My Account click");		
-	}
+			selenium.click(account_link, "My Account click");
+			selenium.waitForPageToLoad("30000", "My Account click");
+			selenium.getLocation("tiwipro/app/account","My Account click");		
+		}
 	
 	public void click_my_messages(){
-		selenium.click(messages_link, "My Messages click");
-		selenium.waitForPageToLoad("30000", "My Messages click");
-		selenium.getLocation("tiwipro/app/messages/", "My Messages click");
-	}
+			selenium.click(messages_link, "My Messages click");
+			selenium.waitForPageToLoad("30000", "My Messages click");
+			selenium.getLocation("tiwipro/app/messages/", "My Messages click");
+		}
 	
 	public void click_logout(){
-		selenium.click(logout_link, "Logout click");
-		selenium.waitForPageToLoad("30000", "Logout click");
-		selenium.getLocation("tiwipro/login", "Logout click");
-	}
+			selenium.click(logout_link, "Logout click");
+			selenium.waitForPageToLoad("30000", "Logout click");
+			selenium.getLocation("tiwipro/login", "Logout click");
+		}
 	
 	public void click_support(){
-		selenium.click(support_link, "Support click");
-		selenium.selectWindow(null);
-	}
+			selenium.click(support_link, "Support click");
+			selenium.selectWindow(null);
+		}
 	
 	public void click_legal(){
-		selenium.click(legal_link, "Legal Notice click");
-		selenium.waitForPopUp("popup", "30000");
-		selenium.selectPopUp("");
-		selenium.getText("//p[8]", legal_notice, "Legal Notice click");
-		selenium.close();
-		selenium.selectWindow(null);
-	}
+			selenium.click(legal_link, "Legal Notice click");
+			selenium.waitForPopUp("popup", "30000");
+			selenium.selectPopUp("");
+			selenium.getText("//p[8]", legal_notice, "Legal Notice click");
+			selenium.close();
+			selenium.selectWindow(null);
+		}
 	
 	public void click_privacy(){
-		selenium.click(privacy_link, "Privacy Policy click");
-		selenium.waitForPopUp("popup", "30000");
-		selenium.selectPopUp("");
-		selenium.getText("//p[4]", privacy_policy, "Privacy Policy text");
-		selenium.close();
-		selenium.selectWindow(null);
-	}
+			selenium.click(privacy_link, "Privacy Policy click");
+			selenium.waitForPopUp("popup", "30000");
+			selenium.selectPopUp("");
+			selenium.getText("//p[4]", privacy_policy, "Privacy Policy text");
+			selenium.close();
+			selenium.selectWindow(null);
+		}
 	
 	public void click_help(String help_page){
-		if (help_page.indexOf(".htm")== -1){help_page += ".htm";}
-		selenium.click(help_link+help_page, "Help click");
-		selenium.waitForPageToLoad("30000", "Help click");
-	}
+			if (help_page.indexOf(".htm")== -1){help_page += ".htm";}
+			selenium.click(help_link+help_page, "Help click");
+			selenium.waitForPageToLoad("30000", "Help click");
+		}
 	
 	
 
 	public void ck_header(){
-		selenium.isElementPresent(logo_id, "Logo element present");
-		selenium.isElementPresent(help_link, "Help link present");
-		selenium.isElementPresent(messages_id, "My Messages element present");
-		selenium.isElementPresent(account_id, "My Account element present");
-		selenium.isElementPresent(logout_link, "Log Out link present");
-		
-		selenium.getText(help_link, "Help", "Help link text");
-		selenium.getText(messages_id, "My Messages", "My Messages link text");
-		selenium.getText(account_id, "My Account", "My Account text");
-		selenium.getText(logout_link, "Log Out", "Log Out text");
-	}
+			selenium.isElementPresent(logo_id, "Logo element present");
+			selenium.isElementPresent(help_link, "Help link present");
+			selenium.isElementPresent(messages_id, "My Messages element present");
+			selenium.isElementPresent(account_id, "My Account element present");
+			selenium.isElementPresent(logout_link, "Log Out link present");
+			
+			selenium.getText(help_link, "Help", "Help link text");
+			selenium.getText(messages_id, "My Messages", "My Messages link text");
+			selenium.getText(account_id, "My Account", "My Account text");
+			selenium.getText(logout_link, "Log Out", "Log Out text");
+		}
 	
 	public void ck_footer(){
-		selenium.isElementPresent(copyright_xpath, "Copyright element present");
-		selenium.isElementPresent(privacy_id, "Privacy Policy element present");
-		selenium.isElementPresent(legal_id, "Legal Notice element present");
-		selenium.isElementPresent(support_id, "Support element present");
-		selenium.isElementPresent(version_id, "Version element present");
-		
-		selenium.getText(copyright_xpath, copyright_text, "Copyright text");
-		selenium.getText(privacy_id, privacy_title, "Privacy Policy text");
-		selenium.getText(legal_id, legal_title, "Legal Notice text");
-		selenium.getText(support_id, support_title, "Support text");
-	}
+			selenium.isElementPresent(copyright_xpath, "Copyright element present");
+			selenium.isElementPresent(privacy_id, "Privacy Policy element present");
+			selenium.isElementPresent(legal_id, "Legal Notice element present");
+			selenium.isElementPresent(support_id, "Support element present");
+			selenium.isElementPresent(version_id, "Version element present");
+			
+			selenium.getText(copyright_xpath, copyright_text, "Copyright text");
+			selenium.getText(privacy_id, privacy_title, "Privacy Policy text");
+			selenium.getText(legal_id, legal_title, "Legal Notice text");
+			selenium.getText(support_id, support_title, "Support text");
+		}
 	
 	public void test_self_before_login(){
-		if (selenium.getLocation().indexOf("/tiwipro/login")==-1){selenium.open("login", "Open login page");}
-		ck_footer();
-	}
+			if (selenium.getLocation().indexOf("/tiwipro/login")==-1){selenium.open("login", "Open login page");}
+			ck_footer();
+		}
 	
 	public void test_self_after_login(){
-		ck_footer();
-		ck_header();
-		
-		click_logout();
-	}
+			ck_footer();
+			ck_header();
+			click_logout();
+		}
 	
 
 	public Error_Catcher get_errors(){
-		return selenium.getErrors();
-	}
-	
+			return selenium.getErrors();
+		}
+		
 	public Core get_selenium(){
-		return selenium;
-	}
+			return selenium;
+		}
 	
 	public static void main( String[] args ){
 		String errors = "";
