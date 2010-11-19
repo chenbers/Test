@@ -1,12 +1,12 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
 import org.junit.Test;
-import com.inthinc.pro.web.selenium.portal.NAVIGATE;
+import com.inthinc.pro.web.selenium.portal.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.Data_Reader;
 import com.inthinc.pro.web.selenium.portal.Masthead.*;;
 
-public class TF_97 extends NAVIGATE {
+public class TF_97 extends InthincTest {
 	//instantiate var for data reader
 	Data_Reader testdata = new Data_Reader();
 	

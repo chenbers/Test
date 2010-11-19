@@ -7,7 +7,7 @@ import com.inthinc.pro.web.selenium.portal.Login.*;
 
 
 
-public class LoginScreen_HP extends NAVIGATE {
+public class LoginScreen_HP extends InthincTest {
 
 	@Test
 	public void testme(){

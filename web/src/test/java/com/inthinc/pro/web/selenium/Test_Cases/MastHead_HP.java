@@ -1,6 +1,6 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
-import com.inthinc.pro.web.selenium.portal.NAVIGATE;
+import com.inthinc.pro.web.selenium.portal.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Singleton;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.portal.Notifications.Notifications;

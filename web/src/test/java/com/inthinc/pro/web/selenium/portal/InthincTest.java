@@ -1,25 +1,23 @@
 /****************************************************************************************
- * Purpose: ?????
+ * Purpose: To standardize the setup and teardown for System Test Automation tests
  * @author larringt , dtanner
- * Last Update:  11/18/Added comments and made changes to adhere to Java Coding Standards
+ * Update:  11/18/Added comments and made changes to adhere to Java Coding Standards
+ * Update:  11/19/Changed name to InthincTest and removed previous functionality that
+ * 				is no longer being used.  Also fixed start_selenium() so if we can't
+ * 				start the selenium instance we will fail the test, move to 
+ * 				stop_selenium(), and skip the Rally stuff.
  */
 
 package com.inthinc.pro.web.selenium.portal;
 
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.*;
 import org.junit.runner.notification.StoppedByUserException;
 import org.openqa.selenium.server.SeleniumServer;
-import com.inthinc.pro.web.selenium.Core;
-import com.inthinc.pro.web.selenium.Data_Reader;
-import com.inthinc.pro.web.selenium.Rally_API;
-import com.thoughtworks.selenium.SeleniumException;
+import com.inthinc.pro.web.selenium.*;
 
-public class NAVIGATE
+public class InthincTest
 {
 	
 	private GregorianCalendar currentTime;
@@ -38,7 +36,7 @@ public class NAVIGATE
 	private final static String workspace = "Inthinc";
 	
 	private static Core selenium;
-	static SeleniumServer seleniumserver;
+	private static SeleniumServer seleniumserver;
 	
 	@BeforeClass
 	public static void start_server(){
@@ -47,7 +45,6 @@ public class NAVIGATE
 		        seleniumserver.start();
 				rally = new Rally_API(username, password);
 			}catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				throw new StoppedByUserException();
 		}
@@ -68,54 +65,6 @@ public class NAVIGATE
 		
 	}
 	
-	public void set_selenium(Core sel ){
-		selenium = sel;		
-	}//end before
-	
-	public void fforward(int times){
-		selenium.open("/tiwipro/app/admin/vehicles");
-		selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
-		int i = 0;
-		while (times>i){
-			selenium.open("/tiwipro/app/admin/vehicles");
-			selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'fastforward'});\"]");
-		i = i + 1;
-		}
-	}
-	
-	public void frewind(int times){
-		selenium.open("/tiwipro/app/admin/vehicles");
-		selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
-		int i = 0;
-		while (times>i){
-		selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'fastrewind'});\"]");
-		i = i + 1;
-		}	
-	}
-	
-	public void lastpage(){
-		selenium.open("/tiwipro/app/admin/vehicles");
-		selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
-		selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'last'});\"]");
-		//selenium.waitForPageToLoad("10000");
-	}
-	
-	public void firstpage(){
-		selenium.open("/tiwipro/app/admin/vehicles");
-		selenium.click("//a[@id='navigation:layout-navigationAdmin']/span");
-		selenium.click("//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll', {'page': 'first'});\"]");
-		//selenium.waitForPageToLoad("10000");
-	}
-			
-	public void logout(){
-		//logout of Tiwipro Application
-		selenium.click("link=Log Out");
-		selenium.waitForPageToLoad("30000");
-		stop_selenium();
-		stop_server();
-	}//end logout
-	
-
 	@After
 	public void stop_selenium(){
 		if (!skip){
@@ -140,6 +89,8 @@ public class NAVIGATE
 		seleniumserver.stop();
 		
 	}//tear down
+	
+	
 	
 	public String set_test_case(String file_name, String test_case){
 		//takes data file and test case Id as entries
@@ -191,13 +142,6 @@ public class NAVIGATE
 			rally.createJSON(workspace, testCaseID, testVersion, currentTime, errors, testVerdict);
 		}catch(Exception e1){
 			e1.printStackTrace();
-			try {
-				// TODO Add a data writer in case the rally call fails
-			} catch (Exception e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
 		}
 	}//end record results
 }
-
