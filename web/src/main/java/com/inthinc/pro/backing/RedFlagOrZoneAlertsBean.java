@@ -518,7 +518,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
             return null;
         }
-        public String getZonePoints(){
+        public String getZonePointsString(){
             if (getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
                 if (getZoneID() != null){
                     return getZone().getPointsString();
@@ -526,8 +526,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
             return null;
         }
-        public void setZonePoints(){
-            
+        public void setZonePointsString(String pointsString){
+            getZone().setPointsString(pointsString);
         }
 
         @Override

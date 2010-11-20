@@ -36,6 +36,8 @@
       function loadMap(){
           if (GBrowserIsCompatible())
           {
+            GUnload();
+              
             map = new GMap2(document.getElementById("map-canvas"));
             map.disableDragging();
             map.disableDoubleClickZoom();
@@ -83,7 +85,7 @@
           <a4j:form id="edit-form">
           
 			<h:panelGroup id="zonePoints-panel" >
-           		<h:inputHidden  id="editZoneAlert-zonePoints" value="#{redFlagOrZoneAlertsBean.item.zonePoints}" />
+           		<h:inputHidden  id="editZoneAlert-zonePoints" value="#{redFlagOrZoneAlertsBean.item.zonePointsString}" />
             </h:panelGroup>
 
             <div class="">
