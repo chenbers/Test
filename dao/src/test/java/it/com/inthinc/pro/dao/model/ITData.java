@@ -21,6 +21,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -77,6 +78,7 @@ public class ITData extends BaseITData{
         	writeObject(team.user);
             writeObject(team.device);
             writeObject(team.driver);
+            writeObject(team.driver.getPerson());
             writeObject(team.vehicle);
             
         }
@@ -165,6 +167,7 @@ public class ITData extends BaseITData{
                 groupData.user = getNext(xmlDecoder, User.class);
                 groupData.device = getNext(xmlDecoder, Device.class);
                 groupData.driver = getNext(xmlDecoder, Driver.class);
+                groupData.driver.setPerson(getNext(xmlDecoder, Person.class));
                 groupData.vehicle = getNext(xmlDecoder, Vehicle.class);
             }
             if (includeUnknown) {

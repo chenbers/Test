@@ -139,7 +139,6 @@ public abstract class BaseITData {
         driverDAO.setSiloService(siloService);
         
         Person person = createPerson(group.getAccountID(), group.getGroupID(), ((idx == null) ? "" : idx) + "Driver"+group.getName(), "Last"+group.getGroupID());
-        person.setEmpid("Emp"+ group.getGroupID());
         Date expired = Util.genDate(2012, 9, 30);
         
         Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l"+person.getPersonID(), 
@@ -147,6 +146,7 @@ public abstract class BaseITData {
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);
         driver.setDriverID(driverID);
+        driver.setPerson(person);
         
         System.out.println("driverId: " + driverID);
         return driver;
@@ -272,7 +272,7 @@ public abstract class BaseITData {
 	        try {
 		        person = new Person(0, acctID, ReportTestConst.timeZone, address.getAddrID(), 
 		        		first + "email"+groupID+Util.randomInt(1, 99999)+"@email.com", 
-		        		null, "5555555555", "5555555555", null, null, null, null, null, "emp_"+groupID+"_"+Util.randomInt(1, 99999), 
+		        		null, "5555555555", "5555555555", null, null, null, null, null, "emp_"+groupID+"_"+acctID+"_"+Util.randomInt(1, 99999), 
 		                null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, 
 		                MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
 		        person.setCrit(1);

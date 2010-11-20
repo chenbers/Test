@@ -133,12 +133,12 @@ public class DataGenForHOSTesting extends DataGenForTesting {
         try
         {
             conn = dataSource.getConnection();
-            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)}");
             statement.setInt(1, hosRecord.getDriverID());
             statement.setInt(2, hosRecord.getVehicleID());
             statement.setLong(3, 0l);
-            statement.setTimestamp(4, new Timestamp(hosRecord.getLogTime().getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
-            statement.setInt(5, hosRecord.getStatus().getCode());
+            statement.setInt(4, hosRecord.getStatus().getCode());
+            statement.setTimestamp(5, new Timestamp(hosRecord.getLogTime().getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
             statement.setInt(6, hosRecord.getVehicleID().intValue());
             statement.setFloat(7, hosRecord.getLat());
             statement.setFloat(8, hosRecord.getLng());
@@ -149,7 +149,8 @@ public class DataGenForHOSTesting extends DataGenForTesting {
             statement.setString(13, hosRecord.getServiceID()); 
             statement.setFloat(14, hosRecord.getTruckGallons());
             statement.setFloat(15, hosRecord.getTrailerGallons());
-
+            statement.setString(16, hosRecord.getEmployeeID());
+System.out.println(statement.toString());
             resultSet = statement.executeQuery();
         }   // end try
         catch (SQLException ex) {
@@ -173,9 +174,11 @@ public class DataGenForHOSTesting extends DataGenForTesting {
     private void genHOSTestData(Date currentDate) throws SQLException {
         
         GroupData testGroupData = ((ITData)itData).teamGroupData.get(ITData.INTERMEDIATE);
+        Integer testDeviceID = testGroupData.device.getDeviceID();
         Integer testDriverID = testGroupData.driver.getDriverID();
         Integer testVehicleID = testGroupData.vehicle.getVehicleID();
-System.out.println("driverid = " + testDriverID + " vehicleID = " + testVehicleID);        
+        String employeeID = testGroupData.driver.getPerson().getEmpid();
+System.out.println("testDeviceID = " + testDeviceID + " vehicleID = " + testVehicleID + " emp id " + employeeID);        
         
         DateTime dayStartUTC = new DateMidnight(currentDate, DateTimeZone.UTC).toDateTime();
         
@@ -185,7 +188,7 @@ System.out.println("driverid = " + testDriverID + " vehicleID = " + testVehicleI
         loginDriver(dataSource, testDriverID, testVehicleID, dayStartUTC.toDate());
         
         for (int i = 0; i < 4; i++) {
-            HOSRecord rec = constructHosRecord(testDriverID, testVehicleID, HOSStatus.values()[i], dayStartUTC.plusMinutes(i*15).toDate());
+            HOSRecord rec = constructHosRecord(testDeviceID, testVehicleID, HOSStatus.values()[i], dayStartUTC.plusMinutes(i*15).toDate(), employeeID);
             addHOSLog(dataSource, rec);
         }
         
@@ -197,7 +200,7 @@ System.out.println("driverid = " + testDriverID + " vehicleID = " + testVehicleI
         loginDriver(dataSource, testDriverID, testVehicleID, dayStartUTC.toDate());
         
         for (int i = 0; i < 4; i++) {
-            HOSRecord rec = constructHosRecord(testDriverID, testVehicleID, HOSStatus.ON_DUTY_OCCUPANT, dayStartUTC.plusMinutes(i*15).toDate());
+            HOSRecord rec = constructHosRecord(testDeviceID, testVehicleID, HOSStatus.ON_DUTY_OCCUPANT, dayStartUTC.plusMinutes(i*15).toDate(), employeeID);
             addHOSLog(dataSource, rec);
         }
         
@@ -207,7 +210,7 @@ System.out.println("driverid = " + testDriverID + " vehicleID = " + testVehicleI
         
     }
 
-    private HOSRecord constructHosRecord(Integer driverID, Integer vehicleID, HOSStatus status, Date logTime) {
+    private HOSRecord constructHosRecord(Integer driverID, Integer vehicleID, HOSStatus status, Date logTime, String employeeID) {
         HOSRecord rec = new HOSRecord();
         rec.setDriverID(driverID);
         rec.setLat(0f);
@@ -221,6 +224,7 @@ System.out.println("driverid = " + testDriverID + " vehicleID = " + testVehicleI
         rec.setTruckGallons(0f);
         rec.setVehicleID(vehicleID);
         rec.setVehicleOdometer(0l);
+        rec.setEmployeeID(employeeID);
         return rec;
     }
 
