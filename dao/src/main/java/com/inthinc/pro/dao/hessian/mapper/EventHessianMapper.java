@@ -1,8 +1,6 @@
 package com.inthinc.pro.dao.hessian.mapper;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -11,10 +9,7 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
-import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.model.TablePreference;
 
 public class EventHessianMapper extends AbstractMapper
 {

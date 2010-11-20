@@ -2,24 +2,20 @@ package com.inthinc.pro.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.VehicleReportDAO;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.LastLocation;
-import com.inthinc.pro.model.MpgEntity;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
+import com.inthinc.pro.model.event.Event;
 
 public class SecureVehicleDAO extends SecureDAO<Vehicle> {
 

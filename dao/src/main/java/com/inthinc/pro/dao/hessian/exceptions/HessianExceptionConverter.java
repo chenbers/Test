@@ -85,6 +85,7 @@ public class HessianExceptionConverter
         REMOTESERVER_EXCEPTION_MAP.put(333, "TSCodeDuplicateAcct..   An attempt to use an existing acct name.");
         REMOTESERVER_EXCEPTION_MAP.put(334, "TSCodeDuplicateSerial   An attempt to use an existing serial number.");
         REMOTESERVER_EXCEPTION_MAP.put(335, "TSCodeDuplicateVin...   An attempt to use an existing vin.");
+        REMOTESERVER_EXCEPTION_MAP.put(345, "TSCodeDuplicateEmpid...   An attempt to use an existing employee id.");
         
         
         PROXY_EXCEPTION_MAP.put(401, "ProxyNoMem...........    Insufficient memory for the proxy server.");

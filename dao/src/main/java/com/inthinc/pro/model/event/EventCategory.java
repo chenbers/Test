@@ -3,6 +3,7 @@ package com.inthinc.pro.model.event;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,21 +12,31 @@ import com.inthinc.pro.model.BaseEnum;
 @XmlRootElement
 public enum EventCategory implements BaseEnum
 {
-    VIOLATION(1, "VIOLATION"),
-    WARNING(2, "WARNING"),
-    DRIVER(3, "DRIVER"),
+    VIOLATION(1, "VIOLATION", EnumSet.of(EventSubCategory.DRIVING_STYLE, EventSubCategory.SPEED, EventSubCategory.COMPLIANCE, EventSubCategory.FATIGUE)),
+    WARNING(2, "WARNING", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION)),
+//    DRIVER(3, "DRIVER"),
     NONE(4, "NONE"),
-    EMERGENCY(5, "EMERGENCY"),
-    ZONE_ALERT(6,"ZONE_ALERT"),
-    NO_DRIVER(7,"NO_DRIVER");
+    EMERGENCY(5, "EMERGENCY", EnumSet.of(EventSubCategory.EMERGENCY)),
+    ZONE(6,"ZONE", EnumSet.of(EventSubCategory.ZONES)),
+//    NO_DRIVER(7,"NO_DRIVER"),
+    HOS(8, "HOS", EnumSet.of(EventSubCategory.HOS));
 
     private String description;
     private int code;
+    private Set<EventSubCategory> subCategorySet;
+
 
     private EventCategory(int code, String description)
     {
         this.code = code;
         this.description = description;
+    }
+
+    private EventCategory(int code, String description, Set<EventSubCategory> subCategorySet)
+    {
+        this.code = code;
+        this.description = description;
+        this.subCategorySet = subCategorySet;
     }
 
     private static final Map<Integer, EventCategory> lookup = new HashMap<Integer, EventCategory>();
@@ -46,6 +57,14 @@ public enum EventCategory implements BaseEnum
     {
         return lookup.get(code);
     }
+    public Set<EventSubCategory> getSubCategorySet() {
+        return subCategorySet;
+    }
+
+    public void setSubCategorySet(Set<EventSubCategory> subCategorySet) {
+        this.subCategorySet = subCategorySet;
+    }
+
 
     @Override
     public String toString()

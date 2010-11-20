@@ -1,7 +1,6 @@
 package com.inthinc.pro.dao.mock.proserver;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.ProDAOException;
@@ -31,13 +29,9 @@ import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventType;
-import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.TablePreference;
@@ -46,6 +40,8 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.NoteType;
 
 public class SiloServiceMockImpl extends AbstractServiceMockImpl implements SiloService {
 

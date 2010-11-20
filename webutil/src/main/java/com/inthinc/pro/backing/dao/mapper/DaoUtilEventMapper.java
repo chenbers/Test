@@ -8,7 +8,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
-import com.inthinc.pro.model.event.EventMapper;
+import com.inthinc.pro.model.event.NoteType;
 
 public class DaoUtilEventMapper extends DaoUtilMapper {
 
@@ -44,7 +44,7 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
     {
         if (type == Event.class)
         {
-            Class<?> eventType = EventMapper.getEventType((Integer) map.get("type"));
+            Class<?> eventType = getEventType((Integer) map.get("type"));
             if (eventType != null)
                 return type.cast(super.convertToModelObject(map, eventType));
             else
@@ -55,5 +55,18 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
             return super.convertToModelObject(map, type);
         }
     }
+    
+    private Class getEventType(Integer proEventType)
+    {
+        NoteType noteType = NoteType.valueOf(proEventType);
+        if (noteType.getEventClass() == null)
+        {
+            //logger.error("Unsupported Event Type requested type = [" + proEventType + "] returning Base Event");
+            return NoteType.BASE.getEventClass();
+        }
+        
+        return noteType.getEventClass();
+    }
+
 
 }

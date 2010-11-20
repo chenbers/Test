@@ -22,7 +22,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.security.context.SecurityContextHolder;
 
-
 import com.caucho.hessian.client.HessianRuntimeException;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.AddressDAO;
@@ -35,14 +34,10 @@ import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
-import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
-import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.ForwardCommandType;
@@ -54,6 +49,8 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.security.userdetails.ProUser;
 
 public class DAOUtilBean implements PhaseListener {

@@ -20,14 +20,13 @@ import org.richfaces.json.JSONObject;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
-import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.model.TimeFrame;
 
 @KeepAlive
 public class TeamTripsBean extends BaseBean {

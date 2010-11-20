@@ -1,0 +1,81 @@
+<ui:composition template="/secured/notifications/notifications.xhtml" 
+			xmlns="http://www.w3.org/1999/xhtml" 
+			xmlns:ui="http://java.sun.com/jsf/facelets"
+  			xmlns:h="http://java.sun.com/jsf/html" 
+            xmlns:rich="http://richfaces.org/rich"
+            xmlns:a4j="http://richfaces.org/a4j"
+			xmlns:t="http://myfaces.apache.org/tomahawk"
+  			xmlns:f="http://java.sun.com/jsf/core">
+  			
+	<t:saveState value="#{pagingHOSEventsBean}"/>
+
+	<ui:param name="hosSubSelected" value="current" />
+	<ui:param name="helpFile" value="Events.htm" />
+    <ui:param name="context" value="hosEvents"/>
+    <ui:param name="ajaxPanels" value="#{context}_table,#{context}_search"/>
+
+		
+	<ui:define name="content">
+	
+		<a4j:keepAlive beanName="hosEventsTableColumns" />
+	
+		<table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
+		  <tr>
+		    <td valign="top">
+		      <!-- START PANEL -->
+		      <h:panelGroup layout="block" styleClass="">
+
+				<ui:include src="/includes/notificationsHeaderTitle.xhtml">	
+	           		<ui:param name="title" value="#{messages.notes_hos_title}"/>
+	           		<ui:param name="description" value="#{messages.notes_hos_description}"/>
+  					<ui:param name="context" value="hosEvents" />
+  					<ui:param name="style" value="event" />
+	   			</ui:include>  
+
+				<h:panelGroup layout="block" styleClass="panel_w">
+		   			<h:panelGroup layout="block" styleClass="panel_content">
+						<ui:include src="/includes/notificationsHeader.xhtml">	
+		    				<ui:param name="bean" value="#{pagingHOSEventsBean}"/>
+	  	 					<ui:param name="context" value="hosEvents" />
+		    			</ui:include>    							
+	
+			            <h:panelGroup id="#{context}_table" layout="block" styleClass="datagrid_panel">
+							<ui:include src="/includes/pagingNotificationsTable.xhtml">	
+			    				<ui:param name="bean" value="#{pagingHOSEventsBean}"/>
+			             		<ui:param name="clearTitle" value="#{messages.notes_hos_clearTitle}"/>
+			             		<ui:param name="clearInst" value="#{messages.notes_hos_clearInst}"/>
+			             		<ui:param name="clearRerender" value="#{context}_search:header,#{context}-form:#{context}"/>
+	    	 					<ui:param name="context" value="hosEvents" />
+	    	 					<ui:param name="tableColumns" value="#{hosEventsTableColumns.tableColumns}" />
+			    			</ui:include>    							
+			            </h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+		
+				<ui:include src="/includes/columnSelectionPopup.xhtml">
+					<ui:param name="bean" value="#{hosEventsTableColumns}"/>	
+					<ui:param name="reRender" value="#{context}-form:#{context}" />
+    	 			<ui:param name="context" value="#{context}" />
+				</ui:include>
+				
+				
+		        <h:panelGroup layout="block" styleClass="panel_sw">
+		          <h:panelGroup layout="block" styleClass="panel_statusbar"/>
+				</h:panelGroup>
+		
+		      </h:panelGroup>
+		      <!-- END PANEL -->
+		    </td>
+		  </tr>
+		</table>
+		
+		<h:outputText id="#{context}_emailModalPanel">
+			<ui:include src="/includes/emailReportPopup.xhtml">	
+				<ui:param  name="id" value="#{context}_reportEmailModal" />
+				<ui:param  name="reportBean" value="#{pagingHOSEventsBean}"/>
+    	 		<ui:param name="context" value="hosEvents" />
+			</ui:include>
+		</h:outputText>
+	</ui:define>
+
+</ui:composition>

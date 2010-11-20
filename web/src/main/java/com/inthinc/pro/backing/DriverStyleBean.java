@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,13 +13,12 @@ import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventMapper;
-import com.inthinc.pro.model.event.EventType;
-import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.util.MessageUtil;

@@ -29,7 +29,9 @@ public enum TableType implements BaseEnum
     CRASH_HISTORY(17, "CRASH_HISTORY"),
     ADMIN_CUSTOMROLE(18, "ADMIN_CUSTOMROLE"),
     TEAM_STATS(19, "TEAM_STATS"),
-    HOS_LOGS(20, "HOS_LOGS");
+    HOS_LOGS(20, "HOS_LOGS"),
+    ZONE_EVENTS(21, "ZONE_EVENTS"),
+    HOS_EVENTS(22, "HOS_EVENTS");
     
     private String description;
     private int    code;

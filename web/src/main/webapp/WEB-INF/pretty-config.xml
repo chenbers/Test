@@ -241,9 +241,13 @@
     	<view-id>/secured/notifications/editCrashReport.faces</view-id>
     	<action onPostback="false">#{crashReportBean.edit}</action>
     </url-mapping>
-    <url-mapping id="zoneAlerts">
-        <pattern>/app/notifications/zoneAlerts</pattern>
-        <view-id>/secured/notifications/zoneAlerts.faces</view-id>
+    <url-mapping id="zoneEvents">
+        <pattern>/app/notifications/zoneEvents</pattern>
+        <view-id>/secured/pagingnotifications/zones.faces</view-id>
+    </url-mapping>
+    <url-mapping id="hosEvents">
+        <pattern>/app/notifications/hosEvents</pattern>
+        <view-id>/secured/pagingnotifications/hos.faces</view-id>
     </url-mapping>
     <!-- Live Fleet Section -->
     <url-mapping id="liveFleet">

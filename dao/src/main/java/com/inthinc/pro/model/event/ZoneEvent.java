@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -53,7 +52,7 @@ public abstract class ZoneEvent extends Event {
 	}
 
 	public EventCategory getEventCategory() {
-	    return EventCategory.DRIVER;
+	    return EventCategory.ZONE;
 	}
 
 	@Override

@@ -10,6 +10,8 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.ProDAOException;
+
 public abstract class GenericJDBCDAO implements Serializable
 {
     /**
@@ -43,8 +45,7 @@ public abstract class GenericJDBCDAO implements Serializable
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            logger.error(e);
-            return null;
+            throw new ProDAOException(e);
         }
     }
 

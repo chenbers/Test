@@ -10,20 +10,19 @@ import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.reports.ReportCriteria;
 
 @KeepAlive
-public class PagingSafetyEventsBean extends PagingEventsBean {
+public class PagingHOSEventsBean extends PagingEventsBean {
 	
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1651630462783406354L;
 	
-    private static final Logger logger = Logger.getLogger(PagingSafetyEventsBean.class);
+    private static final Logger logger = Logger.getLogger(PagingHOSEventsBean.class);
 	
 	static final List<EventCategory> CATEGORIES;
 	static {
 		CATEGORIES = new ArrayList<EventCategory>();
-//		CATEGORIES.add(EventCategory.NONE);
-		CATEGORIES.add(EventCategory.VIOLATION);
+		CATEGORIES.add(EventCategory.HOS);
 	}
 
 	@Override
@@ -31,9 +30,9 @@ public class PagingSafetyEventsBean extends PagingEventsBean {
 		return CATEGORIES;
 	}
 	
-	public PagingSafetyEventsBean()
+	public PagingHOSEventsBean()
 	{
-		logger.info("PagingSafetyEventsBean - constructor");
+		logger.info("PagingHOSEventsBean - constructor");
 	}
 
 
@@ -44,7 +43,7 @@ public class PagingSafetyEventsBean extends PagingEventsBean {
     @Override
     public EventCategory getEventCategory()
     {
-    	return EventCategory.VIOLATION;
+    	return EventCategory.HOS;
     }
 
 

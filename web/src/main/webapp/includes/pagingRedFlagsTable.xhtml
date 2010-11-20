@@ -161,14 +161,16 @@
                 	<h:panelGroup>
                     	<h:outputText value="#{messages.notes_redflags_category}" />
                     	<rich:spacer style="display:block" height="2"/>
-                    	<h:selectOneMenu id="catFilter" value="#{bean.filterCategoryKey}" label="#{messages.notes_redflags_category}" style="width:120px;size:auto;margin-top:3px;">
+                    	<h:selectOneMenu id="catFilter" value="#{bean.filterCategoryKey}" label="#{messages.notes_redflags_category}" style="height:22px;width:120px;size:auto;margin-top:0;letter-spacing:0;padding:3px">
                         	<f:selectItems value="#{bean.filterCategories}" />
                         	<a4j:support event="onchange" 
                         		reRender="redFlags,redFlags-form:header, redFlags_pageHeader,redFlags-form:redFlags_bottomScroller" />
                     	</h:selectOneMenu>
+<!--                     	
 						<ui:include src="/includes/dhtmlSelectBox.xhtml">	
    			 				<ui:param name="selectBoxID" value="redFlags-form:redFlags:catFilter" />
 						</ui:include>
+ -->						
                     </h:panelGroup>
                 </f:facet>
                 <c:set var="cat" value="redflags_cat#{redFlag.event.eventCategory}"/> 

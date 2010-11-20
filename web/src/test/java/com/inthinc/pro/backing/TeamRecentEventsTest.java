@@ -7,11 +7,10 @@ import java.util.List;
 import org.junit.Test;
 
 import com.inthinc.pro.backing.ui.EventDisplay;
-import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.model.event.EventMapper;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;

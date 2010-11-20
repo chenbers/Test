@@ -3,10 +3,10 @@ package com.inthinc.pro.model.event;
 import java.text.MessageFormat;
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class AggressiveDrivingEvent extends Event
@@ -23,7 +23,7 @@ public class AggressiveDrivingEvent extends Event
                         // This may need to be changed.
     private Integer speedLimit;
     private String eventTypeString;
-
+    
     public AggressiveDrivingEvent()
     {
         super();
@@ -43,22 +43,21 @@ public class AggressiveDrivingEvent extends Event
     public EventType getEventType()
     {
         EventType eventType = super.getEventType();
-
+        
         if (eventType == EventType.UNKNOWN && deltaX != null && deltaY != null && deltaZ != null)
         {
-            if (Math.abs(deltaZ / 10.0f) > Math.abs(deltaX / 10.0f)
-                    && Math.abs(deltaZ / 10.0f) > Math.abs(deltaY / 10.0f))
-                eventType = EventType.HARD_VERT;
-            else if (Math.abs(deltaX / 10.0f) > (Math.abs(deltaY / 10.0f) * 1.1f) && deltaX / 10.0f > 0f)
-                eventType = EventType.HARD_ACCEL;
-            else if (Math.abs(deltaX / 10.0f) > (Math.abs(deltaY / 10.0f) * 1.1f) && deltaX / 10.0f < 0f)
-                eventType = EventType.HARD_BRAKE;
-            // TODO: Distinguish between hard left and hard right
-            else if (Math.abs(deltaY / 10.0f) * 1.1f > Math.abs(deltaX / 10.0f)
-                    && Math.abs(deltaY / 10.0f) > Math.abs(deltaZ / 10.0f))
-                eventType = EventType.HARD_TURN;
+                if (Math.abs(deltaZ / 10.0f) > Math.abs(deltaX / 10.0f)
+                        && Math.abs(deltaZ / 10.0f) > Math.abs(deltaY / 10.0f))
+                    eventType = EventType.HARD_VERT;
+                else if (Math.abs(deltaX / 10.0f) > (Math.abs(deltaY / 10.0f) * 1.1f) && deltaX / 10.0f > 0f)
+                    eventType = EventType.HARD_ACCEL;
+                else if (Math.abs(deltaX / 10.0f) > (Math.abs(deltaY / 10.0f) * 1.1f) && deltaX / 10.0f < 0f)
+                    eventType = EventType.HARD_BRAKE;
+                // TODO: Distinguish between hard left and hard right
+                else if (Math.abs(deltaY / 10.0f) * 1.1f > Math.abs(deltaX / 10.0f)
+                        && Math.abs(deltaY / 10.0f) > Math.abs(deltaZ / 10.0f))
+                    eventType = EventType.HARD_TURN;
         }
-
         return eventType;
     }
 

@@ -36,6 +36,17 @@ public class EventCategoryFilter implements TableFilterFactory{
 		else this.aggTypeList = Arrays.asList(aggTypeArray);
 	}
 	
+    public EventCategoryFilter(NoteType[] typeArray, Integer[] aggTypeArray) {
+        super();
+        if (typeArray == null)
+            this.typeList = null;
+        else this.typeList = Arrays.asList(typeArray);
+        
+        if (aggTypeArray == null)
+            this.aggTypeList = null;
+        else this.aggTypeList = Arrays.asList(aggTypeArray);
+    }
+    
 	
 	public EventType getKey() {
 		return key;

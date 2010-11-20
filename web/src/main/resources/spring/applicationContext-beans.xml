@@ -584,6 +584,12 @@
   <bean id="pagingEmergencyEventsBean" class="com.inthinc.pro.backing.paging.PagingEmergencyEventsBean" scope="request" parent="pagingEventsBean">
   </bean>
 
+  <bean id="pagingZoneEventsBean" class="com.inthinc.pro.backing.paging.PagingZoneEventsBean" scope="request" parent="pagingEventsBean">
+  </bean>
+
+  <bean id="pagingHOSEventsBean" class="com.inthinc.pro.backing.paging.PagingHOSEventsBean" scope="request" parent="pagingEventsBean">
+  </bean>
+
   <bean id="eventPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider" scope="request">
     <property name="eventDAO" ref="eventDAO"></property>
     <property name="timeFrameBean" ref="timeFrameBean" />
@@ -649,6 +655,8 @@
   <bean id="deviceReportTableColumns" class="com.inthinc.pro.table.columns.DeviceReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="idlingReportTableColumns" class="com.inthinc.pro.table.columns.IdlingReportTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="hosTableColumns" class="com.inthinc.pro.table.columns.HosTableColumns" scope="request" parent="baseTableColumns" />
+  <bean id="zoneEventsTableColumns" class="com.inthinc.pro.table.columns.ZoneEventsTableColumns" scope="request" parent="eventsTableColumns" />
+  <bean id="hosEventsTableColumns" class="com.inthinc.pro.table.columns.HOSEventsTableColumns" scope="request" parent="eventsTableColumns" />
   
 <!--    
   <bean id="phoneBean" class="com.inthinc.pro.backing.PhoneBean" parent="baseBean">

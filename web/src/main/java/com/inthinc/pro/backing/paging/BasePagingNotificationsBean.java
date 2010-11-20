@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing.paging;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,15 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.model.event.EventMapper;
-import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.EventSubCategory;
+import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.pagination.EventCategoryFilter;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
@@ -67,9 +67,9 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 
 	protected abstract List<EventCategory> getCategories();
 
-	private List<SelectItem> filterCategories;
 	private Map<Integer, EventCategoryFilter> eventCategoryMap;
-
+/*
+    private List<SelectItem> filterCategories;
 	public List<SelectItem> getFilterCategories() {
 		if (filterCategories == null) {
 			eventCategoryMap = new HashMap<Integer, EventCategoryFilter>();
@@ -105,7 +105,44 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 		}
 		return filterCategories;
 	}
+*/
 
+    private List<SelectItemGroup> filterCategories;
+    public List<SelectItemGroup> getFilterCategories() {
+        if (filterCategories == null) {
+            eventCategoryMap = new HashMap<Integer, EventCategoryFilter>();
+            filterCategories = new ArrayList<SelectItemGroup>();
+            filterCategories.add(getBlankGroup());
+            for (EventCategory category : getCategories()) {
+                if (category.getSubCategorySet() == null)
+                    continue;
+                for (EventSubCategory subCategory : category.getSubCategorySet()) {
+                    String subCategoryStr = MessageUtil.getMessageString(subCategory.toString(), getLocale());
+                    filterCategories.add(new SelectItemGroup(subCategoryStr, subCategoryStr, false, getItemsBySubCategory(subCategory)));
+                }
+            }
+
+        }
+        return filterCategories;
+    }
+    
+    private SelectItem[] getItemsBySubCategory(EventSubCategory subCategory) {
+        List<SelectItem> items = new ArrayList<SelectItem>();
+        for (EventType eventType : subCategory.getEventTypeSet()) {
+            items.add(new SelectItem(eventType.getCode(), MessageUtil.getMessageString(eventType.toString())));
+            eventCategoryMap.put(eventType.getCode(), eventType.getEventCategoryFilter());
+        }
+        return items.toArray(new SelectItem[0]);
+    }
+
+    protected SelectItemGroup getBlankGroup(){
+        SelectItem[] items = new SelectItem[1]; 
+        items[0] = new SelectItem(null, "");
+        SelectItemGroup itemGroup = new SelectItemGroup("","",false,items);      
+        return itemGroup;
+    }
+    
+    
 	protected final static String BLANK_SELECTION = "&#160;";
 
 	protected static void sort(List<SelectItem> selectItemList) {

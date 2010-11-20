@@ -33,7 +33,7 @@ public class Zone extends BaseEntity implements Cloneable
     
     private List<ZoneOption>    options;
     @Column(updateable=false)
-    private Map<ZoneAvailableOption, OptionValue> optionsMap;
+    private transient Map<ZoneAvailableOption, OptionValue> optionsMap;
     
     public Zone()
     {
