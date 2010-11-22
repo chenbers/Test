@@ -433,21 +433,19 @@
 
 
 
-						<f:facet name="footer" rendered="#{crashReportBean.device.isCrashTraceAppletCapable}">//TODO: jwimmer: rendered attribute is EXAMPLE only needs implemented !!!
-							<h:panelGroup>
+						<f:facet name="footer">
+							<h:panelGroup rendered="#{crashReportBean.device.crashTraceAppletCapable == false}"><!-- //TODO: remove "== false" for production... left if for testing until non MOCK data becomes available -->
 								<div class="panel_nw">
-								<div class="panel_title" style="z-index: #{zorder}">
-								#{messages.crashReport_crashTrace}</div>
+									<div class="panel_title" style="z-index: #{zorder}">
+										#{messages.crashReport_crashTrace} 
+									</div>
 								</div>
 			
 								<div class="panel_w">
 								<div class="panel_content crash_panel_content"
 									id="crashPanelContent" style="height: 570px;">
 								<div align="center" id="realEventViewer">
-								<blockquote><font class="topic_text"> To
-								calculate event data select the time period (click and drag) of the
-								incident on the chart below. Single click anywhere on the chart to
-								select the entire time period. </font></blockquote>
+								<blockquote><font class="topic_text">#{messages.crashReport_crashTraceInstructions} </font></blockquote>
 								
 								
 								
@@ -461,8 +459,6 @@
 								<applet code="com.iwi.viewer.IWIViewer.class" mayscript="mayscript"
 									name="iwi_viewer" width="95%" height="400" hspace="0" vspace="0"
 									archive="#{request.contextPath}/applets/iwi_viewer.jar" imageFetcherOpts="null" >
-									<!--  <param name="file" value="//web/images/staticEventFile.do" />  -->
-									<!--  <param name="file" value="//web/secured/eventFile.jsp" /> -->
 									<param name="file" value="/#{request.contextPath}/app/crashTrace/test" />
 									<param name="event_index" value="1" />
 									<!-- param name="chart_type" value="linear_acceleration"/ -->
@@ -479,7 +475,8 @@
 									<param name="autoZero" value="true" />
 									<param name="certified" value="false" />
 									<param name="witnessIIITrace" value="false" />
-									BROWSER IGNORING APPLET TAG??? 
+									#{messages.crashReport_mustHaveJava}
+									<a href="http://www.java.com">www.java.com</a>
 								</applet>
 			
 								<div align="center" id="realEventValues">
