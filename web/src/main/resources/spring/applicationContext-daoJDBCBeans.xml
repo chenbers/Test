@@ -15,10 +15,12 @@ default-autowire="byName">
   <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
   
 <!-- Un-comment and comment out DAOs above this to use mock data    
-  <bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean>
--->  
+  <bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean>-->
+    
 <!--  <bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.mock.MockWaysmartDAO"></bean>-->
-  <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO"></bean>
+<!--  <bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean>-->
+  <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
+  
   
   <!-- DAO -->
   <!--
