@@ -17,7 +17,7 @@ default-autowire="byName">
   <!-- Un-comment and comment out hosDAO above this to use mock data
   <bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean>
  --> 
-   <bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean>
+   <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
  
   <!-- DAO -->
   <!--
