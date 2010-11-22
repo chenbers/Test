@@ -18,6 +18,8 @@ import com.inthinc.pro.web.selenium.portal.Singleton;
 
 public class Login extends Selenium_Server {
 	
+	
+	//Object Map
 	private final String change_password_form_id = "//form[@id='changePasswordForm']/";
 	private final String login_form_id = "//form[@id='loginForm']/";
 
