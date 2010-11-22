@@ -13,6 +13,13 @@ import com.inthinc.pro.web.selenium.portal.Singleton;
 @SuppressWarnings("unused")
 public class Notifications
 {
+	//Object Map
+	
+	private final String notifications_page = "/tiwipro/app/notifications/";
+	
+	
+	
+	
 	protected static Core selenium;
 	String curbutton = "";
 	
@@ -36,7 +43,7 @@ public class Notifications
 		public void selectTimeFrame(String nSection,String time){
 				//Parameters:  nSection:  Name of Notification menuItem i.e. Redflag, Safety etc..
 				//Time:  Item to be selected from drop down box
-				selenium.open("/tiwipro/app/notifications/");
+				selenium.open(notifications_page);
 				selenium.select(nSection + "_search:" + nSection + "_timeframe", "label=" + time);
 			}
 		
@@ -60,7 +67,7 @@ public class Notifications
 		
 		public void ckRedflagScr(){
 				//Verify Red Flag Screen is displayed as expected
-				selenium.open("/tiwipro/app/notifications/","Open Notification");
+				selenium.open(notifications_page,"Open Notification");
 				selenium.isTextPresent("Team","Team");
 				selenium.isTextPresent("Time Frame", "Time Frame");
 				selenium.isTextPresent("Custom red flags setup by your organization", "Red Flag Setup");
@@ -83,40 +90,40 @@ public class Notifications
 				}		
 			if (screen.contentEquals("Red Flags)")){
 						//Select Red Flag Menu	
-						selenium.open("/tiwipro/app/notifications/", "RedFlags");
+						selenium.open(notifications_page, "RedFlags");
 						selenium.click("//a[@id='" + curbutton + "-redFlags']/span", "Click RedFlags");
 						curbutton = "redFlags";
 						selenium.waitForPageToLoad("30000");
-						selenium.open("/tiwipro/app/notifications/redflags","Refresh Button on Section:RedFlags");
+						selenium.open(notifications_page + "redflags","Refresh Button on Section:RedFlags");
 						selenium.isTextPresent("Red Flags","Red Flags");
 				}else if (screen.contentEquals("Safety")){
 							//select Safety Menu
 							selenium.click("//a[@id='" + curbutton + "-safety']/span", "Click Safety");
 							curbutton = "safety";
 							selenium.waitForPageToLoad("30000");
-							selenium.open("/tiwipro/app/notifications/safety", "Open Safety");
+							selenium.open(notifications_page + "safety", "Open Safety");
 							selenium.isTextPresent("Safety","Safety");
 					}else if (screen.contentEquals("Diagnostics")){
 							//select Diagnostics
 							selenium.click("//a[@id='" + curbutton + "-diagnostics']/span", "Diagnostics");
 							curbutton = "diagnostics";
 							selenium.waitForPageToLoad("30000");
-							selenium.open("/tiwipro/app/notifications/diagnostics", "Diagnostics");
+							selenium.open(notifications_page + "diagnostics", "Diagnostics");
 							selenium.isTextPresent("Diagnostics","Diagnostics");
 					}else if (screen.contentEquals("Emergency")){
 							//select Emergency
 							selenium.click("//a[@id='" + curbutton + "-emergency']/span","Emergency");
 							curbutton = "emergency";
 							selenium.waitForPageToLoad("30000");
-							selenium.open("/tiwipro/app/notifications/emergency", "Emergency");
+							selenium.open(notifications_page + "emergency", "Emergency");
 							selenium.isTextPresent("Emergency","Emergency");
 					}else if (screen.contentEquals("Crash History")){
 					//select Crash History
-						selenium.open("/tiwipro/app/notifications/", "Crash History");
+						selenium.open(notifications_page, "Crash History");
 						selenium.click("//a[@id='" + curbutton + "-crashHistory']/span", "Crash History");
 						curbutton = "crashHistory";
 						selenium.waitForPageToLoad("30000");
-						selenium.open("/tiwipro/app/notifications/crashHistory","Crash History");
+						selenium.open(notifications_page + "crashHistory","Crash History");
 						selenium.isTextPresent("Crash History","Crash History");
 		}}}
 
