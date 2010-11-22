@@ -230,14 +230,16 @@ public class CrashReportBean extends BaseBean {
     }
     
     public Device getDevice() {
-        //TODO: jwimmer: determine if THIS is OK or if Device should be added to the CrashReport object (involves backend guys who have TONS of work)
-        //System.out.println(" :"+ crashReport);
-        //System.out.println(" :"+ crashReport.getVehicle());
-        //System.out.println(" :"+ crashReport.getVehicleID());
-        //System.out.println(" :"+ crashReport.getVehicle().getDeviceID());
-        //System.out.println(" :"+ deviceDAO.findByID(crashReport.getVehicle().getDeviceID()));
-        //System.out.println(" :"+ deviceDAO.findByID(crashReport.getVehicle().getDeviceID()).getName());
-        return deviceDAO.findByID(crashReport.getVehicle().getDeviceID());
+        //TODO: jwimmer: could be improved by adding the device to what is initially retrieved from the backend
+        Device result = null;
+        Integer devID = crashReport.getVehicle().getDeviceID();
+        if(devID != null){
+            result = deviceDAO.findByID(crashReport.getVehicle().getDeviceID());
+        }else{
+            result = new Device();
+            result.setProductVer(null); //set product ver to null so that device capabilities all come back FALSE
+        }
+        return result;
     }
 
     private void loadVehicles() {
