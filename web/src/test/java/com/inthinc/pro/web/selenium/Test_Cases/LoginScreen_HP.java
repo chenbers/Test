@@ -2,6 +2,7 @@ package com.inthinc.pro.web.selenium.Test_Cases;
 
 import org.junit.Test;
 
+import com.inthinc.pro.web.selenium.InthincTest;
 import com.inthinc.pro.web.selenium.portal.*;
 import com.inthinc.pro.web.selenium.portal.Login.*;
 

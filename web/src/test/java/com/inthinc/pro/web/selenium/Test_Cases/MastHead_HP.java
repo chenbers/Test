@@ -1,7 +1,7 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
-import com.inthinc.pro.web.selenium.portal.InthincTest;
-import com.inthinc.pro.web.selenium.portal.Singleton;
+import com.inthinc.pro.web.selenium.InthincTest;
+import com.inthinc.pro.web.selenium.Singleton;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.portal.Notifications.Notifications;
 import com.thoughtworks.selenium.*;

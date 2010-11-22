@@ -1,6 +1,5 @@
-package com.inthinc.pro.web.selenium.portal;
+package com.inthinc.pro.web.selenium;
 
-import com.inthinc.pro.web.selenium.Core;
 
 
 

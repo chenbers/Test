@@ -8,8 +8,8 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import com.inthinc.pro.web.selenium.Core;
 import com.inthinc.pro.web.selenium.Selenium_Server;
+import com.inthinc.pro.web.selenium.Singleton;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
-import com.inthinc.pro.web.selenium.portal.Singleton;
 /****************************************************************************************
  * Purpose: Includes all methods and variables to process the TiwiPro Login Screen
  * @author larringt , dtanner

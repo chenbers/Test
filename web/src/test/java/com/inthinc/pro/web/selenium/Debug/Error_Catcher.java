@@ -1,3 +1,13 @@
+/****************************************************************************************
+ * Purpose: To catch the errors raised by Selenium, and format them into a nice HashMap
+ * <p>
+ * The idea is to take a stack trace, or string, and tie it to an error name.
+ * Then associate that error with a name for easy reading to see what broke.
+ * 
+ * @author dtanner
+ * @see HashMap
+ */
+
 package com.inthinc.pro.web.selenium.Debug;
 
 import java.io.PrintWriter;
@@ -17,7 +27,7 @@ public class Error_Catcher {
 	/**
 	 * Take an Assertion Error and add it to the error list
 	 * 
-	 * @param errorName
+	 * @param errorName 
 	 * @param AssertionError
 	 */
 	public void Error(String name, AssertionError error){
@@ -46,10 +56,10 @@ public class Error_Catcher {
 	
 	
 	/**
-	 * Take a generel Exception and add it to the error list
+	 * Take a general Exception and add it to the error list
 	 * 
-	 * @param name
-	 * @param error
+	 * @param errorName
+	 * @param Exception
 	 */
 	public void Error(String name, Exception error){
 		
@@ -65,7 +75,7 @@ public class Error_Catcher {
 	 * Take the Actual and add it to our string
 	 * 
 	 * @param name
-	 * @param error
+	 * @param String error
 	 */
 	public void Error(String name, String error){
 		
@@ -79,7 +89,7 @@ public class Error_Catcher {
 	/**
 	 * Take the expected string for comparison against the actual
 	 * 
-	 * @param name
+	 * @param errorName
 	 * @param expected
 	 */
 	public void Expected( String name, String expected){
@@ -94,18 +104,29 @@ public class Error_Catcher {
 	/**
 	 * Add an error by Name
 	 * 
-	 * @param name
+	 * @param errorName
 	 */
-	public void add_error(String name){
+	private void add_error(String name){
 		errorList  = new HashMap<String, String>();
 		errors.put(name, errorList);
-		
 	}
 	
+	/**
+	 * @return the errors we have stored in a double HashMap
+	 * @see HashMap
+	 */
 	public HashMap<String, HashMap<String, String>> get_errors(){
 		return errors;
 	}
 	
+	
+	
+	/**
+	 * Take an error, and get the stack trace into a string
+	 * 
+	 * @param Throwable object
+	 * @return a string containing the stack trace
+	 */
 	private static String getStackTrace(Throwable stack){
 		final Writer result = new StringWriter();
 		final PrintWriter printWriter = new PrintWriter(result);

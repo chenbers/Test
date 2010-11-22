@@ -3,7 +3,7 @@ package com.inthinc.pro.web.selenium.Test_Cases;
 
 import org.junit.*;
 
-import com.inthinc.pro.web.selenium.portal.InthincTest;
+import com.inthinc.pro.web.selenium.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.portal.Masthead.Masthead;
 

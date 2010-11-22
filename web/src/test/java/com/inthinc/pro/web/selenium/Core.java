@@ -1,3 +1,18 @@
+/****************************************************************************************
+ * Extend the functionality of DefaultSelenium, but add some error handling around it
+ * 
+ * try{}
+ * catch(AssertionError e){ errors.Error(NameOfError, e)}
+ * catch(SeleniumException e){ errors.Error(NameOfError, e)}
+ * catch(Exception e){ errors.Error(NameOfError, e)}
+ * 
+ * @see DefaultSelenium
+ * @see Error_Catcher
+ * @author dtanner
+ *
+ */
+
+
 package com.inthinc.pro.web.selenium;
 
 import static org.junit.Assert.assertFalse;
@@ -7,6 +22,7 @@ import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 import com.thoughtworks.selenium.CommandProcessor;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
+
 
 public class Core extends DefaultSelenium{
 

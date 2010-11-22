@@ -7,8 +7,8 @@
 package com.inthinc.pro.web.selenium.portal.Notifications;
 import java.util.Calendar;
 import com.inthinc.pro.web.selenium.Core;
+import com.inthinc.pro.web.selenium.Singleton;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
-import com.inthinc.pro.web.selenium.portal.Singleton;
 
 @SuppressWarnings("unused")
 public class Notifications

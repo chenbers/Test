@@ -21,28 +21,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * @author dtanner
+ * 
  * This class provides a way to send test case results
  * to Rally.  
- * 
+ * <p>
  * URI = https://rally1.rallydev.com/slm/webservice/1.21/testcaseresult/create.js?workspace=https://rally1.rallydev.com/slm/webservice/1.21/workspace/558474157
- * 
- * {
- * 	TestCaseResult:
- * 		{
- * 			Build: 3.0
- * 			Date: 2010-11-16T19:53:29.000Z
- * 			Notes: This was done in Java<br />We successfully sent the results
- * 			TestCase: {
- * 					_ref: https://rally1.rallydev.com/slm/webservice/1.21/testcase/2433294998.js
- * 					_refObjectName: test Result Test
- * 					_type: TestCase
- * 			}
- * 			Verdict: Pass
- * 		}
+ * <br />
+ * {<br />
+ * 	TestCaseResult:<br />
+ * 		{<br />
+ * 			Build: 3.0<br />
+ * 			Date: 2010-11-16T19:53:29.000Z<br />
+ * 			Notes: This was done in Java<br />We successfully sent the results<br />
+ * 			TestCase: {<br />
+ * 					_ref: https://rally1.rallydev.com/slm/webservice/1.21/testcase/2433294998.js<br />
+ * 					_refObjectName: test Result Test<br />
+ * 					_type: TestCase<br />
+ * 			}<br />
+ * 			Verdict: Pass<br />
+ * 		}<br />
  * }
  * 
- * 
+ * @author dtanner
  */
 public class Rally_API {
     private final String hostname = "https://rally1.rallydev.com/slm/webservice/1.21/";
@@ -93,22 +93,21 @@ public class Rally_API {
     
     
     /**
-     * Method createJSON
-     * 
-     * Pass a Workspace, "Sand Box" or "Inthinc"
-     * Pass the Formatted Test Case ID "TCXXXX"
-     * Pass the build of the portal, this is required and can be anything
-     * Send the time as a GregorianCalendar, not sure if we should use anything else
-     * Send the notes as a string
-     * Send the Verdict = "Blocked", "Error", "Fail", "Inconclusive", "Pass"
+     * Method createJSON<br />
+     * <br />
+     * Pass a Workspace, "Sand Box" or "Inthinc"<br />
+     * Pass the Formatted Test Case ID "TCXXXX"<br />
+     * Pass the build of the portal, this is required and can be anything<br />
+     * Send the time as a GregorianCalendar, not sure if we should use anything else<br />
+     * Send the notes as a string<br />
+     * Send the Verdict = "Blocked", "Error", "Fail", "Inconclusive", "Pass"<br />
      * 
      * @param workspace
      * @param testCase
      * @param build
      * @param date
-     * @param notes
+     * @param notes as a hashmap
      * @param verdict
-     * @return
      * @throws JSONException 
      * @throws IOException 
      * @throws HttpException 
@@ -120,6 +119,28 @@ public class Rally_API {
     	createJSON(workspace, testCase,build,date,formatString(errors),verdict);
     }
     
+    
+    /**
+     * Method createJSON<br />
+     * <br />
+     * Pass a Workspace, "Sand Box" or "Inthinc"<br />
+     * Pass the Formatted Test Case ID "TCXXXX"<br />
+     * Pass the build of the portal, this is required and can be anything<br />
+     * Send the time as a GregorianCalendar, not sure if we should use anything else<br />
+     * Send the notes as a string<br />
+     * Send the Verdict = "Blocked", "Error", "Fail", "Inconclusive", "Pass"<br />
+     * 
+     * @param workspace
+     * @param testCase
+     * @param build
+     * @param date
+     * @param notes as a string to be sent up to Rally
+     * @param verdict
+     * @throws JSONException 
+     * @throws IOException 
+     * @throws HttpException 
+     * @throws Exception 
+     */
     public Boolean createJSON(String workspace, 
     		String testCase, String build, GregorianCalendar date, 
     		String notes, String verdict ) throws JSONException, HttpException, IOException {
@@ -140,11 +161,11 @@ public class Rally_API {
     
     
     /**
-     * Method setWorkspace
-     * 
-     * Set the workspace object so our results go to the correct one
-     * SandBox = https://rally1.rallydev.com/slm/webservice/1.21/workspace/558474157
-     * Inthinc = https://rally1.rallydev.com/slm/webservice/1.21/workspace/665449629
+     * Method setWorkspace<br />
+     * <br />
+     * Set the workspace object so our results go to the correct one<br />
+     * SandBox = https://rally1.rallydev.com/slm/webservice/1.21/workspace/558474157<br />
+     * Inthinc = https://rally1.rallydev.com/slm/webservice/1.21/workspace/665449629<br />
      * 
      * @param workspace
      * @throws JSONException
@@ -165,24 +186,24 @@ public class Rally_API {
     }
     
     /**
-     * Method getTestCase
-     * 
-     * Create a new Get Method, then use the testCase_base as our URL base
-     * testCase_base = hostname+"testcase.js"
-     * 
-     * Define our workspace as a filter, we need the _ref for our workspace
-     * then we add the parameters to our query
-     * 
-     * ?workspace=WorkspaceAddress&query=( FormattedID = TCXXX )&start=1&pagesize=20
-     * 
-     * Then we set the query string with setQueryString(query)  This adds our query to the end of the URI
-     * We then send the request using httpRequest
-     * Turn the response body into a string for JSON to consume, 
-     * Turn the string into a JSONObject.  To get the results we have to do the following
-     * 
-     * JSONObject.getJSONObject("QueryResult").getJSONArray("Results").getJSONObject(0)
-     * We should only get one result because of our query filter, then we add the 
-     * test case object we got to the testCaseResults JSONObject
+     * Method getTestCase<br />
+     * <br />
+     * Create a new Get Method, then use the testCase_base as our URL base<br />
+     * testCase_base = hostname+"testcase.js"<br />
+     * <br />
+     * Define our workspace as a filter, we need the _ref for our workspace<br />
+     * then we add the parameters to our query<br />
+     * <br />
+     * ?workspace=WorkspaceAddress&query=( FormattedID = TCXXX )&start=1&pagesize=20<br />
+     * <br />
+     * Then we set the query string with setQueryString(query)  This adds our query to the end of the URI<br />
+     * We then send the request using httpRequest<br />
+     * Turn the response body into a string for JSON to consume, <br />
+     * Turn the string into a JSONObject.  To get the results we have to do the following<br />
+     * <br />
+     * JSONObject.getJSONObject("QueryResult").getJSONArray("Results").getJSONObject(0)<br />
+     * We should only get one result because of our query filter, then we add the <br />
+     * test case object we got to the testCaseResults JSONObject<br />
      * 
      * @param testCase
      * @throws HttpException
@@ -210,8 +231,8 @@ public class Rally_API {
     
 
     /**
-     * Method setBuild
-     * 
+     * Method setBuild<br />
+     * <br />
      * add the build to the testCaseResult JSONObject
      * 
      * @param build
@@ -223,8 +244,8 @@ public class Rally_API {
     
     
     /**
-     * Method setDate
-     * 
+     * Method setDate<br />
+     * <br />
      * add the time we executed the test.  This has to be an xml string, so we will convert it from a 
      * date object
      * 
@@ -240,8 +261,8 @@ public class Rally_API {
    
         
     /**
-     * Method setNotes
-     * 
+     * Method setNotes<br />
+     * <br />
      * add the notes to the testCaseResults JSONObject
      * 
      * @param notes
@@ -252,8 +273,8 @@ public class Rally_API {
     }
     
     /**
-     * Method setVerdict
-     * 
+     * Method setVerdict<br />
+     * <br />
      * add the verdict to our TestCaseResult JSON Object
      * also validate it is one of the valid options
      * 
@@ -274,7 +295,20 @@ public class Rally_API {
     
 
 
-	public String formatString(HashMap<String, HashMap<String, String>> errors){
+	/**
+	 * Format a HashMap so it looks nice in Rally:<br />
+	 * <br />
+	 * ErrorName<br />
+	 * ----Error 1
+	 * --------Error Message Stack Trace
+	 * ----Error 2
+	 * --------Error Message Stack Trace
+	 * 
+	 * 
+	 * @param errors
+	 * @return
+	 */
+	private String formatString(HashMap<String, HashMap<String, String>> errors){
 		String errorString = "";
 		Set<String> outerKeys = errors.keySet();
 		Iterator<String> outerItr = outerKeys.iterator();
@@ -293,15 +327,15 @@ public class Rally_API {
 	}
     
     /**
-     * Method sendTestCaseResults()
-     * 
-     * Create a post method using the host and final address for imports.
-     * 
-     * hostname = "https://rally1.rallydev.com/slm/webservice/1.21/"
-     * import_result = "testcaseresult/create.js"
-     * 
-     * Then add the JSON string as a StringRequestEntity to the post method
-     * Set the entity
+     * Method sendTestCaseResults()<br />
+     * <br />
+     * Create a post method using the host and final address for imports.<br />
+     * <br />
+     * hostname = "https://rally1.rallydev.com/slm/webservice/1.21/"<br />
+     * import_result = "testcaseresult/create.js"<br />
+     * <br />
+     * Then add the JSON string as a StringRequestEntity to the post method<br />
+     * Set the entity<br />
      * Call httpRequest to send our post
      * @throws IOException 
      * @throws HttpException 
@@ -319,10 +353,10 @@ public class Rally_API {
    
     
 	/**
-	 * Method httpRequest
-	 * 
-	 * Using the given HttpMethod, execute it and get the status code
-	 * Depending on the status, print an error or success method, consume the body
+	 * Method httpRequest<br />
+	 * <br />
+	 * Using the given HttpMethod, execute it and get the status code<br />
+	 * Depending on the status, print an error or success method, consume the body<br />
 	 * then finally release the connection
 	 * 
 	 * @param mehod

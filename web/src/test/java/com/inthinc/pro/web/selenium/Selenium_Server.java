@@ -3,7 +3,6 @@ package com.inthinc.pro.web.selenium;
 import org.junit.*;
 import org.openqa.selenium.server.SeleniumServer;
 
-import com.inthinc.pro.web.selenium.portal.Singleton;
 
 
 public class Selenium_Server {

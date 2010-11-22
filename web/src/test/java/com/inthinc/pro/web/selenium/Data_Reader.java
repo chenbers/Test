@@ -1,3 +1,8 @@
+/**********************************************************
+ * @author dtanner
+ *
+ */
+
 package com.inthinc.pro.web.selenium;
 
 import java.io.File;
