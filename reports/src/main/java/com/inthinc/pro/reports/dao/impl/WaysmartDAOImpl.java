@@ -135,7 +135,7 @@ public class WaysmartDAOImpl implements WaysmartDAO {
 
     @Override
     public List<VehicleUsageRecord> getVehicleUsage(Integer driverID, Interval interval) {
-        // TODO Auto-generated method stub
+        // TODO To be implemented
         return null;
     }
 
@@ -153,6 +153,7 @@ public class WaysmartDAOImpl implements WaysmartDAO {
      */
     @Override
     public List<AssetWarrantyRecord> getWarrantyList(Integer groupID, boolean expiredOnly) {   
+        // TODO To be implemented
         return new MockWaysmartDAO().getWarrantyList(groupID, expiredOnly);
     }
 

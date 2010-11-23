@@ -5,6 +5,9 @@ import java.util.Date;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
+import com.inthinc.pro.model.phone.CellStatusType;
+import com.inthinc.pro.model.phone.ServiceProviderType;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,6 +41,9 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     @Column(updateable = false)
     private Person person;
     private Integer groupID;
+    private String cellPhone;
+    private CellStatusType cellStatus;
+    private ServiceProviderType provider;
 
     public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
             Integer dot, Integer groupID) {
@@ -191,6 +197,54 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 
     public void setGroupID(Integer groupID) {
         this.groupID = groupID;
+    }
+
+    /**
+     * The cellPhone getter.
+     * @return the cellPhone
+     */
+    public String getCellPhone() {
+        return this.cellPhone;
+    }
+
+    /**
+     * The cellPhone setter.
+     * @param cellPhone the cellPhone to set
+     */
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    /**
+     * The cellStatus getter.
+     * @return the cellStatus
+     */
+    public CellStatusType getCellStatus() {
+        return this.cellStatus;
+    }
+    
+    /**
+     * The provider getter.
+     * @return the provider
+     */
+    public ServiceProviderType getProvider() {
+        return this.provider;
+    }
+
+    /**
+     * The cellStatus setter.
+     * @param cellStatus the cellStatus to set
+     */
+    public void setCellStatus(CellStatusType cellStatus) {
+        this.cellStatus = cellStatus;
+    }
+
+    /**
+     * The provider setter.
+     * @param provider the provider to set
+     */
+    public void setProvider(ServiceProviderType provider) {
+        this.provider = provider;
     }
 
     @Override
