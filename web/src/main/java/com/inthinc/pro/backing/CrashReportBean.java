@@ -73,14 +73,12 @@ public class CrashReportBean extends BaseBean {
     private FileUploadBean fileUploadBean;
     
     public void serveCrashTrace() {
-        System.out.println("public void serveCrashTrace()");
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
 
         OutputStream out = null;
         try {
             out = response.getOutputStream();
             //TODO: jwimmer: populate crashTrace from this.getCrashTraceEventID()
-            System.out.println("crashTraceEventID: "+this.getCrashTraceEventID());
             if(crashTraceBean == null) {
                 //TODO: jwimmer: add logic to check if eventID is null, if not load REAL crash trace
                 if(this.getCrashTraceEventID() != null && !("".equalsIgnoreCase(this.getCrashTraceEventID()))) {
@@ -376,7 +374,12 @@ public class CrashReportBean extends BaseBean {
     public DriverDAO getDriverDAO() {
         return driverDAO;
     }
-
+    public void setDeviceDAO(DeviceDAO deviceDAO){
+        this.deviceDAO = deviceDAO;
+    }
+    public DeviceDAO getDeviceDAO() {
+        return deviceDAO;
+    }
     public void setVehicleDAO(VehicleDAO vehicleDAO) {
         this.vehicleDAO = vehicleDAO;
     }
