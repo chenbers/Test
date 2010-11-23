@@ -1,5 +1,6 @@
 package com.inthinc.pro.device.tiwiPro;
 
+import java.util.List;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,12 +10,17 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.device.*;
 
 
 public class Device {
+	
+	private ArrayList<byte[]> sendingQueue = new ArrayList<byte[]>();
+	private ArrayList<byte[]> note_queue = new ArrayList<byte[]>();
+    private ArrayList<Double[][]> speed_points = new ArrayList<Double[][]>();
     
     private Boolean ignition_state = false;
     private Boolean power_state = false;
@@ -33,32 +39,37 @@ public class Device {
     private int trip_start, trip_stop, sats;
     private int odometer;
     private int note_count = 0;
+    private int productVersion;
     
     private final int device_version = 5;
 
     private final int[] dbErrors = { 302, 303, 402 };
     
-    long time, time_last;
+    private long time, time_last;
     
     private MCMProxy mcmProxy;
     
-    private ArrayList<byte[]> note_queue = new ArrayList<byte[]>();
-    private ArrayList<Double[][]> speed_points = new ArrayList<Double[][]>();
-        
+
+	private Object reply;
+
     private String imei;
     
     
-    public Device( String IMEI, String server, HashMap<Integer, String> settings ){
-        this.imei = IMEI;
+    public Device( String IMEI, String server, HashMap<Integer, String> settings, Integer version ){
+       	set_IMEI(IMEI, server, settings, version);
         Settings = settings;
     }
     
+    public Device( String IMEI, String server, HashMap<Integer, String> settings ){
+    	this(IMEI, server, settings, 5);
+    }
+    
     public Device( String IMEI, String server ){
-    	this(IMEI, server, Defaults.get_defaults());
+    	this(IMEI, server, Defaults.get_defaults(), 5);
     }
 
     public Device( String IMEI ){
-    	this(IMEI, "QA", Defaults.get_defaults());
+    	this(IMEI, "QA", Defaults.get_defaults(), 5);
     }
     
     public void add_location(){
@@ -80,7 +91,7 @@ public class Device {
     }
     
     
-    public void initiate_device(String server){
+    private void initiate_device(String server ){
         ignition_state = false;
         
         speed_limit = Integer.parseInt(Settings.get( Constants.PROPERTY_SPEED_LIMIT.getCode()));
@@ -89,15 +100,16 @@ public class Device {
         clear_internal_settings();
         
         get_time();
+        set_url(server);
         set_server();
-//        TODO get_server();
+        
 
 
         set_satelites( 8 );
-//        TODO set_location( 0.0, 0.0 );
+        set_location( 0.0, 0.0 );
         set_WMP( 17014 );
         set_MSP( 50 );
-//        TODO set_vehicle_speed();
+        set_vehicle_speed();
         
         ignition_state = false;
         power_state = false;
@@ -105,12 +117,11 @@ public class Device {
         rpm_violation = false;
         seatbelt_violation = false;
         speeding_violation = false;
-        
-        
     }
     
-    
-    public void add_note( Package_Note note ){
+
+
+	public void add_note( Package_Note note ){
         
         byte[] packaged = note.Package();
         note_queue.add(packaged);
@@ -119,20 +130,33 @@ public class Device {
     }
     
     public void construct_note(Integer type, HashMap<Integer, Integer> attrs){
-    	
+    	// TODO
+    }
+    
+    public void change_IMEI( String imei, String server, HashMap<Integer, String> settings, Integer version){
+        set_IMEI( imei, server, settings, version );
     }
     
     public void change_IMEI( String imei, String server, HashMap<Integer, String> settings){
-        
-        set_IMEI( imei );
-        Settings = settings;
-        set_url( server );
+        set_IMEI( imei, server, settings, 5 );
+    }
+    
+    public void change_IMEI( String imei, String server){
+        set_IMEI( imei, server, Defaults.get_defaults(), 5 );
+    }
+    
+    public void change_IMEI( String imei, Integer version){
+        set_IMEI( imei, "QA", Defaults.get_defaults(), version );
+    }
+    
+    public void change_IMEI( String imei){
+        set_IMEI( imei, "QA", Defaults.get_defaults(), 5 );
     }
     
     private void check_queue(){
         
         if ( note_queue.size() >= Integer.parseInt( Settings.get( Constants.PROPERTY_SET_MSGS_PER_NOTIFICATION.getCode() ) ) ){
-            //TODO send_note();
+        	send_note();
         }
     
     }
@@ -151,6 +175,24 @@ public class Device {
         }
     }
     
+
+    private void configurate_device() {
+    	dump_settings();
+    	get_changes();		
+	}
+    
+
+	private void dump_settings() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	private void get_changes() {
+		// TODO Auto-generated method stub
+		
+	}
+    
     public void get_time(){
         
         time = System.currentTimeMillis() / 1000;
@@ -162,33 +204,65 @@ public class Device {
         time_last = time;
         time += increment;
     }
-    
+                
     public void power_on_device(Integer time_now){
         
-//        TODO set_time( time_now );
+    	set_time( time_now );
         set_power();
-//        TODO configurate_device();
+        configurate_device();
         time_now += 30;
-//        TODO set_time( time_now );
-        
-                
+        set_time( time_now );
     }
-    
-    public void power_off_device(){
+
+	public void power_off_device(){
         
         set_power();
     }
+	
+
+    private void send_note() {
+		// TODO Auto-generated method stub
+		assert(note_queue.getClass()==new ArrayList<byte[]>().getClass());
+		assert(imei.getClass() == "".getClass());
+		while (!note_queue.isEmpty()){
+			for (int i=0; i < note_count; i++){
+				sendingQueue.add(note_queue.remove(0));
+			}
+			reply = dbErrors[0];
+			while (dbErrors.toString().compareTo(reply.toString())!=0){
+				reply = mcmProxy.note(imei, sendingQueue);
+			}
+			if (reply.getClass()==int.class){
+				System.out.println(reply.toString());
+			}
+			else if (reply.getClass()==new ArrayList<Map>().getClass()){
+				
+			}
+		}
+	}
     
-    private void set_IMEI( String imei ){
+    private void set_IMEI( String imei, String server, HashMap<Integer, String> settings, Integer version ){
         
         this.imei = imei;
+        productVersion=version;
+        set_settings(settings);        
+        initiate_device( server );
     }
 
     
-    public void set_MSP( Integer version ){
+
+
+	public void set_MSP( Integer version ){
         
         MSP = version;
     }
+	
+    
+    private void set_location(double d, double e) {
+		// TODO Auto-generated method stub
+		
+	}
+
     
     private void set_power(){
         
@@ -199,30 +273,37 @@ public class Device {
             attrs.put(Constants.ATTR_TYPE_FIRMWARE_VERSION.getCode(), WMP);
             attrs.put(Constants.ATTR_TYPE_DMM_VERSION.getCode(), MSP);
             attrs.put(Constants.ATTR_TYPE_GPS_LOCK_TIME.getCode(), 10);
-//            TODO construct_note( Constants.NOTE_TYPE_POWER_ON.getCode(), attrs );
+            construct_note( Constants.NOTE_TYPE_POWER_ON.getCode(), attrs );
             check_queue();
             
         } else if (!power_state){
             attrs.put(Constants.ATTR_TYPE_LOW_POWER_MODE_TIMEOUT.getCode(), Integer.parseInt(Settings.get(Constants.PROPERTY_LOW_POWER_MODE_SECONDS.getCode())));
-//            TODO construct_note( Constants.NOTE_TYPE_LOW_POWER_MODE.getCode(), attrs );
+            construct_note( Constants.NOTE_TYPE_LOW_POWER_MODE.getCode(), attrs );
             check_queue();
-//            TODO if (note_queue.size() != 0) sent_note();
+            if (note_queue.size() != 0) send_note();
         }
         
     }
     
-    public void set_satelites( Integer satelites ){
+
+	public void set_satelites( Integer satelites ){
         
         sats = satelites;
     }
 
-    public void set_server(){
+    private void set_server(){
             
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
-			mcmProxy = (MCMProxy)factory.create( MCMProxy.class, 
+        	if (productVersion==5){        		
+        		mcmProxy = (MCMProxy)factory.create( MCMProxy.class, 
 			        Settings.get(Constants.PROPERTY_SERVER_URL.getCode()), 
 			        Integer.parseInt(Settings.get(Constants.PROPERTY_SERVER_PORT.getCode())));
+        	}else if (productVersion==2){
+        		mcmProxy = (MCMProxy)factory.create( MCMProxy.class, 
+			        Settings.get(Constants.PROPERTY_SERVER_URL.getCode()), 
+			        Integer.parseInt(Settings.get(Constants.PROPERTY_SERVER_PORT.getCode())));	
+        	}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
@@ -232,8 +313,7 @@ public class Device {
     }
 
     public void set_speed_limit( Integer limit ){
-        
-        speed_limit = limit;
+        // TODO
     }
     
   
@@ -245,7 +325,7 @@ public class Device {
             Integer next = itr.next();
             Settings.put(next, changes.get(next));
         }
-//      TODO dump_settings();
+        dump_settings();
     }
     
     public void set_time( Date time_now ){
@@ -283,52 +363,70 @@ public class Device {
     }
     
     public void set_url( String url, String port ){
-
-        Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), port);
-        Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), url);
-//        TODO set_server();
+    	HashMap<Integer, String> changes = new HashMap<Integer, String>();
+        
+        if (productVersion==5){
+        	changes.put(Constants.PROPERTY_SERVER_PORT.getCode(), port);
+        	changes.put(Constants.PROPERTY_SERVER_URL.getCode(), url);
+        }
+//        else if (productVersion==2){
+//        	changes.put(key, value);
+//        }
+        
+        set_settings(changes);
+        set_server();
     }
     
     
     public void set_url(String server){
         server = server.toLowerCase();
+        String port = Addresses.QA_MCM_PORT.getCode();
+        String url = Addresses.QA_MCM.getCode();
+        
         
         if (server == "dev"){
-            Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.DEV_MCM_PORT.getCode());
-            Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.DEV_MCM.getCode());
+            url = Addresses.DEV_MCM_PORT.getCode();
+            port = Addresses.DEV_MCM.getCode();
         }
         
         else if (server == "qa"){
-            Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.QA_MCM_PORT.getCode());
-            Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.QA_MCM.getCode());
+            url = Addresses.QA_MCM.getCode();
+            port = Addresses.QA_MCM_PORT.getCode();
         }
         
         else if (server == "qa2"){
-            Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.QA2_MCM_PORT.getCode());
-            Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.QA2_MCM.getCode());
+            url = Addresses.QA2_MCM.getCode();
+            port = Addresses.QA2_MCM_PORT.getCode();
         }
         
         else if (server == "prod"){
-            Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.PROD_MCM_PORT.getCode());
-            Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.PROD_MCM.getCode());
+            url = Addresses.PROD_MCM.getCode();
+            port = Addresses.PROD_MCM_PORT.getCode();
             
         }
         else if (server == "teen_qa"){
-            Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.TEEN_MCM_PORT_QA.getCode());
-            Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.TEEN_MCM_QA.getCode());
+            url = Addresses.TEEN_MCM_QA.getCode();
+            port = Addresses.TEEN_MCM_PORT_QA.getCode();
         }
+        
 //        else if (server == "teen_prod"){
-//            Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.getCode());
-//            Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.QA_MCM.getCode());
+//      	  url = Addresses.QA_MCM.getCode();
+//            port = Addresses.getCode();
 //            
 //        }
 //        else if (server == "teen_dev"){
-//            Settings.put(Constants.PROPERTY_SERVER_PORT.getCode(), Addresses.QA_MCM_PORT.getCode());
-//            Settings.put(Constants.PROPERTY_SERVER_URL.getCode(), Addresses.QA_MCM.getCode());
-        
-//        TODO set_server();
-            
+//      	  url = Addresses.QA_MCM.getCode();
+//            port = Addresses.QA_MCM_PORT.getCode();
+
+        set_url(url, port);
+
     }
+    
+
+	private void set_vehicle_speed() {
+		// TODO Auto-generated method stub
+		
+	}
     
       
     public void set_WMP( Integer version ){

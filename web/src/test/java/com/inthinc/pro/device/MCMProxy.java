@@ -1,5 +1,6 @@
 package com.inthinc.pro.device;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,5 +17,5 @@ public interface MCMProxy{
          * @return Returns a List of Forward commands, or an integer error 
          */
         
-        List<Map> note(String mcmID, List<byte[]> noteList);
+		ArrayList<Map> note(String mcmID, List<byte[]> noteList);
 }
