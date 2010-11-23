@@ -3,13 +3,13 @@ package com.inthinc.pro.model.phone;
 /**
  * Cell phone control Service Provider enum.
  */
-public enum ServiceProviderType {
+public enum CellProviderType {
     CELL_CONTROL ("Cell Control"),
     ZOOM_SAFER ("Zoom Safer");
     
     private String name;
 
-    private ServiceProviderType(String providerName) {
+    private CellProviderType(String providerName) {
         this.name = providerName;
     }
 

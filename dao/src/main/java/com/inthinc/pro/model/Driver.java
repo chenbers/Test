@@ -6,7 +6,7 @@ import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.phone.CellStatusType;
-import com.inthinc.pro.model.phone.ServiceProviderType;
+import com.inthinc.pro.model.phone.CellProviderType;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -43,7 +43,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private Integer groupID;
     private String cellPhone;
     private CellStatusType cellStatus;
-    private ServiceProviderType provider;
+    private CellProviderType provider;
 
     public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
             Integer dot, Integer groupID) {
@@ -227,7 +227,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
      * The provider getter.
      * @return the provider
      */
-    public ServiceProviderType getProvider() {
+    public CellProviderType getProvider() {
         return this.provider;
     }
 
@@ -243,7 +243,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
      * The provider setter.
      * @param provider the provider to set
      */
-    public void setProvider(ServiceProviderType provider) {
+    public void setProvider(CellProviderType provider) {
         this.provider = provider;
     }
 
