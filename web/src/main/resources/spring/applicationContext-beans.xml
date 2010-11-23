@@ -274,6 +274,7 @@
     <property name="crashTraceBean">
     	<bean id="crashTraceBean" class="com.inthinc.pro.backing.CrashTraceBean"/>
   	</property>
+  	<property name="deviceDAO" ref="deviceDAO"></property>
   </bean>
 
   <bean id="personBean" class="com.inthinc.pro.backing.PersonBean" scope="session" init-method="initBean">
