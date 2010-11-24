@@ -14,9 +14,9 @@
             http://www.springframework.org/schema/aop
             http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-    <context:component-scan base-package="com.inthinc.pro.service.security"/>
-    <context:component-scan base-package="com.inthinc.pro.service.adapters"/>
-    <aop:aspectj-autoproxy/>
+  <context:component-scan base-package="com.inthinc.pro.service.security"/>
+  <context:component-scan base-package="com.inthinc.pro.service.adapters"/>
+  <aop:aspectj-autoproxy/>
 
   <http auto-config="true" create-session="never" session-fixation-protection="newSession">
     <intercept-url pattern="/api/**" access="ROLE_ADMIN" />

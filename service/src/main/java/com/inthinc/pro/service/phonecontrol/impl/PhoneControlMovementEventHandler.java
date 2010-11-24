@@ -3,6 +3,9 @@
  */
 package com.inthinc.pro.service.phonecontrol.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
@@ -12,6 +15,7 @@ import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 /**
  * {@link MovementEventHandler} which requests phone control service provider to disable/enable driver's cell phone once it starts/stops driving.
  */
+@Component
 public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
     private final DriverDAO driverDao;
@@ -21,10 +25,11 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
      * Creates an instance of {@link PhoneControlMovementEventHandler}.
      * 
      * @param driverDao
-     *            THe {@link DriverDAO} instance to use to obtain information about the driver.
+     *            The {@link DriverDAO} instance to use to obtain information about the driver.
      * @param serviceFactory
      *            An instance of the {@link PhoneControlAdapterFactory} to be used to create {@link PhoneControlAdapter} client endpoints.
      */
+    @Autowired
     public PhoneControlMovementEventHandler(DriverDAO driverDao, PhoneControlAdapterFactory serviceFactory) {
         this.driverDao = driverDao;
         this.serviceFactory = serviceFactory;
