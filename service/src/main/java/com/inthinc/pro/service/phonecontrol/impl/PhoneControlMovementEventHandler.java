@@ -6,6 +6,8 @@ package com.inthinc.pro.service.phonecontrol.impl;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
+import com.inthinc.pro.service.phonecontrol.PhoneControlServiceFactory;
+import com.inthinc.pro.service.phonecontrol.client.PhoneControlService;
 
 /**
  * {@link MovementEventHandler} which requests phone control service provider to disable/enable driver's cell phone once it starts/stops driving.
@@ -13,15 +15,19 @@ import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
     private final DriverDAO driverDao;
+    private PhoneControlServiceFactory serviceFactory;
 
     /**
      * Creates an instance of {@link PhoneControlMovementEventHandler}.
      * 
      * @param driverDao
      *            THe {@link DriverDAO} instance to use to obtain information about the driver.
+     * @param serviceFactory
+     *            An instance of the {@link PhoneControlServiceFactory} to be used to create {@link PhoneControlService} client endpoints.
      */
-    public PhoneControlMovementEventHandler(DriverDAO driverDao) {
+    public PhoneControlMovementEventHandler(DriverDAO driverDao, PhoneControlServiceFactory serviceFactory) {
         this.driverDao = driverDao;
+        this.serviceFactory = serviceFactory;
     }
 
     /**
@@ -30,11 +36,13 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
      * 
      * @see com.inthinc.pro.service.phonecontrol.MovementEventHandler#handleDriverStartedMoving(java.lang.Integer)
      */
+    // TODO Add logic to handle error once retry user story is implemented.
     @Override
     public void handleDriverStartedMoving(Integer driverId) {
         Driver driver = driverDao.findByID(driverId);
-        driver.getPerson().getPriPhone();
-        // TODO Check if driver has a Cellcontrol/Zoomsafer cell phone account and
-        // fire the request to the appropriate service.
+        String cellPhoneNumber = driver.getCellPhone();
+
+        PhoneControlService phoneControlService = serviceFactory.createServiceEndpoint(driver.getProvider());
+        phoneControlService.disablePhone(cellPhoneNumber);
     }
 }
