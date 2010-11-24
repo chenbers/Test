@@ -2,14 +2,19 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIData;
+import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+
 
 import org.springframework.beans.BeanUtils;
 
@@ -18,7 +23,8 @@ import com.inthinc.pro.dao.RedFlagAndZoneAlertsDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.BaseAlert;
-import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Delay;
+import com.inthinc.pro.model.LimitType;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.RedFlagOrZoneAlert;
@@ -27,6 +33,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.SelectItemUtil;
 
 public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAlertsBean.RedFlagOrZoneAlertView> implements Serializable {
 
@@ -43,7 +50,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("zone");
         AVAILABLE_COLUMNS.add("owner"); // admin only
-
     }
     private RedFlagAndZoneAlertsDAO redFlagAndZoneAlertsDAO;
     private ZonesBean               zonesBean;
@@ -407,8 +413,86 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         private RedFlagOrZoneAlertsBean    redFlagOrZoneAlertsBean;
         @Column(updateable = false)
         private Zone              zone;
+        private Delay delay;
+        private Integer limitValue;
+        private LimitType limitType;
         
+        private HtmlDataTable escEmailsDataTable;
+        private HtmlDataTable phNumbersDataTable;
+        private HtmlDataTable emailTosDataTable;
+
+        private List<String> escEmails;
+        private List<String> phNumbers;
+        private List<String> emailTos;//TODO: jwimmer: init wrong name? also this VALUE should be the same as baseAlert.EmailTo(String???)
         private Integer alertID;
+        
+        public RedFlagOrZoneAlertView() {
+            super();
+            //TODO: jwimmer: remove fake testing data
+            escEmails = new ArrayList<String>();
+            phNumbers = new ArrayList<String>();
+            emailTos = new ArrayList<String>();
+            if(escEmails.isEmpty()) {
+                escEmails.add("escjohn@company.com");
+                escEmails.add("escmary@company.com");
+            }
+            if(phNumbers.isEmpty()){
+                phNumbers.add("80155551212");
+                phNumbers.add("2037289200");
+            }
+            if(emailTos.isEmpty()) {
+                emailTos.add("john@company.com");
+                emailTos.add("mary@company.com");
+            }
+            //TODO: jwimmer: end of fake testing data
+            
+            //initialize to ensure that the last item is an empty slot
+            String lastString = escEmails.get(escEmails.size()-1) ;
+            if(null != lastString && !"".equals(lastString)){
+                escEmails.add("");
+            }
+            lastString = phNumbers.get(phNumbers.size()-1);
+            if(null != lastString && !"".equals(lastString)){
+                phNumbers.add("");
+            }
+            lastString = emailTos.get(emailTos.size()-1);
+            if(null != lastString && !"".equals(lastString)){
+                emailTos.add("");
+            }
+        }
+        
+        public void removePhNumber() {
+            phNumbers.remove(phNumbersDataTable.getRowData());
+        }
+
+        public void addPhNumberSlot() {
+//            System.out.println("addPhNumberSlot: "+(String)phNumbersDataTable.getRowData());
+  //          if(!"".equals(((String)phNumbersDataTable.getRowData())))
+            //TODO:jwimmer: there are 3 instances of the above 2 lines... added to keep USER from needlessly adding input fields.  which is probably a good idea... but this code was effectively just making it so that ONLY one "add" field could be added... exactly what is going on here may become clearer on save???
+                phNumbers.add("");
+        }
+
+        public void removeEmailTo() {
+            //System.out.println("removeEmailToSlot: "+(String)emailTosDataTable.getRowData());
+            
+            emailTos.remove(emailTosDataTable.getRowData());
+        }
+
+        public void addEmailToSlot() {
+            //System.out.println("addEmailToSlot: "+(String)emailTosDataTable.getRowData());
+            //if(!"".equals(((String)emailTosDataTable.getRowData())))
+                emailTos.add("");
+        }
+
+        public void removeEscEmail() {
+            escEmails.remove(escEmailsDataTable.getRowData());
+        }
+
+        public void addEscEmailSlot() {
+            //System.out.println((String)escEmailsDataTable.getRowData());
+            //if(!"".equals(((String)escEmailsDataTable.getRowData())))
+                escEmails.add("");
+        }
         
         @Override
         public Integer getId() {
@@ -518,6 +602,52 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
             return null;
         }
+        public List<SelectItem> getDelays() {
+            return SelectItemUtil.toList(Delay.class, false);
+        }
+        public List<SelectItem> getLimitTypes() {
+            return SelectItemUtil.toList(LimitType.class, false);
+        }
+        public List<SelectItem> getLimitValues() {
+            //TODO: jwimmer: what are the ACTUAL values and how to we want to get them?
+            List<SelectItem> results = new ArrayList<SelectItem>();
+            results.add(new SelectItem(4,"4"));
+            results.add(new SelectItem(5,"5"));
+            results.add(new SelectItem(6,"6"));
+            results.add(new SelectItem(7,"7"));
+            return results;
+        }
+        public Delay getDelay() {
+            return delay;
+        }
+
+        public void setDelay(Delay delay) {
+            this.delay = delay;
+        }
+
+        public Integer getLimitValue() {
+            return limitValue;
+        }
+
+        public void setLimitValue(Integer limitValue) {
+            this.limitValue = limitValue;
+        }
+
+        public LimitType getLimitType() {
+            return limitType;
+        }
+
+        public void setLimitType(LimitType limitType) {
+            this.limitType = limitType;
+        }
+
+        public List<String> getEscEmails() {            
+            return escEmails;
+        }
+
+        public void setEscEmails(List<String> escEmails) {
+            this.escEmails = escEmails;
+        }
         public String getZonePointsString(){
             if (getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
                 if (getZoneID() != null){
@@ -530,6 +660,22 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             getZone().setPointsString(pointsString);
         }
 
+        public List<String> getPhNumbers() {
+            return phNumbers;
+        }
+
+        public void setPhNumbers(List<String> phNumbers) {
+            this.phNumbers = phNumbers;
+        }
+
+        public List<String> getEmailTos() {
+            return emailTos;
+        }
+
+        public void setEmailTos(List<String> emailTos) {
+            this.emailTos = emailTos;
+        }
+
         @Override
         public Integer getAlertID() {
             return alertID;
@@ -539,6 +685,30 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public void setAlertID(Integer alertID) {
             this.alertID = alertID;
             
+        }
+
+        public HtmlDataTable getEscEmailsDataTable() {
+            return escEmailsDataTable;
+        }
+
+        public void setEscEmailsDataTable(HtmlDataTable escEmailsDataTable) {
+            this.escEmailsDataTable = escEmailsDataTable;
+        }
+
+        public HtmlDataTable getPhNumbersDataTable() {
+            return phNumbersDataTable;
+        }
+
+        public void setPhNumbersDataTable(HtmlDataTable phNumbersDataTable) {
+            this.phNumbersDataTable = phNumbersDataTable;
+        }
+
+        public HtmlDataTable getEmailTosDataTable() {
+            return emailTosDataTable;
+        }
+
+        public void setEmailTosDataTable(HtmlDataTable emailTosDataTable) {
+            this.emailTosDataTable = emailTosDataTable;
         }
     }
 }
