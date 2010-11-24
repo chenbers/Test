@@ -8,10 +8,10 @@ public interface MovementEventHandler {
     /**
      * Handles the 'driver start moving' event.
      * 
-     * @param driverId
+     * @param driverID
      *            The id of the driver who started to drive.
      */
-    void handleDriverStartedMoving(Integer driverId);
+    void handleDriverStartedMoving(Integer driverID);
 
     /**
      * Handles the 'driver stopped moving' event.
@@ -19,5 +19,5 @@ public interface MovementEventHandler {
      * @param driverId
      *            The id of the driver who stopped driving.
      */
-    void handleDriverStoppedMoving(Integer driverId);
+    void handleDriverStoppedMoving(Integer driverID);
 }

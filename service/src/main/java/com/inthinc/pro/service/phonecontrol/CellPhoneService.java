@@ -1,7 +1,7 @@
 package com.inthinc.pro.service.phonecontrol;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -9,7 +9,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import com.inthinc.pro.model.phone.CellStatusType;
-import com.iwi.teenserver.dao.hessian.mcm.IWINotificationType;
 
 /**
  * Services for Cell phone Control.
@@ -19,15 +18,28 @@ import com.iwi.teenserver.dao.hessian.mcm.IWINotificationType;
 public interface CellPhoneService {
 
     /**
-     * Send a request to the phone provider to enable or disable the driver's phone 
+     * Process startMotion event received from the Note Server. 
+     * A request for disabling to phone is sent to the phone provider
      * @param driverID The driver ID
-     * @param event The event sent by the Note Server
      * @return
      */
-    @GET
+
+    @POST
     @Consumes("application/xml")
-    @Path("/eventService/notifyCellPhoneEvent/{driverID}/{event}")
-    public Response createEvent(@PathParam("driverID") Integer driverID, @PathParam("event") IWINotificationType event  );
+    @Path("/driver/{driverID}/startMotion")
+    public Response processStartMotionEvent(@PathParam("driverID") Integer driverID);
+    
+    /**
+     * Process stopMotion event received from the Note Server. 
+     * A request for enabling to phone is sent to the phone provider
+     * @param driverID The driver ID
+     * @return
+     */
+
+    @POST
+    @Consumes("application/xml")
+    @Path("/driver/{driverID}/stopMotion")
+    public Response processStopMotionEvent(@PathParam("driverID") Integer driverID);
     
     
     /**
@@ -39,6 +51,6 @@ public interface CellPhoneService {
     @PUT
     @Consumes("application/xml")
     @Path("/phone/{phoneID}/{status}") 
-    public Response update(@PathParam("phoneID") String phoneId, @PathParam("status") CellStatusType status);
+    public Response updateStatus(@PathParam("phoneID") String phoneId, @PathParam("status") CellStatusType status);
     
 }
