@@ -12,5 +12,4 @@ public interface MovementEventHandler {
      *            The id of the driver which started to drive.
      */
     void handleDriverStartedMoving(Integer driverId);
-
 }
