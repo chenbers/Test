@@ -6,8 +6,8 @@ package com.inthinc.pro.service.phonecontrol.impl;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
-import com.inthinc.pro.service.phonecontrol.PhoneControlServiceFactory;
-import com.inthinc.pro.service.phonecontrol.client.PhoneControlService;
+import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
+import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 
 /**
  * {@link MovementEventHandler} which requests phone control service provider to disable/enable driver's cell phone once it starts/stops driving.
@@ -15,7 +15,7 @@ import com.inthinc.pro.service.phonecontrol.client.PhoneControlService;
 public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
     private final DriverDAO driverDao;
-    private PhoneControlServiceFactory serviceFactory;
+    private PhoneControlAdapterFactory serviceFactory;
 
     /**
      * Creates an instance of {@link PhoneControlMovementEventHandler}.
@@ -23,9 +23,9 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
      * @param driverDao
      *            THe {@link DriverDAO} instance to use to obtain information about the driver.
      * @param serviceFactory
-     *            An instance of the {@link PhoneControlServiceFactory} to be used to create {@link PhoneControlService} client endpoints.
+     *            An instance of the {@link PhoneControlAdapterFactory} to be used to create {@link PhoneControlAdapter} client endpoints.
      */
-    public PhoneControlMovementEventHandler(DriverDAO driverDao, PhoneControlServiceFactory serviceFactory) {
+    public PhoneControlMovementEventHandler(DriverDAO driverDao, PhoneControlAdapterFactory serviceFactory) {
         this.driverDao = driverDao;
         this.serviceFactory = serviceFactory;
     }
@@ -42,7 +42,7 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         Driver driver = driverDao.findByID(driverId);
         String cellPhoneNumber = driver.getCellPhone();
 
-        PhoneControlService phoneControlService = serviceFactory.createServiceEndpoint(driver.getProvider());
+        PhoneControlAdapter phoneControlService = serviceFactory.createServiceEndpoint(driver.getProvider());
         phoneControlService.disablePhone(cellPhoneNumber);
     }
 
@@ -55,7 +55,7 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         Driver driver = driverDao.findByID(driverId);
         String cellPhoneNumber = driver.getCellPhone();
 
-        PhoneControlService phoneControlService = serviceFactory.createServiceEndpoint(driver.getProvider());
+        PhoneControlAdapter phoneControlService = serviceFactory.createServiceEndpoint(driver.getProvider());
         phoneControlService.enablePhone(cellPhoneNumber);
     }
 }

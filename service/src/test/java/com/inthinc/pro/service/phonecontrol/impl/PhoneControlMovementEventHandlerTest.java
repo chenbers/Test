@@ -11,13 +11,13 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
-import com.inthinc.pro.service.phonecontrol.PhoneControlServiceFactory;
-import com.inthinc.pro.service.phonecontrol.client.PhoneControlService;
+import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
+import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 
 public class PhoneControlMovementEventHandlerTest {
 
     @Test
-    public void testHandlesDriverStartMovingEvent(final DriverDAO driverDaoMock, final PhoneControlServiceFactory serviceFactory, final PhoneControlService phoneControlService) {
+    public void testHandlesDriverStartMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactory, final PhoneControlAdapter phoneControlService) {
 
         final Driver expectedDriver = new Driver();
         final Integer expectedDriverId = 666;
@@ -61,7 +61,7 @@ public class PhoneControlMovementEventHandlerTest {
 
     @Test
     // TODO Update this test to add call to Zoomsafer/Cellcontrol service.
-    public void testHandlesDriverStopsMovingEvent(final DriverDAO driverDaoMock, final PhoneControlServiceFactory serviceFactory, final PhoneControlService phoneControlService) {
+    public void testHandlesDriverStopsMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactory, final PhoneControlAdapter phoneControlService) {
 
         final Driver expectedDriver = new Driver();
         final Integer expectedDriverId = 666;
@@ -104,7 +104,7 @@ public class PhoneControlMovementEventHandlerTest {
     }
 
     @Test
-    public void testPropagatesExceptionsFromTiwiproBackend(final DriverDAO driverDaoMock, final PhoneControlServiceFactory serviceFactory) {
+    public void testPropagatesExceptionsFromTiwiproBackend(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactory) {
 
         final RuntimeException expectedException = new RuntimeException("Dummy exception");
 
@@ -136,7 +136,7 @@ public class PhoneControlMovementEventHandlerTest {
 
     @Test
     // TODO Update this test to add call to Zoomsafer/Cellcontrol service.
-    public void testPropagatesExceptionsFromPhoneControlEndpoint(final DriverDAO driverDaoMock, final PhoneControlServiceFactory serviceFactory, final PhoneControlService phoneControlService) {
+    public void testPropagatesExceptionsFromPhoneControlEndpoint(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactory, final PhoneControlAdapter phoneControlService) {
 
         final RuntimeException expectedException = new RuntimeException("Dummy exception");
 
