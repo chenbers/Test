@@ -1,11 +1,9 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.CellPhoneService;
-import com.iwi.teenserver.dao.hessian.mcm.IWINotificationType;
 
 public class CellPhoneServiceImpl implements CellPhoneService {
 

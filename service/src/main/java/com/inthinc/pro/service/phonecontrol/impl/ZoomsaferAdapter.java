@@ -3,7 +3,7 @@ package com.inthinc.pro.service.phonecontrol.impl;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 
 /**
- * {@link PhoneControlAdapter} implementation for Zoomsafer service provider.
+ * {@link PhoneControlAdapter} implementation for Cellcontrol service provider.
  */
 public class ZoomsaferAdapter implements PhoneControlAdapter {
 

@@ -1,6 +1,5 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
-import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 
 public class MovementStopHandlerThread extends MovementEventHandlerThread implements Runnable {
 
