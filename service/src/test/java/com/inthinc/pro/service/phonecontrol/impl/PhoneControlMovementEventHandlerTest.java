@@ -17,7 +17,6 @@ import com.inthinc.pro.service.phonecontrol.client.PhoneControlService;
 public class PhoneControlMovementEventHandlerTest {
 
     @Test
-    // TODO Update this test to add call to Zoomsafer/Cellcontrol service.
     public void testHandlesDriverStartMovingEvent(final DriverDAO driverDaoMock, final PhoneControlServiceFactory serviceFactory, final PhoneControlService phoneControlService) {
 
         final Driver expectedDriver = new Driver();
@@ -61,6 +60,50 @@ public class PhoneControlMovementEventHandlerTest {
     }
 
     @Test
+    // TODO Update this test to add call to Zoomsafer/Cellcontrol service.
+    public void testHandlesDriverStopsMovingEvent(final DriverDAO driverDaoMock, final PhoneControlServiceFactory serviceFactory, final PhoneControlService phoneControlService) {
+
+        final Driver expectedDriver = new Driver();
+        final Integer expectedDriverId = 666;
+        final String expectedCellPhoneNumber = "5145555555";
+        final CellProviderType expectedCellProvider = CellProviderType.CELL_CONTROL;
+
+        expectedDriver.setCellPhone(expectedCellPhoneNumber);
+        expectedDriver.setProvider(expectedCellProvider);
+
+        // Expectations & stubbing
+        new NonStrictExpectations() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                result = expectedDriver;
+
+                serviceFactory.createServiceEndpoint(expectedCellProvider);
+                result = phoneControlService;
+
+                phoneControlService.enablePhone(expectedCellPhoneNumber);
+            }
+        };
+
+        // Execution
+        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, serviceFactory);
+        handler.handleDriverStoppedMoving(expectedDriverId);
+
+        // Verification
+        new Verifications() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                times = 1;
+
+                serviceFactory.createServiceEndpoint(expectedCellProvider);
+                times = 1;
+
+                phoneControlService.enablePhone(expectedCellPhoneNumber);
+                times = 1;
+            }
+        };
+    }
+
+    @Test
     public void testPropagatesExceptionsFromTiwiproBackend(final DriverDAO driverDaoMock, final PhoneControlServiceFactory serviceFactory) {
 
         final RuntimeException expectedException = new RuntimeException("Dummy exception");
@@ -77,6 +120,13 @@ public class PhoneControlMovementEventHandlerTest {
         MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, serviceFactory);
         try {
             handler.handleDriverStartedMoving(1);
+            fail("Exception should have been raised but got none");
+        } catch (Throwable e) {
+            // Verification
+            assertSame(expectedException, e);
+        }
+        try {
+            handler.handleDriverStoppedMoving(1);
             fail("Exception should have been raised but got none");
         } catch (Throwable e) {
             // Verification
@@ -101,6 +151,9 @@ public class PhoneControlMovementEventHandlerTest {
 
                 phoneControlService.disablePhone(anyString);
                 result = expectedException;
+
+                phoneControlService.enablePhone(anyString);
+                result = expectedException;
             }
         };
 
@@ -109,6 +162,14 @@ public class PhoneControlMovementEventHandlerTest {
 
         try {
             handler.handleDriverStartedMoving(1);
+            fail("Exception should have been raised but got none");
+        } catch (Throwable e) {
+            // Verification
+            assertSame(expectedException, e);
+        }
+
+        try {
+            handler.handleDriverStoppedMoving(1);
             fail("Exception should have been raised but got none");
         } catch (Throwable e) {
             // Verification

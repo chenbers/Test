@@ -4,13 +4,14 @@ import com.inthinc.pro.model.phone.CellProviderType;
 
 /**
  * {@link PhoneControlService} is an adapter for the various service endpoints implementation of available {@link CellProviderType}s.
+ * <p/>
+ * All requests are idempotent (i.e. multiple calls for the same number have no additional effect). No error is returned from any of this class' calls. All requests are treated as
+ * successful.
  */
 public interface PhoneControlService {
 
     /**
      * Sends a request to disable a phone.
-     * <p/>
-     * Requests are idempotent (i.e. multiple calls for the same number have no additional effect). It can be assumed that the requests are always successfully sent.
      * 
      * @param cellPhoneNumber
      *            The number of the cell phone to be disabled.
@@ -18,4 +19,14 @@ public interface PhoneControlService {
     // TODO This signature will likely change once the Retry user story is implemented.
     // Either a value will be returned or an exception will be thrown.
     void disablePhone(String cellPhoneNumber);
+
+    /**
+     * Sends a request to enable a phone.
+     * 
+     * @param cellPhoneNumber
+     *            The number of the cell phone to be enabled.
+     */
+    // TODO This signature will likely change once the Retry user story is implemented.
+    // Either a value will be returned or an exception will be thrown.
+    void enablePhone(String cellPhoneNumber);
 }

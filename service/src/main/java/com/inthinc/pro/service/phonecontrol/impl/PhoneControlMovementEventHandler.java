@@ -45,4 +45,17 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         PhoneControlService phoneControlService = serviceFactory.createServiceEndpoint(driver.getProvider());
         phoneControlService.disablePhone(cellPhoneNumber);
     }
+
+    /**
+     * @see com.inthinc.pro.service.phonecontrol.MovementEventHandler#handleDriverStoppedMoving(java.lang.Integer)
+     */
+    // TODO Add logic to handle error once retry user story is implemented.
+    @Override
+    public void handleDriverStoppedMoving(Integer driverId) {
+        Driver driver = driverDao.findByID(driverId);
+        String cellPhoneNumber = driver.getCellPhone();
+
+        PhoneControlService phoneControlService = serviceFactory.createServiceEndpoint(driver.getProvider());
+        phoneControlService.enablePhone(cellPhoneNumber);
+    }
 }
