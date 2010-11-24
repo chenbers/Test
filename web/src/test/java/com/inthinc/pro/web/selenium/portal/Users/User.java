@@ -142,7 +142,7 @@ public class User extends InthincTest {
 		selenium.type(password, get_data(datasheet,"Password"));
 		selenium.type(password_confirm, get_data(datasheet,"Password"));
 		selenium.selectDhxCombo(get_data(datasheet,"Group"), "Login Group");
-		selenium.addtoPanel(panel_id, "label=" + get_data(datasheet,"Panel"), "Login Role Panel");
+//		selenium.addtoPanel(panel_id, "label=" + get_data(datasheet,"Panel"), "Login Role Panel");
 		selenium.select(user_status, "label=" + get_data(datasheet,"Status"));
 	}
 	
