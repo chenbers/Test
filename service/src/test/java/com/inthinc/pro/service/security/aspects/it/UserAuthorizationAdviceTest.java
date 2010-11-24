@@ -13,8 +13,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.service.adapters.GroupDAOAdapter;
-import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.adapters.UserDAOAdapter;
 import com.inthinc.pro.service.test.stubs.GroupDaoStub;
 import com.inthinc.pro.service.test.stubs.PersonDaoStub;
@@ -29,8 +27,6 @@ public class UserAuthorizationAdviceTest {
 
     private static ApplicationContext applicationContext;
     private UserDAOAdapter userAdapter;
-    private GroupDAOAdapter groupAdapter;
-    private PersonDAOAdapter personAdapter;
     private TiwiproPrincipalStub tiwiproPrincipal;
     private GroupDaoStub groupDaoStub;
     private PersonDaoStub personDaoStub;
@@ -46,8 +42,6 @@ public class UserAuthorizationAdviceTest {
     @Before
     public void setUpTests() throws Exception {
         userAdapter = (UserDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, UserDAOAdapter.class);
-        groupAdapter = (GroupDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, GroupDAOAdapter.class);
-        personAdapter = (PersonDAOAdapter) BeanFactoryUtils.beanOfType(applicationContext, PersonDAOAdapter.class);
         groupDaoStub = (GroupDaoStub) BeanFactoryUtils.beanOfType(applicationContext, GroupDaoStub.class);
         personDaoStub = (PersonDaoStub) BeanFactoryUtils.beanOfType(applicationContext, PersonDaoStub.class);
         tiwiproPrincipal = (TiwiproPrincipalStub) BeanFactoryUtils.beanOfType(applicationContext, TiwiproPrincipalStub.class);
