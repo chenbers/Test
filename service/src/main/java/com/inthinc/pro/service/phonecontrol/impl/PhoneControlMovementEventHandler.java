@@ -47,7 +47,7 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         Driver driver = driverDao.findByID(driverId);
         String cellPhoneNumber = driver.getCellPhone();
 
-        PhoneControlAdapter phoneControlService = serviceFactory.createServiceEndpoint(driver.getProvider());
+        PhoneControlAdapter phoneControlService = serviceFactory.createAdapter(driver.getProvider());
         phoneControlService.disablePhone(cellPhoneNumber);
     }
 
@@ -60,7 +60,7 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         Driver driver = driverDao.findByID(driverId);
         String cellPhoneNumber = driver.getCellPhone();
 
-        PhoneControlAdapter phoneControlService = serviceFactory.createServiceEndpoint(driver.getProvider());
+        PhoneControlAdapter phoneControlService = serviceFactory.createAdapter(driver.getProvider());
         phoneControlService.enablePhone(cellPhoneNumber);
     }
 }

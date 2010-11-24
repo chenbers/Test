@@ -33,7 +33,7 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 result = expectedDriver;
 
-                serviceFactory.createServiceEndpoint(expectedCellProvider);
+                serviceFactory.createAdapter(expectedCellProvider);
                 result = phoneControlService;
 
                 phoneControlService.disablePhone(expectedCellPhoneNumber);
@@ -50,7 +50,7 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 times = 1;
 
-                serviceFactory.createServiceEndpoint(expectedCellProvider);
+                serviceFactory.createAdapter(expectedCellProvider);
                 times = 1;
 
                 phoneControlService.disablePhone(expectedCellPhoneNumber);
@@ -77,7 +77,7 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 result = expectedDriver;
 
-                serviceFactory.createServiceEndpoint(expectedCellProvider);
+                serviceFactory.createAdapter(expectedCellProvider);
                 result = phoneControlService;
 
                 phoneControlService.enablePhone(expectedCellPhoneNumber);
@@ -94,7 +94,7 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 times = 1;
 
-                serviceFactory.createServiceEndpoint(expectedCellProvider);
+                serviceFactory.createAdapter(expectedCellProvider);
                 times = 1;
 
                 phoneControlService.enablePhone(expectedCellPhoneNumber);
@@ -146,7 +146,7 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(anyInt);
                 result = new Driver();
 
-                serviceFactory.createServiceEndpoint((CellProviderType) any);
+                serviceFactory.createAdapter((CellProviderType) any);
                 result = phoneControlService;
 
                 phoneControlService.disablePhone(anyString);

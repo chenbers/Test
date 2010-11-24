@@ -1,4 +1,6 @@
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/util 
@@ -6,113 +8,140 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName">
-  <!-- Message Bundles -->
-  <!-- 
-  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-    <property name="basename" value="com.inthinc.pro.resources.Messages" />
-  </bean>
-  -->
-  <!-- Phone control autowiring configuration -->
-  <context:component-scan base-package="com.inthinc.pro.service.phonecontrol"/>
-  
-  <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="ignoreResourceNotFound" value="true" />
-    <property name="locations">
-      <list>
-        <value>classpath:tiwipro.properties</value>
-        <value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
-      </list>
-    </property>
-  </bean>
-  
-  
-   <!-- Global Application Context (singleton scoped) beans -->
-<!--   <bean id="roles" class="com.inthinc.pro.model.app.Roles" init-method="init">-->
-<!--    <property name="roleDAO" ref="roleDAO"></property>-->
-<!--   </bean>-->
-   <bean id="states" class="com.inthinc.pro.model.app.States" init-method="init"/>
-   <bean id="supportedTimeZones" class="com.inthinc.pro.model.app.SupportedTimeZones" init-method="init"/>
-   <bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping" init-method="init"/>
+	<!-- Message Bundles -->
+	<!--
+		<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="com.inthinc.pro.resources.Messages"
+		/> </bean>
+	-->
+	<!-- Phone control autowiring configuration -->
+	<context:component-scan base-package="com.inthinc.pro.service.phonecontrol" />
 
-  <!-- RestEasy Config -->
-  <!--
-    <bean class="com.inthinc.pro.service.impl.SpeedByStreetServiceImpl"> <property name="sbsUserId" value="${teenproxy.sbsUserId}"/> <property name="sbsUserName" value="${teenproxy.sbsUserName}"/>
-    <property name="teenServerDAO" ref="sbsDataAccessBean"/> <property name="tigerDAO" ref="tigerDao"/> </bean>
-  -->
-  <bean id="secureAccountDAO" class="com.inthinc.pro.util.SecureAccountDAO">
-    <property name="accountDAO" ref="accountDAO"/>
-  </bean>
-  <bean id="secureAddressDAO" class="com.inthinc.pro.util.SecureAddressDAO">
-    <property name="addressDAO" ref="addressDAO" />
-  </bean>
-  <bean id="secureDeviceDAO" class="com.inthinc.pro.util.SecureDeviceDAO">
-    <property name="deviceDAO" ref="deviceDAO" />
-  </bean>
-  <bean id="secureGroupDAO" class="com.inthinc.pro.util.SecureGroupDAO">
-    <property name="groupDAO" ref="groupDAO" />
-    <property name="groupReportDAO" ref="groupReportDAO"/>
-  </bean>
-  <bean id="securePersonDAO" class="com.inthinc.pro.util.SecurePersonDAO">
-    <property name="personDAO" ref="personDAO" />
-    <property name="addressDAO" ref="secureAddressDAO" />
-  </bean>
-  <bean id="secureDriverDAO" class="com.inthinc.pro.util.SecureDriverDAO">
-    <property name="driverDAO" ref="driverDAO" />
-    <property name="driverReportDAO" ref="driverReportDAO"/>
-    <property name="eventDAO" ref="eventDAO"/>
-    <property name="groupDAO" ref="secureGroupDAO" />
-    <property name="personDAO" ref="securePersonDAO" />
-  </bean>
-  <bean id="secureUserDAO" class="com.inthinc.pro.util.SecureUserDAO">
-    <property name="userDAO" ref="userDAO" />
-    <property name="groupDAO" ref="secureGroupDAO" />
-    <property name="personDAO" ref="securePersonDAO" />
-  </bean>
-  <bean id="secureVehicleDAO" class="com.inthinc.pro.util.SecureVehicleDAO">
-    <property name="vehicleDAO" ref="vehicleDAO" />
-    <property name="vehicleReportDAO" ref="vehicleReportDAO"/>
-    <property name="mpgDAO" ref="mpgDAO" />
-    <property name="driverDAO" ref="secureDriverDAO" />
-    <property name="groupDAO" ref="secureGroupDAO" />
-    <property name="deviceDAO" ref="secureDeviceDAO" />
-  </bean>
-  
-  <bean id="accountService" class="com.inthinc.pro.service.impl.AccountServiceImpl">
-    <property name="dao" ref="secureAccountDAO"/>
-  </bean>
-  <bean id="addressService" class="com.inthinc.pro.service.impl.AddressServiceImpl">
-    <property name="dao" ref="secureAddressDAO" />
-  </bean>
-  <bean id="deviceService" class="com.inthinc.pro.service.impl.DeviceServiceImpl">
-    <property name="dao" ref="secureDeviceDAO" />
-  </bean>
-  <bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl">
-    <property name="dao" ref="secureDriverDAO" />
-  </bean>
-  <bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl">
-    <property name="dao" ref="secureGroupDAO" />
-  </bean>
-  <bean id="personService" class="com.inthinc.pro.service.impl.PersonServiceImpl">
-    <property name="dao" ref="securePersonDAO" />
-  </bean>
-  <bean id="userService" class="com.inthinc.pro.service.impl.UserServiceImpl">
-    <property name="dao" ref="secureUserDAO" />
-  </bean>
-  <bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl">
-    <property name="dao" ref="secureVehicleDAO" />
-    <property name="addressLookup" ref="geonamesAddressLookupBean"/>
-  </bean>  
-  <bean id="voiceService" class="com.inthinc.pro.service.voicexml.VoiceServiceImpl">
-    <property name="voxeoAudioURL" value="${voxeoAudioURL}" />
-    <property name="alertMessageDAO" ref="alertMessageDAO" />
-  </bean>  
-  <bean id="voiceAckService" class="com.inthinc.pro.service.voicexml.VoiceAckServiceImpl">
-    <property name="voxeoAudioURL" value="${voxeoAudioURL}" />
-    <property name="alertMessageDAO" ref="alertMessageDAO" />
-  </bean>  
-  <!--     
-    <bean class="com.inthinc.pro.service.impl.NoteServiceImpl">
-    	<property name="mcmService" ref="mcmServiceBean"/>
-    </bean>
- -->
+	<!-- Phone control adapter factory configuration -->
+	<bean id="phoneControlAdapterFactory"
+		class="com.inthinc.pro.service.phonecontrol.impl.DefaultPhoneControlAdapterFactory">
+		<property name="factoryMap">
+			<map>
+				<entry>
+					<key><value>CELL_CONTROL</value></key>
+					<bean class="com.inthinc.pro.service.phonecontrol.impl.CellcontrolAdapter" />
+				</entry>
+				<entry>
+					<key><value>ZOOM_SAFER</value></key>
+					<bean class="com.inthinc.pro.service.phonecontrol.impl.ZoomsaferAdapter" />
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="propertyPlaceholderConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:tiwipro.properties</value>
+				<value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Global Application Context (singleton scoped) beans -->
+	<!--
+		<bean id="roles" class="com.inthinc.pro.model.app.Roles"
+		init-method="init">
+	-->
+	<!--    <property name="roleDAO" ref="roleDAO"></property>-->
+	<!--   </bean>-->
+	<bean id="states" class="com.inthinc.pro.model.app.States"
+		init-method="init" />
+	<bean id="supportedTimeZones" class="com.inthinc.pro.model.app.SupportedTimeZones"
+		init-method="init" />
+	<bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping"
+		init-method="init" />
+
+	<!-- RestEasy Config -->
+	<!--
+		<bean class="com.inthinc.pro.service.impl.SpeedByStreetServiceImpl">
+		<property name="sbsUserId" value="${teenproxy.sbsUserId}"/> <property
+		name="sbsUserName" value="${teenproxy.sbsUserName}"/> <property
+		name="teenServerDAO" ref="sbsDataAccessBean"/> <property
+		name="tigerDAO" ref="tigerDao"/> </bean>
+	-->
+	<bean id="secureAccountDAO" class="com.inthinc.pro.util.SecureAccountDAO">
+		<property name="accountDAO" ref="accountDAO" />
+	</bean>
+	<bean id="secureAddressDAO" class="com.inthinc.pro.util.SecureAddressDAO">
+		<property name="addressDAO" ref="addressDAO" />
+	</bean>
+	<bean id="secureDeviceDAO" class="com.inthinc.pro.util.SecureDeviceDAO">
+		<property name="deviceDAO" ref="deviceDAO" />
+	</bean>
+	<bean id="secureGroupDAO" class="com.inthinc.pro.util.SecureGroupDAO">
+		<property name="groupDAO" ref="groupDAO" />
+		<property name="groupReportDAO" ref="groupReportDAO" />
+	</bean>
+	<bean id="securePersonDAO" class="com.inthinc.pro.util.SecurePersonDAO">
+		<property name="personDAO" ref="personDAO" />
+		<property name="addressDAO" ref="secureAddressDAO" />
+	</bean>
+	<bean id="secureDriverDAO" class="com.inthinc.pro.util.SecureDriverDAO">
+		<property name="driverDAO" ref="driverDAO" />
+		<property name="driverReportDAO" ref="driverReportDAO" />
+		<property name="eventDAO" ref="eventDAO" />
+		<property name="groupDAO" ref="secureGroupDAO" />
+		<property name="personDAO" ref="securePersonDAO" />
+	</bean>
+	<bean id="secureUserDAO" class="com.inthinc.pro.util.SecureUserDAO">
+		<property name="userDAO" ref="userDAO" />
+		<property name="groupDAO" ref="secureGroupDAO" />
+		<property name="personDAO" ref="securePersonDAO" />
+	</bean>
+	<bean id="secureVehicleDAO" class="com.inthinc.pro.util.SecureVehicleDAO">
+		<property name="vehicleDAO" ref="vehicleDAO" />
+		<property name="vehicleReportDAO" ref="vehicleReportDAO" />
+		<property name="mpgDAO" ref="mpgDAO" />
+		<property name="driverDAO" ref="secureDriverDAO" />
+		<property name="groupDAO" ref="secureGroupDAO" />
+		<property name="deviceDAO" ref="secureDeviceDAO" />
+	</bean>
+
+	<bean id="accountService" class="com.inthinc.pro.service.impl.AccountServiceImpl">
+		<property name="dao" ref="secureAccountDAO" />
+	</bean>
+	<bean id="addressService" class="com.inthinc.pro.service.impl.AddressServiceImpl">
+		<property name="dao" ref="secureAddressDAO" />
+	</bean>
+	<bean id="deviceService" class="com.inthinc.pro.service.impl.DeviceServiceImpl">
+		<property name="dao" ref="secureDeviceDAO" />
+	</bean>
+	<bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl">
+		<property name="dao" ref="secureDriverDAO" />
+	</bean>
+	<bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl">
+		<property name="dao" ref="secureGroupDAO" />
+	</bean>
+	<bean id="personService" class="com.inthinc.pro.service.impl.PersonServiceImpl">
+		<property name="dao" ref="securePersonDAO" />
+	</bean>
+	<bean id="userService" class="com.inthinc.pro.service.impl.UserServiceImpl">
+		<property name="dao" ref="secureUserDAO" />
+	</bean>
+	<bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl">
+		<property name="dao" ref="secureVehicleDAO" />
+		<property name="addressLookup" ref="geonamesAddressLookupBean" />
+	</bean>
+	<bean id="voiceService" class="com.inthinc.pro.service.voicexml.VoiceServiceImpl">
+		<property name="voxeoAudioURL" value="${voxeoAudioURL}" />
+		<property name="alertMessageDAO" ref="alertMessageDAO" />
+	</bean>
+	<bean id="voiceAckService" class="com.inthinc.pro.service.voicexml.VoiceAckServiceImpl">
+		<property name="voxeoAudioURL" value="${voxeoAudioURL}" />
+		<property name="alertMessageDAO" ref="alertMessageDAO" />
+	</bean>
+	<!--
+		<bean class="com.inthinc.pro.service.impl.NoteServiceImpl"> <property
+		name="mcmService" ref="mcmServiceBean"/> </bean>
+	-->
 </beans>

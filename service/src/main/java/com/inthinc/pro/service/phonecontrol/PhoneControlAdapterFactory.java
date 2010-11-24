@@ -15,5 +15,5 @@ public interface PhoneControlAdapterFactory {
      * 
      * @return A client endpoint for the respective remote {@link PhoneControlAdapter}.
      */
-    PhoneControlAdapter createServiceEndpoint(CellProviderType providerType);
+    PhoneControlAdapter createAdapter(CellProviderType providerType);
 }
