@@ -51,12 +51,12 @@ public abstract class VehicleSettingManager {
 	        return createDefaultValues(vehicleID); 
 	    }
 	    else {
-	        return createFromExistingValues(vehicleSetting);
+	        return createFromExistingValues(vehicleID, vehicleSetting);
 	    }
 	}
 	
     protected abstract EditableVehicleSettings createDefaultValues(Integer vehicleID);
-    protected abstract EditableVehicleSettings createFromExistingValues(VehicleSetting vs);
+    protected abstract EditableVehicleSettings createFromExistingValues(Integer vehicleID,VehicleSetting vs);
     
     protected Map<Integer, String> getHardAccelerationValue(Integer sliderValue){
         

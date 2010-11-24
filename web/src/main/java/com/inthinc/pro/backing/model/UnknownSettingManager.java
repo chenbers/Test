@@ -34,7 +34,7 @@ public class UnknownSettingManager extends VehicleSettingManager {
 	}
 
 	@Override
-	protected EditableVehicleSettings createFromExistingValues(VehicleSetting vs) {
+	protected EditableVehicleSettings createFromExistingValues(Integer vehicleID,VehicleSetting vs) {
 		return null;
 	}
 

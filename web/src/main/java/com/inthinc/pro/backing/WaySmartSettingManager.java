@@ -37,7 +37,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
                                         hardAcceleration, hardBrake, hardTurn,hardVertical);
     }
     
-    protected EditableVehicleSettings createFromExistingValues(VehicleSetting vs){
+    protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
         
         Integer speedLimit  = NumberUtil.convertString(vs.getCombined(SettingType.SPEED_LIMIT.getSettingID()));
         Integer speedBuffer = NumberUtil.convertString(vs.getCombined(SettingType.SPEED_BUFFER.getSettingID()));
@@ -50,7 +50,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
 
-        return new WaySmartEditableVehicleSettings(vs.getVehicleID(), speedLimit,speedBuffer,severeSpeed, 
+        return new WaySmartEditableVehicleSettings(vehicleID, speedLimit,speedBuffer,severeSpeed, 
                                           hardAcceleration, hardBrake, hardTurn,hardVertical);
     }
     

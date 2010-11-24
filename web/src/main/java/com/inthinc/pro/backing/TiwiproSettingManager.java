@@ -36,7 +36,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         return new TiwiproEditableVehicleSettings(vehicleID==null?-1:vehicleID, ephone, autoLogoffSeconds, speedSettings, hardAcceleration, hardBrake, hardTurn,hardVertical);
     }
     
-    public EditableVehicleSettings createFromExistingValues(VehicleSetting vs){
+    public EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
         
         String ephone = vs.getCombined(SettingType.EPHONE_SETTING.getSettingID());
         Integer autoLogoffSeconds = NumberUtil.convertString(vs.getCombined(SettingType.AUTOLOGOFF_SETTING.getSettingID()));

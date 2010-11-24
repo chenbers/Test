@@ -20,7 +20,7 @@ public class VehicleSettingsFactory {
         List<VehicleSetting> vehiclesSettings = configuratorDAO.getVehicleSettingsByGroupIDDeep(groupID);
         for (VehicleSetting vehicleSetting : vehiclesSettings){
 
-            vehicleSettingManagers.put(vehicleSetting.getVehicleID(),getSettingManager(vehicleSetting.getProductType(),vehicleSetting.getVehicleID()));
+            vehicleSettingManagers.put(vehicleSetting.getVehicleID(),getSettingManager(vehicleSetting.getProductType(),vehicleSetting.getVehicleID(),vehicleSetting));
         }
         return vehicleSettingManagers;
     }
@@ -28,17 +28,17 @@ public class VehicleSettingsFactory {
         
         return new UnknownSettingManager(configuratorDAO,new VehicleSetting());
     }
-    public VehicleSettingManager getSettingManager(ProductType productType, Integer vehicleID){
+    public VehicleSettingManager getSettingManager(ProductType productType, Integer vehicleID, VehicleSetting vehicleSetting){
         
-        if (productType == null) return new UnknownSettingManager(configuratorDAO,null);
+        if (productType == null) return new UnknownSettingManager(configuratorDAO,vehicleSetting==null?new VehicleSetting():vehicleSetting);
         switch (productType){
             case WS820:
-               return  new WaySmartSettingManager(configuratorDAO,productType,new VehicleSetting());
+               return  new WaySmartSettingManager(configuratorDAO,productType,vehicleSetting==null?new VehicleSetting():vehicleSetting);
             case TIWIPRO_R71:
             case TIWIPRO_R74:
-                return new TiwiproSettingManager(configuratorDAO, productType,new VehicleSetting());
+                return new TiwiproSettingManager(configuratorDAO, productType,vehicleSetting==null?new VehicleSetting():vehicleSetting);
             default:
-                return new UnknownSettingManager(configuratorDAO,new VehicleSetting());
+                return new UnknownSettingManager(configuratorDAO,vehicleSetting==null?new VehicleSetting():vehicleSetting);
        }
     }
     public ConfiguratorDAO getConfiguratorDAO() {

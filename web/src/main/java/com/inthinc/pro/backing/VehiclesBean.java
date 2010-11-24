@@ -225,7 +225,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             }
             else {
                 
-                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(ProductType.valueOfByName(batchProductChoice),vehicleID));
+                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(ProductType.valueOfByName(batchProductChoice),vehicleID, null));
             }
         }
     }
@@ -362,8 +362,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     public String batchEdit()
     {
-        final String redirect = super.batchEdit();
+        if (batchProductChoice == null) return null;
         
+        final String redirect = super.batchEdit();
+       
         if(isBatchEdit()){
             getItem().setVehicleID(-1);
         }
@@ -372,7 +374,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     private void createSettingManagerForCreateItem(){
                         
-        vehicleSettingManagers.put(-1, vehicleSettingsFactory.getSettingManager(ProductType.valueOfByName(batchProductChoice),-1));
+        vehicleSettingManagers.put(-1, vehicleSettingsFactory.getSettingManager(ProductType.valueOfByName(batchProductChoice),-1, null));
     }
     @Override
     public String cancelEdit()
