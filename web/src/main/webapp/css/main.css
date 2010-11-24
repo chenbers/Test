@@ -664,7 +664,18 @@ form input.txt {
 	padding: 4px;
 	font: 10px Verdana, Arial, Helvetica, sans-serif;
 }
-
+.emailInput {
+	background-image:url('../images/ico_email.gif');
+	background-repeat:no-repeat;
+	background-position: 3px 0px;
+	padding-left:23px;
+}
+.phoneInput {
+	background-image:url('../images/ico_telephone.gif');
+	background-repeat:no-repeat;
+	background-position: 3px 0px;
+	padding-left:23px;
+}
 form select {
 	float: left;
 	display: block;
@@ -3492,4 +3503,10 @@ td.middle select {
 
 #report_description{
 				padding: 8px 0 0 55px;
+}
+hr.minorSeparator{
+	border: none 0;
+	border-top: 1px dotted #000;
+	width: 100%;
+	height: 1px;
 }
