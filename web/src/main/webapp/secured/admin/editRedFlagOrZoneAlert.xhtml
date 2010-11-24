@@ -570,13 +570,8 @@
  						  <ui:param name="context" value="editRedFlag"/>
  						  <ui:param name="formName" value="edit-form"/>
                         </ui:include>
-
-                      </td>
-                       
-                      <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-                      <td width="390" valign="top">
-                      
-                        <!-- 
+                        
+                         
                         <div class="add_section_title">
                           <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_emailToString" value="#{redFlagOrZoneAlertsBean.updateField['emailToString']}" />
                           <h:outputText value="#{messages.editAlerts_notificationsByEmail}" />
@@ -584,8 +579,152 @@
 
                         <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByEmailInstructions}" /></div>
 
-                        <h:inputTextarea id="emailToString" value="#{redFlagOrZoneAlertsBean.item.emailToString}" rows="4" style="width:100%" onchange="checkMultiple(this)" />
-                        -->
+                        <!-- <h:inputTextarea id="emailToString" value="#{redFlagOrZoneAlertsBean.item.emailToString}" rows="4" style="width:100%" onchange="checkMultiple(this)" /> -->
+						<!-- Escalation Emails list -->
+						<table>
+							<tr>
+								<td width="115" valign="top">
+									<ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="FALSE"/>
+										<ui:param name="reRender" value="emailTos"/>
+										<ui:param name="for" value="emailTos"/>
+										<ui:param name="fieldName" value="emailTos"/>
+										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+										<ui:param name="label" value="#{messages.editRedFlag_emailAddressesLabel}"/>
+        								<ui:param name="context" value="redFlagAlertsEmailTos" />
+									</ui:include>
+								</td>
+								<td>
+									<h:dataTable value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="dataItem" id="emailTos" binding="#{redFlagOrZoneAlertsBean.item.emailTosDataTable}">
+								        <h:column>
+								            <h:inputText value="#{dataItem}" styleClass="emailInput" />
+								        </h:column>
+								        <h:column>
+								            <a4j:commandLink value="X" action="#{redFlagOrZoneAlertsBean.item.removeEmailTo}" reRender="emailTos" rendered="#{dataItem != ''}" /> 
+								            <a4j:commandLink value="+" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos"  rendered="#{dataItem == ''}" />
+								        </h:column>	
+								    </h:dataTable>
+								</td>
+							</tr>
+						</table>
+					    
+					    <br/>
+						<!-- / Escalation Emails list -->                        
+
+                      </td>
+                       
+                      <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
+                      <td width="390" valign="top">
+                      <div class="add_section_title">
+                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_phoneCallEscalation" value="#{redFlagOrZoneAlertsBean.updateField['emailToString']}" />
+                          <h:outputText value="editRedFlag_notificationsByPhone" />
+                        </div>
+
+                        <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByPhoneInstructions}" /></div>
+						<table>
+							<tr>
+								<td width="115" valign="top">
+									<ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="FALSE"/>
+										<ui:param name="reRender" value="phNumbers"/>
+										<ui:param name="for" value="phNumbers"/>
+										<ui:param name="fieldName" value="phNumbers"/>
+										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+										<ui:param name="label" value="#{messages.editRedFlag_phoneNumbersLabel}"/>
+        								<ui:param name="context" value="redFlagAlertsPhNumbers" />
+									</ui:include>
+								</td>
+								<td>
+      								<!-- Escalation phNumbers list -->
+								    <h:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.item.phNumbersDataTable}">
+								        <h:column>
+								            <h:inputText value="#{dataItem}" styleClass="phoneInput" />
+								        </h:column>
+								        <h:column>
+								            <a4j:commandLink value="X" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers" rendered="#{dataItem != ''}" /> 
+								            <a4j:commandLink value="+" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers"  rendered="#{dataItem == ''}" />
+								        </h:column>	
+								    </h:dataTable>
+								    <br/>
+									<!-- / Escalation phNumbers list -->
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2"><hr class="minorSeparator"/></td>
+							</tr>
+							<tr>
+								<td width="115" valign="top">
+									<ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="FALSE"/>
+										<ui:param name="reRender" value="delay"/>
+										<ui:param name="for" value="delay"/>
+										<ui:param name="fieldName" value="delay"/>
+										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+										<ui:param name="label" value="#{messages.editRedFlag_callDelayLabel}"/>
+        								<ui:param name="context" value="redFlagAlertsPhoneDelay" />
+									</ui:include>
+								</td>
+								<td>
+      								<h:selectOneMenu id="redFlagAlertsPhoneDelay" value="#{redFlagOrZoneAlertsBean.item.delay}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+      									<f:selectItems value="#{redFlagOrZoneAlertsBean.item.delays}"/> 
+      								</h:selectOneMenu>
+								</td>
+							</tr>
+							<tr>
+								<td width="115" valign="top">
+									<ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="FALSE"/>
+										<ui:param name="reRender" value="limit"/>
+										<ui:param name="for" value="limit"/>
+										<ui:param name="fieldName" value="limitType"/>
+										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+										<ui:param name="label" value="#{messages.editRedFlag_limitByLabel}"/>
+        								<ui:param name="context" value="redFlagAlertsLimitType" />
+									</ui:include>
+								</td>
+								<td>
+      								<h:selectOneMenu id="redFlagAlertsLimitType" value="#{redFlagOrZoneAlertsBean.item.limitType}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+      									<f:selectItems value="#{redFlagOrZoneAlertsBean.item.limitTypes}"/> 
+      								</h:selectOneMenu>
+      								<rich:spacer width="5px" height="1px" style="float:left;" />
+      								<h:selectOneMenu id="redFlagAlertsLimitValue" value="#{redFlagOrZoneAlertsBean.item.limitValue}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+      									<f:selectItems value="#{redFlagOrZoneAlertsBean.item.limitValues}"/> 
+      								</h:selectOneMenu>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2"><hr class="minorSeparator"/></td>
+							</tr>
+							<tr>
+								<td width="115" valign="top">
+									<ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="FALSE"/>
+										<ui:param name="reRender" value="escEmails"/>
+										<ui:param name="for" value="escEmails"/>
+										<ui:param name="fieldName" value="escEmails"/>
+										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
+										<ui:param name="label" value="#{messages.editRedFlag_escalationEmailsLabel}"/>
+        								<ui:param name="context" value="redFlagAlertsEscEmails" />
+									</ui:include>
+								</td>
+								<td>
+      								<!-- Escalation Emails list -->
+								    <h:dataTable value="#{redFlagOrZoneAlertsBean.item.escEmails}" var="dataItem" id="escEmails" binding="#{redFlagOrZoneAlertsBean.item.escEmailsDataTable}">
+								        <h:column>
+								            <h:inputText value="#{dataItem}" styleClass="emailInput" />
+								        </h:column>
+								        <h:column>
+								            <a4j:commandLink value="X" action="#{redFlagOrZoneAlertsBean.item.removeEscEmail}" reRender="escEmails" rendered="#{dataItem != ''}" /> 
+								            <a4j:commandLink value="+" action="#{redFlagOrZoneAlertsBean.item.addEscEmailSlot}" reRender="escEmails" rendered="#{dataItem == ''}" />
+								        </h:column>	
+								    </h:dataTable>
+								    <br/>
+									<!-- / Escalation Emails list -->
+								</td>
+							</tr>
+						</table>
+                       
+                        <div class="instructions"><h:outputText value="#{messages.editRedFlag_escalationEmailInstructions}" /></div>
                       </td>
                       
                     </tr>
