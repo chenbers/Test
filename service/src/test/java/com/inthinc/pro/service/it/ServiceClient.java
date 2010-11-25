@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 import org.jboss.resteasy.client.ClientResponse;
 
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Device;
 
 @Path("/service/api")
 @Consumes("application/xml")
@@ -28,4 +29,8 @@ public interface ServiceClient {
     @DELETE
     @Path("/account/{accountID}")
     public ClientResponse<Account> delete(@PathParam("accountID")Integer id);
+
+    @GET
+    @Path("/devices")
+    public ClientResponse<List<Device>> getAllDevices();
 }
