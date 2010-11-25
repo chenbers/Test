@@ -19,6 +19,7 @@ import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
  */
 public class CellPhoneServiceImplTest extends BaseUnitTest {
     private final String phoneID = "1234567890";
+    private Integer expecteDriverID = 777;    
     
     private CellPhoneServiceImpl serviceSUT = new CellPhoneServiceImpl();
     
@@ -26,7 +27,7 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
     @Mocked private DriverDAO driverDaoMock;
     
     /**
-     * Test Update with CellStatusType.ENABLED acknowledgment.
+     * Test updateStatus() with CellStatusType.ENABLED acknowledgment.
      */
     @Test
     public void testUpdate() {
@@ -38,8 +39,6 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
         
     }
 
-    private Integer expecteDriverID = 777;
-    
     @Test 
     public void testProcessStartMotionEvent(final MovementEventHandler movementEventHandler){
         CellPhoneServiceImpl serviceSUT = new CellPhoneServiceImpl();
