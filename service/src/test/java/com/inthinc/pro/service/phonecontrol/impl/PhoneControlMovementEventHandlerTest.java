@@ -17,7 +17,7 @@ import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 public class PhoneControlMovementEventHandlerTest {
 
     @Test
-    public void testHandlesDriverStartMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactory, final PhoneControlAdapter phoneControlService) {
+    public void testHandlesDriverStartMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactoryMock, final PhoneControlAdapter phoneControlServiceMock) {
 
         final Driver expectedDriver = new Driver();
         final Integer expectedDriverId = 666;
@@ -33,15 +33,15 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 result = expectedDriver;
 
-                serviceFactory.createAdapter(expectedCellProvider);
-                result = phoneControlService;
+                serviceFactoryMock.createAdapter(expectedCellProvider);
+                result = phoneControlServiceMock;
 
-                phoneControlService.disablePhone(expectedCellPhoneNumber);
+                phoneControlServiceMock.disablePhone(expectedCellPhoneNumber);
             }
         };
 
         // Execution
-        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, serviceFactory);
+        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, serviceFactoryMock);
         handler.handleDriverStartedMoving(expectedDriverId);
 
         // Verification
@@ -50,10 +50,10 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 times = 1;
 
-                serviceFactory.createAdapter(expectedCellProvider);
+                serviceFactoryMock.createAdapter(expectedCellProvider);
                 times = 1;
 
-                phoneControlService.disablePhone(expectedCellPhoneNumber);
+                phoneControlServiceMock.disablePhone(expectedCellPhoneNumber);
                 times = 1;
             }
         };

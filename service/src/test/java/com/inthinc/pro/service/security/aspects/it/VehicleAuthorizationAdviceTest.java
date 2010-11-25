@@ -16,6 +16,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.inthinc.pro.dao.report.VehicleReportDAO;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -35,10 +36,6 @@ import com.inthinc.pro.service.test.mock.PersonDaoStub;
 import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
 import com.inthinc.pro.service.test.mock.VehicleDaoStub;
 
-/**
- * @author dfreitas
- * 
- */
 public class VehicleAuthorizationAdviceTest {
 
     private static ApplicationContext applicationContext;
@@ -87,6 +84,8 @@ public class VehicleAuthorizationAdviceTest {
         Device device = new Device();
 
         deviceDaoStub.setExpectedDevice(device);
+
+        driverDaoStub.setExpectedDriver(new Driver());
 
         Person person = new Person();
         Address address = new Address();

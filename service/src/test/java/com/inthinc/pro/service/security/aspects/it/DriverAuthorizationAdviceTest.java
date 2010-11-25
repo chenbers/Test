@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.inthinc.pro.service.security.aspects.it;
 
 import org.junit.Before;
@@ -18,10 +15,6 @@ import com.inthinc.pro.service.test.mock.GroupDaoStub;
 import com.inthinc.pro.service.test.mock.PersonDaoStub;
 import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
 
-/**
- * @author dfreitas
- * 
- */
 public class DriverAuthorizationAdviceTest {
 
     private static ApplicationContext applicationContext;
@@ -50,6 +43,7 @@ public class DriverAuthorizationAdviceTest {
     public void testJoinoints() {
 
         Driver driver = new Driver();
+        driver.setDriverID(1);
         Group group = new Group();
         Person person = new Person();
 

@@ -19,13 +19,29 @@
 	<context:component-scan base-package="com.inthinc.pro.service.phonecontrol" />
 
 	<!-- Phone control adapter factory configuration -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<bean id="cellcontrolHttpConnection" class="com.inthinc.pro.service.client.HttpClientFactoryBean">
+		<property name="host" value="${cellcontrol.service.host}" />
+		<property name="port" value="${cellcontrol.service.port}" />
+		<property name="username" value="${cellcontrol.service.username}" />
+		<property name="password" value="${cellcontrol.service.password}" />
+	</bean>
+	<bean id="cellcontrolClientEndpoint"
+		class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
+		<property name="httpClient" ref="cellcontrolHttpConnection" />
+		<property name="serviceInterface" value="com.inthinc.pro.service.client.CellcontrolEndpoint" />
+		<property name="baseUri" value="http://${cellcontrol.service.host}" />
+	</bean>
 	<bean id="phoneControlAdapterFactory"
 		class="com.inthinc.pro.service.phonecontrol.impl.DefaultPhoneControlAdapterFactory">
 		<property name="factoryMap">
 			<map>
 				<entry>
 					<key><value>CELL_CONTROL</value></key>
-					<bean class="com.inthinc.pro.service.phonecontrol.impl.CellcontrolAdapter" />
+					<bean
+						class="com.inthinc.pro.service.phonecontrol.impl.CellcontrolAdapter">
+						<constructor-arg ref="cellcontrolClientEndpoint" />
+					</bean>
 				</entry>
 				<entry>
 					<key><value>ZOOM_SAFER</value></key>

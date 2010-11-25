@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.inthinc.pro.service.test.mock;
 
 import java.util.Collections;
@@ -106,5 +103,9 @@ public class DriverDaoStub implements DriverDAO {
     public Driver findByPhoneID(String phoneID) {
         this.driver.setCellPhone(phoneID);
         return this.driver;
+    }
+
+    public void setExpectedDriver(Driver driver) {
+        this.driver = driver;
     }
 }
