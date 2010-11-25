@@ -7,6 +7,9 @@ import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.CellPhoneService;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 
+/**
+ * CellPhoneService implementation class.
+ */
 public class CellPhoneServiceImpl implements CellPhoneService {
     private DriverDAO driverDAO;
     private MovementEventHandler movementEventHandler;

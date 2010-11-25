@@ -12,12 +12,22 @@ public class PhoneStatusUpdateThread extends Thread {
     private CellStatusType status;
     private DriverDAO driverDAO;
     
+    /**
+     * Default constructor.
+     * @param driverDAO the DAO to get/update the driver.
+     * @param phoneId the driver's phone number
+     * @param status the cell status: ENABLED/DISABLED
+     */
     PhoneStatusUpdateThread(DriverDAO driverDAO, String phoneId, CellStatusType status) {
         this.driverDAO = driverDAO;
         this.phoneId = phoneId;
         this.status = status;
     }
     
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Thread#run()
+     */
     @Override
     public void run() {
         Driver driver = driverDAO.findByPhoneID(phoneId);
