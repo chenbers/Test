@@ -2,6 +2,7 @@ package com.inthinc.pro.reports.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -208,7 +209,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
 
         @Override
         public List<Driver> getDrivers(Integer groupID) {
-            List<Driver> list = new ArrayList<Driver>();
+            List<Driver> list = Collections.emptyList();
             list.add(driver);
             return list;
         }
@@ -260,6 +261,11 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
 
         @Override
         public Integer update(Driver entity) {
+            return null;
+        }
+
+        @Override
+        public Driver findByPhoneID(String phoneID) {
             return null;
         }
     }

@@ -1,8 +1,9 @@
 /**
  * 
  */
-package com.inthinc.pro.service.test.stubs;
+package com.inthinc.pro.service.test.mock;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -22,94 +23,88 @@ import com.inthinc.pro.model.Trip;
  */
 @Component
 public class DriverDaoStub implements DriverDAO {
-
+    private Driver driver;
+    
     @Override
     public Integer update(Driver entity) {
-        // TODO Auto-generated method stub
-        return 0;
+        this.driver = entity;
+        return entity.getDriverID();
     }
 
     @Override
     public Driver findByID(Integer id) {
-        // TODO Auto-generated method stub
-        return new Driver();
+        return this.driver;
     }
 
     @Override
     public Integer deleteByID(Integer id) {
-        // TODO Auto-generated method stub
-        return null;
+        return driver.getDriverID();
     }
 
     @Override
     public Integer create(Integer id, Driver entity) {
-        // TODO Auto-generated method stub
-        return null;
+        this.driver = entity;
+        return id;
     }
 
     @Override
     public List<Trip> getTrips(Integer driverID, Interval interval) {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public List<Trip> getTrips(Integer driverID, Date startDate, Date endDate) {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public List<DriverStops> getStops(Integer driverID, Interval interval) {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public List<Long> getRfidsByBarcode(String barcode) {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public Trip getLastTrip(Integer driverID) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public LastLocation getLastLocation(Integer driverID) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public List<Driver> getDrivers(Integer groupID) {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public List<DriverLocation> getDriverLocations(Integer groupID) {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public Integer getDriverIDByBarcode(String barcode) {
-        // TODO Auto-generated method stub
-        return null;
+        return driver.getDriverID();
     }
 
     @Override
     public List<Driver> getAllDrivers(Integer groupID) {
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.emptyList();
     }
 
     @Override
     public Driver findByPersonID(Integer personID) {
-        // TODO Auto-generated method stub
-        return null;
+        return this.driver;
+    }
+
+    @Override
+    public Driver findByPhoneID(String phoneID) {
+        this.driver.setCellPhone(phoneID);
+        return this.driver;
     }
 }

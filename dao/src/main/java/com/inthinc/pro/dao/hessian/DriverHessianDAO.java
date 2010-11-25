@@ -16,6 +16,8 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.State;
+import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Trip;
 
 public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> implements DriverDAO
@@ -175,4 +177,15 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         }	    
 	    
 	}
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.dao.DriverDAO#findByPhoneID(java.lang.String)
+     */
+    @Override
+    public Driver findByPhoneID(String phoneID) {
+        // TODO To be implemented
+        return new Driver(1, 2, Status.ACTIVE, null, null, null, "", 
+                new State(), "5", new Date(), "", 1, 2);
+    }
 }

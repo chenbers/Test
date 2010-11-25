@@ -18,8 +18,8 @@ import org.springframework.security.AccessDeniedException;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.service.adapters.AddressDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
-import com.inthinc.pro.service.test.stubs.AddressDAOStub;
-import com.inthinc.pro.service.test.stubs.TiwiproPrincipalStub;
+import com.inthinc.pro.service.test.mock.AddressDAOStub;
+import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
 
 /**
  * @author dfreitas

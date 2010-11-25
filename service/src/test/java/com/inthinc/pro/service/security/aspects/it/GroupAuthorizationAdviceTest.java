@@ -14,8 +14,8 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
-import com.inthinc.pro.service.test.stubs.GroupDaoStub;
-import com.inthinc.pro.service.test.stubs.TiwiproPrincipalStub;
+import com.inthinc.pro.service.test.mock.GroupDaoStub;
+import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
 
 /**
  * GroupAuthorizationAdvice Test.

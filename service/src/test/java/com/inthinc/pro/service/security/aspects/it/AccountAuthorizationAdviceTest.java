@@ -17,8 +17,8 @@ import org.springframework.security.AccessDeniedException;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.service.adapters.AccountDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
-import com.inthinc.pro.service.test.stubs.AccountDAOStub;
-import com.inthinc.pro.service.test.stubs.TiwiproPrincipalStub;
+import com.inthinc.pro.service.test.mock.AccountDAOStub;
+import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
 
 /**
  * @author dfreitas

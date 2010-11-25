@@ -46,7 +46,7 @@ public interface CellPhoneService {
      * Service to update the driver's cell phone status.
      * @param phoneId The driver's phone ID
      * @param status The status to update
-     * @return 200/OK if succeeded.
+     * @return 200/OK 
      */
     @PUT
     @Consumes("application/xml")

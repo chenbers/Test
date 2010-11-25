@@ -17,8 +17,8 @@ import org.springframework.security.AccessDeniedException;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.service.adapters.DeviceDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
-import com.inthinc.pro.service.test.stubs.DeviceDaoStub;
-import com.inthinc.pro.service.test.stubs.TiwiproPrincipalStub;
+import com.inthinc.pro.service.test.mock.DeviceDaoStub;
+import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
 
 /**
  * @author dfreitas

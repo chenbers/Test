@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.inthinc.pro.service.test.stubs;
+package com.inthinc.pro.service.test.mock;
 
 import java.util.ArrayList;
 import java.util.List;

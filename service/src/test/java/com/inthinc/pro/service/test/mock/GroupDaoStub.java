@@ -1,4 +1,4 @@
-package com.inthinc.pro.service.test.stubs;
+package com.inthinc.pro.service.test.mock;
 
 import java.util.Collections;
 import java.util.List;

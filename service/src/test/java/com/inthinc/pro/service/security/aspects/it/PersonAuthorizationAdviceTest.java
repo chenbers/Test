@@ -18,8 +18,8 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
-import com.inthinc.pro.service.test.stubs.PersonDaoStub;
-import com.inthinc.pro.service.test.stubs.TiwiproPrincipalStub;
+import com.inthinc.pro.service.test.mock.PersonDaoStub;
+import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
 
 /**
  * @author dfreitas

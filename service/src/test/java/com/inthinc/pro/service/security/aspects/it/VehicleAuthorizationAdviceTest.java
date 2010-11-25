@@ -28,12 +28,12 @@ import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
-import com.inthinc.pro.service.test.stubs.DeviceDaoStub;
-import com.inthinc.pro.service.test.stubs.DriverDaoStub;
-import com.inthinc.pro.service.test.stubs.GroupDaoStub;
-import com.inthinc.pro.service.test.stubs.PersonDaoStub;
-import com.inthinc.pro.service.test.stubs.TiwiproPrincipalStub;
-import com.inthinc.pro.service.test.stubs.VehicleDaoStub;
+import com.inthinc.pro.service.test.mock.DeviceDaoStub;
+import com.inthinc.pro.service.test.mock.DriverDaoStub;
+import com.inthinc.pro.service.test.mock.GroupDaoStub;
+import com.inthinc.pro.service.test.mock.PersonDaoStub;
+import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
+import com.inthinc.pro.service.test.mock.VehicleDaoStub;
 
 /**
  * @author dfreitas
