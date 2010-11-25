@@ -12,7 +12,7 @@ import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 
 /**
- * 
+ * Test for PhoneStatusUpdateThread.
  */
 public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
     private final String phoneID = "1234567890";
