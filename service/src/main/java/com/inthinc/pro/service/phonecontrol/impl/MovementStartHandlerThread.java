@@ -1,9 +1,11 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
+import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
+
 public class MovementStartHandlerThread extends MovementEventHandlerThread implements Runnable {
 
-    public MovementStartHandlerThread(Integer driverID) {
-        super(driverID);
+    public MovementStartHandlerThread(MovementEventHandler movementEventHandler, Integer driverID) {
+        super(movementEventHandler, driverID);
     }
 
     @Override
