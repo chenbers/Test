@@ -17,7 +17,7 @@ import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 public class PhoneControlMovementEventHandlerTest {
 
     @Test
-    public void testHandlesDriverStartMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactoryMock, final PhoneControlAdapter phoneControlServiceMock) {
+    public void testHandlesDriverStartMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock, final PhoneControlAdapter phoneControlAdapterMock) {
 
         final Driver expectedDriver = new Driver();
         final Integer expectedDriverId = 666;
@@ -33,15 +33,13 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 result = expectedDriver;
 
-                serviceFactoryMock.createAdapter(expectedCellProvider);
-                result = phoneControlServiceMock;
-
-                phoneControlServiceMock.disablePhone(expectedCellPhoneNumber);
+                adapterFactoryMock.createAdapter(expectedCellProvider);
+                result = phoneControlAdapterMock;
             }
         };
 
         // Execution
-        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, serviceFactoryMock);
+        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
         handler.handleDriverStartedMoving(expectedDriverId);
 
         // Verification
@@ -50,10 +48,10 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 times = 1;
 
-                serviceFactoryMock.createAdapter(expectedCellProvider);
+                adapterFactoryMock.createAdapter(expectedCellProvider);
                 times = 1;
 
-                phoneControlServiceMock.disablePhone(expectedCellPhoneNumber);
+                phoneControlAdapterMock.disablePhone(expectedCellPhoneNumber);
                 times = 1;
             }
         };
@@ -61,7 +59,7 @@ public class PhoneControlMovementEventHandlerTest {
 
     @Test
     // TODO Update this test to add call to Zoomsafer/Cellcontrol service.
-    public void testHandlesDriverStopsMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactory, final PhoneControlAdapter phoneControlService) {
+    public void testHandlesDriverStopsMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock, final PhoneControlAdapter phoneControlAdapterMock) {
 
         final Driver expectedDriver = new Driver();
         final Integer expectedDriverId = 666;
@@ -77,15 +75,13 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 result = expectedDriver;
 
-                serviceFactory.createAdapter(expectedCellProvider);
-                result = phoneControlService;
-
-                phoneControlService.enablePhone(expectedCellPhoneNumber);
+                adapterFactoryMock.createAdapter(expectedCellProvider);
+                result = phoneControlAdapterMock;
             }
         };
 
         // Execution
-        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, serviceFactory);
+        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
         handler.handleDriverStoppedMoving(expectedDriverId);
 
         // Verification
@@ -94,17 +90,17 @@ public class PhoneControlMovementEventHandlerTest {
                 driverDaoMock.findByID(expectedDriverId);
                 times = 1;
 
-                serviceFactory.createAdapter(expectedCellProvider);
+                adapterFactoryMock.createAdapter(expectedCellProvider);
                 times = 1;
 
-                phoneControlService.enablePhone(expectedCellPhoneNumber);
+                phoneControlAdapterMock.enablePhone(expectedCellPhoneNumber);
                 times = 1;
             }
         };
     }
 
     @Test
-    public void testPropagatesExceptionsFromTiwiproBackend(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactory) {
+    public void testPropagatesExceptionsFromTiwiproBackend(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock) {
 
         final RuntimeException expectedException = new RuntimeException("Dummy exception");
 
@@ -117,7 +113,7 @@ public class PhoneControlMovementEventHandlerTest {
         };
 
         // Execution
-        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, serviceFactory);
+        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
         try {
             handler.handleDriverStartedMoving(1);
             fail("Exception should have been raised but got none");
@@ -136,29 +132,32 @@ public class PhoneControlMovementEventHandlerTest {
 
     @Test
     // TODO Update this test to add call to Zoomsafer/Cellcontrol service.
-    public void testPropagatesExceptionsFromPhoneControlEndpoint(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory serviceFactory, final PhoneControlAdapter phoneControlService) {
+    public void testPropagatesExceptionsFromPhoneControlEndpoint(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock, final PhoneControlAdapter phoneControlAdapterMock) {
 
         final RuntimeException expectedException = new RuntimeException("Dummy exception");
+        
+        final Driver driver = new Driver();
+        driver.setProvider(CellProviderType.CELL_CONTROL);
 
         // Expectations & stubbing
         new NonStrictExpectations() {
             {
                 driverDaoMock.findByID(anyInt);
-                result = new Driver();
+                result = driver;
 
-                serviceFactory.createAdapter((CellProviderType) any);
-                result = phoneControlService;
+                adapterFactoryMock.createAdapter((CellProviderType) any);
+                result = phoneControlAdapterMock;
 
-                phoneControlService.disablePhone(anyString);
+                phoneControlAdapterMock.disablePhone(anyString);
                 result = expectedException;
 
-                phoneControlService.enablePhone(anyString);
+                phoneControlAdapterMock.enablePhone(anyString);
                 result = expectedException;
             }
         };
 
         // Execution
-        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, serviceFactory);
+        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
 
         try {
             handler.handleDriverStartedMoving(1);
@@ -175,5 +174,79 @@ public class PhoneControlMovementEventHandlerTest {
             // Verification
             assertSame(expectedException, e);
         }
+    }
+
+    @Test
+    public void testDoesNotDisablePhoneIfProviderInformationIsNotAvailable(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock,
+            final PhoneControlAdapter phoneControlAdapterMock) {
+
+        final Driver expectedDriver = new Driver();
+        final Integer expectedDriverId = 666;
+
+        // Expectations & stubbing
+        new NonStrictExpectations() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                result = expectedDriver;
+
+                adapterFactoryMock.createAdapter((CellProviderType) any);
+                result = phoneControlAdapterMock;
+            }
+        };
+
+        // Execution
+        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
+        handler.handleDriverStartedMoving(expectedDriverId);
+
+        // Verification
+        new Verifications() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                times = 1;
+
+                adapterFactoryMock.createAdapter((CellProviderType) any);
+                times = 0;
+
+                phoneControlAdapterMock.disablePhone((String) any);
+                times = 0;
+            }
+        };
+    }
+
+    @Test
+    public void testDoesNotEnablePhoneIfProviderInformationIsNotAvailable(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock,
+            final PhoneControlAdapter phoneControlAdapterMock) {
+        
+        final Driver expectedDriver = new Driver();
+        final Integer expectedDriverId = 666;
+        
+        // Expectations & stubbing
+        new NonStrictExpectations() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                result = expectedDriver;
+                
+                adapterFactoryMock.createAdapter((CellProviderType) any);
+                result = phoneControlAdapterMock;
+            }
+        };
+        
+        // Execution
+        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
+        handler.handleDriverStartedMoving(expectedDriverId);
+        
+        // Verification
+        new Verifications() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                times = 1;
+                
+                adapterFactoryMock.createAdapter((CellProviderType) any);
+                times = 0;
+                
+                phoneControlAdapterMock.enablePhone((String) any);
+                times = 0;
+            }
+        };
     }
 }

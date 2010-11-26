@@ -20,7 +20,7 @@ import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
     private static final Logger logger = Logger.getLogger(PhoneControlMovementEventHandler.class);
-    
+
     private final DriverDAO driverDao;
     private PhoneControlAdapterFactory serviceFactory;
 
@@ -52,8 +52,12 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         String cellPhoneNumber = driver.getCellPhone();
         logger.debug("Obtained driver cellphone from the back end. Cell phone # is '" + cellPhoneNumber + "'");
 
-        PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
-        phoneControlAdapter.disablePhone(cellPhoneNumber);
+        if (driver.getProvider() != null) {
+            PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
+            phoneControlAdapter.disablePhone(cellPhoneNumber);
+        } else {
+            logger.debug("No provider information is available for the driver ID " + driverId + ". Ignoring event.");
+        }
     }
 
     /**
@@ -67,7 +71,11 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         String cellPhoneNumber = driver.getCellPhone();
         logger.debug("Obtained driver cellphone from the back end. Cell phone # is '" + cellPhoneNumber + "'");
 
-        PhoneControlAdapter phoneControlService = serviceFactory.createAdapter(driver.getProvider());
-        phoneControlService.enablePhone(cellPhoneNumber);
+        if (driver.getProvider() != null) {
+            PhoneControlAdapter phoneControlService = serviceFactory.createAdapter(driver.getProvider());
+            phoneControlService.enablePhone(cellPhoneNumber);
+        } else {
+            logger.debug("No provider information is available for the driver ID " + driverId + ". Ignoring event.");
+        }
     }
 }
