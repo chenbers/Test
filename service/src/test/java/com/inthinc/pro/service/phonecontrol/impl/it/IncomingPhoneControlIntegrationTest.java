@@ -1,4 +1,4 @@
-package com.inthinc.pro.service.phonecontrol.impl;
+package com.inthinc.pro.service.phonecontrol.impl.it;
 
 import static org.junit.Assert.assertEquals;
 
