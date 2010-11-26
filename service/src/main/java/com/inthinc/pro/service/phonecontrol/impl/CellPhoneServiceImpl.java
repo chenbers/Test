@@ -2,10 +2,10 @@ package com.inthinc.pro.service.phonecontrol.impl;
 
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.CellPhoneService;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
@@ -15,8 +15,7 @@ import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
  */
 @Component
 public class CellPhoneServiceImpl implements CellPhoneService {
-    @Autowired
-    private DriverDAO driverDAO;
+    private static Logger logger = Logger.getLogger(CellPhoneServiceImpl.class);
     @Autowired
     private MovementEventHandler movementEventHandler;
 
@@ -40,18 +39,10 @@ public class CellPhoneServiceImpl implements CellPhoneService {
      */
     @Override
     public Response updateStatus(String phoneId, CellStatusType status) {
-        
-        new PhoneStatusUpdateThread(driverDAO, phoneId, status).start();
+        logger.debug("UpdateStatus Request received for phoneID: " + phoneId + ", status: " + status);
+        new PhoneStatusUpdateThread(phoneId, status).start();
         
         return Response.ok().build();
-    }
-
-    /**
-     * The driverDAO setter.
-     * @param driverDAO the driverDAO to set
-     */
-    public void setDriverDAO(DriverDAO driverDAO) {
-        this.driverDAO = driverDAO;
     }
 
     public MovementEventHandler getMovementEventHandler() {
