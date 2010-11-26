@@ -10,59 +10,47 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:spring/applicationContext-*.xml" })
-public abstract class BaseEmbeddedServerITCase implements ApplicationContextAware   {
-    
-        private static int port;
-        private static final String domain = "localhost";
+public abstract class BaseEmbeddedServerITCase {
 
-        protected static final String url = "http://" + domain + ":" + port + "/service/api";
-            
-        protected ApplicationContext applicationContext;
-        protected HttpClient httpClient; 
-        protected ClientExecutor clientExecutor;
-        protected ServiceClient client;
+    private static int port;
+    private static final String domain = "localhost";
 
-        @BeforeClass
-        public static void beforeClass() throws Exception{
-            
-            Server server = new Server(0);
-            server.addHandler(new WebAppContext("src/main/webapp", "/service"));       
-            server.start();
-            port = server.getConnectors()[0].getLocalPort();
-            System.out.println("Port is " + port);
-        }
-        
-        @Before
-        public void before() {
+    protected static final String url = "http://" + domain + ":" + port + "/service/api";
 
-            HttpClientParams params = new HttpClientParams();
-            params.setAuthenticationPreemptive(true);
-            httpClient = new HttpClient(params);
-            Credentials defaultcreds = new UsernamePasswordCredentials("TEST_4846", "password");
-            httpClient.getState().setCredentials(new AuthScope(domain, port, AuthScope.ANY_REALM), defaultcreds);
-            clientExecutor = new ApacheHttpClientExecutor(httpClient);
-            
-            client = ProxyFactory.create(ServiceClient.class, "http://localhost:" + port , clientExecutor );
+    protected ApplicationContext applicationContext;
+    protected HttpClient httpClient;
+    protected ClientExecutor clientExecutor;
+    protected ServiceClient client;
 
-        }
+    @BeforeClass
+    public static void beforeClass() throws Exception {
 
-        @Override
-        public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-            this.applicationContext = applicationContext;        
-       }
-        
-       public int getPort() {
-           return port;
-       }
+        Server server = new Server(0);
+        server.addHandler(new WebAppContext("src/main/webapp", "/service"));
+        server.start();
+        port = server.getConnectors()[0].getLocalPort();
+        System.out.println("Port is " + port);
+    }
+
+    @Before
+    public void before() {
+
+        HttpClientParams params = new HttpClientParams();
+        params.setAuthenticationPreemptive(true);
+        httpClient = new HttpClient(params);
+        Credentials defaultcreds = new UsernamePasswordCredentials("TEST_4846", "password");
+        httpClient.getState().setCredentials(new AuthScope(domain, port, AuthScope.ANY_REALM), defaultcreds);
+        clientExecutor = new ApacheHttpClientExecutor(httpClient);
+
+        client = ProxyFactory.create(ServiceClient.class, "http://localhost:" + port, clientExecutor);
+
+    }
+
+    public int getPort() {
+        return port;
+    }
 }

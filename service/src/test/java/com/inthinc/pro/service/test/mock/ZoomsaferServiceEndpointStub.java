@@ -4,7 +4,6 @@ import javax.ws.rs.core.Response;
 
 import com.inthinc.pro.service.phonecontrol.client.CellcontrolEndpoint;
 import com.inthinc.pro.service.phonecontrol.client.ZoomsaferEndPoint;
-import com.inthinc.pro.service.phonecontrol.impl.it.CellcontrolIntegrationTest;
 
 /**
  * A stub implementation of {@link ZoomsaferEndPoint} interface to be used for integration tests. Like a mock, this instance can be set an expected {@link Response} value through
