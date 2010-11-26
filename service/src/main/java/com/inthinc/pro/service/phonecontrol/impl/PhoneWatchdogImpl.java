@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,11 +45,11 @@ public class PhoneWatchdogImpl implements PhoneWatchdog {
 	public void enablePhonesWhenLostComm() {
 
 		// Fetch IDs of drivers with disabled phones
-		List<Integer> driverIDList = driverPhoneDAO.getDriversWithDisabledPhones();
+		Set<Integer> driverIDSet = driverPhoneDAO.getDriversWithDisabledPhones();
 		Date[] interval = getInterval();
 		
 		// Fetch events for each driver
-		for(Integer driverID : driverIDList) {
+		for(Integer driverID : driverIDSet) {
 			
 			List<Event> events = eventDAO.getEventsForDriver(driverID, interval[1], interval[0], noteTypes, EventDAO.INCLUDE_FORGIVEN);
 			

@@ -5,7 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import mockit.Expectations;
 import mockit.Mocked;
@@ -140,8 +142,8 @@ public class PhoneWatchdogImplTest {
 	 * 
 	 * @return list of drivers
 	 */
-	private List<Integer> getDriverIDList(int numDrivers) {
-		List<Integer> driverIDList = new ArrayList<Integer>();
+	private Set<Integer> getDriverIDList(int numDrivers) {
+		Set<Integer> driverIDList = new HashSet<Integer>();
 		
 		for (int i=0; i<numDrivers; i++){
 			driverIDList.add(DRIVER_ID[i]);

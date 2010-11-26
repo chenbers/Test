@@ -3,7 +3,7 @@
  */
 package com.inthinc.pro.service.phonecontrol.dao;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * This interface allows the access to a list of drivers with disabled phones.
@@ -20,7 +20,7 @@ public interface DriverPhoneDAO {
 	 * 
 	 * @return List of driver IDs.
 	 */
-	public List<Integer> getDriversWithDisabledPhones();
+	public Set<Integer> getDriversWithDisabledPhones();
 	
 	/**
 	 * Adds a driver ID to the list of drivers with disabled phones.
