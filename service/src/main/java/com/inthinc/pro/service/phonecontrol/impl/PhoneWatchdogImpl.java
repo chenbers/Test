@@ -111,50 +111,5 @@ public class PhoneWatchdogImpl implements PhoneWatchdog {
 		this.secondsAgoEvents = secondsAgoEvents;
 	}
 
-	/**
-	 * @return the driverPhoneDAO
-	 */
-	public DriverPhoneDAO getDriverPhoneDAO() {
-		return driverPhoneDAO;
-	}
-
-	/**
-	 * @param driverPhoneDAO the driverPhoneDAO to set
-	 */
-	public void setDriverPhoneDAO(DriverPhoneDAO driverPhoneDAO) {
-		this.driverPhoneDAO = driverPhoneDAO;
-	}
-
-	/**
-	 * @return the eventDAO
-	 */
-	public EventDAO getEventDAO() {
-		return eventDAO;
-	}
-
-	/**
-	 * @param eventDAO the eventDAO to set
-	 */
-	public void setEventDAO(EventDAO eventDAO) {
-		this.eventDAO = eventDAO;
-	}
-
-	/**
-	 * @return the phoneControl
-	 */
-	public PhoneControlMovementEventHandler getPhoneControl() {
-		return phoneControl;
-	}
-
-	/**
-	 * @param phoneControl the phoneControl to set
-	 */
-	public void setPhoneControl(PhoneControlMovementEventHandler phoneControl) {
-		this.phoneControl = phoneControl;
-	}
-
-	
-	
-
  
 }

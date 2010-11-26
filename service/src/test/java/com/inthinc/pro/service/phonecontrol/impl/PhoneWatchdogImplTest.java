@@ -12,6 +12,7 @@ import java.util.Set;
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.Mockit;
+import mockit.Deencapsulation;
 
 import org.junit.After;
 import org.junit.Before;
@@ -48,9 +49,9 @@ public class PhoneWatchdogImplTest {
 	
 	@Before
 	public void setUp() {
-		watchdogSUT.setEventDAO(eventDAO);
-		watchdogSUT.setDriverPhoneDAO(driverPhoneDAO);
-		watchdogSUT.setPhoneControl(phoneControl);
+		Deencapsulation.setField(watchdogSUT, "eventDAO", eventDAO);
+		Deencapsulation.setField(watchdogSUT, "driverPhoneDAO", driverPhoneDAO);
+		Deencapsulation.setField(watchdogSUT, "phoneControl", phoneControl);
 		watchdogSUT.setSecondsAgoEvents(SECONDS_AGO);
 	}
 	
