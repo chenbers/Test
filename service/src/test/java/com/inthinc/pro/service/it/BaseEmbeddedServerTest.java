@@ -22,12 +22,12 @@ public abstract class BaseEmbeddedServerTest implements ApplicationContextAware 
     protected static final TJWSEmbeddedJaxrsServer server = new TJWSEmbeddedJaxrsServer();
     protected ApplicationContext applicationContext;
 
-    private static Integer port;
+    private static Integer port = 9676;
     private static String urlprefix = "http://localhost:8080";
 
     @BeforeClass
     public static void beforeClass() {
-        server.setPort(9676);
+        server.setPort(port);
         server.start();
     }
 

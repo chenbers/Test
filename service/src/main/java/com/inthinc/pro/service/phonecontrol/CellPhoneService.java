@@ -14,6 +14,7 @@ import com.inthinc.pro.model.phone.CellStatusType;
  * Services for Cell phone Control.
  */
 @Path("/")
+@Consumes("application/xml")
 @Produces("application/xml")
 public interface CellPhoneService {
 
@@ -25,7 +26,6 @@ public interface CellPhoneService {
      */
 
     @POST
-    @Consumes("application/xml")
     @Path("/driver/{driverID}/startMotion")
     public Response processStartMotionEvent(@PathParam("driverID") Integer driverID);
     
@@ -37,7 +37,6 @@ public interface CellPhoneService {
      */
 
     @POST
-    @Consumes("application/xml")
     @Path("/driver/{driverID}/stopMotion")
     public Response processStopMotionEvent(@PathParam("driverID") Integer driverID);
     
@@ -49,7 +48,6 @@ public interface CellPhoneService {
      * @HTTP HTTP 200 - OK
      */
     @PUT
-    @Consumes("application/xml")
     @Path("/phone/{phoneID}/{status}") 
     public Response updateStatus(@PathParam("phoneID") String phoneId, @PathParam("status") CellStatusType status);
     

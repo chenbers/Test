@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
@@ -14,6 +15,7 @@ import org.jboss.resteasy.client.ClientResponse;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.phone.CellStatusType;
 
 @Path("/service/api")
 @Consumes("application/xml")
@@ -36,9 +38,14 @@ public interface ServiceClient {
     
     @POST
     @Path("/driver/{driverID}/startMotion")
-    public ClientResponse processStartMotionEvent(@PathParam("driverID") Integer driverID);
+    public Response processStartMotionEvent(@PathParam("driverID") Integer driverID);
     
     @POST
     @Path("/driver/{driverID}/stopMotion")
-    public ClientResponse processStopMotionEvent(@PathParam("driverID") Integer driverID);
+    public Response processStopMotionEvent(@PathParam("driverID") Integer driverID);
+    
+    @PUT
+    @Path("/phone/{phoneID}/{status}") 
+    public Response updateStatus(@PathParam("phoneID") String phoneId, @PathParam("status") CellStatusType status);
+
 }
