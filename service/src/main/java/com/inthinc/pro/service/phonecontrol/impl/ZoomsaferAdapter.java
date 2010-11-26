@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.ws.rs.core.Response;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.service.phonecontrol.Clock;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.client.ZoomsaferEndPoint;
@@ -14,6 +16,8 @@ import com.inthinc.pro.service.phonecontrol.client.ZoomsaferEndPoint;
  */
 public class ZoomsaferAdapter implements PhoneControlAdapter {
 
+    private static final Logger logger = Logger.getLogger(ZoomsaferAdapter.class);
+    
     public static final String ZOOM_SAFER_TIMESTAMP_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS Z";
 
     private ZoomsaferEndPoint zoomsaferEndpoint;
@@ -40,8 +44,8 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
     @Override
     public void disablePhone(String cellPhoneNumber) {
         Date now = clock.getNow();
-        Response resp = zoomsaferEndpoint.disablePhone(cellPhoneNumber, this.dateFormatter.format(now));
-        System.out.println(resp);
+        Response response = zoomsaferEndpoint.disablePhone(cellPhoneNumber, this.dateFormatter.format(now));
+        logger.debug("A request was sent to Zoomsafer endpoint to disable phone # '" + cellPhoneNumber + "'. Response status = " + response.getStatus() + ".");
     }
 
     /**
@@ -50,7 +54,7 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
     @Override
     public void enablePhone(String cellPhoneNumber) {
         Date now = clock.getNow();
-        Response resp = zoomsaferEndpoint.enablePhone(cellPhoneNumber, this.dateFormatter.format(now));
-        System.out.println(resp);
+        Response response = zoomsaferEndpoint.enablePhone(cellPhoneNumber, this.dateFormatter.format(now));
+        logger.debug("A request was sent to Zoomsafer endpoint to enable phone # '" + cellPhoneNumber + "'. Response status = " + response.getStatus() + ".");
     }
 }

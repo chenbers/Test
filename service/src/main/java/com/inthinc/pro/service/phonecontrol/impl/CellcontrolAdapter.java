@@ -1,5 +1,9 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
+import javax.ws.rs.core.Response;
+
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.client.CellcontrolEndpoint;
 
@@ -7,6 +11,8 @@ import com.inthinc.pro.service.phonecontrol.client.CellcontrolEndpoint;
  * {@link PhoneControlAdapter} implementation for Cellcontrol service provider.
  */
 public class CellcontrolAdapter implements PhoneControlAdapter {
+
+    private static final Logger logger = Logger.getLogger(CellcontrolAdapter.class);
 
     private CellcontrolEndpoint cellcontrolEndpoint;
 
@@ -26,8 +32,8 @@ public class CellcontrolAdapter implements PhoneControlAdapter {
     // TODO Return type or exception handling might change once retry user story is implemented.
     @Override
     public void disablePhone(String cellPhoneNumber) {
-        cellcontrolEndpoint.disablePhone(cellPhoneNumber);
-        // TODO Add logging
+        Response response = cellcontrolEndpoint.disablePhone(cellPhoneNumber);
+        logger.debug("A request was sent to Cellcontrol endpoint to disable phone # '" + cellPhoneNumber + "'. Response status = " + response.getStatus() + ".");
     }
 
     /**
@@ -36,7 +42,7 @@ public class CellcontrolAdapter implements PhoneControlAdapter {
     // TODO Return type or exception handling might change once retry user story is implemented.
     @Override
     public void enablePhone(String cellPhoneNumber) {
-        cellcontrolEndpoint.enablePhone(cellPhoneNumber);
-        // TODO Add logging
+        Response response = cellcontrolEndpoint.enablePhone(cellPhoneNumber);
+        logger.debug("A request was sent to Cellcontrol endpoint to enable phone # '" + cellPhoneNumber + "'. Response status = " + response.getStatus() + ".");
     }
 }

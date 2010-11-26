@@ -3,6 +3,7 @@
  */
 package com.inthinc.pro.service.phonecontrol.impl;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,8 @@ import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 @Component
 public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
+    private static final Logger logger = Logger.getLogger(PhoneControlMovementEventHandler.class);
+    
     private final DriverDAO driverDao;
     private PhoneControlAdapterFactory serviceFactory;
 
@@ -44,11 +47,13 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
     // TODO Add logic to handle error once retry user story is implemented.
     @Override
     public void handleDriverStartedMoving(Integer driverId) {
+        logger.debug("Querying backend for driver information. Driver ID = " + driverId);
         Driver driver = driverDao.findByID(driverId);
         String cellPhoneNumber = driver.getCellPhone();
+        logger.debug("Obtained driver cellphone from the back end. Cell phone # is '" + cellPhoneNumber + "'");
 
-        PhoneControlAdapter phoneControlService = serviceFactory.createAdapter(driver.getProvider());
-        phoneControlService.disablePhone(cellPhoneNumber);
+        PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
+        phoneControlAdapter.disablePhone(cellPhoneNumber);
     }
 
     /**
@@ -57,8 +62,10 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
     // TODO Add logic to handle error once retry user story is implemented.
     @Override
     public void handleDriverStoppedMoving(Integer driverId) {
+        logger.debug("Querying backend for driver information. Driver ID = " + driverId);
         Driver driver = driverDao.findByID(driverId);
         String cellPhoneNumber = driver.getCellPhone();
+        logger.debug("Obtained driver cellphone from the back end. Cell phone # is '" + cellPhoneNumber + "'");
 
         PhoneControlAdapter phoneControlService = serviceFactory.createAdapter(driver.getProvider());
         phoneControlService.enablePhone(cellPhoneNumber);
