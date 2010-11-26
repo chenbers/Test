@@ -3,6 +3,8 @@ package com.inthinc.pro.service.phonecontrol.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
 
 /**
@@ -12,6 +14,7 @@ import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
  * @author dcueva
  *
  */
+@Component
 public class InMemoryDriverPhoneDAO implements DriverPhoneDAO {
 
 	private List<Integer> driverIDList = new ArrayList<Integer>(); 
@@ -37,7 +40,6 @@ public class InMemoryDriverPhoneDAO implements DriverPhoneDAO {
 	@Override
 	public void removeDriverFromDisabledPhoneList(Integer driverID) {
 		driverIDList.remove(driverID);
-		
 	}
 
 }

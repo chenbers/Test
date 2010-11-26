@@ -182,4 +182,28 @@
 		<bean class="com.inthinc.pro.service.impl.NoteServiceImpl"> <property
 		name="mcmService" ref="mcmServiceBean"/> </bean>
 	-->
+
+	<!-- Watchdog -->	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	  <property name="triggers">
+	    <list>
+	      <ref bean="phoneWatchdogCronTrigger"/>
+	    </list>
+	  </property>
+	  <property name="autoStartup" value="${phone.watchdog.enabled}" />
+	</bean>
+
+	<bean id="phoneWatchdogCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="phoneWatchdogJob" />
+	    <property name="cronExpression" value="${phone.watchdog.cron}" />
+	</bean>	
+
+	<bean id="phoneWatchdogJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	  <property name="targetObject" ref="phoneWatchdogImpl" />
+	  <property name="targetMethod" value="enablePhonesWhenLostComm" />
+	  <property name="concurrent" value="false" />
+	</bean>
+
+
+
 </beans>
