@@ -14,4 +14,20 @@ public abstract class MovementEventHandlerThread implements Runnable {
     
     public abstract void run();
 
+    public MovementEventHandler getMovementEventHandler() {
+        return movementEventHandler;
+    }
+
+    public void setMovementEventHandler(MovementEventHandler movementEventHandler) {
+        this.movementEventHandler = movementEventHandler;
+    }
+
+    public Integer getDriverID() {
+        return driverID;
+    }
+
+    public void setDriverID(Integer driverID) {
+        this.driverID = driverID;
+    }
+
 }

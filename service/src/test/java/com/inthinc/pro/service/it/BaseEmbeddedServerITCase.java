@@ -32,7 +32,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public abstract class BaseEmbeddedServerITCase implements ApplicationContextAware   {
     
         protected static ApplicationContext applicationContext;
-        private static final int port = 8081;
+        private static int port;
         private static final String domain = "localhost";
 
         protected static final String url = "http://" + domain + ":" + port + "/service/api";
@@ -44,9 +44,11 @@ public abstract class BaseEmbeddedServerITCase implements ApplicationContextAwar
         @BeforeClass
         public static void beforeClass() throws Exception{
             
-            Server server = new Server(port);
+            Server server = new Server(0);
             server.addHandler(new WebAppContext("src/main/webapp", "/service"));       
             server.start();
+            port = server.getConnectors()[0].getLocalPort();
+            System.out.println("Port is " + port);
         }
         
         @Before

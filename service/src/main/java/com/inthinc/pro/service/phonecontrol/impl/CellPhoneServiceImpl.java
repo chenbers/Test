@@ -2,6 +2,9 @@ package com.inthinc.pro.service.phonecontrol.impl;
 
 import javax.ws.rs.core.Response;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.CellPhoneService;
@@ -10,8 +13,11 @@ import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 /**
  * CellPhoneService implementation class.
  */
+@Component
 public class CellPhoneServiceImpl implements CellPhoneService {
+    @Autowired
     private DriverDAO driverDAO;
+    @Autowired
     private MovementEventHandler movementEventHandler;
 
     @Override

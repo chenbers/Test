@@ -1,10 +1,12 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import mockit.Expectations;
 import mockit.Mocked;
 
 import org.junit.Test;
@@ -50,6 +52,36 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
         
         assertNotNull(response); 
         assertEquals("Error processing start motion event", Response.Status.OK.getStatusCode(), response.getStatus());
+
+    }
+    
+    @Test 
+    public void testThreadStart(final MovementEventHandler movementEventHandlerMock){
+        MovementStartHandlerThread serviceSUT = new MovementStartHandlerThread(movementEventHandlerMock, expecteDriverID);
+        
+        new Expectations(){                     
+             {
+                 movementEventHandlerMock.handleDriverStartedMoving(expecteDriverID);
+             }
+         };
+         
+        //System under test
+        serviceSUT.run();       
+
+    }
+    
+    @Test 
+    public void testThreadStop(final MovementEventHandler movementEventHandlerMock){
+        MovementStopHandlerThread serviceSUT = new MovementStopHandlerThread(movementEventHandlerMock, expecteDriverID);
+        
+        new Expectations(){                     
+             {
+                 movementEventHandlerMock.handleDriverStoppedMoving(expecteDriverID);
+             }
+         };
+         
+        //System under test
+        serviceSUT.run();       
 
     }
 }

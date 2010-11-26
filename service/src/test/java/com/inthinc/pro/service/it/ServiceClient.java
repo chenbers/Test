@@ -33,4 +33,12 @@ public interface ServiceClient {
     @GET
     @Path("/devices")
     public ClientResponse<List<Device>> getAllDevices();
+    
+    @POST
+    @Path("/driver/{driverID}/startMotion")
+    public ClientResponse processStartMotionEvent(@PathParam("driverID") Integer driverID);
+    
+    @POST
+    @Path("/driver/{driverID}/stopMotion")
+    public ClientResponse processStopMotionEvent(@PathParam("driverID") Integer driverID);
 }
