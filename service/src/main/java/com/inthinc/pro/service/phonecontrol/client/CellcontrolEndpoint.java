@@ -1,4 +1,4 @@
-package com.inthinc.pro.service.client;
+package com.inthinc.pro.service.phonecontrol.client;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

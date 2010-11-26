@@ -20,7 +20,8 @@
 
 	<!-- Phone control adapter factory configuration -->
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<bean id="cellcontrolHttpConnection" class="com.inthinc.pro.service.client.HttpClientFactoryBean">
+	<!-- Cell Control -->
+	<bean id="cellcontrolHttpConnection" class="com.inthinc.pro.service.phonecontrol.client.HttpClientFactoryBean">
 		<property name="host" value="${cellcontrol.service.host}" />
 		<property name="port" value="${cellcontrol.service.port}" />
 		<property name="username" value="${cellcontrol.service.username}" />
@@ -29,8 +30,22 @@
 	<bean id="cellcontrolClientEndpoint"
 		class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
 		<property name="httpClient" ref="cellcontrolHttpConnection" />
-		<property name="serviceInterface" value="com.inthinc.pro.service.client.CellcontrolEndpoint" />
+		<property name="serviceInterface" value="com.inthinc.pro.service.phonecontrol.client.CellcontrolEndpoint" />
 		<property name="baseUri" value="http://${cellcontrol.service.host}" />
+	</bean>
+	<!-- Zoom Safer -->
+	<bean id="systemClock" class="com.inthinc.pro.service.phonecontrol.impl.SystemClock"/>
+	<bean id="zoomsaferHttpConnection" class="com.inthinc.pro.service.phonecontrol.client.HttpClientFactoryBean">
+		<property name="host" value="${zoomsafer.service.host}" />
+		<property name="port" value="${zoomsafer.service.port}" />
+		<property name="username" value="${zoomsafer.service.username}" />
+		<property name="password" value="${zoomsafer.service.password}" />
+	</bean>
+	<bean id="zoomsaferClientEndpoint"
+		class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
+		<property name="httpClient" ref="zoomsaferHttpConnection" />
+		<property name="serviceInterface" value="com.inthinc.pro.service.phonecontrol.client.ZoomsaferEndPoint" />
+		<property name="baseUri" value="http://${zoomsafer.service.host}" />
 	</bean>
 	<bean id="phoneControlAdapterFactory"
 		class="com.inthinc.pro.service.phonecontrol.impl.DefaultPhoneControlAdapterFactory">
@@ -45,7 +60,10 @@
 				</entry>
 				<entry>
 					<key><value>ZOOM_SAFER</value></key>
-					<bean class="com.inthinc.pro.service.phonecontrol.impl.ZoomsaferAdapter" />
+					<bean class="com.inthinc.pro.service.phonecontrol.impl.ZoomsaferAdapter">
+					    <constructor-arg type="com.inthinc.pro.service.phonecontrol.client.ZoomsaferEndPoint" ref="zoomsaferClientEndpoint"/>
+					    <constructor-arg type="com.inthinc.pro.service.phonecontrol.Clock" ref="systemClock"/>
+					</bean>
 				</entry>
 			</map>
 		</property>

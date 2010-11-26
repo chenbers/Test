@@ -1,9 +1,7 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
-import javax.ws.rs.core.Response;
-
-import com.inthinc.pro.service.client.CellcontrolEndpoint;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
+import com.inthinc.pro.service.phonecontrol.client.CellcontrolEndpoint;
 
 /**
  * {@link PhoneControlAdapter} implementation for Cellcontrol service provider.
@@ -28,7 +26,7 @@ public class CellcontrolAdapter implements PhoneControlAdapter {
     // TODO Return type or exception handling might change once retry user story is implemented.
     @Override
     public void disablePhone(String cellPhoneNumber) {
-        Response response = cellcontrolEndpoint.disablePhone(cellPhoneNumber);
+        cellcontrolEndpoint.disablePhone(cellPhoneNumber);
         // TODO Add logging
     }
 
@@ -38,7 +36,7 @@ public class CellcontrolAdapter implements PhoneControlAdapter {
     // TODO Return type or exception handling might change once retry user story is implemented.
     @Override
     public void enablePhone(String cellPhoneNumber) {
-        Response response = cellcontrolEndpoint.enablePhone(cellPhoneNumber);
+        cellcontrolEndpoint.enablePhone(cellPhoneNumber);
         // TODO Add logging
     }
 }

@@ -7,8 +7,8 @@ import mockit.Verifications;
 
 import org.junit.Test;
 
-import com.inthinc.pro.service.client.CellcontrolEndpoint;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
+import com.inthinc.pro.service.phonecontrol.client.CellcontrolEndpoint;
 
 public class CellcontrolAdapterTest {
 
@@ -16,7 +16,7 @@ public class CellcontrolAdapterTest {
     public void testDisablePhone(final CellcontrolEndpoint cellcontrolEndpointMock) {
         
         final String cellPhoneNumber = "15145555555";
-        PhoneControlAdapter cellControlAdapter = new CellcontrolAdapter(cellcontrolEndpointMock);
+        PhoneControlAdapter cellcontrolAdapter = new CellcontrolAdapter(cellcontrolEndpointMock);
         
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -27,7 +27,7 @@ public class CellcontrolAdapterTest {
         };
         
         // Execution
-        cellControlAdapter.disablePhone(cellPhoneNumber);
+        cellcontrolAdapter.disablePhone(cellPhoneNumber);
         
         // Verification
         new Verifications() {
@@ -42,7 +42,7 @@ public class CellcontrolAdapterTest {
     public void testEnablePhone(final CellcontrolEndpoint cellcontrolEndpointMock) {
 
         final String cellPhoneNumber = "15145555555";
-        PhoneControlAdapter cellControlAdapter = new CellcontrolAdapter(cellcontrolEndpointMock);
+        PhoneControlAdapter cellcontrolAdapter = new CellcontrolAdapter(cellcontrolEndpointMock);
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -53,7 +53,7 @@ public class CellcontrolAdapterTest {
         };
 
         // Execution
-        cellControlAdapter.enablePhone(cellPhoneNumber);
+        cellcontrolAdapter.enablePhone(cellPhoneNumber);
 
         // Verification
         new Verifications() {

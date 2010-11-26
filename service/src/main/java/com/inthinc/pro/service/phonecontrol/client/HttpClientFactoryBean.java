@@ -1,4 +1,4 @@
-package com.inthinc.pro.service.client;
+package com.inthinc.pro.service.phonecontrol.client;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
