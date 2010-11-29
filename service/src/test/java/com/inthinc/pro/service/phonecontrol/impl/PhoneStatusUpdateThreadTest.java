@@ -38,11 +38,11 @@ public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
         new Expectations() {
             {
                 driverDaoMock.findByPhoneID(phoneID); returns(driverMock);
+                driverMock.setCellStatus(CellStatusType.ENABLED);
+                driverDaoMock.update(driverMock); returns(0);
                 driverMock.getDriverID(); returns(driverID); 
                 phoneDaoMock.removeDriverFromDisabledPhoneList(driverID); returns(null);
                 driverMock.getDriverID(); returns(driverID); 
-                driverMock.setCellStatus(CellStatusType.ENABLED); returns(null);
-                driverDaoMock.update(driverMock); returns(0);
             }
         };
         

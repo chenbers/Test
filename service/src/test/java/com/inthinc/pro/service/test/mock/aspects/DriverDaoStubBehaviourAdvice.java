@@ -95,6 +95,14 @@ public class DriverDaoStubBehaviourAdvice {
     public void findByIdPointcut() {}
 
     /**
+     * Pointcut definition.
+     * <p/>
+     * This pointcut will match the update() method.
+     */
+    @Pointcut("execution(* *.update(java.lang.Object))")
+    public void updatePointcut() {}
+
+    /**
      * Advice definition.
      * <p/>
      * AfterReturning advice which checks if the user has access to the returned {@link HasAccountId} instance of the findById() method. Access is granted if the entity has the
@@ -110,6 +118,7 @@ public class DriverDaoStubBehaviourAdvice {
         Integer driverId = (Integer) pjp.getArgs()[0];
 
         Driver driver = new Driver();
+        driver.setDriverID(driverId);
 
         switch (driverId) {
             case 77700:
@@ -136,5 +145,26 @@ public class DriverDaoStubBehaviourAdvice {
         }
 
         return driver;
+    }
+
+    @Around(value = "inDriverHessianDAO() && updatePointcut()")
+    public Object mockUpdate(ProceedingJoinPoint pjp) throws Throwable {
+        Integer driverId = ((Driver) pjp.getArgs()[0]).getDriverID();
+
+        if (driverId == null) {
+            return null;
+        }
+
+        switch (driverId) {
+            case 77700:
+            case 77710:
+            case 77701:
+            case 77702:
+            case 77711:
+            case 77712:
+                return driverId;
+            default:
+                return pjp.proceed();
+        }
     }
 }
