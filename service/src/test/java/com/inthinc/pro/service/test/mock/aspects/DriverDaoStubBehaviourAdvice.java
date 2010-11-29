@@ -14,7 +14,7 @@ import com.inthinc.pro.model.phone.CellProviderType;
 
 /**
  * Test advice which adds stub behavior to {@link DriverHessianDAO}. It intercepts calls to {@link DriverHessianDAO#findByID(Integer)} and provides test data for driver
- * information. The advice will return specific driver information based on certain test driver ids. The exact spects can be found below.
+ * information. The advice will return specific driver information based on certain test driver ids. The exact specs can be found below.
  * <p/>
  * <table border="1">
  * <tr>
