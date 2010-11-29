@@ -16,6 +16,7 @@ import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 @Component
 public class CellPhoneServiceImpl implements CellPhoneService {
     private static Logger logger = Logger.getLogger(CellPhoneServiceImpl.class);
+    
     @Autowired
     private MovementEventHandler movementEventHandler;
 

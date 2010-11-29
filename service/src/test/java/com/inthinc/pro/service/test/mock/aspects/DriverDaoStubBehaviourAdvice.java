@@ -27,7 +27,7 @@ import com.inthinc.pro.model.phone.CellProviderType;
  * </tr>
  * <tr>
  * <td>77710</td>
- * <td>Driver with cell phone number but no provider information. The cell phone number is equal to {@link DriverDaoStubBehaviourAdvice#STUBBED_CELL_PHONE_NUMBER}.</td>
+ * <td>Driver with cell phone number but no provider information. The cell phone number is equal to {@link DriverDaoStubBehaviourAdvice#STUBBED_PHONE_NUMBER}.</td>
  * </tr>
  * <tr>
  * <td>77701</td>
@@ -40,12 +40,12 @@ import com.inthinc.pro.model.phone.CellProviderType;
  * <tr>
  * <td>77711</td>
  * <td>Driver with cell phone number and {@link CellProviderType#CELL_CONTROL} provider. The cell phone number is equal to
- * {@link DriverDaoStubBehaviourAdvice#STUBBED_CELL_PHONE_NUMBER}.</td>
+ * {@link DriverDaoStubBehaviourAdvice#STUBBED_CELLCONTROL_PHONE_NUMBER}.</td>
  * </tr>
  * <tr>
  * <td>77712</td>
  * <td>Driver with cell phone number and {@link CellProviderType#ZOOM_SAFER} provider. The cell phone number is equal to
- * {@link DriverDaoStubBehaviourAdvice#STUBBED_CELL_PHONE_NUMBER}.</td>
+ * {@link DriverDaoStubBehaviourAdvice#STUBBED_ZOOMSAFER_PHONE_NUMBER}.</td>
  * </tr>
  * </table>
  * <p/>
@@ -65,9 +65,19 @@ import com.inthinc.pro.model.phone.CellProviderType;
 public class DriverDaoStubBehaviourAdvice {
 
     /**
-     * Cell phone number returned in all test drivers returned by this stub advice.
+     * Cell phone number returned in all test drivers associated with Cellcontrol.
      */
-    public static final String STUBBED_CELL_PHONE_NUMBER = "15145555555";
+    public static final String STUBBED_CELLCONTROL_PHONE_NUMBER = "2259388363";
+
+    /**
+     * Cell phone number returned in all test drivers associated with Zoomsafer.
+     */
+    public static final String STUBBED_ZOOMSAFER_PHONE_NUMBER = "8016737947";
+
+    /**
+     * Cell phone number returned in all test drivers without provider information.
+     */
+    public static final String STUBBED_PHONE_NUMBER = "15145555555";
 
     /**
      * Pointcut definition.
@@ -104,7 +114,7 @@ public class DriverDaoStubBehaviourAdvice {
             case 77700:
                 break;
             case 77710:
-                driver.setCellPhone(STUBBED_CELL_PHONE_NUMBER);
+                driver.setCellPhone(STUBBED_PHONE_NUMBER);
                 break;
             case 77701:
                 driver.setProvider(CellProviderType.CELL_CONTROL);
@@ -113,11 +123,11 @@ public class DriverDaoStubBehaviourAdvice {
                 driver.setProvider(CellProviderType.ZOOM_SAFER);
                 break;
             case 77711:
-                driver.setCellPhone(STUBBED_CELL_PHONE_NUMBER);
+                driver.setCellPhone(STUBBED_CELLCONTROL_PHONE_NUMBER);
                 driver.setProvider(CellProviderType.CELL_CONTROL);
                 break;
             case 77712:
-                driver.setCellPhone(STUBBED_CELL_PHONE_NUMBER);
+                driver.setCellPhone(STUBBED_ZOOMSAFER_PHONE_NUMBER);
                 driver.setProvider(CellProviderType.CELL_CONTROL);
                 break;
             default:
