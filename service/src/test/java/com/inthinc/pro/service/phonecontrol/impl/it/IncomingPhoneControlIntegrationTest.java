@@ -20,7 +20,7 @@ public class IncomingPhoneControlIntegrationTest extends BaseEmbeddedServerITCas
        Response response = client.processStartMotionEvent(expectedDriverID);
        
        assertEquals(Status.OK.getStatusCode(), response.getStatus());
-       logger.info("Note start request received successfully");
+       logger.info("Note Server start motion request processed successfully");
     }
     
     @Test
@@ -28,6 +28,6 @@ public class IncomingPhoneControlIntegrationTest extends BaseEmbeddedServerITCas
        Response response = client.processStopMotionEvent(expectedDriverID);
        
        assertEquals(Status.OK.getStatusCode(), response.getStatus());
-       logger.info("Note start request received successfully");
+       logger.info("Note Server stop motion request processed successfully");
     }
 }

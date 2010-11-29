@@ -21,13 +21,15 @@ public class CellPhoneServiceImpl implements CellPhoneService {
 
     @Override
     public Response processStartMotionEvent(Integer driverID) {   
+        logger.info("Start motion request received from Note Server for driver " + driverID);
         new Thread(new MovementStartHandlerThread(movementEventHandler, driverID)).start();
         return Response.ok().build();
 
     }
-    
+
     @Override
     public Response processStopMotionEvent(Integer driverID) {   
+        logger.info("Stop motion request received from Note Server for driver " + driverID);
         new Thread(new MovementStopHandlerThread(movementEventHandler, driverID)).start();
         return Response.ok().build();
 
