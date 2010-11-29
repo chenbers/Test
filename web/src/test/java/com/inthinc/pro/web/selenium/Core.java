@@ -317,6 +317,26 @@ public class Core extends DefaultSelenium{
 		click(entry_name, error_name);
 		Pause(5);
 	}
+	public void addtoPanel(String locator, String itemtomove, String error_name){
+			addSelection(locator + "-from", itemtomove);
+			click(locator + "-move_right");
+			Pause(2);
+		}
+	public void removefromPanel (String locator, String itemtomove, String error_name){
+			addSelection(locator + "-picked", itemtomove);
+			click(locator + "-move_left");
+			Pause(2);
+		}
+	public void moveallPanel (String locator, String moveoption, String error_name){
+			if (moveoption.contentEquals("Right")){
+				click(locator + "-move_all_right",error_name);
+			}else if (moveoption.contentEquals("Left")){
+				click(locator + "-move_all_left", error_name);
+			}else{
+				System.out.printf("ERROR - invald data in moveallPanel.");
+			}
+			Pause(2);
+		}
 	
 	public void wait_for_element_present(String watch_for){
 		wait_for_element_present(watch_for, "link");
