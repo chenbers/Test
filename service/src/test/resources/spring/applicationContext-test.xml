@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security" 
-            xmlns:beans="http://www.springframework.org/schema/beans" 
-            xmlns:aop="http://www.springframework.org/schema/aop" 
-            xmlns:context="http://www.springframework.org/schema/context"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
             http://www.springframework.org/schema/security
@@ -14,6 +13,9 @@
             http://www.springframework.org/schema/aop
             http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-    <beans:bean id="cellcontrolServiceStub" class="com.inthinc.pro.service.test.mock.CellcontrolServiceEndpointStub"/>
-    <beans:bean id="zoomsaferServiceStub" class="com.inthinc.pro.service.test.mock.ZoomsaferServiceEndpointStub"/>
+	<context:component-scan base-package="com.inthinc.pro.service.test.mock.aspects" />
+	<beans:bean id="cellcontrolServiceStub"
+		class="com.inthinc.pro.service.test.mock.CellcontrolServiceEndpointStub" />
+	<beans:bean id="zoomsaferServiceStub"
+		class="com.inthinc.pro.service.test.mock.ZoomsaferServiceEndpointStub" />
 </beans:beans>
