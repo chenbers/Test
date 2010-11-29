@@ -9,7 +9,7 @@ public class MovementStartHandlerThread extends MovementEventHandlerThread imple
     }
 
     @Override
-    public void run() {
+    public void execute() {
         movementEventHandler.handleDriverStartedMoving(driverID);
     }
 

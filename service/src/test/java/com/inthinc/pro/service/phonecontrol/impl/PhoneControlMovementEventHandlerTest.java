@@ -16,7 +16,7 @@ import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 
 public class PhoneControlMovementEventHandlerTest {
 
-    final static String EXPECTED_CELL_PHONE_NUMBER = "5145555555";
+    private final static String EXPECTED_CELL_PHONE_NUMBER = "5145555555";
 
     @Test
     public void testHandlesDriverStartMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock, final PhoneControlAdapter phoneControlAdapterMock) {
@@ -100,7 +100,7 @@ public class PhoneControlMovementEventHandlerTest {
     }
 
     @Test
-    public void testDosNotPropagatesExceptionsFromTiwiproBackend(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock) {
+    public void testPropagatesExceptionsFromTiwiproBackend(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock) {
 
         final RuntimeException expectedException = new RuntimeException("Dummy exception");
 
@@ -116,15 +116,17 @@ public class PhoneControlMovementEventHandlerTest {
         MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
         try {
             handler.handleDriverStartedMoving(1);
+            fail("Exception should have been raised but got none");
         } catch (Throwable e) {
             // Verification
-            fail("No exception should have been raised but got: " + e);
+            assertSame(expectedException, e);
         }
         try {
             handler.handleDriverStoppedMoving(1);
+            fail("Exception should have been raised but got none");
         } catch (Throwable e) {
             // Verification
-            fail("No exception should have been raised but got: " + e);
+            assertSame(expectedException, e);
         }
     }
 

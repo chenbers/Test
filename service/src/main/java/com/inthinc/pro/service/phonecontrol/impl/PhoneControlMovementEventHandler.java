@@ -70,16 +70,13 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
     private Driver getDriverInfo(Integer driverId) {
         Driver driver = null;
 
-        try {
-            driver = driverDao.findByID(driverId);
+        logger.debug("Requesting driver information from backend...");
+        driver = driverDao.findByID(driverId);
 
-            if (driver == null) {
-                logger.warn("No information is available for driver DID-" + driverId + ".");
-            } else {
-                logger.debug("Obtained driver info from the back end. DID-" + driverId + ", PH#-" + driver.getCellPhone() + ", provider: " + driver.getProvider());
-            }
-        } catch (Throwable e) {
-            logger.warn("Unable to query driver DID-" + driverId + " information due to an internal error:", e);
+        if (driver == null) {
+            logger.warn("No information is available for driver DID-" + driverId + ".");
+        } else {
+            logger.debug("Obtained driver info from the back end. DID-" + driverId + ", PH#-" + driver.getCellPhone() + ", provider: " + driver.getProvider());
         }
 
         return driver;
@@ -89,7 +86,9 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         if (driver.getProvider() != null) {
 
             if (driver.getCellPhone() != null) {
+                logger.debug("Creating " + driver.getProvider() + " client endpoint proxy...");
                 PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
+                logger.debug("Sending request to " + driver.getProvider() + " client endpoint proxy to disable PH#-" + driver.getCellPhone());
                 phoneControlAdapter.disablePhone(driver.getCellPhone());
             } else {
                 logger.warn("Driver DID-" + driver.getDriverID() + " has no associated cell phone number.");
@@ -104,10 +103,13 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         if (driver.getProvider() != null) {
 
             if (driver.getCellPhone() != null) {
+                logger.debug("Creating " + driver.getProvider() + " client endpoint proxy...");
                 PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
+                logger.debug("Requesting " + driver.getProvider() + " client endpoint proxy to enable PH#-" + driver.getCellPhone());
+
                 phoneControlAdapter.enablePhone(driver.getCellPhone());
             } else {
-                logger.warn("Driver DID-" + driver.getDriverID() + " has no cell phone number associated with him.");
+                logger.warn("Driver DID-" + driver.getDriverID() + " has no associated cell phone number.");
             }
 
         } else {

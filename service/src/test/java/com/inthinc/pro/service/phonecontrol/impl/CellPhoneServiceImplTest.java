@@ -6,13 +6,10 @@ import static org.junit.Assert.assertNotNull;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import mockit.Cascading;
 import mockit.Expectations;
-import mockit.Mocked;
 
 import org.junit.Test;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
