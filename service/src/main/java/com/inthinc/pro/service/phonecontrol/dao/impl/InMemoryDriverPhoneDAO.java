@@ -1,7 +1,6 @@
 package com.inthinc.pro.service.phonecontrol.dao.impl;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Component;
@@ -35,7 +34,6 @@ public class InMemoryDriverPhoneDAO implements DriverPhoneDAO {
 	@Override
 	public void addDriverToDisabledPhoneList(Integer driverID) {
 		driverIDSet.add(driverID);
-
 	}
 
 	@Override

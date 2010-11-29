@@ -10,7 +10,6 @@ import mockit.Expectations;
 
 import org.junit.Test;
 
-import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 
@@ -25,12 +24,27 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
     //@Cascading private PhoneStatusUpdateThread thread;
     
     /**
-     * Test updateStatus() with CellStatusType.ENABLED acknowledgment.
+     * Test for Change Status Enabled acknowledgment.
      */
     @Test()
-    public void testUpdate() {               
+    public void testSetStatusEnabled() {               
         try {
-            Response response = serviceSUT.updateStatus(phoneID, CellStatusType.ENABLED);
+            Response response = serviceSUT.setStatusEnabled(phoneID);
+            // check if the response is OK
+            assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        } catch (Exception e) {
+            // OK as thread is mocked
+        }
+        
+    }
+
+    /**
+     * Test for Change Status Disabled acknowledgment.
+     */
+    @Test()
+    public void testSetStatusDisabled() {               
+        try {
+            Response response = serviceSUT.setStatusDisabled(phoneID);
             // check if the response is OK
             assertEquals(Status.OK.getStatusCode(), response.getStatus());
         } catch (Exception e) {

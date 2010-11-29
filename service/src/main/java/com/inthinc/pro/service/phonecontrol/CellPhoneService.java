@@ -8,8 +8,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import com.inthinc.pro.model.phone.CellStatusType;
-
 /**
  * Services for Cell phone Control.
  */
@@ -42,13 +40,20 @@ public interface CellPhoneService {
     
     
     /**
-     * Service to update the driver's cell phone status.
+     * Service to update the driver's cell phone status ENABLED.
      * @param phoneId The driver's phone ID
-     * @param status The status to update
      * @HTTP HTTP 200 - OK
      */
     @PUT
-    @Path("/phone/{phoneID}/{status}") 
-    public Response updateStatus(@PathParam("phoneID") String phoneId, @PathParam("status") CellStatusType status);
+    @Path("/phone/{phoneID}/ENABLED") 
+    public Response setStatusEnabled(@PathParam("phoneID") String phoneId);
     
+    /**
+     * Service to set the driver's cell phone status DISABLED.
+     * @param phoneId The driver's phone ID
+     * @HTTP HTTP 200 - OK
+     */
+    @PUT
+    @Path("/phone/{phoneID}/DISABLED")
+    public Response setStatusDisabled(@PathParam("phoneID") String phoneId);
 }

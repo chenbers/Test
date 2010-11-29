@@ -15,7 +15,6 @@ import org.jboss.resteasy.client.ClientResponse;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.phone.CellStatusType;
 
 @Path("/service/api")
 @Consumes("application/xml")
@@ -45,7 +44,10 @@ public interface ServiceClient {
     public Response processStopMotionEvent(@PathParam("driverID") Integer driverID);
     
     @PUT
-    @Path("/phone/{phoneID}/{status}") 
-    public Response updateStatus(@PathParam("phoneID") String phoneId, @PathParam("status") CellStatusType status);
+    @Path("/phone/{phoneID}/ENABLED") 
+    public Response setStatusEnabled(@PathParam("phoneID") String phoneId);
 
+    @PUT
+    @Path("/phone/{phoneID}/DISABLED") 
+    public Response setStatusDisabled(@PathParam("phoneID") String phoneId);
 }

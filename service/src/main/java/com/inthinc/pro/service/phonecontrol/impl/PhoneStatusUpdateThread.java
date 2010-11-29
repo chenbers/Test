@@ -1,7 +1,6 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
@@ -13,13 +12,13 @@ import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
  */
 public class PhoneStatusUpdateThread extends Thread {
     private static Logger logger = Logger.getLogger(PhoneStatusUpdateThread.class);
-    private static final String LOG_PREFIX = "UpdateStatus Request ";
+    private static final String LOG_PREFIX = "Change Status Request ";
+    private static final String PHONE_PATTERN = "^\\d{7,12}$";
     
     private String phoneId; 
     private CellStatusType status;
-    @Autowired
+    
     private DriverDAO driverDAO;
-    @Autowired
     private DriverPhoneDAO phoneDAO;
     
     /**
@@ -39,24 +38,33 @@ public class PhoneStatusUpdateThread extends Thread {
      */
     @Override
     public void run() {
-        logger.debug(LOG_PREFIX + "started for phoneID: " + phoneId + ", status: " + status);
-        Driver driver = driverDAO.findByPhoneID(phoneId);
-        logger.debug(LOG_PREFIX + "called driverDAO.findByPhoneID(), returned: " + driver);
-        if (driver != null) {
-            if (status == CellStatusType.DISABLED) {
-                phoneDAO.addDriverToDisabledPhoneList(driver.getDriverID());
-                logger.debug(LOG_PREFIX + "added " + driver.getDriverID() + " to DisabledPhoneList");
-            } else {
-                phoneDAO.removeDriverFromDisabledPhoneList(driver.getDriverID());
-                logger.debug(LOG_PREFIX + "removed " + driver.getDriverID() + " from DisabledPhoneList");
-            }
-            
-            logger.debug(LOG_PREFIX + " is updating driver.. ");
-            driver.setCellStatus(status);
-            driverDAO.update(driver);
+        if (phoneId == null || !phoneId.matches(PHONE_PATTERN)) {
+            logger.error(LOG_PREFIX + "validation: PhoneID doesn't match " + PHONE_PATTERN);
+            return;
         }
         
-        logger.debug(LOG_PREFIX + "done.");
+        logger.debug(LOG_PREFIX + "started for phoneID: " + phoneId + ", status: " + status);
+        try {
+            Driver driver = driverDAO.findByPhoneID(phoneId);
+            logger.debug(LOG_PREFIX + "called driverDAO.findByPhoneID(), returned: " + driver);
+            if (driver != null) {
+                if (status == CellStatusType.DISABLED) {
+                    phoneDAO.addDriverToDisabledPhoneList(driver.getDriverID());
+                    logger.debug(LOG_PREFIX + "added " + driver.getDriverID() + " to DisabledPhoneList");
+                } else {
+                    phoneDAO.removeDriverFromDisabledPhoneList(driver.getDriverID());
+                    logger.debug(LOG_PREFIX + "removed " + driver.getDriverID() + " from DisabledPhoneList");
+                }
+                
+                logger.debug(LOG_PREFIX + " is updating driver.. ");
+                driver.setCellStatus(status);
+                driverDAO.update(driver);
+            }
+            
+            logger.debug(LOG_PREFIX + "done.");
+        } catch (Exception e) {
+            logger.error(LOG_PREFIX + "failed!", e);
+        }
     }
     
     /**
