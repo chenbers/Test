@@ -47,16 +47,10 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
     // TODO Add logic to handle error once retry user story is implemented.
     @Override
     public void handleDriverStartedMoving(Integer driverId) {
-        logger.debug("Querying backend for driver information. Driver ID = " + driverId);
-        Driver driver = driverDao.findByID(driverId);
-        String cellPhoneNumber = driver.getCellPhone();
-        logger.debug("Obtained driver cellphone from the back end. Cell phone # is '" + cellPhoneNumber + "'");
+        Driver driver = getDriverInfo(driverId);
 
-        if (driver.getProvider() != null) {
-            PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
-            phoneControlAdapter.disablePhone(cellPhoneNumber);
-        } else {
-            logger.debug("No provider information is available for the driver ID " + driverId + ". Ignoring event.");
+        if (driver != null) {
+            disableDriverPhone(driver);
         }
     }
 
@@ -66,16 +60,58 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
     // TODO Add logic to handle error once retry user story is implemented.
     @Override
     public void handleDriverStoppedMoving(Integer driverId) {
-        logger.debug("Querying backend for driver information. Driver ID = " + driverId);
-        Driver driver = driverDao.findByID(driverId);
-        String cellPhoneNumber = driver.getCellPhone();
-        logger.debug("Obtained driver cellphone from the back end. Cell phone # is '" + cellPhoneNumber + "'");
+        Driver driver = getDriverInfo(driverId);
 
+        if (driver != null) {
+            enableDriverPhone(driver);
+        }
+    }
+
+    private Driver getDriverInfo(Integer driverId) {
+        Driver driver = null;
+
+        try {
+            driver = driverDao.findByID(driverId);
+
+            if (driver == null) {
+                logger.warn("No information is available for driver DID-" + driverId + ".");
+            } else {
+                logger.debug("Obtained driver info from the back end. DID-" + driverId + ", PH#-" + driver.getCellPhone() + ", provider: " + driver.getProvider());
+            }
+        } catch (Throwable e) {
+            logger.warn("Unable to query driver DID-" + driverId + " information due to an internal error:", e);
+        }
+
+        return driver;
+    }
+
+    private void disableDriverPhone(Driver driver) {
         if (driver.getProvider() != null) {
-            PhoneControlAdapter phoneControlService = serviceFactory.createAdapter(driver.getProvider());
-            phoneControlService.enablePhone(cellPhoneNumber);
+
+            if (driver.getCellPhone() != null) {
+                PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
+                phoneControlAdapter.disablePhone(driver.getCellPhone());
+            } else {
+                logger.warn("Driver DID-" + driver.getDriverID() + " has no associated cell phone number.");
+            }
+
         } else {
-            logger.debug("No provider information is available for the driver ID " + driverId + ". Ignoring event.");
+            logger.warn("No provider information is available for the driver DID-" + driver.getDriverID() + ".");
+        }
+    }
+
+    private void enableDriverPhone(Driver driver) {
+        if (driver.getProvider() != null) {
+
+            if (driver.getCellPhone() != null) {
+                PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
+                phoneControlAdapter.enablePhone(driver.getCellPhone());
+            } else {
+                logger.warn("Driver DID-" + driver.getDriverID() + " has no cell phone number associated with him.");
+            }
+
+        } else {
+            logger.warn("No provider information is available for the driver DID-" + driver.getDriverID() + ".");
         }
     }
 }

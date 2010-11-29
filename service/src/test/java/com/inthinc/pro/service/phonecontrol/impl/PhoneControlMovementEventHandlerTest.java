@@ -16,15 +16,16 @@ import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 
 public class PhoneControlMovementEventHandlerTest {
 
+    final static String EXPECTED_CELL_PHONE_NUMBER = "5145555555";
+
     @Test
     public void testHandlesDriverStartMovingEvent(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock, final PhoneControlAdapter phoneControlAdapterMock) {
 
         final Driver expectedDriver = new Driver();
         final Integer expectedDriverId = 666;
-        final String expectedCellPhoneNumber = "5145555555";
         final CellProviderType expectedCellProvider = CellProviderType.CELL_CONTROL;
 
-        expectedDriver.setCellPhone(expectedCellPhoneNumber);
+        expectedDriver.setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
         expectedDriver.setProvider(expectedCellProvider);
 
         // Expectations & stubbing
@@ -51,7 +52,7 @@ public class PhoneControlMovementEventHandlerTest {
                 adapterFactoryMock.createAdapter(expectedCellProvider);
                 times = 1;
 
-                phoneControlAdapterMock.disablePhone(expectedCellPhoneNumber);
+                phoneControlAdapterMock.disablePhone(EXPECTED_CELL_PHONE_NUMBER);
                 times = 1;
             }
         };
@@ -63,10 +64,9 @@ public class PhoneControlMovementEventHandlerTest {
 
         final Driver expectedDriver = new Driver();
         final Integer expectedDriverId = 666;
-        final String expectedCellPhoneNumber = "5145555555";
         final CellProviderType expectedCellProvider = CellProviderType.CELL_CONTROL;
 
-        expectedDriver.setCellPhone(expectedCellPhoneNumber);
+        expectedDriver.setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
         expectedDriver.setProvider(expectedCellProvider);
 
         // Expectations & stubbing
@@ -93,14 +93,14 @@ public class PhoneControlMovementEventHandlerTest {
                 adapterFactoryMock.createAdapter(expectedCellProvider);
                 times = 1;
 
-                phoneControlAdapterMock.enablePhone(expectedCellPhoneNumber);
+                phoneControlAdapterMock.enablePhone(EXPECTED_CELL_PHONE_NUMBER);
                 times = 1;
             }
         };
     }
 
     @Test
-    public void testPropagatesExceptionsFromTiwiproBackend(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock) {
+    public void testDosNotPropagatesExceptionsFromTiwiproBackend(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock) {
 
         final RuntimeException expectedException = new RuntimeException("Dummy exception");
 
@@ -116,17 +116,15 @@ public class PhoneControlMovementEventHandlerTest {
         MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
         try {
             handler.handleDriverStartedMoving(1);
-            fail("Exception should have been raised but got none");
         } catch (Throwable e) {
             // Verification
-            assertSame(expectedException, e);
+            fail("No exception should have been raised but got: " + e);
         }
         try {
             handler.handleDriverStoppedMoving(1);
-            fail("Exception should have been raised but got none");
         } catch (Throwable e) {
             // Verification
-            assertSame(expectedException, e);
+            fail("No exception should have been raised but got: " + e);
         }
     }
 
@@ -138,6 +136,7 @@ public class PhoneControlMovementEventHandlerTest {
         
         final Driver driver = new Driver();
         driver.setProvider(CellProviderType.CELL_CONTROL);
+        driver.setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
 
         // Expectations & stubbing
         new NonStrictExpectations() {

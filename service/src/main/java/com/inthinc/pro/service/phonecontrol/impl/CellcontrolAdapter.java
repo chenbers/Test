@@ -33,7 +33,7 @@ public class CellcontrolAdapter implements PhoneControlAdapter {
     @Override
     public void disablePhone(String cellPhoneNumber) {
         Response response = cellcontrolEndpoint.disablePhone(cellPhoneNumber);
-        logger.debug("A request was sent to Cellcontrol endpoint to disable phone # '" + cellPhoneNumber + "'. Response status = " + response.getStatus() + ".");
+        logger.debug("A request was sent to Cellcontrol endpoint to disable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
     }
 
     /**
@@ -43,6 +43,6 @@ public class CellcontrolAdapter implements PhoneControlAdapter {
     @Override
     public void enablePhone(String cellPhoneNumber) {
         Response response = cellcontrolEndpoint.enablePhone(cellPhoneNumber);
-        logger.debug("A request was sent to Cellcontrol endpoint to enable phone # '" + cellPhoneNumber + "'. Response status = " + response.getStatus() + ".");
+        logger.debug("A request was sent to Cellcontrol endpoint to enable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
     }
 }

@@ -45,7 +45,7 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
     public void disablePhone(String cellPhoneNumber) {
         Date now = clock.getNow();
         Response response = zoomsaferEndpoint.disablePhone(cellPhoneNumber, this.dateFormatter.format(now));
-        logger.debug("A request was sent to Zoomsafer endpoint to disable phone # '" + cellPhoneNumber + "'. Response status = " + response.getStatus() + ".");
+        logger.debug("A request was sent to Zoomsafer endpoint to disable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
     }
 
     /**
@@ -55,6 +55,6 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
     public void enablePhone(String cellPhoneNumber) {
         Date now = clock.getNow();
         Response response = zoomsaferEndpoint.enablePhone(cellPhoneNumber, this.dateFormatter.format(now));
-        logger.debug("A request was sent to Zoomsafer endpoint to enable phone # '" + cellPhoneNumber + "'. Response status = " + response.getStatus() + ".");
+        logger.debug("A request was sent to Zoomsafer endpoint to enable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
     }
 }
