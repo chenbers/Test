@@ -22,7 +22,6 @@ public class Device extends BaseEntity implements HasAccountId
     private Integer           vehicleID;
     private DeviceStatus      status;
     private String            name;
-    @Column(name = "mcmid")
     private String            imei;
     private String            sim;
     private String			  serialNum;

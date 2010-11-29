@@ -19,7 +19,7 @@ import com.inthinc.pro.model.ForwardCommandStatus;
 public class DeviceHessianDAO extends GenericHessianDAO<Device, Integer> implements DeviceDAO, FindByKey<Device>
 {
     private static final Logger logger = Logger.getLogger(DeviceHessianDAO.class);
-    private static final String CENTRAL_ID_KEY = "mcmid";
+    private static final String CENTRAL_ID_KEY = "imei";
     private static final String SERIAL_NUM_KEY = "serialNum";
 
     private DeviceMapper deviceMapper;

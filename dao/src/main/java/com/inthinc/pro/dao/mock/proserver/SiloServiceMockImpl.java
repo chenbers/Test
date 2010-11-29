@@ -107,7 +107,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
                 returnMap = new HashMap<String, Object>();
                 returnMap.put("id", vehicle.getVehicleID());
             }
-        } else if (name.equals("mcmid")) {
+        } else if (name.equals("imei")) {
             Device device = MockData.getInstance().lookupObject(Device.class, name, value);
             if (device != null) {
                 returnMap = new HashMap<String, Object>();
