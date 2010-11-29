@@ -43,11 +43,15 @@ public class PhoneStatusUpdateThread extends Thread {
             return;
         }
         
-        logger.debug(LOG_PREFIX + "started for phoneID: " + phoneId + ", status: " + status);
+        logger.debug(LOG_PREFIX + "started for PH#-" + phoneId + " Status-" + status);
         try {
             Driver driver = driverDAO.findByPhoneID(phoneId);
             logger.debug(LOG_PREFIX + "called driverDAO.findByPhoneID(), returned: " + driver);
             if (driver != null) {
+                logger.debug(LOG_PREFIX + " is updating driver.. ");
+                driver.setCellStatus(status);
+                driverDAO.update(driver);
+                
                 if (status == CellStatusType.DISABLED) {
                     phoneDAO.addDriverToDisabledPhoneList(driver.getDriverID());
                     logger.debug(LOG_PREFIX + "added " + driver.getDriverID() + " to DisabledPhoneList");
@@ -55,13 +59,10 @@ public class PhoneStatusUpdateThread extends Thread {
                     phoneDAO.removeDriverFromDisabledPhoneList(driver.getDriverID());
                     logger.debug(LOG_PREFIX + "removed " + driver.getDriverID() + " from DisabledPhoneList");
                 }
-                
-                logger.debug(LOG_PREFIX + " is updating driver.. ");
-                driver.setCellStatus(status);
-                driverDAO.update(driver);
+
+                logger.debug(LOG_PREFIX + status + " for PH#-" + phoneId); // should we log as info?
             }
             
-            logger.debug(LOG_PREFIX + "done.");
         } catch (Exception e) {
             logger.error(LOG_PREFIX + "failed!", e);
         }
