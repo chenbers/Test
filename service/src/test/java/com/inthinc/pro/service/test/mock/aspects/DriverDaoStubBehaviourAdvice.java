@@ -6,7 +6,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.HasAccountId;
@@ -102,10 +101,12 @@ public class DriverDaoStubBehaviourAdvice {
      * same account id as the currently logged user.
      * <p/>
      * Note that AspectJ will only invoke this advice if the returning object is of type {@link HasAccountId}.
+     * 
+     * @throws Throwable
+     *             If unable to proceed with the join point.
      */
     @Around(value = "inDriverHessianDAO() && findByIdPointcut()")
-    public Object mockFindById(ProceedingJoinPoint pjp) {
-        DriverDAO targetDao = (DriverDAO) pjp.getTarget();
+    public Object mockFindById(ProceedingJoinPoint pjp) throws Throwable {
         Integer driverId = (Integer) pjp.getArgs()[0];
 
         Driver driver = new Driver();
@@ -131,7 +132,7 @@ public class DriverDaoStubBehaviourAdvice {
                 driver.setProvider(CellProviderType.CELL_CONTROL);
                 break;
             default:
-                driver = targetDao.findByID(driverId);
+                driver = (Driver) pjp.proceed();
         }
 
         return driver;
