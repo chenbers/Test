@@ -139,7 +139,7 @@ public class DriverDaoStubBehaviourAdvice {
                 break;
             case 77712:
                 driver.setCellPhone(STUBBED_ZOOMSAFER_PHONE_NUMBER);
-                driver.setProvider(CellProviderType.CELL_CONTROL);
+                driver.setProvider(CellProviderType.ZOOM_SAFER);
                 break;
             default:
                 driver = (Driver) pjp.proceed();
