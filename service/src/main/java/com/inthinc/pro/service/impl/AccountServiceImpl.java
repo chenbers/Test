@@ -9,9 +9,9 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.service.AccountService;
-import com.inthinc.pro.util.SecureAccountDAO;
+import com.inthinc.pro.service.adapters.AccountDAOAdapter;
 
-public class AccountServiceImpl extends AbstractService<Account, SecureAccountDAO> implements AccountService {
+public class AccountServiceImpl extends AbstractService<Account, AccountDAOAdapter> implements AccountService {
 
     public Response get() {
         return get(getDao().getAccountID());

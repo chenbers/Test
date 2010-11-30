@@ -15,10 +15,10 @@ import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 import com.inthinc.pro.service.GroupService;
+import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
-import com.inthinc.pro.util.SecureGroupDAO;
 
-public class GroupServiceImpl extends AbstractService<Group, SecureGroupDAO> implements GroupService {
+public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> implements GroupService {
 
     @Override
     public Response getAll() {

@@ -1,6 +1,7 @@
 package com.inthinc.pro.service.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.service.adapters.UserDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
-import com.inthinc.pro.util.SecureUserDAO;
 
 /**
  * Unit tests for UserServiceImpl.
@@ -31,7 +32,7 @@ public class UserServiceImplTest extends BaseUnitTest {
     
     // JMockit mocks
     @Mocked private User userMock;
-    @Mocked private SecureUserDAO secureDaoMock;
+    @Mocked private UserDAOAdapter secureDaoMock;
     
     // System Under Test
     private UserServiceImpl serviceSUT = new UserServiceImpl();

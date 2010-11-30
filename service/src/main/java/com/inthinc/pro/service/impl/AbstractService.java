@@ -11,10 +11,10 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.service.GenericService;
+import com.inthinc.pro.service.adapters.BaseDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
-import com.inthinc.pro.util.SecureDAO;
 
-public abstract class AbstractService<T, DAO extends SecureDAO<T>> implements GenericService<T> {
+public abstract class AbstractService<T, DAO extends BaseDAOAdapter<T>> implements GenericService<T> {
 
     private DAO dao;
 

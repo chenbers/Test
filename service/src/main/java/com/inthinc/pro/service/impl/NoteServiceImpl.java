@@ -19,7 +19,7 @@ import com.inthinc.pro.service.note.CrashData;
 import com.inthinc.pro.service.note.Heading;
 import com.inthinc.pro.service.note.Note;
 import com.inthinc.pro.service.note.NoteType;
-
+@SuppressWarnings("unchecked")
 public class NoteServiceImpl implements NoteService {
     private MCMService mcmService;
     private CrashReportDAO crashReportDAO;

@@ -18,6 +18,9 @@
 	<!-- Phone control autowiring configuration -->
 	<context:component-scan base-package="com.inthinc.pro.service.phonecontrol" />
 
+    <!-- TODO Temporary placeholder for QA testing. Remove when going to production -->	
+	<context:component-scan base-package="com.inthinc.pro.service.test.mock.aspects" />
+
 	<!-- Phone control adapter factory configuration -->
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<!-- Cell Control -->
@@ -103,67 +106,31 @@
 		name="teenServerDAO" ref="sbsDataAccessBean"/> <property
 		name="tigerDAO" ref="tigerDao"/> </bean>
 	-->
-	<bean id="secureAccountDAO" class="com.inthinc.pro.util.SecureAccountDAO">
-		<property name="accountDAO" ref="accountDAO" />
-	</bean>
-	<bean id="secureAddressDAO" class="com.inthinc.pro.util.SecureAddressDAO">
-		<property name="addressDAO" ref="addressDAO" />
-	</bean>
-	<bean id="secureDeviceDAO" class="com.inthinc.pro.util.SecureDeviceDAO">
-		<property name="deviceDAO" ref="deviceDAO" />
-	</bean>
-	<bean id="secureGroupDAO" class="com.inthinc.pro.util.SecureGroupDAO">
-		<property name="groupDAO" ref="groupDAO" />
-		<property name="groupReportDAO" ref="groupReportDAO" />
-	</bean>
-	<bean id="securePersonDAO" class="com.inthinc.pro.util.SecurePersonDAO">
-		<property name="personDAO" ref="personDAO" />
-		<property name="addressDAO" ref="secureAddressDAO" />
-	</bean>
-	<bean id="secureDriverDAO" class="com.inthinc.pro.util.SecureDriverDAO">
-		<property name="driverDAO" ref="driverDAO" />
-		<property name="driverReportDAO" ref="driverReportDAO" />
-		<property name="eventDAO" ref="eventDAO" />
-		<property name="groupDAO" ref="secureGroupDAO" />
-		<property name="personDAO" ref="securePersonDAO" />
-	</bean>
-	<bean id="secureUserDAO" class="com.inthinc.pro.util.SecureUserDAO">
-		<property name="userDAO" ref="userDAO" />
-		<property name="groupDAO" ref="secureGroupDAO" />
-		<property name="personDAO" ref="securePersonDAO" />
-	</bean>
-	<bean id="secureVehicleDAO" class="com.inthinc.pro.util.SecureVehicleDAO">
-		<property name="vehicleDAO" ref="vehicleDAO" />
-		<property name="vehicleReportDAO" ref="vehicleReportDAO" />
-		<property name="mpgDAO" ref="mpgDAO" />
-		<property name="driverDAO" ref="secureDriverDAO" />
-		<property name="groupDAO" ref="secureGroupDAO" />
-		<property name="deviceDAO" ref="secureDeviceDAO" />
-	</bean>
 
+    <!-- Adapters are declared as @Components do they do not need to be set up in XML -->
 	<bean id="accountService" class="com.inthinc.pro.service.impl.AccountServiceImpl">
-		<property name="dao" ref="secureAccountDAO" />
+		<property name="dao" ref="accountDAOAdapter" />
 	</bean>
 	<bean id="addressService" class="com.inthinc.pro.service.impl.AddressServiceImpl">
-		<property name="dao" ref="secureAddressDAO" />
+		<property name="dao" ref="addressDAOAdapter" />
 	</bean>
 	<bean id="deviceService" class="com.inthinc.pro.service.impl.DeviceServiceImpl">
-		<property name="dao" ref="secureDeviceDAO" />
+		<property name="dao" ref="deviceDAOAdapter" />
 	</bean>
 	<bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl">
-		<property name="dao" ref="secureDriverDAO" />
+		<property name="dao" ref="driverDAOAdapter" />
 	</bean>
 	<bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl">
-		<property name="dao" ref="secureGroupDAO" />
+		<property name="dao" ref="groupDAOAdapter" />
 	</bean>
 	<bean id="personService" class="com.inthinc.pro.service.impl.PersonServiceImpl">
-		<property name="dao" ref="securePersonDAO" />
+		<property name="dao" ref="personDAOAdapter" />
 	</bean>
 	<bean id="userService" class="com.inthinc.pro.service.impl.UserServiceImpl">
-		<property name="dao" ref="secureUserDAO" />
+		<property name="dao" ref="userDAOAdapter" />
 	</bean>
 	<bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl">
-		<property name="dao" ref="secureVehicleDAO" />
+		<property name="dao" ref="vehicleDAOAdapter" />
 		<property name="addressLookup" ref="geonamesAddressLookupBean" />
 	</bean>
 	<bean id="voiceService" class="com.inthinc.pro.service.voicexml.VoiceServiceImpl">

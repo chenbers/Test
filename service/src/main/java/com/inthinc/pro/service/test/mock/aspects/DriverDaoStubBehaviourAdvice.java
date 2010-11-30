@@ -59,6 +59,7 @@ import com.inthinc.pro.model.phone.CellProviderType;
  * <p/>
  * To enable this advice, make sure resource <tt>spring/applicationContext-test.xml</tt> is loaded by Spring, along with the {@link DriverHessianDAO} bean.
  */
+// TODO This aspect and package must be moved back to src/test once QA testing is performed.
 @Aspect
 @Component
 public class DriverDaoStubBehaviourAdvice {

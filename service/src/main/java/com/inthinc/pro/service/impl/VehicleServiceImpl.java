@@ -16,18 +16,18 @@ import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.service.VehicleService;
+import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
-import com.inthinc.pro.util.SecureVehicleDAO;
 
-public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDAO> implements VehicleService {
+public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapter> implements VehicleService {
 
     private AddressLookup addressLookup;
 
@@ -109,14 +109,14 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
             try {
                 trip.setStartAddressStr(addressLookup.getAddress(trip.getStartLoc()));
             } catch (NoAddressFoundException nafe) {
-            	
-                trip.setStartAddressStr("Address Not Found at"+nafe.getLat()+","+nafe.getLng());
+
+                trip.setStartAddressStr("Address Not Found at" + nafe.getLat() + "," + nafe.getLng());
             }
 
             try {
                 trip.setEndAddressStr(addressLookup.getAddress(trip.getEndLoc()));
             } catch (NoAddressFoundException nafe) {
-                trip.setStartAddressStr("Address Not Found at"+nafe.getLat()+","+nafe.getLng());
+                trip.setStartAddressStr("Address Not Found at" + nafe.getLat() + "," + nafe.getLng());
             }
         }
         return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();
@@ -144,8 +144,7 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, SecureVehicleDA
         List<Event> list = getDao().getEvents(vehicleID, startDate.toDate(), new Date());
         return Response.ok(new GenericEntity<List<Event>>(list) {}).build();
     }
-    
-    
+
     // fuel consumption for vehicle (parameter:day)"
     // @Override
     // public Response getVehicleMPG(Integer id) {

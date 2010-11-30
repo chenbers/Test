@@ -9,9 +9,9 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.service.DeviceService;
-import com.inthinc.pro.util.SecureDeviceDAO;
+import com.inthinc.pro.service.adapters.DeviceDAOAdapter;
 
-public class DeviceServiceImpl extends AbstractService<Device, SecureDeviceDAO> implements DeviceService {
+public class DeviceServiceImpl extends AbstractService<Device, DeviceDAOAdapter> implements DeviceService {
 
     @Override
     public Response getAll() {

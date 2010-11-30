@@ -12,10 +12,10 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.PersonService;
+import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
-import com.inthinc.pro.util.SecurePersonDAO;
 
-public class PersonServiceImpl extends AbstractService<Person, SecurePersonDAO> implements PersonService {
+public class PersonServiceImpl extends AbstractService<Person, PersonDAOAdapter> implements PersonService {
 
     @Override
     public Response getAll() {

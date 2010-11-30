@@ -11,10 +11,10 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.UserService;
+import com.inthinc.pro.service.adapters.UserDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
-import com.inthinc.pro.util.SecureUserDAO;
 
-public class UserServiceImpl extends AbstractService<User, SecureUserDAO> implements UserService {
+public class UserServiceImpl extends AbstractService<User, UserDAOAdapter> implements UserService {
 
     @Override
     public Response getAll() {

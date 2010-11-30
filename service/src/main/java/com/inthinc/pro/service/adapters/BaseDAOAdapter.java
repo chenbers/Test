@@ -65,7 +65,7 @@ public abstract class BaseDAOAdapter<R> {
 	 * 
 	 * @return account ID.
 	 */
-    protected Integer getAccountID() {
+    public Integer getAccountID() {
 		// obtained from TiwiProPrincipal
 		return tiwiProPrincipal.getAccountID();
 	}

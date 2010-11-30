@@ -11,14 +11,14 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.service.DriverService;
+import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
-import com.inthinc.pro.util.SecureDriverDAO;
 
-public class DriverServiceImpl extends AbstractService<Driver, SecureDriverDAO> implements DriverService {
+public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter> implements DriverService {
 
     @Override
     public Response getAll() {

@@ -11,10 +11,10 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.service.AddressService;
+import com.inthinc.pro.service.adapters.AddressDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
-import com.inthinc.pro.util.SecureAddressDAO;
 
-public class AddressServiceImpl extends AbstractService<Address, SecureAddressDAO> implements AddressService {
+public class AddressServiceImpl extends AbstractService<Address, AddressDAOAdapter> implements AddressService {
     
     @Override
     public Response getAll() {
