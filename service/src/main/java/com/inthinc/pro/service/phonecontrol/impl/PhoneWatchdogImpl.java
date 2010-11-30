@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,8 @@ import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
 @Component("phoneWatchdogImpl")
 public class PhoneWatchdogImpl implements PhoneWatchdog {
 
+	private static final Logger logger = Logger.getLogger(PhoneWatchdogImpl.class);	
+	
 	@Autowired
 	private DriverPhoneDAO driverPhoneDAO;
 	
@@ -39,13 +42,13 @@ public class PhoneWatchdogImpl implements PhoneWatchdog {
 	
 	private static List<NoteType> noteTypes = getNoteTypes();
 	
-//	Logger logger = Logger.getLogger(clazz);
-	
 	@Override
 	public void enablePhonesWhenLostComm() {
 
+		
 		// Fetch IDs of drivers with disabled phones
 		Set<Integer> driverIDSet = driverPhoneDAO.getDriversWithDisabledPhones();
+		logger.info("Phone Watchdog started, verifying communication for the following drivers: " + driverIDSet.toString());
 		Date[] interval = getInterval();
 		
 		// Fetch events for each driver
@@ -55,6 +58,7 @@ public class PhoneWatchdogImpl implements PhoneWatchdog {
 			
 			// Enable if no communication events
 			if(events.size() == 0){
+				logger.debug("No events found for driver " + driverID +". A communication loss is suspected, therefore sending a request to enable the phone.");
 				phoneControl.handleDriverStoppedMoving(driverID);
 				// TODO: this method calls the provider. eg. CellControl. Verify if this is correct, or we just need an internal Inthinc status update
 			}
