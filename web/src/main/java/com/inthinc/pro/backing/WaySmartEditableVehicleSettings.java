@@ -4,9 +4,9 @@ import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 	
-	private Integer speedLimit;
-	private Integer speedBuffer;
-	private Integer severeSpeed;
+	private Double speedLimit;
+	private Double speedBuffer;
+	private Double severeSpeed;
 	private Integer hardAcceleration;
 	private Integer hardBrake;
 	private Integer hardTurn;
@@ -17,7 +17,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     }
 
 
-    public WaySmartEditableVehicleSettings(	int vehicleID, Integer speedLimit, Integer speedBuffer, Integer severeSpeed,
+    public WaySmartEditableVehicleSettings(	int vehicleID, Double speedLimit, Double speedBuffer, Double severeSpeed,
                                   			Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
                                   			Integer hardVertical) {
         
@@ -50,32 +50,32 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     	 this.hardVertical = hardVertical;
      }
 
-    public Integer getSpeedLimit() {
+    public Double getSpeedLimit() {
 		return speedLimit;
 	}
 
 
-	public void setSpeedLimit(Integer speedLimit) {
+	public void setSpeedLimit(Double speedLimit) {
 		this.speedLimit = speedLimit;
 	}
 
 
-	public Integer getSpeedBuffer() {
+	public Double getSpeedBuffer() {
 		return speedBuffer;
 	}
 
 
-	public void setSpeedBuffer(Integer speedBuffer) {
+	public void setSpeedBuffer(Double speedBuffer) {
 		this.speedBuffer = speedBuffer;
 	}
 
 
-	public Integer getSevereSpeed() {
+	public Double getSevereSpeed() {
 		return severeSpeed;
 	}
 
 
-	public void setSevereSpeed(Integer severeSpeed) {
+	public void setSevereSpeed(Double severeSpeed) {
 		this.severeSpeed = severeSpeed;
 	}
 
@@ -99,6 +99,34 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
         return hardVertical;
 	}
 
+    public Integer getSpeedLimitInteger() {
+        return speedLimit.intValue();
+    }
+
+
+    public void setSpeedLimitInteger(Integer speedLimit) {
+        this.speedLimit = new Double(speedLimit);
+    }
+
+
+    public Integer getSpeedBufferInteger() {
+        return speedBuffer.intValue();
+    }
+
+
+    public void setSpeedBufferInteger(Integer speedBuffer) {
+        this.speedBuffer = new Double(speedBuffer);
+    }
+
+
+    public Integer getSevereSpeedInteger() {
+        return severeSpeed.intValue();
+    }
+
+
+    public void setSevereSpeedInteger(Integer severeSpeed) {
+        this.severeSpeed = new Double(severeSpeed);
+    }
 	public WaySmartEditableVehicleSettings getSelf(){
 	    return this;
 	}

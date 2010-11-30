@@ -25,9 +25,9 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 
     protected EditableVehicleSettings createDefaultValues(Integer vehicleID){
         
-        Integer speedLimit = 5;
-        Integer speedBuffer = 10;
-        Integer severeSpeed = 15;
+        Double speedLimit = 5.0;
+        Double speedBuffer = 10.0;
+        Double severeSpeed = 15.0;
         Integer hardVertical = vehicleSensitivitySliders.getHardVerticalSlider().getDefaultValueIndex();
         Integer hardTurn = vehicleSensitivitySliders.getHardTurnSlider().getDefaultValueIndex();
         Integer hardAcceleration =  vehicleSensitivitySliders.getHardAccelerationSlider().getDefaultValueIndex();
@@ -39,9 +39,9 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
         
-        Integer speedLimit  = NumberUtil.convertString(vs.getCombined(SettingType.SPEED_LIMIT.getSettingID()));
-        Integer speedBuffer = NumberUtil.convertString(vs.getCombined(SettingType.SPEED_BUFFER.getSettingID()));
-        Integer severeSpeed = NumberUtil.convertString(vs.getCombined(SettingType.SEVERE_SPEED.getSettingID()));
+        Double speedLimit  = NumberUtil.convertStringToDouble(vs.getCombined(SettingType.SPEED_LIMIT.getSettingID()));
+        Double speedBuffer = NumberUtil.convertStringToDouble(vs.getCombined(SettingType.SPEED_BUFFER.getSettingID()));
+        Double severeSpeed = NumberUtil.convertStringToDouble(vs.getCombined(SettingType.SEVERE_SPEED.getSettingID()));
  
         Integer hardVertical = extractHardVerticalValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardVerticalSlider()));
         Integer hardTurn = extractHardTurnValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardTurnSlider()));

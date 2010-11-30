@@ -159,10 +159,9 @@ public abstract class VehicleSettingManager {
 
         public boolean isDifferent(String newValue, String oldValue) {
         
-           if(((oldValue != null) && (newValue == null)) ||
-                ((oldValue == null) && (newValue != null)) || 
-                (!oldValue.equals(newValue))) return true;
-           return false;
+           if((oldValue == null) && (newValue==null)) return false;
+           if((oldValue == null)||(newValue == null)) return true;
+           return !oldValue.equals(newValue);
         }
         public abstract void addSettingIfNeeded(SettingType setting,String newValue, String oldValue);
         public abstract void addSliderIfNeeded(SettingType setting,String newValue, String oldValue);

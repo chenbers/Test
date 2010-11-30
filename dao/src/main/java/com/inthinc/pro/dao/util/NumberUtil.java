@@ -48,4 +48,24 @@ public class NumberUtil
             return 0;
         }
    }
+    /**
+     * No one likes to use exceptions for flow control. For now we'll isolate this case to this method, so that it's not spread
+     * throughout our application.
+     * 
+     * @param str 
+     * Convert string to double.  If it isn't an integer just return 0
+     */
+    public static final Double convertStringToDouble(String doubleValue) {
+        
+        if (doubleValue == null) return 0.0;
+        
+        try {
+            
+            return Double.parseDouble(doubleValue);
+        }
+        catch(NumberFormatException nfe){
+            
+            return 0.0;
+        }
+   }
 }
