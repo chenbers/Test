@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.it;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -23,6 +24,11 @@ public class ServiceSecuritySmokeTest implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
+    @Test
+    public void dummyTest() {
+      
+    }
+    
     /*
      * Used for manual smoke testing of secured services.
      */
