@@ -116,8 +116,8 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
     }
 
     /**
-     * The driverDAO setter.
-     * @param driverDAO the driverDAO to set
+     * The DriverDAO setter.
+     * @param driverDAO the DriverDAO to set
      */
     void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;

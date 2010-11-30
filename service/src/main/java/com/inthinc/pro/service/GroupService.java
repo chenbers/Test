@@ -55,6 +55,7 @@ public interface GroupService {
      * Returns the last known location of each driver in a group.
      * @param groupID the group ID
      * @HTTP HTTP 200 - OK if succeeds.
+     * @HTTP HTTP 404 - NOT FOUND if error or no results.
      */
     @GET
     @Path("/group/{groupID}/driverlocations")
