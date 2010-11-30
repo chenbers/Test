@@ -37,7 +37,7 @@ public class TeamWarningsBeanTest extends BaseBeanTest
         
         assertTrue(eventList.size() <= 5);
         
-        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.WARNING);
+        List<NoteType> validEventTypes = EventCategory.WARNING.getNoteTypesInCategory();
         for (EventDisplay eventDisplay : eventList)
         {
             Event event = eventDisplay.getEvent();

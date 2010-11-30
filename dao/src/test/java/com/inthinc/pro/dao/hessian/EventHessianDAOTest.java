@@ -68,7 +68,7 @@ public class EventHessianDAOTest
         // One speeding event will be invalid so not counted, but should be compensated for
         assertEquals(5, eventList.size());
         
-        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.VIOLATION);
+        List<NoteType> validEventTypes = EventCategory.VIOLATION.getNoteTypesInCategory();
         // make sure they are in descending order by date
         for (int i = 0 ; i < 4; i++)
         {
@@ -100,7 +100,7 @@ public class EventHessianDAOTest
         assertNotNull(eventList);
         assertEquals(5, eventList.size());
 
-        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.WARNING);
+        List<NoteType> validEventTypes = EventCategory.WARNING.getNoteTypesInCategory();
         
         // make sure they are in decending order by date
         for (int i = 0 ; i < 4; i++)
@@ -126,7 +126,7 @@ public class EventHessianDAOTest
         
         assertNotNull(eventList);
         
-        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.VIOLATION);
+        List<NoteType> validEventTypes = EventCategory.VIOLATION.getNoteTypesInCategory();
         // make sure they are in decending order by date
         for (Event event : eventList)
         {

@@ -32,7 +32,7 @@ public class TeamRecentEventsTest extends BaseBeanTest
         List<EventDisplay> eventList = teamRecentEventsBean.getRecentEvents();
         
         assertTrue(eventList.size() <= 5);
-        List<NoteType> validEventTypes = NoteType.getNoteTypesInCategory(EventCategory.VIOLATION);
+        List<NoteType> validEventTypes = EventCategory.VIOLATION.getNoteTypesInCategory();
 
         for (EventDisplay eventDisplay : eventList)
         {

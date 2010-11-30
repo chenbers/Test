@@ -72,7 +72,7 @@ public class PhoneWatchdogImpl implements PhoneWatchdog {
 		// TODO: verify if we really need to get all note types. 
 		// It makes sense as we are just checking the device is alive, but it may be heavy in the DB. 
 		for(EventCategory category : EventCategory.values()){
-			noteTypeList.addAll(NoteType.getNoteTypesInCategory(category));
+			noteTypeList.addAll(category.getNoteTypesInCategory());
 		}
 		return noteTypeList;
 	}

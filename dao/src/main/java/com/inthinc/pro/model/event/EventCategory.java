@@ -1,7 +1,9 @@
 package com.inthinc.pro.model.event;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -71,5 +73,25 @@ public enum EventCategory implements BaseEnum
     {
         return this.description;
     }
+ 
     
+    public List<NoteType> getNoteTypesInCategory()
+    {
+        List<NoteType> noteTypeList = new ArrayList<NoteType>();
+        
+        if (getSubCategorySet() == null)
+            return noteTypeList;
+        
+        for (EventSubCategory subCategory : getSubCategorySet()) {
+            
+            for (EventType eventType : subCategory.getEventTypeSet()) {
+                for (NoteType noteType : eventType.getNoteTypeList()) {
+                    if (!noteTypeList.contains(noteType))
+                        noteTypeList.add(noteType);
+                }
+            }
+        }
+        return noteTypeList;
+    }
+
 }

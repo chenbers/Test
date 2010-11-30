@@ -17,17 +17,17 @@ public enum EventType implements BaseEnum {
     TAMPERING(1),
     SEATBELT(2),
     SPEEDING(3),
-    HARD_ACCEL(4),
-    HARD_BRAKE(5),
-    HARD_TURN(6),
-    HARD_VERT(8),
+    HARD_ACCEL(4, AggressiveDrivingEventType.HARD_ACCEL),
+    HARD_BRAKE(5, AggressiveDrivingEventType.HARD_BRAKE),
+    HARD_TURN(6, AggressiveDrivingEventType.HARD_TURN),
+    HARD_VERT(8, AggressiveDrivingEventType.HARD_VERT),
     ZONES_ARRIVAL(9),
     ZONES_DEPARTURE(10),
     LOW_BATTERY(11),
     DEVICE_LOW_BATTERY(12),
     IDLING(13),
     CRASH(14),
-    ROLLOVER(15),
+//    ROLLOVER(15),
     UNKNOWN(16),
     NO_DRIVER(17),
     PARKING_BRAKE(18),
@@ -50,9 +50,14 @@ public enum EventType implements BaseEnum {
     HOS_NO_HOURS(35);
     
     private int code;
+    private AggressiveDrivingEventType noteSubType;
     
     private EventType(int code) {
         this.code = code;
+    }
+    private EventType(int code, AggressiveDrivingEventType noteSubType) {
+        this.code = code;
+        this.noteSubType = noteSubType;
     }
 
     private static final Map<Integer, EventType> lookup = new HashMap<Integer, EventType>();
@@ -78,26 +83,37 @@ public enum EventType implements BaseEnum {
         sb.append(this.name());
         return sb.toString();
     }
-    
+
     public EventCategoryFilter getEventCategoryFilter() {
-        if (this == HARD_ACCEL)
-            return new EventCategoryFilter(this, new NoteType[] {NoteType.NOTEEVENT}, new Integer[] {AggressiveDrivingEventType.HARD_ACCEL.getCode()});
-        if (this == HARD_BRAKE)
-            return  new EventCategoryFilter(this, new NoteType[] {NoteType.NOTEEVENT}, new Integer[] {AggressiveDrivingEventType.HARD_BRAKE.getCode()});
-        if (this == HARD_TURN)
-            return new EventCategoryFilter(this, new NoteType[] {NoteType.NOTEEVENT}, new Integer[] {AggressiveDrivingEventType.HARD_TURN.getCode()});
-        if (this == HARD_VERT)
-            return new EventCategoryFilter(this, new NoteType[] {NoteType.NOTEEVENT}, new Integer[] {AggressiveDrivingEventType.HARD_VERT.getCode()});
+        List<Integer> subTypeList = null;
+        if (noteSubType != null) {
+            subTypeList = new ArrayList<Integer>();
+            subTypeList.add(noteSubType.getCode());
+        }
         
+        return new EventCategoryFilter(this, getNoteTypeList(), subTypeList);
+        
+    }
+
+    public List<NoteType> getNoteTypeList() {
         List<NoteType> noteTypeList = new ArrayList<NoteType>();
         for (NoteType noteType : NoteType.values()) {
-            if (noteType.getEventType() == this) {
+            if (noteType.getEventTypes() != null) {
+                for (EventType et : noteType.getEventTypes()) {
+                    if (et == this) {
+                        noteTypeList.add(noteType);
+                        break;
+                    }
+                }
+            }
+            else if (noteType.getEventType() == this) {
                 noteTypeList.add(noteType);
             }
         }
         if (noteTypeList.size() == 0)
             System.out.println("NO NOTES TYPES FOUND FOR EVENTTYPE " + this);
-        return new EventCategoryFilter(this, noteTypeList.toArray(new NoteType[0]), null);
+        return noteTypeList;
         
     }
+
 }

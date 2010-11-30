@@ -2,6 +2,8 @@ package com.inthinc.pro.model.event;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -9,7 +11,7 @@ import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 
 @XmlRootElement
-public class AggressiveDrivingEvent extends Event
+public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
 {
     /**
      * 
@@ -136,6 +138,11 @@ public class AggressiveDrivingEvent extends Event
     public void setEventTypeString(String eventTypeString)
     {
         this.eventTypeString = eventTypeString;
+    }
+
+    @Override
+    public Set<EventType> getEventTypes() {
+        return EnumSet.of(EventType.HARD_ACCEL, EventType.HARD_BRAKE, EventType.HARD_TURN, EventType.HARD_VERT);
     }
 
 }

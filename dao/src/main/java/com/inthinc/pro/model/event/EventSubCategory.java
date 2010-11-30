@@ -19,7 +19,7 @@ public enum EventSubCategory implements BaseEnum
     VEHICLE(5, EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.POTENTIAL_TAMPERING)), 
     WIRELINE(6, EnumSet.of(EventType.WIRELINE_ALARM)), 
     INSTALLATION(7, EnumSet.of(EventType.INSTALL, EventType.FIRMWARE_CURRENT, EventType.LOCATION_DEBUG, EventType.QSI_UPDATED, EventType.WITNESS_UPDATED, EventType.ZONES_CURRENT, EventType.NO_INTERNAL_THUMB_DRIVE, EventType.WITNESS_HEARTBEAT_VIOLATION )),
-    EMERGENCY(8, EnumSet.of(EventType.CRASH, EventType.ROLLOVER, EventType.PANIC, EventType.MAN_DOWN, EventType.MAN_DOWN_CANCELED)),
+    EMERGENCY(8, EnumSet.of(EventType.CRASH, EventType.PANIC, EventType.MAN_DOWN, EventType.MAN_DOWN_CANCELED)),
     ZONES(9, EnumSet.of(EventType.ZONES_ARRIVAL, EventType.ZONES_DEPARTURE)),
     HOS(10, EnumSet.of(EventType.DOT_STOPPED, EventType.HOS_NO_HOURS));
 

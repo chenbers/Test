@@ -460,4 +460,5 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
 	{
 	    return false;
 	}
+	
 }

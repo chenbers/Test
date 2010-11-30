@@ -35,7 +35,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         try
         {
-            Integer[] eventTypes = getMapper().convertToArray(NoteType.getNoteTypesInCategory(EventCategory.VIOLATION), Integer.class);
+            Integer[] eventTypes = getMapper().convertToArray(EventCategory.VIOLATION.getNoteTypesInCategory(), Integer.class);
 
             //TODO Temporarily added arbitrary 10 to hopefully be able to get the eventCount of valid events back after the clean
             List <Event> eventList = Event.cleanEvents(getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCount+10, eventTypes), Event.class));
@@ -55,7 +55,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         try
         {
-            Integer[] eventTypes = getMapper().convertToArray(NoteType.getNoteTypesInCategory(EventCategory.WARNING), Integer.class);
+            Integer[] eventTypes = getMapper().convertToArray(EventCategory.WARNING.getNoteTypesInCategory(), Integer.class);
             return getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCount, eventTypes), Event.class);
         }
         catch (EmptyResultSetException e)
@@ -69,7 +69,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         try
         {
-            Integer[] eventTypes = getMapper().convertToArray(NoteType.getNoteTypesInCategory(EventCategory.EMERGENCY), Integer.class);
+            Integer[] eventTypes = getMapper().convertToArray(EventCategory.EMERGENCY.getNoteTypesInCategory(), Integer.class);
             return getMapper().convertToModelObject(getSiloService().getRecentNotes(groupID, eventCount, eventTypes), Event.class);
         }
         catch (EmptyResultSetException e)
@@ -117,19 +117,19 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     @Override
     public List<Event> getViolationEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven)
     {
-        return Event.cleanEvents(getEventsForDriver(driverID, startDate, endDate, NoteType.getNoteTypesInCategory(EventCategory.VIOLATION), includeForgiven));
+        return Event.cleanEvents(getEventsForDriver(driverID, startDate, endDate, EventCategory.VIOLATION.getNoteTypesInCategory(), includeForgiven));
     }
 
     @Override
     public List<Event> getWarningEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven)
     {
-        return getEventsForDriver(driverID, startDate, endDate, NoteType.getNoteTypesInCategory(EventCategory.WARNING), includeForgiven);
+        return getEventsForDriver(driverID, startDate, endDate, EventCategory.WARNING.getNoteTypesInCategory(), includeForgiven);
     }
     
     @Override
     public List<Event> getEmergencyEventsForDriver(Integer driverID, Date startDate, Date endDate, Integer includeForgiven)
     {
-        return getEventsForDriver(driverID, startDate, endDate, NoteType.getNoteTypesInCategory(EventCategory.EMERGENCY), includeForgiven);
+        return getEventsForDriver(driverID, startDate, endDate, EventCategory.EMERGENCY.getNoteTypesInCategory(), includeForgiven);
     }    
 
     @Override

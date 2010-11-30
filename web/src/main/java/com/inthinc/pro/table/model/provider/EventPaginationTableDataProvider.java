@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.pagination.PageParams;
 
 public class EventPaginationTableDataProvider  extends BaseNotificationPaginationDataProvider<Event> {
@@ -40,7 +39,7 @@ public class EventPaginationTableDataProvider  extends BaseNotificationPaginatio
 		}
 		
 		PageParams pageParams = new PageParams(firstRow, endRow, getSort(), getFilters());
-		return eventDAO.getEventPage(groupID, startDate, endDate, EventDAO.INCLUDE_FORGIVEN, NoteType.getNoteTypesInCategory(eventCategory), pageParams);
+		return eventDAO.getEventPage(groupID, startDate, endDate, EventDAO.INCLUDE_FORGIVEN, eventCategory.getNoteTypesInCategory(), pageParams);
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class EventPaginationTableDataProvider  extends BaseNotificationPaginatio
 			return 0;
 		}
 		initStartEndDates();
-		return eventDAO.getEventCount(groupID, startDate, endDate, EventDAO.INCLUDE_FORGIVEN, NoteType.getNoteTypesInCategory(eventCategory), getFilters());
+		return eventDAO.getEventCount(groupID, startDate, endDate, EventDAO.INCLUDE_FORGIVEN, eventCategory.getNoteTypesInCategory(), getFilters());
 	}
 
 	
