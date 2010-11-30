@@ -97,10 +97,6 @@ public class UserAuthorizationAdvice {
      */
     @Before(value = "inUserDAOAdapter() && receivesUserObjectAsFirstArgument() && args(entity)", argNames = "entity")
     public void doAccessCheck(User entity) {
-        /*
-         * TODO Use the DAOs directly. If using the adapter, they will be advised as well, making unnecessary additional calls to the validation framework. Optionally, just use the
-         * adapters to do findById and the access rules will automatically be applied. First approach is best though as there are no guarantees that the adapters are being advised.
-         */
         Group group = groupDAO.findByID(entity.getGroupID());
         Person person = personDAO.findByID(entity.getPersonID());
 

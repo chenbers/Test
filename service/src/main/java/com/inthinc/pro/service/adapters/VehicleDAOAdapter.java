@@ -3,6 +3,7 @@ package com.inthinc.pro.service.adapters;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.EventDAO;
@@ -26,8 +27,11 @@ import com.inthinc.pro.model.event.Event;
 @Component
 public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
 
+    @Autowired
     private VehicleDAO vehicleDAO;
-    private EventDAO eventDAO;    
+    @Autowired
+    private EventDAO eventDAO;   
+    @Autowired
     private VehicleReportDAO vehicleReportDAO;    
 	
 	@Override

@@ -75,17 +75,6 @@ public class VehicleAuthorizationAdvice {
     @Pointcut("args(com.inthinc.pro.model.Vehicle,..)")
     public void receivesVehicleObjectAsFirstArgument() {}
 
-//    /**
-//     * 
-//     * Pointcut definition.
-//     * <p/>
-//     * This pointcut will match all methods which receives a Integer as first argument.
-//     * <p/>
-//     * Overriden from the BaseAuthorizationAdvce so it does not affect other methods in the adapter.
-//     */
-//    @Pointcut("execution(* com.inthinc.pro.service.adapters.*.*(java.lang.Integer,..))")
-//    public void receivesIntegerAs1StArgumentJoinPoint() {}
-
     /**
      * Advice definition.
      * <p/>
@@ -140,10 +129,6 @@ public class VehicleAuthorizationAdvice {
      */
     @Before(value = "inVehicleDAOAdapter() && receivesVehicleObjectAsFirstArgument() && args(entity)", argNames = "entity")
     public void doAccessCheck(Vehicle entity) {
-        /*
-         * TODO Use the DAOs directly. If using the adapter, they will be advised as well, making unnecessary additional calls to the validation framework. Optionally, just use the
-         * adapters to do findById and the access rules will automatically be applied. First approach is best though as there are no guarantees that the adapters are being advised.
-         */
         Group group = groupDAO.findByID(entity.getGroupID());
 
         groupAuthorizationAdvice.doAccessCheck(group);

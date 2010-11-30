@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.inthinc.pro.service.security.aspects.it;
 
 import org.junit.Before;
@@ -19,10 +16,6 @@ import com.inthinc.pro.service.test.mock.PersonDaoStub;
 import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
 import com.inthinc.pro.service.test.mock.UserDaoStub;
 
-/**
- * @author dfreitas
- * 
- */
 public class UserAuthorizationAdviceTest {
 
     private static ApplicationContext applicationContext;
@@ -36,7 +29,7 @@ public class UserAuthorizationAdviceTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        applicationContext = new ClassPathXmlApplicationContext("/spring/testAspects-security.xml");
+        applicationContext = new ClassPathXmlApplicationContext(new String[] {"/spring/testAspects-security.xml"});
     }
 
     @Before

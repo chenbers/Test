@@ -3,6 +3,7 @@ package com.inthinc.pro.service.adapters;
 import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.DeviceDAO;
@@ -18,6 +19,7 @@ import com.inthinc.pro.model.Device;
 @Component
 public class DeviceDAOAdapter extends BaseDAOAdapter<Device> {
 
+    @Autowired
     private DeviceDAO deviceDAO;	
 	
 	@Override

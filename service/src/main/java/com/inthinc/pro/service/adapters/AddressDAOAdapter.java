@@ -3,6 +3,7 @@ package com.inthinc.pro.service.adapters;
 import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.AddressDAO;
@@ -18,6 +19,7 @@ import com.inthinc.pro.model.Address;
 @Component
 public class AddressDAOAdapter extends BaseDAOAdapter<Address> {
 
+    @Autowired
     private AddressDAO addressDAO;
 
 	@Override

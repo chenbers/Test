@@ -5,6 +5,8 @@ package com.inthinc.pro.service.security.aspects.it;
 
 import static junit.framework.Assert.fail;
 import junit.framework.Assert;
+import mockit.Mocked;
+import mockit.NonStrictExpectations;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -14,10 +16,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.security.AccessDeniedException;
 
+import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
+import com.inthinc.pro.service.security.aspects.PersonAuthorizationAdvice;
 import com.inthinc.pro.service.test.mock.PersonDaoStub;
 import com.inthinc.pro.service.test.mock.TiwiproPrincipalStub;
 
@@ -31,6 +35,8 @@ public class PersonAuthorizationAdviceTest {
     private PersonDaoStub personDaoStub;
     private PersonDAOAdapter adapter;
     private TiwiproPrincipalStub principal;
+    @Mocked
+    private AddressDAO addressDaoMock;
 
     /**
      * @throws java.lang.Exception
@@ -146,6 +152,17 @@ public class PersonAuthorizationAdviceTest {
 
     @Test
     public void testDeniesAccessToCreate() {
+        final Address address = new Address();
+        PersonAuthorizationAdvice advice = (PersonAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, PersonAuthorizationAdvice.class);
+        advice.setAddressDao(addressDaoMock);
+        // Expectations & stubbing
+        new NonStrictExpectations() {
+            {
+                addressDaoMock.findByID((Integer) any);
+                result = address;
+            }
+        };
+        
         try {
             // First batch of tests. Address is null.
             // -------------------------------------------------------------------------------------------------------------
@@ -169,15 +186,16 @@ public class PersonAuthorizationAdviceTest {
             Person person = new Person();
             principal.setInthincUser(false); // And user is not Inthinc
 
-            Address address = new Address();
+            
             principal.setAccountID(12);
             person.setAcctID(12); // Set account id to be the same.
-            address.setAccountID(13); // But address has different account id.
+            person.setAddressID(13); // But address has different account id.
+            address.setAccountID(13);
             person.setAddress(address);
 
             adapter.create(person);
             Assert.fail("Should have thrown exception " + AccessDeniedException.class + ". Ids should not match. Principal account id = " + principal.getAccountID() + " resource account id = "
-                    + person.getAccountID());
+                    + address.getAccountID());
         } catch (AccessDeniedException e) {
             // Ok, exception should have been raised.
         }
@@ -264,12 +282,22 @@ public class PersonAuthorizationAdviceTest {
         personDaoStub.setExpectedPerson(person);
         principal.setInthincUser(false); // And user is not Inthinc
 
-        Address address = new Address();
+        final Address address = new Address();
         principal.setAccountID(10);
         person.setAcctID(10); // Set account id to be the same as the principal.
         address.setAccountID(11); // But address account id is different.
         person.setAddress(address);
 
+        PersonAuthorizationAdvice advice = (PersonAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, PersonAuthorizationAdvice.class);
+        advice.setAddressDao(addressDaoMock);
+        // Expectations & stubbing
+        new NonStrictExpectations() {
+            {
+                addressDaoMock.findByID((Integer) any);
+                result = address;
+            }
+        };
+        
         try {
             adapter.delete(11);
             Assert.fail("Should have thrown exception " + AccessDeniedException.class + ". Ids should not match. Principal account id = " + principal.getAccountID() + " resource account id = "
@@ -317,7 +345,7 @@ public class PersonAuthorizationAdviceTest {
     public void testDeniesFindById() {
         Person person = new Person();
         personDaoStub.setExpectedPerson(person);
-        Address address = new Address();
+        final Address address = new Address();
         person.setAddress(address);
 
         // Test rejects if different ID and not Inthinc user.
@@ -327,6 +355,16 @@ public class PersonAuthorizationAdviceTest {
             person.setAcctID(10);
             address.setAccountID(11);// Make address account id diff from principal account id.
 
+            PersonAuthorizationAdvice advice = (PersonAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, PersonAuthorizationAdvice.class);
+            advice.setAddressDao(addressDaoMock);
+            // Expectations & stubbing
+            new NonStrictExpectations() {
+                {
+                    addressDaoMock.findByID((Integer) any);
+                    result = address;
+                }
+            };
+            
             adapter.findByID(23);
             fail("Test should have thrown exception " + AccessDeniedException.class);
         } catch (AccessDeniedException e) {
@@ -391,12 +429,22 @@ public class PersonAuthorizationAdviceTest {
             Person person = new Person();
             principal.setInthincUser(false); // And user is not Inthinc
 
-            Address address = new Address();
+            final Address address = new Address();
             principal.setAccountID(12);
             person.setAcctID(12); // Set account id to be the same.
             address.setAccountID(13); // But address has different account id.
             person.setAddress(address);
 
+            PersonAuthorizationAdvice advice = (PersonAuthorizationAdvice) BeanFactoryUtils.beanOfType(applicationContext, PersonAuthorizationAdvice.class);
+            advice.setAddressDao(addressDaoMock);
+            // Expectations & stubbing
+            new NonStrictExpectations() {
+                {
+                    addressDaoMock.findByID((Integer) any);
+                    result = address;
+                }
+            };
+            
             adapter.create(person);
             Assert.fail("Should have thrown exception " + AccessDeniedException.class + ". Ids should not match. Principal account id = " + principal.getAccountID() + " resource account id = "
                     + person.getAccountID());

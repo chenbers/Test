@@ -2,6 +2,7 @@ package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.AccountDAO;
@@ -17,6 +18,7 @@ import com.inthinc.pro.model.Account;
 @Component
 public class AccountDAOAdapter extends BaseDAOAdapter<Account> {
 
+    @Autowired
 	private AccountDAO accountDAO;	
 	
     /**

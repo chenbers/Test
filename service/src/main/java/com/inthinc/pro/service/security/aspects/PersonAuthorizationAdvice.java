@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.dao.AddressDAO;
+import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.adapters.BaseDAOAdapter;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
@@ -26,6 +28,9 @@ public class PersonAuthorizationAdvice {
 
     @Autowired
     private BaseAuthorizationAdvice baseAuthorizationAdvice;
+    
+    @Autowired 
+    private AddressDAO addressDao;
 
     /**
      * Pointcut definition.
@@ -63,7 +68,8 @@ public class PersonAuthorizationAdvice {
      */
     @Before(value = "inPersonDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesHasAccountIdObjectAsFirstArgument() && args(entity)", argNames = "entity")
     public void doAccessCheck(Person entity) {
-        baseAuthorizationAdvice.doAccessCheck(entity.getAddress());
+        Address address = addressDao.findByID(entity.getAddressID());
+        baseAuthorizationAdvice.doAccessCheck(address);
     }
 
     /**
@@ -77,9 +83,10 @@ public class PersonAuthorizationAdvice {
     public void doDeleteAccessCheck(JoinPoint jp, Integer entityId) {
         BaseDAOAdapter<?> adapter = (BaseDAOAdapter<?>) jp.getTarget();
         Person entity = (Person) adapter.findByID(entityId);
-
+        Address address = addressDao.findByID(entity.getAddressID());
+        
         baseAuthorizationAdvice.doAccessCheck(entity);
-        baseAuthorizationAdvice.doAccessCheck(entity.getAddress());
+        baseAuthorizationAdvice.doAccessCheck(address);
     }
 
     /**
@@ -90,6 +97,15 @@ public class PersonAuthorizationAdvice {
      */
     @AfterReturning(value = "inPersonDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()", returning = "retVal", argNames = "retVal")
     public void doFindByAccessCheck(Person retVal) {
-        baseAuthorizationAdvice.doAccessCheck(retVal.getAddress());
+        Address address = addressDao.findByID(retVal.getAddressID());
+        baseAuthorizationAdvice.doAccessCheck(address);
+    }
+
+    public AddressDAO getAddressDao() {
+        return addressDao;
+    }
+
+    public void setAddressDao(AddressDAO addressDao) {
+        this.addressDao = addressDao;
     }
 }

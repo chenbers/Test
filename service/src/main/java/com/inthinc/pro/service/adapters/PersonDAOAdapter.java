@@ -2,6 +2,7 @@ package com.inthinc.pro.service.adapters;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.GenericDAO;
@@ -16,6 +17,7 @@ import com.inthinc.pro.model.Person;
 @Component
 public class PersonDAOAdapter extends BaseDAOAdapter<Person> {
 
+    @Autowired
     private PersonDAO personDAO;
     
 	@Override
