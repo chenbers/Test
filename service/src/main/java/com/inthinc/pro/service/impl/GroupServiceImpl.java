@@ -9,6 +9,12 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
+import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
@@ -19,7 +25,9 @@ import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
 
 public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> implements GroupService {
-
+    private static final Logger logger = Logger.getLogger(GroupServiceImpl.class);
+    @Autowired private DriverDAO driverDAO;
+    
     @Override
     public Response getAll() {
         List<Group> list = getDao().getAll();
@@ -86,5 +94,32 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
             responseList.add(batchResponse);
         }
         return Response.ok(new GenericEntity<List<BatchResponse>>(responseList) {}).build();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.GroupService#getGroupDriverLocations(java.lang.Integer)
+     */
+    @Override
+    public Response getGroupDriverLocations(Integer groupID) {
+        // Should we use the adapter instead of direct DAO call?
+        List<DriverLocation> list = null;
+        try {
+            list = driverDAO.getDriverLocations(groupID);
+        } catch (ProxyException e) {
+            logger.error(e);
+        }
+        if (list == null || list.isEmpty()) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+        return Response.ok(new GenericEntity<List<DriverLocation>>(list) {}).build();
+    }
+
+    /**
+     * The driverDAO setter.
+     * @param driverDAO the driverDAO to set
+     */
+    void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
     }
 }

@@ -21,7 +21,6 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
     private Integer expecteDriverID = 777;    
     
     private CellPhoneServiceImpl serviceSUT = new CellPhoneServiceImpl();
-    //@Cascading private PhoneStatusUpdateThread thread;
     
     /**
      * Test for Change Status Enabled acknowledgment.

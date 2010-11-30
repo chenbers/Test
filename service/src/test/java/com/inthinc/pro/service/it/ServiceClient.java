@@ -15,6 +15,7 @@ import org.jboss.resteasy.client.ClientResponse;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DriverLocation;
 
 @Path("/service/api")
 @Consumes("application/xml")
@@ -50,4 +51,8 @@ public interface ServiceClient {
     @PUT
     @Path("/phone/{phoneID}/DISABLED") 
     public Response setStatusDisabled(@PathParam("phoneID") String phoneId);
+
+    @GET
+    @Path("/group/{groupID}/driverlocations")
+    public ClientResponse<List<DriverLocation>> getGroupDriverLocations(@PathParam("groupID") Integer groupID);
 }
