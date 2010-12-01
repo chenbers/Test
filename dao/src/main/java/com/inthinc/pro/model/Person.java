@@ -293,6 +293,32 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
         }
         return result.toString();
     }
+    
+    public String getFullNameWithPriPhone() {
+        StringBuilder result = new StringBuilder();
+        if (this.priPhone != null && !this.priPhone.isEmpty()) {
+            result.append(getFullName());
+            result.append(' ');
+            result.append("[ " + this.priPhone + " ]");
+        }
+        else {
+            result.append(getFullName());
+        }
+        return result.toString();
+    }
+    
+    public String getFullNameWithSecPhone() {
+        StringBuilder result = new StringBuilder();
+        if (this.secPhone != null && !this.secPhone.isEmpty()) {
+            result.append(getFullName());
+            result.append(' ');
+            result.append("[ " + this.secPhone + " ]");
+        }
+        else {
+            result.append(getFullName());
+        }
+        return result.toString();
+    }
 
     public String getFirst() {
         return first;
