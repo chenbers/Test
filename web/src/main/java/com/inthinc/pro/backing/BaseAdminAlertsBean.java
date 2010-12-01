@@ -267,9 +267,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
             for (final Person person : people) { 
                 if(null != person.getPriPhone() && !"".equals(person.getPriPhone()))
-                    allUsers.add(new SelectItem(person.getPriPhone(), person.getFullNameWithPriPhone()));
-                if(null != person.getSecPhone() && !"".equals(person.getSecPhone()))
-                    allUsers.add(new SelectItem(person.getSecPhone(), person.getFullNameWithSecPhone()));
+                    allUsers.add(new SelectItem(person, person.getFullNameWithPriPhone()));
             }
             MiscUtil.sortSelectItems(allUsers);
 
