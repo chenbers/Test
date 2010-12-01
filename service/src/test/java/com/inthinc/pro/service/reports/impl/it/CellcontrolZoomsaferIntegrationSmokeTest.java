@@ -27,7 +27,7 @@ public class CellcontrolZoomsaferIntegrationSmokeTest {
     @Test
     public void testDummy() {}
 
-    // @BeforeClass
+//    @BeforeClass
     public static void setUp() throws Exception {
         Server server = new Server(0);
         server.addHandler(new WebAppContext("src/main/webapp", "/service"));
@@ -45,10 +45,9 @@ public class CellcontrolZoomsaferIntegrationSmokeTest {
         assetServiceClient = ProxyFactory.create(AssetService.class, "http://localhost:" + port + "/service/api", clientExecutor);
     }
 
-    // @Test
+//    @Test
     public void testAssetService() throws InterruptedException {
         Response resp = assetServiceClient.getRedFlagCount(1);
         System.out.println(resp.getStatus());
-        Thread.sleep(Long.MAX_VALUE);
     }
 }

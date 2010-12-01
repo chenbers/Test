@@ -11,7 +11,13 @@ import com.inthinc.pro.security.userdetails.ProUser;
 public class TiwiproPrincipal {
 
     /**
+     * TODO This is a temporary back door for the security mechanism until the isInthincUser() check is implemented.
+     */
+    public static boolean adminUserBackDoor;
+
+    /**
      * The ProUser getter.
+     * 
      * @return the ProUser
      */
     private ProUser getProUser() {
@@ -20,6 +26,7 @@ public class TiwiproPrincipal {
 
     /**
      * The User getter.
+     * 
      * @return the current User
      */
     public User getUser() {
@@ -28,6 +35,7 @@ public class TiwiproPrincipal {
 
     /**
      * The Person getter.
+     * 
      * @return the Person
      */
     public Person getPerson() {
@@ -36,6 +44,7 @@ public class TiwiproPrincipal {
 
     /**
      * The GroupID getter.
+     * 
      * @return the GroupID
      */
     public Integer getGroupID() {
@@ -44,19 +53,21 @@ public class TiwiproPrincipal {
 
     /**
      * The AccountID getter.
+     * 
      * @return the AccountID
      */
     public Integer getAccountID() {
         return getUser().getPerson().getAcctID();
     }
-    
+
     /**
      * The getter for Inthinc user flag.
+     * 
      * @return true if the user is InthincUser
      */
     public boolean isInthincUser() {
-        //TODO: for now, don't allow inthinc role, 
-        //need to determine how to allow for an inthinc role at a later time
-        return false;//getUser().getUsername().equalsIgnoreCase("admin");
+        // TODO: Remove backdoor once implemented,
+        // need to determine how to allow for an inthinc role at a later time
+        return adminUserBackDoor;// getUser().getUsername().equalsIgnoreCase("admin");
     }
 }

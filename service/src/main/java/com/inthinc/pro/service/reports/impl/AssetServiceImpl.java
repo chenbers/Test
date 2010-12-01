@@ -20,7 +20,8 @@ public class AssetServiceImpl implements AssetService {
      */
     @Override
     public Response getRedFlagCount(Integer groupID) {
-        // TODO Finish implementation
+        System.out.println(groupID);
+
         return Response.ok().build();
     }
 
@@ -29,7 +30,13 @@ public class AssetServiceImpl implements AssetService {
      */
     @Override
     public Response getRedFlagCount(Integer groupID, Date startDate, Date endDate, PathSegment optionalParams) {
-        // TODO Finish implementation
+        System.out.println(groupID);
+        System.out.println(startDate);
+        System.out.println(endDate);
+        System.out.println(optionalParams);
+        System.out.println(optionalParams.getPath());
+        System.out.println(optionalParams.getMatrixParameters());
+
         return Response.ok().build();
     }
 
