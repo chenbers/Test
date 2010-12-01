@@ -74,10 +74,10 @@ public interface DriverDAO extends GenericDAO<Driver, Integer> {
 
     /**
      * Get Driver object by cell phone number.
-     * @param phoneID the cell phone number.
+     * @param phoneNumber the cell phone number.
      * @return the Driver having the cell phone number.
      */
-    Driver findByPhoneID(String phoneID);
+    Driver findByPhoneNumber(String phoneNumber);
 
     /**
      * Find a RFIDs for a barcode.

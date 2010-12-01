@@ -1,5 +1,8 @@
 package com.inthinc.pro.service.test.mock.aspects;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.HasAccountId;
 import com.inthinc.pro.model.phone.CellProviderType;
 
 /**
@@ -59,10 +61,50 @@ import com.inthinc.pro.model.phone.CellProviderType;
  * <p/>
  * To enable this advice, make sure resource <tt>spring/applicationContext-test.xml</tt> is loaded by Spring, along with the {@link DriverHessianDAO} bean.
  */
+@SuppressWarnings("serial")
 // TODO This aspect and package must be moved back to src/test once QA testing is performed.
 @Aspect
 @Component
 public class DriverDaoStubBehaviourAdvice {
+
+    /*
+     * Test data stored in a map by driverId.
+     */
+    private Map<Integer, Driver> testDrivers = new HashMap<Integer, Driver>() {
+        {
+            Driver driver77700 = new Driver();
+            driver77700.setDriverID(77700);
+
+            Driver driver77710 = new Driver();
+            driver77710.setCellPhone(STUBBED_PHONE_NUMBER);
+            driver77710.setDriverID(77710);
+
+            Driver driver77701 = new Driver();
+            driver77701.setProvider(CellProviderType.CELL_CONTROL);
+            driver77701.setDriverID(77701);
+
+            Driver driver77702 = new Driver();
+            driver77702.setProvider(CellProviderType.ZOOM_SAFER);
+            driver77702.setDriverID(77702);
+
+            Driver driver77711 = new Driver();
+            driver77711.setProvider(CellProviderType.CELL_CONTROL);
+            driver77711.setCellPhone(STUBBED_CELLCONTROL_PHONE_NUMBER);
+            driver77711.setDriverID(77711);
+
+            Driver driver77712 = new Driver();
+            driver77712.setProvider(CellProviderType.ZOOM_SAFER);
+            driver77712.setCellPhone(STUBBED_ZOOMSAFER_PHONE_NUMBER);
+            driver77712.setDriverID(77712);
+
+            put(77700, driver77700);
+            put(77710, driver77710);
+            put(77701, driver77701);
+            put(77702, driver77702);
+            put(77711, driver77711);
+            put(77712, driver77712);
+        }
+    };
 
     /**
      * Cell phone number returned in all test drivers associated with Cellcontrol.
@@ -98,6 +140,14 @@ public class DriverDaoStubBehaviourAdvice {
     /**
      * Pointcut definition.
      * <p/>
+     * This pointcut will match the findByPhoneNumber() method.
+     */
+    @Pointcut("execution(* *.findByPhoneNumber(java.lang.String))")
+    public void findByPhoneNumber() {}
+
+    /**
+     * Pointcut definition.
+     * <p/>
      * This pointcut will match the update() method.
      */
     @Pointcut("execution(* *.update(java.lang.Object))")
@@ -106,10 +156,7 @@ public class DriverDaoStubBehaviourAdvice {
     /**
      * Advice definition.
      * <p/>
-     * AfterReturning advice which checks if the user has access to the returned {@link HasAccountId} instance of the findById() method. Access is granted if the entity has the
-     * same account id as the currently logged user.
-     * <p/>
-     * Note that AspectJ will only invoke this advice if the returning object is of type {@link HasAccountId}.
+     * Around advice for stubbing data for findById().
      * 
      * @throws Throwable
      *             If unable to proceed with the join point.
@@ -118,36 +165,50 @@ public class DriverDaoStubBehaviourAdvice {
     public Object mockFindById(ProceedingJoinPoint pjp) throws Throwable {
         Integer driverId = (Integer) pjp.getArgs()[0];
 
-        Driver driver = new Driver();
-        driver.setDriverID(driverId);
-
         switch (driverId) {
             case 77700:
-                break;
             case 77710:
-                driver.setCellPhone(STUBBED_PHONE_NUMBER);
-                break;
             case 77701:
-                driver.setProvider(CellProviderType.CELL_CONTROL);
-                break;
             case 77702:
-                driver.setProvider(CellProviderType.ZOOM_SAFER);
-                break;
             case 77711:
-                driver.setCellPhone(STUBBED_CELLCONTROL_PHONE_NUMBER);
-                driver.setProvider(CellProviderType.CELL_CONTROL);
-                break;
             case 77712:
-                driver.setCellPhone(STUBBED_ZOOMSAFER_PHONE_NUMBER);
-                driver.setProvider(CellProviderType.ZOOM_SAFER);
-                break;
+                return testDrivers.get(driverId);
             default:
-                driver = (Driver) pjp.proceed();
+                return (Driver) pjp.proceed();
         }
-
-        return driver;
     }
 
+    /**
+     * Advice definition.
+     * <p/>
+     * Around advice for stubbing data for findByPhoneNumber().
+     * 
+     * @throws Throwable
+     *             If unable to proceed with the join point.
+     */
+    @Around(value = "inDriverHessianDAO() && findByPhoneNumber()")
+    public Object mockFindByPhoneNumber(ProceedingJoinPoint pjp) throws Throwable {
+        String phoneNumber = (String) pjp.getArgs()[0];
+
+        if (phoneNumber.equals(STUBBED_PHONE_NUMBER)) {
+            return testDrivers.get(77710);
+        } else if (phoneNumber.equals(STUBBED_CELLCONTROL_PHONE_NUMBER)) {
+            return testDrivers.get(77711);
+        } else if (phoneNumber.equals(STUBBED_ZOOMSAFER_PHONE_NUMBER)) {
+            return testDrivers.get(77712);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Advice definition.
+     * <p/>
+     * Around advice for stubbing data for update().
+     * 
+     * @throws Throwable
+     *             If unable to proceed with the join point.
+     */
     @Around(value = "inDriverHessianDAO() && updatePointcut()")
     public Object mockUpdate(ProceedingJoinPoint pjp) throws Throwable {
         Integer driverId = ((Driver) pjp.getArgs()[0]).getDriverID();

@@ -180,10 +180,10 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.dao.DriverDAO#findByPhoneID(java.lang.String)
+     * @see com.inthinc.pro.dao.DriverDAO#findByPhoneNumber(java.lang.String)
      */
     @Override
-    public Driver findByPhoneID(String phoneID) {
+    public Driver findByPhoneNumber(String phoneID) {
         // TODO To be implemented
         return new Driver(1, 2, Status.ACTIVE, null, null, null, "", 
                 new State(), "5", new Date(), "", 1, 2);

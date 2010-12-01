@@ -265,7 +265,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         }
 
         @Override
-        public Driver findByPhoneID(String phoneID) {
+        public Driver findByPhoneNumber(String phoneID) {
             return null;
         }
     }

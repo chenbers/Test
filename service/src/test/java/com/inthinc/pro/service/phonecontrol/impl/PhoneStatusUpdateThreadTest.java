@@ -37,7 +37,7 @@ public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
         
         new Expectations() {
             {
-                driverDaoMock.findByPhoneID(phoneID); returns(driverMock);
+                driverDaoMock.findByPhoneNumber(phoneID); returns(driverMock);
                 driverMock.setCellStatus(CellStatusType.ENABLED);
                 driverDaoMock.update(driverMock); returns(0);
                 driverMock.getDriverID(); returns(driverID); 
@@ -60,7 +60,7 @@ public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
         
         new Expectations() {
             {
-                driverDaoMock.findByPhoneID(phoneID); returns(null);
+                driverDaoMock.findByPhoneNumber(phoneID); returns(null);
             }
         };
         

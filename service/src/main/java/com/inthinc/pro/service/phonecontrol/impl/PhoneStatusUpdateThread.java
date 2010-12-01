@@ -45,7 +45,7 @@ public class PhoneStatusUpdateThread extends Thread {
         
         logger.debug(LOG_PREFIX + "started for PH#-" + phoneId + " Status-" + status);
         try {
-            Driver driver = driverDAO.findByPhoneID(phoneId);
+            Driver driver = driverDAO.findByPhoneNumber(phoneId);
             logger.debug(LOG_PREFIX + "called driverDAO.findByPhoneID(), returned: " + driver);
             if (driver != null) {
                 logger.debug(LOG_PREFIX + " is updating driver.. ");
