@@ -1,5 +1,6 @@
 package com.inthinc.pro.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -69,5 +70,18 @@ public interface DriverService {
     @Consumes("application/xml")
     @Path("/drivers")
     public Response delete(List<Integer> vehicleIDs);
+    
+    @GET
+    @Path("/driver/{driverID}/trip")
+    public Response getLastTrip(@PathParam("driverID") Integer driverID);
+    
+    //trips that have occurred from date until today. Can only go 30 days back
+    @GET
+    @Path("/driver/{driverID}/trips/{date}")
+    public Response getLastTrips(@PathParam("driverID") Integer driverID, @PathParam("date") String date );
+    
+    @GET
+    @Path("/driver/{driverID}/trips")
+    public Response getLastTrips(@PathParam("driverID") Integer driverID);
 
 }

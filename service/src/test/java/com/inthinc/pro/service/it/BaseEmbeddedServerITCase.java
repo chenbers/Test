@@ -42,7 +42,7 @@ public abstract class BaseEmbeddedServerITCase {
         HttpClientParams params = new HttpClientParams();
         params.setAuthenticationPreemptive(true);
         httpClient = new HttpClient(params);
-        Credentials defaultcreds = new UsernamePasswordCredentials("TEST_4846", "password");
+        Credentials defaultcreds = new UsernamePasswordCredentials("mraby", "password");
         httpClient.getState().setCredentials(new AuthScope(domain, port, AuthScope.ANY_REALM), defaultcreds);
         clientExecutor = new ApacheHttpClientExecutor(httpClient);
 

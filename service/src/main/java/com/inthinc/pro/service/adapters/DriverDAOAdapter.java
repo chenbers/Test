@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.adapters;
 
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -12,6 +13,7 @@ import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
 import com.inthinc.pro.model.event.Event;
@@ -71,6 +73,15 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 
     public List<Trend> getTrend(Integer driverID, Duration duration) {
         return driverReportDAO.getTrend(driverID, duration);
+    }
+    
+    public Trip getLastTrip(Integer driverID) {
+            return driverDAO.getLastTrip(driverID);
+    }
+    
+    public List<Trip> getLastTrips(Integer driverID, Date startDate) {          
+            Date today = new Date();
+            return driverDAO.getTrips(driverID, startDate, today);
     }
 
 	// Getters and setters -----------------------------------------------------

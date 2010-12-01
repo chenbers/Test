@@ -12,20 +12,23 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponse;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 
 
-public class WebServiceITCase extends BaseEmbeddedServerITCase {
-    private static Logger logger = Logger.getLogger(WebServiceITCase.class);
+public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
+    private static Logger logger = Logger.getLogger(WebServiceITCaseTest.class);
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
     private static final String XML_CONTENT_TYPE = "application/xml";
     private static int randomInt = RandomUtils.nextInt(99999);
-    private static int GROUP_ID = 1504;
+    private static int GROUP_ID = 1;
     private static int PERSON_ID = 9999;
     private static String USERNAME = "MY_USER_";
 
@@ -115,6 +118,16 @@ public class WebServiceITCase extends BaseEmbeddedServerITCase {
         assertEquals(devices.getResponseStatus(), Response.Status.OK );
         assertNotNull(devices.getEntity());
         logger.info("Devices retrieved successfully");
+    }
+    
+    @BeforeClass
+    public static void setup() {
+        TiwiproPrincipal.adminUserBackDoor = true ;
+    }
+    
+    @AfterClass
+    public static void tearDown(){
+        TiwiproPrincipal.adminUserBackDoor = false ;
     }
     
 }

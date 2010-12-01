@@ -1,6 +1,11 @@
 package com.inthinc.pro.service.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
@@ -11,6 +16,8 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
 import com.inthinc.pro.model.event.Event;
@@ -19,6 +26,9 @@ import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
 
 public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter> implements DriverService {
+
+    private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
+    static final Integer DEFAULT_PAST_TIMING = -30;
 
     @Override
     public Response getAll() {
@@ -75,5 +85,68 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
         }
         return Response.status(Status.NOT_FOUND).build();
     }
+
+    @Override
+    public Response getLastTrip(Integer driverID) {
+        if (driverID != null) {
+            Trip trip = this.getDao().getLastTrip(driverID);
+            if( trip != null)
+                return Response.ok(new GenericEntity<Trip>(trip) {}).build();
+            else
+                return Response.status(Status.NOT_FOUND).build();
+        }
+        else {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+    }
+
+    @Override
+    public Response getLastTrips(Integer driverID, String date) {
+        Date startDate = buildDateFromString(date);
+        Date today = new Date();
+        
+        if(driverID != null && startDate != null ) {
+            long diff = today.getTime() - startDate.getTime();
+            long diffDays = diff / (1000 * 60 * 60 * 24) ;
+            
+            if(diffDays <= 30L) {
+                List<Trip> trips =  this.getDao().getLastTrips(driverID, startDate);
+                if(trips != null && !trips.isEmpty()) {
+                    return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
+                }
+            }
+        }
+        return Response.status(Status.NOT_FOUND).build();
+
+    }
+
+    private Date buildDateFromString(String strDate) {
+        if(strDate == null)
+            return null;
+        
+        DateFormat df = new SimpleDateFormat(getSimpleDateFormat()); 
+        try
+        {
+            Date convertedDate = df.parse(strDate);           
+            return convertedDate;
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Response getLastTrips(Integer driverID) {
+        DateFormat df = new SimpleDateFormat(getSimpleDateFormat()); 
+        Calendar c = Calendar.getInstance(); 
+        c.add(Calendar.DATE, DEFAULT_PAST_TIMING);      
+        return getLastTrips(driverID,  df.format(c.getTime()));
+    }
+
+    public static String getSimpleDateFormat() {
+        return SIMPLE_DATE_FORMAT;
+    }
+
 
 }
