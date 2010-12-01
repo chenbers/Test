@@ -263,11 +263,14 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         if (escalationPeoplePicker == null)
         {
-            //final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
             final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            for (final Person person : people) 
-                allUsers.add(new SelectItem(person.getPersonID(), person.getFirst() + " " + person.getLast()));
+            for (final Person person : people) { 
+                if(null != person.getPriPhone() && !"".equals(person.getPriPhone()))
+                    allUsers.add(new SelectItem(person.getPriPhone(), person.getFullNameWithPriPhone()));
+                if(null != person.getSecPhone() && !"".equals(person.getSecPhone()))
+                    allUsers.add(new SelectItem(person.getSecPhone(), person.getFullNameWithSecPhone()));
+            }
             MiscUtil.sortSelectItems(allUsers);
 
             final ArrayList<SelectItem> notifyPeople = getNotifyPicked();
