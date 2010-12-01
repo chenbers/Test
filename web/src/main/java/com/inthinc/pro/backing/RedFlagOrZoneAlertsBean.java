@@ -2,20 +2,17 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
-import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-
+import org.jfree.util.Log;
+import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.ui.AlertTypeSelectItems;
@@ -417,11 +414,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         private Integer limitValue;
         private LimitType limitType;
         
-        private HtmlDataTable escEmailsDataTable;
         private HtmlDataTable phNumbersDataTable;
         private HtmlDataTable emailTosDataTable;
 
-        private List<String> escEmails;
+        private String escEmail;
         private List<String> phNumbers;
         private List<String> emailTos;//TODO: jwimmer: init wrong name? also this VALUE should be the same as baseAlert.EmailTo(String???)
         private Integer alertID;
@@ -429,13 +425,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public RedFlagOrZoneAlertView() {
             super();
             //TODO: jwimmer: remove fake testing data
-            escEmails = new ArrayList<String>();
             phNumbers = new ArrayList<String>();
             emailTos = new ArrayList<String>();
-            if(escEmails.isEmpty()) {
-                escEmails.add("escjohn@company.com");
-                escEmails.add("escmary@company.com");
-            }
             if(phNumbers.isEmpty()){
                 phNumbers.add("80155551212");
                 phNumbers.add("2037289200");
@@ -447,11 +438,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             //TODO: jwimmer: end of fake testing data
             
             //initialize to ensure that the last item is an empty slot
-            String lastString = escEmails.get(escEmails.size()-1) ;
-            if(null != lastString && !"".equals(lastString)){
-                escEmails.add("");
-            }
-            lastString = phNumbers.get(phNumbers.size()-1);
+            String lastString = phNumbers.get(phNumbers.size()-1);
             if(null != lastString && !"".equals(lastString)){
                 phNumbers.add("");
             }
@@ -466,34 +453,65 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public void addPhNumberSlot() {
-//            System.out.println("addPhNumberSlot: "+(String)phNumbersDataTable.getRowData());
-  //          if(!"".equals(((String)phNumbersDataTable.getRowData())))
-            //TODO:jwimmer: there are 3 instances of the above 2 lines... added to keep USER from needlessly adding input fields.  which is probably a good idea... but this code was effectively just making it so that ONLY one "add" field could be added... exactly what is going on here may become clearer on save???
-                phNumbers.add("");
+            try {
+                int indexForPhNumToAdd = 0;
+                String paramForPhNumToAdd = "";
+                FacesContext context = FacesContext.getCurrentInstance();
+                Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+                for (String key : map.keySet()) {
+
+                    if (key.endsWith("phNumInput")) {
+                        String[] words = key.split(":");
+                        int rowIndex = Integer.parseInt(words[2]);
+                        if (rowIndex > indexForPhNumToAdd)
+                            paramForPhNumToAdd = key;
+                        indexForPhNumToAdd = Math.max(rowIndex, indexForPhNumToAdd);
+                    }
+                }
+
+                String value = map.get(paramForPhNumToAdd);
+                if (!"".equals(value)) {
+                    phNumbers.add(value);
+                    phNumbers.remove("");
+                    phNumbers.add("");
+                }
+            } catch (Exception e) {
+               Log.error("addPhNumberSlot() failed");
+            }
         }
 
         public void removeEmailTo() {
             //System.out.println("removeEmailToSlot: "+(String)emailTosDataTable.getRowData());
-            
             emailTos.remove(emailTosDataTable.getRowData());
         }
 
         public void addEmailToSlot() {
-            //System.out.println("addEmailToSlot: "+(String)emailTosDataTable.getRowData());
-            //if(!"".equals(((String)emailTosDataTable.getRowData())))
-                emailTos.add("");
-        }
-
-        public void removeEscEmail() {
-            escEmails.remove(escEmailsDataTable.getRowData());
-        }
-
-        public void addEscEmailSlot() {
-            //System.out.println((String)escEmailsDataTable.getRowData());
-            //if(!"".equals(((String)escEmailsDataTable.getRowData())))
-                escEmails.add("");
+            try {
+                int indexForEmailToAdd = 0;
+                String paramForEmailToAdd = "";
+                FacesContext context = FacesContext.getCurrentInstance();
+                Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+                for (String key : map.keySet()) {    System.out.println(key.toString()+" : "+map.get(key)); 
+                    if (key.endsWith("emailAddressesInput")) {     
+                        String[] words = key.split(":");
+                        int rowIndex = Integer.parseInt(words[2]);
+                        if (rowIndex > indexForEmailToAdd)
+                            paramForEmailToAdd = (String) key;
+                        indexForEmailToAdd = Math.max(rowIndex, indexForEmailToAdd);
+                    }
+                }
+                String value = map.get(paramForEmailToAdd);
+                if (!"".equals(value)) {
+                    emailTos.add(value);
+                    emailTos.remove("");
+                    emailTos.add("");
+                }
+            } catch (Exception e) {
+               Log.error("addPhNumberSlot() failed");
+            }
         }
         
+
         @Override
         public Integer getId() {
             // TODO Auto-generated method stub
@@ -641,12 +659,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.limitType = limitType;
         }
 
-        public List<String> getEscEmails() {            
-            return escEmails;
+        public String getEscEmail() {            
+            return escEmail;
         }
 
-        public void setEscEmails(List<String> escEmails) {
-            this.escEmails = escEmails;
+        public void setEscEmail(String escEmail) {
+            this.escEmail = escEmail;
         }
         public String getZonePointsString(){
             if (getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
@@ -685,14 +703,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public void setAlertID(Integer alertID) {
             this.alertID = alertID;
             
-        }
-
-        public HtmlDataTable getEscEmailsDataTable() {
-            return escEmailsDataTable;
-        }
-
-        public void setEscEmailsDataTable(HtmlDataTable escEmailsDataTable) {
-            this.escEmailsDataTable = escEmailsDataTable;
         }
 
         public HtmlDataTable getPhNumbersDataTable() {
