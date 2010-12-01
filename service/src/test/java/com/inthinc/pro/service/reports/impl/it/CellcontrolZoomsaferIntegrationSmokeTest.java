@@ -1,4 +1,4 @@
-package com.inthinc.pro.service.phonecontrol.impl.it;
+package com.inthinc.pro.service.reports.impl.it;
 
 import javax.ws.rs.core.Response;
 
@@ -13,13 +13,13 @@ import org.junit.Test;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
 
-import com.inthinc.pro.service.phonecontrol.CellPhoneService;
+import com.inthinc.pro.service.reports.AssetService;
 
 public class CellcontrolZoomsaferIntegrationSmokeTest {
 
     private static int port;
 
-    private static CellPhoneService cellPhoneServiceClient;
+    private static AssetService assetServiceClient;
 
     /**
      * Dummy test required to avoid JUnit initialization errors.
@@ -42,16 +42,12 @@ public class CellcontrolZoomsaferIntegrationSmokeTest {
         httpClient.getState().setCredentials(new AuthScope("localhost", port, AuthScope.ANY_REALM), defaultcreds);
         ApacheHttpClientExecutor clientExecutor = new ApacheHttpClientExecutor(httpClient);
 
-        cellPhoneServiceClient = ProxyFactory.create(CellPhoneService.class, "http://localhost:" + port + "/service/api", clientExecutor);
+        assetServiceClient = ProxyFactory.create(AssetService.class, "http://localhost:" + port + "/service/api", clientExecutor);
     }
 
-    /*
-     * This method should not be added to automatic execution during the integration test. It should be run manually as a smoke test since it hits the actual Cellcontrol service.
-     */
-    // DO NOT RUN THIS TEST AS PART OF THE AUTOMATED SUITE
     // @Test
-    public void testDisablePhone() throws InterruptedException {
-        Response resp = cellPhoneServiceClient.processStartMotionEvent(77711);
+    public void testAssetService() throws InterruptedException {
+        Response resp = assetServiceClient.getRedFlagCount(1);
         System.out.println(resp.getStatus());
         Thread.sleep(Long.MAX_VALUE);
     }

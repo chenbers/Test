@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.Map;
 
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import mockit.Deencapsulation;
 import mockit.Expectations;
