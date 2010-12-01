@@ -1,4 +1,4 @@
-package com.inthinc.pro.device.tiwiPro;
+package com.inthinc.pro.device;
 
 public class Distance_Calc {
     

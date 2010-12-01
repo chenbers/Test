@@ -5,16 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 public class Package_Note {
     
-    private static Integer nType, sats, heading, maprev, Speed, odometer, nTime;
-    private static Double lat, lng;
-    private static HashMap<Integer, Integer> attrs;
+    private Integer nType, sats, heading, maprev, Speed, odometer, nTime;
+    private Double lat, lng;
+    private HashMap<Integer, Integer> attrs;
     
     
-    public Package_Note(Integer type,String time, Integer Sats, Integer Heading, Integer Maprev, Double Lat, Double Lng, Integer speed, Integer Odometer, HashMap<Integer, Integer> Attrs){
-        nType = type;
+    public Package_Note(Constants type, String time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<Constants, Integer> Attrs){
+        nType = type.getCode();
         nTime = (int)DateToLong(time);
         sats = Sats;
         heading = Heading;
@@ -23,14 +24,14 @@ public class Package_Note {
         lng = Lng;
         Speed = speed;
         odometer = Odometer;
-        attrs = Attrs;
-        
+        processAttrs(Attrs);
     }
     
-    public Package_Note(Integer type, Integer time, Integer Sats, Integer Heading, Integer Maprev, Double Lat, Double Lng, Integer speed, Integer Odometer, HashMap<Integer, Integer> Attrs){
-        nType = type;
-        if ( time > (int)(System.currentTimeMillis()/100 )) nTime = (int)( time/1000 );
-        else{ nTime = time; }
+    
+    public Package_Note(Constants type, long time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<Constants, Integer> Attrs){
+        nType = type.getCode();
+        if ( time > (System.currentTimeMillis()/100 )) nTime = (int)( time/1000 );
+        else{ nTime = (int)time; }
         sats = Sats;
         heading = Heading;
         maprev = Maprev;
@@ -38,12 +39,11 @@ public class Package_Note {
         lng = Lng;
         Speed = speed;
         odometer = Odometer;
-        attrs = Attrs;
-        
+        processAttrs(Attrs);
     }
     
-    public Package_Note( Integer type, HashMap<Integer, Integer> Attrs ){
-        nType = type;
+    public Package_Note( Constants type, HashMap<Constants, Integer> Attrs ){
+        nType = type.getCode();
         nTime = (int)(System.currentTimeMillis()/1000);
         sats = 0;
         heading = 0;
@@ -52,8 +52,20 @@ public class Package_Note {
         lng = 0.0;
         Speed = 0;
         odometer = 0;
-        attrs = Attrs;
-        
+        processAttrs(Attrs);
+    }
+    
+    public Package_Note( Constants type ){
+        nType = type.getCode();
+        nTime = (int)(System.currentTimeMillis()/1000);
+        sats = 0;
+        heading = 0;
+        maprev = 0;
+        lat = 0.0;
+        lng = 0.0;
+        Speed = 0;
+        odometer = 0;
+        attrs = new HashMap<Integer, Integer>();
     }
     
     public Package_Note(){
@@ -67,8 +79,22 @@ public class Package_Note {
         Speed = 0;
         odometer = 0;
         attrs = new HashMap<Integer, Integer>();
-        
-        
+    }
+    
+    
+
+	public void AddAttrs(HashMap<Constants, Integer> Attrs){
+    	processAttrs(Attrs);
+    }
+    public void AddAttrs(Constants cmd, Integer reply){
+    	HashMap<Constants, Integer> Attrs = new HashMap<Constants, Integer>();
+    	Attrs.put(cmd, reply);
+    	processAttrs(Attrs);
+    }
+    public void AddAttrs(Constants cmd, Constants reply){
+    	HashMap<Constants, Integer> Attrs = new HashMap<Constants, Integer>();
+    	Attrs.put(cmd, reply.getCode());
+    	processAttrs(Attrs);
     }
         
         
@@ -86,7 +112,6 @@ public class Package_Note {
           }
         
         return epoch_time;
-        
     }
     
     public String noteToString(){
@@ -99,6 +124,16 @@ public class Package_Note {
     	return note;
     }
     
+    public void processAttrs(HashMap<Constants, Integer> Attrs){
+    	attrs = new HashMap<Integer, Integer>();
+    	Constants attrID;
+    	Set<Constants> keys = Attrs.keySet();
+    	Iterator<Constants> itr = keys.iterator();
+    	while (itr.hasNext()){
+    		attrID = itr.next();
+    		attrs.put(attrID.getCode(), Attrs.get(attrID));
+    	}
+    }
     
     public byte[] Package(){
         

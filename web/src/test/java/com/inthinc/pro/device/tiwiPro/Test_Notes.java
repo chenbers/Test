@@ -48,7 +48,7 @@ public class Test_Notes {
 		
 		note.add(getPackageNote().Package());
 		
-		List<Map> reply = getMcmProxy().note("999456789012345", note);
+		ArrayList<Map<String, Object>> reply = getMcmProxy().note("999456789012345", note);
 		System.out.println(reply);
 	}
 
