@@ -580,7 +580,7 @@
                         <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByEmailInstructions}" /></div>
 
                         <!-- <h:inputTextarea id="emailToString" value="#{redFlagOrZoneAlertsBean.item.emailToString}" rows="4" style="width:100%" onchange="checkMultiple(this)" /> -->
-						<!-- Escalation Emails list -->
+						<!-- free form Emails list -->
 						<table>
 							<tr>
 								<td width="115" valign="top">
@@ -595,21 +595,24 @@
 									</ui:include>
 								</td>
 								<td>
-									<h:dataTable value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="dataItem" id="emailTos" binding="#{redFlagOrZoneAlertsBean.item.emailTosDataTable}">
-								        <h:column>
-								            <h:inputText value="#{dataItem}" styleClass="emailInput" />
-								        </h:column>
-								        <h:column>
+									<rich:dataTable value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="dataItem" id="emailTos" binding="#{redFlagOrZoneAlertsBean.item.emailTosDataTable}">
+								        <rich:column>
+									        <rich:message id="emailAddressesInputMessage#{index}" for="emailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+								            <h:inputText value="#{dataItem}" styleClass="emailInput" id="emailAddressesInput" >
+								            	<f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+								            </h:inputText>
+								        </rich:column>
+								        <rich:column>
 								            <a4j:commandLink value="X" action="#{redFlagOrZoneAlertsBean.item.removeEmailTo}" reRender="emailTos" rendered="#{dataItem != ''}" /> 
-								            <a4j:commandLink value="+" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos"  rendered="#{dataItem == ''}" />
-								        </h:column>	
-								    </h:dataTable>
+								            <a4j:commandLink value="+" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage"  rendered="#{dataItem == ''}" />
+								        </rich:column>	
+								    </rich:dataTable>
 								</td>
 							</tr>
 						</table>
 					    
 					    <br/>
-						<!-- / Escalation Emails list -->                        
+						<!-- / free form Emails list -->                        
 
                       </td>
                        
@@ -636,15 +639,25 @@
 								</td>
 								<td>
       								<!-- Escalation phNumbers list -->
-								    <h:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.item.phNumbersDataTable}">
-								        <h:column>
-								            <h:inputText value="#{dataItem}" styleClass="phoneInput" />
-								        </h:column>
-								        <h:column>
-								            <a4j:commandLink value="X" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers" rendered="#{dataItem != ''}" /> 
-								            <a4j:commandLink value="+" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers"  rendered="#{dataItem == ''}" />
-								        </h:column>	
-								    </h:dataTable>
+								    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.item.phNumbersDataTable}">
+								        <rich:column id="phNumInputCol">
+								   	    	<rich:message id="phNumInputMessage#{index}" for="phNumInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+								            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput"  >
+									            <f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />
+								            </h:inputText>
+								            <rich:suggestionbox id="suggestionBoxId" for="phNumInput"
+							                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.autocomplete}" 
+							                    var="suggestion" fetchValue="#{suggestion.value}" selfRendered="true">
+							                    <h:column>
+									              <h:outputText value="#{suggestion.label}" id="phNumSuggestion" />
+									            </h:column>
+							                </rich:suggestionbox>
+								        </rich:column>
+								        <rich:column id="phNumInputBtns">
+								            <a4j:commandLink id="phNumRemBtn" value="X" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers, message" rendered="#{dataItem != ''}" />
+								            <a4j:commandLink id="phNumAddSlotBtn" value="+" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}" />
+								        </rich:column>	
+								    </rich:dataTable>
 								    <br/>
 									<!-- / Escalation phNumbers list -->
 								</td>
@@ -698,28 +711,22 @@
 							<tr>
 								<td width="115" valign="top">
 									<ui:include src="../../includes/admin/inputLabel.xhtml">
-										<ui:param name="required" value="FALSE"/>
-										<ui:param name="reRender" value="escEmails"/>
-										<ui:param name="for" value="escEmails"/>
-										<ui:param name="fieldName" value="escEmails"/>
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="reRender" value="escEmail"/>
+										<ui:param name="for" value="escEmail"/>
+										<ui:param name="fieldName" value="escEmail"/>
 										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
-										<ui:param name="label" value="#{messages.editRedFlag_escalationEmailsLabel}"/>
-        								<ui:param name="context" value="redFlagAlertsEscEmails" />
+										<ui:param name="label" value="#{messages.editRedFlag_escalationEmailLabel}"/>
+        								<ui:param name="context" value="redFlagAlertsEscEmail" />
 									</ui:include>
 								</td>
 								<td>
-      								<!-- Escalation Emails list -->
-								    <h:dataTable value="#{redFlagOrZoneAlertsBean.item.escEmails}" var="dataItem" id="escEmails" binding="#{redFlagOrZoneAlertsBean.item.escEmailsDataTable}">
-								        <h:column>
-								            <h:inputText value="#{dataItem}" styleClass="emailInput" />
-								        </h:column>
-								        <h:column>
-								            <a4j:commandLink value="X" action="#{redFlagOrZoneAlertsBean.item.removeEscEmail}" reRender="escEmails" rendered="#{dataItem != ''}" /> 
-								            <a4j:commandLink value="+" action="#{redFlagOrZoneAlertsBean.item.addEscEmailSlot}" reRender="escEmails" rendered="#{dataItem == ''}" />
-								        </h:column>	
-								    </h:dataTable>
-								    <br/>
-									<!-- / Escalation Emails list -->
+      								<!-- Escalation Email -->
+      								<rich:message id="escEmailAddressesInputMessage" for="escEmailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+									<h:inputText value="#{dataItem}" id="escEmailAddressesInput" styleClass="emailInput" >    
+								    	<f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
+								  	</h:inputText>
+									<!-- / Escalation Email -->
 								</td>
 							</tr>
 						</table>
