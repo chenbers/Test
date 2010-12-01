@@ -595,14 +595,14 @@
 									</ui:include>
 								</td>
 								<td>
-									<rich:dataTable value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="dataItem" id="emailTos" binding="#{redFlagOrZoneAlertsBean.item.emailTosDataTable}">
-								        <rich:column>
+									<rich:dataTable value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="dataItem" id="emailTos" binding="#{redFlagOrZoneAlertsBean.item.emailTosDataTable}" style="border: none;" >
+								        <rich:column  style="border: none;">
 									        <rich:message id="emailAddressesInputMessage#{index}" for="emailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 								            <h:inputText value="#{dataItem}" styleClass="emailInput" id="emailAddressesInput" >
 								            	<f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
 								            </h:inputText>
 								        </rich:column>
-								        <rich:column>
+								        <rich:column style="border: none;">
 								            <a4j:commandLink value="X" action="#{redFlagOrZoneAlertsBean.item.removeEmailTo}" reRender="emailTos" rendered="#{dataItem != ''}" /> 
 								            <a4j:commandLink value="+" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage"  rendered="#{dataItem == ''}" />
 								        </rich:column>	
@@ -639,8 +639,8 @@
 								</td>
 								<td>
       								<!-- Escalation phNumbers list -->
-								    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.item.phNumbersDataTable}">
-								        <rich:column id="phNumInputCol">
+								    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.item.phNumbersDataTable}" style="border: none;">
+								        <rich:column id="phNumInputCol" style="border: none;">
 								   	    	<rich:message id="phNumInputMessage#{index}" for="phNumInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 								            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput"  >
 									            <f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />
@@ -653,7 +653,7 @@
 									            </h:column>
 							                </rich:suggestionbox>
 								        </rich:column>
-								        <rich:column id="phNumInputBtns">
+								        <rich:column id="phNumInputBtns" style="border: none;">
 								            <a4j:commandLink id="phNumRemBtn" value="X" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers, message" rendered="#{dataItem != ''}" />
 								            <a4j:commandLink id="phNumAddSlotBtn" value="+" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}" />
 								        </rich:column>	
