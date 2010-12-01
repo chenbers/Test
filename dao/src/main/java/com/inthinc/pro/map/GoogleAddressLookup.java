@@ -498,34 +498,6 @@ public class GoogleAddressLookup extends AddressLookup {
         return results;
     }
 
-    private static void printEventType(int eventType) {
-        System.out.print("EVENT TYPE(" + eventType + "):");
-        System.out.println(getEventTypeString(eventType));
-    }
-
-    private static void printName(XMLStreamReader xmlr, int eventType) {
-        if (xmlr.hasName()) {
-            System.out.println("HAS NAME: " + xmlr.getLocalName());
-        } else {
-            System.out.println("HAS NO NAME");
-        }
-    }
-
-    private static void printText(XMLStreamReader xmlr) {
-        if (xmlr.hasText()) {
-            System.out.println("HAS TEXT: " + xmlr.getText());
-        } else {
-            System.out.println("HAS NO TEXT");
-        }
-    }
-
-    private static void printPIData(XMLStreamReader xmlr) {
-        if (xmlr.getEventType() == XMLEvent.PROCESSING_INSTRUCTION) {
-            System.out.println(" PI target = " + xmlr.getPITarget());
-            System.out.println(" PI Data = " + xmlr.getPIData());
-        }
-    }
-
     public void setMeasurementType(MeasurementType measurementType) {
         this.measurementType = measurementType;
     }
