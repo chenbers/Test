@@ -419,14 +419,15 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
         private String escEmail;
         private List<String> phNumbers;
-        private List<String> emailTos;//TODO: jwimmer: init wrong name? also this VALUE should be the same as baseAlert.EmailTo(String???)
+        private List<String> emailTos;
         private Integer alertID;
         
         public RedFlagOrZoneAlertView() {
             super();
-            //TODO: jwimmer: remove fake testing data
+            
             phNumbers = new ArrayList<String>();
             emailTos = new ArrayList<String>();
+            //TODO: jwimmer: remove fake testing data 
             if(phNumbers.isEmpty()){
                 phNumbers.add("80155551212");
                 phNumbers.add("2037289200");
@@ -459,7 +460,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 FacesContext context = FacesContext.getCurrentInstance();
                 Map<String, String> map = context.getExternalContext().getRequestParameterMap();
                 for (String key : map.keySet()) {
-
                     if (key.endsWith("phNumInput")) {
                         String[] words = key.split(":");
                         int rowIndex = Integer.parseInt(words[2]);
@@ -507,7 +507,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                     emailTos.add("");
                 }
             } catch (Exception e) {
-               Log.error("addPhNumberSlot() failed");
+               Log.error("addEmailSlot() failed");
             }
         }
         
