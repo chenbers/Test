@@ -75,6 +75,6 @@ public interface ServiceClient {
     public ClientResponse<List<Trip>> getLastTrips(@PathParam("driverID") Integer driverID );
     
     @GET
-    @Path(" /driver/{driverID}/location")
+    @Path("/driver/{driverID}/location")
     public ClientResponse<LastLocation> getLastLocation(@PathParam("driverID") Integer driverID);
 }
