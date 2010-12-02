@@ -79,7 +79,7 @@
                                   <h:outputText value="#{messages.editDevice_productVer}" />
                                 </td>
                                 <td width="100" valign="top">
-                                  <h:outputText value="#{devicesBean.item.productVer.name}" />
+                                  <h:outputText value="#{devicesBean.item.productVersion.name}" />
                                 </td>
                               </tr>
                               <tr>
@@ -94,18 +94,19 @@
                                     maxlength="20" />
                                 </td>
                               </tr>
-                              <ui:fragment rendered="#{devicesBean.item.productVer eq 'TIWIPRO_R74' or devicesBean.item.productVer eq 'TIWIPRO_R71'}">
+                              <tr>
+                                <td width="100" valign="top">
+                                  <h:outputText value="#{messages.editDevice_serialNum}" />
+                                </td>
+                                <td><h:outputText value="#{devicesBean.item.serialNum}" /></td>
+                              </tr>
+                              <ui:fragment rendered="#{devicesBean.item.productVersion eq 'TIWIPRO_R74' or devicesBean.item.productVersion eq 'TIWIPRO_R71'}">
                               <tr>
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_editDevice-imei" value="#{devicesBean.updateField['imei']}" />
                                   <h:outputText value="#{messages.editDevice_imei}" />
-                                  <span class="required">*</span>
-                                </td>
-                                <td>
-                                  <h:message for="editDevice-imei" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                                  <h:inputText value="#{devicesBean.item.imei}" id="editDevice-imei" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="15" />
-                                </td>
+                                 </td>
+                                <td><h:outputText value="#{devicesBean.item.imei}" /></td>
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
@@ -125,12 +126,6 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:outputText value="#{messages.editDevice_serialNum}" />
-                                </td>
-                                <td><h:outputText value="#{devicesBean.item.serialNum}" /></td>
-                              </tr>
-                              <tr>
-                                <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_editDevice-phone" value="#{devicesBean.updateField['phone']}" />
                                   <h:outputText value="#{messages.editDevice_phone}" />
                                   <span class="required">*</span>
@@ -142,37 +137,30 @@
                                 </td>
                               </tr>
                               </ui:fragment>
-                              <ui:fragment rendered="#{devicesBean.item.productVer eq 'WS820'}">
+                              <ui:fragment rendered="#{devicesBean.item.productVersion eq 'WS820'}">
                               <tr>
-                                <td width="100" valign="top">
-                                  <h:outputText value="#{messages.editDevice_waySmartSerialNumber}" />
-                                  <span class="required">*</span>
-                                   <h:message for="editDevice_waySmartSerialNumber" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                            	</td>
-                            	<td>
-                            		<h:inputText value="#{devicesBean.item.waySmartSerialNumber}" id="editDevice_waySmartSerialNumber"  styleClass="text" size="20"
-                             				 maxlength="9" required="true" requiredMessage="#{messages.required}" >
-                             			<f:validateLength minimum="9" maximum="9" />
-	                                    <f:validator validatorId="com.inthinc.pro.validators.WaySmartSerialNumberValidator" />
-                                    </h:inputText>
-                              
-                                </td>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_mcmid}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.mcmid}" /></td>
  							  </tr> 
                               <tr>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_altimei}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.altimei}" /></td>
+ 							  </tr> 
+                              <tr>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_witnessVersion}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.witnessVersion}" /></td>
+ 							  </tr> 
+                              <tr>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_firmwareVersion}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.firmwareVersion}" /></td>
+ 							  </tr> 
+               
+                               <tr>
                                 <td width="100" valign="top">
                                   <h:outputText value="#{messages.editDevice_iridiumImei}" />
-                                  <span class="required">*</span>
-                                   <h:message for="editDevice_iridiumImei" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                           		</td>
-                           		<td>
-                            		<h:inputText value="#{devicesBean.item.iridiumImei}" id="editDevice_iridiumImei"  styleClass="text" size="20"
-                             				 maxlength="15" required="true" requiredMessage="#{messages.required}" >
-                             			<f:validateLength minimum="15" maximum="15" />
-	                                    <f:validator validatorId="com.inthinc.pro.validators.IridiumIMEIValidator" />
-                                    </h:inputText>
-                              
-                                </td>
- 							  </tr> 
+								</td>
+                                <td><h:outputText value="#{devicesBean.item.imei}" /></td>
+                              </tr>
                               </ui:fragment>
                               </ui:fragment>
                             </table>

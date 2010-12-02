@@ -46,8 +46,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("serialNum");
         AVAILABLE_COLUMNS.add("phone");
         AVAILABLE_COLUMNS.add("status");
-        AVAILABLE_COLUMNS.add("waysmartSerialNumber");
-        AVAILABLE_COLUMNS.add("iridiumIMEI");
+        AVAILABLE_COLUMNS.add("mcmid");
+        AVAILABLE_COLUMNS.add("altimei");
         
     }
     private DeviceDAO deviceDAO;
@@ -481,7 +481,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             
             for(DeviceView deviceView : filteredItems){
                                    
-                deviceView.setSelected(selectAll && deviceView.getProductVer().getName().equals(batchProductChoice));
+                deviceView.setSelected(selectAll && deviceView.getProductVersion().getName().equals(batchProductChoice));
             }
         }
     }
@@ -497,7 +497,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 
             for(DeviceView deviceView : filteredItems){
                 
-                if (!deviceView.isSelected() && deviceView.getProductVer().getName().equals(batchProductChoice))
+                if (!deviceView.isSelected() && deviceView.getProductVersion().getName().equals(batchProductChoice))
                     return false;
             }
             return true;

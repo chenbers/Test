@@ -22,9 +22,9 @@ public class Device extends BaseEntity implements HasAccountId
     private Integer           vehicleID;
     private DeviceStatus      status;
     private String            name;
-    private String            imei;
+    private String            imei; //waysmart iridium imei, tiwipro imei
     private String            sim;
-    private String			  serialNum;
+    private String			  serialNum;//tiwipro and waysmart
     private String            phone;
     private Date              activated;
     private Integer           baseID;
@@ -34,12 +34,10 @@ public class Device extends BaseEntity implements HasAccountId
     @Column(name="witnessVer", updateable = false)
     private Integer	witnessVersion;
     private String emuMd5;
-    private ProductType productVer;
-    
-    //Waysmart data
-    private String waySmartSerialNumber;
-    private String iridiumImei;
-    
+    @Column(name="productVer", updateable = false)
+    private ProductType productVersion;
+    private String mcmid;   //Waysmart mcmid
+    private String altimei; //Alternate Waysmart imei
 /* 
  * waySmartSerialNumber
  * 
@@ -206,9 +204,9 @@ public class Device extends BaseEntity implements HasAccountId
         // TODO: jwimmer: this is a stopgap until a better way to determine device capabilities is implemented
 
         //TODO: Jacquie added this to temporarily get the tests to pass - will make this always retrn false
-        this.productVer = ProductType.TIWIPRO_R74;
+        this.productVersion = ProductType.TIWIPRO_R74;
 
-        return (this.productVer != null && this.productVer.equals(ProductType.WS820));
+        return (this.productVersion != null && this.productVersion.equals(ProductType.WS820));
     }
     
     /**
@@ -218,29 +216,32 @@ public class Device extends BaseEntity implements HasAccountId
      */
     public boolean isCrashTraceAppletCapable(){
         //TODO: jwimmer: another stopgap until a better way to determine device capabilities is implemented
-        return (this.productVer != null && this.productVer.equals(ProductType.WS820));
+        return (this.productVersion != null && this.productVersion.equals(ProductType.WS820));
     }
 
     
     public boolean isWaySmart() {
-        return true;// ProductType.WS820.getCode().equals(this.productVer);
+        return ProductType.WS820.getCode().equals(this.productVersion);
     }
-    public String getWaySmartSerialNumber() {
-        return waySmartSerialNumber;
+    public ProductType getProductVersion() {
+        return productVersion;
     }
-    public void setWaySmartSerialNumber(String waySmartSerialNumber) {
-        this.waySmartSerialNumber = waySmartSerialNumber;
+    public void setProductVersion(ProductType productVersion) {
+        this.productVersion = productVersion;
     }
-    public String getIridiumImei() {
-        return iridiumImei;
+    public String getMcmid() {
+        return mcmid;
     }
-    public void setIridiumImei(String iridiumImei) {
-        this.iridiumImei = iridiumImei;
+    public void setMcmid(String mcmid) {
+        this.mcmid = mcmid;
     }
-    public ProductType getProductVer() {
-        return productVer;
+    public String getAltimei() {
+        return altimei;
     }
-    public void setProductVer(ProductType productVer) {
-        this.productVer = productVer;
+    public void setAltimei(String altimei) {
+        this.altimei = altimei;
+    }
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 }

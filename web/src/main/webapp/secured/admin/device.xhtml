@@ -69,14 +69,18 @@
                                   <h:outputText value="#{messages.editDevice_productVer}" />
                                 </td>
                                 <td width="100" valign="top">
-                                  <h:outputText value="#{devicesBean.item.productVer}" />
+                                  <h:outputText value="#{devicesBean.item.productVersion}" />
                                 </td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editDevice_name}" /></td>
                                 <td><h:outputText value="#{devicesBean.item.name}" /></td>
                               </tr>
-                              <ui:fragment rendered="#{devicesBean.item.productVer eq 'TIWIPRO_R74' or devicesBean.item.productVer eq 'TIWIPRO_R71'}">
+                              <tr>
+                                <td width="100"><h:outputText value="#{messages.editDevice_serialNum}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.serialNum}" /></td>
+                              </tr>
+                              <ui:fragment rendered="#{devicesBean.item.productVersion eq 'TIWIPRO_R74' or devicesBean.item.productVersion eq 'TIWIPRO_R71'}">
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editDevice_imei}" /></td>
                                 <td><h:outputText value="#{devicesBean.item.imei}" /></td>
@@ -86,23 +90,31 @@
                                 <td><h:outputText value="#{devicesBean.item.sim}" /></td>
                               </tr>
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.editDevice_serialNum}" /></td>
-                                <td><h:outputText value="#{devicesBean.item.serialNum}" /></td>
-                              </tr>
-                              <tr>
                                 <td width="100"><h:outputText value="#{messages.editDevice_phone}" /></td>
                                 <td><h:outputText value="#{devicesBean.item.phone}" /></td>
                               </tr>
                               </ui:fragment>
-                             <ui:fragment rendered="#{devicesBean.item.productVer eq 'WS820'}">
+                             <ui:fragment rendered="#{devicesBean.item.productVersion eq 'WS820'}">
                               <tr>
-                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_waySmartSerialNumber}" /></td>
-                                <td><h:outputText value="#{devicesBean.item.waySmartSerialNumber}" /></td>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_mcmid}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.mcmid}" /></td>
  							  </tr> 
                               <tr>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_altimei}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.altimei}" /></td>
+ 							  </tr> 
+                              <tr>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_witnessVersion}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.witnessVersion}" /></td>
+ 							  </tr> 
+                              <tr>
+                                <td width="100" valign="top"><h:outputText value="#{messages.editDevice_firmwareVersion}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.firmwareVersion}" /></td>
+ 							  </tr> 
+                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editDevice_iridiumImei}" /></td>
-                                <td><h:outputText value="#{devicesBean.item.iridiumImei}" /></td>
- 							  </tr> 
+                                <td><h:outputText value="#{devicesBean.item.imei}" /></td>
+                              </tr>
                               </ui:fragment>
                             </table>
 
@@ -123,10 +135,6 @@
                                 <td><h:outputText value="#{devicesBean.item.activated}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText></td>
                               </tr>
                               </ui:fragment>
-<!--                              <tr>-->
-<!--                                <td width="100"><h:outputText value="#{messages.editDevice_autoLogoff}" /></td>-->
-<!--                                <td><c:set var="autoLogoff" value="#{devicesBean.item.autoLogoff.description}" /><h:outputText value="#{messages[autoLogoff]}" /></td>-->
-<!--                              </tr>-->
                             </table>
 
                             <div class="spacer"></div>
@@ -151,26 +159,6 @@
 
                     </rich:tab>
 
-<!--                    <rich:tab id="speedSensitivity" label="#{messages.device_speedSensitivity}">-->
-<!---->
-<!--                      <ul id="grid_nav" style="margin: 0;">-->
-<!--                        <li class="l text"><a4j:htmlCommandLink id="deviceBack2"-->
-<!--                        	action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>-->
-<!--                        <li class="r">-->
-<!--                          <a4j:commandButton id="deviceDelete2" styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="cancel"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>-->
-<!--                          <h:outputText value=" " /><h:commandButton id="deviceEdit2" action="#{devicesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>-->
-<!--                        </li>-->
-<!--                      </ul>-->
-<!---->
-<!--                      <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />-->
-<!---->
-<!--                      <ui:include src="../../includes/admin/speedSensitivity.xhtml">-->
-<!--                        <ui:param name="device" value="#{devicesBean.item}" />-->
-<!--                        <ui:param name="disabled" value="true" />-->
-<!--                        <ui:param name="context" value="device" />-->
-<!--                      </ui:include>-->
-<!---->
-<!--                    </rich:tab>-->
 
                   </rich:tabPanel>
 

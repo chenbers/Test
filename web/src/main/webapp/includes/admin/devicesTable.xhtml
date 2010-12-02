@@ -27,7 +27,7 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
-    <rich:column id="productVersion" custFilterBy="#{item.productVer.name}" filterValue="#{devicesBean.batchProductChoice}">
+    <rich:column id="productVersion" custFilterBy="#{item.productVersion.name}" filterValue="#{devicesBean.batchProductChoice}">
       <f:facet name="header">
         <h:panelGroup>
 		<h:outputText value="#{messages.devicesHeader_productVer}" />
@@ -42,11 +42,15 @@
 		</ui:include> -->
     	</h:panelGroup>
       </f:facet>
-      <h:outputText value="#{item.productVer.name}" />
+      <h:outputText value="#{item.productVersion.name}" />
     </rich:column>
     <rich:column id="imei" rendered="#{devicesBean.tableColumns['imei'].visible}" sortBy="#{item.imei}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_imei}" /></f:facet>
       <h:outputText value="#{item.imei}" />
+    </rich:column>
+    <rich:column id="altimei" rendered="#{devicesBean.tableColumns['altimei'].visible}" sortBy="#{item.altimei}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_altimei}" /></f:facet>
+      <h:outputText value="#{item.altimei}" />
     </rich:column>
     <rich:column id="sim" rendered="#{devicesBean.tableColumns['sim'].visible}" sortBy="#{item.sim}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_sim}" /></f:facet>
@@ -68,13 +72,9 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_status}" /></f:facet>
       <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
     </rich:column>
-    <rich:column id="waySmartSerialNumber" rendered="#{devicesBean.tableColumns['waySmartSerialNumber'].visible}" sortBy="#{item.waySmartSerialNumber}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_waySmartSerialNumber}" /></f:facet>
-      <h:outputText value="#{item.waySmartSerialNumber}" />
-    </rich:column>
-    <rich:column id="iridiumImei" rendered="#{devicesBean.tableColumns['iridiumImei'].visible}" sortBy="#{item.iridiumImei}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_iridiumImei}" /></f:facet>
-      <h:outputText value="#{item.iridiumImei}" />
+    <rich:column id="mcmid" rendered="#{devicesBean.tableColumns['mcmid'].visible}" sortBy="#{item.mcmid}">
+      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_mcmid}" /></f:facet>
+      <h:outputText value="#{item.mcmid}" />
     </rich:column>
   </ui:define>
 
