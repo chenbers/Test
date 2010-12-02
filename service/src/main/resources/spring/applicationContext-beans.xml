@@ -182,7 +182,6 @@
 	  <property name="deviceDAO" ref="deviceDAO" />
 	  <property name="eventDAO" ref="eventDAO" />
 	  <property name="redFlagDAO" ref="redFlagDAO" />
-	  <property name="reportDAO" ref="reportDAO" />
 	  <property name="groupReportDAO" ref="groupReportDAO" />
 	  <property name="driverDAO" ref="driverDAO"/>
 	  <property name="waysmartDAO" ref="waysmartDAO"/>

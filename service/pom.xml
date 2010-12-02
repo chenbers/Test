@@ -117,6 +117,11 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.inthinc.pro.reports</groupId>
+			<artifactId>reports</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 		</dependency>

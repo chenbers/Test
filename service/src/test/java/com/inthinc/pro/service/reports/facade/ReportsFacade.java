@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -14,6 +15,7 @@ import com.inthinc.pro.reports.service.ReportCriteriaService;
 /**
  * Facade to ReportCriteriaService.
  */
+@Component
 public class ReportsFacade {
 
     @Autowired

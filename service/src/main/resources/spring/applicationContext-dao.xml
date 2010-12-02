@@ -69,7 +69,10 @@
 	<bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="alertMessageDAO" class="com.inthinc.pro.dao.hessian.AlertMessageHessianDAO" parent="genericDAO"></bean>
-
+	<bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"/>
+  	<bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"/>
+	<bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
+	
 	<!-- Address Lookup -->
 	<bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
 		<property name="mapServerURLString" value="${mapserver.geonames.url}" />
