@@ -173,6 +173,22 @@
 	  <property name="concurrent" value="false" />
 	</bean>
 
+	<bean id="reportCriteriaService" class="com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl">
+	  <property name="accountDAO" ref="accountDAO" />
+	  <property name="groupDAO" ref="groupDAO" />
+	  <property name="scoreDAO" ref="scoreDAO" />
+	  <property name="mpgDAO" ref="mpgDAO" />
+	  <property name="vehicleDAO" ref="vehicleDAO" />
+	  <property name="deviceDAO" ref="deviceDAO" />
+	  <property name="eventDAO" ref="eventDAO" />
+	  <property name="redFlagDAO" ref="redFlagDAO" />
+	  <property name="reportDAO" ref="reportDAO" />
+	  <property name="groupReportDAO" ref="groupReportDAO" />
+	  <property name="driverDAO" ref="driverDAO"/>
+	  <property name="waysmartDAO" ref="waysmartDAO"/>
+	  <property name="stateMileageDAO" ref="stateMileageDAO"/>
+	  <property name="addressDAO" ref="addressDAO" />
+	</bean>
 
 
 </beans>
