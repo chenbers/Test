@@ -87,6 +87,10 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
         return Response.status(Status.NOT_FOUND).build();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.DriverService#getLastTrip(java.lang.Integer)
+     */
     @Override
     public Response getLastTrip(Integer driverID) {
         if (driverID != null) {
@@ -101,6 +105,10 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.DriverService#getLastTrips(java.lang.Integer, java.lang.String)
+     */
     @Override
     public Response getLastTrips(Integer driverID, String date) {
         Date startDate = buildDateFromString(date);
@@ -140,6 +148,10 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.DriverService#getLastTrips(java.lang.Integer)
+     */
     @Override
     public Response getLastTrips(Integer driverID) {
         DateFormat df = new SimpleDateFormat(getSimpleDateFormat()); 
@@ -152,6 +164,10 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
         return SIMPLE_DATE_FORMAT;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.DriverService#getLastLocation(java.lang.Integer)
+     */
     @Override
     public Response getLastLocation(Integer driverID) {
         if (driverID != null) {
