@@ -26,6 +26,7 @@ public class MailDispatcher
     public boolean send(String emailAddress, String subjectText, String messageText)
     {
         logger.debug("sendEmail: [" + emailAddress + "] [" + subjectText + "] [" + messageText + "]");
+        boolean ok = true;
         
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(emailAddress);
@@ -33,17 +34,25 @@ public class MailDispatcher
         message.setSubject(subjectText);
         message.setText(messageText);
        
-        try
+        if (emailAddress==null || emailAddress.trim().isEmpty())
         {
-            mailSender.send(message);
+            logger.error("sendEmail FAILED. Address is empty: [" + emailAddress + "] [" + subjectText + "] [" + messageText + "]");
+            ok = false;
         }
-        catch (Exception e)
+        else
         {
-            logger.error("sendEmail FAILED: [" + emailAddress + "] [" + subjectText + "] [" + messageText + "]", e);
-            return false;
+            try
+            {
+                mailSender.send(message);
+            }
+            catch (Exception e)
+            {
+                logger.error("sendEmail FAILED: [" + emailAddress + "] [" + subjectText + "] [" + messageText + "]", e);
+                ok = false;
+            }
         }
         logger.debug("sendEmail - Complete");
-        return true;
+        return ok;
     }
 
 	public String getFrom() {

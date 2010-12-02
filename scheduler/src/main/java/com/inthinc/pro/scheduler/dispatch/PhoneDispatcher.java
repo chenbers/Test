@@ -25,8 +25,10 @@ public class PhoneDispatcher {
     }
 
     public void send(String phoneNumber, String messageText, Integer msgID, Boolean acknowledge) {
-
-        executorService.submit(new PhoneThread(phoneNumber, messageText, msgID, acknowledge));
+        if (phoneNumber==null || phoneNumber.trim().isEmpty())
+            logger.error("Error phoneNumber is empty: " + msgID);
+        else
+            executorService.submit(new PhoneThread(phoneNumber, messageText, msgID, acknowledge));
     }
 
     public String getCallerID() {
