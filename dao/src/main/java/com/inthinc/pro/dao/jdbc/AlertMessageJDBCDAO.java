@@ -50,8 +50,8 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
     //message status 
     //1 new
     //2 sent
-    //3 waiting acknowledge
-    //4 acknowledged
+    //3 escalated awaiting acknowledge
+    //4 escalated acknowledged
 
     @Override
     public Boolean acknowledgeMessage(Integer msgID) {
@@ -179,20 +179,22 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             while ((numNoEscalationMsgs>0 || numEscalationMsgs>0) && resultSet.next())
             {
                 alertMessage = new AlertMessage();
-                alertMessage.setMessageID(resultSet.getInt(1));
-                alertMessage.setNoteID(resultSet.getLong(2));
-                alertMessage.setPersonID(resultSet.getInt(3));
-                alertMessage.setAlertID(resultSet.getInt(4));
-                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt(5)));
-                alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt(8)));
-                alertMessage.setAddress(resultSet.getString(9));
-                alertMessage.setMessage(resultSet.getString(10));
-                alertMessage.setLevel(RedFlagLevel.valueOf(resultSet.getInt(12)));
-                alertMessage.setZoneID(resultSet.getInt(14));
-                alertMessage.setAcknowledge(resultSet.getBoolean(15));
+                alertMessage.setMessageID(resultSet.getInt("msgID"));
+                alertMessage.setNoteID(resultSet.getLong("noteID"));
+                alertMessage.setPersonID(resultSet.getInt("personID"));
+                alertMessage.setAlertID(resultSet.getInt("alertID"));
+                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt("alertTypeID")));
+                alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt("deliveryMethodID")));
+                alertMessage.setMessage(resultSet.getString("message"));
+                
+                //We ignore what harry returns in address column for address aka phone/email
+                
+                alertMessage.setLevel(RedFlagLevel.valueOf(resultSet.getInt("level")));
+                alertMessage.setZoneID(resultSet.getInt("zoneID"));
+                alertMessage.setAcknowledge(resultSet.getBoolean("acknowledge"));
                 
                 Event event = eventDAO.findByID(alertMessage.getNoteID());
-                AlertMessageBuilder alertMessageBuilder = this.createAlertMessageBuilder(alertMessage, event);
+                AlertMessageBuilder alertMessageBuilder = this.createAlertMessageBuilder(alertMessage, event, messageType);
                 recordList.add(alertMessageBuilder);    
                 
                 statement = (PreparedStatement) conn.prepareStatement("INSERT INTO messageLog (msgID, personID, created) VALUES(?, ?, utc_timestamp())");
@@ -217,11 +219,12 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         
     }
 
-    private AlertMessageBuilder createAlertMessageBuilder(AlertMessage alertMessage, Event event) {
+    private AlertMessageBuilder createAlertMessageBuilder(AlertMessage alertMessage, Event event, AlertMessageDeliveryType messageType) {
         if (alertMessage.getPersonID() == null || alertMessage.getPersonID() == 0 || event == null) {
             logger.debug("Person ID or Event is Null");
             return null;
         }
+        
         Person person = personDAO.findByID(alertMessage.getPersonID());
         logger.debug("Preparing message for: " + person.getFullName());
         Driver driver = driverDAO.findByID(event.getDriverID());
@@ -229,6 +232,20 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         Locale locale = Locale.ENGLISH;
         if (person != null && person.getLocale() != null)
             locale = person.getLocale();
+        
+        //TODO if person is null we are screwed
+        //TODO is primaryXXX the correct thing to send to?
+        if (person!=null)
+        {
+            if (AlertMessageDeliveryType.EMAIL.equals(messageType))
+            {
+                alertMessage.setMessage(person.getPriEmail());    
+            }
+            else if (AlertMessageDeliveryType.PHONE.equals(messageType))
+            {
+                alertMessage.setMessage(person.getPriPhone());    
+            }                
+        }
         AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder();
         alertMessageBuilder.setLocale(locale);
         alertMessageBuilder.setAddress(alertMessage.getAddress());
