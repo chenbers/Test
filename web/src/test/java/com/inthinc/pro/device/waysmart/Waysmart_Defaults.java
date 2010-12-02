@@ -180,7 +180,7 @@ public class Waysmart_Defaults {
 		DEFAULT.put(  Waysmart.BUZZER_BATTERY.getCode(), "1");
 		DEFAULT.put(  Waysmart.IDLETIME_WITH_EVENTS.getCode(), "0");
 		DEFAULT.put(  Waysmart.INPUT4_TYPE.getCode(), "2");
-		DEFAULT.put(  Waysmart.SERVER_IP.getCode(), "192.168.11.110:8888");
+		DEFAULT.put(  Waysmart.SERVER_IP.getCode(), "qa.tiwipro.com:8988");
 		DEFAULT.put(  Waysmart.SBS_UPDATE_RESULT_EVENT.getCode(), "1");
 		DEFAULT.put(  Waysmart.TRIAX_MODULE.getCode(), "1");
 		DEFAULT.put(  Waysmart.KILL_COMMUNICATION.getCode(), "0");

@@ -1,11 +1,9 @@
 package com.inthinc.pro.device;
 
-import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -16,53 +14,50 @@ import org.junit.runner.notification.StoppedByUserException;
 
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
-import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
-import com.inthinc.pro.device.tiwiPro.TiwiPro_Defaults;
-import com.inthinc.pro.device.tiwiPro.Package_tiwiPro_Note;
-import com.inthinc.pro.device.waysmart.Package_Waysmart_Note;
-import com.inthinc.pro.device.tiwiPro.TiwiPro;
 
 @SuppressWarnings("unchecked")
-public class Device {
+public abstract class Device {
 	
 	private ArrayList<byte[]> sendingQueue = new ArrayList<byte[]>();
-	private ArrayList<byte[]> note_queue = new ArrayList<byte[]>();
-    private ArrayList<Integer> speed_points = new ArrayList<Integer>();
-    private ArrayList<Double[]> speed_loc = new ArrayList<Double[]>();
+	protected ArrayList<byte[]> note_queue = new ArrayList<byte[]>();
+	protected ArrayList<Integer> speed_points = new ArrayList<Integer>();
+	protected ArrayList<Double[]> speed_loc = new ArrayList<Double[]>();
     
-    private Boolean ignition_state = false;
-    private Boolean power_state = false;
-    private Boolean speeding = false;
-    private Boolean rpm_violation = false;
-    private Boolean seatbelt_violation = false;
+    protected Boolean ignition_state = false;
+    protected Boolean power_state = false;
+    protected Boolean speeding = false;
+    protected Boolean rpm_violation = false;
+    protected Boolean seatbelt_violation = false;
         
-    private Double latitude, longitude, last_lat, last_lng;
-    private Double speed_limit;
+    protected Double latitude;
+	protected Double longitude;
+	protected Double last_lat, last_lng;
+    protected Double speed_limit;
     
-    private Distance_Calc calculator = new Distance_Calc();
+    protected Distance_Calc calculator = new Distance_Calc();
     
-    public HashMap<Integer, String> Settings;
-    HashMap<TiwiPro, Integer> attrs;
+    protected HashMap<Integer, String> Settings;
 
-    private int heading=0;
-    private int speed;
-    private int WMP=17013, MSP = 50;
-    private int trip_start, trip_stop, sats;
-    private int odometer;
-    private int note_count = 4;
-    private int productVersion = 5;
-    private int deviceDriverID;
+    protected int heading=0;
+    protected int speed;
+    protected int WMP=17013, MSP = 50;
+	protected int sats;
+    protected int odometer;
+    protected int note_count = 4;
+    protected int productVersion = 5;
+    protected int deviceDriverID;
 
     private final int[] dbErrors = { 302, 303, 402 };
     
-    private long time, time_last;
+    protected long time;
+    protected long time_last;
     
-    private MCMProxy mcmProxy;
+    protected MCMProxy mcmProxy;
     
 
-	private Object reply;
+    protected Object reply;
 
-    private String imei;
+    protected String imei;
     
     
     public Device( String IMEI, String server, HashMap<Integer, String> settings, Integer version ){
@@ -74,15 +69,8 @@ public class Device {
     	this(IMEI, server, settings, 5);
     }
     
-    public Device( String IMEI, String server ){
-    	this(IMEI, server, TiwiPro_Defaults.get_defaults(), 5);
-    }
-
-    public Device( String IMEI ){
-    	this(IMEI, "QA", TiwiPro_Defaults.get_defaults(), 5);
-    }
     
-    public void ackFwdCmds( List<HashMap<String, Object>> reply){
+    private void ackFwdCmds( List<HashMap<String, Object>> reply){
     	try{ assert(reply.size()<=5);
     	}catch(AssertionError e){
     		e.printStackTrace();
@@ -101,48 +89,17 @@ public class Device {
     			fwdCmd = (Integer) fwd.get("fwdCmd");
     			fwdData = fwd.get("fwdData");
     			
-    			if (productVersion==5){
-    				Package_tiwiPro_Note ackNote = new Package_tiwiPro_Note(TiwiPro.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
-	    			ackNote.AddAttrs(TiwiPro.ATTR_TYPE_FWDCMD_ID, fwdID);
-	    			ackNote.AddAttrs(TiwiPro.ATTR_TYPE_FWDCMD_STATUS, TiwiPro.FWDCMD_RECEIVED);
-	    			byte[] packaged = ackNote.Package();
-	    	        note_queue.add(packaged);
-    			}
-//    			else if (productVersion==2){
-//    				Package_Waysmart_Note ackNote = new Package_Waysmart_Note(Waysmart..getCode());
-//        			byte[] packaged = ackNote.Package();
-//        	        note_queue.add(packaged);
-//    			}
-    			
-    			processCommand(fwdID, fwdCmd, fwdData);	
+    			createAckNote(fwdID, fwdCmd, fwdData);
     		}
     	}
     }
+    
+    protected abstract void createAckNote(Integer fwdID, Integer fwdCmd, Object fwdData);
 
-	public void add_location(){
-        attrs = new HashMap<TiwiPro, Integer>();
-        if (speeding){ 
-            attrs.put( TiwiPro.ATTR_TYPE_VIOLATION_FLAGS, TiwiPro.VIOLATION_MASK_SPEEDING.getCode() );
-        }
-        
-        else if (rpm_violation){ 
-            attrs.put( TiwiPro.ATTR_TYPE_VIOLATION_FLAGS, TiwiPro.VIOLATION_MASK_RPM.getCode() );
-        }
-        
-        else if (seatbelt_violation){ 
-            attrs.put( TiwiPro.ATTR_TYPE_VIOLATION_FLAGS, TiwiPro.VIOLATION_MASK_SEATBELT.getCode() );
-        }
-        
-        construct_note( TiwiPro.NOTE_TYPE_LOCATION, attrs );
-    }
+    public abstract void add_location();
 	
 
-	public void add_note( Package_tiwiPro_Note note ){
-        
-        byte[] packaged = note.Package();
-        note_queue.add(packaged);
-        check_queue();
-    }
+	public abstract void add_note();
     
     
     private void initiate_device(String server ){
@@ -173,53 +130,18 @@ public class Device {
 
 
     
-    public void construct_note(TiwiPro type, HashMap<TiwiPro, Integer> attrs){
-    	try{attrs.put(TiwiPro.ATTR_TYPE_SPEED_LIMIT, speed_limit.intValue());}
-    	catch (Exception e){
-//    		e.printStackTrace();
-    	}
-    	Package_tiwiPro_Note note = new Package_tiwiPro_Note(type, time, sats, heading,
-    			1, latitude, longitude, speed, odometer, attrs);
-    	clear_internal_settings();
-    	add_note(note);
-    }
-    
-    public void construct_note(TiwiPro type){
-    	attrs = new HashMap<TiwiPro,Integer>();
-    	construct_note(type, attrs);
-    }
-    
-    public void change_IMEI( String imei, String server, HashMap<Integer, String> settings, Integer version){
-        set_IMEI( imei, server, settings, version );
-    }
-    
-    public void change_IMEI( String imei, String server, HashMap<Integer, String> settings){
-        set_IMEI( imei, server, settings, 5 );
-    }
-    
-    public void change_IMEI( String imei, String server){
-        set_IMEI( imei, server, TiwiPro_Defaults.get_defaults(), 5 );
-    }
-    
-    public void change_IMEI( String imei, Integer version){
-        set_IMEI( imei, "QA", TiwiPro_Defaults.get_defaults(), version );
-    }
-    
-    public void change_IMEI( String imei){
-        set_IMEI( imei, "QA", TiwiPro_Defaults.get_defaults(), 5 );
-    }
-    
-    private void check_queue(){
-        note_count = get_setting_int( TiwiPro.PROPERTY_SET_MSGS_PER_NOTIFICATION );
+    protected abstract void construct_note();
+    protected abstract Integer get_note_count();
+        
+    protected void check_queue(){
+        note_count = get_note_count();
         if ( note_queue.size() >= note_count ){
         	send_note();
         }
-    
     }
     
 
-
-	private void clear_internal_settings(){
+	protected void clear_internal_settings(){
         
         odometer = 0;
         speed = 0;
@@ -240,7 +162,7 @@ public class Device {
 	}
     
 
-	private void dump_settings() {
+	protected void dump_settings() {
 		if (WMP >= 17013){
 			reply = dbErrors[0];
 			while (check_error(reply)){
@@ -270,7 +192,7 @@ public class Device {
 	}
 	
 
-	private void get_changes() {
+	protected void get_changes() {
 		if (WMP >= 17013){
 			reply = dbErrors[0];
 			while (check_error(reply)){
@@ -289,12 +211,8 @@ public class Device {
 		}
 	}
 	
-	public String get_setting(TiwiPro settingID){
-		return Settings.get( settingID.getCode() );
-	}    
-	private Integer get_setting_int(TiwiPro settingID) {
-		return Integer.parseInt(get_setting(settingID));
-	}
+	public abstract String get_setting();
+	public abstract Integer get_setting_int();
 
 	
     public void get_time(){
@@ -361,18 +279,18 @@ public class Device {
 	}
     
 
-	public void power_off_device(Integer time_now){
+	public void power_off_device(Integer time_delta){
 		if (power_state){
+			increment_time(time_delta);
 			set_power();	
 		}
 		else{
 			System.out.println("The device is already off.");
 		}
-    }public void power_off_device(Long time_now){   
-    	power_off_device((int)(time_now/1000));
     }
 
 	public void power_on_device(Integer time_now){
+		assert(latitude!=0.0&&longitude!=0.0);
         if (!power_state){
 			set_time( time_now );
 		    set_power();
@@ -384,42 +302,20 @@ public class Device {
         }
     }public void power_on_device(Long time_now){
         power_on_device((int)(time_now / 1000));
+    }public void power_on_device(){
+    	power_on_device((int)(System.currentTimeMillis()/1000));
     }
 
 	
-    private Integer processCommand(Integer fwdID, Integer fwdCmd, Object fwdData) {
-    	if (fwdCmd == null)return 1;
-    	HashMap<Integer, String> changes = new HashMap<Integer, String>();
-    	Package_tiwiPro_Note ackNote = new Package_tiwiPro_Note(TiwiPro.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
-    	
-		if (fwdCmd==TiwiPro.FWD_CMD_ASSIGN_DRIVER.getCode()){
-			String[] values = fwdData.toString().split(" ");
-			setDeviceDriverID(Integer.parseInt(values[0]));
-		}
-		else if (fwdCmd==TiwiPro.FWD_CMD_DUMP_CONFIGURATION.getCode()) dump_settings();
-		else if (fwdCmd==TiwiPro.FWD_CMD_UPDATE_CONFIGURATION.getCode()) get_changes();
-		else if (fwdCmd==TiwiPro.FWD_CMD_DOWNLOAD_NEW_WITNESSII_FIRMWARE.getCode()) set_MSP((Integer) fwdData);
-		else if (fwdCmd==TiwiPro.FWD_CMD_DOWNLOAD_NEW_FIRMWARE.getCode()) set_WMP((Integer) fwdData);
-		else if (fwdCmd==TiwiPro.FWD_CMD_SET_SPEED_BUFFER_VALUES.getCode()){
-			changes.put(TiwiPro.PROPERTY_VARIABLE_SPEED_LIMITS.getCode(),(String) fwdData);
-		}
-		
-		ackNote.AddAttrs(TiwiPro.ATTR_TYPE_FWDCMD_ID, fwdID);
-		ackNote.AddAttrs(TiwiPro.ATTR_TYPE_FWDCMD_STATUS, TiwiPro.FWDCMD_FLASH_SUCCESS);
-		byte[] packaged = ackNote.Package();
-        note_queue.add(packaged);
-		
-		set_settings(changes);
-		return 1;
-	}
+    public abstract Integer processCommand(Integer fwdID, Integer fwdCmd, Object fwdData);
     
-	private void send_note() {
-		
-		assert(note_queue.getClass()==new ArrayList<byte[]>().getClass());
-		assert(imei.getClass() == "".getClass());
-		while (note_queue.size() != 0){
+	protected void send_note() {
+		assert(note_queue instanceof ArrayList<?>);
+		assert(imei instanceof String);
+		while (!note_queue.isEmpty()){
+			sendingQueue = new ArrayList<byte[]>();
 			for (int i=0; i < note_count; i++){
-				if (note_queue.size()==0) break;
+				if (note_queue.isEmpty()) break;
 				sendingQueue.add(note_queue.remove(0));
 			}
 			reply = dbErrors[0];
@@ -441,7 +337,7 @@ public class Device {
 		this.deviceDriverID = deviceDriverID;
 	}
     
-    private void set_IMEI( String imei, String server, HashMap<Integer, String> settings, Integer version ){
+    protected void set_IMEI( String imei, String server, HashMap<Integer, String> settings, Integer version ){
         
         this.imei = imei;
         this.Settings = settings;
@@ -450,23 +346,7 @@ public class Device {
     }
 
 
-    public void set_ignition( Integer time_delta){
-    	ignition_state = !ignition_state;
-    	Integer newTime = (int)(time + time_delta);
-    	set_time(newTime);
-    	if (ignition_state){
-    		construct_note(TiwiPro.NOTE_TYPE_IGNITION_ON);
-    		trip_start = newTime;
-    	}
-    	else if(!ignition_state){
-    		trip_stop=newTime;
-    		Integer tripTime = trip_stop - trip_start;
-    		attrs = new HashMap<TiwiPro, Integer>();
-    		attrs.put(TiwiPro.ATTR_TYPE_TRIP_DURATION, tripTime);
-    		attrs.put(TiwiPro.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 980);
-    		construct_note(TiwiPro.NOTE_TYPE_IGNITION_OFF, attrs);
-    	}
-    }
+    public abstract void set_ignition( Integer time_delta);
 	
     
     public void set_location(double lat, double lng, Integer time_delta) {
@@ -481,7 +361,8 @@ public class Device {
 		}catch(Exception e){
 			last_lng = lng;
 		}
-		latitude = lat;longitude = lng;
+		latitude = lat;
+		longitude = lng;
 		
 		heading();
 		Integer new_time = (int)(time + time_delta);
@@ -498,7 +379,6 @@ public class Device {
 	
 
 	public void set_MSP( Integer version ){
-        
         MSP = version;
     }
 
@@ -509,59 +389,19 @@ public class Device {
 	}
 
     
-    private void set_power(){
-        
-        attrs = new HashMap<TiwiPro, Integer>();
-        
-        power_state = !power_state; // Change the power state between on and off
-        if (power_state){
-            attrs.put(TiwiPro.ATTR_TYPE_FIRMWARE_VERSION, WMP);
-            attrs.put(TiwiPro.ATTR_TYPE_DMM_VERSION, MSP);
-            attrs.put(TiwiPro.ATTR_TYPE_GPS_LOCK_TIME, 10);
-            construct_note( TiwiPro.NOTE_TYPE_POWER_ON, attrs );
-            check_queue();
-            
-        } else if (!power_state){
-            attrs.put(TiwiPro.ATTR_TYPE_LOW_POWER_MODE_TIMEOUT, Integer.parseInt(Settings.get(TiwiPro.PROPERTY_LOW_POWER_MODE_SECONDS.getCode())));
-            construct_note( TiwiPro.NOTE_TYPE_LOW_POWER_MODE, attrs );
-            check_queue();
-            if (note_queue.isEmpty()) send_note();
-        }
-        
-    }
+    protected abstract void set_power();
     
 
 	public void set_satelites( Integer satelites ){
-        
         sats = satelites;
     }
 
-    private void set_server(){
-            
-        HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
-        try {
-        	if (productVersion==5){        		
-        		mcmProxy = (MCMProxy)factory.create( MCMProxy.class, 
-			        Settings.get(TiwiPro.PROPERTY_SERVER_URL.getCode()), 
-			        Integer.parseInt(Settings.get(TiwiPro.PROPERTY_SERVER_PORT.getCode())));
-        	}else if (productVersion==2){
-        		mcmProxy = (MCMProxy)factory.create( MCMProxy.class, 
-			        Settings.get(TiwiPro.PROPERTY_SERVER_URL.getCode()), 
-			        Integer.parseInt(Settings.get(TiwiPro.PROPERTY_SERVER_PORT.getCode())));	
-        	}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-    }
+    protected abstract void set_server();
 
-    public void set_speed_limit( Integer limit ){
-    	set_settings(TiwiPro.PROPERTY_SPEED_LIMIT, limit.toString());    	
-    }
+    public abstract void set_speed_limit( Integer limit );
     
   
-    private void set_settings( HashMap<Integer, String> changes){
+    public void set_settings( HashMap<Integer, String> changes){
 
         Iterator<Integer> itr = changes.keySet().iterator();
         while (itr.hasNext()){
@@ -570,13 +410,10 @@ public class Device {
         }
         dump_settings();
     }
-    private void set_settings( Integer key, String value){
+    public void set_settings( Integer key, String value){
     	HashMap<Integer, String> change = new HashMap<Integer, String>();
     	change.put(key, value);
     	set_settings(change);
-    }
-    private void set_settings( TiwiPro key, String value){
-    	set_settings( key.getCode(), value);
     }
     
     public void set_time( Date time_now ){
@@ -584,16 +421,9 @@ public class Device {
         Calendar cal = new GregorianCalendar();
         cal.setTime(time_now);
         
-        time = cal.getTimeInMillis()/1000;
-        time_last = time;
+        set_time( (int)(cal.getTimeInMillis()/1000));
     }
-      
-    
-    public void set_time( Integer time_now ){
-        
-        time = time_now;
-        time_last = time;
-    }
+
     
     public void set_time( String time_now ){
         
@@ -609,21 +439,16 @@ public class Device {
         Calendar cal = new GregorianCalendar();
         cal.setTime(date);
         
-        time = cal.getTimeInMillis()/1000;
+        set_time( (int)(cal.getTimeInMillis()/1000));
+    }
+    
+    public void set_time( Integer time_now ){
+        
+        time = time_now;
         time_last = time;
     }
     
-    public void set_url( String url, String port ){
-        if (productVersion==5){
-        	Settings.put(TiwiPro.PROPERTY_SERVER_PORT.getCode(), port);
-        	Settings.put(TiwiPro.PROPERTY_SERVER_URL.getCode(), url);
-        }
-//        else if (productVersion==2){
-//        	Settings.put(key, url+":"+port);
-//        }
-        set_server();
-    }
-    
+    public abstract void set_url( String url, String port );
     
     public void set_url(String server){
         Addresses port = Addresses.QA_MCM_PORT;
@@ -696,32 +521,9 @@ public class Device {
     
 
 	public void set_WMP( Integer version ){
-        
         WMP = version;
     }
     
-    private void was_speeding() {
-		Integer topSpeed = Collections.max(speed_points);
-		Integer avgSpeed = 0;
-		Double speeding_distance = 0.0;
-		for (int i=0; i<speed_points.size();i++){
-			avgSpeed += speed_points.get(i);
-		}
-		for (int i=1; i<speed_loc.size();i++){
-			Double[] last = speed_loc.get(i-1);
-			Double[] loc = speed_loc.get(i);
-			speeding_distance += Math.abs(calculator.calc_distance(last[0],last[1],loc[0],loc[1]));
-		}
-		Integer distance = (int)(speeding_distance * 100);
-		attrs = new HashMap<TiwiPro, Integer>();
-		attrs.put(TiwiPro.ATTR_TYPE_DISTANCE, distance);
-		attrs.put(TiwiPro.ATTR_TYPE_TOP_SPEED, topSpeed);
-		attrs.put(TiwiPro.ATTR_TYPE_AVG_SPEED, avgSpeed);
-		attrs.put(TiwiPro.ATTR_TYPE_SPEED_ID, 9999);
-		attrs.put(TiwiPro.ATTR_TYPE_VIOLATION_FLAGS, 1);
-		
-		construct_note(TiwiPro.NOTE_TYPE_SPEEDING_EX3, attrs);
-	}
+    protected abstract void was_speeding() ;
 
-	
 }

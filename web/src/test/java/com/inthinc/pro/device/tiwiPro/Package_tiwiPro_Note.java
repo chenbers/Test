@@ -146,7 +146,7 @@ public class Package_tiwiPro_Note {
         byte[] eventBytes = new byte[200];
         
         double latitude = ( 90.0 - lat ) / 180.0;
-        double longitude = (int)( lng / 360.0 );
+        double longitude = ( lng / 360.0 );
         
         int idx   = 0;
         int val1  = (int)( latitude  * 0x00FFFFFF );
