@@ -7,14 +7,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Package_Note {
+public class Package_tiwiPro_Note {
     
     private Integer nType, sats, heading, maprev, Speed, odometer, nTime;
     private Double lat, lng;
     private HashMap<Integer, Integer> attrs;
     
     
-    public Package_Note(Constants type, String time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<Constants, Integer> Attrs){
+    public Package_tiwiPro_Note(TiwiPro type, String time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<TiwiPro, Integer> Attrs){
         nType = type.getCode();
         nTime = (int)DateToLong(time);
         sats = Sats;
@@ -28,7 +28,7 @@ public class Package_Note {
     }
     
     
-    public Package_Note(Constants type, long time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<Constants, Integer> Attrs){
+    public Package_tiwiPro_Note(TiwiPro type, long time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<TiwiPro, Integer> Attrs){
         nType = type.getCode();
         if ( time > (System.currentTimeMillis()/100 )) nTime = (int)( time/1000 );
         else{ nTime = (int)time; }
@@ -42,7 +42,7 @@ public class Package_Note {
         processAttrs(Attrs);
     }
     
-    public Package_Note( Constants type, HashMap<Constants, Integer> Attrs ){
+    public Package_tiwiPro_Note( TiwiPro type, HashMap<TiwiPro, Integer> Attrs ){
         nType = type.getCode();
         nTime = (int)(System.currentTimeMillis()/1000);
         sats = 0;
@@ -55,7 +55,7 @@ public class Package_Note {
         processAttrs(Attrs);
     }
     
-    public Package_Note( Constants type ){
+    public Package_tiwiPro_Note( TiwiPro type ){
         nType = type.getCode();
         nTime = (int)(System.currentTimeMillis()/1000);
         sats = 0;
@@ -68,8 +68,8 @@ public class Package_Note {
         attrs = new HashMap<Integer, Integer>();
     }
     
-    public Package_Note(){
-        nType = Constants.NOTE_TYPE_LOCATION.getCode();
+    public Package_tiwiPro_Note(){
+        nType = TiwiPro.NOTE_TYPE_LOCATION.getCode();
         nTime = (int)(System.currentTimeMillis()/1000);
         sats = 0;
         heading = 0;
@@ -83,16 +83,16 @@ public class Package_Note {
     
     
 
-	public void AddAttrs(HashMap<Constants, Integer> Attrs){
+	public void AddAttrs(HashMap<TiwiPro, Integer> Attrs){
     	processAttrs(Attrs);
     }
-    public void AddAttrs(Constants cmd, Integer reply){
-    	HashMap<Constants, Integer> Attrs = new HashMap<Constants, Integer>();
+    public void AddAttrs(TiwiPro cmd, Integer reply){
+    	HashMap<TiwiPro, Integer> Attrs = new HashMap<TiwiPro, Integer>();
     	Attrs.put(cmd, reply);
     	processAttrs(Attrs);
     }
-    public void AddAttrs(Constants cmd, Constants reply){
-    	HashMap<Constants, Integer> Attrs = new HashMap<Constants, Integer>();
+    public void AddAttrs(TiwiPro cmd, TiwiPro reply){
+    	HashMap<TiwiPro, Integer> Attrs = new HashMap<TiwiPro, Integer>();
     	Attrs.put(cmd, reply.getCode());
     	processAttrs(Attrs);
     }
@@ -124,11 +124,11 @@ public class Package_Note {
     	return note;
     }
     
-    public void processAttrs(HashMap<Constants, Integer> Attrs){
+    public void processAttrs(HashMap<TiwiPro, Integer> Attrs){
     	attrs = new HashMap<Integer, Integer>();
-    	Constants attrID;
-    	Set<Constants> keys = Attrs.keySet();
-    	Iterator<Constants> itr = keys.iterator();
+    	TiwiPro attrID;
+    	Set<TiwiPro> keys = Attrs.keySet();
+    	Iterator<TiwiPro> itr = keys.iterator();
     	while (itr.hasNext()){
     		attrID = itr.next();
     		attrs.put(attrID.getCode(), Attrs.get(attrID));

@@ -1,6 +1,6 @@
 package com.inthinc.pro.device.tiwiPro;
 
-public enum Constants {
+public enum TiwiPro {
     /* Forward Command Results */
 
     FWDCMD_PROCESSED(0),
@@ -788,7 +788,7 @@ public enum Constants {
 
  private int code;
 
- private Constants(int c) {
+ private TiwiPro(int c) {
    code = c;
  }
 
