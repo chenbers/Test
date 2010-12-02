@@ -235,7 +235,7 @@ public class CrashReportBean extends BaseBean {
             result = deviceDAO.findByID(crashReport.getVehicle().getDeviceID());
         }else{
             result = new Device();
-            result.setProductVer(null); //set product ver to null so that device capabilities all come back FALSE
+            result.setProductVersion(null); //set product version to null so that device capabilities all come back FALSE
         }
         return result;
     }
