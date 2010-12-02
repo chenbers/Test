@@ -10,7 +10,7 @@ import org.junit.Test;
 public class EventCategoryTest {
 
     Integer[] expectedCounts = {
-            8,
+            10,
             16,
             0,
             11,
