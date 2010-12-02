@@ -23,7 +23,7 @@ public class EventReportItem implements Comparable<EventReportItem> {
 	private String type;
 	private Boolean excluded;
 	
-	public EventReportItem(Event event, MeasurementType measurementType, String dateFormat, String detailsFormat, String mphString, Locale locale)
+	public EventReportItem(Event event, MeasurementType measurementType, String dateFormat, String detailsFormat, String detailsString, Locale locale)
 	{
 		DateTimeFormatter fmt = DateTimeFormat.forPattern(dateFormat).withLocale(locale);
 		
@@ -35,7 +35,7 @@ public class EventReportItem implements Comparable<EventReportItem> {
 		setDriverName(event.getDriverName());
 		setVehicleName(event.getVehicleName());
 		setCategory(EventCategory.getCategoryForEventType(event.getEventType()).toString());
-		setDetail(event.getDetails(detailsFormat, measurementType, mphString));
+        setDetail(event.getDetails(detailsFormat, measurementType, detailsString));
 		setType(event.getEventType().toString());
 		setExcluded(event.getForgiven() != null && event.getForgiven().intValue() == 1);
 	}

@@ -68,44 +68,6 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 	protected abstract List<EventCategory> getCategories();
 
 	private Map<Integer, EventCategoryFilter> eventCategoryMap;
-/*
-    private List<SelectItem> filterCategories;
-	public List<SelectItem> getFilterCategories() {
-		if (filterCategories == null) {
-			eventCategoryMap = new HashMap<Integer, EventCategoryFilter>();
-			filterCategories = new ArrayList<SelectItem>();
-			for (EventCategory category : getCategories()) {
-				String categoryFormatStr = MessageUtil.getMessageString(
-						"redflags_cat" + category.toString(), getLocale());
-				List<EventCategoryFilter> eventCategoryFilterList = EventMapper
-						.getEventCategoryFilter(category);
-				for (EventCategoryFilter eventCategoryFilter : eventCategoryFilterList) {
-					SelectItem item = null;
-					if (eventCategoryFilter.getKey().equals(EventType.UNKNOWN)) {
-						item = new SelectItem(eventCategoryFilter.getKey()
-								.getCode(), BLANK_SELECTION);
-						item.setEscape(false);
-					} else {
-						String eventTypeStr = MessageFormat.format(
-								categoryFormatStr, new Object[] { MessageUtil
-										.getMessageString(eventCategoryFilter
-												.getKey().toString(),
-												getLocale()) });
-						item = new SelectItem(eventCategoryFilter.getKey()
-								.getCode(), eventTypeStr);
-					}
-					filterCategories.add(item);
-					eventCategoryMap.put(
-							eventCategoryFilter.getKey().getCode(),
-							eventCategoryFilter);
-				}
-			}
-
-			sort(filterCategories);
-		}
-		return filterCategories;
-	}
-*/
 
     private List<SelectItemGroup> filterCategories;
     public List<SelectItemGroup> getFilterCategories() {

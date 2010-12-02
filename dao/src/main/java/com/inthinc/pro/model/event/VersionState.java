@@ -37,5 +37,12 @@ public enum VersionState  implements BaseEnum {
         return lookup.get(code);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
+        sb.append(".");
+        sb.append(this.name());
+        return sb.toString();
+    }
 
 }

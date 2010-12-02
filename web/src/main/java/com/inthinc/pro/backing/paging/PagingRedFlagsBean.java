@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing.paging;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.StatusEvent;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
@@ -135,7 +137,11 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
             	redFlag.getEvent().setDriverName(MessageUtil.getMessageString("unknown_driver"));
             }
 
-            redFlagReportItemList.add(new RedFlagReportItem(redFlag, getMeasurementType(), dateFormatString, detailsFormatStr, mphString, LocaleBean.getCurrentLocale()));
+            String statusString = null;
+            if (Arrays.asList(redFlag.getEvent().getClass().getInterfaces()).contains(StatusEvent.class)) {
+                statusString = MessageUtil.getMessageString(((StatusEvent)redFlag.getEvent()).getStatusMessageKey());
+            }
+            redFlagReportItemList.add(new RedFlagReportItem(redFlag, getMeasurementType(), dateFormatString, detailsFormatStr, (statusString == null) ? mphString : statusString, LocaleBean.getCurrentLocale()));
         }
         return redFlagReportItemList;
     }

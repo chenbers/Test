@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
+import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 
@@ -73,7 +74,7 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
     }
     
     private void setDetail(Event event, MeasurementType measurementType) {
-        if (event.getClass().isInstance(StatusEvent.class)) {
+        if (Arrays.asList(event.getClass().getInterfaces()).contains(StatusEvent.class)) {
             String statusString = MessageUtil.getMessageString(((StatusEvent)event).getStatusMessageKey());
             setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, statusString));
         }

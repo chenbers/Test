@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing.paging;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.joda.time.DateTimeZone;
 import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.StatusEvent;
 import com.inthinc.pro.model.EventReportItem;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -74,8 +76,12 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
             if (event.getDriverName() == null || event.getDriverName().isEmpty()) {
             	event.setDriverName(MessageUtil.getMessageString("unknown_driver"));
             }
-
-            eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, mphString,LocaleBean.getCurrentLocale()));
+            String statusString = null;
+            if (Arrays.asList(event.getClass().getInterfaces()).contains(StatusEvent.class)) {
+                statusString = MessageUtil.getMessageString(((StatusEvent)event).getStatusMessageKey());
+            }
+            eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, (statusString == null) ? mphString : statusString, LocaleBean.getCurrentLocale()));
+            
         }
         
         return eventReportItemList;
