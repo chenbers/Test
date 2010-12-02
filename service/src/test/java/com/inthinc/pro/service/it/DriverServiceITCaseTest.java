@@ -45,33 +45,5 @@ public class DriverServiceITCaseTest extends BaseEmbeddedServerITCase {
 
         assertEquals( Response.Status.NOT_FOUND, trip.getResponseStatus() );
     }
-    
-    @Test
-    public void getLastTripsTest() throws Exception {
-        
-        // Getting driver last trip
-        ClientResponse<List<Trip>> trips = client.getLastTrips(DRIVER_ID, todayAsString());
-
-        assertEquals( Response.Status.OK, trips.getResponseStatus() );
-        assertNotNull(trips.getEntity());
-        assertFalse(trips.getEntity().isEmpty());
-        logger.info("Driver last trips retrieved successfully");
-    }
-    
-    @Test
-    public void getLastTripsTestDefaultedDate() throws Exception {
-        
-        // Getting driver last trip
-        ClientResponse<List<Trip>> trips = client.getLastTrips(DRIVER_ID);
-
-        assertEquals( Response.Status.OK, trips.getResponseStatus() );
-        assertNotNull(trips.getEntity());
-        assertFalse(trips.getEntity().isEmpty());
-        logger.info("Driver last trips retrieved successfully");
-    }
-    
-    private String todayAsString() {   
-        Calendar c1 = Calendar.getInstance(); 
-        return sdf.format(c1.getTime());
-    }
+   
 }
