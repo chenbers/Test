@@ -137,7 +137,8 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 
     protected SelectItemGroup getBlankGroup(){
         SelectItem[] items = new SelectItem[1]; 
-        items[0] = new SelectItem(null, "");
+        items[0] = new SelectItem(EventType.UNKNOWN.getCode(), "");
+        eventCategoryMap.put(EventType.UNKNOWN.getCode(), new EventCategoryFilter(EventType.UNKNOWN, null, null));
         SelectItemGroup itemGroup = new SelectItemGroup("","",false,items);      
         return itemGroup;
     }

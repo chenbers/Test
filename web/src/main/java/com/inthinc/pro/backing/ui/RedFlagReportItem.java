@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.StatusEvent;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
@@ -67,9 +69,19 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
 //        setCategory(redFlag.getEvent().getEventCategory().toString());
         setMphString(MessageUtil.getMessageString(measurementType.toString()+"_mph"));
         setMeasurementType(measurementType);
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + redFlag.getEvent().getEventType().name(),LocaleBean.getCurrentLocale()),measurementType,mphString));
+        setDetail(event, measurementType);
     }
     
+    private void setDetail(Event event, MeasurementType measurementType) {
+        if (event.getClass().isInstance(StatusEvent.class)) {
+            String statusString = MessageUtil.getMessageString(((StatusEvent)event).getStatusMessageKey());
+            setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, statusString));
+        }
+        else {
+            String mphString = MessageUtil.getMessageString(measurementType.toString() + "_mph");
+            setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, mphString));
+        }
+    }
 
     public MeasurementType getMeasurementType() {
 		return measurementType;
@@ -84,7 +96,7 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
 	@Override
 	public String getCategory() {
 
-		return redFlag.getEvent().getEventCategory().toString();
+		return EventCategory.getCategoryForEventType(redFlag.getEvent().getEventType()).toString();
 	}
     public String getEventType(){
     	

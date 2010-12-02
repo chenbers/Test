@@ -38,12 +38,12 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 	static final List<EventCategory> CATEGORIES;
 	static {
 		CATEGORIES = new ArrayList<EventCategory>();
-		CATEGORIES.add(EventCategory.NONE);
+//		CATEGORIES.add(EventCategory.NONE);
 		CATEGORIES.add(EventCategory.VIOLATION);
 		CATEGORIES.add(EventCategory.EMERGENCY);
 		CATEGORIES.add(EventCategory.WARNING);
         CATEGORIES.add(EventCategory.ZONE);
-//??        CATEGORIES.add(EventCategory.HOS);
+        CATEGORIES.add(EventCategory.HOS);
 	}
 
 	@Override

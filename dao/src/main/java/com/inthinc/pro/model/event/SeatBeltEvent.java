@@ -66,9 +66,5 @@ public class SeatBeltEvent extends Event
         return EventType.SEATBELT;
     }
 
-    public EventCategory getEventCategory()
-    {
-        return EventCategory.VIOLATION;
-    }
 
 }

@@ -92,10 +92,6 @@ public class SpeedingEvent extends Event
         this.avgRPM = avgRPM;
     }
 
-    public EventCategory getEventCategory()
-    {
-        return EventCategory.VIOLATION;
-    }
 
     @Override
     public String getDetails(String formatStr,MeasurementType measurementType,String mphString)

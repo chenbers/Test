@@ -24,6 +24,7 @@ public class EventCategoryFilter implements TableFilterFactory{
 		this.typeList = typeList;
 		this.aggTypeList = aggTypeList;
 	}
+/*	
 	public EventCategoryFilter(EventType key, NoteType[] typeArray, Integer[] aggTypeArray) {
 		super();
 		this.key = key;
@@ -35,7 +36,6 @@ public class EventCategoryFilter implements TableFilterFactory{
 			this.aggTypeList = null;
 		else this.aggTypeList = Arrays.asList(aggTypeArray);
 	}
-	
     public EventCategoryFilter(NoteType[] typeArray, Integer[] aggTypeArray) {
         super();
         if (typeArray == null)
@@ -47,6 +47,7 @@ public class EventCategoryFilter implements TableFilterFactory{
         else this.aggTypeList = Arrays.asList(aggTypeArray);
     }
     
+*/  
 	
 	public EventType getKey() {
 		return key;

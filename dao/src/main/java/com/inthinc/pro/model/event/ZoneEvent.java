@@ -51,10 +51,6 @@ public abstract class ZoneEvent extends Event {
 	    this.zoneName = zoneName;
 	}
 
-	public EventCategory getEventCategory() {
-	    return EventCategory.ZONE;
-	}
-
 	@Override
     public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
     {

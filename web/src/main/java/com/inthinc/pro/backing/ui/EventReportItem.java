@@ -8,6 +8,9 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.Alert;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.StatusEvent;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
@@ -40,12 +43,22 @@ public class EventReportItem extends NotificationReportItem<EventReportItem> {
         setDriverName(event.getDriverName() == null ? MessageUtil.getMessageString("unknown_driver") : event.getDriverName());
         setVehicleName(event.getVehicleName() == null ? MessageUtil.getMessageString("unassigned") : event.getVehicleName());
 
-        String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
+        String catFormat = MessageUtil.getMessageString("redflags_cat" + EventCategory.getCategoryForEventType(event.getEventType()).toString());
         setCategory(MessageFormat.format(catFormat, new Object[] { MessageUtil.getMessageString(event.getEventType().toString()) }));
 
-        String mphString = MessageUtil.getMessageString(measurementType.toString() + "_mph");
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, mphString));
+        setDetail(event, measurementType);
         setNoteID(event.getNoteID());
+    }
+
+    private void setDetail(Event event, MeasurementType measurementType) {
+        if (event.getClass().isInstance(StatusEvent.class)) {
+            String statusString = MessageUtil.getMessageString(((StatusEvent)event).getStatusMessageKey());
+            setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, statusString));
+        }
+        else {
+            String mphString = MessageUtil.getMessageString(measurementType.toString() + "_mph");
+            setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, mphString));
+        }
     }
 
     /* END - added for pagination -- may be able to remove others */
@@ -74,12 +87,10 @@ public class EventReportItem extends NotificationReportItem<EventReportItem> {
         setDriverName((event.getDriver() == null || event.getDriver().getPerson() == null) ? MessageUtil.getMessageString("unassigned") : event.getDriver().getPerson().getFullName());
         setVehicleName((event.getVehicle() == null) ? MessageUtil.getMessageString("unassigned") : event.getVehicle().getName());
 
-        String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
+        String catFormat = MessageUtil.getMessageString("redflags_cat" + EventCategory.getCategoryForEventType(event.getEventType()).toString());
         setCategory(MessageFormat.format(catFormat, new Object[] { MessageUtil.getMessageString(event.getEventType().toString()) }));
 
-        String mphString = MessageUtil.getMessageString(measurementType.toString() + "_mph");
-
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()), measurementType, mphString));
+        setDetail(event, measurementType);
 
         setNoteID(event.getNoteID());
     }
@@ -90,12 +101,10 @@ public class EventReportItem extends NotificationReportItem<EventReportItem> {
         dateFormatter.setTimeZone((tz == null) ? TimeZone.getDefault() : tz);
         setDate(dateFormatter.format(event.getTime()));
 
-        String catFormat = MessageUtil.getMessageString("redflags_cat" + event.getEventCategory().toString());
+        String catFormat = MessageUtil.getMessageString("redflags_cat" + EventCategory.getCategoryForEventType(event.getEventType()).toString());
         setCategory(MessageFormat.format(catFormat, new Object[] { MessageUtil.getMessageString(event.getEventType().toString()) }));
 
-        String mphString = MessageUtil.getMessageString(measurementType.toString() + "_mph");
-
-        setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType().name()), measurementType, mphString));
+        setDetail(event, measurementType);
     }
 
     public Event getEvent() {

@@ -9,6 +9,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
 
 
 public class EventReportItem implements Comparable<EventReportItem> {
@@ -33,7 +34,7 @@ public class EventReportItem implements Comparable<EventReportItem> {
 		setGroup(event.getGroupName());
 		setDriverName(event.getDriverName());
 		setVehicleName(event.getVehicleName());
-		setCategory(event.getEventCategory().toString());
+		setCategory(EventCategory.getCategoryForEventType(event.getEventType()).toString());
 		setDetail(event.getDetails(detailsFormat, measurementType, mphString));
 		setType(event.getEventType().toString());
 		setExcluded(event.getForgiven() != null && event.getForgiven().intValue() == 1);

@@ -288,11 +288,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     @XmlElement
     public EventCategory getEventCategory()
     {
-        //TODO having a 1:1 here makes no sense since its really a 1:M
-        EventCategory eventCategory = EventCategory.NONE;
-//        if (type.getEventCategories().size()>0)
-//            eventCategory = (EventCategory)type.getEventCategories().toArray()[0]; 
-        return eventCategory;
+        return EventCategory.getCategoryForEventType(getEventType());
     }
     
     /**

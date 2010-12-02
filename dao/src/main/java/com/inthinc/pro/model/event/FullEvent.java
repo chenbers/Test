@@ -37,10 +37,6 @@ public class FullEvent extends Event
 	{
 		return EventType.CRASH;
 	}
-    public EventCategory getEventCategory()
-    {
-        return EventCategory.EMERGENCY;
-    }
     public String getDetails(String formatStr)
     {
         return formatStr;

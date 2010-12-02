@@ -93,5 +93,21 @@ public enum EventCategory implements BaseEnum
         }
         return noteTypeList;
     }
+    
+    public static EventCategory getCategoryForEventType(EventType eventType) {
+
+        for (EventCategory cat : EnumSet.allOf(EventCategory.class)) {
+            if (cat.getSubCategorySet() == null)
+                continue;
+            for (EventSubCategory subCategory : cat.getSubCategorySet()) {
+                
+                for (EventType subCatEventType : subCategory.getEventTypeSet()) {
+                    if (subCatEventType == eventType)
+                        return cat;
+                }
+            }
+        }
+        return EventCategory.NONE;
+    }
 
 }

@@ -69,10 +69,6 @@ public class IdleEvent extends Event
 	{
 		return EventType.IDLING;
 	}
-    public EventCategory getEventCategory()
-    {
-        return EventCategory.WARNING;
-    }
     
     @Override
     public String getDetails(String formatStr,MeasurementType measurementType,String mphString)

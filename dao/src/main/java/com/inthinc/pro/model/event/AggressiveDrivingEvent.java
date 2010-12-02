@@ -72,10 +72,6 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
     {
         this.severity = severity;
     }
-    public EventCategory getEventCategory()
-    {
-        return EventCategory.VIOLATION;
-    }
     
     @Override
     public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
