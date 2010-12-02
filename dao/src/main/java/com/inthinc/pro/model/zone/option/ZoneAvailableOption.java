@@ -23,8 +23,9 @@ public enum ZoneAvailableOption implements BaseEnum {
     MASTER_BUZZER(9, "MASTER_BUZZER", ZoneOptionType.OFF_ON_DEVICE, OffOnDevice.DEVICE, true),
     HARD_TURN_EVENT(10, "HARD_TURN_EVENT", ZoneOptionType.OFF_ON_DEVICE, OffOnDevice.DEVICE, true),
     HARD_BRAKE_EVENT(11, "HARD_BRAKE_EVENT", ZoneOptionType.OFF_ON_DEVICE, OffOnDevice.DEVICE, true),
-    HARD_VERTICAL_EVENT(12, "HARD_VERTICAL_EVENT", ZoneOptionType.OFF_ON_DEVICE, OffOnDevice.DEVICE, true),
-    LOAD_ZONES_ON_MAP(13, "LOAD_ZONES_ON_MAP", ZoneOptionType.OFF_ON, OffOn.OFF, true);
+    HARD_VERTICAL_EVENT(12, "HARD_VERTICAL_EVENT", ZoneOptionType.OFF_ON_DEVICE, OffOnDevice.DEVICE, true);
+// removing for now, might be put back later    
+//    LOAD_ZONES_ON_MAP(13, "LOAD_ZONES_ON_MAP", ZoneOptionType.OFF_ON, OffOn.OFF, true);
     
     Integer id;
     OptionValue defaultValue;

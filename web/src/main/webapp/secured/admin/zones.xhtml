@@ -22,14 +22,14 @@
   			width: 20%;
   			vertical-align:top;
   		}
-  		.publish_nav {
+  		.download_nav {
               padding:5px;
               height:15px;
               border-right:1px solid #E1E1E1;
               font: 10px Veranda,Arial,Heletica,sans-serif;
         }
   		
-  		.publish_nav a.download {
+  		.download_nav a.download {
 				padding: 6px 10px 7px 20px;
 				background: transparent url(../../images/ico_admin.png) no-repeat center left;
 				text-decoration: underline;
@@ -37,14 +37,6 @@
 				margin: 0 0 0 8px;
 		}
 		
-  		.publish_nav a.publish {
-				padding: 6px 10px 7px 20px;
-				background: transparent url(../../images/ico_zones.png) no-repeat center left;
-				text-decoration: underline;
-				color: #000;
-				margin: 0 0 0 8px;
-				float:right;
-		}
   		
   	</style>
     <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
@@ -86,8 +78,8 @@
             </div>
 
             <div class="panel_w">
-       		  <a4j:outputPanel styleClass="publish_nav" id="publishNav" layout="block">
-              <a4j:form id="publishForm" style="padding:0;">
+       		  <a4j:outputPanel styleClass="download_nav" id="downloadNav" layout="block">
+              <a4j:form id="downloadForm" style="padding:0;">
                 <div style="float:right">
               	<span title="#{messages.zones_download}" style="margin-top: 5px; float: left;">
 					<h:commandLink id="downloadIcon" action="#{zonesBean.download}" styleClass="download"> 
@@ -99,11 +91,6 @@
 						<f:selectItems value="#{zonesBean.vehicleTypeSelectItems}" />
                 </h:selectOneMenu>
                 </div>
-              	<span title="#{messages.zones_publish}">
-					<a4j:commandLink  id="publishLink" reRender="msgPanel, publishNav" action="#{zonesBean.publish}" rendered="#{zonesBean.enablePublish}" styleClass="publish" >
-   						<h:outputText value="#{messages.zones_publish}"/>
-					</a4j:commandLink>    
-				</span>	
               </a4j:form>
               </a4j:outputPanel>
               <div class="panel_content">

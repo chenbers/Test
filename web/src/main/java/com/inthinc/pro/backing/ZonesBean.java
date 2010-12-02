@@ -19,13 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.model.KeepAlive;
 
-import com.inthinc.pro.backing.zone.ZonePublisher;
 import com.inthinc.pro.dao.ZoneAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.ZonePublishDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.zone.ZonePublish;
+import com.inthinc.pro.model.zone.ZonePublisher;
 import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
 import com.inthinc.pro.model.zone.option.ZoneOption;
 import com.inthinc.pro.model.zone.option.type.OffOn;
@@ -47,7 +47,6 @@ public class ZonesBean extends BaseBean
     private ZoneAlertDAO         zoneAlertDAO;
     private ZonePublishDAO       zonePublishDAO;
     private String               helpFile = "Zones.htm";
-    private Boolean             enablePublish;
     private ZoneVehicleType      downloadType;
     private String              message;
 
@@ -211,9 +210,9 @@ public class ZonesBean extends BaseBean
 
         editing = false;
         helpFile = "Zones.htm";
-
+        
+        item.setModified(new Date());
         reloadZones();
-        setEnablePublish(true);
 
         return "adminZones";
 }
@@ -446,7 +445,7 @@ public class ZonesBean extends BaseBean
         
     }
 
-
+/*
     public Boolean getEnablePublish() {
         if (enablePublish == null)
             initEnablePublish();
@@ -488,8 +487,44 @@ public class ZonesBean extends BaseBean
         setMessage("zones_publishMsg");
         
     }
+*/
+
+    
+    private boolean zonesNeedPublish() {
+        Account account = getAccountDAO().findByID(getAccountID());
+        Date lastPublishDate = (account.getZonePublishDate() == null) ? new Date(0) : account.getZonePublishDate();
+
+        for (Zone zone : getZones()) {
+            if ((zone.getCreated() != null && zone.getCreated().after(lastPublishDate)) || 
+                (zone.getModified() != null && zone.getModified().after(lastPublishDate)))
+                return true;
+        }
+        return false;
+    }
+
+    private void publishToDatabase() throws IOException {
+        setMessage(null);        
+        ZonePublisher zonePublisher = new ZonePublisher();
+
+        for (ZoneVehicleType zoneVehicleType : ZoneVehicleType.values()) {
+            
+            ZonePublish zonePublish = new ZonePublish();
+            zonePublish.setAcctID(getAccountID());
+            zonePublish.setZoneVehicleType(zoneVehicleType);
+            zonePublish.setPublishZoneData(zonePublisher.publish(getZones(),  zoneVehicleType));
+            zonePublishDAO.publishZone(zonePublish);
+        }
+        
+        
+        setMessage("zones_publishMsg");
+        
+    }
 
     public void download() throws IOException {
+        // make sure all zone edits are in the database published zone blob before download
+        if (zonesNeedPublish())
+            publishToDatabase();
+        
         setMessage(null);        
         ZonePublish zonePublish = zonePublishDAO.getPublishedZone(getAccountID(), getDownloadType());
         if (zonePublish == null || zonePublish.getPublishZoneData() == null) {

@@ -377,26 +377,6 @@
 			<version>1.3</version>
 			<scope>compile</scope>
 		</dependency>
-		 <dependency>
-		   <groupId>org.geotools</groupId>
-   			<artifactId>gt-main</artifactId>
-   			<version>${geotools.version}</version>
- 			</dependency>
-		 <dependency>
-		   <groupId>org.geotools</groupId>
-   			<artifactId>gt-shapefile</artifactId>
-   			<version>${geotools.version}</version>
- 			</dependency>
-		 <dependency>
-		   <groupId>org.geotools</groupId>
-   			<artifactId>gt-api</artifactId>
-   			<version>${geotools.version}</version>
- 			</dependency>
-		 <dependency>
-		   <groupId>org.geotools</groupId>
-   			<artifactId>gt-metadata</artifactId>
-   			<version>${geotools.version}</version>
- 			</dependency>
 		 <!-- <dependency>
 		   <groupId>com.inthinc</groupId>
    			<artifactId>iwi_viewer</artifactId>

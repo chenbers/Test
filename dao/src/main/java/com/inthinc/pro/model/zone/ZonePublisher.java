@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing.zone;
+package com.inthinc.pro.model.zone;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

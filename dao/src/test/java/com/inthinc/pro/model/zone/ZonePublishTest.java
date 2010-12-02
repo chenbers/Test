@@ -1,4 +1,4 @@
-package com.inthinc.pro.backing.zone;
+package com.inthinc.pro.model.zone;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -74,6 +74,19 @@
 	<bean name="phoneAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
 		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.PhoneAlertJob"/>
 	</bean>
+
+
+	<bean name="zonePublishJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
+		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.ZonePublishJob"/>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="accountDAO" value-ref="accountDAO"/>
+				<entry key="zoneDAO" value-ref="zoneDAO"/>
+				<entry key="zonePublishDAO" value-ref="zonePublishDAO"/>
+			</map>
+		</property>
+	</bean>
+
 	
 	<bean id="emailReportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 	  <property name="jobDetail" ref="emailReportJob"/>
@@ -98,6 +111,11 @@
 	  <property name="cronExpression" value="${cron.phoneAlert}"/>
 	</bean>
 
+	<bean id="zonePublishCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	  <property name="jobDetail" ref="zonePublishJob"/>
+	  <property name="cronExpression" value="${cron.zonePublish}"/>
+	</bean>
+
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false">
 	  <property name="triggers">
     	<list>
@@ -105,6 +123,7 @@
 	      <ref bean="smsMessageCronTrigger"/>
 	      <ref bean="phoneMessageCronTrigger"/>
 	      <ref bean="emailReportCronTrigger"/>
+	      <ref bean="zonePublishCronTrigger"/>
 	    </list>
 	  </property>
 	</bean>

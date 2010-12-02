@@ -26,7 +26,8 @@ public class ZoneOptionsMapper extends AbstractMapper {
             List<Map<String, Integer>> simpleOptions = (List<Map<String, Integer>>)value;
             for (Map<String, Integer> option : simpleOptions) {
                 ZoneAvailableOption zoneAvailableOption = ZoneAvailableOption.valueOf(option.get("option"));
-                options.add(new ZoneOption(zoneAvailableOption, ZoneAvailableOption.convertOptionValue(zoneAvailableOption.getOptionType(), option.get("value"))));
+                if (zoneAvailableOption != null)
+                    options.add(new ZoneOption(zoneAvailableOption, ZoneAvailableOption.convertOptionValue(zoneAvailableOption.getOptionType(), option.get("value"))));
             }
             
             zone.setOptions(options);
