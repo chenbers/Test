@@ -12,14 +12,11 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponse;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Status;
-import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 
 
@@ -119,15 +116,4 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
         assertNotNull(devices.getEntity());
         logger.info("Devices retrieved successfully");
     }
-    
-    @BeforeClass
-    public static void setup() {
-        TiwiproPrincipal.adminUserBackDoor = true ;
-    }
-    
-    @AfterClass
-    public static void tearDown(){
-        TiwiproPrincipal.adminUserBackDoor = false ;
-    }
-    
 }

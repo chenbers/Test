@@ -11,11 +11,6 @@ import com.inthinc.pro.security.userdetails.ProUser;
 public class TiwiproPrincipal {
 
     /**
-     * TODO This is a temporary back door for the security mechanism until the isInthincUser() check is implemented.
-     */
-    public static boolean adminUserBackDoor;
-
-    /**
      * The ProUser getter.
      * 
      * @return the ProUser
@@ -68,6 +63,6 @@ public class TiwiproPrincipal {
     public boolean isInthincUser() {
         // TODO: Remove backdoor once implemented,
         // need to determine how to allow for an inthinc role at a later time
-        return adminUserBackDoor;// getUser().getUsername().equalsIgnoreCase("admin");
+        return true;// getUser().getUsername().equalsIgnoreCase("admin");
     }
 }

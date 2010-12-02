@@ -16,13 +16,10 @@ import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.joda.time.DateTime;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
@@ -38,24 +35,12 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
-import com.inthinc.pro.model.security.Roles;
-import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 public class AccountCreationITCase extends BaseITCase {
     private static Logger logger = Logger.getLogger(AccountCreationITCase.class);
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
     private static int randomInt = RandomUtils.nextInt(99999);
     
-    @BeforeClass
-    public static void setup() {
-        TiwiproPrincipal.adminUserBackDoor = true ;
-    }
-    
-    @AfterClass
-    public static void tearDown(){
-        TiwiproPrincipal.adminUserBackDoor = false ;
-    }
-
     @Test
     public void accountDummyTest() throws Exception {
         

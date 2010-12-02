@@ -5,7 +5,6 @@ import java.util.Date;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 
 import com.inthinc.pro.service.annotations.DateFormat;
@@ -16,12 +15,25 @@ import com.inthinc.pro.service.annotations.DateFormat;
 @Path("/group/{groupID}")
 public interface AssetService {
 
+    /**
+     * TODO Complete javadoc.
+     * 
+     * @param groupID
+     * @return
+     */
     @GET
     @Path("/redflags")
-    public Response getRedFlagCount(@PathParam("groupID") Integer groupID);
+    public Response getRedFlags(@PathParam("groupID") Integer groupID);
 
+    /**
+     * TODO Complete javadoc.
+     * 
+     * @param groupID
+     * @param startDate
+     * @param endDate
+     * @return
+     */
     @GET
-    @Path("/redflags/{startDate}/{endDate}/{optionalParams}")
-    public Response getRedFlagCount(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate, @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate,
-            @PathParam("optionalParams") PathSegment optionalParams);
+    @Path("/redflags/{startDate}/{endDate}")
+    public Response getRedFlags(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate, @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate);
 }
