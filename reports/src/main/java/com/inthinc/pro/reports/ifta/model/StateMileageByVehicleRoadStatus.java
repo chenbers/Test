@@ -1,8 +1,11 @@
 package com.inthinc.pro.reports.ifta.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Bean for MileageByVehicle report.
  */
+@XmlRootElement
 public class StateMileageByVehicleRoadStatus {
 
     private String vehicle;
