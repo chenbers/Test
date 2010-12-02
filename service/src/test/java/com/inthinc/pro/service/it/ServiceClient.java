@@ -15,6 +15,7 @@ import org.jboss.resteasy.client.ClientResponse;
 
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.LastLocation;
 
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.phone.CellStatusType;
@@ -72,4 +73,8 @@ public interface ServiceClient {
     @GET
     @Path("/driver/{driverID}/trips")
     public ClientResponse<List<Trip>> getLastTrips(@PathParam("driverID") Integer driverID );
+    
+    @GET
+    @Path(" /driver/{driverID}/location")
+    public ClientResponse<LastLocation> getLastLocation(@PathParam("driverID") Integer driverID);
 }

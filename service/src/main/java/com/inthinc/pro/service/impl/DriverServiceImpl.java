@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.aggregation.Score;
@@ -115,6 +116,9 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
                     return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
                 }
             }
+            else {
+                return Response.status(Status.BAD_REQUEST).build();
+            }
         }
         return Response.status(Status.NOT_FOUND).build();
 
@@ -146,6 +150,20 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
 
     public static String getSimpleDateFormat() {
         return SIMPLE_DATE_FORMAT;
+    }
+
+    @Override
+    public Response getLastLocation(Integer driverID) {
+        if (driverID != null) {
+            LastLocation location = this.getDao().getLastLocation(driverID);
+            if( location != null)
+                return Response.ok(new GenericEntity<LastLocation>(location) {}).build();
+            else
+                return Response.status(Status.NOT_FOUND).build();
+        }
+        else {
+            return Response.status(Status.NOT_FOUND).build();
+        }
     }
 
 

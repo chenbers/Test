@@ -15,6 +15,7 @@ import mockit.Expectations;
 
 import org.junit.Test;
 
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.util.SecureDriverDAO;
@@ -199,7 +200,7 @@ public class DriverServiceImplTest extends BaseUnitTest {
         Response response = serviceSUT.getLastTrips(expectedDriver, TOO_EARLY_STRING_START_DATE);
         
         assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(),response.getStatus() );
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),response.getStatus() );
     }
     
     @Test
@@ -209,7 +210,7 @@ public class DriverServiceImplTest extends BaseUnitTest {
         Response response = serviceSUT.getLastTrips(expectedDriver, tooEarlyDateAsString());
         
         assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(),response.getStatus() );
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),response.getStatus() );
     }
     
     private String todayAsString() {   
@@ -227,5 +228,46 @@ public class DriverServiceImplTest extends BaseUnitTest {
         Calendar c1 = Calendar.getInstance(); 
         c1.add(Calendar.DATE, DriverServiceImpl.DEFAULT_PAST_TIMING );   
         return sdf.format(c1.getTime());
+    }
+    
+    @Test
+    public void getLastLocationWithDriverTripDataTest(final DriverDAOAdapter driverDaoMock) {
+        serviceSUT.setDao(driverDaoMock);
+        
+        new Expectations() {
+            {
+                driverDaoMock.getLastLocation(expectedDriver);
+                result = new LastLocation();
+            }
+        };
+        
+        Response response = serviceSUT.getLastLocation(expectedDriver);
+        
+        assertNotNull(response);
+        assertEquals(Response.Status.OK.getStatusCode(),response.getStatus() );
+    }
+    
+    @Test
+    public void getLastLocationWithoutDriverLocationDataTest(final DriverDAOAdapter driverDaoMock) {
+        serviceSUT.setDao(driverDaoMock);
+        
+        new Expectations() {
+            {
+                driverDaoMock.getLastLocation(expectedDriver);
+                result = null;
+            }
+        };
+        
+        Response response = serviceSUT.getLastLocation(expectedDriver);
+        
+        assertNotNull(response);
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(),response.getStatus() );
+    }
+    
+    @Test
+    public void getLastLocationWithNullDriverID() {        
+        Response response = serviceSUT.getLastLocation(null);       
+        assertNotNull(response);
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(),response.getStatus() );
     }
 }

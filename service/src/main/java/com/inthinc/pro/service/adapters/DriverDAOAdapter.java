@@ -13,6 +13,7 @@ import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
+import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
@@ -77,6 +78,10 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
     
     public Trip getLastTrip(Integer driverID) {
             return driverDAO.getLastTrip(driverID);
+    }
+    
+    public LastLocation getLastLocation(Integer driverID) {
+        return driverDAO.getLastLocation(driverID);
     }
     
     public List<Trip> getLastTrips(Integer driverID, Date startDate) {          

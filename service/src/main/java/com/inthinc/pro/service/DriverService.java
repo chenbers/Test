@@ -83,5 +83,11 @@ public interface DriverService {
     @GET
     @Path("/driver/{driverID}/trips")
     public Response getLastTrips(@PathParam("driverID") Integer driverID);
+    
+    @GET
+    @Path(" /driver/{driverID}/location")
+    public Response getLastLocation(@PathParam("driverID") Integer driverID);
+    
+   
 
 }
