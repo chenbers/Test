@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response;
 /**
  * Interface for IFTA/DOT Reports Services.
  */
-@Produces("{application/xml}")
+@Produces("application/xml")
 @Path("/group/{groupID}/report/IFTA")
 public interface IFTAService {
     
@@ -29,7 +29,7 @@ public interface IFTAService {
      */
     @GET
     @Path("/roadStatus/{startDate}/{endDate}/{dotOnly}")
-    @Produces("{application/xml")
+    @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatus(@PathParam("groupID") Integer groupID,
                                   @PathParam("startDate") String startDate,
                                   @PathParam("endDate") String endDate,
@@ -48,10 +48,7 @@ public interface IFTAService {
      */
     @GET
     @Path("/roadStatus/{dotOnly}")
-    @Produces("{application/xml")
+    @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatusDefaultRange(@PathParam("groupID") Integer groupID,
                                                             @PathParam("dotOnly")  @DefaultValue("false") boolean dotOnly );
-    
-    
-
 }

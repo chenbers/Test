@@ -26,7 +26,10 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
 @Component
 public class IFTAServiceImpl implements IFTAService {
     
-    private final static Integer DAYS_BACK = 7;
+    /**
+     * @deprecated Use {@link ReportsFacade#DAYS_BACK} instead
+     */
+    private final static Integer DAYS_BACK = ReportsFacade.DAYS_BACK;
 
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     
@@ -99,7 +102,7 @@ public class IFTAServiceImpl implements IFTAService {
 
     @Override
     public Response getStateMileageByVehicleRoadStatusDefaultRange(Integer groupID, boolean dotOnly) {
-        return getStateMileageByVehicleRoadStatus(groupID, daysAgoAsString(DAYS_BACK) , todayAsString(), dotOnly);
+        return getStateMileageByVehicleRoadStatus(groupID, daysAgoAsString(ReportsFacade.DAYS_BACK) , todayAsString(), dotOnly);
     }
 
     private String todayAsString() {

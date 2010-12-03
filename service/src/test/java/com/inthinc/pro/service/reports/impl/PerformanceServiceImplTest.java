@@ -1,7 +1,7 @@
 package com.inthinc.pro.service.reports.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
@@ -29,11 +29,14 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
     
     @Mocked private ReportsFacade facadeMock;
     
-    @SuppressWarnings("unchecked")
-    @Test
+    /**
+     * Test the getTenHourViolations without an Interval.
+     */
+    @SuppressWarnings("unchecked") @Test
     public void testGetTenHourViolations() {
         
         final TenHoursViolation violation = new TenHoursViolation();
+        // set the mock facade
         serviceSUT.setReportsFacade(facadeMock);
         
         new Expectations () {
@@ -44,22 +47,60 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
             }
         };
         
+        // check the response
         Response response = serviceSUT.getTenHourViolations(GROUP_ID);
         Assert.assertNotNull(response);
         Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
                 
+        // check the content
         GenericEntity<List<TenHoursViolation>> entity = 
             (GenericEntity<List<TenHoursViolation>>) response.getEntity();
         
         Assert.assertNotNull(entity);
         Assert.assertEquals(1, entity.getEntity().size());
         Assert.assertEquals(violation, entity.getEntity().get(0));
-
     }
     
-    @Test
+    /**
+     * Test getTenHourViolations with the interval.
+     */
+    @SuppressWarnings("unchecked")
+    @Test(expected=IllegalArgumentException.class)
     public void testGetTenHourViolationsWithInterval() {
-        Date today = new Date();
-        serviceSUT.getTenHourViolations(GROUP_ID, today, today);
+        // create interval dates
+        Calendar endDate = Calendar.getInstance();
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.DAY_OF_MONTH, -ReportsFacade.DAYS_BACK);
+        
+        final TenHoursViolation violation = new TenHoursViolation();
+        
+        // set the mock facade
+        serviceSUT.setReportsFacade(facadeMock);
+        
+        new Expectations () {
+            {
+                List<TenHoursViolation> list = new ArrayList<TenHoursViolation>();
+                list.add(violation);
+                facadeMock.getTenHourViolations(GROUP_ID, (Interval)any); returns(list);
+            }
+        };
+        
+        // check the response
+        Response response = serviceSUT.getTenHourViolations(GROUP_ID, startDate.getTime(), endDate.getTime());
+        
+        Assert.assertNotNull(response);
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        
+        // check the content
+        GenericEntity<List<TenHoursViolation>> entity = 
+            (GenericEntity<List<TenHoursViolation>>) response.getEntity();
+        
+        Assert.assertNotNull(entity);
+        Assert.assertEquals(1, entity.getEntity().size());
+        Assert.assertEquals(violation, entity.getEntity().get(0));
+        
+        // check for wrong interval
+        response = serviceSUT.getTenHourViolations(GROUP_ID, endDate.getTime(), startDate.getTime());
+        Assert.fail("IllegalArgumentException expected to throw");
     }
 }

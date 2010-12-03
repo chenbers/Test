@@ -26,6 +26,8 @@ public class ReportsFacade {
 
     @Autowired private ReportCriteriaService reportService;    
     @Autowired private GroupDAOAdapter groupAdapter;
+
+    public final static Integer DAYS_BACK = 6;
     
     @SuppressWarnings("unchecked")
     public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval) {
@@ -43,8 +45,8 @@ public class ReportsFacade {
     }
 
     private MeasurementType getMeasurementType() {
-        // TODO Auto-generated method stub
-        return null;
+        // TODO to be implemented
+        return MeasurementType.ENGLISH;
     }
 
     /**

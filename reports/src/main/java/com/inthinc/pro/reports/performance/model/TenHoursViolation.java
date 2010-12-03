@@ -2,6 +2,9 @@ package com.inthinc.pro.reports.performance.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class TenHoursViolation {
     private String groupName;
     private Date date;

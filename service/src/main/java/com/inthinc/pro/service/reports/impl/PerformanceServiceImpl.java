@@ -33,7 +33,7 @@ public class PerformanceServiceImpl implements PerformanceService {
     public Response getTenHourViolations(Integer groupID) {
         Calendar endDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.DAY_OF_MONTH, -7);
+        startDate.add(Calendar.DAY_OF_MONTH, -ReportsFacade.DAYS_BACK);
         
         return this.getTenHourViolations(groupID, startDate.getTime(), endDate.getTime());
     }
