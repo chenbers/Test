@@ -1,13 +1,10 @@
 package com.inthinc.pro.convert;
 
-import java.util.Arrays;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
 
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.MultipleEventTypes;
 import com.inthinc.pro.model.event.StatusEvent;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -29,7 +26,7 @@ public class EventDetailsConverter extends BaseConverter
 		  if (formatString == null || event == null)
 			  return "";
 
-          if (Arrays.asList(event.getClass().getInterfaces()).contains(StatusEvent.class)) {
+		  if (event instanceof StatusEvent) {
 	            String statusString = MessageUtil.getMessageString(((StatusEvent)event).getStatusMessageKey());
 	            return event.getDetails(formatString, null, statusString);
 	      }

@@ -22,6 +22,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.ReportParamType;
+import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
@@ -207,7 +208,10 @@ public abstract class ReportsBean extends BaseBean {
                 
             case STATE_MILEAGE_BY_MONTH:
                 reportCriteriaList.add(getReportCriteriaService().getStateMileageByMonthReportCriteria(
-                        getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), params.getLocale(), 
+                        getAccountGroupHierarchy(), params.getGroupIDList(), 
+                        //params.getDateRange().getInterval(),
+                        TimeFrame.THREE_MONTHS.getInterval(),
+                        params.getLocale(), 
                         getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;
             

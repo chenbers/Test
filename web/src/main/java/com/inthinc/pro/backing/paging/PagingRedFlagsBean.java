@@ -138,7 +138,7 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
             }
 
             String statusString = null;
-            if (Arrays.asList(redFlag.getEvent().getClass().getInterfaces()).contains(StatusEvent.class)) {
+            if (redFlag.getEvent() instanceof StatusEvent) {
                 statusString = MessageUtil.getMessageString(((StatusEvent)redFlag.getEvent()).getStatusMessageKey());
             }
             redFlagReportItemList.add(new RedFlagReportItem(redFlag, getMeasurementType(), dateFormatString, detailsFormatStr, (statusString == null) ? mphString : statusString, LocaleBean.getCurrentLocale()));

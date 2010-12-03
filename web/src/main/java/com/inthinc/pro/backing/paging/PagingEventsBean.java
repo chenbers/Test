@@ -77,7 +77,7 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
             	event.setDriverName(MessageUtil.getMessageString("unknown_driver"));
             }
             String statusString = null;
-            if (Arrays.asList(event.getClass().getInterfaces()).contains(StatusEvent.class)) {
+            if (event instanceof StatusEvent) {
                 statusString = MessageUtil.getMessageString(((StatusEvent)event).getStatusMessageKey());
             }
             eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, (statusString == null) ? mphString : statusString, LocaleBean.getCurrentLocale()));

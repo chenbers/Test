@@ -15,6 +15,7 @@ import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.MeasurementType;
@@ -91,8 +92,7 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         setDateFormatter();
 
         List<Event> tempEvents = new ArrayList<Event>();
-        List<NoteType> types = new ArrayList<NoteType>();
-        types.add(NoteType.NOTEEVENT);
+        List<NoteType> types = EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory();
 
         tempEvents = eventDAO.getEventsForVehicle(getVehicle().getVehicleID(), durationBean.getStartDate(), durationBean.getEndDate(), types,getShowExcludedEvents());
         events = new ArrayList<EventReportItem>();

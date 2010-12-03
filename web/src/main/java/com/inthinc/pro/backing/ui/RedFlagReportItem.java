@@ -74,7 +74,7 @@ public class RedFlagReportItem extends NotificationReportItem<RedFlagReportItem>
     }
     
     private void setDetail(Event event, MeasurementType measurementType) {
-        if (Arrays.asList(event.getClass().getInterfaces()).contains(StatusEvent.class)) {
+        if (event instanceof StatusEvent) {
             String statusString = MessageUtil.getMessageString(((StatusEvent)event).getStatusMessageKey());
             setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, statusString));
         }

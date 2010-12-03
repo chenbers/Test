@@ -13,6 +13,9 @@ public class HardVertical820Event extends Event
      */
     private static final long serialVersionUID = 1L;
     
+    // TODO: should backend be setting this?
+    private Integer severity; 
+
     public HardVertical820Event()
     {
         super();
@@ -29,6 +32,18 @@ public class HardVertical820Event extends Event
     {
         return EventType.HARD_VERT;
         
+    }
+
+    public Integer getSeverity()
+    {
+        if (severity == null)
+            return 1;
+        return severity;
+    }
+
+    public void setSeverity(Integer severity)
+    {
+        this.severity = severity;
     }
 
     @Override
