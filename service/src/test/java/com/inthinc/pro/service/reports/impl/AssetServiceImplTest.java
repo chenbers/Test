@@ -2,12 +2,15 @@ package com.inthinc.pro.service.reports.impl;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import mockit.Expectations;
 
+import org.jboss.resteasy.spi.BadRequestException;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -199,6 +202,74 @@ public class AssetServiceImplTest {
 
         AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
         assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_START_ROW, PAGE_END_ROW, startDate, endDate);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testFailsIfStartDateGreaterThanNow(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+
+        // Expected end date is today's
+        final DateMidnight dateMidnight = new DateMidnight();
+
+        // Some pseudo random time for today's date.
+        DateTime todayDateTime = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 12, 35, 47, 647);
+        final Date today = todayDateTime.toDate();
+
+        // Start date will be one day after current date
+        final Date startDate = new DateTime(todayDateTime.getYear(), todayDateTime.getMonthOfYear(), todayDateTime.getDayOfMonth(), 0, 0, 0, 0).plusDays(1).toDate();
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                systemClock.getNow();
+                result = today;
+
+                redflagDaoMock.getRedFlagCount((Integer) any, (Date) any, (Date) any, (Integer) any, (List) any);
+                times = 0;
+            }
+        };
+
+        AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
+        try {
+            assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate);
+            fail("Should have thrown " + BadRequestException.class);
+        } catch (BadRequestException e) {
+            // Ok expected
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testFailsIfStartDateBeforeLastYear(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+
+        // Expected end date is today's
+        final DateMidnight dateMidnight = new DateMidnight();
+
+        // Some pseudo random time for today's date.
+        DateTime todayDateTime = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 12, 35, 47, 647);
+        final Date today = todayDateTime.toDate();
+
+        // Start date will be one year and one day before now
+        final Date startDate = new DateTime(todayDateTime.getYear(), todayDateTime.getMonthOfYear(), todayDateTime.getDayOfMonth(), 0, 0, 0, 0).minusYears(1).minusMillis(1).toDate();
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                systemClock.getNow();
+                result = today;
+
+                redflagDaoMock.getRedFlagCount((Integer) any, (Date) any, (Date) any, (Integer) any, (List) any);
+                times = 0;
+            }
+        };
+
+        AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
+        try {
+            assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate);
+            fail("Should have thrown " + BadRequestException.class);
+        } catch (BadRequestException e) {
+            // Ok expected
+        }
     }
 
     private PageParams createPageParams() {

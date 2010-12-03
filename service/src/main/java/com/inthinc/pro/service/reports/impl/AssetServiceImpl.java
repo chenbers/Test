@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 
+import org.jboss.resteasy.spi.BadRequestException;
+import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,6 +58,16 @@ public class AssetServiceImpl implements AssetService {
     public Response getRedFlagCount(Integer groupID, Date startDate) {
         Date today = systemClock.getNow();
         Date todayEnd = getEndOfDay(today);
+
+        if (startDate.after(todayEnd)) {
+            throw new BadRequestException("Start date can't be greater than current date.");
+        }
+
+        Date oneYearThreshold = getOneYearThresholdDate(today);
+
+        if (startDate.before(oneYearThreshold)) {
+            throw new BadRequestException("Start date can't be before last year.");
+        }
 
         return getRedFlagCount(groupID, startDate, todayEnd);
     }
@@ -117,8 +129,7 @@ public class AssetServiceImpl implements AssetService {
         todayEnd.setMinuteOfHour(59);
         todayEnd.setSecondOfMinute(59);
         todayEnd.setMillisOfSecond(999);
-        Date todayEnd2 = todayEnd.toDate();
-        return todayEnd2;
+        return todayEnd.toDate();
     }
 
     private Date getBeginningOfDay(Date day) {
@@ -127,8 +138,16 @@ public class AssetServiceImpl implements AssetService {
         todayBegin.setMinuteOfHour(0);
         todayBegin.setSecondOfMinute(0);
         todayBegin.setMillisOfSecond(0);
-        Date todayBegin2 = todayBegin.toDate();
-        return todayBegin2;
+        return todayBegin.toDate();
+    }
+    
+    private Date getOneYearThresholdDate(Date day) {
+        MutableDateTime beginningOfThisYear = new MutableDateTime(day);
+        beginningOfThisYear.setHourOfDay(0);
+        beginningOfThisYear.setMinuteOfHour(0);
+        beginningOfThisYear.setSecondOfMinute(0);
+        beginningOfThisYear.setMillisOfSecond(0);
+        return new DateTime(beginningOfThisYear).minusYears(1).toDate();
     }
 
     private PageParams createPageParams(Integer firstRecord, Integer lastRecord) {
