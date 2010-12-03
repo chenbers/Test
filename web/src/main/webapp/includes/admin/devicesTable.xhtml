@@ -31,7 +31,7 @@
       <f:facet name="header">
         <h:panelGroup>
 		<h:outputText value="#{messages.devicesHeader_productVer}" />
-       	<!-- <rich:spacer style="display:block" height="2"/>
+       	<rich:spacer style="display:block" height="2"/>
        	<h:selectOneMenu value="#{devicesBean.batchProductChoice}"  id="editDevice-productChoice" style="width:120px;size:auto;margin-top:3px;">
            	<f:selectItems value="#{devicesBean.productTypesSelectItems}" />
            	<a4j:support event="onchange" 
@@ -39,8 +39,8 @@
        	</h:selectOneMenu>
 		<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 		 	<ui:param name="selectBoxID" value="admin-table-form:devicesTable:editDevice-productChoice" />
-		</ui:include> -->
-    	</h:panelGroup>
+		</ui:include>
+                </h:panelGroup>
       </f:facet>
       <h:outputText value="#{item.productVersion.name}" />
     </rich:column>
