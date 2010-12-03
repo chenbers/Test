@@ -86,7 +86,7 @@ public class Masthead extends Selenium_Server{
 	private final String privacy_link = "link="+privacy_title;
 	private final String privacy_xpath = footer_form+"/ul/li["+privacy_loc+"]/a";
 	private final String privacy_xpath_direct = "//a[@title='"+privacy_title+"']";
-	private final String privacy_policy = StringEscapeUtils.unescapeHtml("We at inthinc take your privacy very seriously. This Privacy Policy describes how we handle personally identifiable information (&ldquo;Personal Information&rdquo;) and other information that we collect or receive through the operation of inthinc products and services, any websites, portals, telecommunications, technical or customer service support or information and as part of any of our other business activities.  &rdquo;Personal Information&ldquo; in this context is information that is identifiable to a particular person, including when the information is combined with other information about that individual.  We endeavor to carefully guard and protect the privacy of any Personal Information that we collect or otherwise receive.");
+	private final String privacy_policy = StringEscapeUtils.unescapeHtml("We at inthinc take your privacy very seriously. This Privacy Policy describes how we handle personally identifiable information (&8220;Personal Information&8221;) and other information that we collect or receive through the operation of inthinc products and services, any websites, portals, telecommunications, technical or customer service support or information and as part of any of our other business activities.  &8220;Personal Information&8221; in this context is information that is identifiable to a particular person, including when the information is combined with other information about that individual.  We endeavor to carefully guard and protect the privacy of any Personal Information that we collect or otherwise receive.");
 	
 	private final String support_id = "footerForm:customerSupport";
 	private final String support_title = "Support";
@@ -235,19 +235,21 @@ public class Masthead extends Selenium_Server{
 		try{
 			Masthead masthead = new Masthead();
 			Login login = new Login(masthead.get_selenium());
-			
+			Masthead.selenium.start();
 			masthead.test_self_before_login();
 			login.login_to_portal("Automation1", "password");
 			masthead.test_self_after_login();
 			
 			errors = masthead.get_errors().get_errors().toString();
-			System.out.println(errors);	
+			System.out.println(errors);
 			Masthead.selenium.close();
+			Masthead.selenium.stop();
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		try{
-			tearDown();
+			Masthead.tearDown();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
