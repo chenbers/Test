@@ -30,7 +30,7 @@
       <f:facet name="header">
         <h:panelGroup>
 		<h:outputText value="#{messages.vehiclesHeader_productVersion}" />
-       	<!-- <rich:spacer style="display:block" height="2"/>
+       	<rich:spacer style="display:block" height="2"/>
        	<h:selectOneMenu value="#{vehiclesBean.batchProductChoice}" style="width:120px;size:auto;margin-top:3px;"
        					id="editVehicle-productChoice">
            	<f:selectItems value="#{vehiclesBean.productTypesSelectItems}" />
@@ -39,8 +39,8 @@
        	</h:selectOneMenu>
 		<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 		 	<ui:param name="selectBoxID" value="admin-table-form:vehiclesTable:editVehicle-productChoice" />
-		</ui:include> -->
-      	</h:panelGroup>
+		</ui:include>
+                </h:panelGroup>
       </f:facet>
       <h:outputText value="#{item.editableVehicleSettings.productType.name}" />
     </rich:column>
