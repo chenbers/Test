@@ -13,7 +13,7 @@ import org.mortbay.jetty.webapp.WebAppContext;
 
 import com.inthinc.pro.service.reports.AssetService;
 
-public class CellcontrolZoomsaferIntegrationSmokeTest {
+public class AssetServiceSmokeTest {
 
     private static int port;
 
@@ -44,7 +44,7 @@ public class CellcontrolZoomsaferIntegrationSmokeTest {
     }
 
     // @Test
-    public void testAssetService() throws InterruptedException {
-        assetServiceClient.getRedFlags(1);
+    public void testGetRedFlagCount() {
+        assetServiceClient.getRedFlagCount(12);
     }
 }
