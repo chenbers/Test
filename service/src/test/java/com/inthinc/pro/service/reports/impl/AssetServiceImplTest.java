@@ -88,7 +88,7 @@ public class AssetServiceImplTest {
 
         // Start date will be 2010-11-25
         final Date startDate = new DateTime(2010, 11, 25, 0, 0, 0, 0).toDate();
-        // Start date will be 2010-12-31
+        // End date will be 2010-12-31
         final Date endDate = new DateTime(2010, 12, 31, 0, 0, 0, 0).toDate();
 
         // Expectations & stubbing
@@ -180,7 +180,7 @@ public class AssetServiceImplTest {
 
         // Start date will be 2010-11-25
         final Date startDate = new DateTime(2010, 11, 25, 0, 0, 0, 0).toDate();
-        // Start date will be 2010-12-31
+        // End date will be 2010-12-31
         final Date endDate = new DateTime(2010, 12, 31, 0, 0, 0, 0).toDate();
 
         final PageParams expectedPageParams = createPageParams();
@@ -266,6 +266,32 @@ public class AssetServiceImplTest {
         AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
         try {
             assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate);
+            fail("Should have thrown " + BadRequestException.class);
+        } catch (BadRequestException e) {
+            // Ok expected
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testFailsIfStartDateAfterEndDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+
+        // End date will be 2010-12-31
+        final Date endDate = new DateTime(2010, 12, 31, 0, 0, 0, 0).toDate();
+        // Start date will be 1 millisecond after end date
+        final Date startDate = new DateTime(2010, 12, 31, 0, 0, 0, 1).toDate();
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                redflagDaoMock.getRedFlagCount((Integer) any, (Date) any, (Date) any, (Integer) any, (List) any);
+                times = 0;
+            }
+        };
+
+        AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
+        try {
+            assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate, endDate);
             fail("Should have thrown " + BadRequestException.class);
         } catch (BadRequestException e) {
             // Ok expected

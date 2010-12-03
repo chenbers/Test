@@ -78,6 +78,10 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Response getRedFlagCount(Integer groupID, Date startDate, Date endDate) {
 
+        if (startDate.after(endDate)) {
+            throw new BadRequestException("Start date can't be after end date.");
+        }
+
         ArrayList<TableFilterField> emptyList = new ArrayList<TableFilterField>();
         Integer result = this.redFlagDAO.getRedFlagCount(groupID, startDate, endDate, RedFlagDAO.INCLUDE_FORGIVEN, emptyList);
 
@@ -140,7 +144,7 @@ public class AssetServiceImpl implements AssetService {
         todayBegin.setMillisOfSecond(0);
         return todayBegin.toDate();
     }
-    
+
     private Date getOneYearThresholdDate(Date day) {
         MutableDateTime beginningOfThisYear = new MutableDateTime(day);
         beginningOfThisYear.setHourOfDay(0);
