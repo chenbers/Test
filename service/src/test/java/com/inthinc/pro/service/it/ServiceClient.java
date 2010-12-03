@@ -9,6 +9,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.ClientResponse;
@@ -18,9 +19,8 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.LastLocation;
 
 import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.model.phone.CellStatusType;
-
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 
 
 @Path("/service/api")
@@ -77,4 +77,10 @@ public interface ServiceClient {
     @GET
     @Path("/driver/{driverID}/location")
     public ClientResponse<LastLocation> getLastLocation(@PathParam("driverID") Integer driverID);
+    
+    @GET
+    @Path("/group/{groupID}/report/performance/10HourViolations")
+    @Produces("application/xml")
+    public ClientResponse<List<TenHoursViolation>> getTenHourViolations(@PathParam("groupID") Integer groupID); 
+
 }

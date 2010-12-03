@@ -27,7 +27,7 @@ public class ReportsFacade {
     @Autowired private ReportCriteriaService reportService;    
     @Autowired private GroupDAOAdapter groupAdapter;
 
-    public final static Integer DAYS_BACK = 6;
+    public static final int DAYS_BACK = 6;
     
     @SuppressWarnings("unchecked")
     public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval) {

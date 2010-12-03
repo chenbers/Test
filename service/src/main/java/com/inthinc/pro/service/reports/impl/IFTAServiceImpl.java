@@ -29,7 +29,7 @@ public class IFTAServiceImpl implements IFTAService {
     /**
      * @deprecated Use {@link ReportsFacade#DAYS_BACK} instead
      */
-    private final static Integer DAYS_BACK = ReportsFacade.DAYS_BACK;
+    private final static int DAYS_BACK = ReportsFacade.DAYS_BACK;
 
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     

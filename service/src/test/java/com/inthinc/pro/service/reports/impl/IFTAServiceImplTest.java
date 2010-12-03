@@ -2,6 +2,7 @@ package com.inthinc.pro.service.reports.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -76,18 +77,6 @@ public class IFTAServiceImplTest extends BaseUnitTest {
         Response response = serviceSUT.getStateMileageByVehicleRoadStatus(expectedGroupID, 
                 "20100202",
                 null, 
-                true);
-
-        assertNotNull(response);
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),response.getStatus() );
-    }
-
-    @Test
-    public void getStateMileageByVehicleRoadStatusTestWihInvalidInput5(){
-
-        Response response = serviceSUT.getStateMileageByVehicleRoadStatus(expectedGroupID, 
-                "20aaa0202",
-                "20100202", 
                 true);
 
         assertNotNull(response);
@@ -193,16 +182,12 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         final boolean expectedDot = true;
 
-        Date startDate = buildDateFromString(daysAgoAsString(7));
-        Date endDate = buildDateFromString(todayAsString());
-
-        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
         final List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
         list.add(new StateMileageByVehicleRoadStatus());
 
         new Expectations() {
             {
-                  reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, interval, expectedDot);
+                  reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, (Interval)any, expectedDot);
                   result = list;
             }
         };
