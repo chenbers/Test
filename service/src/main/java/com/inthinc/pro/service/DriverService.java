@@ -93,7 +93,8 @@ public interface DriverService {
      */
     @GET
     @Path("/driver/{driverID}/trips/{date}")
-    public Response getLastTrips(@PathParam("driverID") Integer driverID, @PathParam("date") String date );
+    public Response getLastTrips(@PathParam("driverID") Integer driverID, 
+                                 @PathParam("date") String date );
     
     /**
      * Service to get the trips of given driver that has been performed between 30 days ago and today.
