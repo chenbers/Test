@@ -69,4 +69,13 @@ public class PerformanceServiceImpl implements PerformanceService {
         return Response.ok(new GenericEntity<List<TenHoursViolation>>(violations) {}).build();
     }
 
+
+    /**
+     * The reportsFacade setter.
+     * @param reportsFacade the reportsFacade to set
+     */
+    void setReportsFacade(ReportsFacade reportsFacade) {
+        this.reportsFacade = reportsFacade;
+    }
+
 }
