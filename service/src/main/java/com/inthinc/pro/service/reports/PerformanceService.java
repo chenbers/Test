@@ -25,8 +25,8 @@ public interface PerformanceService {
      * @HTTP HTTP 404 - NOT FOUND if no violations found 
      */
     @GET
-    @Path("/TenHourViolations")
-    @Produces("{application/xml, application/json}")
+    @Path("/10HourViolations")
+    @Produces("application/xml")
     Response getTenHourViolations(@PathParam("groupID") Integer groupID); 
 
     /**
@@ -39,8 +39,8 @@ public interface PerformanceService {
      * @HTTP HTTP 404 - NOT FOUND if no violations found 
      */
     @GET
-    @Path("/TenHourViolations/{startDate}/{endDate}")
-    @Produces("{application/xml, application/json}")
+    @Path("/10HourViolations/{startDate}/{endDate}")
+    @Produces("application/xml")
     Response getTenHourViolations(@PathParam("groupID") Integer groupID, 
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate, 
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
