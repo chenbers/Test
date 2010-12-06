@@ -47,14 +47,16 @@ public class PhoneWatchdogImpl implements PhoneWatchdog {
 
 		
 		// Fetch IDs of drivers with disabled phones
+		logger.debug("Phone Watchdog started");
 		Set<Integer> driverIDSet = driverPhoneDAO.getDriversWithDisabledPhones();
-		logger.info("Phone Watchdog started, verifying communication for the following drivers: " + driverIDSet.toString());
+		logger.debug("Verifying communication for the following drivers: " + driverIDSet.toString());
 		Date[] interval = getInterval();
 		
 		// Fetch events for each driver
 		for(Integer driverID : driverIDSet) {
 			
 			List<Event> events = eventDAO.getEventsForDriver(driverID, interval[1], interval[0], noteTypes, EventDAO.INCLUDE_FORGIVEN);
+			logger.debug("Backend returned " + events.size() + " events for driver " + driverID +".");
 			
 			// Enable if no communication events
 			if(events.size() == 0){

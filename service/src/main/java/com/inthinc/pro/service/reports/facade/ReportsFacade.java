@@ -8,31 +8,29 @@ import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
-import com.inthinc.pro.service.adapters.GroupDAOAdapter;
+import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 /**
  * Facade to ReportCriteriaService.
  */
 @Component
 public class ReportsFacade {
-    private GroupHierarchy groupHierarchy;
 
     @Autowired private ReportCriteriaService reportService;    
-    @Autowired private GroupDAOAdapter groupAdapter;
+    @Autowired private TiwiproPrincipal principal;
 
     public static final int DAYS_BACK = 6;
     
     @SuppressWarnings("unchecked")
     public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval) {
         ReportCriteria criteria = reportService.getTenHoursDayViolationsCriteria(
-                getGroupHierarchy(), groupID, interval, getLocale());
+                getAccountGroupHierarchy(), groupID, interval, getLocale());
         return criteria.getMainDataset();
     }
     
@@ -40,7 +38,7 @@ public class ReportsFacade {
     public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly) {
         List groupIDList = new ArrayList();
         groupIDList.add(groupID);
-        ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
+        ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
         return criteria.getMainDataset();
     }
 
@@ -53,17 +51,12 @@ public class ReportsFacade {
      * Returns the user group hierarchy.
      * @return
      */
-    GroupHierarchy getGroupHierarchy() {
-        if (groupHierarchy == null) {
-            List<Group> accountGroupList = groupAdapter.getAll();
-            groupHierarchy = new GroupHierarchy(accountGroupList);
-        }
-        return groupHierarchy;
+    GroupHierarchy getAccountGroupHierarchy() {
+    	return principal.getAccountGroupHierarchy();
     }
 
     /**
      * Returns the user Locale.
-     * @return Locale
      */
     Locale getLocale() {
         // FIXME temporarily fixed
@@ -79,11 +72,4 @@ public class ReportsFacade {
         this.reportService = reportService;
     }
 
-    /**
-     * The groupAdapter setter.
-     * @param groupAdapter the groupAdapter to set
-     */
-    void setGroupAdapter(GroupDAOAdapter groupAdapter) {
-        this.groupAdapter = groupAdapter;
-    }
 }

@@ -3,10 +3,17 @@ package com.inthinc.pro.service.security;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
+/**
+ * Convenience class to access the User and Principal information.
+ * @see com.inthinc.pro.security.userdetails.ProUser
+ * 
+ * @author dcueva
+ */
 @Component
 public class TiwiproPrincipal {
 
@@ -18,7 +25,7 @@ public class TiwiproPrincipal {
     private ProUser getProUser() {
         return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
-
+    
     /**
      * The User getter.
      * 
@@ -65,4 +72,9 @@ public class TiwiproPrincipal {
         // need to determine how to allow for an inthinc role at a later time
         return true;// getUser().getUsername().equalsIgnoreCase("admin");
     }
+
+    public GroupHierarchy getAccountGroupHierarchy() {
+        return getProUser().getAccountGroupHierarchy();
+    }
+
 }

@@ -1,10 +1,14 @@
 package com.inthinc.pro.service.phonecontrol.dao.impl;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
 
 /**
@@ -19,6 +23,30 @@ public class InMemoryDriverPhoneDAO implements DriverPhoneDAO {
 
 	private Set<Integer> driverIDSet = new HashSet<Integer>(); 
 	
+	@Autowired
+	private DriverDAO driverDAO;
+	
+	/**
+	 * Constructor.
+	 */
+	public InMemoryDriverPhoneDAO() {
+		regenerateDriverIDSet();
+	}
+
+	/**
+	 * Tries to retrieve the drivers with disabled phones from the back-end
+	 * This is done in case the JVM was shut down and there were still drivers with disabled phones.
+	 * 
+	 * The method must silently swallow all exceptions because it is called in the constructor.
+	 **/
+	void regenerateDriverIDSet() {
+		try {
+			List<Driver> drivers = driverDAO.getDriversWithDisabledPhones();
+			for (Driver driver : drivers) {
+				this.driverIDSet.add(driver.getDriverID());
+			}
+		} catch (Exception e){}
+	}
 
 	/**
 	 * @see com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO#getDriversWithDisabledPhones()

@@ -3,49 +3,55 @@ package com.inthinc.pro.service.reports.facade;
 import java.util.ArrayList;
 import java.util.List;
 
+import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
-import com.inthinc.pro.reports.service.ReportCriteriaService;
-import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.impl.BaseUnitTest;
+import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 /**
  * Unit test for ReportsFacade.
  */
 public class ReportsFacadeTest extends BaseUnitTest {
     private static final Integer GROUP_ID = 1505;
+    private static final String GROUP_NAME = "Mock Group";
 
     private ReportsFacade reportsFacadeSUT = new ReportsFacade();
     
-    @Mocked private ReportCriteriaService reportServiceMock;
-    @Mocked private GroupDAOAdapter groupAdapterMock;
+    @Mocked private TiwiproPrincipal principalMock;
+
     
     @Test public void testGetGroupHierarchy() {
-        reportsFacadeSUT.setGroupAdapter(groupAdapterMock);
-        final Group group = new Group(GROUP_ID, 1, "Mock Group", null);
+
+    	Deencapsulation.setField(reportsFacadeSUT, principalMock);
+
+        new Expectations() {{
+                principalMock.getAccountGroupHierarchy(); returns(getHierarchy());
+        }};
         
-        new Expectations() {
-            {
-                List<Group> list = new ArrayList<Group>();
-                list.add(group);
-                groupAdapterMock.getAll(); returns(list);
-            }
-        };
-        
-        GroupHierarchy hierarchy = reportsFacadeSUT.getGroupHierarchy();
+        GroupHierarchy hierarchy = reportsFacadeSUT.getAccountGroupHierarchy();
         
         Assert.assertNotNull(hierarchy);
-        Assert.assertNotNull(hierarchy.getShortGroupName(GROUP_ID, "/"));
+        Assert.assertEquals(hierarchy.getShortGroupName(GROUP_ID, "/"), GROUP_NAME);
     }
     
-    @Test public void testGetLocale() {
+    protected GroupHierarchy getHierarchy() {
+    	Group group = new Group(GROUP_ID, 1, GROUP_NAME, null);
+        List<Group> groupList = new ArrayList<Group>();
+        groupList.add(group);
+        
+        GroupHierarchy hierarchy = new GroupHierarchy();
+        hierarchy.setGroupList(groupList);
+        return hierarchy;
+	}
+
+	@Test public void testGetLocale() {
         Assert.assertNotNull(reportsFacadeSUT.getLocale());
     }
 }

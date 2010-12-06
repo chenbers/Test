@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
 
+import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.security.Role;
@@ -15,14 +16,12 @@ import com.inthinc.pro.model.security.Role;
 public class ProUser extends org.springframework.security.userdetails.User
 {
     
-    /**
-     * 
-     */
     private static final long serialVersionUID = -8015069498032652168L;
 
     private static final Logger logger = Logger.getLogger(ProUser.class);
 
     private User user;
+    private GroupHierarchy accountGroupHierarchy;
     
     public ProUser(User user, GrantedAuthority[] authorities)
     {
@@ -53,5 +52,21 @@ public class ProUser extends org.springframework.security.userdetails.User
     {
         this.user = user;
     }
+
+	/**
+	 * @return the accountGroupHierarchy
+	 */
+	public GroupHierarchy getAccountGroupHierarchy() {
+		return accountGroupHierarchy;
+	}
+
+	/**
+	 * @param accountGroupHierarchy the accountGroupHierarchy to set
+	 */
+	public void setAccountGroupHierarchy(GroupHierarchy accountGroupHierarchy) {
+		this.accountGroupHierarchy = accountGroupHierarchy;
+	}
+
+
     
 }
