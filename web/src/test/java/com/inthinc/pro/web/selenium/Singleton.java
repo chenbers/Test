@@ -26,8 +26,8 @@ public class Singleton extends InthincTest {
               if(singleton == null) {
                     try {
                     	singleton = new Singleton();
-                    	set_test_case(file_name, test_case);
-                    	singleton.selenium = new Core((get_data("Settings","Host")), 4444, (get_data("Settings","Browser")), (get_data("Settings","URL")));
+//                    	set_test_case(file_name, test_case);
+//                    	singleton.selenium = new Core((get_data("Settings","Host")), 4444, (get_data("Settings","Browser")), (get_data("Settings","URL")));
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
