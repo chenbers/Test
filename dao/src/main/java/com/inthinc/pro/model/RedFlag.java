@@ -13,8 +13,8 @@ public class RedFlag extends BaseEntity
     @Column(updateable=false)
     private RedFlagLevel level;
     
-    @Column(name="sent",updateable=false)
-    private Boolean alert;
+    @Column(updateable=false)
+    private AlertSentStatus sent;
     
     @Column(name="note",updateable=false)
     private Event event;
@@ -22,13 +22,15 @@ public class RedFlag extends BaseEntity
     @Column(name="tzName",updateable=false)
     private TimeZone timezone;
     
+    private Integer msgID;
+    
     public RedFlag()
     {
     }
-    public RedFlag(Integer redFlagID, RedFlagLevel level, Boolean alert, Event event, TimeZone timezone)
+    public RedFlag(Integer redFlagID, RedFlagLevel level,  AlertSentStatus sent, Event event, TimeZone timezone)
     {
         this.level = level;
-        this.alert = alert;
+        this.sent = sent;
         this.event = event;
         this.timezone = timezone;
     }
@@ -44,14 +46,14 @@ public class RedFlag extends BaseEntity
         this.level = level;
     }
 
-    public Boolean getAlert()
+    public AlertSentStatus getSent()
     {
-        return alert;
+        return sent;
     }
 
-    public void setAlert(Boolean alert)
+    public void setSent(AlertSentStatus sent)
     {
-        this.alert = alert;
+        this.sent = sent;
     }
 
     public Event getEvent()
@@ -72,6 +74,11 @@ public class RedFlag extends BaseEntity
         this.timezone = timezone;
     }
 
-
+    public Integer getMsgID() {
+        return msgID;
+    }
+    public void setMsgID(Integer msgID) {
+        this.msgID = msgID;
+    }
 
 }

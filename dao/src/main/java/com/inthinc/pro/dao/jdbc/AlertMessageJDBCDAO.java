@@ -21,6 +21,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.model.AlertEscalationStatus;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
@@ -34,6 +35,8 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.zone.ZonePublish;
+import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 import com.mysql.jdbc.PreparedStatement;
 
 public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessageDAO{
@@ -52,6 +55,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
     //2 sent
     //3 escalated awaiting acknowledge
     //4 escalated acknowledged
+    //5 canceled 
 
     @Override
     public Boolean acknowledgeMessage(Integer msgID) {
@@ -61,6 +65,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         try
         {
             conn = getConnection();
+            // if (status == 1) status=2; else if (status == 3) status= 4; else status = status;
             statement = (PreparedStatement) conn.prepareStatement("UPDATE message SET status=IF(status=1,2,IF(status=3,4,status)), modified=utc_timestamp() WHERE msgID=?");
             statement.setInt(1, msgID);
             numRows=statement.executeUpdate();
@@ -75,6 +80,11 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             close(conn);
         } // end finally   
         return numRows!=0;
+    }
+
+    @Override
+    public Boolean cancelPendingMessage(Integer msgID) {
+        return true;
     }
 
     @Override
@@ -95,9 +105,61 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         return null;
     }
 
+    String FETCH_ALERT_MESSAGE= "SELECT noteID,personID,alertID,alertTypeID,deliveryMethodID,status,level,escalationOrdinal,escalationTryCount FROM message WHERE msgID = ?";
+
     @Override
     public AlertMessage findByID(Integer id) {
-        // TODO Auto-generated method stub
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        
+        try
+        {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(FETCH_ALERT_MESSAGE);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+/*
+ * msgID
+noteID
+personID
+alertID
+alertTypeID
+deliveryMethodID
+status
+level
+escalationOrdinal
+escalationTryCount
+
+ */
+            if (resultSet.next()) {
+                AlertMessage alertMessage = new AlertMessage();
+                alertMessage.setMessageID(id);
+                alertMessage.setNoteID(resultSet.getLong(1));
+                alertMessage.setPersonID(resultSet.getInt(2));
+                alertMessage.setAlertID(resultSet.getInt(3));
+                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt(4)));
+                alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt(5)));
+                alertMessage.setStatus(AlertEscalationStatus.valueOf(resultSet.getInt(6)));
+                alertMessage.setLevel(RedFlagLevel.valueOf(resultSet.getInt(7)));
+                alertMessage.setEscalationOrdinal(resultSet.getInt(8));
+                alertMessage.setEscalationTryCount(resultSet.getInt(9));
+                return alertMessage;
+            }
+                
+
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally   
+        
         return null;
     }
 

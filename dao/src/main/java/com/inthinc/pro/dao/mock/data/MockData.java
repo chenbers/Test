@@ -26,6 +26,7 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.CrashDataPoint;
 import com.inthinc.pro.model.CrashReport;
@@ -599,7 +600,7 @@ public class MockData {
         event.setAddressStr(addressStr[randomInt(0, 2)]);
         event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         storeObject(event, Event.class);
-        RedFlag redFlag = new RedFlag(idOffset + 1, RedFlagLevel.valueOf(randomInt(1, 3)), randomInt(0, 1) == 1, event, driver.getPerson().getTimeZone());
+        RedFlag redFlag = new RedFlag(idOffset + 1, RedFlagLevel.valueOf(randomInt(1, 3)), AlertSentStatus.valueOf(randomInt(0, 2)), event, driver.getPerson().getTimeZone());
         storeObject(redFlag);
         if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID)) {
             unitTestStats.totalRedFlags++;
@@ -613,7 +614,7 @@ public class MockData {
         event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         event.setAddressStr(addressStr[randomInt(0, 2)]);
         storeObject(event, Event.class);
-        redFlag = new RedFlag(idOffset + 2, RedFlagLevel.valueOf(randomInt(1, 3)), randomInt(0, 1) == 1, event, driver.getPerson().getTimeZone());
+        redFlag = new RedFlag(idOffset + 2, RedFlagLevel.valueOf(randomInt(1, 3)), AlertSentStatus.valueOf(randomInt(0, 2)), event, driver.getPerson().getTimeZone());
         storeObject(redFlag);
         if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID)) {
             unitTestStats.totalRedFlags++;
@@ -627,7 +628,7 @@ public class MockData {
         event.setAddressStr(addressStr[randomInt(0, 2)]);
         event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
         storeObject(event, Event.class);
-        redFlag = new RedFlag(idOffset + 3, RedFlagLevel.valueOf(randomInt(1, 3)), randomInt(0, 1) == 1, event, driver.getPerson().getTimeZone());
+        redFlag = new RedFlag(idOffset + 3, RedFlagLevel.valueOf(randomInt(1, 3)), AlertSentStatus.valueOf(randomInt(0, 2)), event, driver.getPerson().getTimeZone());
         storeObject(redFlag);
         if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID)) {
             unitTestStats.totalRedFlags++;
@@ -725,7 +726,7 @@ public class MockData {
             event.setGroupID(UnitTestStats.UNIT_TEST_GROUP_ID);
             storeObject(event, Event.class);
             Integer redFlagID = new Integer(idOffset * MAX_EVENTS + eventCnt);
-            RedFlag redFlag = new RedFlag(redFlagID, RedFlagLevel.valueOf(randomInt(1, 3)), randomInt(0, 1) == 1, event, driver.getPerson().getTimeZone());
+            RedFlag redFlag = new RedFlag(redFlagID, RedFlagLevel.valueOf(randomInt(1, 3)), AlertSentStatus.valueOf(randomInt(0, 2)), event, driver.getPerson().getTimeZone());
             storeObject(redFlag);
             if (driver.getGroupID().equals(UnitTestStats.UNIT_TEST_GROUP_ID)) {
                 unitTestStats.totalRedFlags++;

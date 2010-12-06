@@ -1,0 +1,109 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+  	xmlns:h="http://java.sun.com/jsf/html" 
+  	xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:rich="http://richfaces.org/rich"
+  	xmlns:a4j="http://richfaces.org/a4j">
+
+    <rich:modalPanel id="redFlagsSentDetailsPanel" width="540" height="450" headerClass="popupHeader" >
+        <f:facet name="header">
+            <h:outputText id="redFlagsSentDetailsPanelHeader" value="#{messages.redFlagDetailsPopupTitle}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:graphicImage id="redFlagsSentDetails-closeX" value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('redFlagsSentDetailsPanel')" />
+        </f:facet>
+        
+        <h:panelGroup layout="block" styleClass="popupsubtitle">
+            <h:outputText value="#{messages.redFlagDetailsPopupInst}" />
+        </h:panelGroup>
+        
+        <a4j:form id="redFlagsSentDetailsForm">
+			<table width="500" border="0" cellspacing="0" cellpadding="0">
+            	<tr>
+                	<td width="480" valign="top">
+					<div class="add_section_title"><h:outputText value="#{messages.redFlagDetailsPopupNameSectTitle}" /></div>
+					<table width="460" border="0" cellspacing="2" cellpadding="4" align="center">
+						<tr>
+                        	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupName}" /></td>
+                        	<td><h:outputText value="#{details.alert.name}" /></td>
+                        </tr>
+						<tr>
+                        	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupDescription}" /></td>
+                        	<td><h:outputText value="#{details.alert.description}" /></td>
+                        </tr>
+						<tr>
+                        	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupType}" /></td>
+                        	<td><h:outputText value="#{messages[details.alert.type]}" /></td>
+                        </tr>
+                     </table>
+                     </td>
+				</tr>
+            	<tr>
+                	<td width="480" valign="top">
+					<div class="add_section_title"><h:outputText value="#{messages.redFlagDetailsPopupEscalationSectTitle}" /></div>
+					<table width="460" border="0" cellspacing="2" cellpadding="4" align="center">
+						<ui:fragment rendered="#{details.personList != null}">
+						<tr>
+                        	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupPersonList}" /></td>
+                        	<td>
+                        		<ul>
+                        		<a4j:repeat value="#{details.personList}" var="name">
+                        			<li><h:outputText value="#{name}" /></li>
+								</a4j:repeat>
+								</ul>
+                        	</td>
+                        </tr>
+                        </ui:fragment>
+						<ui:fragment rendered="#{details.emailTo != null}">
+						<tr>
+                        	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupEmailList}" /></td>
+                        	<td>
+                        		<ul>
+                        		<a4j:repeat value="#{details.emailTo}" var="email">
+                        			<li><h:outputText value="#{email}" /></li>
+								</a4j:repeat>
+								</ul>
+                        	</td>
+                        </tr>
+                        </ui:fragment>
+						<ui:fragment rendered="#{details.phoneList != null}">
+						<tr>
+                        	<td width="110" ><h:outputText value="#{messages.redFlagDetailsPopupPhoneList}" /></td>
+                        	<td>
+                        		<ol>
+                        		<a4j:repeat value="#{details.phoneList}" var="phone">
+                        			<li>
+                        				<h:outputText value="#{phone.phoneNumber}" converter="PhoneNumberConverter" style="width:150px;margin-right:20px;"/>
+                        				<h:outputFormat value="#{messages[phone.status]}" style="font-style:italic;">
+                        					<f:param value="#{phone.attempt}"/>
+                        					<f:param value="#{phone.maxAttempts}"/>
+                        				</h:outputFormat>
+                        			</li>
+								</a4j:repeat>
+								</ol>
+                        	</td>
+                        </tr>
+                        </ui:fragment>
+						<ui:fragment rendered="#{details.escalationEmail != null}">
+						<tr>
+                        	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupEscalationEmail}" /></td>
+                        	<td><h:outputText value="#{details.escalationEmail}" /></td>
+                        </tr>
+                        </ui:fragment>
+                     </table>
+                     </td>
+				</tr>
+			</table>				                     
+
+        <div class="popupactions">
+        <a4j:commandButton id="redFlagsSentDetailsPanel-canceled" value="#{messages.redFlagDetailsPopupCancelPending}" rendered="#{details.message.status == 'ESCALATED_AWAITING_ACKNOWLEDGE'}" 
+        	action="#{details.cancelPendingAction}" onclick="Richfaces.hideModalPanel('redFlagsSentDetailsPanel')" styleClass="left">
+            <span class="delete"> <h:outputText value="#{messages.redFlagDetailsPopupCancelPending}" /></span>
+        	</a4j:commandButton>
+        <a4j:commandButton id="redFlagsSentDetailsPanel-close" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('redFlagsSentDetailsPanel')" styleClass="left">
+            <span class="edit"> <h:outputText value="#{messages.button_close}" /></span>
+        </a4j:commandButton></div>
+        </a4j:form>
+    </rich:modalPanel>
+
+</ui:composition>

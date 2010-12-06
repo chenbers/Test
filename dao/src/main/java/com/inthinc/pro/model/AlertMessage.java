@@ -43,6 +43,10 @@ public class AlertMessage
     
     private Boolean acknowledge;
     
+    private AlertEscalationStatus status;
+    
+    private Integer escalationOrdinal;
+    private Integer escalationTryCount;
     
     public AlertMessage(Integer messageID, AlertMessageDeliveryType alertMessageDeliveryType, AlertMessageType alertMessageType, String address, String message)
     {
@@ -143,4 +147,24 @@ public class AlertMessage
     public void setAcknowledge(Boolean acknowledge) {
         this.acknowledge = acknowledge;
     }
+    public AlertEscalationStatus getStatus() {
+        return status;
+    }
+    public void setStatus(AlertEscalationStatus status) {
+        this.status = status;
+    }
+    
+    public Integer getEscalationOrdinal() {
+        return escalationOrdinal;
+    }
+    public void setEscalationOrdinal(Integer escalationOrdinal) {
+        this.escalationOrdinal = escalationOrdinal;
+    }
+    public Integer getEscalationTryCount() {
+        return escalationTryCount;
+    }
+    public void setEscalationTryCount(Integer escalationTryCount) {
+        this.escalationTryCount = escalationTryCount;
+    }
+
 }

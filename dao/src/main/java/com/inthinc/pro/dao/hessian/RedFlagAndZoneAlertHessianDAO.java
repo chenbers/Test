@@ -97,6 +97,17 @@ public class RedFlagAndZoneAlertHessianDAO extends GenericHessianDAO<RedFlagOrZo
         return getChangedCount(getSiloService().deleteZoneAlertsByZoneID(zoneID));
     }
 
+    
+    @Override
+    public RedFlagOrZoneAlert findByID(Integer ID)
+    {
+        RedFlagAlert redFlagAlert = redFlagAlertDAO.findByID(ID);
+        if (redFlagAlert == null)
+            return zoneAlertDAO.findByID(ID);
+        
+        return redFlagAlert;
+    }
+
     private List<RedFlagOrZoneAlert> combineAndSort(List<RedFlagAlert> redFlagAlerts,List<ZoneAlert> zoneAlerts){
 
         List<RedFlagOrZoneAlert> redFlagAndZoneAlerts = new ArrayList<RedFlagOrZoneAlert>(redFlagAlerts);

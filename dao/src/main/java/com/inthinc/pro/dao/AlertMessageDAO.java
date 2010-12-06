@@ -20,4 +20,7 @@ public interface AlertMessageDAO extends GenericDAO<AlertMessage, Integer>
     List<AlertMessageBuilder> getMessageBuilders(AlertMessageDeliveryType messageType);
     
     Boolean acknowledgeMessage(Integer msgID);
+    
+    Boolean cancelPendingMessage(Integer msgID);
+
 }

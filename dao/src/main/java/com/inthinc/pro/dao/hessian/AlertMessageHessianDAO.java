@@ -247,4 +247,11 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         // TODO Auto-generated method stub
         return false;
     }
+    
+    @Override
+    public Boolean cancelPendingMessage(Integer msgID) {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
 }

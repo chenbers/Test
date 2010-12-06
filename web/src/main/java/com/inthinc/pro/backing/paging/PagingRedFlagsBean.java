@@ -12,11 +12,17 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.LocaleBean;
+import com.inthinc.pro.dao.AlertMessageDAO;
+import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.RedFlagAndZoneAlertsDAO;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.StatusEvent;
+import com.inthinc.pro.model.AlertMessage;
+import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
+import com.inthinc.pro.model.RedFlagOrZoneAlert;
 import com.inthinc.pro.model.RedFlagReportItem;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
@@ -55,12 +61,41 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 	
 	private String filterLevel;
 	private String filterAlert;
-	public String getFilterAlert() {
+	
+	private AlertMessageDAO alertMessageDAO;
+	private RedFlagAndZoneAlertsDAO redFlagAndZoneAlertsDAO;
+    private PersonDAO personDAO;
+	
+
+    private RedFlag sentDetailsItem;
+    private RedFlagEscalationDetails alertDetails; 
+	
+	public RedFlag getSentDetailsItem() {
+	    
+	    
+        return sentDetailsItem;
+    }
+
+    public void setSentDetailsItem(RedFlag sentDetailsItem) {
+        // TODO: TEMPORARY FOR TESTING UNTIL THE MESSAGE ID IS POPULUATED 
+        sentDetailsItem.setMsgID(50584);
+        this.sentDetailsItem = sentDetailsItem;
+        alertDetails = new RedFlagEscalationDetails(alertMessageDAO, redFlagAndZoneAlertsDAO, personDAO, sentDetailsItem);
+    }
+
+    public RedFlagEscalationDetails getAlertDetails() {
+        return alertDetails;
+    }
+
+    public void setAlertDetails(RedFlagEscalationDetails alertDetails) {
+        this.alertDetails = alertDetails;
+    }
+
+    public String getFilterAlert() {
 		return filterAlert;
 	}
 
 	public void setFilterAlert(String filterAlert) {
-logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));		
 		this.filterAlert = filterAlert;
 	}
 
@@ -96,8 +131,9 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
 			SelectItem blankItem = new SelectItem("", BLANK_SELECTION);
 			blankItem.setEscape(false);
 			filterAlerts.add(blankItem);
-        	filterAlerts.add(new SelectItem("1", MessageUtil.getMessageString("yes", getLocale())));
-        	filterAlerts.add(new SelectItem("0", MessageUtil.getMessageString("no", getLocale())));
+            for (AlertSentStatus p : EnumSet.allOf(AlertSentStatus.class)) {
+                filterAlerts.add(new SelectItem(p.getCode().toString(), MessageUtil.getMessageString(p.toString(), getLocale())));
+            }
 		}
 	    
 	    return filterAlerts;
@@ -157,6 +193,8 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
 	public void refreshAction(){
 		table.reset();
     }
+	
+	
 	@Override
 	public void refreshPage(){
 		table.resetPage();
@@ -188,6 +226,30 @@ logger.info("setfilterAlert " + ((filterAlert == null) ? "" : filterAlert));
 	public void setTable(BasePaginationTable<RedFlag> table) {
 		this.table = table;
 	}
+
+    public AlertMessageDAO getAlertMessageDAO() {
+        return alertMessageDAO;
+    }
+
+    public void setAlertMessageDAO(AlertMessageDAO alertMessageDAO) {
+        this.alertMessageDAO = alertMessageDAO;
+    }
+
+    public RedFlagAndZoneAlertsDAO getRedFlagAndZoneAlertsDAO() {
+        return redFlagAndZoneAlertsDAO;
+    }
+
+    public void setRedFlagAndZoneAlertsDAO(RedFlagAndZoneAlertsDAO redFlagAndZoneAlertsDAO) {
+        this.redFlagAndZoneAlertsDAO = redFlagAndZoneAlertsDAO;
+    }
+	
+    public PersonDAO getPersonDAO() {
+        return personDAO;
+    }
+
+    public void setPersonDAO(PersonDAO personDAO) {
+        this.personDAO = personDAO;
+    }
 
 	
 }
