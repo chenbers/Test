@@ -10,7 +10,7 @@ import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
  * Last Update:  11/24/10
  ****************************************************************************************/
 
-public class User extends InthincTest {
+public class User_AddEdit extends InthincTest {
 	
 	//Define Class Objects
 	private final String add_user_page = "/tiwipro/app/admin/editPerson";
@@ -57,76 +57,143 @@ public class User extends InthincTest {
 	// Screen Buttons
 	private final String savebutton = "edit-form:editPersonSave1";
 	private final String cancelbutton = "edit-form:editPersonCancel1";
-	private final String searchbutton = "admin-table-form:personTable-adminTableSearch";
-	private final String userdeletebutton = "admin-table-form:personTable-adminTableDelete";
-	private final String batcheditbutton = "admin-table-form:personTable-adminTableEdit";
-	private final String confirmdelbutton = "confirmDeleteForm:personTable-deleteButton";
-	private final String canceldelbutton = "personTable-confirmDeleteCancel";
+	private final String lowersavebutton = "edit-form:editPersonCancel2";
+	private final String lowercancelbutton = "edit-form:editPersonSave2";
+	private final String driverradiobutton = "edit-form:editPerson-isDriver";
+	private final String loginradiobutton = "edit-form:editPerson-isUser";
 	
-	
-	//General text box
-	private final String search_text_box = "admin-table-form:personTable-filterTable";
-	
+
 	protected static Core selenium;
 
-	public User(){
+	public User_AddEdit(){
 			this(Singleton.getSingleton().getSelenium());
 		}
 	
-	public User(Singleton tvar ){
+	public User_AddEdit(Singleton tvar ){
 			this(tvar.getSelenium());
 		}
 	
-	public void ClickUserDelete(String errorname){
-			selenium.click(userdeletebutton, errorname);
-			selenium.waitForPageToLoad("30000");
+	public void AddUser(String datasheet){
+			//enter new user info
+			enter_user_info(datasheet);
+			enter_employee_info(datasheet);
+			enter_driver_information(datasheet);
+			enter_login_information(datasheet);
+			enter_notifications(datasheet);
+			enter_rfid_information(datasheet);
+			//save new user
+			ClickSave();
 		}
 	
-	public void ClickBatchEditButton(String errorname){
-			selenium.click(batcheditbutton, errorname);
-			selenium.waitForPageToLoad("30000");
+	public void confirmMessage(String msgtext, String error_name){
+		selenium.isTextPresent(msgtext,error_name);
+	}
+	
+	public void chk_screen_headings(){
+			//verify headings
+			selenium.isTextPresent("User Information","User Detail: Information heading");
+			selenium.isTextPresent("Employee Information", "User Detail Emp Info heading");
+			selenium.isTextPresent("Driver Information", "User Detail Driver Info heading");
+			selenium.isTextPresent("Login Information", "User Detail Login Info heading");
+			selenium.isTextPresent("RFID Information", "User Detail RFID Information");
+			selenium.isTextPresent("Notifications", "User Detail Notifications");
+		}
+		
+	public void chk_screen_buttons(String error_name){
+			selenium.isTextPresent("Save",error_name);
+			selenium.isTextPresent("Cancel",error_name);
+			selenium.isTextPresent("Cancel",error_name);
+			selenium.isTextPresent("Save",error_name);
+		}
+		
+	
+	public void chk_userInfo_labels(String error_name){
+			//Title
+			selenium.isTextPresent("Admin: Add User", "Title Admin"+ error_name);
+			//User Information
+			selenium.isTextPresent("First Name:", "First name:" + error_name);
+			selenium.isTextPresent("Middle Name:","Middle Name:" + error_name);
+			selenium.isTextPresent("Last Name:","Last Name:" + error_name);
+			selenium.isTextPresent("Suffix:","Suffix:" + error_name);
+			selenium.isTextPresent("DOB:","DOB:" + error_name);
+			selenium.isTextPresent("Gender:","Gender:" + error_name);
+			//Employee Information
+			selenium.isTextPresent("Employee ID:", "Employee ID:" + error_name);
+			selenium.isTextPresent("Reports To:","Reports To:" + error_name);
+			selenium.isTextPresent("Title:","Title:" + error_name);
+			selenium.isTextPresent("Locale:","Locale:" + error_name);
+			selenium.isTextPresent("Time Zone:","Time Zone:"+ error_name);
+			selenium.isTextPresent("Measurement:","Measurement:"+ error_name);
+			selenium.isTextPresent("Fuel Efficiency Ratio:","Fuel Efficiency Ratio:" + error_name);
+			//Driver Information
+			selenium.isTextPresent("Driver License #:","Driver License #:" + error_name );
+			selenium.isTextPresent("Class:","Class:" + error_name );
+			selenium.isTextPresent("State:","State:" + error_name );
+			selenium.isTextPresent("Expiration:","Expiration:" + error_name );
+			selenium.isTextPresent("Certifications:","Certifications:" + error_name );
+			selenium.isTextPresent("DOT:","DOT:" + error_name );
+			selenium.isTextPresent("Team:","Team:"+ error_name );
+			selenium.isTextPresent("Status:","Status:" + error_name );
+			//Login Information
+			selenium.isTextPresent("User Name:", "User Name:" + error_name);
+			selenium.isTextPresent("Group:", "Group" + error_name);
+			selenium.isTextPresent("Roles:", "Roles" + error_name);
+			selenium.isTextPresent("Status:", "Status" + error_name);
+			//RFID Information
+			selenium.isTextPresent("Bar Code:", "Bar Code:" + error_name);
+			selenium.isTextPresent("ID 1:", "ID 1:" + error_name);
+			selenium.isTextPresent("ID 2:", "ID 2:" + error_name);
+			//Notifications
+			selenium.isTextPresent("E-mail 1:", "Email1" + error_name);
+			selenium.isTextPresent("E-mail 2:", "Email2" + error_name);
+			selenium.isTextPresent("Text Message 1:", "Text Message 1:" + error_name);
+			selenium.isTextPresent("Text Message 2:", "Text Message 2:" + error_name);
+			selenium.isTextPresent("Phone 1:", "Phone 1:" + error_name);
+			selenium.isTextPresent("Phone 2:", "Phone 2:" + error_name);
+			selenium.isTextPresent("exact:Information:", "exact:Information:" + error_name);
+			selenium.isTextPresent("exact:Warning:", "exact:Warning:"+ error_name);
+			selenium.isTextPresent("exact:Critical:", "exact:Critical:" + error_name);
 		}
 	
-	public void ClickConfirmDelButton(String errorname){
-			selenium.click(confirmdelbutton, errorname);
-			selenium.waitForPageToLoad("30000");
+	public void SetDriverRadioButton (int col, String error_name){
+		String ck = selenium.isnotChecked(driverradiobutton, error_name);
+		if (ck.contentEquals("yes")) {
+				selenium.click(driverradiobutton , error_name);
+				}
 		}
 	
-	public void ClickCancelDelButton(String errorname){
-			selenium.click(canceldelbutton, errorname);
-			selenium.waitForPageToLoad("30000");
+	public void SetLoginRadioButton (int col, String error_name){
+		String ck = selenium.isnotChecked(loginradiobutton , error_name);
+		if (ck.contentEquals("yes")) {
+				selenium.click(loginradiobutton , error_name);
+				}
 		}
 	
-	public void ClickUserDelete(){
-			selenium.click(savebutton, "Select Save Button");
+	public void ClicklSaveButton(){
+			selenium.click(lowersavebutton, "Select Save Button");
 			selenium.waitForPageToLoad("30000");
 		}
-	
-	public void search_admin(String text, String errorname){
-			selenium.type(search_text_box, text,errorname);
-			selenium.click(searchbutton, "Select Search Button");
+
+	public void ClicklCancelButton(){
+			selenium.click(lowercancelbutton,"Select Cancel Button");
 			selenium.waitForPageToLoad("30000");
 		}
-	
+
 	public void ClickSave(){
-			selenium.open(add_user_page);
 			selenium.click(savebutton, "Select Save Button");
 			selenium.waitForPageToLoad("30000");
 		}
 	
 	public void ClickCancel(){
-			selenium.open(add_user_page);
 			selenium.click(cancelbutton,"Select Cancel Button");
 			selenium.waitForPageToLoad("30000");
 		}
 	
 	public void enter_rfid_information(String datasheet){
-			selenium.open(add_user_page );
 			selenium.type(barcode_id, get_data(datasheet,"BarCode"));
 		}
 	
 	public void enter_notifications(String datasheet){
-			selenium.open(add_user_page );
 			selenium.type(email_1, get_data(datasheet,"EMAIL1"));
 			selenium.type(email_2, get_data(datasheet,"EMAIL2"));
 			selenium.type(text_msg_1, get_data(datasheet,"TextMsg1"));
@@ -137,17 +204,17 @@ public class User extends InthincTest {
 			selenium.select(Notification_warning, "label=" + get_data(datasheet,"NWarning"));
 			selenium.select(Notification_critical, "label=" + get_data(datasheet,"NCritical"));
 		}
+	
 	public void enter_login_information(String datasheet){
-		selenium.type(username , get_data(datasheet,"UserName"));
-		selenium.type(password, get_data(datasheet,"Password"));
-		selenium.type(password_confirm, get_data(datasheet,"Password"));
-		selenium.selectDhxCombo(get_data(datasheet,"Group"), "Login Group");
-		selenium.addtoPanel(panel_id, "label=" + get_data(datasheet,"Panel"), "Login Role Panel");
-		selenium.select(user_status, "label=" + get_data(datasheet,"Status"));
-	}
+			selenium.type(username , get_data(datasheet,"UserName"));
+			selenium.type(password, get_data(datasheet,"Password"));
+			selenium.type(password_confirm, get_data(datasheet,"Password"));
+			selenium.selectDhxCombo(get_data(datasheet,"Group"), "Login Group");
+			selenium.addtoPanel(panel_id, "label=" + get_data(datasheet,"Panel"), "Login Role Panel");
+			selenium.select(user_status, "label=" + get_data(datasheet,"Status"));
+		}
 	
 	public void enter_driver_information(String datasheet){
-			selenium.open(add_user_page);
 			selenium.type(driver_lic,get_data(datasheet,"DrivLicNum"));
 			selenium.select(driver_state, "label=" + get_data(datasheet,"DrivLicState"));
 			selenium.select(lic_class, "label=" + get_data(datasheet,"LicClass"));
@@ -158,7 +225,6 @@ public class User extends InthincTest {
 		}
 
 	public void enter_user_info(String datasheet){
-			selenium.open(add_user_page,"Add User Page");
 			selenium.type(emp_firstname, get_data(datasheet,"FirstName"), "Employee First Name");
 			selenium.type(emp_middle_name, get_data(datasheet,"MiddleName"), "Employee Middle Name");
 			selenium.type(emp_lastname, get_data(datasheet,"LastName"), "Employee Last Name");
@@ -168,7 +234,6 @@ public class User extends InthincTest {
 		}
 		
 	public void enter_employee_info(String datasheet){
-			selenium.open(add_user_page);
 			selenium.type(emp_id , get_data(datasheet,"EmpID"));
 			selenium.type(emp_reportsTo, get_data(datasheet,"ReportsTo"));
 			selenium.type(emp_title, get_data(datasheet,"Title"));
@@ -178,7 +243,7 @@ public class User extends InthincTest {
 			selenium.select(emp_fuelefficiencytype, "label=" + get_data(datasheet,"FuelEffType"));
 		}
 	
-	public User( Core sel ){
+	public User_AddEdit( Core sel ){
 			selenium = sel;
 		}
 	
