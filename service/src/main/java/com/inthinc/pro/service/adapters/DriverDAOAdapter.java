@@ -63,6 +63,15 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 
 	// Specialized methods ----------------------------------------------------
 
+    /**
+     * Lookup for driver by Phone number.
+     * @param phoneNumber the phone number
+     * @return the Driver having assigned the phone number, if not found - null.
+     */
+    public Driver findByPhoneNumber(String phoneNumber) {
+        return driverDAO.findByPhoneNumber(phoneNumber);
+    }    
+
     public Score getScore(Integer driverID, Duration duration) {
         return driverReportDAO.getScore(driverID, duration);
     }
@@ -131,7 +140,5 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 	 */
 	public void setEventDAO(EventDAO eventDAO) {
 		this.eventDAO = eventDAO;
-	}    
-    
-    
+	}
 }

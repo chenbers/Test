@@ -1,7 +1,5 @@
 package com.inthinc.pro.service.reports.impl.it;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -29,7 +27,8 @@ public class PerformanceServiceTest extends BaseEmbeddedServerITCase {
         logger.info("Testing Get TenHourViolations service... ");
         ClientResponse<List<TenHoursViolation>> response = client.getTenHourViolations(GROUP_ID);
         logger.info("Get TenHourViolations response: " + response.getStatus());
-        if (Response.Status.OK.getStatusCode() == response.getStatus()) {        
+        
+        if (Response.Status.OK.getStatusCode() == response.getStatus()) {
             List<TenHoursViolation> content = response.getEntity();
             Assert.assertTrue(content.size() > 0);
         }

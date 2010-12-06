@@ -6,8 +6,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.phone.CellStatusType;
+import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.service.phonecontrol.CellPhoneService;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
@@ -22,7 +22,7 @@ public class CellPhoneServiceImpl implements CellPhoneService {
     @Autowired
     private MovementEventHandler movementEventHandler;
 
-    @Autowired private DriverDAO driverDAO;    
+    @Autowired private DriverDAOAdapter driverAdapter;    
     @Autowired private DriverPhoneDAO phoneDAO;
 
 
@@ -50,7 +50,7 @@ public class CellPhoneServiceImpl implements CellPhoneService {
     public Response setStatusEnabled(String phoneId) {
         logger.debug("setStatus enabled Request received for phoneID: " + phoneId);
         PhoneStatusUpdateThread update = new PhoneStatusUpdateThread(phoneId, CellStatusType.ENABLED);
-        update.setDriverDAO(this.driverDAO);
+        update.setDriverDAOAdapter(this.driverAdapter);
         update.setDriverPhoneDAO(this.phoneDAO);
         update.start();
         
@@ -65,7 +65,7 @@ public class CellPhoneServiceImpl implements CellPhoneService {
     public Response setStatusDisabled(String phoneId) {
         logger.debug("setStatus disabled Request received for phoneID: " + phoneId);
         PhoneStatusUpdateThread update = new PhoneStatusUpdateThread(phoneId, CellStatusType.DISABLED);
-        update.setDriverDAO(this.driverDAO);
+        update.setDriverDAOAdapter(this.driverAdapter);
         update.setDriverPhoneDAO(this.phoneDAO);
         update.start();
         
@@ -73,11 +73,11 @@ public class CellPhoneServiceImpl implements CellPhoneService {
     }
 
     /**
-     * The driverDAO setter.
-     * @param driverDAO the driverDAO to set
+     * The driverDAOAdapter setter.
+     * @param driverDAOAdapter the driverDAOAdapter to set
      */
-    public void setDriverDAO(DriverDAO driverDAO) {
-        this.driverDAO = driverDAO;
+    public void setDriverDAOAdapter(DriverDAOAdapter driverDAOAdapter) {
+        this.driverAdapter = driverDAOAdapter;
     }
 
     /**

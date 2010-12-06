@@ -6,9 +6,9 @@ import mockit.Mocked;
 
 import org.junit.Test;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellStatusType;
+import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
 
@@ -22,7 +22,7 @@ public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
     private PhoneStatusUpdateThread threadSUT;
     
     //Mock
-    @Mocked private DriverDAO driverDaoMock;
+    @Mocked private DriverDAOAdapter driverAdapterMock;
     @Mocked private DriverPhoneDAO phoneDaoMock;
     @Cascading private Driver driverMock;
     
@@ -32,14 +32,14 @@ public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
     @Test
     public void testEnablePhone() {
         threadSUT = new PhoneStatusUpdateThread(phoneID, CellStatusType.ENABLED);
-        threadSUT.setDriverDAO(driverDaoMock);
+        threadSUT.setDriverDAOAdapter(driverAdapterMock);
         threadSUT.setDriverPhoneDAO(phoneDaoMock);
         
         new Expectations() {
             {
-                driverDaoMock.findByPhoneNumber(phoneID); returns(driverMock);
+                driverAdapterMock.findByPhoneNumber(phoneID); returns(driverMock);
                 driverMock.setCellStatus(CellStatusType.ENABLED);
-                driverDaoMock.update(driverMock); returns(0);
+                driverAdapterMock.update(driverMock); returns(0);
                 driverMock.getDriverID(); returns(driverID); 
                 phoneDaoMock.removeDriverFromDisabledPhoneList(driverID); returns(null);
                 driverMock.getDriverID(); returns(driverID); 
@@ -55,12 +55,12 @@ public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
     @Test
     public void testRunWhenNullDriver() {
         threadSUT = new PhoneStatusUpdateThread(phoneID, CellStatusType.ENABLED);
-        threadSUT.setDriverDAO(driverDaoMock);
+        threadSUT.setDriverDAOAdapter(driverAdapterMock);
         threadSUT.setDriverPhoneDAO(phoneDaoMock);
         
         new Expectations() {
             {
-                driverDaoMock.findByPhoneNumber(phoneID); returns(null);
+                driverAdapterMock.findByPhoneNumber(phoneID); returns(null);
             }
         };
         

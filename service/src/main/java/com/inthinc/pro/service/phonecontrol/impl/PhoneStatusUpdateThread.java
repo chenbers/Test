@@ -1,10 +1,11 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellStatusType;
+import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
 
 /**
@@ -18,7 +19,7 @@ public class PhoneStatusUpdateThread extends Thread {
     private String phoneId; 
     private CellStatusType status;
     
-    private DriverDAO driverDAO;
+    @Autowired private DriverDAOAdapter driverDAOAdapter;
     private DriverPhoneDAO phoneDAO;
     
     /**
@@ -45,12 +46,12 @@ public class PhoneStatusUpdateThread extends Thread {
         
         logger.debug(LOG_PREFIX + "started for PH#-" + phoneId + " Status-" + status);
         try {
-            Driver driver = driverDAO.findByPhoneNumber(phoneId);
+            Driver driver = driverDAOAdapter.findByPhoneNumber(phoneId);
             logger.debug(LOG_PREFIX + "called driverDAO.findByPhoneID(), returned: " + driver);
             if (driver != null) {
                 logger.debug(LOG_PREFIX + " is updating driver.. ");
                 driver.setCellStatus(status);
-                driverDAO.update(driver);
+                driverDAOAdapter.update(driver);
                 
                 if (status == CellStatusType.DISABLED) {
                     phoneDAO.addDriverToDisabledPhoneList(driver.getDriverID());
@@ -64,7 +65,7 @@ public class PhoneStatusUpdateThread extends Thread {
             }
             
         } catch (Exception e) {
-            logger.error(LOG_PREFIX + "failed!", e);
+            logger.error(LOG_PREFIX + " to " + status + " failed!", e);
         }
     }
     
@@ -72,8 +73,8 @@ public class PhoneStatusUpdateThread extends Thread {
      * The driverDAO setter.
      * @param driverDAO the driverDAO to set
      */
-    public void setDriverDAO(DriverDAO driverDAO) {
-        this.driverDAO = driverDAO;
+    public void setDriverDAOAdapter(DriverDAOAdapter driverDAOAdapter) {
+        this.driverDAOAdapter = driverDAOAdapter;
     }
 
     /**
