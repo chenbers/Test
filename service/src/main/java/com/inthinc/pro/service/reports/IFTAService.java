@@ -14,7 +14,7 @@ import com.inthinc.pro.service.annotations.DateFormat;
 /**
  * Interface for IFTA/DOT Reports Services.
  */
-@Produces("{application/xml}")
+@Produces("application/xml")
 @Path("/group/{groupID}/report/IFTA")
 public interface IFTAService {
     String DATE_FORMAT = "yyyyMMdd";
@@ -32,7 +32,7 @@ public interface IFTAService {
      */
     @GET
     @Path("/roadStatus/{startDate}/{endDate}/{dotOnly}")
-    @Produces("{application/xml")
+    @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatus(@PathParam("groupID") Integer groupID,
                                   @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
                                   @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
@@ -49,7 +49,7 @@ public interface IFTAService {
      */
     @GET
     @Path("/roadStatus/{dotOnly}")
-    @Produces("{application/xml")
+    @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatusOnlyStatus(@PathParam("groupID") Integer groupID,
                                                             @PathParam("dotOnly")  @DefaultValue("false") boolean dotOnly );
     
@@ -62,7 +62,7 @@ public interface IFTAService {
      */
     @GET
     @Path("/roadStatus")
-    @Produces("{application/xml")
+    @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatusOnlyGroup(@PathParam("groupID") Integer groupID); 
     
     /**
@@ -76,7 +76,7 @@ public interface IFTAService {
      */
     @GET
     @Path("/roadStatus/{startDate}/{endDate}")
-    @Produces("{application/xml")
+    @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatusOnlyDates(@PathParam("groupID") Integer groupID,
                                   @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
                                   @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
