@@ -17,6 +17,7 @@ package com.inthinc.pro.web.selenium;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 import com.thoughtworks.selenium.CommandProcessor;
@@ -57,6 +58,35 @@ public class Core extends DefaultSelenium{
 			errors.Error(error_name, e);
 		}
 	}
+	
+	
+	public int isChecked(String element,String condition, String error_name){
+		try{
+			assertTrue( isChecked(element));
+		}catch(SeleniumException e){
+			errors.Error(error_name, e);
+			return 0;
+		}catch(Exception e){
+			errors.Error(error_name, e);
+			return 0;
+		}
+		//returns 1 if checked 0 if not checked
+		return 1;
+	}
+		
+	public String isnotChecked(String element, String error_name){
+			try{
+				assertFalse( isChecked(element));
+			}catch(SeleniumException e){
+				errors.Error(error_name, e);
+				return "no";
+			}catch(Exception e){
+				errors.Error(error_name, e);
+				return "no";
+			}
+			//returns 1 is not checked 0 if checked
+			return "yes";
+		}
 	
 	public void isElementPresent(String element, String error_name){
 		try{
@@ -174,6 +204,7 @@ public class Core extends DefaultSelenium{
 			errors.Error(error_name, e);
 		}
 	}
+	
 	
 	public void isTextNotPresent(String text, String error_name){
 		try{
