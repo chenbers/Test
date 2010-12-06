@@ -1,17 +1,24 @@
 package com.inthinc.pro.service.reports.facade;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import mockit.Cascading;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
+import mockit.Mockit;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
 
@@ -24,15 +31,13 @@ public class ReportsFacadeTest extends BaseUnitTest {
 
     private ReportsFacade reportsFacadeSUT = new ReportsFacade();
     
-    @Mocked private TiwiproPrincipal principalMock;
-
-    
-    @Test public void testGetGroupHierarchy() {
+    @Test 
+    public void testGetGroupHierarchy(@Mocked final TiwiproPrincipal principalMock) {
 
     	Deencapsulation.setField(reportsFacadeSUT, principalMock);
 
         new Expectations() {{
-                principalMock.getAccountGroupHierarchy(); returns(getHierarchy());
+                principalMock.getAccountGroupHierarchy();  returns(getHierarchy());
         }};
         
         GroupHierarchy hierarchy = reportsFacadeSUT.getAccountGroupHierarchy();
@@ -51,7 +56,24 @@ public class ReportsFacadeTest extends BaseUnitTest {
         return hierarchy;
 	}
 
-	@Test public void testGetLocale() {
+	@Test 
+	public void testGetLocale() {
         Assert.assertNotNull(reportsFacadeSUT.getLocale());
     }
+
+	@Test 
+	public void testGetMeasurementType(@Mocked final TiwiproPrincipal principalMock, 
+									   @Cascading final User userMock) {
+
+		Deencapsulation.setField(reportsFacadeSUT, principalMock);
+        
+    	new Expectations() {{
+    	  // Cannot use cascading on TiwiproPrincipal
+    	  principalMock.getUser(); returns(userMock);
+    	  userMock.getPerson().getMeasurementType(); returns(MeasurementType.METRIC);
+        }};
+    
+        assertEquals(reportsFacadeSUT.getMeasurementType(), MeasurementType.METRIC);
+    }
+
 }

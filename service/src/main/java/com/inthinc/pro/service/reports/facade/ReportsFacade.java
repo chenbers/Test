@@ -42,10 +42,6 @@ public class ReportsFacade {
         return criteria.getMainDataset();
     }
 
-    private MeasurementType getMeasurementType() {
-        // TODO to be implemented
-        return MeasurementType.ENGLISH;
-    }
 
     /**
      * Returns the user group hierarchy.
@@ -55,6 +51,15 @@ public class ReportsFacade {
     	return principal.getAccountGroupHierarchy();
     }
 
+    /** 
+     * Return the measurement type from the user preferences
+     * @return Measurement Type
+     */
+    MeasurementType getMeasurementType() {
+        return principal.getUser().getPerson().getMeasurementType();
+    }
+    
+    
     /**
      * Returns the user Locale.
      */
