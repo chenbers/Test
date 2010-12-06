@@ -268,6 +268,11 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
         public Driver findByPhoneNumber(String phoneID) {
             return null;
         }
+
+		@Override
+		public List<Driver> getDriversWithDisabledPhones() {
+			return null;
+		}
     }
 
     class MockGroupDAO implements GroupDAO {

@@ -188,4 +188,10 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         return new Driver(1, 2, Status.ACTIVE, null, null, null, "", 
                 new State(), "5", new Date(), "", 1, 2);
     }
+
+	@Override
+	public List<Driver> getDriversWithDisabledPhones() {
+		// TODO To be implemented
+		return new ArrayList<Driver>();
+	}
 }
