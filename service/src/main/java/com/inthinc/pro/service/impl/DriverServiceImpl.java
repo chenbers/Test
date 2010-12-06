@@ -14,11 +14,14 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.log4j.Logger;
+
+import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
 import com.inthinc.pro.model.event.Event;
@@ -27,7 +30,7 @@ import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
 
 public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter> implements DriverService {
-
+    private static final Logger logger = Logger.getLogger(DriverServiceImpl.class);
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     static final Integer DEFAULT_PAST_TIMING = -30;
 
@@ -182,5 +185,22 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.GroupService#getGroupDriverLocations(java.lang.Integer)
+     */
+    @Override
+    public Response getGroupDriverLocations(Integer groupID) {
+        List<DriverLocation> list = null;
+        try {
+            list = this.getDao().getDriverLocations(groupID);
+        } catch (ProxyException e) {
+            logger.error(e);
+        }
+        if (list == null || list.isEmpty()) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+        return Response.ok(new GenericEntity<List<DriverLocation>>(list) {}).build();
+    }
 
 }

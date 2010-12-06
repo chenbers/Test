@@ -12,6 +12,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
@@ -86,7 +87,7 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
     }
     
     public Trip getLastTrip(Integer driverID) {
-            return driverDAO.getLastTrip(driverID);
+        return driverDAO.getLastTrip(driverID);
     }
     
     public LastLocation getLastLocation(Integer driverID) {
@@ -94,11 +95,15 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
     }
     
     public List<Trip> getLastTrips(Integer driverID, Date startDate) {          
-            Date today = new Date();
-            return driverDAO.getTrips(driverID, startDate, today);
+        Date today = new Date();
+        return driverDAO.getTrips(driverID, startDate, today);
     }
 
-	// Getters and setters -----------------------------------------------------
+    public List<DriverLocation> getDriverLocations(Integer groupID) {
+        return driverDAO.getDriverLocations(groupID);
+    }
+
+    // Getters and setters -----------------------------------------------------
     
 	/**
 	 * @return the driverDAO
@@ -141,4 +146,5 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
 	public void setEventDAO(EventDAO eventDAO) {
 		this.eventDAO = eventDAO;
 	}
+
 }

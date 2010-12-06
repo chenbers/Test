@@ -2,6 +2,7 @@ package com.inthinc.pro.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,23 +10,22 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 
 import mockit.Expectations;
 
 import org.junit.Test;
 
+import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.service.adapters.DriverDAOAdapter;
-import com.inthinc.pro.util.SecureDriverDAO;
 
 /**
  * Unit tests for UserServiceImpl.
  */
 public class DriverServiceImplTest extends BaseUnitTest {
-    private static final String OK_RESPONSE = "Response Status: ";
-    private static final String USERNAME_MOCK = "user";
     protected static final String TOO_EARLY_STRING_START_DATE = "20100102";
     private static final SimpleDateFormat sdf = new SimpleDateFormat(DriverServiceImpl.getSimpleDateFormat());
     
@@ -269,5 +269,44 @@ public class DriverServiceImplTest extends BaseUnitTest {
         Response response = serviceSUT.getLastLocation(null);       
         assertNotNull(response);
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(),response.getStatus() );
+    }
+
+    /**
+     * Test if the right API is used when getGroupDriverLocations() is called.
+     * Test if the Response returns what is expected.
+     */
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetGroupDriverLocations(final DriverDAOAdapter driverDaoMock){
+        final Integer groupID = 1;
+        final DriverLocation location = new DriverLocation();
+        serviceSUT.setDao(driverDaoMock);
+        
+        new Expectations() {
+            {
+                driverDaoMock.getDriverLocations(groupID); returns(new ArrayList<DriverLocation>());
+                
+                List<DriverLocation> list = new ArrayList<DriverLocation>();
+                list.add(location);                
+                driverDaoMock.getDriverLocations(groupID); returns(list);
+            }
+        };
+        // check when empty list
+        Response response = serviceSUT.getGroupDriverLocations(groupID);
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        
+        // check the content
+        GenericEntity<List<DriverLocation>> entity = (GenericEntity<List<DriverLocation>>) response.getEntity();        
+        assertNull(entity);
+
+        // check when at least an element is returned
+        response = serviceSUT.getGroupDriverLocations(groupID);
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        
+        // check the content
+        entity = (GenericEntity<List<DriverLocation>>) response.getEntity();        
+        assertNotNull(entity);
+        assertEquals(1, entity.getEntity().size());
+        assertEquals(location, entity.getEntity().get(0));
     }
 }

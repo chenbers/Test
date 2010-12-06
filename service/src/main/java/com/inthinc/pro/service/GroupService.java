@@ -50,17 +50,7 @@ public interface GroupService {
     @GET
     @Path("/group/{groupID}/subgroups/scores/driver/{numberOfDays}")
     public Response getSubGroupsDriverScores(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
-    
-    /**
-     * Returns the last known location of each driver in a group.
-     * @param groupID the group ID
-     * @HTTP HTTP 200 - OK if succeeds.
-     * @HTTP HTTP 404 - NOT FOUND if error or no results.
-     */
-    @GET
-    @Path("/group/{groupID}/driverlocations")
-    public Response getGroupDriverLocations(@PathParam("groupID") Integer groupID);
-   
+       
     @POST
     @Consumes("application/xml")
     @Path("/group")

@@ -51,6 +51,14 @@ public class DriverAuthorizationAdvice implements EntityAuthorization<Driver> {
     public void receivesDriverObjectAsFirstArgument() {}
 
     /**
+     * Pointcut definition.
+     * <p/>
+     * This pointcut will match the getDriverLocations() method which receives the GroupID as the first parameter.
+     */
+    @Pointcut("execution(* com.inthinc.pro.service.adapters.DriverDAOAdapter.getDriverLocations(java.lang.Integer))")
+    public void receivesGroupID() {}
+    
+    /**
      * Advice definition.
      * <p/>
      * AfterReturning advice which checks if the user has access to the returned {@link Driver} instance. Access check to Driver entities are performed through Group and Person.
@@ -67,7 +75,7 @@ public class DriverAuthorizationAdvice implements EntityAuthorization<Driver> {
      * Before advice which checks if the user has access to the resource. Access check to Driver entities are performed through Group and Person.
      */
     @SuppressWarnings("unused")
-    @Before(value = "inDriverDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesIntegerAs1stArgumentJoinPoint() && !com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()")
+    @Before(value = "inDriverDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesIntegerAs1stArgumentJoinPoint() && !com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint() && !com.inthinc.pro.service.security.aspects.DriverAuthorizationAdvice.receivesGroupID()")
     private void doAccessCheck(JoinPoint jp) {
         Driver driver = ((DriverDAOAdapter) jp.getTarget()).findByID((Integer) jp.getArgs()[0]);
         doAccessCheck(driver);
@@ -92,11 +100,22 @@ public class DriverAuthorizationAdvice implements EntityAuthorization<Driver> {
      */
     public void doAccessCheck(Driver entity) {
         if (entity != null) {
-            Group group = groupDAO.findByID(entity.getGroupID());
             Person person = personDAO.findByID(entity.getPersonID());
-
-            groupAuthorizationAdvice.doAccessCheck(group);
             personAuthorizationAdvice.doAccessCheck(person);
+            
+            doGroupAccessCheck(entity.getGroupID());
         }
+    }
+    /**
+     * Advice definition.
+     * <p/>
+     * Before advice to check if the user has access to the Group.
+     * @param groupID
+     *            The ID of the Group to be checked.
+     */
+    @Before(value = "inDriverDAOAdapter() && receivesGroupID() && args(groupID)", argNames = "groupID")
+    private void doGroupAccessCheck(Integer groupID) {
+        Group group = groupDAO.findByID(groupID);
+        groupAuthorizationAdvice.doAccessCheck(group);
     }
 }

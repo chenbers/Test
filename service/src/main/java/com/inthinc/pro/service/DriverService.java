@@ -1,6 +1,5 @@
 package com.inthinc.pro.service;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -24,52 +23,52 @@ public interface DriverService {
 
     @GET
     @Path("/drivers")
-    public Response getAll();
+    Response getAll();
 
     @GET
     @Path("/driver/{driverID}")
-    public Response get(@PathParam("driverID") Integer driverID);
+    Response get(@PathParam("driverID") Integer driverID);
 
     @GET
     @Path("/driver/{driverID}/events/speeding")
-    public Response getSpeedingEvents(@PathParam("driverID") Integer driverID);
+    Response getSpeedingEvents(@PathParam("driverID") Integer driverID);
 
     @GET
     @Path("/driver/{driverID}/score/{numberOfDays}")
-    public Response getScore(@PathParam("driverID") Integer driverID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
+    Response getScore(@PathParam("driverID") Integer driverID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
 
     @GET
     @Path("/driver/{driverID}/trend/{numberOfDays}")
-    public Response getTrend(@PathParam("driverID") Integer driverID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
+    Response getTrend(@PathParam("driverID") Integer driverID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
     
     @POST
     @Consumes("application/xml")
     @Path("/driver")
-    public Response create(Driver driver, @Context UriInfo uriInfo);
+    Response create(Driver driver, @Context UriInfo uriInfo);
 
     @PUT
     @Consumes("application/xml")
     @Path("/driver")
-    public Response update(Driver driver);
+    Response update(Driver driver);
 
     @DELETE
     @Path("/driver/{id}")
-    public Response delete(@PathParam("id") Integer id);
+    Response delete(@PathParam("id") Integer id);
 
     @POST
     @Consumes("application/xml")
     @Path("/drivers")
-    public Response create(List<Driver> drivers, @Context UriInfo uriInfo);
+    Response create(List<Driver> drivers, @Context UriInfo uriInfo);
 
     @PUT
     @Consumes("application/xml")
     @Path("/drivers")
-    public Response update(List<Driver> drivers);
+    Response update(List<Driver> drivers);
 
     @DELETE
     @Consumes("application/xml")
     @Path("/drivers")
-    public Response delete(List<Integer> vehicleIDs);
+    Response delete(List<Integer> vehicleIDs);
     
     /**
      * Service to get the last trip of given driver.
@@ -80,7 +79,7 @@ public interface DriverService {
      */
     @GET
     @Path("/driver/{driverID}/trip")
-    public Response getLastTrip(@PathParam("driverID") Integer driverID);
+    Response getLastTrip(@PathParam("driverID") Integer driverID);
     
     /**
      * Service to get the trips of given driver that has been performed between a given date and today.
@@ -93,7 +92,7 @@ public interface DriverService {
      */
     @GET
     @Path("/driver/{driverID}/trips/{date}")
-    public Response getLastTrips(@PathParam("driverID") Integer driverID, 
+    Response getLastTrips(@PathParam("driverID") Integer driverID, 
                                  @PathParam("date") String date );
     
     /**
@@ -105,7 +104,7 @@ public interface DriverService {
      */
     @GET
     @Path("/driver/{driverID}/trips")
-    public Response getLastTrips(@PathParam("driverID") Integer driverID);
+    Response getLastTrips(@PathParam("driverID") Integer driverID);
     
     /**
      * Service to get the last location of given driverID.
@@ -116,8 +115,17 @@ public interface DriverService {
      */
     @GET
     @Path("/driver/{driverID}/location")
-    public Response getLastLocation(@PathParam("driverID") Integer driverID);
-    
-   
+    Response getLastLocation(@PathParam("driverID") Integer driverID);
+
+    /**
+     * Service to get the last location of all drivers from given groupID.
+     * @param groupID the group ID
+     * @returnWrapped List<LastLocation> the last driver location
+     * @HTTP HTTP 200 - OK if last location found
+     * @HTTP HTTP 404 - NOT FOUND if no location found 
+     */
+    @GET
+    @Path("/group/{groupID}/driverlocations")
+    Response getGroupDriverLocations(@PathParam("groupID") Integer groupID);   
 
 }
