@@ -1,10 +1,12 @@
 package com.inthinc.pro.service.reports;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import com.inthinc.pro.service.annotations.DateFormat;
@@ -21,7 +23,8 @@ public interface AssetService {
      * @param groupID
      *            The id of the group to check for.
      * 
-     * @return The amount of redflags the group has for the current day, embedded in a {@link Response} object.
+     * @returnWrapped {@link Integer} The amount of redflags the group has for the current day.
+     * @HTTP HTTP 200 OK
      */
     @GET
     @Path("/redflags/count")
@@ -35,7 +38,9 @@ public interface AssetService {
      * @param startDate
      *            The date interval range start.
      * 
-     * @return The amount of redflags the group has from the specified date to the current day, embedded in a {@link Response} object.
+     * @returnWrapped {@link Integer} The amount of redflags the group has from the specified date to the current day.
+     * @HTTP HTTP 200 OK
+     * @HTTP HTTP 400 If start date is greater than today's date or if the date is not in the yyyyMMdd format.
      */
     @GET
     @Path("/redflags/count/{startDate}")
@@ -50,8 +55,9 @@ public interface AssetService {
      *            The date interval range start.
      * @param endDate
      *            The date interval range end.
-     * 
-     * @return The amount of redflags the group has from the specified start date to the end date, embedded in a {@link Response} object.
+     * @returnWrapped {@link Integer} The amount of redflags the group has from the specified start date to the end date.
+     * @HTTP HTTP 200 OK
+     * @HTTP HTTP 400 If start date is greater than end date or if the date is not in the yyyyMMdd format.
      */
     @GET
     @Path("/redflags/count/{startDate}/{endDate}")
@@ -66,10 +72,13 @@ public interface AssetService {
      *            The record count range start.
      * @param lastRecord
      *            The record count range end.
-     * @return A list of red flags for the specified group, respecting the filter criteria.
+     * @returnWrapped {@link List} A list of red flags for the specified group, matching the filter criteria.
+     * @HTTP HTTP 200 OK
+     * @HTTP HTTP 400 If first record is greater than last record.
      */
     @GET
     @Path("/redflags/{firstRecord}/{lastRecord}")
+    @Produces("application/xml")
     public Response getRedFlags(@PathParam("groupID") Integer groupID, @PathParam("firstRecord") Integer firstRecord, @PathParam("lastRecord") Integer lastRecord);
 
     /**
@@ -83,10 +92,14 @@ public interface AssetService {
      *            The record count range end. The date interval range start.
      * @param startDate
      *            The date interval range start.
-     * @return A list of red flags for the specified group, respecting the filter criteria.
+     * @returnWrapped {@link List} A list of red flags for the specified group, matching the filter criteria.
+     * @HTTP HTTP 200 OK
+     * @HTTP HTTP 400 If start date is greater than today or if the date is not in the yyyyMMdd format.
+     * @HTTP HTTP 400 If first record is greater than last record.
      */
     @GET
     @Path("/redflags/{firstRecord}/{lastRecord}/{startDate}")
+    @Produces("application/xml")
     public Response getRedFlags(@PathParam("groupID") Integer groupID, @PathParam("firstRecord") Integer firstRecord, @PathParam("lastRecord") Integer lastRecord,
             @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate);
 
@@ -103,10 +116,14 @@ public interface AssetService {
      *            The date interval range start.
      * @param endDate
      *            The date interval range end.
-     * @return Gets a list of red flags for the specified group, respecting the filter criteria.
+     * @returnWrapped {@link List} A list of red flags for the specified group, matching the filter criteria.
+     * @HTTP HTTP 200 OK
+     * @HTTP HTTP 400 If start date is greater than end date or if the date is not in the yyyyMMdd format.
+     * @HTTP HTTP 400 If first record is greater than last record.
      */
     @GET
     @Path("/redflags/{firstRecord}/{lastRecord}/{startDate}/{endDate}")
+    @Produces("application/xml")
     public Response getRedFlags(@PathParam("groupID") Integer groupID, @PathParam("firstRecord") Integer firstRecord, @PathParam("lastRecord") Integer lastRecord,
             @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate, @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate);
 

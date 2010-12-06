@@ -3,8 +3,10 @@ package com.inthinc.pro.model;
 import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.adapter.TimeZoneXmlAdapter;
 import com.inthinc.pro.model.event.Event;
 
 @XmlRootElement
@@ -65,6 +67,8 @@ public class RedFlag extends BaseEntity
     {
         this.event = event;
     }
+    
+    @XmlJavaTypeAdapter(TimeZoneXmlAdapter.class)
     public TimeZone getTimezone()
     {
         return timezone;

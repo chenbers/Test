@@ -2,15 +2,15 @@ package com.inthinc.pro.service.reports.impl;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.ws.rs.core.Response;
+
 import mockit.Expectations;
 
-import org.jboss.resteasy.spi.BadRequestException;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -32,8 +32,8 @@ public class AssetServiceImplTest {
     public void testGetsRedFlagCountForTodaysDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
         final DateMidnight dateMidnight = new DateMidnight();
-        final Date expectedBeginningOfDay = dateMidnight.toDate();
-        final Date expectedEndOfDay = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 23, 59, 59, 999).toDate();
+        final Date expectedStartDate = dateMidnight.toDate();
+        final Date expectedEndDate = dateMidnight.toDate();
 
         // Some pseudo random time for today date.
         final Date today = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 12, 35, 47, 647).toDate();
@@ -44,7 +44,7 @@ public class AssetServiceImplTest {
                 systemClock.getNow();
                 result = today;
 
-                redflagDaoMock.getRedFlagCount(withEqual(SAMPLE_GROUP_ID), withEqual(expectedBeginningOfDay), withEqual(expectedEndOfDay), withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
+                redflagDaoMock.getRedFlagCount(withEqual(SAMPLE_GROUP_ID), withEqual(expectedStartDate), withEqual(expectedEndDate), withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
                         withEqual(new ArrayList<TableFilterField>()));
                 result = 200;
             }
@@ -62,7 +62,8 @@ public class AssetServiceImplTest {
 
         // Expected end date is today's
         final DateMidnight dateMidnight = new DateMidnight();
-        final Date expectedEndDate = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 23, 59, 59, 999).toDate();
+        final Date expectedStartDate = new DateMidnight(startDate).toDate();
+        final Date expectedEndDate = dateMidnight.toDate();
 
         // Some pseudo random time for today's date.
         final Date today = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 12, 35, 47, 647).toDate();
@@ -73,7 +74,7 @@ public class AssetServiceImplTest {
                 systemClock.getNow();
                 result = today;
 
-                redflagDaoMock.getRedFlagCount(withEqual(77), withSameInstance(startDate), withEqual(expectedEndDate), withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
+                redflagDaoMock.getRedFlagCount(withEqual(77), withEqual(expectedStartDate), withEqual(expectedEndDate), withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
                         withEqual(new ArrayList<TableFilterField>()));
                 result = 200;
             }
@@ -104,12 +105,13 @@ public class AssetServiceImplTest {
         assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate, endDate);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testGetsRedFlagsForTodaysDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
         final DateMidnight dateMidnight = new DateMidnight();
         final Date expectedBeginningOfDay = dateMidnight.toDate();
-        final Date expectedEndOfDay = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 23, 59, 59, 999).toDate();
+        final Date expectedEndOfDay = dateMidnight.toDate();
 
         // Some pseudo random time for today date.
         final Date today = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 12, 35, 47, 647).toDate();
@@ -123,6 +125,7 @@ public class AssetServiceImplTest {
                 result = today;
 
                 redflagDaoMock.getRedFlagPage(withEqual(SAMPLE_GROUP_ID), withEqual(expectedBeginningOfDay), withEqual(expectedEndOfDay), withEqual(RedFlagDAO.INCLUDE_FORGIVEN), (PageParams) any);
+                result = new ArrayList();
                 forEachInvocation = new Object() {
                     @SuppressWarnings("unused")
                     void validate(Integer groupID, Date startDate, Date endDate, Integer includeForgiven, PageParams pageParams) {
@@ -130,7 +133,6 @@ public class AssetServiceImplTest {
                     }
                 };
 
-                result = 200;
             }
         };
 
@@ -138,6 +140,7 @@ public class AssetServiceImplTest {
         assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_START_ROW, PAGE_END_ROW);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testGetsRedFlagsFromBeginDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
@@ -145,8 +148,8 @@ public class AssetServiceImplTest {
         final Date startDate = new DateTime(2010, 11, 25, 0, 0, 0, 0).toDate();
 
         // Expected end date is today's
-        final DateMidnight dateMidnight = new DateMidnight();
-        final Date expectedEndDate = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 23, 59, 59, 999).toDate();
+        DateMidnight dateMidnight = new DateMidnight();
+        final Date expectedEndDate = dateMidnight.toDate();
 
         // Some pseudo random time for today's date.
         final Date today = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 12, 35, 47, 647).toDate();
@@ -160,14 +163,13 @@ public class AssetServiceImplTest {
                 result = today;
 
                 redflagDaoMock.getRedFlagPage(withEqual(SAMPLE_GROUP_ID), withEqual(startDate), withEqual(expectedEndDate), withEqual(RedFlagDAO.INCLUDE_FORGIVEN), (PageParams) any);
+                result = new ArrayList();
                 forEachInvocation = new Object() {
                     @SuppressWarnings("unused")
                     void validate(Integer groupID, Date startDate, Date endDate, Integer includeForgiven, PageParams pageParams) {
                         validatePageParamsAttributes(expectedPageParams, pageParams);
                     }
                 };
-
-                result = 200;
             }
         };
 
@@ -175,6 +177,7 @@ public class AssetServiceImplTest {
         assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_START_ROW, PAGE_END_ROW, startDate);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void testGetsRedFlagsFromBeginDateToEndDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
@@ -189,14 +192,13 @@ public class AssetServiceImplTest {
         new Expectations() {
             {
                 redflagDaoMock.getRedFlagPage(withEqual(SAMPLE_GROUP_ID), withEqual(startDate), withEqual(endDate), withEqual(RedFlagDAO.INCLUDE_FORGIVEN), (PageParams) any);
+                result = new ArrayList();
                 forEachInvocation = new Object() {
                     @SuppressWarnings("unused")
                     void validate(Integer groupID, Date startDate, Date endDate, Integer includeForgiven, PageParams pageParams) {
                         validatePageParamsAttributes(expectedPageParams, pageParams);
                     }
                 };
-
-                result = 200;
             }
         };
 
@@ -230,17 +232,13 @@ public class AssetServiceImplTest {
         };
 
         AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
-        try {
-            assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate);
-            fail("Should have thrown " + BadRequestException.class);
-        } catch (BadRequestException e) {
-            // Ok expected
-        }
+        Response response = assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate);
+        assertEquals(400, response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testFailsIfStartDateBeforeLastYear(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+    public void testCountFailsIfStartDateBeforeLastYear(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
         // Expected end date is today's
         final DateMidnight dateMidnight = new DateMidnight();
@@ -250,7 +248,7 @@ public class AssetServiceImplTest {
         final Date today = todayDateTime.toDate();
 
         // Start date will be one year and one day before now
-        final Date startDate = new DateTime(todayDateTime.getYear(), todayDateTime.getMonthOfYear(), todayDateTime.getDayOfMonth(), 0, 0, 0, 0).minusYears(1).minusMillis(1).toDate();
+        final Date startDate = dateMidnight.minusYears(1).minusDays(1).toDate();
 
         // Expectations & stubbing
         new Expectations() {
@@ -264,22 +262,18 @@ public class AssetServiceImplTest {
         };
 
         AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
-        try {
-            assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate);
-            fail("Should have thrown " + BadRequestException.class);
-        } catch (BadRequestException e) {
-            // Ok expected
-        }
+        Response response = assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate);
+        assertEquals(400, response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testFailsIfStartDateAfterEndDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+    public void testCountFailsIfStartDateAfterEndDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
         // End date will be 2010-12-31
-        final Date endDate = new DateTime(2010, 12, 31, 0, 0, 0, 0).toDate();
+        final Date endDate = new DateTime(2010, 12, 30, 0, 0, 0, 0).toDate();
         // Start date will be 1 millisecond after end date
-        final Date startDate = new DateTime(2010, 12, 31, 0, 0, 0, 1).toDate();
+        final Date startDate = new DateTime(2010, 12, 31, 0, 0, 0, 0).toDate();
 
         // Expectations & stubbing
         new Expectations() {
@@ -290,12 +284,85 @@ public class AssetServiceImplTest {
         };
 
         AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
-        try {
-            assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate, endDate);
-            fail("Should have thrown " + BadRequestException.class);
-        } catch (BadRequestException e) {
-            // Ok expected
-        }
+
+        Response response = assetService.getRedFlagCount(SAMPLE_GROUP_ID, startDate, endDate);
+        assertEquals(400, response.getStatus());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetFlagsFailsIfStartDateBeforeLastYear(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+
+        // Expected end date is today's
+        final DateMidnight dateMidnight = new DateMidnight();
+
+        // Some pseudo random time for today's date.
+        DateTime todayDateTime = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 12, 35, 47, 647);
+        final Date today = todayDateTime.toDate();
+
+        // Start date will be one year and one day before now
+        final Date startDate = dateMidnight.minusYears(1).minusDays(1).toDate();
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                systemClock.getNow();
+                result = today;
+
+                redflagDaoMock.getRedFlagCount((Integer) any, (Date) any, (Date) any, (Integer) any, (List) any);
+                times = 0;
+            }
+        };
+
+        AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
+        Response response = assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_START_ROW, PAGE_END_ROW, startDate);
+        assertEquals(400, response.getStatus());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testgetFlagsFailsIfStartDateAfterEndDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+
+        // End date will be 2010-12-30
+        final Date endDate = new DateTime(2010, 12, 30, 0, 0, 0, 0).toDate();
+        // Start date will be 2010-12-31
+        final Date startDate = new DateTime(2010, 12, 31, 0, 0, 0, 0).toDate();
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                redflagDaoMock.getRedFlagCount((Integer) any, (Date) any, (Date) any, (Integer) any, (List) any);
+                times = 0;
+            }
+        };
+
+        AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
+
+        Response response = assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_START_ROW, PAGE_END_ROW, startDate, endDate);
+        assertEquals(400, response.getStatus());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testFailsIfFirstRowGreaterThanLastRow(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+
+        // Start date
+        final Date startDate = new DateTime(2010, 12, 1, 0, 0, 0, 0).toDate();
+        // End date
+        final Date endDate = new DateTime(2010, 12, 31, 0, 0, 0, 0).toDate();
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                redflagDaoMock.getRedFlagCount((Integer) any, (Date) any, (Date) any, (Integer) any, (List) any);
+                times = 0;
+            }
+        };
+
+        AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
+
+        Response response = assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_END_ROW, PAGE_START_ROW, startDate, endDate);
+        assertEquals(400, response.getStatus());
     }
 
     private PageParams createPageParams() {
