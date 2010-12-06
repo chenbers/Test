@@ -26,10 +26,7 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
 @Component
 public class IFTAServiceImpl implements IFTAService {
     
-    /**
-     * @deprecated Use {@link ReportsFacade#DAYS_BACK} instead
-     */
-    private final static int DAYS_BACK = ReportsFacade.DAYS_BACK;
+    private final static Integer DAYS_BACK = -6;
 
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     
@@ -41,13 +38,10 @@ public class IFTAServiceImpl implements IFTAService {
     }
     
     @Override
-    public Response getStateMileageByVehicleRoadStatus(Integer groupID, String strStartDate, String strEndDate, boolean dotOnly) {
-        if(invalidParameters(groupID, strStartDate, strEndDate, dotOnly)) {
+    public Response getStateMileageByVehicleRoadStatus(Integer groupID, Date startDate, Date endDate, boolean dotOnly) {
+        if(invalidParameters(groupID, startDate, endDate, dotOnly)) {
             return Response.status(Status.BAD_REQUEST).build();
         }
-        
-        Date startDate = buildDateFromString(strStartDate);
-        Date endDate = buildDateFromString(strEndDate);
         
         List<StateMileageByVehicleRoadStatus> list = null;
         
@@ -65,35 +59,16 @@ public class IFTAServiceImpl implements IFTAService {
         return Response.status(Status.NOT_FOUND).build();
     }
 
-    private boolean invalidParameters(Integer groupID, String strStartDate, String strEndDate, boolean ifta) {
+    private boolean invalidParameters(Integer groupID, Date startDate, Date endDate, boolean ifta) {
         boolean res = false;
 
-        if( groupID == null || strStartDate == null || strEndDate == null )
+        if( groupID == null || startDate == null || endDate == null ){
             res = true;
-        
-        Date startDate = buildDateFromString(strStartDate);
-        Date endDate = buildDateFromString(strEndDate);
-
-        if(startDate == null || endDate == null || endDate.before(startDate))
-            res = true;
-
-        return res;
-    }
-
-    private Date buildDateFromString(String strDate) {
-        if(strDate == null)
-            return null;
-
-        DateFormat df = new SimpleDateFormat(getSimpleDateFormat()); 
-        try
-        {
-            Date convertedDate = df.parse(strDate);           
-            return convertedDate;
-        } catch (ParseException e)
-        {
-            e.printStackTrace();
-            return null;
         }
+        else if(endDate.before(startDate)) {
+            res = true;
+        }
+        return res;
     }
 
     public static String getSimpleDateFormat() {
@@ -101,25 +76,48 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     @Override
-    public Response getStateMileageByVehicleRoadStatusDefaultRange(Integer groupID, boolean dotOnly) {
-        return getStateMileageByVehicleRoadStatus(groupID, daysAgoAsString(ReportsFacade.DAYS_BACK) , todayAsString(), dotOnly);
-    }
+    public Response getStateMileageByVehicleRoadStatusOnlyStatus(Integer groupID, boolean dotOnly) {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
+        today.set(Calendar.MINUTE, 0);                 // set minute in hour
+        today.set(Calendar.SECOND, 0);                 // set second in minute
+        today.set(Calendar.MILLISECOND, 0);            // set millis in second
 
-    private String todayAsString() {
-        DateFormat df = new SimpleDateFormat(getSimpleDateFormat()); 
-        Calendar c = Calendar.getInstance();     
-        return df.format(c.getTime());
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
+        startDate.set(Calendar.MINUTE, 0);                 // set minute in hour
+        startDate.set(Calendar.SECOND, 0);                 // set second in minute
+        startDate.set(Calendar.MILLISECOND, 0);            // set millis in second
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+        
+        return getStateMileageByVehicleRoadStatus(groupID, startDate.getTime() , today.getTime() , dotOnly);
     }
-
-    private String daysAgoAsString(Integer daysBack) {
-        DateFormat df = new SimpleDateFormat(getSimpleDateFormat()); 
-        Calendar c = Calendar.getInstance(); 
-        c.add(Calendar.DATE, -daysBack);      
-        return df.format(c.getTime());
-    }
-
+    
     public void setFacade(ReportsFacade reportsFacade) {
         this.reportsFacade = reportsFacade;   
+    }
+
+    @Override
+    public Response getStateMileageByVehicleRoadStatusOnlyDates(Integer groupID, Date startDate, Date endDate) {
+        return getStateMileageByVehicleRoadStatus(groupID, startDate ,endDate , false);
+    }
+
+    @Override
+    public Response getStateMileageByVehicleRoadStatusOnlyGroup(Integer groupID) {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
+        today.set(Calendar.MINUTE, 0);                 // set minute in hour
+        today.set(Calendar.SECOND, 0);                 // set second in minute
+        today.set(Calendar.MILLISECOND, 0);            // set millis in second
+
+        Calendar startDate = Calendar.getInstance();
+        startDate.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
+        startDate.set(Calendar.MINUTE, 0);                 // set minute in hour
+        startDate.set(Calendar.SECOND, 0);                 // set second in minute
+        startDate.set(Calendar.MILLISECOND, 0);            // set millis in second
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+        
+        return getStateMileageByVehicleRoadStatus(groupID, startDate.getTime() , today.getTime() , false);
     }
 
 
