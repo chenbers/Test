@@ -20,7 +20,7 @@ import com.inthinc.pro.service.adapters.UserDAOAdapter;
  */
 @Aspect
 @Component
-public class UserAuthorizationAdvice {
+public class UserAuthorizationAdvice implements EntityAuthorization<User> {
 
     @Autowired
     private GroupAuthorizationAdvice groupAuthorizationAdvice;
@@ -63,8 +63,9 @@ public class UserAuthorizationAdvice {
      * <p/>
      * Advice which checks if the user has access to the {@link User} resource. Access check to User entities are performed through Group and Person.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inUserDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesIntegerAs1stArgumentJoinPoint() && !com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()")
-    public void doAccessCheck(JoinPoint jp) {
+    private void doAccessCheck(JoinPoint jp) {
         User user = ((UserDAOAdapter) jp.getTarget()).findByID((Integer) jp.getArgs()[0]);
         doAccessCheck(user);
     }
@@ -74,8 +75,9 @@ public class UserAuthorizationAdvice {
      * <p/>
      * Advice which checks if the user has access to the {@link User} instance. Access check to User entities are performed through Group and Person.
      */
+    @SuppressWarnings("unused")
     @Before(value = "loginJoinPoint()")
-    public void doLoginAccessCheck(JoinPoint jp) {
+    private void doLoginAccessCheck(JoinPoint jp) {
         User user = ((UserDAOAdapter) jp.getTarget()).findByUserName((String) jp.getArgs()[0]);
         doAccessCheck(user);
     }
@@ -85,8 +87,9 @@ public class UserAuthorizationAdvice {
      * <p/>
      * AfterReturning advice which checks if the user has access to the returned {@link User} instance. Access check to User entities are performed through Group and Person.
      */
+    @SuppressWarnings("unused")
     @AfterReturning(value = "com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint() && inUserDAOAdapter()", returning = "retVal", argNames = "retVal")
-    public void doFindByAccessCheck(User retVal) {
+    private void doFindByAccessCheck(User retVal) {
         doAccessCheck(retVal);
     }
 
@@ -95,12 +98,22 @@ public class UserAuthorizationAdvice {
      * <p/>
      * Access check to {@link User} entities are performed through Group and Person.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inUserDAOAdapter() && receivesUserObjectAsFirstArgument() && args(entity)", argNames = "entity")
-    public void doAccessCheck(User entity) {
-        Group group = groupDAO.findByID(entity.getGroupID());
-        Person person = personDAO.findByID(entity.getPersonID());
+    private void doEntityAccessCheck(User entity) {
+        doAccessCheck(entity);
+    }
 
-        groupAuthorizationAdvice.doAccessCheck(group);
-        personAuthorizationAdvice.doAccessCheck(person);
+    /**
+     * @see com.inthinc.pro.service.security.aspects.EntityAuthorization#doAccessCheck(java.lang.Object)
+     */
+    public void doAccessCheck(User entity) {
+        if (entity != null) {
+            Group group = groupDAO.findByID(entity.getGroupID());
+            Person person = personDAO.findByID(entity.getPersonID());
+
+            groupAuthorizationAdvice.doAccessCheck(group);
+            personAuthorizationAdvice.doAccessCheck(person);
+        }
     }
 }

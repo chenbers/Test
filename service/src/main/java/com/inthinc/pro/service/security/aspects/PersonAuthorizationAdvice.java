@@ -21,15 +21,15 @@ import com.inthinc.pro.service.security.TiwiproPrincipal;
  */
 @Aspect
 @Component
-public class PersonAuthorizationAdvice {
+public class PersonAuthorizationAdvice implements EntityAuthorization<Person> {
 
     @Autowired
     private TiwiproPrincipal principal;
 
     @Autowired
     private BaseAuthorizationAdvice baseAuthorizationAdvice;
-    
-    @Autowired 
+
+    @Autowired
     private AddressDAO addressDao;
 
     /**
@@ -53,8 +53,9 @@ public class PersonAuthorizationAdvice {
      * <p/>
      * Before advice which checks if the user has permissions to create a {@link Person} entity with another AccountId. Access is granted only to Inthinc users.
      */
+    @SuppressWarnings("unused")
     @Before(value = "createWithAccountJoinPoint() && args(id,entity)", argNames = "id,entity")
-    public void doAccessCheck(Integer id, Person entity) {
+    private void doAccessCheck(Integer id, Person entity) {
         if (!principal.isInthincUser()) {
             throw new AccessDeniedException("Principal does not have the proper permission to create the resource.");
         }
@@ -66,10 +67,10 @@ public class PersonAuthorizationAdvice {
      * Access to Person entities also require that the address passes validation. Aspects are additive. So we only require to define the check for Address, since the check on
      * person is done by the BaseAuthenticationAspect.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inPersonDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesHasAccountIdObjectAsFirstArgument() && args(entity)", argNames = "entity")
-    public void doAccessCheck(Person entity) {
-        Address address = addressDao.findByID(entity.getAddressID());
-        baseAuthorizationAdvice.doAccessCheck(address);
+    private void doPersonAccessCheck(Person entity) {
+        doAccessCheck(entity);
     }
 
     /**
@@ -79,12 +80,17 @@ public class PersonAuthorizationAdvice {
      * <p/>
      * It needs a distinct joinpoint and advice for delete so it does not conflict with other methods which receives an Integer.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inPersonDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.deleteJoinPoint() && args(entityId)", argNames = "entityId")
-    public void doDeleteAccessCheck(JoinPoint jp, Integer entityId) {
+    private void doDeleteAccessCheck(JoinPoint jp, Integer entityId) {
         BaseDAOAdapter<?> adapter = (BaseDAOAdapter<?>) jp.getTarget();
         Person entity = (Person) adapter.findByID(entityId);
-        Address address = addressDao.findByID(entity.getAddressID());
-        
+        Address address = null;
+
+        if (entity != null) {
+            address = addressDao.findByID(entity.getAddressID());
+        }
+
         baseAuthorizationAdvice.doAccessCheck(entity);
         baseAuthorizationAdvice.doAccessCheck(address);
     }
@@ -95,10 +101,21 @@ public class PersonAuthorizationAdvice {
      * Access to Person entities also require that the address passes validation. Aspects are additive. So we only require to define the check for Address, since the check on
      * person is done by the BaseAuthenticationAspect.
      */
+    @SuppressWarnings("unused")
     @AfterReturning(value = "inPersonDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()", returning = "retVal", argNames = "retVal")
-    public void doFindByAccessCheck(Person retVal) {
+    private void doFindByAccessCheck(Person retVal) {
         Address address = addressDao.findByID(retVal.getAddressID());
         baseAuthorizationAdvice.doAccessCheck(address);
+    }
+
+    /**
+     * @see com.inthinc.pro.service.security.aspects.EntityAuthorization#doAccessCheck(java.lang.Object)
+     */
+    public void doAccessCheck(Person entity) {
+        if (entity != null) {
+            Address address = addressDao.findByID(entity.getAddressID());
+            baseAuthorizationAdvice.doAccessCheck(address);
+        }
     }
 
     public AddressDAO getAddressDao() {

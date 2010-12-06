@@ -17,7 +17,7 @@ import com.inthinc.pro.service.security.TiwiproPrincipal;
  */
 @Aspect
 @Component
-public class BaseAuthorizationAdvice {
+public class BaseAuthorizationAdvice implements EntityAuthorization<HasAccountId> {
 
     /**
      * Pointcut definition.
@@ -43,7 +43,7 @@ public class BaseAuthorizationAdvice {
      */
     @Pointcut("execution(* com.inthinc.pro.service.adapters.*.*(java.lang.Integer,..))")
     public void receivesIntegerAs1stArgumentJoinPoint() {}
-    
+
     /**
      * Pointcut definition.
      * <p/>
@@ -81,13 +81,10 @@ public class BaseAuthorizationAdvice {
      * <p/>
      * Note the argNames attribute in the @Before aspect. This is required since there's no guarantee the code will be compiled with debug information or with the AspectJ compiler.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inAdaptersLayer() && receivesHasAccountIdObjectAsFirstArgument() && args(entity)", argNames = "entity")
-    public void doAccessCheck(HasAccountId entity) {
-        if (entity != null) {
-            if (!principal.isInthincUser() && !principal.getAccountID().equals(entity.getAccountID())) {
-                throw new AccessDeniedException("Principal does not have the proper permission to access the resource.");
-            }
-        }
+    private void doEntityAccessCheck(HasAccountId entity) {
+        doAccessCheck(entity);
     }
 
     /**
@@ -98,9 +95,21 @@ public class BaseAuthorizationAdvice {
      * <p/>
      * Note that AspectJ will only invoke this advice if the returning object is of type {@link HasAccountId}.
      */
+    @SuppressWarnings("unused")
     @AfterReturning(value = "findByJoinPoint()", returning = "retVal", argNames = "retVal")
-    public void doFindByAccessCheck(HasAccountId retVal) {
+    private void doFindByAccessCheck(HasAccountId retVal) {
         doAccessCheck(retVal);
+    }
+
+    /**
+     * @see com.inthinc.pro.service.security.aspects.EntityAuthorization#doAccessCheck(java.lang.Object)
+     */
+    public void doAccessCheck(HasAccountId entity) {
+        if (entity != null) {
+            if (!principal.isInthincUser() && !principal.getAccountID().equals(entity.getAccountID())) {
+                throw new AccessDeniedException("Principal does not have the proper permission to access the resource.");
+            }
+        }
     }
 
     @Autowired

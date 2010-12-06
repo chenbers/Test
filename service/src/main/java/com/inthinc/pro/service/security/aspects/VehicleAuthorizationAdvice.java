@@ -23,7 +23,7 @@ import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
  */
 @Aspect
 @Component
-public class VehicleAuthorizationAdvice {
+public class VehicleAuthorizationAdvice implements EntityAuthorization<Vehicle> {
 
     @Autowired
     private GroupAuthorizationAdvice groupAuthorizationAdvice;
@@ -80,8 +80,9 @@ public class VehicleAuthorizationAdvice {
      * <p/>
      * Advice which checks if the user has access to the {@link User} resource. Access check to User entities are performed through Group and Person.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inVehicleDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesIntegerAs1stArgumentJoinPoint() && !com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()")
-    public void doAccessCheck(JoinPoint jp) {
+    private void doAccessCheck(JoinPoint jp) {
         Vehicle vehicle = ((VehicleDAOAdapter) jp.getTarget()).findByID((Integer) jp.getArgs()[0]);
         doAccessCheck(vehicle);
     }
@@ -93,8 +94,9 @@ public class VehicleAuthorizationAdvice {
      * <p/>
      * Vehicle is already verified by doAccessCheck() so only the check on device is required.
      */
+    @SuppressWarnings("unused")
     @Before(value = "assignDeviceJoinPoint()")
-    public void doAssignDeviceAccessCheck(JoinPoint jp) {
+    private void doAssignDeviceAccessCheck(JoinPoint jp) {
         Device device = deviceDAO.findByID((Integer) jp.getArgs()[1]);
         baseAuthorizationAdvice.doAccessCheck(device);
     }
@@ -106,8 +108,9 @@ public class VehicleAuthorizationAdvice {
      * <p/>
      * Vehicle is already verified by doAccessCheck() so only the check on driver is required.
      */
+    @SuppressWarnings("unused")
     @Before(value = "assignDriverJoinPoint()")
-    public void doAssignDriverAccessCheck(JoinPoint jp) {
+    private void doAssignDriverAccessCheck(JoinPoint jp) {
         Driver driver = driverDAO.findByID((Integer) jp.getArgs()[1]);
         driverAuthorizationAdvice.doAccessCheck(driver);
     }
@@ -117,8 +120,9 @@ public class VehicleAuthorizationAdvice {
      * <p/>
      * AfterReturning advice which checks if the user has access to the returned {@link User} instance. Access check to User entities are performed through Group and Person.
      */
+    @SuppressWarnings("unused")
     @AfterReturning(value = "com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint() && inVehicleDAOAdapter()", returning = "retVal", argNames = "retVal")
-    public void doFindByAccessCheck(Vehicle retVal) {
+    private void doFindByAccessCheck(Vehicle retVal) {
         doAccessCheck(retVal);
     }
 
@@ -127,10 +131,19 @@ public class VehicleAuthorizationAdvice {
      * <p/>
      * Access check to {@link User} entities are performed through Group and Person.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inVehicleDAOAdapter() && receivesVehicleObjectAsFirstArgument() && args(entity)", argNames = "entity")
-    public void doAccessCheck(Vehicle entity) {
-        Group group = groupDAO.findByID(entity.getGroupID());
+    private void doVehicleAccessCheck(Vehicle entity) {
+        doAccessCheck(entity);
+    }
 
-        groupAuthorizationAdvice.doAccessCheck(group);
+    /**
+     * @see com.inthinc.pro.service.security.aspects.EntityAuthorization#doAccessCheck(java.lang.Object)
+     */
+    public void doAccessCheck(Vehicle entity) {
+        if (entity != null) {
+            Group group = groupDAO.findByID(entity.getGroupID());
+            groupAuthorizationAdvice.doAccessCheck(group);
+        }
     }
 }

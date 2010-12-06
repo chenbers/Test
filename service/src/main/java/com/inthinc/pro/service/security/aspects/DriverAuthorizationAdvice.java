@@ -20,7 +20,7 @@ import com.inthinc.pro.service.adapters.DriverDAOAdapter;
  */
 @Aspect
 @Component
-public class DriverAuthorizationAdvice {
+public class DriverAuthorizationAdvice implements EntityAuthorization<Driver> {
 
     @Autowired
     private GroupAuthorizationAdvice groupAuthorizationAdvice;
@@ -55,18 +55,20 @@ public class DriverAuthorizationAdvice {
      * <p/>
      * AfterReturning advice which checks if the user has access to the returned {@link Driver} instance. Access check to Driver entities are performed through Group and Person.
      */
+    @SuppressWarnings("unused")
     @AfterReturning(value = "com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint() && inDriverDAOAdapter()", returning = "retVal", argNames = "retVal")
-    public void doFindByAccessCheck(Driver retVal) {
+    private void doFindByAccessCheck(Driver retVal) {
         doAccessCheck(retVal);
     }
 
     /**
      * Advice definition.
      * <p/>
-     * AfterReturning advice which checks if the user has access to the returned {@link Driver} instance. Access check to Driver entities are performed through Group and Person.
+     * Before advice which checks if the user has access to the resource. Access check to Driver entities are performed through Group and Person.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inDriverDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesIntegerAs1stArgumentJoinPoint() && !com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()")
-    public void doAccessCheck(JoinPoint jp) {
+    private void doAccessCheck(JoinPoint jp) {
         Driver driver = ((DriverDAOAdapter) jp.getTarget()).findByID((Integer) jp.getArgs()[0]);
         doAccessCheck(driver);
     }
@@ -75,13 +77,26 @@ public class DriverAuthorizationAdvice {
      * Advice definition.
      * <p/>
      * Access check to Driver entities are performed through Group and Person.
+     * 
+     * @param entity
+     *            The driver to be checked.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inDriverDAOAdapter() && receivesDriverObjectAsFirstArgument() && args(entity)", argNames = "entity")
-    public void doAccessCheck(Driver entity) {
-        Group group = groupDAO.findByID(entity.getGroupID());
-        Person person = personDAO.findByID(entity.getPersonID());
+    private void doDriverAccessCheck(Driver entity) {
+        doAccessCheck(entity);
+    }
 
-        groupAuthorizationAdvice.doAccessCheck(group);
-        personAuthorizationAdvice.doAccessCheck(person);
+    /**
+     * @see com.inthinc.pro.service.security.aspects.EntityAuthorization#doAccessCheck(java.lang.Object)
+     */
+    public void doAccessCheck(Driver entity) {
+        if (entity != null) {
+            Group group = groupDAO.findByID(entity.getGroupID());
+            Person person = personDAO.findByID(entity.getPersonID());
+
+            groupAuthorizationAdvice.doAccessCheck(group);
+            personAuthorizationAdvice.doAccessCheck(person);
+        }
     }
 }

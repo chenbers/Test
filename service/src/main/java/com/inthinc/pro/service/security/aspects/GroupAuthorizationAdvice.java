@@ -15,7 +15,7 @@ import com.inthinc.pro.service.adapters.GroupDAOAdapter;
  */
 @Aspect
 @Component
-public class GroupAuthorizationAdvice {
+public class GroupAuthorizationAdvice implements EntityAuthorization<Group> {
 
     @Autowired
     private BaseAuthorizationAdvice baseAuthorizationAdvice;
@@ -33,17 +33,17 @@ public class GroupAuthorizationAdvice {
      * <p/>
      * Advice which checks if the user has access to the {@link Group} resource.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inGroupDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.receivesIntegerAs1stArgumentJoinPoint() && !com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()")
-    public void doAccessCheck(JoinPoint jp) {
+    private void doGroupAccessCheck(JoinPoint jp) {
         Group group = ((GroupDAOAdapter) jp.getTarget()).findByID((Integer) jp.getArgs()[0]);
         doAccessCheck(group);
     }
 
     /**
-     * Access to Group entities is done by the BaseAuthenticationAspect.
+     * @see com.inthinc.pro.service.security.aspects.EntityAuthorization#doAccessCheck(java.lang.Object)
      */
     public void doAccessCheck(Group entity) {
         baseAuthorizationAdvice.doAccessCheck(entity);
     }
-
 }

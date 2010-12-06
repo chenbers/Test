@@ -15,7 +15,7 @@ import com.inthinc.pro.service.adapters.AddressDAOAdapter;
  */
 @Aspect
 @Component
-public class AddressAuthorizationAdvice {
+public class AddressAuthorizationAdvice implements EntityAuthorization<Address> {
 
     @Autowired
     private BaseAuthorizationAdvice baseAuthorizationAdvice;
@@ -33,11 +33,12 @@ public class AddressAuthorizationAdvice {
      * <p/>
      * Before advice which checks if the user has access to delete the entity. Only Inthinc users are allowed to delete accounts.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inAddressDAOAdapter() && (com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.deleteJoinPoint()) && args(addressId)", argNames = "addressId")
-    public void doDeleteAccessCheck(JoinPoint pjp, Integer addressId) {
+    private void doDeleteAccessCheck(JoinPoint pjp, Integer addressId) {
         AddressDAOAdapter adapter = (AddressDAOAdapter) pjp.getTarget();
         Address address = adapter.findByID(addressId);
-        baseAuthorizationAdvice.doAccessCheck(address);
+        doAccessCheck(address);
     }
 
     /**
@@ -45,8 +46,17 @@ public class AddressAuthorizationAdvice {
      * <p/>
      * Before advice which checks if the user has access to get a list of accounts. Only Inthinc users are allowed to list all accounts.
      */
+    @SuppressWarnings("unused")
     @Before(value = "inAddressDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.getAllJoinPoint()")
-    public void doGetAllAccessCheck() {
+    private void doGetAllAccessCheck() {
     // Not yet implemented. Do nothing.
+    }
+
+    /**
+     * @see com.inthinc.pro.service.security.aspects.EntityAuthorization#doAccessCheck(java.lang.Object)
+     */
+    @Override
+    public void doAccessCheck(Address entity) {
+        baseAuthorizationAdvice.doAccessCheck(entity);
     }
 }
