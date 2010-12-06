@@ -25,7 +25,9 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
+import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.MpgHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.ScoreHessianDAO;
@@ -37,12 +39,14 @@ import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.CrashSummary;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverScore;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
 import com.inthinc.pro.model.MpgEntity;
+import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
@@ -850,6 +854,33 @@ public class ReportServiceTest {
         assertEquals("getEntities mpgHeavy", expectedDailyFleetMPGHeavy, ((entity.getHeavyValue() == null) ? Double.valueOf(0) : entity.getHeavyValue()));
     }
 
+    @Test
+    @Ignore
+    public void getTripsANDgetDVScoresByGSE_numTripsShouldMatch() {
+        GroupReportHessianDAO groupReportHessianDAO = new GroupReportHessianDAO();
+        groupReportHessianDAO.setReportService(reportService);
+        DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(ReportTestConst.timeZone);
+        
+        DriverHessianDAO driverHessianDAO = new DriverHessianDAO();
+        driverHessianDAO.setSiloService(siloService);
+        DateTime startDateTime=  TimeFrame.YEAR.getInterval(dateTimeZone).getStart();
+        DateTime endDateTime= TimeFrame.YEAR.getInterval(dateTimeZone).getEnd();
+        for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++) {
+            System.out.print(".");
+            List<DriverVehicleScoreWrapper> driverScoreList = groupReportHessianDAO.getDriverScores(6, startDateTime, endDateTime);//groupReportHessianDAO.getDriverScores(itData.teamGroupData.get(teamType).group.getGroupID(), startDateTime, endDateTime);
+            System.out.println("driverScoreList: "+driverScoreList);
+            System.out.println("driverScoreList.size(): "+driverScoreList.size());
+            for(DriverVehicleScoreWrapper dvsw: driverScoreList){
+                System.out.print(":");
+                Driver driver = dvsw.getDriver();
+                
+                List<Trip> tripList = driverHessianDAO.getTrips(driver.getDriverID(), startDateTime.toDate(), endDateTime.toDate());
+                System.out.println("tripList.size(): "+tripList.size()+" should be equal to dvsw.getScore().getTrips(): "+dvsw.getScore().getTrips());
+                assertEquals("number of trips should be the same", tripList.size(), dvsw.getScore().getTrips());
+            }
+        }  
+    }
+    
     @Test
     // @Ignore
     public void teamStats() {
