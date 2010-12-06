@@ -506,6 +506,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     public TimeZone getUtcTimeZone() {
         return TimeZone.getTimeZone("UTC");
     }
+    public TimeZone getUserTimeZone() {
+System.out.println("user timezone is " + getPerson().getTimeZone());        
+        return getPerson().getTimeZone();
+    }
 
     @Override
     public List<String> getAvailableColumns() {

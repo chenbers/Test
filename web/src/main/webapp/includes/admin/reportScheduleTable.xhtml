@@ -46,8 +46,7 @@
     <rich:column id="lastEmail" rendered="#{reportScheduleBean.tableColumns['lastEmail'].visible}" sortBy="#{item.lastDate}">
       <f:facet name="header"><h:outputText value="#{messages.reportSchedulesHeader_lastEmail}" /></f:facet>
       	<h:outputText value="#{item.lastDate}">
-      		<f:convertDateTime timeZone="
-      		#{reportScheduleBean.utcTimeZone}" type="date" />
+      		<f:convertDateTime timeZone="#{reportScheduleBean.userTimeZone}" type="date" />
       </h:outputText>
     </rich:column>
     <rich:column id="report" rendered="#{reportScheduleBean.tableColumns['report'].visible}" sortBy="#{messages[item.report]}">
