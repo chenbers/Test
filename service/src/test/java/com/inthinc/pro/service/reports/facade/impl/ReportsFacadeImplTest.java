@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import mockit.Cascading;
 import mockit.Deencapsulation;
@@ -55,11 +56,6 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 	}
 
 	@Test 
-	public void testGetLocale() {
-        Assert.assertNotNull(reportsFacadeSUT.getLocale());
-    }
-
-	@Test 
 	public void testGetMeasurementType(@Mocked final TiwiproPrincipal principalMock, 
 									   @Cascading final User userMock) {
 
@@ -74,4 +70,19 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
         assertEquals(reportsFacadeSUT.getMeasurementType(), MeasurementType.METRIC);
     }
 
+	@Test 
+	public void testGetLocale(@Mocked final TiwiproPrincipal principalMock, 
+							  @Cascading final User userMock) {
+
+		Deencapsulation.setField(reportsFacadeSUT, principalMock);
+        
+    	new Expectations() {{
+    	  // Cannot use cascading on TiwiproPrincipal
+    	  principalMock.getUser(); returns(userMock);
+    	  userMock.getPerson().getLocale(); returns(Locale.CANADA_FRENCH);
+        }};
+    
+        assertEquals(reportsFacadeSUT.getLocale(), Locale.CANADA_FRENCH);
+    }	
+	
 }

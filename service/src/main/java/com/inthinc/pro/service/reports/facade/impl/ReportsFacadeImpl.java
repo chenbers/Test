@@ -43,7 +43,6 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();
     }
 
-
     /**
      * Returns the user group hierarchy.
      * @return
@@ -60,15 +59,14 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return principal.getUser().getPerson().getMeasurementType();
     }
     
-    
     /**
      * Returns the user Locale.
+     * 
+     * @return The user Locale
      */
     Locale getLocale() {
-        // FIXME temporarily fixed
-        return Locale.US;
+    	return principal.getUser().getPerson().getLocale();
     }
-
     
     /**
      * The reportService setter.
