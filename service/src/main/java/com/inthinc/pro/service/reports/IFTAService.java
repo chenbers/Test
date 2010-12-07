@@ -230,7 +230,7 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
      */
     @GET
-    @Path("/mileage/{startDate}/{endDate}/iftaOnly")
+    @Path("/stateMileage/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
     Response getStateMileageByVehicle(@PathParam("groupID") Integer groupID,
                                  @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
@@ -245,7 +245,7 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
      */
     @GET
-    @Path("/mileage/iftaOnly")
+    @Path("/stateMileage/iftaOnly")
     @Produces("application/xml")
     Response getStateMileageByVehicleIfta(@PathParam("groupID") Integer groupID); 
 
@@ -256,7 +256,7 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
      */
     @GET
-    @Path("/mileage")
+    @Path("/stateMileage")
     @Produces("application/xml")
     Response getStateMileageByVehicleGroup(@PathParam("groupID") Integer groupID); 
 
@@ -270,7 +270,7 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
      */
     @GET
-    @Path("/mileage/{startDate}/{endDate}")
+    @Path("/stateMileage/{startDate}/{endDate}")
     @Produces("application/xml")
     Response getStateMileageByVehicleInterval(@PathParam("groupID") Integer groupID,
                                  @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
