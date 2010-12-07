@@ -448,16 +448,16 @@ public abstract class Device {
         time_last = time;
     }
     
-    public abstract void set_url( String url, String port );
+    public abstract void set_url( String url, Integer port );
     
     public void set_url(String server){
-        Addresses port = Addresses.QA_MCM_PORT;
         Addresses url = Addresses.QA_MCM;
+        Addresses port = Addresses.QA_MCM_PORT;
         
         
         if (server.compareToIgnoreCase("dev")==0){
-            url = Addresses.DEV_MCM_PORT;
-            port = Addresses.DEV_MCM;
+        	url = Addresses.DEV_MCM;
+            port = Addresses.DEV_MCM_PORT;
         }
         
         else if (server.compareToIgnoreCase("qa")==0){
@@ -494,7 +494,7 @@ public abstract class Device {
     }
     
 	private void set_url(Addresses url, Addresses port) {
-		set_url(url.getCode(),port.getCode());
+		set_url(url.getCode(),Integer.parseInt(port.getCode()));
 	}
 
 	private void set_vehicle_speed(){

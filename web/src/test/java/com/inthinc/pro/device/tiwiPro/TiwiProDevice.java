@@ -185,8 +185,8 @@ public class TiwiProDevice extends Device{
 	}
 	
 	@Override
-	public void set_url( String url, String port ){
-    	Settings.put(TiwiPro.PROPERTY_SERVER_PORT.getCode(), port);
+	public void set_url( String url, Integer port ){
+    	Settings.put(TiwiPro.PROPERTY_SERVER_PORT.getCode(), port.toString());
     	Settings.put(TiwiPro.PROPERTY_SERVER_URL.getCode(), url);
         set_server();
     }
