@@ -155,24 +155,23 @@ public interface IFTAService {
     // ----------------------------------------------------------------------
     // Mileage By Vehicle 
     /**
-     * Service for Mileage By Vehicle Report with an explicit Interval and IFTA flag.
+     * Service for Mileage By Vehicle Report with an explicit Interval and iftaOnly flag.
      * @param groupID the Group ID
      * @param startDate the start date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
      * @param endDate the end date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
-     * @param iftaOnly the string iftaOnly to consider true
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
      */
     @GET
-    @Path("/mileage/{startDate}/{endDate}/iftaOnly")
+    @Path("/mileage/iftaOnly/{startDate:\\d{8}}/{endDate:\\d{8}}")
     @Produces("application/xml")
     Response getMileageByVehicle(@PathParam("groupID") Integer groupID,
                                  @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-                                 @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
-                                 @DefaultValue("true") Boolean iftaOnly); 
+                                 @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
 
     /**
+     * Service for Mileage By Vehicle Report with an explicit Interval.
      * Service for Mileage By Vehicle Report without Interval but with IFTA flag.
      * @param groupID the Group ID
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
@@ -205,7 +204,7 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
      */
     @GET
-    @Path("/mileage/{startDate}/{endDate}")
+    @Path("/mileage/{startDate:\\d{8}}/{endDate:\\d{8}}")
     @Produces("application/xml")
     Response getMileageByVehicleInterval(@PathParam("groupID") Integer groupID,
                                  @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
