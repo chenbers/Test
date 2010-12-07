@@ -87,11 +87,11 @@ public class ReportsFacadeImpl implements ReportsFacade {
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, boolean)
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getMileageByVehicle(java.lang.Integer, org.joda.time.Interval, boolean)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<MileageByVehicle> getMileageByVehicleReportCriteria(Integer groupID, Interval interval, boolean dotOnly) {
+    public List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly) {
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(groupID);
         ReportCriteria criteria = reportService.getMileageByVehicleReportCriteria(getAccountGroupHierarchy(), 
@@ -113,6 +113,11 @@ public class ReportsFacadeImpl implements ReportsFacade {
                 dotOnly);
         return criteria.getMainDataset();
     }
+
+	@Override
+	public List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly) {
+		return null;
+	}
 
 }
 

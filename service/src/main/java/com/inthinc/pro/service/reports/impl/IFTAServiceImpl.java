@@ -17,7 +17,6 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.service.reports.IFTAService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
-import com.inthinc.pro.util.ReportsUtil;
 
 
 @Component
@@ -111,7 +110,7 @@ public class IFTAServiceImpl implements IFTAService {
 
         List<MileageByVehicle> list = null;
         try {
-            list = reportsFacade.getMileageByVehicleReportCriteria(groupID, interval, iftaOnly);
+            list = reportsFacade.getMileageByVehicle(groupID, interval, iftaOnly);
         } catch(Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
