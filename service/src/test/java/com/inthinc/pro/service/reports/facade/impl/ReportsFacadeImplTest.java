@@ -1,4 +1,4 @@
-package com.inthinc.pro.service.reports.facade;
+package com.inthinc.pro.service.reports.facade.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,10 +9,8 @@ import mockit.Cascading;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
-import mockit.Mockit;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Group;
@@ -25,11 +23,11 @@ import com.inthinc.pro.service.security.TiwiproPrincipal;
 /**
  * Unit test for ReportsFacade.
  */
-public class ReportsFacadeTest extends BaseUnitTest {
+public class ReportsFacadeImplTest extends BaseUnitTest {
     private static final Integer GROUP_ID = 1505;
     private static final String GROUP_NAME = "Mock Group";
 
-    private ReportsFacade reportsFacadeSUT = new ReportsFacade();
+    private ReportsFacadeImpl reportsFacadeSUT = new ReportsFacadeImpl();
     
     @Test 
     public void testGetGroupHierarchy(@Mocked final TiwiproPrincipal principalMock) {

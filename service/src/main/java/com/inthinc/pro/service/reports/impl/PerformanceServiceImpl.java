@@ -22,7 +22,8 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
  */
 @Component
 public class PerformanceServiceImpl implements PerformanceService {
-    private static Logger logger = Logger.getLogger(PerformanceServiceImpl.class);
+
+	private static Logger logger = Logger.getLogger(PerformanceServiceImpl.class);
     @Autowired private ReportsFacade reportsFacade;
     
     /**

@@ -1,9 +1,5 @@
 package com.inthinc.pro.service.reports.impl;
 
-import java.text.DateFormat;
-import com.inthinc.pro.dao.StateMileageDAO;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,10 +12,7 @@ import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.inthinc.pro.model.StateMileage;
-import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
-import com.inthinc.pro.service.reports.AssetService;
 import com.inthinc.pro.service.reports.IFTAService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 
