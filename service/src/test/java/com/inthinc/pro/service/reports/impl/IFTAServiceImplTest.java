@@ -199,7 +199,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         serviceSUT.setFacade(reportsFacadeMock);
 
-        Response response = serviceSUT.getStateMileageByVehicleRoadStatusOnlyStatus(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleRoadStatusIfta(expectedGroupID, 
                                                                                       expectedIfta);
 
         assertNotNull(response);
@@ -225,7 +225,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         serviceSUT.setFacade(reportsFacadeMock);
 
-        Response response = serviceSUT.getStateMileageByVehicleRoadStatusOnlyGroup(expectedGroupID);
+        Response response = serviceSUT.getStateMileageByVehicleRoadStatusGroup(expectedGroupID);
                                                                                       
 
         assertNotNull(response);
@@ -254,7 +254,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         serviceSUT.setFacade(reportsFacadeMock);
 
-        Response response = serviceSUT.getStateMileageByVehicleRoadStatusOnlyDates(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleRoadStatusInterval(expectedGroupID, 
                 startDate,
                 endDate);
 
@@ -291,7 +291,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     @Test
     public void getStateMileageByVehicleStateComparaisonTestWihInvalidInput1(){
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaison(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparison(expectedGroupID, 
                 buildDateFromString("20110101"),
                 buildDateFromString("20100202"), 
                 true);
@@ -303,7 +303,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     @Test
     public void getStateMileageByVehicleStateComparaisonTestWihInvalidInput2(){
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaison(null, 
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparison(null, 
                 buildDateFromString("20100101"),
                 buildDateFromString("20100202"), 
                 true);
@@ -315,7 +315,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     @Test
     public void getStateMileageByVehicleStateComparaisonTestWihInvalidInput3(){
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaison(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparison(expectedGroupID, 
                 null,
                 buildDateFromString("20100202"), 
                 true);
@@ -327,7 +327,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     @Test
     public void getStateMileageByVehicleStateComparaisonTestWihInvalidInput4(){
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaison(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparison(expectedGroupID, 
                 buildDateFromString("20100202"),
                 null, 
                 true);
@@ -360,7 +360,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         serviceSUT.setFacade(reportsFacadeMock);
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaison(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparison(expectedGroupID, 
                 startDate,
                 endDate, 
                 expectedIfta);
@@ -391,7 +391,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         serviceSUT.setFacade(reportsFacadeMock);
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaison(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparison(expectedGroupID, 
                 startDate,
                 endDate, 
                 expectedIfta);
@@ -422,7 +422,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         serviceSUT.setFacade(reportsFacadeMock);
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaison(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparison(expectedGroupID, 
                 startDate,
                 endDate, 
                 expectedIfta);
@@ -452,7 +452,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         serviceSUT.setFacade(reportsFacadeMock);
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaisonOnlyStatus(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparisonIfta(expectedGroupID, 
                                                                                       expectedIfta);
 
         assertNotNull(response);
@@ -478,7 +478,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         serviceSUT.setFacade(reportsFacadeMock);
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaisonOnlyGroup(expectedGroupID);
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparisonGroup(expectedGroupID);
                                                                                       
 
         assertNotNull(response);
@@ -507,7 +507,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         serviceSUT.setFacade(reportsFacadeMock);
 
-        Response response = serviceSUT.getStateMileageByVehicleStateComparaisonOnlyDates(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleGroupComparaisonInterval(expectedGroupID, 
                 startDate,
                 endDate);
 

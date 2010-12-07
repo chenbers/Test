@@ -75,7 +75,7 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     @Override
-    public Response getStateMileageByVehicleRoadStatusOnlyStatus(Integer groupID, boolean iftaOnly) {
+    public Response getStateMileageByVehicleRoadStatusIfta(Integer groupID, boolean iftaOnly) {
         Calendar today = getMidnight();
 
         Calendar startDate = getMidnight();
@@ -85,12 +85,12 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     @Override
-    public Response getStateMileageByVehicleRoadStatusOnlyDates(Integer groupID, Date startDate, Date endDate) {
+    public Response getStateMileageByVehicleRoadStatusInterval(Integer groupID, Date startDate, Date endDate) {
         return getStateMileageByVehicleRoadStatus(groupID, startDate ,endDate , false);
     }
 
     @Override
-    public Response getStateMileageByVehicleRoadStatusOnlyGroup(Integer groupID) {
+    public Response getStateMileageByVehicleRoadStatusGroup(Integer groupID) {
         Calendar today = getMidnight();
 
         Calendar startDate = getMidnight();
@@ -125,20 +125,20 @@ public class IFTAServiceImpl implements IFTAService {
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithInterval(java.lang.Integer, java.util.Date, java.util.Date)
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleInterval(java.lang.Integer, java.util.Date, java.util.Date)
      */
     @Override
-    public Response getMileageByVehicleWithInterval(Integer groupID, Date startDate, Date endDate) {
+    public Response getMileageByVehicleInterval(Integer groupID, Date startDate, Date endDate) {
         return getMileageByVehicle(groupID, startDate, endDate, false);
     }
 
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithFlag(java.lang.Integer)
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleIfta(java.lang.Integer)
      */
     @Override
-    public Response getMileageByVehicleWithFlag(Integer groupID) {
+    public Response getMileageByVehicleIfta(Integer groupID) {
         Calendar today = getMidnight();
 
         Calendar startDate = getMidnight();
@@ -148,10 +148,10 @@ public class IFTAServiceImpl implements IFTAService {
     }
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithoutParam(java.lang.Integer)
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleGroup(java.lang.Integer)
      */
     @Override
-    public Response getMileageByVehicleWithoutParam(Integer groupID) {
+    public Response getMileageByVehicleGroup(Integer groupID) {
         Calendar today = getMidnight();
 
         Calendar startDate = getMidnight();
@@ -174,7 +174,7 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     @Override
-    public Response getStateMileageByVehicleStateComparaison(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
+    public Response getStateMileageByVehicleGroupComparison(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
         if(invalidParameters(groupID, startDate, endDate, iftaOnly)) {
             return Response.status(Status.BAD_REQUEST).build();
         }
@@ -196,26 +196,50 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     @Override
-    public Response getStateMileageByVehicleStateComparaisonOnlyDates(Integer groupID, Date startDate, Date endDate) {
-        return getStateMileageByVehicleStateComparaison(groupID, startDate ,endDate , false);
+    public Response getStateMileageByVehicleGroupComparaisonInterval(Integer groupID, Date startDate, Date endDate) {
+        return getStateMileageByVehicleGroupComparison(groupID, startDate ,endDate , false);
     }
 
     @Override
-    public Response getStateMileageByVehicleStateComparaisonOnlyGroup(Integer groupID) {
+    public Response getStateMileageByVehicleGroupComparisonGroup(Integer groupID) {
         Calendar today = getMidnight(); 
         Calendar startDate = getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
         
-        return getStateMileageByVehicleStateComparaison(groupID, startDate.getTime() , today.getTime() , false);
+        return getStateMileageByVehicleGroupComparison(groupID, startDate.getTime() , today.getTime() , false);
     }
 
     @Override
-    public Response getStateMileageByVehicleStateComparaisonOnlyStatus(Integer groupID, boolean iftaOnly) {
+    public Response getStateMileageByVehicleGroupComparisonIfta(Integer groupID, boolean iftaOnly) {
         Calendar today = getMidnight(); 
         Calendar startDate = getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
         
-        return getStateMileageByVehicleStateComparaison(groupID, startDate.getTime() , today.getTime() , iftaOnly);
+        return getStateMileageByVehicleGroupComparison(groupID, startDate.getTime() , today.getTime() , iftaOnly);
 
     }
+
+	@Override
+	public Response getStateMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Response getStateMileageByVehicleGroup(Integer groupID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Response getStateMileageByVehicleIfta(Integer groupID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Response getStateMileageByVehicleInterval(Integer groupID, Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

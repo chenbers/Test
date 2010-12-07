@@ -19,6 +19,7 @@ import com.inthinc.pro.service.annotations.DateFormat;
 public interface IFTAService {
     String DATE_FORMAT = "yyyyMMdd";
 
+    // ----------------------------------------------------------------------
     // State Mileage by Vehicle / Road status webservice 
 
     /**
@@ -53,7 +54,7 @@ public interface IFTAService {
     @GET
     @Path("/roadStatus/{iftaOnly}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatusOnlyStatus(
+    Response getStateMileageByVehicleRoadStatusIfta(
             @PathParam("groupID") Integer groupID,
             @PathParam("iftaOnly")  @DefaultValue("false") boolean iftaOnly );
 
@@ -67,7 +68,7 @@ public interface IFTAService {
     @GET
     @Path("/roadStatus")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatusOnlyGroup(@PathParam("groupID") Integer groupID); 
+    Response getStateMileageByVehicleRoadStatusGroup(@PathParam("groupID") Integer groupID); 
 
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
@@ -81,11 +82,12 @@ public interface IFTAService {
     @GET
     @Path("/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatusOnlyDates(
+    Response getStateMileageByVehicleRoadStatusInterval(
             @PathParam("groupID") Integer groupID,
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
 
+    // ----------------------------------------------------------------------
     // State Mileage by Vehicle / Group Comparison by State-Province
 
     /**
@@ -102,7 +104,7 @@ public interface IFTAService {
     @GET
     @Path("/stateComparaison/{startDate}/{endDate}/{iftaOnly}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleStateComparaison(
+    Response getStateMileageByVehicleGroupComparison(
             @PathParam("groupID") Integer groupID,
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
@@ -120,7 +122,7 @@ public interface IFTAService {
     @GET
     @Path("/stateComparaison/{iftaOnly}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleStateComparaisonOnlyStatus(
+    Response getStateMileageByVehicleGroupComparisonIfta(
             @PathParam("groupID") Integer groupID,
             @PathParam("iftaOnly")  @DefaultValue("false") boolean iftaOnly );
 
@@ -134,7 +136,7 @@ public interface IFTAService {
     @GET
     @Path("/stateComparaison")
     @Produces("application/xml")
-    Response getStateMileageByVehicleStateComparaisonOnlyGroup(@PathParam("groupID") Integer groupID); 
+    Response getStateMileageByVehicleGroupComparisonGroup(@PathParam("groupID") Integer groupID); 
 
     /**
      * Service for State mileage by vehicle / Group Comparison by State-Province Report with an explicit Interval.
@@ -148,13 +150,13 @@ public interface IFTAService {
     @GET
     @Path("/stateComparaison/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleStateComparaisonOnlyDates(
+    Response getStateMileageByVehicleGroupComparaisonInterval(
             @PathParam("groupID") Integer groupID,
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
 
-
-    // Mileage By Vehicle ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    // Mileage By Vehicle 
     /**
      * Service for Mileage By Vehicle Report with an explicit Interval and IFTA flag.
      * @param groupID the Group ID
@@ -174,6 +176,29 @@ public interface IFTAService {
                                  @DefaultValue("true") Boolean iftaOnly); 
 
     /**
+     * Service for Mileage By Vehicle Report without Interval but with IFTA flag.
+     * @param groupID the Group ID
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
+     * @HTTP HTTP 200 - OK if any MileageByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
+     */
+    @GET
+    @Path("/mileage/iftaOnly")
+    @Produces("application/xml")
+    Response getMileageByVehicleIfta(@PathParam("groupID") Integer groupID); 
+
+    /**
+     * Service for Mileage By Vehicle Report without any other params.
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
+     * @HTTP HTTP 200 - OK if any MileageByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
+     */
+    @GET
+    @Path("/mileage")
+    @Produces("application/xml")
+    Response getMileageByVehicleGroup(@PathParam("groupID") Integer groupID); 
+
+    /**
      * Service for Mileage By Vehicle Report with an explicit Interval only.
      * @param groupID the Group ID
      * @param startDate the start date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
@@ -185,12 +210,35 @@ public interface IFTAService {
     @GET
     @Path("/mileage/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getMileageByVehicleWithInterval(@PathParam("groupID") Integer groupID,
+    Response getMileageByVehicleInterval(@PathParam("groupID") Integer groupID,
                                  @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
                                  @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
 
+    
+    // ----------------------------------------------------------------------
+    // State Mileage By Vehicle
+    
     /**
-     * Service for Mileage By Vehicle Report without Interval but with IFTA flag.
+     * Service for State Mileage By Vehicle Report with an explicit Interval and IFTA flag.
+     * 
+     * @param groupID the Group ID
+     * @param startDate the start date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
+     * @param endDate the end date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
+     * @param iftaOnly the string iftaOnly to consider true
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
+     * @HTTP HTTP 200 - OK if any MileageByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
+     */
+    @GET
+    @Path("/mileage/{startDate}/{endDate}/iftaOnly")
+    @Produces("application/xml")
+    Response getStateMileageByVehicle(@PathParam("groupID") Integer groupID,
+                                 @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+                                 @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+                                 @DefaultValue("true") Boolean iftaOnly); 
+
+    /**
+     * Service for State Mileage By Vehicle Report without Interval but with IFTA flag.
      * @param groupID the Group ID
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
@@ -199,10 +247,10 @@ public interface IFTAService {
     @GET
     @Path("/mileage/iftaOnly")
     @Produces("application/xml")
-    Response getMileageByVehicleWithFlag(@PathParam("groupID") Integer groupID); 
+    Response getStateMileageByVehicleIfta(@PathParam("groupID") Integer groupID); 
 
     /**
-     * Service for Mileage By Vehicle Report without any other params.
+     * Service for State Mileage By Vehicle Report with only the group as a parameter.
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
@@ -210,5 +258,22 @@ public interface IFTAService {
     @GET
     @Path("/mileage")
     @Produces("application/xml")
-    Response getMileageByVehicleWithoutParam(@PathParam("groupID") Integer groupID); 
+    Response getStateMileageByVehicleGroup(@PathParam("groupID") Integer groupID); 
+
+    /**
+     * Service for State Mileage By Vehicle Report with an explicit Interval only.
+     * @param groupID the Group ID
+     * @param startDate the start date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
+     * @param endDate the end date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
+     * @HTTP HTTP 200 - OK if any MileageByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found 
+     */
+    @GET
+    @Path("/mileage/{startDate}/{endDate}")
+    @Produces("application/xml")
+    Response getStateMileageByVehicleInterval(@PathParam("groupID") Integer groupID,
+                                 @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+                                 @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);     
+    
 }
