@@ -17,6 +17,7 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.service.reports.IFTAService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.util.ReportsUtil;
 
 
 @Component
@@ -36,16 +37,17 @@ public class IFTAServiceImpl implements IFTAService {
     }
     
     @Override
-    public Response getStateMileageByVehicleRoadStatus(Integer groupID, Date startDate, Date endDate, boolean dotOnly) {
-        if(invalidParameters(groupID, startDate, endDate, dotOnly)) {
+    public Response getStateMileageByVehicleRoadStatus(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
+        if(invalidParameters(groupID, startDate, endDate, iftaOnly)) {
             return Response.status(Status.BAD_REQUEST).build();
         }
+//        ReportsUtil.checkParameters(groupID, startDate, endDate, iftaOnly);
         
         List<StateMileageByVehicleRoadStatus> list = null;
         
         Interval interval = new Interval(startDate.getTime(), endDate.getTime());
         try{
-            list = reportsFacade.getStateMileageByVehicleRoadStatus(groupID, interval, dotOnly);
+            list = reportsFacade.getStateMileageByVehicleRoadStatus(groupID, interval, iftaOnly);
         }
         catch(Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -74,13 +76,13 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     @Override
-    public Response getStateMileageByVehicleRoadStatusOnlyStatus(Integer groupID, boolean dotOnly) {
+    public Response getStateMileageByVehicleRoadStatusOnlyStatus(Integer groupID, boolean iftaOnly) {
         Calendar today = getMidnight();
 
         Calendar startDate = getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
         
-        return getStateMileageByVehicleRoadStatus(groupID, startDate.getTime() , today.getTime() , dotOnly);
+        return getStateMileageByVehicleRoadStatus(groupID, startDate.getTime() , today.getTime() , iftaOnly);
     }
 
     @Override
@@ -173,8 +175,8 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     @Override
-    public Response getStateMileageByVehicleStateComparaison(Integer groupID, Date startDate, Date endDate, boolean dotOnly) {
-        if(invalidParameters(groupID, startDate, endDate, dotOnly)) {
+    public Response getStateMileageByVehicleStateComparaison(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
+        if(invalidParameters(groupID, startDate, endDate, iftaOnly)) {
             return Response.status(Status.BAD_REQUEST).build();
         }
         
@@ -182,7 +184,7 @@ public class IFTAServiceImpl implements IFTAService {
         
         Interval interval = new Interval(startDate.getTime(), endDate.getTime());
         try{
-            list = reportsFacade.getStateMileageByVehicleStateComparaison(groupID, interval, dotOnly);
+            list = reportsFacade.getStateMileageByVehicleStateComparaison(groupID, interval, iftaOnly);
         }
         catch(Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -209,12 +211,12 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     @Override
-    public Response getStateMileageByVehicleStateComparaisonOnlyStatus(Integer groupID, boolean dotOnly) {
+    public Response getStateMileageByVehicleStateComparaisonOnlyStatus(Integer groupID, boolean iftaOnly) {
         Calendar today = getMidnight(); 
         Calendar startDate = getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
         
-        return getStateMileageByVehicleStateComparaison(groupID, startDate.getTime() , today.getTime() , dotOnly);
+        return getStateMileageByVehicleStateComparaison(groupID, startDate.getTime() , today.getTime() , iftaOnly);
 
     }
 }
