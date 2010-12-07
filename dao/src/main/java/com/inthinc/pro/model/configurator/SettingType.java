@@ -17,7 +17,7 @@ public enum SettingType implements BaseEnum
     HARD_BRAKE_SETTING(2,158,10,5, "hardBrake"),
     HARD_TURN_SETTING(3,159,10,5, "hardTurn"),
     HARD_VERT_SETTING(4,160,15,10, "hardVertical"),
-    SEVERE_PEAK_2_PEAK(5,0,15,10, ""),
+    SEVERE_PEAK_2_PEAK(5,1225,15,10, ""),
     AUTOLOGOFF_SETTING(6,138,29,0, "autologoffSeconds"),
     SPEED_SETTING(7,85,0,0, "speedSettings"),
     EPHONE_SETTING(8,60,0,0, "ephone"),

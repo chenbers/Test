@@ -7,33 +7,15 @@
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
-    <tr>
-     <td width="100"><h:outputText value="#{messages.editDevice_dot}" /></td>
-     <td><c:set var="dot" value="#{vehiclesBean.item.dot?'yes':'no'}" />
-     	<h:outputText value="#{vehiclesBean.item.dot}" /></td>
-   </tr>
+<!--    <tr>-->
+<!--     <td width="100"><h:outputText value="#{messages.editDevice_dot}" /></td>-->
+<!--     <td><c:set var="dot" value="#{vehiclesBean.item.dot?'yes':'no'}" />-->
+<!--     	<h:outputText value="#{vehiclesBean.item.dot}" /></td>-->
+<!--   </tr>-->
    <tr>
      <td width="100"><h:outputText value="#{messages.editDevice_ifta}" /></td>
      <td><c:set var="ifta" value="#{vehiclesBean.item.ifta?'yes':'no'}" />
      	<h:outputText value="#{messages[ifta]}" />
-     </td>
-   </tr>
-   <tr>
-     <td width="100"><h:outputText value="#{messages.editDevice_warrantyStart}" /></td>
-     <td>
-     	<h:outputText value="#{vehiclesBean.item.warrantyStart}" />
-     </td>
-   </tr>
-   <tr>
-     <td width="100"><h:outputText value="#{messages.editDevice_warrantyStop}" /></td>
-     <td>
-     	<h:outputText value="#{vehiclesBean.item.warrantyStop}" />
-     </td>
-   </tr>
-   <tr>
-     <td width="100"><h:outputText value="#{messages.editDevice_zoneType}" /></td>
-     <td>
-     	<h:outputText value="#{vehiclesBean.item.zoneType==null?'':vehiclesBean.item.zoneType==1?'light':'heavy'}" />
      </td>
    </tr>
  

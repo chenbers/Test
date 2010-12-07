@@ -48,7 +48,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private static final long                     serialVersionUID       = 1L;
 
     private static final List<String>             AVAILABLE_COLUMNS;
-    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12, 13};
+    private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12, 13,18};
 
     private static final Map<String, String>      YEARS;
     private static final Map<String, State>       STATES;
@@ -75,9 +75,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("ephone");
         AVAILABLE_COLUMNS.add("DOT");
         AVAILABLE_COLUMNS.add("IFTA");
-        AVAILABLE_COLUMNS.add("zoneType");
-        AVAILABLE_COLUMNS.add("warrantyStart");
-        AVAILABLE_COLUMNS.add("warrantyStop");
+        AVAILABLE_COLUMNS.add("productVersion");
         
 
         // years
@@ -109,7 +107,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private TreeMap<Integer, Boolean>             driverAssigned;
     
     private String                                batchProductChoice;
-    
+    private ProductType  batchEditProductChoice;
     // Stuff to do with vehicleSettings for the device
     private VehicleSettingsFactory              vehicleSettingsFactory;
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
@@ -124,7 +122,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     public void doSelectAll() {
 
-        if (batchProductChoice == null){
+        if (batchEditProductChoice == null){
             
              super.doSelectAll();
         }
@@ -132,7 +130,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             
             for(VehicleView vehicleView : filteredItems){
                                    
-                vehicleView.setSelected(selectAll && vehicleView.editableVehicleSettings.getProductType().getName().equals(batchProductChoice));
+                vehicleView.setSelected(selectAll && vehicleView.editableVehicleSettings.getProductType().equals(batchEditProductChoice));
             }
         }
     }
@@ -140,7 +138,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     public boolean isSelectAll() {
         
-         if (batchProductChoice == null || getFilteredItems().size() == 0){
+         if (batchEditProductChoice == null || getFilteredItems().size() == 0){
         
             return super.isSelectAll();
         }
@@ -148,15 +146,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 
             for(VehicleView vehicleView : filteredItems){
                 
-                if (!vehicleView.isSelected() && vehicleView.editableVehicleSettings.getProductType().getName().equals(batchProductChoice))
+                if (!vehicleView.isSelected() && vehicleView.editableVehicleSettings.getProductType().equals(batchEditProductChoice))
                     return false;
             }
             return true;
         }
     }
-    public boolean isBatchProductChoice(ProductType productType){
+    public boolean isBatchEditProductChoice(ProductType productType){
         
-        return batchProductChoice == null || batchProductChoice.equals(productType.getName());
+        return batchEditProductChoice == null || batchEditProductChoice.equals(productType.getName());
     }
     public CacheBean getCacheBean() {
 		return cacheBean;
@@ -225,7 +223,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             }
             else {
                 
-                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(ProductType.valueOfByName(batchProductChoice),vehicleID, null));
+                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(batchEditProductChoice,vehicleID, null));
             }
         }
     }
@@ -242,7 +240,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         List<String> classNames = new ArrayList<String>();
         if(vehicleSettingManagers.get(null) == null){
-            vehicleSettingManagers.put(null, new TiwiproSettingManager(null, ProductType.valueOfByName(batchProductChoice), null));
+            vehicleSettingManagers.put(null, new TiwiproSettingManager(null, batchEditProductChoice, null));
         }
         for (Entry<Integer,VehicleSettingManager> vsm : vehicleSettingManagers.entrySet()){
             
@@ -354,16 +352,17 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicle.setStatus(Status.ACTIVE);
         //TODO decide how to create add item
         VehicleView vehicleView = createVehicleView(vehicle);
-        createSettingManagerForCreateItem();
-        vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
+        if(batchEditProductChoice != null){
+            createSettingManagerForCreateItem();
+            vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
+        }
         return vehicleView;
     }
 
     @Override
     public String batchEdit()
     {
-        if (batchProductChoice == null) return null;
-        
+        setBatchEditProductChoice();
         final String redirect = super.batchEdit();
        
         if(isBatchEdit()){
@@ -371,10 +370,43 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
         return redirect;
     }
-
+    private void setBatchEditProductChoice(){
+        
+        if (batchEditProductChoice != null) return;
+        ProductType productChoice = null;
+        //set first value
+        int firstSelected = getFirstSelectedItem();
+        VehicleView firstSelectedVehicle = filteredItems.get(firstSelected);
+        if(firstSelectedVehicle.getEditableVehicleSettings()!= null){
+            productChoice = firstSelectedVehicle.getEditableVehicleSettings().getProductType();
+        }
+        if (productChoice == null) return;
+        for(VehicleView vehicleView : filteredItems){
+            
+            if (vehicleView.isSelected()){
+                
+                if (!(vehicleView.editableVehicleSettings != null) && 
+                        (vehicleView.editableVehicleSettings.getProductType() != null) &&
+                        (vehicleView.editableVehicleSettings.getProductType().equals(productChoice))){
+                    productChoice = null;
+                    return;
+                }
+            }
+        }
+        batchEditProductChoice = productChoice;
+    }
+    private int getFirstSelectedItem(){
+        int firstSelected = 0;
+        for(VehicleView vehicleView : filteredItems){
+            
+            if (vehicleView.isSelected()) return firstSelected;
+            firstSelected++;
+        }
+        return -1;
+    }
     private void createSettingManagerForCreateItem(){
                         
-        vehicleSettingManagers.put(-1, vehicleSettingsFactory.getSettingManager(ProductType.valueOfByName(batchProductChoice),-1, null));
+        vehicleSettingManagers.put(-1, vehicleSettingsFactory.getSettingManager(batchEditProductChoice,-1, null));
     }
     @Override
     public String cancelEdit()
@@ -502,7 +534,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         boolean valid = true;
         final String required = "required";
         // Required fields check
-        valid = vehicleView.getEditableVehicleSettings().validateSaveItems(context, isBatchEdit(), getUpdateField());
+        if(!isBatchEdit() || (isBatchEdit() && (batchProductChoice != null) && !ProductType.UNKNOWN.getName().equals(batchProductChoice))){
+            valid = vehicleView.getEditableVehicleSettings().validateSaveItems(context, isBatchEdit(), getUpdateField());
+        }
 
         if(vehicleView.getMake() == null || vehicleView.getMake().equals("")
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("make"))))
@@ -718,12 +752,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         public VehicleView() {
             super();
-//            editableVehicleSettings = new UnknownEditableVehicleSettings();
         }
         public VehicleView(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, Integer year, String color, VehicleType vtype, String vin, Integer weight,
                 String license, State state) {
             super(vehicleID, groupID, status, name, make, model, year, color, vtype, vin, weight, license, state);
-//            editableVehicleSettings = new UnknownEditableVehicleSettings();
         }
         public void setEditableVehicleSettings(EditableVehicleSettings editableVehicleSettings) {
             this.editableVehicleSettings = editableVehicleSettings;
@@ -737,7 +769,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
 
         public String getProductVersion() {
-            
+            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN.toString();
             return editableVehicleSettings.getProductType().toString();
         }
         @Override
@@ -823,7 +855,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
         public void setSelected(boolean selected)
         {
-            this.selected = selected && bean.isBatchProductChoice(editableVehicleSettings.getProductType());
+            this.selected = selected;
         }
     }
 }

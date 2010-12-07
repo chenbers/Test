@@ -146,12 +146,12 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     private void getSliderValuesForHardTurn(DesiredSettings desiredSettings,WaySmartEditableVehicleSettings waySmartEditableVehicleSettings){
         	
         Map<Integer,String> hardTurn = 
-            vehicleSensitivitySliders.getHardVerticalSlider().getSettingValuesFromSliderValue(waySmartEditableVehicleSettings.getHardTurn());
+            vehicleSensitivitySliders.getHardTurnSlider().getSettingValuesFromSliderValue(waySmartEditableVehicleSettings.getHardTurn());
     	desiredSettings.addSettingIfNeeded(SettingType.DVY, 
-    	                                   hardTurn.get(SettingType.DVY), 
+    	                                   hardTurn.get(SettingType.DVY.getSettingID()), 
     	                                   vehicleSetting.getCombined(SettingType.DVY.getSettingID()));
     	desiredSettings.addSettingIfNeeded(SettingType.Y_LEVEL, 
-                                           hardTurn.get(SettingType.Y_LEVEL), 
+                                           hardTurn.get(SettingType.Y_LEVEL.getSettingID()), 
                                            vehicleSetting.getCombined(SettingType.Y_LEVEL.getSettingID()));
     }
     private  void getSliderValuesForHardAcceleration(DesiredSettings desiredSettings,WaySmartEditableVehicleSettings waySmartEditableVehicleSettings){
@@ -159,10 +159,10 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Map<Integer,String> hardAcceleration = 
             vehicleSensitivitySliders.getHardAccelerationSlider().getSettingValuesFromSliderValue(waySmartEditableVehicleSettings.getHardAcceleration());
         desiredSettings.addSettingIfNeeded(SettingType.HARD_ACCEL_LEVEL, 
-                                           hardAcceleration.get(SettingType.HARD_ACCEL_LEVEL), 
+                                           hardAcceleration.get(SettingType.HARD_ACCEL_LEVEL.getSettingID()), 
                                            vehicleSetting.getCombined(SettingType.HARD_ACCEL_LEVEL.getSettingID()));
         desiredSettings.addSettingIfNeeded(SettingType.HARD_ACCEL_DELTAV, 
-                                           hardAcceleration.get(SettingType.HARD_ACCEL_DELTAV), 
+                                           hardAcceleration.get(SettingType.HARD_ACCEL_DELTAV.getSettingID()), 
                                            vehicleSetting.getCombined(SettingType.HARD_ACCEL_DELTAV.getSettingID()));
     }
     private  void getSliderValuesForHardBrake(DesiredSettings desiredSettings,WaySmartEditableVehicleSettings waySmartEditableVehicleSettings){
@@ -170,10 +170,10 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Map<Integer,String> hardBrake = 
             vehicleSensitivitySliders.getHardBrakeSlider().getSettingValuesFromSliderValue(waySmartEditableVehicleSettings.getHardBrake());
         desiredSettings.addSettingIfNeeded(SettingType.X_ACCEL, 
-	                                       hardBrake.get(SettingType.X_ACCEL), 
+	                                       hardBrake.get(SettingType.X_ACCEL.getSettingID()), 
 	                                       vehicleSetting.getCombined(SettingType.X_ACCEL.getSettingID()));
         desiredSettings.addSettingIfNeeded(SettingType.DVX, 
-	                                       hardBrake.get(SettingType.DVX), 
+	                                       hardBrake.get(SettingType.DVX.getSettingID()), 
 	                                       vehicleSetting.getCombined(SettingType.DVX.getSettingID()));
      }
     private VehicleSetting createVehicleSetting(Integer vehicleID){

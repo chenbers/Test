@@ -2,6 +2,7 @@ package com.inthinc.pro.model.configurator;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -40,30 +41,28 @@ public class Slider {
         
         if (settings == null || settings.isEmpty()) return sliderPositionCount+1;
         
-        Integer sliderValue = sliderPositionCount+1;
         Set<Entry<Integer,String>> settingEntries = settings.entrySet();
 
-        for(int i=0;i<sliderPositionCount;i++){
-             
-            boolean match = true;
-            sliderValue = i;
-            for (Entry<Integer,String> settingEntry : settingEntries){
-                
-                Integer settingID = settingEntry.getKey(); //settingID
-                String settingValue = settingEntry.getValue();//setting value
-                
-                match = match && settingsForThisSlider.get(settingID).getValues().get(i).equals(settingValue);
-                
-                if (!match){
-                     
-                    break;
-                }
-            }
-            if (match) return sliderValue;
+        for(int sliderValue=0;sliderValue<sliderPositionCount;sliderValue++){
+            
+            if (settingsMatch(sliderValue,settingEntries)) return sliderValue+1;
         }
         return sliderPositionCount+1;
     }
-     
+    private boolean settingsMatch(int sliderValue,Set<Entry<Integer,String>> settingEntries){
+        boolean match = true;
+        for (Entry<Integer,String> settingEntry : settingEntries){
+            
+            Integer settingID = settingEntry.getKey(); //settingID
+            String settingValue = settingEntry.getValue();//setting value
+            
+            match = settingsForThisSlider.get(settingID).getValues().get(sliderValue).equals(settingValue);
+            
+            if (!match) return false;
+        }
+        return true;
+        
+    }
     public SliderKey getSliderKey() {
         return sliderKey;
     }
@@ -77,11 +76,26 @@ public class Slider {
     }
 
     public Map<Integer, String> getSettingValuesFromSliderValue(Integer sliderValue) {
+           
+        if (!sliderValueInRange(sliderValue)) return new HashMap<Integer, String>();
+        
+        Map<Integer, String> sliderValues = getValuesForSliderValue(sliderValue);
+        
+        return sliderValues;
+    }
+    private boolean sliderValueInRange(Integer sliderValue){
+        
+        Iterator<SensitivitySliderValues> it = settingsForThisSlider.values().iterator();
+        List<String> values = null;
+        if (it.hasNext()){
+            values = it.next().getValues();
+        }    
+         
+        return (values != null) && (sliderValue <= values.size());
+    }
+    private Map<Integer, String> getValuesForSliderValue(Integer sliderValue){
         
         Map<Integer, String> settings = new HashMap<Integer, String>();
-        
-        if (sliderValue > settingsForThisSlider.entrySet().size()) return settings;
-        
         Iterator<Entry<Integer,SensitivitySliderValues>> settingsEntrySetIterator = settingsForThisSlider.entrySet().iterator();
         
         while(settingsEntrySetIterator.hasNext()){
@@ -93,6 +107,7 @@ public class Slider {
         return settings;
     }
     public void setSliderPositionCount(){
+        
         
         Iterator<SensitivitySliderValues> sliderValuesIterator = settingsForThisSlider.values().iterator();
         if(sliderValuesIterator.hasNext()){

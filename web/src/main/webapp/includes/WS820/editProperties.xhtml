@@ -29,32 +29,6 @@
 		 	title="ifta" id="editVehicle-ifta" onchange="checkMultiple(this)" 
 		  	value="#{vehiclesBean.item.ifta}" >
 		</h:selectBooleanCheckbox>
-<!--        <h:selectOneMenu value="#{vehiclesBean.item.ifta}" id="editVehicle-ifta" onchange="checkMultiple(this)" converter="SimpleBeanConverter">-->
-<!--          <f:selectItem itemValue="0" itemLabel="No"/>-->
-<!--          <f:selectItem itemValue="1" itemLabel="Yes"/>-->
-<!--        </h:selectOneMenu>-->
-     </td>
-   </tr>
-   <tr>
-     <td width="100"><h:outputText value="#{messages.editDevice_warrantyStart}" /></td>
-	    <td>
-	      <rich:message for="editWaysmart-warrantyStart" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-	      <rich:calendar value="#{vehiclesBean.item.warrantyStart}" id="editWaysmart-warrantyStart" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" />
-	    </td>
-   </tr>
-   <tr>
-     <td width="100"><h:outputText value="#{messages.editDevice_warrantyStop}" /></td>
-      <td>
-	      <rich:message for="editWaysmart-warrantyStop" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-	      <rich:calendar value="#{vehiclesBean.item.warrantyStop}" id="editWaysmart-warrantyStop" todayControlMode="hidden" enableManualInput="true" converterMessage="#{messages.editPerson_dateFormat}" />
-      </td>
-   </tr>
-   <tr>
-     <td width="100"><h:outputText value="#{messages.editDevice_zoneType}" /></td>
-     <td>
-        <h:selectOneMenu value="#{vehiclesBean.item.zoneType}" id="editVehicle-zoneType" onchange="checkMultiple(this)">
-          <f:selectItems value="#{vehiclesBean.zoneTypeSelectItems}" />
-        </h:selectOneMenu>
      </td>
    </tr>
  

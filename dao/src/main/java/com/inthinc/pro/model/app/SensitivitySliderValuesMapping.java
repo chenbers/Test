@@ -1,6 +1,7 @@
 package com.inthinc.pro.model.app;
 
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +131,9 @@ public class SensitivitySliderValuesMapping {
         
         Map<SliderKey, Slider> sliders = new HashMap<SliderKey, Slider>();
         for (SensitivitySliderValues sensitivitySliderValues : sensitivitySliderValuesList){
-            
+            if(EnumSet.of(ProductType.TIWIPRO_R71,ProductType.TIWIPRO_R74).contains(sensitivitySliderValues.getProductType()) && 
+                   sensitivitySliderValues.getSettingID()==1225)
+                continue;
             SliderKey sliderKey = createSliderKey(sensitivitySliderValues);
             Slider slider = findSlider(sliders, sliderKey);
             slider.addSetting(sensitivitySliderValues);

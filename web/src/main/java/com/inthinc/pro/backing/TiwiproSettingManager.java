@@ -121,10 +121,10 @@ public class TiwiproSettingManager extends VehicleSettingManager{
 	                                  getHardTurnValue(tiwiproEditableVehicleSettings.getHardTurn()).get(SettingType.HARD_TURN_SETTING.getSettingID()), 
 	                                  vehicleSetting.getCombined(SettingType.HARD_TURN_SETTING.getSettingID()));
 	       newSettings.addSliderIfNeeded(SettingType.HARD_ACCEL_SETTING, 
-	                                  getHardAccelerationValue(tiwiproEditableVehicleSettings.getHardAcceleration()).get(SettingType.HARD_TURN_SETTING.getSettingID()), 
+	                                  getHardAccelerationValue(tiwiproEditableVehicleSettings.getHardAcceleration()).get(SettingType.HARD_ACCEL_SETTING.getSettingID()), 
 	                                  vehicleSetting.getCombined(SettingType.HARD_ACCEL_SETTING.getSettingID()));
 	       newSettings.addSliderIfNeeded(SettingType.HARD_BRAKE_SETTING, 
-	                                  getHardBrakeValue(tiwiproEditableVehicleSettings.getHardBrake()).get(SettingType.HARD_TURN_SETTING.getSettingID()), 
+	                                  getHardBrakeValue(tiwiproEditableVehicleSettings.getHardBrake()).get(SettingType.HARD_BRAKE_SETTING.getSettingID()), 
 	                                  vehicleSetting.getCombined(SettingType.HARD_BRAKE_SETTING.getSettingID()));
 	       newSettings.addSettingIfNeeded(SettingType.SPEED_SETTING, 
 	                                  tiwiproEditableVehicleSettings.getSpeedSettingsString(), 
@@ -157,16 +157,16 @@ public class TiwiproSettingManager extends VehicleSettingManager{
     		   								  ""+tiwiproEditableVehicleSettings.getAutologoffSeconds(),
     		   								  vehicleSetting.getCombined(SettingType.AUTOLOGOFF_SETTING.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.HARD_VERT_SETTING, 
-	                                          getCompleteHardVerticalValue(tiwiproEditableVehicleSettings.getHardVertical()),
+	                                          getHardVerticalValue(tiwiproEditableVehicleSettings.getHardVertical()).get(SettingType.HARD_VERT_SETTING.getSettingID()),
     		   								  vehicleSetting.getCombined(SettingType.HARD_VERT_SETTING.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.HARD_TURN_SETTING,
 	                                          getHardTurnValue(tiwiproEditableVehicleSettings.getHardTurn()).get(SettingType.HARD_TURN_SETTING.getSettingID()),
     		   								  vehicleSetting.getCombined(SettingType.HARD_TURN_SETTING.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.HARD_ACCEL_SETTING,
-	                                          getHardAccelerationValue(tiwiproEditableVehicleSettings.getHardAcceleration()).get(SettingType.HARD_TURN_SETTING.getSettingID()),
+	                                          getHardAccelerationValue(tiwiproEditableVehicleSettings.getHardAcceleration()).get(SettingType.HARD_ACCEL_SETTING.getSettingID()),
     		   								  vehicleSetting.getCombined(SettingType.HARD_ACCEL_SETTING.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.HARD_BRAKE_SETTING,
-	                                          getHardBrakeValue(tiwiproEditableVehicleSettings.getHardBrake()).get(SettingType.HARD_TURN_SETTING.getSettingID()),
+	                                          getHardBrakeValue(tiwiproEditableVehicleSettings.getHardBrake()).get(SettingType.HARD_BRAKE_SETTING.getSettingID()),
     		   								  vehicleSetting.getCombined(SettingType.HARD_BRAKE_SETTING.getSettingID()));
 	       changedSettings.addSettingIfNeeded(SettingType.SPEED_SETTING, 
                                               tiwiproEditableVehicleSettings.getSpeedSettingsString(), 

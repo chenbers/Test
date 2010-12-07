@@ -380,7 +380,7 @@
 <!--                      </ui:fragment>-->
                       
                        <h:panelGroup id="speeedSettingsPanel">
-<!--                         <ui:fragment rendered="#{not empty vehiclesBean.item.editableVehicleSettings.properties['speedSettings']}">-->
+                        <ui:fragment rendered="#{not vehiclesBean.batchEdit or (vehiclesBean.batchEdit and vehiclesBean.batchProductChoice ne null)}">
                          <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/speedSensitivity.xhtml">
                              <ui:param name="editableVehicleSettings" value="#{vehiclesBean.item.editableVehicleSettings}" />
                              <ui:param name="vehicleSettingManager" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID]}" />
@@ -390,7 +390,7 @@
                              <ui:param name="disabled" value="false"/>
                              <ui:param name="formName" value="edit-form"/>
                            </ui:include>
-<!--                         </ui:fragment>-->
+                         </ui:fragment>
                       </h:panelGroup>
 
                       <ul id="grid_nav" style="margin: 0;">
