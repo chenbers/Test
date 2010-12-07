@@ -15,7 +15,7 @@ import com.inthinc.pro.service.annotations.DateFormat;
  * Interface for IFTA/DOT Reports Services.
  */
 @Produces("application/xml")
-@Path("/group/{groupID}/report/IFTA")
+@Path("/group/{groupID}/report/ifta")
 public interface IFTAService {
     String DATE_FORMAT = "yyyyMMdd";
 
