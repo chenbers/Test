@@ -14,8 +14,10 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
+import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.service.reports.IFTAService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+
 
 @Component
 public class IFTAServiceImpl implements IFTAService {
@@ -168,5 +170,51 @@ public class IFTAServiceImpl implements IFTAService {
         today.set(Calendar.SECOND, 0);                 // set second in minute
         today.set(Calendar.MILLISECOND, 0);            // set millis in second
         return today;
+    }
+
+    @Override
+    public Response getStateMileageByVehicleStateComparaison(Integer groupID, Date startDate, Date endDate, boolean dotOnly) {
+        if(invalidParameters(groupID, startDate, endDate, dotOnly)) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+        
+        List<StateMileageCompareByGroup> list = null;
+        
+        Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+        try{
+            list = reportsFacade.getStateMileageByVehicleStateComparaison(groupID, interval, dotOnly);
+        }
+        catch(Exception e) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        if(list != null && !list.isEmpty())
+            return Response.ok(new GenericEntity<List<StateMileageCompareByGroup>>(list) {}).build();
+        
+        return Response.status(Status.NOT_FOUND).build();
+    }
+
+    @Override
+    public Response getStateMileageByVehicleStateComparaisonOnlyDates(Integer groupID, Date startDate, Date endDate) {
+        return getStateMileageByVehicleStateComparaison(groupID, startDate ,endDate , false);
+    }
+
+    @Override
+    public Response getStateMileageByVehicleStateComparaisonOnlyGroup(Integer groupID) {
+        Calendar today = getMidnight(); 
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+        
+        return getStateMileageByVehicleStateComparaison(groupID, startDate.getTime() , today.getTime() , false);
+    }
+
+    @Override
+    public Response getStateMileageByVehicleStateComparaisonOnlyStatus(Integer groupID, boolean dotOnly) {
+        Calendar today = getMidnight(); 
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+        
+        return getStateMileageByVehicleStateComparaison(groupID, startDate.getTime() , today.getTime() , dotOnly);
+
     }
 }

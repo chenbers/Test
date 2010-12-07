@@ -13,6 +13,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
+import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
@@ -34,13 +35,20 @@ public class ReportsFacadeImpl implements ReportsFacade {
                 getAccountGroupHierarchy(), groupID, interval, getLocale());
         return criteria.getMainDataset();
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
-    public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly) {
+    public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID,
+            Interval interval,
+            boolean dotOnly) {
         List groupIDList = new ArrayList();
         groupIDList.add(groupID);
-        ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
+        ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(),
+                groupIDList, 
+                interval,
+                getLocale(),
+                getMeasurementType(), 
+                dotOnly);
         return criteria.getMainDataset();
     }
 
@@ -49,7 +57,7 @@ public class ReportsFacadeImpl implements ReportsFacade {
      * @return
      */
     GroupHierarchy getAccountGroupHierarchy() {
-    	return principal.getAccountGroupHierarchy();
+        return principal.getAccountGroupHierarchy();
     }
 
     /** 
@@ -59,16 +67,16 @@ public class ReportsFacadeImpl implements ReportsFacade {
     MeasurementType getMeasurementType() {
         return principal.getUser().getPerson().getMeasurementType();
     }
-    
+
     /**
      * Returns the user Locale.
      * 
      * @return The user Locale
      */
     Locale getLocale() {
-    	return principal.getUser().getPerson().getLocale();
+        return principal.getUser().getPerson().getLocale();
     }
-    
+
     /**
      * The reportService setter.
      * @param reportService the reportService to set
@@ -91,5 +99,20 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparaison(Integer groupID,
+            Interval interval,
+            boolean dotOnly) {
+        List groupIDList = new ArrayList();
+        groupIDList.add(groupID);
+        ReportCriteria criteria = reportService.getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(), 
+                groupIDList, interval, 
+                getLocale(),
+                getMeasurementType(),
+                dotOnly);
+        return criteria.getMainDataset();
+    }
+
 }
- 
+

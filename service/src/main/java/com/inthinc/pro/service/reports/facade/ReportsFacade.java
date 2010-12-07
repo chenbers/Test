@@ -6,6 +6,7 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
+import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 
 /**
@@ -13,12 +14,13 @@ import com.inthinc.pro.reports.performance.model.TenHoursViolation;
  */
 public interface ReportsFacade {
 
-    public static final int DAYS_BACK = 6;	
-	
-    public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval);
-    
-    public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly);
+    int DAYS_BACK = 6;	
 
-    public List<MileageByVehicle> getMileageByVehicleReportCriteria(Integer groupID, Interval interval, boolean dotOnly);
+    List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval);
 
+    List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly);
+
+    List<MileageByVehicle> getMileageByVehicleReportCriteria(Integer groupID, Interval interval, boolean dotOnly);
+
+    List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparaison(Integer groupID, Interval interval, boolean dotOnly);
 }

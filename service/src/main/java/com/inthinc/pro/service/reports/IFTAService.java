@@ -19,6 +19,8 @@ import com.inthinc.pro.service.annotations.DateFormat;
 public interface IFTAService {
     String DATE_FORMAT = "yyyyMMdd";
 
+    // State Mileage by Vehicle / Road status webservice 
+
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
      * @param groupID the Group ID
@@ -33,10 +35,11 @@ public interface IFTAService {
     @GET
     @Path("/roadStatus/{startDate}/{endDate}/{dotOnly}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatus(@PathParam("groupID") Integer groupID,
-                                  @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-                                  @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
-                                  @PathParam("dotOnly")  @DefaultValue("false") boolean dotOnly ); 
+    Response getStateMileageByVehicleRoadStatus(
+            @PathParam("groupID") Integer groupID,
+            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("dotOnly")  @DefaultValue("false") boolean dotOnly ); 
 
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
@@ -50,9 +53,10 @@ public interface IFTAService {
     @GET
     @Path("/roadStatus/{dotOnly}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatusOnlyStatus(@PathParam("groupID") Integer groupID,
-                                                            @PathParam("dotOnly")  @DefaultValue("false") boolean dotOnly );
-    
+    Response getStateMileageByVehicleRoadStatusOnlyStatus(
+            @PathParam("groupID") Integer groupID,
+            @PathParam("dotOnly")  @DefaultValue("false") boolean dotOnly );
+
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
      * @param groupID the Group ID
@@ -64,7 +68,7 @@ public interface IFTAService {
     @Path("/roadStatus")
     @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatusOnlyGroup(@PathParam("groupID") Integer groupID); 
-    
+
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
      * @param groupID the Group ID
@@ -77,9 +81,78 @@ public interface IFTAService {
     @GET
     @Path("/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatusOnlyDates(@PathParam("groupID") Integer groupID,
-                                  @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-                                  @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
+    Response getStateMileageByVehicleRoadStatusOnlyDates(
+            @PathParam("groupID") Integer groupID,
+            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
+
+    // State Mileage by Vehicle / Group Comparison by State-Province
+
+    /**
+     * Service for State mileage by vehicle / Group Comparison by State-Province Report with an explicit Interval.
+     * @param groupID the Group ID
+     * @param startDate the start date 
+     * @param endDate the end date
+     * @param dotOnly the DOT indicator. If set to true, only DOT data will be returned. 
+     *                                   Defaulted to false.
+     * @returnWrapped List<StateMileageCompareByGroup> the list of StateMileageCompareByGroup
+     * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found 
+     */
+    @GET
+    @Path("/stateComparaison/{startDate}/{endDate}/{dotOnly}")
+    @Produces("application/xml")
+    Response getStateMileageByVehicleStateComparaison(
+            @PathParam("groupID") Integer groupID,
+            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("dotOnly")  @DefaultValue("false") boolean dotOnly ); 
+
+    /**
+     * Service for State mileage by vehicle / Group Comparison by State-Province Report with an explicit Interval.
+     * @param groupID the Group ID
+     * @param dotOnly the DOT indicator. If set to true, only DOT data will be returned. 
+     *                                   Defaulted to false.
+     * @returnWrapped List<StateMileageByVehicleGroupComparaison> the list of StateMileageByVehicleGroupComparaison
+     * @HTTP HTTP 200 - OK if any StateMileageByVehicleGroupComparaison found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleGroupComparaison found 
+     */
+    @GET
+    @Path("/stateComparaison/{dotOnly}")
+    @Produces("application/xml")
+    Response getStateMileageByVehicleStateComparaisonOnlyStatus(
+            @PathParam("groupID") Integer groupID,
+            @PathParam("dotOnly")  @DefaultValue("false") boolean dotOnly );
+
+    /**
+     * Service for State mileage by vehicle /Group Comparison by State-Province Report with an explicit Interval.
+     * @param groupID the Group ID
+     * @returnWrapped List<StateMileageCompareByGroup> the list of StateMileageCompareByGroup
+     * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found 
+     */
+    @GET
+    @Path("/stateComparaison")
+    @Produces("application/xml")
+    Response getStateMileageByVehicleStateComparaisonOnlyGroup(@PathParam("groupID") Integer groupID); 
+
+    /**
+     * Service for State mileage by vehicle / Group Comparison by State-Province Report with an explicit Interval.
+     * @param groupID the Group ID
+     * @param startDate the start date 
+     * @param endDate the end date
+     * @returnWrapped List<StateMileageCompareByGroup> the list of StateMileageCompareByGroup
+     * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found 
+     */
+    @GET
+    @Path("/stateComparaison/{startDate}/{endDate}")
+    @Produces("application/xml")
+    Response getStateMileageByVehicleStateComparaisonOnlyDates(
+            @PathParam("groupID") Integer groupID,
+            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
+
 
     // Mileage By Vehicle ----------------------------------------------------------------------
     /**
