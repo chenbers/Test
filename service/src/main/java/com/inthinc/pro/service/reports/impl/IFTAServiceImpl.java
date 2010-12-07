@@ -12,6 +12,7 @@ import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.service.reports.IFTAService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
@@ -21,13 +22,15 @@ public class IFTAServiceImpl implements IFTAService {
     
     private final static Integer DAYS_BACK = -6;
 
-    private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
-    
     @Autowired ReportsFacade reportsFacade;
 
     @Autowired
     public IFTAServiceImpl(ReportsFacade reportsFacade){
         this.reportsFacade = reportsFacade;
+    }
+    
+    public void setFacade(ReportsFacade reportsFacade) {
+        this.reportsFacade = reportsFacade;   
     }
     
     @Override
@@ -65,29 +68,17 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     public static String getSimpleDateFormat() {
-        return SIMPLE_DATE_FORMAT;
+        return IFTAService.DATE_FORMAT;
     }
 
     @Override
     public Response getStateMileageByVehicleRoadStatusOnlyStatus(Integer groupID, boolean dotOnly) {
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
-        today.set(Calendar.MINUTE, 0);                 // set minute in hour
-        today.set(Calendar.SECOND, 0);                 // set second in minute
-        today.set(Calendar.MILLISECOND, 0);            // set millis in second
+        Calendar today = getMidnight();
 
-        Calendar startDate = Calendar.getInstance();
-        startDate.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
-        startDate.set(Calendar.MINUTE, 0);                 // set minute in hour
-        startDate.set(Calendar.SECOND, 0);                 // set second in minute
-        startDate.set(Calendar.MILLISECOND, 0);            // set millis in second
+        Calendar startDate = getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
         
         return getStateMileageByVehicleRoadStatus(groupID, startDate.getTime() , today.getTime() , dotOnly);
-    }
-    
-    public void setFacade(ReportsFacade reportsFacade) {
-        this.reportsFacade = reportsFacade;   
     }
 
     @Override
@@ -97,22 +88,85 @@ public class IFTAServiceImpl implements IFTAService {
 
     @Override
     public Response getStateMileageByVehicleRoadStatusOnlyGroup(Integer groupID) {
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
-        today.set(Calendar.MINUTE, 0);                 // set minute in hour
-        today.set(Calendar.SECOND, 0);                 // set second in minute
-        today.set(Calendar.MILLISECOND, 0);            // set millis in second
+        Calendar today = getMidnight();
 
-        Calendar startDate = Calendar.getInstance();
-        startDate.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
-        startDate.set(Calendar.MINUTE, 0);                 // set minute in hour
-        startDate.set(Calendar.SECOND, 0);                 // set second in minute
-        startDate.set(Calendar.MILLISECOND, 0);            // set millis in second
+        Calendar startDate = getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
         
         return getStateMileageByVehicleRoadStatus(groupID, startDate.getTime() , today.getTime() , false);
     }
 
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicle(java.lang.Integer, java.util.Date, java.util.Date, java.lang.Boolean)
+     */
+    @Override
+    public Response getMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly) {
+        Interval interval = new Interval(startDate.getTime(), endDate.getTime());
 
+        List<MileageByVehicle> list = null;
+        try {
+            list = reportsFacade.getMileageByVehicleReportCriteria(groupID, interval, iftaOnly);
+        } catch(Exception e) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        if(list == null || list.isEmpty()) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+        return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
+    }
+
+
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithInterval(java.lang.Integer, java.util.Date, java.util.Date)
+     */
+    @Override
+    public Response getMileageByVehicleWithInterval(Integer groupID, Date startDate, Date endDate) {
+        return getMileageByVehicle(groupID, startDate, endDate, false);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithFlag(java.lang.Integer)
+     */
+    @Override
+    public Response getMileageByVehicleWithFlag(Integer groupID) {
+        Calendar today = getMidnight();
+
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+        
+        return getMileageByVehicle(groupID, startDate.getTime(), today.getTime(), true);
+    }
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithoutParam(java.lang.Integer)
+     */
+    @Override
+    public Response getMileageByVehicleWithoutParam(Integer groupID) {
+        Calendar today = getMidnight();
+
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+        
+        return getMileageByVehicle(groupID, startDate.getTime(), today.getTime(), false);
+    }
+
+    /*
+     * Create the Date for today and set it to midnight.
+     * @return
+     */
+    private Calendar getMidnight() {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
+        today.set(Calendar.MINUTE, 0);                 // set minute in hour
+        today.set(Calendar.SECOND, 0);                 // set second in minute
+        today.set(Calendar.MILLISECOND, 0);            // set millis in second
+        return today;
+    }
 }

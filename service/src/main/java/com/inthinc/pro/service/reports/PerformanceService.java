@@ -15,7 +15,7 @@ import com.inthinc.pro.service.annotations.DateFormat;
  */
 @Path("/group/{groupID}/report/performance")
 public interface PerformanceService {
-    public final static String DATE_FORMAT = "yyyyMMdd";
+    String DATE_FORMAT = "yyyyMMdd";
 
     /**
      * Service for 10 Hours Violations Report with default Interval.

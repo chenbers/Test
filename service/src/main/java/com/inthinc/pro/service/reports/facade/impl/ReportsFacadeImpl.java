@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
@@ -74,6 +75,20 @@ public class ReportsFacadeImpl implements ReportsFacade {
      */
     void setReportService(ReportCriteriaService reportService) {
         this.reportService = reportService;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getMileageByVehicleReportCriteria(java.lang.Integer, org.joda.time.Interval, boolean)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<MileageByVehicle> getMileageByVehicleReportCriteria(Integer groupID, Interval interval, boolean dotOnly) {
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(groupID);
+        ReportCriteria criteria = reportService.getMileageByVehicleReportCriteria(getAccountGroupHierarchy(), 
+                groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
+        return criteria.getMainDataset();
     }
 
 }
