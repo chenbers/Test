@@ -35,8 +35,7 @@ public class IFTAServiceImpl implements IFTAService {
         this.reportsFacade = reportsFacade;   
     }
     
-    @Override
-    public Response getStateMileageByVehicleRoadStatus(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
+    Response getStateMileageByVehicleRoadStatusWithFullParameters(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
         if(invalidParameters(groupID, startDate, endDate, iftaOnly)) {
             return Response.status(Status.BAD_REQUEST).build();
         }
@@ -75,28 +74,33 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     @Override
-    public Response getStateMileageByVehicleRoadStatusIfta(Integer groupID, boolean iftaOnly) {
+    public Response getStateMileageByVehicleRoadStatusWithIfta(Integer groupID) {
         Calendar today = getMidnight();
 
         Calendar startDate = getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
         
-        return getStateMileageByVehicleRoadStatus(groupID, startDate.getTime() , today.getTime() , iftaOnly);
+        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate.getTime() , today.getTime() , true);
+    }
+    
+    @Override
+    public Response getStateMileageByVehicleRoadStatusWithIftaAndDates(Integer groupID, Date startDate, Date endDate) {
+        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate , endDate , true);
     }
 
     @Override
-    public Response getStateMileageByVehicleRoadStatusInterval(Integer groupID, Date startDate, Date endDate) {
-        return getStateMileageByVehicleRoadStatus(groupID, startDate ,endDate , false);
+    public Response getStateMileageByVehicleRoadStatusWithDates(Integer groupID, Date startDate, Date endDate) {
+        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate ,endDate , false);
     }
 
     @Override
-    public Response getStateMileageByVehicleRoadStatusGroup(Integer groupID) {
+    public Response getStateMileageByVehicleRoadStatusDefaults(Integer groupID) {
         Calendar today = getMidnight();
 
         Calendar startDate = getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
         
-        return getStateMileageByVehicleRoadStatus(groupID, startDate.getTime() , today.getTime() , false);
+        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate.getTime() , today.getTime() , false);
     }
 
 
@@ -242,4 +246,6 @@ public class IFTAServiceImpl implements IFTAService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }

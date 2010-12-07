@@ -97,12 +97,11 @@ public interface ServiceClient {
     public ClientResponse<List<TenHoursViolation>> getTenHourViolations(@PathParam("groupID") Integer groupID); 
 
     @GET
-    @Path("/group/{groupID}/report/ifta/roadStatus/{startDate}/{endDate}/{dotOnly}")
+    @Path("/group/{groupID}/report/ifta/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
-    public ClientResponse<List<StateMileageByVehicleRoadStatus>> getStateMileageByVehicleRoadStatus(
+    public ClientResponse<List<StateMileageByVehicleRoadStatus>> getStateMileageByVehicleRoadStatusOnlyDates(
             @PathParam("groupID") Integer groupID,
             @PathParam("startDate") String startDate,
-            @PathParam("endDate") String endDate,
-            @PathParam("dotOnly")  @DefaultValue("false") boolean dotOnly ); 
+            @PathParam("endDate") String endDate ); 
 
 }

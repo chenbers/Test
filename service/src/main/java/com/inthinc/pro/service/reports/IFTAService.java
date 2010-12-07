@@ -34,13 +34,12 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found 
      */
     @GET
-    @Path("/roadStatus/{startDate}/{endDate}/{iftaOnly}")
+    @Path("/roadStatus/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatus(
+    Response getStateMileageByVehicleRoadStatusWithIftaAndDates(
             @PathParam("groupID") Integer groupID,
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
-            @PathParam("iftaOnly")  @DefaultValue("false") boolean iftaOnly ); 
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
 
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
@@ -52,11 +51,9 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found 
      */
     @GET
-    @Path("/roadStatus/{iftaOnly}")
+    @Path("/roadStatus/iftaOnly")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatusIfta(
-            @PathParam("groupID") Integer groupID,
-            @PathParam("iftaOnly")  @DefaultValue("false") boolean iftaOnly );
+    Response getStateMileageByVehicleRoadStatusWithIfta(@PathParam("groupID") Integer groupID );
 
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
@@ -68,7 +65,7 @@ public interface IFTAService {
     @GET
     @Path("/roadStatus")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatusGroup(@PathParam("groupID") Integer groupID); 
+    Response getStateMileageByVehicleRoadStatusDefaults(@PathParam("groupID") Integer groupID); 
 
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
@@ -82,7 +79,7 @@ public interface IFTAService {
     @GET
     @Path("/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleRoadStatusInterval(
+    Response getStateMileageByVehicleRoadStatusWithDates(
             @PathParam("groupID") Integer groupID,
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate); 
