@@ -1,5 +1,6 @@
 package com.inthinc.pro.model;
 
+import java.util.List;
 import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,7 +25,8 @@ public class RedFlag extends BaseEntity
     @Column(name="tzName",updateable=false)
     private TimeZone timezone;
     
-    private Integer msgID;
+    @Column(updateable=false)
+    private List<Integer> msgIDList;
     
     public RedFlag()
     {
@@ -78,11 +80,11 @@ public class RedFlag extends BaseEntity
         this.timezone = timezone;
     }
 
-    public Integer getMsgID() {
-        return msgID;
+    public List<Integer> getMsgIDList() {
+        return msgIDList;
     }
-    public void setMsgID(Integer msgID) {
-        this.msgID = msgID;
+    public void setMsgIDList(List<Integer> msgIDList) {
+        this.msgIDList = msgIDList;
     }
 
 }

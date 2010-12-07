@@ -1,9 +1,10 @@
 package com.inthinc.pro.backing.paging;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.model.SelectItem;
 
@@ -15,15 +16,14 @@ import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RedFlagAndZoneAlertsDAO;
-import com.inthinc.pro.model.event.EventCategory;
-import com.inthinc.pro.model.event.StatusEvent;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
-import com.inthinc.pro.model.RedFlagOrZoneAlert;
 import com.inthinc.pro.model.RedFlagReportItem;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.StatusEvent;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -46,7 +46,6 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 	static final List<EventCategory> CATEGORIES;
 	static {
 		CATEGORIES = new ArrayList<EventCategory>();
-//		CATEGORIES.add(EventCategory.NONE);
 		CATEGORIES.add(EventCategory.VIOLATION);
 		CATEGORIES.add(EventCategory.EMERGENCY);
 		CATEGORIES.add(EventCategory.WARNING);
@@ -68,28 +67,90 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 	
 
     private RedFlag sentDetailsItem;
-    private RedFlagEscalationDetails alertDetails; 
-	
-	public RedFlag getSentDetailsItem() {
-	    
-	    
+    private List<SelectItem> alertItems;
+    private RedFlagEscalationDetails details;
+    private Map<Integer, RedFlagEscalationDetails> detailsMap;
+    private Integer selectedAlertID;
+    
+
+    public Map<Integer, RedFlagEscalationDetails> getDetailsMap() {
+        return detailsMap;
+    }
+
+    public void setDetailsMap(Map<Integer, RedFlagEscalationDetails> detailsMap) {
+        this.detailsMap = detailsMap;
+    }
+
+    public RedFlagEscalationDetails getDetails() {
+        return details;
+    }
+
+    public void setDetails(RedFlagEscalationDetails details) {
+        this.details = details;
+    }
+
+
+    public Integer getSelectedAlertID() {
+        return selectedAlertID;
+    }
+
+    public void setSelectedAlertID(Integer selectedAlertID) {
+        this.selectedAlertID = selectedAlertID;
+        details = detailsMap.get(selectedAlertID);
+        
+    }
+
+    public List<SelectItem> getAlertItems() {
+        if (alertItems == null) {
+            alertItems = new ArrayList<SelectItem>();
+            alertItems.add(new SelectItem(null, ""));
+        }
+        return alertItems;
+    }
+
+    public void setAlertItems(List<SelectItem> alertItems) {
+        this.alertItems = alertItems;
+    }
+
+    public RedFlag getSentDetailsItem() {
         return sentDetailsItem;
+    }
+
+    // TODO: TEMPORARY FOR TESTING UNTIL THE MESSAGE ID IS POPULUATED 
+    static int randomInt(int min, int max) {
+        return (int) (Math.random() * ((max - min) + 1)) + min;
     }
 
     public void setSentDetailsItem(RedFlag sentDetailsItem) {
         // TODO: TEMPORARY FOR TESTING UNTIL THE MESSAGE ID IS POPULUATED 
-        sentDetailsItem.setMsgID(50584);
+        List<Integer> msgIDList = new ArrayList<Integer>();
+//        msgIDList.add(Integer.valueOf(50584));
+//        msgIDList.add(Integer.valueOf(50937));
+        msgIDList.add(Integer.valueOf(randomInt(1,100)));
+        msgIDList.add(Integer.valueOf(randomInt(1,100)));
+        msgIDList.add(Integer.valueOf(42));// this one has status of ESCALATED_AWAITING_ACK
+        sentDetailsItem.setMsgIDList(msgIDList);
+        // TODO: DONE
         this.sentDetailsItem = sentDetailsItem;
-        alertDetails = new RedFlagEscalationDetails(alertMessageDAO, redFlagAndZoneAlertsDAO, personDAO, sentDetailsItem);
+        
+        List<Integer> redFlagMsgIDList = sentDetailsItem.getMsgIDList();
+        detailsMap = new HashMap<Integer, RedFlagEscalationDetails>();
+        alertItems = new ArrayList<SelectItem>();
+        alertItems.add(new SelectItem(null, ""));
+        for (Integer msgID : redFlagMsgIDList) {
+            AlertMessage message = alertMessageDAO.findByID(msgID);
+            if (detailsMap.get(message.getAlertID()) == null) {
+                RedFlagEscalationDetails details = new RedFlagEscalationDetails(alertMessageDAO, redFlagAndZoneAlertsDAO, personDAO, sentDetailsItem, message);
+                alertItems.add(new SelectItem(details.getAlert().getAlertID(), details.getAlert().getName()));
+                detailsMap.put(details.getAlert().getAlertID(), details);
+            }
+            else {
+                detailsMap.get(details.getAlert().getAlertID()).addMessage(message);
+            }
+        }
     }
 
-    public RedFlagEscalationDetails getAlertDetails() {
-        return alertDetails;
-    }
 
-    public void setAlertDetails(RedFlagEscalationDetails alertDetails) {
-        this.alertDetails = alertDetails;
-    }
 
     public String getFilterAlert() {
 		return filterAlert;
@@ -251,5 +312,10 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
         this.personDAO = personDAO;
     }
 
-	
+    public void closeDetailsAction() {
+        details = null;
+        alertItems = null;
+        detailsMap = null;
+        selectedAlertID = null;
+    }
 }

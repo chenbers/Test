@@ -4,7 +4,8 @@ public enum PhoneEscalationStatus {
     NOT_ATTEMPTED,
     IN_PROGRESS,
     FAILED,
-    SUCCESS;
+    SUCCESS,
+    CANCELED;
     
     @Override
     public String toString() {

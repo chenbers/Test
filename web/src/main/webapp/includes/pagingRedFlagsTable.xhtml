@@ -120,7 +120,7 @@
 				<a4j:commandLink id="redFlags-sentStatus" rendered="#{redFlag.sent != 'NONE'}" 
 								title="#{messages[redFlag.sent]}" 
 								oncomplete="javascript:Richfaces.showModalPanel('redFlagsSentDetailsPanel');" 
-								reRender="redFlagsSentDetailsForm"> 
+								reRender="alertSelectForm,redFlagsSentDetailsForm"> 
 					<h:outputText value="#{messages[redFlag.sent]}" />
 					<f:setPropertyActionListener target="#{bean.sentDetailsItem}" value="#{redFlag}"/>
 				</a4j:commandLink>
@@ -237,7 +237,7 @@
 	</ui:include>
 	
 	<ui:include src="/includes/redFlagSentDetailsPopup.xhtml">
-	   	<ui:param name="details" value="#{bean.alertDetails}" />
+	   	<ui:param name="bean" value="#{bean}" />
 	</ui:include>
 	
 

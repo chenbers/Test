@@ -84,7 +84,26 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
 
     @Override
     public Boolean cancelPendingMessage(Integer msgID) {
-        return true;
+        Connection conn = null;
+        Integer numRows=0;
+        PreparedStatement statement = null;
+        try
+        {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement("UPDATE message SET status=5, modified=utc_timestamp() WHERE msgID=?");
+            statement.setInt(1, msgID);
+            numRows=statement.executeUpdate();
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(statement);
+            close(conn);
+        } // end finally   
+        return numRows!=0;
     }
 
     @Override
@@ -301,11 +320,11 @@ escalationTryCount
         {
             if (AlertMessageDeliveryType.EMAIL.equals(messageType))
             {
-                alertMessage.setMessage(person.getPriEmail());    
+                alertMessage.setAddress(person.getPriEmail());    
             }
             else if (AlertMessageDeliveryType.PHONE.equals(messageType))
             {
-                alertMessage.setMessage(person.getPriPhone());    
+                alertMessage.setAddress(person.getPriPhone());    
             }                
         }
         AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder();

@@ -13,11 +13,20 @@
             <h:graphicImage id="redFlagsSentDetails-closeX" value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('redFlagsSentDetailsPanel')" />
         </f:facet>
         
-        <h:panelGroup layout="block" styleClass="popupsubtitle">
-            <h:outputText value="#{messages.redFlagDetailsPopupInst}" />
+        <h:panelGroup id="alertSelectPanel" layout="block" styleClass="popupsubtitle">
+        	<h:panelGrid columns="1">
+            <h:outputText value="#{messages.redFlagDetailsPopupInst}"/>  
+			<a4j:form id="alertSelectForm">
+				<h:selectOneMenu value="#{bean.selectedAlertID}" id="detailsSelect" style="width: 200px">
+                	<f:selectItems value="#{bean.alertItems}" />
+                    <a4j:support event="onchange" reRender="redFlagsSentDetailsForm" />
+				</h:selectOneMenu>
+			</a4j:form>
+			</h:panelGrid>
         </h:panelGroup>
         
         <a4j:form id="redFlagsSentDetailsForm">
+			<ui:fragment rendered="#{bean.details != null}">
 			<table width="500" border="0" cellspacing="0" cellpadding="0">
             	<tr>
                 	<td width="480" valign="top">
@@ -25,15 +34,15 @@
 					<table width="460" border="0" cellspacing="2" cellpadding="4" align="center">
 						<tr>
                         	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupName}" /></td>
-                        	<td><h:outputText value="#{details.alert.name}" /></td>
+                        	<td><h:outputText value="#{bean.details.alert.name}" /></td>
                         </tr>
 						<tr>
                         	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupDescription}" /></td>
-                        	<td><h:outputText value="#{details.alert.description}" /></td>
+                        	<td><h:outputText value="#{bean.details.alert.description}" /></td>
                         </tr>
 						<tr>
                         	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupType}" /></td>
-                        	<td><h:outputText value="#{messages[details.alert.type]}" /></td>
+                        	<td><h:outputText value="#{messages[bean.details.alert.type]}" /></td>
                         </tr>
                      </table>
                      </td>
@@ -42,36 +51,36 @@
                 	<td width="480" valign="top">
 					<div class="add_section_title"><h:outputText value="#{messages.redFlagDetailsPopupEscalationSectTitle}" /></div>
 					<table width="460" border="0" cellspacing="2" cellpadding="4" align="center">
-						<ui:fragment rendered="#{details.personList != null}">
+						<ui:fragment rendered="#{bean.details.personList != null}">
 						<tr>
                         	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupPersonList}" /></td>
                         	<td>
                         		<ul>
-                        		<a4j:repeat value="#{details.personList}" var="name">
+                        		<a4j:repeat value="#{bean.details.personList}" var="name">
                         			<li><h:outputText value="#{name}" /></li>
 								</a4j:repeat>
 								</ul>
                         	</td>
                         </tr>
                         </ui:fragment>
-						<ui:fragment rendered="#{details.emailTo != null}">
+						<ui:fragment rendered="#{bean.details.emailTo != null}">
 						<tr>
                         	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupEmailList}" /></td>
                         	<td>
                         		<ul>
-                        		<a4j:repeat value="#{details.emailTo}" var="email">
+                        		<a4j:repeat value="#{bean.details.emailTo}" var="email">
                         			<li><h:outputText value="#{email}" /></li>
 								</a4j:repeat>
 								</ul>
                         	</td>
                         </tr>
                         </ui:fragment>
-						<ui:fragment rendered="#{details.phoneList != null}">
+						<ui:fragment rendered="#{bean.details.phoneList != null}">
 						<tr>
                         	<td width="110" ><h:outputText value="#{messages.redFlagDetailsPopupPhoneList}" /></td>
                         	<td>
                         		<ol>
-                        		<a4j:repeat value="#{details.phoneList}" var="phone">
+                        		<a4j:repeat value="#{bean.details.phoneList}" var="phone">
                         			<li>
                         				<h:outputText value="#{phone.phoneNumber}" converter="PhoneNumberConverter" style="width:150px;margin-right:20px;"/>
                         				<h:outputFormat value="#{messages[phone.status]}" style="font-style:italic;">
@@ -84,23 +93,23 @@
                         	</td>
                         </tr>
                         </ui:fragment>
-						<ui:fragment rendered="#{details.escalationEmail != null}">
+						<ui:fragment rendered="#{bean.details.escalationEmail != null}">
 						<tr>
                         	<td width="110"><h:outputText value="#{messages.redFlagDetailsPopupEscalationEmail}" /></td>
-                        	<td><h:outputText value="#{details.escalationEmail}" /></td>
+                        	<td><h:outputText value="#{bean.details.escalationEmail}" /></td>
                         </tr>
                         </ui:fragment>
                      </table>
                      </td>
 				</tr>
 			</table>				                     
-
+			</ui:fragment>
         <div class="popupactions">
-        <a4j:commandButton id="redFlagsSentDetailsPanel-canceled" value="#{messages.redFlagDetailsPopupCancelPending}" rendered="#{details.message.status == 'ESCALATED_AWAITING_ACKNOWLEDGE'}" 
-        	action="#{details.cancelPendingAction}" onclick="Richfaces.hideModalPanel('redFlagsSentDetailsPanel')" styleClass="left">
+        <a4j:commandButton id="redFlagsSentDetailsPanel-canceled" value="#{messages.redFlagDetailsPopupCancelPending}" rendered="#{bean.details != null and bean.details.status == 'ESCALATED_AWAITING_ACKNOWLEDGE'}" 
+        	action="#{bean.details.cancelPendingAction}" reRender="redFlagsSentDetailsForm,popupactions" styleClass="left">
             <span class="delete"> <h:outputText value="#{messages.redFlagDetailsPopupCancelPending}" /></span>
         	</a4j:commandButton>
-        <a4j:commandButton id="redFlagsSentDetailsPanel-close" value="#{messages.button_close}" onclick="Richfaces.hideModalPanel('redFlagsSentDetailsPanel')" styleClass="left">
+        <a4j:commandButton id="redFlagsSentDetailsPanel-close" value="#{messages.button_close}" action="#{bean.closeDetailsAction}" onclick="Richfaces.hideModalPanel('redFlagsSentDetailsPanel')" styleClass="left">
             <span class="edit"> <h:outputText value="#{messages.button_close}" /></span>
         </a4j:commandButton></div>
         </a4j:form>
