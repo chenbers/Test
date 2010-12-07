@@ -30,6 +30,7 @@
 	</bean>
 
    <bean id="phoneDispatcher" class="com.inthinc.pro.scheduler.dispatch.PhoneDispatcher" init-method="init">
+         <property name="phoneServerURL" value="${voxeo.phoneServerURL}" />
          <property name="callerID" value="${voxeo.callerID}" />
          <property name="tokenID" value="${voxeo.tokenID}" />
          <property name="maxThreads" value="${voxeo.maxThreads}" />

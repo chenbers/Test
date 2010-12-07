@@ -19,14 +19,6 @@
     <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
         <property name="dataSource" ref="tiwiJDBCDataSource" />
     </bean>
-    <bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO">
-    	<property name="personDAO"     ref="personDAO"></property>
-    	<property name="driverDAO"     ref="driverDAO"></property>
-    	<property name="vehicleDAO"    ref="vehicleDAO"></property>
-    	<property name="eventDAO"      ref="eventDAO"></property>
-    	<property name="zoneDAO"      ref="zoneDAO"></property>
-    	<property name="addressLookup" ref="${addressLookup2}"></property>
-    </bean>
     <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO" parent="genericDAO"></bean>
     <bean id="groupDAO" class="com.inthinc.pro.dao.hessian.GroupHessianDAO" parent="genericDAO"></bean>
     <bean id="personDAO" class="com.inthinc.pro.dao.hessian.PersonHessianDAO" parent="genericDAO"></bean>
