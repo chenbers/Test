@@ -289,7 +289,6 @@ public class AssetServiceImplTest {
         assertEquals(400, response.getStatus());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testGetFlagsFailsIfStartDateBeforeLastYear(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
@@ -309,7 +308,7 @@ public class AssetServiceImplTest {
                 systemClock.getNow();
                 result = today;
 
-                redflagDaoMock.getRedFlagCount((Integer) any, (Date) any, (Date) any, (Integer) any, (List) any);
+                redflagDaoMock.getRedFlagPage((Integer) any, (Date) any, (Date) any, (Integer) any, (PageParams) any);
                 times = 0;
             }
         };
@@ -319,7 +318,6 @@ public class AssetServiceImplTest {
         assertEquals(400, response.getStatus());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testgetFlagsFailsIfStartDateAfterEndDate(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
@@ -331,7 +329,7 @@ public class AssetServiceImplTest {
         // Expectations & stubbing
         new Expectations() {
             {
-                redflagDaoMock.getRedFlagCount((Integer) any, (Date) any, (Date) any, (Integer) any, (List) any);
+                redflagDaoMock.getRedFlagPage((Integer) any, (Date) any, (Date) any, (Integer) any, (PageParams) any);
                 times = 0;
             }
         };
@@ -342,7 +340,6 @@ public class AssetServiceImplTest {
         assertEquals(400, response.getStatus());
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void testFailsIfFirstRowGreaterThanLastRow(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
 
@@ -354,7 +351,7 @@ public class AssetServiceImplTest {
         // Expectations & stubbing
         new Expectations() {
             {
-                redflagDaoMock.getRedFlagCount((Integer) any, (Date) any, (Date) any, (Integer) any, (List) any);
+                redflagDaoMock.getRedFlagPage((Integer) any, (Date) any, (Date) any, (Integer) any, (PageParams) any);
                 times = 0;
             }
         };
@@ -363,6 +360,32 @@ public class AssetServiceImplTest {
 
         Response response = assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_END_ROW, PAGE_START_ROW, startDate, endDate);
         assertEquals(400, response.getStatus());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testReturns404IfRedflagListIsEmpty(final RedFlagDAO redflagDaoMock, final Clock systemClock) {
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                // First call test for empty list
+                redflagDaoMock.getRedFlagPage((Integer) any, (Date) any, (Date) any, (Integer) any, (PageParams) any);
+                result = new ArrayList();
+
+                // Second call test for null
+                redflagDaoMock.getRedFlagPage((Integer) any, (Date) any, (Date) any, (Integer) any, (PageParams) any);
+                result = null;
+            }
+        };
+
+        AssetServiceImpl assetService = new AssetServiceImpl(redflagDaoMock, systemClock);
+
+        Response response = assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_START_ROW, PAGE_END_ROW, new Date(), new Date());
+        assertEquals(404, response.getStatus());
+
+        response = assetService.getRedFlags(SAMPLE_GROUP_ID, PAGE_START_ROW, PAGE_END_ROW, new Date(), new Date());
+        assertEquals(404, response.getStatus());
     }
 
     private PageParams createPageParams() {

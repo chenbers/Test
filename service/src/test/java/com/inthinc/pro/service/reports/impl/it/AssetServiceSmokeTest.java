@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;
@@ -87,7 +88,7 @@ public class AssetServiceSmokeTest {
     @Test
     public void testGetRedFlags() {
         ClientResponse<List<RedFlag>> response = assetServiceClient.getRedFlags(SAMPLE_GROUP_ID, START_ROW, END_ROW);
-        assertEquals(STATUS_OK, response.getStatus());
+        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
     @Test

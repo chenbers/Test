@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.joda.time.DateMidnight;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,6 @@ public class AssetServiceImpl implements AssetService {
      */
     public static final String HEADER_ERROR_MESSAGE = "ERROR_MESSAGE";
 
-    private static final int STATUS_BAD_REQUEST = 400;
     private RedFlagDAO redFlagDAO;
     private Clock systemClock;
 
@@ -60,7 +60,7 @@ public class AssetServiceImpl implements AssetService {
         Date oneYearThreshold = getOneYearThresholdDate(today);
 
         if (startDate.before(oneYearThreshold)) {
-            return Response.status(STATUS_BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be before today minus one year.").build();
+            return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be before today minus one year.").build();
         }
 
         return getRedFlagCount(groupID, startDate, today);
@@ -76,7 +76,7 @@ public class AssetServiceImpl implements AssetService {
         Date normalizedEndDate = getBeginningOfDay(endDate);
 
         if (normalizedStartDate.after(normalizedEndDate)) {
-            return Response.status(400).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be greater than end date (" + endDate + ").").build();
+            return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be greater than end date (" + endDate + ").").build();
         }
 
         ArrayList<TableFilterField> emptyList = new ArrayList<TableFilterField>();
@@ -104,7 +104,7 @@ public class AssetServiceImpl implements AssetService {
         Date oneYearThreshold = getOneYearThresholdDate(today);
 
         if (startDate.before(oneYearThreshold)) {
-            return Response.status(400).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be before today minus one year.").build();
+            return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be before today minus one year.").build();
         }
 
         return getRedFlags(groupID, firstRecord, lastRecord, startDate, today);
@@ -119,16 +119,20 @@ public class AssetServiceImpl implements AssetService {
         Date normalizedEndDate = getBeginningOfDay(endDate);
 
         if (firstRecord > lastRecord) {
-            return Response.status(400).header(HEADER_ERROR_MESSAGE, "First recourd number can't be greater than last record number.").build();
+            return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "First recourd number can't be greater than last record number.").build();
         }
 
         if (normalizedStartDate.after(normalizedEndDate)) {
-            return Response.status(400).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be greater than end date (" + endDate + ")").build();
+            return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be greater than end date (" + endDate + ")").build();
         }
 
         PageParams expectedPageParams = createPageParams(firstRecord, lastRecord);
 
         List<RedFlag> result = redFlagDAO.getRedFlagPage(groupID, normalizedStartDate, normalizedEndDate, RedFlagDAO.INCLUDE_FORGIVEN, expectedPageParams);
+        
+        if (result == null || result.isEmpty()) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
 
         return Response.ok(new GenericEntity<List<RedFlag>>(result) {}).build();
     }

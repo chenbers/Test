@@ -75,6 +75,7 @@ public interface AssetService {
      * @returnWrapped {@link List} A list of red flags for the specified group, matching the filter criteria.
      * @HTTP HTTP 200 OK
      * @HTTP HTTP 400 If first record is greater than last record.
+     * @HTTP HTTP 404 If no data is found matching the criteria.
      */
     @GET
     @Path("/redflags/{firstRecord}/{lastRecord}")
@@ -96,6 +97,7 @@ public interface AssetService {
      * @HTTP HTTP 200 OK
      * @HTTP HTTP 400 If start date is greater than today or if the date is not in the yyyyMMdd format.
      * @HTTP HTTP 400 If first record is greater than last record.
+     * @HTTP HTTP 404 If no data is found matching the criteria.
      */
     @GET
     @Path("/redflags/{firstRecord}/{lastRecord}/{startDate}")
@@ -120,6 +122,7 @@ public interface AssetService {
      * @HTTP HTTP 200 OK
      * @HTTP HTTP 400 If start date is greater than end date or if the date is not in the yyyyMMdd format.
      * @HTTP HTTP 400 If first record is greater than last record.
+     * @HTTP HTTP 404 If no data is found matching the criteria.
      */
     @GET
     @Path("/redflags/{firstRecord}/{lastRecord}/{startDate}/{endDate}")
