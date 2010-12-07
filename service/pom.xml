@@ -307,6 +307,7 @@
 								<link>..\apidocs</link>
 								<link>..\jaxbdocs</link>
 								<link>..\..\..\..\dao\target\site\jaxbdocs</link>
+								<link>..\..\..\..\reports\target\site\jaxbdocs</link>
 							</links>
 						</configuration>
 						<reports>

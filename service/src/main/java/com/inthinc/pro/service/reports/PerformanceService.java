@@ -15,33 +15,33 @@ import com.inthinc.pro.service.annotations.DateFormat;
  */
 @Path("/group/{groupID}/report/performance")
 public interface PerformanceService {
-    String DATE_FORMAT = "yyyyMMdd";
+    public final static String DATE_FORMAT = "yyyyMMdd";
 
     /**
      * Service for 10 Hours Violations Report with default Interval.
      * @param groupID the Group ID
-     * @returnWrapped List<TenHoursViolation> the list of violations
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.performance.model.TenHoursViolation> the list of violations
      * @HTTP HTTP 200 - OK if any violations found
-     * @HTTP HTTP 404 - NOT FOUND if no violations found 
+     * @HTTP HTTP 404 - NOT FOUND if no violations found
      */
     @GET
     @Path("/10HourViolations")
     @Produces("application/xml")
-    Response getTenHourViolations(@PathParam("groupID") Integer groupID); 
+    Response getTenHourViolations(@PathParam("groupID") Integer groupID);
 
     /**
      * Service for 10 Hours Violations Report with an explicite Interval.
      * @param groupID the Group ID
-     * @param startDate the start date 
-     * @param endDate the end date
-     * @returnWrapped List<TenHoursViolation> the list of violations
+     * @param startDate the start date in format {@value com.inthinc.pro.service.reports.PerformanceService#DATE_FORMAT}
+     * @param endDate the end date in format {@value com.inthinc.pro.service.reports.PerformanceService#DATE_FORMAT}
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.performance.model.TenHoursViolation> the list of violations
      * @HTTP HTTP 200 - OK if any violations found
-     * @HTTP HTTP 404 - NOT FOUND if no violations found 
+     * @HTTP HTTP 404 - NOT FOUND if no violations found
      */
     @GET
     @Path("/10HourViolations/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getTenHourViolations(@PathParam("groupID") Integer groupID, 
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate, 
+    Response getTenHourViolations(@PathParam("groupID") Integer groupID,
+            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 }

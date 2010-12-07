@@ -71,7 +71,27 @@ public interface UserService extends GenericService<User> {
 
     /**
      * Get All Users (bulk)
-     * @return list of users
+     * @return list of users in the form: 
+     * <pre>
+     *{@code
+     * <collection>
+     * <user>
+     * <modified>2010-06-01T17:27:42-06:00</modified>
+     * <groupID>53</groupID>
+     * <password>
+     * W1bf8nnwwKg8JMcbBNpOPe4drnJjWoPzT63p4X76gbvq/j0vTN1JeMXscx+80QPr
+     * </password>
+     * <personID>10041</personID>
+     * <roles>24</roles>
+     * <roles>23</roles>
+     * <status>ACTIVE</status>
+     * <userID>1090</userID>
+     * <username>travelguard</username>
+     * </user>
+     * etc...
+     * </collection>
+     * }
+ 	 * </pre>
      */
     @GET
     @Path("/users")
