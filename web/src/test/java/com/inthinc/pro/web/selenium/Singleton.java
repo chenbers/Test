@@ -1,7 +1,8 @@
 package com.inthinc.pro.web.selenium;
-import com.inthinc.pro.web.selenium.InthincTest;
 
-public class Singleton extends InthincTest {
+import org.apache.commons.lang.NullArgumentException;
+
+public class Singleton {
 	 
     // volatile is needed so that multiple thread can reconcile the instance
     // semantics for volatile changed in Java 5.
@@ -17,8 +18,8 @@ public class Singleton extends InthincTest {
     	
     }
     
-  //overloaded singleton used by the start_selenium method to pass data file information
-    public static Singleton getSingleton(String file_name, String test_case) {
+  //overloaded singleton used by the start_selenium method to pass information
+    public static Singleton getSingleton(String host, String browser, String url) {
     	if(singleton==null) {
             synchronized(Singleton.class){
             // this is needed if two threads are waiting at the monitor at the
@@ -26,10 +27,8 @@ public class Singleton extends InthincTest {
               if(singleton == null) {
                     try {
                     	singleton = new Singleton();
-//                    	set_test_case(file_name, test_case);
-//                    	singleton.selenium = new Core((get_data("Settings","Host")), 4444, (get_data("Settings","Browser")), (get_data("Settings","URL")));
+                    	singleton.selenium = new Core(host, 4444, browser, url);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					}
@@ -46,18 +45,30 @@ public class Singleton extends InthincTest {
             // this is needed if two threads are waiting at the monitor at the
             // time when singleton was getting instantiated
                 if(singleton == null) {
+            		String host = "localhost";
+            		String browser = "*iexplore";
+            		String url = "https://qa.tiwipro.com:8423/tiwipro/";
+                	try{
+                		host = System.getenv("Selenium_host");
+                		browser = System.getenv("Selenium_Browser");
+                		url = System.getenv("Selenium_Url");
+                		if (host.isEmpty()||browser.isEmpty()||url.isEmpty()){
+                			throw new NullArgumentException("No environment Variables");
+                		}
+                	}catch(Exception e){
+                		host = "localhost";
+                		browser = "*iexplore";
+                		url = "https://qa.tiwipro.com:8423/tiwipro/";
+                	}
                     try {
                     	singleton = new Singleton();
-                    	singleton.selenium = new Core(System.getenv("Selenium_host"), 4444, System.getenv("Selenium_Browser"), System.getenv("Selenium_Url"));
+                    	singleton.selenium = new Core(host, 4444, browser, url);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					}
-                    
-                }
+				}
             }
+        }
         return singleton;
-    }
-    
-    }
+    }   
+}
