@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import mockit.Expectations;
 import mockit.Mocked;
@@ -24,6 +25,7 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.util.ReportsUtil;
 
 public class IFTAServiceImplTest extends BaseUnitTest {
 
@@ -31,19 +33,35 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     @Mocked 
     private ReportsFacade reportsFacadeMock;
 
-    IFTAServiceImpl serviceSUT = new IFTAServiceImpl(reportsFacadeMock);
+    @Autowired 
+    @Mocked
+    private ReportsUtil reportsUtilMock;
+
+    IFTAServiceImpl serviceSUT = new IFTAServiceImpl(reportsFacadeMock, reportsUtilMock);
 
     private Integer expectedGroupID = 1504;
-    
+
     // ----------------------------------------------------------------------
     // State Mileage by Vehicle / Road Status
 
     @Test
     public void getStateMileageByVehicleRoadStatusTestWihInvalidInput1(){
 
+        final String expectedStartDate = "20110101";
+        final String expectedEndDate = "20100202";
+
+        new Expectations() {
+            {
+                reportsUtilMock.checkParameters(expectedGroupID,  buildDateFromString(expectedStartDate), buildDateFromString(expectedEndDate));
+                result =  Response.status(Status.BAD_REQUEST).build();
+            }
+        };
+
+        serviceSUT.setReportsUtil(reportsUtilMock);
+
         Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithDates(expectedGroupID, 
-                buildDateFromString("20110101"),
-                buildDateFromString("20100202"));
+                buildDateFromString(expectedStartDate),
+                buildDateFromString(expectedEndDate));
 
         assertNotNull(response);
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),response.getStatus() );
@@ -52,39 +70,51 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     @Test
     public void getStateMileageByVehicleRoadStatusTestWihInvalidInput2(){
 
-        Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithDates(null, 
-                buildDateFromString("20100101"),
-                buildDateFromString("20100202"));
+        final String expectedStartDate = "20110101";
+        final String expectedEndDate = "20100202";
+
+        new Expectations() {
+            {
+                reportsUtilMock.checkParameters(expectedGroupID,  buildDateFromString(expectedStartDate), buildDateFromString(expectedEndDate));
+                result =  Response.status(Status.NOT_FOUND).build();
+            }
+        };
+
+        serviceSUT.setReportsUtil(reportsUtilMock);
+
+        Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithDates(expectedGroupID, 
+                buildDateFromString(expectedStartDate),
+                buildDateFromString(expectedEndDate));
 
         assertNotNull(response);
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),response.getStatus() );
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(),response.getStatus() );
     }
 
     @Test
     public void getStateMileageByVehicleRoadStatusTestWihInvalidInput3(){
 
+        final String expectedStartDate = "20110101";
+        final String expectedEndDate = "20100202";
+
+        new Expectations() {
+            {
+                reportsUtilMock.checkParameters(expectedGroupID,  buildDateFromString(expectedStartDate), buildDateFromString(expectedEndDate));
+                result =  Response.status(Status.FORBIDDEN).build();
+            }
+        };
+
+        serviceSUT.setReportsUtil(reportsUtilMock);
+
         Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithDates(expectedGroupID, 
-                null,
-                buildDateFromString("20100202"));
+                buildDateFromString(expectedStartDate),
+                buildDateFromString(expectedEndDate));
 
         assertNotNull(response);
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),response.getStatus() );
+        assertEquals(Response.Status.FORBIDDEN.getStatusCode(),response.getStatus() );
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusTestWihInvalidInput4(){
-
-        Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithDates(expectedGroupID, 
-                buildDateFromString("20100202"),
-                null);
-
-        assertNotNull(response);
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),response.getStatus() );
-    }
-
-
-    @Test
-    public void getStateMileageByVehicleRoadStatusTest(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleRoadStatusTest(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -99,12 +129,15 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
+                reportsUtilMock.checkParameters(expectedGroupID,  buildDateFromString(expectedStrStartDate), buildDateFromString(expectedStrEndDate));
+                result = null;
                 reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, interval, expectedIfta);
                 result = list;
             }
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithIftaAndDates(expectedGroupID, 
                 startDate,
@@ -115,7 +148,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusWithEmptyResultTest1(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleRoadStatusWithEmptyResultTest1(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -129,12 +162,15 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
+                reportsUtilMock.checkParameters(expectedGroupID,  buildDateFromString(expectedStrStartDate), buildDateFromString(expectedStrEndDate));
+                result = null;
                 reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, interval, expectedIfta);
                 result = list;
             }
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithIftaAndDates(expectedGroupID, 
                 startDate,
@@ -145,7 +181,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusWithEmptyResultTest2(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleRoadStatusWithEmptyResultTest2(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -159,12 +195,15 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
+                reportsUtilMock.checkParameters(expectedGroupID,  buildDateFromString(expectedStrStartDate), buildDateFromString(expectedStrEndDate));
+                result = null;
                 reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, interval, expectedIfta);
                 result = null;
             }
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithIftaAndDates(expectedGroupID, 
                 startDate,
@@ -175,12 +214,12 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusDefaultRangeTest(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleRoadStatusDefaultRangeTest(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final boolean expectedIfta = true;
 
-        Date startDate = buildDateFromString(daysAgoAsString(6));
-        Date endDate = buildDateFromString(todayAsString());
+        final Date startDate = buildDateFromString(daysAgoAsString(6));
+        final Date endDate = buildDateFromString(todayAsString());
 
         final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
         final List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
@@ -188,24 +227,27 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                  reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, interval, expectedIfta);
-                  result = list;
+                reportsUtilMock.checkParameters(expectedGroupID, startDate, endDate);
+                result = null;
+                reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, interval, expectedIfta);
+                result = list;
             }
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithIfta(expectedGroupID);
 
         assertNotNull(response);
         assertEquals(Response.Status.OK.getStatusCode(),response.getStatus() );
     }
-    
+
     @Test
     public void getStateMileageByVehicleRoadStatusNoParamTest(@Mocked final ReportsFacade reportsFacadeMock){
 
-        Date startDate = buildDateFromString(daysAgoAsString(6));
-        Date endDate = buildDateFromString(todayAsString());
+        final Date startDate = buildDateFromString(daysAgoAsString(6));
+        final Date endDate = buildDateFromString(todayAsString());
 
         final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
         final List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
@@ -213,22 +255,25 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                  reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, interval, false);
-                  result = list;
+                reportsUtilMock.checkParameters(expectedGroupID, startDate, endDate);
+                result = null;
+                reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, interval, false);
+                result = list;
             }
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleRoadStatusDefaults(expectedGroupID);
-                                                                                      
+
 
         assertNotNull(response);
         assertEquals(Response.Status.OK.getStatusCode(),response.getStatus() );
     }
-    
+
     @Test
-    public void getStateMileageByVehicleRoadStatusOnlyRangeTest(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleRoadStatusOnlyRangeTest(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final String expectedStrStartDate = "20100101";
         final String expectedStrEndDate = "20100202";
@@ -242,12 +287,15 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
+                reportsUtilMock.checkParameters(expectedGroupID,  buildDateFromString(expectedStrStartDate), buildDateFromString(expectedStrEndDate));
+                result = null;
                 reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupID, interval, false );
                 result = list;
             }
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleRoadStatusWithDates(expectedGroupID, 
                 startDate,
@@ -256,10 +304,10 @@ public class IFTAServiceImplTest extends BaseUnitTest {
         assertNotNull(response);
         assertEquals(Response.Status.OK.getStatusCode(),response.getStatus() );
     }
-    
+
     // ----------------------------------------------------------------------
     // State Mileage by Vehicle / Group Comparison by State-Province
-    
+
     @Test
     public void getStateMileageByVehicleGroupComparisonTestWihInvalidInput1(){
 
@@ -306,7 +354,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
 
     @Test
-    public void getStateMileageByVehicleGroupComparisonTest(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleGroupComparisonTest(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -327,6 +375,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleGroupComparisonWithIftaAndDates(expectedGroupID, 
                 startDate,
@@ -337,7 +386,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleGroupComparisonWithEmptyResultTest1(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleGroupComparisonWithEmptyResultTest1(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -357,6 +406,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleGroupComparisonWithIftaAndDates(expectedGroupID, 
                 startDate,
@@ -367,7 +417,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleGroupComparisonWithEmptyResultTest2(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleGroupComparisonWithEmptyResultTest2(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -387,6 +437,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleGroupComparisonWithIftaAndDates(expectedGroupID, 
                 startDate,
@@ -397,7 +448,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleGroupComparisonDefaultRangeTest(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleGroupComparisonDefaultRangeTest(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final boolean expectedIfta = true;
 
@@ -410,21 +461,22 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                  reportsFacadeMock.getStateMileageByVehicleStateComparaison(expectedGroupID, interval, expectedIfta);
-                  result = list;
+                reportsFacadeMock.getStateMileageByVehicleStateComparaison(expectedGroupID, interval, expectedIfta);
+                result = list;
             }
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleGroupComparisonWithIfta(expectedGroupID);
 
         assertNotNull(response);
         assertEquals(Response.Status.OK.getStatusCode(),response.getStatus() );
     }
-    
+
     @Test
-    public void getStateMileageByVehicleGroupComparisonNoParamTest(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleGroupComparisonNoParamTest(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         Date startDate = buildDateFromString(daysAgoAsString(6));
         Date endDate = buildDateFromString(todayAsString());
@@ -435,22 +487,23 @@ public class IFTAServiceImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                  reportsFacadeMock.getStateMileageByVehicleStateComparaison(expectedGroupID, interval, false);
-                  result = list;
+                reportsFacadeMock.getStateMileageByVehicleStateComparaison(expectedGroupID, interval, false);
+                result = list;
             }
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleGroupComparisonDefaults(expectedGroupID);
-                                                                                      
+
 
         assertNotNull(response);
         assertEquals(Response.Status.OK.getStatusCode(),response.getStatus() );
     }
-    
+
     @Test
-    public void getStateMileageByVehicleGroupComparisonOnlyRangeTest(@Mocked final ReportsFacade reportsFacadeMock){
+    public void getStateMileageByVehicleGroupComparisonOnlyRangeTest(@Mocked final ReportsFacade reportsFacadeMock, final ReportsUtil reportsUtilMock){
 
         final String expectedStrStartDate = "20100101";
         final String expectedStrEndDate = "20100202";
@@ -470,6 +523,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
         };
 
         serviceSUT.setFacade(reportsFacadeMock);
+        serviceSUT.setReportsUtil(reportsUtilMock);
 
         Response response = serviceSUT.getStateMileageByVehicleGroupComparisonWithDates(expectedGroupID, 
                 startDate,
@@ -478,7 +532,7 @@ public class IFTAServiceImplTest extends BaseUnitTest {
         assertNotNull(response);
         assertEquals(Response.Status.OK.getStatusCode(),response.getStatus() );
     }
-    
+
     /* Utility methods*/
 
     private Date buildDateFromString(String strDate) {

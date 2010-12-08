@@ -38,12 +38,6 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetStateMileageByVehicleRoadStatusWithGroupNotInUserHierarchy() {
 
-        String expectedStrStartDate = TEST_START_DATE;
-        String expectedStrEndDate = TEST_END_DATE;
-
-        Date startDate = buildDateFromString(expectedStrStartDate);
-        Date endDate = buildDateFromString(expectedStrEndDate);
-
         ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
@@ -53,14 +47,18 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetStateMileageByVehicleRoadStatusWithGroupWithoutData() {
 
-        String expectedStrStartDate = TEST_START_DATE;
-        String expectedStrEndDate = TEST_END_DATE;
-
-        Date startDate = buildDateFromString(expectedStrStartDate);
-        Date endDate = buildDateFromString(expectedStrEndDate);
         ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_WITH_NO_DATA, TEST_START_DATE, TEST_END_DATE);
 
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+
+    }
+    
+    @Test
+    public void testGetStateMileageByVehicleRoadStatusWithBadInput1() {
+
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_END_DATE, TEST_START_DATE);
+
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 
     }
     

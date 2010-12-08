@@ -17,6 +17,7 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.service.reports.IFTAService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.util.ReportsUtil;
 
 @Component
 public class IFTAServiceImpl implements IFTAService {
@@ -24,38 +25,59 @@ public class IFTAServiceImpl implements IFTAService {
     private final static Integer DAYS_BACK = -6;
 
     @Autowired ReportsFacade reportsFacade;
+    @Autowired ReportsUtil reportsUtil;
 
     @Autowired
-    public IFTAServiceImpl(ReportsFacade reportsFacade){
+    public IFTAServiceImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil){
         this.reportsFacade = reportsFacade;
+        this.reportsUtil = reportsUtil;
     }
     
     public void setFacade(ReportsFacade reportsFacade) {
-        this.reportsFacade = reportsFacade;   
+        this.reportsFacade = reportsFacade; 
     }
     
     // ----------------------------------------------------------------------
     // State Mileage by Vehicle / Road Status
     
+    
+    /**
+     * Service to retrieve the StateMileageByVehicleRoadStatus report data beans from the backend via a facade.
+     * @param gorupID   The ID of the group
+     * @param startDate The start date of the interval
+     * @param endDate   The end date of the interval
+     * @param iftaOnly  Indicator expressing if only the ifta data should be returned
+     * @return javax.ws.rs.core.Response to return the client
+     */
     Response getStateMileageByVehicleRoadStatusWithFullParameters(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
-        if(invalidParameters(groupID, startDate, endDate, iftaOnly)) {
-            return Response.status(Status.BAD_REQUEST).build();
-        }
         
-        List<StateMileageByVehicleRoadStatus> list = null;
+        Response response = reportsUtil.checkParameters(groupID, startDate, endDate);
         
-        Interval interval = new Interval(startDate.getTime(), endDate.getTime());
-        try{
-            list = reportsFacade.getStateMileageByVehicleRoadStatus(groupID, interval, iftaOnly);
+        // Some validation errors found
+        if (response != null){
+            return response;
         }
-        catch(Exception e) {
-            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        // No validation error found
+        else {
+            List<StateMileageByVehicleRoadStatus> list = null;
+            
+            Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+            try{
+                list = reportsFacade.getStateMileageByVehicleRoadStatus(groupID, interval, iftaOnly);
+            }
+            catch(Exception e) {
+                return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+            }
+            
+            // Some data found
+            if(list != null && !list.isEmpty()) {
+                return Response.ok(new GenericEntity<List<StateMileageByVehicleRoadStatus>>(list) {}).build();
+            }
+            // No data found
+            else {
+                return Response.status(Status.NOT_FOUND).build();
+            }          
         }
-
-        if(list != null && !list.isEmpty())
-            return Response.ok(new GenericEntity<List<StateMileageByVehicleRoadStatus>>(list) {}).build();
-        
-        return Response.status(Status.NOT_FOUND).build();
     }
 
     private boolean invalidParameters(Integer groupID, Date startDate, Date endDate, boolean ifta) {
@@ -296,5 +318,13 @@ public class IFTAServiceImpl implements IFTAService {
         }
         
         return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
+    }
+
+    public ReportsUtil getReportsUtil() {
+        return reportsUtil;
+    }
+
+    public void setReportsUtil(ReportsUtil reportsUtil) {
+        this.reportsUtil = reportsUtil;
     }
 }
