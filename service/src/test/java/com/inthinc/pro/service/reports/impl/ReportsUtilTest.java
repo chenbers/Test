@@ -29,7 +29,7 @@ public class ReportsUtilTest extends BaseUnitTest {
     private Integer expectedGroupID = 1504;
     
     @Test
-    public void checkParametersWithBadInputTest1() {
+    public void checkParametersWithBadInputTestNullGroup() {
            
         Response response = serviceSUT.checkParameters(null, buildDateFromString("20090101"), buildDateFromString("20100101"));
         
@@ -37,7 +37,7 @@ public class ReportsUtilTest extends BaseUnitTest {
     }
     
     @Test
-    public void checkParametersWithBadInputTest2() {
+    public void checkParametersWithBadInputTestNullStartDate() {
            
         Response response = serviceSUT.checkParameters(expectedGroupID, null, buildDateFromString("20100101"));
         
@@ -45,7 +45,7 @@ public class ReportsUtilTest extends BaseUnitTest {
     }
     
     @Test
-    public void checkParametersWithBadInputTest3() {
+    public void checkParametersWithBadInputTestNullEndDate() {
            
         Response response = serviceSUT.checkParameters(expectedGroupID,  buildDateFromString("20100101"),null);
         
@@ -53,7 +53,7 @@ public class ReportsUtilTest extends BaseUnitTest {
     }
     
     @Test
-    public void checkParametersWithBadInputTest4() {
+    public void checkParametersWithBadInputTestStartDateBiggerThanEndDate() {
            
         Response response = serviceSUT.checkParameters(expectedGroupID,  buildDateFromString("20100101"), buildDateFromString("20090101"));
         
@@ -61,7 +61,7 @@ public class ReportsUtilTest extends BaseUnitTest {
     }
     
     @Test
-    public void checkParametersWithBadInputTest5() {
+    public void checkParametersWithBadInputTestNegativeGroupID() {
            
         Response response = serviceSUT.checkParameters(-expectedGroupID,  buildDateFromString("20090101"), buildDateFromString("20100101"));
         
