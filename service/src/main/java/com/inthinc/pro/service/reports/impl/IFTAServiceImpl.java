@@ -101,30 +101,30 @@ public class IFTAServiceImpl implements IFTAService {
         return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate.getTime() , today.getTime() , false);
     }
 
+
     /* Mileage by Vehicle ------------------------------------------------------------- */
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicle(java.lang.Integer, java.util.Date, java.util.Date)
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithIftaAndDates(java.lang.Integer, java.util.Date, java.util.Date)
      */
     @Override
-    public Response getMileageByVehicle(Integer groupID, Date startDate, Date endDate) {
+    public Response getMileageByVehicleWithIftaAndDates(Integer groupID, Date startDate, Date endDate) {
         return getMileageByVehicle(groupID, startDate, endDate, true);
     }
-
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithInterval(java.lang.Integer, java.util.Date, java.util.Date)
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithDates(java.lang.Integer, java.util.Date, java.util.Date)
      */
     @Override
-    public Response getMileageByVehicleInterval(Integer groupID, Date startDate, Date endDate) {
+    public Response getMileageByVehicleWithDates(Integer groupID, Date startDate, Date endDate) {
         return getMileageByVehicle(groupID, startDate, endDate, false);
     }
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithFlag(java.lang.Integer)
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithIfta(java.lang.Integer)
      */
     @Override
-    public Response getMileageByVehicleIfta(Integer groupID) {
+    public Response getMileageByVehicleWithIfta(Integer groupID) {
         Calendar today = getMidnight();
 
         Calendar startDate = getMidnight();
@@ -134,10 +134,10 @@ public class IFTAServiceImpl implements IFTAService {
     }
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithoutParam(java.lang.Integer)
+     * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleDefaults(java.lang.Integer)
      */
     @Override
-    public Response getMileageByVehicleGroup(Integer groupID) {
+    public Response getMileageByVehicleDefaults(Integer groupID) {
         Calendar today = getMidnight();
 
         Calendar startDate = getMidnight();
@@ -146,8 +146,8 @@ public class IFTAServiceImpl implements IFTAService {
         return getMileageByVehicle(groupID, startDate.getTime(), today.getTime(), false);
     }
 
-    /* Service implementation for Mileage by Vehicle report */
-    private Response getMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly) {
+    /** Service implementation for Mileage by Vehicle report */
+    Response getMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly) {
         Interval interval = new Interval(startDate.getTime(), endDate.getTime());
 
         List<MileageByVehicle> list = null;
