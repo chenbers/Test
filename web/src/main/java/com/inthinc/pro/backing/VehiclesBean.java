@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -544,6 +546,23 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             valid = false;
             String summary = MessageUtil.getMessageString(required);
             context.addMessage("edit-form:editVehicle-make", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
+        }
+        
+        if(vehicleView.getName() == null || vehicleView.getName().equals("")
+                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("make"))))
+        {
+            valid = false;
+            String summary = MessageUtil.getMessageString(required);
+            context.addMessage("edit-form:editVehicle-name", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));        
+        } else {
+            // Pattern to check for, note blank being sneaky on the end
+            Pattern pat = Pattern.compile("[a-zA-Z0-9 ]+");
+            Matcher mtch = pat.matcher(vehicleView.getName());
+            if ( !mtch.matches() ) {
+                valid = false;
+                String summary = MessageUtil.getMessageString("vehicle_name_rules", getLocale());
+                context.addMessage("edit-form:editVehicle-name", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));                   
+            } 
         }
         
         if(vehicleView.getModel() == null || vehicleView.getModel().equals("")
