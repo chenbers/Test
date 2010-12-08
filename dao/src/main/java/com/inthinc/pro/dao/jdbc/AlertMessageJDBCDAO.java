@@ -6,8 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -26,10 +28,12 @@ import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
@@ -431,5 +435,65 @@ escalationTryCount
 
     public void setZoneDAO(ZoneDAO zoneDAO) {
         this.zoneDAO = zoneDAO;
+    }
+
+    private static final String FETCH_RED_FLAG_MESSAGE_INFO_PREFIX = "SELECT noteID, msgID, status FROM message WHERE noteID IN (";
+    private static final String FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX = ") order by noteID";
+
+
+    @Override
+    public void fillInRedFlagMessageInfo(List<RedFlag> redFlagList) {
+        Map<Long, RedFlag> redFlagMap = new HashMap<Long, RedFlag>();
+        StringBuffer noteIDList = new StringBuffer();
+        for(RedFlag redFlag : redFlagList) {
+            redFlag.setMsgIDList(new ArrayList<Integer>());
+            redFlag.setSent(AlertSentStatus.NONE);
+            if (noteIDList.length() > 0)
+                noteIDList.append(",");
+            noteIDList.append(redFlag.getEvent().getNoteID());
+            redFlagMap.put(redFlag.getEvent().getNoteID(), redFlag);
+        }
+        
+        
+        Connection conn = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            conn = getConnection();
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(FETCH_RED_FLAG_MESSAGE_INFO_PREFIX + noteIDList.toString() + FETCH_RED_FLAG_MESSAGE_INFO_SUFFIX);
+
+            while (resultSet.next()) {
+                long noteID = resultSet.getLong(1);
+                int msgID = resultSet.getInt(2);
+                AlertEscalationStatus status = AlertEscalationStatus.valueOf(resultSet.getInt(3));
+                RedFlag redFlag = redFlagMap.get(noteID);
+                redFlag.getMsgIDList().add(msgID);
+System.out.println("msgStatus: " + status + " redFlag status: " + redFlag.getSent());            
+                if (redFlag.getSent() != AlertSentStatus.PENDING && redFlag.getSent() != AlertSentStatus.CANCELED) {
+                    
+                    if (status == AlertEscalationStatus.CANCELED)
+                        redFlag.setSent(AlertSentStatus.CANCELED);
+                    else if (status == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE || status == AlertEscalationStatus.NEW)
+                        redFlag.setSent(AlertSentStatus.PENDING);
+                    else if (status == AlertEscalationStatus.SENT || status == AlertEscalationStatus.ESCALATED_ACKNOWLEDGED)
+                        redFlag.setSent(AlertSentStatus.SENT);
+                }
+System.out.println("new redFlag status: " + redFlag.getSent());            
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally   
+        
+        
     }
 }

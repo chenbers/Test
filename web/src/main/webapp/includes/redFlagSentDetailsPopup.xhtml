@@ -105,8 +105,9 @@
 			</table>				                     
 			</ui:fragment>
         <div class="popupactions">
-        <a4j:commandButton id="redFlagsSentDetailsPanel-canceled" value="#{messages.redFlagDetailsPopupCancelPending}" rendered="#{bean.details != null and bean.details.status == 'ESCALATED_AWAITING_ACKNOWLEDGE'}" 
-        	action="#{bean.details.cancelPendingAction}" reRender="redFlagsSentDetailsForm,popupactions" styleClass="left">
+        <a4j:commandButton id="redFlagsSentDetailsPanel-canceled" value="#{messages.redFlagDetailsPopupCancelPending}" 
+        	rendered="#{bean.details != null and (bean.details.status == 'ESCALATED_AWAITING_ACKNOWLEDGE' or bean.details.status == 'NEW')}" 
+        	action="#{bean.details.cancelPendingAction}" reRender="redFlagsSentDetailsForm,popupactions,redFlagsForm:redFlags" styleClass="left">
             <span class="delete"> <h:outputText value="#{messages.redFlagDetailsPopupCancelPending}" /></span>
         	</a4j:commandButton>
         <a4j:commandButton id="redFlagsSentDetailsPanel-close" value="#{messages.button_close}" action="#{bean.closeDetailsAction}" onclick="Richfaces.hideModalPanel('redFlagsSentDetailsPanel')" styleClass="left">

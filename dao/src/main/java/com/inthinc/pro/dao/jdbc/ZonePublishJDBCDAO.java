@@ -1,8 +1,6 @@
 package com.inthinc.pro.dao.jdbc;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,21 +8,21 @@ import java.util.Date;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.ZonePublishDAO;
-import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 import com.inthinc.pro.model.zone.ZonePublish;
-import com.mysql.jdbc.PreparedStatement;
+import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 import com.mysql.jdbc.CallableStatement;
+import com.mysql.jdbc.PreparedStatement;
 
 public class ZonePublishJDBCDAO extends GenericJDBCDAO implements ZonePublishDAO {
 
 
     private static final long serialVersionUID = 1L;
     
-    String FETCH_ZONE_PUBLISH_ID = "SELECT zonePublishID FROM zonePublish WHERE acctID = ? and zoneType = ?";
-    String INSERT_ZONE_PUBLISH = "INSERT INTO zonePublish(acctID, zoneType, zoneData) values (?, ?, ?)";
-    String UPDATE_ZONE_PUBLISH = "UPDATE zonePublish set zoneData = ? where  acctID = ? and zoneType = ?";
-    String FETCH_ZONE_PUBLISH = "SELECT zoneData FROM zonePublish WHERE acctID = ? and zoneType = ?";
-    String FETCH_ZONE_PUBLISH_BY_ID = "SELECT zonePublishID, acctID, zoneType, zoneData FROM zonePublish WHERE zonePublishID = ?";
+    private static final String FETCH_ZONE_PUBLISH_ID = "SELECT zonePublishID FROM zonePublish WHERE acctID = ? and zoneType = ?";
+    private static final String INSERT_ZONE_PUBLISH = "INSERT INTO zonePublish(acctID, zoneType, zoneData) values (?, ?, ?)";
+    private static final String UPDATE_ZONE_PUBLISH = "UPDATE zonePublish set zoneData = ? where  acctID = ? and zoneType = ?";
+    private static final String FETCH_ZONE_PUBLISH = "SELECT zoneData FROM zonePublish WHERE acctID = ? and zoneType = ?";
+    private static final String FETCH_ZONE_PUBLISH_BY_ID = "SELECT zonePublishID, acctID, zoneType, zoneData FROM zonePublish WHERE zonePublishID = ?";
     
     @Override
     public void publishZone(ZonePublish zonePublish) {

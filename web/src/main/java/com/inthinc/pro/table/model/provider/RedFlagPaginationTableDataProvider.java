@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.pagination.PageParams;
@@ -20,9 +21,11 @@ public class RedFlagPaginationTableDataProvider   extends BaseNotificationPagina
     
 	private RedFlagDAO              redFlagDAO;
 	private Integer 				groupID;
+    private AlertMessageDAO         alertMessageDAO;
 
 
-	public RedFlagPaginationTableDataProvider() {
+
+    public RedFlagPaginationTableDataProvider() {
 	    
 //		logger.info("RedFlagPaginationTableDataProvider");
 	}
@@ -38,7 +41,9 @@ public class RedFlagPaginationTableDataProvider   extends BaseNotificationPagina
 		}
 	
 		PageParams pageParams = new PageParams(firstRow, endRow, getSort(), getFilters());
-		return redFlagDAO.getRedFlagPage(groupID, startDate, endDate, RedFlagDAO.INCLUDE_FORGIVEN, pageParams);
+		List<RedFlag> redFlagList = redFlagDAO.getRedFlagPage(groupID, startDate, endDate, RedFlagDAO.INCLUDE_FORGIVEN, pageParams);
+		alertMessageDAO.fillInRedFlagMessageInfo(redFlagList);
+		return redFlagList;
 	}
 
 	@Override
@@ -66,5 +71,12 @@ public class RedFlagPaginationTableDataProvider   extends BaseNotificationPagina
 		this.redFlagDAO = redFlagDAO;
 	}
 
+    public AlertMessageDAO getAlertMessageDAO() {
+        return alertMessageDAO;
+    }
+
+    public void setAlertMessageDAO(AlertMessageDAO alertMessageDAO) {
+        this.alertMessageDAO = alertMessageDAO;
+    }
 
 }

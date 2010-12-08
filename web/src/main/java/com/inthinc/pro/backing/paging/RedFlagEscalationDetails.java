@@ -41,7 +41,8 @@ public class RedFlagEscalationDetails {
     
     public void cancelPendingAction() {
         for (AlertMessage message : messageList)
-            if (message != null && message.getMessageID() != null && message.getStatus() == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE) {
+            if (message != null && message.getMessageID() != null &&
+               (message.getStatus() == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE || message.getStatus() == AlertEscalationStatus.NEW)) {
                 System.out.println("cancel pending msgID: " + message.getMessageID());
                 if (alertMessageDAO.cancelPendingMessage(message.getMessageID()))
                    message.setStatus(AlertEscalationStatus.CANCELED); 
@@ -50,7 +51,8 @@ public class RedFlagEscalationDetails {
     }
     public AlertEscalationStatus getStatus() {
         for (AlertMessage message : messageList)
-            if (message != null && message.getMessageID() != null && message.getStatus() == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE) {
+            if (message != null && message.getMessageID() != null && 
+                (message.getStatus() == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE || message.getStatus() == AlertEscalationStatus.NEW)) {
                 return AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE;
             }
         return AlertEscalationStatus.NONE;
@@ -61,31 +63,31 @@ public class RedFlagEscalationDetails {
         phoneList = new ArrayList<PhoneEscalationDetails>();
 // TODO: remove when real backend is ready
         
-        phoneList.add(new PhoneEscalationDetails("5555551111", PhoneEscalationStatus.FAILED, 0,0));
-        phoneList.add(new PhoneEscalationDetails("5555552222", PhoneEscalationStatus.IN_PROGRESS, 2, 4));
-        phoneList.add(new PhoneEscalationDetails("5555553333", PhoneEscalationStatus.NOT_ATTEMPTED, 0,0));
-//        if (voiceEscalationPersonIDs == null) {
-//            phoneList = null;
-//            return;
-//        }
-//        
-//        // only one of the messages should be the phone delivery type with escalation details
-//        for (AlertMessage message : messageList) {
-//            int cnt = 0;
-//            int escalationOrdinal = (message.getEscalationOrdinal() == null) ? 0 : message.getEscalationOrdinal().intValue(); 
-//            for (Integer personID : voiceEscalationPersonIDs) {
-//                Person person = personDAO.findByID(personID);
-//                PhoneEscalationStatus status = PhoneEscalationStatus.NOT_ATTEMPTED;
-//                if (cnt == escalationOrdinal)
-//                    status = (message.getStatus().equals(AlertEscalationStatus.ESCALATED_ACKNOWLEDGED) ? PhoneEscalationStatus.SUCCESS : ((message.getStatus().equals(AlertEscalationStatus.CANCELED) ? PhoneEscalationStatus.CANCELED : PhoneEscalationStatus.IN_PROGRESS)));
-//                else if (cnt < escalationOrdinal)
-//                    status = PhoneEscalationStatus.FAILED;
-//                phoneList.add(new PhoneEscalationDetails(person.getPriPhone(), status, message.getEscalationTryCount(), alert.getMaxEscalationTries()));
-//                cnt++;
-//            }
-//        }
-//        if (phoneList.size() == 0)
-//            phoneList = null;
+//        phoneList.add(new PhoneEscalationDetails("5555551111", PhoneEscalationStatus.FAILED, 0,0));
+//        phoneList.add(new PhoneEscalationDetails("5555552222", PhoneEscalationStatus.IN_PROGRESS, 2, 4));
+//        phoneList.add(new PhoneEscalationDetails("5555553333", PhoneEscalationStatus.NOT_ATTEMPTED, 0,0));
+        if (voiceEscalationPersonIDs == null) {
+            phoneList = null;
+            return;
+        }
+        
+        // only one of the messages should be the phone delivery type with escalation details
+        for (AlertMessage message : messageList) {
+            int cnt = 0;
+            int escalationOrdinal = (message.getEscalationOrdinal() == null) ? 0 : message.getEscalationOrdinal().intValue(); 
+            for (Integer personID : voiceEscalationPersonIDs) {
+                Person person = personDAO.findByID(personID);
+                PhoneEscalationStatus status = PhoneEscalationStatus.NOT_ATTEMPTED;
+                if (cnt == escalationOrdinal)
+                    status = (message.getStatus().equals(AlertEscalationStatus.ESCALATED_ACKNOWLEDGED) ? PhoneEscalationStatus.SUCCESS : ((message.getStatus().equals(AlertEscalationStatus.CANCELED) ? PhoneEscalationStatus.CANCELED : PhoneEscalationStatus.IN_PROGRESS)));
+                else if (cnt < escalationOrdinal)
+                    status = PhoneEscalationStatus.FAILED;
+                phoneList.add(new PhoneEscalationDetails(person.getPriPhone(), status, message.getEscalationTryCount(), alert.getMaxEscalationTries()));
+                cnt++;
+            }
+        }
+        if (phoneList.size() == 0)
+            phoneList = null;
     }
     
     private void initEscalationEmail(Integer emailEscalationPersonID, PersonDAO personDAO) {

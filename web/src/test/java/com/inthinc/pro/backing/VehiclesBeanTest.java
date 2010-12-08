@@ -53,7 +53,7 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
 
         assertEquals(adminBean.getItem().getId().intValue(), -1);
     }
-    @Override
+//    @Override
     public void setProductType(BaseAdminBean<VehicleView> adminBean){
         ((VehiclesBean)adminBean).setBatchProductChoice("Tiwipro R74");
     }

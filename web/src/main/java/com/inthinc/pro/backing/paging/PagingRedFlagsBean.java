@@ -123,17 +123,18 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 
     public void setSentDetailsItem(RedFlag sentDetailsItem) {
         // TODO: TEMPORARY FOR TESTING UNTIL THE MESSAGE ID IS POPULUATED 
-        List<Integer> msgIDList = new ArrayList<Integer>();
+//        List<Integer> msgIDList = new ArrayList<Integer>();
 //        msgIDList.add(Integer.valueOf(50584));
 //        msgIDList.add(Integer.valueOf(50937));
-        msgIDList.add(Integer.valueOf(randomInt(1,100)));
-        msgIDList.add(Integer.valueOf(randomInt(1,100)));
-        msgIDList.add(Integer.valueOf(42));// this one has status of ESCALATED_AWAITING_ACK
-        sentDetailsItem.setMsgIDList(msgIDList);
+//        msgIDList.add(Integer.valueOf(randomInt(1,100)));
+//        msgIDList.add(Integer.valueOf(randomInt(1,100)));
+//        msgIDList.add(Integer.valueOf(42));// this one has status of ESCALATED_AWAITING_ACK
+//        sentDetailsItem.setMsgIDList(msgIDList);
         // TODO: DONE
         this.sentDetailsItem = sentDetailsItem;
         
         List<Integer> redFlagMsgIDList = sentDetailsItem.getMsgIDList();
+System.out.println("Number of messages: " + redFlagMsgIDList.size());        
         detailsMap = new HashMap<Integer, RedFlagEscalationDetails>();
         alertItems = new ArrayList<SelectItem>();
         alertItems.add(new SelectItem(null, ""));

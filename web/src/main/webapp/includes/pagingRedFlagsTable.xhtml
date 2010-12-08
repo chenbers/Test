@@ -101,19 +101,10 @@
                 <h:outputText styleClass="ls_tab_#{redFlag.level}" value="#{messages[descriptionKey]}" />
             </rich:column>
           
-            <rich:column id="alerts" rendered="#{tableColumns['alerts'].visible}"  
-            custFilterBy="#{redFlag.sent}" filterValue="#{bean.filterAlert}">
+            <rich:column id="alerts" rendered="#{tableColumns['alerts'].visible}">  
                 <f:facet name="header">
 	                <h:panelGroup>
 	                    <h:outputText value="#{messages.notes_redflags_alerts}" />
-                    	<rich:spacer style="display:block" height="2"/>
-    	                <h:selectOneMenu id="alertFilter" value="#{bean.filterAlert}" label="#{messages.notes_redflags_alerts}"   style="width:80px;size:auto;margin-top:3px;">
-        	                <f:selectItems value="#{bean.filterAlerts}" />
-            	            <a4j:support event="onchange" reRender="redFlags,redFlags-form:header, redFlags_pageHeader,redFlags-form:redFlags_bottomScroller" />
-                	    </h:selectOneMenu>
-						<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-   			 				<ui:param name="selectBoxID" value="redFlags-form:redFlags:alertFilter" />
-						</ui:include>
                     </h:panelGroup>
                 </f:facet>
                 <h:outputText  value="#{messages[redFlag.sent]}"  rendered="#{redFlag.sent eq 'NONE'}"/>

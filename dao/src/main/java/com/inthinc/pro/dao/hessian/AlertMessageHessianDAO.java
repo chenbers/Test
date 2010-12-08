@@ -25,6 +25,7 @@ import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -253,5 +254,12 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         // TODO Auto-generated method stub
         return true;
     }
+
+    @Override
+    public void fillInRedFlagMessageInfo(List<RedFlag> redFlagList) {
+        // TODO Auto-generated method stub
+        
+    }
+    
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.model.RedFlag;
 
 public interface AlertMessageDAO extends GenericDAO<AlertMessage, Integer>
 {
@@ -22,5 +23,7 @@ public interface AlertMessageDAO extends GenericDAO<AlertMessage, Integer>
     Boolean acknowledgeMessage(Integer msgID);
     
     Boolean cancelPendingMessage(Integer msgID);
+    
+    void fillInRedFlagMessageInfo(List<RedFlag> redFlagList);
 
 }
