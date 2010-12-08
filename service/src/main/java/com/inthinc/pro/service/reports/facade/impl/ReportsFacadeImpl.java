@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
@@ -114,10 +115,14 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();
     }
 
-	@Override
-	public List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly) {
-		return null;
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly) {
+        List<Integer> groupIDList = new ArrayList<Integer>();
+        groupIDList.add(groupID);
+        ReportCriteria criteria = reportService.getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
+        return criteria.getMainDataset();
+    }
 
 }
 

@@ -271,5 +271,4 @@ public interface IFTAService {
     Response getStateMileageByVehicleInterval(@PathParam("groupID") Integer groupID,
                                  @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
                                  @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);     
-    
 }

@@ -222,29 +222,58 @@ public class IFTAServiceImpl implements IFTAService {
 
     }
 
-	@Override
-	public Response getStateMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicle(java.lang.Integer, java.util.Date, java.util.Date, java.lang.Boolean)
+     */
+    @Override
+    public Response getStateMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly) {
+        Interval interval = new Interval(startDate.getTime(), endDate.getTime());
 
-	@Override
-	public Response getStateMileageByVehicleGroup(Integer groupID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        List<MileageByVehicle> list = null;
+        try {
+            list = reportsFacade.getStateMileageByVehicle(groupID, interval, iftaOnly);
+        } catch (Exception e) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
 
-	@Override
-	public Response getStateMileageByVehicleIfta(Integer groupID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        if (list == null || list.isEmpty()) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+        
+        return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
+    }
 
-	@Override
-	public Response getStateMileageByVehicleInterval(Integer groupID, Date startDate, Date endDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleGroup(java.lang.Integer)
+     */
+    @Override
+    public Response getStateMileageByVehicleGroup(Integer groupID) {
+        Calendar today = getMidnight();
 
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
 
+        return getStateMileageByVehicle(groupID, startDate.getTime(), today.getTime(), true);
+    }
+
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleIfta(java.lang.Integer)
+     */
+    @Override
+    public Response getStateMileageByVehicleIfta(Integer groupID) {
+        Calendar today = getMidnight();
+
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+
+        return getStateMileageByVehicle(groupID, startDate.getTime(), today.getTime(), true);
+    }
+
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleInterval(java.lang.Integer, java.util.Date, java.util.Date)
+     */
+    @Override
+    public Response getStateMileageByVehicleInterval(Integer groupID, Date startDate, Date endDate) {
+        return getStateMileageByVehicle(groupID, startDate, endDate, false);
+    }
 }
