@@ -21,6 +21,7 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
+import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 
 /**
@@ -92,7 +93,13 @@ public interface ServiceClient {
     @GET
     @Path("/group/{groupID}/report/ifta/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
-    public ClientResponse<List<StateMileageByVehicleRoadStatus>> getStateMileageByVehicleRoadStatusOnlyDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
+    public ClientResponse<List<StateMileageByVehicleRoadStatus>> getStateMileageByVehicleRoadStatusWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
+            @PathParam("endDate") String endDate);
+    
+    @GET
+    @Path("/group/{groupID}/report/ifta/stateComparaison/{startDate}/{endDate}")
+    @Produces("application/xml")
+    public ClientResponse<List<StateMileageCompareByGroup>> getStateMileageByVehicleGroupComparaisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
 
     // State Mileage by Vehicle

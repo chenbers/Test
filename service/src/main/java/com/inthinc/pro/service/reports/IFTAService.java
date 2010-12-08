@@ -96,73 +96,69 @@ public interface IFTAService {
     // State Mileage by Vehicle / Group Comparison by State-Province
 
     /**
-     * Service for State mileage by vehicle / Group Comparison by State-Province Report with an explicit Interval.
+     * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & IFTA only & given dates. 
      * 
      * @param groupID
      *            the Group ID
      * @param startDate
-     *            the start date
+     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
      * @param endDate
-     *            the end date
-     * @param iftaOnly
-     *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
-     * @returnWrapped List<StateMileageCompareByGroup> the list of StateMileageCompareByGroup
+     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/stateComparaison/{startDate}/{endDate}/{iftaOnly}")
+    @Path("/stateComparaison/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleGroupComparison(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate, @PathParam("iftaOnly") @DefaultValue("false") boolean iftaOnly);
+    Response getStateMileageByVehicleGroupComparisonWithIftaAndDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 
     /**
-     * Service for State mileage by vehicle / Group Comparison by State-Province Report with an explicit Interval.
+     * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & IFTA only & default dates.
      * 
      * @param groupID
      *            the Group ID
-     * @param iftaOnly
-     *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
-     * @returnWrapped List<StateMileageByVehicleGroupComparaison> the list of StateMileageByVehicleGroupComparaison
-     * @HTTP HTTP 200 - OK if any StateMileageByVehicleGroupComparaison found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleGroupComparaison found
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/stateComparaison/{iftaOnly}")
+    @Path("/stateComparaison/iftaOnly")
     @Produces("application/xml")
-    Response getStateMileageByVehicleGroupComparisonIfta(@PathParam("groupID") Integer groupID, @PathParam("iftaOnly") @DefaultValue("false") boolean iftaOnly);
+    Response getStateMileageByVehicleGroupComparisonWithIfta(@PathParam("groupID") Integer groupID);
 
     /**
-     * Service for State mileage by vehicle /Group Comparison by State-Province Report with an explicit Interval.
+     * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & default ifta (false) & default dates
      * 
      * @param groupID
      *            the Group ID
-     * @returnWrapped List<StateMileageCompareByGroup> the list of StateMileageCompareByGroup
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
     @Path("/stateComparaison")
     @Produces("application/xml")
-    Response getStateMileageByVehicleGroupComparisonGroup(@PathParam("groupID") Integer groupID);
+    Response getStateMileageByVehicleGroupComparisonDefaults(@PathParam("groupID") Integer groupID);
 
     /**
-     * Service for State mileage by vehicle / Group Comparison by State-Province Report with an explicit Interval.
+     * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & given dates & default ifta (false). 
      * 
      * @param groupID
      *            the Group ID
      * @param startDate
-     *            the start date
+     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
      * @param endDate
-     *            the end date
-     * @returnWrapped List<StateMileageCompareByGroup> the list of StateMileageCompareByGroup
+     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAService#DATE_FORMAT}
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
     @Path("/stateComparaison/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleGroupComparaisonInterval(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+    Response getStateMileageByVehicleGroupComparisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 
     // ----------------------------------------------------------------------

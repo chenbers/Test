@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
+import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.service.it.BaseEmbeddedServerITCase;
 import com.inthinc.pro.service.reports.impl.IFTAServiceImpl;
 
@@ -43,7 +44,7 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
         Date startDate = buildDateFromString(expectedStrStartDate);
         Date endDate = buildDateFromString(expectedStrEndDate);
 
-        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusOnlyDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 
@@ -57,11 +58,47 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
 
         Date startDate = buildDateFromString(expectedStrStartDate);
         Date endDate = buildDateFromString(expectedStrEndDate);
-        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusOnlyDates(GROUP_ID_WITH_NO_DATA, TEST_START_DATE, TEST_END_DATE);
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_WITH_NO_DATA, TEST_START_DATE, TEST_END_DATE);
 
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
     }
+    
+    /**
+     * Integration test for getStateMileageByVehicleGroupComparaison().
+     */
+    @Test
+    public void testGetStateMileageByVehicleGroupComparaisonWithGroupNotInUserHierarchy() {
+
+        String expectedStrStartDate = TEST_START_DATE;
+        String expectedStrEndDate = TEST_END_DATE;
+
+        Date startDate = buildDateFromString(expectedStrStartDate);
+        Date endDate = buildDateFromString(expectedStrEndDate);
+
+        ClientResponse<List<StateMileageCompareByGroup>> response = client.getStateMileageByVehicleGroupComparaisonWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+
+    }
+
+    @Test
+    public void testGetStateMileageByVehicleGroupComparaisonWithGroupWithoutData() {
+
+        String expectedStrStartDate = TEST_START_DATE;
+        String expectedStrEndDate = TEST_END_DATE;
+
+        Date startDate = buildDateFromString(expectedStrStartDate);
+        Date endDate = buildDateFromString(expectedStrEndDate);
+        ClientResponse<List<StateMileageCompareByGroup>> response = client.getStateMileageByVehicleGroupComparaisonWithDates(GROUP_ID_WITH_NO_DATA, TEST_START_DATE, TEST_END_DATE);
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+
+    }
+    
+    /**
+     * Integration test for getStateMileageByVehicle().
+     */
 
     @Test
     public void testGetStateMileageByVehicleDefaults() {
