@@ -10,29 +10,30 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.dao.CrashTraceDAO;
 import com.inthinc.pro.model.CrashTrace;
 
 public class CrashTraceBean extends BaseBean implements ServableFileObject {
+    private static final long serialVersionUID = 1459750210891008671L;
+
     private static final Logger logger = Logger.getLogger(CrashTraceBean.class);
 
-    private CrashTraceDAO crashTraceDAO;
     private CrashTrace crashTrace = new CrashTrace();
 
     public CrashTraceBean() {
         super();
         logger.info("public CrashTraceBean() ");
     }
-
-    public CrashTraceBean(String eventID) {
-        logger.fatal("public WaysmartCrashTrace(String " + eventID + ") is not ready for public consumption");
-        crashTraceDAO.getCrashTraces(eventID);// TODO: jwimmer: throwing null probably because of the inner class!!!
+    public CrashTraceBean(CrashTrace crashTrace) {
+        this.crashTrace = crashTrace;
+    }
+    public CrashTraceBean(Integer crashID, byte[] traceData) {
+        this.crashTrace = new CrashTrace(crashID, null, traceData);
     }
 
     public CrashTraceBean getMockObject() throws IOException {
+        logger.warn("getMockObject still getting called!");
         CrashTraceBean results = new CrashTraceBean(); 
-        StringBuffer URL = ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURL();
-        System.out.println(URL.toString());
+        //StringBuffer URL = ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getRequestURL();
         String path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
         String server = ((HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest()).getServerName();
         Integer port =  ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).getLocalPort(); 
@@ -46,7 +47,7 @@ public class CrashTraceBean extends BaseBean implements ServableFileObject {
 
     @Override
     public String getFileName() {
-        return crashTrace.getEventID();
+        return crashTrace.getEventID().toString();
     }
 
     @Override
@@ -69,7 +70,10 @@ public class CrashTraceBean extends BaseBean implements ServableFileObject {
             out.write(crashTrace.getBinaryTraceData_ba(), 0, crashTrace.getBinaryTraceData_ba().length);
         } catch (Exception e) {
             // IF the data is mal-formatted.
-            logger.error("Data is not in proper format.");
+            logger.error("e: "+e);
+            logger.error("crashTrace: "+crashTrace);
+            logger.error("crashTrace.getBinaryTraceData_ba: "+crashTrace.getBinaryTraceData_ba());
+            logger.error("Data is not in proper format. (binary array)");
         } finally {
             out.flush();
             getFacesContext().responseComplete();
@@ -92,7 +96,7 @@ public class CrashTraceBean extends BaseBean implements ServableFileObject {
 
         } catch (Exception e) {
             // IF the data is mal-formatted.
-            logger.error("Data is not in proper format.");
+            logger.error("Data is not in proper format. (BLOB)");
         } finally {
             out.flush();
         }
