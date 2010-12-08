@@ -17,7 +17,6 @@ import java.util.HashMap;
 import org.junit.*;
 import org.junit.runner.notification.StoppedByUserException;
 import org.openqa.selenium.server.SeleniumServer;
-import com.inthinc.pro.web.selenium.*;
 
 public abstract class InthincTest
 {
@@ -76,7 +75,7 @@ public abstract class InthincTest
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			//rest output vars for next test and record results for execute test
+			//reset output vars for next test and record results for execute test
 			selenium.stop();
 			record_results();
 		}
