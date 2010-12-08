@@ -44,6 +44,7 @@ public class CrashReport extends BaseEntity {
     private FullEvent fullEvent;
     @Column(updateable = false, name = "dataPts")
     private List<CrashDataPoint> crashDataPoints; // Detailed Crash Data
+    private byte[] trace;
 
     public CrashReport() {
     }
@@ -207,5 +208,13 @@ public class CrashReport extends BaseEntity {
         return "CrashReport [accountID=" + accountID + ", crashDataPoints=" + crashDataPoints + ", crashReportID=" + crashReportID + ", crashReportStatus=" + crashReportStatus
                 + ", date=" + date + ", description=" + description + ", driver=" + driver + ", driverID=" + driverID + ", fullEvent=" + fullEvent + ", lat=" + lat + ", lng="
                 + lng + ", noteID=" + noteID + ", occupantCount=" + occupantCount + ", vehicle=" + vehicle + ", vehicleID=" + vehicleID + ", weather=" + weather + "]";
+    }
+
+    public byte[] getTrace() {
+        return trace;
+    }
+
+    public void setTrace(byte[] trace) {
+        this.trace = trace;
     }
 }

@@ -12,21 +12,20 @@ import com.inthinc.pro.dao.annotations.ID;
 
 @XmlRootElement
 public class CrashTrace extends BaseEntity {
-    /**
-     * 
-     */
+    
     @Column(updateable = false)
-    private static final long serialVersionUID = -2232308206099636851L;//TODO: jwimmer: regenerate after class complete-ish
+    private static final long serialVersionUID = 8598351196318036286L;
+    
     @ID
     @Column(name = "eventID")    
-    private String eventID;
+    private Integer eventID;
     private Blob binaryTraceData;
     private byte[] binaryTraceData_ba;
 
     public CrashTrace() {
     }
 
-    public CrashTrace(String eventID, Blob binaryTraceData, byte[] binaryTraceData_ba) {
+    public CrashTrace(Integer eventID, Blob binaryTraceData, byte[] binaryTraceData_ba) {
         super();
         this.eventID = eventID;
         this.binaryTraceData = binaryTraceData;
@@ -36,7 +35,7 @@ public class CrashTrace extends BaseEntity {
     
     public CrashTrace getMockObject(String path) throws IOException{
         CrashTrace result = new CrashTrace();
-        result.setEventID("D6FB4857-E6B6-4813-9DB6-2E41C5392D9D");//example of an actual eventID
+        //result.setEventID("D6FB4857-E6B6-4813-9DB6-2E41C5392D9D");//example of an actual eventID
         result.setBinaryTraceData(getMockBlob(path));
         result.setBinaryTraceData_ba(getMockByteArray(path));
            
@@ -47,7 +46,7 @@ public class CrashTrace extends BaseEntity {
         InputStream is = null;
         byte[] result = null; 
         try{
-            is = new URL(path+"/applets/mockCrashTrace.bin").openStream(); //TODO: needs replaced with ?hessian stuff? to get BLOB out of DB (not media server)
+            is = new URL(path+"/applets/mockCrashTrace.bin").openStream(); 
 
             byte[] buf = new byte[32 * 1024]; // 32k buffer
             int nRead = 0;
@@ -66,10 +65,11 @@ public class CrashTrace extends BaseEntity {
     }
     
     public static Blob getMockBlob(String path) throws IOException {
+        System.out.println("getMockBlob("+path+") is still getting called");
         InputStream is = null;
         Blob result = null;
         try{
-            is = new URL(path+"/applets/mockCrashTrace.bin").openStream(); //TODO: needs replaced with ?hessian stuff? to get BLOB out of DB (not media server)
+            is = new URL(path+"/applets/mockCrashTrace.bin").openStream(); 
 
             byte[] buf = new byte[32 * 1024]; // 32k buffer
             int nRead = 0;
@@ -89,7 +89,7 @@ public class CrashTrace extends BaseEntity {
 
     @Override
     public String toString() {
-        return "CrashTrace [eventID=" + eventID + ", ]"; //TODO: jwimmer: finish implementation after fields established
+        return "CrashTrace [eventID=" + eventID + ", ]"; 
     }
 
     public Blob getBinaryTraceData() {
@@ -108,11 +108,11 @@ public class CrashTrace extends BaseEntity {
         binaryTraceData_ba = binaryTraceDataBa;
     }
 
-    public String getEventID() {
+    public Integer getEventID() {
         return eventID;
     }
 
-    public void setEventID(String eventID) {
+    public void setEventID(Integer eventID) {
         this.eventID = eventID;
     }
 }
