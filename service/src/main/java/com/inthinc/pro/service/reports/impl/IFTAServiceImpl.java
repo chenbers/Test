@@ -226,6 +226,9 @@ public class IFTAServiceImpl implements IFTAService {
 
     /** Service implementation for Mileage by Vehicle report */
     Response getMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly) {
+        Response response = reportsUtil.checkParameters(groupID, startDate, endDate);
+        if (response !=null) return response;
+        
         Interval interval = new Interval(startDate.getTime(), endDate.getTime());
 
         List<MileageByVehicle> list = null;
@@ -241,11 +244,11 @@ public class IFTAServiceImpl implements IFTAService {
         return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
     }
 
-    /*
+    /**
      * Create the Date for today and set it to midnight.
-     * @return
+     * @return the date as Calendar
      */
-    private Calendar getMidnight() {
+    static Calendar getMidnight() {
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
         today.set(Calendar.MINUTE, 0);                 // set minute in hour
