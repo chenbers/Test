@@ -16,6 +16,7 @@ import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RedFlagAndZoneAlertsDAO;
+import com.inthinc.pro.model.AlertEscalationStatus;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.MeasurementType;
@@ -319,4 +320,12 @@ System.out.println("Number of messages: " + redFlagMsgIDList.size());
         detailsMap = null;
         selectedAlertID = null;
     }
+    
+    public void cancelPendingAction() {
+        if (details == null)
+            return;
+        details.cancelPendingAction();
+        refreshPage();
+    }
+
 }
