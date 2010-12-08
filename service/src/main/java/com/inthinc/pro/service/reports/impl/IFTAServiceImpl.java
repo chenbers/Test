@@ -232,7 +232,7 @@ public class IFTAServiceImpl implements IFTAService {
         return today;
     }
 
-   
+    /* State Mileage by Vehicle ------------------------------------------------------------- */
 
     /**
      * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleDefaults(java.lang.Integer)
@@ -254,6 +254,7 @@ public class IFTAServiceImpl implements IFTAService {
     public Response getStateMileageByVehicleWithDates(Integer groupID, Date startDate, Date endDate) {
         return getStateMileageByVehicleWithFullParameters(groupID, startDate, endDate, false);
     }
+    
     /**
      * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleWithIfta(java.lang.Integer)
      */
