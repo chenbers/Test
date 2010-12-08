@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.faces.model.SelectItem;
@@ -29,6 +28,7 @@ import com.inthinc.pro.model.MessageItem;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
+import com.inthinc.pro.util.MessageUtil;
 
 public class MessagesBean extends BaseBean {
     
@@ -59,8 +59,6 @@ public class MessagesBean extends BaseBean {
     private DeviceDAO deviceDAO;
     private VehicleDAO vehicleDAO;
     private TextMsgAlertDAO textMsgAlertDAO;
-    
-    private ResourceBundle resourceMessages = ResourceBundle.getBundle("com.inthinc.pro.resources.Messages", getLocale());
     
     public MessagesBean()
     {
@@ -175,7 +173,7 @@ public class MessagesBean extends BaseBean {
                         Device device = deviceDAO.findByID(v.getDeviceID());
                         if(device != null && device.isTextMsgReceiveCapable()) {
                             SelectItem si = new SelectItem();
-                            si.setLabel(d.getPerson().getFullName() != null ? d.getPerson().getFullName() : resourceMessages.getString("unknown_driver"));
+                            si.setLabel(d.getPerson().getFullName() != null ? d.getPerson().getFullName() : MessageUtil.getMessageString("unknown_driver"));
                             si.setValue(d.getDriverID());
                             driverSelectFromList.add(si);
                         }
@@ -199,7 +197,7 @@ public class MessagesBean extends BaseBean {
                     Device d = deviceDAO.findByID(v.getDeviceID());
                     if (d!=null && d.isTextMsgReceiveCapable()) {
                         SelectItem si = new SelectItem();
-                        si.setLabel(v.getFullName() != null ? v.getFullName() : resourceMessages.getString("unknown_vehicle"));
+                        si.setLabel(v.getFullName() != null ? v.getFullName() : MessageUtil.getMessageString("unknown_vehicle"));
                         si.setValue(v.getVehicleID());
                         vehicleSelectFromList.add(si);
                     }
@@ -221,7 +219,7 @@ public class MessagesBean extends BaseBean {
             
             for ( Group g: groups ) {
                 SelectItem si = new SelectItem();
-                si.setLabel(g.getName()!=null?g.getName():resourceMessages.getString("unknown_group"));
+                si.setLabel(g.getName()!=null?g.getName():MessageUtil.getMessageString("unknown_group"));
                 si.setValue(g.getGroupID());
                 groupSelectFromList.add(si);
             }
@@ -343,7 +341,7 @@ public class MessagesBean extends BaseBean {
             }
             else
             {   
-                this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgDriverNoDevice"), driverDAO.findByID(d).getPerson().getFullName()));
+                this.sendMessageList.add(String.format(MessageUtil.getMessageString("txtMsg_sendMsgDriverNoDevice"), driverDAO.findByID(d).getPerson().getFullName()));
             }
         }
         return results;
@@ -358,7 +356,7 @@ public class MessagesBean extends BaseBean {
             }
             else
             {
-                this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgVehicleNoDevice"), v.getFullName()));
+                this.sendMessageList.add(String.format(MessageUtil.getMessageString("txtMsg_sendMsgVehicleNoDevice"), v.getFullName()));
             }
         }
         return results;
@@ -451,7 +449,7 @@ public class MessagesBean extends BaseBean {
             sendDevice(item.getDeviceID());
         }
         if(this.sendMessageList.size()<1){
-            this.sendMessageList.add(resourceMessages.getString("txtMsg_noMsgSent"));
+            this.sendMessageList.add(MessageUtil.getMessageString("txtMsg_noMsgSent"));
         }
         // Prep for next interaction
         this.messageToSend = "";
@@ -472,12 +470,12 @@ public class MessagesBean extends BaseBean {
                 ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED, getUser().getPersonID(), sendTo.getDriverID(), sendTo.getVehicleID());
                 deviceDAO.queueForwardCommand(sendTo.getDeviceID(), fwdCmd);
                 
-                this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgSuccess"), (sendTo.getVehicleName()!=null)?sendTo.getVehicleName():resourceMessages.getString("unknown_vehicle") ));
+                this.sendMessageList.add(String.format(MessageUtil.getMessageString("txtMsg_sendMsgSuccess"), (sendTo.getVehicleName()!=null)?sendTo.getVehicleName():MessageUtil.getMessageString("unknown_vehicle") ));
                 success = true;
         }
 
         if (!success) {
-            this.sendMessageList.add(resourceMessages.getString("txtMsg_noDevice")); 
+            this.sendMessageList.add(MessageUtil.getMessageString("txtMsg_noDevice")); 
         }
     }
     
@@ -500,15 +498,15 @@ public class MessagesBean extends BaseBean {
                     ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.SEND_TEXT_MESSAGE, this.messageToSend, ForwardCommandStatus.STATUS_QUEUED, getUser().getPersonID(), v.getDriverID(), v.getVehicleID());
                     deviceDAO.queueForwardCommand(devID, fwdCmd);
                     
-                    this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgSuccess"), (d!=null)?d.getPerson().getFullName():resourceMessages.getString("unknown_driver"), (v!=null)?v.getFullName():resourceMessages.getString("unknown_vehicle"), dev.getName() ));
+                    this.sendMessageList.add(String.format(MessageUtil.getMessageString("txtMsg_sendMsgSuccess"), (d!=null)?d.getPerson().getFullName():MessageUtil.getMessageString("unknown_driver"), (v!=null)?v.getFullName():MessageUtil.getMessageString("unknown_vehicle"), dev.getName() ));
                 } else {
-                    this.sendMessageList.add(String.format(resourceMessages.getString("txtMsg_sendMsgNotCapable"), dev.getName() , (d!=null)?d.getPerson().getFullName():resourceMessages.getString("unknown_driver"), (v!=null)?v.getFullName():resourceMessages.getString("unknown_vehicle")));
+                    this.sendMessageList.add(String.format(MessageUtil.getMessageString("txtMsg_sendMsgNotCapable"), dev.getName() , (d!=null)?d.getPerson().getFullName():MessageUtil.getMessageString("unknown_driver"), (v!=null)?v.getFullName():MessageUtil.getMessageString("unknown_vehicle")));
                 }
                 success = true;
             }
         }
         if (!success) {
-            this.sendMessageList.add(resourceMessages.getString("txtMsg_noDevice")); 
+            this.sendMessageList.add(MessageUtil.getMessageString("txtMsg_noDevice")); 
         }
     }
        
