@@ -431,10 +431,8 @@
 					        </div>
 						</h:panelGroup>
 
-
-
 						<f:facet name="footer">
-							<h:panelGroup rendered="#{crashReportBean.device.crashTraceAppletCapable == false}"><!-- //TODO: remove "== false" for production... left if for testing until non MOCK data becomes available -->
+							<h:panelGroup rendered="#{crashReportBean.device.crashTraceAppletCapable}">
 								<div class="panel_nw">
 									<div class="panel_title" style="z-index: #{zorder}">
 										#{messages.crashReport_crashTrace} 
@@ -446,20 +444,12 @@
 									id="crashPanelContent" style="height: 570px;">
 								<div align="center" id="realEventViewer">
 								<blockquote><font class="topic_text">#{messages.crashReport_crashTraceInstructions} </font></blockquote>
-								
-								
-								
-								<!--<ui:include src="/includes/fileUpload.xhtml">
-							            <ui:param name="fileAction" value="uploadTrace" />
-							            <ui:param name="bean" value="#{crashReportBean.fileUploadBean}" />
-							            <ui:param name="context" value="crashReport" />
-								</ui:include>-->
 								<br/>
 																
 								<applet code="com.iwi.viewer.IWIViewer.class" mayscript="mayscript"
 									name="iwi_viewer" width="95%" height="400" hspace="0" vspace="0"
 									archive="#{request.contextPath}/applets/iwi_viewer.jar" imageFetcherOpts="null" >
-									<param name="file" value="/#{request.contextPath}/app/crashTrace/test" />
+									<param name="file" value="/#{request.contextPath}/app/crashTrace/#{crashReportBean.crashReport.crashReportID}" />
 									<param name="event_index" value="1" />
 									<!-- param name="chart_type" value="linear_acceleration"/ -->
 									<param name="start_time" value="0.0" />
