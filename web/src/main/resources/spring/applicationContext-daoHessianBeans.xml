@@ -32,7 +32,6 @@ default-autowire="byName">
   <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO"></bean>
   <bean id="addressDAO" class="com.inthinc.pro.dao.hessian.AddressHessianDAO"></bean>
   <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO"/>
-  <bean id="crashTraceDAO" class="com.inthinc.pro.dao.hessian.CrashTraceHessianDAO" />
   <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO"/>
   <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO"/>
   <bean id="redFlagAndZoneAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAndZoneAlertHessianDAO"></bean>
