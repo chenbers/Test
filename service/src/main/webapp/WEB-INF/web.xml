@@ -18,6 +18,14 @@
     <param-value>/api</param-value>
   </context-param>
 
+  <!--  Example context param on how to set custom Providers (for exception mappers) -->
+  <!-- 
+  <context-param>
+    <param-name>resteasy.providers</param-name>
+    <param-value>com.inthinc.pro.service.providers.InvalidDateExceptionMapper</param-value>
+  </context-param>
+  -->
+  
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -39,7 +47,8 @@
     <listener-class>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</listener-class>
   </listener>
 
-  <!-- This is to help with preventing a user from logging in concurrently (i.e. having 2 sessions open at the same time) -->
+  <!-- This is to help with preventing a user from logging in concurrently (i.e. having 2 sessions open at the same time)
+-->
   <listener>
     <listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
   </listener>
