@@ -16,11 +16,13 @@ import org.joda.time.Interval;
 import org.junit.Test;
 
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.util.ReportsUtil;
 
 public class StateMileageByVehicleIFTAServiceImplTest {
 
     private static final Integer SAMPLE_GROUP_ID = 77;
     private static final int SIX_UNITS = 6;
+    private static final ReportsUtil reportsUtil = new ReportsUtil();
 
     @Test
     public void testGetStateMileageByVehicleDefaults(final ReportsFacade reportsFacadeMock) {
@@ -38,7 +40,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
         iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID);
     }
 
@@ -58,7 +60,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
         iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
     }
 
@@ -78,7 +80,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
         iftaService.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID);
     }
 
@@ -98,7 +100,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
         iftaService.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
     }
 
@@ -119,7 +121,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
 
         Response response = iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
@@ -150,7 +152,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
 
         Response response = iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
@@ -182,7 +184,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
 
         Response response = iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
         assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
@@ -207,7 +209,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
 
         Response response = iftaService.getStateMileageByVehicleDefaults(null);
         assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
@@ -237,7 +239,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
 
         Response response = iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, null, expectedEndDate);
         assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
@@ -261,7 +263,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
 
         Response response = iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, expectedStartDate, null);
         assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
@@ -286,7 +288,7 @@ public class StateMileageByVehicleIFTAServiceImplTest {
             }
         };
 
-        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock);
+        IFTAServiceImpl iftaService = new IFTAServiceImpl(reportsFacadeMock, reportsUtil);
 
         Response response = iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID);
         assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
