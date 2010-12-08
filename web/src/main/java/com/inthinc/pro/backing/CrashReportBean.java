@@ -17,7 +17,6 @@ import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.CrashReportDAO;
-import com.inthinc.pro.dao.CrashTraceDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
@@ -55,7 +54,6 @@ public class CrashReportBean extends BaseBean {
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private CrashReportDAO crashReportDAO;
-    private CrashTraceDAO crashTraceDAO;
     private EventDAO eventDAO;
     private List<Trip> tripList;
     private Trip selectedTrip;
@@ -64,7 +62,7 @@ public class CrashReportBean extends BaseBean {
     private EntityType selectedEntityType = EntityType.ENTITY_DRIVER;
 
     private CrashReport crashReport;
-    private String crashTraceEventID;
+    private Integer crashTraceEventID;
     private CrashTraceBean crashTraceBean;
     private Integer crashTime;
     private Integer crashReportID; // Only used by pretty faces to set the crashReportID. Use crashReport when working with the crashReportID
@@ -74,22 +72,19 @@ public class CrashReportBean extends BaseBean {
     
     public void serveCrashTrace() {
         HttpServletResponse response = (HttpServletResponse) getFacesContext().getExternalContext().getResponse();
+        setCrashReport(crashReportDAO.findByID(crashTraceEventID));
 
         OutputStream out = null;
         try {
             out = response.getOutputStream();
-            //TODO: jwimmer: populate crashTrace from this.getCrashTraceEventID()
-            if(crashTraceBean == null) {
-                //TODO: jwimmer: add logic to check if eventID is null, if not load REAL crash trace
-                if(this.getCrashTraceEventID() != null && !("".equalsIgnoreCase(this.getCrashTraceEventID()))) {
-                    crashTraceBean = new CrashTraceBean(this.getCrashTraceEventID());
-                } else {
-                    crashTraceBean = new CrashTraceBean();
-                }
-            }
-            crashTraceBean.getMockObject().write(out);
-            //crashTraceBean.write(out);//TODO: jwimmer: when MOCK crashtrace is not needed anymore this line represents the RIGHT way to do this
-
+            boolean needCrashTraceDetails = (crashTraceBean == null || crashTraceBean.getCrashTrace() == null || crashTraceBean.getCrashTrace().getEventID() == null);
+            if(needCrashTraceDetails) {
+                if(crashReport != null && crashReport.getTrace() != null && crashReport.getTrace().length > 0) {
+                    crashTraceBean = new CrashTraceBean(crashTraceEventID, this.getCrashReport().getTrace());
+                } 
+            } 
+            
+            crashTraceBean.write(out);
             out.flush();
             getFacesContext().responseComplete();
         } catch (IOException e) {
@@ -560,11 +555,11 @@ public class CrashReportBean extends BaseBean {
         this.fileUploadBean = fileUploadBean;
     }
 
-    public String getCrashTraceEventID() {
+    public Integer getCrashTraceEventID() {
         return crashTraceEventID;
     }
 
-    public void setCrashTraceEventID(String crashTraceEventID) {
+    public void setCrashTraceEventID(Integer crashTraceEventID) {
         this.crashTraceEventID = crashTraceEventID;
     }
 
