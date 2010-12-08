@@ -1073,7 +1073,7 @@ public class SiloServiceTest {
             assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
         }
         // find
-        String ignoreFields[] = { "modified", "baseID", "productVer"};  
+        String ignoreFields[] = { "modified", "baseID", "productVersion"};  
         for (Device device : deviceList) {
             Device returnedDevice = deviceDAO.findByID(device.getDeviceID());
             Util.compareObjects(device, returnedDevice, ignoreFields);
