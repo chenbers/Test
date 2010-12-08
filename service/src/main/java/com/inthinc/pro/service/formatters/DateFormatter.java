@@ -36,9 +36,26 @@ public class DateFormatter implements StringParameterUnmarshaller<Date> {
      */
     public Date fromString(String str) {
         try {
+
+            validateInputString(str);
+
             return formatter.parse(str);
         } catch (ParseException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * The JDK has a bug in {@link SimpleDateFormat} which gives a wrong date as a result of the parsing instead of throwing a {@link ParseException} when there are dashes included
+     * in either the pattern or input string. Details for the bug can be found here:
+     * http://bugs.sun.com/bugdatabase/view_bug.do;jsessionid=7d89d1669acc5303b141a69a327f?bug_id=6609727.
+     * <p/>
+     * This method does a pattern match on the input string to perform the validation that {@link SimpleDateFormat} should have done. It throws a {@link ParseException} if the
+     * input string is not composed of 8 digits.
+     */
+    private void validateInputString(String str) throws ParseException {
+        if (!str.matches("\\d{8}")) {
+            throw new ParseException("Unparseable date: \"" + str + "\"", 0);
         }
     }
 }
