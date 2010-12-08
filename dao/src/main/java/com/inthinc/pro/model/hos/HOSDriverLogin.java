@@ -2,6 +2,8 @@ package com.inthinc.pro.model.hos;
 
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.model.BaseEntity;
+import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.MeasurementType;
 
 public class HOSDriverLogin extends BaseEntity {
     
@@ -15,6 +17,8 @@ public class HOSDriverLogin extends BaseEntity {
     private boolean currentOcupantFlag;
     private String currentAddress;
     private RuleSetType vehicleDotType;
+    private FuelEfficiencyType fuelEfficiencyType; 
+    private MeasurementType measurementType; 
     
     
     
@@ -107,5 +111,20 @@ public class HOSDriverLogin extends BaseEntity {
     public void setVehicleDotType(RuleSetType vehicleDotType) {
         this.vehicleDotType = vehicleDotType;
     }
-    
+
+    public FuelEfficiencyType getFuelEfficiencyType() {
+        return fuelEfficiencyType;
+    }
+
+    public void setFuelEfficiencyType(FuelEfficiencyType fuelEfficiencyType) {
+        this.fuelEfficiencyType = fuelEfficiencyType;
+    }
+
+    public MeasurementType getMeasurementType() {
+        return measurementType;
+    }
+
+    public void setMeasurementType(MeasurementType measurementType) {
+        this.measurementType = measurementType;
+    }
 }

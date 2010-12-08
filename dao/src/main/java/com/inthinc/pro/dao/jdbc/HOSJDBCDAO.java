@@ -28,6 +28,8 @@ import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
+import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.MeasurementType;
 
 
 
@@ -582,15 +584,21 @@ System.out.println("statment: " + statement.toString());
         try
         {
             conn = getConnection();
+            
+            if (conn == null)
+                throw new ProDAOException("conn is null", new Exception("conn is null"));;
+                
             statement = conn.prepareCall("{call hos_isValidLogin(?, ?, ?, ?, ?)}");
+
+
             statement.setString(1, commAddress);
             statement.setString(2, employeeId);
             statement.setLong(3, loginTime);
             statement.setBoolean(4, occupantFlag);
             statement.setInt(5, odometer);
             
+
             resultSet = statement.executeQuery();
-            
             if (resultSet.next()) {
                 driverLogin.setAcctID(resultSet.getInt(1));
                 driverLogin.setDeviceID(resultSet.getInt(2));
@@ -602,6 +610,8 @@ System.out.println("statment: " + statement.toString());
                 driverLogin.setCurrentDeviceID(resultSet.getInt(8));
                 driverLogin.setCurrentAddress(resultSet.getString(9));
                 driverLogin.setVehicleDotType(RuleSetType.valueOf(resultSet.getInt(10)));
+                driverLogin.setMeasurementType(MeasurementType.valueOf(resultSet.getInt(11)));
+                driverLogin.setFuelEfficiencyType(FuelEfficiencyType.valueOf(resultSet.getInt(12)));
             }
 
         }   // end try
@@ -641,6 +651,8 @@ System.out.println("statment: " + statement.toString());
                 driverLogin.setDriverID(resultSet.getInt(3));
                 driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(4)));
                 driverLogin.setTimezoneID(resultSet.getString(5));
+                driverLogin.setMeasurementType(MeasurementType.valueOf(resultSet.getInt(6)));
+                driverLogin.setFuelEfficiencyType(FuelEfficiencyType.valueOf(resultSet.getInt(7)));
             }
 
         }   // end try
