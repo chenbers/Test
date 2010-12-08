@@ -1749,7 +1749,7 @@ public class SiloServiceTest {
         findByKeyExpectNoResult(userDAO, "BAD_USER");
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
-        findByKey(deviceDAO, deviceList.get(0), deviceList.get(0).getImei(), new String[] { "modified", "baseID", "productVer" });
+        findByKey(deviceDAO, deviceList.get(0), deviceList.get(0).getImei(), new String[] { "modified", "baseID", "productVersion" });
         findByKeyExpectNoResult(deviceDAO, "BAD_DEVICE");
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
