@@ -1,5 +1,9 @@
 package com.inthinc.pro.device;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import com.inthinc.pro.device.tiwiPro.TiwiProDevice;
 
 
@@ -18,4 +22,11 @@ public class Test_Notes {
 		testTiwi.set_ignition(30);
 		testTiwi.power_off_device(5);
 	}
+	
+    @Test
+    public void dummy()
+    {
+        assertEquals("", 1,1);
+    }
+
 }
