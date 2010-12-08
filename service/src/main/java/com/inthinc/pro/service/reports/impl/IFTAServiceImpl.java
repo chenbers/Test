@@ -223,10 +223,52 @@ public class IFTAServiceImpl implements IFTAService {
     }
 
     /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleDefaults(java.lang.Integer)
+     */
+    @Override
+    public Response getStateMileageByVehicleDefaults(Integer groupID) {
+        Calendar today = getMidnight();
+        
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+        
+        return getStateMileageByVehicleWithFullParameters(groupID, startDate.getTime(), today.getTime(), false);
+    }
+
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleWithDates(java.lang.Integer, java.util.Date, java.util.Date)
+     */
+    @Override
+    public Response getStateMileageByVehicleWithDates(Integer groupID, Date startDate, Date endDate) {
+        return getStateMileageByVehicleWithFullParameters(groupID, startDate, endDate, false);
+    }
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleWithIfta(java.lang.Integer)
+     */
+    @Override
+    public Response getStateMileageByVehicleWithIfta(Integer groupID) {
+        Calendar today = getMidnight();
+
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+
+        return getStateMileageByVehicleWithFullParameters(groupID, startDate.getTime(), today.getTime(), true);
+    }
+
+    /**
      * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicle(java.lang.Integer, java.util.Date, java.util.Date, java.lang.Boolean)
      */
     @Override
-    public Response getStateMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly) {
+    public Response getStateMileageByVehicleWithIftaAndDates(Integer groupID, Date startDate, Date endDate) {
+        return getStateMileageByVehicleWithFullParameters(groupID, startDate, endDate, true);
+    }
+
+    private Response getStateMileageByVehicleWithFullParameters(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
+        
+        if(invalidParameters(groupID, startDate, endDate, iftaOnly)) {
+            return Response.status(Status.BAD_REQUEST).build();
+        }
+        
         Interval interval = new Interval(startDate.getTime(), endDate.getTime());
 
         List<MileageByVehicle> list = null;
@@ -241,39 +283,5 @@ public class IFTAServiceImpl implements IFTAService {
         }
         
         return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
-    }
-
-    /**
-     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleGroup(java.lang.Integer)
-     */
-    @Override
-    public Response getStateMileageByVehicleGroup(Integer groupID) {
-        Calendar today = getMidnight();
-
-        Calendar startDate = getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicle(groupID, startDate.getTime(), today.getTime(), true);
-    }
-
-    /**
-     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleIfta(java.lang.Integer)
-     */
-    @Override
-    public Response getStateMileageByVehicleIfta(Integer groupID) {
-        Calendar today = getMidnight();
-
-        Calendar startDate = getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicle(groupID, startDate.getTime(), today.getTime(), true);
-    }
-
-    /**
-     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByVehicleInterval(java.lang.Integer, java.util.Date, java.util.Date)
-     */
-    @Override
-    public Response getStateMileageByVehicleInterval(Integer groupID, Date startDate, Date endDate) {
-        return getStateMileageByVehicle(groupID, startDate, endDate, false);
     }
 }
