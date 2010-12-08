@@ -714,33 +714,6 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
     
-    @Override
-    @MethodDescription(description = "Retrieves crash traces for an eventID.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.CrashTrace.class)
-    public List<Map<String, Object>> getCrashTraces(@DaoParam(name = "eventID") String eventID) throws ProDAOException {
-        return null;
-    }
-    
-    @Override
-    @MethodDescription(description = "Retrieves a count of crash traces for an eventID and date range.", crudType=CrudType.READ, modelClass=java.lang.Integer.class)
-    public Map<String, Object> getCrashTraceCount(
-            @DaoParam(name = "eventID")String groupID,
-            @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,
-            @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long endDate,
-            List<Map<String, Object>> filterList) throws ProDAOException{
-        return null;
-    }
-   
-    @Override
-    @MethodDescription(description = "Get a list of stack traces for the specified eventID and date range.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.CrashTrace.class)
-    public List<Map<String, Object>> getCrashTracePage(
-            @DaoParam(name = "eventID") String eventID, 
-            @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate, 
-            @DaoParam(name = "endDate", type=java.util.Date.class, inputDesc="MM/dd/yyyy hh:mm") Long endDate, 
-            List<Map<String, Object>> filterList, 
-            @DaoParam(name = "pageParams", type = com.inthinc.pro.model.pagination.PageParams.class) Map<String, Object> pageParams) throws ProDAOException {
-        return null;
-    }
-    
 	@Override
     @MethodDescription(description = "Do not use. Method only to be used by test data generators on development server.", crudType=CrudType.NOT_AVAILABLE)
 	public Map<String, Object> setVehicleDriver(Integer vehicleID,
