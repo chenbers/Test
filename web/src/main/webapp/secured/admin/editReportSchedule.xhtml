@@ -209,13 +209,13 @@
 						<table width="370" border="0" cellspacing="2" cellpadding="4"
 							align="center">
 							<tr>
-								<td width="100" valign="top">
+								<td width="115" valign="top">
 									<h:outputText value="#{messages.reportSchedule_report}"/>
 									<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 								</td>
 								<td>
 									<rich:message for="editReportSchedule-report" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<h:selectOneMenu id="editReportSchedule-report" value="#{reportScheduleBean.item.reportID}" required="true" requiredMessage="#{messages.required}">
+									<h:selectOneMenu id="editReportSchedule-report" value="#{reportScheduleBean.item.reportID}" required="true" requiredMessage="#{messages.required}" style="width:240px">
 										<a4j:support action="#{reportScheduleBean.reportGroupChangeAction}" event="onchange" reRender="reportConfigTable" ajaxSingle="true"/>
 										<f:selectItems value="#{reportScheduleBean.reportGroups}"/> 
 									</h:selectOneMenu>
@@ -225,7 +225,7 @@
 							<ui:repeat value="#{reportScheduleBean.item.report.criterias}" var="criteria">
 								<h:outputText rendered="#{criteria eq 'DURATION'}">
 									<tr>
-										<td width="100" valign="top">
+										<td width="115" valign="top">
 											<h:outputText value="#{messages.reportSchedule_daysReported}"/>
 											<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 										</td>
@@ -239,7 +239,7 @@
 								</h:outputText>
 								<h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
 									<tr>
-										<td width="100" valign="top">
+										<td width="115" valign="top">
 											<h:outputText value="#{messages.reportSchedule_daysReported}"/>
 											<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 										</td>
@@ -254,13 +254,13 @@
 							</ui:repeat>
 							<h:outputText id="reportOnInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER' or reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_OR_DRIVER' }">
 								<tr>
-									<td width="100" valign="top">
+									<td width="115" valign="top">
 										<h:outputText value="#{messages.reportSchedule_reportOn}"/>
 										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 									</td>
 									<td>
 										<a4j:outputPanel id="reportOnSelect">
-										<h:selectOneMenu id="editReportSchedule-reportOn" value="#{reportScheduleBean.item.paramType}" style="width:200px;">
+										<h:selectOneMenu id="editReportSchedule-reportOn" value="#{reportScheduleBean.item.paramType}" style="width:240px;">
 											<f:selectItems value="#{reportScheduleBean.reportParamTypes}"/> 
 											<a4j:support action="#{reportScheduleBean.reportGroupChangeAction}"  event="onchange" reRender="reportConfigTable" ajaxSingle="true"/>
 										</h:selectOneMenu>
@@ -269,16 +269,16 @@
 									</td>
 								</tr>
 							</h:outputText>
-							<h:outputText id="groupInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP' or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_OR_DRIVER' and reportScheduleBean.item.paramType eq 'GROUPS')}">
+							<h:outputText id="groupInput" rendered="#{reportScheduleBean.showGroupInput}">
 								<tr>
-									<td width="100" valign="top">
+									<td width="115" valign="top">
 										<h:outputText value="#{messages.reportSchedule_group}"/>
 										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 									</td>
 									<td>
 										<a4j:outputPanel id="groupSelect">
 										<rich:message for="editReportSchedule-group" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-										<h:selectOneMenu id="editReportSchedule-group" value="#{reportScheduleBean.item.groupID}" style="width:200px;"
+										<h:selectOneMenu id="editReportSchedule-group" value="#{reportScheduleBean.item.groupID}" style="width:240px;"
 											required="true" requiredMessage="#{messages.required}">
 											<f:selectItems value="#{reportScheduleBean.groups}"/> 
 										</h:selectOneMenu>
@@ -290,35 +290,35 @@
 									</td>
 								</tr>
 							</h:outputText>
-							<h:outputText id="groupListInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST' or reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_AND_IFTA' or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER' and reportScheduleBean.item.paramType eq 'GROUPS')}">
+							<h:outputText id="groupListInput" rendered="#{reportScheduleBean.showGroupListInput}">
 								<tr>
-									<td width="100" valign="top">
+									<td width="115" valign="top">
 										<h:outputText value="#{messages.reportSchedule_groups}"/>
 										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 									</td>
 									<td>
 									<a4j:outputPanel id="groupListSelect">
-									<h:selectManyMenu id="editRSGroups" value="#{reportScheduleBean.item.groupIDSelectList}" style="width:200px;size:auto"
+									<h:selectManyMenu id="editRSGroups" value="#{reportScheduleBean.item.groupIDSelectList}" style="width:240px;size:auto"
 											required="true" requiredMessage="#{messages.required}">
 										<f:selectItems value="#{reportScheduleBean.groups}"/>
 									</h:selectManyMenu>
 									<rich:jQuery selector="#editRSGroups" timing="onload"
 										query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
-														width: 200,maxDropHeight: 150})"/>
+														width: 240,maxDropHeight: 150})"/>
 									</a4j:outputPanel>
 									</td>
 								</tr>
 							</h:outputText>
-							<h:outputText id="driverInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_DRIVER' or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_OR_DRIVER' and (reportScheduleBean.item.paramType eq 'DRIVER' or reportScheduleBean.item.paramType eq null)) or (reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_OR_DRIVER' and (reportScheduleBean.item.paramType eq 'DRIVER' or reportScheduleBean.item.paramType eq null)) }">
+							<h:outputText id="driverInput" rendered="#{reportScheduleBean.showDriverInput}">
 									<tr>
-										<td width="100" valign="top">
+										<td width="115" valign="top">
 											<h:outputText value="#{messages.reportSchedule_driver}"/>
 											<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 										</td>
 										<td>
 											<a4j:outputPanel id="driverSelect">
 											<rich:message for="editReportSchedule-driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-											<h:selectOneMenu id="editReportSchedule-driver" value="#{reportScheduleBean.item.driverID}" required="true" requiredMessage="#{messages.required}">
+											<h:selectOneMenu id="editReportSchedule-driver" value="#{reportScheduleBean.item.driverID}" required="true" requiredMessage="#{messages.required}" style="width:240px;size:auto">
 												<f:selectItems value="#{reportScheduleBean.drivers}"/> 
 											</h:selectOneMenu>
 											</a4j:outputPanel>
@@ -327,7 +327,7 @@
 							</h:outputText>
 							<h:outputText id="iftaInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_AND_IFTA'}">
 								<tr>
-									<td>
+									<td width="115" valign="top">
 										<h:outputText value="#{messages.reports_ifta_only}"/>						
 									</td>
 									<td>
@@ -337,11 +337,11 @@
 							</h:outputText>
 							<ui:fragment rendered="#{reportScheduleBean.admin}">
 								<tr>
-									<td width="100" valign="top">
+									<td width="115" valign="top">
 			                       		<h:outputText value="#{messages.reportSchedule_owner}" />
 			                  		</td>
 			                   		<td>
-			                            <h:selectOneMenu id="userID" value="#{reportScheduleBean.item.userID}" style="width: 200px">
+			                            <h:selectOneMenu id="userID" value="#{reportScheduleBean.item.userID}" style="width: 240px">
 			                            	<f:selectItems value="#{reportScheduleBean.allGroupUsers}" />
 				                            <a4j:support action="#{reportScheduleBean.ownerChangedAction}" event="onchange" 
 			                            		reRender="edit_form:groupSelect,edit_form:groupListSelect,edit_form:driverSelect" ajaxSingle="true"/>

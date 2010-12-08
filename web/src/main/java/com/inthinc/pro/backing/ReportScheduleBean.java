@@ -67,6 +67,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private List<Driver> driverList;
     protected final static String BLANK_SELECTION = " ";
 
+
+
     /*
      * Spring managed beans
      */
@@ -255,6 +257,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     }
     
     public void reportGroupChangeAction() {
+System.out.println("reportGroupChangeAction()");        
         allGroupUsers = null;
         getItem().setGroupIDList(null);
         getItem().setGroupID(null);
@@ -265,6 +268,10 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         getItem().setDriverName(null);
         getItem().setVehicleName(null);
         getAllGroupUsers();
+if (getItem() != null && getItem().getReport() != null)        
+System.out.println("report Entity TYPE: " + getItem().getReport().getEntityType());   
+System.out.println("reportGroupChangeAction()-END");   
+
     }
     
     
@@ -629,6 +636,48 @@ System.out.println("user timezone is " + getPerson().getTimeZone());
         return booleanList;
     }
 
+    public Boolean getShowDriverInput() {
+        if (getItem() == null || getItem().getReport() == null)
+            return false;
+        
+        EntityType entityType = getItem().getReport().getEntityType();
+        if (entityType == EntityType.ENTITY_DRIVER)
+            return true;
+        if (entityType == EntityType.ENTITY_GROUP_OR_DRIVER || entityType == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
+            ReportParamType paramType = getItem().getParamType();
+            if (paramType == null || paramType == ReportParamType.NONE || paramType == ReportParamType.DRIVER)
+                return true;
+        }
+        return false;
+    }
+    
+    public Boolean getShowGroupListInput() {
+        if (getItem() == null || getItem().getReport() == null)
+            return false;
+        EntityType entityType = getItem().getReport().getEntityType();
+        if (entityType == EntityType.ENTITY_GROUP_LIST || entityType == EntityType.ENTITY_GROUP_LIST_AND_IFTA)
+            return true;
+        if (entityType == EntityType.ENTITY_GROUP_LIST_OR_DRIVER) {
+            ReportParamType paramType = getItem().getParamType();
+            if (paramType != null && paramType == ReportParamType.GROUPS)
+                return true;
+        }
+        return false;
+    }
+    public Boolean getShowGroupInput() {
+        if (getItem() == null || getItem().getReport() == null)
+            return false;
+        EntityType entityType = getItem().getReport().getEntityType();
+        if (entityType == EntityType.ENTITY_GROUP)
+            return true;
+        if (entityType == EntityType.ENTITY_GROUP_OR_DRIVER) {
+            ReportParamType paramType = getItem().getParamType();
+            if (paramType != null && paramType == ReportParamType.GROUPS)
+                return true;
+        }
+        return false;
+    }
+
     public void setReportScheduleDAO(ReportScheduleDAO reportScheduleDAO) {
         this.reportScheduleDAO = reportScheduleDAO;
     }
@@ -681,6 +730,13 @@ System.out.println("user timezone is " + getPerson().getTimeZone());
         @Column(updateable = true)
         private Integer dayOfMonth;
         private List<String> groupIDSelectList;
+        
+        
+        @Override
+        public void setReportID(Integer reportID) {
+            super.setReportID(reportID);
+System.out.println("set reportID: " + reportID);            
+        }
 
         public List<String> getGroupIDSelectList() {
             if (getGroupIDList() != null) {
