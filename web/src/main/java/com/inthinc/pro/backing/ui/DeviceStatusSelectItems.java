@@ -38,7 +38,6 @@ public enum DeviceStatusSelectItems {
             results.append(Character.toUpperCase(word.charAt(0)));
             results.append(word.substring(1).toLowerCase());
         }
-        //System.out.println("initCap("+s+") returns "+results.toString());
         return results.toString();
     }
 }
