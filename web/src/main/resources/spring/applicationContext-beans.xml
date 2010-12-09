@@ -333,8 +333,11 @@
   <bean id="vehicleBean" class="com.inthinc.pro.backing.VehicleBean" scope="session" parent="baseBean">
     <property name="vehicleDAO" ref="vehicleDAO" />
   </bean>
-
+  <bean id="deviceBean" class="com.inthinc.pro.backing.DeviceBean" scope="session" parent="baseBean">
+    <property name="deviceDAO" ref="deviceDAO" ></property>
+  </bean>
   <bean id="vehiclePerformanceBean" class="com.inthinc.pro.backing.VehiclePerformanceBean" scope="request" parent="basePerformanceBean">
+	<property name="deviceBean" ref="deviceBean"></property>
     <property name="durationBean" ref="vehicleDurationBean" />
     <property name="speedDurationBean" ref="vehicleSpeedDurationBean"></property>
     <property name="styleDurationBean" ref="vehicleStyleDurationBean"></property>
@@ -368,6 +371,7 @@
   </bean>
 
   <bean id="driverPerformanceBean" class="com.inthinc.pro.backing.DriverPerformanceBean" scope="request" parent="basePerformanceBean">
+  	<property name="deviceBean" ref="deviceBean"></property>
     <property name="durationBean" ref="driverDurationBean"></property>
     <property name="speedDurationBean" ref="driverSpeedDurationBean"></property>
     <property name="styleDurationBean" ref="driverStyleDurationBean"></property>
