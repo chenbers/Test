@@ -237,7 +237,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         boolean valid = true;
         final String required = "required";
-        // Name
+        // Name.  
         if ((deviceView.getName() == null || deviceView.getName().equals("")) && !isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))
         {
             valid = false;
@@ -245,6 +245,13 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             getFacesContext().addMessage("edit-form:editDevice-name", message);
         }
+        
+        // If a waysmart, the only attribute that can be changed is name, currently, so, 
+        //  return the results of that check.
+        if ( deviceView.isWaySmart() ) {
+            return valid;
+        }
+        
         Device byImei = null;
         if (deviceView.getImei() != null)
             byImei = deviceDAO.findByIMEI(deviceView.getImei());
