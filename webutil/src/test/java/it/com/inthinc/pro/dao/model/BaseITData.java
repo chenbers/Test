@@ -362,7 +362,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
             null, null,
             null, null, null,
             RedFlagLevel.NONE,null,
-            escalationList(),5, null,5,0);
+            escalationList(),5, null,5);
     	return redFlagAlert;
     }
     
