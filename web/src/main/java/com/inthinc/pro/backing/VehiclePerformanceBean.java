@@ -52,6 +52,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     private VehicleDAO          vehicleDAO;
     private DriverDAO           driverDAO;
+    //private DeviceDAO           deviceDAO;
     private ScoreDAO            scoreDAO;
 
 	private MpgDAO              mpgDAO;
@@ -72,6 +73,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private String              coachingHistory;
     private Boolean             hasLastTrip;
     private TimeZone            timeZone;
+    private DeviceBean          deviceBean;
     private VehicleSpeedBean    vehicleSpeedBean;
     private VehicleStyleBean    vehicleStyleBean;
     private VehicleSeatBeltBean vehicleSeatBeltBean;
@@ -646,6 +648,15 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 		this.violationEventsMap = violationEventsMap;
 	}
 
+    public DeviceBean getDeviceBean() {
+        logger.debug("DeviceBean getDeviceBean()");
+        if(null == deviceBean.getDeviceID()){
+            deviceBean.loadDeviceBean(getVehicle());
+        }
+        return deviceBean;
+    }
 
-
+    public void setDeviceBean(DeviceBean deviceBean) {
+        this.deviceBean = deviceBean;
+    }
 }

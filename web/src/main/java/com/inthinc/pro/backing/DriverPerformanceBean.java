@@ -64,6 +64,7 @@ public class DriverPerformanceBean extends BasePerformanceBean {
     private DriverSeatBeltBean driverSeatBeltBean;
     private CrashSummary crashSummary;
 
+    private DeviceBean deviceBean;
     private TripDisplay lastTrip;
     private List<Event> tamperEvents;
     private Integer overallScore;
@@ -552,6 +553,14 @@ public class DriverPerformanceBean extends BasePerformanceBean {
 
     public void setViolationEventsMap(Map<Long, Event> violationEventsMap) {
         this.violationEventsMap = violationEventsMap;
+    }
+
+    public void setDeviceBean(DeviceBean deviceBean) {
+        this.deviceBean = deviceBean;
+    }
+
+    public DeviceBean getDeviceBean() {
+        return deviceBean;
     }
 
 }

@@ -557,11 +557,31 @@
 						</h:outputText>
 						</span>
 						<span class="panel_links">
-                           <pretty:link id="driverPerformanceDriverTrips" mappingId="driverTrips">
+                           
+                        </span>
+                        <span class="panel_links">
+						   <a4j:form id="reqGPSLocForm" style="float:left;">
+						   	  <a4j:commandLink action="#{driverPerformanceBean.deviceBean.requestGPSLocation}" value="#{messages.GPS_get_location}" rendered="#{driverPerformanceBean.deviceBean.waysmart}" oncomplete="javascript:Richfaces.showModalPanel('GPSRequested')"/>
+						   </a4j:form>
+						   <rich:spacer width="5"/>
+              			   <pretty:link id="driverPerformanceDriverTrips" mappingId="driverTrips">
                               <h:outputText value="#{messages.driver_view_all}"/>
                               <f:param value="#{driverPerformanceBean.driver.driverID}"/>
                            </pretty:link>
                         </span>
+                        <rich:modalPanel id="GPSRequested" headerClass="popupHeader"
+							controlsClass="popupControls" width="500" height="140"
+							autosized="true" resizeable="false" zindex="2001">
+							<f:facet name="header">
+								<h:outputText value="#{messages.GPS_get_location}" />
+							</f:facet>
+							<f:facet name="controls">
+								<h:graphicImage value="/images/modal_close.png"
+									style="cursor:pointer"
+									onclick="Richfaces.hideModalPanel('GPSRequested')" />
+							</f:facet>
+							<div class="popupsubtitle"><h:outputText value="#{messages.GPS_get_location_sent}" /></div>
+						</rich:modalPanel>
 					</div>
 				</div>
 					<div class="panel_w">
