@@ -1,0 +1,3229 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_20" class="java.beans.XMLDecoder"> 
+ <object class="com.inthinc.pro.model.Account"> 
+  <void property="acctID"> 
+   <int>73</int> 
+  </void> 
+  <void property="acctName"> 
+   <string>TEST 16:17:22 MST 2010</string> 
+  </void> 
+  <void property="hos"> 
+   <object class="com.inthinc.pro.model.AccountHOSType" method="valueOf"> 
+    <string>HOS_SUPPORT</string> 
+   </object> 
+  </void> 
+  <void property="props"> 
+   <null/> 
+  </void> 
+  <void property="status"> 
+   <object id="Status0" class="com.inthinc.pro.model.Status" method="valueOf"> 
+    <string>ACTIVE</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Address"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="addr1"> 
+   <string>433 Street</string> 
+  </void> 
+  <void property="addrID"> 
+   <int>91</int> 
+  </void> 
+  <void property="city"> 
+   <string>City 83</string> 
+  </void> 
+  <void property="state"> 
+   <object id="State0" class="com.inthinc.pro.model.State"> 
+    <void property="abbrev"> 
+     <string>UT</string> 
+    </void> 
+    <void property="name"> 
+     <string>Utah</string> 
+    </void> 
+    <void property="stateID"> 
+     <int>45</int> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="zip"> 
+   <string>12345</string> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Group"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="description"> 
+   <string>Fleet Group</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>187</int> 
+  </void> 
+  <void id="LatLng0" property="mapCenter"> 
+   <void property="lat"> 
+    <double>0.0</double> 
+   </void> 
+   <void property="lng"> 
+    <double>0.0</double> 
+   </void> 
+  </void> 
+  <void property="mapCenter"> 
+   <object idref="LatLng0"/> 
+  </void> 
+  <void property="mapZoom"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>Fleet</string> 
+  </void> 
+  <void property="parentID"> 
+   <int>0</int> 
+  </void> 
+  <void property="status"> 
+   <object id="GroupStatus0" class="com.inthinc.pro.model.GroupStatus" method="valueOf"> 
+    <string>GROUP_ACTIVE</string> 
+   </object> 
+  </void> 
+  <void property="type"> 
+   <object class="com.inthinc.pro.model.GroupType" method="valueOf"> 
+    <string>FLEET</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Group"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="description"> 
+   <string>Division Group</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>188</int> 
+  </void> 
+  <void id="LatLng1" property="mapCenter"> 
+   <void property="lat"> 
+    <double>0.0</double> 
+   </void> 
+   <void property="lng"> 
+    <double>0.0</double> 
+   </void> 
+  </void> 
+  <void property="mapCenter"> 
+   <object idref="LatLng1"/> 
+  </void> 
+  <void property="mapZoom"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>Division</string> 
+  </void> 
+  <void property="parentID"> 
+   <int>187</int> 
+  </void> 
+  <void property="status"> 
+   <object idref="GroupStatus0"/> 
+  </void> 
+  <void property="type"> 
+   <object class="com.inthinc.pro.model.GroupType" method="valueOf"> 
+    <string>DIVISION</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Group"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="description"> 
+   <string>GOOD</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>189</int> 
+  </void> 
+  <void id="LatLng2" property="mapCenter"> 
+   <void property="lat"> 
+    <double>0.0</double> 
+   </void> 
+   <void property="lng"> 
+    <double>0.0</double> 
+   </void> 
+  </void> 
+  <void property="mapCenter"> 
+   <object idref="LatLng2"/> 
+  </void> 
+  <void property="mapZoom"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>GOOD</string> 
+  </void> 
+  <void property="parentID"> 
+   <int>188</int> 
+  </void> 
+  <void property="status"> 
+   <object idref="GroupStatus0"/> 
+  </void> 
+  <void property="type"> 
+   <object id="GroupType0" class="com.inthinc.pro.model.GroupType" method="valueOf"> 
+    <string>TEAM</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Group"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="description"> 
+   <string>INTERMEDIATE</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>190</int> 
+  </void> 
+  <void id="LatLng3" property="mapCenter"> 
+   <void property="lat"> 
+    <double>0.0</double> 
+   </void> 
+   <void property="lng"> 
+    <double>0.0</double> 
+   </void> 
+  </void> 
+  <void property="mapCenter"> 
+   <object idref="LatLng3"/> 
+  </void> 
+  <void property="mapZoom"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>INTERMEDIATE</string> 
+  </void> 
+  <void property="parentID"> 
+   <int>188</int> 
+  </void> 
+  <void property="status"> 
+   <object idref="GroupStatus0"/> 
+  </void> 
+  <void property="type"> 
+   <object idref="GroupType0"/> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Group"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="description"> 
+   <string>BAD</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>191</int> 
+  </void> 
+  <void id="LatLng4" property="mapCenter"> 
+   <void property="lat"> 
+    <double>0.0</double> 
+   </void> 
+   <void property="lng"> 
+    <double>0.0</double> 
+   </void> 
+  </void> 
+  <void property="mapCenter"> 
+   <object idref="LatLng4"/> 
+  </void> 
+  <void property="mapZoom"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>BAD</string> 
+  </void> 
+  <void property="parentID"> 
+   <int>188</int> 
+  </void> 
+  <void property="status"> 
+   <object idref="GroupStatus0"/> 
+  </void> 
+  <void property="type"> 
+   <object idref="GroupType0"/> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.User"> 
+  <void property="groupID"> 
+   <int>187</int> 
+  </void> 
+  <void property="password"> 
+   <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
+  </void> 
+  <void property="personID"> 
+   <int>640</int> 
+  </void> 
+  <void property="roles"> 
+   <void method="add"> 
+    <int>167</int> 
+   </void> 
+   <void method="add"> 
+    <int>168</int> 
+   </void> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>271</int> 
+  </void> 
+  <void property="username"> 
+   <string>TEST_640</string> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.User"> 
+  <void property="groupID"> 
+   <int>188</int> 
+  </void> 
+  <void property="password"> 
+   <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
+  </void> 
+  <void property="personID"> 
+   <int>641</int> 
+  </void> 
+  <void property="roles"> 
+   <void method="add"> 
+    <int>167</int> 
+   </void> 
+   <void method="add"> 
+    <int>168</int> 
+   </void> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>272</int> 
+  </void> 
+  <void property="username"> 
+   <string>TEST_641</string> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.User"> 
+  <void property="groupID"> 
+   <int>189</int> 
+  </void> 
+  <void property="password"> 
+   <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
+  </void> 
+  <void property="personID"> 
+   <int>642</int> 
+  </void> 
+  <void property="roles"> 
+   <void method="add"> 
+    <int>167</int> 
+   </void> 
+   <void method="add"> 
+    <int>168</int> 
+   </void> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>273</int> 
+  </void> 
+  <void property="username"> 
+   <string>TEST_642</string> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Device"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="activated"> 
+   <object id="Date0" class="java.util.Date"> 
+    <long>1291791600000</long> 
+   </object> 
+  </void> 
+  <void property="deviceID"> 
+   <int>441</int> 
+  </void> 
+  <void property="emuMd5"> 
+   <string>696d6acbc199d607a5704642c67f4d86</string> 
+  </void> 
+  <void property="imei"> 
+   <string>918941556053764</string> 
+  </void> 
+  <void property="name"> 
+   <string>GOODDevice</string> 
+  </void> 
+  <void property="phone"> 
+   <string>9189813323</string> 
+  </void> 
+  <void property="productVersion"> 
+   <object id="ProductType0" class="com.inthinc.pro.model.configurator.ProductType" method="valueOf"> 
+    <string>TIWIPRO_R74</string> 
+   </object> 
+  </void> 
+  <void property="serialNum"> 
+   <string>9189288994</string> 
+  </void> 
+  <void property="sim"> 
+   <string>9189780038206139280</string> 
+  </void> 
+  <void property="status"> 
+   <object id="DeviceStatus0" class="com.inthinc.pro.model.DeviceStatus" method="valueOf"> 
+    <string>ACTIVE</string> 
+   </object> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Driver"> 
+  <void property="dot"> 
+   <int>2</int> 
+  </void> 
+  <void property="driverID"> 
+   <int>460</int> 
+  </void> 
+  <void property="expiration"> 
+   <object class="java.util.Date"> 
+    <long>1351555201000</long> 
+   </object> 
+  </void> 
+  <void property="groupID"> 
+   <int>189</int> 
+  </void> 
+  <void property="license"> 
+   <string>l643</string> 
+  </void> 
+  <void property="licenseClass"> 
+   <string>ABCD</string> 
+  </void> 
+  <void property="person"> 
+   <object id="Person0" class="com.inthinc.pro.model.Person"> 
+    <void property="acctID"> 
+     <int>73</int> 
+    </void> 
+    <void property="addressID"> 
+     <int>91</int> 
+    </void> 
+    <void property="crit"> 
+     <int>1</int> 
+    </void> 
+    <void property="dept"> 
+     <string>dept</string> 
+    </void> 
+    <void property="dob"> 
+     <object class="java.util.Date"> 
+      <long>1291936643005</long> 
+     </object> 
+    </void> 
+    <void property="empid"> 
+     <string>emp_189_73_66523</string> 
+    </void> 
+    <void property="first"> 
+     <string>DriverGOOD</string> 
+    </void> 
+    <void property="fuelEfficiencyType"> 
+     <object id="FuelEfficiencyType$10" class="com.inthinc.pro.model.FuelEfficiencyType$1" method="valueOf"> 
+      <string>MPG_US</string> 
+     </object> 
+    </void> 
+    <void property="gender"> 
+     <object id="Gender0" class="com.inthinc.pro.model.Gender" method="valueOf"> 
+      <string>MALE</string> 
+     </object> 
+    </void> 
+    <void property="height"> 
+     <int>65</int> 
+    </void> 
+    <void property="info"> 
+     <int>1</int> 
+    </void> 
+    <void property="last"> 
+     <string>Last189</string> 
+    </void> 
+    <void property="measurementType"> 
+     <object id="MeasurementType0" class="com.inthinc.pro.model.MeasurementType" method="valueOf"> 
+      <string>ENGLISH</string> 
+     </object> 
+    </void> 
+    <void property="middle"> 
+     <string>m</string> 
+    </void> 
+    <void property="personID"> 
+     <int>643</int> 
+    </void> 
+    <void property="priEmail"> 
+     <string>DriverGOODemail18934434@email.com</string> 
+    </void> 
+    <void property="priPhone"> 
+     <string>5555555555</string> 
+    </void> 
+    <void property="secPhone"> 
+     <string>5555555555</string> 
+    </void> 
+    <void property="status"> 
+     <object idref="Status0"/> 
+    </void> 
+    <void property="suffix"> 
+     <string>jr</string> 
+    </void> 
+    <void property="timeZone"> 
+     <object id="ZoneInfo0" class="sun.util.calendar.ZoneInfo"> 
+      <void property="ID"> 
+       <string>US/Mountain</string> 
+      </void> 
+      <void property="rawOffset"> 
+       <int>-25200000</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void property="title"> 
+     <string>title</string> 
+    </void> 
+    <void property="warn"> 
+     <int>1</int> 
+    </void> 
+    <void property="weight"> 
+     <int>180</int> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+ </object> 
+ <object idref="Person0"/> 
+ <object class="com.inthinc.pro.model.Vehicle"> 
+  <void property="VIN"> 
+   <string>VIN_441</string> 
+  </void> 
+  <void property="color"> 
+   <string>Red</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>189</int> 
+  </void> 
+  <void property="license"> 
+   <string>UT 189</string> 
+  </void> 
+  <void property="make"> 
+   <string>Make</string> 
+  </void> 
+  <void property="model"> 
+   <string>Model</string> 
+  </void> 
+  <void property="name"> 
+   <string>VehicleGOOD</string> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="vehicleID"> 
+   <int>501</int> 
+  </void> 
+  <void property="vtype"> 
+   <object id="VehicleType0" class="com.inthinc.pro.model.VehicleType" method="valueOf"> 
+    <string>LIGHT</string> 
+   </object> 
+  </void> 
+  <void property="weight"> 
+   <int>1000</int> 
+  </void> 
+  <void property="year"> 
+   <int>2000</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.User"> 
+  <void property="groupID"> 
+   <int>190</int> 
+  </void> 
+  <void property="password"> 
+   <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
+  </void> 
+  <void property="personID"> 
+   <int>644</int> 
+  </void> 
+  <void property="roles"> 
+   <void method="add"> 
+    <int>167</int> 
+   </void> 
+   <void method="add"> 
+    <int>168</int> 
+   </void> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>274</int> 
+  </void> 
+  <void property="username"> 
+   <string>TEST_644</string> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Device"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="activated"> 
+   <object idref="Date0"/> 
+  </void> 
+  <void property="deviceID"> 
+   <int>442</int> 
+  </void> 
+  <void property="emuMd5"> 
+   <string>696d6acbc199d607a5704642c67f4d86</string> 
+  </void> 
+  <void property="imei"> 
+   <string>919092450519551</string> 
+  </void> 
+  <void property="name"> 
+   <string>INTERMEDIATEDevice</string> 
+  </void> 
+  <void property="phone"> 
+   <string>9190070850</string> 
+  </void> 
+  <void property="productVersion"> 
+   <object idref="ProductType0"/> 
+  </void> 
+  <void property="serialNum"> 
+   <string>9190642014</string> 
+  </void> 
+  <void property="sim"> 
+   <string>9190905105980848001</string> 
+  </void> 
+  <void property="status"> 
+   <object idref="DeviceStatus0"/> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Driver"> 
+  <void property="dot"> 
+   <int>2</int> 
+  </void> 
+  <void property="driverID"> 
+   <int>461</int> 
+  </void> 
+  <void property="expiration"> 
+   <object class="java.util.Date"> 
+    <long>1351555201000</long> 
+   </object> 
+  </void> 
+  <void property="groupID"> 
+   <int>190</int> 
+  </void> 
+  <void property="license"> 
+   <string>l645</string> 
+  </void> 
+  <void property="licenseClass"> 
+   <string>ABCD</string> 
+  </void> 
+  <void property="person"> 
+   <object id="Person1" class="com.inthinc.pro.model.Person"> 
+    <void property="acctID"> 
+     <int>73</int> 
+    </void> 
+    <void property="addressID"> 
+     <int>91</int> 
+    </void> 
+    <void property="crit"> 
+     <int>1</int> 
+    </void> 
+    <void property="dept"> 
+     <string>dept</string> 
+    </void> 
+    <void property="dob"> 
+     <object class="java.util.Date"> 
+      <long>1291936643428</long> 
+     </object> 
+    </void> 
+    <void property="empid"> 
+     <string>emp_190_73_4486</string> 
+    </void> 
+    <void property="first"> 
+     <string>DriverINTERMEDIATE</string> 
+    </void> 
+    <void property="fuelEfficiencyType"> 
+     <object idref="FuelEfficiencyType$10"/> 
+    </void> 
+    <void property="gender"> 
+     <object idref="Gender0"/> 
+    </void> 
+    <void property="height"> 
+     <int>65</int> 
+    </void> 
+    <void property="info"> 
+     <int>1</int> 
+    </void> 
+    <void property="last"> 
+     <string>Last190</string> 
+    </void> 
+    <void property="measurementType"> 
+     <object idref="MeasurementType0"/> 
+    </void> 
+    <void property="middle"> 
+     <string>m</string> 
+    </void> 
+    <void property="personID"> 
+     <int>645</int> 
+    </void> 
+    <void property="priEmail"> 
+     <string>DriverINTERMEDIATEemail19096021@email.com</string> 
+    </void> 
+    <void property="priPhone"> 
+     <string>5555555555</string> 
+    </void> 
+    <void property="secPhone"> 
+     <string>5555555555</string> 
+    </void> 
+    <void property="status"> 
+     <object idref="Status0"/> 
+    </void> 
+    <void property="suffix"> 
+     <string>jr</string> 
+    </void> 
+    <void property="timeZone"> 
+     <object idref="ZoneInfo0"/> 
+    </void> 
+    <void property="title"> 
+     <string>title</string> 
+    </void> 
+    <void property="warn"> 
+     <int>1</int> 
+    </void> 
+    <void property="weight"> 
+     <int>180</int> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+ </object> 
+ <object idref="Person1"/> 
+ <object class="com.inthinc.pro.model.Vehicle"> 
+  <void property="VIN"> 
+   <string>VIN_442</string> 
+  </void> 
+  <void property="color"> 
+   <string>Red</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>190</int> 
+  </void> 
+  <void property="license"> 
+   <string>UT 190</string> 
+  </void> 
+  <void property="make"> 
+   <string>Make</string> 
+  </void> 
+  <void property="model"> 
+   <string>Model</string> 
+  </void> 
+  <void property="name"> 
+   <string>VehicleINTERMEDIATE</string> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="vehicleID"> 
+   <int>502</int> 
+  </void> 
+  <void property="vtype"> 
+   <object idref="VehicleType0"/> 
+  </void> 
+  <void property="weight"> 
+   <int>1000</int> 
+  </void> 
+  <void property="year"> 
+   <int>2000</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.User"> 
+  <void property="groupID"> 
+   <int>191</int> 
+  </void> 
+  <void property="password"> 
+   <string>nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7</string> 
+  </void> 
+  <void property="personID"> 
+   <int>646</int> 
+  </void> 
+  <void property="roles"> 
+   <void method="add"> 
+    <int>167</int> 
+   </void> 
+   <void method="add"> 
+    <int>168</int> 
+   </void> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>275</int> 
+  </void> 
+  <void property="username"> 
+   <string>TEST_646</string> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Device"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="activated"> 
+   <object idref="Date0"/> 
+  </void> 
+  <void property="deviceID"> 
+   <int>443</int> 
+  </void> 
+  <void property="emuMd5"> 
+   <string>696d6acbc199d607a5704642c67f4d86</string> 
+  </void> 
+  <void property="imei"> 
+   <string>919147278257201</string> 
+  </void> 
+  <void property="name"> 
+   <string>BADDevice</string> 
+  </void> 
+  <void property="phone"> 
+   <string>9191082420</string> 
+  </void> 
+  <void property="productVersion"> 
+   <object idref="ProductType0"/> 
+  </void> 
+  <void property="serialNum"> 
+   <string>9191066869</string> 
+  </void> 
+  <void property="sim"> 
+   <string>9191473908525898597</string> 
+  </void> 
+  <void property="status"> 
+   <object idref="DeviceStatus0"/> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Driver"> 
+  <void property="dot"> 
+   <int>2</int> 
+  </void> 
+  <void property="driverID"> 
+   <int>462</int> 
+  </void> 
+  <void property="expiration"> 
+   <object class="java.util.Date"> 
+    <long>1351555201000</long> 
+   </object> 
+  </void> 
+  <void property="groupID"> 
+   <int>191</int> 
+  </void> 
+  <void property="license"> 
+   <string>l647</string> 
+  </void> 
+  <void property="licenseClass"> 
+   <string>ABCD</string> 
+  </void> 
+  <void property="person"> 
+   <object id="Person2" class="com.inthinc.pro.model.Person"> 
+    <void property="acctID"> 
+     <int>73</int> 
+    </void> 
+    <void property="addressID"> 
+     <int>91</int> 
+    </void> 
+    <void property="crit"> 
+     <int>1</int> 
+    </void> 
+    <void property="dept"> 
+     <string>dept</string> 
+    </void> 
+    <void property="dob"> 
+     <object class="java.util.Date"> 
+      <long>1291936643875</long> 
+     </object> 
+    </void> 
+    <void property="empid"> 
+     <string>emp_191_73_6162</string> 
+    </void> 
+    <void property="first"> 
+     <string>DriverBAD</string> 
+    </void> 
+    <void property="fuelEfficiencyType"> 
+     <object idref="FuelEfficiencyType$10"/> 
+    </void> 
+    <void property="gender"> 
+     <object idref="Gender0"/> 
+    </void> 
+    <void property="height"> 
+     <int>65</int> 
+    </void> 
+    <void property="info"> 
+     <int>1</int> 
+    </void> 
+    <void property="last"> 
+     <string>Last191</string> 
+    </void> 
+    <void property="measurementType"> 
+     <object idref="MeasurementType0"/> 
+    </void> 
+    <void property="middle"> 
+     <string>m</string> 
+    </void> 
+    <void property="personID"> 
+     <int>647</int> 
+    </void> 
+    <void property="priEmail"> 
+     <string>DriverBADemail19134162@email.com</string> 
+    </void> 
+    <void property="priPhone"> 
+     <string>5555555555</string> 
+    </void> 
+    <void property="secPhone"> 
+     <string>5555555555</string> 
+    </void> 
+    <void property="status"> 
+     <object idref="Status0"/> 
+    </void> 
+    <void property="suffix"> 
+     <string>jr</string> 
+    </void> 
+    <void property="timeZone"> 
+     <object idref="ZoneInfo0"/> 
+    </void> 
+    <void property="title"> 
+     <string>title</string> 
+    </void> 
+    <void property="warn"> 
+     <int>1</int> 
+    </void> 
+    <void property="weight"> 
+     <int>180</int> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+ </object> 
+ <object idref="Person2"/> 
+ <object class="com.inthinc.pro.model.Vehicle"> 
+  <void property="VIN"> 
+   <string>VIN_443</string> 
+  </void> 
+  <void property="color"> 
+   <string>Red</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>191</int> 
+  </void> 
+  <void property="license"> 
+   <string>UT 191</string> 
+  </void> 
+  <void property="make"> 
+   <string>Make</string> 
+  </void> 
+  <void property="model"> 
+   <string>Model</string> 
+  </void> 
+  <void property="name"> 
+   <string>VehicleBAD</string> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="vehicleID"> 
+   <int>503</int> 
+  </void> 
+  <void property="vtype"> 
+   <object idref="VehicleType0"/> 
+  </void> 
+  <void property="weight"> 
+   <int>1000</int> 
+  </void> 
+  <void property="year"> 
+   <int>2000</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Device"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="activated"> 
+   <object idref="Date0"/> 
+  </void> 
+  <void property="deviceID"> 
+   <int>444</int> 
+  </void> 
+  <void property="emuMd5"> 
+   <string>696d6acbc199d607a5704642c67f4d86</string> 
+  </void> 
+  <void property="imei"> 
+   <string>918934462124345</string> 
+  </void> 
+  <void property="name"> 
+   <string>GOODDevice</string> 
+  </void> 
+  <void property="phone"> 
+   <string>9189971147</string> 
+  </void> 
+  <void property="productVersion"> 
+   <object idref="ProductType0"/> 
+  </void> 
+  <void property="serialNum"> 
+   <string>9189248758</string> 
+  </void> 
+  <void property="sim"> 
+   <string>9189943555932482400</string> 
+  </void> 
+  <void property="status"> 
+   <object idref="DeviceStatus0"/> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Vehicle"> 
+  <void property="VIN"> 
+   <string>VIN_444</string> 
+  </void> 
+  <void property="color"> 
+   <string>Red</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>189</int> 
+  </void> 
+  <void property="license"> 
+   <string>UT 189</string> 
+  </void> 
+  <void property="make"> 
+   <string>Make</string> 
+  </void> 
+  <void property="model"> 
+   <string>Model</string> 
+  </void> 
+  <void property="name"> 
+   <string>VehicleNO_DRIVER</string> 
+  </void> 
+  <void property="state"> 
+   <object idref="State0"/> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="vehicleID"> 
+   <int>504</int> 
+  </void> 
+  <void property="vtype"> 
+   <object idref="VehicleType0"/> 
+  </void> 
+  <void property="weight"> 
+   <int>1000</int> 
+  </void> 
+  <void property="year"> 
+   <int>2000</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.Zone"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="address"> 
+   <string>123 Street, Salt Lake City, UT 84107</string> 
+  </void> 
+  <void property="groupID"> 
+   <int>187</int> 
+  </void> 
+  <void property="name"> 
+   <string>Zone 73</string> 
+  </void> 
+  <void property="points"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.LatLng"> 
+      <void property="lat"> 
+       <double>32.96453094482422</double> 
+      </void> 
+      <void property="lng"> 
+       <double>-117.12944793701172</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.LatLng"> 
+      <void property="lat"> 
+       <double>32.96453094482422</double> 
+      </void> 
+      <void property="lng"> 
+       <double>-117.12352752685547</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.LatLng"> 
+      <void property="lat"> 
+       <double>32.96186447143555</double> 
+      </void> 
+      <void property="lng"> 
+       <double>-117.12352752685547</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.LatLng"> 
+      <void property="lat"> 
+       <double>32.96186447143555</double> 
+      </void> 
+      <void property="lng"> 
+       <double>-117.12944793701172</double> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.LatLng"> 
+      <void property="lat"> 
+       <double>32.96453094482422</double> 
+      </void> 
+      <void property="lng"> 
+       <double>-117.12944793701172</double> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="status"> 
+   <object idref="Status0"/> 
+  </void> 
+  <void property="zoneID"> 
+   <int>54</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.RedFlagAlert"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="alertID"> 
+   <int>98</int> 
+  </void> 
+  <void property="alertTypeMask"> 
+   <long>48</long> 
+  </void> 
+  <void property="dayOfWeek"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="description"> 
+   <string>Zone Alert Profile Description</string> 
+  </void> 
+  <void property="escalationList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>640</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>-1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>641</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="escalationTimeBetweenRetries"> 
+   <int>5</int> 
+  </void> 
+  <void id="ArrayList0" property="groupIDs"> 
+   <void method="add"> 
+    <int>189</int> 
+   </void> 
+   <void method="add"> 
+    <int>190</int> 
+   </void> 
+   <void method="add"> 
+    <int>191</int> 
+   </void> 
+  </void> 
+  <void property="groupIDs"> 
+   <object idref="ArrayList0"/> 
+  </void> 
+  <void property="maxEscalationTries"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>Zone Alert Profile</string> 
+  </void> 
+  <void id="ArrayList1" property="notifyPersonIDs"> 
+   <void method="add"> 
+    <int>640</int> 
+   </void> 
+  </void> 
+  <void property="notifyPersonIDs"> 
+   <object idref="ArrayList1"/> 
+  </void> 
+  <void property="severityLevel"> 
+   <object class="com.inthinc.pro.model.RedFlagLevel" method="valueOf"> 
+    <string>NONE</string> 
+   </object> 
+  </void> 
+  <void property="startTOD"> 
+   <int>0</int> 
+  </void> 
+  <void property="stopTOD"> 
+   <int>1439</int> 
+  </void> 
+  <void property="typesSet"> 
+   <void method="clear"/> 
+   <void method="add"> 
+    <void class="com.inthinc.pro.model.RedFlagAlert"> 
+     <void property="accountID"> 
+      <int>73</int> 
+     </void> 
+     <void property="alertID"> 
+      <int>98</int> 
+     </void> 
+     <void property="alertTypeMask"> 
+      <long>48</long> 
+     </void> 
+     <void property="dayOfWeek"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="description"> 
+      <string>Zone Alert Profile Description</string> 
+     </void> 
+     <void property="escalationList"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>640</int> 
+         </void> 
+        </object> 
+       </void> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>-1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>641</int> 
+         </void> 
+        </object> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="escalationTimeBetweenRetries"> 
+      <int>5</int> 
+     </void> 
+     <void id="ArrayList0" property="groupIDs"> 
+      <void method="add"> 
+       <int>189</int> 
+      </void> 
+      <void method="add"> 
+       <int>190</int> 
+      </void> 
+      <void method="add"> 
+       <int>191</int> 
+      </void> 
+     </void> 
+     <void property="groupIDs"> 
+      <object idref="ArrayList0"/> 
+     </void> 
+     <void property="maxEscalationTries"> 
+      <int>5</int> 
+     </void> 
+     <void property="name"> 
+      <string>Zone Alert Profile</string> 
+     </void> 
+     <void id="ArrayList1" property="notifyPersonIDs"> 
+      <void method="add"> 
+       <int>640</int> 
+      </void> 
+     </void> 
+     <void property="notifyPersonIDs"> 
+      <object idref="ArrayList1"/> 
+     </void> 
+     <void property="severityLevel"> 
+      <object class="com.inthinc.pro.model.RedFlagLevel" method="valueOf"> 
+       <string>NONE</string> 
+      </object> 
+     </void> 
+     <void property="startTOD"> 
+      <int>0</int> 
+     </void> 
+     <void property="stopTOD"> 
+      <int>1439</int> 
+     </void> 
+     <void property="typesSet"> 
+      <void method="clear"/> 
+      <void method="add"> 
+       <object idref="AlertMessageType0"/> 
+      </void> 
+      <void method="add"> 
+       <void class="com.inthinc.pro.model.RedFlagAlert"> 
+        <void property="accountID"> 
+         <int>73</int> 
+        </void> 
+        <void property="alertID"> 
+         <int>98</int> 
+        </void> 
+        <void property="alertTypeMask"> 
+         <long>48</long> 
+        </void> 
+        <void property="dayOfWeek"> 
+         <object class="java.util.ArrayList"> 
+          <void method="add"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void method="add"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void method="add"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void method="add"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void method="add"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void method="add"> 
+           <boolean>true</boolean> 
+          </void> 
+          <void method="add"> 
+           <boolean>true</boolean> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="description"> 
+         <string>Zone Alert Profile Description</string> 
+        </void> 
+        <void property="escalationList"> 
+         <object class="java.util.ArrayList"> 
+          <void method="add"> 
+           <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+            <void property="escalationOrder"> 
+             <int>1</int> 
+            </void> 
+            <void property="personID"> 
+             <int>640</int> 
+            </void> 
+           </object> 
+          </void> 
+          <void method="add"> 
+           <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+            <void property="escalationOrder"> 
+             <int>-1</int> 
+            </void> 
+            <void property="personID"> 
+             <int>641</int> 
+            </void> 
+           </object> 
+          </void> 
+         </object> 
+        </void> 
+        <void property="escalationTimeBetweenRetries"> 
+         <int>5</int> 
+        </void> 
+        <void id="ArrayList0" property="groupIDs"> 
+         <void method="add"> 
+          <int>189</int> 
+         </void> 
+         <void method="add"> 
+          <int>190</int> 
+         </void> 
+         <void method="add"> 
+          <int>191</int> 
+         </void> 
+        </void> 
+        <void property="groupIDs"> 
+         <object idref="ArrayList0"/> 
+        </void> 
+        <void property="maxEscalationTries"> 
+         <int>5</int> 
+        </void> 
+        <void property="name"> 
+         <string>Zone Alert Profile</string> 
+        </void> 
+        <void id="ArrayList1" property="notifyPersonIDs"> 
+         <void method="add"> 
+          <int>640</int> 
+         </void> 
+        </void> 
+        <void property="notifyPersonIDs"> 
+         <object idref="ArrayList1"/> 
+        </void> 
+        <void property="severityLevel"> 
+         <object class="com.inthinc.pro.model.RedFlagLevel" method="valueOf"> 
+          <string>NONE</string> 
+         </object> 
+        </void> 
+        <void property="startTOD"> 
+         <int>0</int> 
+        </void> 
+        <void property="stopTOD"> 
+         <int>1439</int> 
+        </void> 
+        <void property="typesSet"> 
+         <void method="clear"/> 
+         <void method="add"> 
+          <object idref="AlertMessageType0"/> 
+         </void> 
+         <void method="add"> 
+          <object idref="AlertMessageType1"/> 
+         </void> 
+        </void> 
+        <void id="ArrayList2" property="types"> 
+         <void id="AlertMessageType0" index="0"/> 
+         <void id="AlertMessageType1" index="1"/> 
+        </void> 
+        <void property="userID"> 
+         <int>271</int> 
+        </void> 
+        <void property="zoneID"> 
+         <int>54</int> 
+        </void> 
+       </void> 
+       <object idref="ArrayList2"/> 
+       <object idref="AlertMessageType1"/> 
+      </void> 
+     </void> 
+     <void id="ArrayList2" property="types"> 
+      <void id="AlertMessageType0" index="0"/> 
+      <void id="AlertMessageType1" index="1"/> 
+     </void> 
+     <void property="userID"> 
+      <int>271</int> 
+     </void> 
+     <void property="zoneID"> 
+      <int>54</int> 
+     </void> 
+    </void> 
+    <object idref="ArrayList2"/> 
+    <object idref="AlertMessageType0"/> 
+   </void> 
+   <void method="add"> 
+    <object idref="AlertMessageType1"/> 
+   </void> 
+  </void> 
+  <void id="ArrayList2" property="types"> 
+   <void id="AlertMessageType0" index="0"/> 
+   <void id="AlertMessageType1" index="1"/> 
+  </void> 
+  <void property="userID"> 
+   <int>271</int> 
+  </void> 
+  <void property="zoneID"> 
+   <int>54</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.RedFlagAlert"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="alertID"> 
+   <int>99</int> 
+  </void> 
+  <void property="alertTypeMask"> 
+   <long>2</long> 
+  </void> 
+  <void property="dayOfWeek"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="description"> 
+   <string>AlertMessageType.ALERT_TYPE_SPEEDING Red Flag Description</string> 
+  </void> 
+  <void property="escalationList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>640</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>-1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>641</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="escalationTimeBetweenRetries"> 
+   <int>5</int> 
+  </void> 
+  <void id="ArrayList3" property="groupIDs"> 
+   <void method="add"> 
+    <int>189</int> 
+   </void> 
+   <void method="add"> 
+    <int>190</int> 
+   </void> 
+   <void method="add"> 
+    <int>191</int> 
+   </void> 
+  </void> 
+  <void property="groupIDs"> 
+   <object idref="ArrayList3"/> 
+  </void> 
+  <void property="maxEscalationTries"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>AlertMessageType.ALERT_TYPE_SPEEDING Red Flag</string> 
+  </void> 
+  <void id="ArrayList4" property="notifyPersonIDs"> 
+   <void method="add"> 
+    <int>640</int> 
+   </void> 
+  </void> 
+  <void property="notifyPersonIDs"> 
+   <object idref="ArrayList4"/> 
+  </void> 
+  <void property="severityLevel"> 
+   <object class="com.inthinc.pro.model.RedFlagLevel" method="valueOf"> 
+    <string>WARNING</string> 
+   </object> 
+  </void> 
+  <void property="speedSettings"> 
+   <array class="java.lang.Integer" length="15"> 
+    <void index="0"> 
+     <int>5</int> 
+    </void> 
+    <void index="1"> 
+     <int>5</int> 
+    </void> 
+    <void index="2"> 
+     <int>5</int> 
+    </void> 
+    <void index="3"> 
+     <int>5</int> 
+    </void> 
+    <void index="4"> 
+     <int>5</int> 
+    </void> 
+    <void index="5"> 
+     <int>5</int> 
+    </void> 
+    <void index="6"> 
+     <int>5</int> 
+    </void> 
+    <void index="7"> 
+     <int>5</int> 
+    </void> 
+    <void index="8"> 
+     <int>5</int> 
+    </void> 
+    <void index="9"> 
+     <int>5</int> 
+    </void> 
+    <void index="10"> 
+     <int>5</int> 
+    </void> 
+    <void index="11"> 
+     <int>5</int> 
+    </void> 
+    <void index="12"> 
+     <int>5</int> 
+    </void> 
+    <void index="13"> 
+     <int>5</int> 
+    </void> 
+    <void index="14"> 
+     <int>5</int> 
+    </void> 
+   </array> 
+  </void> 
+  <void property="startTOD"> 
+   <int>0</int> 
+  </void> 
+  <void property="stopTOD"> 
+   <int>1439</int> 
+  </void> 
+  <void property="typesSet"> 
+   <void method="clear"/> 
+   <void method="add"> 
+    <void class="com.inthinc.pro.model.RedFlagAlert"> 
+     <void property="accountID"> 
+      <int>73</int> 
+     </void> 
+     <void property="alertID"> 
+      <int>99</int> 
+     </void> 
+     <void property="alertTypeMask"> 
+      <long>2</long> 
+     </void> 
+     <void property="dayOfWeek"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="description"> 
+      <string>AlertMessageType.ALERT_TYPE_SPEEDING Red Flag Description</string> 
+     </void> 
+     <void property="escalationList"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>640</int> 
+         </void> 
+        </object> 
+       </void> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>-1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>641</int> 
+         </void> 
+        </object> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="escalationTimeBetweenRetries"> 
+      <int>5</int> 
+     </void> 
+     <void id="ArrayList3" property="groupIDs"> 
+      <void method="add"> 
+       <int>189</int> 
+      </void> 
+      <void method="add"> 
+       <int>190</int> 
+      </void> 
+      <void method="add"> 
+       <int>191</int> 
+      </void> 
+     </void> 
+     <void property="groupIDs"> 
+      <object idref="ArrayList3"/> 
+     </void> 
+     <void property="maxEscalationTries"> 
+      <int>5</int> 
+     </void> 
+     <void property="name"> 
+      <string>AlertMessageType.ALERT_TYPE_SPEEDING Red Flag</string> 
+     </void> 
+     <void id="ArrayList4" property="notifyPersonIDs"> 
+      <void method="add"> 
+       <int>640</int> 
+      </void> 
+     </void> 
+     <void property="notifyPersonIDs"> 
+      <object idref="ArrayList4"/> 
+     </void> 
+     <void property="severityLevel"> 
+      <object class="com.inthinc.pro.model.RedFlagLevel" method="valueOf"> 
+       <string>WARNING</string> 
+      </object> 
+     </void> 
+     <void property="speedSettings"> 
+      <array class="java.lang.Integer" length="15"> 
+       <void index="0"> 
+        <int>5</int> 
+       </void> 
+       <void index="1"> 
+        <int>5</int> 
+       </void> 
+       <void index="2"> 
+        <int>5</int> 
+       </void> 
+       <void index="3"> 
+        <int>5</int> 
+       </void> 
+       <void index="4"> 
+        <int>5</int> 
+       </void> 
+       <void index="5"> 
+        <int>5</int> 
+       </void> 
+       <void index="6"> 
+        <int>5</int> 
+       </void> 
+       <void index="7"> 
+        <int>5</int> 
+       </void> 
+       <void index="8"> 
+        <int>5</int> 
+       </void> 
+       <void index="9"> 
+        <int>5</int> 
+       </void> 
+       <void index="10"> 
+        <int>5</int> 
+       </void> 
+       <void index="11"> 
+        <int>5</int> 
+       </void> 
+       <void index="12"> 
+        <int>5</int> 
+       </void> 
+       <void index="13"> 
+        <int>5</int> 
+       </void> 
+       <void index="14"> 
+        <int>5</int> 
+       </void> 
+      </array> 
+     </void> 
+     <void property="startTOD"> 
+      <int>0</int> 
+     </void> 
+     <void property="stopTOD"> 
+      <int>1439</int> 
+     </void> 
+     <void property="typesSet"> 
+      <void method="clear"/> 
+      <void method="add"> 
+       <object idref="AlertMessageType2"/> 
+      </void> 
+     </void> 
+     <void id="ArrayList5" property="types"> 
+      <void id="AlertMessageType2" index="0"/> 
+     </void> 
+     <void property="userID"> 
+      <int>271</int> 
+     </void> 
+    </void> 
+    <object idref="ArrayList5"/> 
+    <object idref="AlertMessageType2"/> 
+   </void> 
+  </void> 
+  <void id="ArrayList5" property="types"> 
+   <void id="AlertMessageType2" index="0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>271</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.RedFlagAlert"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="alertID"> 
+   <int>100</int> 
+  </void> 
+  <void property="alertTypeMask"> 
+   <long>4</long> 
+  </void> 
+  <void property="dayOfWeek"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="description"> 
+   <string>AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING Red Flag Description</string> 
+  </void> 
+  <void property="escalationList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>640</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>-1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>641</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="escalationTimeBetweenRetries"> 
+   <int>5</int> 
+  </void> 
+  <void id="ArrayList6" property="groupIDs"> 
+   <void method="add"> 
+    <int>189</int> 
+   </void> 
+   <void method="add"> 
+    <int>190</int> 
+   </void> 
+   <void method="add"> 
+    <int>191</int> 
+   </void> 
+  </void> 
+  <void property="groupIDs"> 
+   <object idref="ArrayList6"/> 
+  </void> 
+  <void property="hardAcceleration"> 
+   <int>1</int> 
+  </void> 
+  <void property="hardBrake"> 
+   <int>1</int> 
+  </void> 
+  <void property="hardTurn"> 
+   <int>1</int> 
+  </void> 
+  <void property="hardVertical"> 
+   <int>1</int> 
+  </void> 
+  <void property="maxEscalationTries"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING Red Flag</string> 
+  </void> 
+  <void id="ArrayList7" property="notifyPersonIDs"> 
+   <void method="add"> 
+    <int>640</int> 
+   </void> 
+  </void> 
+  <void property="notifyPersonIDs"> 
+   <object idref="ArrayList7"/> 
+  </void> 
+  <void property="severityLevel"> 
+   <object id="RedFlagLevel0" class="com.inthinc.pro.model.RedFlagLevel" method="valueOf"> 
+    <string>CRITICAL</string> 
+   </object> 
+  </void> 
+  <void property="startTOD"> 
+   <int>0</int> 
+  </void> 
+  <void property="stopTOD"> 
+   <int>1439</int> 
+  </void> 
+  <void property="typesSet"> 
+   <void method="clear"/> 
+   <void method="add"> 
+    <void class="com.inthinc.pro.model.RedFlagAlert"> 
+     <void property="accountID"> 
+      <int>73</int> 
+     </void> 
+     <void property="alertID"> 
+      <int>100</int> 
+     </void> 
+     <void property="alertTypeMask"> 
+      <long>4</long> 
+     </void> 
+     <void property="dayOfWeek"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="description"> 
+      <string>AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING Red Flag Description</string> 
+     </void> 
+     <void property="escalationList"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>640</int> 
+         </void> 
+        </object> 
+       </void> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>-1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>641</int> 
+         </void> 
+        </object> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="escalationTimeBetweenRetries"> 
+      <int>5</int> 
+     </void> 
+     <void id="ArrayList6" property="groupIDs"> 
+      <void method="add"> 
+       <int>189</int> 
+      </void> 
+      <void method="add"> 
+       <int>190</int> 
+      </void> 
+      <void method="add"> 
+       <int>191</int> 
+      </void> 
+     </void> 
+     <void property="groupIDs"> 
+      <object idref="ArrayList6"/> 
+     </void> 
+     <void property="hardAcceleration"> 
+      <int>1</int> 
+     </void> 
+     <void property="hardBrake"> 
+      <int>1</int> 
+     </void> 
+     <void property="hardTurn"> 
+      <int>1</int> 
+     </void> 
+     <void property="hardVertical"> 
+      <int>1</int> 
+     </void> 
+     <void property="maxEscalationTries"> 
+      <int>5</int> 
+     </void> 
+     <void property="name"> 
+      <string>AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING Red Flag</string> 
+     </void> 
+     <void id="ArrayList7" property="notifyPersonIDs"> 
+      <void method="add"> 
+       <int>640</int> 
+      </void> 
+     </void> 
+     <void property="notifyPersonIDs"> 
+      <object idref="ArrayList7"/> 
+     </void> 
+     <void property="severityLevel"> 
+      <object idref="RedFlagLevel0"/> 
+     </void> 
+     <void property="startTOD"> 
+      <int>0</int> 
+     </void> 
+     <void property="stopTOD"> 
+      <int>1439</int> 
+     </void> 
+     <void property="typesSet"> 
+      <void method="clear"/> 
+      <void method="add"> 
+       <object idref="AlertMessageType3"/> 
+      </void> 
+     </void> 
+     <void id="ArrayList8" property="types"> 
+      <void id="AlertMessageType3" index="0"/> 
+     </void> 
+     <void property="userID"> 
+      <int>271</int> 
+     </void> 
+    </void> 
+    <object idref="ArrayList8"/> 
+    <object idref="AlertMessageType3"/> 
+   </void> 
+  </void> 
+  <void id="ArrayList8" property="types"> 
+   <void id="AlertMessageType3" index="0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>271</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.RedFlagAlert"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="alertID"> 
+   <int>101</int> 
+  </void> 
+  <void property="alertTypeMask"> 
+   <long>8</long> 
+  </void> 
+  <void property="dayOfWeek"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="description"> 
+   <string>AlertMessageType.ALERT_TYPE_SEATBELT Red Flag Description</string> 
+  </void> 
+  <void property="escalationList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>640</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>-1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>641</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="escalationTimeBetweenRetries"> 
+   <int>5</int> 
+  </void> 
+  <void id="ArrayList9" property="groupIDs"> 
+   <void method="add"> 
+    <int>189</int> 
+   </void> 
+   <void method="add"> 
+    <int>190</int> 
+   </void> 
+   <void method="add"> 
+    <int>191</int> 
+   </void> 
+  </void> 
+  <void property="groupIDs"> 
+   <object idref="ArrayList9"/> 
+  </void> 
+  <void property="maxEscalationTries"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>AlertMessageType.ALERT_TYPE_SEATBELT Red Flag</string> 
+  </void> 
+  <void id="ArrayList10" property="notifyPersonIDs"> 
+   <void method="add"> 
+    <int>640</int> 
+   </void> 
+  </void> 
+  <void property="notifyPersonIDs"> 
+   <object idref="ArrayList10"/> 
+  </void> 
+  <void property="severityLevel"> 
+   <object id="RedFlagLevel1" class="com.inthinc.pro.model.RedFlagLevel" method="valueOf"> 
+    <string>INFO</string> 
+   </object> 
+  </void> 
+  <void property="startTOD"> 
+   <int>0</int> 
+  </void> 
+  <void property="stopTOD"> 
+   <int>1439</int> 
+  </void> 
+  <void property="typesSet"> 
+   <void method="clear"/> 
+   <void method="add"> 
+    <void class="com.inthinc.pro.model.RedFlagAlert"> 
+     <void property="accountID"> 
+      <int>73</int> 
+     </void> 
+     <void property="alertID"> 
+      <int>101</int> 
+     </void> 
+     <void property="alertTypeMask"> 
+      <long>8</long> 
+     </void> 
+     <void property="dayOfWeek"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="description"> 
+      <string>AlertMessageType.ALERT_TYPE_SEATBELT Red Flag Description</string> 
+     </void> 
+     <void property="escalationList"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>640</int> 
+         </void> 
+        </object> 
+       </void> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>-1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>641</int> 
+         </void> 
+        </object> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="escalationTimeBetweenRetries"> 
+      <int>5</int> 
+     </void> 
+     <void id="ArrayList9" property="groupIDs"> 
+      <void method="add"> 
+       <int>189</int> 
+      </void> 
+      <void method="add"> 
+       <int>190</int> 
+      </void> 
+      <void method="add"> 
+       <int>191</int> 
+      </void> 
+     </void> 
+     <void property="groupIDs"> 
+      <object idref="ArrayList9"/> 
+     </void> 
+     <void property="maxEscalationTries"> 
+      <int>5</int> 
+     </void> 
+     <void property="name"> 
+      <string>AlertMessageType.ALERT_TYPE_SEATBELT Red Flag</string> 
+     </void> 
+     <void id="ArrayList10" property="notifyPersonIDs"> 
+      <void method="add"> 
+       <int>640</int> 
+      </void> 
+     </void> 
+     <void property="notifyPersonIDs"> 
+      <object idref="ArrayList10"/> 
+     </void> 
+     <void property="severityLevel"> 
+      <object idref="RedFlagLevel1"/> 
+     </void> 
+     <void property="startTOD"> 
+      <int>0</int> 
+     </void> 
+     <void property="stopTOD"> 
+      <int>1439</int> 
+     </void> 
+     <void property="typesSet"> 
+      <void method="clear"/> 
+      <void method="add"> 
+       <object idref="AlertMessageType4"/> 
+      </void> 
+     </void> 
+     <void id="ArrayList11" property="types"> 
+      <void id="AlertMessageType4" index="0"/> 
+     </void> 
+     <void property="userID"> 
+      <int>271</int> 
+     </void> 
+    </void> 
+    <object idref="ArrayList11"/> 
+    <object idref="AlertMessageType4"/> 
+   </void> 
+  </void> 
+  <void id="ArrayList11" property="types"> 
+   <void id="AlertMessageType4" index="0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>271</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.RedFlagAlert"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="alertID"> 
+   <int>102</int> 
+  </void> 
+  <void property="alertTypeMask"> 
+   <long>512</long> 
+  </void> 
+  <void property="dayOfWeek"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="description"> 
+   <string>AlertMessageType.ALERT_TYPE_CRASH Red Flag Description</string> 
+  </void> 
+  <void property="escalationList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>640</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>-1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>641</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="escalationTimeBetweenRetries"> 
+   <int>5</int> 
+  </void> 
+  <void id="ArrayList12" property="groupIDs"> 
+   <void method="add"> 
+    <int>189</int> 
+   </void> 
+   <void method="add"> 
+    <int>190</int> 
+   </void> 
+   <void method="add"> 
+    <int>191</int> 
+   </void> 
+  </void> 
+  <void property="groupIDs"> 
+   <object idref="ArrayList12"/> 
+  </void> 
+  <void property="maxEscalationTries"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>AlertMessageType.ALERT_TYPE_CRASH Red Flag</string> 
+  </void> 
+  <void id="ArrayList13" property="notifyPersonIDs"> 
+   <void method="add"> 
+    <int>640</int> 
+   </void> 
+  </void> 
+  <void property="notifyPersonIDs"> 
+   <object idref="ArrayList13"/> 
+  </void> 
+  <void property="severityLevel"> 
+   <object idref="RedFlagLevel0"/> 
+  </void> 
+  <void property="startTOD"> 
+   <int>0</int> 
+  </void> 
+  <void property="stopTOD"> 
+   <int>1439</int> 
+  </void> 
+  <void property="typesSet"> 
+   <void method="clear"/> 
+   <void method="add"> 
+    <void class="com.inthinc.pro.model.RedFlagAlert"> 
+     <void property="accountID"> 
+      <int>73</int> 
+     </void> 
+     <void property="alertID"> 
+      <int>102</int> 
+     </void> 
+     <void property="alertTypeMask"> 
+      <long>512</long> 
+     </void> 
+     <void property="dayOfWeek"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="description"> 
+      <string>AlertMessageType.ALERT_TYPE_CRASH Red Flag Description</string> 
+     </void> 
+     <void property="escalationList"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>640</int> 
+         </void> 
+        </object> 
+       </void> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>-1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>641</int> 
+         </void> 
+        </object> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="escalationTimeBetweenRetries"> 
+      <int>5</int> 
+     </void> 
+     <void id="ArrayList12" property="groupIDs"> 
+      <void method="add"> 
+       <int>189</int> 
+      </void> 
+      <void method="add"> 
+       <int>190</int> 
+      </void> 
+      <void method="add"> 
+       <int>191</int> 
+      </void> 
+     </void> 
+     <void property="groupIDs"> 
+      <object idref="ArrayList12"/> 
+     </void> 
+     <void property="maxEscalationTries"> 
+      <int>5</int> 
+     </void> 
+     <void property="name"> 
+      <string>AlertMessageType.ALERT_TYPE_CRASH Red Flag</string> 
+     </void> 
+     <void id="ArrayList13" property="notifyPersonIDs"> 
+      <void method="add"> 
+       <int>640</int> 
+      </void> 
+     </void> 
+     <void property="notifyPersonIDs"> 
+      <object idref="ArrayList13"/> 
+     </void> 
+     <void property="severityLevel"> 
+      <object idref="RedFlagLevel0"/> 
+     </void> 
+     <void property="startTOD"> 
+      <int>0</int> 
+     </void> 
+     <void property="stopTOD"> 
+      <int>1439</int> 
+     </void> 
+     <void property="typesSet"> 
+      <void method="clear"/> 
+      <void method="add"> 
+       <object idref="AlertMessageType5"/> 
+      </void> 
+     </void> 
+     <void id="ArrayList14" property="types"> 
+      <void id="AlertMessageType5" index="0"/> 
+     </void> 
+     <void property="userID"> 
+      <int>271</int> 
+     </void> 
+    </void> 
+    <object idref="ArrayList14"/> 
+    <object idref="AlertMessageType5"/> 
+   </void> 
+  </void> 
+  <void id="ArrayList14" property="types"> 
+   <void id="AlertMessageType5" index="0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>271</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.RedFlagAlert"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="alertID"> 
+   <int>103</int> 
+  </void> 
+  <void property="alertTypeMask"> 
+   <long>256</long> 
+  </void> 
+  <void property="dayOfWeek"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="description"> 
+   <string>AlertMessageType.ALERT_TYPE_TAMPERING Red Flag Description</string> 
+  </void> 
+  <void property="escalationList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>640</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>-1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>641</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="escalationTimeBetweenRetries"> 
+   <int>5</int> 
+  </void> 
+  <void id="ArrayList15" property="groupIDs"> 
+   <void method="add"> 
+    <int>189</int> 
+   </void> 
+   <void method="add"> 
+    <int>190</int> 
+   </void> 
+   <void method="add"> 
+    <int>191</int> 
+   </void> 
+  </void> 
+  <void property="groupIDs"> 
+   <object idref="ArrayList15"/> 
+  </void> 
+  <void property="maxEscalationTries"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>AlertMessageType.ALERT_TYPE_TAMPERING Red Flag</string> 
+  </void> 
+  <void id="ArrayList16" property="notifyPersonIDs"> 
+   <void method="add"> 
+    <int>640</int> 
+   </void> 
+  </void> 
+  <void property="notifyPersonIDs"> 
+   <object idref="ArrayList16"/> 
+  </void> 
+  <void property="severityLevel"> 
+   <object idref="RedFlagLevel1"/> 
+  </void> 
+  <void property="startTOD"> 
+   <int>0</int> 
+  </void> 
+  <void property="stopTOD"> 
+   <int>1439</int> 
+  </void> 
+  <void property="typesSet"> 
+   <void method="clear"/> 
+   <void method="add"> 
+    <void class="com.inthinc.pro.model.RedFlagAlert"> 
+     <void property="accountID"> 
+      <int>73</int> 
+     </void> 
+     <void property="alertID"> 
+      <int>103</int> 
+     </void> 
+     <void property="alertTypeMask"> 
+      <long>256</long> 
+     </void> 
+     <void property="dayOfWeek"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="description"> 
+      <string>AlertMessageType.ALERT_TYPE_TAMPERING Red Flag Description</string> 
+     </void> 
+     <void property="escalationList"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>640</int> 
+         </void> 
+        </object> 
+       </void> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>-1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>641</int> 
+         </void> 
+        </object> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="escalationTimeBetweenRetries"> 
+      <int>5</int> 
+     </void> 
+     <void id="ArrayList15" property="groupIDs"> 
+      <void method="add"> 
+       <int>189</int> 
+      </void> 
+      <void method="add"> 
+       <int>190</int> 
+      </void> 
+      <void method="add"> 
+       <int>191</int> 
+      </void> 
+     </void> 
+     <void property="groupIDs"> 
+      <object idref="ArrayList15"/> 
+     </void> 
+     <void property="maxEscalationTries"> 
+      <int>5</int> 
+     </void> 
+     <void property="name"> 
+      <string>AlertMessageType.ALERT_TYPE_TAMPERING Red Flag</string> 
+     </void> 
+     <void id="ArrayList16" property="notifyPersonIDs"> 
+      <void method="add"> 
+       <int>640</int> 
+      </void> 
+     </void> 
+     <void property="notifyPersonIDs"> 
+      <object idref="ArrayList16"/> 
+     </void> 
+     <void property="severityLevel"> 
+      <object idref="RedFlagLevel1"/> 
+     </void> 
+     <void property="startTOD"> 
+      <int>0</int> 
+     </void> 
+     <void property="stopTOD"> 
+      <int>1439</int> 
+     </void> 
+     <void property="typesSet"> 
+      <void method="clear"/> 
+      <void method="add"> 
+       <object idref="AlertMessageType6"/> 
+      </void> 
+     </void> 
+     <void id="ArrayList17" property="types"> 
+      <void id="AlertMessageType6" index="0"/> 
+     </void> 
+     <void property="userID"> 
+      <int>271</int> 
+     </void> 
+    </void> 
+    <object idref="ArrayList17"/> 
+    <object idref="AlertMessageType6"/> 
+   </void> 
+  </void> 
+  <void id="ArrayList17" property="types"> 
+   <void id="AlertMessageType6" index="0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>271</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.RedFlagAlert"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="alertID"> 
+   <int>104</int> 
+  </void> 
+  <void property="alertTypeMask"> 
+   <long>64</long> 
+  </void> 
+  <void property="dayOfWeek"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="description"> 
+   <string>AlertMessageType.ALERT_TYPE_LOW_BATTERY Red Flag Description</string> 
+  </void> 
+  <void property="escalationList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>640</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>-1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>641</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="escalationTimeBetweenRetries"> 
+   <int>5</int> 
+  </void> 
+  <void id="ArrayList18" property="groupIDs"> 
+   <void method="add"> 
+    <int>189</int> 
+   </void> 
+   <void method="add"> 
+    <int>190</int> 
+   </void> 
+   <void method="add"> 
+    <int>191</int> 
+   </void> 
+  </void> 
+  <void property="groupIDs"> 
+   <object idref="ArrayList18"/> 
+  </void> 
+  <void property="maxEscalationTries"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>AlertMessageType.ALERT_TYPE_LOW_BATTERY Red Flag</string> 
+  </void> 
+  <void id="ArrayList19" property="notifyPersonIDs"> 
+   <void method="add"> 
+    <int>640</int> 
+   </void> 
+  </void> 
+  <void property="notifyPersonIDs"> 
+   <object idref="ArrayList19"/> 
+  </void> 
+  <void property="severityLevel"> 
+   <object idref="RedFlagLevel1"/> 
+  </void> 
+  <void property="startTOD"> 
+   <int>0</int> 
+  </void> 
+  <void property="stopTOD"> 
+   <int>1439</int> 
+  </void> 
+  <void property="typesSet"> 
+   <void method="clear"/> 
+   <void method="add"> 
+    <void class="com.inthinc.pro.model.RedFlagAlert"> 
+     <void property="accountID"> 
+      <int>73</int> 
+     </void> 
+     <void property="alertID"> 
+      <int>104</int> 
+     </void> 
+     <void property="alertTypeMask"> 
+      <long>64</long> 
+     </void> 
+     <void property="dayOfWeek"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="description"> 
+      <string>AlertMessageType.ALERT_TYPE_LOW_BATTERY Red Flag Description</string> 
+     </void> 
+     <void property="escalationList"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>640</int> 
+         </void> 
+        </object> 
+       </void> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>-1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>641</int> 
+         </void> 
+        </object> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="escalationTimeBetweenRetries"> 
+      <int>5</int> 
+     </void> 
+     <void id="ArrayList18" property="groupIDs"> 
+      <void method="add"> 
+       <int>189</int> 
+      </void> 
+      <void method="add"> 
+       <int>190</int> 
+      </void> 
+      <void method="add"> 
+       <int>191</int> 
+      </void> 
+     </void> 
+     <void property="groupIDs"> 
+      <object idref="ArrayList18"/> 
+     </void> 
+     <void property="maxEscalationTries"> 
+      <int>5</int> 
+     </void> 
+     <void property="name"> 
+      <string>AlertMessageType.ALERT_TYPE_LOW_BATTERY Red Flag</string> 
+     </void> 
+     <void id="ArrayList19" property="notifyPersonIDs"> 
+      <void method="add"> 
+       <int>640</int> 
+      </void> 
+     </void> 
+     <void property="notifyPersonIDs"> 
+      <object idref="ArrayList19"/> 
+     </void> 
+     <void property="severityLevel"> 
+      <object idref="RedFlagLevel1"/> 
+     </void> 
+     <void property="startTOD"> 
+      <int>0</int> 
+     </void> 
+     <void property="stopTOD"> 
+      <int>1439</int> 
+     </void> 
+     <void property="typesSet"> 
+      <void method="clear"/> 
+      <void method="add"> 
+       <object idref="AlertMessageType7"/> 
+      </void> 
+     </void> 
+     <void id="ArrayList20" property="types"> 
+      <void id="AlertMessageType7" index="0"/> 
+     </void> 
+     <void property="userID"> 
+      <int>271</int> 
+     </void> 
+    </void> 
+    <object idref="ArrayList20"/> 
+    <object idref="AlertMessageType7"/> 
+   </void> 
+  </void> 
+  <void id="ArrayList20" property="types"> 
+   <void id="AlertMessageType7" index="0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>271</int> 
+  </void> 
+ </object> 
+ <object class="com.inthinc.pro.model.RedFlagAlert"> 
+  <void property="accountID"> 
+   <int>73</int> 
+  </void> 
+  <void property="alertID"> 
+   <int>105</int> 
+  </void> 
+  <void property="alertTypeMask"> 
+   <long>16384</long> 
+  </void> 
+  <void property="dayOfWeek"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+    <void method="add"> 
+     <boolean>true</boolean> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="description"> 
+   <string>AlertMessageType.ALERT_TYPE_NO_DRIVER Red Flag Description</string> 
+  </void> 
+  <void property="escalationList"> 
+   <object class="java.util.ArrayList"> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>640</int> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+      <void property="escalationOrder"> 
+       <int>-1</int> 
+      </void> 
+      <void property="personID"> 
+       <int>641</int> 
+      </void> 
+     </object> 
+    </void> 
+   </object> 
+  </void> 
+  <void property="escalationTimeBetweenRetries"> 
+   <int>5</int> 
+  </void> 
+  <void id="ArrayList21" property="groupIDs"> 
+   <void method="add"> 
+    <int>189</int> 
+   </void> 
+   <void method="add"> 
+    <int>190</int> 
+   </void> 
+   <void method="add"> 
+    <int>191</int> 
+   </void> 
+  </void> 
+  <void property="groupIDs"> 
+   <object idref="ArrayList21"/> 
+  </void> 
+  <void property="maxEscalationTries"> 
+   <int>5</int> 
+  </void> 
+  <void property="name"> 
+   <string>AlertMessageType.ALERT_TYPE_NO_DRIVER Red Flag</string> 
+  </void> 
+  <void id="ArrayList22" property="notifyPersonIDs"> 
+   <void method="add"> 
+    <int>640</int> 
+   </void> 
+  </void> 
+  <void property="notifyPersonIDs"> 
+   <object idref="ArrayList22"/> 
+  </void> 
+  <void property="severityLevel"> 
+   <object idref="RedFlagLevel1"/> 
+  </void> 
+  <void property="startTOD"> 
+   <int>0</int> 
+  </void> 
+  <void property="stopTOD"> 
+   <int>1439</int> 
+  </void> 
+  <void property="typesSet"> 
+   <void method="clear"/> 
+   <void method="add"> 
+    <void class="com.inthinc.pro.model.RedFlagAlert"> 
+     <void property="accountID"> 
+      <int>73</int> 
+     </void> 
+     <void property="alertID"> 
+      <int>105</int> 
+     </void> 
+     <void property="alertTypeMask"> 
+      <long>16384</long> 
+     </void> 
+     <void property="dayOfWeek"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+       <void method="add"> 
+        <boolean>true</boolean> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="description"> 
+      <string>AlertMessageType.ALERT_TYPE_NO_DRIVER Red Flag Description</string> 
+     </void> 
+     <void property="escalationList"> 
+      <object class="java.util.ArrayList"> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>640</int> 
+         </void> 
+        </object> 
+       </void> 
+       <void method="add"> 
+        <object class="com.inthinc.pro.model.AlertEscalationItem"> 
+         <void property="escalationOrder"> 
+          <int>-1</int> 
+         </void> 
+         <void property="personID"> 
+          <int>641</int> 
+         </void> 
+        </object> 
+       </void> 
+      </object> 
+     </void> 
+     <void property="escalationTimeBetweenRetries"> 
+      <int>5</int> 
+     </void> 
+     <void id="ArrayList21" property="groupIDs"> 
+      <void method="add"> 
+       <int>189</int> 
+      </void> 
+      <void method="add"> 
+       <int>190</int> 
+      </void> 
+      <void method="add"> 
+       <int>191</int> 
+      </void> 
+     </void> 
+     <void property="groupIDs"> 
+      <object idref="ArrayList21"/> 
+     </void> 
+     <void property="maxEscalationTries"> 
+      <int>5</int> 
+     </void> 
+     <void property="name"> 
+      <string>AlertMessageType.ALERT_TYPE_NO_DRIVER Red Flag</string> 
+     </void> 
+     <void id="ArrayList22" property="notifyPersonIDs"> 
+      <void method="add"> 
+       <int>640</int> 
+      </void> 
+     </void> 
+     <void property="notifyPersonIDs"> 
+      <object idref="ArrayList22"/> 
+     </void> 
+     <void property="severityLevel"> 
+      <object idref="RedFlagLevel1"/> 
+     </void> 
+     <void property="startTOD"> 
+      <int>0</int> 
+     </void> 
+     <void property="stopTOD"> 
+      <int>1439</int> 
+     </void> 
+     <void property="typesSet"> 
+      <void method="clear"/> 
+      <void method="add"> 
+       <object idref="AlertMessageType8"/> 
+      </void> 
+     </void> 
+     <void id="ArrayList23" property="types"> 
+      <void id="AlertMessageType8" index="0"/> 
+     </void> 
+     <void property="userID"> 
+      <int>271</int> 
+     </void> 
+    </void> 
+    <object idref="ArrayList23"/> 
+    <object idref="AlertMessageType8"/> 
+   </void> 
+  </void> 
+  <void id="ArrayList23" property="types"> 
+   <void id="AlertMessageType8" index="0"/> 
+  </void> 
+  <void property="userID"> 
+   <int>271</int> 
+  </void> 
+ </object> 
+ <int>1291936644</int> 
+</java> 
