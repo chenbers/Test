@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -196,7 +197,9 @@ public class TeamStatisticsBean extends BaseBean {
         reportCriteria.setFuelEfficiencyType(getFuelEfficiencyType());
         List<DriverVehicleScoreWrapper> reportDataSet = new ArrayList<DriverVehicleScoreWrapper>();
         reportDataSet.addAll(this.getDriverTotals());
-        reportDataSet.addAll(this.getDriverStatistics());
+        List<DriverVehicleScoreWrapper> driverStatList = getDriverStatistics();
+        Collections.sort(driverStatList);
+        reportDataSet.addAll(driverStatList);
         reportCriteria.setMainDataset(reportDataSet);
         return reportCriteria;
     }

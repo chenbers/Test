@@ -11,7 +11,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Vehicle;
 
 @XmlRootElement
-public class DriverVehicleScoreWrapper {
+public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreWrapper> {
     private Driver driver;
     private Vehicle vehicle;
     @Column(name="driveQ")
@@ -240,5 +240,10 @@ public class DriverVehicleScoreWrapper {
         
         return dvsw;
 
+    }
+
+    @Override
+    public int compareTo(DriverVehicleScoreWrapper o) {
+        return this.driver.compareTo(o.getDriver());
     }
 }
