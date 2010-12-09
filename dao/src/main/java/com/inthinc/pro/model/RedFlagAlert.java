@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.dao.annotations.SimpleName;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 
+@SuppressWarnings("serial")
 @XmlRootElement
 @SimpleName(simpleName = "Alert")
 public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
@@ -22,8 +23,6 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     /**
      * 
      */
-    @Column(updateable = false)
-    private static final long serialVersionUID = 1L;
     @ID
     @Column(name = "alertID")
     private Integer alertID;
