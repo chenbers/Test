@@ -22,6 +22,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     /**
      * 
      */
+    @Column(updateable = false)
     private static final long serialVersionUID = 1L;
     @ID
     @Column(name = "alertID")
@@ -69,6 +70,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     @Column(name = "escalationCallDelay")
     private Integer             escalationTimeBetweenRetries;
 
+    @Column(updateable = false)
     private Integer             timeoutUnits; //calls or minutes
     
     private RedFlagLevel severityLevel;

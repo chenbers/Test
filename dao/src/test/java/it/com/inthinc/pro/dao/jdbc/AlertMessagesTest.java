@@ -39,6 +39,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO;
 import com.inthinc.pro.map.GeonamesAddressLookup;
+import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
@@ -318,6 +319,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
         notifyPersonIDs.add(itData.fleetUser.getPersonID());
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
+        List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
+        escalationList.add(new AlertEscalationItem(itData.fleetUser.getPersonID(), 1));
+        escalationList.add(new AlertEscalationItem(itData.fleetUser.getPersonID(), -1));
         zoneAlert.setStartTOD(0);
         zoneAlert.setStopTOD(1439);
         List<Integer> emptyList = new ArrayList<Integer>();
@@ -332,6 +336,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 zoneAlert.setVehicleTypes(emptyVTList);
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setEmailTo(emailList);
+                zoneAlert.setEscalationList(escalationList);
+                zoneAlert.setMaxEscalationTries(5);
+                zoneAlert.setMaxEscalationTryTime(null);
                 break;
             case VEHICLES:
                 List<Integer> vehicleIDs = new ArrayList<Integer>();
@@ -352,6 +359,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 zoneAlert.setVehicleTypes(vehicleTypes);
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setEmailTo(emailList);
+                zoneAlert.setEscalationList(escalationList);
+                zoneAlert.setMaxEscalationTries(5);
+                zoneAlert.setMaxEscalationTryTime(null);
                 break;
             case GROUPS:
                 zoneAlert.setDriverIDs(emptyList);
@@ -360,6 +370,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 zoneAlert.setVehicleTypes(emptyVTList);
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setEmailTo(emailList);
+                zoneAlert.setEscalationList(escalationList);
+                zoneAlert.setMaxEscalationTries(5);
+                zoneAlert.setMaxEscalationTryTime(null);
                 break;
             case CONTACT_INFO:
                 zoneAlert.setDriverIDs(emptyList);
@@ -368,6 +381,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 zoneAlert.setVehicleTypes(emptyVTList);
                 zoneAlert.setNotifyPersonIDs(notifyPersonIDs);
                 zoneAlert.setEmailTo(new ArrayList<String>());
+                zoneAlert.setEscalationList(escalationList);
+                zoneAlert.setMaxEscalationTries(5);
+                zoneAlert.setMaxEscalationTryTime(null);
                 break;
             case ANY_TIME:
                 zoneAlert.setDriverIDs(null);
@@ -378,6 +394,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 zoneAlert.setStartTOD(0);
                 zoneAlert.setStopTOD(0);
                 zoneAlert.setEmailTo(emailList);
+                zoneAlert.setEscalationList(escalationList);
+                zoneAlert.setMaxEscalationTries(5);
+                zoneAlert.setMaxEscalationTryTime(null);
                 break;
         }
         RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
@@ -396,8 +415,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
         emailList.add("cjennings@inthinc.com");
         List<Integer> emptyList = new ArrayList<Integer>();
         List<VehicleType> emptyVTList = new ArrayList<VehicleType>();
-        
-        
+        List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
+        escalationList.add(new AlertEscalationItem(itData.fleetUser.getPersonID(), 1));
+        escalationList.add(new AlertEscalationItem(itData.fleetUser.getPersonID(), -1));
 
         redFlagAlert.setStartTOD(0);
         redFlagAlert.setStopTOD(1439);
@@ -411,7 +431,10 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 redFlagAlert.setVehicleTypes(emptyVTList);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(emailList);
-                break;
+                redFlagAlert.setEscalationList(escalationList);
+                redFlagAlert.setMaxEscalationTries(5);
+                redFlagAlert.setMaxEscalationTryTime(null);
+               break;
             case VEHICLES:
                 List<Integer> vehicleIDs = new ArrayList<Integer>();
                 vehicleIDs.add(groupData.vehicle.getVehicleID());
@@ -421,6 +444,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 redFlagAlert.setVehicleTypes(emptyVTList);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(emailList);
+                redFlagAlert.setEscalationList(escalationList);
+                redFlagAlert.setMaxEscalationTries(5);
+                redFlagAlert.setMaxEscalationTryTime(null);
                 break;
             case VEHICLE_TYPES:
                 List<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
@@ -431,6 +457,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 redFlagAlert.setVehicleTypes(vehicleTypes);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(emailList);
+                redFlagAlert.setEscalationList(escalationList);
+                redFlagAlert.setMaxEscalationTries(5);
+                redFlagAlert.setMaxEscalationTryTime(null);
                 break;
             case GROUPS:
                 redFlagAlert.setDriverIDs(emptyList);
@@ -439,6 +468,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 redFlagAlert.setVehicleTypes(emptyVTList);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(emailList);
+                redFlagAlert.setEscalationList(escalationList);
+                redFlagAlert.setMaxEscalationTries(5);
+                redFlagAlert.setMaxEscalationTryTime(null);
                 break;
             case CONTACT_INFO:
                 redFlagAlert.setDriverIDs(emptyList);
@@ -447,6 +479,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 redFlagAlert.setVehicleTypes(emptyVTList);
                 redFlagAlert.setNotifyPersonIDs(notifyPersonIDs);
                 redFlagAlert.setEmailTo(new ArrayList<String>());
+                redFlagAlert.setEscalationList(escalationList);
+                redFlagAlert.setMaxEscalationTries(5);
+                redFlagAlert.setMaxEscalationTryTime(null);
                 break;
             case ANY_TIME:
                 redFlagAlert.setDriverIDs(emptyList);
@@ -457,6 +492,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 redFlagAlert.setEmailTo(emailList);
                 redFlagAlert.setStartTOD(0);
                 redFlagAlert.setStopTOD(1439);
+                redFlagAlert.setEscalationList(escalationList);
+                redFlagAlert.setMaxEscalationTries(5);
+                redFlagAlert.setMaxEscalationTryTime(null);
                 break;
         }
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();

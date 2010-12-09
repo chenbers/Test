@@ -362,7 +362,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
             null, null,
             null, null, null,
             RedFlagLevel.NONE,null,
-            escalationList(),5,5, null,0);
+            escalationList(),5, null,5,0);
     	return redFlagAlert;
     }
     
@@ -393,7 +393,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
                 null,null,null,null,//aggressive
                 RedFlagLevel.NONE,
                 zone.getZoneID(),
-                escalationList(),5,5, null,0);
+                escalationList(),5, null,5,0);
         Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
         assertNotNull(zoneAlertID);
         zoneAlert.setAlertID(zoneAlertID);

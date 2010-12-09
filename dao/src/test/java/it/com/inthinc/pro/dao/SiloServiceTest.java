@@ -593,7 +593,7 @@ public class SiloServiceTest {
                 notifyPersonIDs,
                 null, // emailTo
                 speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null,
-                escalationList,5,5, 5,0);
+                escalationList,5, null,5,0);
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setAlertID(redFlagAlertID);
@@ -650,7 +650,7 @@ public class SiloServiceTest {
                 notifyPersonIDs,
                 null, // emailTo
                 speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null,
-                escalationList,5,5, 5,0);
+                escalationList,5, null,5,0);
         Integer fleetRedFlagAlertID = redFlagAlertDAO.create(acctID, fleetRedFlagAlert);
         fleetRedFlagAlert.setAlertID(fleetRedFlagAlertID);
         userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(fleetUserID);
@@ -805,7 +805,7 @@ public class SiloServiceTest {
                 null,//speed settings
                 null,null,null,null,//aggressive driving settings
                 RedFlagLevel.NONE, zoneID,
-                escalationList,5,5, 5,0);
+                escalationList,5, null,5,0);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         assertNotNull(zoneAlertID);
         zoneAlert.setAlertID(zoneAlertID);
