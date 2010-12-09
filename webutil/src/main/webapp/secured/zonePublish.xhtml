@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/template/template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+
+    <ui:param name="panelTitle" value="Zone Publish" />
+    <ui:param name="groupSelected" value="MAIN" />
+    <ui:define name="util_content">
+    <div style="margin: 10px auto 20px auto;background: #fff;">
+    <div style="width:400px">
+		<a4j:form id="account-select-form">
+			<table>
+			<tr><td>
+			<h:panelGrid columns="2" cellspacing="0" columnClasses="labelColMiddle,valueCol">
+				<h:outputText value="Account:" style="font-size:12px;font-weight:bold;padding:10px;"/>
+				<h:selectOneMenu id="account-select-menu" value="#{zonePublishBean.selectedAccountID}">
+						<f:selectItems value="#{zonePublishBean.accountSelectList}" />
+                        <a4j:support event="onchange" action="submit()" reRender="optionsForm" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+			</td>
+			<td>
+		    	<a4j:status for="optionsRegion">
+					<f:facet name="start">
+        		   		<h:outputText>
+            	    		<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+						</h:outputText>
+            		</f:facet>
+    			</a4j:status>
+			</td>
+			</tr>
+			</table>	
+		</a4j:form>
+		<a4j:region id="optionsRegion">
+            <a4j:form id="optionsForm">
+            <rich:panel rendered="#{zonePublishBean.account != null}">
+	            <f:facet name="header">
+					<h:outputText value="Publish" />
+        	    </f:facet>
+                <table>
+					<tr>
+						<td colspan="2">
+					<h:outputText value="Click the button to publish the zones and send a forward command to reload zones to all devices in the account." />
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+			                <a4j:commandButton id="publish" value="Publish Zones" action="#{zonePublishBean.publishAction}" rendered="#{zonePublishBean.account != null}" reRender="optionsForm"/>
+						</td>
+					</tr>
+        			<tr>
+						<td colspan="2">
+							<h:outputText value="#{zonePublishBean.publishActionMsg}" rendered="#{zonePublishBean.publishActionMsg != null}" style="color:green;"/>
+						</td>
+					</tr>
+                </table>
+			</rich:panel>
+			<h:outputText value="Select an account." rendered="#{zonePublishBean.account == null}"/>
+            </a4j:form>
+		</a4j:region>
+		</div>
+		</div>
+    </ui:define>
+</ui:composition>

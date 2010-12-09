@@ -62,6 +62,12 @@
    <to-view-id>/secured/accountOptions.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_zonePublish</from-outcome>
+   <to-view-id>/secured/zonePublish.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
  
  
 

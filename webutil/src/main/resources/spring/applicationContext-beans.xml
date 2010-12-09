@@ -38,6 +38,7 @@
  	<bean id="configurationExtractor" class="com.inthinc.pro.configurator.model.ConfigurationExtractor" scope="session"/>
 	<bean id="configuratorBean" class ="com.inthinc.pro.backing.configurator.ConfiguratorBean" scope="request" />
 	<bean id="vehicleSettingsHistoryBean" class ="com.inthinc.pro.backing.configurator.VehicleSettingsHistoryBean" scope="request"/>
+	<bean id="zonePublishBean" class="com.inthinc.pro.backing.ZonePublishBean" init-method="init" scope="session"/>
 	
 	<!--  UI beans -->
 	<bean id="productSelectItems" class="com.inthinc.pro.configurator.ui.ProductSelectItems"/>

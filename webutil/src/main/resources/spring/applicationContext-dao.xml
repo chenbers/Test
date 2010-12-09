@@ -17,6 +17,7 @@
         <constructor-arg value="${proxy.siloDataAccessPort}" />
     </bean>
     
+    
     <!-- Service Related Beans -->
     <bean id="siloServiceBean" factory-bean="siloServiceCreator" factory-method="getService" />
 
@@ -45,4 +46,21 @@
     <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO" parent="genericDAO"></bean>
     <bean id="reportScheduleDAO" class="com.inthinc.pro.dao.hessian.ReportScheduleHessianDAO" parent="genericDAO"></bean>
     <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO" parent="genericDAO"></bean>
+    
+
+	<!--  JDBC -->
+	
+	<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
+	  <property name="url" value="${jdbc.mysql.url}"/>
+	  <property name="username" value="${jdbc.mysql.username}"/>
+	  <property name="password" value="${jdbc.mysql.password}"/>
+	</bean>
+	
+    <bean id="genericJDBCDAO" class="com.inthinc.pro.dao.jdbc.GenericJDBCDAO" abstract="true">
+        <property name="dataSource" ref="tiwiJDBCDataSource" />
+    </bean>
+	
+    <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
+    
 </beans>
