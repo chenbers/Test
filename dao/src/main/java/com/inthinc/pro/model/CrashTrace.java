@@ -65,7 +65,6 @@ public class CrashTrace extends BaseEntity {
     }
     
     public static Blob getMockBlob(String path) throws IOException {
-        System.out.println("getMockBlob("+path+") is still getting called");
         InputStream is = null;
         Blob result = null;
         try{
