@@ -707,7 +707,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
 
     public List<SelectItem> getStatusSelectItems() {
-        //logger.fatal("getStatusSelectItems() returns "+DeviceStatusSelectItems.INSTANCE.getSelectItems());
         return DeviceStatusSelectItems.INSTANCE.getSelectItems();
     }
     public String getBatchProductChoice() {
