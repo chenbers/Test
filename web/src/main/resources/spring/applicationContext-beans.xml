@@ -282,8 +282,6 @@
     <property name="personChangeListeners">
       <list>
         <ref local="vehiclesBean" />
-        <ref local="zoneAlertsBean" />
-        <ref local="redFlagAlertsBean" />
         <ref local="redFlagOrZoneAlertsBean" />
       </list>
     </property>
@@ -300,9 +298,6 @@
 
   <bean id="zonesBean" class="com.inthinc.pro.backing.ZonesBean" scope="session"/>
 
-  <bean id="zoneAlertsBean" class="com.inthinc.pro.backing.ZoneAlertsBean" scope="session" init-method="initBean"/>
-
-  <bean id="redFlagAlertsBean" class="com.inthinc.pro.backing.RedFlagAlertsBean" scope="session" init-method="initBean"/>
   <bean id="redFlagOrZoneAlertsBean" class="com.inthinc.pro.backing.RedFlagOrZoneAlertsBean" scope="session" init-method="initBean"/>
   
   <bean id="messagesBean" class="com.inthinc.pro.backing.MessagesBean" scope="session">

@@ -335,38 +335,40 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getRedFlagsPage(Integer groupID, Long startDate, Long endDate, Integer includeForgiven, Map<String, Object> pageParams);
 
     // Methods related to the RedFlagAlert type
-    Map<String, Object> deleteRedFlagAlert(Integer redFlagAlertID) throws ProDAOException;
+    Map<String, Object> deleteAlert(Integer redFlagAlertID) throws ProDAOException;
 
-    Map<String, Object> getRedFlagAlert(Integer redFlagAlertID) throws ProDAOException;
+    Map<String, Object> getAlert(Integer redFlagAlertID) throws ProDAOException;
 
-    Map<String, Object> updateRedFlagAlert(Integer redFlagAlertID, Map<String, Object> redFlagAlertMap) throws ProDAOException;
+    Map<String, Object> updateAlert(Integer redFlagAlertID, Map<String, Object> redFlagAlertMap) throws ProDAOException;
 
-    Map<String, Object> createRedFlagAlert(Integer acctID, Map<String, Object> redFlagAlertMap) throws ProDAOException;
+    Map<String, Object> createAlert(Integer acctID, Map<String, Object> redFlagAlertMap) throws ProDAOException;
 
-    List<Map<String, Object>> getRedFlagAlertsByAcctID(Integer accountID);
-    List<Map<String, Object>> getRedFlagAlertsByUserID(Integer userID);
-    List<Map<String, Object>> getRedFlagAlertsByUserIDDeep(Integer userID);
+    List<Map<String, Object>> getAlertsByAcctID(Integer accountID);
+    List<Map<String, Object>> getAlertsByUserID(Integer userID);
+    List<Map<String, Object>> getAlertsByUserIDDeep(Integer userID);
+    Map<String, Object> deleteAlertsByZoneID(Integer zoneID);
 
-    // Methods related to the ZoneAlert type
-    Map<String, Object> deleteZoneAlert(Integer zoneAlertID) throws ProDAOException;
-
-    Map<String, Object> getZoneAlert(Integer zoneAlertID) throws ProDAOException;
-
-    Map<String, Object> updateZoneAlert(Integer zoneAlertID, Map<String, Object> zoneAlertMap) throws ProDAOException;
-
-    Map<String, Object> createZoneAlert(Integer acctID, Map<String, Object> zoneAlertMap) throws ProDAOException;
-
-    List<Map<String, Object>> getZoneAlertsByAcctID(Integer accountID);
-    List<Map<String, Object>> getZoneAlertsByUserID(Integer userID);
-    List<Map<String, Object>> getZoneAlertsByUserIDDeep(Integer userID);
-
-    Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID);
-    
-    List<Map<String,Object>> getTextMsgAlertsByAcctID(Integer acctID);
+    List<Map<String, Object>>getAlertsByTeamGroupID(Integer groupID);
+   // Methods related to the ZoneAlert type
+//    Map<String, Object> deleteZoneAlert(Integer zoneAlertID) throws ProDAOException;
+//
+//    Map<String, Object> getZoneAlert(Integer zoneAlertID) throws ProDAOException;
+//
+//    Map<String, Object> updateZoneAlert(Integer zoneAlertID, Map<String, Object> zoneAlertMap) throws ProDAOException;
+//
+//    Map<String, Object> createZoneAlert(Integer acctID, Map<String, Object> zoneAlertMap) throws ProDAOException;
+//
+//    List<Map<String, Object>> getZoneAlertsByAcctID(Integer accountID);
+//    List<Map<String, Object>> getZoneAlertsByUserID(Integer userID);
+//    List<Map<String, Object>> getZoneAlertsByUserIDDeep(Integer userID);
+//
+//    Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID);
+//    
+//    List<Map<String,Object>> getTextMsgAlertsByAcctID(Integer acctID);
     List<Map<String,Object>> getTextMsgPage(Integer groupID, Long startDate, Long endDate,  List<Map<String, Object>> filterList, Map<String, Object> pageParams );
     List<Map<String,Object>> getSentTextMsgsByGroupID(Integer groupID, Long startDate, Long endDate);
     Map<String, Object> getTextMsgCount(Integer groupID, Long startDate, Long endDate,  List<Map<String, Object>> filterList);
-    Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) throws ProDAOException;
+//    Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) throws ProDAOException;
     
     // Report Schedules
     
@@ -440,5 +442,5 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getSensitivitySliderValues();
     
     // Alert escalation
-    List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID);
+//    List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID);
 }

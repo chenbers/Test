@@ -2,21 +2,24 @@ package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
 import org.junit.Ignore;
 
-import com.inthinc.pro.backing.ZoneAlertsBean.ZoneAlertView;
+import com.inthinc.pro.backing.RedFlagOrZoneAlertsBean.RedFlagOrZoneAlertView;
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.util.MiscUtil;
 @Ignore
-public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAlertView>
+public class ZoneAlertsBeanTest extends BaseAdminBeanTest<RedFlagOrZoneAlertsBean.RedFlagOrZoneAlertView>
 {
     @Override
-    protected ZoneAlertsBean getAdminBean()
+    protected RedFlagOrZoneAlertsBean getAdminBean()
     {
-        return (ZoneAlertsBean) applicationContext.getBean("zoneAlertsBean");
+        return (RedFlagOrZoneAlertsBean) applicationContext.getBean("zoneAlertsBean");
     }
 
     @Override
@@ -45,7 +48,7 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAle
     }
 */
     @Override
-    protected void populate(ZoneAlertView editItem, BaseAdminBean<ZoneAlertsBean.ZoneAlertView> adminBean)
+    protected void populate(RedFlagOrZoneAlertView editItem, BaseAdminBean<RedFlagOrZoneAlertsBean.RedFlagOrZoneAlertView> adminBean)
     {
         editItem.setCreated(new Date());
         editItem.setName("Zone Alert");
@@ -54,14 +57,18 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<ZoneAlertsBean.ZoneAle
         for (int i = 0; i < 7; i++)
             dayOfWeek.add(new Boolean(MiscUtil.randomInt(0, 1) == 1));
         editItem.setDayOfWeek(dayOfWeek);
-        editItem.setArrival(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-        if (!editItem.getArrival())
-            editItem.setDeparture(true);
-        else
-            editItem.setDeparture(MiscUtil.randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+        Set<AlertMessageType> types = EnumSet.noneOf(AlertMessageType.class);
+        if ( MiscUtil.randomInt(0, 1)==1) types.add(AlertMessageType.ALERT_TYPE_ENTER_ZONE);
+        if (types.isEmpty()){
+            types.add(AlertMessageType.ALERT_TYPE_EXIT_ZONE);
+        }
+        else{
+            if ( MiscUtil.randomInt(0, 1)==1) types.add(AlertMessageType.ALERT_TYPE_EXIT_ZONE);
+        }
+        editItem.setTypesSet(types);
         final List<SelectItem> pickedGroups = new ArrayList<SelectItem>();
         pickedGroups.add(new SelectItem("group101"));
-        ((ZoneAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);
+        ((RedFlagOrZoneAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);
         editItem.setEmailToString("hello@dolly.com");
     }
 

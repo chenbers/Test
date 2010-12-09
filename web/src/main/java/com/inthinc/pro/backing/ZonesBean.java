@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.model.KeepAlive;
 
-import com.inthinc.pro.dao.ZoneAlertDAO;
+import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
 import com.inthinc.pro.dao.ZonePublishDAO;
 import com.inthinc.pro.model.Account;
@@ -44,7 +44,7 @@ public class ZonesBean extends BaseBean
     private Zone                 item;
     private boolean              editing;
     private ZoneDAO              zoneDAO;
-    private ZoneAlertDAO         zoneAlertDAO;
+    private RedFlagAlertDAO         zoneAlertDAO;
     private ZonePublishDAO       zonePublishDAO;
     private String               helpFile = "Zones.htm";
     private ZoneVehicleType      downloadType;
@@ -58,7 +58,7 @@ public class ZonesBean extends BaseBean
         this.zoneDAO = zoneDAO;
     }
 
-    public void setZoneAlertDAO(ZoneAlertDAO zoneAlertDAO)
+    public void setRedFlagAlertDAO(RedFlagAlertDAO zoneAlertDAO)
     {
         this.zoneAlertDAO = zoneAlertDAO;
     }
@@ -223,7 +223,7 @@ public class ZonesBean extends BaseBean
     public void delete()
     {
 
-        zoneAlertDAO.deleteByZoneID(item.getZoneID());
+        zoneAlertDAO.deleteAlertsByZoneID(item.getZoneID());
 
         zoneDAO.deleteByID(item.getZoneID());
 

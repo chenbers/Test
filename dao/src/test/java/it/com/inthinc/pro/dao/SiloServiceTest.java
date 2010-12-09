@@ -10,6 +10,7 @@ import it.config.IntegrationConfig;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -39,7 +40,6 @@ import com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO;
 import com.inthinc.pro.dao.hessian.TimeZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
-import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
@@ -49,6 +49,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -83,7 +84,6 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
@@ -580,16 +580,20 @@ public class SiloServiceTest {
         List<Integer> notifyPersonIDs = new ArrayList<Integer>();
         notifyPersonIDs.add(this.personList.get(0).getPersonID());
         notifyPersonIDs.add(this.personList.get(1).getPersonID());
+        List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
+        escalationList.add(new AlertEscalationItem(this.personList.get(0).getPersonID(),1));
+        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), -1));
         Integer[] speedSettings = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80 };
 
-        RedFlagAlert redFlagAlert = new RedFlagAlert(AlertMessageType.ALERT_TYPE_SPEEDING,acctID, userID, 
+        RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING),acctID, userID, 
         		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0, 1339, dayOfWeek, groupIDList,
                 null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
                 notifyPersonIDs,
                 null, // emailTo
-                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null);
+                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null,
+                escalationList,5,5, 5,0);
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setAlertID(redFlagAlertID);
@@ -638,14 +642,15 @@ public class SiloServiceTest {
         assertEquals(1, groupRedFlagAlertList.size());
         Util.compareObjects(redFlagAlert, groupRedFlagAlertList.get(0), ignoreFields);
         
-        RedFlagAlert fleetRedFlagAlert = new RedFlagAlert(AlertMessageType.ALERT_TYPE_SPEEDING,acctID, fleetUserID, 
+        RedFlagAlert fleetRedFlagAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING),acctID, fleetUserID, 
                 "Red Flag Alert Profile", "Red Flag Alert Profile Description", 0, 1339, dayOfWeek, groupIDList,
                 null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
                 notifyPersonIDs,
                 null, // emailTo
-                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null);
+                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null,
+                escalationList,5,5, 5,0);
         Integer fleetRedFlagAlertID = redFlagAlertDAO.create(acctID, fleetRedFlagAlert);
         fleetRedFlagAlert.setAlertID(fleetRedFlagAlertID);
         userRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserID(fleetUserID);
@@ -691,20 +696,20 @@ public class SiloServiceTest {
         // create a zone to use
         Integer zoneID = createZone(acctID, groupID, "Zone With Alerts", zoneDAO);
         
-        ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
+        RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
         
-        ZoneAlert zoneAlert = createZoneAlert(acctID, userID, zoneID, zoneAlertDAO);
+        RedFlagAlert zoneAlert = createZoneAlert(acctID, userID, zoneID, zoneAlertDAO);
         Integer zoneAlertID = zoneAlert.getAlertID();
         
         // find
         String ignoreFields[] = { "modified", "fullName" };
-        ZoneAlert returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
+        RedFlagAlert returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
         Util.compareObjects(zoneAlert, returnedZoneAlert, ignoreFields);
         // update
         zoneAlert.setName("Mod Zone Alert Profile");
         zoneAlert.setDescription("Mod Zone Alert Profile Description");
-        zoneAlert.setArrival(false);
+//        zoneAlert.setArrival(false);
         zoneAlert.setGroupIDs(new ArrayList<Integer>());
         List<VehicleType> vehicleTypeList = new ArrayList<VehicleType>();
         vehicleTypeList.add(VehicleType.LIGHT);
@@ -714,33 +719,33 @@ public class SiloServiceTest {
         returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
         Util.compareObjects(zoneAlert, returnedZoneAlert, ignoreFields);
         // get by account id
-        List<ZoneAlert> zoneAlertList = zoneAlertDAO.getZoneAlerts(acctID);
+        List<RedFlagAlert> zoneAlertList = zoneAlertDAO.getRedFlagAlerts(acctID);
         assertEquals(1, zoneAlertList.size());
         Util.compareObjects(zoneAlert, zoneAlertList.get(0), ignoreFields);
         // get by user id
-        List<ZoneAlert> userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(userID);
+        List<RedFlagAlert> userZoneAlertList = zoneAlertDAO.getRedFlagAlertsByUserID(userID);
         assertEquals(1, userZoneAlertList.size());
         Util.compareObjects(zoneAlert, userZoneAlertList.get(0), ignoreFields);
         // get by group id
-        List<ZoneAlert> groupZoneAlertList = zoneAlertDAO.getZoneAlertsByUserIDDeep(userID);
+        List<RedFlagAlert> groupZoneAlertList = zoneAlertDAO.getRedFlagAlertsByUserIDDeep(userID);
         assertEquals(1, groupZoneAlertList.size());
         Util.compareObjects(zoneAlert, groupZoneAlertList.get(0), ignoreFields);
         
         
         // fleet level user
-        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(fleetUserID);
+        userZoneAlertList = zoneAlertDAO.getRedFlagAlertsByUserID(fleetUserID);
         assertEquals(0, userZoneAlertList.size());
         // get by user deep
-        groupZoneAlertList = zoneAlertDAO.getZoneAlertsByUserIDDeep(fleetUserID);
+        groupZoneAlertList = zoneAlertDAO.getRedFlagAlertsByUserIDDeep(fleetUserID);
         assertEquals(1, groupZoneAlertList.size());
         Util.compareObjects(zoneAlert, groupZoneAlertList.get(0), ignoreFields);
         
-        ZoneAlert fleetZoneAlert = createZoneAlert(acctID, fleetUserID, zoneID, zoneAlertDAO);
-        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(fleetUserID);
+        RedFlagAlert fleetZoneAlert = createZoneAlert(acctID, fleetUserID, zoneID, zoneAlertDAO);
+        userZoneAlertList = zoneAlertDAO.getRedFlagAlertsByUserID(fleetUserID);
         assertEquals(1, userZoneAlertList.size());
         Util.compareObjects(fleetZoneAlert, userZoneAlertList.get(0), ignoreFields);
         // get by user deep
-        groupZoneAlertList = zoneAlertDAO.getZoneAlertsByUserIDDeep(fleetUserID);
+        groupZoneAlertList = zoneAlertDAO.getRedFlagAlertsByUserIDDeep(fleetUserID);
         assertEquals(2, groupZoneAlertList.size());
         
         // modify the owner 
@@ -748,15 +753,15 @@ public class SiloServiceTest {
         fleetZoneAlert.setGroupIDs(zoneAlert.getGroupIDs());
         changedCount = zoneAlertDAO.update(fleetZoneAlert);
         assertEquals("Zone update count", Integer.valueOf(1), changedCount);
-        ZoneAlert updatedZoneAlert = zoneAlertDAO.findByID(fleetZoneAlert.getAlertID());
+        RedFlagAlert updatedZoneAlert = zoneAlertDAO.findByID(fleetZoneAlert.getAlertID());
         Util.compareObjects(fleetZoneAlert, updatedZoneAlert, ignoreFields);
         
         // check counts
-        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(fleetUserID);
+        userZoneAlertList = zoneAlertDAO.getRedFlagAlertsByUserID(fleetUserID);
         assertEquals(0, userZoneAlertList.size());
-        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserIDDeep(fleetUserID);
+        userZoneAlertList = zoneAlertDAO.getRedFlagAlertsByUserIDDeep(fleetUserID);
         assertEquals(2, userZoneAlertList.size());
-        userZoneAlertList = zoneAlertDAO.getZoneAlertsByUserID(userID);
+        userZoneAlertList = zoneAlertDAO.getRedFlagAlertsByUserID(userID);
         assertEquals(2, userZoneAlertList.size());
         
         
@@ -773,14 +778,14 @@ public class SiloServiceTest {
         // find after un-delete
         returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
         assertEquals("Zone alert have deleted status after delete", Status.ACTIVE, returnedZoneAlert.getStatus());
-        zoneAlertDAO.deleteByZoneID(zoneID);
+        zoneAlertDAO.deleteAlertsByZoneID(zoneID);
         returnedZoneAlert = zoneAlertDAO.findByID(zoneAlertID);
         assertEquals("Zone alert have deleted status after deletebyzoneID", Status.DELETED, returnedZoneAlert.getStatus());
         
         
     }
 
-    private ZoneAlert createZoneAlert(Integer acctID, Integer userID, Integer zoneID, ZoneAlertHessianDAO zoneAlertDAO) {
+    private RedFlagAlert createZoneAlert(Integer acctID, Integer userID, Integer zoneID, RedFlagAlertHessianDAO zoneAlertDAO) {
         List<Boolean> dayOfWeek = new ArrayList<Boolean>();
         for (int i = 0; i < 7; i++)
             dayOfWeek.add(true);
@@ -789,12 +794,18 @@ public class SiloServiceTest {
         List<Integer> notifyPersonIDs = new ArrayList<Integer>();
         notifyPersonIDs.add(this.personList.get(0).getPersonID());
         notifyPersonIDs.add(this.personList.get(1).getPersonID());
-        ZoneAlert zoneAlert = new ZoneAlert(acctID, userID, 
+        List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
+        escalationList.add(new AlertEscalationItem(this.personList.get(0).getPersonID(),1));
+        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), -1));
+        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE),acctID, userID, 
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1339, dayOfWeek, groupIDList, null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
                 notifyPersonIDs, null, // emailTo
-                0, zoneID, true, true);
+                null,//speed settings
+                null,null,null,null,//aggressive driving settings
+                RedFlagLevel.NONE, zoneID,
+                escalationList,5,5, 5,0);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         assertNotNull(zoneAlertID);
         zoneAlert.setAlertID(zoneAlertID);

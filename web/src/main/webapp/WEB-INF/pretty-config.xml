@@ -390,12 +390,12 @@
 	<url-mapping id="adminredFlagsAccess">
 		<pattern>/app/admin/redFlags</pattern>
 		<view-id>/secured/admin/redFlags.faces</view-id>
-		<action onPostback="false">#{redFlagAlertsBean.resetList}</action>
+		<action onPostback="false">#{redFlagOrZoneAlertsBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminRedFlags">
 		<pattern>/app/admin/redFlags</pattern>
 		<view-id>/secured/admin/redFlags.faces</view-id>
-		<action onPostback="false">#{redFlagAlertsBean.resetList}</action>
+		<action onPostback="false">#{redFlagOrZoneAlertsBean.resetList}</action>
 	</url-mapping>
 	<url-mapping id="adminEditRedFlag">
 		<pattern>/app/admin/editRedFlag</pattern>
@@ -404,7 +404,7 @@
 	<url-mapping id="adminRedFlag">
 		<pattern>/app/admin/redFlag/#{redFlagOrZoneAlertsBean.itemID}</pattern>
 		<view-id>/secured/admin/redFlag.faces</view-id>
-		<action>#{redFlagAlertsBean.view}</action>
+		<action>#{redFlagOrZoneAlertsBean.view}</action>
 	</url-mapping>
 	<url-mapping id="adminredFlagOrZoneAlertsAccess">
 		<pattern>/app/admin/redFlagOrZoneAlerts</pattern>

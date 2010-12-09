@@ -10,11 +10,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
-import com.inthinc.pro.model.ZoneAlert;
+import com.inthinc.pro.model.RedFlagAlert;
 
 public class ZoneAlertHessianDAOTest
 {
-    ZoneAlertHessianDAO zoneAlertHessianDAO;
+    RedFlagAlertHessianDAO zoneAlertHessianDAO;
 
     @BeforeClass
     public static void runOnceBeforeAllTests() throws Exception
@@ -30,7 +30,7 @@ public class ZoneAlertHessianDAOTest
     @Before
     public void setUp() throws Exception
     {
-        zoneAlertHessianDAO = new ZoneAlertHessianDAO();
+        zoneAlertHessianDAO = new RedFlagAlertHessianDAO();
         zoneAlertHessianDAO.setSiloService(new SiloServiceCreator().getService());
     }
 
@@ -39,11 +39,11 @@ public class ZoneAlertHessianDAOTest
     {
         try
         {
-            List<ZoneAlert> alerts = zoneAlertHessianDAO.getZoneAlerts(-1);
+            List<RedFlagAlert> alerts = zoneAlertHessianDAO.getRedFlagAlerts(-1);
 
             assertTrue("expected no zone alerts to be returned", alerts.size() == 0);
 
-            alerts = zoneAlertHessianDAO.getZoneAlerts(1);
+            alerts = zoneAlertHessianDAO.getRedFlagAlerts(1);
 
             assertTrue("expected to retrieve zone alert records", alerts.size() > 0);
         }

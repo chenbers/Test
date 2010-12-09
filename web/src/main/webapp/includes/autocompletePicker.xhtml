@@ -33,15 +33,15 @@
     </c:if>
 
     <a4j:region renderRegionOnly="true">
-      <a4j:outputPanel id="pickerPanel">
+      <a4j:outputPanel id="#{context}-pickerPanel">
 
-        <h:inputHidden id="itemValue" value="#{autocompleter.itemValue}" />
+        <h:inputHidden id="#{context}-itemValue" value="#{autocompleter.itemValue}" />
 
         <div class="picker" onclick="setFocus(event, this)">
-          <ui:repeat id="picker-repeater" value="#{autocompleter.picked}" var="item">
+          <ui:repeat id="#{context}-picker-repeater" value="#{autocompleter.picked}" var="item">
             <span class="pick-item">
               <h:outputText value="#{item.label}" />
-              <a4j:commandLink id="#{context}-autoCompletePickerDelete" styleClass="delete-pick-item" reRender="pickerPanel" limitToList="true" oncomplete="changeComplete()">
+              <a4j:commandLink id="#{context}-autoCompletePickerDelete" styleClass="delete-pick-item" reRender="#{context}-pickerPanel" limitToList="true" oncomplete="changeComplete()">
                 <a4j:actionparam name="itemValue" value="#{item.value}" assignTo="#{autocompleter.itemValue}" />
                 <h:graphicImage value="/images/x.gif" width="16" height="20" />
               </a4j:commandLink></span>
@@ -52,7 +52,7 @@
             <h:column>
               <h:outputText value="#{suggestion.label}" />
             </h:column>
-            <a4j:support event="onselect" action="#{autocompleter.addItem}" reRender="pickerPanel" limitToList="true" oncomplete="changeComplete()" />
+            <a4j:support event="onselect" action="#{autocompleter.addItem}" reRender="#{context}-pickerPanel" limitToList="true" oncomplete="changeComplete()" />
           </rich:suggestionbox>
         </div>
 
@@ -81,10 +81,10 @@
         if (empty &amp;&amp; (e.keyCode == 8))
         {
           var index = 0;
-          while (document.getElementById("#{formName}:picker-repeater:" + index + ":#{context}-autoCompletePickerDelete") != null)
+          while (document.getElementById("#{formName}:#{context}-picker-repeater:" + index + ":#{context}-autoCompletePickerDelete") != null)
             index++;
           if (index > 0)
-            document.getElementById("#{formName}:picker-repeater:" + (index - 1) + ":#{context}-autoCompletePickerDelete").onclick();
+            document.getElementById("#{formName}:#{context}-picker-repeater:" + (index - 1) + ":#{context}-autoCompletePickerDelete").onclick();
         }
         empty = (input.value.length == 0);
       }
@@ -93,7 +93,7 @@
       {
         var selected = suggestion.getSelectedItems();
         if (selected.length > 0)
-          document.getElementById('#{formName}:itemValue').value = selected[0].value;
+          document.getElementById('#{formName}:#{context}-itemValue').value = selected[0].value;
       }
 
       function changeComplete()

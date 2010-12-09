@@ -25,7 +25,7 @@ default-autowire="byName">
   <bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO"/>
   <bean id="tablePreferenceDAO" class="com.inthinc.pro.dao.hessian.TablePreferenceHessianDAO"></bean>
   <bean id="zoneDAO" class="com.inthinc.pro.dao.hessian.ZoneHessianDAO"></bean>
-  <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean>
+<!--  <bean id="zoneAlertDAO" class="com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO"></bean>-->
   <bean id="roleDAO" class="com.inthinc.pro.dao.hessian.RoleHessianDAO"></bean>
   <bean id="stateDAO" class="com.inthinc.pro.dao.hessian.StateHessianDAO"></bean>
   <bean id="timeZoneDAO" class="com.inthinc.pro.dao.hessian.TimeZoneHessianDAO"></bean>
@@ -34,7 +34,7 @@ default-autowire="byName">
   <bean id="crashReportDAO" class="com.inthinc.pro.dao.hessian.CrashReportHessianDAO"/>
   <bean id="textMsgAlertDAO" class="com.inthinc.pro.dao.hessian.TextMsgAlertHessianDAO"/>
   <bean id="configuratorDAO" class="com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO"/>
-  <bean id="redFlagAndZoneAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAndZoneAlertHessianDAO"></bean>
+  <bean id="redFlagAlertsDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO"></bean>
   
   <!-- Address Lookup -->
   <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">

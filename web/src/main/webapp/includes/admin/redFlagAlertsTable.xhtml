@@ -8,35 +8,35 @@
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
-  <ui:param name="recordCount" value="#{redFlagAlertsBean.itemCount}" />
-  <ui:param name="items" value="#{redFlagAlertsBean.filteredItems}" />
-  <ui:param name="filterValue" value="#{redFlagAlertsBean.filterValue}" />
-  <ui:param name="page" value="#{redFlagAlertsBean.page}" />
-  <ui:param name="editorBean" value="#{redFlagAlertsBean}" />
+  <ui:param name="recordCount" value="#{redFlagOrZoneAlertsBean.itemCount}" />
+  <ui:param name="items" value="#{redFlagOrZoneAlertsBean.filteredItems}" />
+  <ui:param name="filterValue" value="#{redFlagOrZoneAlertsBean.filterValue}" />
+  <ui:param name="page" value="#{redFlagOrZoneAlertsBean.page}" />
+  <ui:param name="editorBean" value="#{redFlagOrZoneAlertsBean}" />
   <ui:param name="context" value="redFlagAlertsTable"/>		
 
   <ui:define name="columns">
-    <rich:column id="name" rendered="#{redFlagAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
+    <rich:column id="name" rendered="#{redFlagOrZoneAlertsBean.tableColumns['name'].visible}" sortBy="#{item.name}" sortOrder="ASCENDING">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_name}" /></f:facet>
-      <a4j:htmlCommandLink id="redFlagsAlertsTableName" action="#{redFlagAlertsBean.display}" value="#{item.name}">
+      <a4j:htmlCommandLink id="redFlagsAlertsTableName" action="#{redFlagOrZoneAlertsBean.display}" value="#{item.name}">
         <f:param name="displayID" value="#{item.id}" />
       </a4j:htmlCommandLink>
     </rich:column>
-    <rich:column id="description" rendered="#{redFlagAlertsBean.tableColumns['description'].visible}" sortBy="#{item.description}">
+    <rich:column id="description" rendered="#{redFlagOrZoneAlertsBean.tableColumns['description'].visible}" sortBy="#{item.description}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_description}" /></f:facet>
       <h:outputText value="#{item.description}" />
     </rich:column>
-    <rich:column id="type" rendered="#{redFlagAlertsBean.tableColumns['type'].visible}" sortBy="#{item.type}">
+    <rich:column id="type" rendered="#{redFlagOrZoneAlertsBean.tableColumns['type'].visible}" sortBy="#{item.type}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_type}" /></f:facet>
       <c:set var="typeMessage" value="#{item.type}" />
       <h:outputText value="#{messages[typeMessage]}" />
     </rich:column>
-    <rich:column id="status" rendered="#{redFlagAlertsBean.tableColumns['status'].visible}" sortBy="#{item.status}">
+    <rich:column id="status" rendered="#{redFlagOrZoneAlertsBean.tableColumns['status'].visible}" sortBy="#{item.status}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_status}" /></f:facet>
       <h:outputText value="#{messages[item.status]}">
       </h:outputText>
     </rich:column>
-    <rich:column id="owner" rendered="#{redFlagAlertsBean.tableColumns['owner'].visible}" sortBy="#{item.fullName}">
+    <rich:column id="owner" rendered="#{redFlagOrZoneAlertsBean.tableColumns['owner'].visible}" sortBy="#{item.fullName}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_owner}" /></f:facet>
       <h:outputText value="#{item.fullName}" />
     </rich:column>

@@ -1,11 +1,12 @@
 package com.inthinc.pro.backing.dao.validator;
 
-import com.inthinc.pro.dao.ZoneAlertDAO;
-import com.inthinc.pro.model.ZoneAlert;
+import com.inthinc.pro.dao.RedFlagAlertDAO;
+import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.RedFlagAlert;
 
 public class ZoneAlertIDValidator extends DefaultValidator {
 
-	ZoneAlertDAO zoneAlertDAO;
+	RedFlagAlertDAO zoneAlertDAO;
 
 	@Override
 	public boolean isValid(String input) {
@@ -19,10 +20,14 @@ public class ZoneAlertIDValidator extends DefaultValidator {
 		}
 		
 		try {
-			ZoneAlert  zoneAlert = zoneAlertDAO.findByID(id);
+			RedFlagAlert  zoneAlert = zoneAlertDAO.findByID(id);
 			
 			if (zoneAlert == null)
 				return false;
+			
+			if(!zoneAlert.getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE) &&
+			   !zoneAlert.getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE))
+			    return false;
 			
 			return (isValidAccountID(zoneAlert.getAccountID()));
 		}
@@ -37,11 +42,11 @@ public class ZoneAlertIDValidator extends DefaultValidator {
 	}
 
 
-	public ZoneAlertDAO getZoneAlertDAO() {
+	public RedFlagAlertDAO getZoneAlertDAO() {
 		return zoneAlertDAO;
 	}
 
-	public void setZoneAlertDAO(ZoneAlertDAO zoneAlertDAO) {
+	public void setZoneAlertDAO(RedFlagAlertDAO zoneAlertDAO) {
 		this.zoneAlertDAO = zoneAlertDAO;
 	}
 

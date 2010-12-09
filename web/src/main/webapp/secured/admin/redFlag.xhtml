@@ -112,7 +112,7 @@
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editRedFlag_type}" /></td>
                             <td>
-                              <c:set var="typeMessage" value="#{redFlagOrZoneAlertsBean.item.type}" />
+                              <c:set var="typeMessage" value="#{redFlagOrZoneAlertsBean.item.eventSubCategory}" />
                               <h:outputText value="#{messages[typeMessage]}" />
                             </td>
                           </tr>
@@ -154,7 +154,7 @@
                     <tr>
                       <td>
 
-                        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.type == 'ALERT_TYPE_SPEEDING'}">
+                        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory== 'SPEED'}">
 
                           <table width="100%" border="0" cellpadding="2" cellspacing="0">
                             <tr class="datagrid">
@@ -193,7 +193,7 @@
 
                         </h:panelGroup>
 
-                        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.type == 'ALERT_TYPE_AGGRESSIVE_DRIVING'}">
+                        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'DRIVING_STYLE'}">
 
                           <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr class="datagrid">
@@ -242,15 +242,17 @@
 
                         </h:panelGroup>
 
-                        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.type != 'ALERT_TYPE_SPEEDING' and redFlagOrZoneAlertsBean.item.type != 'ALERT_TYPE_AGGRESSIVE_DRIVING' and redFlagOrZoneAlertsBean.item.type != null}">
+                        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory != 'SPEED' and redFlagOrZoneAlertsBean.item.eventSubCategory != 'DRIVING_STYLE' and redFlagOrZoneAlertsBean.item.eventSubCategory != null}">
 
                           <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                             <tr>
                               <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
                             </tr>
-                            <tr class="tableEven">
-                              <c:set var="mp" value="editRedFlag_#{redFlagOrZoneAlertsBean.item.type.description}" />
-                              <td><h:outputText value="#{messages[mp]}" /></td>
+                            <tr class="tableEven"><td>
+                            <rich:dataList value="#{redFlagOrZoneAlertsBean.item.types}" var="type" >
+                                <h:outputText value="#{messages[type]}" />
+                            </rich:dataList>
+                             </td> 
                             </tr>
                           </table>
                         </h:panelGroup>
@@ -277,20 +279,32 @@
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
+                        <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_notificationsByPhone}" /></div>
+
+                        <div>
+                          <h:outputText value="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.picked[0].label}" />
+                          <ui:repeat value="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.picked}" var="person" offset="1">
+                            <h:outputText value=", " />
+                            <h:outputText value="#{person.label}" />
+                          </ui:repeat>
+                        </div>
                       
-                        <!--  
+
+                      </td>
+                    </tr>
+                    <tr>
+                    <td>
                         <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>
 
                         <div>
-                          <a href="mailto:#{email}"><h:outputText value="#{redFlagOrZoneAlertsBean.item.emailTo[0]}" /></a>
-                          <ui:repeat value="#{redFlagOrZoneAlertsBean.item.emailTo}" var="email" offset="1">
+                          <a href="mailto:#{email}"><h:outputText value="#{redFlagOrZoneAlertsBean.item.emailTos[0]}" /></a>
+                          <ui:repeat value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="email" offset="1">
                             <h:outputText value=", " />
                             <a href="mailto:#{email}"><h:outputText value="#{email}" /></a>
                           </ui:repeat>
                         </div>
-                        -->
-
-                      </td>
+                    
+                    </td>
                     </tr>
                   </table>
 

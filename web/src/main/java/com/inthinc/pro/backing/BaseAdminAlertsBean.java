@@ -14,7 +14,7 @@ import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
-import com.inthinc.pro.model.BaseAlert;
+import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -267,11 +267,11 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
             for (final Person person : people) { 
                 if(null != person.getPriPhone() && !"".equals(person.getPriPhone()))
-                    allUsers.add(new SelectItem(person, person.getFullNameWithPriPhone()));
+                    allUsers.add(new SelectItem(person.getPersonID(), person.getFullNameWithPriPhone()));
             }
             MiscUtil.sortSelectItems(allUsers);
 
-            final ArrayList<SelectItem> notifyPeople = getNotifyPicked();
+            final ArrayList<SelectItem> notifyPeople = getEscalationPicked();
 
             escalationPeoplePicker = new AutocompletePicker(allUsers, notifyPeople);
         }
@@ -304,6 +304,22 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return notifyPeople;
     }
 
+    private ArrayList<SelectItem> getEscalationPicked()
+    {
+        final ArrayList<SelectItem> notifyPeople = new ArrayList<SelectItem>();
+        if (getItem().getNotifyPersonIDs() != null)
+        {
+            for (final Integer id : getItem().getVoiceEscalationPersonIDs())
+            {
+                //final User user = userDAO.findByID(id);
+                final Person person = personDAO.findByID(id);
+                if (!isPersonDeleted(person))
+                    notifyPeople.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
+            }
+//            MiscUtil.sortSelectItems(notifyPeople);
+        }
+        return notifyPeople;
+    }
     private boolean isPersonDeleted(Person person)
     {
     	if (person == null)
@@ -324,6 +340,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         assignPicker = null;
         peoplePicker = null;
+        escalationPeoplePicker = null;
     }
 
     @Override
@@ -337,6 +354,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             getAssignPicker().setPicked(getAssignPicked());
             getAssignPicker().setPickFrom(getAssignPickFrom());
             getPeoplePicker().setPicked(getNotifyPicked());
+            getEscalationPeoplePicker().setPicked(getEscalationPicked());
         }
         if ((item.getDayOfWeek() == null) || (item.getDayOfWeek().size() != 7))
         {
@@ -369,6 +387,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         getAssignPicker().setPicked(getAssignPicked());
         getPeoplePicker().setPicked(getNotifyPicked());
+        getEscalationPeoplePicker().setPicked(getEscalationPicked());
         getItem().setEmailToString(getOldEmailToString());
         return super.cancelEdit();
     }
@@ -427,6 +446,13 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             userIDs.add((Integer) item.getValue());
         
         getItem().setNotifyPersonIDs(userIDs);
+        
+        // set notify user IDs
+        final ArrayList<Integer> escalationUserIDs = new ArrayList<Integer>(getEscalationPeoplePicker().getPicked().size());
+        for (final SelectItem item : getEscalationPeoplePicker().getPicked())
+            escalationUserIDs.add((Integer) item.getValue());
+
+        getItem().setEscalationPersonIDs(escalationUserIDs);
         
         if (!isBatchEdit()) {
             for (SelectItem selectItem : getAllGroupUsers()) {
@@ -526,15 +552,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     {
         if (anytime)
         {
-            alert.setStartTOD(BaseAlert.MIN_TOD);
-            alert.setStopTOD(BaseAlert.MIN_TOD);
+            alert.setStartTOD(RedFlagAlert.MIN_TOD);
+            alert.setStopTOD(RedFlagAlert.MIN_TOD);
         }
         else
         {
             if (alert.getStartTOD() == null)
-                alert.setStartTOD(BaseAlert.DEFAULT_START_TOD);
+                alert.setStartTOD(RedFlagAlert.DEFAULT_START_TOD);
             if (alert.getStopTOD() == null)
-                alert.setStopTOD(BaseAlert.DEFAULT_STOP_TOD);
+                alert.setStopTOD(RedFlagAlert.DEFAULT_STOP_TOD);
         }
     }
     
@@ -582,6 +608,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         public List<Integer> getNotifyPersonIDs();
 
         public void setNotifyPersonIDs(List<Integer> notifyPersonIDs);
+        
+        public void setEscalationPersonIDs(List<Integer> notifyPersonIDs);
 
         public List<String> getEmailTo();
 
@@ -597,10 +625,10 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         
         public List<Integer> getVoiceEscalationPersonIDs();
         
-        public void setVoiceEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs);
+//        public void setVoiceEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs);
 
         public Integer getEmailEscalationPersonID();
 
-        public void setEmailEscalationPersonID(Integer emailEscalationPersonID);
+//        public void setEmailEscalationPersonID(Integer emailEscalationPersonID);
     }
 }

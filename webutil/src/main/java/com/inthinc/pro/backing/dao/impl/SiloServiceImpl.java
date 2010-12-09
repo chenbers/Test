@@ -56,7 +56,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Creates a new red flag alert preferences.", crudType=CrudType.CREATE)
-    public Map<String, Object> createRedFlagAlert(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
+    public Map<String, Object> createAlert(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "RedFlagAlert", type = com.inthinc.pro.model.RedFlagAlert.class) Map<String, Object> redFlagAlertMap) throws ProDAOException {
         return null;
     }
@@ -89,12 +89,12 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
 
-    @Override
-    @MethodDescription(description = "Creates a new zone alert preference.", crudType=CrudType.CREATE)
-    public Map<String, Object> createZoneAlert(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
-            @DaoParam(name = "ZoneAlert", type = com.inthinc.pro.model.ZoneAlert.class) Map<String, Object> zoneAlertMap) throws ProDAOException {
-        return null;
-    }
+//    @Override
+//    @MethodDescription(description = "Creates a new zone alert preference.", crudType=CrudType.CREATE)
+//    public Map<String, Object> createZoneAlert(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
+//            @DaoParam(name = "ZoneAlert", type = com.inthinc.pro.model.ZoneAlert.class) Map<String, Object> zoneAlertMap) throws ProDAOException {
+//        return null;
+//    }
 
     @Override
     @MethodDescription(description = "Delete an account.", crudType=CrudType.DELETE)
@@ -128,7 +128,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Delete a red flag alert preference.", crudType=CrudType.DELETE)
-    public Map<String, Object> deleteRedFlagAlert(@DaoParam(name = "redFlagAlertID") Integer redFlagAlertID) throws ProDAOException {
+    public Map<String, Object> deleteAlert(@DaoParam(name = "redFlagAlertID") Integer redFlagAlertID) throws ProDAOException {
         return null;
     }
 
@@ -156,15 +156,15 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
 
+//    @Override
+//    @MethodDescription(description = "Delete a zone alert preference.", crudType=CrudType.DELETE)
+//    public Map<String, Object> deleteZoneAlert(@DaoParam(name = "zoneAlertID") Integer zoneAlertID) throws ProDAOException {
+//        return null;
+//    }
+//
     @Override
     @MethodDescription(description = "Delete a zone alert preference.", crudType=CrudType.DELETE)
-    public Map<String, Object> deleteZoneAlert(@DaoParam(name = "zoneAlertID") Integer zoneAlertID) throws ProDAOException {
-        return null;
-    }
-
-    @Override
-    @MethodDescription(description = "Delete a zone alert preference.", crudType=CrudType.DELETE)
-    public Map<String, Object> deleteZoneAlertsByZoneID(@DaoParam(name = "zoneID") Integer zoneID) {
+    public Map<String, Object> deleteAlertsByZoneID(@DaoParam(name = "zoneID") Integer zoneID) {
         return null;
     }
 
@@ -341,14 +341,14 @@ public class SiloServiceImpl implements SiloService {
     @Override
     @MethodDescription(description = "Fetches a red flag alert preference.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class,
 			mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
-    public Map<String, Object> getRedFlagAlert(@DaoParam(name = "redFlagAlertID", validator=ValidatorType.RED_FLAG_ALERT) Integer redFlagAlertID) throws ProDAOException {
+    public Map<String, Object> getAlert(@DaoParam(name = "redFlagAlertID", validator=ValidatorType.RED_FLAG_ALERT) Integer redFlagAlertID) throws ProDAOException {
         return null;
     }
 
     @Override
     @MethodDescription(description = "Fetches all red flag alert preferences for the account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class,
 			mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
-    public List<Map<String, Object>> getRedFlagAlertsByAcctID(@DaoParam(name = "accountID", isAccountID=true) Integer accountID) {
+    public List<Map<String, Object>> getAlertsByAcctID(@DaoParam(name = "accountID", isAccountID=true) Integer accountID) {
         return null;
     }
 
@@ -440,17 +440,17 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
 
-    @Override
-    @MethodDescription(description = "Fetches a zone alert preference.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
-    public Map<String, Object> getZoneAlert(@DaoParam(name = "zoneAlertID", validator=ValidatorType.ZONE_ALERT) Integer zoneAlertID) throws ProDAOException {
-        return null;
-    }
-
-    @Override
-    @MethodDescription(description = "Fetches all zone alert preferences for an account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
-    public List<Map<String, Object>> getZoneAlertsByAcctID(@DaoParam(name = "accountID", isAccountID=true) Integer accountID) {
-        return null;
-    }
+//    @Override
+//    @MethodDescription(description = "Fetches a zone alert preference.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
+//    public Map<String, Object> getZoneAlert(@DaoParam(name = "zoneAlertID", validator=ValidatorType.ZONE_ALERT) Integer zoneAlertID) throws ProDAOException {
+//        return null;
+//    }
+//
+//    @Override
+//    @MethodDescription(description = "Fetches all zone alert preferences for an account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
+//    public List<Map<String, Object>> getZoneAlertsByAcctID(@DaoParam(name = "accountID", isAccountID=true) Integer accountID) {
+//        return null;
+//    }
 
     @Override
     @MethodDescription(description = "Fetches all zones for an account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Zone.class)
@@ -540,7 +540,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Update a red flag alert preference.", crudType=CrudType.UPDATE)
-    public Map<String, Object> updateRedFlagAlert(@DaoParam(name = "redFlagAlertID") Integer redFlagAlertID,
+    public Map<String, Object> updateAlert(@DaoParam(name = "redFlagAlertID") Integer redFlagAlertID,
             @DaoParam(name = "RedFlagAlert", type = com.inthinc.pro.model.RedFlagAlert.class) Map<String, Object> redFlagAlertMap) throws ProDAOException {
         return null;
     }
@@ -573,12 +573,12 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
 
-    @Override
-    @MethodDescription(description = "Update a zone alert prefreference.", crudType=CrudType.UPDATE)
-    public Map<String, Object> updateZoneAlert(@DaoParam(name = "zoneAlertID") Integer zoneAlertID,
-            @DaoParam(name = "ZoneAlert", type = com.inthinc.pro.model.ZoneAlert.class) Map<String, Object> zoneAlertMap) throws ProDAOException {
-        return null;
-    }
+//    @Override
+//    @MethodDescription(description = "Update a zone alert prefreference.", crudType=CrudType.UPDATE)
+//    public Map<String, Object> updateZoneAlert(@DaoParam(name = "zoneAlertID") Integer zoneAlertID,
+//            @DaoParam(name = "ZoneAlert", type = com.inthinc.pro.model.ZoneAlert.class) Map<String, Object> zoneAlertMap) throws ProDAOException {
+//        return null;
+//    }
 
     @Override
     @MethodDescription(description = "Fetch a driver by its associated personID.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Driver.class)
@@ -927,28 +927,35 @@ public class SiloServiceImpl implements SiloService {
 	@Override
     @MethodDescription(description = "Fetches red flag alerts for the group hierarchy of the specified user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class,
             mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
-	public List<Map<String, Object>> getRedFlagAlertsByUserIDDeep(@DaoParam(name = "userID", validator=ValidatorType.USER) Integer userID) {
+	public List<Map<String, Object>> getAlertsByUserIDDeep(@DaoParam(name = "userID", validator=ValidatorType.USER) Integer userID) {
 		return null;
 	}
 
 	@Override
     @MethodDescription(description = "Fetches red flag alerts for the user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class,
             mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
-	public List<Map<String, Object>> getRedFlagAlertsByUserID(@DaoParam(name = "userID", validator=ValidatorType.USER)Integer userID) {
+	public List<Map<String, Object>> getAlertsByUserID(@DaoParam(name = "userID", validator=ValidatorType.USER)Integer userID) {
 		return null;
 	}
+    @Override
+    @MethodDescription(description = "Fetches red flag alerts for the group.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlagAlert.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
+    public List<Map<String, Object>> getAlertsByTeamGroupID(Integer groupID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-    @MethodDescription(description = "Fetches zone alerts for the group hierarchy of the specified user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
-	public List<Map<String, Object>> getZoneAlertsByUserIDDeep(@DaoParam(name = "userID", validator=ValidatorType.USER) Integer userID) {
-		return null;
-	}
-
-	@Override
-    @MethodDescription(description = "Fetches zone alerts for the user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
-	public List<Map<String, Object>> getZoneAlertsByUserID(@DaoParam(name = "userID", validator=ValidatorType.USER)Integer userID) {
-		return null;
-	}
+//	@Override
+//    @MethodDescription(description = "Fetches zone alerts for the group hierarchy of the specified user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
+//	public List<Map<String, Object>> getZoneAlertsByUserIDDeep(@DaoParam(name = "userID", validator=ValidatorType.USER) Integer userID) {
+//		return null;
+//	}
+//
+//	@Override
+//    @MethodDescription(description = "Fetches zone alerts for the user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ZoneAlert.class)
+//	public List<Map<String, Object>> getZoneAlertsByUserID(@DaoParam(name = "userID", validator=ValidatorType.USER)Integer userID) {
+//		return null;
+//	}
 
 	@Override
     @MethodDescription(description = "Fetches report schedules for the group hierarchy of the specified user.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.ReportSchedule.class)
@@ -1006,18 +1013,18 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
     
-    @Override
-    @MethodDescription(description = "Create a new text message alert.", crudType=CrudType.CREATE, modelClass=com.inthinc.pro.model.TextMsgAlert.class)    
-    public Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) {
-        return null;
-    }
-    
-    @Override
-    @MethodDescription(description = "Fetches a text message alert.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.TextMsgAlert.class) 
-    public List<Map<String,Object>> getTextMsgAlertsByAcctID(@DaoParam(name = "acctID") Integer acctID) {
-        return null;
-    }
-    
+//    @Override
+//    @MethodDescription(description = "Create a new text message alert.", crudType=CrudType.CREATE, modelClass=com.inthinc.pro.model.TextMsgAlert.class)    
+//    public Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) {
+//        return null;
+//    }
+//    
+//    @Override
+//    @MethodDescription(description = "Fetches a text message alert.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.TextMsgAlert.class) 
+//    public List<Map<String,Object>> getTextMsgAlertsByAcctID(@DaoParam(name = "acctID") Integer acctID) {
+//        return null;
+//    }
+//    
     @Override
     @MethodDescription(description = "Get a subset of text message alerts for the specifed group and time frame.", 
     		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.TextMsgAlert.class
@@ -1058,18 +1065,19 @@ public class SiloServiceImpl implements SiloService {
 	public List<Map<String, Object>> getSensitivitySliderValues() {
 		return null;
 	}
-    @Override
-    @MethodDescription(description = "Fetches the list of escalation items for an alert.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.AlertEscalationItem.class,
-            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
-    public List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID) {
-        return null;
-    }
+//    @Override
+//    @MethodDescription(description = "Fetches the list of escalation items for an alert.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.AlertEscalationItem.class,
+//            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilRedFlagAlertMapper.class)
+//    public List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID) {
+//        return null;
+//    }
 
     @Override
    @MethodDescription(description = "Sends an UPDATE_ZONES forward command to all devices.", crudType=CrudType.UPDATE)
    public Map<String, Object> publishZones(@DaoParam(name = "accountID", isAccountID=true) Integer accountID) {
         return null;
     }
+
     
 	
 }

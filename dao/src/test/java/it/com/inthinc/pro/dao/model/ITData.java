@@ -26,12 +26,11 @@ import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneAlert;
 
 public class ITData extends BaseITData{
 
 	public List<GroupData> teamGroupData;
-	public ZoneAlert zoneAlert;
+	public RedFlagAlert zoneAlert;
 	public List<RedFlagAlert> redFlagAlertList;
 
     
@@ -176,7 +175,7 @@ public class ITData extends BaseITData{
             }
             if (includeZonesAndAlerts) {
             	zone = getNext(xmlDecoder, Zone.class);
-            	zoneAlert = getNext(xmlDecoder, ZoneAlert.class);
+            	zoneAlert = getNext(xmlDecoder, RedFlagAlert.class);
             	redFlagAlertList = new ArrayList<RedFlagAlert>();
             	for (int i = 0; i < 7; i++) {
             		redFlagAlertList.add(getNext(xmlDecoder, RedFlagAlert.class));

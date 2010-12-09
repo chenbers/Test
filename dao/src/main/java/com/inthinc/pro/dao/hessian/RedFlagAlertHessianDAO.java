@@ -22,7 +22,7 @@ public class RedFlagAlertHessianDAO extends GenericHessianDAO<RedFlagAlert, Inte
     {
         try
         {
-            return getMapper().convertToModelObject(getSiloService().getRedFlagAlertsByAcctID(accountID), RedFlagAlert.class);
+            return getMapper().convertToModelObject(getSiloService().getAlertsByAcctID(accountID), RedFlagAlert.class);
         }
         catch (EmptyResultSetException e)
         {
@@ -33,7 +33,7 @@ public class RedFlagAlertHessianDAO extends GenericHessianDAO<RedFlagAlert, Inte
     @Override
     public List<RedFlagAlert> getRedFlagAlertsByUserID(Integer userID) {
         try {
-            return getMapper().convertToModelObject(getSiloService().getRedFlagAlertsByUserID(userID), RedFlagAlert.class);
+            return getMapper().convertToModelObject(getSiloService().getAlertsByUserID(userID), RedFlagAlert.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
@@ -42,9 +42,22 @@ public class RedFlagAlertHessianDAO extends GenericHessianDAO<RedFlagAlert, Inte
     @Override
     public List<RedFlagAlert> getRedFlagAlertsByUserIDDeep(Integer userID) {
         try {
-            return getMapper().convertToModelObject(getSiloService().getRedFlagAlertsByUserIDDeep(userID), RedFlagAlert.class);
+            return getMapper().convertToModelObject(getSiloService().getAlertsByUserIDDeep(userID), RedFlagAlert.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }
     }
+    @Override
+    public Integer deleteAlertsByZoneID(Integer zoneID)
+    {
+        return getChangedCount(getSiloService().deleteAlertsByZoneID(zoneID));
+    }
+    @Override
+    public List<RedFlagAlert> getAlertsByTeamGroupID(Integer groupID) {
+        try {
+            return getMapper().convertToModelObject(getSiloService().getAlertsByTeamGroupID(groupID), RedFlagAlert.class);
+        } catch (EmptyResultSetException e) {
+            return Collections.emptyList();
+        }
+   }
 }

@@ -1,20 +1,22 @@
 package com.inthinc.pro.model;
 
-import com.inthinc.pro.dao.annotations.Column;
+import java.io.Serializable;
 
-public class AlertEscalationItem {
+public class AlertEscalationItem implements Serializable{
     
-    @Column(name = "alertID")
-    private Integer redFlagAlertID;
-    private Integer personID;
-    private Integer ordinal;
-    private AlertMessageDeliveryType alertMessageDeliveryType;
-    
-    public Integer getId() {
-        return redFlagAlertID;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    public AlertEscalationItem() {
+        super();
     }
-    public void setId(Integer redFlagAlertID) {
-        this.redFlagAlertID = redFlagAlertID;
+    private Integer personID;
+    private Integer escalationOrder; //-1 = last resort email
+    
+    public AlertEscalationItem(Integer personID, Integer escalationOrder) {
+        this.personID = personID;
+        this.escalationOrder = escalationOrder;
     }
     public Integer getPersonID() {
         return personID;
@@ -22,16 +24,10 @@ public class AlertEscalationItem {
     public void setPersonID(Integer personID) {
         this.personID = personID;
     }
-    public AlertMessageDeliveryType getAlertMessageDeliveryType() {
-        return alertMessageDeliveryType;
+    public Integer getEscalationOrder() {
+        return escalationOrder;
     }
-    public void setAlertMessageDeliveryType(AlertMessageDeliveryType alertMessageDeliveryType) {
-        this.alertMessageDeliveryType = alertMessageDeliveryType;
-    }
-    public Integer getOrdinal() {
-        return ordinal;
-    }
-    public void setOrdinal(Integer ordinal) {
-        this.ordinal = ordinal;
+    public void setEscalationOrder(Integer escalationOrder) {
+        this.escalationOrder = escalationOrder;
     }
 }

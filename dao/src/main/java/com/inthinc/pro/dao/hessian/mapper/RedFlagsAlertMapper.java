@@ -45,6 +45,7 @@ public class RedFlagsAlertMapper extends AbstractMapper
             
         }
     }
+    @SuppressWarnings("unchecked")
     @ConvertFieldToColumn(fieldName = "speedSettings")
     public void speedSettingsToColumn(RedFlagAlert redFlagAlert, Object value)
     {

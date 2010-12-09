@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.TextMsgAlertDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;

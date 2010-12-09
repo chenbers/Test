@@ -12,6 +12,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.backing.ui.TableColumn;
@@ -473,7 +474,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
                     ignoreFields.add(key);
             
             ignoreFields.add("rolePicker");
-            
+            ignoreFields.add("escEmailsDataTable");
+            ignoreFields.add("phNumbersDataTable");
+            ignoreFields.add("emailTosDataTable");
+
             //we need to validate the item before we copy the properties. 
             if(!validateBatchEdit(item))
             {

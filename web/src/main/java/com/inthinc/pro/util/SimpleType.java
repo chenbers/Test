@@ -2,12 +2,10 @@ package com.inthinc.pro.util;
 
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneAlert;
 
 /**
  * @author mstrong
@@ -20,7 +18,7 @@ import com.inthinc.pro.model.ZoneAlert;
 
 public enum SimpleType
 {
-    ZONE_ALERT_TYPE(ZoneAlert.class,Zone.class);
+    ZONE_ALERT_TYPE(RedFlagAlert.class,Zone.class);
     
     @SuppressWarnings("unchecked")
     private List<Class> simpleTypes;

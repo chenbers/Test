@@ -16,6 +16,7 @@ import com.inthinc.pro.model.BaseEnum;
 public enum NoteType implements BaseEnum {
     
     //TODO These trip types are used by web TeamTripsBean but not clear why?
+    // Because the trips need start and end or in progress events to map onto the correct icon on the map
     TRIP_START(-1),
     TRIP_INPROGRESS(-2),
     TRIP_END(-3),

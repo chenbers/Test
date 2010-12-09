@@ -39,7 +39,6 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 
@@ -536,73 +535,73 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return createReturnValue("count", 1);
     }
 
-    @Override
-    public List<Map<String, Object>> getZoneAlertsByAcctID(Integer accountID) {
-        final SearchCriteria criteria = new SearchCriteria();
-        criteria.addKeyValue("accountID", accountID);
-        return MockData.getInstance().lookupList(ZoneAlert.class, criteria);
-    }
+//    @Override
+//    public List<Map<String, Object>> getZoneAlertsByAcctID(Integer accountID) {
+//        final SearchCriteria criteria = new SearchCriteria();
+//        criteria.addKeyValue("accountID", accountID);
+//        return MockData.getInstance().lookupList(ZoneAlert.class, criteria);
+//    }
+//
+//    @Override
+//    public Map<String, Object> deleteZoneAlert(Integer zoneAlertID) throws ProDAOException {
+//        return createReturnValue("count", 0);
+//    }
+//
+//    @Override
+//    public Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID) {
+//        return createReturnValue("count", 0);
+//    }
+//
+//    @Override
+//    public Map<String, Object> createZoneAlert(Integer acctID, Map<String, Object> zoneAlertMap) throws ProDAOException {
+//        // TODO: actually store the object to the mock data
+//        return createReturnValue("zoneAlertID", (int) (Math.random() * Integer.MAX_VALUE));
+//    }
+
+//    @Override
+//    public Map<String, Object> getZoneAlert(Integer zoneAlertID) throws ProDAOException {
+//        return doMockLookup(ZoneAlert.class, "zoneAlertID", zoneAlertID, "No zoneAlert for ID: " + zoneAlertID, "getZoneAlert");
+//
+//    }
+//
+//    @Override
+//    public Map<String, Object> updateZoneAlert(Integer zoneAlertID, Map<String, Object> zoneAlertMap) throws ProDAOException {
+//        return createReturnValue("count", 1);
+//    }
 
     @Override
-    public Map<String, Object> deleteZoneAlert(Integer zoneAlertID) throws ProDAOException {
-        return createReturnValue("count", 0);
-    }
-
-    @Override
-    public Map<String, Object> deleteZoneAlertsByZoneID(Integer zoneID) {
-        return createReturnValue("count", 0);
-    }
-
-    @Override
-    public Map<String, Object> createZoneAlert(Integer acctID, Map<String, Object> zoneAlertMap) throws ProDAOException {
-        // TODO: actually store the object to the mock data
-        return createReturnValue("zoneAlertID", (int) (Math.random() * Integer.MAX_VALUE));
-    }
-
-    @Override
-    public Map<String, Object> getZoneAlert(Integer zoneAlertID) throws ProDAOException {
-        return doMockLookup(ZoneAlert.class, "zoneAlertID", zoneAlertID, "No zoneAlert for ID: " + zoneAlertID, "getZoneAlert");
-
-    }
-
-    @Override
-    public Map<String, Object> updateZoneAlert(Integer zoneAlertID, Map<String, Object> zoneAlertMap) throws ProDAOException {
-        return createReturnValue("count", 1);
-    }
-
-    @Override
-    public List<Map<String, Object>> getRedFlagAlertsByAcctID(Integer accountID) {
+    public List<Map<String, Object>> getAlertsByAcctID(Integer accountID) {
         final SearchCriteria criteria = new SearchCriteria();
         criteria.addKeyValue("accountID", accountID);
         return MockData.getInstance().lookupList(RedFlagAlert.class, criteria);
     }
 
     @Override
-    public Map<String, Object> deleteRedFlagAlert(Integer redFlagAlertID) throws ProDAOException {
+    public Map<String, Object> deleteAlert(Integer redFlagAlertID) throws ProDAOException {
         return createReturnValue("count", 0);
     }
 
     @Override
-    public Map<String, Object> createRedFlagAlert(Integer acctID, Map<String, Object> redFlagAlertMap) throws ProDAOException {
+    public Map<String, Object> createAlert(Integer acctID, Map<String, Object> redFlagAlertMap) throws ProDAOException {
         // TODO: actually store the object to the mock data
         return createReturnValue("redFlagAlertID", (int) (Math.random() * Integer.MAX_VALUE));
     }
 
     @Override
-    public Map<String, Object> getRedFlagAlert(Integer redFlagAlertID) throws ProDAOException {
+    public Map<String, Object> getAlert(Integer redFlagAlertID) throws ProDAOException {
         return doMockLookup(RedFlagAlert.class, "redFlagAlertID", redFlagAlertID, "No redFlagAlert for ID: " + redFlagAlertID, "getRedFlagAlert");
 
     }
 
     @Override
-    public Map<String, Object> updateRedFlagAlert(Integer redFlagAlertID, Map<String, Object> redFlagAlertMap) throws ProDAOException {
+    public Map<String, Object> updateAlert(Integer redFlagAlertID, Map<String, Object> redFlagAlertMap) throws ProDAOException {
         return createReturnValue("count", 1);
     }
     
-    @Override
-    public List<Map<String, Object>> getTextMsgAlertsByAcctID(Integer accountID) {
-        return null;
-    }    
+//    @Override
+//    public List<Map<String, Object>> getTextMsgAlertsByAcctID(Integer accountID) {
+//        return null;
+//    }    
 
     @Override
     public Map<String, Object> createAcct(Integer siloID, Map<String, Object> acctMap) throws ProDAOException {
@@ -1323,30 +1322,30 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return null;
     }
 	@Override
-	public List<Map<String, Object>> getRedFlagAlertsByUserIDDeep(Integer userID) {
+	public List<Map<String, Object>> getAlertsByUserIDDeep(Integer userID) {
         User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
         Person person = (Person) MockData.getInstance().lookupObject(Person.class, "personID", user.getPersonID());
-		return getRedFlagAlertsByAcctID(person.getAcctID());
+		return getAlertsByAcctID(person.getAcctID());
 	}
 
 	@Override
-	public List<Map<String, Object>> getRedFlagAlertsByUserID(Integer userID) {
+	public List<Map<String, Object>> getAlertsByUserID(Integer userID) {
         User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
-		return getRedFlagAlertsByAcctID(user.getPerson().getAcctID());
+		return getAlertsByAcctID(user.getPerson().getAcctID());
 	}
 
-	@Override
-	public List<Map<String, Object>> getZoneAlertsByUserIDDeep(Integer userID) {
-        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
-        Person person = (Person) MockData.getInstance().lookupObject(Person.class, "personID", user.getPersonID());
-		return getZoneAlertsByAcctID(person.getAcctID());
-	}
-
-	@Override
-	public List<Map<String, Object>> getZoneAlertsByUserID(Integer userID) {
-        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
-		return getZoneAlertsByAcctID(user.getPerson().getAcctID());
-	}
+//	@Override
+//	public List<Map<String, Object>> getZoneAlertsByUserIDDeep(Integer userID) {
+//        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
+//        Person person = (Person) MockData.getInstance().lookupObject(Person.class, "personID", user.getPersonID());
+//		return getZoneAlertsByAcctID(person.getAcctID());
+//	}
+//
+//	@Override
+//	public List<Map<String, Object>> getZoneAlertsByUserID(Integer userID) {
+//        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
+//		return getZoneAlertsByAcctID(user.getPerson().getAcctID());
+//	}
 
 	@Override
 	public List<Map<String, Object>> getReportPrefsByUserIDDeep(Integer userID)
@@ -1399,11 +1398,11 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return null;
     }
     
-    @Override
-    public Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) throws ProDAOException {
-        return null;
-    }
-    
+//    @Override
+//    public Map<String,Object> createTextMsgAlert(Integer acctID, Map<String,Object> textMsgAlertMap) throws ProDAOException {
+//        return null;
+//    }
+//    
     @Override
 	public List<Map<String, Object>> getSensitivitySliderValues() {
 		// TODO Auto-generated method stub
@@ -1426,14 +1425,26 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         // TODO Auto-generated method stub
         return null;
     }
+//    @Override
+//    public List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID) {
+//        // TODO Auto-generated method stub
+//        return null;
+//    }
+
     @Override
-    public List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID) {
+    public Map<String, Object> publishZones(Integer accountID) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Map<String, Object> publishZones(Integer accountID) {
+    public Map<String, Object> deleteAlertsByZoneID(Integer zoneID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getAlertsByTeamGroupID(Integer groupID) {
         // TODO Auto-generated method stub
         return null;
     }

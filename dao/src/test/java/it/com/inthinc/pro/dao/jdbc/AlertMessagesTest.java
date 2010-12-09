@@ -11,15 +11,18 @@ import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import it.util.EventGenerator;
 import it.util.MCMSimulator;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
@@ -28,7 +31,6 @@ import com.inthinc.pro.dao.hessian.PersonHessianDAO;
 import com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
-import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
@@ -39,9 +41,9 @@ import com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO;
 import com.inthinc.pro.map.GeonamesAddressLookup;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.VehicleType;
-import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.Event;
@@ -75,11 +77,11 @@ public class AlertMessagesTest extends BaseJDBCTest{
     private static ZoneHessianDAO zoneHessianDAO;
     private static GeonamesAddressLookup addressLookup;
     
-    private static ZoneAlertHessianDAO zoneAlertHessianDAO;
+    private static RedFlagAlertHessianDAO zoneAlertHessianDAO;
     private static RedFlagAlertHessianDAO redFlagAlertHessianDAO;
-    private static List<ZoneAlert> zoneAlerts;
+    private static List<RedFlagAlert> zoneAlerts;
     private static List<RedFlagAlert> redFlagAlerts;
-    private static List<ZoneAlert> originalZoneAlerts;
+    private static List<RedFlagAlert> originalZoneAlerts;
     private static List<RedFlagAlert> originalRedFlagAlerts;
     private static ITData itData;
     
@@ -102,8 +104,8 @@ public class AlertMessagesTest extends BaseJDBCTest{
         if (!itData.parseTestData(stream, siloService, true, true)) {
             throw new Exception("Error parsing Test data xml file");
         }
-    	zoneAlerts = zoneAlertHessianDAO.getZoneAlerts(itData.account.getAcctID());
-        originalZoneAlerts = zoneAlertHessianDAO.getZoneAlerts(itData.account.getAcctID());
+    	zoneAlerts = zoneAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
+        originalZoneAlerts = zoneAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
     	
     	redFlagAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
         originalRedFlagAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
@@ -126,7 +128,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
         // save original settings
-    	for (ZoneAlert zoneAlert : originalZoneAlerts) {
+    	for (RedFlagAlert zoneAlert : originalZoneAlerts) {
     	    zoneAlertHessianDAO.update(zoneAlert);
     	}
     	for (RedFlagAlert redFlagAlert : originalRedFlagAlerts) {
@@ -134,60 +136,60 @@ public class AlertMessagesTest extends BaseJDBCTest{
     	}
     }
 
-    
+    @Ignore
     @Test
     public void zoneAlerts() {
-    	for (ZoneAlert zoneAlert : zoneAlerts) {
-    		EventType eventType = getEventType(zoneAlert);
-	    	Integer zoneID = itData.zone.getZoneID();
-	        String IMEI = itData.teamGroupData.get(ITData.GOOD).device.getImei();
-	
-	        boolean anyAlertsFound = false;
-	        // generate zone arrival/departure event
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
-	        if (pollForMessages("Zone Alert Groups Set"))
-	        	anyAlertsFound = true;
+//    	for (RedFlagAlert zoneAlert : zoneAlerts) {
+//    		EventType eventType = getEventType(zoneAlert);
+//	    	Integer zoneID = itData.zone.getZoneID();
+//	        String IMEI = itData.teamGroupData.get(ITData.GOOD).device.getImei();
+//	
+//	        boolean anyAlertsFound = false;
+//	        // generate zone arrival/departure event
+//	        if (!genZoneEvent(IMEI, zoneID, eventType))
+//	            fail("Unable to generate zone arrival event");
+//	        if (pollForMessages("Zone Alert Groups Set"))
+//	        	anyAlertsFound = true;
 	        
-	        modZoneAlertPref(DRIVERS, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
-	        if (pollForMessages("Zone Alert Drivers Set"))
-	        	anyAlertsFound = true;
-	        modZoneAlertPref(VEHICLES, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
-	        if (pollForMessages("Zone Alert Vehicles Set"))
-	        	anyAlertsFound = true;
-	        modZoneAlertPref(VEHICLE_TYPES, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
-	        if (pollForMessages("Zone Alert Vehicle Types Set"))
-	        	anyAlertsFound = true;
-	        modZoneAlertPref(CONTACT_INFO, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
-	        if (pollForMessages("Zone Alert Contact Info Set"))
-	        	anyAlertsFound = true;
-	        modZoneAlertPref(ANY_TIME, zoneAlert);
-	        if (!genZoneEvent(IMEI, zoneID, eventType))
-	            fail("Unable to generate zone arrival event");
-	        if (pollForMessages("Zone Alert ANY TIME (0,0) Set"))
-	        	anyAlertsFound = true;
-	        assertTrue("No Zone Alerts were generated", anyAlertsFound);
-    	}
+//	        modZoneAlertPref(DRIVERS, zoneAlert);
+//	        if (!genZoneEvent(IMEI, zoneID, eventType))
+//	            fail("Unable to generate zone arrival event");
+//	        if (pollForMessages("Zone Alert Drivers Set"))
+//	        	anyAlertsFound = true;
+//	        modZoneAlertPref(VEHICLES, zoneAlert);
+//	        if (!genZoneEvent(IMEI, zoneID, eventType))
+//	            fail("Unable to generate zone arrival event");
+//	        if (pollForMessages("Zone Alert Vehicles Set"))
+//	        	anyAlertsFound = true;
+//	        modZoneAlertPref(VEHICLE_TYPES, zoneAlert);
+//	        if (!genZoneEvent(IMEI, zoneID, eventType))
+//	            fail("Unable to generate zone arrival event");
+//	        if (pollForMessages("Zone Alert Vehicle Types Set"))
+//	        	anyAlertsFound = true;
+//	        modZoneAlertPref(CONTACT_INFO, zoneAlert);
+//	        if (!genZoneEvent(IMEI, zoneID, eventType))
+//	            fail("Unable to generate zone arrival event");
+//	        if (pollForMessages("Zone Alert Contact Info Set"))
+//	        	anyAlertsFound = true;
+//	        modZoneAlertPref(ANY_TIME, zoneAlert);
+//	        if (!genZoneEvent(IMEI, zoneID, eventType))
+//	            fail("Unable to generate zone arrival event");
+//	        if (pollForMessages("Zone Alert ANY TIME (0,0) Set"))
+//	        	anyAlertsFound = true;
+//	        assertTrue("No Zone Alerts were generated", anyAlertsFound);
+//    	}
     }
 
     @Test
     public void alertsUnknownDriver() {
         boolean anyAlertsFound = false;
-    	for (ZoneAlert zoneAlert : zoneAlerts) {
-    		EventType eventType = getEventType(zoneAlert);
+    	for (RedFlagAlert zoneAlert : zoneAlerts) {
+    		List<EventType> eventTypes = getZoneEventTypes(zoneAlert);
 	    	Integer zoneID = itData.zone.getZoneID();
 	        String noDriverDeviceIMEI = itData.noDriverDevice.getImei();
 	        
 	        // generate zone arrival/departure event
-	        if (!genZoneEvent(noDriverDeviceIMEI, zoneID, eventType))
+	        if (!genZoneEvent(noDriverDeviceIMEI, zoneID, eventTypes.get(0)))
 	            fail("Unable to generate zone arrival event");
 	        if (pollForMessages("Zone Alert Groups Set"))
 	        	anyAlertsFound = true;
@@ -195,10 +197,10 @@ public class AlertMessagesTest extends BaseJDBCTest{
 	        
     	}
     	for (RedFlagAlert redFlagAlert : redFlagAlerts) {
-    		EventType eventType = getEventType(redFlagAlert);
+    		List<EventType> eventTypes = getEventTypes(redFlagAlert);
 	        String noDriverDeviceIMEI = itData.noDriverDevice.getImei();
 	        
-	        if (!genEvent(noDriverDeviceIMEI, eventType))
+	        if (!genEvent(noDriverDeviceIMEI, eventTypes.get(0)))
 	            fail("Unable to generate no driver event");
 	        if (pollForMessages("Red Flag Alert Groups Set"))
 	        	anyAlertsFound = true;
@@ -212,46 +214,46 @@ public class AlertMessagesTest extends BaseJDBCTest{
     	for (RedFlagAlert redFlagAlert : redFlagAlerts) {
             boolean anyAlertsFound = false;
 	        modRedFlagAlertPref(GROUPS, redFlagAlert);
-    		EventType eventType = getEventType(redFlagAlert);
+	        List<EventType> eventTypes = getEventTypes(redFlagAlert);
 	        String IMEI = groupData.device.getImei();
-	        if (eventType.equals(EventType.NO_DRIVER))
+	        if (eventTypes.get(0).equals(EventType.NO_DRIVER))
 	        	IMEI = itData.noDriverDevice.getImei();
 
 	        
-	        if (!genEvent(IMEI, eventType))
-	            fail("Unable to generate event of type " + eventType);
+	        if (!genEvent(IMEI, eventTypes.get(0)))
+	            fail("Unable to generate event of type " + eventTypes.get(0));
 	        if (pollForMessages("Red Flag Alert Groups Set"))
 	        	anyAlertsFound = true;
 	        modRedFlagAlertPref(DRIVERS, redFlagAlert);
-	        if (!genEvent(IMEI, eventType))
-	            fail("Unable to generate event of type " + eventType);
+	        if (!genEvent(IMEI, eventTypes.get(0)))
+	            fail("Unable to generate event of type " + eventTypes.get(0));
 	        if (pollForMessages("Red Flag Alert Drivers Set"))
 	        	anyAlertsFound = true;
 
 	        modRedFlagAlertPref(VEHICLES, redFlagAlert);
-	        if (!genEvent(IMEI, eventType))
-	            fail("Unable to generate event of type " + eventType);
+	        if (!genEvent(IMEI, eventTypes.get(0)))
+	            fail("Unable to generate event of type " + eventTypes.get(0));
 	        if (pollForMessages("Red Flag Alert Vehicles Set"))
 	        	anyAlertsFound = true;
 
 	        modRedFlagAlertPref(VEHICLE_TYPES, redFlagAlert);
-	        if (!genEvent(IMEI, eventType))
-	            fail("Unable to generate event of type " + eventType);
+	        if (!genEvent(IMEI, eventTypes.get(0)))
+	            fail("Unable to generate event of type " + eventTypes.get(0));
 	        if (pollForMessages("Red Flag Alert Vehicle Types Set"))
 	        	anyAlertsFound = true;
 
 	        modRedFlagAlertPref(ANY_TIME, redFlagAlert);
-	        if (!genEvent(IMEI, eventType))
-	            fail("Unable to generate event of type " + eventType);
+	        if (!genEvent(IMEI, eventTypes.get(0)))
+	            fail("Unable to generate event of type " + eventTypes.get(0));
 	        if (pollForMessages("Red Flag Alert Any Time Info Set"))
 	        	anyAlertsFound = true;
 
 	        modRedFlagAlertPref(CONTACT_INFO, redFlagAlert);
-	        if (!genEvent(IMEI, eventType))
-	            fail("Unable to generate event of type " + eventType);
+	        if (!genEvent(IMEI, eventTypes.get(0)))
+	            fail("Unable to generate event of type " + eventTypes.get(0));
 	        if (pollForMessages("Red Flag Alert Contact Info Set"))
 	        	anyAlertsFound = true;
-	        assertTrue("No Red Flag Alerts were generated for eventType " + eventType, anyAlertsFound);
+	        assertTrue("No Red Flag Alerts were generated for eventType " + eventTypes.get(0), anyAlertsFound);
 //System.out.println("anyAlertsFound: " + anyAlertsFound);	        
 
     	}
@@ -264,39 +266,50 @@ public class AlertMessagesTest extends BaseJDBCTest{
         assertTrue(msgList!=null);
     }
     
-    private EventType getEventType(ZoneAlert zoneAlert) {
-    	if (zoneAlert.getArrival())
-    		return EventType.ZONES_ARRIVAL;
-    	return EventType.ZONES_DEPARTURE;
+    private List<EventType> getZoneEventTypes(RedFlagAlert zoneAlert) {
+        List<EventType> eventTypes = new ArrayList<EventType>();
+    	if (zoneAlert.getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE)){
+    	    eventTypes.add(EventType.ZONES_ARRIVAL);
+    	}
+        if (zoneAlert.getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE)){
+            eventTypes.add(EventType.ZONES_DEPARTURE);
+        }
+    	return eventTypes;
     }
     
-    private EventType getEventType(RedFlagAlert redFlagAlert) {
-            switch (redFlagAlert.getType())
+    private List<EventType> getEventTypes(RedFlagAlert redFlagAlert) {
+        List<EventType> eventTypes = new ArrayList<EventType>();
+        List<AlertMessageType>alertTypes = redFlagAlert.getTypes();
+        
+        for(AlertMessageType amt:alertTypes){
+            switch (amt)
             {
                 case ALERT_TYPE_SEATBELT:
-                    return EventType.SEATBELT;
-                case ALERT_TYPE_HARD_ACCELL:    
-                    return EventType.HARD_ACCEL;
+                    eventTypes.add(EventType.SEATBELT);
+                case ALERT_TYPE_HARD_ACCEL:    
+                    eventTypes.add(EventType.HARD_ACCEL);
                 case ALERT_TYPE_HARD_BRAKE:    
-                    return EventType.HARD_BRAKE;
+                    eventTypes.add(EventType.HARD_BRAKE);
                 case ALERT_TYPE_HARD_BUMP:    
-                    return EventType.HARD_VERT;
+                    eventTypes.add(EventType.HARD_VERT);
                 case ALERT_TYPE_HARD_TURN:    
-                    return EventType.HARD_TURN;
+                    eventTypes.add(EventType.HARD_TURN);
                 case ALERT_TYPE_CRASH:    
-                    return EventType.CRASH;
+                    eventTypes.add(EventType.CRASH);
                 case ALERT_TYPE_TAMPERING:    
-                    return EventType.TAMPERING;
+                    eventTypes.add(EventType.TAMPERING);
                 case ALERT_TYPE_LOW_BATTERY:    
-                    return EventType.LOW_BATTERY;
+                    eventTypes.add(EventType.LOW_BATTERY);
                 case ALERT_TYPE_NO_DRIVER:    
-                    return EventType.NO_DRIVER;                
+                    eventTypes.add(EventType.NO_DRIVER);                
                 default:
-                    return EventType.SPEEDING;
+                    eventTypes.add(EventType.SPEEDING);
             }
+        }
+        return eventTypes;
     }
 
-    private static void modZoneAlertPref(int type, ZoneAlert zoneAlert) {
+    private static void modZoneAlertPref(int type, RedFlagAlert zoneAlert) {
     	// original settings are any group and driver,vehicle, vehicle types lists are null
     	GroupData groupData = itData.teamGroupData.get(ITData.GOOD);
         List<Integer> groupIDList = new ArrayList<Integer>();
@@ -367,7 +380,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 zoneAlert.setEmailTo(emailList);
                 break;
         }
-        ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
+        RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
         zoneAlertDAO.update(zoneAlert);
     }
@@ -578,7 +591,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
         vehicleDAO = new VehicleHessianDAO();
         zoneHessianDAO = new ZoneHessianDAO();
         
-        zoneAlertHessianDAO = new ZoneAlertHessianDAO();
+        zoneAlertHessianDAO = new RedFlagAlertHessianDAO();
         redFlagAlertHessianDAO = new RedFlagAlertHessianDAO();
         
         addressLookup = new GeonamesAddressLookup();

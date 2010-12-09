@@ -18,7 +18,7 @@ public class TextMsgAlertHessianDAO extends GenericHessianDAO<MessageItem, Integ
     @Override
     public List<MessageItem> getTextMsgAlertsByAcctID(Integer acctID) {
         try {
-            return getMapper().convertToModelObject(getSiloService().getTextMsgAlertsByAcctID(acctID), MessageItem.class);
+            return getMapper().convertToModelObject(getSiloService().getAlertsByAcctID(acctID), MessageItem.class);
         } catch (EmptyResultSetException e) {
             return Collections.emptyList();
         }

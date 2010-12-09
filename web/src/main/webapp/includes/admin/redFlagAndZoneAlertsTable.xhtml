@@ -26,9 +26,9 @@
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_description}" /></f:facet>
       <h:outputText value="#{item.description}" />
     </rich:column>
-    <rich:column id="type" rendered="#{redFlagOrZoneAlertsBean.tableColumns['type'].visible}" sortBy="#{item.type}">
+    <rich:column id="type" rendered="#{redFlagOrZoneAlertsBean.tableColumns['eventSubCategory'].visible}" sortBy="#{item.eventSubCategory}">
       <f:facet name="header"><h:outputText value="#{messages.redFlagsHeader_type}" /></f:facet>
-      <c:set var="typeMessage" value="#{item.type}" />
+      <c:set var="typeMessage" value="#{item.eventSubCategory}" />
       <h:outputText value="#{messages[typeMessage]}" />
     </rich:column>
     <rich:column id="zoneName" rendered="#{redFlagOrZoneAlertsBean.tableColumns['zone'].visible}" sortBy="#{item.zoneName}">

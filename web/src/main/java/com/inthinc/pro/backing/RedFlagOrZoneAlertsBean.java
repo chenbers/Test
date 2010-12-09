@@ -2,10 +2,13 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -16,19 +19,18 @@ import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.ui.AlertTypeSelectItems;
-import com.inthinc.pro.dao.RedFlagAndZoneAlertsDAO;
+import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageType;
-import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.Delay;
 import com.inthinc.pro.model.LimitType;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
-import com.inthinc.pro.model.RedFlagOrZoneAlert;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
+import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
@@ -47,10 +49,15 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("zone");
         AVAILABLE_COLUMNS.add("owner"); // admin only
-    }
-    private RedFlagAndZoneAlertsDAO redFlagAndZoneAlertsDAO;
-    private ZonesBean               zonesBean;
 
+    }
+    private RedFlagAlertDAO redFlagAlertsDAO;
+    private ZonesBean       zonesBean;
+
+    private HtmlDataTable escEmailsDataTable;
+    private HtmlDataTable phNumbersDataTable;
+    private HtmlDataTable emailTosDataTable;
+    
     public void setZonesBean(ZonesBean zonesBean)
     {
         this.zonesBean = zonesBean;
@@ -61,27 +68,32 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         return AlertTypeSelectItems.INSTANCE.getSelectItems();
     }
 
-    public void setRedFlagAndZoneAlertsDAO(RedFlagAndZoneAlertsDAO redFlagAndZoneAlertsDAO) {
-        this.redFlagAndZoneAlertsDAO = redFlagAndZoneAlertsDAO;
-    }
-
     @Override
     protected List<RedFlagOrZoneAlertView> loadItems() {
-        List<RedFlagOrZoneAlert> plainRedFlagOrZoneAlerts = null;
+        List<RedFlagAlert> plainRedFlagOrZoneAlerts = null;
         if (this.getProUser().isAdmin()) {
-            plainRedFlagOrZoneAlerts = redFlagAndZoneAlertsDAO.getRedFlagAndZoneAlertsByUserIDDeep(getUser().getUserID());
+            plainRedFlagOrZoneAlerts = redFlagAlertsDAO.getRedFlagAlertsByUserIDDeep(getUser().getUserID());
         }
         else {
-            plainRedFlagOrZoneAlerts = redFlagAndZoneAlertsDAO.getRedFlagAndZoneAlertsByUserID(getUser().getUserID());
+            plainRedFlagOrZoneAlerts = redFlagAlertsDAO.getRedFlagAlertsByUserID(getUser().getUserID());
         }
 
         // convert the RedFlagAlerts to RedFlagOrZoneAlertViews
         final LinkedList<RedFlagOrZoneAlertView> items = new LinkedList<RedFlagOrZoneAlertView>();
-        for (final RedFlagOrZoneAlert flag : plainRedFlagOrZoneAlerts)
+        for (final RedFlagAlert flag : plainRedFlagOrZoneAlerts)
             items.add(createRedFlagOrZoneAlertView(flag));
         return items;
     }
 
+    @Override
+    public String fieldValue(RedFlagOrZoneAlertView item, String column)
+    {
+        if("zone".equals(column)){
+            if(item.getZone() != null)
+                return item.getZone().getName();
+        }
+        return super.fieldValue(item, column);
+    }
     /**
      * Creates a RedFlagOrZoneAlertView object from the given RedFlagAlert object.
      * 
@@ -89,26 +101,49 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
      *            The flag.
      * @return The new RedFlagOrZoneAlertView object.
      */
-    private RedFlagOrZoneAlertView createRedFlagOrZoneAlertView(RedFlagOrZoneAlert flag) {
+    private RedFlagOrZoneAlertView createRedFlagOrZoneAlertView(RedFlagAlert flag) {
         final RedFlagOrZoneAlertView alertView = new RedFlagOrZoneAlertView();
         alertView.setAnytime(true);
-        alertView.setHardAccelerationSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardAccelerationNull());
-        alertView.setHardBrakeSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardBrakeNull());
-        alertView.setHardTurnSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardTurnNull());
-        alertView.setHardVerticalSelected(flag instanceof RedFlagAlert && !((RedFlagAlert)flag).isHardVerticalNull());
-        BeanUtils.copyProperties(flag, alertView);
         if (alertView.getStartTOD() == null)
-            alertView.setStartTOD(BaseAlert.MIN_TOD);
+            alertView.setStartTOD(RedFlagAlert.MIN_TOD);
         if (alertView.getStopTOD() == null)
-            alertView.setStopTOD(BaseAlert.MIN_TOD);
+            alertView.setStopTOD(RedFlagAlert.MIN_TOD);
         alertView.setAnytime(isAnytime(alertView));
         alertView.setSelected(false);
         alertView.setRedFlagOrZoneAlertsBean(this);
 
-        alertView.setAlertID(flag.getAlertID());
+        
+        if(flag != null){
+            if (flag.getTypes() == null || flag.getTypes().isEmpty()){
+                alertView.setEventSubCategory(EventSubCategory.DRIVING_STYLE);
+            }
+            else{
+                alertView.setEventSubCategory(deriveEventSubCategory(flag));
+            }
+            alertView.setAlertID(flag.getAlertID());
+            alertView.setHardAccelerationSelected(!flag.isHardAccelerationNull());
+            alertView.setHardBrakeSelected(!flag.isHardBrakeNull());
+            alertView.setHardTurnSelected(!flag.isHardTurnNull());
+            alertView.setHardVerticalSelected(!flag.isHardVerticalNull());
+            BeanUtils.copyProperties(flag, alertView);
+        }
+        else{
+            alertView.setEventSubCategory(EventSubCategory.DRIVING_STYLE);
+            alertView.setHardAccelerationSelected(false);
+            alertView.setHardBrakeSelected(false);
+            alertView.setHardTurnSelected(false);
+            alertView.setHardVerticalSelected(false);
+        }
+        alertView.getSelectedAlertMessageTypes(flag);
+        alertView.setEmailTos(flag.getEmailTo());
         return alertView;
     }
-
+    private EventSubCategory deriveEventSubCategory(RedFlagAlert flag){
+        
+        AlertMessageType alertMessageType = flag.getTypes().get(0);
+        
+        return EventSubCategory.valueForAlertMessageType(alertMessageType);
+    }
     @Override
     public List<String> getAvailableColumns() {
         if (!getProUser().isAdmin()) {
@@ -143,31 +178,24 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     protected RedFlagOrZoneAlertView createAddItem() {
 
-//will it be RedFlagAlert
-        
-        final RedFlagAlert redFlag = new RedFlagAlert();
-        RedFlagOrZoneAlertView RedFlagOrZoneAlertView = createRedFlagOrZoneAlertView(redFlag);
-        RedFlagOrZoneAlertView.setAccountID(getAccountID());
-        RedFlagOrZoneAlertView.setUserID(getUserID());
-//        return RedFlagOrZoneAlertView;
-//ZoneAlert
-        final ZoneAlert zoneAlert = new ZoneAlert();
+        final RedFlagAlert alert = new RedFlagAlert();
         final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        final String zoneID = parameterMap.get("zones-form:zone");
+        final String zoneID = parameterMap.get("zones-form:zone"); // TODO find out what this should be
         zonesBean.loadZones();
         
         if (zoneID != null)
-            zoneAlert.setZoneID(Integer.valueOf(zoneID));
+            alert.setZoneID(Integer.valueOf(zoneID));
         else
         {
             final List<SelectItem> zones = getZones();
             if ((zones != null) && (zones.size() > 0))
-                zoneAlert.setZoneID((Integer)zones.get(0).getValue());
+                alert.setZoneID((Integer)zones.get(0).getValue());
         }
-        zoneAlert.setAccountID(getAccountID());
-        zoneAlert.setUserID(getUserID());
-        return createRedFlagOrZoneAlertView(zoneAlert);
-
+        RedFlagOrZoneAlertView redFlagOrZoneAlertView = createRedFlagOrZoneAlertView(alert);
+        redFlagOrZoneAlertView.setAccountID(getAccountID());
+        redFlagOrZoneAlertView.setUserID(getUserID());
+        
+        return redFlagOrZoneAlertView;
     }
 
     @Override
@@ -182,7 +210,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     protected void doDelete(List<RedFlagOrZoneAlertView> deleteItems) {
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final RedFlagOrZoneAlertView flag : deleteItems) {
-            redFlagAndZoneAlertsDAO.deleteByEntity(flag);
+            redFlagAlertsDAO.deleteByID(flag.getAlertID());
             // add a message
             final String summary = MessageUtil.formatMessageString("redFlag_deleted", flag.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -192,14 +220,15 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     @Override
     public String cancelEdit() {
-        getItem().setType(null);
+        getItem().setEventSubCategory(null);
         return super.cancelEdit();
     }
     
     @Override
     public String save() {
         final Map<String, Boolean> updateField = getUpdateField();
-        
+        setAlertTypesFromSubCategory();
+        getItem().setEmailTos();
         if (isBatchEdit()) {
             boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
             updateField.put("severityLevel", updateType);
@@ -213,11 +242,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 updateField.put("stopTOD", true);
             }
             final boolean defineAlerts = Boolean.TRUE.equals(updateField.get("defineAlerts"));
-            updateField.put("arrival", defineAlerts);
-            updateField.put("departure", defineAlerts);
         }
         // null out unselected items
-        if (AlertMessageType.ALERT_TYPE_SPEEDING.equals(getItem().getType())) {
+        if (EventSubCategory.SPEED.equals(getItem().getEventSubCategory())) {
             Boolean selected[]=this.getItem().getSpeedSelected();
             Integer settings[]=this.getItem().getSpeedSettings();
             for (int i=0; i<selected.length; i++)
@@ -227,7 +254,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
             getItem().setSpeedSettings(settings);
         }
-        else if (AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING.equals(getItem().getType())) {
+        else if (EventSubCategory.DRIVING_STYLE.equals(getItem().getEventSubCategory())) {
             if (!getItem().isHardAccelerationSelected())
                 getItem().setHardAcceleration(null);
             if (!getItem().isHardTurnSelected())
@@ -237,12 +264,24 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if (!getItem().isHardVerticalSelected())
                 getItem().setHardVertical(null);
         }
+        
         return super.save();
+    }
+    private void setAlertTypesFromSubCategory(){
+        RedFlagOrZoneAlertView redFlagAlert = getItem();
+        Set<AlertMessageType> alertMessageTypes = redFlagAlert.getEventSubCategory().getAlertMessageTypeSet();
+        Long alertTypeMask = 0L;
+        for(AlertMessageType amt:alertMessageTypes){
+            if(redFlagAlert.getSelectedAlertTypes().get(amt.name())){
+                alertTypeMask = alertTypeMask | amt.getBitMask();
+            }
+        }
+        redFlagAlert.setAlertTypeMask(alertTypeMask);
     }
 
     @Override
     protected RedFlagOrZoneAlertView revertItem(RedFlagOrZoneAlertView editItem) {
-        return createRedFlagOrZoneAlertView(redFlagAndZoneAlertsDAO.findByID(editItem.getAlertID()));
+        return createRedFlagOrZoneAlertView(redFlagAlertsDAO.findByID(editItem.getAlertID()));
     }
 
     @Override
@@ -262,13 +301,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             valid = false;
         }
   
-        if (saveItem.getType() == null)
+        if (saveItem.getEventSubCategory() == null)
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeTypeMessage"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
             valid=false;
         }
-        if (AlertMessageType.ALERT_TYPE_SPEEDING.equals(saveItem.getType())){
+        if (EventSubCategory.SPEED.equals(saveItem.getEventSubCategory())){
             boolean speedValid = false;
             for(int i=0;i< saveItem.getSpeedSelected().length; i++){
                 
@@ -282,7 +321,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 
             }
         }
-        else if (AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING.equals(saveItem.getType())){
+        else if (EventSubCategory.DRIVING_STYLE.equals(saveItem.getEventSubCategory())){
              
             boolean styleValid = saveItem.isHardAccelerationSelected() 
                                 || saveItem.isHardBrakeSelected() 
@@ -297,15 +336,40 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 valid = false;
             }
         }
-        else if (AlertMessageType.ALERT_TYPE_OFFHOUR.equals(saveItem.getType())){
-            if (saveItem.isAnytime()) {
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeOffHourMessage"), null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
-                
+//        else if (EventSubCategory.OFFHOURS.equals(saveItem.getEventSubCategory())){
+//            if (saveItem.isAnytime()) {
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeOffHourMessage"), null);
+//                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+//                
+//                valid = false;
+//            }
+//        }
+        else if(EventSubCategory.ZONES.equals(saveItem.getEventSubCategory())){
+            if ((!Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE)) && 
+                    !Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE))) 
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("defineAlerts"))))
+            {
+                final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-arrival", message);
+            }
+            
+            //Validate required name field
+            if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
+                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
+            {
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-name", message);
                 valid = false;
             }
+           
         }
-         
+        valid = saveItem.validateSelectedAlertTypes();
+        if(!valid){
+            
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("atLeastOne"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+        }
         return valid;
     }
 
@@ -326,17 +390,17 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                      }
             }
             if (flag.isAnytime()) {
-                flag.setStartTOD(BaseAlert.MIN_TOD);
-                flag.setStopTOD(BaseAlert.MIN_TOD);
+                flag.setStartTOD(RedFlagAlert.MIN_TOD);
+                flag.setStopTOD(RedFlagAlert.MIN_TOD);
             }
             // since getItem auto-creates the below, null 'em here before saving
             if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
                 flag.setSpeedSettings(null);
             }
             if (create)
-                flag.setAlertID(redFlagAndZoneAlertsDAO.create(getAccountID(), flag));
+                flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
             else
-                redFlagAndZoneAlertsDAO.update(flag);
+                redFlagAlertsDAO.update(flag);
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "redFlag_added" : "redFlag_updated", flag.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -347,10 +411,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     protected String getDisplayRedirect() {
         
-        if (AlertMessageType.ALERT_TYPE_ZONES.equals(getItem().getType())){
-          
-             return "pretty:adminZone";
-        }
+//        if (getItem().getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
+//          
+//             return "pretty:adminZone";
+//        }
         return "pretty:adminRedFlag";
     }
 
@@ -387,8 +451,32 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         zonesBean.clearZones();
         super.resetList();
     }
+    public HtmlDataTable getEscEmailsDataTable() {
+        return escEmailsDataTable;
+    }
 
-    public static class RedFlagOrZoneAlertView extends RedFlagOrZoneAlert implements BaseAdminAlertsBean.BaseAlertView {
+    public void setEscEmailsDataTable(HtmlDataTable escEmailsDataTable) {
+        this.escEmailsDataTable = escEmailsDataTable;
+    }
+
+    public HtmlDataTable getPhNumbersDataTable() {
+        return phNumbersDataTable;
+    }
+
+    public void setPhNumbersDataTable(HtmlDataTable phNumbersDataTable) {
+        this.phNumbersDataTable = phNumbersDataTable;
+    }
+
+    public HtmlDataTable getEmailTosDataTable() {
+        return emailTosDataTable;
+    }
+
+    public void setEmailTosDataTable(HtmlDataTable emailTosDataTable) {
+        this.emailTosDataTable = emailTosDataTable;
+    }
+
+    public static class RedFlagOrZoneAlertView extends RedFlagAlert implements BaseAdminAlertsBean.BaseAlertView {
+
 
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
@@ -397,6 +485,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Column(updateable = false)
         private boolean selected;
         @Column(updateable = false)
+        private Map<String,Boolean> selectedAlertTypes;
         private Boolean[] speedSelected;
         @Column(updateable = false)
         private Boolean hardAccelerationSelected;
@@ -407,20 +496,26 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Column(updateable = false)
         private Boolean hardVerticalSelected;
         @Column(updateable = false)
-        private RedFlagOrZoneAlertsBean    redFlagOrZoneAlertsBean;
+        private RedFlagOrZoneAlertsBean redFlagOrZoneAlertsBean;
         @Column(updateable = false)
         private Zone              zone;
+        @Column(updateable = false)
+        private EventSubCategory eventSubCategory;
+        @Column(updateable = false)
+        private String newEmail;
+        @Column(updateable = false)
+        private Integer removeId;
+
         private Delay delay;
         private Integer limitValue;
         private LimitType limitType;
         
-        private HtmlDataTable phNumbersDataTable;
-        private HtmlDataTable emailTosDataTable;
 
         private String escEmail;
         private List<String> phNumbers;
+        @Column(updateable = false)
         private List<String> emailTos;
-        private Integer alertID;
+//        private Integer alertID;
         
         public RedFlagOrZoneAlertView() {
             super();
@@ -429,12 +524,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             emailTos = new ArrayList<String>();
             //TODO: jwimmer: remove fake testing data 
             if(phNumbers.isEmpty()){
-                phNumbers.add("80155551212");
-                phNumbers.add("2037289200");
+                phNumbers.add("");
             }
             if(emailTos.isEmpty()) {
-                emailTos.add("john@company.com");
-                emailTos.add("mary@company.com");
+                emailTos.add("");
             }
             //TODO: jwimmer: end of fake testing data
             
@@ -447,10 +540,35 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if(null != lastString && !"".equals(lastString)){
                 emailTos.add("");
             }
+            
+            initAlertMessageTypeMap();
         }
-        
+        private void initAlertMessageTypeMap(){
+            
+            selectedAlertTypes = new HashMap<String, Boolean>();
+            for (AlertMessageType amt : EnumSet.allOf(AlertMessageType.class)){
+                selectedAlertTypes.put(amt.name(), false);
+            }
+            for (EventSubCategory esc : EnumSet.allOf(EventSubCategory.class)){
+                selectAlertMessageTypeIfOnlyOneInEventSubCategory(esc);
+            }
+        }
+        private void selectAlertMessageTypeIfOnlyOneInEventSubCategory(EventSubCategory anEventSubCategory){
+            Set<AlertMessageType> selectedSet = anEventSubCategory.getAlertMessageTypeSet();
+            if(selectedSet != null && selectedSet.size() == 1){
+                Iterator<AlertMessageType> it = selectedSet.iterator();
+                selectedAlertTypes.put(it.next().name(), true); 
+            }
+        }
+        private void getSelectedAlertMessageTypes(RedFlagAlert flag){
+            List<AlertMessageType> selectedAlertMessageTypes = flag.getTypes();
+            for(AlertMessageType amt : selectedAlertMessageTypes){
+                selectedAlertTypes.put(amt.name(), true);
+            }
+        }
+
         public void removePhNumber() {
-            phNumbers.remove(phNumbersDataTable.getRowData());
+            phNumbers.remove(redFlagOrZoneAlertsBean.phNumbersDataTable.getRowData());
         }
 
         public void addPhNumberSlot() {
@@ -481,7 +599,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public void removeEmailTo() {
-            emailTos.remove(emailTosDataTable.getRowData());
+            //System.out.println("removeEmailToSlot: "+(String)emailTosDataTable.getRowData());
+            emailTos.remove(redFlagOrZoneAlertsBean.emailTosDataTable.getRowData());
         }
 
         public void addEmailToSlot() {
@@ -490,7 +609,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 String paramForEmailToAdd = "";
                 FacesContext context = FacesContext.getCurrentInstance();
                 Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-                for (String key : map.keySet()) { 
+                for (String key : map.keySet()) {    System.out.println(key.toString()+" : "+map.get(key)); 
                     if (key.endsWith("emailAddressesInput")) {     
                         String[] words = key.split(":");
                         int rowIndex = Integer.parseInt(words[2]);
@@ -509,8 +628,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                Log.error("addEmailSlot() failed");
             }
         }
-        
-
         @Override
         public Integer getId() {
             // TODO Auto-generated method stub
@@ -527,7 +644,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Override
         public void setStartTOD(Integer startTOD) {
             if (startTOD == null) {
-                super.setStartTOD(BaseAlert.MIN_TOD);
+                super.setStartTOD(RedFlagAlert.MIN_TOD);
             }
             else {
                 super.setStartTOD(startTOD);
@@ -537,11 +654,18 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Override
         public void setStopTOD(Integer stopTOD) {
             if (stopTOD == null) {
-                super.setStopTOD(BaseAlert.MIN_TOD);
+                super.setStopTOD(RedFlagAlert.MIN_TOD);
             }
             else {
                 super.setStopTOD(stopTOD);
             }
+        }
+
+        public EventSubCategory getEventSubCategory() {
+            return eventSubCategory;
+        }
+        public void setEventSubCategory(EventSubCategory eventSubCategory) {
+            this.eventSubCategory = eventSubCategory;
         }
 
         public Boolean[] getSpeedSelected() {
@@ -605,14 +729,24 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         {
             this.redFlagOrZoneAlertsBean = redFlagOrZoneAlertsBean;
         }
+        @Override
+        public Integer getZoneID() {
+            if( super.getZoneID() == null){
+                setZoneID(((Integer)redFlagOrZoneAlertsBean.getZones().get(0).getValue()));
+            }
+            return super.getZoneID();
+        }
         public Zone getZone()
         {
+            if (getZoneID() == null){
+                setZoneID(((Integer)redFlagOrZoneAlertsBean.getZones().get(0).getValue()));
+            }
             if (/*zone == null && */getZoneID() != null)
                 zone = redFlagOrZoneAlertsBean.getZoneByID(getZoneID());
             return zone;
         }
         public String getZoneName(){
-            if (AlertMessageType.ALERT_TYPE_ZONES.equals(getType())){
+            if (EventSubCategory.ZONES.equals(getEventSubCategory())){
                 if (getZoneID() != null){
                     return getZone().getName();
                 }
@@ -666,15 +800,15 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.escEmail = escEmail;
         }
         public String getZonePointsString(){
-            if (AlertMessageType.ALERT_TYPE_ZONES.equals(getType())){
-                if (getZoneID() != null){
-                    return getZone().getPointsString();
-                }
+            if ((getEventSubCategory() != null) && (EventSubCategory.ZONES.equals(getEventSubCategory()))){
+               return getZone().getPointsString();
             }
             return null;
         }
         public void setZonePointsString(String pointsString){
-            getZone().setPointsString(pointsString);
+            if ((getEventSubCategory() != null) && (EventSubCategory.ZONES.equals(getEventSubCategory()))){
+                getZone().setPointsString(pointsString);
+            }
         }
 
         public List<String> getPhNumbers() {
@@ -693,31 +827,74 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.emailTos = emailTos;
         }
 
-        @Override
-        public Integer getAlertID() {
-            return alertID;
-        }
-
-        @Override
-        public void setAlertID(Integer alertID) {
-            this.alertID = alertID;
+        private void setEmailTos(){
             
+            Iterator<String> it = emailTos.iterator();
+            while(it.hasNext()){
+                if (it.next().isEmpty()) it.remove();
+            }
+            this.setEmailTo(emailTos);
         }
+        public Map<String, Boolean> getSelectedAlertTypes() {
+            return selectedAlertTypes;
+        }
+        
+        private boolean validateSelectedAlertTypes(){
+            Set<AlertMessageType> selectedSet = eventSubCategory.getAlertMessageTypeSet();
+            for(AlertMessageType amt:selectedSet){
+                if (selectedAlertTypes.get(amt.name())){
+                    return true;
+                }
+            }
+            return false;
+        }
+        @Override
+        public Integer getEmailEscalationPersonID() {
+            return super.getEmailEscalationPersonID();
+        }
+        @Override
+        public List<Integer> getVoiceEscalationPersonIDs() {
+             return super.getVoiceEscalationPersonIDs();
+        }
+//        @Override
+//        public void setEmailEscalationPersonID(Integer emailEscalationPersonID) {
+//            super.setE
+//            
+//        }
+        @Override
+        public void setEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs) {
+            List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
+            int i=1;
+            for(Integer personID : voiceEscalationPersonIDs){
+                escalationList.add(new AlertEscalationItem(personID,i++));
+            }
+            setEscalationList(escalationList);
+        }
+        public Object addEmail(){
+          emailTos.add("");
+          return null;
+        }
+        public Object removeEmail(){
+            
+            if (removeId == null) return null;
+            emailTos.remove(removeId.intValue());
+            return null;
+        }
+        public String getNewEmail() {
+            return newEmail;
+        }
+        public void setNewEmail(String newEmail) {
+            this.newEmail = newEmail;
+        }
+        public Integer getRemoveId() {
+            return removeId;
+        }
+        public void setRemoveId(Integer removeId) {
+            this.removeId = removeId;
+        }
+    }
 
-        public HtmlDataTable getPhNumbersDataTable() {
-            return phNumbersDataTable;
-        }
-
-        public void setPhNumbersDataTable(HtmlDataTable phNumbersDataTable) {
-            this.phNumbersDataTable = phNumbersDataTable;
-        }
-
-        public HtmlDataTable getEmailTosDataTable() {
-            return emailTosDataTable;
-        }
-
-        public void setEmailTosDataTable(HtmlDataTable emailTosDataTable) {
-            this.emailTosDataTable = emailTosDataTable;
-        }
+    public void setRedFlagAlertsDAO(RedFlagAlertDAO redFlagAlertsDAO) {
+        this.redFlagAlertsDAO = redFlagAlertsDAO;
     }
 }

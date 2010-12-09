@@ -120,7 +120,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         for (int i = 0; (selected < maxItems) && (i < adminBean.getItemCount()); i += 2)
         {
             filteredItems.get(i).setSelected(true);
-            selected++;
+            if (filteredItems.get(i).isSelected()) selected++;
         }
         return selected;
     }
@@ -241,6 +241,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<T> adminBean = getAdminBean();
         adminBean.getItems();
+        setProductType(adminBean);
 
         // select items to edit
         int selected = selectItems(adminBean, 3);
@@ -323,5 +324,8 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         
         assertNull(adminBean.getItem().getId());
 
+    }
+    public void setProductType(BaseAdminBean<T> adminBean){
+        
     }
 }

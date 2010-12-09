@@ -15,8 +15,7 @@ import org.joda.time.DateTimeZone;
 import com.inthinc.pro.backing.LocaleBean;
 import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.dao.PersonDAO;
-import com.inthinc.pro.dao.RedFlagAndZoneAlertsDAO;
-import com.inthinc.pro.model.AlertEscalationStatus;
+import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.MeasurementType;
@@ -63,7 +62,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 	private String filterAlert;
 	
 	private AlertMessageDAO alertMessageDAO;
-	private RedFlagAndZoneAlertsDAO redFlagAndZoneAlertsDAO;
+	private RedFlagAlertDAO redFlagAndZoneAlertsDAO;
     private PersonDAO personDAO;
 	
 
@@ -298,11 +297,11 @@ System.out.println("Number of messages: " + redFlagMsgIDList.size());
         this.alertMessageDAO = alertMessageDAO;
     }
 
-    public RedFlagAndZoneAlertsDAO getRedFlagAndZoneAlertsDAO() {
+    public RedFlagAlertDAO getRedFlagAndZoneAlertsDAO() {
         return redFlagAndZoneAlertsDAO;
     }
 
-    public void setRedFlagAndZoneAlertsDAO(RedFlagAndZoneAlertsDAO redFlagAndZoneAlertsDAO) {
+    public void setRedFlagAndZoneAlertsDAO(RedFlagAlertDAO redFlagAndZoneAlertsDAO) {
         this.redFlagAndZoneAlertsDAO = redFlagAndZoneAlertsDAO;
     }
 	

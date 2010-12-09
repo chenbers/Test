@@ -13,12 +13,14 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.dao.util.MiscUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.AccountHOSType;
@@ -26,6 +28,7 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
+
 import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.BaseAlert;
 import com.inthinc.pro.model.CrashDataPoint;
@@ -62,7 +65,6 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneAlert;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.Event;
@@ -763,12 +765,12 @@ public class MockData {
         zone.setPoints(points);
     }
 
-    private List<ZoneAlert> addZoneAlertsToZone(Integer zoneID, Integer accountID, int numZoneAlerts) {
-        final List<ZoneAlert> alerts = new ArrayList<ZoneAlert>();
+    private List<RedFlagAlert> addZoneAlertsToZone(Integer zoneID, Integer accountID, int numZoneAlerts) {
+        final List<RedFlagAlert> alerts = new ArrayList<RedFlagAlert>();
         final Integer idOffset = accountID * MAX_ZONES + zoneID * MAX_ZONE_ALERTS_PER_ZONE;
         for (int i = 0; i < numZoneAlerts; i++) {
             int id = idOffset + i + 1;
-            final ZoneAlert alert = new ZoneAlert();
+            final RedFlagAlert alert = new RedFlagAlert();
             alert.setAccountID(accountID);
             alert.setZoneID(zoneID);
             alert.setAlertID(id);
@@ -786,14 +788,14 @@ public class MockData {
                 dayOfWeek.set(0, true);
             alert.setDayOfWeek(dayOfWeek);
             if (randomInt(0, 1) == 1) {
-                alert.setStartTOD(randomInt(BaseAlert.MIN_TOD, BaseAlert.MAX_TOD));
-                alert.setStopTOD(randomInt(BaseAlert.MIN_TOD, BaseAlert.MAX_TOD));
+                alert.setStartTOD(randomInt(RedFlagAlert.MIN_TOD, RedFlagAlert.MAX_TOD));
+                alert.setStopTOD(randomInt(RedFlagAlert.MIN_TOD, RedFlagAlert.MAX_TOD));
             }
-            alert.setArrival(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
-            if (!alert.getArrival())
-                alert.setDeparture(true);
-            else
-                alert.setDeparture(randomInt(0, 1) == 1 ? Boolean.TRUE : Boolean.FALSE);
+            Set<AlertMessageType> types = EnumSet.noneOf(AlertMessageType.class);
+            if ( randomInt(0, 1)==1) types.add(AlertMessageType.ALERT_TYPE_ENTER_ZONE);
+            if ( randomInt(0, 1)==1) types.add(AlertMessageType.ALERT_TYPE_EXIT_ZONE);
+            if (types.isEmpty()) types.add(AlertMessageType.ALERT_TYPE_EXIT_ZONE);
+            alert.setTypesSet(types);
             // groups
             final ArrayList<Integer> groupIDs = new ArrayList<Integer>();
             final List<Object> groups = dataMap.get(Group.class);
@@ -844,12 +846,12 @@ public class MockData {
                 dayOfWeek.set(0, true);
             flag.setDayOfWeek(dayOfWeek);
             if (randomInt(0, 1) == 1) {
-                flag.setStartTOD(randomInt(BaseAlert.MIN_TOD, BaseAlert.MAX_TOD));
-                flag.setStopTOD(randomInt(BaseAlert.MIN_TOD, BaseAlert.MAX_TOD));
+                flag.setStartTOD(randomInt(RedFlagAlert.MIN_TOD, RedFlagAlert.MAX_TOD));
+                flag.setStopTOD(randomInt(RedFlagAlert.MIN_TOD, RedFlagAlert.MAX_TOD));
             }
             final int type = randomInt(0, 2);
             if (type == 0) {
-                flag.setType(AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING);
+                flag.setTypesSet(EnumSet.of(AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING));
                 flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
                 flag.setHardBrake(randomInt(0, 2));
                 flag.setHardAcceleration(randomInt(0, 2));
@@ -857,7 +859,7 @@ public class MockData {
                 flag.setHardVertical(randomInt(0, 2));
             }
             else if (type == 1) {
-                flag.setType(AlertMessageType.ALERT_TYPE_SPEEDING);
+                flag.setTypesSet(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING));
                 flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
                 final Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
                 for (int j = 0; j < speedSettings.length; j++)
@@ -865,7 +867,7 @@ public class MockData {
                 flag.setSpeedSettings(speedSettings);
             }
             else {
-                flag.setType(AlertMessageType.ALERT_TYPE_SEATBELT);
+                flag.setTypesSet(EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT));
                 flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
             }
             // groups

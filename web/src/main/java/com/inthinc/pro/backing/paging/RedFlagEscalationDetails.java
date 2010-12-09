@@ -5,22 +5,22 @@ import java.util.List;
 
 import com.inthinc.pro.dao.AlertMessageDAO;
 import com.inthinc.pro.dao.PersonDAO;
-import com.inthinc.pro.dao.RedFlagAndZoneAlertsDAO;
+import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.model.AlertEscalationStatus;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
-import com.inthinc.pro.model.RedFlagOrZoneAlert;
+import com.inthinc.pro.model.RedFlagAlert;
 
 public class RedFlagEscalationDetails {
     private AlertMessageDAO alertMessageDAO;
     private List<AlertMessage> messageList;
-    private RedFlagOrZoneAlert alert;
+    private RedFlagAlert alert;
     private List<String> personList;
     private List<PhoneEscalationDetails> phoneList;
     private String escalationEmail;
     
-    public RedFlagEscalationDetails(AlertMessageDAO alertMessageDAO, RedFlagAndZoneAlertsDAO redFlagsAndZoneAlertsDAO, PersonDAO personDAO, RedFlag redFlag, AlertMessage message) {
+    public RedFlagEscalationDetails(AlertMessageDAO alertMessageDAO, RedFlagAlertDAO redFlagsAndZoneAlertsDAO, PersonDAO personDAO, RedFlag redFlag, AlertMessage message) {
         
         this.alertMessageDAO = alertMessageDAO;
         messageList = new ArrayList<AlertMessage>();
@@ -111,10 +111,10 @@ public class RedFlagEscalationDetails {
             personList = null;
     }
     
-    public RedFlagOrZoneAlert getAlert() {
+    public RedFlagAlert getAlert() {
         return alert;
     }
-    public void setAlert(RedFlagOrZoneAlert alert) {
+    public void setAlert(RedFlagAlert alert) {
         this.alert = alert;
     }
     

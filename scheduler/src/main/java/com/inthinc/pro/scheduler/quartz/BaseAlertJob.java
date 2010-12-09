@@ -64,7 +64,7 @@ public class BaseAlertJob extends QuartzJobBean
 
     protected String getSubject(AlertMessageBuilder message)
     {
-        return LocalizedMessage.getString("SUBJECT_" + message.getAlertMessageType().getDescription(),message.getLocale());
+        return LocalizedMessage.getString("SUBJECT_" + message.getAlertMessageType().name(),message.getLocale());
         // TODO: I think we should do a lookup in a messages.properties
 /*        
         switch (message.getAlertTypeID())

@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,7 +33,6 @@ import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
-import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
@@ -48,8 +48,6 @@ import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
@@ -64,9 +62,9 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneAlert;
-import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.security.Role;
 
 public class DataGenForStressTesting {
@@ -288,7 +286,7 @@ public class DataGenForStressTesting {
     private RedFlagAlert initRedFlagAlert(AlertMessageType type) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-    	RedFlagAlert redFlagAlert = new RedFlagAlert(type, account.getAcctID(), 
+    	RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(type), account.getAcctID(), 
     		fleetUser.getUserID(),
     		type + " Red Flag", type + " Red Flag Description", 0,
             1439, // start/end time
@@ -301,7 +299,8 @@ public class DataGenForStressTesting {
             null, // emailTo
             null, null,
             null, null, null,
-            RedFlagLevel.NONE,null);
+            RedFlagLevel.NONE,null,
+            null,5,5, 5,0);
     	return redFlagAlert;
     }
 	private void addRedFlagAlert(RedFlagAlert redFlagAlert,
@@ -315,9 +314,9 @@ public class DataGenForStressTesting {
 
 	private void createZoneAlert() {
 		// zone alert pref for enter/leave zone any time, any day, both teams
-        ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
+        RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
-        ZoneAlert zoneAlert = new ZoneAlert(account.getAcctID(), 
+        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_ENTER_ZONE),account.getAcctID(), 
         		fleetUser.getUserID(),
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
@@ -325,7 +324,11 @@ public class DataGenForStressTesting {
                 null, // vehicleTypeIDs
                 notifyPersonList(), // notifyPersonIDs
                 null, // emailTo
-                0, zone.getZoneID(), true, true);
+                null,//speed
+                null,null,null,null,//aggressive
+                RedFlagLevel.NONE,
+                zone.getZoneID(),
+                null,5,5, 5,0);
         Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
         assertNotNull(zoneAlertID);
         zoneAlert.setAlertID(zoneAlertID);
@@ -408,7 +411,7 @@ public class DataGenForStressTesting {
         Integer zoneID = zoneDAO.create(acctID, zone);
         zone.setZoneID(zoneID);
 
-        ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
+        RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
         List<Boolean> dayOfWeek = new ArrayList<Boolean>();
         for (int i = 0; i < 7; i++)
@@ -419,7 +422,7 @@ public class DataGenForStressTesting {
         emailList.add("test@email.com");
         List<Integer> notifyPersonIDList = new ArrayList<Integer>();
         notifyPersonIDList.add(notifyPersonIDs[0]);
-        ZoneAlert zoneAlert = new ZoneAlert(acctID,
+        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_ENTER_ZONE),acctID,
         		fleetUser.getUserID(),
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 dayOfWeek, groupIDList, null, // driverIDs
@@ -427,7 +430,11 @@ public class DataGenForStressTesting {
                 null, // vehicleTypeIDs
                 notifyPersonIDList, // notifyPersonIDs
                 emailList, // emailTo
-                0, zoneID, true, true);
+                null,//speed
+                null,null,null,null,//aggressive
+                RedFlagLevel.NONE,
+                zone.getZoneID(),
+                null,5,5, 5,0);
         zoneAlert.setNotifyPersonIDs(notifyPersonIDList);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         zoneAlert.setAlertID(zoneAlertID);
@@ -450,7 +457,7 @@ public class DataGenForStressTesting {
         List<String> emailList = new ArrayList<String>();
         emailList.add("test@email.com");
         // speeding alert
-        RedFlagAlert redFlagAlert = new RedFlagAlert(AlertMessageType.ALERT_TYPE_SEATBELT, acctID, 
+        RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT), acctID, 
         		fleetUser.getUserID(),
         		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
                 1439, // start/end time
@@ -461,7 +468,8 @@ public class DataGenForStressTesting {
                 null,
                 emailList, // emailTo
                 null, null, null, null, null,
-                RedFlagLevel.CRITICAL, null);
+                RedFlagLevel.CRITICAL, null,
+                null,5,5, 5,0);
         
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         redFlagAlert.setAlertID(redFlagAlertID);

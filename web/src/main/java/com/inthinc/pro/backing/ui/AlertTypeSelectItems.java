@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.inthinc.pro.model.AlertMessageType;
+import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.util.MessageUtil;
 
 public enum AlertTypeSelectItems {
@@ -21,7 +21,7 @@ public enum AlertTypeSelectItems {
         SelectItem blankItem = new SelectItem("", MessageUtil.getMessageString("editRedFlag_notype"));
         alertTypeSelectItems.add(blankItem);
 
-        for (AlertMessageType e : EnumSet.allOf(AlertMessageType.class))
+        for (EventSubCategory e : EnumSet.allOf(EventSubCategory.class))
         {
             alertTypeSelectItems.add(new SelectItem(e.name(),MessageUtil.getMessageString(e.toString())));
         }

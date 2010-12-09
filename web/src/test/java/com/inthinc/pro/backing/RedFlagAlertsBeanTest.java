@@ -8,15 +8,15 @@ import javax.faces.model.SelectItem;
 
 import org.junit.Ignore;
 
-import com.inthinc.pro.backing.RedFlagAlertsBean.RedFlagAlertView;
+import com.inthinc.pro.backing.RedFlagOrZoneAlertsBean.RedFlagOrZoneAlertView;
 import com.inthinc.pro.util.MiscUtil;
 @Ignore
-public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagAlertsBean.RedFlagAlertView>
+public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagOrZoneAlertsBean.RedFlagOrZoneAlertView>
 {
     @Override
-    protected RedFlagAlertsBean getAdminBean()
+    protected RedFlagOrZoneAlertsBean getAdminBean()
     {
-        return (RedFlagAlertsBean) applicationContext.getBean("redFlagAlertsBean");
+        return (RedFlagOrZoneAlertsBean) applicationContext.getBean("redFlagAlertsBean");
     }
 
     @Override
@@ -26,7 +26,7 @@ public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagAlertsBean.R
     }
 
     @Override
-    protected void populate(RedFlagAlertView editItem, BaseAdminBean<RedFlagAlertsBean.RedFlagAlertView> adminBean)
+    protected void populate(RedFlagOrZoneAlertView editItem, BaseAdminBean<RedFlagOrZoneAlertView> adminBean)
     {
         editItem.setCreated(new Date());
         editItem.setName("RedFlagAlert");
@@ -39,7 +39,7 @@ public class RedFlagAlertsBeanTest extends BaseAdminBeanTest<RedFlagAlertsBean.R
 //        assertEquals("seatBelt", editItem.getType());
         final List<SelectItem> pickedGroups = new ArrayList<SelectItem>();
         pickedGroups.add(new SelectItem("group101"));
-        ((RedFlagAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);
+        ((RedFlagOrZoneAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);
     }
 
     @Override

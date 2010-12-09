@@ -9,6 +9,7 @@ import java.beans.XMLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,13 +23,13 @@ import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.StateHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
-import com.inthinc.pro.dao.hessian.ZoneAlertHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEntryException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
@@ -46,8 +47,6 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
-import com.inthinc.pro.model.ZoneAlert;
-import com.inthinc.pro.model.app.DeviceSensitivityMapping;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.security.Role;
@@ -182,7 +181,7 @@ public abstract class BaseITData {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         
-        for (int cnt = 0; cnt < 10; cnt++)
+        for (int count = 0; count < 10; count++)
         {
 	        try
 	        {
@@ -350,7 +349,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
     protected RedFlagAlert initRedFlagAlert(AlertMessageType type) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-    	RedFlagAlert redFlagAlert = new RedFlagAlert(type, account.getAcctID(), 
+    	RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(type), account.getAcctID(), 
     		fleetUser.getUserID(), type + " Red Flag", type + " Red Flag Description", 0,
             1439, // start/end time
             anyDay(), 
@@ -362,7 +361,8 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
             null, // emailTo
             null, null,
             null, null, null,
-            RedFlagLevel.NONE,null);
+            RedFlagLevel.NONE,null,
+            escalationList(),5,5, null,0);
     	return redFlagAlert;
     }
     
@@ -380,16 +380,20 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
 
     protected void createZoneAlert() {
 		// zone alert pref for enter/leave zone any time, any day, both teams
-        ZoneAlertHessianDAO zoneAlertDAO = new ZoneAlertHessianDAO();
+        RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
-        ZoneAlert zoneAlert = new ZoneAlert(account.getAcctID(), 
+        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_ENTER_ZONE),account.getAcctID(), 
         		fleetUser.getUserID(), "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
                 notifyPersonList(), // notifyPersonIDs
                 null, // emailTo
-                0, zone.getZoneID(), true, true);
+                null,//speed
+                null,null,null,null,//aggressive
+                RedFlagLevel.NONE,
+                zone.getZoneID(),
+                escalationList(),5,5, null,0);
         Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
         assertNotNull(zoneAlertID);
         zoneAlert.setAlertID(zoneAlertID);
@@ -431,6 +435,13 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
         notifyPersonIDList.add(fleetUser.getPersonID());
 		return notifyPersonIDList;
 	}
+    protected List<AlertEscalationItem>escalationList(){
+        List<AlertEscalationItem> escalationPersonIDList = new ArrayList<AlertEscalationItem>();
+        escalationPersonIDList.add(new AlertEscalationItem(fleetUser.getPersonID(), 1));
+        escalationPersonIDList.add(new AlertEscalationItem(fleetUser.getPersonID(), -1));
+        return escalationPersonIDList;
+        
+    }
 
     protected <T> T getNext(XMLDecoder xmlDecoder, Class<T> expectedType) throws Exception {
         Object result = xmlDecoder.readObject();
