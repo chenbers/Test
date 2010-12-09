@@ -32,7 +32,8 @@ import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 @Consumes("application/xml")
 public interface ServiceClient {
     String DATE_FORMAT = "yyyyMMdd";
-
+    // --------------------------------------------------------------------------------
+    //   Account services 
     @GET
     @Path("/accounts")
     public ClientResponse<List<Account>> getAllAccounts();
@@ -49,6 +50,8 @@ public interface ServiceClient {
     @Path("/devices")
     public ClientResponse<List<Device>> getAllDevices();
 
+    // --------------------------------------------------------------------------------
+    //  CellControl/ZoomSafer services 
     @POST
     @Path("/driver/{driverID}/startMotion")
     public Response processStartMotionEvent(@PathParam("driverID") Integer driverID);
@@ -61,17 +64,19 @@ public interface ServiceClient {
     @Path("/phone/{phoneID}/ENABLED")
     public Response setStatusEnabled(@PathParam("phoneID") String phoneId);
 
-    @GET
-    @Path("/driver/{driverID}/trip")
-    public ClientResponse<Trip> getLastTrip(@PathParam("driverID") Integer driverID);
-
     @PUT
     @Path("/phone/{phoneID}/DISABLED")
     public Response setStatusDisabled(@PathParam("phoneID") String phoneId);
 
+    // ----------------------------------------------------------------------------------
+    //   Driver/Group web-services 
     @GET
     @Path("/group/{groupID}/driverlocations")
     public ClientResponse<List<DriverLocation>> getGroupDriverLocations(@PathParam("groupID") Integer groupID);
+
+    @GET
+    @Path("/driver/{driverID}/trip")
+    public ClientResponse<Trip> getLastTrip(@PathParam("driverID") Integer driverID);
 
     @GET
     @Path("/driver/{driverID}/trips/{date}")
@@ -85,14 +90,15 @@ public interface ServiceClient {
     @Path("/driver/{driverID}/location")
     public ClientResponse<LastLocation> getLastLocation(@PathParam("driverID") Integer driverID);
 
+    // --------------------------------------------------------------------------------
+    //   Performance Reports web-services 
     @GET
     @Path("/group/{groupID}/report/performance/10HourViolations")
     @Produces("application/xml")
     public ClientResponse<List<TenHoursViolation>> getTenHourViolations(@PathParam("groupID") Integer groupID);
 
-    // State Mileage by Vehicle Road Status
-    // -----------------------------------------------------------------------------------------------------------------
-    
+    // --------------------------------------------------------------------------------
+    //   IFTA Reports web-services 
     @GET
     @Path("/group/{groupID}/report/ifta/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
@@ -108,8 +114,8 @@ public interface ServiceClient {
     public ClientResponse<List<StateMileageCompareByGroup>> getStateMileageByVehicleStateComparisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
 
-    // State Mileage by Vehicle
-    // -----------------------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------
+    //   State Mileage by Vehicle
     @GET
     @Path("/group/{groupID}/report/ifta/stateMileage")
     @Produces("application/xml")
@@ -131,4 +137,29 @@ public interface ServiceClient {
     @Produces("application/xml")
     public ClientResponse<List<MileageByVehicle>> getStateMileageByVehicleWithIftaAndDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
+
+    // --------------------------------------------------------------------------------
+    //   Mileage by Vehicle
+    @GET
+    @Path("/group/{groupID}/report/ifta/mileage/iftaOnly/{startDate}/{endDate}")
+    @Produces("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getMileageByVehicleWithIftaAndDates(@PathParam("groupID") Integer groupID,
+                                 @PathParam("startDate") String startDate, @PathParam("endDate") String endDate); 
+    @GET
+    @Path("/group/{groupID}/report/ifta/mileage/iftaOnly")
+    @Produces("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getMileageByVehicleWithIfta(@PathParam("groupID") Integer groupID); 
+
+    @GET
+    @Path("/group/{groupID}/report/ifta/mileage/{startDate}/{endDate}")
+    @Produces("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getMileageByVehicleWithDates(@PathParam("groupID") Integer groupID,
+                                 @PathParam("startDate") String startDate, @PathParam("endDate") String endDate); 
+
+    @GET
+    @Path("/group/{groupID}/report/ifta/mileage")
+    @Produces("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getMileageByVehicleDefaults(@PathParam("groupID") Integer groupID); 
+    
+    // --------------------------------------------------------------------------------
 }
