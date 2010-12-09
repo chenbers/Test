@@ -103,7 +103,7 @@ public interface ServiceClient {
     // -----------------------------------------------------------------------------------------------------------------
     
     @GET
-    @Path("/group/{groupID}/report/ifta/stateComparaison/{startDate}/{endDate}")
+    @Path("/group/{groupID}/report/ifta/stateComparison/{startDate}/{endDate}")
     @Produces("application/xml")
     public ClientResponse<List<StateMileageCompareByGroup>> getStateMileageByVehicleStateComparisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);

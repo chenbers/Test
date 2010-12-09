@@ -108,7 +108,7 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/stateComparaison/iftaOnly/{startDate}/{endDate}")
+    @Path("/stateComparison/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonWithIftaAndDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
@@ -123,7 +123,7 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/stateComparaison/iftaOnly")
+    @Path("/stateComparison/iftaOnly")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonWithIfta(@PathParam("groupID") Integer groupID);
 
@@ -137,7 +137,7 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/stateComparaison")
+    @Path("/stateComparison")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonDefaults(@PathParam("groupID") Integer groupID);
 
@@ -155,7 +155,7 @@ public interface IFTAService {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/stateComparaison/{startDate}/{endDate}")
+    @Path("/stateComparison/{startDate}/{endDate}")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
