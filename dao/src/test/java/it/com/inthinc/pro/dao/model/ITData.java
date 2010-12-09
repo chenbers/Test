@@ -36,6 +36,10 @@ public class ITData extends BaseITData{
     
     public void createTestData(SiloService siloService, XMLEncoder xml, Date assignmentDate, boolean includeUnknown, boolean includeZonesAndAlerts)
     {
+        createTestData(siloService, xml, assignmentDate, includeUnknown, includeZonesAndAlerts, false);
+    }
+    public void createTestData(SiloService siloService, XMLEncoder xml, Date assignmentDate, boolean includeUnknown, boolean includeZonesAndAlerts, boolean includeWSGroup)
+    {
     	this.siloService = siloService;
     	this.xml = xml;
     	this.assignmentDate = assignmentDate;
@@ -51,7 +55,7 @@ public class ITData extends BaseITData{
         writeObject(address);
         
         // Group Hierarchy
-        createGroupHierarchy(account.getAcctID());
+        createGroupHierarchy(account.getAcctID(), includeWSGroup);
         writeObject(fleetGroup);
         writeObject(districtGroup);
         for (GroupData team : teamGroupData)
@@ -81,6 +85,10 @@ public class ITData extends BaseITData{
             writeObject(team.vehicle);
             
         }
+        
+        if (includeWSGroup) {
+            
+        }
         if (includeUnknown) {
 	        // no Driver device/vehicle
 	        Group noDriverGroup = teamGroupData.get(0).group;
@@ -104,7 +112,7 @@ public class ITData extends BaseITData{
     }
 
     @Override
-    protected void createGroupHierarchy(Integer acctID)
+    protected void createGroupHierarchy(Integer acctID, boolean includeWSGroup)
     {
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         groupDAO.setSiloService(siloService);
@@ -122,7 +130,9 @@ public class ITData extends BaseITData{
         teamGroupData = new ArrayList<GroupData>();
         
         // team
-        for (int i = GOOD; i <= BAD; i++)
+        int endIdx = (includeWSGroup ? WS_GROUP : BAD);
+        
+        for (int i = GOOD; i <= endIdx; i++)
         {
         	GroupData data = new GroupData();
         	data.driverType = i;
@@ -145,6 +155,9 @@ public class ITData extends BaseITData{
 
 
 	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts) {
+	    return parseTestData(stream, siloService, includeUnknown, includeZonesAndAlerts, false);
+	}
+	public boolean parseTestData(InputStream stream, SiloService siloService, boolean includeUnknown, boolean includeZonesAndAlerts, boolean includeWaysmartData) {
         try {
             XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(stream));
             account = getNext(xmlDecoder, Account.class);
@@ -152,7 +165,8 @@ public class ITData extends BaseITData{
             fleetGroup = getNext(xmlDecoder, Group.class);
             districtGroup = getNext(xmlDecoder, Group.class);
             teamGroupData = new ArrayList<GroupData>();
-            for (int i = GOOD; i <= BAD; i++) {
+            int endIdx = (includeWaysmartData) ? WS_GROUP : BAD;
+            for (int i = GOOD; i <= endIdx; i++) {
                 Group group = getNext(xmlDecoder, Group.class);
                 GroupData groupData = new GroupData();
                 groupData.group = group;
@@ -161,7 +175,7 @@ public class ITData extends BaseITData{
             }
             fleetUser = getNext(xmlDecoder, User.class);
             districtUser = getNext(xmlDecoder, User.class);
-            for (int i = GOOD; i <= BAD; i++) {
+            for (int i = GOOD; i <= endIdx; i++) {
                 GroupData groupData = teamGroupData.get(i);
                 groupData.user = getNext(xmlDecoder, User.class);
                 groupData.device = getNext(xmlDecoder, Device.class);

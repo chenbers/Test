@@ -51,30 +51,33 @@ import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.security.Role;
 
 public abstract class BaseITData {
 
-	public Account account;
-	public Address address;
-	public Group fleetGroup;
-	public User fleetUser;
-	public Group districtGroup;
-	public User districtUser;
-	public Integer startDateInSec;
-	public int totalDays;
-	public Zone zone;
-	public Device noDriverDevice;
-	public Vehicle noDriverVehicle;
+    public Account account;
+    public Address address;
+    public Group fleetGroup;
+    public User fleetUser;
+    public Group districtGroup;
+    public User districtUser;
+    public Integer startDateInSec;
+    public int totalDays;
+    public Zone zone;
+    public Device noDriverDevice;
+    public Vehicle noDriverVehicle;
 
     public static int GOOD = 0;
     public static int INTERMEDIATE = 1;
     public static int BAD = 2;
+    public static int WS_GROUP = 3;
     protected static final String PASSWORD="nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
     public static String TEAM_GROUP_NAME[] = {
-    	"GOOD",
-    	"INTERMEDIATE",
-    	"BAD",
+        "GOOD",
+        "INTERMEDIATE",
+        "BAD",
+        "WS"
     };
     public static Integer TESTING_SILO = 0;    
 
@@ -83,7 +86,7 @@ public abstract class BaseITData {
     protected Date assignmentDate;
 
     protected abstract List<Integer> anyTeam();
-    protected abstract void createGroupHierarchy(Integer acctID);
+    protected abstract void createGroupHierarchy(Integer acctID, boolean includeWSGroup);
     
     protected void createAddress(Integer acctID)
     {
@@ -128,7 +131,7 @@ public abstract class BaseITData {
     
     protected Driver createDriver(Group group)
     {
-    	return createDriver(group, null);
+        return createDriver(group, null);
     }
     
     protected Driver createDriver(Group group, Integer idx)
@@ -153,7 +156,7 @@ public abstract class BaseITData {
 
     protected Vehicle createVehicle(Group group, Integer deviceID, Integer driverID)
     {
-    	return createVehicle(group, deviceID, driverID, null);
+        return createVehicle(group, deviceID, driverID, null);
     }
     
     protected Vehicle createVehicle(Group group, Integer deviceID, Integer driverID, Integer idx)
@@ -188,26 +191,26 @@ public abstract class BaseITData {
         
         for (int cnt = 0; cnt < 10; cnt++)
         {
-	        try
-	        {
-		        Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, group.getName()+"Device", 
-		        		genNumericID(group.getGroupID(), 15), genNumericID(group.getGroupID(), 19), genNumericID(group.getGroupID(), 10), 
-		        		genNumericID(group.getGroupID(), 10));
-//		        , 
-//		        		"5555559876");
-		        device.setActivated(assignmentDate);
-//		        device.setAccel("1100 50 4");
-		        device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
-		        System.out.println("device imei " + device.getImei() + " activated date: " + assignmentDate);
-		        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
-		        device.setDeviceID(deviceID);
-		        
-		        return device;
-	        }
-	        catch (DuplicateEntryException ex)
-	        {
-	        	throw ex;
-	        }
+            try
+            {
+                Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, group.getName()+"Device", 
+                        genNumericID(group.getGroupID(), 15), genNumericID(group.getGroupID(), 19), genNumericID(group.getGroupID(), 10), 
+                        genNumericID(group.getGroupID(), 10));
+                device.setActivated(assignmentDate);
+                device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
+                if (group.getName().startsWith("WS")) 
+                    device.setProductVersion(ProductType.WS820);
+                else device.setProductVersion(ProductType.TIWIPRO_R74);
+                System.out.println("device imei " + device.getImei() + " activated date: " + assignmentDate);
+                Integer deviceID = deviceDAO.create(account.getAcctID(), device);
+                device.setDeviceID(deviceID);
+                
+                return device;
+            }
+            catch (DuplicateEntryException ex)
+            {
+                throw ex;
+            }
         }
         
         return null;
@@ -248,14 +251,14 @@ public abstract class BaseITData {
     
     protected List<Integer> getAccountDefaultRoles(Integer acctID)
     {
-		RoleHessianDAO roleDAO = new RoleHessianDAO();
-		roleDAO.setSiloService(siloService);
-		List<Role> roles = roleDAO.getRoles(acctID);
-		List<Integer> roleIDs = new ArrayList<Integer>();
-		for (Role role : roles)
-			roleIDs.add(role.getRoleID());
-		return roleIDs;
-	
+        RoleHessianDAO roleDAO = new RoleHessianDAO();
+        roleDAO.setSiloService(siloService);
+        List<Role> roles = roleDAO.getRoles(acctID);
+        List<Integer> roleIDs = new ArrayList<Integer>();
+        for (Role role : roles)
+            roleIDs.add(role.getRoleID());
+        return roleIDs;
+    
     }
 
     protected Person createPerson(Integer acctID, Integer groupID, String first, String last)
@@ -267,23 +270,23 @@ public abstract class BaseITData {
         Person person = null;
         // create a person
         while (retryCount > 0)
-	        try {
-		        person = new Person(0, acctID, ReportTestConst.timeZone, address.getAddrID(), 
-		        		first + "email"+groupID+Util.randomInt(1, 99999)+"@email.com", 
-		        		null, "5555555555", "5555555555", null, null, null, null, null, "emp_"+groupID+"_"+acctID+"_"+Util.randomInt(1, 99999), 
-		                null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, 
-		                MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
-		        person.setCrit(1);
-		        person.setWarn(1);
-		        person.setInfo(1);
-		
-		        Integer personID = personDAO.create(acctID, person);
-		        person.setPersonID(personID);
-		        retryCount = 0;
-	        }
-	        catch (DuplicateEmailException ex) {
-	        	retryCount--;
-	        }
+            try {
+                person = new Person(0, acctID, ReportTestConst.timeZone, address.getAddrID(), 
+                        first + "email"+groupID+Util.randomInt(1, 99999)+"@email.com", 
+                        null, "5555555555", "5555555555", null, null, null, null, null, "emp_"+groupID+"_"+acctID+"_"+Util.randomInt(1, 99999), 
+                        null, "title", "dept", first, "m", last, "jr", Gender.MALE, 65, 180, new Date(), Status.ACTIVE, 
+                        MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
+                person.setCrit(1);
+                person.setWarn(1);
+                person.setInfo(1);
+        
+                Integer personID = personDAO.create(acctID, person);
+                person.setPersonID(personID);
+                retryCount = 0;
+            }
+            catch (DuplicateEmailException ex) {
+                retryCount--;
+            }
 
         return person;
     }
@@ -356,9 +359,9 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
     protected RedFlagAlert initRedFlagAlert(AlertMessageType type) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-    	RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(type), account.getAcctID(),
-    		fleetUser.getUserID(),
-    		type + " Red Flag", type + " Red Flag Description", 0,
+        RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(type), account.getAcctID(),
+            fleetUser.getUserID(),
+            type + " Red Flag", type + " Red Flag Description", 0,
             1439, // start/end time
             anyDay(), 
             anyTeam(),
@@ -371,28 +374,28 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
             null, null, null, null,
             RedFlagLevel.WARNING,null,
             escalationList(),5, null,5);
-    	return redFlagAlert;
+        return redFlagAlert;
     }
     
 
 
     protected void addRedFlagAlert(RedFlagAlert redFlagAlert,
-			RedFlagAlertHessianDAO redFlagAlertDAO) {
-		
+            RedFlagAlertHessianDAO redFlagAlertDAO) {
+        
         Integer redFlagAlertID = redFlagAlertDAO.create(account.getAcctID(), redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setAlertID(redFlagAlertID);
-    	xml.writeObject(redFlagAlert);
-	}
+        xml.writeObject(redFlagAlert);
+    }
 
 
     protected void createZoneAlert() {
-		// zone alert pref for enter/leave zone any time, any day, both teams
+        // zone alert pref for enter/leave zone any time, any day, both teams
         RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
 
         RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE),account.getAcctID(), this.fleetUser.getUserID(), 
-        		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
+                "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs
@@ -405,9 +408,9 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
         assertNotNull(zoneAlertID);
         zoneAlert.setAlertID(zoneAlertID);
-    	xml.writeObject(zoneAlert);
+        xml.writeObject(zoneAlert);
 
-	}
+    }
 
 
 
@@ -427,22 +430,22 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         zone.setPoints(points);
         Integer zoneID = zoneDAO.create(account.getAcctID(), zone);
         zone.setZoneID(zoneID);
-    	xml.writeObject(zone);
+        xml.writeObject(zone);
 
-	}
+    }
 
     protected List<Boolean> anyDay() {
-		List<Boolean> dayOfWeek = new ArrayList<Boolean>();
+        List<Boolean> dayOfWeek = new ArrayList<Boolean>();
         for (int i = 0; i < 7; i++)
             dayOfWeek.add(true);
-		return dayOfWeek;
-	}
+        return dayOfWeek;
+    }
 
     protected List<Integer> notifyPersonList() {
-		List<Integer> notifyPersonIDList = new ArrayList<Integer>();
+        List<Integer> notifyPersonIDList = new ArrayList<Integer>();
         notifyPersonIDList.add(fleetUser.getPersonID());
-		return notifyPersonIDList;
-	}
+        return notifyPersonIDList;
+    }
     protected List<AlertEscalationItem>escalationList(){
         List<AlertEscalationItem> escalationPersonIDList = new ArrayList<AlertEscalationItem>();
         escalationPersonIDList.add(new AlertEscalationItem(fleetUser.getPersonID(), 1));

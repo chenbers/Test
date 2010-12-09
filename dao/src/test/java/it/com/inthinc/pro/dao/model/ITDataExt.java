@@ -45,7 +45,7 @@ public class ITDataExt extends BaseITData {
         writeObject(address);
         
         // Group Hierarchy
-        createGroupHierarchy(account.getAcctID());
+        createGroupHierarchy(account.getAcctID(), false);
         writeObject(fleetGroup);
         writeObject(districtGroup);
         for (GroupListData team : teamGroupListData)
@@ -90,7 +90,7 @@ public class ITDataExt extends BaseITData {
     }
 
     @Override
-    protected void createGroupHierarchy(Integer acctID)
+    protected void createGroupHierarchy(Integer acctID, boolean notUsed)
     {
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         groupDAO.setSiloService(siloService);
