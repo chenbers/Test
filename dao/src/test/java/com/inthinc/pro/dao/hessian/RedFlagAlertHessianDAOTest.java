@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
@@ -66,6 +67,7 @@ public class RedFlagAlertHessianDAOTest
             throw t;
         }
     }
+    @Ignore
     @Test
     public void update(){
         List<RedFlagAlert> plainRedFlagOrZoneAlerts = redFlagAlertHessianDAO.getRedFlagAlertsByUserIDDeep(personId);
@@ -80,6 +82,7 @@ public class RedFlagAlertHessianDAOTest
         updatedRedFlagOrZoneAlerts = redFlagAlertHessianDAO.getRedFlagAlertsByUserIDDeep(personId);
         assertTrue("expected redflag to be updated", updatedRedFlagOrZoneAlerts.get(0).getAlertTypeMask() == AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask());
     }
+    @Ignore
     @Test
     public void createAndDelete(){
         List<RedFlagAlert> plainRedFlagOrZoneAlerts = redFlagAlertHessianDAO.getRedFlagAlertsByUserIDDeep(personId);
@@ -97,6 +100,7 @@ public class RedFlagAlertHessianDAOTest
         assertTrue("expected redflag to be deleted", result == 1);
         
     }
+    @Ignore
     @Test
     public void deleteByZoneID(){
         List<Zone> zones = zoneHessianDAO.getZones(1);
