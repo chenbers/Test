@@ -37,11 +37,15 @@
 			  	 	<h:selectOneMenu value="#{bean.tableDataProvider.timeFrameBean.timeFrameKey}" id="#{context}_timeframe">
 						<f:selectItems value="#{bean.tableDataProvider.timeFrameBean.selectItems}" />
 					</h:selectOneMenu>
+					
+					<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+   			 				<ui:param name="selectBoxID" value="#{context}_search:#{context}_timeframe" />
+						</ui:include>
 					</td>
 				  </tr>
 				</table>
 			  </li>
-			  <li class="l">
+			  <li class="l select">
 				<a4j:commandButton id="#{context}_refresh" styleClass="left"
 					reRender="#{context}-form:header,#{context}-form:#{context},#{context}-form:#{context}_bottomScroller" 
 							action="#{bean.refreshAction}" oncomplete="initializeTable();">
