@@ -21,6 +21,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -154,29 +155,31 @@ public class ITData extends BaseITData{
                 teamGroupData.add(groupData);
             }
             fleetUser = getNext(xmlDecoder, User.class);
+            districtUser = getNext(xmlDecoder, User.class);
             for (int i = GOOD; i <= BAD; i++) {
                 GroupData groupData = teamGroupData.get(i);
                 groupData.user = getNext(xmlDecoder, User.class);
                 groupData.device = getNext(xmlDecoder, Device.class);
                 groupData.driver = getNext(xmlDecoder, Driver.class);
+                groupData.driver.setPerson(getNext(xmlDecoder, Person.class));
                 groupData.vehicle = getNext(xmlDecoder, Vehicle.class);
             }
             if (includeUnknown) {
-	            noDriverDevice = getNext(xmlDecoder, Device.class);
-	            noDriverVehicle = getNext(xmlDecoder, Vehicle.class);
+                noDriverDevice = getNext(xmlDecoder, Device.class);
+                noDriverVehicle = getNext(xmlDecoder, Vehicle.class);
             }
             if (includeZonesAndAlerts) {
-            	zone = getNext(xmlDecoder, Zone.class);
-            	zoneAlert = getNext(xmlDecoder, RedFlagAlert.class);
-            	redFlagAlertList = new ArrayList<RedFlagAlert>();
-            	for (int i = 0; i < 7; i++) {
-            		redFlagAlertList.add(getNext(xmlDecoder, RedFlagAlert.class));
-            	}
+                zone = getNext(xmlDecoder, Zone.class);
+                zoneAlert = getNext(xmlDecoder, RedFlagAlert.class);
+                redFlagAlertList = new ArrayList<RedFlagAlert>();
+                for (int i = 0; i < 7; i++) {
+                    redFlagAlertList.add(getNext(xmlDecoder, RedFlagAlert.class));
+                }
             }
-        	startDateInSec = getNext(xmlDecoder, Integer.class);
-        	Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
+            startDateInSec = getNext(xmlDecoder, Integer.class);
+            Integer todayInSec = DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 0, ReportTestConst.TIMEZONE_STR);
         
-        	totalDays = (todayInSec - startDateInSec) / DateUtil.SECONDS_IN_DAY;
+            totalDays = (todayInSec - startDateInSec) / DateUtil.SECONDS_IN_DAY;
             xmlDecoder.close();
             return dataExists(siloService);
         } catch (Exception ex) {

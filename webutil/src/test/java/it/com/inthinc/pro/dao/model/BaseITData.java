@@ -58,6 +58,7 @@ public abstract class BaseITData {
 	public Group fleetGroup;
 	public User fleetUser;
 	public Group districtGroup;
+	public User districtUser;
 	public Integer startDateInSec;
 	public int totalDays;
 	public Zone zone;

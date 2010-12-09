@@ -68,6 +68,7 @@ public class DaoUtilTest extends BaseSpringTest {
 	
     // Warning: this test uses the same data as the alert messages test in the dao project -- If the alert data is regenerated
     // copy the AlertTest.xml from that project's test/resources to this one.
+    // UtilText.xml is also  AlertTest.xml but for a different account
     private static final String XML_DATA_FILE = "AlertTest.xml";
     private static final String OTHER_XML_DATA_FILE = "UtilTest.xml";
 
