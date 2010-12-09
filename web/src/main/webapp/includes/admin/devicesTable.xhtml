@@ -68,10 +68,28 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_activated}" /></f:facet>
       <h:outputText value="#{item.activated}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText>
     </rich:column>
-    <rich:column id="status" rendered="#{devicesBean.tableColumns['status'].visible}" sortBy="#{item.status.description}">
-      <f:facet name="header"><h:outputText value="#{messages.devicesHeader_status}" /></f:facet>
+	<rich:column id="status" rendered="#{devicesBean.tableColumns['status'].visible}" custFilterBy="#{item.status.description}" filterValue="#{devicesBean.filterStatus}" sortBy="#{item.status.description}">
+      <f:facet name="header">
+      	<h:panelGroup>
+			<h:outputText value="#{messages.devicesHeader_status}" />
+			<h:panelGroup style="float:right;">
+		       	<rich:spacer style="display:block" height="2"/>
+		       	<h:selectOneMenu value="#{devicesBean.filterStatus}" style="width:120px;size:auto;margin-top:3px;"
+		      		id="editDevice-statusChoice" >
+		           	<f:selectItems value="#{devicesBean.statusSelectItems}" />
+		           	<a4j:support event="onchange" 
+		           		reRender="devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable_dataTableScroller" />
+		       	</h:selectOneMenu>
+				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+				 	<ui:param name="selectBoxID" value="admin-table-form:devicesTable:editDevice-statusChoice" />
+				</ui:include>
+			</h:panelGroup>
+		</h:panelGroup>
+      </f:facet>
       <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
     </rich:column>
+
+
     <rich:column id="mcmid" rendered="#{devicesBean.tableColumns['mcmid'].visible}" sortBy="#{item.mcmid}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_mcmid}" /></f:facet>
       <h:outputText value="#{item.mcmid}" />

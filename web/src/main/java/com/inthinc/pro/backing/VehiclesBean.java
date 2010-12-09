@@ -23,7 +23,9 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.backing.model.VehicleSettingsFactory;
+import com.inthinc.pro.backing.ui.DeviceStatusSelectItems;
 import com.inthinc.pro.backing.ui.ProductTypeSelectItems;
+import com.inthinc.pro.backing.ui.VehicleTypeSelectItems;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
@@ -109,7 +111,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private TreeMap<Integer, Boolean>             driverAssigned;
     
     private String                                batchProductChoice;
-    private ProductType  batchEditProductChoice;
+    private ProductType                           batchEditProductChoice;
+    private String                                filterVehicleType;
+    private String                                filterState;
+    private String                                filterStatus;
+    private String                                filterDOT;
+    private String                                filterIFTA;
+    
     // Stuff to do with vehicleSettings for the device
     private VehicleSettingsFactory              vehicleSettingsFactory;
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
@@ -685,14 +693,22 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return YEARS;
     }
 
-    public List<SelectItem> getTypes()
-    {
+    public List<SelectItem> getTypes() {
         return SelectItemUtil.toList(VehicleType.class, false);
     }
 
-    public List<SelectItem> getProductTypesSelectItems(){
-        
+    public List<SelectItem> getProductTypesSelectItems() {
+
         return ProductTypeSelectItems.INSTANCE.getSelectItems();
+    }
+
+    public List<SelectItem> getVehicleTypesSelectItems() {
+        return VehicleTypeSelectItems.INSTANCE.getSelectItems();
+    }
+
+    public List<SelectItem> getStatusSelectItems() {
+        //logger.fatal("getStatusSelectItems() returns "+DeviceStatusSelectItems.INSTANCE.getSelectItems());
+        return DeviceStatusSelectItems.INSTANCE.getSelectItems();
     }
     public String getBatchProductChoice() {
         return batchProductChoice;
@@ -729,6 +745,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public List<SelectItem> getAutoLogoffs()
     {
         return SelectItemUtil.toList(AutoLogoff.class, false);
+    }
+
+    public void setFilterVehicleType(String filterVehicleType) {
+        this.filterVehicleType = filterVehicleType;
+    }
+    public String getFilterVehicleType() {
+        return filterVehicleType;
     }
 
     // TODO: REFACTOR -- this method is in several backing beans
@@ -876,5 +899,30 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         {
             this.selected = selected;
         }
+    }
+
+    public String getFilterState() {
+        return filterState;
+    }
+    public void setFilterState(String filterState) {
+        this.filterState = filterState;
+    }
+    public String getFilterStatus() {
+        return filterStatus;
+    }
+    public void setFilterStatus(String filterStatus) {
+        this.filterStatus = filterStatus;
+    }
+    public String getFilterDOT() {
+        return filterDOT;
+    }
+    public void setFilterDOT(String filterDOT) {
+        this.filterDOT = filterDOT;
+    }
+    public String getFilterIFTA() {
+        return filterIFTA;
+    }
+    public void setFilterIFTA(String filterIFTA) {
+        this.filterIFTA = filterIFTA;
     }
 }

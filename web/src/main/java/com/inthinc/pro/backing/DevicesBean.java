@@ -15,6 +15,7 @@ import javax.faces.validator.ValidatorException;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
+import com.inthinc.pro.backing.ui.DeviceStatusSelectItems;
 import com.inthinc.pro.backing.ui.ProductTypeSelectItems;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.VehicleDAO;
@@ -55,6 +56,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private VehiclesBean vehiclesBean;
 
     private String batchProductChoice;
+    private String filterStatus;
 
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
@@ -395,6 +397,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         return SelectItemUtil.toList(DeviceStatus.class, false, DeviceStatus.DELETED);
     }
+    public List<SelectItem> getStatusSelectItems() {
+        return DeviceStatusSelectItems.INSTANCE.getSelectItems();
+    }
 
     @Override
     public void resetList()
@@ -506,6 +511,14 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public boolean isBatchProductChoice(ProductType productType){
         
         return batchProductChoice == null || batchProductChoice.equals(productType.getName());
+    }
+
+    public void setFilterStatus(String filterStatus) {
+        this.filterStatus = filterStatus;
+    }
+
+    public String getFilterStatus() {
+        return filterStatus;
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.faces.model.SelectItem;
 
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.util.MessageUtil;
 
 public enum ProductTypeSelectItems {
     
@@ -20,7 +21,7 @@ public enum ProductTypeSelectItems {
         
         List<SelectItem> productTypesSelectItems = new ArrayList<SelectItem>();
 
-        SelectItem blankItem = new SelectItem("", BLANK_SELECTION);
+        SelectItem blankItem = new SelectItem("", BLANK_SELECTION+MessageUtil.getMessageString("vehiclesHeader_productVersion"));
         blankItem.setEscape(false);
         productTypesSelectItems.add(blankItem);
 
