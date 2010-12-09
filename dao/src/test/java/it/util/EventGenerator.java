@@ -9,18 +9,31 @@ import java.util.Date;
 import java.util.List;
 
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.DOTStoppedEvent;
+import com.inthinc.pro.model.event.DOTStoppedState;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.FirmwareVersionEvent;
 import com.inthinc.pro.model.event.FullEvent;
+import com.inthinc.pro.model.event.HOSNoHoursEvent;
+import com.inthinc.pro.model.event.HOSNoHoursState;
+import com.inthinc.pro.model.event.HardVertical820Event;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.IgnitionOffEvent;
 import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.event.ParkingBrakeEvent;
+import com.inthinc.pro.model.event.ParkingBrakeState;
+import com.inthinc.pro.model.event.QSIVersionEvent;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.event.VersionEvent;
+import com.inthinc.pro.model.event.VersionState;
+import com.inthinc.pro.model.event.WitnessVersionEvent;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
 import com.inthinc.pro.model.event.ZoneDepartureEvent;
 import com.inthinc.pro.model.event.ZoneEvent;
+import com.inthinc.pro.model.event.ZonesVersionEvent;
 
 
 public class EventGenerator
@@ -50,7 +63,13 @@ public class EventGenerator
     private final static int ATTR_TYPE_MPG_DISTANCE  = 224;
     private final static int ATTR_TYPE_DRIVETIME  = 225;
 
-/*    
+    private final static int ATTR_upToDateStatus= 8260;
+    private final static int ATTR_state =8254;
+    private final static int ATTR_reasonCodeDot =8233;
+    private final static int ATTR_reasonCodeHos = 8234;
+
+
+    /*    
     private final static int ATTR_TYPE_FIRMVER   193
     private final static int ATTR_TYPE_FWDCMD_ID 194
     private final static int ATTR_TYPE_FWDCMD    195
@@ -175,16 +194,16 @@ public class EventGenerator
     static int eventCount;    
 	public void generateTripExt(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, Integer zoneID ) throws Exception
 	{
-		generateTrip(imeiID, service, startTime, data, true, zoneID);
+		generateTrip(imeiID, service, startTime, data, true, zoneID, false);
 	}
 //boolean tampering = false;
     public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data ) throws Exception
     {
-		generateTrip(imeiID, service, startTime, data, false, 0);
+		generateTrip(imeiID, service, startTime, data, false, 0, false);
     	
     }
 
-    public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, boolean includeExtraEvents, Integer zoneID ) throws Exception
+    public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, boolean includeExtraEvents, Integer zoneID, boolean includeWaysmartEvents ) throws Exception
     {
     	System.out.println("generate trip for imei" + imeiID + " Date: " + startTime);
     	
@@ -225,6 +244,62 @@ public class EventGenerator
 	        			break;
         		}
         	}
+        	else if (includeWaysmartEvents && waysmartEventIndex(i) != null) {
+        	    event = null;
+        	    Integer ws = waysmartEventIndex(i);
+        	    int idx = ReportTestConst.waySmartEventIndexes[ws].idx;
+        	    switch (idx) {
+        	        case ReportTestConst.NOTE_EVENT_SECONDARY_IDX:
+                        // hard vert
+                           event = new AggressiveDrivingEvent(0l, 0, NoteType.WAYSMART_NOTEEVENT_SECONDARY,
+                                    eventTime, 60, odometer,  locations[i].getLat(), locations[i].getLng(),
+                                    55, 11, -22, -33, data.severity);
+                           break;
+        	        case ReportTestConst.SPEEDING_EXT_IDX:
+        	            event = new SpeedingEvent(0l, 0, NoteType.WAYSMART_SPEEDING_EX4,
+                                           eventTime, 80, odometer,  locations[i].getLat(), locations[i].getLng(),
+                                           90, 65, 60, ReportTestConst.MILES_PER_EVENT, 10);
+        	            break;
+        	        case ReportTestConst.HARD_VERT_820_IDX:
+        	        case ReportTestConst.HARD_VERT_820_SECONDARY_IDX:
+        	            event = new HardVertical820Event(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 99, odometer, 
+                                       locations[i].getLat(), locations[i].getLng());
+        	            break;
+        	        case ReportTestConst.FIRMWARE_CURRENT_IDX:
+                        event = new FirmwareVersionEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng(), VersionState.UNKNOWN);
+                        break;
+        	        case ReportTestConst.WITNESS_UPDATED_IDX:
+                        event = new WitnessVersionEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng(), VersionState.CURRENT);
+                        break;
+        	        case ReportTestConst.QSI_UPDATED_IDX:
+                        event = new QSIVersionEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng(), VersionState.SERVER_OLDER);
+                        break;
+        	        case ReportTestConst.ZONES_UPDATED_IDX:
+                        event = new ZonesVersionEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng(), VersionState.UPDATED);
+                        break;
+                    case ReportTestConst.PARKING_BRAKE_IDX:
+                        event = new ParkingBrakeEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng(), ParkingBrakeState.DRIVING);
+                        break;
+                    case ReportTestConst.HOS_NO_HOURS_REMAINING_IDX:
+                        event = new HOSNoHoursEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng(), HOSNoHoursState.DRIVING);
+                        break;
+                    case ReportTestConst.DOT_STOPPED_IDX:
+                        event = new DOTStoppedEvent(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng(), DOTStoppedState.UNSAFE_VEHICLE);
+                        break;
+        	        default:
+        	            event = new Event(0l, 0, ReportTestConst.waySmartEventIndexes[ws].type, eventTime, 0, odometer, 
+                                       locations[i].getLat(), locations[i].getLng());
+                       
+        	    }
+        	
+            }
         	else if (!ignitionOn)
         	{
                 event = new Event(0l, 0, NoteType.IGNITION_ON,
@@ -328,6 +403,8 @@ public class EventGenerator
             }
             eventTime = new Date(eventTime.getTime() + ReportTestConst.ELAPSED_TIME_PER_EVENT);
         }
+//        if (includeWaysmartEvents)
+//            sendWSEvents(eventList, imeiID, service);
         sendEvents(eventList, imeiID, service);
         
         
@@ -370,12 +447,57 @@ public class EventGenerator
         }
 //        System.out.println("done");
     }
+
+/*
+ * this didn't work -- trying to generate waysmart events got a 313 error,     
+ */
+    private void sendWSEvents(List<Event> eventList, String imeiID, MCMSimulator service) throws Exception {
+        
+        List<byte[]> noteList = new ArrayList<byte[]>();
+
+        int cnt = 1;
+        for (Event event : eventList) {
+            byte[] eventBytes = createWSDataBytesFromEvent(event);
+            noteList.add(eventBytes);
+//            System.out.println("event type: " + event.getType());
+        
+            if (cnt % 4 == 0 || cnt == eventList.size()){
+//                System.out.print(cnt + " "  + noteList.size() + " ");
+                int retryCnt = 0;
+                for (; retryCnt < 10; retryCnt++) {
+                    try {
+                        service.notews(imeiID, 2, noteList);
+                        break;
+                    }
+                    catch (HessianException e) {
+                        System.out.println("Exception inserting notes: " + e.getErrorCode() + " retrying...");
+                    }
+                    catch (Throwable t) {
+                        System.out.println("Exception inserting notes: " + t.getMessage() + " retrying...");
+                    }
+                }
+                if (retryCnt == 10)
+                    throw new Exception("Error inserting notes even after 10 retry attempts.");
+                noteList = new ArrayList<byte[]>();
+            }
+            cnt++;
+        }
+//        System.out.println("done");
+    }
+
+    
     private boolean isExtraEventIndex(int idx) {
     		for (int cnt = 0; cnt < ReportTestConst.extraEventIndexes.length; cnt++)
     			if (idx == ReportTestConst.extraEventIndexes[cnt])
     				return true;
 		return false;
 	}
+    private Integer waysmartEventIndex(int idx) {
+        for (int cnt = 0; cnt < ReportTestConst.waySmartEventIndexes.length; cnt++)
+            if (idx == ReportTestConst.waySmartEventIndexes[cnt].idx)
+                return cnt;
+        return null;
+    }
 	int randomInt(int min, int max) {
         return (int) (Math.random() * ((max - min) + 1)) + min;
     }
@@ -559,10 +681,79 @@ public class EventGenerator
             eventBytes[idx++] = (byte) (ATTR_SPEED_ID & 0x000000FF);
             idx = puti4(eventBytes, idx, 2); //DateUtil.convertMillisecondsToSeconds(event.getTime().getTime()));
         }
+       // TODO: These are actually waysmart events
+/*        
+        else if (event instanceof VersionEvent) {
+            VersionEvent versionEvent = (VersionEvent)event;
+            idx = puti4(eventBytes, idx, ATTR_upToDateStatus);
+//            eventBytes[idx++] = (byte) (ATTR_upToDateStatus & 0x000000FF);
+            eventBytes[idx++] = (byte) (versionEvent.getStatus().getCode() & 0x000000FF);
+            
+        }
+        else if (event instanceof ParkingBrakeEvent) {
+            ParkingBrakeEvent parkingBrakeEvent = (ParkingBrakeEvent)event;
+            idx = puti4(eventBytes, idx, ATTR_state);
+            eventBytes[idx++] = (byte) (parkingBrakeEvent.getStatus().getCode() & 0x000000FF);
+        }
+        else if (event instanceof HOSNoHoursEvent) {
+            HOSNoHoursEvent hosNoHoursEvent = (HOSNoHoursEvent)event;
+            idx = puti4(eventBytes, idx, ATTR_reasonCodeHos);
+            eventBytes[idx++] = (byte) (hosNoHoursEvent.getStatus().getCode() & 0x000000FF);
+        }
+        else if (event instanceof DOTStoppedEvent) { 
+            DOTStoppedEvent dotStoppedEvent = (DOTStoppedEvent)event;
+            idx = puti4(eventBytes, idx, ATTR_reasonCodeDot);
+//            eventBytes[idx++] = (byte) (ATTR_upToDateStatus & 0x000000FF);
+            eventBytes[idx++] = (byte) (dotStoppedEvent.getStatus().getCode() & 0x000000FF);
+        }
+*/        
+        return Arrays.copyOf(eventBytes, idx);
+    }
+
+    
+    public static byte[] createWSDataBytesFromEvent(Event event)
+    {
+
+//       que->notes[n].len = len;
+//        que->notes[n].buf[len++] = 0;  /* packetLen */
+//        que->notes[n].buf[len++] = nType;
+//        que->notes[n].buf[len++] = 2;  /* version */
+//        len += puti4(que->notes[n].buf+len, (unsigned int)nTime);
+//        que->notes[n].buf[len++] = flags  & 0x00ff;
+//        len += putLatitude4(que->notes[n].buf+len, latitude);
+//        len += putLongitude4(que->notes[n].buf+len, longitude);
+//        que->notes[n].buf[len++] = speed & 0x00ff;
+//        que->notes[n].buf[len++] = speedLimit & 0x00ff;
+//        len += puti4(que->notes[n].buf+len, (unsigned int)linkID);
+//        len += puti4(que->notes[n].buf+len, que->odometer);
+//        len += puti2(que->notes[n].buf+len, g_stateID);
+//        que->notes[n].len = len;
+        
+
+        eventCount++;       
+//System.out.println("type: " + event.getType() + " time: " + DateUtil.convertDateToSeconds(event.getTime()));      
+        byte[] eventBytes = new byte[200];
+        int idx = 0;
+        eventBytes[idx++] = (byte) (0);
+        eventBytes[idx++] = (byte) (event.getType().getCode() & 0x000000FF);
+        eventBytes[idx++] = (byte) (2);
+        idx = puti4(eventBytes, idx, (int)(event.getTime().getTime()/1000l));
+//        if (event.getSats() == null || event.getSats().intValue() == 0)
+//            event.setSats(10);
+        eventBytes[idx++] = (byte) (0);
+//        eventBytes[idx++] = (byte) 1; // maprev
+        idx = putlat4(eventBytes, idx, event.getLatitude());
+        idx = putlng4(eventBytes, idx, event.getLongitude());
+        eventBytes[idx++] = (byte) (event.getSpeed() & 0x000000FF);
+        eventBytes[idx++] = (byte) ((event.getSpeedLimit()==null ? 0 : event.getSpeedLimit()) & 0x000000FF);
+        idx = puti4(eventBytes, idx, 0); // linkID
+        idx = puti4(eventBytes, idx, event.getOdometer());
+        idx = puti2(eventBytes, idx, 10); // stateID
 
         return Arrays.copyOf(eventBytes, idx);
     }
 
+    
     private static int putlat(byte[] eventBytes, int idx, Double latitude)
     {
         latitude = 90.0 - latitude;
@@ -583,6 +774,32 @@ public class EventGenerator
     private static int putlatlng(byte[] eventBytes, int idx, Double latlng)
     {
         int i = (int) (latlng * 0x00ffffff);
+        eventBytes[idx++] = (byte) ((i >> 16) & 0x000000FF);
+        eventBytes[idx++] = (byte) ((i >> 8) & 0x000000FF);
+        eventBytes[idx++] = (byte) (i & 0x000000FF);
+        return idx;
+    }
+    private static int putlat4(byte[] eventBytes, int idx, Double latitude)
+    {
+        latitude = 90.0 - latitude;
+        latitude = latitude / 180.0;
+
+        return putlatlng4(eventBytes, idx, latitude);
+    }
+
+    private static int putlng4(byte[] eventBytes, int idx, Double longitude)
+    {
+        if (longitude < 0.0)
+            longitude = longitude + 360;
+        longitude = longitude / 360.0;
+
+        return putlatlng4(eventBytes, idx, longitude);
+    }
+
+    private static int putlatlng4(byte[] eventBytes, int idx, Double latlng)
+    {
+        int i = (int) (latlng * 0x00ffffff);
+        eventBytes[idx++] = (byte) ((i >> 24) & 0x000000FF);
         eventBytes[idx++] = (byte) ((i >> 16) & 0x000000FF);
         eventBytes[idx++] = (byte) ((i >> 8) & 0x000000FF);
         eventBytes[idx++] = (byte) (i & 0x000000FF);

@@ -59,6 +59,15 @@ public class PaginationTest {
     	EXPECTED_EVENT_COUNTS.put(EventCategory.EMERGENCY, new Integer[] {Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(1)});
     	
     }
+    private static Map<EventCategory, Integer> EXPECTED_WS_EVENT_COUNTS;
+    static {
+        EXPECTED_WS_EVENT_COUNTS = new HashMap<EventCategory, Integer> ();
+        // events in team 0 (GOOD) are from the unknown driver
+        EXPECTED_WS_EVENT_COUNTS.put(EventCategory.VIOLATION, Integer.valueOf(7));
+        EXPECTED_WS_EVENT_COUNTS.put(EventCategory.WARNING, Integer.valueOf(11));
+        EXPECTED_WS_EVENT_COUNTS.put(EventCategory.EMERGENCY, Integer.valueOf(9));
+        
+    }
 
     private static Integer[] EXPECTED_RED_FLAG_COUNTS = {
     	Integer.valueOf(7),
@@ -81,7 +90,7 @@ public class PaginationTest {
         itData = new ITData();
 
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(PAGINATION_BASE_DATA_XML);
-        if (!itData.parseTestData(stream, siloService, true, true)) {
+        if (!itData.parseTestData(stream, siloService, true, true, true)) {
             throw new Exception("Error parsing Test data xml file");
         }
 
@@ -634,5 +643,24 @@ public class PaginationTest {
     		
     	}
 	}
+    @Test
+    //@Ignore
+    public void wsevents() {
+        EventHessianDAO eventDAO = new EventHessianDAO();
+        eventDAO.setSiloService(siloService);
+        
+        // no filters
+        for (EventCategory category : EXPECTED_WS_EVENT_COUNTS.keySet()) {
+            int teamIdx = ITData.WS_GROUP;
+            int daysBack = 1;
+            Date endDate = new Date();
+            Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+
+            GroupData team = itData.teamGroupData.get(teamIdx);
+            Integer eventCount = eventDAO.getEventCount(team.group.getGroupID(), startDate, endDate, EventDAO.INCLUDE_FORGIVEN, category.getNoteTypesInCategory(), null);
+            assertEquals("Unexpected event count for team " + team.group.getName() + " category " + category, EXPECTED_WS_EVENT_COUNTS.get(category), eventCount);
+
+        }
+    }
 
 }

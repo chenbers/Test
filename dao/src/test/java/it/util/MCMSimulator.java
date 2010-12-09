@@ -18,4 +18,5 @@ public interface MCMSimulator
          */
         
         List<Map> note(String mcmID, List<byte[]> noteList);
+        List<Map> notews(String imei, Integer type, List<byte[]> noteList);
 }
