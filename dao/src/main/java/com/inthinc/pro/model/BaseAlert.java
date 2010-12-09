@@ -51,7 +51,7 @@ public abstract class BaseAlert extends BaseEntity
     private Integer             maxEscalationTryTime;
     private Integer             escalationTimeBetweenRetries;
 
-    private Integer             timeoutUnits; //calls or minutes
+//    private Integer             timeoutUnits; //calls or minutes
     
 
     public BaseAlert()
@@ -298,6 +298,7 @@ public abstract class BaseAlert extends BaseEntity
     public void setEscalationTimeBetweenRetries(Integer escalationTimeBetweenRetries) {
         this.escalationTimeBetweenRetries = escalationTimeBetweenRetries;
     }
+/*    
 
     public Integer getTimeoutUnits() {
         return timeoutUnits;
@@ -307,5 +308,5 @@ public abstract class BaseAlert extends BaseEntity
         this.timeoutUnits = timeoutUnits;
     }
     
-
+*/
 }

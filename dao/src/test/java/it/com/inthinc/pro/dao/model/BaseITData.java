@@ -370,7 +370,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
             null,
             null, null, null, null,
             RedFlagLevel.WARNING,null,
-            escalationList(),5, null,5,0);
+            escalationList(),5, null,5);
     	return redFlagAlert;
     }
     
@@ -401,7 +401,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
                 null,//speed settings
                 null,null,null,null,//aggressive driving settings
                 RedFlagLevel.NONE, zone.getZoneID(),
-                escalationList(),5, null,5,0);
+                escalationList(),5, null,5);
         Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
         assertNotNull(zoneAlertID);
         zoneAlert.setAlertID(zoneAlertID);

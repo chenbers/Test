@@ -34,7 +34,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
     protected void createTestData() {
     	itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), NUM_EVENT_DAYS+2, ReportTestConst.TIMEZONE_STR));
-        ((ITData)itData).createTestData(siloService, xml, assignmentDate, true, true);
+        ((ITData)itData).createTestData(siloService, xml, assignmentDate, true, true, true);
     }
     
     @Override
@@ -47,7 +47,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 			e.printStackTrace();
         	return false;
 		}
-        if (!((ITData)itData).parseTestData(stream, siloService, true, true))
+        if (!((ITData)itData).parseTestData(stream, siloService, true, true, true))
         {
         	System.out.println("Parse of xml data file failed.  File: " + xmlPath);
         	return false;
@@ -148,6 +148,9 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 				case 2:			// bad
 					eventGenerator.generateTripExt(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(5,5,5,5,true,20,100), itData.zone.getZoneID());
 				break;
+                case 3:         // waysmart
+                    eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(0,0,0,0,false,30,0), false, itData.zone.getZoneID(), true);
+                break;
 				
 				}
 			}		
@@ -191,7 +194,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 	            
 	            int numDays = NUM_EVENT_DAYS;
 //numDays = 5;	            
-	            for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
+	            for (int teamType = ITData.GOOD; teamType <= ITData.WS_GROUP; teamType++)
 	            {
 	            	for (int day = numDays; day > 0; day--)
 	            	{
@@ -231,7 +234,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 
                 HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
                 MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
-                for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
+                for (int teamType = ITData.GOOD; teamType <= ITData.WS_GROUP; teamType++)
                 {
     	        	for (int day = 0; day < testData.numDays; day++)
     	        	{

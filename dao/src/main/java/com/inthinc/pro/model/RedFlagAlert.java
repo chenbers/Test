@@ -70,8 +70,8 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     @Column(name = "escalationCallDelay")
     private Integer             escalationTimeBetweenRetries;
 
-    @Column(updateable = false)
-    private Integer             timeoutUnits; //calls or minutes
+//    @Column(updateable = false)
+//    private Integer             timeoutUnits; //calls or minutes
     
     private RedFlagLevel severityLevel;
     
@@ -100,10 +100,12 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     public RedFlagAlert(Set<AlertMessageType> types, Integer accountID, Integer userID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
             List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo,Integer[] speedSettings,
             Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, RedFlagLevel severityLevel,Integer zoneID,
-            List<AlertEscalationItem> escalationList,Integer maxEscalationTries, Integer maxEscalationTryTime, Integer escalationTimeBetweenRetries,Integer timeoutUnits)
+            List<AlertEscalationItem> escalationList,Integer maxEscalationTries, Integer maxEscalationTryTime, Integer escalationTimeBetweenRetries
+            /*,Integer timeoutUnits */)
     {
         super();
         this.types = new ArrayList<AlertMessageType>(types);
+        this.alertTypeMask = AlertMessageType.convertTypes(getTypesSet()); 
         this.accountID = accountID;
         this.userID = userID;
         this.name = name;
@@ -129,7 +131,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         this.maxEscalationTries = maxEscalationTries;
         this.maxEscalationTryTime = maxEscalationTryTime;
         this.escalationTimeBetweenRetries = escalationTimeBetweenRetries;
-        this.timeoutUnits = timeoutUnits;
+//        this.timeoutUnits = timeoutUnits;
     }
 
     public List<AlertMessageType> getTypes() {
@@ -364,12 +366,15 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     }
 
     public Integer getTimeoutUnits() {
-        return timeoutUnits;
+        if (this.maxEscalationTryTime == null)
+            return 1;
+        else return 0;
+//        return timeoutUnits;
     }
 
-    public void setTimeoutUnits(Integer timeoutUnits) {
-        this.timeoutUnits = timeoutUnits;
-    }
+//    public void setTimeoutUnits(Integer timeoutUnits) {
+//        this.timeoutUnits = timeoutUnits;
+//    }
     
     public int compareTo(RedFlagAlert o) {
 

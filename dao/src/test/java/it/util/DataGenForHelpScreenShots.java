@@ -257,7 +257,7 @@ public class DataGenForHelpScreenShots {
                 null,null,null,null,//aggressive
                 RedFlagLevel.NONE,
                 zoneID,
-                escalationList,5,5, 5,0);
+                escalationList,5,null, 5);
         zoneAlert.setNotifyPersonIDs(notifyPersonIDList);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         zoneAlert.setAlertID(zoneAlertID);
@@ -292,7 +292,7 @@ public class DataGenForHelpScreenShots {
                 emailList, // emailTo
                 null, null, null, null, null,
                 RedFlagLevel.CRITICAL, null,
-                null, null, null, null, null);
+                null, null, null, null);
         
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         redFlagAlert.setAlertID(redFlagAlertID);
