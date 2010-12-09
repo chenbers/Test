@@ -347,7 +347,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     protected String getDisplayRedirect() {
         
-        if (getItem().getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
+        if (AlertMessageType.ALERT_TYPE_ZONES.equals(getItem().getType())){
           
              return "pretty:adminZone";
         }
@@ -481,7 +481,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public void removeEmailTo() {
-            //System.out.println("removeEmailToSlot: "+(String)emailTosDataTable.getRowData());
             emailTos.remove(emailTosDataTable.getRowData());
         }
 
@@ -491,7 +490,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 String paramForEmailToAdd = "";
                 FacesContext context = FacesContext.getCurrentInstance();
                 Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-                for (String key : map.keySet()) {    System.out.println(key.toString()+" : "+map.get(key)); 
+                for (String key : map.keySet()) { 
                     if (key.endsWith("emailAddressesInput")) {     
                         String[] words = key.split(":");
                         int rowIndex = Integer.parseInt(words[2]);
@@ -613,7 +612,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             return zone;
         }
         public String getZoneName(){
-            if (getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
+            if (AlertMessageType.ALERT_TYPE_ZONES.equals(getType())){
                 if (getZoneID() != null){
                     return getZone().getName();
                 }
@@ -667,7 +666,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.escEmail = escEmail;
         }
         public String getZonePointsString(){
-            if (getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
+            if (AlertMessageType.ALERT_TYPE_ZONES.equals(getType())){
                 if (getZoneID() != null){
                     return getZone().getPointsString();
                 }
