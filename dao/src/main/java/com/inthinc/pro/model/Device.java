@@ -203,10 +203,10 @@ public class Device extends BaseEntity implements HasAccountId
     public boolean isTextMsgReceiveCapable() {
         // TODO: jwimmer: this is a stopgap until a better way to determine device capabilities is implemented
 
-        //TODO: Jacquie added this to temporarily get the tests to pass - will make this always retrn false
-        this.productVersion = ProductType.TIWIPRO_R74;
+        //TODO: Jacquie added this to temporarily get the tests to pass - will make this always return false
+        //this.productVersion = ProductType.TIWIPRO_R74;
 
-        return (this.productVersion != null && this.productVersion.equals(ProductType.WS820));
+        return ProductType.WS820.equals(this.productVersion);
     }
     
     /**
@@ -216,12 +216,11 @@ public class Device extends BaseEntity implements HasAccountId
      */
     public boolean isCrashTraceAppletCapable(){
         //TODO: jwimmer: another stopgap until a better way to determine device capabilities is implemented
-        return (this.productVersion != null && this.productVersion.equals(ProductType.WS820));
+        return (ProductType.WS820.equals(this.productVersion));
     }
 
-    
     public boolean isWaySmart() {
-        return ProductType.WS820.getCode().equals(this.productVersion);
+        return ProductType.WS820.equals(this.productVersion);
     }
     public ProductType getProductVersion() {
         return productVersion;
