@@ -30,20 +30,12 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     private static final Integer TEST_GROUP_ID = 1;
     private static Logger logger = Logger.getLogger(IFTAServiceTest.class);
     private static final Integer GROUP_ID_WITH_NO_DATA = 1;
+    private static final Integer GROUP_ID = 3;
     private static final Integer GROUP_ID_NOT_IN_USER_HIERARCHY = 1504;
 
     /**
      * Integration test for getStateMileageByVehicleRoadStatus().
      */
-    @Test
-    public void testGetStateMileageByVehicleRoadStatusWithGroupNotInUserHierarchy() {
-
-        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
-
-        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-
-    }
-
     @Test
     public void testGetStateMileageByVehicleRoadStatusWithGroupWithoutData() {
 
@@ -54,7 +46,7 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     }
     
     @Test
-    public void testGetStateMileageByVehicleRoadStatusWithBadInput1() {
+    public void testGetStateMileageByVehicleRoadStatusWithAccessDenied() {
 
         ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_END_DATE, TEST_START_DATE);
 
@@ -63,7 +55,7 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     }
     
     @Test
-    public void testGetStateMileageByVehicleRoadStatusWithBadInput2() {
+    public void testGetStateMileageByVehicleRoadStatusWithNegativeGroupID() {
 
         ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(-10, TEST_START_DATE, TEST_END_DATE);
 
@@ -72,28 +64,56 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     }
     
     @Test
-    public void testGetStateMileageByVehicleRoadStatusWithBadInput3() {
+    public void testGetStateMileageByVehicleRoadStatusWithNullGroupID() {
 
-//        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(null, TEST_START_DATE, TEST_END_DATE);
-//
-//        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(null, TEST_START_DATE, TEST_END_DATE);
+
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 
     }
     
     @Test
-    public void testGetStateMileageByVehicleRoadStatusWithBadInput4() {
+    public void testGetStateMileageByVehicleRoadStatusWithNullStartDate() {
 
-//        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, null, TEST_END_DATE);
-//
-//        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID, null, TEST_END_DATE);
+
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
 
     }
+    
+    @Test
+    public void testGetStateMileageByVehicleRoadStatusWithNullEndDate() {
+
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID,TEST_START_DATE , null);
+
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+
+    }
+    
+    @Test
+    public void testGetStateMileageByVehicleRoadStatusWithStartDateBiggerThanEndDate() {
+
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID, TEST_END_DATE , TEST_START_DATE );
+
+        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+
+    }
+    
+    @Test
+    public void testGetStateMileageByVehicleRoadStatusWithUnknownGroupID() {
+
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(9999, TEST_END_DATE , TEST_START_DATE );
+
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+
+    }
+    
     
     /**
-     * Integration test for getStateMileageByVehicleGroupComparaison().
+     * Integration test for getStateMileageByVehicleStateComparison().
      */
     @Test
-    public void testGetStateMileageByVehicleGroupComparaisonWithGroupNotInUserHierarchy() {
+    public void testGetStateMileageByVehicleStateComparisonWithGroupNotInUserHierarchy() {
 
         String expectedStrStartDate = TEST_START_DATE;
         String expectedStrEndDate = TEST_END_DATE;
@@ -101,21 +121,21 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
         Date startDate = buildDateFromString(expectedStrStartDate);
         Date endDate = buildDateFromString(expectedStrEndDate);
 
-        ClientResponse<List<StateMileageCompareByGroup>> response = client.getStateMileageByVehicleGroupComparaisonWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
+        ClientResponse<List<StateMileageCompareByGroup>> response = client.getStateMileageByVehicleStateComparisonWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 
     }
 
     @Test
-    public void testGetStateMileageByVehicleGroupComparaisonWithGroupWithoutData() {
+    public void testGetStateMileageByVehicleStateComparisonWithGroupWithoutData() {
 
         String expectedStrStartDate = TEST_START_DATE;
         String expectedStrEndDate = TEST_END_DATE;
 
         Date startDate = buildDateFromString(expectedStrStartDate);
         Date endDate = buildDateFromString(expectedStrEndDate);
-        ClientResponse<List<StateMileageCompareByGroup>> response = client.getStateMileageByVehicleGroupComparaisonWithDates(GROUP_ID_WITH_NO_DATA, TEST_START_DATE, TEST_END_DATE);
+        ClientResponse<List<StateMileageCompareByGroup>> response = client.getStateMileageByVehicleStateComparisonWithDates(GROUP_ID_WITH_NO_DATA, TEST_START_DATE, TEST_END_DATE);
 
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
 

@@ -90,16 +90,22 @@ public interface ServiceClient {
     @Produces("application/xml")
     public ClientResponse<List<TenHoursViolation>> getTenHourViolations(@PathParam("groupID") Integer groupID);
 
+    // State Mileage by Vehicle Road Status
+    // -----------------------------------------------------------------------------------------------------------------
+    
     @GET
     @Path("/group/{groupID}/report/ifta/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
     public ClientResponse<List<StateMileageByVehicleRoadStatus>> getStateMileageByVehicleRoadStatusWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
     
+    // State Mileage by Vehicle State Comparison
+    // -----------------------------------------------------------------------------------------------------------------
+    
     @GET
     @Path("/group/{groupID}/report/ifta/stateComparaison/{startDate}/{endDate}")
     @Produces("application/xml")
-    public ClientResponse<List<StateMileageCompareByGroup>> getStateMileageByVehicleGroupComparaisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
+    public ClientResponse<List<StateMileageCompareByGroup>> getStateMileageByVehicleStateComparisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
 
     // State Mileage by Vehicle

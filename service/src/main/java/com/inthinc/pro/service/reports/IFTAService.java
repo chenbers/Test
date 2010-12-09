@@ -110,7 +110,7 @@ public interface IFTAService {
     @GET
     @Path("/stateComparaison/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleGroupComparisonWithIftaAndDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+    Response getStateMileageByVehicleStateComparisonWithIftaAndDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 
     /**
@@ -125,7 +125,7 @@ public interface IFTAService {
     @GET
     @Path("/stateComparaison/iftaOnly")
     @Produces("application/xml")
-    Response getStateMileageByVehicleGroupComparisonWithIfta(@PathParam("groupID") Integer groupID);
+    Response getStateMileageByVehicleStateComparisonWithIfta(@PathParam("groupID") Integer groupID);
 
     /**
      * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & default ifta (false) & default dates
@@ -139,7 +139,7 @@ public interface IFTAService {
     @GET
     @Path("/stateComparaison")
     @Produces("application/xml")
-    Response getStateMileageByVehicleGroupComparisonDefaults(@PathParam("groupID") Integer groupID);
+    Response getStateMileageByVehicleStateComparisonDefaults(@PathParam("groupID") Integer groupID);
 
     /**
      * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & given dates & default ifta (false). 
@@ -157,7 +157,7 @@ public interface IFTAService {
     @GET
     @Path("/stateComparaison/{startDate}/{endDate}")
     @Produces("application/xml")
-    Response getStateMileageByVehicleGroupComparisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+    Response getStateMileageByVehicleStateComparisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 
     // ----------------------------------------------------------------------

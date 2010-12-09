@@ -102,7 +102,7 @@ public class ReportsFacadeImpl implements ReportsFacade {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparaison(Integer groupID,
+    public List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(Integer groupID,
             Interval interval,
             boolean dotOnly) {
         List groupIDList = new ArrayList();

@@ -42,4 +42,12 @@ public class ReportsUtil {
         return res;
     }
 
+    public GroupDAOAdapter getGroupDAOAdapter() {
+        return groupDAOAdapter;
+    }
+
+    public void setGroupDAOAdapter(GroupDAOAdapter groupDAOAdapter) {
+        this.groupDAOAdapter = groupDAOAdapter;
+    }
+
 }
