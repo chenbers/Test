@@ -15,7 +15,7 @@
 	<field name="driverName" class="java.lang.String"/>
 	<field name="vehicleName" class="java.lang.String"/>
 	<field name="employeeID" class="java.lang.String"/>
-	<field name="date" class="java.util.Date"/>
+	<field name="date" class="java.lang.String"/>
 	<field name="hoursThisDay" class="java.lang.Double"/>
 	<sortField name="groupName"/>
 	<group name="groupName">
@@ -57,7 +57,7 @@
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
-			<textField isStretchWithOverflow="true" pattern="MM/dd/yy" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
 				<reportElement key="textField" x="171" y="0" width="79" height="17" isPrintWhenDetailOverflows="true" forecolor="#000000"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -68,7 +68,7 @@
 				<textElement textAlignment="Center">
 					<font size="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.util.Date"><![CDATA[$F{date}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
 				<reportElement key="textField" x="448" y="0" width="104" height="17" isPrintWhenDetailOverflows="true" forecolor="#000000"/>

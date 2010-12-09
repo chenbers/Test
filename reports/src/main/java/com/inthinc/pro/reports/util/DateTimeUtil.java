@@ -23,6 +23,7 @@ public class DateTimeUtil {
             DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
             dayList.add(day);
         }
+        
         return dayList;
     }
     

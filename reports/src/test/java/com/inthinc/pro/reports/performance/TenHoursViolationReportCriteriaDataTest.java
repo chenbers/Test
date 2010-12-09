@@ -29,9 +29,9 @@ public class TenHoursViolationReportCriteriaDataTest extends BaseUnitTest {
     public static final String testCaseName = "vtest_01H1_07012010_07072010"; 
     
     TenHoursViolation[] expectedData = {
-        new TenHoursViolation("Norman Wells"+ TenHoursViolationReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS",new Date(1278223200000l)," David  Francey",null,"02289734",3.0833333333333335),
-        new TenHoursViolation("Norman Wells"+ TenHoursViolationReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS",new Date(1278309600000l)," David  Francey",null,"02289734",3.5166666666666666),
-        new TenHoursViolation("Norman Wells"+ TenHoursViolationReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS",new Date(1277964000000l)," Scott Giem",null,"00317263",3.433333333333333),
+        new TenHoursViolation("Norman Wells"+ TenHoursViolationReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/2010"," David  Francey",null,"02289734",3.0833333333333335),
+        new TenHoursViolation("Norman Wells"+ TenHoursViolationReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/2010"," David  Francey",null,"02289734",3.5166666666666666),
+        new TenHoursViolation("Norman Wells"+ TenHoursViolationReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/2010"," Scott Giem",null,"00317263",3.433333333333333),
     };
 
     // test using data extracted from GAIN database

@@ -66,7 +66,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 			for (DriverHoursRecord rec : entry.getValue()) {
 				DriverHours bean = new DriverHours();
 				bean.setGroupName(driverGroupName);
-				bean.setDate(dayFormatter.print(rec.getDate().getTime()));
+				bean.setDate(dayFormatter.print(rec.getDay()));
 				bean.setDriverName(driver.getPerson().getFullName());
 				bean.setHours(rec.getHoursThisDay());
 

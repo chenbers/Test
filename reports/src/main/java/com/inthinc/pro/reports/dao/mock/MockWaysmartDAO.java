@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.Driver;
@@ -42,8 +43,8 @@ public class MockWaysmartDAO implements WaysmartDAO {
         List<TenHoursViolationRecord> list = getTenHoursViolationData(driverID);
         if (list != null) {
             for (TenHoursViolationRecord rec : list) {
-                if (rec.getDate().after(startDate.getTime())
-                        && rec.getDate().before(endDate.getTime())) {
+                if (rec.getDateTime().toDate().after(startDate.getTime())
+                        && rec.getDateTime().toDate().before(endDate.getTime())) {
                     filter.add(rec);
                 }
             }
@@ -70,8 +71,8 @@ public class MockWaysmartDAO implements WaysmartDAO {
         List<DriverHoursRecord> list = this.getDriverHoursData(driverID);
         if (list != null) {
             for (DriverHoursRecord rec : list) {
-                if (rec.getDate().after(startDate.getTime())
-                        && rec.getDate().before(endDate.getTime())) {
+                if (rec.getDay().toDate().after(startDate.getTime())
+                        && rec.getDay().toDate().before(endDate.getTime())) {
                     filter.add(rec);
                 }
             }
@@ -152,7 +153,7 @@ public class MockWaysmartDAO implements WaysmartDAO {
         List<TenHoursViolationRecord> list = new ArrayList<TenHoursViolationRecord>();
         
         TenHoursViolationRecord rec = new TenHoursViolationRecord();
-        rec.setDate(this.createDate(2010, 8, id+1, 0, 0));
+        rec.setDateTime(new DateTime(createDate(2010, 8, id+1, 0, 0)));
         rec.setVehicleID(11+id*3);
         rec.setVehicleName("Stub Vehicle");
         rec.setHoursThisDay((10+id));
@@ -180,7 +181,7 @@ public class MockWaysmartDAO implements WaysmartDAO {
         
         for (int i = 0; i < d.length; i++) {
             DriverHoursRecord rec = new DriverHoursRecord();
-            rec.setDate(this.createDate(2010, 8, i+1, 0, 0));
+            rec.setDay(new DateTime(createDate(2010, 8, i+1, 0, 0)));
             rec.setDriverID(driverId);
             rec.setHoursThisDay(d[i]);
             list.add(rec);

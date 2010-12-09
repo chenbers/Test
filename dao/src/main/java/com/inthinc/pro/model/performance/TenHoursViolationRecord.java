@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.joda.time.DateTime;
+
 import com.inthinc.pro.model.BaseEntity;
 
 @XmlRootElement
@@ -11,18 +13,19 @@ public class TenHoursViolationRecord extends BaseEntity {
 
     private static final long serialVersionUID = 6391654979859374036L;
 
-    private Date date;
+    private DateTime dateTime;
     private Integer driverID;
     private String vehicleName;
     private Integer vehicleID;
     private Number hoursThisDay;
     
-    public Date getDate() {
-        return date;
+
+    public DateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateTime(DateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public Integer getDriverID() {

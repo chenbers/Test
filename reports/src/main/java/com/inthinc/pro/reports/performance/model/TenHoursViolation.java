@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class TenHoursViolation {
     private String groupName;
-    private Date date;
+    private String date;
     private String driverName;
     private String vehicleName;
     private String employeeID;
@@ -15,7 +15,7 @@ public class TenHoursViolation {
 
     public TenHoursViolation(){}
     
-    public TenHoursViolation(String groupName, Date date, String driverName, String vehicleName, String employeeId, Double hours) {
+    public TenHoursViolation(String groupName, String date, String driverName, String vehicleName, String employeeId, Double hours) {
         this.groupName = groupName;
         this.date = date;
         this.driverName = driverName;
@@ -32,11 +32,11 @@ public class TenHoursViolation {
         this.groupName = groupName;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -75,7 +75,7 @@ public class TenHoursViolation {
     public void dump() {
         System.out.println("new TenHoursViolation(" +
                 "\""+ groupName + "\"," +
-                "new Date("+ date.getTime() + ")," +
+                "\""+ date + "\"," +
                 "\""+ driverName + "\"," +
                 "\""+ vehicleName + "\"," +
                 "\""+ employeeID + "\"," +

@@ -43,9 +43,9 @@ public class WaysmartDAOImpl implements WaysmartDAO {
         
         List<DriverHoursRecord> driverHoursRecordList = new ArrayList<DriverHoursRecord>();
         
+        
         DateTime currentTime = new DateTime();
         for (DateTime day : dayList) {
-
             List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime.toDate(), true);
             Long drivingMinutes = 0l;
             for (HOSRecAdjusted hosRec : logListForDay) {
@@ -54,7 +54,7 @@ public class WaysmartDAOImpl implements WaysmartDAO {
             }
             
             DriverHoursRecord driverHoursRecord = new DriverHoursRecord();
-            driverHoursRecord.setDate(day.toDate());
+            driverHoursRecord.setDay(day);
             driverHoursRecord.setDriverID(driver.getDriverID());
             driverHoursRecord.setHoursThisDay(drivingMinutes.doubleValue()/60.0);
             
@@ -113,7 +113,7 @@ public class WaysmartDAOImpl implements WaysmartDAO {
             
             if (drivingMinutes > violationMinutesLevel) {
                 TenHoursViolationRecord tenHoursViolationRecord = new TenHoursViolationRecord();
-                tenHoursViolationRecord.setDate(day.toDate());
+                tenHoursViolationRecord.setDateTime(day);
                 tenHoursViolationRecord.setDriverID(driver.getDriverID());
                 tenHoursViolationRecord.setHoursThisDay(drivingMinutes/60.0);
                 tenHoursViolationRecord.setVehicleID(vehicleID);

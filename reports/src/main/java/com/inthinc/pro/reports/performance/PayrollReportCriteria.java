@@ -84,7 +84,8 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
                 {
                     //String groupName, String groupAddress, Integer driverId, String driverName, TimeZone timeZone, String employeeID,
                     PayrollData item = new PayrollData(groupName, groupAddress, driver.getDriverID(), driverName, employeeID,
-                            day.toDate(), log.getStatus(), log.getTotalIncrements()*15);
+                            day.toDate(), log.getStatus(), log.getTotalIncrements()*15, day);
+                    item.setDayStr(dateTimeFormatter.print(day));
                     dataList.add(item);
                 }
             }
@@ -135,21 +136,21 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
         if (dataList == null || dataList.size()==0)
             return null;
         
-        Map<String, Map<Date,Integer[]>> dataMap = new TreeMap<String, Map<Date,Integer[]>>();
+        Map<String, Map<DateTime,Integer[]>> dataMap = new TreeMap<String, Map<DateTime,Integer[]>>();
         
         for (PayrollData data : dataList) {
-            Map<Date,Integer[]> driverData = dataMap.get(data.getDriverName());
+            Map<DateTime,Integer[]> driverData = dataMap.get(data.getDriverName());
             if (driverData == null) {
-                driverData = new TreeMap<Date, Integer[]>();
+                driverData = new TreeMap<DateTime, Integer[]>();
                 dataMap.put(data.getDriverName(), driverData);
             }
-            Integer[] timeData = driverData.get(data.getDay());
+            Integer[] timeData = driverData.get(data.getDateTime());
             if (timeData == null) {
                 timeData = new Integer[5];
                 for (int i = 0; i < 5; i++)
                         timeData[i] = 0;
                 
-                driverData.put(data.getDay(),timeData);
+                driverData.put(data.getDateTime(),timeData);
             }
                 
             if (data.getStatus()== HOSStatus.OFF_DUTY || data.getStatus() == HOSStatus.OFF_DUTY_OCCUPANT) {
@@ -171,8 +172,8 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
         }        
         
         List<List<Result>>records = new ArrayList<List<Result>>();
-        for (Entry<String, Map<Date,Integer[]>> driverEntry : dataMap.entrySet()) {
-            for (Entry<Date, Integer[]> dayEntry : driverEntry.getValue().entrySet()) {
+        for (Entry<String, Map<DateTime,Integer[]>> driverEntry : dataMap.entrySet()) {
+            for (Entry<DateTime, Integer[]> dayEntry : driverEntry.getValue().entrySet()) {
                 List<Result> row = new ArrayList<Result>();
                 row.add(new Result(driverEntry.getKey(), driverEntry.getKey()));
                 row.add(new Result(dateTimeFormatter.print(new DateTime(dayEntry.getKey())), dayEntry.getKey()));

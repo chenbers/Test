@@ -18,6 +18,7 @@ import mockit.NonStrict;
 import mockit.Verifications;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Test;
 
@@ -91,7 +92,7 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
            private List<DriverHoursRecord> getHoursList(){
         	   List<DriverHoursRecord> hoursList = new ArrayList<DriverHoursRecord>();
         	   DriverHoursRecord hours = new DriverHoursRecord(); 
-        	   hours.setDate(new Date());
+        	   hours.setDay(new DateTime());
         	   hours.setHoursThisDay(HOURS_THIS_DAY); 
                hoursList.add(hours);
                

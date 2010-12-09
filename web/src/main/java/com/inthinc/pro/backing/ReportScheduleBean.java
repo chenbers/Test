@@ -257,7 +257,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     }
     
     public void reportGroupChangeAction() {
-System.out.println("reportGroupChangeAction()");        
         allGroupUsers = null;
         getItem().setGroupIDList(null);
         getItem().setGroupID(null);
@@ -268,9 +267,6 @@ System.out.println("reportGroupChangeAction()");
         getItem().setDriverName(null);
         getItem().setVehicleName(null);
         getAllGroupUsers();
-if (getItem() != null && getItem().getReport() != null)        
-System.out.println("report Entity TYPE: " + getItem().getReport().getEntityType());   
-System.out.println("reportGroupChangeAction()-END");   
 
     }
     
@@ -514,7 +510,6 @@ System.out.println("reportGroupChangeAction()-END");
         return TimeZone.getTimeZone("UTC");
     }
     public TimeZone getUserTimeZone() {
-System.out.println("user timezone is " + getPerson().getTimeZone());        
         return getPerson().getTimeZone();
     }
 
@@ -735,7 +730,6 @@ System.out.println("user timezone is " + getPerson().getTimeZone());
         @Override
         public void setReportID(Integer reportID) {
             super.setReportID(reportID);
-System.out.println("set reportID: " + reportID);            
         }
 
         public List<String> getGroupIDSelectList() {

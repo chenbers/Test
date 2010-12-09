@@ -2,6 +2,8 @@ package com.inthinc.pro.reports.performance.model;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 import com.inthinc.hos.model.HOSStatus;
 
 public class PayrollData implements Comparable<PayrollData>
@@ -13,9 +15,13 @@ public class PayrollData implements Comparable<PayrollData>
     private String employeeID;
     
     private Date day;
+    private DateTime dateTime;
+    private String dayStr;
+
     private HOSStatus status;
     private int totalAdjustedMinutes;
 
+    
 
     public PayrollData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
             Date day, HOSStatus status, int totalAdjustedMinutes)
@@ -29,6 +35,21 @@ public class PayrollData implements Comparable<PayrollData>
         this.day = day;
         this.status = status;
         this.totalAdjustedMinutes = totalAdjustedMinutes;
+        this.dateTime = new DateTime(day.getTime()); 
+    }
+    public PayrollData(String groupName, String groupAddress, Integer driverId, String driverName, String employeeID,
+            Date day, HOSStatus status, int totalAdjustedMinutes, DateTime dateTime)
+    {
+        super();
+        this.groupName = groupName;
+        this.groupAddress = groupAddress;
+        this.driverId = driverId;
+        this.driverName = driverName;
+        this.employeeID = employeeID;
+        this.day = day;
+        this.status = status;
+        this.totalAdjustedMinutes = totalAdjustedMinutes;
+        this.dateTime = dateTime; 
     }
 
     public void dump()
@@ -128,6 +149,20 @@ public class PayrollData implements Comparable<PayrollData>
         }
         
         return cmp;
+    }
+    public DateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(DateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getDayStr() {
+        return dayStr;
+    }
+    public void setDayStr(String dayStr) {
+        this.dayStr = dayStr;
     }
 
 }

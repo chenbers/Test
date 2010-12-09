@@ -29,9 +29,10 @@
 	<field name="driverId" class="java.lang.Integer"/>
 	<field name="driverName" class="java.lang.String"/>
 	<field name="employeeID" class="java.lang.String"/>
-	<field name="day" class="java.util.Date"/>
+	<field name="dayStr" class="java.lang.String"/>
 	<field name="status" class="com.inthinc.hos.model.HOSStatus"/>
 	<field name="totalAdjustedMinutes" class="java.lang.Integer"/>
+	<field name="day" class="java.util.Date"/>
 	<sortField name="groupName"/>
 	<variable name="drivingHours" class="java.lang.Integer">
 		<variableExpression><![CDATA[new Integer(($F{status} == com.inthinc.hos.model.HOSStatus.DRIVING) ? $F{totalAdjustedMinutes}.intValue() : 0)]]></variableExpression>
@@ -488,7 +489,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 		</groupHeader>
 		<groupFooter>
 			<band height="21" splitType="Stretch">
-				<textField evaluationTime="Group" evaluationGroup="day" pattern="MM/dd/yyyy" isBlankWhenNull="true">
+				<textField isStretchWithOverflow="true" evaluationTime="Group" evaluationGroup="day" pattern="MM/dd/yyyy" isBlankWhenNull="true">
 					<reportElement key="textField-60" isPrintRepeatedValues="false" x="3" y="2" width="169" height="16" forecolor="#000000"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -499,7 +500,7 @@ $V{SUM_daily_drivingHours}.intValue())]]></variableExpression>
 					<textElement>
 						<font size="12" isBold="false" pdfFontName="Helvetica"/>
 					</textElement>
-					<textFieldExpression class="java.util.Date"><![CDATA[$F{day}]]></textFieldExpression>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{dayStr}]]></textFieldExpression>
 				</textField>
 				<textField evaluationTime="Group" evaluationGroup="day" pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-61" x="182" y="2" width="60" height="16"/>
