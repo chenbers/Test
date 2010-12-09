@@ -56,6 +56,14 @@
   <servlet>
     <servlet-name>Resteasy</servlet-name>
     <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
+    <!-- How to provide custom Application (subclass) -->
+    <!-- Custom Application can used to programmatically register Providers (and avoid listing them in web.xml) -->
+    <!-- 
+    <init-param>  
+        <param-name>javax.ws.rs.Application</param-name>  
+        <param-value>com.inthinc.pro.service.providers.TestApplication</param-value>  
+    </init-param>
+    -->
   </servlet>
 
   <servlet-mapping>
