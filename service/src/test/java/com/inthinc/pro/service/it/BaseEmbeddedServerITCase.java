@@ -53,4 +53,8 @@ public abstract class BaseEmbeddedServerITCase {
     public int getPort() {
         return port;
     }
+    
+    public String getDomain() {
+        return domain;
+    }
 }

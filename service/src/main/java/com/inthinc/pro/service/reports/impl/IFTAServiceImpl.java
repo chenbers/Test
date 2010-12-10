@@ -80,18 +80,6 @@ public class IFTAServiceImpl implements IFTAService {
 
     }
 
-//    private boolean invalidParameters(Integer groupID, Date startDate, Date endDate, boolean ifta) {
-//        boolean res = false;
-//
-//        if( groupID == null || startDate == null || endDate == null ){
-//            res = true;
-//        }
-//        else if(endDate.before(startDate)) {
-//            res = true;
-//        }
-//        return res;
-//    }
-
     public static String getSimpleDateFormat() {
         return IFTAService.DATE_FORMAT;
     }

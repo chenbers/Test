@@ -70,7 +70,8 @@ public class TiwiproPrincipal {
     public boolean isInthincUser() {
         // TODO: Remove backdoor once implemented,
         // need to determine how to allow for an inthinc role at a later time
-        return getUser().getUsername().equalsIgnoreCase("admin");
+        // User TEST_622 has been choosen arbitrarily as a DEV admin --> needs to be fixed.
+        return getUser().getUsername().equalsIgnoreCase("TEST_622");
     }
 
     public GroupHierarchy getAccountGroupHierarchy() {

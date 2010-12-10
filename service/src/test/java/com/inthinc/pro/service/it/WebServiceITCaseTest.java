@@ -9,9 +9,16 @@ import java.util.List;
 
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
+import org.apache.commons.httpclient.auth.AuthScope;
+import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientResponse;
+import org.jboss.resteasy.client.ProxyFactory;
+import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Account;
@@ -33,13 +40,15 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
   
     @Test
     public void accountCRUDTest() throws Exception {
+        
+        ServiceClient adminClient = this.getAdminClient();
 
         // Posting accounts
         Account account1 = new Account();  
         account1.setAcctName("IT" + randomInt);
         account1.setStatus(Status.ACTIVE);
         
-        ClientResponse<Account> response = client.create(account1);
+        ClientResponse<Account> response = adminClient.create(account1);
 
         System.out.println(response.getResponseStatus() );
         
@@ -52,7 +61,7 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
         account2.setAcctName("IT" + (randomInt + 1) );
         account2.setStatus(Status.ACTIVE);
 
-        response = client.create(account2);
+        response = adminClient.create(account2);
         
         assertEquals("Error creating account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.CREATED, response.getResponseStatus());
         assertEquals(response.getEntity().getAcctName(),account2.getAcctName() );
@@ -60,7 +69,7 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
         logger.info("Account 2 created successfully");
         
         // Getting accounts
-        ClientResponse<List<Account>> accounts = client.getAllAccounts();
+        ClientResponse<List<Account>> accounts = adminClient.getAllAccounts();
         
         assertEquals(accounts.getResponseStatus(), Response.Status.OK );
         assertTrue(this.checkListcontainsElement(accounts.getEntity(), account1));
@@ -70,20 +79,20 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
         logger.info("Account 2 found successfully");
         
         // Deleting accounts
-        response = client.delete(account1.getAcctID());
+        response = adminClient.delete(account1.getAcctID());
         
         assertEquals("Error deleting account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         assertTrue(this.checkListcontainsElement(accounts.getEntity(), account1));
         logger.info("Account 1 deleted successfully");
         
-        response = client.delete(account2.getAcctID());
+        response = adminClient.delete(account2.getAcctID());
         
         assertEquals("Error deleting account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         assertTrue(this.checkListcontainsElement(accounts.getEntity(), account2));
         logger.info("Account 2 deleted successfully");
         
         // Getting accounts again to make sure they disappeared
-        accounts = client.getAllAccounts();
+        accounts = adminClient.getAllAccounts();
         
         assertEquals(accounts.getResponseStatus(), Response.Status.OK );
         assertFalse(this.checkListcontainsElement(accounts.getEntity(), account1));
@@ -115,5 +124,19 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
         assertEquals(devices.getResponseStatus(), Response.Status.OK );
         assertNotNull(devices.getEntity());
         logger.info("Devices retrieved successfully");
+    }
+    
+    private ServiceClient getAdminClient() {
+        
+        HttpClientParams params = new HttpClientParams();
+        params.setAuthenticationPreemptive(true);
+        httpClient = new HttpClient(params);
+        Credentials defaultcreds = new UsernamePasswordCredentials("TEST_622", "password");
+        httpClient.getState().setCredentials(new AuthScope(this.getDomain(),  this.getPort(), AuthScope.ANY_REALM), defaultcreds);
+        clientExecutor = new ApacheHttpClientExecutor(httpClient);
+
+        client = ProxyFactory.create(ServiceClient.class, "http://localhost:" + this.getPort(), clientExecutor);
+        
+        return client;
     }
 }

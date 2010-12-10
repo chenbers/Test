@@ -64,33 +64,6 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     }
     
     @Test
-    public void testGetStateMileageByVehicleRoadStatusWithNullGroupID() {
-
-        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(null, TEST_START_DATE, TEST_END_DATE);
-
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-
-    }
-    
-    @Test
-    public void testGetStateMileageByVehicleRoadStatusWithNullStartDate() {
-
-        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID, null, TEST_END_DATE);
-
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-
-    }
-    
-    @Test
-    public void testGetStateMileageByVehicleRoadStatusWithNullEndDate() {
-
-        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID,TEST_START_DATE , null);
-
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-
-    }
-    
-    @Test
     public void testGetStateMileageByVehicleRoadStatusWithStartDateBiggerThanEndDate() {
 
         ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID, TEST_END_DATE , TEST_START_DATE );
@@ -102,7 +75,7 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetStateMileageByVehicleRoadStatusWithUnknownGroupID() {
 
-        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(9999, TEST_END_DATE , TEST_START_DATE );
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(9999, TEST_START_DATE, TEST_END_DATE );
 
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
@@ -123,7 +96,7 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
 
         ClientResponse<List<StateMileageCompareByGroup>> response = client.getStateMileageByVehicleStateComparisonWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
 
-        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
 
     }
 
