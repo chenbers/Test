@@ -8,9 +8,11 @@ import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.model.AlertEscalationStatus;
 import com.inthinc.pro.model.AlertMessage;
+import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.util.MessageUtil;
 
 public class RedFlagEscalationDetails {
     private AlertMessageDAO alertMessageDAO;
@@ -20,13 +22,13 @@ public class RedFlagEscalationDetails {
     private List<PhoneEscalationDetails> phoneList;
     private String escalationEmail;
     
-    public RedFlagEscalationDetails(AlertMessageDAO alertMessageDAO, RedFlagAlertDAO redFlagsAndZoneAlertsDAO, PersonDAO personDAO, RedFlag redFlag, AlertMessage message) {
+    public RedFlagEscalationDetails(AlertMessageDAO alertMessageDAO, RedFlagAlertDAO redFlagsAlertsDAO, PersonDAO personDAO, RedFlag redFlag, AlertMessage message) {
         
         this.alertMessageDAO = alertMessageDAO;
         messageList = new ArrayList<AlertMessage>();
         if (message != null) {
             if (message.getAlertID() != null) {
-                alert = redFlagsAndZoneAlertsDAO.findByID(message.getAlertID());
+                alert = redFlagsAlertsDAO.findByID(message.getAlertID());
                 initPersonList(alert.getNotifyPersonIDs(), personDAO);
                 initPhoneList(alert.getVoiceEscalationPersonIDs(), personDAO);
                 initEscalationEmail(alert.getEmailEscalationPersonID(), personDAO);
@@ -162,4 +164,18 @@ public class RedFlagEscalationDetails {
         this.messageList = messageList;
     }
 
+    public String getAlertType() {
+        if (alert == null || alert.getTypes() == null || alert.getTypes().size() == 0)
+            return "";
+        
+        StringBuffer buffer = new StringBuffer();
+        for (AlertMessageType type : alert.getTypes()) {
+            if (buffer.length() > 0)
+                buffer.append(",");
+            
+            buffer.append(MessageUtil.getMessageString(type.toString()));
+        }
+        
+        return buffer.toString();
+    }
 }

@@ -62,7 +62,8 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 	private String filterAlert;
 	
 	private AlertMessageDAO alertMessageDAO;
-	private RedFlagAlertDAO redFlagAndZoneAlertsDAO;
+	private RedFlagAlertDAO redFlagAlertDAO;
+
     private PersonDAO personDAO;
 	
 
@@ -140,13 +141,15 @@ System.out.println("Number of messages: " + redFlagMsgIDList.size());
         alertItems.add(new SelectItem(null, ""));
         for (Integer msgID : redFlagMsgIDList) {
             AlertMessage message = alertMessageDAO.findByID(msgID);
+            
             if (detailsMap.get(message.getAlertID()) == null) {
-                RedFlagEscalationDetails details = new RedFlagEscalationDetails(alertMessageDAO, redFlagAndZoneAlertsDAO, personDAO, sentDetailsItem, message);
+                RedFlagEscalationDetails details = new RedFlagEscalationDetails(alertMessageDAO, redFlagAlertDAO, personDAO, sentDetailsItem, message);
                 alertItems.add(new SelectItem(details.getAlert().getAlertID(), details.getAlert().getName()));
                 detailsMap.put(details.getAlert().getAlertID(), details);
             }
             else {
-                detailsMap.get(details.getAlert().getAlertID()).addMessage(message);
+                RedFlagEscalationDetails details = detailsMap.get(message.getAlertID());
+                details.addMessage(message);
             }
         }
     }
@@ -297,13 +300,6 @@ System.out.println("Number of messages: " + redFlagMsgIDList.size());
         this.alertMessageDAO = alertMessageDAO;
     }
 
-    public RedFlagAlertDAO getRedFlagAndZoneAlertsDAO() {
-        return redFlagAndZoneAlertsDAO;
-    }
-
-    public void setRedFlagAndZoneAlertsDAO(RedFlagAlertDAO redFlagAndZoneAlertsDAO) {
-        this.redFlagAndZoneAlertsDAO = redFlagAndZoneAlertsDAO;
-    }
 	
     public PersonDAO getPersonDAO() {
         return personDAO;
@@ -312,6 +308,14 @@ System.out.println("Number of messages: " + redFlagMsgIDList.size());
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
     }
+    public RedFlagAlertDAO getRedFlagAlertDAO() {
+        return redFlagAlertDAO;
+    }
+
+    public void setRedFlagAlertDAO(RedFlagAlertDAO redFlagAlertDAO) {
+        this.redFlagAlertDAO = redFlagAlertDAO;
+    }
+
 
     public void closeDetailsAction() {
         details = null;
