@@ -39,8 +39,6 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.SpeedingEvent;
-import com.inthinc.pro.model.zone.ZonePublish;
-import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 import com.mysql.jdbc.PreparedStatement;
 
 public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessageDAO{
@@ -133,13 +131,13 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
     @Override
     public AlertMessage findByID(Integer id) {
         Connection conn = null;
-        PreparedStatement statement = null;
+        java.sql.PreparedStatement statement = null;
         ResultSet resultSet = null;
         
         try
         {
             conn = getConnection();
-            statement = (PreparedStatement) conn.prepareStatement(FETCH_ALERT_MESSAGE);
+            statement = conn.prepareStatement(FETCH_ALERT_MESSAGE);
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
 /*
