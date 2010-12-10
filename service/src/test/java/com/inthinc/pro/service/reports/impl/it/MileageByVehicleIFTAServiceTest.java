@@ -29,49 +29,10 @@ public class MileageByVehicleIFTAServiceTest extends BaseEmbeddedServerITCase {
      * Integration test for getMileageByVehicleWithDates().
      */
     @Test public void testGetMileageByVehicleWithDates() {
-        // test case when Group doesn't exist
-        ClientResponse<List<MileageByVehicle>> response = 
-            client.getMileageByVehicleWithDates(GROUP_ID_BAD, TEST_START_DATE, TEST_END_DATE);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
-
-        // test case when Group is negative
-        response = client.getMileageByVehicleWithDates(GROUP_ID_NEGATIVE, TEST_START_DATE, TEST_END_DATE);
-        assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-        
         // test case when Group has data
-        response = client.getMileageByVehicleWithDates(GROUP_ID_WITH_DATA, TEST_START_DATE, TEST_END_DATE);
+        ClientResponse<List<MileageByVehicle>> response = 
+            client.getMileageByVehicleWithDates(GROUP_ID_WITH_DATA, TEST_START_DATE, TEST_END_DATE);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());      
-        List<MileageByVehicle> list = response.getEntity();
-        assertTrue(list.size() > 0);
-
-        // test case when Group not in Hierarchy
-        response = client.getMileageByVehicleWithDates(GROUP_ID_NOT_IN_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
-       // TODO fix it 
-       // assertEquals(Status.FORBIDDEN.getStatusCode(), response.getStatus());
-        
-    }
-
-    /**
-     * Integration test for getMileageByVehicleWithIftaAndDates().
-     */
-    @Test public void testGetMileageByVehicleWithIftaAndDates() {
-        // test case when Group not in Hierarchy
-        ClientResponse<List<MileageByVehicle>> response = 
-            client.getMileageByVehicleWithIftaAndDates(GROUP_ID_NOT_IN_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
-        // TODO fix it 
-        // assertEquals(Status.FORBIDDEN.getStatusCode(), response.getStatus());
-        
-        // test case when Group doesn't exist
-        response = client.getMileageByVehicleWithIftaAndDates(GROUP_ID_BAD, TEST_START_DATE, TEST_END_DATE);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
-
-        // test case when Group is negative
-        response = client.getMileageByVehicleWithIftaAndDates(GROUP_ID_NEGATIVE, TEST_START_DATE, TEST_END_DATE);
-        assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
-        
-        // test case when Group has data
-        response = client.getMileageByVehicleWithIftaAndDates(GROUP_ID_WITH_DATA, TEST_START_DATE, TEST_END_DATE);
-        assertEquals(Status.OK.getStatusCode(), response.getStatus());        
         List<MileageByVehicle> list = response.getEntity();
         assertTrue(list.size() > 0);
 
@@ -85,25 +46,25 @@ public class MileageByVehicleIFTAServiceTest extends BaseEmbeddedServerITCase {
     }
 
     /**
+     * Integration test for getMileageByVehicleWithIftaAndDates().
+     */
+    @Test public void testGetMileageByVehicleWithIftaAndDates() {
+        
+        // test case when Group has data
+        ClientResponse<List<MileageByVehicle>> response = 
+            client.getMileageByVehicleWithIftaAndDates(GROUP_ID_WITH_DATA, TEST_START_DATE, TEST_END_DATE);
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());        
+        List<MileageByVehicle> list = response.getEntity();
+        assertTrue(list.size() > 0);
+    }
+
+    /**
      * Integration test for getMileageByVehicleWithIfta().
      */
     @Test public void testGetMileageByVehicleWithIfta() {
-        // test case when Group not in Hierarchy
-        ClientResponse<List<MileageByVehicle>> response = 
-            client.getMileageByVehicleWithIfta(GROUP_ID_NOT_IN_HIERARCHY);
-        // TODO fix it 
-        // assertEquals(Status.FORBIDDEN.getStatusCode(), response.getStatus());
-        
-        // test case when Group doesn't exist
-        response = client.getMileageByVehicleWithIfta(GROUP_ID_BAD);
-        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
-
-        // test case when Group is negative
-        response = client.getMileageByVehicleWithIfta(GROUP_ID_NEGATIVE);
-        assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
         
         // test case when Group has data
-        response = client.getMileageByVehicleWithIfta(GROUP_ID_WITH_DATA);
+        ClientResponse<List<MileageByVehicle>> response = client.getMileageByVehicleWithIfta(GROUP_ID_WITH_DATA);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());        
         List<MileageByVehicle> list = response.getEntity();
         assertTrue(list.size() > 0);
@@ -117,7 +78,7 @@ public class MileageByVehicleIFTAServiceTest extends BaseEmbeddedServerITCase {
         ClientResponse<List<MileageByVehicle>> response = 
             client.getMileageByVehicleDefaults(GROUP_ID_NOT_IN_HIERARCHY);
         // TODO fix it 
-        // assertEquals(Status.FORBIDDEN.getStatusCode(), response.getStatus());
+         assertEquals(Status.FORBIDDEN.getStatusCode(), response.getStatus());
         
         // test case when Group doesn't exist
         response = client.getMileageByVehicleDefaults(GROUP_ID_BAD);

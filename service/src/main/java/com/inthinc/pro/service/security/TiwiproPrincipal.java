@@ -70,7 +70,7 @@ public class TiwiproPrincipal {
     public boolean isInthincUser() {
         // TODO: Remove backdoor once implemented,
         // need to determine how to allow for an inthinc role at a later time
-        return true;// getUser().getUsername().equalsIgnoreCase("admin");
+        return getUser().getUsername().equalsIgnoreCase("admin");
     }
 
     public GroupHierarchy getAccountGroupHierarchy() {

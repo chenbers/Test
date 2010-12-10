@@ -1,7 +1,7 @@
 package com.inthinc.pro.service.security;
 
-import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import com.inthinc.pro.service.impl.BaseUnitTest;
  * Test for TiwiproPrincipal.
  */
 public class TiwiproPrincipalTest extends BaseUnitTest {
-
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
     private static final Integer USER_ID = 1;
     private static final Integer GROUP_ID = 2;
     private static final Integer ACCOUNT_ID = 3;
@@ -37,7 +37,7 @@ public class TiwiproPrincipalTest extends BaseUnitTest {
         User user = new User(USER_ID, 1, null, Status.ACTIVE, "test", "testpassword", GROUP_ID);
         user.setPerson(person);
 
-        ProUser proUser = new ProUser(user, new GrantedAuthority[] {new GrantedAuthorityImpl("ROLE_ADMIN")});
+        ProUser proUser = new ProUser(user, new GrantedAuthority[] {new GrantedAuthorityImpl(ROLE_ADMIN)});
 
         TestingAuthenticationToken testToken = new TestingAuthenticationToken(
                 proUser, proUser.getPassword(), proUser.getAuthorities());
@@ -90,6 +90,6 @@ public class TiwiproPrincipalTest extends BaseUnitTest {
     @Test
     public void testIsInthincUser() {
         boolean isInthinc = principalSUT.isInthincUser();
-        assertTrue(isInthinc);
+        assertFalse(isInthinc);
     }
 }

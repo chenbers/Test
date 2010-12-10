@@ -31,7 +31,7 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(IFTAServiceTest.class);
     private static final Integer GROUP_ID_WITH_NO_DATA = 1;
     private static final Integer GROUP_ID = 3;
-    private static final Integer GROUP_ID_NOT_IN_USER_HIERARCHY = 1504;
+    private static final Integer GROUP_ID_NOT_IN_USER_HIERARCHY = 8;
 
     /**
      * Integration test for getStateMileageByVehicleRoadStatus().
@@ -48,9 +48,9 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     @Test
     public void testGetStateMileageByVehicleRoadStatusWithAccessDenied() {
 
-        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_END_DATE, TEST_START_DATE);
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
 
-        assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+        assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
 
     }
     
