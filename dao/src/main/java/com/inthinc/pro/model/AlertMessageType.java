@@ -77,7 +77,9 @@ public enum AlertMessageType implements BaseEnum
         return this.code;
     }
     public Long getBitMask(){
-        return new Double(Math.pow( 2, code)).longValue();
+        return new Double(Math.pow( 2, code-1)).longValue();
+        
+//        return  new Long(1 << (code-1));
     }
     public static AlertMessageType valueOf(Integer code)
     {
