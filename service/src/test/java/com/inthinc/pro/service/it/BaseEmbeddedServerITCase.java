@@ -17,9 +17,9 @@ import org.springframework.context.ApplicationContext;
 public abstract class BaseEmbeddedServerITCase {
 
     private static int port;
-    private static final String domain = "localhost";
+    public static final String DOMAIN = "localhost";
 
-    protected static final String url = "http://" + domain + ":" + port + "/service/api";
+    protected static final String url = "http://" + DOMAIN + ":" + port + "/service/api";
 
     protected ApplicationContext applicationContext;
     protected HttpClient httpClient;
@@ -43,7 +43,7 @@ public abstract class BaseEmbeddedServerITCase {
         params.setAuthenticationPreemptive(true);
         httpClient = new HttpClient(params);
         Credentials defaultcreds = new UsernamePasswordCredentials("mraby", "password");
-        httpClient.getState().setCredentials(new AuthScope(domain, port, AuthScope.ANY_REALM), defaultcreds);
+        httpClient.getState().setCredentials(new AuthScope(DOMAIN, port, AuthScope.ANY_REALM), defaultcreds);
         clientExecutor = new ApacheHttpClientExecutor(httpClient);
 
         client = ProxyFactory.create(ServiceClient.class, "http://localhost:" + port, clientExecutor);
@@ -55,6 +55,6 @@ public abstract class BaseEmbeddedServerITCase {
     }
     
     public String getDomain() {
-        return domain;
+        return DOMAIN;
     }
 }

@@ -57,7 +57,7 @@ public class DriverAuthorizationAdvice implements EntityAuthorization<Driver> {
      */
     @Pointcut("execution(* com.inthinc.pro.service.adapters.DriverDAOAdapter.getDriverLocations(java.lang.Integer))")
     public void receivesGroupID() {}
-    
+
     /**
      * Advice definition.
      * <p/>
@@ -102,18 +102,20 @@ public class DriverAuthorizationAdvice implements EntityAuthorization<Driver> {
         if (entity != null) {
             Person person = personDAO.findByID(entity.getPersonID());
             personAuthorizationAdvice.doAccessCheck(person);
-            
+
             doGroupAccessCheck(entity.getGroupID());
         }
     }
+
     /**
      * Advice definition.
      * <p/>
      * Before advice to check if the user has access to the Group.
+     * 
      * @param groupID
      *            The ID of the Group to be checked.
      */
-    @Before(value = "inDriverDAOAdapter() && receivesGroupID() && args(groupID)", argNames = "groupID")
+    @Before(value = "receivesGroupID() && args(groupID)", argNames = "groupID")
     private void doGroupAccessCheck(Integer groupID) {
         Group group = groupDAO.findByID(groupID);
         groupAuthorizationAdvice.doAccessCheck(group);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.joda.time.Interval;
 
-import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
@@ -15,7 +14,7 @@ import com.inthinc.pro.reports.performance.model.TenHoursViolation;
  */
 public interface ReportsFacade {
 
-    int DAYS_BACK = 6;  
+    int DAYS_BACK = 6;
 
     List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval);
 
@@ -27,6 +26,7 @@ public interface ReportsFacade {
 
     List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly);
 
+    List<MileageByVehicle> getStateMileageByMonth(Integer withEqual, Interval withEqual2, Boolean withEqual3);
+    
     List<MileageByVehicle> getStateMileageByVehicleByMonth(Integer groupID, Interval interval, boolean dotOnly);
-
 }

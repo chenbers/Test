@@ -399,4 +399,72 @@ public class IFTAServiceImpl implements IFTAService {
     public void setReportsUtil(ReportsUtil reportsUtil) {
         this.reportsUtil = reportsUtil;
     }
+    
+    /* State Mileage by Month ------------------------------------------------------------- */
+
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByMonthDefaults(java.lang.Integer)
+     */
+    @Override
+    public Response getStateMileageByMonthDefaults(Integer groupId) {
+        Calendar today = getMidnight();
+
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+
+        return getStateMileageByMonthWithFullParameters(groupId, startDate.getTime(), today.getTime(), false);
+    }
+
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByMonthWithDates(java.lang.Integer, java.util.Date, java.util.Date)
+     */
+    @Override
+    public Response getStateMileageByMonthWithDates(Integer groupId, Date startDate, Date endDate) {
+        return getStateMileageByMonthWithFullParameters(groupId, startDate, endDate, false);
+    }
+
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByMonthWithIfta(java.lang.Integer)
+     */
+    @Override
+    public Response getStateMileageByMonthWithIfta(Integer groupId) {
+        Calendar today = getMidnight();
+
+        Calendar startDate = getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+
+        return getStateMileageByMonthWithFullParameters(groupId, startDate.getTime(), today.getTime(), true);
+    }
+
+    /**
+     * @see com.inthinc.pro.service.reports.IFTAService#getStateMileageByMonthWithIftaAndDates(java.lang.Integer, java.util.Date, java.util.Date)
+     */
+    @Override
+    public Response getStateMileageByMonthWithIftaAndDates(Integer groupId, Date startDate, Date endDate) {
+        return getStateMileageByMonthWithFullParameters(groupId, startDate, endDate, true);
+    }
+
+    private Response getStateMileageByMonthWithFullParameters(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
+
+        Response errorResponse = reportsUtil.checkParameters(groupID, startDate, endDate);
+
+        if (errorResponse != null) {
+            return errorResponse;
+        }
+
+        Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+        List<MileageByVehicle> list = null;
+        
+        try {
+            list = reportsFacade.getStateMileageByMonth(groupID, interval, iftaOnly);
+        } catch (Exception e) {
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+
+        if (list == null || list.isEmpty()) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+
+        return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
+    }
 }

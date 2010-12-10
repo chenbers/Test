@@ -10,12 +10,18 @@ import com.inthinc.pro.security.userdetails.ProUser;
 
 /**
  * Convenience class to access the User and Principal information.
+ * 
  * @see com.inthinc.pro.security.userdetails.ProUser
  * 
  * @author dcueva
  */
 @Component
 public class TiwiproPrincipal {
+
+    /*
+     * TODO For dev purposes only. Remove once implementation in place.
+     */
+    public static final String ADMIN_BACKDOOR_USERNAME = "TEST_622";
 
     /**
      * The ProUser getter.
@@ -25,7 +31,7 @@ public class TiwiproPrincipal {
     private ProUser getProUser() {
         return (ProUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
-    
+
     /**
      * The User getter.
      * 
@@ -71,7 +77,7 @@ public class TiwiproPrincipal {
         // TODO: Remove backdoor once implemented,
         // need to determine how to allow for an inthinc role at a later time
         // User TEST_622 has been choosen arbitrarily as a DEV admin --> needs to be fixed.
-        return getUser().getUsername().equalsIgnoreCase("TEST_622");
+        return getUser().getUsername().equalsIgnoreCase(ADMIN_BACKDOOR_USERNAME);
     }
 
     public GroupHierarchy getAccountGroupHierarchy() {
