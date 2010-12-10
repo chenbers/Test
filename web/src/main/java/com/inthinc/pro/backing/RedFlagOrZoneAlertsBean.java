@@ -14,7 +14,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.jfree.util.Log;
+import org.apache.log4j.Logger;
 import org.richfaces.component.html.HtmlDataTable;
 import org.springframework.beans.BeanUtils;
 
@@ -37,6 +37,7 @@ import com.inthinc.pro.util.SelectItemUtil;
 public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAlertsBean.RedFlagOrZoneAlertView> implements Serializable {
 
     private static final long serialVersionUID = -2066762539439571492L;
+    private static final Logger logger = Logger.getLogger(RedFlagOrZoneAlertsBean.class);
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 3, 4 };
     private static final int[] DEFAULT_ADMIN_COLUMN_INDICES = new int[] { 5 };
@@ -573,28 +574,29 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
         public void addPhNumberSlot() {
             try {
-                int indexForPhNumToAdd = 0;
-                String paramForPhNumToAdd = "";
+                boolean okToAddAnother = true;
                 FacesContext context = FacesContext.getCurrentInstance();
                 Map<String, String> map = context.getExternalContext().getRequestParameterMap();
                 for (String key : map.keySet()) {
                     if (key.endsWith("phNumInput")) {
                         String[] words = key.split(":");
-                        int rowIndex = Integer.parseInt(words[2]);
-                        if (rowIndex > indexForPhNumToAdd)
-                            paramForPhNumToAdd = key;
-                        indexForPhNumToAdd = Math.max(rowIndex, indexForPhNumToAdd);
+                        int fieldIndex = Integer.parseInt(words[2]);
+                        //if the user changed ANY fields update phNumbers
+                        if(!map.get(key).equalsIgnoreCase(phNumbers.get(fieldIndex))){
+                            phNumbers.set(fieldIndex, map.get(key));
+                        }
+                        //if there are ANY empty slots, it is NOT okToAddAnother
+                        if(map.get(key) == null || map.get(key).equals("")){
+                            okToAddAnother = false;
+                        }
                     }
                 }
-
-                String value = map.get(paramForPhNumToAdd);
-                if (!"".equals(value)) {
-                    phNumbers.add(value);
-                    phNumbers.remove("");
+                
+                if (okToAddAnother) {
                     phNumbers.add("");
                 }
             } catch (Exception e) {
-               Log.error("addPhNumberSlot() failed");
+                logger.error("addPhNumberSlot() failed");
             }
         }
 
@@ -625,7 +627,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                     emailTos.add("");
                 }
             } catch (Exception e) {
-               Log.error("addEmailSlot() failed");
+               logger.error("addEmailSlot() failed");
             }
         }
         @Override
