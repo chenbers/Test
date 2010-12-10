@@ -271,13 +271,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     private void setAlertTypesFromSubCategory(){
         RedFlagOrZoneAlertView redFlagAlert = getItem();
         Set<AlertMessageType> alertMessageTypes = redFlagAlert.getEventSubCategory().getAlertMessageTypeSet();
-        Long alertTypeMask = 0L;
+        List<AlertMessageType> selectedTypes = new ArrayList<AlertMessageType>();
         for(AlertMessageType amt:alertMessageTypes){
             if(redFlagAlert.getSelectedAlertTypes().get(amt.name())){
-                alertTypeMask = alertTypeMask | amt.getBitMask();
+                selectedTypes.add(amt);
             }
         }
-        redFlagAlert.setAlertTypeMask(alertTypeMask);
+        redFlagAlert.setTypes(selectedTypes);
     }
 
     @Override

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
-import com.inthinc.pro.dao.hessian.mapper.RedFlagsAlertMapper;
+import com.inthinc.pro.dao.hessian.mapper.RedFlagAlertMapper;
 import com.inthinc.pro.model.RedFlagAlert;
 
 
@@ -15,7 +15,7 @@ public class RedFlagAlertHessianDAO extends GenericHessianDAO<RedFlagAlert, Inte
     public RedFlagAlertHessianDAO ()
     {
         super();
-        super.setMapper(new RedFlagsAlertMapper());
+        super.setMapper(new RedFlagAlertMapper());
     }
     @Override
     public List<RedFlagAlert> getRedFlagAlerts(Integer accountID)

@@ -158,7 +158,7 @@ public class MockData {
 
     // ------------ DATA GENERATION METHODS ----------------
     private void addMessages() {
-        AlertMessage msg = new AlertMessage(1, AlertMessageDeliveryType.EMAIL, AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING, "cjennings@inthinc.com",
+        AlertMessage msg = new AlertMessage(1, AlertMessageDeliveryType.EMAIL, AlertMessageType.ALERT_TYPE_HARD_BUMP, "cjennings@inthinc.com",
                 "this is a test email message");
         storeObject(msg);
         msg = new AlertMessage(2, AlertMessageDeliveryType.TEXT_MESSAGE, AlertMessageType.ALERT_TYPE_LOW_BATTERY, "8017185958@vtext.com", "this is a test SMS message");
@@ -795,7 +795,7 @@ public class MockData {
             if ( randomInt(0, 1)==1) types.add(AlertMessageType.ALERT_TYPE_ENTER_ZONE);
             if ( randomInt(0, 1)==1) types.add(AlertMessageType.ALERT_TYPE_EXIT_ZONE);
             if (types.isEmpty()) types.add(AlertMessageType.ALERT_TYPE_EXIT_ZONE);
-            alert.setTypesSet(types);
+            alert.setTypes(new ArrayList(types));
             // groups
             final ArrayList<Integer> groupIDs = new ArrayList<Integer>();
             final List<Object> groups = dataMap.get(Group.class);
@@ -851,7 +851,7 @@ public class MockData {
             }
             final int type = randomInt(0, 2);
             if (type == 0) {
-                flag.setTypesSet(EnumSet.of(AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING));
+                flag.setTypes(new ArrayList(AlertMessageType.getAggressiveDrivingTypes()));
                 flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
                 flag.setHardBrake(randomInt(0, 2));
                 flag.setHardAcceleration(randomInt(0, 2));
@@ -859,7 +859,7 @@ public class MockData {
                 flag.setHardVertical(randomInt(0, 2));
             }
             else if (type == 1) {
-                flag.setTypesSet(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING));
+                flag.setTypes(new ArrayList(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING)));
                 flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
                 final Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
                 for (int j = 0; j < speedSettings.length; j++)
@@ -867,7 +867,7 @@ public class MockData {
                 flag.setSpeedSettings(speedSettings);
             }
             else {
-                flag.setTypesSet(EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT));
+                flag.setTypes(new ArrayList(EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT)));
                 flag.setSeverityLevel(RedFlagLevel.values()[randomInt(1, RedFlagLevel.values().length - 1)]);
             }
             // groups

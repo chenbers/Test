@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
@@ -253,7 +254,7 @@ public class DataGenForStressTesting {
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // aggressive driving all  (level 1)  CRITICAL
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_HARD_BUMP);
         redFlagAlert.setHardAcceleration(Integer.valueOf(1));
         redFlagAlert.setHardBrake(Integer.valueOf(1));
         redFlagAlert.setHardTurn(Integer.valueOf(1));
@@ -286,7 +287,9 @@ public class DataGenForStressTesting {
     private RedFlagAlert initRedFlagAlert(AlertMessageType type) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-    	RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(type), account.getAcctID(), 
+        List<AlertMessageType> list = new ArrayList<AlertMessageType>();
+        list.add(type);
+        RedFlagAlert redFlagAlert = new RedFlagAlert(list, account.getAcctID(), 
     		fleetUser.getUserID(),
     		type + " Red Flag", type + " Red Flag Description", 0,
             1439, // start/end time
@@ -303,6 +306,33 @@ public class DataGenForStressTesting {
             null,5,null, 5);
     	return redFlagAlert;
     }
+    protected RedFlagAlert initRedFlagAlertMultiple(List<AlertMessageType> types) {
+        List<String> emailList = new ArrayList<String>();
+        emailList.add("cjennings@inthinc.com");
+        StringBuilder typeBuilder = new StringBuilder();
+        StringBuilder descriptionBuilder = new StringBuilder();
+        
+        for(AlertMessageType amt:types){
+            typeBuilder.append(amt + " Red Flag");
+            descriptionBuilder.append(amt + " Red Flag Description\n");
+        }
+        RedFlagAlert redFlagAlert = new RedFlagAlert(types, account.getAcctID(),
+            fleetUser.getUserID(),
+            typeBuilder.toString(), descriptionBuilder.toString(), 0,
+            1439, // start/end time
+            anyDay(), 
+            anyTeam(),
+            null, // driverIDs
+            null, // vehicleIDs
+            null, // vehicleTypeIDs
+            notifyPersonList(),
+            null, // emailTo
+            null,
+            null, null, null, null,
+            RedFlagLevel.WARNING,null,
+            null,5, null,5);
+        return redFlagAlert;
+    }
 	private void addRedFlagAlert(RedFlagAlert redFlagAlert,
 			RedFlagAlertHessianDAO redFlagAlertDAO) {
 		
@@ -316,7 +346,8 @@ public class DataGenForStressTesting {
 		// zone alert pref for enter/leave zone any time, any day, both teams
         RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
-        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_ENTER_ZONE),account.getAcctID(), 
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
+        RedFlagAlert zoneAlert = new RedFlagAlert(list,account.getAcctID(), 
         		fleetUser.getUserID(),
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
@@ -422,7 +453,8 @@ public class DataGenForStressTesting {
         emailList.add("test@email.com");
         List<Integer> notifyPersonIDList = new ArrayList<Integer>();
         notifyPersonIDList.add(notifyPersonIDs[0]);
-        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_ENTER_ZONE),acctID,
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
+        RedFlagAlert zoneAlert = new RedFlagAlert(list,acctID,
         		fleetUser.getUserID(),
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 dayOfWeek, groupIDList, null, // driverIDs
@@ -457,7 +489,8 @@ public class DataGenForStressTesting {
         List<String> emailList = new ArrayList<String>();
         emailList.add("test@email.com");
         // speeding alert
-        RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT), acctID, 
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT));
+        RedFlagAlert redFlagAlert = new RedFlagAlert(list, acctID, 
         		fleetUser.getUserID(),
         		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
                 1439, // start/end time

@@ -74,9 +74,8 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     
     private RedFlagLevel severityLevel;
     
-    @Column(updateable = false)
+    @Column(name = "alertTypeMask")
     private List<AlertMessageType> types;
-    private Long alertTypeMask;
     
     private Integer[] speedSettings;
     @Column(name = "accel")
@@ -93,18 +92,18 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
 
     public RedFlagAlert()
     {
-        types = new ArrayList<AlertMessageType>();
+//        types = new ArrayList<AlertMessageType>();
     }
     
-    public RedFlagAlert(Set<AlertMessageType> types, Integer accountID, Integer userID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
+    public RedFlagAlert(List<AlertMessageType> types, Integer accountID, Integer userID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
             List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo,Integer[] speedSettings,
             Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, RedFlagLevel severityLevel,Integer zoneID,
             List<AlertEscalationItem> escalationList,Integer maxEscalationTries, Integer maxEscalationTryTime, Integer escalationTimeBetweenRetries
             /*,Integer timeoutUnits */)
     {
         super();
-        this.types = new ArrayList<AlertMessageType>(types);
-        this.alertTypeMask = AlertMessageType.convertTypes(getTypesSet()); 
+        this.types = types;
+//        this.alertTypeMask = AlertMessageType.convertTypes(types); 
         this.accountID = accountID;
         this.userID = userID;
         this.name = name;
@@ -145,11 +144,11 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         return EnumSet.copyOf(types);
     }
 
-    public void setTypesSet(Set<AlertMessageType> types) {
-        
-        if(types == null) return;
-        this.types = new ArrayList<AlertMessageType>(types);
-    }
+//    public void setTypesSet(Set<AlertMessageType> types) {
+//        
+//        if(types == null) return;
+//        this.types = new ArrayList<AlertMessageType>(types);
+//    }
     
     public Integer getAlertID() {
         return alertID;
@@ -467,15 +466,6 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
                 + hardBrake + ", hardTurn=" + hardTurn + ", hardVertical=" + hardVertical
                 + ", alertID=" + getAlertID() +  ", speedLevels="
                 + ", speedSettings=" + Arrays.toString(speedSettings) + "zoneID=" + zoneID + "emailTos="+getEmailTo().toString()+"]";
-    }
-
-    public void setAlertTypeMask(Long alertTypeMask) {
-        this.types = new ArrayList<AlertMessageType>(AlertMessageType.getAlertMessageTypes(alertTypeMask));
-        this.alertTypeMask = alertTypeMask;
-    }
-    public Long getAlertTypeMask() {
-        alertTypeMask = AlertMessageType.convertTypes(getTypesSet());
-        return alertTypeMask;
     }
 
     public List<AlertEscalationItem> getEscalationList() {

@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -319,7 +320,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // aggressive driving all  (level 1)  CRITICAL
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_HARD_BUMP);
         redFlagAlert.setHardAcceleration(Integer.valueOf(1));
         redFlagAlert.setSeverityLevel(RedFlagLevel.CRITICAL);
         redFlagAlert.setHardBrake(Integer.valueOf(1));
@@ -359,7 +360,9 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
     protected RedFlagAlert initRedFlagAlert(AlertMessageType type) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-        RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(type), account.getAcctID(),
+        List<AlertMessageType> list = new ArrayList<AlertMessageType>();
+        list.add(type);
+        RedFlagAlert redFlagAlert = new RedFlagAlert(list, account.getAcctID(),
             fleetUser.getUserID(),
             type + " Red Flag", type + " Red Flag Description", 0,
             1439, // start/end time
@@ -377,6 +380,33 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         return redFlagAlert;
     }
     
+    protected RedFlagAlert initRedFlagAlertMultiple(List<AlertMessageType> types) {
+        List<String> emailList = new ArrayList<String>();
+        emailList.add("cjennings@inthinc.com");
+        StringBuilder typeBuilder = new StringBuilder();
+        StringBuilder descriptionBuilder = new StringBuilder();
+        
+        for(AlertMessageType amt:types){
+            typeBuilder.append(amt + " Red Flag");
+            descriptionBuilder.append(amt + " Red Flag Description\n");
+        }
+        RedFlagAlert redFlagAlert = new RedFlagAlert(types, account.getAcctID(),
+            fleetUser.getUserID(),
+            typeBuilder.toString(), descriptionBuilder.toString(), 0,
+            1439, // start/end time
+            anyDay(), 
+            anyTeam(),
+            null, // driverIDs
+            null, // vehicleIDs
+            null, // vehicleTypeIDs
+            notifyPersonList(),
+            null, // emailTo
+            null,
+            null, null, null, null,
+            RedFlagLevel.WARNING,null,
+            escalationList(),5, null,5);
+        return redFlagAlert;
+    }
 
 
     protected void addRedFlagAlert(RedFlagAlert redFlagAlert,
@@ -393,8 +423,8 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
         // zone alert pref for enter/leave zone any time, any day, both teams
         RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
-
-        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE),account.getAcctID(), this.fleetUser.getUserID(), 
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
+        RedFlagAlert zoneAlert = new RedFlagAlert(list,account.getAcctID(), this.fleetUser.getUserID(), 
                 "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
                 null, // vehicleIDs

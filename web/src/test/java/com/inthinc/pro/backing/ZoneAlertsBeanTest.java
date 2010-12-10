@@ -65,7 +65,7 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<RedFlagOrZoneAlertsBea
         else{
             if ( MiscUtil.randomInt(0, 1)==1) types.add(AlertMessageType.ALERT_TYPE_EXIT_ZONE);
         }
-        editItem.setTypesSet(types);
+        editItem.setTypes(new ArrayList(types));
         final List<SelectItem> pickedGroups = new ArrayList<SelectItem>();
         pickedGroups.add(new SelectItem("group101"));
         ((RedFlagOrZoneAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);

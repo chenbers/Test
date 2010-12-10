@@ -584,8 +584,8 @@ public class SiloServiceTest {
         escalationList.add(new AlertEscalationItem(this.personList.get(0).getPersonID(),1));
         escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), -1));
         Integer[] speedSettings = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80 };
-
-        RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING),acctID, userID, 
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING));
+        RedFlagAlert redFlagAlert = new RedFlagAlert(list,acctID, userID, 
         		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0, 1339, dayOfWeek, groupIDList,
                 null, // driverIDs
                 null, // vehicleIDs
@@ -641,8 +641,8 @@ public class SiloServiceTest {
         groupRedFlagAlertList = redFlagAlertDAO.getRedFlagAlertsByUserIDDeep(fleetUserID);
         assertEquals(1, groupRedFlagAlertList.size());
         Util.compareObjects(redFlagAlert, groupRedFlagAlertList.get(0), ignoreFields);
-        
-        RedFlagAlert fleetRedFlagAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING),acctID, fleetUserID, 
+        list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING));
+        RedFlagAlert fleetRedFlagAlert = new RedFlagAlert(list,acctID, fleetUserID, 
                 "Red Flag Alert Profile", "Red Flag Alert Profile Description", 0, 1339, dayOfWeek, groupIDList,
                 null, // driverIDs
                 null, // vehicleIDs
@@ -798,7 +798,8 @@ public class SiloServiceTest {
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(this.personList.get(0).getPersonID(),1));
         escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), -1));
-        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE),acctID, userID, 
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
+        RedFlagAlert zoneAlert = new RedFlagAlert(list,acctID, userID, 
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1339, dayOfWeek, groupIDList, null, // driverIDs
                 null, // vehicleIDs
                 null, // vehicleTypeIDs

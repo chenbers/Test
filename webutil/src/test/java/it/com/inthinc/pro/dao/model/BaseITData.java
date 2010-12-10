@@ -310,7 +310,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
         addRedFlagAlert(redFlagAlert, redFlagAlertDAO);
 
         // aggressive driving all  (level 1)  CRITICAL
-        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_AGGRESSIVE_DRIVING);
+        redFlagAlert = initRedFlagAlert(AlertMessageType.ALERT_TYPE_HARD_BUMP);
         redFlagAlert.setHardAcceleration(Integer.valueOf(1));
         redFlagAlert.setSeverityLevel(RedFlagLevel.CRITICAL);
         redFlagAlert.setHardBrake(Integer.valueOf(1));
@@ -350,7 +350,9 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
     protected RedFlagAlert initRedFlagAlert(AlertMessageType type) {
         List<String> emailList = new ArrayList<String>();
         emailList.add("cjennings@inthinc.com");
-    	RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(type), account.getAcctID(), 
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>();
+        list.add(type);
+        RedFlagAlert redFlagAlert = new RedFlagAlert(list, account.getAcctID(), 
     		fleetUser.getUserID(), type + " Red Flag", type + " Red Flag Description", 0,
             1439, // start/end time
             anyDay(), 
@@ -383,7 +385,8 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
 		// zone alert pref for enter/leave zone any time, any day, both teams
         RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
-        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_ENTER_ZONE),account.getAcctID(), 
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
+        RedFlagAlert zoneAlert = new RedFlagAlert(list,account.getAcctID(), 
         		fleetUser.getUserID(), "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
                 null, // vehicleIDs

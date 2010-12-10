@@ -1,7 +1,10 @@
 package com.inthinc.pro.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -78,10 +81,10 @@ public enum AlertMessageType implements BaseEnum
     public static int getMax(){
         return EnumSet.allOf(AlertMessageType.class).size();
     }
-    public static Set<AlertMessageType> getAlertMessageTypes(Long alertTypeMask){
+    public static List<AlertMessageType> getAlertMessageTypes(Long alertTypeMask){
         
         Set<AlertMessageType> alertMessageTypes = EnumSet.noneOf(AlertMessageType.class);
-        if (alertTypeMask == null) return alertMessageTypes;
+        if (alertTypeMask == null) return Collections.emptyList();
         for(AlertMessageType amt : EnumSet.allOf(AlertMessageType.class)){
             
             long bitValue = amt.getBitMask();
@@ -89,7 +92,7 @@ public enum AlertMessageType implements BaseEnum
                 alertMessageTypes.add(amt); 
             }
         }
-        return alertMessageTypes;
+        return new ArrayList<AlertMessageType>(alertMessageTypes);
     }
     public static  Long convertTypes(Set<AlertMessageType> alertMessageTypes){
         Long alertMessageTypesMask = new Long(0);
@@ -102,7 +105,23 @@ public enum AlertMessageType implements BaseEnum
         }
         return alertMessageTypesMask;
     }
-
+    public static  Long convertTypes(List<AlertMessageType> alertMessageTypes){
+        Long alertMessageTypesMask = new Long(0);
+        if(alertMessageTypes != null){
+            for(AlertMessageType amt : alertMessageTypes){
+                
+                long bitValue = amt.getBitMask();
+                alertMessageTypesMask = alertMessageTypesMask.longValue()  | bitValue;
+            }
+        }
+        return alertMessageTypesMask;
+    }
+    public static Set<AlertMessageType> getAggressiveDrivingTypes(){
+        return EnumSet.of(  ALERT_TYPE_HARD_BRAKE,
+                            ALERT_TYPE_HARD_ACCEL,
+                            ALERT_TYPE_HARD_TURN,
+                            ALERT_TYPE_HARD_BUMP);
+    }
     @Override
     public String toString()
     {
