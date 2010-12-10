@@ -54,9 +54,9 @@ public class PaginationTest {
     static {
     	EXPECTED_EVENT_COUNTS = new HashMap<EventCategory, Integer[]> ();
     	// events in team 0 (GOOD) are from the unknown driver
-    	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(15), Integer.valueOf(21)});
-    	EXPECTED_EVENT_COUNTS.put(EventCategory.WARNING, new Integer[] {Integer.valueOf(6), Integer.valueOf(5), Integer.valueOf(9), Integer.valueOf(20)});
-    	EXPECTED_EVENT_COUNTS.put(EventCategory.EMERGENCY, new Integer[] {Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(1)});
+    	EXPECTED_EVENT_COUNTS.put(EventCategory.VIOLATION, new Integer[] {Integer.valueOf(3), Integer.valueOf(3), Integer.valueOf(15), Integer.valueOf(28)});
+    	EXPECTED_EVENT_COUNTS.put(EventCategory.WARNING, new Integer[] {Integer.valueOf(6), Integer.valueOf(5), Integer.valueOf(9), Integer.valueOf(31)});
+    	EXPECTED_EVENT_COUNTS.put(EventCategory.EMERGENCY, new Integer[] {Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(1), Integer.valueOf(10)});
     	
     }
     private static Map<EventCategory, Integer> EXPECTED_WS_EVENT_COUNTS;
