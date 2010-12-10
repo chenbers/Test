@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.jdbc;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,7 +40,6 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.SpeedingEvent;
-import com.mysql.jdbc.PreparedStatement;
 
 public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessageDAO{
 
@@ -206,7 +206,13 @@ escalationTryCount
             conn = getConnection();
             statement = (PreparedStatement) conn.prepareStatement("UPDATE msgQueueGuid set id = LAST_INSERT_ID((id+1)%1000000000) WHERE sequence=1", Statement.RETURN_GENERATED_KEYS);
             statement.executeUpdate();
-            uid=statement.getLastInsertID();
+            /* 
+             We are using the mysql driver specfic method to retreive the LastInsertID(). If there are issues with this, we can use one of the following methods:
+             http://dev.mysql.com/doc/refman/5.1/en/connector-j-usagenotes-basic.html#connector-j-examples-autoincrement-getgeneratedkeys
+             http://dev.mysql.com/doc/refman/5.1/en/connector-j-usagenotes-basic.html#connector-j-examples-autoincrement-select
+             */
+            uid=((com.mysql.jdbc.PreparedStatement)statement).getLastInsertID();
+            
 
 //TODO the backend needs to insert escalations with status=3 and escalationOrdinal=1
 
