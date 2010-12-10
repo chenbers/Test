@@ -25,6 +25,8 @@ public interface ReportsFacade {
 
     List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(Integer groupID, Interval interval, boolean dotOnly);
 
-    public List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly);
+    List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly);
+
+    List<MileageByVehicle> getStateMileageByVehicleByMonth(Integer groupID, Interval interval, boolean dotOnly);
 
 }

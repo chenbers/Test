@@ -123,6 +123,22 @@ public class ReportsFacadeImpl implements ReportsFacade {
         ReportCriteria criteria = reportService.getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
         return criteria.getMainDataset();
     }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<MileageByVehicle> getStateMileageByVehicleByMonth(Integer groupID,
+            Interval interval,
+            boolean dotOnly) {
+        List groupIDList = new ArrayList();
+        groupIDList.add(groupID);
+        ReportCriteria criteria = reportService.getStateMileageByMonthReportCriteria(getAccountGroupHierarchy(),
+                groupIDList, 
+                interval,
+                getLocale(),
+                getMeasurementType(), 
+                dotOnly);
+        return criteria.getMainDataset();
+    }
 
 }
 
