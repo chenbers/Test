@@ -56,30 +56,20 @@ public enum AlertMessageType implements BaseEnum
     private static final Map<Integer, AlertMessageType> lookup = new HashMap<Integer, AlertMessageType>();
     static
     {
-        
         for (AlertMessageType p : EnumSet.allOf(AlertMessageType.class))
         {
             lookup.put(p.code, p);
         }
     }
 
-    private static final Map<Long, AlertMessageType> powerOfTwoLookup = new HashMap<Long, AlertMessageType>();
-    static
-    {
-        
-        for (AlertMessageType p : EnumSet.allOf(AlertMessageType.class))
-        {
-            powerOfTwoLookup.put(p.getBitMask(), p);
-        }
-    }
     public Integer getCode()
     {
         return this.code;
     }
     public Long getBitMask(){
-        return new Double(Math.pow( 2, code-1)).longValue();
         
-//        return  new Long(1 << (code-1));
+       return 1l << (code-1);
+        
     }
     public static AlertMessageType valueOf(Integer code)
     {
