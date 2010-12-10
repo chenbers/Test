@@ -11,18 +11,12 @@ default-autowire="byName">
         <constructor-arg value="${proxy.siloDataAccessHost}" />
         <constructor-arg value="${proxy.siloDataAccessPort}" />
     </bean>
-	<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<bean id="tiwiJDBCDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
 	  <property name="url" value="${jdbc.mysql.url}"/>
 	  <property name="username" value="${jdbc.mysql.username}"/>
 	  <property name="password" value="${jdbc.mysql.password}"/>
+	  <property name="initialSize" value="${jdbc.dbcp.initialSize}"/>
+	  <property name="maxActive" value="${jdbc.dbcp.maxActive}"/>
 	</bean>
-<!-- 	
-	<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-	  <property name="driverClassName" value="com.mysql.jdbc.Driver" />
-	  <property name="url" value="jdbc:mysql://192.168.11.114:3306/siloDB"/>
-	  <property name="username" value="bmiller"/>
-	  <property name="password" value="4monkey"/>
-	</bean>
- -->	
 </beans>
