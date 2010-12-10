@@ -930,34 +930,35 @@
 									</ui:include>
 								</td>
 								<td>
-								            <ui:include src="../../includes/autocompletePicker.xhtml">
+								            <!--   <ui:include src="../../includes/autocompletePicker.xhtml">
 					                          <ui:param name="autocompleter" value="#{redFlagOrZoneAlertsBean.escalationPeoplePicker}" />
 					                          <ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" />
 					 						  <ui:param name="context" value="editRedFlagEscalation"/>
 					 						  <ui:param name="formName" value="edit-form"/>
-					                        </ui:include>
+					                        </ui:include> -->
 								
       								<!-- Escalation phNumbers list -->
-<!--								    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.phNumbersDataTable}" style="border: none;">-->
-<!--								        <rich:column id="phNumInputCol" style="border: none;">-->
-<!--								   	    	<rich:message id="phNumInputMessage#{index}" for="phNumInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />-->
-<!--								            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput"  />-->
-<!--								            <rich:suggestionbox id="suggestionBoxId" for="phNumInput"-->
-<!--							                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.autocomplete}" -->
-<!--							                    var="suggestion" fetchValue="#{suggestion.value.fullName}" selfRendered="true">-->
-<!--							                    <h:column>-->
-<!--									              <h:outputText value="#{suggestion.label}" id="phNumSuggestion" />-->
-<!--									            </h:column>-->
-<!--            									<a4j:support event="onselect" action="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.addItem}" reRender="pickerPanel" limitToList="true">-->
-<!--            									    <a4j:actionparam name="itemValue" value="#{dataItem}" assignTo="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" />-->
-<!--            									 </a4j:support>-->
-<!--							                </rich:suggestionbox>-->
-<!--								        </rich:column>-->
-<!--								        <rich:column id="phNumInputBtns" style="border: none;">-->
-<!--								            <a4j:commandLink id="phNumRemBtn" value="X" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers, message" rendered="#{dataItem != ''}" />-->
-<!--								            <a4j:commandLink id="phNumAddSlotBtn" value="+" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}" />-->
-<!--								        </rich:column>	-->
-<!--								    </rich:dataTable>-->
+								    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.phNumbersDataTable}" style="border: none;">
+								        <rich:column id="phNumInputCol" style="border: none;">
+								   	    	<rich:message id="phNumInputMessage#{index}" for="phNumInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+								            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput"  />
+								            <rich:suggestionbox id="suggestionBoxId" for="phNumInput"
+							                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.autocomplete}" 
+							                    var="suggestion" fetchValue="#{suggestion.value}" selfRendered="true">
+							                    <h:column>
+									              <h:outputText value="#{suggestion.label}" id="phNumSuggestion" />
+									            </h:column>
+            									<a4j:support event="onselect" action="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.addItem}" reRender="pickerPanel" limitToList="true">
+            									    <a4j:actionparam name="itemValue" value="#{dataItem}" assignTo="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" />
+            									 </a4j:support>
+							                </rich:suggestionbox>
+								        </rich:column>
+								        <rich:column id="phNumInputBtns" style="border: none;">
+								            <a4j:commandLink id="phNumRemBtn" value="X" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers, message" rendered="#{dataItem != ''}" />
+								            <a4j:commandLink id="phNumAddSlotBtn" value="+" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}" />
+								        </rich:column>	
+								    </rich:dataTable>
+								    
 								    <br/>
 									<!-- / Escalation phNumbers list -->
 								</td>
