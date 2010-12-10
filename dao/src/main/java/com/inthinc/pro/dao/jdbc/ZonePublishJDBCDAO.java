@@ -1,7 +1,9 @@
 package com.inthinc.pro.dao.jdbc;
 
 import java.io.ByteArrayInputStream;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
@@ -10,8 +12,6 @@ import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.ZonePublishDAO;
 import com.inthinc.pro.model.zone.ZonePublish;
 import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
-import com.mysql.jdbc.CallableStatement;
-import com.mysql.jdbc.PreparedStatement;
 
 public class ZonePublishJDBCDAO extends GenericJDBCDAO implements ZonePublishDAO {
 
