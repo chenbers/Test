@@ -433,7 +433,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
                 null, // emailTo
                 null,//speed settings
                 null,null,null,null,//aggressive driving settings
-                RedFlagLevel.NONE, zone.getZoneID(),
+                RedFlagLevel.INFO, zone.getZoneID(),
                 escalationList(),5, null,5);
         Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
         assertNotNull(zoneAlertID);
