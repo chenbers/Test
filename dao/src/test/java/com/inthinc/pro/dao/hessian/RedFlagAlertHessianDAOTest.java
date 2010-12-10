@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.hessian;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.AfterClass;
@@ -16,7 +17,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Zone;
-
+@Ignore
 public class RedFlagAlertHessianDAOTest
 {
     RedFlagAlertHessianDAO redFlagAlertHessianDAO;
@@ -45,7 +46,19 @@ public class RedFlagAlertHessianDAOTest
         personHessianDAO = new PersonHessianDAO();
         personHessianDAO.setSiloService(new SiloServiceCreator("dev-pro.inthinc.com", 8099).getService());
         List<Person> people = personHessianDAO.getPeopleInGroupHierarchy(1);
-        personId= people.get(0).getUserID();
+        Person admin = null;
+        for(Person person:people){
+            if (person.getUser().getRoles().contains(2)) {
+                admin = person;
+                break;
+            }
+        }
+        if (admin != null){
+            personId = admin.getPersonID();
+        }
+        else{
+            personId= people.get(0).getUserID();
+        }
     }
 
     @Test
@@ -67,20 +80,29 @@ public class RedFlagAlertHessianDAOTest
             throw t;
         }
     }
-    @Ignore
     @Test
     public void update(){
         List<RedFlagAlert> plainRedFlagOrZoneAlerts = redFlagAlertHessianDAO.getRedFlagAlertsByUserIDDeep(personId);
         assertTrue("expected to retrieve red flag alert records", plainRedFlagOrZoneAlerts.size() > 0);
         RedFlagAlert rfa = plainRedFlagOrZoneAlerts.get(0);
-        rfa.setAlertTypeMask(AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask()|AlertMessageType.ALERT_TYPE_EXIT_ZONE.getBitMask());
+        List<AlertMessageType> types = new ArrayList<AlertMessageType>();
+        types.add(AlertMessageType.ALERT_TYPE_ENTER_ZONE);
+        types.add(AlertMessageType.ALERT_TYPE_EXIT_ZONE);
+       
+        rfa.setTypes(types);
         redFlagAlertHessianDAO.update(rfa);
         List<RedFlagAlert> updatedRedFlagOrZoneAlerts = redFlagAlertHessianDAO.getRedFlagAlertsByUserIDDeep(personId);
-        assertTrue("expected redflag to be updated", updatedRedFlagOrZoneAlerts.get(0).getAlertTypeMask() == (AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask()|AlertMessageType.ALERT_TYPE_EXIT_ZONE.getBitMask()));
-        rfa.setAlertTypeMask(AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask());
+        assertTrue("expected redflag to be updated", 
+                updatedRedFlagOrZoneAlerts.get(0).getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE) &&
+                updatedRedFlagOrZoneAlerts.get(0).getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE));
+        
+        types = new ArrayList<AlertMessageType>();
+        types.add(AlertMessageType.ALERT_TYPE_ENTER_ZONE);
+        rfa.setTypes(types);
         redFlagAlertHessianDAO.update(rfa);
         updatedRedFlagOrZoneAlerts = redFlagAlertHessianDAO.getRedFlagAlertsByUserIDDeep(personId);
-        assertTrue("expected redflag to be updated", updatedRedFlagOrZoneAlerts.get(0).getAlertTypeMask() == AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask());
+        assertTrue("expected redflag to be updated", 
+                updatedRedFlagOrZoneAlerts.get(0).getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE));
     }
     @Ignore
     @Test

@@ -245,7 +245,8 @@ public class DataGenForHelpScreenShots {
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(notifyPersonIDs[0],1));
         escalationList.add(new AlertEscalationItem(notifyPersonIDs[1], -1));
-        RedFlagAlert zoneAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_ENTER_ZONE),acctID, 
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
+        RedFlagAlert zoneAlert = new RedFlagAlert(list,acctID, 
         		fleetUser.getUserID(),
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 dayOfWeek, groupIDList, null, // driverIDs
@@ -280,7 +281,8 @@ public class DataGenForHelpScreenShots {
         List<String> emailList = new ArrayList<String>();
         emailList.add("test@email.com");
         // speeding alert
-        RedFlagAlert redFlagAlert = new RedFlagAlert(EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT), acctID, 
+        List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT));
+        RedFlagAlert redFlagAlert = new RedFlagAlert(list, acctID, 
         		fleetUser.getUserID(),
         		"Red Flag Alert Profile", "Red Flag Alert Profile Description", 0,
                 1439, // start/end time
