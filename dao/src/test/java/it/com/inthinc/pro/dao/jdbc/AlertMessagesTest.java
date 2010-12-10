@@ -56,7 +56,6 @@ import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.event.ZoneArrivalEvent;
 import com.inthinc.pro.model.event.ZoneDepartureEvent;
 
-@Ignore
 public class AlertMessagesTest extends BaseJDBCTest{
     private static final Logger logger = Logger.getLogger(AlertMessagesTest.class);
     private static SiloService siloService;
@@ -78,12 +77,10 @@ public class AlertMessagesTest extends BaseJDBCTest{
     private static ZoneHessianDAO zoneHessianDAO;
     private static GeonamesAddressLookup addressLookup;
     
-    private static RedFlagAlertHessianDAO zoneAlertHessianDAO;
     private static RedFlagAlertHessianDAO redFlagAlertHessianDAO;
     private static List<RedFlagAlert> zoneAlerts;
     private static List<RedFlagAlert> redFlagAlerts;
-    private static List<RedFlagAlert> originalZoneAlerts;
-    private static List<RedFlagAlert> originalRedFlagAlerts;
+    private static List<RedFlagAlert> originalAlerts;
     private static ITData itData;
     
     @BeforeClass
@@ -105,11 +102,18 @@ public class AlertMessagesTest extends BaseJDBCTest{
         if (!itData.parseTestData(stream, siloService, true, true)) {
             throw new Exception("Error parsing Test data xml file");
         }
-    	zoneAlerts = zoneAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
-        originalZoneAlerts = zoneAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
+System.out.println("account id " + itData.account.getAcctID());        
+        List<RedFlagAlert> alerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
+        originalAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
+        zoneAlerts = new ArrayList<RedFlagAlert>();
+        redFlagAlerts = new ArrayList<RedFlagAlert>();
     	
-    	redFlagAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
-        originalRedFlagAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
+        for (RedFlagAlert alert : alerts) {
+            if (alert.getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE) || alert.getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE)) {
+                zoneAlerts.add(alert);
+            }
+            else redFlagAlerts.add(alert);
+        }
     }
 
     private static void initApp() {
@@ -121,67 +125,61 @@ public class AlertMessagesTest extends BaseJDBCTest{
 
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
-//        DeviceSensitivityMapping mapping = new DeviceSensitivityMapping();
-//        mapping.setDeviceDAO(deviceDAO);
-//        mapping.init();
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-        // save original settings
-    	for (RedFlagAlert zoneAlert : originalZoneAlerts) {
-    	    zoneAlertHessianDAO.update(zoneAlert);
-    	}
-    	for (RedFlagAlert redFlagAlert : originalRedFlagAlerts) {
-    	    redFlagAlertHessianDAO.update(redFlagAlert);
+    	for (RedFlagAlert alert : originalAlerts) {
+    	    redFlagAlertHessianDAO.update(alert);
     	}
     }
 
-    @Ignore
     @Test
+//    @Ignore
     public void zoneAlerts() {
-//    	for (RedFlagAlert zoneAlert : zoneAlerts) {
-//    		EventType eventType = getEventType(zoneAlert);
-//	    	Integer zoneID = itData.zone.getZoneID();
-//	        String IMEI = itData.teamGroupData.get(ITData.GOOD).device.getImei();
-//	
-//	        boolean anyAlertsFound = false;
-//	        // generate zone arrival/departure event
-//	        if (!genZoneEvent(IMEI, zoneID, eventType))
-//	            fail("Unable to generate zone arrival event");
-//	        if (pollForMessages("Zone Alert Groups Set"))
-//	        	anyAlertsFound = true;
+    	for (RedFlagAlert zoneAlert : zoneAlerts) {
+    		EventType eventType = getEventTypes(zoneAlert).get(0);
+	    	Integer zoneID = itData.zone.getZoneID();
+	        String IMEI = itData.teamGroupData.get(ITData.GOOD).device.getImei();
+	
+	        boolean anyAlertsFound = false;
+	        // generate zone arrival/departure event
+	        if (!genZoneEvent(IMEI, zoneID, eventType))
+	            fail("Unable to generate zone arrival event");
+	        if (pollForMessages("Zone Alert Groups Set"))
+	        	anyAlertsFound = true;
 	        
-//	        modZoneAlertPref(DRIVERS, zoneAlert);
-//	        if (!genZoneEvent(IMEI, zoneID, eventType))
-//	            fail("Unable to generate zone arrival event");
-//	        if (pollForMessages("Zone Alert Drivers Set"))
-//	        	anyAlertsFound = true;
-//	        modZoneAlertPref(VEHICLES, zoneAlert);
-//	        if (!genZoneEvent(IMEI, zoneID, eventType))
-//	            fail("Unable to generate zone arrival event");
-//	        if (pollForMessages("Zone Alert Vehicles Set"))
-//	        	anyAlertsFound = true;
-//	        modZoneAlertPref(VEHICLE_TYPES, zoneAlert);
-//	        if (!genZoneEvent(IMEI, zoneID, eventType))
-//	            fail("Unable to generate zone arrival event");
-//	        if (pollForMessages("Zone Alert Vehicle Types Set"))
-//	        	anyAlertsFound = true;
-//	        modZoneAlertPref(CONTACT_INFO, zoneAlert);
-//	        if (!genZoneEvent(IMEI, zoneID, eventType))
-//	            fail("Unable to generate zone arrival event");
-//	        if (pollForMessages("Zone Alert Contact Info Set"))
-//	        	anyAlertsFound = true;
-//	        modZoneAlertPref(ANY_TIME, zoneAlert);
-//	        if (!genZoneEvent(IMEI, zoneID, eventType))
-//	            fail("Unable to generate zone arrival event");
-//	        if (pollForMessages("Zone Alert ANY TIME (0,0) Set"))
-//	        	anyAlertsFound = true;
-//	        assertTrue("No Zone Alerts were generated", anyAlertsFound);
-//    	}
+	        modZoneAlertPref(DRIVERS, zoneAlert);
+	        if (!genZoneEvent(IMEI, zoneID, eventType))
+	            fail("Unable to generate zone arrival event");
+	        if (pollForMessages("Zone Alert Drivers Set"))
+	        	anyAlertsFound = true;
+	        modZoneAlertPref(VEHICLES, zoneAlert);
+	        if (!genZoneEvent(IMEI, zoneID, eventType))
+	            fail("Unable to generate zone arrival event");
+	        if (pollForMessages("Zone Alert Vehicles Set"))
+	        	anyAlertsFound = true;
+	        modZoneAlertPref(VEHICLE_TYPES, zoneAlert);
+	        if (!genZoneEvent(IMEI, zoneID, eventType))
+	            fail("Unable to generate zone arrival event");
+	        if (pollForMessages("Zone Alert Vehicle Types Set"))
+	        	anyAlertsFound = true;
+	        modZoneAlertPref(CONTACT_INFO, zoneAlert);
+	        if (!genZoneEvent(IMEI, zoneID, eventType))
+	            fail("Unable to generate zone arrival event");
+	        if (pollForMessages("Zone Alert Contact Info Set"))
+	        	anyAlertsFound = true;
+	        modZoneAlertPref(ANY_TIME, zoneAlert);
+	        if (!genZoneEvent(IMEI, zoneID, eventType))
+	            fail("Unable to generate zone arrival event");
+	        if (pollForMessages("Zone Alert ANY TIME (0,0) Set"))
+	        	anyAlertsFound = true;
+	        assertTrue("No Zone Alerts were generated", anyAlertsFound);
+    	}
     }
 
     @Test
+    // @Ignore
     public void alertsUnknownDriver() {
         boolean anyAlertsFound = false;
     	for (RedFlagAlert zoneAlert : zoneAlerts) {
@@ -210,6 +208,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
     }
     
     @Test
+    // @Ignore
     public void redFlagAlerts() {
     	GroupData groupData = itData.teamGroupData.get(ITData.GOOD); 
     	for (RedFlagAlert redFlagAlert : redFlagAlerts) {
@@ -261,8 +260,10 @@ public class AlertMessagesTest extends BaseJDBCTest{
     }
 
     @Test
+    @Ignore
     public void escalationPhoneTest()
     {
+        // TODO: this was just fetching one that had been inserted in db, need a better test for this
         List<AlertMessageBuilder> msgList = alertMessageDAO.getMessageBuilders(AlertMessageDeliveryType.PHONE);
         assertTrue(msgList!=null);
     }
@@ -530,7 +531,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
         severity = 1
     return severity    	
  */
-//System.out.println("genEvent: " + eventType);    	
+System.out.println("genEvent: " + eventType);    	
     	if (eventType.equals(EventType.SEATBELT) )
     			event = new SeatBeltEvent(0l, 0, NoteType.SEATBELT, new Date(), 60, 1000, 
     					new Double(40.704246f), new Double(-111.948613f), 80, 100, 20);
@@ -629,7 +630,6 @@ public class AlertMessagesTest extends BaseJDBCTest{
         vehicleDAO = new VehicleHessianDAO();
         zoneHessianDAO = new ZoneHessianDAO();
         
-        zoneAlertHessianDAO = new RedFlagAlertHessianDAO();
         redFlagAlertHessianDAO = new RedFlagAlertHessianDAO();
         
         addressLookup = new GeonamesAddressLookup();
@@ -640,7 +640,6 @@ public class AlertMessagesTest extends BaseJDBCTest{
         personDAO.setSiloService(siloService);
         vehicleDAO.setSiloService(siloService);
         zoneHessianDAO.setSiloService(siloService);
-        zoneAlertHessianDAO.setSiloService(siloService);
         redFlagAlertHessianDAO.setSiloService(siloService);
     
         alertMessageDAO.setDriverDAO(driverDAO);
@@ -681,8 +680,7 @@ public class AlertMessagesTest extends BaseJDBCTest{
                 {
                     alertMessageDAO.acknowledgeMessage(amb.getMessageID());
                 }
-//                System.out.println(msg.getAlertMessageType() + " " + description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList() + " ");
-                // logger.debug(description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList());
+System.out.println(msg.getAlertMessageType() + " " + description + "address: " + msg.getAddress() + " msg: " + msg.getParamterList() + " ");
                 return true;
             }
         }

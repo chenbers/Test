@@ -13,7 +13,9 @@ public class ITDataSource {
 
 	private static Logger logger = Logger.getLogger(ITDataSource.class);
 
-	DriverManagerDataSource datasource;
+//	DriverManagerDataSource datasource;
+	
+	org.apache.commons.dbcp.BasicDataSource datasource;
 	
 	public ITDataSource()
 	{
@@ -22,11 +24,14 @@ public class ITDataSource {
 
 	private void initDataSourceFromProperties(IntegrationConfig config) {
         
-		datasource = new DriverManagerDataSource();
+		//datasource = new DriverManagerDataSource();
+		datasource = new org.apache.commons.dbcp.BasicDataSource();
 		datasource.setDriverClassName(config.getProperty(IntegrationConfig.JDBC_DRIVER_CLASS_NAME));
 		datasource.setUrl(config.getProperty(IntegrationConfig.JDBC_MYSQL_URL));
 		datasource.setUsername(config.getProperty(IntegrationConfig.JDBC_MYSQL_USERNAME));
 		datasource.setPassword(config.getProperty(IntegrationConfig.JDBC_MYSQL_PASSWORD));
+		datasource.setInitialSize(1);
+		datasource.setMaxActive(10);
 	}
 	
 	public Connection getConnection()

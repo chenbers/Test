@@ -140,19 +140,6 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             statement = conn.prepareStatement(FETCH_ALERT_MESSAGE);
             statement.setInt(1, id);
             resultSet = statement.executeQuery();
-/*
- * msgID
-noteID
-personID
-alertID
-alertTypeID
-deliveryMethodID
-status
-level
-escalationOrdinal
-escalationTryCount
-
- */
             if (resultSet.next()) {
                 AlertMessage alertMessage = new AlertMessage();
                 alertMessage.setMessageID(id);
@@ -204,15 +191,19 @@ escalationTryCount
         try
         {
             conn = getConnection();
+/* 
+            
             statement = (PreparedStatement) conn.prepareStatement("UPDATE msgQueueGuid set id = LAST_INSERT_ID((id+1)%1000000000) WHERE sequence=1", Statement.RETURN_GENERATED_KEYS);
             statement.executeUpdate();
-            /* 
              We are using the mysql driver specfic method to retreive the LastInsertID(). If there are issues with this, we can use one of the following methods:
              http://dev.mysql.com/doc/refman/5.1/en/connector-j-usagenotes-basic.html#connector-j-examples-autoincrement-getgeneratedkeys
              http://dev.mysql.com/doc/refman/5.1/en/connector-j-usagenotes-basic.html#connector-j-examples-autoincrement-select
-             */
+             
+             this was throwing class cast exception, so went with  #2 above
             uid=((com.mysql.jdbc.PreparedStatement)statement).getLastInsertID();
+*/
             
+            uid = getLastInsertID(conn);
 
 //TODO the backend needs to insert escalations with status=3 and escalationOrdinal=1
 
@@ -272,7 +263,9 @@ escalationTryCount
                 alertMessage.setNoteID(resultSet.getLong("noteID"));
                 alertMessage.setPersonID(resultSet.getInt("personID"));
                 alertMessage.setAlertID(resultSet.getInt("alertID"));
-                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt("alertTypeID")));
+                // added -1 here to see if it fixes the issue (alertTypeID is 1 too many)
+                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt("alertTypeID")-1));
+System.out.println("alertMessage type: " + alertMessage.getAlertMessageType());                
                 alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt("deliveryMethodID")));
                 alertMessage.setMessage(resultSet.getString("message"));
                 
@@ -308,6 +301,34 @@ escalationTryCount
         
     }
 
+    private Long getLastInsertID(Connection conn) 
+    {
+        Statement statement = null;
+        ResultSet resultSet = null;
+        Long uid = 0l;
+        try
+        {
+            statement = conn.createStatement();
+            statement.executeUpdate("UPDATE msgQueueGuid set id = LAST_INSERT_ID((id+1)%1000000000) WHERE sequence=1");
+            resultSet = statement.executeQuery("SELECT LAST_INSERT_ID()");
+
+            if (resultSet.next()) {
+                uid = resultSet.getLong(1);
+//System.out.println("uid = " + uid);                
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+        } // end finally   
+        return uid;
+    }
+    
     private AlertMessageBuilder createAlertMessageBuilder(AlertMessage alertMessage, Event event, AlertMessageDeliveryType messageType) {
         if (alertMessage.getPersonID() == null || alertMessage.getPersonID() == 0 || event == null) {
             logger.debug("Person ID or Event is Null");
@@ -335,6 +356,7 @@ escalationTryCount
                 alertMessage.setAddress(person.getPriPhone());    
             }                
         }
+        
         AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder();
         alertMessageBuilder.setLocale(locale);
         alertMessageBuilder.setAddress(alertMessage.getAddress());
