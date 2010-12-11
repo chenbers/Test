@@ -263,9 +263,8 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                 alertMessage.setNoteID(resultSet.getLong("noteID"));
                 alertMessage.setPersonID(resultSet.getInt("personID"));
                 alertMessage.setAlertID(resultSet.getInt("alertID"));
-                // added -1 here to see if it fixes the issue (alertTypeID is 1 too many)
-                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt("alertTypeID")-1));
-System.out.println("alertMessage type: " + alertMessage.getAlertMessageType());                
+                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt("alertTypeID")));
+//System.out.println("alertMessage type: " + alertMessage.getAlertMessageType());                
                 alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt("deliveryMethodID")));
                 alertMessage.setMessage(resultSet.getString("message"));
                 

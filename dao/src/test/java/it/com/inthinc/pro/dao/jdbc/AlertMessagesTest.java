@@ -135,7 +135,7 @@ System.out.println("account id " + itData.account.getAcctID());
     }
 
     @Test
-//    @Ignore
+    //@Ignore
     public void zoneAlerts() {
     	for (RedFlagAlert zoneAlert : zoneAlerts) {
     		EventType eventType = getEventTypes(zoneAlert).get(0);
@@ -179,7 +179,7 @@ System.out.println("account id " + itData.account.getAcctID());
     }
 
     @Test
-    // @Ignore
+    //@Ignore
     public void alertsUnknownDriver() {
         boolean anyAlertsFound = false;
     	for (RedFlagAlert zoneAlert : zoneAlerts) {
@@ -208,7 +208,7 @@ System.out.println("account id " + itData.account.getAcctID());
     }
     
     @Test
-    // @Ignore
+//    @Ignore
     public void redFlagAlerts() {
     	GroupData groupData = itData.teamGroupData.get(ITData.GOOD); 
     	for (RedFlagAlert redFlagAlert : redFlagAlerts) {
