@@ -18,5 +18,13 @@ default-autowire="byName">
 	  <property name="password" value="${jdbc.mysql.password}"/>
 	  <property name="initialSize" value="${jdbc.dbcp.initialSize}"/>
 	  <property name="maxActive" value="${jdbc.dbcp.maxActive}"/>
+	  <property name="validationQuery" value="${jdbc.dbcp.validationQuery}"/>
+	  <property name="validationQueryTimeout" value="${jdbc.dbcp.validationQueryTimeout}"/>
+	  <property name="testOnBorrow" value="${jdbc.dbcp.testOnBorrow}"/>
+	  <property name="testOnReturn" value="${jdbc.dbcp.testOnReturn}"/>
+	  <property name="testWhileIdle" value="${jdbc.dbcp.testWhileIdle}"/>
+	  <property name="timeBetweenEvictionRunsMillis" value="${jdbc.dbcp.timeBetweenEvictionRunsMillis}"/>
+	  <property name="removeAbandoned" value="${jdbc.dbcp.removeAbandoned}"/>
+	  <property name="logAbandoned" value="${jdbc.dbcp.logAbandoned}"/>
 	</bean>
 </beans>
