@@ -255,16 +255,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
             getItem().setSpeedSettings(settings);
         }
-        else if (EventSubCategory.DRIVING_STYLE.equals(getItem().getEventSubCategory())) {
-            if (!getItem().isHardAccelerationSelected())
-                getItem().setHardAcceleration(null);
-            if (!getItem().isHardTurnSelected())
-                getItem().setHardTurn(null);
-            if (!getItem().isHardBrakeSelected())
-                getItem().setHardBrake(null);
-            if (!getItem().isHardVerticalSelected())
-                getItem().setHardVertical(null);
-        }
+//        else if (EventSubCategory.DRIVING_STYLE.equals(getItem().getEventSubCategory())) {
+//            if (!getItem().isHardAccelerationSelected())
+//                getItem().setHardAcceleration(null);
+//            if (!getItem().isHardTurnSelected())
+//                getItem().setHardTurn(null);
+//            if (!getItem().isHardBrakeSelected())
+//                getItem().setHardBrake(null);
+//            if (!getItem().isHardVerticalSelected())
+//                getItem().setHardVertical(null);
+//        }
         
         return super.save();
     }
@@ -322,21 +322,21 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 
             }
         }
-        else if (EventSubCategory.DRIVING_STYLE.equals(saveItem.getEventSubCategory())){
-             
-            boolean styleValid = saveItem.isHardAccelerationSelected() 
-                                || saveItem.isHardBrakeSelected() 
-                                || saveItem.isHardTurnSelected()
-                                || saveItem.isHardVerticalSelected();
-            
-            if (!styleValid){
-                
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeDrivingStyleMessage"), null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
-                
-                valid = false;
-            }
-        }
+//        else if (EventSubCategory.DRIVING_STYLE.equals(saveItem.getEventSubCategory())){
+//             
+//            boolean styleValid = saveItem.isHardAccelerationSelected() 
+//                                || saveItem.isHardBrakeSelected() 
+//                                || saveItem.isHardTurnSelected()
+//                                || saveItem.isHardVerticalSelected();
+//            
+//            if (!styleValid){
+//                
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeDrivingStyleMessage"), null);
+//                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+//                
+//                valid = false;
+//            }
+//        }
 //        else if (EventSubCategory.OFFHOURS.equals(saveItem.getEventSubCategory())){
 //            if (saveItem.isAnytime()) {
 //                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeOffHourMessage"), null);
@@ -488,14 +488,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Column(updateable = false)
         private Map<String,Boolean> selectedAlertTypes;
         private Boolean[] speedSelected;
-        @Column(updateable = false)
-        private Boolean hardAccelerationSelected;
-        @Column(updateable = false)
-        private Boolean hardBrakeSelected;
-        @Column(updateable = false)
-        private Boolean hardTurnSelected;
-        @Column(updateable = false)
-        private Boolean hardVerticalSelected;
+//        @Column(updateable = false)
+//        private Boolean hardAccelerationSelected;
+//        @Column(updateable = false)
+//        private Boolean hardBrakeSelected;
+//        @Column(updateable = false)
+//        private Boolean hardTurnSelected;
+//        @Column(updateable = false)
+//        private Boolean hardVerticalSelected;
         @Column(updateable = false)
         private RedFlagOrZoneAlertsBean redFlagOrZoneAlertsBean;
         @Column(updateable = false)
@@ -563,8 +563,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         private void getSelectedAlertMessageTypes(RedFlagAlert flag){
             List<AlertMessageType> selectedAlertMessageTypes = flag.getTypes();
-            for(AlertMessageType amt : selectedAlertMessageTypes){
-                selectedAlertTypes.put(amt.name(), true);
+            if (selectedAlertMessageTypes != null){
+                for(AlertMessageType amt : selectedAlertMessageTypes){
+                    selectedAlertTypes.put(amt.name(), true);
+                }
             }
         }
 
@@ -684,35 +686,40 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardAccelerationSelected() {
-            return hardAccelerationSelected;
+            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name());
         }
 
         public void setHardAccelerationSelected(boolean hardAccelerationSelected) {
-            this.hardAccelerationSelected = hardAccelerationSelected;
+//            this.hardAccelerationSelected = hardAccelerationSelected;
+            selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name(), hardAccelerationSelected);
         }
 
         public boolean isHardBrakeSelected() {
-            return hardBrakeSelected;
+            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name());
         }
 
         public void setHardBrakeSelected(boolean hardBrakeSelected) {
-            this.hardBrakeSelected = hardBrakeSelected;
+//            this.hardBrakeSelected = hardBrakeSelected;
+            selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name(), hardBrakeSelected);
         }
 
         public boolean isHardTurnSelected() {
-            return hardTurnSelected;
+            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_TURN.name());
+
         }
 
         public void setHardTurnSelected(boolean hardTurnSelected) {
-            this.hardTurnSelected = hardTurnSelected;
+//            this.hardTurnSelected = hardTurnSelected;
+            selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_HARD_TURN.name(), hardTurnSelected);
         }
 
         public boolean isHardVerticalSelected() {
-            return hardVerticalSelected;
+            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BUMP.name());
         }
 
         public void setHardVerticalSelected(boolean hardVerticalSelected) {
-            this.hardVerticalSelected = hardVerticalSelected;
+//            this.hardVerticalSelected = hardVerticalSelected;
+            selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_HARD_BUMP.name(), hardVerticalSelected);
         }
 
         @Override
