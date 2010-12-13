@@ -14,7 +14,7 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
 
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(DeviceBean.class);
-    
+
     private Integer deviceID;
     private Device device;
     private DeviceDAO deviceDAO;
@@ -22,33 +22,38 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
     public DeviceBean() {
         super();
     }
+
     public DeviceBean(Device device) {
         this.deviceID = device.getDeviceID();
         this.device = device;
     }
-    public DeviceBean(Integer deviceID){
-        if(null != deviceID)
+
+    public DeviceBean(Integer deviceID) {
+        if (null != deviceID)
             this.device = deviceDAO.findByID(deviceID);
     }
-    public DeviceBean(Vehicle vehicle){
-        logger.debug("DeviceBean(Vehicle "+vehicle+")");
-        logger.debug("35: deviceDAO should NOT be NULL? deviceDAO: "+deviceDAO);
-        if(null != vehicle){
-            if(null != vehicle.getDeviceID()) {
+
+    public DeviceBean(Vehicle vehicle) {
+        logger.debug("DeviceBean(Vehicle " + vehicle + ")");
+        logger.debug("35: deviceDAO should NOT be NULL? deviceDAO: " + deviceDAO);
+        if (null != vehicle) {
+            if (null != vehicle.getDeviceID()) {
                 this.deviceID = vehicle.getDeviceID();
-                logger.debug("39: deviceDAO: "+deviceDAO);
+                logger.debug("39: deviceDAO: " + deviceDAO);
                 this.device = deviceDAO.findByID(vehicle.getDeviceID());
             }
         }
     }
-    public void loadDeviceBean(){
-        if(null != this.deviceID){
+
+    public void loadDeviceBean() {
+        if (null != this.deviceID) {
             this.device = deviceDAO.findByID(this.deviceID);
         }
     }
-    public void loadDeviceBean(Vehicle vehicle){
-        if(null != vehicle){
-            if(null != vehicle.getDeviceID()) {
+
+    public void loadDeviceBean(Vehicle vehicle) {
+        if (null != vehicle) {
+            if (null != vehicle.getDeviceID()) {
                 this.deviceID = vehicle.getDeviceID();
                 this.device = deviceDAO.findByID(vehicle.getDeviceID());
             }
@@ -59,40 +64,39 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
         Integer deviceID = getDeviceID();
         Device device;
         if (null != deviceID) {
-            
+
             device = deviceDAO.findByID(deviceID);
             if (null != device && device.isWaySmart()) {
                 ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.GET_GPS_GET_LOCATION, 0, ForwardCommandStatus.STATUS_QUEUED);
                 Integer cmdCount = deviceDAO.queueForwardCommand(deviceID, fwdCmd);
-                System.out.println("cmdCount: "+cmdCount);
+                System.out.println("cmdCount: " + cmdCount);
             }
         } else {
             // TODO: alert page that there was a problem
         }
     }
-    
+
     public boolean isWaysmart() {
         logger.debug("public boolean isWaysmart()");
-        logger.debug("79: deviceDAO: "+deviceDAO);
+        logger.debug("79: deviceDAO: " + deviceDAO);
         boolean result = false;
         Integer deviceID = getDeviceID();
         Device device;
-        if(null != deviceID) {
+        if (null != deviceID) {
             device = deviceDAO.findByID(deviceID);
             result = (null != device && device.isWaySmart());
-            logger.debug("productVersion: "+device.getProductVersion());
+            logger.debug("productVersion: " + device.getProductVersion());
         }
-        logger.debug("isWaysmart() returning: "+result);
+        logger.debug("isWaysmart() returning: " + result);
         return result;
     }
-
 
     public Integer getDeviceID() {
         return deviceID;
     }
 
     public void setDeviceID(Integer deviceID) {
-        logger.debug("98: deviceDAO: "+deviceDAO);
+        logger.debug("98: deviceDAO: " + deviceDAO);
         this.device = deviceDAO.findByID(deviceID);
         this.deviceID = deviceID;
     }
@@ -145,7 +149,7 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
     @Override
     public String getLongName() {
         if (device != null) {
-            return device.getName() + " - " + device.getFirmwareVersion(); 
+            return device.getName() + " - " + device.getFirmwareVersion();
             // TODO: jwimmer: not sure what intention of getLongName is, or IF/WHEN/WHERE it would get used ?
         }
         return null;
