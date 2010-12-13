@@ -92,19 +92,24 @@ public class AutocompletePicker
 
     public void setItemValue(Object value)
     {
+        System.out.println("setItemValue: "+value);
         this.value = value.toString();
     }
 
     public void addItem()
     {
+        System.out.println("addItem() ");
+        System.out.println("value: "+value+";");
         if (value == null)
             return;
-        for (final SelectItem item : getPickFrom())
+        for (final SelectItem item : getPickFrom()) {
+            System.out.println("item.getValue().toString(): "+item.getValue().toString());
             if (value.equals(item.getValue().toString()))
             {
                 picked.add(item);
                 break;
             }
+        }
         value = null;
     }
 }
