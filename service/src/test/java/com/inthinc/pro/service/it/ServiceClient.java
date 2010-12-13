@@ -18,6 +18,7 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
@@ -112,6 +113,15 @@ public interface ServiceClient {
     @Path("/group/{groupID}/report/ifta/stateComparison/{startDate}/{endDate}")
     @Produces("application/xml")
     public ClientResponse<List<StateMileageCompareByGroup>> getStateMileageByVehicleStateComparisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
+            @PathParam("endDate") String endDate);
+
+    // State Mileage by Vehicle State Comparison
+    // -----------------------------------------------------------------------------------------------------------------
+    
+    @GET
+    @Path("/group/{groupID}/report/ifta/monthMileage/{startDate}/{endDate}")
+    @Produces("application/xml")
+    public ClientResponse<List<StateMileage>> getStateMileageByVehicleByMonthWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
 
     // --------------------------------------------------------------------------------

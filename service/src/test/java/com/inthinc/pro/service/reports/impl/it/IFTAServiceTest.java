@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import org.jboss.resteasy.client.ClientResponse;
 import org.junit.Test;
 
+import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
@@ -157,5 +158,17 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
         //        
         // assertNotNull(results);
         // assertFalse(results.isEmpty());
+    }
+    
+    /**
+     * Integration test for getStateMileageByVehicleByMonth().
+     */
+    @Test
+    public void testGetStateMileageByVehicleByMonthWithGroupNotInUserHierarchy() {
+
+        ClientResponse<List<StateMileage>> response = client.getStateMileageByVehicleByMonthWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
+
+        assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
+
     }
 }

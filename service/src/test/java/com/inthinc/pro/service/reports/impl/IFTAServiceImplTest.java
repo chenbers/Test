@@ -686,14 +686,14 @@ public class IFTAServiceImplTest extends BaseUnitTest {
         Date endDate = buildDateFromString(expectedStrEndDate);
 
         final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
-        final List<StateMileage> list = new ArrayList<StateMileage>();
+        final List<StateMileage> emptyList = new ArrayList<StateMileage>();
 
         new Expectations() {
             {
                 reportsUtilMock.checkParameters(expectedGroupID,  buildDateFromString(expectedStrStartDate), buildDateFromString(expectedStrEndDate));
                 result = null;
                 reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupID, interval, expectedIfta);
-                result = list;
+                result = emptyList;
             }
         };
 
