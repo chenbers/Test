@@ -869,9 +869,6 @@
 									        <rich:message id="emailAddressesInputMessage#{index}" for="emailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 								            <h:inputText value="#{dataItem}" styleClass="emailInput" id="emailAddressesInput" >
 								            	<f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
-								            	<a4j:support event="onchange" action="#{redFlagOrZoneAlertsBean.item.addEmail}" reRender="emailTos, emailAddressesInputMessage">
-									            	<f:setPropertyActionListener value="#{dataItem.value}" target="#{redFlagOrZoneAlertsBean.item.newEmail}" />
-								            	</a4j:support>
 								            </h:inputText>
 								        </rich:column>
 								        <rich:column style="border: none;">
@@ -901,9 +898,8 @@
 					   ajaxSingle="true" reRender="emailsToPanel">
 					   <a4j:actionparam name="removeId" assignTo="#{redFlagOrZoneAlertsBean.item.removeId}"/>
 					 </a4j:jsFunction>
-					 
-					    
-					    --><br/>
+					    -->
+					    <br/>
 						<!-- / free form Emails list -->                        
 
                       </td>
