@@ -66,6 +66,7 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
             if (null != device && device.isWaySmart()) {
                 ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.GET_GPS_GET_LOCATION, 0, ForwardCommandStatus.STATUS_QUEUED);
                 Integer cmdCount = deviceDAO.queueForwardCommand(deviceID, fwdCmd);
+                //TODO: alert page that there are <code>cmdCount</code> fwdCmds queued for the device in question???
             }
         } else {
             // TODO: alert page that there was a problem
