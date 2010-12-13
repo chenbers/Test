@@ -386,7 +386,12 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             case ALERT_TYPE_ENTER_ZONE:
             case ALERT_TYPE_EXIT_ZONE:
                 Zone zone = zoneDAO.findByID(alertMessage.getZoneID());
-                parameterList.add(zone.getName());
+                if (zone == null) {
+                    logger.error("Zone could not be found for zoneID: " + alertMessage.getZoneID());
+                }
+                else {
+                    parameterList.add(zone.getName());
+                }
                 break;
             case ALERT_TYPE_SPEEDING:
                 Number topSpeed = MeasurementConversionUtil.convertSpeed(((SpeedingEvent) event).getTopSpeed(), person.getMeasurementType());
