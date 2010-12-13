@@ -70,10 +70,10 @@ public class PaginationTest {
     }
 
     private static Integer[] EXPECTED_RED_FLAG_COUNTS = {
-    	Integer.valueOf(7),
-    	Integer.valueOf(7),
-        Integer.valueOf(16),
-        Integer.valueOf(30),
+    	Integer.valueOf(8),
+    	Integer.valueOf(8),
+        Integer.valueOf(21),
+        Integer.valueOf(38),        // 1 from WS Group (no driver)
 
     };
 
