@@ -398,6 +398,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
                 flag.setSpeedSettings(null);
             }
+            
             if (create)
                 flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
             else
@@ -478,7 +479,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     public static class RedFlagOrZoneAlertView extends RedFlagAlert implements BaseAdminAlertsBean.BaseAlertView {
 
-
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
         @Column(updateable = false)
@@ -511,9 +511,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         private Integer limitValue;
         private LimitType limitType;
         
-
         private String escEmail;
         private List<String> phNumbers;
+        private List<Integer> phNumberPersonIDs;
         @Column(updateable = false)
         private List<String> emailTos;
 //        private Integer alertID;
@@ -522,16 +522,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             super();
             
             phNumbers = new ArrayList<String>();
+            phNumberPersonIDs = new ArrayList<Integer>();
             emailTos = new ArrayList<String>();
-            //TODO: jwimmer: remove fake testing data 
+             
             if(phNumbers.isEmpty()){
                 phNumbers.add("");
             }
             if(emailTos.isEmpty()) {
                 emailTos.add("");
             }
-            //TODO: jwimmer: end of fake testing data
-            
+
             //initialize to ensure that the last item is an empty slot
             String lastString = phNumbers.get(phNumbers.size()-1);
             if(null != lastString && !"".equals(lastString)){
@@ -580,24 +580,27 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 FacesContext context = FacesContext.getCurrentInstance();
                 Map<String, String> map = context.getExternalContext().getRequestParameterMap();
                 for (String key : map.keySet()) {
+                    System.out.println(key+" : "+map.get(key));
                     if (key.endsWith("phNumInput")) {
                         String[] words = key.split(":");
                         int fieldIndex = Integer.parseInt(words[2]);
-                        //if the user changed ANY fields update phNumbers
-                        if(!map.get(key).equalsIgnoreCase(phNumbers.get(fieldIndex))){
+                        // if the user changed ANY fields update phNumbers
+                        if (!map.get(key).equalsIgnoreCase(phNumbers.get(fieldIndex))) {
                             phNumbers.set(fieldIndex, map.get(key));
+                            //phNumberPersonIDs.set(fieldIndex, Integer.parseInt(map.get(key)));
                         }
-                        //if there are ANY empty slots, it is NOT okToAddAnother
-                        if(map.get(key) == null || map.get(key).equals("")){
+                        // if there are ANY empty slots, it is NOT okToAddAnother
+                        if (map.get(key) == null || map.get(key).equals("")) {
                             okToAddAnother = false;
                         }
                     }
                 }
-                
+
                 if (okToAddAnother) {
                     phNumbers.add("");
                 }
             } catch (Exception e) {
+                logger.error(e);
                 logger.error("addPhNumberSlot() failed");
             }
         }
@@ -609,27 +612,31 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
         public void addEmailToSlot() {
             try {
-                int indexForEmailToAdd = 0;
-                String paramForEmailToAdd = "";
+                boolean okToAddAnother = true;
                 FacesContext context = FacesContext.getCurrentInstance();
                 Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-                for (String key : map.keySet()) {    System.out.println(key.toString()+" : "+map.get(key)); 
-                    if (key.endsWith("emailAddressesInput")) {     
+                for (String key : map.keySet()) {
+                    System.out.println(key+" : "+map.get(key));
+                    if (key.endsWith("emailAddressesInput")) {
                         String[] words = key.split(":");
-                        int rowIndex = Integer.parseInt(words[2]);
-                        if (rowIndex > indexForEmailToAdd)
-                            paramForEmailToAdd = (String) key;
-                        indexForEmailToAdd = Math.max(rowIndex, indexForEmailToAdd);
+                        int fieldIndex = Integer.parseInt(words[2]);
+                        // if the user changed ANY fields update phNumbers
+                        if (!map.get(key).equalsIgnoreCase(emailTos.get(fieldIndex))) {
+                            emailTos.set(fieldIndex, map.get(key));
+                        }
+                        // if there are ANY empty slots, it is NOT okToAddAnother
+                        if (map.get(key) == null || map.get(key).equals("")) {
+                            okToAddAnother = false;
+                        }
                     }
                 }
-                String value = map.get(paramForEmailToAdd);
-                if (!"".equals(value)) {
-                    emailTos.add(value);
-                    emailTos.remove("");
+
+                if (okToAddAnother) {
                     emailTos.add("");
                 }
             } catch (Exception e) {
-               logger.error("addEmailSlot() failed");
+                logger.error(e);
+                logger.error("addPhNumberSlot() failed");
             }
         }
         @Override
@@ -900,6 +907,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         public void setRemoveId(Integer removeId) {
             this.removeId = removeId;
+        }
+        public void setPhNumberPersonIDs(List<Integer> phNumberPersonIDs) {
+            this.phNumberPersonIDs = phNumberPersonIDs;
+        }
+        public List<Integer> getPhNumberPersonIDs() {
+            return phNumberPersonIDs;
         }
     }
 
