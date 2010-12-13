@@ -130,13 +130,4 @@ public class ReportsFacadeImpl implements ReportsFacade {
                 dotOnly);
         return criteria.getMainDataset();
     }
-
-    /**
-     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getStateMileageByMonth(java.lang.Integer, org.joda.time.Interval, java.lang.Boolean)
-     */
-    @Override
-    public List<MileageByVehicle> getStateMileageByMonth(Integer withEqual, Interval withEqual2, Boolean withEqual3) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

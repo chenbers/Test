@@ -19,6 +19,7 @@
 	<context:component-scan base-package="com.inthinc.pro.service.phonecontrol" />
 	<context:component-scan base-package="com.inthinc.pro.util" />
 	<context:component-scan base-package="com.inthinc.pro.service.reports" />
+	<context:component-scan base-package="com.inthinc.pro.service.providers" />
 
     <!-- TODO Temporary placeholder for QA testing. Remove when going to production -->	
 	<context:component-scan base-package="com.inthinc.pro.service.test.mock.aspects" />

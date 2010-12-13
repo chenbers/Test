@@ -5,10 +5,13 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.springframework.stereotype.Component;
+
 /**
  * TODO Example provider to map exception {@link InvalidDateException} to HTTP error codes.
  */
 @Provider
+@Component
 public class InvalidDateExceptionMapper implements ExceptionMapper<InvalidDateException> {
 
     /**

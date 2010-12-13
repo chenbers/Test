@@ -18,14 +18,6 @@
     <param-value>/api</param-value>
   </context-param>
 
-  <!--  Example context param on how to set custom Providers (for exception mappers) -->
-  <!-- 
-  <context-param>
-    <param-name>resteasy.providers</param-name>
-    <param-value>com.inthinc.pro.service.providers.InvalidDateExceptionMapper</param-value>
-  </context-param>
-  -->
-  
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -56,14 +48,6 @@
   <servlet>
     <servlet-name>Resteasy</servlet-name>
     <servlet-class>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher</servlet-class>
-    <!-- How to provide custom Application (subclass) -->
-    <!-- Custom Application can used to programmatically register Providers (and avoid listing them in web.xml) -->
-    <!-- 
-    <init-param>  
-        <param-name>javax.ws.rs.Application</param-name>  
-        <param-value>com.inthinc.pro.service.providers.TestApplication</param-value>  
-    </init-param>
-    -->
   </servlet>
 
   <servlet-mapping>
