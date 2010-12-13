@@ -55,7 +55,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     private RedFlagAlertDAO redFlagAlertsDAO;
     private ZonesBean       zonesBean;
 
-    private HtmlDataTable escEmailsDataTable;
     private HtmlDataTable phNumbersDataTable;
     private HtmlDataTable emailTosDataTable;
     
@@ -136,7 +135,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setHardVerticalSelected(false);
         }
         alertView.getSelectedAlertMessageTypes(flag);
-        alertView.setEmailTos(flag.getEmailTo());
+        //alertView.setEmailTos(flag.getEmailTo());  //TODO: Jacquie?  this line was causing the emailTos control NOT to show up... flag.gtEmailTo() must be returning null???
         return alertView;
     }
     private EventSubCategory deriveEventSubCategory(RedFlagAlert flag){
@@ -453,13 +452,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         zonesBean.clearZones();
         super.resetList();
     }
-    public HtmlDataTable getEscEmailsDataTable() {
-        return escEmailsDataTable;
-    }
-
-    public void setEscEmailsDataTable(HtmlDataTable escEmailsDataTable) {
-        this.escEmailsDataTable = escEmailsDataTable;
-    }
 
     public HtmlDataTable getPhNumbersDataTable() {
         return phNumbersDataTable;
@@ -524,7 +516,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             phNumbers = new ArrayList<String>();
             phNumberPersonIDs = new ArrayList<Integer>();
             emailTos = new ArrayList<String>();
-             
+           
             if(phNumbers.isEmpty()){
                 phNumbers.add("");
             }
@@ -580,7 +572,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 FacesContext context = FacesContext.getCurrentInstance();
                 Map<String, String> map = context.getExternalContext().getRequestParameterMap();
                 for (String key : map.keySet()) {
-                    System.out.println(key+" : "+map.get(key));
                     if (key.endsWith("phNumInput")) {
                         String[] words = key.split(":");
                         int fieldIndex = Integer.parseInt(words[2]);
@@ -606,7 +597,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public void removeEmailTo() {
-            //System.out.println("removeEmailToSlot: "+(String)emailTosDataTable.getRowData());
             emailTos.remove(redFlagOrZoneAlertsBean.emailTosDataTable.getRowData());
         }
 
@@ -616,7 +606,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 FacesContext context = FacesContext.getCurrentInstance();
                 Map<String, String> map = context.getExternalContext().getRequestParameterMap();
                 for (String key : map.keySet()) {
-                    System.out.println(key+" : "+map.get(key));
                     if (key.endsWith("emailAddressesInput")) {
                         String[] words = key.split(":");
                         int fieldIndex = Integer.parseInt(words[2]);
