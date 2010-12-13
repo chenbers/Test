@@ -267,7 +267,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
             for (final Person person : people) { 
                 if(null != person.getPriPhone() && !"".equals(person.getPriPhone()))
-                    allUsers.add(new SelectItem(person.getPersonID(), person.getFullNameWithPriPhone()));
+                    allUsers.add(new SelectItem(person, person.getFullNameWithPriPhone()));
             }
             MiscUtil.sortSelectItems(allUsers);
 
@@ -450,7 +450,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         // set notify user IDs
         final ArrayList<Integer> escalationUserIDs = new ArrayList<Integer>(getEscalationPeoplePicker().getPicked().size());
         for (final SelectItem item : getEscalationPeoplePicker().getPicked())
-            escalationUserIDs.add((Integer) item.getValue());
+            escalationUserIDs.add((Integer) ((Person)item.getValue()).getPersonID());
 
         getItem().setEscalationPersonIDs(escalationUserIDs);
         
