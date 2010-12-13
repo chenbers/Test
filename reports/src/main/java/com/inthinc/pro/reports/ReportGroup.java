@@ -152,7 +152,7 @@ public enum ReportGroup
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
             Boolean.TRUE,
-            ReportType.DRIVER_HOURS),
+            ReportType.DRIVER_HOURS);
    
     /* VEHICLE_USAGE("Vehicle usage", 19, EntityType.ENTITY_GROUP_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
@@ -160,10 +160,10 @@ public enum ReportGroup
             ReportType.VEHICLE_USAGE),  */
             
       // Asset
-     WARRANTY_LIST("Warranty List", 26, EntityType.ENTITY_GROUP_AND_EXPIRED,   
-            new CriteriaType[]{}, 
-            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Asset,
-            ReportType.WARRANTY_LIST);
+//     WARRANTY_LIST("Warranty List", 26, EntityType.ENTITY_GROUP_AND_EXPIRED,   
+//            new CriteriaType[]{}, 
+//            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Asset,
+//            ReportType.WARRANTY_LIST);
 
     
     private ReportType[] reports;

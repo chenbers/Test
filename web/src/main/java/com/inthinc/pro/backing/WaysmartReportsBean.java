@@ -60,8 +60,8 @@ public class WaysmartReportsBean extends ReportsBean {
         itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
         		ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));
 
-        itemGroups.add(new SelectItemGroup(ReportCategory.Asset.getLabel(), 
-                ReportCategory.Asset.getDescription(), false, getItemsByCategory(ReportCategory.Asset)));
+//        itemGroups.add(new SelectItemGroup(ReportCategory.Asset.getLabel(), 
+//                ReportCategory.Asset.getDescription(), false, getItemsByCategory(ReportCategory.Asset)));
         
         return itemGroups;
     }

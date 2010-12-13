@@ -22,7 +22,7 @@ public class HosReportsBean extends ReportsBean {
     @Override
     public List<SelectItemGroup> getReportGroups() {
 
-        // The map between and item and its ID
+        // The map between an item and its ID
         reportGroupMap = new HashMap<Integer, ReportGroup>();
         
         // The items categorized in groups to be shown in the UI list
@@ -30,14 +30,14 @@ public class HosReportsBean extends ReportsBean {
 
         itemGroups.add(getBlankGroup());
         
-        itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
-                ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance, true)));
-        
+//        itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
+//                ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance, true)));
+        // Just HOS for HOS
         itemGroups.add(new SelectItemGroup(ReportCategory.HOS.getLabel(), 
                 ReportCategory.HOS.getDescription(), false, getItemsByCategory(ReportCategory.HOS, true)));
 
-        itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
-                ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA, false)));
+//        itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
+//                ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA, false)));
         
         return itemGroups;
     }
