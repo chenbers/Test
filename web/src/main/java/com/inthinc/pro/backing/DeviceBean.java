@@ -34,12 +34,9 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
     }
 
     public DeviceBean(Vehicle vehicle) {
-        logger.debug("DeviceBean(Vehicle " + vehicle + ")");
-        logger.debug("35: deviceDAO should NOT be NULL? deviceDAO: " + deviceDAO);
         if (null != vehicle) {
             if (null != vehicle.getDeviceID()) {
                 this.deviceID = vehicle.getDeviceID();
-                logger.debug("39: deviceDAO: " + deviceDAO);
                 this.device = deviceDAO.findByID(vehicle.getDeviceID());
             }
         }
@@ -69,7 +66,6 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
             if (null != device && device.isWaySmart()) {
                 ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.GET_GPS_GET_LOCATION, 0, ForwardCommandStatus.STATUS_QUEUED);
                 Integer cmdCount = deviceDAO.queueForwardCommand(deviceID, fwdCmd);
-                System.out.println("cmdCount: " + cmdCount);
             }
         } else {
             // TODO: alert page that there was a problem
@@ -77,17 +73,13 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
     }
 
     public boolean isWaysmart() {
-        logger.debug("public boolean isWaysmart()");
-        logger.debug("79: deviceDAO: " + deviceDAO);
         boolean result = false;
         Integer deviceID = getDeviceID();
         Device device;
         if (null != deviceID) {
             device = deviceDAO.findByID(deviceID);
             result = (null != device && device.isWaySmart());
-            logger.debug("productVersion: " + device.getProductVersion());
         }
-        logger.debug("isWaysmart() returning: " + result);
         return result;
     }
 
@@ -96,7 +88,6 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
     }
 
     public void setDeviceID(Integer deviceID) {
-        logger.debug("98: deviceDAO: " + deviceDAO);
         this.device = deviceDAO.findByID(deviceID);
         this.deviceID = deviceID;
     }
