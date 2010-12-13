@@ -202,16 +202,18 @@ public class ZonesBean extends BaseBean
         final String summary = MessageUtil.formatMessageString(add ? "zone_added" : "zone_updated", item.getName());
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
         context.addMessage(null, message);
+        item.setModified(new Date());
 
         if (add)
         {
-            zones.add(item);
+            Zone newItem = zoneDAO.findByID(item.getZoneID());
+            zones.add(newItem);
+            item = null;
         }
 
         editing = false;
         helpFile = "Zones.htm";
         
-        item.setModified(new Date());
         reloadZones();
 
         return "adminZones";
@@ -353,6 +355,7 @@ public class ZonesBean extends BaseBean
     }
     private List<ZoneOption> getOptionsFromMap() 
     {
+        
         List<ZoneOption> options = new ArrayList<ZoneOption>();
         Map<ZoneAvailableOption, OptionValue> optionsMap = getItem().getOptionsMap();
         for (ZoneAvailableOption availOption : ZoneAvailableOption.values())
