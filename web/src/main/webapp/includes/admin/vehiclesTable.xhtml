@@ -36,7 +36,7 @@
 	       					id="editVehicle-productChoice" >
 	           	<f:selectItems value="#{vehiclesBean.productTypesSelectItems}" />
 	           	<a4j:support event="onchange" 
-	           		reRender="vehiclesTable,admin-table-form:header, vehiclesTable_pageHeader,admin-table-form:vehiclesTable_dataTableScroller" />
+	           		reRender="vehiclesTable,admin-table-form:header, vehiclesTable_pageHeader,admin-table-form:vehiclesTable-dataTableScroller" />
 	       	</h:selectOneMenu>
 			<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 			 	<ui:param name="selectBoxID" value="admin-table-form:vehiclesTable:editVehicle-productChoice" />
@@ -76,7 +76,7 @@
 		      		id="editVehicle-vehicleTypeChoice" >
 		           	<f:selectItems value="#{vehiclesBean.vehicleTypesSelectItems}" />
 		           	<a4j:support event="onchange" 
-		           		reRender="vehiclesTable,admin-table-form:header, vehiclesTable_pageHeader,admin-table-form:vehiclesTable_dataTableScroller" />
+		           		reRender="vehiclesTable,admin-table-form:header, vehiclesTable_pageHeader,admin-table-form:vehiclesTable-dataTableScroller" />
 		       	</h:selectOneMenu>
 				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 				 	<ui:param name="selectBoxID" value="admin-table-form:vehiclesTable:editVehicle-vehicleTypeChoice" />
@@ -121,7 +121,7 @@
 		      		id="editVehicle-statusChoice" >
 		           	<f:selectItems value="#{vehiclesBean.statusSelectItems}" />
 		           	<a4j:support event="onchange" 
-		           		reRender="vehiclesTable,admin-table-form:header, vehiclesTable_pageHeader,admin-table-form:vehiclesTable_dataTableScroller" />
+		           		reRender="vehiclesTable,admin-table-form:header, vehiclesTable_pageHeader,admin-table-form:vehiclesTable-dataTableScroller" />
 		       	</h:selectOneMenu>
 				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 				 	<ui:param name="selectBoxID" value="admin-table-form:vehiclesTable:editVehicle-statusChoice" />
