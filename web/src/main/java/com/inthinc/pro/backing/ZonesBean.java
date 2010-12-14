@@ -18,6 +18,8 @@ import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.ZoneDAO;
@@ -44,14 +46,19 @@ public class ZonesBean extends BaseBean
     private Zone                 item;
     private boolean              editing;
     private ZoneDAO              zoneDAO;
-    private RedFlagAlertDAO         zoneAlertDAO;
+    private RedFlagAlertDAO      zoneAlertDAO;
     private ZonePublishDAO       zonePublishDAO;
     private String               helpFile = "Zones.htm";
     private ZoneVehicleType      downloadType;
-    private String              message;
-
-
-
+    private String               message;
+    
+    
+    public String getPublishInfo() {
+        Account account = getAccountDAO().findByID(getAccountID());
+        Date lastPublishDate = (account.getZonePublishDate() == null) ? new Date(0) : account.getZonePublishDate();
+        DateTimeFormatter fmt = DateTimeFormat.forPattern(MessageUtil.getMessageString("dateTimeFormat", getLocale())).withLocale(getLocale());
+        return MessageUtil.formatMessageString("ZonesPublishInfo", fmt.print(lastPublishDate.getTime()));
+    }
 
     public void setZoneDAO(ZoneDAO zoneDAO)
     {

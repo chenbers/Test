@@ -23,11 +23,22 @@
   			vertical-align:top;
   		}
   		.download_nav {
-              padding:5px;
-              height:15px;
-              border-right:1px solid #E1E1E1;
-              font: 10px Veranda,Arial,Heletica,sans-serif;
+			padding: 5px 0 10px 5px;
+            height:35px;
+            border-right:1px solid #E1E1E1;
+            font: 10px Veranda,Arial,Heletica,sans-serif;
         }
+  		.download_nav_msg {
+			margin: 0;
+			padding: 0;
+			float: left;
+			height:40px;
+		}
+		.download_nav_msg p {
+			font: normal 10px Verdana, Arial, Helvetica, sans-serif;
+			padding:10px 2px 10px 35px;
+			background: none;
+		}
   		
   		.download_nav a.download {
 				padding: 6px 10px 7px 20px;
@@ -68,6 +79,7 @@
               <div class="panel_title">
                 <span class="zones"><h:outputText value="#{messages.adminHeader_zones}" /></span>
                 <span class="panel_links">
+					
 					<a4j:status id="refresh_ajax_status" for="main">
 						<f:facet name="start">
 							<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
@@ -79,9 +91,15 @@
 
             <div class="panel_w">
        		  <a4j:outputPanel styleClass="download_nav" id="downloadNav" layout="block">
-              <a4j:form id="downloadForm" style="padding:0;">
+       		  	<div class="download_nav_msg">
+					<p id="info">
+						<h:outputText  id="publishMessage" value="#{zonesBean.publishInfo}" escape="false" />
+					</p>
+				</div>
+       		  
+              <a4j:form id="downloadForm" style="padding:10px;">
                 <div style="float:right">
-              	<span title="#{messages.zones_download}" style="margin-top: 5px; float: left;">
+              	<span title="#{messages.zones_download}" style="margin-top: 5px; margin-bottom:5px; float: left;">
 					<h:commandLink id="downloadIcon" action="#{zonesBean.download}" styleClass="download"> 
     					<h:outputText value="#{messages.zones_download}"/>
 						<a4j:support event="onclick" reRender="zonesMsgPopup" />

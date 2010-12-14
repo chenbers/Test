@@ -137,12 +137,12 @@
 
 	//]]>
 	var respondToClick = false;
+	var queryableLayers = [];
 	 <ui:fragment rendered="#{(wmsConfigurationBean.url ne null) and (fn:length(wmsConfigurationBean.url) gt 0)}">
 		//Assumes map is defined elsewhere
 		var url = "#{wmsConfigurationBean.url}" + "#{wmsConfigurationBean.query}";
 		
 		var wmsLayerQueryParam = "#{wmsConfigurationBean.layerQueryParam}";
-		var queryableLayers = [];
 
 		
 		function addLayers(){
