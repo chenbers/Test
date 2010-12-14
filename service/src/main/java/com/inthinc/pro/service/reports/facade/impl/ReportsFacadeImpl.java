@@ -30,22 +30,6 @@ public class ReportsFacadeImpl implements ReportsFacade {
     @Autowired
     private TiwiproPrincipal principal;
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval) {
-        ReportCriteria criteria = reportService.getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), groupID, interval, getLocale());
-        return criteria.getMainDataset();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly) {
-        List groupIDList = new ArrayList();
-        groupIDList.add(groupID);
-        ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
-        return criteria.getMainDataset();
-    }
-
     /**
      * Returns the user group hierarchy.
      * 
@@ -81,6 +65,22 @@ public class ReportsFacadeImpl implements ReportsFacade {
      */
     void setReportService(ReportCriteriaService reportService) {
         this.reportService = reportService;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval) {
+        ReportCriteria criteria = reportService.getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), groupID, interval, getLocale());
+        return criteria.getMainDataset();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly) {
+        List groupIDList = new ArrayList();
+        groupIDList.add(groupID);
+        ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
+        return criteria.getMainDataset();
     }
 
     /**

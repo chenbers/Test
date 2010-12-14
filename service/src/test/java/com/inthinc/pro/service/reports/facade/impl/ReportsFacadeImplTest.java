@@ -1,88 +1,130 @@
 package com.inthinc.pro.service.reports.facade.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import mockit.Cascading;
 import mockit.Deencapsulation;
+import mockit.Delegate;
 import mockit.Expectations;
 import mockit.Mocked;
+import mockit.Mockit;
 
-import org.junit.Assert;
+import org.joda.time.Interval;
+import org.junit.After;
 import org.junit.Test;
 
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.User;
+import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.service.impl.BaseUnitTest;
-import com.inthinc.pro.service.security.TiwiproPrincipal;
 
 /**
  * Unit test for ReportsFacade.
  */
 public class ReportsFacadeImplTest extends BaseUnitTest {
     private static final Integer GROUP_ID = 1505;
-    private static final String GROUP_NAME = "Mock Group";
-
-    private ReportsFacadeImpl reportsFacadeSUT = new ReportsFacadeImpl();
+    private static final Interval INTERVAL = new Interval(0L, 1L);
+    private static final boolean IFTA_ONLY = true;
     
-    @Test 
-    public void testGetGroupHierarchy(@Mocked final TiwiproPrincipal principalMock) {
-
-    	Deencapsulation.setField(reportsFacadeSUT, principalMock);
-
-        new Expectations() {{
-                principalMock.getAccountGroupHierarchy();  returns(getHierarchy());
-        }};
-        
-        GroupHierarchy hierarchy = reportsFacadeSUT.getAccountGroupHierarchy();
-        
-        Assert.assertNotNull(hierarchy);
-        Assert.assertEquals(hierarchy.getShortGroupName(GROUP_ID, "/"), GROUP_NAME);
-    }
+	@Mocked 
+	ReportCriteriaService reportServiceMock;
+	
+	// Partial mocking: mock only these three methods 
+	@Mocked(methods = {"getAccountGroupHierarchy()", "getLocale()", "getMeasurementType()"}) 
+	ReportsFacadeImpl reportsFacadeSUTMock;    
     
-    protected GroupHierarchy getHierarchy() {
-    	Group group = new Group(GROUP_ID, 1, GROUP_NAME, null);
-        List<Group> groupList = new ArrayList<Group>();
-        groupList.add(group);
-        
-        GroupHierarchy hierarchy = new GroupHierarchy();
-        hierarchy.setGroupList(groupList);
-        return hierarchy;
+	@After
+	public void tearDown() {
+		Mockit.tearDownMocks();
 	}
 
-	@Test 
-	public void testGetMeasurementType(@Mocked final TiwiproPrincipal principalMock, 
-									   @Cascading final User userMock) {
+	@Test
+	public void testGetTenHourViolations() {
+		
+		Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
+		
+		new Expectations(){{
+			reportServiceMock.getTenHoursDayViolationsCriteria(null, GROUP_ID, INTERVAL, null);
+			result = new ReportCriteria();
+		}};
+		
+		reportsFacadeSUTMock.getTenHourViolations(GROUP_ID, INTERVAL);
+	}	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetStateMileageByVehicleRoadStatus() {
+		
+		Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
+		
+		new Expectations(){{
+			reportServiceMock.getStateMileageByVehicleRoadStatusReportCriteria(null, (List<Integer>) any, INTERVAL, null, null, IFTA_ONLY);
+			result = new ServiceDelegate();
+		}};
+		
+		reportsFacadeSUTMock.getStateMileageByVehicleRoadStatus(GROUP_ID, INTERVAL, IFTA_ONLY);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetMileageByVehicle() {
+		
+		Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
+		
+		new Expectations(){{
+			reportServiceMock.getMileageByVehicleReportCriteria(null, (List<Integer>) any, INTERVAL, null, null, IFTA_ONLY);
+			result = new ServiceDelegate();
+		}};
+		
+		reportsFacadeSUTMock.getMileageByVehicle(GROUP_ID, INTERVAL, IFTA_ONLY);
+	}	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetStateMileageByVehicleStateComparison() {
+		
+		Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
+		
+		new Expectations(){{
+			reportServiceMock.getStateMileageCompareByGroupReportCriteria(null, (List<Integer>) any, INTERVAL, null, null, IFTA_ONLY);
+			result = new ServiceDelegate();
+		}};
+		
+		reportsFacadeSUTMock.getStateMileageByVehicleStateComparison(GROUP_ID, INTERVAL, IFTA_ONLY);
+	}	
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testGetStateMileageByVehicle() {
+		
+		Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
+		
+		new Expectations(){{
+			reportServiceMock.getStateMileageByVehicleReportCriteria(null, (List<Integer>) any, INTERVAL, null, null, IFTA_ONLY);
+			result = new ServiceDelegate();
+		}};
+		
+		reportsFacadeSUTMock.getStateMileageByVehicle(GROUP_ID, INTERVAL, IFTA_ONLY);
+	}
 
-		Deencapsulation.setField(reportsFacadeSUT, principalMock);
-        
-    	new Expectations() {{
-    	  // Cannot use cascading on TiwiproPrincipal
-    	  principalMock.getUser(); returns(userMock);
-    	  userMock.getPerson().getMeasurementType(); returns(MeasurementType.METRIC);
-        }};
-    
-        assertEquals(reportsFacadeSUT.getMeasurementType(), MeasurementType.METRIC);
-    }
-
-	@Test 
-	public void testGetLocale(@Mocked final TiwiproPrincipal principalMock, 
-							  @Cascading final User userMock) {
-
-		Deencapsulation.setField(reportsFacadeSUT, principalMock);
-        
-    	new Expectations() {{
-    	  // Cannot use cascading on TiwiproPrincipal
-    	  principalMock.getUser(); returns(userMock);
-    	  userMock.getPerson().getLocale(); returns(Locale.CANADA_FRENCH);
-        }};
-    
-        assertEquals(reportsFacadeSUT.getLocale(), Locale.CANADA_FRENCH);
-    }	
+	/**
+	 * Delegate used to capture and verify arguments passed to the method being tested
+	 * @author dcueva
+	 */
+	private class ServiceDelegate implements Delegate {
+		@SuppressWarnings("unused")
+		ReportCriteria getCriteria(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, Locale locale, MeasurementType measurementType, boolean dotOnly){
+		
+			assertNotNull(groupIDList);
+			assertTrue(GROUP_ID.equals(groupIDList.get(0)));
+			return new ReportCriteria();
+		}		
+	}
+	
+	
 	
 }
