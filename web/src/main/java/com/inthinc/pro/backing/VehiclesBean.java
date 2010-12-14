@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -752,7 +753,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public String getFilterVehicleType() {
         return filterVehicleType;
     }
-
     // TODO: REFACTOR -- this method is in several backing beans
 //    public TreeMap<String, Integer> getTeams()
 //    {        

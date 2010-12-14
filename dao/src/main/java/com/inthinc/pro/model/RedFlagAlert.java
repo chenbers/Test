@@ -139,10 +139,10 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     public void setTypes(List<AlertMessageType> types) {
         this.types = types;
     }
-    public Set<AlertMessageType> getTypesSet() {
-        if (types.isEmpty()) return Collections.emptySet();
-        return EnumSet.copyOf(types);
-    }
+//    public Set<AlertMessageType> getTypesSet() {
+//        if (types.isEmpty()) return Collections.emptySet();
+//        return EnumSet.copyOf(types);
+//    }
 
 //    public void setTypesSet(Set<AlertMessageType> types) {
 //        

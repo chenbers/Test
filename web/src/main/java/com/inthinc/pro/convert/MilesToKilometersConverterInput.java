@@ -1,7 +1,5 @@
 package com.inthinc.pro.convert;
 
-import java.text.NumberFormat;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -22,7 +20,8 @@ public class MilesToKilometersConverterInput extends BaseConverter  {
             {
                 if (getMeasurementType().equals(MeasurementType.METRIC))
                 {
-                    Long dist = Long.valueOf(value);
+                    Double dist = Double.valueOf(value);
+                    dist++;
                     return MeasurementConversionUtil.fromKilometersToMiles(dist).intValue();                    
                 }
                 else
@@ -50,7 +49,7 @@ public class MilesToKilometersConverterInput extends BaseConverter  {
         if (Integer.class.isInstance(value))
         {
             if (getMeasurementType().equals(MeasurementType.METRIC))
-                return MeasurementConversionUtil.fromKilometersToMiles(((Integer) value).longValue()).toString();
+                return MeasurementConversionUtil.fromMilesToKilometers(((Integer) value).longValue()).toString();
             else
                 return value.toString();
         }

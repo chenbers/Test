@@ -1,5 +1,13 @@
 package com.inthinc.pro.backing;
 
+import java.text.NumberFormat;
+
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.ConverterException;
+
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
@@ -100,13 +108,36 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 	}
 
     public Integer getSpeedLimitInteger() {
-        return speedLimit.intValue();
+        //Need to convert here for the validation to work correctly on the number slider
+        Integer speedLimitInteger = convertMPHtoKPH(speedLimit.intValue());
+        return speedLimitInteger;
     }
 
+    public Integer convertMPHtoKPH(Integer mph) throws ConverterException
+    {
+            if (getMeasurementType().equals(MeasurementType.METRIC))
+                return (Integer) MeasurementConversionUtil.fromMPHtoKPH(mph);
+            else
+                return mph;
+    }    
 
+    public MeasurementType getMeasurementType() {
+        if (getUser() != null)
+            return getUser().getPerson().getMeasurementType();
+        else
+            return MeasurementType.ENGLISH;
+    }
     public void setSpeedLimitInteger(Integer speedLimit) {
-        this.speedLimit = new Double(speedLimit);
+        Integer speedLimitInteger = convertKPHtoMPH(speedLimit);
+        this.speedLimit = new Double(speedLimitInteger);
     }
+    public Integer convertKPHtoMPH(Integer kph) throws ConverterException
+    {
+            if (getMeasurementType().equals(MeasurementType.METRIC))
+                return (Integer) MeasurementConversionUtil.fromKPHtoMPH(kph);
+            else
+                return kph;
+    }    
 
 
     public Integer getSpeedBufferInteger() {

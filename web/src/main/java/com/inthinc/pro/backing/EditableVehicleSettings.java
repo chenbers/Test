@@ -6,7 +6,7 @@ import javax.faces.context.FacesContext;
 
 import com.inthinc.pro.model.configurator.ProductType;
 
-public abstract class EditableVehicleSettings {
+public abstract class EditableVehicleSettings extends BaseBean{
 
 
     //This is for the different settings that have to be displayed for different products on the Admin->vehicle pages

@@ -82,12 +82,12 @@
                                  <tr class="#{'tableOdd'}">
                                      <td style="padding: 6px 12px 0px 12px;border-bottom: 1px solid #8BAD37;" align="left">
                                        <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_speedLimit" value="#{updateField['speed_limit']}" />
-                                       <h:outputText value="#{messages.WS820_maxSpeedSlider}" />
+                                       <h:outputText value="#{messages.WS820_maxSpeedSlider}" converter="MphToKphLabelConverter"/>
                                      </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
                                           id="speedLimit" value="#{vehiclesBean.item.editableVehicleSettings.self.speedLimitInteger}" width="250"
-                                          converter="MphToKphConverter"
+                                          
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(40)}" maxValue="${tiwiprofn:convertMphToKph(90)}" step="1" 
                                           onchange="if (checkMultiple) checkMultiple(this.mainTable.id);adminSetCheckbox(this.mainTable.id,'speed','#{context}-update_','')" />
@@ -99,14 +99,14 @@
                                  <tr class="#{'tableEven'}">
                                      <td style="padding: 6px 12px 0px 12px;border-bottom: 1px solid #8BAD37;" align="left">
                                        <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_speedBuffer" value="#{updateField['speed_buffer']}" />
-                                       <h:outputText value="#{messages.WS820_speedBuffer}" />
+                                       <h:outputText value="#{messages.WS820_speedBuffer}" converter="MphToKphLabelConverter"/>
                                       </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
                                           id="speedBuffer" value="#{vehiclesBean.item.editableVehicleSettings.self.speedBufferInteger}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
-                                          minValue="${tiwiprofn:convertMphToKph(0)}" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
+                                          minValue="0" maxValue="${tiwiprofn:convertMphToKph(25)}" step="1" 
                                           onchange="if (checkMultiple) checkMultiple(this.mainTable.id);adminSetCheckbox(this.mainTable.id,'speed','#{context}-update_','')" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px; border-bottom: 1px solid #8BAD37;">
@@ -116,14 +116,14 @@
                                  <tr class="#{'tableOdd'}">
                                      <td style="padding: 6px 12px 0px 12px" align="left">
                                        <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_severeSpeed" value="#{updateField['severe_speed']}" />
-                                       <h:outputText value="#{messages.WS820_severeSpeeding}" />
+                                       <h:outputText value="#{messages.WS820_severeSpeeding}" converter="MphToKphLabelConverter"/>
                                      </td>
                                   <td style="padding: 6px 0px 6px 12px;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
                                           id="severeSpeed" value="#{vehiclesBean.item.editableVehicleSettings.self.severeSpeedInteger}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
-                                          minValue="${tiwiprofn:convertMphToKph(0)}" maxValue="${tiwiprofn:convertMphToKph(40)}" step="1" 
+                                          minValue="0" maxValue="${tiwiprofn:convertMphToKph(40)}" step="1" 
                                           onchange="if (checkMultiple) checkMultiple(this.mainTable.id);adminSetCheckbox(this.mainTable.id,'speed','#{context}-update_','')" />
                                   </td>
                                   <td style="padding: 6px 12px 6px 2px;">
