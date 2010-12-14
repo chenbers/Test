@@ -43,6 +43,8 @@ public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCri
                 driverDOTType, 
                 recListForViolationsCalc);
         addViolations(violationDetailList, driver, dailyViolations, accountGroupHierarchy);
+        
+//        dump(driver, dailyViolations);
 
         List<ViolationsData> shiftViolations = new ShiftViolations().getHosViolationsInTimeFrame(
                 interval, driverTimeZone.toTimeZone(),
@@ -50,8 +52,25 @@ public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCri
                 null,  
                 recListForViolationsCalc);
         addViolations(violationDetailList, driver, shiftViolations, accountGroupHierarchy);
+
+//        dump(driver, shiftViolations);
+
     }
 
+//    private void dump(Driver driver, List<ViolationsData> violations) {
+//        System.out.println("Driver: " + driver.getDriverID() + " " + ((violations == null || violations.size() == 0) ? 0 : violations.size()) + " violations");
+//        if (violations == null)
+//            return;
+//        for (ViolationsData data : violations) {
+//            System.out.println(data.getHosViolationRec().getStartOfDay() + " " + data.getViolationMap().size());
+//            for (Entry<RuleViolationTypes, Long> entry : data.getViolationMap().entrySet()) {
+//                if (entry.getKey().isReportable()) {
+//                    System.out.println(entry.getKey() + " " + entry.getValue());
+//                }
+//            }
+//        }
+//        
+//    }
 
     @Override
     public List<String> getColumnHeaders() {

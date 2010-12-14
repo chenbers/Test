@@ -32,6 +32,7 @@ import com.inthinc.pro.reports.GroupListReportCriteria;
 import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.hos.model.Violation;
 import com.inthinc.pro.reports.hos.model.ViolationsDetailRaw;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public abstract class ViolationsDetailReportCriteria extends GroupListReportCriteria {
 
@@ -77,10 +78,8 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
                 if (driver.getDot() == null)
                     continue;
                 DateTimeZone dateTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-                DateTime queryStart = new DateTime(interval.getStart(), dateTimeZone).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType()));
-                DateTime queryEnd = new DateTime(interval.getEnd(), dateTimeZone).minusDays(RuleSetFactory.getDaysForwardForRuleSetType(driver.getDriverDOTType()));
-                
-                List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), new Interval(queryStart, queryEnd), false);
+                Interval queryInterval = DateTimeUtil.getExpandedInterval(interval, dateTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDriverDOTType()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDriverDOTType()));
+                List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
                 Collections.sort(hosRecordList);
 
 
@@ -112,7 +111,6 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
         statusFilterList.add(HOSStatus.HOS_DERERRAL);
         return statusFilterList;
     }
-
     void initDataSet(Interval interval, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
     {
         List<ViolationsDetailRaw> violationDetailList = new ArrayList<ViolationsDetailRaw>();

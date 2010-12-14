@@ -17,6 +17,7 @@ import org.joda.time.LocalDate;
 
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.rules.RuleSetFactory;
 import com.inthinc.hos.violations.DailyViolations;
@@ -100,6 +101,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
                     driverTimeZone.toTimeZone(),
                     driverDOTType, 
                     recListForViolationsCalc);
+//            dump(driver, dailyViolations);
             updateSummary(summary, dailyViolations);
 
             List<ViolationsData> shiftViolations = new ShiftViolations().getHosViolationsInTimeFrame(
@@ -107,6 +109,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
                     driverDOTType, 
                     null, 
                     recListForViolationsCalc);
+//            dump(driver, shiftViolations);
             updateSummary(summary, shiftViolations);
 
             updateSummaryDriverCount(summary, driver);
@@ -149,6 +152,20 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         
     }
 
+//    private void dump(Driver driver, List<ViolationsData> violations) {
+//        System.out.println("Driver: " + driver.getDriverID() + " " + ((violations == null || violations.size() == 0) ? 0 : violations.size()) + " violations");
+//        if (violations == null)
+//            return;
+//        for (ViolationsData data : violations) {
+//            System.out.println(data.getHosViolationRec().getStartOfDay() + " " + data.getViolationMap().size());
+//            for (Entry<RuleViolationTypes, Long> entry : data.getViolationMap().entrySet()) {
+//                if (entry.getKey().isReportable()) {
+//                    System.out.println(entry.getKey() + " " + entry.getValue());
+//                }
+//            }
+//        }
+//        
+//    }
     @Override
     protected void updateSummaryDriverCount(ViolationsSummary summary, Driver driver) {
         if (driver.getDot() != null && driver.getDriverDOTType() != RuleSetType.NON_DOT)
