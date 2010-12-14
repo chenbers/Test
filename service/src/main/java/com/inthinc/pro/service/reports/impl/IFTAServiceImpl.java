@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
+import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 import com.inthinc.pro.service.reports.IFTAService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.util.ReportsUtil;
@@ -398,4 +399,9 @@ public class IFTAServiceImpl implements IFTAService {
     public void setReportsUtil(ReportsUtil reportsUtil) {
         this.reportsUtil = reportsUtil;
     }
+
+    public Response getValidationTest(IFTAReportsParamsBean params){
+    	return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
+
 }

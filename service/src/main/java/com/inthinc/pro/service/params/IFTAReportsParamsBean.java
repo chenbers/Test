@@ -3,6 +3,8 @@ package com.inthinc.pro.service.params;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.ws.rs.QueryParam;
+
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
 
@@ -21,9 +23,19 @@ public class IFTAReportsParamsBean {
 	Date startDate;
 	Date endDate;
 	Boolean iftaOnly;
+	
+	/**
+	 * Admitted values in the query string are the 
+	 * <a href="http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt">ISO Language Codes</a>.</br>
+	 * See {@link java.util.Locale}
+	 */
+	@QueryParam("locale")
 	Locale locale;
+	
 	MeasurementType measurementType;
 
+	
+	
 	// Helper to obtain default values
 	TiwiproPrincipal principal;
 	
@@ -69,6 +81,5 @@ public class IFTAReportsParamsBean {
 	public void setPrincipal(TiwiproPrincipal principal) {
 		this.principal = principal;
 	}
-
 	
 }

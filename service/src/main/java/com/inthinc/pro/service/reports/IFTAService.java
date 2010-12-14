@@ -8,7 +8,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.jboss.resteasy.annotations.Form;
+
 import com.inthinc.pro.service.annotations.DateFormat;
+import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 
 /**
  * Interface for IFTA/DOT Reports Services.
@@ -364,4 +367,11 @@ public interface IFTAService {
     @Produces("application/xml")
     Response getStateMileageByVehicleByMonthWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
+    
+    
+    @GET
+    @Path("/validationTest")
+    @Produces("application/xml")
+    Response getValidationTest(@Form IFTAReportsParamsBean params);
+    
 }
