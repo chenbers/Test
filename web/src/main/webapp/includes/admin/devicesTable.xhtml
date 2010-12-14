@@ -36,7 +36,7 @@
 		       	<h:selectOneMenu value="#{devicesBean.batchProductChoice}"  id="editDevice-productChoice" style="width:120px;size:auto;margin-top:3px;">
 		           	<f:selectItems value="#{devicesBean.productTypesSelectItems}" />
 		           	<a4j:support event="onchange" 
-		           		reRender="devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable_dataTableScroller" />
+		           		reRender="devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable-dataTableScroller" />
 		       	</h:selectOneMenu>
 				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 				 	<ui:param name="selectBoxID" value="admin-table-form:devicesTable:editDevice-productChoice" />
@@ -80,7 +80,7 @@
 		      		id="editDevice-statusChoice" >
 		           	<f:selectItems value="#{devicesBean.statusSelectItems}" />
 		           	<a4j:support event="onchange" 
-		           		reRender="devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable_dataTableScroller" />
+		           		reRender="devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable-dataTableScroller" />
 		       	</h:selectOneMenu>
 				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 				 	<ui:param name="selectBoxID" value="admin-table-form:devicesTable:editDevice-statusChoice" />
