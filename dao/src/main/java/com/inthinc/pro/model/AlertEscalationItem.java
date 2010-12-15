@@ -30,4 +30,7 @@ public class AlertEscalationItem implements Serializable{
     public void setEscalationOrder(Integer escalationOrder) {
         this.escalationOrder = escalationOrder;
     }
+    public String toString() {
+        return "AlertEscalationItem [personID="+getPersonID()+", escalationOrder="+getEscalationOrder()+"]";
+    }
 }
