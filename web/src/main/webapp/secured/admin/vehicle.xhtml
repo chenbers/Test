@@ -115,7 +115,7 @@
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_odometer}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.odometer}" /></td>
+                                <td><h:outputText value="#{vehiclesBean.item.odometer}" converter="MilesToKilometersConverter"/></td>
                               </tr>                              
                               <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/properties.xhtml"/>
 	                         <ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
