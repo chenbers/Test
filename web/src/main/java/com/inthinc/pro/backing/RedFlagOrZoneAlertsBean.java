@@ -141,7 +141,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             for(AlertEscalationItem item: flag.getEscalationList()){
                 if(item.getEscalationOrder().equals(-1))
                     alertView.setEscEmail(personDAO.findByID(item.getPersonID()).getPriEmail());
-                displayedPhNumbers.add(personDAO.findByID(item.getPersonID()).getFullNameWithPriPhone());
+                else
+                    displayedPhNumbers.add(personDAO.findByID(item.getPersonID()).getFullNameWithPriPhone());
             }
         }
         alertView.setPhNumbers(displayedPhNumbers);
@@ -411,10 +412,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
                 flag.setSpeedSettings(null);
             }
-            //TODO: jwimmer: finding the RIGHT place to save escalationEmail
-            System.out.println("item: "+getItem());
-            System.out.println("item.emailEscalationPersonID: "+getItem().getEmailEscalationPersonID());
-            System.out.println("item.escEmail: "+getItem().getEscEmail());
             
             if (create)
                 flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
@@ -523,7 +520,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         private String escEmail;
         private List<String> phNumbers;
-        private List<Integer> phNumberPersonIDs;//TODO: jwimmer: this might be obsolete
         
         @Column(updateable = false)
         private List<String> emailTos;
@@ -532,7 +528,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public RedFlagOrZoneAlertView() {
             super();
             phNumbers = new ArrayList<String>();
-            phNumberPersonIDs = new ArrayList<Integer>();
             emailTos = new ArrayList<String>();
            
             if(phNumbers.isEmpty()){
@@ -881,12 +876,21 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         @Override
         public void setEmailEscalationPersonID(Integer escEmailPersonID) {
-            System.out.println("redFlagOrZoneAlertsBean public void setEmailEscalationPersonID( "+escEmailPersonID+")");
             super.setEmailEscalationPersonID(escEmailPersonID);            
         }
         @Override
         public void setEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs) {
+            AlertEscalationItem lastResortEmail = null;
+            List<AlertEscalationItem> oldEscalationList = getEscalationList();
+            for(AlertEscalationItem item: oldEscalationList){
+                if(item.getEscalationOrder().equals(-1)){
+                    lastResortEmail = item;
+                }
+            }
             List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
+            if(lastResortEmail != null){
+                escalationList.add(lastResortEmail);
+            }
             int i=1;
             for(Integer personID : voiceEscalationPersonIDs){
                 escalationList.add(new AlertEscalationItem(personID,i++));
@@ -914,12 +918,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         public void setRemoveId(Integer removeId) {
             this.removeId = removeId;
-        }
-        public void setPhNumberPersonIDs(List<Integer> phNumberPersonIDs) {
-            this.phNumberPersonIDs = phNumberPersonIDs;
-        }
-        public List<Integer> getPhNumberPersonIDs() {
-            return phNumberPersonIDs;
         }
     }
 
