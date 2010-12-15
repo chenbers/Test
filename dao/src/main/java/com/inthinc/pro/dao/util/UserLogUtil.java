@@ -38,14 +38,21 @@ public class UserLogUtil {
     /**
      * Determine the userName for the current user.
      * 
-     * @return the current userName if available, else "noPersonFound"
+     * @return the current userName if available, else "noPersonFound", 
+     * if in the site, "forgot_userName_password" if out
      */
     private static String findUserName() {
         String userName;
         Object userObject = null;
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         userObject = (auth!=null)?auth.getPrincipal():null;
-        userName = (userObject!=null)?((User)userObject).getUsername():"noPersonFound";
+        
+        // If coming from "Forgot your user name or password", userObject will be a String, not a User.
+        if ( userObject instanceof User ) {
+            userName = (userObject!=null)?((User)userObject).getUsername():"noPersonFound";
+        } else {
+            userName = "forgot_userName_password";
+        }
         return userName;
     }
 
