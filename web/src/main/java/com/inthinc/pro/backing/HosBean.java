@@ -738,6 +738,7 @@ logger.info("in loadItems()");
         ForwardCommand forwardCommand = new ForwardCommand();
         forwardCommand.setCmd(ForwardCommandID.DOWNLOAD_HOS_LOGS);
         forwardCommand.setStatus(ForwardCommandStatus.STATUS_QUEUED);
+        forwardCommand.setData(Integer.valueOf(0));
         deviceDAO.queueForwardCommand(vehicle.getDeviceID(), forwardCommand);
 
         setSendLogsMsg("hosSendLogsToDevice.success");
