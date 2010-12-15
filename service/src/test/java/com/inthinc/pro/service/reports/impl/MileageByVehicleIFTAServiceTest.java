@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,6 @@ import org.junit.Test;
 
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.service.impl.BaseUnitTest;
-import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 import com.inthinc.pro.service.reports.facade.impl.ReportsFacadeImpl;
 import com.inthinc.pro.util.ReportsUtil;
 
@@ -47,100 +47,112 @@ public class MileageByVehicleIFTAServiceTest extends BaseUnitTest {
 
         iftaServiceSUT = new IFTAServiceMileageByVehicleImpl(reportsFacadeMock, reportsUtilMock);
     }
-    //TODO These tests are commented out temporarily 
+
     @Test
     public void testGetMileageByVehicleWhenOneItemListReturned() {
-        IFTAReportsParamsBean params = getParamsBean(startDate, endDate, true);
-        
         new Expectations() {
             {
+                reportsUtilMock.checkParameters(expectedGroupID, (Date) any, (Date) any);
+                returns(null);
                 reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, anyBoolean);
                 returns(list);
             }
         };
         // happy path
-        Response response = iftaServiceSUT.getMileageByVehicle(params);
+        Response response = iftaServiceSUT.getMileageByVehicle(expectedGroupID, startDate, endDate, true);
         assertNotNull(response);
-//        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetMileageByVehicleWhenNullListReturned() {
-        IFTAReportsParamsBean params = getParamsBean(startDate, endDate, true);
         new Expectations() {
             {
+                reportsUtilMock.checkParameters(expectedGroupID, (Date) any, (Date) any);
+                returns(null);
                 reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, anyBoolean);
                 returns(null);
             }
         };
         // check for null list
-        Response response = iftaServiceSUT.getMileageByVehicle(params);
+        Response response = iftaServiceSUT.getMileageByVehicle(expectedGroupID, startDate, endDate, true);
         assertNotNull(response);
-//        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetMileageByVehicleWhenEmptyListReturned() {
-        IFTAReportsParamsBean params = getParamsBean(startDate, endDate, true);
         new Expectations() {
             {
+                reportsUtilMock.checkParameters(expectedGroupID, (Date) any, (Date) any);
+                returns(null);
                 reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, anyBoolean);
                 returns(new ArrayList<MileageByVehicle>());
             }
         };
         // check for empty list
-        Response response = iftaServiceSUT.getMileageByVehicle(params);
+        Response response = iftaServiceSUT.getMileageByVehicle(expectedGroupID, startDate, endDate, true);
         assertNotNull(response);
-//        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+        assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetMileageByVehicleWhenExceptionThrown() {
-        IFTAReportsParamsBean params = getParamsBean(startDate, endDate, true);
         new Expectations() {
             {
+                reportsUtilMock.checkParameters(expectedGroupID, (Date) any, (Date) any);
+                returns(null);
                 reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, anyBoolean);
                 returns(Exception.class);
             }
         };
         // check for exception
-        Response response = iftaServiceSUT.getMileageByVehicle(params);
+        Response response = iftaServiceSUT.getMileageByVehicle(expectedGroupID, startDate, endDate, true);
         assertNotNull(response);
-//        assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+        assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetMileageByVehicleDefaults() {
-        IFTAReportsParamsBean params = getParamsBean(null, null, null);
         new Expectations() {
             {
+                reportsUtilMock.getMidnight();
+                result = getMidnight();
+                reportsUtilMock.getMidnight();
+                result = getMidnight();
+                reportsUtilMock.checkParameters((Integer) any, (Date) any, (Date) any);
+                result = null;
                 reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, false);
                 returns(list);
             }
         };
-        Response response = iftaServiceSUT.getMileageByVehicleDefaults(params);
+        Response response = iftaServiceSUT.getMileageByVehicleDefaults(expectedGroupID);
         assertNotNull(response);
-//        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetMileageByVehicleWithIfta() {
-        IFTAReportsParamsBean params = getParamsBean(null, null, null);
         new Expectations() {
             {
+                reportsUtilMock.getMidnight();
+                result = getMidnight();
+                reportsUtilMock.getMidnight();
+                result = getMidnight();
+                reportsUtilMock.checkParameters((Integer) any, (Date) any, (Date) any);
+                result = null;
                 reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, true);
                 returns(list);
             }
         };
 
-        Response response = iftaServiceSUT.getMileageByVehicleWithIfta(params);
+        Response response = iftaServiceSUT.getMileageByVehicleWithIfta(expectedGroupID);
         assertNotNull(response);
-//        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetMileageByVehicleWithDates() {
-        IFTAReportsParamsBean params = getParamsBean(startDate, endDate, null);
         new Expectations() {
             {
                 reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, false);
@@ -148,14 +160,13 @@ public class MileageByVehicleIFTAServiceTest extends BaseUnitTest {
             }
         };
 
-        Response response = iftaServiceSUT.getMileageByVehicleWithDates(params);
+        Response response = iftaServiceSUT.getMileageByVehicleWithDates(expectedGroupID, startDate, endDate);
         assertNotNull(response);
-//        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
     @Test
     public void testGetMileageByVehicleWithIftaAndDates() {
-        IFTAReportsParamsBean params = getParamsBean(startDate, endDate, null);
         new Expectations() {
             {
                 reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, true);
@@ -163,21 +174,17 @@ public class MileageByVehicleIFTAServiceTest extends BaseUnitTest {
             }
         };
 
-        Response response = iftaServiceSUT.getMileageByVehicleWithIftaAndDates(params);
+        Response response = iftaServiceSUT.getMileageByVehicleWithIftaAndDates(expectedGroupID, startDate, endDate);
         assertNotNull(response);
-//        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
 
-    /**
-     * Create an instance of the IFTAReportsParamsBean.
-     * @return IFTAReportsParamsBean
-     */
-    private IFTAReportsParamsBean getParamsBean(Date startDate, Date endDate, Boolean iftaOnly) {
-        IFTAReportsParamsBean params = new IFTAReportsParamsBean();
-        params.setGroupID(expectedGroupID);
-        params.setStartDate(startDate);
-        params.setEndDate(endDate);
-        params.setIftaOnly(iftaOnly);
-        return params;
+    private Calendar getMidnight() {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0); // set hour to midnight
+        today.set(Calendar.MINUTE, 0); // set minute in hour
+        today.set(Calendar.SECOND, 0); // set second in minute
+        today.set(Calendar.MILLISECOND, 0); // set millis in second
+        return today;
     }
 }
