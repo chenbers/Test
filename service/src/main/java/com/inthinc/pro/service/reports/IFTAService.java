@@ -15,9 +15,12 @@ import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 
 /**
  * Interface for IFTA/DOT Reports Services.
+ * 
+ * @deprecated Use the report specific interfaces: {@link IFTAServiceStateMileageByVehicleMonth}, {@link IFTAServiceMileageByVehicle} etc...
  */
 @Produces("application/xml")
 @Path("/group/{groupID}/report/ifta")
+@Deprecated
 public interface IFTAService {
     String DATE_FORMAT = "yyyyMMdd";
 
@@ -367,11 +370,10 @@ public interface IFTAService {
     @Produces("application/xml")
     Response getStateMileageByVehicleByMonthWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
-    
-    
+
     @GET
     @Path("/validationTest")
     @Produces("application/xml")
     Response getValidationTest(@Form IFTAReportsParamsBean params);
-    
+
 }
