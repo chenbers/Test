@@ -1033,7 +1033,9 @@
 					                    <h:column>
 							              <h:outputText value="#{suggestion.label}" id="escEmailSuggestion" />
 							            </h:column>
-
+							            <h:column>
+							              <h:outputText value="#{suggestion.value.personID}" id="escEmailSuggestionPersonId"  />
+							            </h:column>
 							            <a4j:support event="onselect"  reRender="pickerPanel" limitToList="true">
           									<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.emailEscalationPersonID}" value="#{suggestion.value.personID}"> </f:setPropertyActionListener>
           								</a4j:support>
