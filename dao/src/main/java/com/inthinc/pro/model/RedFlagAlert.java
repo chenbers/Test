@@ -496,4 +496,25 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         }
         return null;
     }
+
+    public void setEmailEscalationPersonID(Integer escEmailPersonID) {
+        System.out.println("RedFlagAlert public void setEmailEscalationPersonID( "+escEmailPersonID+")");
+        boolean foundExistingEscEmailPersonID = false;
+        if(escalationList == null){
+            escalationList = new ArrayList<AlertEscalationItem>();
+        }
+        if (!escalationList.isEmpty()) {
+            for (AlertEscalationItem item : escalationList) {
+                if (item.getEscalationOrder() == -1) {
+                    item.setPersonID(escEmailPersonID);
+                    foundExistingEscEmailPersonID = true;
+                    break;
+                }
+            }
+        }
+
+        if (!foundExistingEscEmailPersonID) {
+            escalationList.add(new AlertEscalationItem(escEmailPersonID, -1));
+        }
+    }
 }
