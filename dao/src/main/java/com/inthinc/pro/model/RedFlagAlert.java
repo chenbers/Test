@@ -139,8 +139,9 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     public void setTypes(List<AlertMessageType> types) {
         this.types = types;
     }
+
 //    public Set<AlertMessageType> getTypesSet() {
-//        if (types.isEmpty()) return Collections.emptySet();
+//        if (types==null || types.isEmpty()) return Collections.emptySet();
 //        return EnumSet.copyOf(types);
 //    }
 
@@ -462,10 +463,10 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
 
     @Override
     public String toString() {
-        return "RedFlagAlert [Types="+getTypes().toString()+"severityLevel=" + severityLevel + ", hardAcceleration=" + hardAcceleration + ", hardBrake="
+        return "RedFlagAlert [Types="+getTypes()+", severityLevel=" + severityLevel + ", hardAcceleration=" + hardAcceleration + ", hardBrake="
                 + hardBrake + ", hardTurn=" + hardTurn + ", hardVertical=" + hardVertical
                 + ", alertID=" + getAlertID() +  ", speedLevels="
-                + ", speedSettings=" + Arrays.toString(speedSettings) + "zoneID=" + zoneID + "emailTos="+getEmailTo().toString()+"]";
+                + ", speedSettings=" + Arrays.toString(speedSettings) + ", zoneID=" + zoneID + ", emailTos="+getEmailTo()+"]";
     }
 
     public List<AlertEscalationItem> getEscalationList() {
