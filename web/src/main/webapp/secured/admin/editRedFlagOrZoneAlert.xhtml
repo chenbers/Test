@@ -960,7 +960,6 @@
 								            <a4j:commandLink id="phNumAddSlotBtn" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}"><h:graphicImage value="/images/ico_addAnother_add.png" style="border: 0px; vertical-align: middle;" id="phAddLinkImg" /></a4j:commandLink>
 								        </rich:column>	
 								    </rich:dataTable>
-								    
 								    <br/>
 									<!-- / Escalation phNumbers list -->
 								</td>
@@ -1026,9 +1025,19 @@
 								<td>
       								<!-- Escalation Email -->
       								<rich:message id="escEmailAddressesInputMessage" for="escEmailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-									<h:inputText value="#{dataItem}" id="escEmailAddressesInput" styleClass="emailInput" >    
-								    	<f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
-								  	</h:inputText>
+      								<h:inputHidden value="#{redFlagOrZoneAlertsBean.item.emailEscalationPersonID}"/>
+									<h:inputText value="#{redFlagOrZoneAlertsBean.item.escEmail}" id="escEmailAddressInput" styleClass="emailInput" />
+								  	<rich:suggestionbox id="suggestionBoxId" for="escEmailAddressInput"
+					                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.autocomplete}" 
+					                    var="suggestion" selfRendered="true">
+					                    <h:column>
+							              <h:outputText value="#{suggestion.label}" id="escEmailSuggestion" />
+							            </h:column>
+
+							            <a4j:support event="onselect"  reRender="pickerPanel" limitToList="true">
+          									<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.emailEscalationPersonID}" value="#{suggestion.value.personID}"> </f:setPropertyActionListener>
+          								</a4j:support>
+					                </rich:suggestionbox>
 									<!-- / Escalation Email -->
 								</td>
 							</tr>
