@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 import com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.util.ReportsUtil;
@@ -97,4 +98,9 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
         
         return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
     }
+
+	@Override
+	public Response getValidationTest(IFTAReportsParamsBean params) {
+    	return Response.status(Status.OK).build();
+	}
 }

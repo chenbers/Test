@@ -400,8 +400,4 @@ public class IFTAServiceImpl implements IFTAService {
         this.reportsUtil = reportsUtil;
     }
 
-    public Response getValidationTest(IFTAReportsParamsBean params){
-    	return Response.status(Status.INTERNAL_SERVER_ERROR).build();
-    }
-
 }

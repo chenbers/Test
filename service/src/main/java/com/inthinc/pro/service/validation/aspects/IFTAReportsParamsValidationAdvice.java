@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 
 /**
@@ -21,19 +22,27 @@ import com.inthinc.pro.service.params.IFTAReportsParamsBean;
  * 
  * @author dcueva
  */
-//@Aspect
+@Aspect
 @Component
 public class IFTAReportsParamsValidationAdvice {
 	
 	Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 	Logger logger = Logger.getLogger(IFTAReportsParamsValidationAdvice.class);
+
+	@SuppressWarnings("unused")
+	@Pointcut("@annotation(validParamsAnnotation)")
+	private void validateParams(ValidParams validParamsAnnotation) {};	
 	
 	@SuppressWarnings("unused")
-	//@Pointcut("target(com.inthinc.pro.service.reports.IFTAService)")
+	@Pointcut("execution(* com.inthinc.pro.service.reports.IFTAService*.*(..))")
 	private void isIFTAService() {};
 	
-	//@Around("isIFTAService() && args(params)") 
-	public Object validate(ProceedingJoinPoint pjp, IFTAReportsParamsBean params) throws Throwable {
+	@SuppressWarnings("unused")
+	@Pointcut("args(params)")
+	private void receivesIFTAParams(IFTAReportsParamsBean params) {};
+	
+	@Around("isIFTAService() && receivesIFTAParams(params) && validateParams(validParamsAnnotation)") 
+	public Object validate(ProceedingJoinPoint pjp, IFTAReportsParamsBean params, ValidParams validParamsAnnotation) throws Throwable {
 		
 		logger.debug("Validating parameters " + params);
 

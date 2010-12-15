@@ -17,5 +17,6 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Documented
 public @interface ValidParams {
+	//@Form. Unfortunately not allowed at this location
 
 }
