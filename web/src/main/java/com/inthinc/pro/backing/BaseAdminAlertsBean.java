@@ -314,7 +314,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 //final User user = userDAO.findByID(id);
                 final Person person = personDAO.findByID(id);
                 if (!isPersonDeleted(person))
-                    notifyPeople.add(new SelectItem(person.getPersonID(), person.getFirst() + ' ' + person.getLast()));
+                    notifyPeople.add(new SelectItem(person.getPersonID(), person.getFullNameWithPriPhone()));
             }
 //            MiscUtil.sortSelectItems(notifyPeople);
         }
@@ -449,8 +449,13 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         
         // set notify user IDs
         final ArrayList<Integer> escalationUserIDs = new ArrayList<Integer>(getEscalationPeoplePicker().getPicked().size());
-        for (final SelectItem item : getEscalationPeoplePicker().getPicked())
-            escalationUserIDs.add((Integer) ((Person)item.getValue()).getPersonID());
+        for (final SelectItem item : getEscalationPeoplePicker().getPicked()) {
+            //TODO: jwimmer: test this!
+            if(item.getValue() instanceof Person)
+                escalationUserIDs.add((Integer) ((Person)item.getValue()).getPersonID());
+            else if(item.getValue() instanceof Integer)
+                escalationUserIDs.add((Integer)item.getValue());
+        }
 
         getItem().setEscalationPersonIDs(escalationUserIDs);
         

@@ -685,7 +685,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     }
 
     /**
-     * Selectes or deselects all filtered items.
+     * Selects or deselects all filtered items.
      * 
      * @param select
      *            Whether to select or deselect the items.

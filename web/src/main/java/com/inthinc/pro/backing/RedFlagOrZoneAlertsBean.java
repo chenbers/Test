@@ -135,7 +135,18 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setHardVerticalSelected(false);
         }
         alertView.getSelectedAlertMessageTypes(flag);
-        //alertView.setEmailTos(flag.getEmailTo());  //TODO: Jacquie?  this line was causing the emailTos control NOT to show up... flag.gtEmailTo() must be returning null???
+
+        List<String> displayedPhNumbers = new ArrayList<String>();
+        if(flag.getEscalationList() != null && !flag.getEscalationList().isEmpty()){
+            for(AlertEscalationItem item: flag.getEscalationList()){
+                displayedPhNumbers.add(personDAO.findByID(item.getPersonID()).getFullNameWithPriPhone());
+            }
+        }
+        alertView.setPhNumbers(displayedPhNumbers);
+        alertView.getPhNumbers().add("");
+
+        alertView.setEmailTos(flag.getEmailTo()); 
+        alertView.getEmailTos().add("");  //ensure empty slot
         return alertView;
     }
     private EventSubCategory deriveEventSubCategory(RedFlagAlert flag){
@@ -505,14 +516,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         private String escEmail;
         private List<String> phNumbers;
-        private List<Integer> phNumberPersonIDs;
+        private List<Integer> phNumberPersonIDs;//TODO: jwimmer: this might be obsolete
+        
         @Column(updateable = false)
         private List<String> emailTos;
 //        private Integer alertID;
         
         public RedFlagOrZoneAlertView() {
             super();
-            
             phNumbers = new ArrayList<String>();
             phNumberPersonIDs = new ArrayList<Integer>();
             emailTos = new ArrayList<String>();
