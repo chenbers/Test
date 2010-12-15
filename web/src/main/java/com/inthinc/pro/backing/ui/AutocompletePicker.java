@@ -108,4 +108,19 @@ public class AutocompletePicker
         }
         value = null;
     }
+    
+    public void removeItem() {
+        if (value != null) {
+            for (final Iterator<SelectItem> pickedIterator = picked.iterator(); pickedIterator.hasNext();) {
+                SelectItem item = pickedIterator.next();
+                if (value.equals(item.getLabel())) {
+                    pickFrom.add(item);
+                    pickedIterator.remove();
+                    value = null;
+                    break;
+                }
+            }
+            value = null;
+        }
+    }
 }
