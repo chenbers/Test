@@ -7,6 +7,7 @@ import javax.ws.rs.QueryParam;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
+import com.inthinc.pro.service.validation.annotations.ValidLocale;
 
 /**
  * Simple JavaBean to encapsulate the parameters received by a Web service
@@ -30,6 +31,7 @@ public class IFTAReportsParamsBean {
 	 * See {@link java.util.Locale}
 	 */
 	@QueryParam("locale")
+	@ValidLocale
 	Locale locale;
 	
 	MeasurementType measurementType;
