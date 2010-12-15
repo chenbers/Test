@@ -139,14 +139,17 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         List<String> displayedPhNumbers = new ArrayList<String>();
         if(flag.getEscalationList() != null && !flag.getEscalationList().isEmpty()){
             for(AlertEscalationItem item: flag.getEscalationList()){
+                if(item.getEscalationOrder().equals(-1))
+                    alertView.setEscEmail(personDAO.findByID(item.getPersonID()).getPriEmail());
                 displayedPhNumbers.add(personDAO.findByID(item.getPersonID()).getFullNameWithPriPhone());
             }
         }
         alertView.setPhNumbers(displayedPhNumbers);
-        alertView.getPhNumbers().add("");
+        alertView.getPhNumbers().add("");//ensure empty slot
 
         alertView.setEmailTos(flag.getEmailTo()); 
         alertView.getEmailTos().add("");  //ensure empty slot
+        
         return alertView;
     }
     private EventSubCategory deriveEventSubCategory(RedFlagAlert flag){
@@ -408,6 +411,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
                 flag.setSpeedSettings(null);
             }
+            //TODO: jwimmer: finding the RIGHT place to save escalationEmail
+            System.out.println("item: "+getItem());
+            System.out.println("item.emailEscalationPersonID: "+getItem().getEmailEscalationPersonID());
+            System.out.println("item.escEmail: "+getItem().getEscEmail());
             
             if (create)
                 flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
@@ -872,11 +879,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public List<Integer> getVoiceEscalationPersonIDs() {
              return super.getVoiceEscalationPersonIDs();
         }
-//        @Override
-//        public void setEmailEscalationPersonID(Integer emailEscalationPersonID) {
-//            super.setE
-//            
-//        }
+        @Override
+        public void setEmailEscalationPersonID(Integer escEmailPersonID) {
+            System.out.println("redFlagOrZoneAlertsBean public void setEmailEscalationPersonID( "+escEmailPersonID+")");
+            super.setEmailEscalationPersonID(escEmailPersonID);            
+        }
         @Override
         public void setEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs) {
             List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
