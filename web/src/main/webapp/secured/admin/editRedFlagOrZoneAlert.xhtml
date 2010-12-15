@@ -872,8 +872,8 @@
 								            </h:inputText>
 								        </rich:column>
 								        <rich:column style="border: none;">
-								            <a4j:commandLink value="X" action="#{redFlagOrZoneAlertsBean.item.removeEmailTo}" reRender="emailTos" rendered="#{dataItem != ''}" /> 
-								            <a4j:commandLink value="+" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage"  rendered="#{dataItem == ''}" />
+								            <a4j:commandLink id="removeLink" action="#{redFlagOrZoneAlertsBean.item.removeEmailTo}" reRender="emailTos" rendered="#{dataItem != ''}" ><h:graphicImage value="/images/ico_addAnother_remove.png" style="border: 0px; vertical-align: middle;" id="removeLinkImg" /></a4j:commandLink>
+								            <a4j:commandLink id="addLink" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage"  rendered="#{dataItem == ''}" ><h:graphicImage value="/images/ico_addAnother_add.png" style="border: 0px; vertical-align: middle;" id="addLinkImg" /></a4j:commandLink>
 								        </rich:column>	
 								    </rich:dataTable>
 								</td>
@@ -952,8 +952,12 @@
 							                </rich:suggestionbox>
 								        </rich:column>
 								        <rich:column id="phNumInputBtns" style="border: none;">
-								            <a4j:commandLink id="phNumRemBtn" value="X" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers, message" rendered="#{dataItem != ''}" />
-								            <a4j:commandLink id="phNumAddSlotBtn" value="+" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}" />
+								            <a4j:commandLink id="phNumRemBtn" action="#{redFlagOrZoneAlertsBean.item.removePhNumber}" reRender="phNumbers, message" rendered="#{dataItem != ''}"><h:graphicImage value="/images/ico_addAnother_remove.png" style="border: 0px; vertical-align: middle;" id="phRemoveLinkImg" />
+								                 <a4j:support event="onclick" action="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.removeItem}" reRender="pickerPanel" limitToList="true">
+            									    <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" value="#{dataItem}"> </f:setPropertyActionListener>
+            									 </a4j:support>
+								            </a4j:commandLink>
+								            <a4j:commandLink id="phNumAddSlotBtn" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}"><h:graphicImage value="/images/ico_addAnother_add.png" style="border: 0px; vertical-align: middle;" id="phAddLinkImg" /></a4j:commandLink>
 								        </rich:column>	
 								    </rich:dataTable>
 								    
