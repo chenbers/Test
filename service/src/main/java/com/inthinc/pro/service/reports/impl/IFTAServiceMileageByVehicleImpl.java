@@ -16,6 +16,7 @@ import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 import com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.ReportsUtil;
 
 @Component
@@ -42,7 +43,10 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithDates(java.lang.Integer, java.util.Date, java.util.Date)
      */
     @Override
+    @ValidParams
     public Response getMileageByVehicleWithDates(Integer groupID, Date startDate, Date endDate) {
+//    	return Response.ok().build();
+    	//TODO: un-comment when validation test is done    	
         return getMileageByVehicle(groupID, startDate, endDate, false);
     }
 
@@ -52,7 +56,10 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithIfta(java.lang.Integer)
      */
     @Override
+    @ValidParams    
     public Response getMileageByVehicleWithIfta(Integer groupID) {
+//    	return Response.ok().build();
+    	//TODO: un-comment when validation test is done
         Calendar today = reportsUtil.getMidnight();
 
         Calendar startDate = reportsUtil.getMidnight();
@@ -98,9 +105,5 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
         
         return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
     }
-
-	@Override
-	public Response getValidationTest(IFTAReportsParamsBean params) {
-    	return Response.status(Status.OK).build();
-	}
+	
 }

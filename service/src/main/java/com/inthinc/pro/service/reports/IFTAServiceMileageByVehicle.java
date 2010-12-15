@@ -86,10 +86,4 @@ public interface IFTAServiceMileageByVehicle {
     Response getMileageByVehicleWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 
-    @GET
-    @Path("/validationTest")
-    @Produces("application/xml")
-    @ValidParams
-    Response getValidationTest(@Form IFTAReportsParamsBean params);
-    
 }

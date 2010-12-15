@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.validation.aspects;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -29,29 +30,57 @@ public class IFTAReportsParamsValidationAdvice {
 	Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 	Logger logger = Logger.getLogger(IFTAReportsParamsValidationAdvice.class);
 
+	/**
+	 * Unfortunately we cannot advice the interface package because the annotation @ValidParams is not inherited
+	 * This is a limitation of the JDK.
+	 */
+	@SuppressWarnings("unused")
+	@Pointcut("execution(* com.inthinc.pro.service.reports.impl.IFTAService*.*(..))")
+	private void isIFTAService() {};
+
 	@SuppressWarnings("unused")
 	@Pointcut("@annotation(validParamsAnnotation)")
 	private void validateParams(ValidParams validParamsAnnotation) {};	
 	
 	@SuppressWarnings("unused")
-	@Pointcut("execution(* com.inthinc.pro.service.reports.IFTAService*.*(..))")
-	private void isIFTAService() {};
+	@Pointcut("args(groupID, startDate, endDate)")
+	private void withDates(Integer groupID, Date startDate, Date endDate) {}
 	
 	@SuppressWarnings("unused")
-	@Pointcut("args(params)")
-	private void receivesIFTAParams(IFTAReportsParamsBean params) {};
+	@Pointcut("args(groupID)")
+	private void withoutDates(Integer groupID) {}
+
 	
-	@Around("isIFTAService() && receivesIFTAParams(params) && validateParams(validParamsAnnotation)") 
-	public Object validate(ProceedingJoinPoint pjp, IFTAReportsParamsBean params, ValidParams validParamsAnnotation) throws Throwable {
-		
-		logger.debug("Validating parameters " + params);
+	
+//	@Around("isIFTAService() && receivesIFTAParams(params) && validateParams(validParamsAnnotation)") 
+//	public Object validate(ProceedingJoinPoint pjp, IFTAReportsParamsBean params, ValidParams validParamsAnnotation) throws Throwable {
+//		
+//		logger.debug("Validating parameters " + params);
+//
+//		raiseExceptionIfConstraintViolated(validator.validate(params));
+//		
+//		// call actual method
+//		return pjp.proceed(new Object[] {params});
+//	}
 
-		raiseExceptionIfConstraintViolated(validator.validate(params));
+	
+	@Around("isIFTAService() && withDates(groupID, startDate, endDate) && validateParams(validParamsAnnotation)") 
+	public Object validateWithDates(ProceedingJoinPoint pjp, Integer groupID, Date startDate, Date endDate, ValidParams validParamsAnnotation) throws Throwable {
 		
-		// call actual method
-		return pjp.proceed(new Object[] {params});
-	}
+		logger.debug("Validating parameters");
+	
+		return pjp.proceed(new Object[] {groupID, startDate, endDate});
+	}	
 
+	@Around("isIFTAService() && withoutDates(groupID) && validateParams(validParamsAnnotation)") 
+	public Object validateWithoutDates(ProceedingJoinPoint pjp, Integer groupID, ValidParams validParamsAnnotation) throws Throwable {
+		
+		logger.debug("Validating parameters");
+	
+		return pjp.proceed(new Object[] {groupID});
+	}	
+	
+	
 	/**
 	 * If there are constraint violations, raise exception.
 	 * The appropriate exception will be chosen depending on the constraint violation.
