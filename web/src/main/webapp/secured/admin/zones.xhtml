@@ -97,17 +97,23 @@
 					</p>
 				</div>
        		  
-              <a4j:form id="downloadForm" style="padding:10px;">
-                <div style="float:right">
-              	<span title="#{messages.zones_download}" style="margin-top: 5px; margin-bottom:5px; float: left;">
+              <a4j:form id="downloadForm" style="padding:10px;float:right;">
+                <div class="rpt_nav">
+                <ul>
+                <li class="l">
+              	<span title="#{messages.zones_download}" >
 					<h:commandLink id="downloadIcon" action="#{zonesBean.download}" styleClass="download"> 
     					<h:outputText value="#{messages.zones_download}"/>
 						<a4j:support event="onclick" reRender="zonesMsgPopup" />
 					</h:commandLink>    
-				</span>	
-				<h:selectOneMenu value="#{zonesBean.downloadType}" id="downloadType" style="float:right;">
+				</span>
+				</li>
+                <li class="l select" style="margin:4px 0;">
+				<h:selectOneMenu value="#{zonesBean.downloadType}" id="downloadType">
 						<f:selectItems value="#{zonesBean.vehicleTypeSelectItems}" />
                 </h:selectOneMenu>
+                </li>
+                </ul>
                 </div>
               </a4j:form>
               </a4j:outputPanel>
