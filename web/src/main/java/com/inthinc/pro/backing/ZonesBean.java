@@ -48,7 +48,6 @@ public class ZonesBean extends BaseBean
     private ZoneDAO              zoneDAO;
     private RedFlagAlertDAO      zoneAlertDAO;
     private ZonePublishDAO       zonePublishDAO;
-    private String               helpFile = "Zones.htm";
     private ZoneVehicleType      downloadType;
     private String               message;
     
@@ -111,15 +110,6 @@ public class ZonesBean extends BaseBean
         return zoneIDs;
     }
 
-    public String getHelpFile()
-    {
-        return helpFile;
-    }
-
-    public void setHelpFile(String helpFile)
-    {
-        this.helpFile = helpFile;
-    }
 
     private void sortZones()
     {
@@ -146,7 +136,6 @@ public class ZonesBean extends BaseBean
         item = new Zone();
         item.setCreated(new Date());
         editing = true;
-        helpFile = "Admin_Add_Zone.htm";
         return "adminEditZone";
     }
 
@@ -156,7 +145,6 @@ public class ZonesBean extends BaseBean
     public String edit()
     {
         editing = true;
-        helpFile = "Admin_Add_Zone.htm";
         return "adminEditZone";
     }
 
@@ -166,7 +154,6 @@ public class ZonesBean extends BaseBean
     public String cancelEdit()
     {
         editing = false;
-        helpFile = "Zones.htm";
         if (isAdd())
             item = null;
         if(item != null)
@@ -219,7 +206,6 @@ public class ZonesBean extends BaseBean
         }
 
         editing = false;
-        helpFile = "Zones.htm";
         
         reloadZones();
 

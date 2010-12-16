@@ -532,6 +532,12 @@
   <bean id="eventTypeIcons" class="com.inthinc.pro.backing.ui.EventTypeIcons" scope="session" init-method="init" parent="baseBean">
   </bean>
   <bean id="helpBean" class="com.inthinc.pro.backing.HelpBean" scope="session" parent="baseBean" />
+  
+  <bean id="helpConfigProperties" class="com.inthinc.pro.backing.model.HelpConfigProperties" scope="session" init-method="init" >
+    <property name="location" value="helpConfig.properties">
+	</property>
+  </bean>
+  
 
   <!-- Error translator -->
   <bean id="errorTranslatorBean" class="com.inthinc.pro.backing.ErrorTranslatorBean">

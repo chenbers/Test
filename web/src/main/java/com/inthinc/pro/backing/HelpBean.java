@@ -4,25 +4,39 @@ import java.util.Locale;
 
 import javax.faces.context.FacesContext;
 
+import com.inthinc.pro.backing.model.HelpConfigProperties;
+import com.inthinc.pro.util.DebugUtil;
+import com.ocpsoft.pretty.PrettyContext;
+
 public class HelpBean extends BaseBean {
 
-	String path;
+	private String path;
+	
+	private HelpConfigProperties helpConfigProperties;
 
-	public String getPath() {
-		if (path == null)
-		{
-			String lang = this.getLocale().getLanguage();
-			// TODO: remove this when romanian help is available
-			lang = Locale.ENGLISH.getLanguage();
-			
-			path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/lochelp/" + lang + "/"  + lang + "/";  
 
-		}
-		return path;
+    public String getPath() {
+		String lang = this.getLocale().getLanguage();
+		// TODO: remove this when romanian help is available
+		lang = Locale.ENGLISH.getLanguage();
+		path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/lochelp/" + lang + "/"  + lang + "/";
+        
+		String prettyID = PrettyContext.getCurrentInstance().getCurrentMapping().getId();
+		if (prettyID == null || getHelpConfigProperties().get(prettyID) == null)
+		    return path+getHelpConfigProperties().getDefault();
+		
+		return path+getHelpConfigProperties().get(prettyID);
 	}
 
 	public void setPath(String path) {
 		this.path = path;
 	}
 	
+    public HelpConfigProperties getHelpConfigProperties() {
+        return helpConfigProperties;
+    }
+
+    public void setHelpConfigProperties(HelpConfigProperties helpConfigProperties) {
+        this.helpConfigProperties = helpConfigProperties;
+    }
 }

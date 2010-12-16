@@ -24,7 +24,7 @@
     				</li>
     				
     				<li class="r grid_icon">
-    				<h:outputLink value="#{helpBean.path}#{helpFile ne null ? helpFile : 'Home.htm'}" target="new">
+    				<h:outputLink value="#{helpBean.path}" target="new">
     					<h:graphicImage value="/images/ico_help.png" style="border: 0px" title="#{messages.help}"/>
     				</h:outputLink></li>
     				<h:outputText rendered="#{showContextMenu eq 'true'}">
