@@ -99,7 +99,7 @@ public class Masthead extends Selenium_Server{
 	private final String version_xpath = footer_form+"/ul/li["+version_loc+"']";
 	private final String version_xpath_class = footer_form+"/ul/li[@class='"+version_class+"']";
 	private final String version_xpath_direct = "//span[@id='"+version_id+"";
-	
+	private final String pagelistid = "//td[@onclick=\"Event.fire(this, 'rich:datascroller:onscroll'";
 	
 	
 	private String version_text;
