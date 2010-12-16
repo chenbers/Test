@@ -90,19 +90,26 @@ public class ReportsFacadeImpl implements ReportsFacade {
         ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
         return criteria.getMainDataset();
     }
+
+    public List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly) {
+        return getMileageByVehicle(groupID, interval, dotOnly, getLocale(), getMeasurementType());
+    }
     /**
      * {@inheritDoc}
      * 
-     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getMileageByVehicle(java.lang.Integer, org.joda.time.Interval, boolean)
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getMileageByVehicle(java.lang.Integer, org.joda.time.Interval, boolean, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly) {
+    public List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly, 
+            Locale locale, MeasurementType type) {
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(groupID);
-        ReportCriteria criteria = reportService.getMileageByVehicleReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
-        return criteria.getMainDataset();
+        ReportCriteria criteria = reportService.getMileageByVehicleReportCriteria(getAccountGroupHierarchy(), 
+                groupIDList, interval, locale, type, dotOnly);
+        return criteria.getMainDataset();        
     }
+
 
     @SuppressWarnings("unchecked")
     @Override

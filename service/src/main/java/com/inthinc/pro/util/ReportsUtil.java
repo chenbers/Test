@@ -3,6 +3,7 @@ package com.inthinc.pro.util;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -12,6 +13,7 @@ import org.springframework.security.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 
 @Component
@@ -19,6 +21,20 @@ public class ReportsUtil {
 
     @Autowired
     private GroupDAOAdapter groupDAOAdapter;
+    @Deprecated
+    public Response checkParameters(Integer groupID, Date startDate, Date endDate, Locale locale, MeasurementType measureType) {
+        Response res = checkParameters(groupID, startDate, endDate);
+        // FIXME locale and measurement type hardcoded 
+        if (res == null) {
+            if (locale == null) {
+                locale = Locale.US;
+            }
+            if (measureType == null) {
+                measureType = MeasurementType.ENGLISH;
+            }
+        }
+        return res;
+    }
     @Deprecated
     public Response checkParameters(Integer groupID, Date startDate, Date endDate) {
         Response res = null;

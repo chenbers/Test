@@ -1,9 +1,11 @@
 package com.inthinc.pro.service.reports.facade;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.joda.time.Interval;
 
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
@@ -22,8 +24,8 @@ public interface ReportsFacade {
    
     @Deprecated
     List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly);
-    
-    List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly);
+
+    List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
     List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(Integer groupID, Interval interval, boolean dotOnly);
 

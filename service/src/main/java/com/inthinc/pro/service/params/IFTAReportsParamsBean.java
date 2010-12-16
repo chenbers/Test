@@ -1,10 +1,9 @@
 package com.inthinc.pro.service.params;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import javax.ws.rs.QueryParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -26,31 +25,28 @@ import com.inthinc.pro.service.validation.annotations.ValidLocale;
 @Scope("prototype")
 //@ValidStartEndDates
 public class IFTAReportsParamsBean {
-
-	// Common parameters for all IFTA web services
-	//@NotNull
-	//@Min(0)
-	List<Integer> groupIDList;
+    public static final String DATE_FORMAT = "yyyyMMdd";
+    protected static final Integer DAYS_BACK = -6;
 	
-	Date startDate;
-	Date endDate;
-	
-	/**
-	 * Admitted values in the query string are the 
-	 * <a href="http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt">ISO Language Codes</a>.</br>
-	 * See {@link java.util.Locale}
-	 */
-	@QueryParam("locale")
-	@ValidLocale
-	Locale locale;
-	
-	MeasurementType measurementType;
+    // Common parameters for all IFTA web services
+    private List<Integer> groupIDList;
+    private Integer groupID;
+    private Boolean iftaOnly;
+    private Date startDate;
+    private Date endDate;
+    /**
+     * Admitted values in the query string are the 
+     * <a href="http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt">ISO Language Codes</a>.</br>
+     * See {@link java.util.Locale}
+     */
+    @ValidLocale 
+    private Locale locale; 
+    private MeasurementType measurementType;
 
-
-	/**
-	 * Helper to obtain default values
-	 */
-	@Autowired
+    /**
+     * Helper to obtain default values
+     */
+    @Autowired
 	TiwiproPrincipal principal;
 
 
@@ -69,27 +65,59 @@ public class IFTAReportsParamsBean {
 		this.groupIDList = groupIDList;
 	}
 
-
 	/**
-	 * @return the startDate
-	 */
+     * The startDate getter.
+     * @return the startDate
+     */
 	public Date getStartDate() {
-		return startDate;
-	}
+	    if (startDate == null) {
+	        Calendar c = getMidnight();
+	        c.add(Calendar.DAY_OF_YEAR, DAYS_BACK);
+	    }
+        return this.startDate;
+    }
 
+    /**
+     * The groupID setter.
+     * @param groupID the groupID to set
+     */
+    public void setGroupID(Integer groupID) {
+        this.groupID = groupID;
+    }
 
-	/**
-	 * @param startDate the startDate to set
-	 */
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    /**
+     * The startDate setter.
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * The endDate setter.
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    /**
+     * The iftaOnly setter.
+     * @param iftaOnly the iftaOnly to set
+     */
+    public void setIftaOnly(Boolean iftaOnly) {
+        this.iftaOnly = iftaOnly;
+    }
+
 
 
 	/**
 	 * @return the endDate
 	 */
 	public Date getEndDate() {
+	    if (endDate == null) {
+	        endDate = getMidnight().getTime();
+	    }
 		return endDate;
 	}
 
@@ -97,8 +125,8 @@ public class IFTAReportsParamsBean {
 	/**
 	 * @param endDate the endDate to set
 	 */
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public Boolean getIftaOnly() {
+		return (iftaOnly == null ? false : iftaOnly);
 	}
 
 
@@ -108,10 +136,11 @@ public class IFTAReportsParamsBean {
 	 * @return the locale
 	 */
 	public Locale getLocale() {
-		if (locale == null) locale = principal.getUser().getPerson().getLocale();
+	    if(locale == null) {
+	        locale = principal.getPerson().getLocale();
+	    }
 		return locale;
 	}
-
 
 	/**
 	 * @param locale the locale to set
@@ -127,17 +156,45 @@ public class IFTAReportsParamsBean {
 	 * @return the measurementType
 	 */
 	public MeasurementType getMeasurementType() {
-		if (measurementType == null) measurementType = principal.getUser().getPerson().getMeasurementType();
+        if (measurementType == null) measurementType = principal.getUser().getPerson().getMeasurementType();
 		return measurementType;
 	}
 
 
 	/**
-	 * @param measurementType the measurementType to set
+     * The MeasurementType setter.
+     * @param measurementType the measurementType to set
 	 */
 	public void setMeasurementType(MeasurementType measurementType) {
 		this.measurementType = measurementType;
 	}
 	
+    /**
+     * Create the Date for today and set it to midnight.
+     * 
+     * @return the date as Calendar
+     */
+    Calendar getMidnight() {
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0); // set hour to midnight
+        today.set(Calendar.MINUTE, 0); // set minute in hour
+        today.set(Calendar.SECOND, 0); // set second in minute
+        today.set(Calendar.MILLISECOND, 0); // set millis in second
+        return today;
+    }
+    
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "groupID:" + groupID +
+            " startDate:" + getStartDate().toString() +
+            " endDate:" + getEndDate().toString() +
+            " iftaOnly:" + getIftaOnly() +
+            " locale:" + getLocale() +
+            " measurementType:" + getMeasurementType();
+    }
 	
 }

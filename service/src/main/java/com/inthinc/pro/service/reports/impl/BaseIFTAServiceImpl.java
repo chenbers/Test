@@ -9,7 +9,6 @@ import com.inthinc.pro.util.ReportsUtil;
 public class BaseIFTAServiceImpl {
 
     public static String DATE_FORMAT = "yyyyMMdd";
-    
     protected static final Integer DAYS_BACK = -6;
 
     protected ReportsFacade reportsFacade;
