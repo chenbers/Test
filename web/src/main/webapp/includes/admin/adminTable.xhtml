@@ -72,7 +72,15 @@
       <div class="panel_w">
         <div class="panel_content">
           <ul id="grid_nav" style="margin: 0;">
-            <li class="l"><a4j:commandButton id="#{context}-adminTableDelete" styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton></li>
+            <li class="l">
+            <!-- this rendered check should probably be re-factored? -->
+            	<a4j:commandButton id="#{context}-adminTableDelete" styleClass="left" rendered="#{editorBean.tableType != 'ADMIN_DEVICES'}"
+            		onclick="Richfaces.showModalPanel('confirmDelete'); return false;">
+            		<span class="delete">
+            			<h:outputText value="#{messages.button_delete}" />
+            		</span>
+            	</a4j:commandButton>
+            </li>
             <li class="l"><h:commandButton id="#{context}-adminTableEdit" action="#{editorBean['batchEdit']}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_batchEdit}" /></span></h:commandButton></li>
             <li class="l">
               <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
