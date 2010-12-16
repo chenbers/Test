@@ -882,9 +882,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public void setEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs) {
             AlertEscalationItem lastResortEmail = null;
             List<AlertEscalationItem> oldEscalationList = getEscalationList();
-            for(AlertEscalationItem item: oldEscalationList){
-                if(item.getEscalationOrder().equals(-1)){
-                    lastResortEmail = item;
+            if(null != oldEscalationList) {
+                for(AlertEscalationItem item: oldEscalationList){
+                    if(item.getEscalationOrder().equals(-1)){
+                        lastResortEmail = item;
+                    }
                 }
             }
             List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
