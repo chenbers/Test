@@ -60,9 +60,10 @@ public interface IFTAServiceStateMileageByVehicleRoadStatus {
     @POST
     @Path("/groups/report/ifta/roadStatus/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
+    @Consumes("application/xml")
     Response getStateMileageByVehicleRoadStatusWithIftaAndDatesMultiGroup(GroupList groupList, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
-    
+
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
      * 
@@ -78,7 +79,7 @@ public interface IFTAServiceStateMileageByVehicleRoadStatus {
     @Path("/group/{groupID}/report/ifta/roadStatus/iftaOnly")
     @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatusWithIfta(@PathParam("groupID") Integer groupID);
-    
+
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
      * 
@@ -93,6 +94,7 @@ public interface IFTAServiceStateMileageByVehicleRoadStatus {
     @POST
     @Path("/groups/report/ifta/roadStatus/iftaOnly")
     @Produces("application/xml")
+    @Consumes("application/xml")
     Response getStateMileageByVehicleRoadStatusWithIftaMultiGroup(GroupList groupList);
 
     /**
@@ -108,8 +110,8 @@ public interface IFTAServiceStateMileageByVehicleRoadStatus {
     @Path("/group/{groupID}/report/ifta/roadStatus")
     @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatusDefaults(@PathParam("groupID") Integer groupID);
-    
-    
+
+
 
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
@@ -161,6 +163,7 @@ public interface IFTAServiceStateMileageByVehicleRoadStatus {
     @POST
     @Path("/groups/report/ifta/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
+    @Consumes("application/xml")
     Response getStateMileageByVehicleRoadStatusWithDatesMultiGroup(GroupList groupList, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 }

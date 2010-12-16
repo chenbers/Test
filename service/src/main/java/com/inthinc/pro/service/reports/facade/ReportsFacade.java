@@ -20,11 +20,13 @@ public interface ReportsFacade {
     int DAYS_BACK = 6;
 
     List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval);
-
-    List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly);
-
+   
     @Deprecated
     List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly);
+    
+    List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly);
+    
+    List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly);
 
     List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
@@ -32,7 +34,10 @@ public interface ReportsFacade {
 
     List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly);
 
+    @Deprecated
     List<MileageByVehicle> getStateMileageByVehicleByMonth(Integer groupID, Interval interval, boolean dotOnly);
-
+    
+    List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly);
+    
     List<StateMileageFuelByVehicle> getStateMileageFuelByVehicle(List<Integer> groupIDList, Interval interval, boolean dotOnly);
 }

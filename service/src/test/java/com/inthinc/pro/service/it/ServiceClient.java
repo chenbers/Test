@@ -102,7 +102,7 @@ public interface ServiceClient {
     public ClientResponse<List<TenHoursViolation>> getTenHourViolations(@PathParam("groupID") Integer groupID);
 
     // --------------------------------------------------------------------------------
-    // IFTA Reports web-services
+    // State Mileage by Vehicle Road Status
     @GET
     @Path("/group/{groupID}/report/ifta/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
@@ -117,22 +117,29 @@ public interface ServiceClient {
     public ClientResponse<List<StateMileageByVehicleRoadStatus>> getStateMileageByVehicleRoadStatusWithDatesMultiGroup(GroupList groupList, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
     
-    // State Mileage by Vehicle State Comparison
     // -----------------------------------------------------------------------------------------------------------------
-
+    // State Mileage by Vehicle State Comparison
     @GET
     @Path("/group/{groupID}/report/ifta/stateComparison/{startDate}/{endDate}")
     @Produces("application/xml")
     public ClientResponse<List<StateMileageCompareByGroup>> getStateMileageByVehicleStateComparisonWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
 
-    // State Mileage by Vehicle State Comparison
+    
     // -----------------------------------------------------------------------------------------------------------------
-
+    // State Mileage by Vehicle By Month
+    
     @GET
     @Path("/group/{groupID}/report/ifta/monthMileage/{startDate}/{endDate}")
     @Produces("application/xml")
     public ClientResponse<List<StateMileage>> getStateMileageByVehicleByMonthWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
+            @PathParam("endDate") String endDate);
+    
+    @POST
+    @Path("/groups/report/ifta/monthMileage/{startDate}/{endDate}")
+    @Produces("application/xml")
+    @Consumes("application/xml")
+    public ClientResponse<List<StateMileage>> getStateMileageByVehicleByMonthWithDatesMultiGroup(GroupList groupList, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
 
     // --------------------------------------------------------------------------------
@@ -181,8 +188,10 @@ public interface ServiceClient {
     @Path("/group/{groupID}/report/ifta/mileage")
     @Produces("application/xml")
     public ClientResponse<List<MileageByVehicle>> getMileageByVehicleDefaults(@PathParam("groupID") Integer groupID);
-
+    
     // --------------------------------------------------------------------------------
+    
+      // --------------------------------------------------------------------------------
     // State Mileage Fuel by Vehicle
     @GET
     @Path("/group/{groupID}/report/ifta/fuelConsumption/iftaOnly/{startDate}/{endDate}")

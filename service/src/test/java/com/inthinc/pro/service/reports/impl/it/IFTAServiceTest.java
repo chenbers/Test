@@ -187,4 +187,17 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
         assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
 
     }
+    
+    @Test
+    public void testGetStateMileageByVehicleByMonthWithGroupNotInUserHierarchyMultiGroup() {
+        expectedGroupIDList = new ArrayList<Integer>();
+        expectedGroupIDList.add(GROUP_ID_WITH_NO_DATA);
+        expectedGroupIDList.add(GROUP_ID_NOT_IN_USER_HIERARCHY);
+        GroupList gl = new GroupList(expectedGroupIDList);
+
+        ClientResponse<List<StateMileage>> response = client.getStateMileageByVehicleByMonthWithDatesMultiGroup(gl, TEST_START_DATE, TEST_END_DATE);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+
+    }
 }
