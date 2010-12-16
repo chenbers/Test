@@ -6,6 +6,8 @@ package com.inthinc.pro.service.validation.rules;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.stereotype.Component;
+
 import com.inthinc.pro.service.params.HasStartEndDates;
 import com.inthinc.pro.service.validation.annotations.ValidStartEndDates;
 
@@ -14,6 +16,7 @@ import com.inthinc.pro.service.validation.annotations.ValidStartEndDates;
  * 
  * @author dcueva
  */
+@Component
 public class StartEndDatesValidator implements ConstraintValidator<ValidStartEndDates, HasStartEndDates> {
 
 	/**

@@ -9,6 +9,8 @@ import java.util.MissingResourceException;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.stereotype.Component;
+
 import com.inthinc.pro.service.validation.annotations.ValidLocale;
 
 /**
@@ -17,8 +19,9 @@ import com.inthinc.pro.service.validation.annotations.ValidLocale;
  * 
  * @author dcueva
  */
+@Component
 public class LocaleValidator implements ConstraintValidator<ValidLocale, Locale> {
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
