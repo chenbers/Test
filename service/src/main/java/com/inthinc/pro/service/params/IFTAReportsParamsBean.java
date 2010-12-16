@@ -1,8 +1,11 @@
 package com.inthinc.pro.service.params;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +26,16 @@ import com.inthinc.pro.service.validation.annotations.ValidLocale;
  */
 @Component
 @Scope("prototype")
+//@ValidStartEndDates
 public class IFTAReportsParamsBean {
 
 	// Common parameters for all IFTA web services
-	Integer groupID;
+	@NotNull
+	@Min(0)
+	ArrayList<Integer> groupIDList;
+	
 	Date startDate;
 	Date endDate;
-	Boolean iftaOnly;
 	
 	/**
 	 * Admitted values in the query string are the 
@@ -48,14 +54,39 @@ public class IFTAReportsParamsBean {
 	 */
 	@Autowired
 	TiwiproPrincipal principal;
-	
-	
+
+
 	/**
-	 * @return the groupID
+	 * @return the groupIDList
 	 */
-	public Integer getGroupID() {
-		return groupID;
+	public ArrayList<Integer> getGroupIDList() {
+		return groupIDList;
 	}
+
+
+	/**
+	 * @param groupIDList the groupIDList to set
+	 */
+	public void setGroupIDList(ArrayList<Integer> groupIDList) {
+		this.groupIDList = groupIDList;
+	}
+
+
+	/**
+	 * @return the startDate
+	 */
+	public Date getStartDate() {
+		return startDate;
+	}
+
+
+	/**
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
 
 	/**
 	 * @return the endDate
@@ -64,12 +95,14 @@ public class IFTAReportsParamsBean {
 		return endDate;
 	}
 
+
 	/**
-	 * @return the iftaOnly
+	 * @param endDate the endDate to set
 	 */
-	public Boolean getIftaOnly() {
-		return iftaOnly;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
+
 
 	/**
 	 * @return the locale
@@ -78,6 +111,15 @@ public class IFTAReportsParamsBean {
 		return locale;
 	}
 
+
+	/**
+	 * @param locale the locale to set
+	 */
+	public void setLocale(Locale locale) {
+		this.locale = locale;
+	}
+
+
 	/**
 	 * @return the measurementType
 	 */
@@ -85,11 +127,13 @@ public class IFTAReportsParamsBean {
 		return measurementType;
 	}
 
+
 	/**
-	 * @param principal the principal to set
+	 * @param measurementType the measurementType to set
 	 */
-	public void setPrincipal(TiwiproPrincipal principal) {
-		this.principal = principal;
+	public void setMeasurementType(MeasurementType measurementType) {
+		this.measurementType = measurementType;
 	}
+	
 	
 }
