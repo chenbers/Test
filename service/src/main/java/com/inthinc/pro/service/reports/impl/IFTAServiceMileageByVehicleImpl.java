@@ -13,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
-import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 import com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
-import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.ReportsUtil;
 
 @Component
@@ -43,7 +41,7 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithDates(java.lang.Integer, java.util.Date, java.util.Date)
      */
     @Override
-    @ValidParams
+    //@ValidParams
     public Response getMileageByVehicleWithDates(Integer groupID, Date startDate, Date endDate) {
 //    	return Response.ok().build();
     	//TODO: un-comment when validation test is done    	
@@ -56,10 +54,7 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithIfta(java.lang.Integer)
      */
     @Override
-    @ValidParams    
     public Response getMileageByVehicleWithIfta(Integer groupID) {
-//    	return Response.ok().build();
-    	//TODO: un-comment when validation test is done
         Calendar today = reportsUtil.getMidnight();
 
         Calendar startDate = reportsUtil.getMidnight();
@@ -74,9 +69,12 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleDefaults(java.lang.Integer)
      */
     @Override
+//    @ValidParams    
     public Response getMileageByVehicleDefaults(Integer groupID) {
+//    	return Response.status(Status.OK).build();
+    	//TODO: un-comment when validation test is done
         Calendar today = reportsUtil.getMidnight();
-
+        
         Calendar startDate = reportsUtil.getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
 

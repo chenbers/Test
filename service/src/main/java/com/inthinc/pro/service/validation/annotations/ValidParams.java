@@ -10,7 +10,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Marker interface to indicate a method's params must be validated. 
+ * Marker annotation to indicate that the params of a method must be validated. </br>
+ * 
+ * Must be applied to the methods of the implementation class, not to the interface. 
+ * @see {@link java.lang.annotation.Inherited} </br>
  * 
  * @author dcueva
  */

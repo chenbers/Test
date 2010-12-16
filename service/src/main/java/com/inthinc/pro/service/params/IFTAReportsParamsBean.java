@@ -5,6 +5,10 @@ import java.util.Locale;
 
 import javax.ws.rs.QueryParam;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
 import com.inthinc.pro.service.validation.annotations.ValidLocale;
@@ -17,6 +21,8 @@ import com.inthinc.pro.service.validation.annotations.ValidLocale;
  * @author dcueva
  *
  */
+@Component
+@Scope("prototype")
 public class IFTAReportsParamsBean {
 
 	// Common parameters for all IFTA web services
@@ -36,9 +42,11 @@ public class IFTAReportsParamsBean {
 	
 	MeasurementType measurementType;
 
-	
-	
-	// Helper to obtain default values
+
+	/**
+	 * Helper to obtain default values
+	 */
+	@Autowired
 	TiwiproPrincipal principal;
 	
 	

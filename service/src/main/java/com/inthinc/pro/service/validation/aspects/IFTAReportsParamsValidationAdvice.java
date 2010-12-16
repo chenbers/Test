@@ -12,9 +12,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 
 /**
@@ -27,9 +27,21 @@ import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 @Component
 public class IFTAReportsParamsValidationAdvice {
 	
+	/**
+	 * Autowired prototype instance of an empty bean.
+	 * It includes the tiwipro principal to obtain default parameters.
+	 */
+	@Autowired
+	IFTAReportsParamsBean paramsBean;
+	
+	/**
+	 * JSR303 validator. Reference implementation: Hibernate validator.
+	 */
 	Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+	
 	Logger logger = Logger.getLogger(IFTAReportsParamsValidationAdvice.class);
 
+	
 	/**
 	 * Unfortunately we cannot advice the interface package because the annotation @ValidParams is not inherited
 	 * This is a limitation of the JDK.
@@ -39,8 +51,8 @@ public class IFTAReportsParamsValidationAdvice {
 	private void isIFTAService() {};
 
 	@SuppressWarnings("unused")
-	@Pointcut("@annotation(validParamsAnnotation)")
-	private void validateParams(ValidParams validParamsAnnotation) {};	
+	@Pointcut("@annotation(com.inthinc.pro.service.validation.annotations.ValidParams)")
+	private void validateParams() {};	
 	
 	@SuppressWarnings("unused")
 	@Pointcut("args(groupID, startDate, endDate)")
@@ -51,31 +63,18 @@ public class IFTAReportsParamsValidationAdvice {
 	private void withoutDates(Integer groupID) {}
 
 	
-	
-//	@Around("isIFTAService() && receivesIFTAParams(params) && validateParams(validParamsAnnotation)") 
-//	public Object validate(ProceedingJoinPoint pjp, IFTAReportsParamsBean params, ValidParams validParamsAnnotation) throws Throwable {
-//		
-//		logger.debug("Validating parameters " + params);
-//
-//		raiseExceptionIfConstraintViolated(validator.validate(params));
-//		
-//		// call actual method
-//		return pjp.proceed(new Object[] {params});
-//	}
-
-	
-	@Around("isIFTAService() && withDates(groupID, startDate, endDate) && validateParams(validParamsAnnotation)") 
-	public Object validateWithDates(ProceedingJoinPoint pjp, Integer groupID, Date startDate, Date endDate, ValidParams validParamsAnnotation) throws Throwable {
+	@Around("isIFTAService() && validateParams() && withDates(groupID, startDate, endDate)") 
+	public Object validateWithDates(ProceedingJoinPoint pjp, Integer groupID, Date startDate, Date endDate) throws Throwable {
 		
-		logger.debug("Validating parameters");
+		logger.debug("Validating parameters with dates");
 	
 		return pjp.proceed(new Object[] {groupID, startDate, endDate});
 	}	
 
-	@Around("isIFTAService() && withoutDates(groupID) && validateParams(validParamsAnnotation)") 
-	public Object validateWithoutDates(ProceedingJoinPoint pjp, Integer groupID, ValidParams validParamsAnnotation) throws Throwable {
+	@Around("isIFTAService() && validateParams() && withoutDates(groupID)") 
+	public Object validateWithoutDates(ProceedingJoinPoint pjp, Integer groupID) throws Throwable {
 		
-		logger.debug("Validating parameters");
+		logger.debug("Validating parameters without dates");
 	
 		return pjp.proceed(new Object[] {groupID});
 	}	
