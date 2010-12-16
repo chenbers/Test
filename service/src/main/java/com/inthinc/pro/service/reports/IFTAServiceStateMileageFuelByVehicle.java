@@ -32,9 +32,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
-     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
      */
     @GET
     @Path("/group/{groupID}/report/ifta/fuelConsumption/iftaOnly/{startDate}/{endDate}")
@@ -53,9 +53,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
-     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
      */
     @POST
     @Path("/groups/report/ifta/fuelConsumption/iftaOnly/{startDate}/{endDate}")
@@ -70,9 +70,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            the Group ID
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
-     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
      */
     @GET
     @Path("/group/{groupID}/report/ifta/fuelConsumption/iftaOnly")
@@ -86,9 +86,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            the Group ID List
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
-     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
      */
     @POST
     @Path("/groups/report/ifta/fuelConsumption/iftaOnly")
@@ -100,9 +100,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      * 
      * @param groupID
      *            the Group ID
-     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
      */
     @GET
     @Path("/group/{groupID}/report/ifta/fuelConsumption")
@@ -116,9 +116,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      * 
      * @param groupList
      *            the Group ID List
-     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
      */
     @POST
     @Path("/groups/report/ifta/fuelConsumption")
@@ -135,9 +135,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
      * @param endDate
      *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
-     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
      */
     @GET
     @Path("/group/{groupID}/report/ifta/fuelConsumption/{startDate}/{endDate}")
@@ -154,9 +154,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
      * @param endDate
      *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
-     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
-     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
-     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
      */
     @POST
     @Path("/groups/report/ifta/fuelConsumption/{startDate}/{endDate}")
