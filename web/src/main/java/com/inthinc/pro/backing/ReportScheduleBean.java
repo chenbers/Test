@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.TreeMap;
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -372,6 +372,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
 
             // Get rid of all end dates
             reportSchedule.setEndDate(null);
+            reportSchedule.setLastDate(new Date(0l));
             if (create) {
                 reportSchedule.setReportScheduleID(reportScheduleDAO.create(getAccountID(), reportSchedule));
             }
@@ -726,7 +727,13 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         private Integer dayOfMonth;
         private List<String> groupIDSelectList;
         
-        
+        @Override
+        public Date getLastDate() {
+            if (super.getLastDate() != null && super.getLastDate().getTime() == 0l)
+                return null;
+            
+            return super.getLastDate();
+        }
         @Override
         public void setReportID(Integer reportID) {
             super.setReportID(reportID);
