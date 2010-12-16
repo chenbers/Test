@@ -163,6 +163,26 @@ public class Core extends DefaultSelenium{
 		return text;
 	}
 	
+	
+	public String getTable(String locator, int row, int col, String error_name){
+		String text = "";
+		try{
+			getTable(locator + "." + row + "." + col);
+		}catch(AssertionError e){
+			errors.Error(error_name, getTable(locator));
+		}catch(SeleniumException e){
+			errors.Error(error_name, e);
+		}catch(Exception e){
+			errors.Error(error_name, e);
+		}finally{
+			if (text==""){
+				text = "Failed";
+			}
+		}		
+		return text;
+	}
+	
+	
 	public String getTable(String locator, String expected, String error_name){
 		String text = "";
 		try{
