@@ -1,6 +1,9 @@
 package com.inthinc.pro.service.validation.aspects;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -13,8 +16,10 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 
 /**
@@ -27,12 +32,8 @@ import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 @Component
 public class IFTAReportsParamsValidationAdvice {
 	
-	/**
-	 * Autowired prototype instance of an empty bean.
-	 * It includes the tiwipro principal to obtain default parameters.
-	 */
-	@Autowired
-	IFTAReportsParamsBean paramsBean;
+    @Autowired
+    private ApplicationContext applicationContext;
 	
 	/**
 	 * JSR303 validator. Reference implementation: Hibernate validator.
@@ -55,30 +56,78 @@ public class IFTAReportsParamsValidationAdvice {
 	private void validateParams() {};	
 	
 	@SuppressWarnings("unused")
-	@Pointcut("args(groupID, startDate, endDate)")
-	private void withDates(Integer groupID, Date startDate, Date endDate) {}
+	@Pointcut("args(groupID, startDate, endDate, locale, measurementType)")
+	private void withDates(Integer groupID, Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {}
 	
 	@SuppressWarnings("unused")
-	@Pointcut("args(groupID)")
-	private void withoutDates(Integer groupID) {}
+	@Pointcut("args(groupID, locale, measurementType)")
+	private void withoutDates(Integer groupID, Locale locale, MeasurementType measurementType) {}
 
 	
-	@Around("isIFTAService() && validateParams() && withDates(groupID, startDate, endDate)") 
-	public Object validateWithDates(ProceedingJoinPoint pjp, Integer groupID, Date startDate, Date endDate) throws Throwable {
+	@Around("isIFTAService() && validateParams() && withDates(groupID, startDate, endDate, locale, measurementType)") 
+	public Object validateWithDates(ProceedingJoinPoint pjp, Integer groupID, Date startDate, Date endDate,
+			Locale locale, MeasurementType measurementType) throws Throwable {
 		
 		logger.debug("Validating parameters with dates");
-	
-		return pjp.proceed(new Object[] {groupID, startDate, endDate});
+		IFTAReportsParamsBean params = getBean(groupID, startDate, endDate, locale, measurementType);
+		raiseExceptionIfConstraintViolated(validator.validate(params));
+		return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getStartDate(), params.getEndDate(), params.getLocale(), params.getMeasurementType()});
 	}	
 
-	@Around("isIFTAService() && validateParams() && withoutDates(groupID)") 
-	public Object validateWithoutDates(ProceedingJoinPoint pjp, Integer groupID) throws Throwable {
+	@Around("isIFTAService() && validateParams() && withoutDates(groupID, locale, measurementType)") 
+	public Object validateWithoutDates(ProceedingJoinPoint pjp, Integer groupID,
+		Locale locale, MeasurementType measurementType) throws Throwable {
 		
 		logger.debug("Validating parameters without dates");
-	
-		return pjp.proceed(new Object[] {groupID});
+		IFTAReportsParamsBean params = getBean(groupID, locale, measurementType);
+		raiseExceptionIfConstraintViolated(validator.validate(params));
+		return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getLocale(), params.getMeasurementType()});
 	}	
 	
+	/**
+	 * Obtains an empty instance of the paramters bean from the application context.
+	 * This bean must have the principal alreade autowired.
+	 * 
+	 * @return parameters bean
+	 */
+	private IFTAReportsParamsBean getBeanInstanceFromSpring() {
+		return (IFTAReportsParamsBean) applicationContext.getBean("IFTAReportsParamsBean");
+	}
+
+	/**
+	 * Overloaded convenience method.
+	 * @see #fillBean(IFTAReportsParamsBean, List, Date, Date, Locale, MeasurementType)
+	 */
+	private IFTAReportsParamsBean getBean(Integer groupID, Locale locale, MeasurementType measurementType) {
+		return getBean(groupID, null, null, locale, measurementType);	
+	}
+	
+	/**
+	 * Overloaded convenience method.
+	 * @see #fillBean(IFTAReportsParamsBean, List, Date, Date, Locale, MeasurementType)
+	 */
+	private IFTAReportsParamsBean getBean(Integer groupID, Date startDate, Date endDate, Locale locale,
+			MeasurementType measurementType) {
+		List<Integer> groupIDList = new ArrayList<Integer>();
+		groupIDList.add(groupID);
+		return getBean(groupIDList, startDate, endDate, locale, measurementType);
+	}
+	
+	/**
+	 * Simply fill the bean with the passed parameters.
+	 * @return Bean filled with the incoming parameters
+	 */
+	private IFTAReportsParamsBean getBean(List<Integer> groupIDList, Date startDate, Date endDate, 
+			Locale locale, MeasurementType measurementType) {
+		
+		IFTAReportsParamsBean paramsBean = getBeanInstanceFromSpring();
+		paramsBean.setGroupIDList(groupIDList);
+		paramsBean.setStartDate(startDate);
+		paramsBean.setEndDate(startDate);
+		paramsBean.setLocale(locale);
+		paramsBean.setMeasurementType(measurementType);
+		return paramsBean;
+	}	
 	
 	/**
 	 * If there are constraint violations, raise exception.
@@ -88,11 +137,11 @@ public class IFTAReportsParamsValidationAdvice {
 	 */
 	private void raiseExceptionIfConstraintViolated(
 			Set<ConstraintViolation<IFTAReportsParamsBean>> constraintViolations) {
-		// TODO Auto-generated method stub
 		if (!constraintViolations.isEmpty()){
-			
+			// TODO Exception mapping
 		}
 	}
+
 
 	
 }

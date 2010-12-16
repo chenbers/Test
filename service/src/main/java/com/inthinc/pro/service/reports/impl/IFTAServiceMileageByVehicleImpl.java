@@ -41,7 +41,7 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAService#getMileageByVehicleWithDates(java.lang.Integer, java.util.Date, java.util.Date)
      */
     @Override
-    //@ValidParams
+//    @ValidParams
     public Response getMileageByVehicleWithDates(Integer groupID, Date startDate, Date endDate) {
 //    	return Response.ok().build();
     	//TODO: un-comment when validation test is done    	
@@ -71,7 +71,7 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
     @Override
 //    @ValidParams    
     public Response getMileageByVehicleDefaults(Integer groupID) {
-//    	return Response.status(Status.OK).build();
+///    	return Response.status(Status.OK).build();
     	//TODO: un-comment when validation test is done
         Calendar today = reportsUtil.getMidnight();
         

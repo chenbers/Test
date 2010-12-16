@@ -1,18 +1,17 @@
 package com.inthinc.pro.service.reports;
 
 import java.util.Date;
+import java.util.Locale;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.annotations.Form;
-
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.annotations.DateFormat;
-import com.inthinc.pro.service.params.IFTAReportsParamsBean;
-import com.inthinc.pro.service.validation.annotations.ValidParams;
 
 /**
  * Interface for IFTA/DOT Reports Services.
@@ -86,4 +85,5 @@ public interface IFTAServiceMileageByVehicle {
     Response getMileageByVehicleWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 
+    
 }

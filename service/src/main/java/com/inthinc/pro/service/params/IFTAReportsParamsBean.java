@@ -1,11 +1,9 @@
 package com.inthinc.pro.service.params;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.QueryParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +28,9 @@ import com.inthinc.pro.service.validation.annotations.ValidLocale;
 public class IFTAReportsParamsBean {
 
 	// Common parameters for all IFTA web services
-	@NotNull
-	@Min(0)
-	ArrayList<Integer> groupIDList;
+	//@NotNull
+	//@Min(0)
+	List<Integer> groupIDList;
 	
 	Date startDate;
 	Date endDate;
@@ -59,7 +57,7 @@ public class IFTAReportsParamsBean {
 	/**
 	 * @return the groupIDList
 	 */
-	public ArrayList<Integer> getGroupIDList() {
+	public List<Integer> getGroupIDList() {
 		return groupIDList;
 	}
 
@@ -67,7 +65,7 @@ public class IFTAReportsParamsBean {
 	/**
 	 * @param groupIDList the groupIDList to set
 	 */
-	public void setGroupIDList(ArrayList<Integer> groupIDList) {
+	public void setGroupIDList(List<Integer> groupIDList) {
 		this.groupIDList = groupIDList;
 	}
 
@@ -105,9 +103,12 @@ public class IFTAReportsParamsBean {
 
 
 	/**
+	 * Return the locale.
+	 * If the value is null, gets the default from the current authenticated user.
 	 * @return the locale
 	 */
 	public Locale getLocale() {
+		if (locale == null) locale = principal.getUser().getPerson().getLocale();
 		return locale;
 	}
 
@@ -121,9 +122,12 @@ public class IFTAReportsParamsBean {
 
 
 	/**
+	 * Return the measurement type.
+	 * If the value is null, gets the default from the current authenticated user.
 	 * @return the measurementType
 	 */
 	public MeasurementType getMeasurementType() {
+		if (measurementType == null) measurementType = principal.getUser().getPerson().getMeasurementType();
 		return measurementType;
 	}
 
