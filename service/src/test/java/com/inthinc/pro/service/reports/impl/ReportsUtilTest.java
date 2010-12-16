@@ -97,15 +97,4 @@ public class ReportsUtilTest extends BaseUnitTest {
         assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
     }
 
-    private Date buildDateFromString(String strDate) {
-        DateFormat df = new SimpleDateFormat(BaseIFTAServiceImpl.DATE_FORMAT);
-        try {
-            Date convertedDate = df.parse(strDate);
-            return convertedDate;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
 }

@@ -108,13 +108,14 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();        
     }
 
-
     @SuppressWarnings("unchecked")
     @Override
-    public List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(Integer groupID, Interval interval, boolean dotOnly) {
+    public List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(Integer groupID, Interval interval, 
+            boolean dotOnly, Locale locale, MeasurementType measurementType) {
         List groupIDList = new ArrayList();
         groupIDList.add(groupID);
-        ReportCriteria criteria = reportService.getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
+        ReportCriteria criteria = reportService.getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(), 
+                groupIDList, interval, locale, measurementType, dotOnly);
         return criteria.getMainDataset();
     }
 

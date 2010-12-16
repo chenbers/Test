@@ -31,9 +31,9 @@ public interface IFTAServiceMileageByVehicle {
      * @param endDate
      *            the end date in format "yyyyMMdd" as Path Parameter
      * @param locale 
-     *            the desired user locale from Query string, ex: locale=fr_CA
+     *            the required user locale from Query string, ex: locale=fr_CA
      * @param measurementType 
-     *            the desired user measurementType from Query string, ex: measurementType=METRIC
+     *            the required user measurementType from Query string, ex: measurementType=METRIC
      *            
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
@@ -58,9 +58,9 @@ public interface IFTAServiceMileageByVehicle {
      * @param endDate
      *            the end date in format "yyyyMMdd" as Path Parameter
      * @param locale 
-     *            the desired user locale from Query string, ex: locale=fr_CA
+     *            the required user locale from Query string, ex: locale=fr_CA
      * @param measurementType 
-     *            the desired user measurementType from Query string, ex: measurementType=METRIC
+     *            the required user measurementType from Query string, ex: measurementType=METRIC
      * 
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
@@ -81,9 +81,9 @@ public interface IFTAServiceMileageByVehicle {
      * @param groupID
      *            the Group ID as Path Parameter
      * @param locale 
-     *            the desired user locale from Query string, ex: locale=fr_CA
+     *            the required user locale from Query string, ex: locale=fr_CA
      * @param measurementType 
-     *            the desired user measurementType from Query string, ex: measurementType=METRIC
+     *            the required user measurementType from Query string, ex: measurementType=METRIC
      * 
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
@@ -102,9 +102,9 @@ public interface IFTAServiceMileageByVehicle {
      * @param groupID
      *            the Group ID as Path Parameter
      * @param locale 
-     *            the desired user locale from Query string, ex: locale=fr_CA
+     *            the required user locale from Query string, ex: locale=fr_CA
      * @param measurementType 
-     *            the desired user measurementType from Query string, ex: measurementType=METRIC
+     *            the required user measurementType from Query string, ex: measurementType=METRIC
      * 
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found

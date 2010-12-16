@@ -94,7 +94,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getStateMileageByVehicleStateComparison(GROUP_ID, INTERVAL, IFTA_ONLY);
+		reportsFacadeSUTMock.getStateMileageByVehicleStateComparison(GROUP_ID, INTERVAL, IFTA_ONLY, null, null);
 	}	
 	
 	@SuppressWarnings("unchecked")
