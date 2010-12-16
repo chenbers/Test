@@ -101,7 +101,7 @@ public class WaysmartDevice extends Device {
 	protected void set_server() {
 		HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
 		String[] server = get_setting(Waysmart.SERVER_IP).split(":");
-		System.out.println(server[1]);
+		System.out.println(server[0]+":"+server[1]);
         try {
     		mcmProxy = (MCMProxy)factory.create( MCMProxy.class, server[0], Integer.parseInt(server[1]));	
 		} catch (NumberFormatException e) {
@@ -119,8 +119,6 @@ public class WaysmartDevice extends Device {
 
 	@Override
 	public void set_url(String url, Integer port) {
-		System.out.println(url+" URL");
-		System.out.println(port+" Port");
 		Settings.put(get_setting_int(Waysmart.SERVER_IP), url+":"+port);
 		set_server();
 	}
