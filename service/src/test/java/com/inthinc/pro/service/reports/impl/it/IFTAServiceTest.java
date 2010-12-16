@@ -2,6 +2,7 @@ package com.inthinc.pro.service.reports.impl.it;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -14,6 +15,7 @@ import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.service.it.BaseEmbeddedServerITCase;
+import com.inthinc.pro.util.GroupList;
 
 /**
  * Integration test for IFTA methods.
@@ -26,6 +28,7 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
     private static final Integer GROUP_ID_WITH_NO_DATA = 1;
     private static final Integer GROUP_ID = 3;
     private static final Integer GROUP_ID_NOT_IN_USER_HIERARCHY = 8;
+    private List<Integer> expectedGroupIDList;
 
     /**
      * Integration test for getStateMileageByVehicleRoadStatus().
@@ -36,6 +39,19 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
         ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDates(GROUP_ID_WITH_NO_DATA, TEST_START_DATE, TEST_END_DATE);
 
         assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+
+    }
+    
+    @Test
+    public void testGetStateMileageByVehicleRoadStatusWithGroupWithoutDataMultiGroup() {
+        expectedGroupIDList = new ArrayList<Integer>();
+        expectedGroupIDList.add(GROUP_ID_WITH_NO_DATA);
+        expectedGroupIDList.add(GROUP_ID_NOT_IN_USER_HIERARCHY);
+        GroupList gl = new GroupList(expectedGroupIDList);
+
+        ClientResponse<List<StateMileageByVehicleRoadStatus>> response = client.getStateMileageByVehicleRoadStatusWithDatesMultiGroup(gl, TEST_START_DATE, TEST_END_DATE);
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 
     }
 

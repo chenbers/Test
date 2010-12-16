@@ -24,6 +24,7 @@ import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
+import com.inthinc.pro.util.GroupList;
 
 /**
  * Class used for Integration testing only. It helps marshaling the body response in order to inspect it during the assertions.
@@ -104,6 +105,13 @@ public interface ServiceClient {
     @Path("/group/{groupID}/report/ifta/roadStatus/{startDate}/{endDate}")
     @Produces("application/xml")
     public ClientResponse<List<StateMileageByVehicleRoadStatus>> getStateMileageByVehicleRoadStatusWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
+            @PathParam("endDate") String endDate);
+    
+    @POST
+    @Path("/groups/report/ifta/roadStatus/{startDate}/{endDate}")
+    @Produces("application/xml")
+    @Consumes("application/xml")
+    public ClientResponse<List<StateMileageByVehicleRoadStatus>> getStateMileageByVehicleRoadStatusWithDatesMultiGroup(GroupList groupList, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
     
     // State Mileage by Vehicle State Comparison
