@@ -40,13 +40,13 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServ
      * @return javax.ws.rs.core.Response to return the client
      */
     Response getStateMileageByVehicleRoadStatusWithFullParameters(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
-             
-              // Creating a GroupList with only one group ID.
-              GroupList groupList = new GroupList();
-             groupList.getValueList().add(groupID);
-             return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, iftaOnly);
+
+        // Creating a GroupList with only one group ID.
+        GroupList groupList = new GroupList();
+        groupList.getValueList().add(groupID);
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, iftaOnly);
     }
-    
+
     Response getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(List<Integer> groupList, Date startDate, Date endDate, boolean iftaOnly) {
 
         Response response = reportsUtil.checkParametersMultiGroup(groupList, startDate, endDate);
@@ -106,14 +106,34 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServ
 
         return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate.getTime(), today.getTime(), false);
     }
-    
+
     @Override
     public Response getStateMileageByVehicleRoadStatusDefaultsMultiGroup(GroupList groupList) {
         Calendar today = reportsUtil.getMidnight();
 
         Calendar startDate = reportsUtil.getMidnight();
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-        
+
         return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), false);
+    }
+
+    @Override
+    public Response getStateMileageByVehicleRoadStatusWithDatesMultiGroup(GroupList groupList, Date startDate, Date endDate) {
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, false);
+    }
+
+    @Override
+    public Response getStateMileageByVehicleRoadStatusWithIftaAndDatesMultiGroup(GroupList groupList, Date startDate, Date endDate) {
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, true);
+    }
+
+    @Override
+    public Response getStateMileageByVehicleRoadStatusWithIftaMultiGroup(GroupList groupList) {
+        Calendar today = reportsUtil.getMidnight();
+
+        Calendar startDate = reportsUtil.getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), true);
     }
 }

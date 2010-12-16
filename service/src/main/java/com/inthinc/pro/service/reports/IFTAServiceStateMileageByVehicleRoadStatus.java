@@ -45,6 +45,27 @@ public interface IFTAServiceStateMileageByVehicleRoadStatus {
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
      * 
+     * @param groupList
+     *            the Group ID List
+     * @param startDate
+     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#DATE_FORMAT}
+     * @param endDate
+     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#DATE_FORMAT}
+     * @param iftaOnly
+     *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     */
+    @POST
+    @Path("/groups/report/ifta/roadStatus/iftaOnly/{startDate}/{endDate}")
+    @Produces("application/xml")
+    Response getStateMileageByVehicleRoadStatusWithIftaAndDatesMultiGroup(GroupList groupList, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
+    
+    /**
+     * Service for State mileage by vehicle / road status Report with an explicit Interval.
+     * 
      * @param groupID
      *            the Group ID
      * @param iftaOnly
@@ -57,6 +78,22 @@ public interface IFTAServiceStateMileageByVehicleRoadStatus {
     @Path("/group/{groupID}/report/ifta/roadStatus/iftaOnly")
     @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatusWithIfta(@PathParam("groupID") Integer groupID);
+    
+    /**
+     * Service for State mileage by vehicle / road status Report with an explicit Interval.
+     * 
+     * @param groupList
+     *            the Group ID List
+     * @param iftaOnly
+     *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     */
+    @POST
+    @Path("/groups/report/ifta/roadStatus/iftaOnly")
+    @Produces("application/xml")
+    Response getStateMileageByVehicleRoadStatusWithIftaMultiGroup(GroupList groupList);
 
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
@@ -72,6 +109,8 @@ public interface IFTAServiceStateMileageByVehicleRoadStatus {
     @Produces("application/xml")
     Response getStateMileageByVehicleRoadStatusDefaults(@PathParam("groupID") Integer groupID);
     
+    
+
     /**
      * Service for State mileage by vehicle / road status Report with an explicit Interval.
      * 
@@ -106,4 +145,22 @@ public interface IFTAServiceStateMileageByVehicleRoadStatus {
     Response getStateMileageByVehicleRoadStatusWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 
+    /**
+     * Service for State mileage by vehicle / road status Report with an explicit Interval.
+     * 
+     * @param groupList
+     *            the Group ID List
+     * @param startDate
+     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#DATE_FORMAT}
+     * @param endDate
+     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#DATE_FORMAT}
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus> the list of beans
+     * @HTTP HTTP 200 - OK if any StateMileageByVehicleRoadStatus found
+     * @HTTP HTTP 404 - NOT FOUND if no StateMileageByVehicleRoadStatus found
+     */
+    @POST
+    @Path("/groups/report/ifta/roadStatus/{startDate}/{endDate}")
+    @Produces("application/xml")
+    Response getStateMileageByVehicleRoadStatusWithDatesMultiGroup(GroupList groupList, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 }
