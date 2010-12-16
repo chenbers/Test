@@ -622,7 +622,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                     if (key.endsWith("emailAddressesInput")) {
                         String[] words = key.split(":");
                         int fieldIndex = Integer.parseInt(words[2]);
-                        // if the user changed ANY fields update phNumbers
+                        // if the user changed ANY fields update emailTos
                         if (!map.get(key).equalsIgnoreCase(emailTos.get(fieldIndex))) {
                             emailTos.set(fieldIndex, map.get(key));
                         }
@@ -638,7 +638,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 }
             } catch (Exception e) {
                 logger.error(e);
-                logger.error("addPhNumberSlot() failed");
+                logger.error("addEmailTosSlot() failed");
             }
         }
         @Override
@@ -838,6 +838,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public List<String> getEmailTos() {
+            if(null != emailTos) {
+                String lastString = null;
+                if(emailTos.size()>0)
+                    lastString = emailTos.get(emailTos.size()-1);
+                if(!"".equals(lastString))
+                    emailTos.add("");
+            }
             return emailTos;
         }
 
@@ -881,9 +888,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         @Override
         public void setEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs) {
-            
             AlertEscalationItem lastResortEmail = null;
-            
             List<AlertEscalationItem> oldEscalationList = getEscalationList();
             
             if(null != oldEscalationList) {
