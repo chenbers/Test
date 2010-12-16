@@ -113,6 +113,12 @@
 					<excludes>
 						<exclude>**/it/*Test.java</exclude>
 					</excludes>
+					<systemProperties>
+						<property>
+							<name>webinf.dir</name>
+							<value>${basedir}/src/main/webapp/WEB-INF/</value>
+						</property>
+					</systemProperties>
 				</configuration>
 				<executions>
 					<execution>

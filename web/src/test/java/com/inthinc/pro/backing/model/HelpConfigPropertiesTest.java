@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -19,9 +20,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-@Ignore
 public class HelpConfigPropertiesTest {
     
+    public static String webInfPath = null;
+    @BeforeClass
+    public static void runOnceBeforeAllTests() throws Exception
+    {
+        webInfPath = System.getProperty("webinf.dir");
+        
+        if (webInfPath == null) {
+            webInfPath = "src/main/webapp/WEB-INF/"; 
+        }
+System.out.println("webInfPath: " + webInfPath);        
+    }
     
     @Test
     public void testPrettyIDsExist()
@@ -44,8 +55,8 @@ public class HelpConfigPropertiesTest {
         List<String> prettyIDList = new ArrayList<String>();
         try
         {
-            File file = new File("src/main/webapp/WEB-INF/pretty-config.xml");
-            System.out.println("current dir is " + file.getAbsoluteFile() + " exists: " + file.exists());
+            File file = new File(webInfPath + "pretty-config.xml");
+            System.out.println("prettyconfig path is " + file.getAbsoluteFile() + " exists: " + file.exists());
             
 //            InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("src/main/webapp/WEB-INF/pretty-config.xml");
 //            if (stream == null) {
