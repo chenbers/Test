@@ -239,7 +239,7 @@ public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
 		for (int i = 0; i <= 15; i++){
 			StateMileageFuelByVehicle bean = new StateMileageFuelByVehicle();
 			bean.setGroupName(Integer.toString(i / 8));
-			bean.setVehicle(String.valueOf(i / 4));
+			bean.setVehicleName(String.valueOf(i / 4));
 			bean.setMonth(String.valueOf(i / 2));
 			bean.setState(String.valueOf(i / 1));
 			listToSort.add(bean);	
