@@ -19,12 +19,18 @@ import com.inthinc.pro.service.validation.annotations.ValidLocale;
  */
 public class LocaleValidator implements ConstraintValidator<ValidLocale, Locale> {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void initialize(ValidLocale localeAnnotation) {
 		// No need to get info from the annotation here
 		// In the future the annotation could take a list of accepted locales
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isValid(Locale locale, ConstraintValidatorContext context) {
 		

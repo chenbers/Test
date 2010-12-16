@@ -1,9 +1,10 @@
 package com.inthinc.pro.service.params;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import javax.ws.rs.QueryParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
 import com.inthinc.pro.service.validation.annotations.ValidLocale;
+import com.inthinc.pro.service.validation.annotations.ValidStartEndDates;
 
 /**
  * Simple JavaBean to encapsulate the parameters received by a Web service
@@ -23,30 +25,35 @@ import com.inthinc.pro.service.validation.annotations.ValidLocale;
  */
 @Component
 @Scope("prototype")
-//@ValidStartEndDates
-public class IFTAReportsParamsBean {
-    public static final String DATE_FORMAT = "yyyyMMdd";
-    protected static final Integer DAYS_BACK = -6;
-	
-    // Common parameters for all IFTA web services
-    private List<Integer> groupIDList;
-    private Integer groupID;
-    private Boolean iftaOnly;
-    private Date startDate;
-    private Date endDate;
-    /**
-     * Admitted values in the query string are the 
-     * <a href="http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt">ISO Language Codes</a>.</br>
-     * See {@link java.util.Locale}
-     */
-    @ValidLocale 
-    private Locale locale; 
-    private MeasurementType measurementType;
+@ValidStartEndDates
+public class IFTAReportsParamsBean implements HasStartEndDates {
 
-    /**
-     * Helper to obtain default values
-     */
-    @Autowired
+	// Common parameters for all IFTA web services
+	//@NotNull
+	//@Min(0)
+	private List<Integer> groupIDList;
+	
+	private Date startDate;
+	private Date endDate;
+	
+	/**
+	 * Admitted values in the query string are the 
+	 * <a href="http://ftp.ics.uci.edu/pub/ietf/http/related/iso639.txt">ISO Language Codes</a>.</br>
+	 * See {@link java.util.Locale}
+	 */
+	@QueryParam("locale")
+	@ValidLocale
+	private Locale locale;
+	
+	// No validation required at this point for measuremetType. 
+	// Type validation is done by RestEasy QueryParam unmarshalling. 
+	private MeasurementType measurementType;
+
+
+	/**
+	 * Helper to obtain default values
+	 */
+	@Autowired
 	TiwiproPrincipal principal;
 
 
@@ -65,59 +72,29 @@ public class IFTAReportsParamsBean {
 		this.groupIDList = groupIDList;
 	}
 
+
 	/**
-     * The startDate getter.
-     * @return the startDate
-     */
+	 * The startDate getter.
+	 * @return the start date
+	 */
 	public Date getStartDate() {
-	    if (startDate == null) {
-	        Calendar c = getMidnight();
-	        c.add(Calendar.DAY_OF_YEAR, DAYS_BACK);
-	    }
-        return this.startDate;
-    }
-
-    /**
-     * The groupID setter.
-     * @param groupID the groupID to set
-     */
-    public void setGroupID(Integer groupID) {
-        this.groupID = groupID;
-    }
-
-    /**
-     * The startDate setter.
-     * @param startDate the startDate to set
-     */
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    /**
-     * The endDate setter.
-     * @param endDate the endDate to set
-     */
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    /**
-     * The iftaOnly setter.
-     * @param iftaOnly the iftaOnly to set
-     */
-    public void setIftaOnly(Boolean iftaOnly) {
-        this.iftaOnly = iftaOnly;
-    }
-
+		return startDate;
+	}
 
 
 	/**
-	 * @return the endDate
+	 * The start date setter.
+	 * @param startDate the startDate to set
+	 */
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+
+	/**
+	 * @return the End date
 	 */
 	public Date getEndDate() {
-	    if (endDate == null) {
-	        endDate = getMidnight().getTime();
-	    }
 		return endDate;
 	}
 
@@ -125,8 +102,8 @@ public class IFTAReportsParamsBean {
 	/**
 	 * @param endDate the endDate to set
 	 */
-	public Boolean getIftaOnly() {
-		return (iftaOnly == null ? false : iftaOnly);
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 
@@ -136,11 +113,10 @@ public class IFTAReportsParamsBean {
 	 * @return the locale
 	 */
 	public Locale getLocale() {
-	    if(locale == null) {
-	        locale = principal.getPerson().getLocale();
-	    }
+		if (locale == null) locale = principal.getUser().getPerson().getLocale();
 		return locale;
 	}
+
 
 	/**
 	 * @param locale the locale to set
@@ -156,45 +132,30 @@ public class IFTAReportsParamsBean {
 	 * @return the measurementType
 	 */
 	public MeasurementType getMeasurementType() {
-        if (measurementType == null) measurementType = principal.getUser().getPerson().getMeasurementType();
+		if (measurementType == null) measurementType = principal.getUser().getPerson().getMeasurementType();
 		return measurementType;
 	}
 
 
 	/**
-     * The MeasurementType setter.
-     * @param measurementType the measurementType to set
+	 * @param measurementType the measurementType to set
 	 */
 	public void setMeasurementType(MeasurementType measurementType) {
 		this.measurementType = measurementType;
 	}
-	
-    /**
-     * Create the Date for today and set it to midnight.
-     * 
-     * @return the date as Calendar
-     */
-    Calendar getMidnight() {
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0); // set hour to midnight
-        today.set(Calendar.MINUTE, 0); // set minute in hour
-        today.set(Calendar.SECOND, 0); // set second in minute
-        today.set(Calendar.MILLISECOND, 0); // set millis in second
-        return today;
-    }
-    
+
     /**
      * {@inheritDoc}
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        return "groupID:" + groupID +
+        return "groupIDList:" + groupIDList +
             " startDate:" + getStartDate().toString() +
             " endDate:" + getEndDate().toString() +
-            " iftaOnly:" + getIftaOnly() +
             " locale:" + getLocale() +
             " measurementType:" + getMeasurementType();
     }
+
 	
 }

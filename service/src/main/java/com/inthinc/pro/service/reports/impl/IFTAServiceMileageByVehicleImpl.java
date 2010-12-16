@@ -17,6 +17,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.ReportsUtil;
 import common.Logger;
 
@@ -100,5 +101,22 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
         
         return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
     }
+
+    // TODO:  For Validation Testing. To be removed
+    
+	@Override
+	@ValidParams
+	public Response getMileageByVehicleDefaultsValidationTest(Integer groupID,
+			Locale locale, MeasurementType measurementType) {
+		return Response.ok().build();
+	}
+
+	@Override
+	@ValidParams
+	public Response getMileageByVehicleWithDatesValidationTest(Integer groupID,
+			Date startDate, Date endDate, Locale locale,
+			MeasurementType measurementType) {
+		return Response.ok().build();
+	}
 	
 }

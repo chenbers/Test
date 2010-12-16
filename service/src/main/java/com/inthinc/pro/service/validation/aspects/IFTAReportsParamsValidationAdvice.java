@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.params.IFTAReportsParamsBean;
+import com.inthinc.pro.service.validation.util.ViolationToExceptionMapper;
 
 /**
  * This class advices the IFTA Reports services.
@@ -34,6 +33,9 @@ public class IFTAReportsParamsValidationAdvice {
 	
     @Autowired
     private ApplicationContext applicationContext;
+    
+    @Autowired
+    private ViolationToExceptionMapper violationToExceptionMapper;
 	
 	/**
 	 * JSR303 validator. Reference implementation: Hibernate validator.
@@ -70,7 +72,7 @@ public class IFTAReportsParamsValidationAdvice {
 		
 		logger.debug("Validating parameters with dates");
 		IFTAReportsParamsBean params = getBean(groupID, startDate, endDate, locale, measurementType);
-		raiseExceptionIfConstraintViolated(validator.validate(params));
+		violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
 		return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getStartDate(), params.getEndDate(), params.getLocale(), params.getMeasurementType()});
 	}	
 
@@ -80,7 +82,7 @@ public class IFTAReportsParamsValidationAdvice {
 		
 		logger.debug("Validating parameters without dates");
 		IFTAReportsParamsBean params = getBean(groupID, locale, measurementType);
-		raiseExceptionIfConstraintViolated(validator.validate(params));
+		violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
 		return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getLocale(), params.getMeasurementType()});
 	}	
 	
@@ -123,25 +125,10 @@ public class IFTAReportsParamsValidationAdvice {
 		IFTAReportsParamsBean paramsBean = getBeanInstanceFromSpring();
 		paramsBean.setGroupIDList(groupIDList);
 		paramsBean.setStartDate(startDate);
-		paramsBean.setEndDate(startDate);
+		paramsBean.setEndDate(endDate);
 		paramsBean.setLocale(locale);
 		paramsBean.setMeasurementType(measurementType);
 		return paramsBean;
 	}	
-	
-	/**
-	 * If there are constraint violations, raise exception.
-	 * The appropriate exception will be chosen depending on the constraint violation.
-	 * 
-	 * @param constraintViolations The set of constraint violations
-	 */
-	private void raiseExceptionIfConstraintViolated(
-			Set<ConstraintViolation<IFTAReportsParamsBean>> constraintViolations) {
-		if (!constraintViolations.isEmpty()){
-			// TODO Exception mapping
-		}
-	}
-
-
 	
 }
