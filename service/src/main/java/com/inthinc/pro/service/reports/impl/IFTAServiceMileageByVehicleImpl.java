@@ -1,6 +1,5 @@
 package com.inthinc.pro.service.reports.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -35,9 +34,10 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle#getMileageByVehicleWithIftaAndDates(java.lang.Integer, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
+    @ValidParams
     public Response getMileageByVehicleWithIftaAndDates(Integer groupID, Date startDate, Date endDate, 
-            Locale locale, MeasurementType measureType) {
-        return getMileageByVehicle(groupID, startDate, endDate, true, locale, measureType);
+            Locale locale, MeasurementType measurementType) {
+        return getMileageByVehicle(groupID, startDate, endDate, true, locale, measurementType);
     }
 
     /**
@@ -45,9 +45,10 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle#getMileageByVehicleWithDates(java.lang.Integer, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
+    @ValidParams
     public Response getMileageByVehicleWithDates(Integer groupID, Date startDate, Date endDate,
-            Locale locale, MeasurementType measureType) {
-        return getMileageByVehicle(groupID, startDate, endDate, false, locale, measureType);
+            Locale locale, MeasurementType measurementType) {
+        return getMileageByVehicle(groupID, startDate, endDate, false, locale, measurementType);
     }
 
     /**
@@ -55,13 +56,9 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle#getMileageByVehicleWithIfta(java.lang.Integer, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getMileageByVehicleWithIfta(Integer groupID, Locale locale, MeasurementType measureType) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getMileageByVehicle(groupID, startDate.getTime(), today.getTime(), true, locale, measureType);
+    @ValidParams
+    public Response getMileageByVehicleWithIfta(Integer groupID, Locale locale, MeasurementType measurementType) {
+        return getMileageByVehicle(groupID, null, null, true, locale, measurementType);
     }
 
     /**
@@ -69,29 +66,22 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
      * @see com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle#getMileageByVehicleDefaults(java.lang.Integer, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getMileageByVehicleDefaults(Integer groupID, Locale locale, MeasurementType measureType) {
-        Calendar today = reportsUtil.getMidnight();
-        
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getMileageByVehicle(groupID, startDate.getTime(), today.getTime(), false, locale, measureType);
+    @ValidParams
+    public Response getMileageByVehicleDefaults(Integer groupID, Locale locale, MeasurementType measurementType) {
+         return getMileageByVehicle(groupID, null, null , false, locale, measurementType);
     }
 
     /** Service implementation for Mileage by Vehicle report */
-    Response getMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly, Locale locale, MeasurementType measureType) {
-        Response response = reportsUtil.checkParameters(groupID, startDate, endDate, locale, measureType);
-        if (response != null) return response;
-
-        Interval interval = new Interval(startDate.getTime(), endDate.getTime());
-
-        List<MileageByVehicle> list = null;
+    Response getMileageByVehicle(Integer groupID, Date startDate, Date endDate, Boolean iftaOnly, Locale locale, MeasurementType measurementType) {
         
+        Interval interval = getInterval(startDate, endDate);
+
+        List<MileageByVehicle> list = null;        
         try {
-            list = reportsFacade.getMileageByVehicle(groupID, interval, iftaOnly, locale, measureType);
+            list = reportsFacade.getMileageByVehicle(groupID, interval, iftaOnly, locale, measurementType);
         } catch (Exception e) {
             logger.error(e.toString() + " for groupID:" + groupID + ", interval:" + interval 
-                    + ", iftaOnly:" + iftaOnly + ", locale:" + locale + ", measureType: " + measureType);
+                    + ", iftaOnly:" + iftaOnly + ", locale:" + locale + ", measurementType: " + measurementType);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
@@ -103,7 +93,6 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
     }
 
     // TODO:  For Validation Testing. To be removed
-    
 	@Override
 	@ValidParams
 	public Response getMileageByVehicleDefaultsValidationTest(Integer groupID,

@@ -80,7 +80,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getMileageByVehicle(GROUP_ID, INTERVAL, IFTA_ONLY);
+		reportsFacadeSUTMock.getMileageByVehicle(GROUP_ID, INTERVAL, IFTA_ONLY, null, null);
 	}	
 	
 	@SuppressWarnings("unchecked")

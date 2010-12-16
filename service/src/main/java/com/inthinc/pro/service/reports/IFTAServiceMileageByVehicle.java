@@ -14,7 +14,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.annotations.DateFormat;
 
 /**
- * Interface for IFTA/DOT Reports Services.
+ * Interface for IFTA/DOT MileageByVehicle Report Services.
  */
 @Produces("application/xml")
 @Path("/group/{groupID}/report/ifta/mileage")
@@ -25,11 +25,16 @@ public interface IFTAServiceMileageByVehicle {
      * Service for Mileage By Vehicle Report with an explicit Interval and iftaOnly flag.
      * 
      * @param groupID
-     *            the Group ID
+     *            the Group ID as Path Parameter
      * @param startDate
-     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle#DATE_FORMAT}
+     *            the start date in format "yyyyMMdd" as Path Parameter
      * @param endDate
-     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle#DATE_FORMAT}
+     *            the end date in format "yyyyMMdd" as Path Parameter
+     * @param locale 
+     *            the desired user locale from Query string, ex: locale=fr_CA
+     * @param measurementType 
+     *            the desired user measurementType from Query string, ex: measurementType=METRIC
+     *            
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found
@@ -41,17 +46,22 @@ public interface IFTAServiceMileageByVehicle {
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
-            @QueryParam("measurementType") MeasurementType measureType);
+            @QueryParam("measurementType") MeasurementType measurementType);
 
     /**
      * Service for Mileage By Vehicle Report with an explicit Interval only.
      * 
      * @param groupID
-     *            the Group ID
+     *            the Group ID as Path Parameter
      * @param startDate
-     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle#DATE_FORMAT}
+     *            the start date in format "yyyyMMdd" as Path Parameter
      * @param endDate
-     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle#DATE_FORMAT}
+     *            the end date in format "yyyyMMdd" as Path Parameter
+     * @param locale 
+     *            the desired user locale from Query string, ex: locale=fr_CA
+     * @param measurementType 
+     *            the desired user measurementType from Query string, ex: measurementType=METRIC
+     * 
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found
@@ -63,13 +73,18 @@ public interface IFTAServiceMileageByVehicle {
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
-            @QueryParam("measurementType") MeasurementType measureType);
+            @QueryParam("measurementType") MeasurementType measurementType);
 
     /**
      * Service for Mileage By Vehicle Report with an explicit Interval. Service for Mileage By Vehicle Report without Interval but with IFTA flag.
      * 
      * @param groupID
-     *            the Group ID
+     *            the Group ID as Path Parameter
+     * @param locale 
+     *            the desired user locale from Query string, ex: locale=fr_CA
+     * @param measurementType 
+     *            the desired user measurementType from Query string, ex: measurementType=METRIC
+     * 
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no MileageByVehicle found
@@ -79,10 +94,17 @@ public interface IFTAServiceMileageByVehicle {
     @Produces("application/xml")
     Response getMileageByVehicleWithIfta(@PathParam("groupID") Integer groupID,
             @QueryParam("locale") Locale locale,
-            @QueryParam("measurementType") MeasurementType measureType);
+            @QueryParam("measurementType") MeasurementType measurementType);
 
     /**
      * Service for Mileage By Vehicle Report without any other params.
+     * 
+     * @param groupID
+     *            the Group ID as Path Parameter
+     * @param locale 
+     *            the desired user locale from Query string, ex: locale=fr_CA
+     * @param measurementType 
+     *            the desired user measurementType from Query string, ex: measurementType=METRIC
      * 
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.MileageByVehicle> the list of MileageByVehicle
      * @HTTP HTTP 200 - OK if any MileageByVehicle found
@@ -93,8 +115,7 @@ public interface IFTAServiceMileageByVehicle {
     @Produces("application/xml")
     Response getMileageByVehicleDefaults(@PathParam("groupID") Integer groupID,
             @QueryParam("locale") Locale locale,
-            @QueryParam("measurementType") MeasurementType measureType);
-
+            @QueryParam("measurementType") MeasurementType measurementType);
     
     // TODO: For Validation Testing. To be removed
     @GET

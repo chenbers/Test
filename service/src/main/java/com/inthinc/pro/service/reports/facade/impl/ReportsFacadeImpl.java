@@ -92,9 +92,6 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();
     }
 
-    public List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly) {
-        return getMileageByVehicle(groupID, interval, dotOnly, getLocale(), getMeasurementType());
-    }
     /**
      * {@inheritDoc}
      * 
@@ -147,6 +144,7 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
         ReportCriteria criteria = reportService.getStateMileageByMonthReportCriteria(getAccountGroupHierarchy(),
