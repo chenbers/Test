@@ -607,6 +607,13 @@ logger.info("in loadItems()");
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
             context.addMessage("edit-form:editHosLog_location", message);
         }
+        // future date not allowed
+        if (!isBatchEdit() && log.getLogTime().after(new Date())) {
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("hosLog_future_date_not_allowed"), null);
+            context.addMessage("edit-form:editHosLog_dateTime", message);
+            
+        }
         
         return valid;
     }

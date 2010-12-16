@@ -508,7 +508,7 @@
         <view-id>/secured/hos/hos.faces</view-id>
     </url-mapping>  
     <url-mapping id="hosEdit">
-        <pattern>/app/hosEdit</pattern>
+        <pattern>/app/hosEdit/#{hosBean.driverID}</pattern>
         <view-id>/secured/hos/hosEdit.faces</view-id>
     </url-mapping>  
     <url-mapping id="hosReports">
