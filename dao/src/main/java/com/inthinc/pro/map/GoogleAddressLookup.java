@@ -46,7 +46,8 @@ public class GoogleAddressLookup extends AddressLookup {
             this.latLng = latLng;
     
             StringBuilder request = new StringBuilder(googleMapGeoUrl).append(latLng.getLat()).append(",").append(latLng.getLng()).append("&output=xml");
-    
+            if(this.debugMode)
+                System.out.println("request: "+request);
             String address = null;
             try {
                 address = sendRequest(new URL(request.toString()), ResultType.CLOSEST_TOWN);
@@ -238,8 +239,8 @@ public class GoogleAddressLookup extends AddressLookup {
         this.googleMapGeoUrl = googleMapGeoUrl;
     }
 
-    private ArrayList<Placemark> getPlacemarks(InputStream is) { // TODO: jwimmer: should return a list or map of placemarks?
-        ArrayList<Placemark> results = new ArrayList<Placemark>();// TODO: jwimmer: potential issue if more than one town is EXACTLY the same distance away?
+    private ArrayList<Placemark> getPlacemarks(InputStream is) { 
+        ArrayList<Placemark> results = new ArrayList<Placemark>();
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLStreamReader reader = null;
         StringBuffer text = new StringBuffer();;
