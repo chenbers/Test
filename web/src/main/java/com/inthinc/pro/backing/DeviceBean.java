@@ -18,6 +18,7 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
     private Integer deviceID;
     private Device device;
     private DeviceDAO deviceDAO;
+    private Boolean waysmart;
 
     public DeviceBean() {
         super();
@@ -61,7 +62,6 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
         Integer deviceID = getDeviceID();
         Device device;
         if (null != deviceID) {
-
             device = deviceDAO.findByID(deviceID);
             if (null != device && device.isWaySmart()) {
                 ForwardCommand fwdCmd = new ForwardCommand(0, ForwardCommandID.GET_GPS_GET_LOCATION, 0, ForwardCommandStatus.STATUS_QUEUED);
@@ -74,14 +74,16 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
     }
 
     public boolean isWaysmart() {
-        boolean result = false;
-        Integer deviceID = getDeviceID();
-        Device device;
-        if (null != deviceID) {
-            device = deviceDAO.findByID(deviceID);
-            result = (null != device && device.isWaySmart());
+        if(waysmart == null) {
+            if (null != deviceID) {
+                if(null == device){
+                    device = deviceDAO.findByID(deviceID);
+                }
+                waysmart = (null != device && device.isWaySmart());
+            }
         }
-        return result;
+        if(waysmart == null) return false;
+        return waysmart;
     }
 
     public Integer getDeviceID() {

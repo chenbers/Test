@@ -27,6 +27,7 @@ import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -560,6 +561,11 @@ public class DriverPerformanceBean extends BasePerformanceBean {
     }
 
     public DeviceBean getDeviceBean() {
+        Vehicle vehicle = vehicleBean.getVehicleDAO().findByDriverID(getDriverID());
+        
+        if(null == deviceBean.getDeviceID() && null != vehicle){
+            deviceBean.loadDeviceBean(vehicle);
+        }
         return deviceBean;
     }
 
