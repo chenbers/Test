@@ -2,6 +2,7 @@ package com.inthinc.pro.util;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -18,7 +19,7 @@ public class ReportsUtil {
 
     @Autowired
     private GroupDAOAdapter groupDAOAdapter;
-
+    @Deprecated
     public Response checkParameters(Integer groupID, Date startDate, Date endDate) {
         Response res = null;
 
@@ -34,6 +35,59 @@ public class ReportsUtil {
                 }
             } catch (AccessDeniedException e) {
                 res = Response.status(Status.FORBIDDEN).build();
+            }
+        }
+
+        return res;
+    }
+
+    public Response checkParametersMultiGroup(List<Integer> groupIDList, Date startDate, Date endDate) {
+        Response res = null;
+
+        if (groupIDList == null  || groupIDList.isEmpty() || startDate == null || endDate == null || hasNegativeIDS(groupIDList) || endDate.before(startDate)) {
+
+            res = Response.status(Status.BAD_REQUEST).build();
+
+        } else {
+            try {                          
+                if (noGroupExists(groupIDList)) {
+                    res = Response.status(Status.NOT_FOUND).build();
+                }
+            } catch (AccessDeniedException e) {
+                res = Response.status(Status.FORBIDDEN).build();
+            }
+        }
+
+        return res;
+    }
+
+    private boolean noGroupExists(List<Integer> groupIDList) {
+
+        boolean res = true;
+
+        if(!groupIDList.isEmpty()) {
+            for (Integer groupID : groupIDList) {
+                Group group = groupDAOAdapter.findByID(groupID);
+                // This group exists in the backend
+                if (group != null) {
+                    return false;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    private boolean hasNegativeIDS(List<Integer> groupIDList) {
+        boolean res = false;
+
+        if (!groupIDList.isEmpty()) {
+            for (Integer groupID : groupIDList) {
+                if(groupID < 0 ) {
+                    res = true;
+                    break;
+                }
+
             }
         }
 

@@ -76,13 +76,20 @@ public class ReportsFacadeImpl implements ReportsFacade {
 
     @SuppressWarnings("unchecked")
     @Override
+    @Deprecated
     public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly) {
-        List groupIDList = new ArrayList();
+        List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(groupID);
         ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
         return criteria.getMainDataset();
     }
-
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+        ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
+        return criteria.getMainDataset();
+    }
     /**
      * {@inheritDoc}
      * 

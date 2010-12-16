@@ -18,8 +18,11 @@ public interface ReportsFacade {
 
     List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval);
 
+    List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly);
+   
+    @Deprecated
     List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly);
-
+    
     List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly);
 
     List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(Integer groupID, Interval interval, boolean dotOnly);

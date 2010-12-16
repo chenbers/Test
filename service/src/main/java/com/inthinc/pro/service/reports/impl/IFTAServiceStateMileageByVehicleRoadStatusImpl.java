@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.util.GroupList;
 import com.inthinc.pro.util.ReportsUtil;
 
 @Component
@@ -39,8 +40,16 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServ
      * @return javax.ws.rs.core.Response to return the client
      */
     Response getStateMileageByVehicleRoadStatusWithFullParameters(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
+             
+              // Creating a GroupList with only one group ID.
+              GroupList groupList = new GroupList();
+             groupList.getValueList().add(groupID);
+             return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, iftaOnly);
+    }
+    
+    Response getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(List<Integer> groupList, Date startDate, Date endDate, boolean iftaOnly) {
 
-        Response response = reportsUtil.checkParameters(groupID, startDate, endDate);
+        Response response = reportsUtil.checkParametersMultiGroup(groupList, startDate, endDate);
 
         // Some validation errors found
         if (response != null) {
@@ -52,7 +61,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServ
 
         Interval interval = new Interval(startDate.getTime(), endDate.getTime());
         try {
-            list = reportsFacade.getStateMileageByVehicleRoadStatus(groupID, interval, iftaOnly);
+            list = reportsFacade.getStateMileageByVehicleRoadStatus(groupList, interval, iftaOnly);
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -96,5 +105,15 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServ
         startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
 
         return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate.getTime(), today.getTime(), false);
+    }
+    
+    @Override
+    public Response getStateMileageByVehicleRoadStatusDefaultsMultiGroup(GroupList groupList) {
+        Calendar today = reportsUtil.getMidnight();
+
+        Calendar startDate = reportsUtil.getMidnight();
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
+        
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), false);
     }
 }
