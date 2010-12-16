@@ -198,7 +198,7 @@ public class MessagesBean extends BaseBean {
                     Device d = deviceDAO.findByID(v.getDeviceID());
                     if (d!=null && d.isTextMsgReceiveCapable()) {
                         SelectItem si = new SelectItem();
-                        si.setLabel(v.getFullName() != null ? v.getFullName() : MessageUtil.getMessageString("unknown_vehicle"));
+                        si.setLabel(v.getName() != null ? v.getName() : MessageUtil.getMessageString("unknown_vehicle"));
                         si.setValue(v.getVehicleID());
                         vehicleSelectFromList.add(si);
                     }
