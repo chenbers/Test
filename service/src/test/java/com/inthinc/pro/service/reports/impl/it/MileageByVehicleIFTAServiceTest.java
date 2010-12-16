@@ -1,11 +1,6 @@
 package com.inthinc.pro.service.reports.impl.it;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
-
-import javax.ws.rs.core.Response.Status;
 
 import org.jboss.resteasy.client.ClientResponse;
 import org.junit.Test;

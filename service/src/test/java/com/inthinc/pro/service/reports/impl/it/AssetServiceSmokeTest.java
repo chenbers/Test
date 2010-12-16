@@ -31,8 +31,6 @@ public class AssetServiceSmokeTest {
     private static final int SAMPLE_GROUP_ID = 12;
     private static final int START_ROW = 1;
     private static final int END_ROW = 10;
-    @SuppressWarnings("unused")
-    private static final int STATUS_OK = 200;
     private static final int STATUS_BAD_REQUEST = 400;
 
     private static int port;
