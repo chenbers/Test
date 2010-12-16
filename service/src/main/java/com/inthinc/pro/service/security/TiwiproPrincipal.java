@@ -20,6 +20,7 @@ public class TiwiproPrincipal {
 
     /*
      * TODO For dev purposes only. Remove once implementation in place.
+     * User TEST_622 has been choosen arbitrarily as a DEV admin --> needs to be fixed.
      */
     public static final String ADMIN_BACKDOOR_USERNAME = "TEST_622";
 
@@ -76,7 +77,6 @@ public class TiwiproPrincipal {
     public boolean isInthincUser() {
         // TODO: Remove backdoor once implemented,
         // need to determine how to allow for an inthinc role at a later time
-        // User TEST_622 has been choosen arbitrarily as a DEV admin --> needs to be fixed.
         return getUser().getUsername().equalsIgnoreCase(ADMIN_BACKDOOR_USERNAME);
     }
 

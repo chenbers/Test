@@ -12,7 +12,7 @@ public class GroupList{
 
     @XmlElement(name="groupID")
     public List<Integer> getValueList() {
-        return valueList;
+        return this.valueList;
     }
     
     public void setValue(List<Integer> value) {
@@ -20,10 +20,10 @@ public class GroupList{
     }
     
     public GroupList() {
-        valueList = new ArrayList<Integer>();
+        this.valueList = new ArrayList<Integer>();
     }
     
     public GroupList(List<Integer> l) {
-        valueList = l;
+        this.valueList = l;
     }
 }
