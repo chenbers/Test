@@ -18,6 +18,10 @@ import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
  */
 public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria {
 
+    public static final int POSITIVE = 1;
+    public static final int NEGATIVE = -1;
+    public static final int EQUAL = 0;
+
     /**
      * Default constructor.
      * 
@@ -61,13 +65,39 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
 
         @Override
         public int compare(StateMileageCompareByGroup o1, StateMileageCompareByGroup o2) {
-            int sortOrder = o1.getGroupName().compareTo(o2.getGroupName());
+            int sortOrder;
+            
+            if( o1.getGroupName() == null && o2.getGroupName() ==  null ) {
+                sortOrder = EQUAL;
+            }
+            else if(o1.getGroupName() == null && o2.getGroupName() !=  null ) {
+                sortOrder = POSITIVE;
+            }
+            else {
+                sortOrder = o1.getGroupName().compareTo(o2.getGroupName());
+            }
+            
+            if (sortOrder == EQUAL) {
+                if( o1.getMonth() == null && o2.getMonth() ==  null ) {
+                    sortOrder = EQUAL;
+                }
+                else if(o1.getMonth() == null && o2.getMonth() !=  null ) {
+                    sortOrder = POSITIVE;
+                }
+                else {
+                    sortOrder = o1.getMonth().compareTo(o2.getMonth());
+                }
 
-            if (sortOrder == 0) {
-                sortOrder = o1.getMonth().compareTo(o2.getMonth());
-
-                if (sortOrder == 0) {
-                    sortOrder = o1.getState().compareTo(o2.getState());
+                if (sortOrder == EQUAL) {
+                    if( o1.getState() == null && o2.getState() ==  null ) {
+                        sortOrder = EQUAL;
+                    }
+                    else if(o1.getState() == null && o2.getState() !=  null ) {
+                        sortOrder = POSITIVE;
+                    }
+                    else {
+                        sortOrder = o1.getState().compareTo(o2.getState());
+                    }
                 }
             }
 
