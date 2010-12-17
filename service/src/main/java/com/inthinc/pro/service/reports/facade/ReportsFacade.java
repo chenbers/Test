@@ -17,8 +17,6 @@ import com.inthinc.pro.reports.performance.model.TenHoursViolation;
  */
 public interface ReportsFacade {
 
-    int DAYS_BACK = 6;
-
     List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval);
    
     @Deprecated
@@ -28,9 +26,9 @@ public interface ReportsFacade {
     
     List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
-    List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
+    List<StateMileageCompareByGroup> getStateMileageGroupComparison(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
-    List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly);
+    List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
     @Deprecated
     List<MileageByVehicle> getStateMileageByVehicleByMonth(Integer groupID, Interval interval, boolean dotOnly);

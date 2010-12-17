@@ -70,7 +70,7 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
         // create interval dates
         Calendar endDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.DAY_OF_MONTH, -ReportsFacade.DAYS_BACK);
+        startDate.add(Calendar.DAY_OF_MONTH, -6);
         
         final TenHoursViolation violation = new TenHoursViolation();
         

@@ -23,7 +23,8 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
 @Component
 public class PerformanceServiceImpl implements PerformanceService {
 
-	private static Logger logger = Logger.getLogger(PerformanceServiceImpl.class);
+	private static final Integer DAYS_BACK = -6;
+    private static Logger logger = Logger.getLogger(PerformanceServiceImpl.class);
     @Autowired private ReportsFacade reportsFacade;
     
     /**
@@ -34,7 +35,7 @@ public class PerformanceServiceImpl implements PerformanceService {
     public Response getTenHourViolations(Integer groupID) {
         Calendar endDate = Calendar.getInstance();
         Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.DAY_OF_MONTH, -ReportsFacade.DAYS_BACK);
+        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
         
         return this.getTenHourViolations(groupID, startDate.getTime(), endDate.getTime());
     }

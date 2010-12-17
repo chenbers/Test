@@ -14,19 +14,19 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
-import com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison;
+import com.inthinc.pro.service.reports.IFTAServiceStateMileageGroupComparison;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.ReportsUtil;
 import common.Logger;
 
 @Component
-public class IFTAServiceStateMileageByVehicleGroupComparisonImpl extends BaseIFTAServiceImpl 
-    implements IFTAServiceStateMileageByVehicleGroupComparison {
-    private static Logger logger = Logger.getLogger(IFTAServiceStateMileageByVehicleGroupComparisonImpl.class); 
+public class IFTAServiceStateMileageGroupComparisonImpl extends BaseIFTAServiceImpl 
+    implements IFTAServiceStateMileageGroupComparison {
+    private static Logger logger = Logger.getLogger(IFTAServiceStateMileageGroupComparisonImpl.class); 
 
     @Autowired
-    public IFTAServiceStateMileageByVehicleGroupComparisonImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
+    public IFTAServiceStateMileageGroupComparisonImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
         super(reportsFacade, reportsUtil);
     }
 
@@ -37,7 +37,7 @@ public class IFTAServiceStateMileageByVehicleGroupComparisonImpl extends BaseIFT
 
         Interval interval = getInterval(startDate, endDate);
         try {
-            list = reportsFacade.getStateMileageByVehicleStateComparison(groupID, interval, iftaOnly, locale, measurementType);
+            list = reportsFacade.getStateMileageGroupComparison(groupID, interval, iftaOnly, locale, measurementType);
         } catch (Exception e) {
             logger.error(e.toString() + " for groupID:" + groupID + ", interval:" + interval 
                     + ", iftaOnly:" + iftaOnly + ", locale:" + locale + ", measurementType: " + measurementType);
@@ -52,7 +52,7 @@ public class IFTAServiceStateMileageByVehicleGroupComparisonImpl extends BaseIFT
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison#getStateMileageByVehicleStateComparisonWithIfta(java.lang.Integer, java.util.Locale, com.inthinc.pro.model.MeasurementType)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageGroupComparison#getStateMileageByVehicleStateComparisonWithIfta(java.lang.Integer, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
     @ValidParams
@@ -62,7 +62,7 @@ public class IFTAServiceStateMileageByVehicleGroupComparisonImpl extends BaseIFT
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison#getStateMileageByVehicleStateComparisonWithIftaAndDates(java.lang.Integer, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageGroupComparison#getStateMileageByVehicleStateComparisonWithIftaAndDates(java.lang.Integer, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
     @ValidParams
@@ -73,7 +73,7 @@ public class IFTAServiceStateMileageByVehicleGroupComparisonImpl extends BaseIFT
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison#getStateMileageByVehicleStateComparisonWithDates(java.lang.Integer, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageGroupComparison#getStateMileageByVehicleStateComparisonWithDates(java.lang.Integer, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
     @ValidParams
@@ -84,7 +84,7 @@ public class IFTAServiceStateMileageByVehicleGroupComparisonImpl extends BaseIFT
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison#getStateMileageByVehicleStateComparisonDefaults(java.lang.Integer, java.util.Locale, com.inthinc.pro.model.MeasurementType)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageGroupComparison#getStateMileageByVehicleStateComparisonDefaults(java.lang.Integer, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
     @ValidParams

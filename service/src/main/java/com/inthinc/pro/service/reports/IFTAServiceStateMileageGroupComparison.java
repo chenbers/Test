@@ -14,11 +14,10 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.annotations.DateFormat;
 
 /**
- * Interface for IFTA/DOT Group Comparison by State-Province Report Services.
+ * Interface for IFTA/DOT State Mileage Group Comparison by State-Province Report Services.
  */
 @Produces("application/xml")
-@Path("/group/{groupID}/report/ifta/stateComparison")
-public interface IFTAServiceStateMileageByVehicleGroupComparison {
+public interface IFTAServiceStateMileageGroupComparison {
     String DATE_FORMAT = "yyyyMMdd";
 
     /**
@@ -31,7 +30,7 @@ public interface IFTAServiceStateMileageByVehicleGroupComparison {
      * @param endDate
      *            the end date in format "yyyyMMdd" as Path Parameter
      * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     *            the required user locale from Query string, ex: locale=fr
      * @param measurementType 
      *            the required user measurementType from Query string, ex: measurementType=METRIC
      * 
@@ -40,7 +39,7 @@ public interface IFTAServiceStateMileageByVehicleGroupComparison {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/iftaOnly/{startDate}/{endDate}")
+    @Path("/group/{groupID}/report/ifta/stateComparison/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonWithIftaAndDates(@PathParam("groupID") Integer groupID, 
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
@@ -54,7 +53,7 @@ public interface IFTAServiceStateMileageByVehicleGroupComparison {
      * @param groupID
      *            the Group ID as Path Parameter
      * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     *            the required user locale from Query string, ex: locale=fr
      * @param measurementType 
      *            the required user measurementType from Query string, ex: measurementType=METRIC
      * 
@@ -63,7 +62,7 @@ public interface IFTAServiceStateMileageByVehicleGroupComparison {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/iftaOnly")
+    @Path("/group/{groupID}/report/ifta/stateComparison/iftaOnly")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonWithIfta(@PathParam("groupID") Integer groupID,
             @QueryParam("locale") Locale locale,
@@ -75,7 +74,7 @@ public interface IFTAServiceStateMileageByVehicleGroupComparison {
      * @param groupID
      *            the Group ID as Path Parameter
      * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     *            the required user locale from Query string, ex: locale=fr
      * @param measurementType 
      *            the required user measurementType from Query string, ex: measurementType=METRIC
      * 
@@ -84,7 +83,7 @@ public interface IFTAServiceStateMileageByVehicleGroupComparison {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/")
+    @Path("/group/{groupID}/report/ifta/stateComparison")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonDefaults(@PathParam("groupID") Integer groupID,
             @QueryParam("locale") Locale locale,
@@ -100,7 +99,7 @@ public interface IFTAServiceStateMileageByVehicleGroupComparison {
      * @param endDate
      *            the end date in format "yyyyMMdd" as Path Parameter
      * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     *            the required user locale from Query string, ex: locale=fr
      * @param measurementType 
      *            the required user measurementType from Query string, ex: measurementType=METRIC
      * 
@@ -109,7 +108,7 @@ public interface IFTAServiceStateMileageByVehicleGroupComparison {
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
      */
     @GET
-    @Path("/{startDate}/{endDate}")
+    @Path("/group/{groupID}/report/ifta/stateComparison/{startDate}/{endDate}")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonWithDates(@PathParam("groupID") Integer groupID, 
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,

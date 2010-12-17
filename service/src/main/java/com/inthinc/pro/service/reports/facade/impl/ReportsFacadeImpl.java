@@ -110,7 +110,7 @@ public class ReportsFacadeImpl implements ReportsFacade {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(Integer groupID, Interval interval, 
+    public List<StateMileageCompareByGroup> getStateMileageGroupComparison(Integer groupID, Interval interval, 
             boolean dotOnly, Locale locale, MeasurementType measurementType) {
         List groupIDList = new ArrayList();
         groupIDList.add(groupID);
@@ -121,10 +121,12 @@ public class ReportsFacadeImpl implements ReportsFacade {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly) {
+    public List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, 
+            boolean dotOnly, Locale locale, MeasurementType measurementType) {
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(groupID);
-        ReportCriteria criteria = reportService.getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
+        ReportCriteria criteria = reportService.getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(), 
+                groupIDList, interval, locale, measurementType, dotOnly);
         return criteria.getMainDataset();
     }
     

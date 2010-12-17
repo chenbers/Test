@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,7 +24,6 @@ import org.junit.Test;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
-import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.util.GroupList;
@@ -43,13 +41,11 @@ public class IFTAServiceImplTest extends BaseUnitTest {
     private ReportsUtil reportsUtilMock;
 
     IFTAServiceStateMileageByVehicleRoadStatusImpl roadStatusServiceSUT;
-    IFTAServiceStateMileageByVehicleGroupComparisonImpl groupComparisonServiceSUT;
     IFTAServiceStateMileageByVehicleMonthImpl mileageByMonthServiceSUT;
 
     @Before
     public void setUp() {
         roadStatusServiceSUT = new IFTAServiceStateMileageByVehicleRoadStatusImpl(reportsFacadeMock, reportsUtilMock);
-        groupComparisonServiceSUT = new IFTAServiceStateMileageByVehicleGroupComparisonImpl(reportsFacadeMock, reportsUtilMock);
         mileageByMonthServiceSUT = new IFTAServiceStateMileageByVehicleMonthImpl(reportsFacadeMock, reportsUtilMock);
     }
 

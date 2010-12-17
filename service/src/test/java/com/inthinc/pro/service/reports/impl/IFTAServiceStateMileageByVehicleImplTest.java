@@ -4,8 +4,8 @@ import static junit.framework.Assert.assertEquals;
 import static mockit.Mockit.tearDownMocks;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -19,13 +19,16 @@ import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.util.ReportsUtil;
 
-public class StateMileageByVehicleIFTAServiceImplTest {
+public class IFTAServiceStateMileageByVehicleImplTest {
 
     private static final Integer SAMPLE_GROUP_ID = 77;
     private static final int SIX_UNITS = 6;
+    private final Locale locale = Locale.US;
+    private final MeasurementType measureType = MeasurementType.ENGLISH;
 
     @Mocked
     private ReportsUtil reportsUtilMock;
@@ -56,17 +59,12 @@ public class StateMileageByVehicleIFTAServiceImplTest {
         // Expectations & stubbing
         new Expectations() {
             {
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsUtilMock.checkParameters(withEqual(SAMPLE_GROUP_ID), expectedStartDate, expectedEndDate);
-                result = null;
-                reportsFacadeMock.getStateMileageByVehicle(withEqual(SAMPLE_GROUP_ID), withEqual(interval), withEqual(false));
+                reportsFacadeMock.getStateMileageByVehicle(withEqual(SAMPLE_GROUP_ID), 
+                        withEqual(interval), withEqual(false), locale, measureType);
             }
         };
 
-        iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID);
+        iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID, locale, measureType);
     }
 
     @Test
@@ -81,11 +79,13 @@ public class StateMileageByVehicleIFTAServiceImplTest {
         // Expectations & stubbing
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicle(withEqual(SAMPLE_GROUP_ID), withEqual(interval), withEqual(false));
+                reportsFacadeMock.getStateMileageByVehicle(withEqual(SAMPLE_GROUP_ID), 
+                        withEqual(interval), withEqual(false), locale, measureType);
             }
         };
 
-        iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
+        iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, 
+                expectedStartDate, expectedEndDate, locale, measureType);
     }
 
     @Test
@@ -100,16 +100,12 @@ public class StateMileageByVehicleIFTAServiceImplTest {
         // Expectations & stubbing
         new Expectations() {
             {
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsUtilMock.checkParameters(withEqual(SAMPLE_GROUP_ID), expectedStartDate, expectedEndDate);
-                reportsFacadeMock.getStateMileageByVehicle(withEqual(SAMPLE_GROUP_ID), withEqual(interval), withEqual(true));
+                reportsFacadeMock.getStateMileageByVehicle(withEqual(SAMPLE_GROUP_ID), 
+                        withEqual(interval), withEqual(true), locale, measureType);
             }
         };
 
-        iftaService.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID);
+        iftaService.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID, locale, measureType);
     }
 
     @Test
@@ -124,11 +120,13 @@ public class StateMileageByVehicleIFTAServiceImplTest {
         // Expectations & stubbing
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicle(withEqual(SAMPLE_GROUP_ID), withEqual(interval), withEqual(true));
+                reportsFacadeMock.getStateMileageByVehicle(withEqual(SAMPLE_GROUP_ID), 
+                        withEqual(interval), withEqual(true), locale, measureType);
             }
         };
 
-        iftaService.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
+        iftaService.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, 
+                expectedStartDate, expectedEndDate, locale, measureType);
     }
 
     @SuppressWarnings("unchecked")
@@ -143,26 +141,24 @@ public class StateMileageByVehicleIFTAServiceImplTest {
         // Expectations & stubbing
         new NonStrictExpectations() {
             {
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsUtilMock.checkParameters(withEqual(SAMPLE_GROUP_ID), expectedStartDate, expectedEndDate);
-                reportsFacadeMock.getStateMileageByVehicle((Integer) any, (Interval) any, anyBoolean);
+                reportsFacadeMock.getStateMileageByVehicle((Integer) any, 
+                        (Interval) any, anyBoolean, locale, measureType);
                 result = new ArrayList();
             }
         };
 
-        Response response = iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID);
+        Response response = iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID, locale, measureType);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
-        response = iftaService.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID);
+        response = iftaService.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID, locale, measureType);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
-        response = iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
+        response = iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, 
+                expectedStartDate, expectedEndDate, locale, measureType);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
-        response = iftaService.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
+        response = iftaService.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, 
+                expectedStartDate, expectedEndDate, locale, measureType);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
@@ -177,26 +173,24 @@ public class StateMileageByVehicleIFTAServiceImplTest {
         // Expectations & stubbing
         new NonStrictExpectations() {
             {
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsUtilMock.checkParameters(withEqual(SAMPLE_GROUP_ID), expectedStartDate, expectedEndDate);
-                reportsFacadeMock.getStateMileageByVehicle((Integer) any, (Interval) any, anyBoolean);
+                reportsFacadeMock.getStateMileageByVehicle((Integer) any,
+                        (Interval) any, anyBoolean, locale, measureType);
                 result = null;
             }
         };
 
-        Response response = iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID);
+        Response response = iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID, locale, measureType);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
-        response = iftaService.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID);
+        response = iftaService.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID, locale, measureType);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
-        response = iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
+        response = iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, 
+                expectedStartDate, expectedEndDate, locale, measureType);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
 
-        response = iftaService.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
+        response = iftaService.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, 
+                expectedStartDate, expectedEndDate, locale, measureType);
         assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
@@ -211,34 +205,24 @@ public class StateMileageByVehicleIFTAServiceImplTest {
         // Expectations & stubbing
         new NonStrictExpectations() {
             {
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsUtilMock.getMidnight();
-                result = getMidnight();
-                reportsFacadeMock.getStateMileageByVehicle((Integer) any, (Interval) any, anyBoolean);
+                reportsFacadeMock.getStateMileageByVehicle((Integer) any,
+                        (Interval) any, anyBoolean, locale, measureType);
                 result = new RuntimeException("Dummy exception");
             }
         };
 
-        Response response = iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID);
+        Response response = iftaService.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID, locale, measureType);
         assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 
-        response = iftaService.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID);
+        response = iftaService.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID, locale, measureType);
         assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 
-        response = iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
+        response = iftaService.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID,
+                expectedStartDate, expectedEndDate, locale, measureType);
         assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
 
-        response = iftaService.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, expectedStartDate, expectedEndDate);
+        response = iftaService.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID,
+                expectedStartDate, expectedEndDate, locale, measureType);
         assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-    }
-
-    private Calendar getMidnight() {
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0); // set hour to midnight
-        today.set(Calendar.MINUTE, 0); // set minute in hour
-        today.set(Calendar.SECOND, 0); // set second in minute
-        today.set(Calendar.MILLISECOND, 0); // set millis in second
-        return today;
     }
 }
