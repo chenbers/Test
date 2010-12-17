@@ -160,6 +160,17 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         return alertView;
     }
+    private static void ensureEmptySlot(List<String> list) {
+        System.out.println("private static void ensureEmptySlot(List<String> "+list+")");
+        if(null == list) list = new ArrayList<String>();
+        if(!list.isEmpty()) {
+            String lastString = null;
+            lastString = list.get(list.size()-1);
+            
+            if(!"".equals(lastString))
+                list.add("");
+        }
+    }
     private EventSubCategory deriveEventSubCategory(RedFlagAlert flag){
         
         AlertMessageType alertMessageType = flag.getTypes().get(0);
@@ -250,7 +261,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     public String save() {
         final Map<String, Boolean> updateField = getUpdateField();
         setAlertTypesFromSubCategory();
-        getItem().setEmailTos();
         if (isBatchEdit()) {
             boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
             updateField.put("severityLevel", updateType);
@@ -419,7 +429,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
                 flag.setSpeedSettings(null);
             }
-            
+            if(flag.getEmailTos() != null && !flag.getEmailTos().isEmpty()) {
+                flag.getEmailTos().remove("");
+            }
+            flag.setEmailTo(flag.getEmailTos());
             if (create)
                 flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
             else
@@ -845,13 +858,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public List<String> getEmailTos() {
-            if(null != emailTos) {
-                String lastString = null;
-                if(emailTos.size()>0)
-                    lastString = emailTos.get(emailTos.size()-1);
-                if(!"".equals(lastString))
-                    emailTos.add("");
-            }
             return emailTos;
         }
 
@@ -860,7 +866,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         private void setEmailTos(){
-            
             Iterator<String> it = emailTos.iterator();
             while(it.hasNext()){
                 if (it.next().isEmpty()) it.remove();
