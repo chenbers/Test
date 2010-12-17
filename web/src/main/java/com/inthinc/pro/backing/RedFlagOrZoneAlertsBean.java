@@ -661,6 +661,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 logger.error("addEmailTosSlot() failed");
             }
         }
+        public String getZonesString() {
+            return getZoneName();
+        }
         @Override
         public Integer getId() {
             // TODO Auto-generated method stub

@@ -249,7 +249,8 @@
                             </tr>
                             <tr class="tableEven"><td>
                             <rich:dataList value="#{redFlagOrZoneAlertsBean.item.types}" var="type" >
-                                <h:outputText value="#{messages[type]}" />
+                                <h:outputText value="#{messages[type]}" /><rich:spacer width="5"/>
+                                <h:outputText value="#{redFlagOrZoneAlertsBean.item.zonesString}" />
                             </rich:dataList>
                              </td> 
                             </tr>
