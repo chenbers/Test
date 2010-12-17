@@ -18,9 +18,9 @@ import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
  */
 public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria {
 
-    public static final int POSITIVE = 1;
-    public static final int NEGATIVE = -1;
-    public static final int EQUAL = 0;
+    public static final int COMPARISON_AFTER = 1;
+    public static final int COMPARISON_BEFORE = -1;
+    public static final int COMPARISON_SAME = 0;
 
     /**
      * Default constructor.
@@ -62,46 +62,39 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
 
     /* Comparator for StateMileageByVehicle report */
     class StateMileageCompareByGroupComparator implements Comparator<StateMileageCompareByGroup> {
-
+ 
         @Override
         public int compare(StateMileageCompareByGroup o1, StateMileageCompareByGroup o2) {
-            int sortOrder;
             
-            if( o1.getGroupName() == null && o2.getGroupName() ==  null ) {
-                sortOrder = EQUAL;
-            }
-            else if(o1.getGroupName() == null && o2.getGroupName() !=  null ) {
-                sortOrder = POSITIVE;
-            }
-            else {
-                sortOrder = o1.getGroupName().compareTo(o2.getGroupName());
-            }
-            
-            if (sortOrder == EQUAL) {
-                if( o1.getMonth() == null && o2.getMonth() ==  null ) {
-                    sortOrder = EQUAL;
-                }
-                else if(o1.getMonth() == null && o2.getMonth() !=  null ) {
-                    sortOrder = POSITIVE;
-                }
-                else {
-                    sortOrder = o1.getMonth().compareTo(o2.getMonth());
-                }
+            // Checking for nulls on properties. Null values always goes at the end.
+            int comparison = compareValues(o1.getGroupName(), o2.getGroupName());
 
-                if (sortOrder == EQUAL) {
-                    if( o1.getState() == null && o2.getState() ==  null ) {
-                        sortOrder = EQUAL;
-                    }
-                    else if(o1.getState() == null && o2.getState() !=  null ) {
-                        sortOrder = POSITIVE;
-                    }
-                    else {
-                        sortOrder = o1.getState().compareTo(o2.getState());
-                    }
+            if (comparison == 0) {
+                comparison = compareValues(o1.getMonth(), o2.getMonth());
+                
+                if (comparison == 0) {
+                    comparison = compareValues(o1.getState(), o2.getState());
                 }
             }
 
-            return sortOrder;
+            return comparison;
+        }
+        
+        @SuppressWarnings("unchecked")
+        private int compareValues(Comparable o1, Object o2) {
+            if (o1 == null) {
+                if (o2 != null) {
+                    return COMPARISON_AFTER;
+                } else {
+                    return COMPARISON_SAME;
+                }
+            } else {
+                if (o2 == null) {
+                    return COMPARISON_BEFORE;
+                } else {
+                    return o1.compareTo(o2);
+                }
+            }
         }
     }
 }
