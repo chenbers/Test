@@ -41,8 +41,6 @@ public class Vehicle extends BaseEntity
     private Boolean           dot;
     private Boolean           ifta;
     private Integer           zoneType; //1=light, 2=heavy -TODO make enum for this
-    private Date              warrantyStart;
-    private Date              warrantyStop;
     
     public Vehicle()
     {
@@ -71,22 +69,6 @@ public class Vehicle extends BaseEntity
 
     public void setZoneType(Integer zoneType) {
         this.zoneType = zoneType;
-    }
-
-    public Date getWarrantyStart() {
-        return warrantyStart;
-    }
-
-    public void setWarrantyStart(Date warrantyStart) {
-        this.warrantyStart = warrantyStart;
-    }
-
-    public Date getWarrantyStop() {
-        return warrantyStop;
-    }
-
-    public void setWarrantyStop(Date warrantyStop) {
-        this.warrantyStop = warrantyStop;
     }
 
     public static long getSerialversionuid() {

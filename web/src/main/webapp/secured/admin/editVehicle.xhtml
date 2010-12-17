@@ -230,7 +230,7 @@
                                   </h:inputText>
                                 </td>
                               </tr>
-                         <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/editProperties.xhtml">
+                         <ui:include src="../../includes/#{vehiclesBean.item.productTypeName}/editProperties.xhtml">
                          	 <ui:param name="vehiclesBean" value="#{vehiclesBean}"/>
                              <ui:param name="editableVehicleSettings" value="#{vehiclesBean.item.editableVehicleSettings}" />
                              <ui:param name="vehicleSettingManager" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID]}" />
@@ -328,8 +328,8 @@
                  <div class="add_section_title"><h:outputText value="#{messages.organization_deviceAssignments}" /></div>
                   <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                     <tr>
-                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductVersion}" /></td>
-                     <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.productType.name}" /></td>
+                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductType}" /></td>
+                     <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.productType.description}" /></td>
                     </tr>
                     <tr>
                       <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>
@@ -379,8 +379,8 @@
 <!--                      </ui:fragment>-->
                       
                        <h:panelGroup id="speeedSettingsPanel">
-                        <ui:fragment rendered="#{not vehiclesBean.batchEdit or (vehiclesBean.batchEdit and vehiclesBean.batchProductChoice ne null)}">
-                         <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/speedSensitivity.xhtml">
+                        <ui:fragment rendered="#{not vehiclesBean.batchEdit or (vehiclesBean.batchEdit and vehiclesBean.batchEditProductChoice ne null)}">
+                         <ui:include src="../../includes/#{vehiclesBean.item.productTypeName}/speedSensitivity.xhtml">
                              <ui:param name="editableVehicleSettings" value="#{vehiclesBean.item.editableVehicleSettings}" />
                              <ui:param name="vehicleSettingManager" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID]}" />
                              <ui:param name="batchEdit" value="#{vehiclesBean.batchEdit}" />

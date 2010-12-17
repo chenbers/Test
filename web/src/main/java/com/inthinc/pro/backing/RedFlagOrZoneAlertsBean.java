@@ -67,6 +67,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         return AlertTypeSelectItems.INSTANCE.getSelectItems();
     }
+    @Override
+    public void initFilterValues(){
+        super.initFilterValues();
+        for(String column:AVAILABLE_COLUMNS){
+            filterValues.put(column, null);
+        }
+    }
 
     @Override
     protected List<RedFlagOrZoneAlertView> loadItems() {

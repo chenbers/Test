@@ -1,11 +1,14 @@
 package com.inthinc.pro.backing;
 
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +19,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -48,11 +50,12 @@ import com.inthinc.pro.util.SelectItemUtil;
 /**
  * @author David Gileadi
  */
+@SuppressWarnings("unused")
 public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implements PersonChangeListener, Serializable
 {
     private static final long                     serialVersionUID       = 1L;
 
-    private static final List<String>             AVAILABLE_COLUMNS;
+    static final List<String>             AVAILABLE_COLUMNS;
     private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12, 13,18};
 
     private static final Map<String, String>      YEARS;
@@ -80,7 +83,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         AVAILABLE_COLUMNS.add("ephone");
         AVAILABLE_COLUMNS.add("DOT");
         AVAILABLE_COLUMNS.add("IFTA");
-        AVAILABLE_COLUMNS.add("productVersion");
+        AVAILABLE_COLUMNS.add("productType");
         
 
         // years
@@ -111,13 +114,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private List<Driver>                          drivers;
     private TreeMap<Integer, Boolean>             driverAssigned;
     
-    private String                                batchProductChoice;
     private ProductType                           batchEditProductChoice;
-    private String                                filterVehicleType;
-    private String                                filterState;
-    private String                                filterStatus;
-    private String                                filterDOT;
-    private String                                filterIFTA;
     
     // Stuff to do with vehicleSettings for the device
     private VehicleSettingsFactory              vehicleSettingsFactory;
@@ -131,41 +128,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         super.initBean();
     }
     @Override
-    public void doSelectAll() {
-
-        if (batchEditProductChoice == null){
-            
-             super.doSelectAll();
-        }
-        else{
-            
-            for(VehicleView vehicleView : filteredItems){
-                                   
-                vehicleView.setSelected(selectAll && vehicleView.editableVehicleSettings.getProductType().equals(batchEditProductChoice));
-            }
+    public void initFilterValues(){
+        super.initFilterValues();
+        for(String column:AVAILABLE_COLUMNS){
+            filterValues.put(column, null);
         }
     }
-
-    @Override
-    public boolean isSelectAll() {
+    public boolean isFilterProductChoice(ProductType productType){
         
-         if (batchEditProductChoice == null || getFilteredItems().size() == 0){
-        
-            return super.isSelectAll();
-        }
-        else{
-                
-            for(VehicleView vehicleView : filteredItems){
-                
-                if (!vehicleView.isSelected() && vehicleView.editableVehicleSettings.getProductType().equals(batchEditProductChoice))
-                    return false;
-            }
-            return true;
-        }
-    }
-    public boolean isBatchEditProductChoice(ProductType productType){
-        
-        return batchEditProductChoice == null || batchEditProductChoice.equals(productType.getName());
+        return filterValues.get("productType") == null || filterValues.get("productType").equals(productType);
     }
     public CacheBean getCacheBean() {
 		return cacheBean;
@@ -363,50 +334,53 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicle.setStatus(Status.ACTIVE);
         //TODO decide how to create add item
         VehicleView vehicleView = createVehicleView(vehicle);
-        if(batchEditProductChoice != null){
-            createSettingManagerForCreateItem();
-            vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
-        }
+//        if(batchEditProductChoice != null){
+//            createSettingManagerForCreateItem();
+//            vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
+//        }
         return vehicleView;
     }
 
     @Override
     public String batchEdit()
     {
-        setBatchEditProductChoice();
+        List<VehicleView> inViewItems = getInViewItems();
+        setBatchEditProductChoice(inViewItems);
         final String redirect = super.batchEdit();
        
         if(isBatchEdit()){
             getItem().setVehicleID(-1);
+            if(batchEditProductChoice != null){
+                createSettingManagerForCreateItem();
+                getItem().setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
+            }
         }
         return redirect;
     }
-    private void setBatchEditProductChoice(){
-        
-        if (batchEditProductChoice != null) return;
+    private void setBatchEditProductChoice(List<VehicleView> inViewItems){
+        batchEditProductChoice = null;
         ProductType productChoice = null;
         //set first value
-        int firstSelected = getFirstSelectedItem();
-        VehicleView firstSelectedVehicle = filteredItems.get(firstSelected);
+        int firstSelected = getFirstSelectedItem(inViewItems);
+        VehicleView firstSelectedVehicle = inViewItems.get(firstSelected);
         if(firstSelectedVehicle.getEditableVehicleSettings()!= null){
             productChoice = firstSelectedVehicle.getEditableVehicleSettings().getProductType();
         }
         if (productChoice == null) return;
-        for(VehicleView vehicleView : filteredItems){
+        for(VehicleView vehicleView : inViewItems){
             
             if (vehicleView.isSelected()){
                 
-                if (!(vehicleView.editableVehicleSettings != null) && 
-                        (vehicleView.editableVehicleSettings.getProductType() != null) &&
-                        (vehicleView.editableVehicleSettings.getProductType().equals(productChoice))){
-                    productChoice = null;
+                if ((vehicleView.editableVehicleSettings == null) || 
+                        (vehicleView.editableVehicleSettings.getProductType() == null) ||
+                        !(vehicleView.editableVehicleSettings.getProductType().equals(productChoice))){
                     return;
                 }
             }
         }
         batchEditProductChoice = productChoice;
     }
-    private int getFirstSelectedItem(){
+    private int getFirstSelectedItem(List<VehicleView> inViewItems){
         int firstSelected = 0;
         for(VehicleView vehicleView : filteredItems){
             
@@ -545,10 +519,16 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         boolean valid = true;
         final String required = "required";
         // Required fields check
-        if(!isBatchEdit() || (isBatchEdit() && (batchProductChoice != null) && !ProductType.UNKNOWN.getName().equals(batchProductChoice))){
-            valid = vehicleView.getEditableVehicleSettings().validateSaveItems(context, isBatchEdit(), getUpdateField());
+        if(!isBatchEdit()){
+            if((vehicleView.getEditableVehicleSettings() != null)){
+                valid = vehicleView.getEditableVehicleSettings().validateSaveItems(context, isBatchEdit(), getUpdateField());
+            }
         }
-
+        else {
+            if((filterValues.get("productType") != null) && !ProductType.UNKNOWN.getDescription().equals(filterValues.get("productType"))){
+                valid = vehicleView.getEditableVehicleSettings().validateSaveItems(context, isBatchEdit(), getUpdateField());
+            }
+        }
         if(vehicleView.getMake() == null || vehicleView.getMake().equals("")
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("make"))))
         {
@@ -556,24 +536,23 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             String summary = MessageUtil.getMessageString(required);
             context.addMessage("edit-form:editVehicle-make", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));
         }
-        
-        if(vehicleView.getName() == null || vehicleView.getName().equals("")
-                && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("make"))))
-        {
-            valid = false;
-            String summary = MessageUtil.getMessageString(required);
-            context.addMessage("edit-form:editVehicle-name", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));        
-        } else {
-            // Pattern to check for, note blank being sneaky on the end
-            Pattern pat = Pattern.compile("[a-zA-Z0-9 ]+");
-            Matcher mtch = pat.matcher(vehicleView.getName());
-            if ( !mtch.matches() ) {
+        if(!isBatchEdit()){
+            if(vehicleView.getName() == null || vehicleView.getName().equals("")) 
+            {
                 valid = false;
-                String summary = MessageUtil.getMessageString("vehicle_name_rules", getLocale());
-                context.addMessage("edit-form:editVehicle-name", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));                   
-            } 
+                String summary = MessageUtil.getMessageString(required);
+                context.addMessage("edit-form:editVehicle-name", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));        
+            } else {
+                // Pattern to check for, note blank being sneaky on the end
+                Pattern pat = Pattern.compile("[a-zA-Z0-9 ]+");
+                Matcher mtch = pat.matcher(vehicleView.getName());
+                if ( !mtch.matches() ) {
+                    valid = false;
+                    String summary = MessageUtil.getMessageString("vehicle_name_rules", getLocale());
+                    context.addMessage("edit-form:editVehicle-name", new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null));                   
+                } 
+            }
         }
-        
         if(vehicleView.getModel() == null || vehicleView.getModel().equals("")
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("model"))))
         {
@@ -710,12 +689,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public List<SelectItem> getStatusSelectItems() {
         return DeviceStatusSelectItems.INSTANCE.getSelectItems();
     }
-    public String getBatchProductChoice() {
-        return batchProductChoice;
-    }
-    public void setBatchProductChoice(String batchProductChoice) {
-        this.batchProductChoice = batchProductChoice;
-    }
     public List<SelectItem> getZoneTypeSelectItems()
     {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
@@ -746,28 +719,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         return SelectItemUtil.toList(AutoLogoff.class, false);
     }
+    public ProductType getBatchEditProductChoice() {
+        return batchEditProductChoice;
+    }
 
-    public void setFilterVehicleType(String filterVehicleType) {
-        this.filterVehicleType = filterVehicleType;
-    }
-    public String getFilterVehicleType() {
-        return filterVehicleType;
-    }
-    // TODO: REFACTOR -- this method is in several backing beans
-//    public TreeMap<String, Integer> getTeams()
-//    {        
-//    	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
-//	    for (final Group group : getGroupHierarchy().getGroupList())
-//	    	if (group.getType() == GroupType.TEAM) {
-//	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
-//	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
-//	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
-//	    		}
-//	    		teams.put(fullName, group.getGroupID());
-//    	}
-//	    return teams;
-//        
-//    }
     public static class VehicleView extends Vehicle implements EditItem
     {
         @Column(updateable = false)
@@ -809,9 +764,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             return getVehicleID();
         }
 
-        public String getProductVersion() {
+        public String getProductTypeName() {
             if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN.toString();
-            return editableVehicleSettings.getProductType().toString();
+            return editableVehicleSettings.getProductType().getDescription();
+        }
+        public ProductType getProductType() {
+            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN;
+            return editableVehicleSettings.getProductType();
         }
         @Override
         public Integer getWeight()
@@ -900,28 +859,4 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
     }
 
-    public String getFilterState() {
-        return filterState;
-    }
-    public void setFilterState(String filterState) {
-        this.filterState = filterState;
-    }
-    public String getFilterStatus() {
-        return filterStatus;
-    }
-    public void setFilterStatus(String filterStatus) {
-        this.filterStatus = filterStatus;
-    }
-    public String getFilterDOT() {
-        return filterDOT;
-    }
-    public void setFilterDOT(String filterDOT) {
-        this.filterDOT = filterDOT;
-    }
-    public String getFilterIFTA() {
-        return filterIFTA;
-    }
-    public void setFilterIFTA(String filterIFTA) {
-        this.filterIFTA = filterIFTA;
-    }
 }

@@ -22,7 +22,7 @@ public enum VehicleTypeSelectItems {
         vehicleTypesSelectItems.add(blankItem);
 
         for (VehicleType e : EnumSet.allOf(VehicleType.class)) {
-            vehicleTypesSelectItems.add(new SelectItem(e.getDescription(), e.getDescription()));
+            vehicleTypesSelectItems.add(new SelectItem(e, e.getDescription()));
         }
         selectItems = vehicleTypesSelectItems;
     }

@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing.ui;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -21,13 +20,13 @@ public enum ProductTypeSelectItems {
         
         List<SelectItem> productTypesSelectItems = new ArrayList<SelectItem>();
 
-        SelectItem blankItem = new SelectItem("", BLANK_SELECTION+MessageUtil.getMessageString("vehiclesHeader_productVersion"));
+        SelectItem blankItem = new SelectItem("", BLANK_SELECTION+MessageUtil.getMessageString("vehiclesHeader_productType"));
         blankItem.setEscape(false);
         productTypesSelectItems.add(blankItem);
 
-        for (ProductType e : EnumSet.allOf(ProductType.class))
+        for (ProductType e : ProductType.getSet())
         {
-            productTypesSelectItems.add(new SelectItem(e.getName(),e.getName()));
+            productTypesSelectItems.add(new SelectItem(e,e.getDescription()));
         }
         selectItems = productTypesSelectItems;
     }

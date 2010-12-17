@@ -22,7 +22,7 @@ public enum DeviceStatusSelectItems {
         deviceStatusSelectItems.add(blankItem);
 
         for (DeviceStatus e : EnumSet.allOf(DeviceStatus.class)) {
-            deviceStatusSelectItems.add(new SelectItem(initCap(e.getDescription()), initCap(e.getDescription())));
+            deviceStatusSelectItems.add(new SelectItem(e, initCap(e.getDescription())));
         }
         selectItems = deviceStatusSelectItems;
     }
@@ -30,7 +30,7 @@ public enum DeviceStatusSelectItems {
     public List<SelectItem> getSelectItems() {
         return selectItems;
     }
-    //TODO: jwimmer: there must be a better way to do this.  up against a deadline.
+    //TODO: jwimmer: there must be a better way to do this.  up against a deadline. 
     public static String initCap(String s) {
         StringBuilder results = new StringBuilder();
         String[] words = s.split(" ");

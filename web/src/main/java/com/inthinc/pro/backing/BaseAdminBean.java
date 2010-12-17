@@ -1,7 +1,9 @@
 package com.inthinc.pro.backing;
 
+import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.richfaces.component.html.HtmlDataTable;
+import org.springframework.beans.BeanUtils;
 import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.backing.ui.TableColumn;
@@ -55,12 +57,18 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     private TablePref<T>          tablePref;
     protected UserDAO             userDAO;
     protected List<SelectItem>   	  allGroupUsers;
+    protected Map<String,Object>      filterValues;
 
     public void initBean()
     {
         tablePref = new TablePref<T>(this);
-    }
+        initFilterValues();
 
+    }
+    public void initFilterValues(){
+        filterValues = new HashMap<String,Object>();
+    }
+    
     public void setGroupDAO(GroupDAO groupDAO)
     {
         this.groupDAO = groupDAO;
@@ -145,14 +153,14 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         return items;
     }
 
-    /**
-     * @return the filteredItems
-     */
-    public List<T> getFilteredItems()
-    {
-        getItems();
-        return filteredItems;
-    }
+//    /**
+//     * @return the filteredItems
+//     */
+//    public List<T> getFilteredItems()
+//    {
+//        getItems();
+//        return filteredItems;
+//    }
 
     /**
      * Load the list of items.
@@ -164,10 +172,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     /**
      * @return the number of filtered items.
      */
-    public int getItemCount()
-    {
-        return filteredItems.size();
-    }
+//    public int getItemCount()
+//    {
+//        return filteredItems.size();
+//    }
     
     public void refreshItems()
     {
@@ -414,7 +422,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             item = null;
             return getFinishedRedirect();
         }
-
+        
         // select no fields for update
         for (final String key : getUpdateField().keySet())
             updateField.put(key, false);
@@ -672,17 +680,17 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         return selected;
     }
 
-    /**
-     * @return Whether all filtered items are selected.
-     */
-    public boolean isSelectAll()
-    {
-        selectAll = getFilteredItems().size() > 0;
-        for (final T t : getFilteredItems())
-            if (!t.isSelected())
-                selectAll = false;
-        return selectAll;
-    }
+//    /**
+//     * @return Whether all filtered items are selected.
+//     */
+//    public boolean isSelectAll()
+//    {
+//        selectAll = getFilteredItems().size() > 0;
+//        for (final T t : getFilteredItems())
+//            if (!t.isSelected())
+//                selectAll = false;
+//        return selectAll;
+//    }
 
     /**
      * Selects or deselects all filtered items.
@@ -695,11 +703,17 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         this.selectAll = select;
     }
 
-    public void doSelectAll()
-    {
-        for (final T t : getFilteredItems())
-            t.setSelected(selectAll);
-    }
+//    public void doSelectAll()
+//    {
+//        for (final T t : getFilteredItems())
+//            t.setSelected(selectAll);
+//    }
+      public void doSelectAll() {
+      List<T> viewedItems = getInViewItems();
+      for(T t:viewedItems){
+          t.setSelected(selectAll);
+      }
+}
 
     /**
      * @return A new item for the user to populate on an "add" page.
@@ -846,6 +860,69 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public Boolean getAdmin()
     {
     	return getProUser().isAdmin();
+    }
+    protected List<T> getInViewItems(){
+        List<T> viewedItems = new ArrayList<T>(filteredItems);
+        Iterator<T> it = viewedItems.iterator();
+        while(it.hasNext()){
+            T itemView = it.next();
+            for (String filterField :filterValues.keySet()){
+                Object filterValue = filterValues.get(filterField);
+                if (filterValue != null){
+                    //check if the value for that column matches the selection
+                    Object field = getFieldValue(itemView,filterField);
+                    if (field != null && !field.equals(filterValue)){
+                       it.remove();
+                       break;
+                    }
+                }
+            }
+        }
+        return viewedItems;
+    }
+    @SuppressWarnings("unchecked")
+    private Object getFieldValue(Object object, String propertyName){
+        Class clazz = object.getClass();
+        try{
+            PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(clazz, propertyName);
+            Object [] nullArgs = {};
+            Object property = propertyDescriptor.getReadMethod().invoke(object, nullArgs);
+            
+            if (property instanceof Enum){
+                return ((Enum)property).name();
+            }
+            else{
+                return property;
+            }
+        }
+        catch(Exception e){
+            return null;
+        }
+        
+    }
+    public boolean isSelectAll() {
+        List<T> viewedItems = getInViewItems();
+        selectAll = viewedItems.size() > 0;
+        for(T vv:viewedItems){
+            if(!vv.isSelected()){
+                selectAll = false;
+                break;
+            }
+        }
+        return selectAll;
+    }
+
+    public int getItemCount() {
+        return getInViewItems().size();
+    }
+    
+    public List<T> getFilteredItems() {
+        // TODO Auto-generated method stub
+        getItems();
+        return getInViewItems();
+    }
+    public Map<String, Object> getFilterValues() {
+        return filterValues;
     }
     
 

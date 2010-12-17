@@ -49,14 +49,15 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("mcmid");
         AVAILABLE_COLUMNS.add("altimei");
+        AVAILABLE_COLUMNS.add("productVersion");
         
     }
     private DeviceDAO deviceDAO;
     private VehicleDAO vehicleDAO;
     private VehiclesBean vehiclesBean;
 
-    private String batchProductChoice;
-    private String filterStatus;
+//    private String batchProductChoice;
+//    private String filterStatus;
 
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
@@ -72,17 +73,24 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     {
         this.vehiclesBean = vehiclesBean;
     }
+    @Override
+    public void initFilterValues(){
+        super.initFilterValues();
+        for(String column:AVAILABLE_COLUMNS){
+            filterValues.put(column, null);
+        }
+    }
     
     public List<SelectItem> getProductTypesSelectItems(){
         
         return ProductTypeSelectItems.INSTANCE.getSelectItems();
     }
-    public String getBatchProductChoice() {
-        return batchProductChoice;
-    }
-    public void setBatchProductChoice(String batchProductChoice) {
-        this.batchProductChoice = batchProductChoice;
-    }
+//    public String getBatchProductChoice() {
+//        return batchProductChoice;
+//    }
+//    public void setBatchProductChoice(String batchProductChoice) {
+//        this.batchProductChoice = batchProductChoice;
+//    }
 
     @Override
     protected List<DeviceView> loadItems()
@@ -482,50 +490,41 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             this.selected = selected;
         }
     }
-    @Override
-    public void doSelectAll() {
+//    @Override
+//    public void doSelectAll() {
+//
+//        if (getFilterValues().get("productVersion") == null){
+//            
+//             super.doSelectAll();
+//        }
+//        else{
+//            
+//            for(DeviceView deviceView : filteredItems){
+//                                   
+//                deviceView.setSelected(selectAll && deviceView.getProductVersion().getDescription().equals(getFilterValues().get("productVersion")));
+//            }
+//        }
+//    }
 
-        if (batchProductChoice == null){
-            
-             super.doSelectAll();
-        }
-        else{
-            
-            for(DeviceView deviceView : filteredItems){
-                                   
-                deviceView.setSelected(selectAll && deviceView.getProductVersion().getName().equals(batchProductChoice));
-            }
-        }
-    }
-
-    @Override
-    public boolean isSelectAll() {
-        
-         if (batchProductChoice == null || getFilteredItems().size() == 0){
-        
-            return super.isSelectAll();
-        }
-        else{
-                
-            for(DeviceView deviceView : filteredItems){
-                
-                if (!deviceView.isSelected() && deviceView.getProductVersion().getName().equals(batchProductChoice))
-                    return false;
-            }
-            return true;
-        }
-    }
+//    @Override
+//    public boolean isSelectAll() {
+//        
+//         if (getFilterValues().get("productVersion") == null || getFilteredItems().size() == 0){
+//        
+//            return super.isSelectAll();
+//        }
+//        else{
+//                
+//            for(DeviceView deviceView : filteredItems){
+//                
+//                if (!deviceView.isSelected() && deviceView.getProductVersion().getDescription().equals(getFilterValues().get("productVersion")))
+//                    return false;
+//            }
+//            return true;
+//        }
+//    }
     public boolean isBatchProductChoice(ProductType productType){
         
-        return batchProductChoice == null || batchProductChoice.equals(productType.getName());
+        return getFilterValues().get("productVersion") == null || getFilterValues().get("productVersion").equals(productType.getDescription());
     }
-
-    public void setFilterStatus(String filterStatus) {
-        this.filterStatus = filterStatus;
-    }
-
-    public String getFilterStatus() {
-        return filterStatus;
-    }
-
 }

@@ -13,9 +13,9 @@ import com.inthinc.pro.model.app.States;
 public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView>
 {
     @Override
-    protected VehiclesBean getAdminBean()
+    protected BaseAdminBean<VehicleView> getAdminBean()
     {
-        VehiclesBean vehiclesBean = (VehiclesBean) applicationContext.getBean("vehiclesBean");
+        BaseAdminBean<VehicleView> vehiclesBean = (BaseAdminBean<VehicleView>) applicationContext.getBean("vehiclesBean");
         return vehiclesBean;
     }
 
@@ -55,7 +55,7 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
     }
 //    @Override
     public void setProductType(BaseAdminBean<VehicleView> adminBean){
-        ((VehiclesBean)adminBean).setBatchProductChoice("Tiwipro R74");
+        ((BaseAdminBean<VehicleView>)adminBean).getFilterValues().put("productType","tiwiPro");
     }
     @Override
     public void batchEdit() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException

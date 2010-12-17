@@ -117,7 +117,7 @@
                                 <td width="100"><h:outputText value="#{messages.editVehicle_odometer}" /></td>
                                 <td><h:outputText value="#{vehiclesBean.item.odometer}" converter="MilesToKilometersConverter"/></td>
                               </tr>                              
-                              <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/properties.xhtml"/>
+                              <ui:include src="../../includes/#{vehiclesBean.item.productTypeName}/properties.xhtml"/>
 	                         <ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.editVehicle_DOT}" /></td>
@@ -168,7 +168,7 @@
                  <div class="add_section_title"><h:outputText value="#{messages.organization_deviceAssignments}" /></div>
                   <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                     <tr>
-                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductVersion}" /></td>
+                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductType}" /></td>
                      <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.productType.name}" /></td>
                     </tr>
                     <tr>
@@ -203,7 +203,7 @@
                          </ui:fragment>
                          <h:panelGroup id="speeedSettingsPanel">
                             <ui:fragment rendered="#{not empty vehiclesBean.item.editableVehicleSettings}">
-                              <ui:include src="../../includes/#{vehiclesBean.item.productVersion}/speedSensitivity.xhtml">
+                              <ui:include src="../../includes/#{vehiclesBean.item.productTypeName}/speedSensitivity.xhtml">
                                 <ui:param name="editableVehicleSettings" value="#{vehiclesBean.item.editableVehicleSettings}" />
                                 <ui:param name="vehicleSettingManager" value="#{vehiclesBean.vehicleSettingManagers[vehiclesBean.item.vehicleID]}" />
                                 <ui:param name="disabled" value="true" />

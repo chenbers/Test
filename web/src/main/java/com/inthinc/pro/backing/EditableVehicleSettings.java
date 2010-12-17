@@ -6,6 +6,7 @@ import javax.faces.context.FacesContext;
 
 import com.inthinc.pro.model.configurator.ProductType;
 
+@SuppressWarnings("serial")
 public abstract class EditableVehicleSettings extends BaseBean{
 
 

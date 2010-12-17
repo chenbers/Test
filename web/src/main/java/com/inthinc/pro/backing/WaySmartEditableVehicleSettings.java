@@ -1,15 +1,12 @@
 package com.inthinc.pro.backing;
 
-import java.text.NumberFormat;
-
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.faces.convert.ConverterException;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.configurator.ProductType;
 
+@SuppressWarnings("serial")
 public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 	
 	private Double speedLimit;

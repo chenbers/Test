@@ -27,16 +27,16 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
-    <rich:column id="productVersion" sortBy="#{item.productVersion.name}" custFilterBy="#{item.productVersion.name}" filterValue="#{devicesBean.batchProductChoice}">
+    <rich:column id="productVersion" sortBy="#{item.productVersion.description}" custFilterBy="#{item.productVersion}" filterValue="#{devicesBean.filterValues['productVersion']}">
       <f:facet name="header">
         <h:panelGroup>
 			<h:outputText value="#{messages.devicesHeader_productVer}" />
 			<h:panelGroup style="float:right;">
 		       	<rich:spacer style="display:block" height="2"/>
-		       	<h:selectOneMenu value="#{devicesBean.batchProductChoice}"  id="editDevice-productChoice" style="width:120px;size:auto;margin-top:3px;">
+		       	<h:selectOneMenu value="#{devicesBean.filterValues['productVersion']}"  id="editDevice-productChoice" style="width:120px;size:auto;margin-top:3px;">
 		           	<f:selectItems value="#{devicesBean.productTypesSelectItems}" />
 		           	<a4j:support event="onchange" 
-		           		reRender="devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable-dataTableScroller" />
+		           		reRender="recordCounts,devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable-dataTableScroller" />
 		       	</h:selectOneMenu>
 				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 				 	<ui:param name="selectBoxID" value="admin-table-form:devicesTable:editDevice-productChoice" />
@@ -44,7 +44,7 @@
 			</h:panelGroup>
       	</h:panelGroup>
       </f:facet>
-      <h:outputText value="#{item.productVersion.name}" />
+      <h:outputText value="#{item.productVersion.description}" />
     </rich:column>
     <rich:column id="imei" rendered="#{devicesBean.tableColumns['imei'].visible}" sortBy="#{item.imei}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_imei}" /></f:facet>
@@ -70,17 +70,17 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_activated}" /></f:facet>
       <h:outputText value="#{item.activated}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText>
     </rich:column>
-	<rich:column id="status" rendered="#{devicesBean.tableColumns['status'].visible}" custFilterBy="#{item.status.description}" filterValue="#{devicesBean.filterStatus}" sortBy="#{item.status.description}">
+	<rich:column id="status" rendered="#{devicesBean.tableColumns['status'].visible}" custFilterBy="#{item.status.description}" filterValue="#{devicesBean.filterValues['status']}" sortBy="#{item.status.description}">
       <f:facet name="header">
       	<h:panelGroup>
 			<h:outputText value="#{messages.devicesHeader_status}" />
 			<h:panelGroup style="float:right;">
 		       	<rich:spacer style="display:block" height="2"/>
-		       	<h:selectOneMenu value="#{devicesBean.filterStatus}" style="width:120px;size:auto;margin-top:3px;"
+		       	<h:selectOneMenu value="#{devicesBean.filterValues['status']}" style="width:120px;size:auto;margin-top:3px;"
 		      		id="editDevice-statusChoice" >
 		           	<f:selectItems value="#{devicesBean.statusSelectItems}" />
 		           	<a4j:support event="onchange" 
-		           		reRender="devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable-dataTableScroller" />
+		           		reRender="recordCounts,devicesTable,admin-table-form:header, devicesTable_pageHeader,admin-table-form:devicesTable-dataTableScroller" />
 		       	</h:selectOneMenu>
 				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
 				 	<ui:param name="selectBoxID" value="admin-table-form:devicesTable:editDevice-statusChoice" />

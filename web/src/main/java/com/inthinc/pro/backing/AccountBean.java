@@ -92,7 +92,6 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         this.wmsConfigurationBean = wmsConfigurationBean;
     }
 
-
     @Override
     protected Boolean authorizeAccess(AccountView item) {
         return null;
@@ -349,5 +348,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
             this.person = person;
         }
 
-    }    
+    }
+
+
 }
