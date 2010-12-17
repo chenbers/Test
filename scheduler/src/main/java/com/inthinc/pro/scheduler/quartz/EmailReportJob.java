@@ -102,16 +102,12 @@ public class EmailReportJob extends QuartzJobBean {
             }
         }
 
-Level level = logger.getEffectiveLevel();        
         for (ReportSchedule reportSchedule : reportSchedules) {
             logger.debug("Begin Validation: " + reportSchedule.getName());
             if (emailReport(reportSchedule)) {
                 User user = userDAO.findByID(reportSchedule.getUserID());
                 if (user.getStatus().equals(Status.ACTIVE) && reportSchedule.getStatus().equals(Status.ACTIVE)) { // If the users status is not active, then the reports will no
                     // longer go out for that user.
-if (user.getUserID().equals(Integer.valueOf(11))) {
-logger.setLevel(Level.DEBUG);                        
-}
                     Calendar todaysDate = Calendar.getInstance(user.getPerson().getTimeZone());
                     if (logger.isDebugEnabled()) {
                         logger.debug("-------BEGIN PROCESSING REPORT-------");
@@ -130,7 +126,6 @@ logger.setLevel(Level.DEBUG);
                         // log the exception, but keep processing the rest of the the reports
                         logger.error(t);
                     }
-logger.setLevel(level);                    
                 }
             }
         }
