@@ -191,7 +191,20 @@ public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
 		assertEquals(resourceKey,reportCriteriaSUT.getParameter(ReportCriteria.FUEL_EFFICIENCY_TYPE));
 	}
 	
-	
+	/**
+     * DEF5942: https://rally1.rallydev.com/slm/detail/df/2574711991
+     * 
+     * Adding tests to verify against NPE on comparators.
+     */
+    @Test
+    public void testCompareWithNulls() {
+        StateMileageFuelByVehicleReportCriteria.StateMileageFuelByVehicleComparator comparator = (new StateMileageFuelByVehicleReportCriteria(null).new StateMileageFuelByVehicleComparator());
+
+        StateMileageFuelByVehicle o1 = new StateMileageFuelByVehicle();
+        StateMileageFuelByVehicle o2 = new StateMileageFuelByVehicle();
+
+        assertEquals(0, comparator.compare(o1, o2));
+    }
 	
 	/**
 	 * Verifies if the list was sorted correctly.
