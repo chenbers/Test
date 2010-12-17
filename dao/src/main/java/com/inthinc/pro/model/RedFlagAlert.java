@@ -466,7 +466,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         return "RedFlagAlert [Types="+getTypes()+", severityLevel=" + severityLevel + ", hardAcceleration=" + hardAcceleration + ", hardBrake="
                 + hardBrake + ", hardTurn=" + hardTurn + ", hardVertical=" + hardVertical
                 + ", alertID=" + getAlertID() +  ", speedLevels="
-                + ", speedSettings=" + Arrays.toString(speedSettings) + ", zoneID=" + zoneID + ", emailTos="+getEmailTo()+"]";
+                + ", speedSettings=" + Arrays.toString(speedSettings) + ", zoneID=" + zoneID + ", emailTo="+getEmailTo()+"]";
     }
 
     public List<AlertEscalationItem> getEscalationList() {
