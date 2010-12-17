@@ -20,17 +20,24 @@ public interface ReportsFacade {
     List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval);
    
     @Deprecated
+    //to delete
     List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(Integer groupID, Interval interval, boolean dotOnly);
     
     List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly);
     
     List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
+    @Deprecated
+    //to delete
     List<StateMileageCompareByGroup> getStateMileageGroupComparison(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
+    List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(List<Integer> groupList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
+    
     List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
+
     @Deprecated
+    //to delete
     List<MileageByVehicle> getStateMileageByVehicleByMonth(Integer groupID, Interval interval, boolean dotOnly);
     
     List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly);

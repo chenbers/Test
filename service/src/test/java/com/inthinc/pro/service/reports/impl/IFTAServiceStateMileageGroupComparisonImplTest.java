@@ -61,153 +61,153 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
 
     }
 
-    @Test
-    public void getStateMileageByVehicleGroupComparisonTest() {
-
-        final boolean expectedIfta = true;
-        final String expectedStrStartDate = "20100101";
-        final String expectedStrEndDate = "20100202";
-
-        Date startDate = buildDateFromString(expectedStrStartDate);
-        Date endDate = buildDateFromString(expectedStrEndDate);
-
-        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
-        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
-        list.add(new StateMileageCompareByGroup());
-
-        new Expectations() {
-            {
-                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, interval, expectedIfta, locale, measureType);
-                result = list;
-            }
-        };
-
-        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(expectedGroupID, 
-                startDate, endDate, locale, measureType);
-
-        assertNotNull(response);
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void getStateMileageByVehicleGroupComparisonWithEmptyResultTest1() {
-
-        final boolean expectedIfta = true;
-        final String expectedStrStartDate = "20100101";
-        final String expectedStrEndDate = "20100202";
-
-        Date startDate = buildDateFromString(expectedStrStartDate);
-        Date endDate = buildDateFromString(expectedStrEndDate);
-
-        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
-        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
-
-        new Expectations() {
-            {
-                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, interval, expectedIfta, locale, measureType);
-                result = list;
-            }
-        };
-
-        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(expectedGroupID, 
-                startDate, endDate, locale, measureType);
-
-        assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void getStateMileageByVehicleGroupComparisonWithEmptyResultTest2() {
-
-        final boolean expectedIfta = true;
-        final String expectedStrStartDate = "20100101";
-        final String expectedStrEndDate = "20100202";
-
-        Date startDate = buildDateFromString(expectedStrStartDate);
-        Date endDate = buildDateFromString(expectedStrEndDate);
-
-        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
-
-        new Expectations() {
-            {
-                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, interval, expectedIfta, locale, measureType);
-                result = null;
-            }
-        };
-
-        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(
-                expectedGroupID, startDate, endDate, locale, measureType);
-
-        assertNotNull(response);
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void getStateMileageByVehicleGroupComparisonDefaultRangeTest() {
-
-        final boolean expectedIfta = true;
-
-
-        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
-        list.add(new StateMileageCompareByGroup());
-
-        new Expectations() {
-            {
-                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, (Interval)any, expectedIfta, locale, measureType);
-                result = list;
-            }
-        };
-
-        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIfta(expectedGroupID, locale, measureType);
-
-        assertNotNull(response);
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void getStateMileageByVehicleGroupComparisonNoParamTest() {
-
-        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
-        list.add(new StateMileageCompareByGroup());
-
-        new Expectations() {
-            {
-                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, (Interval)any, false, locale, measureType);
-                result = list;
-            }
-        };
-
-        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonDefaults(expectedGroupID, locale, measureType);
-
-        assertNotNull(response);
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    }
-
-    @Test
-    public void getStateMileageByVehicleGroupComparisonOnlyRangeTest() {
-
-        final String expectedStrStartDate = "20100101";
-        final String expectedStrEndDate = "20100202";
-
-        Date startDate = buildDateFromString(expectedStrStartDate);
-        Date endDate = buildDateFromString(expectedStrEndDate);
-
-        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
-        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
-        list.add(new StateMileageCompareByGroup());
-
-        new Expectations() {
-            {
-                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, interval, false, locale, measureType);
-                result = list;
-            }
-        };
-
-        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithDates(expectedGroupID, 
-                startDate, endDate, locale, measureType);
-
-        assertNotNull(response);
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-    }
+//    @Test
+//    public void getStateMileageByVehicleGroupComparisonTest() {
+//
+//        final boolean expectedIfta = true;
+//        final String expectedStrStartDate = "20100101";
+//        final String expectedStrEndDate = "20100202";
+//
+//        Date startDate = buildDateFromString(expectedStrStartDate);
+//        Date endDate = buildDateFromString(expectedStrEndDate);
+//
+//        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+//        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
+//        list.add(new StateMileageCompareByGroup());
+//
+//        new Expectations() {
+//            {
+//                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, interval, expectedIfta, locale, measureType);
+//                result = list;
+//            }
+//        };
+//
+//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(expectedGroupID, 
+//                startDate, endDate, locale, measureType);
+//
+//        assertNotNull(response);
+//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+//    }
+//
+//    @Test
+//    public void getStateMileageByVehicleGroupComparisonWithEmptyResultTest1() {
+//
+//        final boolean expectedIfta = true;
+//        final String expectedStrStartDate = "20100101";
+//        final String expectedStrEndDate = "20100202";
+//
+//        Date startDate = buildDateFromString(expectedStrStartDate);
+//        Date endDate = buildDateFromString(expectedStrEndDate);
+//
+//        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+//        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
+//
+//        new Expectations() {
+//            {
+//                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, interval, expectedIfta, locale, measureType);
+//                result = list;
+//            }
+//        };
+//
+//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(expectedGroupID, 
+//                startDate, endDate, locale, measureType);
+//
+//        assertNotNull(response);
+//        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+//    }
+//
+//    @Test
+//    public void getStateMileageByVehicleGroupComparisonWithEmptyResultTest2() {
+//
+//        final boolean expectedIfta = true;
+//        final String expectedStrStartDate = "20100101";
+//        final String expectedStrEndDate = "20100202";
+//
+//        Date startDate = buildDateFromString(expectedStrStartDate);
+//        Date endDate = buildDateFromString(expectedStrEndDate);
+//
+//        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+//
+//        new Expectations() {
+//            {
+//                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, interval, expectedIfta, locale, measureType);
+//                result = null;
+//            }
+//        };
+//
+//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(
+//                expectedGroupID, startDate, endDate, locale, measureType);
+//
+//        assertNotNull(response);
+//        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+//    }
+//
+//    @Test
+//    public void getStateMileageByVehicleGroupComparisonDefaultRangeTest() {
+//
+//        final boolean expectedIfta = true;
+//
+//
+//        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
+//        list.add(new StateMileageCompareByGroup());
+//
+//        new Expectations() {
+//            {
+//                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, (Interval)any, expectedIfta, locale, measureType);
+//                result = list;
+//            }
+//        };
+//
+//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIfta(expectedGroupID, locale, measureType);
+//
+//        assertNotNull(response);
+//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+//    }
+//
+//    @Test
+//    public void getStateMileageByVehicleGroupComparisonNoParamTest() {
+//
+//        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
+//        list.add(new StateMileageCompareByGroup());
+//
+//        new Expectations() {
+//            {
+//                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, (Interval)any, false, locale, measureType);
+//                result = list;
+//            }
+//        };
+//
+//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonDefaults(expectedGroupID, locale, measureType);
+//
+//        assertNotNull(response);
+//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+//    }
+//
+//    @Test
+//    public void getStateMileageByVehicleGroupComparisonOnlyRangeTest() {
+//
+//        final String expectedStrStartDate = "20100101";
+//        final String expectedStrEndDate = "20100202";
+//
+//        Date startDate = buildDateFromString(expectedStrStartDate);
+//        Date endDate = buildDateFromString(expectedStrEndDate);
+//
+//        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+//        final List<StateMileageCompareByGroup> list = new ArrayList<StateMileageCompareByGroup>();
+//        list.add(new StateMileageCompareByGroup());
+//
+//        new Expectations() {
+//            {
+//                reportsFacadeMock.getStateMileageGroupComparison(expectedGroupID, interval, false, locale, measureType);
+//                result = list;
+//            }
+//        };
+//
+//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithDates(expectedGroupID, 
+//                startDate, endDate, locale, measureType);
+//
+//        assertNotNull(response);
+//        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+//    }
 
 }

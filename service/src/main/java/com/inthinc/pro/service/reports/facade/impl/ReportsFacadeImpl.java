@@ -68,6 +68,10 @@ public class ReportsFacadeImpl implements ReportsFacade {
         this.reportService = reportService;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getTenHourViolations(java.lang.Integer, org.joda.time.Interval)
+     */
     @SuppressWarnings("unchecked")
     @Override
     public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval) {
@@ -75,6 +79,10 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getStateMileageByVehicleRoadStatus(java.lang.Integer, org.joda.time.Interval, boolean)
+     */
     @SuppressWarnings("unchecked")
     @Override
     @Deprecated
@@ -85,6 +93,10 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();
     }
     
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getStateMileageByVehicleRoadStatus(java.util.List, org.joda.time.Interval, boolean)
+     */
     @SuppressWarnings("unchecked")
     @Override
     public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
@@ -108,6 +120,10 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();        
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getStateMileageByVehicleStateComparison(java.lang.Integer, org.joda.time.Interval, boolean, java.util.Locale, com.inthinc.pro.model.MeasurementType)
+     */
     @SuppressWarnings("unchecked")
     @Override
     public List<StateMileageCompareByGroup> getStateMileageGroupComparison(Integer groupID, Interval interval, 
@@ -118,7 +134,24 @@ public class ReportsFacadeImpl implements ReportsFacade {
                 groupIDList, interval, locale, measurementType, dotOnly);
         return criteria.getMainDataset();
     }
+    
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getStateMileageByVehicleStateComparison(java.lang.Integer, org.joda.time.Interval, boolean, java.util.Locale, com.inthinc.pro.model.MeasurementType)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<StateMileageCompareByGroup> getStateMileageByVehicleStateComparison(List<Integer> groupIDList, Interval interval, 
+            boolean dotOnly, Locale locale, MeasurementType measurementType) {
+        ReportCriteria criteria = reportService.getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(), 
+                groupIDList, interval, locale, measurementType, dotOnly);
+        return criteria.getMainDataset();
+    }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getStateMileageByVehicle(java.lang.Integer, org.joda.time.Interval, boolean)
+     */
     @SuppressWarnings("unchecked")
     @Override
     public List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, 
@@ -130,6 +163,10 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();
     }
     
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getStateMileageByVehicleByMonth(java.lang.Integer, org.joda.time.Interval, boolean)
+     */
     @SuppressWarnings("unchecked")
     @Override
     @Deprecated
@@ -147,6 +184,10 @@ public class ReportsFacadeImpl implements ReportsFacade {
         return criteria.getMainDataset();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getStateMileageByVehicleByMonth(java.util.List, org.joda.time.Interval, boolean)
+     */
     @SuppressWarnings("unchecked")
     @Override
     public List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly) {

@@ -48,6 +48,13 @@ public class IFTAServiceStateMileageByVehicleMonthImpl extends BaseIFTAServiceIm
         return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, iftaOnly);
     }
     
+    /**
+     * @param groupList
+     * @param startDate
+     * @param endDate
+     * @param iftaOnly
+     * @return
+     */
     Response getStateMileageByVehicleByMonthWithFullParametersMultiGroup(List<Integer> groupList, Date startDate, Date endDate, boolean iftaOnly) {
 
         Response response = reportsUtil.checkParametersMultiGroup(groupList, startDate, endDate);
@@ -78,6 +85,10 @@ public class IFTAServiceStateMileageByVehicleMonthImpl extends BaseIFTAServiceIm
 
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleMonth#getStateMileageByVehicleByMonthWithIfta(java.lang.Integer)
+     */
     @Override
     public Response getStateMileageByVehicleByMonthWithIfta(Integer groupID) {
         Calendar today = reportsUtil.getMidnight();
@@ -88,16 +99,28 @@ public class IFTAServiceStateMileageByVehicleMonthImpl extends BaseIFTAServiceIm
         return getStateMileageByVehicleByMonthWithFullParameters(groupID, startDate.getTime(), today.getTime(), true);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleMonth#getStateMileageByVehicleByMonthWithIftaAndDates(java.lang.Integer, java.util.Date, java.util.Date)
+     */
     @Override
     public Response getStateMileageByVehicleByMonthWithIftaAndDates(Integer groupID, Date startDate, Date endDate) {
         return getStateMileageByVehicleByMonthWithFullParameters(groupID, startDate, endDate, true);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleMonth#getStateMileageByVehicleByMonthWithDates(java.lang.Integer, java.util.Date, java.util.Date)
+     */
     @Override
     public Response getStateMileageByVehicleByMonthWithDates(Integer groupID, Date startDate, Date endDate) {
         return getStateMileageByVehicleByMonthWithFullParameters(groupID, startDate, endDate, false);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleMonth#getStateMileageByVehicleByMonthDefaults(java.lang.Integer)
+     */
     @Override
     public Response getStateMileageByVehicleByMonthDefaults(Integer groupID) {
         Calendar today = reportsUtil.getMidnight();
@@ -108,6 +131,10 @@ public class IFTAServiceStateMileageByVehicleMonthImpl extends BaseIFTAServiceIm
         return getStateMileageByVehicleByMonthWithFullParameters(groupID, startDate.getTime(), today.getTime(), false);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleMonth#getStateMileageByVehicleByMonthDefaultsMultiGroup(com.inthinc.pro.util.GroupList)
+     */
     @Override
     public Response getStateMileageByVehicleByMonthDefaultsMultiGroup(GroupList groupList) {
         Calendar today = reportsUtil.getMidnight();
@@ -118,16 +145,28 @@ public class IFTAServiceStateMileageByVehicleMonthImpl extends BaseIFTAServiceIm
         return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), false);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleMonth#getStateMileageByVehicleByMonthWithDatesMultiGroup(com.inthinc.pro.util.GroupList, java.util.Date, java.util.Date)
+     */
     @Override
     public Response getStateMileageByVehicleByMonthWithDatesMultiGroup(GroupList groupList, Date startDate, Date endDate) {
         return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, false);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleMonth#getStateMileageByVehicleByMonthWithIftaAndDatesMultiGroup(com.inthinc.pro.util.GroupList, java.util.Date, java.util.Date)
+     */
     @Override
     public Response getStateMileageByVehicleByMonthWithIftaAndDatesMultiGroup(GroupList groupList, Date startDate, Date endDate) {
         return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, true);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleMonth#getStateMileageByVehicleByMonthWithIftaMultiGroup(com.inthinc.pro.util.GroupList)
+     */
     @Override
     public Response getStateMileageByVehicleByMonthWithIftaMultiGroup(GroupList groupList) {
         Calendar today = reportsUtil.getMidnight();
