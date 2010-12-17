@@ -111,6 +111,19 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 		reportsFacadeSUTMock.getStateMileageByVehicle(GROUP_ID, INTERVAL, IFTA_ONLY, null, null);
 	}
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetStateMileageByMonth() {        
+        Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
+        
+        new Expectations(){{
+            reportServiceMock.getStateMileageByMonthReportCriteria(null, (List<Integer>) any, INTERVAL, null, null, IFTA_ONLY);
+            result = new ServiceDelegate();
+        }};
+        
+        reportsFacadeSUTMock.getStateMileageByVehicleByMonth(GROUP_ID, INTERVAL, IFTA_ONLY, null, null);
+    }
+	
 	/**
 	 * Delegate used to capture and verify arguments passed to the method being tested
 	 * @author dcueva
@@ -124,7 +137,4 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			return new ReportCriteria();
 		}		
 	}
-	
-	
-	
 }

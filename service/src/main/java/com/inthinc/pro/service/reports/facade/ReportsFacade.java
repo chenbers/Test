@@ -35,12 +35,11 @@ public interface ReportsFacade {
     
     List<MileageByVehicle> getStateMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
-
     @Deprecated
     //to delete
-    List<MileageByVehicle> getStateMileageByVehicleByMonth(Integer groupID, Interval interval, boolean dotOnly);
+    List<MileageByVehicle> getStateMileageByVehicleByMonth(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
     
-    List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly);
+    List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
     
     List<StateMileageFuelByVehicle> getStateMileageFuelByVehicle(List<Integer> groupIDList, Interval interval, boolean dotOnly);
 }

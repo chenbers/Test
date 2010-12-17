@@ -16,7 +16,7 @@ import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 /**
  * Interface for IFTA/DOT Reports Services.
  * 
- * @deprecated Use the report specific interfaces: {@link IFTAServiceStateMileageByVehicleMonth}, {@link IFTAServiceMileageByVehicle} etc...
+ * @deprecated Use the report specific interfaces: {@link IFTAServiceStateMileageByMonth}, {@link IFTAServiceMileageByVehicle} etc...
  */
 @Produces("application/xml")
 @Path("/old/group/{groupID}/report/ifta")

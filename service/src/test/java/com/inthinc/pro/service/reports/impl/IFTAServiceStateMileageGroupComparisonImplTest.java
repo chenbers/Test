@@ -39,13 +39,13 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
 
     IFTAServiceStateMileageByVehicleRoadStatusImpl roadStatusServiceSUT;
     IFTAServiceStateMileageGroupComparisonImpl groupComparisonServiceSUT;
-    IFTAServiceStateMileageByVehicleMonthImpl mileageByMonthServiceSUT;
+    IFTAServiceStateMileageByMonthImpl mileageByMonthServiceSUT;
 
     @Before
     public void setUp() {
         roadStatusServiceSUT = new IFTAServiceStateMileageByVehicleRoadStatusImpl(reportsFacadeMock, reportsUtilMock);
         groupComparisonServiceSUT = new IFTAServiceStateMileageGroupComparisonImpl(reportsFacadeMock, reportsUtilMock);
-        mileageByMonthServiceSUT = new IFTAServiceStateMileageByVehicleMonthImpl(reportsFacadeMock, reportsUtilMock);
+        mileageByMonthServiceSUT = new IFTAServiceStateMileageByMonthImpl(reportsFacadeMock, reportsUtilMock);
     }
 
     private Integer expectedGroupID = 1504;

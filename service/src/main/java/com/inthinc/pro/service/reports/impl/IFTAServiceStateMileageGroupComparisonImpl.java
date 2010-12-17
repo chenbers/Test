@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
-import com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison;
+import com.inthinc.pro.service.reports.IFTAServiceStateMileageGroupComparison;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.GroupList;
@@ -24,8 +24,8 @@ import common.Logger;
 
 @Component
 public class IFTAServiceStateMileageGroupComparisonImpl extends BaseIFTAServiceImpl 
-    implements IFTAServiceStateMileageByVehicleGroupComparison {
-    private static Logger logger = Logger.getLogger(IFTAServiceStateMileageByVehicleGroupComparisonImpl.class); 
+    implements IFTAServiceStateMileageGroupComparison {
+    private static Logger logger = Logger.getLogger(IFTAServiceStateMileageGroupComparisonImpl.class); 
 
     /**
      * @param reportsFacade

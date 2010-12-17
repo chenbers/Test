@@ -169,18 +169,12 @@ public class ReportsFacadeImpl implements ReportsFacade {
      */
     @SuppressWarnings("unchecked")
     @Override
-    @Deprecated
     public List<MileageByVehicle> getStateMileageByVehicleByMonth(Integer groupID,
-            Interval interval,
-            boolean dotOnly) {
+            Interval interval, boolean dotOnly, Locale locale, MeasurementType type) {
         List groupIDList = new ArrayList();
         groupIDList.add(groupID);
         ReportCriteria criteria = reportService.getStateMileageByMonthReportCriteria(getAccountGroupHierarchy(),
-                groupIDList, 
-                interval,
-                getLocale(),
-                getMeasurementType(), 
-                dotOnly);
+                groupIDList, interval, locale, type, dotOnly);
         return criteria.getMainDataset();
     }
 
@@ -190,13 +184,10 @@ public class ReportsFacadeImpl implements ReportsFacade {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+    public List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, 
+            boolean dotOnly, Locale locale, MeasurementType type) {
         ReportCriteria criteria = reportService.getStateMileageByMonthReportCriteria(getAccountGroupHierarchy(),
-                groupIDList, 
-                interval,
-                getLocale(),
-                getMeasurementType(), 
-                dotOnly);
+                groupIDList, interval, locale, type, dotOnly);
         return criteria.getMainDataset();
     }
 
