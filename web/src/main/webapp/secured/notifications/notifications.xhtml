@@ -1,5 +1,12 @@
-<ui:composition template="/layout/layout.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:rich="http://richfaces.org/rich" xmlns:a4j="http://richfaces.org/a4j" xmlns:f="http://java.sun.com/jsf/core" xmlns:pretty="http://ocpsoft.com/prettyfaces">
+<ui:composition template="/layout/layout.xhtml" 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich" 
+    xmlns:a4j="http://richfaces.org/a4j" 
+    xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:security="http://pro.tiwi.com/jsf/security"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
     <ui:param name="notificationsSelected" value="current" />
 
@@ -166,9 +173,11 @@
                     <li id="zoneEventstab" class="#{zonesSubSelected}">
                         <pretty:link id="#{context}-zoneEvents" mappingId="zoneEvents"><span>#{messages.notes_tab_zone}</span></pretty:link>
                     </li>
+					<security:authorize ifAnyGranted="ROLE_HOSADMIN,ROLE_HOSACCESS">
                     <li id="hosEventstab" class="#{hosSubSelected}">
                         <pretty:link id="#{context}-hosEvents" mappingId="hosEvents"><span>#{messages.notes_tab_hos}</span></pretty:link>
                     </li>
+                    </security:authorize>
                     <li id="emergencytab" class="#{emergencySubSelected}">
                         <pretty:link id="#{context}-emergency" mappingId="emergency"><span>#{messages.notes_tab_emergency}</span></pretty:link>
                     </li>
