@@ -8,6 +8,12 @@
   <component-class>com.inthinc.pro.backing.ui.UIConditionalCSS</component-class>
  </component>
  <component>
+  <description>Renders a graphical Score Box Component.  Value is a score value between 0 and 50 inclusive.  Size is a number 1 (smallest) to 5 (largest).</description>
+  <display-name>Score Box Component</display-name>
+  <component-type>scoreBoxComponent</component-type>
+  <component-class>com.inthinc.pro.backing.ui.component.ScoreBoxComponent</component-class>
+ </component>
+ <component>
   <description>Renders an HTML "button" element.
 			&amp;lt;br /&amp;gt;
 			During Decoding: Obtains the Map from the
@@ -43,6 +49,7 @@
   <component-type>org.richfaces.Column</component-type>
   <component-class>com.inthinc.pro.table.UIFilterColumn</component-class>
  </component>
+ 
  <!-- components -->
  <component>
   <component-type>com.inthinc.pro.security.jsftaglib.Authorize</component-type>

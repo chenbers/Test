@@ -18,4 +18,10 @@
 			<renderer-type>conditionalCSS.renderer</renderer-type>
 		</component>
 	</tag>
+	<tag>
+		<tag-name>scoreBoxComponent</tag-name>
+		<component>
+			<component-type>scoreBoxComponent</component-type>
+		</component>
+	</tag>
 </facelet-taglib>
