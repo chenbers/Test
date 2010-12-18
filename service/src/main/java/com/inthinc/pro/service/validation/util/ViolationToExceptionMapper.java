@@ -34,9 +34,9 @@ public class ViolationToExceptionMapper {
 	private Map<String, Class<? extends RuntimeException>> map = new HashMap<String, Class<? extends RuntimeException>>();
 	
 	public ViolationToExceptionMapper(){
-		map.put(Response.Status.BAD_REQUEST.toString(), BadRequestException.class);
-		map.put(Response.Status.FORBIDDEN.toString(), ForbiddenException.class);
-		map.put(Response.Status.NOT_FOUND.toString(), NotFoundException.class);
+		map.put(Response.Status.BAD_REQUEST.name(), BadRequestException.class);
+		map.put(Response.Status.FORBIDDEN.name(), ForbiddenException.class);
+		map.put(Response.Status.NOT_FOUND.name(), NotFoundException.class);
 	}
 	
 	/**

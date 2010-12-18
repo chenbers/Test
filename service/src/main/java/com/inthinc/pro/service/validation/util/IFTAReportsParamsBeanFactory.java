@@ -84,9 +84,31 @@ public class IFTAReportsParamsBeanFactory {
 		paramsBean.setGroupIDList(groupIDList);
 		paramsBean.setStartDate(startDate);
 		paramsBean.setEndDate(endDate);
-		paramsBean.setLocale(locale);
+		paramsBean.setLocale(parseLocale(locale));
 		paramsBean.setMeasurementType(measurementType);
 		return paramsBean;
+	}
+
+	/**
+	 * JAXB and RestEasy do not parse locales coming as fr_CA, and put the whole string as the language.</br>
+	 * This method performs a quick parsing assuming the default toString() behavior from {@ Locale}</br>
+	 * Example: "en", "de_DE", "_GB", "en_US_WIN", "de__POSIX"
+	 * </br></br>
+	 * Note: this method will NOT validate the locale. </br>
+	 * Following post from <a href="http://stackoverflow.com/questions/3684747/how-to-validate-a-locale-in-java">Stack Overflow</a></br>  
+	 * 
+	 * @param locale The locale to parse
+	 * @return A locale correctly parsed, or the same argument if it cannot be parsed
+	 */
+	private Locale parseLocale(Locale locale) {
+		if (locale == null) return null;
+		String[] parts = locale.getLanguage().split("_");
+		switch (parts.length) {
+		    case 3: return new Locale(parts[0], parts[1], parts[2]);
+		    case 2: return new Locale(parts[0], parts[1]);
+		    case 1: return new Locale(parts[0]);
+			default: return locale; // not parseable
+		}
 	}	
 	
 }

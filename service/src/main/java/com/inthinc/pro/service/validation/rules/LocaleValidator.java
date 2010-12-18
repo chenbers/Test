@@ -42,9 +42,11 @@ public class LocaleValidator extends AbstractServiceValidator implements Constra
 		// If the value must not be null, it must be annotated with @NotNull
 		if (locale == null) return true;
 
-		// If we can get the ISO3 language, then it is a valid locale
+		// If we can get the ISO3 language and country, then it is a valid locale
 		try {
 			locale.getISO3Language();
+			if (locale.getCountry() != null) locale.getISO3Country();
+			
 		} catch (MissingResourceException e) {
 			return violationTemplate(context, Response.Status.BAD_REQUEST, locale);
 		}

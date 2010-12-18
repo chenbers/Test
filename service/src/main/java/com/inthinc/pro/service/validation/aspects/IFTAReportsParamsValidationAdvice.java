@@ -121,7 +121,7 @@ public class IFTAReportsParamsValidationAdvice {
 		return pjp.proceed(new Object[] {new GroupList(params.getGroupIDList()), params.getStartDate(), params.getEndDate(), params.getLocale(), params.getMeasurementType()});
 	}	
 
-	@Around("isIFTAService() && validateParams() && withoutDates(groupList, locale, measurementType)") 
+	@Around("isIFTAService() && validateParams() && withoutDatesMultiGroup(groupList, locale, measurementType)") 
 	public Object validateWithoutDatesMultiGroup(ProceedingJoinPoint pjp, GroupList groupList,
 		Locale locale, MeasurementType measurementType) throws Throwable {
 
