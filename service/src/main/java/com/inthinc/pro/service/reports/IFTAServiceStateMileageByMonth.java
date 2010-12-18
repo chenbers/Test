@@ -20,6 +20,7 @@ import com.inthinc.pro.util.GroupList;
  * Interface for IFTA/DOT State Mileage by Vehicle / Month Report Services.
  */
 @Produces("application/xml")
+@Path("")
 public interface IFTAServiceStateMileageByMonth {
     String DATE_FORMAT = "yyyyMMdd";
 
@@ -211,4 +212,34 @@ public interface IFTAServiceStateMileageByMonth {
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
+
+    // TODO: For Validation Testing. To be removed
+    @GET
+    @Path("/group/{groupID}/report/ifta/validation")
+    Response getDefaultsValidationTest(@PathParam("groupID") Integer groupID,
+    		@QueryParam("locale") Locale locale, @QueryParam("measurementType") MeasurementType measurementType);    
+
+    @GET
+    @Path("/group/{groupID}/report/ifta/validation/{startDate}/{endDate}")
+    Response getWithDatesValidationTest(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+    		@QueryParam("locale") Locale locale, @QueryParam("measurementType") MeasurementType measurementType);            
+    
+    @POST
+    @Path("/groups/report/ifta/validation")
+    @Consumes("application/xml")
+    Response getDefaultsMultiGroup(GroupList groupList,
+            @QueryParam("locale") Locale locale,
+            @QueryParam("measurementType") MeasurementType measurementType);
+    
+    @POST
+    @Path("/groups/report/ifta/validation/{startDate}/{endDate}")
+    @Consumes("application/xml")
+    Response getWithDatesMultiGroup(GroupList groupList, 
+            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @QueryParam("locale") Locale locale,
+            @QueryParam("measurementType") MeasurementType measurementType);
+
+
 }

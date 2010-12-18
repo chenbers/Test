@@ -1,7 +1,7 @@
 package com.inthinc.pro.service.exceptions;
 
 /**
- * Exception to represent an HTTP eror code 403.
+ * Exception to represent an HTTP error code 403.
  * Not available from the RestEasy framework.
  * 
  * @author dcueva

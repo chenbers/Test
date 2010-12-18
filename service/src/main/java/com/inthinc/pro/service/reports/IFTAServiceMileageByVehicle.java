@@ -117,19 +117,5 @@ public interface IFTAServiceMileageByVehicle {
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
     
-    // TODO: For Validation Testing. To be removed
-    @GET
-    @Path("/validation")
-    @Produces("application/xml")
-    Response getMileageByVehicleDefaultsValidationTest(@PathParam("groupID") Integer groupID,
-    		@QueryParam("locale") Locale locale, @QueryParam("measurementType") MeasurementType measurementType);    
-
-    @GET
-    @Path("/validation/{startDate}/{endDate}")
-    @Produces("application/xml")
-    Response getMileageByVehicleWithDatesValidationTest(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
-    		@QueryParam("locale") Locale locale, @QueryParam("measurementType") MeasurementType measurementType);            
-    
     
 }

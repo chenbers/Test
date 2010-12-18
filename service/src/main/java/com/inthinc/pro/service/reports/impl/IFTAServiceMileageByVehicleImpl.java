@@ -92,20 +92,4 @@ public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl impleme
         return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
     }
 
-    // TODO:  For Validation Testing. To be removed
-	@Override
-	@ValidParams
-	public Response getMileageByVehicleDefaultsValidationTest(Integer groupID,
-			Locale locale, MeasurementType measurementType) {
-		return Response.ok().build();
-	}
-
-	@Override
-	@ValidParams
-	public Response getMileageByVehicleWithDatesValidationTest(Integer groupID,
-			Date startDate, Date endDate, Locale locale,
-			MeasurementType measurementType) {
-		return Response.ok().build();
-	}
-	
 }
