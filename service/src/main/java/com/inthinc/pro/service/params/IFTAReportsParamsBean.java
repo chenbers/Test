@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.security.TiwiproPrincipal;
+import com.inthinc.pro.service.validation.annotations.ValidGroupIDs;
 import com.inthinc.pro.service.validation.annotations.ValidLocale;
 import com.inthinc.pro.service.validation.annotations.ValidStartEndDates;
 
@@ -29,8 +30,7 @@ import com.inthinc.pro.service.validation.annotations.ValidStartEndDates;
 public class IFTAReportsParamsBean implements HasStartEndDates {
 
 	// Common parameters for all IFTA web services
-	//@NotNull
-	//@Min(0)
+	@ValidGroupIDs
 	private List<Integer> groupIDList;
 	
 	private Date startDate;

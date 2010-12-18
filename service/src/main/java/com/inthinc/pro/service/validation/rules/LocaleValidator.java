@@ -8,6 +8,7 @@ import java.util.MissingResourceException;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.ws.rs.core.Response;
 
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ import com.inthinc.pro.service.validation.annotations.ValidLocale;
  * @author dcueva
  */
 @Component
-public class LocaleValidator implements ConstraintValidator<ValidLocale, Locale> {
+public class LocaleValidator extends AbstractServiceValidator implements ConstraintValidator<ValidLocale, Locale> {
 	
 	/**
 	 * {@inheritDoc}
@@ -45,7 +46,7 @@ public class LocaleValidator implements ConstraintValidator<ValidLocale, Locale>
 		try {
 			locale.getISO3Language();
 		} catch (MissingResourceException e) {
-			return false;
+			return violationTemplate(context, Response.Status.BAD_REQUEST, locale);
 		}
 		return true;
 	}

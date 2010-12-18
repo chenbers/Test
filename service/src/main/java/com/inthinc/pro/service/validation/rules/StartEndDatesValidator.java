@@ -3,8 +3,13 @@
  */
 package com.inthinc.pro.service.validation.rules;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.ws.rs.core.Response;
 
 import org.springframework.stereotype.Component;
 
@@ -17,8 +22,10 @@ import com.inthinc.pro.service.validation.annotations.ValidStartEndDates;
  * @author dcueva
  */
 @Component
-public class StartEndDatesValidator implements ConstraintValidator<ValidStartEndDates, HasStartEndDates> {
-
+public class StartEndDatesValidator extends AbstractServiceValidator implements ConstraintValidator<ValidStartEndDates, HasStartEndDates> {
+	
+    private final String DATE_FORMAT = "yyyyMMdd";
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -40,8 +47,17 @@ public class StartEndDatesValidator implements ConstraintValidator<ValidStartEnd
 	public boolean isValid(HasStartEndDates bean, ConstraintValidatorContext context) {
 
 		if (bean.getStartDate() == null || bean.getEndDate() == null) return true; 
-		if (bean.getEndDate().before(bean.getStartDate())) return false;
+
+		if (bean.getEndDate().before(bean.getStartDate())) return violationTemplate(context, Response.Status.BAD_REQUEST, getPrintableDates(bean)); 
 		return true;
+	}
+
+	private List<String> getPrintableDates(HasStartEndDates bean) {
+		List<String> dates = new ArrayList<String>();
+		SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+		dates.add(formatter.format(bean.getStartDate()));
+		dates.add(formatter.format(bean.getEndDate()));
+		return dates;
 	}
 
 }

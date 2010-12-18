@@ -29,7 +29,7 @@ import com.inthinc.pro.service.validation.rules.StartEndDatesValidator;
 @Documented
 public @interface ValidStartEndDates {
 
-    String message() default "{com.inthinc.pro.service.validation.annotations.StartEndDatesValidator.message}";
+    String message() default "{com.inthinc.pro.service.validation.annotations.ValidStartEndDates.message}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};	
 	

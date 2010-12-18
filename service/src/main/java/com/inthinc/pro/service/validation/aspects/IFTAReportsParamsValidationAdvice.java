@@ -21,6 +21,7 @@ import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 import com.inthinc.pro.service.validation.util.IFTAReportsParamsBeanFactory;
 import com.inthinc.pro.service.validation.util.SpringConstraintValidatorFactory;
 import com.inthinc.pro.service.validation.util.ViolationToExceptionMapper;
+import com.inthinc.pro.util.GroupList;
 
 /**
  * This class advices the IFTA Reports services.
@@ -61,7 +62,7 @@ public class IFTAReportsParamsValidationAdvice {
 		validator = factory.getValidator();
 	}
 	
-	/**---------------------------------------------------------------------
+	/*---------------------------------------------------------------------
 	 * Pointcuts. 
 	 */
 	@SuppressWarnings("unused")
@@ -81,8 +82,16 @@ public class IFTAReportsParamsValidationAdvice {
 	@Pointcut("args(groupID, locale, measurementType)")
 	private void withoutDates(Integer groupID, Locale locale, MeasurementType measurementType) {}
 
-
-	/**---------------------------------------------------------------------
+	@SuppressWarnings("unused")
+	@Pointcut("args(groupList, startDate, endDate, locale, measurementType)")
+	private void withDatesMultiGroup(GroupList groupList, Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {}
+	
+	@SuppressWarnings("unused")
+	@Pointcut("args(groupList, locale, measurementType)")
+	private void withoutDatesMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {}
+	
+	
+	/*---------------------------------------------------------------------
 	 * Advice 
 	 */
 	@Around("isIFTAService() && validateParams() && withDates(groupID, startDate, endDate, locale, measurementType)") 
@@ -102,5 +111,23 @@ public class IFTAReportsParamsValidationAdvice {
 		violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
 		return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getLocale(), params.getMeasurementType()});
 	}	
+
+	@Around("isIFTAService() && validateParams() && withDatesMultiGroup(groupList, startDate, endDate, locale, measurementType)") 
+	public Object validateWithDatesMultiGroup(ProceedingJoinPoint pjp, GroupList groupList, Date startDate, Date endDate,
+			Locale locale, MeasurementType measurementType) throws Throwable {
+
+		IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupList, startDate, endDate, locale, measurementType);
+		violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
+		return pjp.proceed(new Object[] {new GroupList(params.getGroupIDList()), params.getStartDate(), params.getEndDate(), params.getLocale(), params.getMeasurementType()});
+	}	
+
+	@Around("isIFTAService() && validateParams() && withoutDates(groupList, locale, measurementType)") 
+	public Object validateWithoutDatesMultiGroup(ProceedingJoinPoint pjp, GroupList groupList,
+		Locale locale, MeasurementType measurementType) throws Throwable {
+
+		IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupList, locale, measurementType);
+		violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
+		return pjp.proceed(new Object[] {new GroupList(params.getGroupIDList()), params.getLocale(), params.getMeasurementType()});
+	}		
 	
 }

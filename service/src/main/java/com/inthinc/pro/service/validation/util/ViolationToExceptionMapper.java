@@ -3,28 +3,42 @@
  */
 package com.inthinc.pro.service.validation.util;
 
-import java.lang.annotation.Annotation;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.spi.BadRequestException;
+import org.jboss.resteasy.spi.NotFoundException;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.service.exceptions.ForbiddenException;
 import com.inthinc.pro.service.params.IFTAReportsParamsBean;
-import com.inthinc.pro.service.validation.rules.LocaleValidator;
-import com.inthinc.pro.service.validation.rules.StartEndDatesValidator;
+import com.inthinc.pro.service.validation.rules.AbstractServiceValidator;
+
 
 /**
  * Maps JSR-303 constrain violations to Rest Easy Exceptions.
  * @author dcueva
  */
+
 @Component
 public class ViolationToExceptionMapper {
 
-	private static final String MULTIPLE_VIOLATIONS = "Multiple constraint violations:\n";
+	public static final String DELIMITER = "#";
+	private static final String MULTIPLE_VIOLATIONS = "\nMultiple constraint violations:\n";
 
+	private Map<String, Class<? extends RuntimeException>> map = new HashMap<String, Class<? extends RuntimeException>>();
+	
+	public ViolationToExceptionMapper(){
+		map.put(Response.Status.BAD_REQUEST.toString(), BadRequestException.class);
+		map.put(Response.Status.FORBIDDEN.toString(), ForbiddenException.class);
+		map.put(Response.Status.NOT_FOUND.toString(), NotFoundException.class);
+	}
+	
 	/**
 	 * If there are constraint violations, raise exception.
 	 * The appropriate exception will be chosen depending on the constraint violation.
@@ -60,16 +74,27 @@ public class ViolationToExceptionMapper {
 	}	
 
 	/**
-	 * Handle single violation depending on the annotation type
-	 * @param violation The violation.
+	 * Handle single violation depending on the annotation type.
+	 * This method will throw an exception depending on the constraint violation.</br></br>
+	 * 
+	 * @param violation The constraint violation.
 	 */
-	private void handleSingleViolation(
-			ConstraintViolation<IFTAReportsParamsBean> violation) {
+	private void handleSingleViolation(ConstraintViolation<IFTAReportsParamsBean> violation) {
 
-			Annotation annotation = violation.getConstraintDescriptor().getAnnotation();
-			if (annotation instanceof LocaleValidator) throw new BadRequestException(violation.getMessage());
-			if (annotation instanceof StartEndDatesValidator) throw new BadRequestException(violation.getMessage());
-			//TODO complete list
+			// Get the exception corresponding to the violation
+			Class<? extends RuntimeException> exceptionClass = map.get(extractStatusTypeName(violation.getMessage()));
+
+			// Default exception: BadRequestException
+			if (exceptionClass == null) exceptionClass = BadRequestException.class;
+			
+			// Throw the exception
+			RuntimeException exception;
+			try {
+				exception = exceptionClass.getDeclaredConstructor(String.class).newInstance(extractUserMessage(violation.getMessage()));
+			} catch (Exception e) {
+				throw new BadRequestException(e);
+			}
+			throw exception;
 	}
 
 	/**
@@ -81,8 +106,33 @@ public class ViolationToExceptionMapper {
 
 			StringBuffer fullMessage = new StringBuffer(MULTIPLE_VIOLATIONS); 
 			Iterator<ConstraintViolation<IFTAReportsParamsBean>>  it = constraintViolations.iterator();
-			while (it.hasNext()) fullMessage.append(it.next().getMessage() + "\n");
+			while (it.hasNext()) fullMessage.append("* " + extractUserMessage(it.next().getMessage()) + "\n");
 			throw new BadRequestException(fullMessage.toString());
+	}
+
+
+	/**
+	 * Returns the name of the {@link Response.Status} from the violation message.</br>
+	 * The convention is detailed in {@link AbstractServiceValidator}
+	 * 
+	 * @param violation The Constraint violation
+	 * @return name of the {@link Response.Status} from the violation message.
+	 */
+	private Object extractStatusTypeName(String violationMessage) {
+		String[] parts = violationMessage.split(DELIMITER);
+		return parts[0];
+	}	
+	
+	/**
+	 * Returns the user-readable portion of the violation message.</br>
+	 * The convention is detailed in {@link AbstractServiceValidator}
+	 * 
+	 * @param violation The Constraint violation
+	 * @return user-readable portion of the violation message.
+	 */
+	private String extractUserMessage(String violationMessage) {
+		String[] parts = violationMessage.split(DELIMITER);
+		return parts[1];
 	}
 	
 }

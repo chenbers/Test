@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.params.IFTAReportsParamsBean;
+import com.inthinc.pro.util.GroupList;
 
 /**
  * Produces instances of IFTAReportsParamsBean.
@@ -53,6 +54,23 @@ public class IFTAReportsParamsBeanFactory {
 		List<Integer> groupIDList = new ArrayList<Integer>();
 		groupIDList.add(groupID);
 		return getBean(groupIDList, startDate, endDate, locale, measurementType);
+	}
+	
+	/**
+	 * Overloaded convenience method.
+	 * @see #getBean(IFTAReportsParamsBean, List, Date, Date, Locale, MeasurementType)
+	 */
+	public IFTAReportsParamsBean getBean(GroupList groupList, Locale locale, MeasurementType measurementType) {
+		return getBean(groupList.getValueList(), null, null, locale, measurementType);	
+	}
+	
+	/**
+	 * Overloaded convenience method.
+	 * @see #getBean(IFTAReportsParamsBean, List, Date, Date, Locale, MeasurementType)
+	 */
+	public IFTAReportsParamsBean getBean(GroupList groupList, Date startDate, Date endDate, Locale locale,
+			MeasurementType measurementType) {
+		return getBean(groupList.getValueList(), startDate, endDate, locale, measurementType);
 	}
 	
 	/**
