@@ -7,7 +7,7 @@
  * catch(Exception e){ errors.Error(NameOfError, e)}
  * 
  * @see DefaultSelenium
- * @see Error_Catcher
+ * @see ErrorCatcher
  * @author dtanner
  *
  */
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
-import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
+import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
 import com.thoughtworks.selenium.CommandProcessor;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.SeleniumException;
 
 public class CoreMethodLib extends DefaultSelenium{
 
-	private static Error_Catcher errors;
+	private static ErrorCatcher errors;
 	
 	public CoreMethodLib(CommandProcessor processor) {
 		super(processor);
@@ -272,7 +272,7 @@ public class CoreMethodLib extends DefaultSelenium{
 		}
 	}
 	
-	public Error_Catcher getErrors(){
+	public ErrorCatcher getErrors(){
 		return errors;
 	}
 
@@ -414,7 +414,7 @@ public class CoreMethodLib extends DefaultSelenium{
 	
 	@Override
 	public void start(){
-		errors = new Error_Catcher();
+		errors = new ErrorCatcher();
 		super.start();
 	}
 }
