@@ -4,18 +4,18 @@ package com.inthinc.pro.web.selenium.portal.Home.Team;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
-import com.inthinc.pro.web.selenium.Core;
+import com.inthinc.pro.web.selenium.CoreMethodLib;
 import org.apache.commons.lang.StringEscapeUtils;
-import com.inthinc.pro.web.selenium.Selenium_Server;
+import com.inthinc.pro.web.selenium.SeleniumServerLib;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
-import com.inthinc.pro.web.selenium.Singleton;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
 /****************************************************************************************
  * Purpose: 
  * @author 
  * Last Update:  
  ****************************************************************************************/
 
-public class DriverStats extends Selenium_Server {
+public class DriverStats extends SeleniumServerLib {
 	
 	//Define Class Objects
 	private final String driverstatsform = "teamStatisticsForm:drivers:";
@@ -27,18 +27,18 @@ public class DriverStats extends Selenium_Server {
 	
 	
 	
-	protected static Core selenium;
+	protected static CoreMethodLib selenium;
 	private long total;
 
 	public DriverStats(){
-		this(Singleton.getSingleton().getSelenium());
+		this(GlobalSelenium.getSingleton().getSelenium());
 		}
 	
-	public DriverStats(Singleton tvar ){
+	public DriverStats(GlobalSelenium tvar ){
 		this(tvar.getSelenium());
 		}
 	
-	public DriverStats( Core sel ){
+	public DriverStats( CoreMethodLib sel ){
 			selenium = sel;
 		}
 	
