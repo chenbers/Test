@@ -1,12 +1,14 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
+import org.junit.Ignore;
+
 import com.inthinc.pro.web.selenium.InthincTest;
-import com.inthinc.pro.web.selenium.Singleton;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.portal.Notifications.Notifications;
 import com.thoughtworks.selenium.*;
 
-
+@Ignore
 public class MastHead_HP extends SeleneseTestCase {
 	//define local vars
 	

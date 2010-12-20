@@ -4,17 +4,17 @@ package com.inthinc.pro.web.selenium.portal;
 import static org.junit.Assert.*;
 import java.util.HashMap;
 import org.apache.commons.lang.StringEscapeUtils;
-import com.inthinc.pro.web.selenium.Core;
-import com.inthinc.pro.web.selenium.Selenium_Server;
-import com.inthinc.pro.web.selenium.Singleton;
-import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
+import com.inthinc.pro.web.selenium.CoreMethodLib;
+import com.inthinc.pro.web.selenium.SeleniumServerLib;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
+import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
 /****************************************************************************************
  * Purpose: 
  * @author 
  * Last Update:  
  ****************************************************************************************/
 
-public class ChartMapLib extends Selenium_Server {
+public class ChartMapLib extends SeleniumServerLib {
 	
 	//Define Class Objects
 	private final String speedboxid = "//div[@id='speedScoreBox_body']/table/tbody/tr/td";
@@ -24,24 +24,37 @@ public class ChartMapLib extends Selenium_Server {
 	private final String crashpermileid = "//table[@id='crashSummaryTable']/tbody/tr[2]/td[1]";
 	private final String totalcrashesid = "//table[@id='crashSummaryTable']/tbody/tr[2]/td[2]";
 	
-	protected static Core selenium;
+	private final String overallchartxpath = "[@id='chartdivOverallScore']";
+	
+	protected static CoreMethodLib selenium;
 
 	public ChartMapLib(){
-			this(Singleton.getSingleton().getSelenium());
+			this(GlobalSelenium.getSingleton().getSelenium());
 		}
 	
-	public ChartMapLib(Singleton tvar ){
+	public ChartMapLib(GlobalSelenium tvar ){
 			this(tvar.getSelenium());
 		}
 	
-	public ChartMapLib( Core sel ){
+	public ChartMapLib( CoreMethodLib sel ){
 			selenium = sel;
 		}
 	
-	public Error_Catcher get_errors(){
+	public ErrorCatcher get_errors(){
 			return selenium.getErrors();
 		}
 		
+	public void pieGraph(){
+		Number test;
+		selenium.click("//*[@id='overallScoreChart_chartVarId']", "teste");
+	
+		String itemNameFromTable=selenium.getText("//*[@id='driverSpeedChart_chart_div_id']");
+		System.out.println(itemNameFromTable);
+	}
+	
+	private void test_self(){
+		validateSpeedScoreBox("5.0","Test");
+	}
 	
 	public void validateSpeedScoreBox(String escore, String error_name){
 			selenium.getText(speedboxid, escore, error_name);
@@ -74,11 +87,12 @@ public class ChartMapLib extends Selenium_Server {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					ChartMapLib login;
-			login = new ChartMapLib();
-			//login.test_self();
+					ChartMapLib cml;
+			cml = new ChartMapLib();
+			cml.test_self();
+			
 			Object errors = "";
-			errors = login.get_errors().get_errors();
+			errors = cml.get_errors().get_errors();
 			System.out.println(errors.toString());	
 			try{
 						tearDown();

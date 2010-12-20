@@ -3,14 +3,14 @@ package com.inthinc.pro.web.selenium.Test_Cases;
 import org.junit.Ignore;
 import org.junit.Test;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
-import com.inthinc.pro.web.selenium.Data_Reader;
+import com.inthinc.pro.web.selenium.DataReaderLib;
 import com.inthinc.pro.web.selenium.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Masthead.*;
 
 @Ignore
 public class TemplateTest extends InthincTest {
-	//instantiate var for data reader
-	Data_Reader testdata = new Data_Reader();
+	//instantiate VAR for data reader
+	DataReaderLib testdata = new DataReaderLib();
 	
 		
 

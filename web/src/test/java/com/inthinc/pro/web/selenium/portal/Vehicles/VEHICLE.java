@@ -2,7 +2,7 @@
 
 package com.inthinc.pro.web.selenium.portal.Vehicles;
 
-import com.inthinc.pro.web.selenium.Singleton;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.thoughtworks.selenium.*;
 
 
@@ -16,7 +16,7 @@ public class VEHICLE
 	
 	
 	//define local vars
-	Singleton tvar = Singleton.getSingleton() ; 
+	GlobalSelenium tvar = GlobalSelenium.getSingleton() ; 
 	Selenium selenium = tvar.getSelenium();
 		
 	
