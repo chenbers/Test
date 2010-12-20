@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +43,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     private AutocompletePicker escalationPeoplePicker;
     private T                  oldItem;
     private String             oldEmailToString;
-
-
 
     public void setPersonDAO(PersonDAO personDAO)
     {
@@ -304,22 +303,35 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return notifyPeople;
     }
 
-    private ArrayList<SelectItem> getEscalationPicked()
-    {
-        final ArrayList<SelectItem> notifyPeople = new ArrayList<SelectItem>();
-        if (getItem().getNotifyPersonIDs() != null)
-        {
-            for (final Integer id : getItem().getVoiceEscalationPersonIDs())
-            {
-                //final User user = userDAO.findByID(id);
+    private ArrayList<SelectItem> getEscalationPicked() {
+        final ArrayList<SelectItem> escPicked = new ArrayList<SelectItem>();
+        if (getItem().getVoiceEscalationPersonIDs() != null) {
+            for (final Integer id : getItem().getVoiceEscalationPersonIDs()) {
+                // final User user = userDAO.findByID(id);
                 final Person person = personDAO.findByID(id);
                 if (!isPersonDeleted(person))
-                    notifyPeople.add(new SelectItem(person.getPersonID(), person.getFullNameWithPriPhone()));
+                    escPicked.add(new SelectItem(person.getPersonID(), person.getFullNameWithPriPhone()));
             }
-//            MiscUtil.sortSelectItems(notifyPeople);
+            // MiscUtil.sortSelectItems(notifyPeople);
         }
-        return notifyPeople;
+        return escPicked;
     }
+
+//    private List<SelectItem> getEscalationPickedFrom() {
+//        final List<SelectItem> picked = getEscalationPeoplePicker().getPicked();
+//        final List<SelectItem> pickedFrom = new ArrayList<SelectItem>();
+//        if (getItem().getVoiceEscalationPersonIDs() != null) {
+//            for (final Integer id : getItem().getVoiceEscalationPersonIDs()) {
+//                for (SelectItem item: picked) {
+//                    if (item.getValue().equals(id)) {
+//                        pickedFrom.add(e)
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//        return pickedFrom;
+//    }
     private boolean isPersonDeleted(Person person)
     {
     	if (person == null)
@@ -355,6 +367,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             getAssignPicker().setPickFrom(getAssignPickFrom());
             getPeoplePicker().setPicked(getNotifyPicked());
             getEscalationPeoplePicker().setPicked(getEscalationPicked());
+            //getEscalationPeoplePicker().getPickFrom().removeAll(getEscalationPicked());
         }
         if ((item.getDayOfWeek() == null) || (item.getDayOfWeek().size() != 7))
         {

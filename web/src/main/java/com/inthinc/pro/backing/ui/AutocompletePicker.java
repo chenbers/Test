@@ -79,10 +79,28 @@ public class AutocompletePicker
             if (matches)
                 suggestions.add(item);
         }
-
+       
+        
         suggestions.removeAll(picked);
+        removeByLabel(suggestions, picked);
         MiscUtil.sortSelectItems(suggestions);
+      
         return suggestions;
+    }
+    public boolean removeByLabel(List<SelectItem> orig, List<SelectItem> remove){
+        boolean changed = false;
+        for (final Iterator<SelectItem> origIterator = orig.iterator(); origIterator.hasNext();) {
+            SelectItem item = origIterator.next();
+            for(SelectItem removeItem: remove){
+                if(item.getLabel().equalsIgnoreCase(removeItem.getLabel())){
+                    origIterator.remove();
+                    changed = true;
+                    break;
+                }
+            }
+        }
+        
+        return changed;
     }
 
     public Object getItemValue()
@@ -113,12 +131,12 @@ public class AutocompletePicker
         if (value != null) {
             for (final Iterator<SelectItem> pickedIterator = picked.iterator(); pickedIterator.hasNext();) {
                 SelectItem item = pickedIterator.next();
-                if (value.equals(item.getLabel())) {
+                if (value.equalsIgnoreCase(item.getLabel())) {
                     pickFrom.add(item);
                     pickedIterator.remove();
                     value = null;
                     break;
-                }
+                } 
             }
             value = null;
         }
