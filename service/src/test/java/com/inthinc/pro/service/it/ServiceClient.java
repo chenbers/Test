@@ -188,6 +188,27 @@ public interface ServiceClient {
     @Path("/group/{groupID}/report/ifta/mileage")
     @Produces("application/xml")
     public ClientResponse<List<MileageByVehicle>> getMileageByVehicleDefaults(@PathParam("groupID") Integer groupID);
+
+    @POST
+    @Path("/groups/report/ifta/mileage/iftaOnly/{startDate}/{endDate}")
+    @Produces("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getMileageByVehicleWithIftaAndDatesMultiGroup(GroupList groupsList, @PathParam("startDate") String startDate,
+            @PathParam("endDate") String endDate);
+    
+    @POST
+    @Path("/groups/report/ifta/mileage/iftaOnly")
+    @Produces("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getMileageByVehicleWithIftaMultiGroup(GroupList groupList);
+    
+    @POST
+    @Path("/groups/report/ifta/mileage/{startDate}/{endDate}")
+    @Produces("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getMileageByVehicleWithDatesMultiGroup(GroupList groupList, @PathParam("startDate") String startDate, @PathParam("endDate") String endDate);
+    
+    @POST
+    @Path("/groups/report/ifta/mileage")
+    @Produces("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getMileageByVehicleDefaultsMultiGroup(GroupList groupList);
     
     // --------------------------------------------------------------------------------
     
