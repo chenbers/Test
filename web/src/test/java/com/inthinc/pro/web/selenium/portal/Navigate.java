@@ -1,8 +1,8 @@
 package com.inthinc.pro.web.selenium.portal;
 
-import com.inthinc.pro.web.selenium.Core;
-import com.inthinc.pro.web.selenium.Selenium_Server;
-import com.inthinc.pro.web.selenium.Singleton;
+import com.inthinc.pro.web.selenium.CoreMethodLib;
+import com.inthinc.pro.web.selenium.SeleniumServerLib;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 
 /****************************************************************************************
@@ -11,7 +11,7 @@ import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
  * Last Update:  
  ****************************************************************************************/
 
-public class Navigate extends Selenium_Server {
+public class Navigate extends SeleniumServerLib {
 	
 	//Define Class Objects
 	private final String main_screen_id = "/tiwipro/app/admin/people";
@@ -20,19 +20,19 @@ public class Navigate extends Selenium_Server {
 	private final String search_list_box = "navigation:layout-navigationRedirectTo";
 	private final String search_button = "navigation:layout-navigation_search_button";
 	private final String hometree_id = "//span[@id='tree_link']/span";
-	protected static Core selenium;
+	protected static CoreMethodLib selenium;
 	private String curr_notif_menu = "";
 	private String curr_admin_menu = "";
 	
 	public Navigate(){
-			this(Singleton.getSingleton().getSelenium());
+			this(GlobalSelenium.getSingleton().getSelenium());
 		}
 	
-	public Navigate(Singleton tvar ){
+	public Navigate(GlobalSelenium tvar ){
 			this(tvar.getSelenium());
 		}
 	
-	public Navigate( Core sel ){
+	public Navigate( CoreMethodLib sel ){
 			selenium = sel;
 		}
 	
