@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import com.inthinc.pro.web.selenium.CoreMethodLib;
 import com.inthinc.pro.web.selenium.SeleniumServerLib;
 import com.inthinc.pro.web.selenium.GlobalSelenium;
-import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
+import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 
 
@@ -217,7 +217,7 @@ public class Masthead extends SeleniumServerLib{
 		}
 	
 
-	public Error_Catcher get_errors(){
+	public ErrorCatcher get_errors(){
 			return selenium.getErrors();
 		}
 		
