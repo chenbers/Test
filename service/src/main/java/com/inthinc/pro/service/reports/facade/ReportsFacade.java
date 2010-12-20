@@ -19,7 +19,7 @@ public interface ReportsFacade {
 
     List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval);
    
-    List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly);
+    List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
     
     List<MileageByVehicle> getMileageByVehicle(List<Integer> idList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 

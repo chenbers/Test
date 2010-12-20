@@ -86,9 +86,10 @@ public class ReportsFacadeImpl implements ReportsFacade {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly) {
+    public List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, 
+            Interval interval, boolean dotOnly, Locale locale, MeasurementType type) {
         ReportCriteria criteria = reportService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(), 
-                groupIDList, interval, getLocale(), getMeasurementType(), dotOnly);
+                groupIDList, interval, locale, type, dotOnly);
         return criteria.getMainDataset();
     }
 

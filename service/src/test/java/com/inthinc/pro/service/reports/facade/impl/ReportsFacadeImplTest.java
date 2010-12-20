@@ -29,6 +29,8 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
     private static final Integer GROUP_ID = 1;
     private static final List<Integer> groupIDList = new ArrayList<Integer>();
     private static final Interval INTERVAL = new Interval(0L, 1L);
+    private static final Locale locale = Locale.US;
+    private static final MeasurementType measureType = MeasurementType.ENGLISH;
     private static final boolean IFTA_ONLY = true;
     
 	@Mocked 
@@ -68,7 +70,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getStateMileageByVehicleRoadStatus(groupIDList, INTERVAL, IFTA_ONLY);
+		reportsFacadeSUTMock.getStateMileageByVehicleRoadStatus(groupIDList, INTERVAL, IFTA_ONLY, locale, measureType);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -82,7 +84,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getMileageByVehicle(groupIDList, INTERVAL, IFTA_ONLY, null, null);
+		reportsFacadeSUTMock.getMileageByVehicle(groupIDList, INTERVAL, IFTA_ONLY, locale, measureType);
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -96,7 +98,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getStateMileageGroupComparison(groupIDList, INTERVAL, IFTA_ONLY, null, null);
+		reportsFacadeSUTMock.getStateMileageGroupComparison(groupIDList, INTERVAL, IFTA_ONLY, locale, measureType);
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -110,7 +112,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getStateMileageByVehicle(groupIDList, INTERVAL, IFTA_ONLY, null, null);
+		reportsFacadeSUTMock.getStateMileageByVehicle(groupIDList, INTERVAL, IFTA_ONLY, locale, measureType);
 	}
 
     @SuppressWarnings("unchecked")
@@ -123,7 +125,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
             result = new ServiceDelegate();
         }};
         
-        reportsFacadeSUTMock.getStateMileageByVehicleByMonth(groupIDList, INTERVAL, IFTA_ONLY, null, null);
+        reportsFacadeSUTMock.getStateMileageByVehicleByMonth(groupIDList, INTERVAL, IFTA_ONLY, locale, measureType);
     }
 	
 	/**

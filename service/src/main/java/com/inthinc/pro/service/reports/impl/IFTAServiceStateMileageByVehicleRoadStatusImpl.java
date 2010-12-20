@@ -1,8 +1,8 @@
 package com.inthinc.pro.service.reports.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -12,14 +12,17 @@ import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.GroupList;
 import com.inthinc.pro.util.ReportsUtil;
 
 @Component
-public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServiceImpl implements IFTAServiceStateMileageByVehicleRoadStatus {
+public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServiceImpl 
+                                implements IFTAServiceStateMileageByVehicleRoadStatus {
 
     @Autowired
     public IFTAServiceStateMileageByVehicleRoadStatusImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
@@ -27,48 +30,50 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServ
     }
 
     /**
-     * Service to retrieve the StateMileageByVehicleRoadStatus report data beans from the backend via a facade.
+     * Retrieve the StateMileageByVehicleRoadStatus report data beans from the Facade.
      * 
-     * @param gorupID
+     * @param groupID
      *            The ID of the group
      * @param startDate
      *            The start date of the interval
      * @param endDate
      *            The end date of the interval
      * @param iftaOnly
-     *            Indicator expressing if only the ifta data should be returned
-     * @return javax.ws.rs.core.Response to return the client
+     *            Indicator expressing if only the IFTA data should be returned
+     * @return javax.ws.rs.core.Response to return to the client
      */
-    Response getStateMileageByVehicleRoadStatusWithFullParameters(Integer groupID, Date startDate, Date endDate, boolean iftaOnly) {
+    Response getStateMileageRoadStatusWithFullParameters(Integer groupID, Date startDate, Date endDate,
+            boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
         // Creating a GroupList with only one group ID.
         GroupList groupList = new GroupList();
         groupList.getValueList().add(groupID);
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, iftaOnly);
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate,
+                iftaOnly, locale, measurementType);
     }
 
     /**
+     * Retrieve the StateMileageByVehicleRoadStatus report data beans from the Facade.
+     * 
      * @param groupList
+     *            A List of GroupIDs
      * @param startDate
+     *            The start date of the interval
      * @param endDate
+     *            The end date of the interval
      * @param iftaOnly
-     * @return
+     *            Indicator expressing if only the IFTA data should be returned
+     * @return javax.ws.rs.core.Response to return to the client
      */
-    Response getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(List<Integer> groupList, Date startDate, Date endDate, boolean iftaOnly) {
-
-        Response response = reportsUtil.checkParametersMultiGroup(groupList, startDate, endDate);
-
-        // Some validation errors found
-        if (response != null) {
-            return response;
-        }
+    Response getStateMileageRoadStatusWithFullParametersMultiGroup(List<Integer> groupList, 
+            Date startDate, Date endDate, boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
         // No validation error found
         List<StateMileageByVehicleRoadStatus> list = null;
 
-        Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+        Interval interval = getInterval(startDate, endDate);
         try {
-            list = reportsFacade.getStateMileageByVehicleRoadStatus(groupList, interval, iftaOnly);
+            list = reportsFacade.getStateMileageByVehicleRoadStatus(groupList, interval, iftaOnly, locale, measurementType);
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -86,93 +91,96 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServ
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageByVehicleRoadStatusWithIfta(java.lang.Integer)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageRoadStatusWithIfta(java.lang.Integer, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getStateMileageByVehicleRoadStatusWithIfta(Integer groupID) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate.getTime(), today.getTime(), true);
+    @ValidParams
+    public Response getStateMileageRoadStatusWithIfta(Integer groupID, 
+            Locale locale, MeasurementType measurementType) {
+        return getStateMileageRoadStatusWithFullParameters(groupID, null, null, true, locale, measurementType);
     }
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageByVehicleRoadStatusWithIftaAndDates(java.lang.Integer, java.util.Date, java.util.Date)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageRoadStatusWithIftaAndDates(java.lang.Integer, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getStateMileageByVehicleRoadStatusWithIftaAndDates(Integer groupID, Date startDate, Date endDate) {
-        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate, endDate, true);
+    @ValidParams
+    public Response getStateMileageRoadStatusWithIftaAndDates(Integer groupID, Date startDate, Date endDate, 
+            Locale locale, MeasurementType measurementType) {
+        return getStateMileageRoadStatusWithFullParameters(groupID, startDate, endDate, 
+                true, locale, measurementType);
     }
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageByVehicleRoadStatusWithDates(java.lang.Integer, java.util.Date, java.util.Date)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageRoadStatusWithDates(java.lang.Integer, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getStateMileageByVehicleRoadStatusWithDates(Integer groupID, Date startDate, Date endDate) {
-        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate, endDate, false);
+    @ValidParams
+    public Response getStateMileageRoadStatusWithDates(Integer groupID, Date startDate, Date endDate, 
+            Locale locale, MeasurementType measurementType) {
+        return getStateMileageRoadStatusWithFullParameters(groupID, startDate, endDate, 
+                false, locale, measurementType);
     }
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageByVehicleRoadStatusDefaults(java.lang.Integer)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageRoadStatusDefaults(java.lang.Integer, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getStateMileageByVehicleRoadStatusDefaults(Integer groupID) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate.getTime(), today.getTime(), false);
+    @ValidParams
+    public Response getStateMileageRoadStatusDefaults(Integer groupID, 
+            Locale locale, MeasurementType measurementType) {
+        return getStateMileageRoadStatusWithFullParameters(groupID, null, null, 
+                false, locale, measurementType);
     }
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageByVehicleRoadStatusDefaultsMultiGroup(com.inthinc.pro.util.GroupList)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageRoadStatusDefaultsMultiGroup(com.inthinc.pro.util.GroupList, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getStateMileageByVehicleRoadStatusDefaultsMultiGroup(GroupList groupList) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), false);
+    @ValidParams
+    public Response getStateMileageRoadStatusDefaultsMultiGroup(GroupList groupList, 
+            Locale locale, MeasurementType measurementType) {
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), null, null, 
+                false, locale, measurementType);
     }
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageByVehicleRoadStatusWithDatesMultiGroup(com.inthinc.pro.util.GroupList, java.util.Date, java.util.Date)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageRoadStatusWithDatesMultiGroup(com.inthinc.pro.util.GroupList, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getStateMileageByVehicleRoadStatusWithDatesMultiGroup(GroupList groupList, Date startDate, Date endDate) {
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, false);
+    @ValidParams
+    public Response getStateMileageRoadStatusWithDatesMultiGroup(GroupList groupList, Date startDate, Date endDate,
+            Locale locale, MeasurementType measurementType) {
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate,
+                false, locale, measurementType);
     }
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageByVehicleRoadStatusWithIftaAndDatesMultiGroup(com.inthinc.pro.util.GroupList, java.util.Date, java.util.Date)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageRoadStatusWithIftaAndDatesMultiGroup(com.inthinc.pro.util.GroupList, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getStateMileageByVehicleRoadStatusWithIftaAndDatesMultiGroup(GroupList groupList, Date startDate, Date endDate) {
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, true);
+    @ValidParams
+    public Response getStateMileageRoadStatusWithIftaAndDatesMultiGroup(GroupList groupList, Date startDate, Date endDate,
+            Locale locale, MeasurementType measurementType) {
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate,
+                true, locale, measurementType);
     }
 
     /**
      * {@inheritDoc}
-     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageByVehicleRoadStatusWithIftaMultiGroup(com.inthinc.pro.util.GroupList)
+     * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus#getStateMileageRoadStatusWithIftaMultiGroup(com.inthinc.pro.util.GroupList, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
-    public Response getStateMileageByVehicleRoadStatusWithIftaMultiGroup(GroupList groupList) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), true);
+    @ValidParams
+    public Response getStateMileageRoadStatusWithIftaMultiGroup(GroupList groupList,
+            Locale locale, MeasurementType measurementType) {
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), null, null,
+                true, locale, measurementType);
     }
 }
