@@ -220,7 +220,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setLong(3, interval.getEndMillis());
             
             resultSet = statement.executeQuery();
-System.out.println("statment: " + statement.toString());            
+            if(logger.isDebugEnabled())
+                logger.debug("statment: " + statement.toString());            
 
             while (resultSet.next())
             {
@@ -271,7 +272,8 @@ System.out.println("statment: " + statement.toString());
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, driverStatusOnly);
-            System.out.println(statement.toString());
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
             
             resultSet = statement.executeQuery();
 
@@ -334,7 +336,8 @@ System.out.println("statment: " + statement.toString());
         List<HOSRecord> hosRecordList = getHOSRecords(driverID, interval, driverStatusOnly);
         if (hosRecordList == null)
             return null;
-        System.out.println("original list size: " + hosRecordList.size());
+        if(logger.isDebugEnabled())
+            logger.debug("original list size: " + hosRecordList.size());
         
         List<HOSRecord> hosFilteredRecordList = new ArrayList<HOSRecord>();
         for (HOSRecord rec : hosRecordList)
