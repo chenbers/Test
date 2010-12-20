@@ -6,9 +6,9 @@ import java.util.HashMap;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.inthinc.pro.web.selenium.Core;
-import com.inthinc.pro.web.selenium.Selenium_Server;
-import com.inthinc.pro.web.selenium.Singleton;
+import com.inthinc.pro.web.selenium.CoreMethodLib;
+import com.inthinc.pro.web.selenium.SeleniumServerLib;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 /****************************************************************************************
  * Purpose: Includes all methods and variables to process the TiwiPro Login Screen
@@ -16,7 +16,7 @@ import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
  * Last Update:  11/18/Added comments and made changes to adhere to Java Coding Standards
  */
 
-public class Login extends Selenium_Server {
+public class Login extends SeleniumServerLib {
 	
 	
 	//Object Map
@@ -81,17 +81,17 @@ public class Login extends Selenium_Server {
 	private final String username_xpath = login_form_id+ "table/tbody/tr[1]/td[2]/input";
 	private final String username_xpath_alt = "//input[@id='"+username_id+"']";
 
-	protected static Core selenium;
+	protected static CoreMethodLib selenium;
 
 	public Login(){
-			this(Singleton.getSingleton().getSelenium());
+			this(GlobalSelenium.getSingleton().getSelenium());
 		}
 	
-	public Login(Singleton tvar ){
+	public Login(GlobalSelenium tvar ){
 			this(tvar.getSelenium());
 		}
 	
-	public Login( Core sel ){
+	public Login( CoreMethodLib sel ){
 			selenium = sel;
 		}
 	
