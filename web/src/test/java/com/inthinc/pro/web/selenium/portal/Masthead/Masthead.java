@@ -14,14 +14,14 @@ import java.util.Calendar;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.inthinc.pro.web.selenium.Core;
-import com.inthinc.pro.web.selenium.Selenium_Server;
-import com.inthinc.pro.web.selenium.Singleton;
+import com.inthinc.pro.web.selenium.CoreMethodLib;
+import com.inthinc.pro.web.selenium.SeleniumServerLib;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 
 
-public class Masthead extends Selenium_Server{	
+public class Masthead extends SeleniumServerLib{	
 	
 
 	private final String footer_form = "//form[@id='footerForm']";
@@ -105,17 +105,17 @@ public class Masthead extends Selenium_Server{
 	private String version_text;
 	private String copyright_text_actual;
 	
-	protected static Core selenium;
+	protected static CoreMethodLib selenium;
 	
 	public Masthead(){
-			this(Singleton.getSingleton().getSelenium());
+			this(GlobalSelenium.getSingleton().getSelenium());
 		}
 	
-	public Masthead(Singleton tvar ){
+	public Masthead(GlobalSelenium tvar ){
 			this(tvar.getSelenium());
 		}
 	
-	public Masthead( Core sel ){
+	public Masthead( CoreMethodLib sel ){
 			selenium = sel;
 		}
 	
@@ -221,7 +221,7 @@ public class Masthead extends Selenium_Server{
 			return selenium.getErrors();
 		}
 		
-	public Core get_selenium(){
+	public CoreMethodLib get_selenium(){
 			return selenium;
 		}
 	
