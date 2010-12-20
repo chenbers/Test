@@ -1,6 +1,5 @@
 package com.inthinc.pro.service.reports.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +27,7 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseIFTAServiceI
     private static Logger logger = Logger.getLogger(IFTAServiceStateMileageGroupComparisonImpl.class); 
 
     /**
+     * Default constructor.
      * @param reportsFacade
      * @param reportsUtil
      */
@@ -37,15 +37,6 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseIFTAServiceI
     }
 
    
-    /**
-     * @param groupID
-     * @param startDate
-     * @param endDate
-     * @param iftaOnly
-     * @param locale
-     * @param measurementType
-     * @return
-     */
     Response getStateMileageByVehicleStateComparisonWithFullParameters(Integer groupID, Date startDate, Date endDate, 
             boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
@@ -55,15 +46,6 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseIFTAServiceI
         return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, iftaOnly, locale, measurementType);
     }
     
-    /**
-     * @param groupList
-     * @param startDate
-     * @param endDate
-     * @param iftaOnly
-     * @param locale
-     * @param measurementType
-     * @return
-     */
     Response getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(List<Integer> groupList, Date startDate, Date endDate, 
             boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
@@ -71,7 +53,7 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseIFTAServiceI
 
         Interval interval = getInterval(startDate, endDate);
         try {
-            list = reportsFacade.getStateMileageByVehicleStateComparison(groupList, interval, iftaOnly, locale, measurementType);
+            list = reportsFacade.getStateMileageGroupComparison(groupList, interval, iftaOnly, locale, measurementType);
         } catch (Exception e) {
             logger.error(e.toString() + ", interval:" + interval 
                     + ", iftaOnly:" + iftaOnly + ", locale:" + locale + ", measurementType: " + measurementType);
@@ -132,12 +114,7 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseIFTAServiceI
      */
     @Override
     public Response getStateMileageByVehicleStateComparisonDefaultsMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), false, locale, measurementType);
+        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), null, null, false, locale, measurementType);
     }
 
 
@@ -165,11 +142,6 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseIFTAServiceI
      */
     @Override
     public Response getStateMileageByVehicleStateComparisonWithIftaMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), true, locale, measurementType);
+        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), null, null, true, locale, measurementType);
     }
 }

@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.client.ClientResponse;
@@ -18,7 +19,6 @@ import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
-import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
@@ -126,22 +126,6 @@ public interface ServiceClient {
             @PathParam("endDate") String endDate);
 
     
-    // -----------------------------------------------------------------------------------------------------------------
-    // State Mileage by Vehicle By Month
-    
-    @GET
-    @Path("/group/{groupID}/report/ifta/monthMileage/{startDate}/{endDate}")
-    @Produces("application/xml")
-    public ClientResponse<List<StateMileage>> getStateMileageByVehicleByMonthWithDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
-            @PathParam("endDate") String endDate);
-    
-    @POST
-    @Path("/groups/report/ifta/monthMileage/{startDate}/{endDate}")
-    @Produces("application/xml")
-    @Consumes("application/xml")
-    public ClientResponse<List<StateMileage>> getStateMileageByVehicleByMonthWithDatesMultiGroup(GroupList groupList, @PathParam("startDate") String startDate,
-            @PathParam("endDate") String endDate);
-
     // --------------------------------------------------------------------------------
     // State Mileage by Vehicle
     @GET
@@ -165,6 +149,56 @@ public interface ServiceClient {
     @Produces("application/xml")
     public ClientResponse<List<MileageByVehicle>> getStateMileageByVehicleWithIftaAndDates(@PathParam("groupID") Integer groupID, @PathParam("startDate") String startDate,
             @PathParam("endDate") String endDate);
+
+    // --------------------------------------------------------------------------------
+    // State Mileage by Month
+    @GET
+    @Path("/group/{groupID}/report/ifta/monthMileage/iftaOnly/{startDate}/{endDate}")
+    public ClientResponse<List<MileageByVehicle>> getStateMileageByMonthWithIftaAndDates(@PathParam("groupID") Integer groupID, 
+            @PathParam("startDate") String startDate, @PathParam("endDate") String endDate,
+            @QueryParam("locale") String locale, @QueryParam("measurementType") String measurementType);
+    
+    @GET
+    @Path("/group/{groupID}/report/ifta/monthMileage/iftaOnly")
+    public ClientResponse<List<MileageByVehicle>> getStateMileageByMonthWithIfta(@PathParam("groupID") Integer groupID,
+            @QueryParam("locale") String locale, @QueryParam("measurementType") String measurementType);
+    
+    @GET
+    @Path("/group/{groupID}/report/ifta/monthMileage")
+    public ClientResponse<List<MileageByVehicle>> getStateMileageByMonthDefaults(@PathParam("groupID") Integer groupID,
+            @QueryParam("locale") String locale, @QueryParam("measurementType") String measurementType);
+    
+    @GET
+    @Path("/group/{groupID}/report/ifta/monthMileage/{startDate}/{endDate}")
+    public ClientResponse<List<MileageByVehicle>> getStateMileageByMonthWithDates(@PathParam("groupID") Integer groupID, 
+            @PathParam("startDate") String startDate, @PathParam("endDate") String endDate,
+            @QueryParam("locale") String locale, @QueryParam("measurementType") String measurementType);
+    
+    @POST
+    @Path("/groups/report/ifta/monthMileage/iftaOnly/{startDate}/{endDate}")
+    @Consumes("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getStateMileageByMonthWithIftaAndDatesMultiGroup(GroupList groupList, 
+            @PathParam("startDate") String startDate, @PathParam("endDate") String endDate,
+            @QueryParam("locale") String locale, @QueryParam("measurementType") String measurementType);
+
+    @POST
+    @Path("/groups/report/ifta/monthMileage/iftaOnly")
+    @Consumes("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getStateMileageByMonthWithIftaMultiGroup(GroupList groupList,
+            @QueryParam("locale") String locale, @QueryParam("measurementType") String measurementType);
+
+    @POST
+    @Path("/groups/report/ifta/monthMileage")
+    @Consumes("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getStateMileageByMonthDefaultsMultiGroup(GroupList groupList,
+            @QueryParam("locale") String locale, @QueryParam("measurementType") String measurementType);
+
+    @POST
+    @Path("/groups/report/ifta/monthMileage/{startDate}/{endDate}")
+    @Consumes("application/xml")
+    public ClientResponse<List<MileageByVehicle>> getStateMileageByMonthWithDatesMultiGroup(GroupList groupList, 
+            @PathParam("startDate") String startDate, @PathParam("endDate") String endDate,
+            @QueryParam("locale") String locale, @QueryParam("measurementType") String measurementType);
 
     // --------------------------------------------------------------------------------
     // Mileage by Vehicle

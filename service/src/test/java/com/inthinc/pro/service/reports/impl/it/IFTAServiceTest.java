@@ -179,28 +179,4 @@ public class IFTAServiceTest extends BaseEmbeddedServerITCase {
         // assertFalse(results.isEmpty());
     }
     
-    /**
-     * Integration test for getStateMileageByVehicleByMonth().
-     */
-//    @Test
-    public void testGetStateMileageByVehicleByMonthWithGroupNotInUserHierarchy() {
-        // FIXME commented out, need to be fixed
-        //ClientResponse<List<StateMileage>> response = client.getStateMileageByVehicleByMonthWithDates(GROUP_ID_NOT_IN_USER_HIERARCHY, TEST_START_DATE, TEST_END_DATE);
-
-        //assertEquals(Response.Status.FORBIDDEN.getStatusCode(), response.getStatus());
-
-    }
-    
-//    @Test
-    public void testGetStateMileageByVehicleByMonthWithGroupNotInUserHierarchyMultiGroup() {
-        expectedGroupIDList = new ArrayList<Integer>();
-        expectedGroupIDList.add(GROUP_ID_WITH_NO_DATA);
-        expectedGroupIDList.add(GROUP_ID_NOT_IN_USER_HIERARCHY);
-        GroupList gl = new GroupList(expectedGroupIDList);
-        // FIXME commented out, need to be fixed
-        //ClientResponse<List<StateMileage>> response = client.getStateMileageByVehicleByMonthWithDatesMultiGroup(gl, TEST_START_DATE, TEST_END_DATE);
-
-        //assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
-
-    }
 }

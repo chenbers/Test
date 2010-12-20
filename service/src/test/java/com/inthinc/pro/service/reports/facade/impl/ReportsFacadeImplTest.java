@@ -3,6 +3,7 @@ package com.inthinc.pro.service.reports.facade.impl;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -10,10 +11,9 @@ import mockit.Deencapsulation;
 import mockit.Delegate;
 import mockit.Expectations;
 import mockit.Mocked;
-import mockit.Mockit;
 
 import org.joda.time.Interval;
-import org.junit.After;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.model.GroupHierarchy;
@@ -26,7 +26,8 @@ import com.inthinc.pro.service.impl.BaseUnitTest;
  * Unit test for ReportsFacade.
  */
 public class ReportsFacadeImplTest extends BaseUnitTest {
-    private static final Integer GROUP_ID = 1505;
+    private static final Integer GROUP_ID = 1;
+    private static final List<Integer> groupIDList = new ArrayList<Integer>();
     private static final Interval INTERVAL = new Interval(0L, 1L);
     private static final boolean IFTA_ONLY = true;
     
@@ -37,11 +38,11 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 	@Mocked(methods = {"getAccountGroupHierarchy()", "getLocale()", "getMeasurementType()"}) 
 	ReportsFacadeImpl reportsFacadeSUTMock;    
     
-	@After
-	public void tearDown() {
-		Mockit.tearDownMocks();
+	@BeforeClass
+	public static void setUp() {
+	    groupIDList.add(GROUP_ID);
 	}
-
+	
 	@Test
 	public void testGetTenHourViolations() {
 		
@@ -51,7 +52,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			reportServiceMock.getTenHoursDayViolationsCriteria(null, GROUP_ID, INTERVAL, null);
 			result = new ReportCriteria();
 		}};
-		
+
 		reportsFacadeSUTMock.getTenHourViolations(GROUP_ID, INTERVAL);
 	}	
 	
@@ -62,11 +63,12 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 		Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
 		
 		new Expectations(){{
-			reportServiceMock.getStateMileageByVehicleRoadStatusReportCriteria(null, (List<Integer>) any, INTERVAL, null, null, IFTA_ONLY);
+			reportServiceMock.getStateMileageByVehicleRoadStatusReportCriteria(null, 
+			    (List<Integer>) any, INTERVAL, null, null, IFTA_ONLY);
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getStateMileageByVehicleRoadStatus(GROUP_ID, INTERVAL, IFTA_ONLY);
+		reportsFacadeSUTMock.getStateMileageByVehicleRoadStatus(groupIDList, INTERVAL, IFTA_ONLY);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -80,7 +82,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getMileageByVehicle(GROUP_ID, INTERVAL, IFTA_ONLY, null, null);
+		reportsFacadeSUTMock.getMileageByVehicle(groupIDList, INTERVAL, IFTA_ONLY, null, null);
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -94,7 +96,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getStateMileageGroupComparison(GROUP_ID, INTERVAL, IFTA_ONLY, null, null);
+		reportsFacadeSUTMock.getStateMileageGroupComparison(groupIDList, INTERVAL, IFTA_ONLY, null, null);
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -108,7 +110,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 			result = new ServiceDelegate();
 		}};
 		
-		reportsFacadeSUTMock.getStateMileageByVehicle(GROUP_ID, INTERVAL, IFTA_ONLY, null, null);
+		reportsFacadeSUTMock.getStateMileageByVehicle(groupIDList, INTERVAL, IFTA_ONLY, null, null);
 	}
 
     @SuppressWarnings("unchecked")
@@ -121,7 +123,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
             result = new ServiceDelegate();
         }};
         
-        reportsFacadeSUTMock.getStateMileageByVehicleByMonth(GROUP_ID, INTERVAL, IFTA_ONLY, null, null);
+        reportsFacadeSUTMock.getStateMileageByVehicleByMonth(groupIDList, INTERVAL, IFTA_ONLY, null, null);
     }
 	
 	/**
