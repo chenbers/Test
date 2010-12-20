@@ -1,8 +1,8 @@
 package com.inthinc.pro.web.selenium.portal.Users;
 
 import com.inthinc.pro.web.selenium.InthincTest;
-import com.inthinc.pro.web.selenium.Core;
-import com.inthinc.pro.web.selenium.Singleton;
+import com.inthinc.pro.web.selenium.CoreMethodLib;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 
 /****************************************************************************************
@@ -31,13 +31,13 @@ public class User_Admin extends InthincTest {
 	//General text box
 	private final String search_text_box = "admin-table-form:personTable-filterTable";
 	
-	protected static Core selenium;
+	protected static CoreMethodLib selenium;
 
 	public User_Admin(){
-			this(Singleton.getSingleton().getSelenium());
+			this(GlobalSelenium.getSingleton().getSelenium());
 		}
 	
-	public User_Admin(Singleton tvar ){
+	public User_Admin(GlobalSelenium tvar ){
 			this(tvar.getSelenium());
 		}
 	
@@ -137,7 +137,7 @@ public class User_Admin extends InthincTest {
 			selenium.waitForPageToLoad("30000");
 		}
 	
-	public User_Admin( Core sel ){
+	public User_Admin( CoreMethodLib sel ){
 			selenium = sel;
 		}
 	
