@@ -23,8 +23,8 @@ public abstract class InthincTest
 	
 	private GregorianCalendar currentTime;
 	private static HashMap<String, HashMap<String, String>> testCase, errors;
-	private static Data_Reader data_file;
-	private static Rally_API rally;
+	private static DataReaderLib data_file;
+	private static RallyAPILib rally;
 	
 	private String testCaseID;
 	private String testVersion="No Version Found";
@@ -36,7 +36,7 @@ public abstract class InthincTest
 	private final static String password = "aOURh7PL5v";
 	private final static String workspace = "Inthinc";
 	
-	private static Core selenium;
+	private static CoreMethodLib selenium;
 	private static SeleniumServer seleniumserver;
 	
 	@BeforeClass
@@ -44,7 +44,7 @@ public abstract class InthincTest
 		try{
 				seleniumserver = new SeleniumServer();
 		        seleniumserver.start();
-				rally = new Rally_API(username, password);
+				rally = new RallyAPILib(username, password);
 			}catch (Exception e) {
 				e.printStackTrace();
 				throw new StoppedByUserException();
@@ -54,7 +54,7 @@ public abstract class InthincTest
 	
 	@Before
 	public void start_selenium(){
-		selenium = Singleton.getSingleton().getSelenium();
+		selenium = GlobalSelenium.getSingleton().getSelenium();
 		try{
 			selenium.start();
 			currentTime = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -103,7 +103,7 @@ public abstract class InthincTest
 		
 		if (data_file==null){
 			//instantiate data reader if needed
-			data_file = new Data_Reader();	
+			data_file = new DataReaderLib();	
 		}
 		
 		try{
