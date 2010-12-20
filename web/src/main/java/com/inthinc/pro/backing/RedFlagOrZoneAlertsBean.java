@@ -160,8 +160,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         return alertView;
     }
+    public static String findOwnerName(Integer userID){
+        String results ="";
+        if(userID != null)
+            results = userDAO.findByID(userID).getPerson().getFullName();
+        return results;
+    }
     private static void ensureEmptySlot(List<String> list) {
-        System.out.println("private static void ensureEmptySlot(List<String> "+list+")");
         if(null == list) list = new ArrayList<String>();
         if(!list.isEmpty()) {
             String lastString = null;
@@ -255,6 +260,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     public String cancelEdit() {
         getItem().setEventSubCategory(null);
         return super.cancelEdit();
+    }
+    @Override
+    public String edit() {
+        String results = super.edit();
+        return results;
     }
     
     @Override
@@ -669,6 +679,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             // TODO Auto-generated method stub
             return getAlertID();
         }
+        @Override
+        public String getFullName(){
+            if(super.getFullName() == null && super.getUserID() != null)
+                super.setFullName(findOwnerName(getUserID()));
+            return super.getFullName();
+        }
         public boolean isAnytime() {
             return anytime;
         }
@@ -946,7 +962,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.removeId = removeId;
         }
     }
-
+    
     public void setRedFlagAlertsDAO(RedFlagAlertDAO redFlagAlertsDAO) {
         this.redFlagAlertsDAO = redFlagAlertsDAO;
     }

@@ -55,7 +55,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected TablePreferenceDAO  tablePreferenceDAO;
     protected TablePreference     tablePreference;
     private TablePref<T>          tablePref;
-    protected UserDAO             userDAO;
+    protected static UserDAO             userDAO;
     protected List<SelectItem>   	  allGroupUsers;
     protected Map<String,Object>      filterValues;
 
@@ -456,7 +456,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             return getDisplayRedirect();
         }
         else
-        {
+        {   
             item = null;
             return getFinishedRedirect();
         }
@@ -837,7 +837,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
 	}
 
 	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
+		BaseAdminBean.userDAO = userDAO;
 	}
 
     public List<SelectItem> getAllGroupUsers() {

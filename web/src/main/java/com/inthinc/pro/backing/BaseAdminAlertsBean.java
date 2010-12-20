@@ -14,10 +14,10 @@ import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
-import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -30,8 +30,8 @@ import com.inthinc.pro.util.SelectItemUtil;
 @SuppressWarnings("serial")
 public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T> implements PersonChangeListener
 {
-//    protected UserDAO          userDAO;
-    protected PersonDAO        personDAO;
+    //protected static UserDAO   userDAO;
+    protected PersonDAO personDAO;
     protected DriverDAO        driverDAO;
     private VehiclesBean       vehiclesBean;
     private String             assignType;
