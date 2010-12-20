@@ -1,8 +1,8 @@
 package com.inthinc.pro.web.selenium.portal.Users;
 
 import com.inthinc.pro.web.selenium.InthincTest;
-import com.inthinc.pro.web.selenium.Core;
-import com.inthinc.pro.web.selenium.Singleton;
+import com.inthinc.pro.web.selenium.CoreMethodLib;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 /****************************************************************************************
  * @author : Lee Arrington
@@ -63,13 +63,13 @@ public class User_AddEdit extends InthincTest {
 	private final String loginradiobutton = "edit-form:editPerson-isUser";
 	
 
-	protected static Core selenium;
+	protected static CoreMethodLib selenium;
 
 	public User_AddEdit(){
-			this(Singleton.getSingleton().getSelenium());
+			this(GlobalSelenium.getSingleton().getSelenium());
 		}
 	
-	public User_AddEdit(Singleton tvar ){
+	public User_AddEdit(GlobalSelenium tvar ){
 			this(tvar.getSelenium());
 		}
 	
@@ -243,7 +243,7 @@ public void enter_employee_info(String datasheet){
 		selenium.select(emp_fuelefficiencytype, "label=" + get_data(datasheet,"FuelEffType"));
 	}
 
-public User_AddEdit(Core sel ){
+public User_AddEdit(CoreMethodLib sel ){
 		selenium = sel;
 	}
 
