@@ -579,7 +579,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 context.addMessage("edit-form:editVehicle-VIN", message);
             }
-        }
+         }
         
         return valid;
     }
@@ -673,7 +673,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return YEARS;
     }
 
-    public List<SelectItem> getTypes() {
+    public List<SelectItem> getWaySmartTypes() {
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        selectItemList.add(new SelectItem(VehicleType.LIGHT,MessageUtil.getMessageString(VehicleType.LIGHT.toString())));
+        selectItemList.add(new SelectItem(VehicleType.HEAVY,MessageUtil.getMessageString(VehicleType.HEAVY.toString())));
+        
+        return selectItemList;
+    }
+    public List<SelectItem> getTiwiProTypes() {
         return SelectItemUtil.toList(VehicleType.class, false);
     }
 

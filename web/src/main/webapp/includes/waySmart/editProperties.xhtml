@@ -7,6 +7,23 @@
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
+                <tr>
+                  <td width="100" valign="top">
+                    <ui:include src="../../includes/admin/inputLabel.xhtml">
+						<ui:param name="required" value="TRUE"/>
+						<ui:param name="for" value="editVehicle-type"/>
+						<ui:param name="fieldName" value="vtype"/>
+						<ui:param name="editBean" value="#{vehiclesBean}"/>
+						<ui:param name="label" value="#{messages.editVehicle_type}"/>
+						<ui:param name="context" value="editVehicleType"/>
+					</ui:include>
+                  </td>
+                  <td>
+                    <h:selectOneMenu value="#{vehiclesBean.item.vtype}" id="editVehicle-type" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
+                      <f:selectItems value="#{vehiclesBean.waySmartTypes}" />
+                    </h:selectOneMenu>
+                  </td>
+                </tr>
          <ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
             <tr>
               <td width="100" valign="top">

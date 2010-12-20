@@ -847,7 +847,6 @@
 
                         <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByEmailInstructions}" /></div>
 
-                        <!-- <h:inputTextarea id="emailToString" value="#{redFlagOrZoneAlertsBean.item.emailToString}" rows="4" style="width:100%" onchange="checkMultiple(this)" /> -->
 						<!-- free form Emails list -->
 						<table>
 							<tr>
@@ -878,26 +877,6 @@
 								</td>
 							</tr>
 						</table>
-					<!--<a4j:outputPanel id="emailsToPanel" >
-					<table>
-					   <c:forEach items="#{redFlagOrZoneAlertsBean.item.emailTos}" var="emailTo" begin="0" step="1" varStatus="status">
-					   <tr><td>
-					   		<h:inputText value="#{emailTo}" styleClass="emailInput" id="emailAddressesInput#{status.index}" />
-						   <a4j:commandLink  action="#{redFlagOrZoneAlertsBean.item.addEmail}" 
-       						rendered="#{status.last}" style="margin-left:9px"
-       						reRender="emailsToPanel" type="submit" ajaxSingle="false" value="+" />
-						     <h:commandLink onclick="removeEmailAddress('#{status.index}');" value="X"
-						       rendered="#{status.index ne 0}" style="margin-left:9px" >
-						     </h:commandLink>
-						     </td></tr>
-      					   </c:forEach>
-      					   </table>
-					   </a4j:outputPanel>
-					<a4j:jsFunction  action="#{redFlagOrZoneAlertsBean.item.removeEmail}" name="removeEmailAddress"
-					   ajaxSingle="true" reRender="emailsToPanel">
-					   <a4j:actionparam name="removeId" assignTo="#{redFlagOrZoneAlertsBean.item.removeId}"/>
-					 </a4j:jsFunction>
-					    -->
 					    <br/>
 						<!-- / free form Emails list -->                        
 
@@ -906,7 +885,7 @@
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
                       <div class="add_section_title">
-                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_phoneCallEscalation" value="#{redFlagOrZoneAlertsBean.updateField['emailToString']}" />
+                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_phoneCallEscalation" value="#{redFlagOrZoneAlertsBean.updateField['escalationList']}" />
                           <h:outputText value="#{messages.editRedFlag_notificationsByPhone}" />
                         </div>
 
@@ -925,13 +904,6 @@
 									</ui:include>
 								</td>
 								<td>
-
-								            <!--   <ui:include src="../../includes/autocompletePicker.xhtml">
-					                          <ui:param name="autocompleter" value="#{redFlagOrZoneAlertsBean.escalationPeoplePicker}" />
-					                          <ui:param name="onchange" value="checkMultiple('escalationPersonIDs')" />
-					 						  <ui:param name="context" value="editRedFlagEscalation"/>
-					 						  <ui:param name="formName" value="edit-form"/>
-					                        </ui:include> -->
 								
       								<!-- Escalation phNumbers list -->
 								    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.phNumbersDataTable}" style="border: none;" rowKeyVar="rowIndex">

@@ -96,10 +96,6 @@
                                 <td><h:outputText value="#{vehiclesBean.item.color}" /></td>
                               </tr>
                               <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_type}" /></td>
-                                <td><h:outputText value="#{vehiclesBean.item.vtype.description}" /></td>
-                              </tr>
-                              <tr>
                                 <td width="100">
                                 <h:outputText value="editVehicle_weight" converter="MeasurementTextConverter" />
                                 </td>
@@ -169,7 +165,7 @@
                   <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                     <tr>
                      <td width="100"><h:outputText value="#{messages.editVehicle_ProductType}" /></td>
-                     <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.productType.name}" /></td>
+                     <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.productType.description}" /></td>
                     </tr>
                     <tr>
                       <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>

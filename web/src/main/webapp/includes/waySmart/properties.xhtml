@@ -12,6 +12,10 @@
 <!--     <td><c:set var="dot" value="#{vehiclesBean.item.dot?'yes':'no'}" />-->
 <!--     	<h:outputText value="#{vehiclesBean.item.dot}" /></td>-->
 <!--   </tr>-->
+    <tr>
+      <td width="100"><h:outputText value="#{messages.editVehicle_type}" /></td>
+      <td><h:outputText value="#{vehiclesBean.item.vtype.description}" /></td>
+    </tr>
    <tr>
      <td width="100"><h:outputText value="#{messages.editDevice_ifta}" /></td>
      <td><c:set var="ifta" value="#{vehiclesBean.item.ifta?'yes':'no'}" />
