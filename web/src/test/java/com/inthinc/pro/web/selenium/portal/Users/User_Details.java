@@ -1,8 +1,8 @@
 package com.inthinc.pro.web.selenium.portal.Users;
 import static org.junit.Assert.*;
 import com.inthinc.pro.web.selenium.InthincTest;
-import com.inthinc.pro.web.selenium.Core;
-import com.inthinc.pro.web.selenium.Singleton;
+import com.inthinc.pro.web.selenium.CoreMethodLib;
+import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
 /****************************************************************************************
  * @author : Lee Arrington
@@ -22,13 +22,13 @@ public class User_Details extends InthincTest {
 	//Links
 	private final String backtouserlink = "display-form:personCancel";
 	
-	protected static Core selenium;
+	protected static CoreMethodLib selenium;
 
 	public User_Details(){
-			this(Singleton.getSingleton().getSelenium());
+			this(GlobalSelenium.getSingleton().getSelenium());
 		}
 	
-	public User_Details(Singleton tvar ){
+	public User_Details(GlobalSelenium tvar ){
 			this(tvar.getSelenium());
 		}
 	
@@ -122,7 +122,7 @@ public class User_Details extends InthincTest {
 			selenium.waitForPageToLoad("30000");
 		}
 	
-	public User_Details( Core sel ){
+	public User_Details( CoreMethodLib sel ){
 			selenium = sel;
 		}
 	
