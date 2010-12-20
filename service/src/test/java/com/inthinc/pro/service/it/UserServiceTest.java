@@ -1,10 +1,6 @@
 package com.inthinc.pro.service.it;
 
-import java.util.List;
-
 import org.junit.Test;
-
-import com.inthinc.pro.model.User;
 
 public class UserServiceTest {
     

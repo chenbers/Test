@@ -25,7 +25,12 @@ public interface ReportsFacade {
     
     List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly);
     
+    /**
+     * @deprecated Use {@link ReportsFacade#getMileageByVehicle(List, Interval, boolean, Locale, MeasurementType)} instead.
+     */
+    @Deprecated
     List<MileageByVehicle> getMileageByVehicle(Integer groupID, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
+    List<MileageByVehicle> getMileageByVehicle(List<Integer> idList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
     @Deprecated
     //to delete
@@ -41,5 +46,5 @@ public interface ReportsFacade {
     
     List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
     
-    List<StateMileageFuelByVehicle> getStateMileageFuelByVehicle(List<Integer> groupIDList, Interval interval, boolean dotOnly);
+    List<StateMileageFuelByVehicle> getStateMileageFuelByVehicle(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType measurementType);
 }

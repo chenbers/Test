@@ -23,6 +23,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.impl.ReportsFacadeImpl;
+import com.inthinc.pro.util.GroupList;
 import com.inthinc.pro.util.ReportsUtil;
 
 /**
@@ -36,6 +37,17 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     private final Locale locale = Locale.US;
     private final MeasurementType measureType = MeasurementType.ENGLISH;
     private List<MileageByVehicle> list;
+    
+    @SuppressWarnings("serial")
+    private List<Integer> expectedIds = new ArrayList<Integer>() {{
+        add(expectedGroupID);
+    }};
+    
+    @SuppressWarnings("serial")
+    private List<Integer> sampleIds = new ArrayList<Integer>() {{
+        add(1);
+        add(2);
+    }};
 
     @Mocked
     private ReportsFacadeImpl reportsFacadeMock;
@@ -56,7 +68,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     public void testGetMileageByVehicleWhenOneItemListReturned() {
         new Expectations() {
             {
-                reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, true, locale, measureType);
+                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, true, locale, measureType);
                 returns(list);
             }
         };
@@ -71,7 +83,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     public void testGetMileageByVehicleWhenNullListReturned() {
         new Expectations() {
             {
-                reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, true, locale, measureType);
+                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, true, locale, measureType);
                 returns(null);
             }
         };
@@ -86,7 +98,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     public void testGetMileageByVehicleWhenEmptyListReturned() {
         new Expectations() {
             {
-                reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, true, locale, measureType);
+                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, true, locale, measureType);
                 returns(new ArrayList<MileageByVehicle>());
             }
         };
@@ -101,7 +113,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     public void testGetMileageByVehicleWhenExceptionThrown() {
         new Expectations() {
             {
-                reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, false, locale, measureType);
+                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, false, locale, measureType);
                 returns(Exception.class);
             }
         };
@@ -116,7 +128,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     public void testGetMileageByVehicleDefaults() {
         new Expectations() {
             {
-                reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, false, locale, measureType);
+                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, false, locale, measureType);
                 returns(list);
             }
         };
@@ -126,10 +138,26 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     }
 
     @Test
+    public void testGetMileageByVehicleMultiGroup() {
+        new Expectations() {
+            {
+                reportsFacadeMock.getMileageByVehicle(withEqual(sampleIds), (Interval) any, false, locale, measureType);
+                returns(list);
+            }
+        };
+        
+        GroupList list = new GroupList(sampleIds);
+        
+        Response response = iftaServiceSUT.getMileageByVehicleDefaultsMultiGroup(list, locale, measureType);
+        assertNotNull(response);
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+    }
+
+    @Test
     public void testGetMileageByVehicleWithIfta() {
         new Expectations() {
             {
-                reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, true, locale, measureType);
+                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, true, locale, measureType);
                 returns(list);
             }
         };
@@ -143,7 +171,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     public void testGetMileageByVehicleWithDates() {
         new Expectations() {
             {
-                reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, false, locale, measureType);
+                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, false, locale, measureType);
                 returns(list);
             }
         };
@@ -158,7 +186,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     public void testGetMileageByVehicleWithIftaAndDates() {
         new Expectations() {
             {
-                reportsFacadeMock.getMileageByVehicle(expectedGroupID, (Interval) any, true, locale, measureType);
+                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, true, locale, measureType);
                 returns(list);
             }
         };

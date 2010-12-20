@@ -15,7 +15,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.User;
 
 
 

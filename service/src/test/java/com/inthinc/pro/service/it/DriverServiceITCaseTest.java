@@ -1,11 +1,6 @@
 package com.inthinc.pro.service.it;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.List;
-
-import javax.ws.rs.core.Response;
 
 import org.apache.commons.httpclient.Credentials;
 import org.apache.commons.httpclient.HttpClient;

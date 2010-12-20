@@ -8,10 +8,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.annotations.Form;
-
 import com.inthinc.pro.service.annotations.DateFormat;
-import com.inthinc.pro.service.params.IFTAReportsParamsBean;
 
 /**
  * Interface for IFTA/DOT Reports Services.

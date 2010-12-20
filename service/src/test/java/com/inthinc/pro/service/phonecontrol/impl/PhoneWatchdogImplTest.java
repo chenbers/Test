@@ -9,10 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.Mockit;
-import mockit.Deencapsulation;
 
 import org.junit.After;
 import org.junit.Before;

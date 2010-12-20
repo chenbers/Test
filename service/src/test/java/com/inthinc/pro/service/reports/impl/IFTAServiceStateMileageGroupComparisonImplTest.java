@@ -1,24 +1,13 @@
 package com.inthinc.pro.service.reports.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import javax.ws.rs.core.Response;
-
-import mockit.Expectations;
 import mockit.Mocked;
 
-import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.util.ReportsUtil;

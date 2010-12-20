@@ -2,11 +2,6 @@ package com.inthinc.pro.service.reports.impl;
 
 import static org.junit.Assert.assertEquals;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.ws.rs.core.Response;
 
 import mockit.Expectations;

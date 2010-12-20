@@ -18,7 +18,6 @@ import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
 import org.joda.time.DateMidnight;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
@@ -45,7 +44,7 @@ public class AssetServiceSmokeTest {
     @Test
     public void testDummy() {}
 
-    @BeforeClass
+//    @BeforeClass
     public static void setUp() throws Exception {
         Server server = new Server(0);
         server.addHandler(new WebAppContext("src/main/webapp", "/service"));
@@ -63,14 +62,14 @@ public class AssetServiceSmokeTest {
         assetServiceClient = ProxyFactory.create(AssetServiceClient.class, "http://localhost:" + port + "/service/api", clientExecutor);
     }
 
-    @Test
+//    @Test
     public void testGetRedFlagCount() {
         @SuppressWarnings("unused")
         ClientResponse<Integer> response = assetServiceClient.getRedFlagCount(SAMPLE_GROUP_ID);
         // assertEquals(STATUS_OK, response.getStatus());
     }
 
-    @Test
+//    @Test
     public void testGetRedFlagCountWithStartDate() {
         @SuppressWarnings("unused")
         ClientResponse<Integer> response = assetServiceClient.getRedFlagCount(SAMPLE_GROUP_ID, getOneYearAgoDate(new Date()));
@@ -78,7 +77,7 @@ public class AssetServiceSmokeTest {
         // assertEquals(STATUS_OK, response.getStatus());
     }
 
-    @Test
+//    @Test
     public void testGetRedFlagCountWithStartDateAndEndDate() {
         Date today = new Date();
 
@@ -88,7 +87,7 @@ public class AssetServiceSmokeTest {
         // assertEquals(STATUS_OK, response.getStatus());
     }
 
-    @Test
+//    @Test
     public void testGetRedFlags() {
         @SuppressWarnings("unused")
         ClientResponse<List<RedFlag>> response = assetServiceClient.getRedFlags(SAMPLE_GROUP_ID, START_ROW, END_ROW);
@@ -96,7 +95,7 @@ public class AssetServiceSmokeTest {
         // assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
     }
 
-    @Test
+//    @Test
     public void testGetRedFlagsWithStartDate() {
         @SuppressWarnings("unused")
         ClientResponse<List<RedFlag>> response = assetServiceClient.getRedFlags(SAMPLE_GROUP_ID, START_ROW, END_ROW, getOneYearAgoDate(new Date()));
@@ -104,7 +103,7 @@ public class AssetServiceSmokeTest {
         // assertEquals(STATUS_OK, response.getStatus());
     }
 
-    @Test
+//    @Test
     public void testGetRedFlagsWithStartDateAndEndDate() {
         Date today = new Date();
 
@@ -114,7 +113,7 @@ public class AssetServiceSmokeTest {
         // assertEquals(STATUS_OK, response.getStatus());
     }
 
-    @Test
+//    @Test
     public void testBadRequestOnGetCountOlderThanOneYear() {
         Date today = new Date();
 
@@ -123,7 +122,7 @@ public class AssetServiceSmokeTest {
         assertNotNull(response.getMetadata().getFirst(AssetServiceImpl.HEADER_ERROR_MESSAGE));
     }
 
-    @Test
+//    @Test
     public void testBadRequestOnGetCountStartDateGreaterThanEndDate() {
         Date today = new Date();
 
@@ -132,7 +131,7 @@ public class AssetServiceSmokeTest {
         assertNotNull(response.getMetadata().getFirst(AssetServiceImpl.HEADER_ERROR_MESSAGE));
     }
 
-    @Test
+//    @Test
     public void testBadRequestOnGetFlagsOlderThanOneYear() {
         Date today = new Date();
 
@@ -141,7 +140,7 @@ public class AssetServiceSmokeTest {
         assertNotNull(response.getMetadata().getFirst(AssetServiceImpl.HEADER_ERROR_MESSAGE));
     }
 
-    @Test
+//    @Test
     public void testBadRequestOnGetFlagsStartDateGreaterThanEndDate() {
         Date today = new Date();
 
@@ -150,7 +149,7 @@ public class AssetServiceSmokeTest {
         assertNotNull(response.getMetadata().getFirst(AssetServiceImpl.HEADER_ERROR_MESSAGE));
     }
 
-    @Test
+//    @Test
     public void testBadRequestOnGetFlagsStartRowGreaterThanEndRow() {
         Date today = new Date();
 

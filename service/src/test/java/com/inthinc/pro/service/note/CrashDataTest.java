@@ -8,8 +8,6 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.inthinc.pro.service.note.CrashData;
-
 
 public class CrashDataTest {
     

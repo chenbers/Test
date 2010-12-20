@@ -8,8 +8,6 @@ import org.apache.commons.httpclient.params.HttpClientParams;
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.springframework.context.ApplicationContext;
@@ -26,7 +24,7 @@ public abstract class BaseEmbeddedServerITCase {
     protected ClientExecutor clientExecutor;
     protected ServiceClient client;
 
-    @BeforeClass
+//    @BeforeClass
     public static void beforeClass() throws Exception {
 
         Server server = new Server(0);
@@ -36,7 +34,7 @@ public abstract class BaseEmbeddedServerITCase {
         System.out.println("Port is " + port);
     }
 
-    @Before
+//    @Before
     public void before() {
 
         HttpClientParams params = new HttpClientParams();

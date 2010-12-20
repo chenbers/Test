@@ -16,7 +16,13 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.inthinc.pro.service.*;
+import com.inthinc.pro.service.AddressService;
+import com.inthinc.pro.service.DeviceService;
+import com.inthinc.pro.service.DriverService;
+import com.inthinc.pro.service.GroupService;
+import com.inthinc.pro.service.PersonService;
+import com.inthinc.pro.service.UserService;
+import com.inthinc.pro.service.VehicleService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext-*.xml" })
