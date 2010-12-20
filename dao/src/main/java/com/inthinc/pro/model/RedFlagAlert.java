@@ -2,10 +2,7 @@ package com.inthinc.pro.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -466,7 +463,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         return "RedFlagAlert [Types="+getTypes()+", severityLevel=" + severityLevel + ", hardAcceleration=" + hardAcceleration + ", hardBrake="
                 + hardBrake + ", hardTurn=" + hardTurn + ", hardVertical=" + hardVertical
                 + ", alertID=" + getAlertID() +  ", speedLevels="
-                + ", speedSettings=" + Arrays.toString(speedSettings) + ", zoneID=" + zoneID + ", emailTo="+getEmailTo()+"]";
+                + ", speedSettings=" + Arrays.toString(speedSettings) + ", zoneID=" + zoneID + ", emailTo="+getEmailTo()+", fullName="+fullName+"]";
     }
 
     public List<AlertEscalationItem> getEscalationList() {
