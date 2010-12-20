@@ -7,7 +7,7 @@ import java.util.HashMap;
 import com.inthinc.pro.web.selenium.CoreMethodLib;
 import org.apache.commons.lang.StringEscapeUtils;
 import com.inthinc.pro.web.selenium.SeleniumServerLib;
-import com.inthinc.pro.web.selenium.Debug.Error_Catcher;
+import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
 import com.inthinc.pro.web.selenium.GlobalSelenium;
 /****************************************************************************************
  * Purpose: 
@@ -42,7 +42,7 @@ public class DriverStats extends SeleniumServerLib {
 			selenium = sel;
 		}
 	
-	public Error_Catcher get_errors(){
+	public ErrorCatcher get_errors(){
 			return selenium.getErrors();
 		}
 		
