@@ -35,7 +35,6 @@ public class MeasurementConverter {
     }
 
     public static Number convertMileage(Number mileage, Boolean convertToMetric, Locale locale) {
-        logger.debug("Mileage: " + mileage + " Convert To Metric: " + convertToMetric);
         if (convertToMetric != null && convertToMetric)
             return MeasurementConversionUtil.convertMpgToKpl(mileage, MeasurementType.METRIC);
         else
@@ -43,7 +42,6 @@ public class MeasurementConverter {
     }
 
     public static String convertDistance(Number distance, Boolean convertToMetric, Locale locale) {
-        logger.debug("Distance: " + distance + " Convert To Metric: " + convertToMetric);
         NumberFormat nf = NumberFormat.getNumberInstance(locale);
         nf.setMaximumFractionDigits(1);
         nf.setMinimumFractionDigits(1);
