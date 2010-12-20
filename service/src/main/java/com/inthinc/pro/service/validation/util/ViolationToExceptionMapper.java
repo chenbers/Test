@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.inthinc.pro.service.validation.util;
 
 import java.util.HashMap;
