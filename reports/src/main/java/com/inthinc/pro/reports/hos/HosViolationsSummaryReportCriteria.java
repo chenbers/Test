@@ -145,6 +145,7 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
                 if (summary == null) {
                     continue;
                 }
+                summary.setTotalMiles(summary.getTotalMiles()+groupMileage.getDistance());
                 summary.setTotalMilesNoDriver(summary.getTotalMilesNoDriver()+groupMileage.getDistance());
             }
         }
