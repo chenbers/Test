@@ -118,7 +118,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{state}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.distance}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

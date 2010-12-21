@@ -46,7 +46,7 @@ public class MileageByVehicleReportCriteria extends DOTReportCriteria {
         for (StateMileage item : records) {
             MileageByVehicle rec = new MileageByVehicle();
             rec.setVehicleName(item.getVehicleName());
-            rec.setState(item.getStateName());
+            //rec.setState(item.getStateName()); not used
             rec.setGroupName(getShortGroupName(item.getGroupID()));
             rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
                         item.getMiles(), getMeasurementType()).doubleValue());
