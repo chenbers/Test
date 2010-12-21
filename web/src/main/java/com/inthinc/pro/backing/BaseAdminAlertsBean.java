@@ -41,6 +41,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     private ListPicker         assignPicker;
     private AutocompletePicker peoplePicker;
     private AutocompletePicker escalationPeoplePicker;
+    private AutocompletePicker escalationEmailPicker;
     private T                  oldItem;
     private String             oldEmailToString;
 
@@ -257,7 +258,21 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         }
         return peoplePicker;
     }
-    
+    public AutocompletePicker getEscalationEmailPicker() {
+        if (escalationEmailPicker == null)
+        {
+            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
+            for (final Person person : people) { 
+                if(null != person.getPriEmail() && !"".equals(person.getPriEmail()))
+                    allUsers.add(new SelectItem(person, person.getFullNameWithPriEmail()));
+            }
+            MiscUtil.sortSelectItems(allUsers);
+
+            escalationEmailPicker = new AutocompletePicker(allUsers);
+        }
+        return escalationEmailPicker;
+    }
     public AutocompletePicker getEscalationPeoplePicker()
     {
         if (escalationPeoplePicker == null)
@@ -585,7 +600,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     public List<SelectItem> getStatuses() {
         return SelectItemUtil.toList(Status.class, false, Status.DELETED);
     }
-
 
     public abstract String getAlertPage();
 
