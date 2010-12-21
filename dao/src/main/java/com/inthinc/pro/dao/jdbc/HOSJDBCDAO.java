@@ -105,7 +105,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_getVehicleMileageByGroup2(?, ?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_getVehicleMileageByGroup(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
