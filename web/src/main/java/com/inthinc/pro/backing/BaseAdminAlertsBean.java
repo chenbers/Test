@@ -1,10 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -332,21 +330,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return escPicked;
     }
 
-//    private List<SelectItem> getEscalationPickedFrom() {
-//        final List<SelectItem> picked = getEscalationPeoplePicker().getPicked();
-//        final List<SelectItem> pickedFrom = new ArrayList<SelectItem>();
-//        if (getItem().getVoiceEscalationPersonIDs() != null) {
-//            for (final Integer id : getItem().getVoiceEscalationPersonIDs()) {
-//                for (SelectItem item: picked) {
-//                    if (item.getValue().equals(id)) {
-//                        pickedFrom.add(e)
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//        return pickedFrom;
-//    }
     private boolean isPersonDeleted(Person person)
     {
     	if (person == null)
@@ -475,18 +458,19 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         
         getItem().setNotifyPersonIDs(userIDs);
         
-        // set notify user IDs
-        final ArrayList<Integer> escalationUserIDs = new ArrayList<Integer>(getEscalationPeoplePicker().getPicked().size());
-        for (final SelectItem item : getEscalationPeoplePicker().getPicked()) {
-            //TODO: jwimmer: test this!
-            if(item.getValue() instanceof Person)
-                escalationUserIDs.add((Integer) ((Person)item.getValue()).getPersonID());
-            else if(item.getValue() instanceof Integer)
-                escalationUserIDs.add((Integer)item.getValue());
+        if (!isBatchEdit() ||(isBatchEdit() && getUpdateField().get("escalationList"))){
+            // set notify user IDs
+            final ArrayList<Integer> escalationUserIDs = new ArrayList<Integer>(getEscalationPeoplePicker().getPicked().size());
+            for (final SelectItem item : getEscalationPeoplePicker().getPicked()) {
+                //TODO: jwimmer: test this!
+                if(item.getValue() instanceof Person)
+                    escalationUserIDs.add((Integer) ((Person)item.getValue()).getPersonID());
+                else if(item.getValue() instanceof Integer)
+                    escalationUserIDs.add((Integer)item.getValue());
+            }
+    
+            getItem().setEscalationPersonIDs(escalationUserIDs);
         }
-
-        getItem().setEscalationPersonIDs(escalationUserIDs);
-        
         if (!isBatchEdit()) {
             for (SelectItem selectItem : getAllGroupUsers()) {
                 if (selectItem.getValue().equals(item.getUserID())) {
@@ -506,7 +490,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         boolean valid = true;
         
         // at least one day chosen
-        Map<String, Boolean> updateFieldMap = getUpdateField();
         if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("dayOfWeek")))
         {
             boolean dayPicked = false;

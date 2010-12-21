@@ -36,7 +36,7 @@ import com.inthinc.pro.util.SelectItemUtil;
 
 public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAlertsBean.RedFlagOrZoneAlertView> implements Serializable {
 
-    private static final long serialVersionUID = -2066762539439571492L;
+    private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(RedFlagOrZoneAlertsBean.class);
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 3, 4 };
@@ -166,16 +166,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             results = userDAO.findByID(userID).getPerson().getFullName();
         return results;
     }
-    private static void ensureEmptySlot(List<String> list) {
-        if(null == list) list = new ArrayList<String>();
-        if(!list.isEmpty()) {
-            String lastString = null;
-            lastString = list.get(list.size()-1);
-            
-            if(!"".equals(lastString))
-                list.add("");
-        }
-    }
+//    private static void ensureEmptySlot(List<String> list) {
+//        if(null == list) list = new ArrayList<String>();
+//        if(!list.isEmpty()) {
+//            String lastString = null;
+//            lastString = list.get(list.size()-1);
+//            
+//            if(!"".equals(lastString))
+//                list.add("");
+//        }
+//    }
     private EventSubCategory deriveEventSubCategory(RedFlagAlert flag){
         
         AlertMessageType alertMessageType = flag.getTypes().get(0);
@@ -283,7 +283,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 updateField.put("startTOD", true);
                 updateField.put("stopTOD", true);
             }
-            final boolean defineAlerts = Boolean.TRUE.equals(updateField.get("defineAlerts"));
+//            final boolean defineAlerts = Boolean.TRUE.equals(updateField.get("defineAlerts"));
         }
         // null out unselected items
         if (EventSubCategory.SPEED.equals(getItem().getEventSubCategory())) {
@@ -525,14 +525,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Column(updateable = false)
         private Map<String,Boolean> selectedAlertTypes;
         private Boolean[] speedSelected;
-//        @Column(updateable = false)
-//        private Boolean hardAccelerationSelected;
-//        @Column(updateable = false)
-//        private Boolean hardBrakeSelected;
-//        @Column(updateable = false)
-//        private Boolean hardTurnSelected;
-//        @Column(updateable = false)
-//        private Boolean hardVerticalSelected;
         @Column(updateable = false)
         private RedFlagOrZoneAlertsBean redFlagOrZoneAlertsBean;
         @Column(updateable = false)
@@ -553,7 +545,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         @Column(updateable = false)
         private List<String> emailTos;
-//        private Integer alertID;
         
         public RedFlagOrZoneAlertView() {
             super();
@@ -738,7 +729,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public void setHardAccelerationSelected(boolean hardAccelerationSelected) {
-//            this.hardAccelerationSelected = hardAccelerationSelected;
+
             selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name(), hardAccelerationSelected);
         }
 
@@ -747,7 +738,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public void setHardBrakeSelected(boolean hardBrakeSelected) {
-//            this.hardBrakeSelected = hardBrakeSelected;
             selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name(), hardBrakeSelected);
         }
 
@@ -757,7 +747,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public void setHardTurnSelected(boolean hardTurnSelected) {
-//            this.hardTurnSelected = hardTurnSelected;
             selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_HARD_TURN.name(), hardTurnSelected);
         }
 
@@ -766,7 +755,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public void setHardVerticalSelected(boolean hardVerticalSelected) {
-//            this.hardVerticalSelected = hardVerticalSelected;
             selectedAlertTypes.put(AlertMessageType.ALERT_TYPE_HARD_BUMP.name(), hardVerticalSelected);
         }
 
@@ -884,13 +872,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.emailTos = emailTos;
         }
 
-        private void setEmailTos(){
-            Iterator<String> it = emailTos.iterator();
-            while(it.hasNext()){
-                if (it.next().isEmpty()) it.remove();
-            }
-            this.setEmailTo(emailTos);
-        }
+//        private void setEmailTos(){
+//            Iterator<String> it = emailTos.iterator();
+//            while(it.hasNext()){
+//                if (it.next().isEmpty()) it.remove();
+//            }
+//            this.setEmailTo(emailTos);
+//        }
         public Map<String, Boolean> getSelectedAlertTypes() {
             return selectedAlertTypes;
         }
