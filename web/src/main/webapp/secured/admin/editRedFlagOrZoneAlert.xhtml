@@ -999,7 +999,7 @@
       								<h:inputHidden value="#{redFlagOrZoneAlertsBean.item.emailEscalationPersonID}"/>
 									<h:inputText value="#{redFlagOrZoneAlertsBean.item.escEmail}" id="escEmailAddressInput" styleClass="emailInput" />
 								  	<rich:suggestionbox id="suggestionBoxId" for="escEmailAddressInput"
-					                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.autocomplete}" 
+					                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationEmailPicker.autocomplete}" 
 					                    var="suggestion" selfRendered="true">
 					                    <h:column>
 							              <h:outputText value="#{suggestion.label}" id="escEmailSuggestion" />
