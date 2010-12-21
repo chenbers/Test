@@ -678,7 +678,7 @@
   <message-bundle>com.inthinc.pro.resources.Messages</message-bundle>
   <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
  </application>
- <lifecycle>
+ <!--<lifecycle>
   <phase-listener>com.inthinc.pro.util.DebugPhaseTracker</phase-listener>
- </lifecycle>
+ </lifecycle>-->
 </faces-config>

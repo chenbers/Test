@@ -14,6 +14,7 @@ default-autowire="byName">
 	<bean id="tiwiJDBCDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
 	  <property name="url" value="${jdbc.mysql.url}"/>
+	  <property name="connectionProperties" value="${jdbc.mysql.connectionProperties}"/>
 	  <property name="username" value="${jdbc.mysql.username}"/>
 	  <property name="password" value="${jdbc.mysql.password}"/>
 	  <property name="initialSize" value="${jdbc.dbcp.initialSize}"/>
@@ -27,4 +28,11 @@ default-autowire="byName">
 	  <property name="removeAbandoned" value="${jdbc.dbcp.removeAbandoned}"/>
 	  <property name="logAbandoned" value="${jdbc.dbcp.logAbandoned}"/>
 	</bean>
+	
+	<!--<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
+	  <property name="url" value="${jdbc.mysql.url}"/>
+	  <property name="username" value="${jdbc.mysql.username}"/>
+	  <property name="password" value="${jdbc.mysql.password}"/>
+	</bean>-->
 </beans>
