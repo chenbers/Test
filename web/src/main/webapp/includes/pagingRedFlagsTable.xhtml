@@ -155,12 +155,13 @@
                     #{redFlag.event.vehicleName}
                 </pretty:link>
             </rich:column>
-            <rich:column id="category" rendered="#{tableColumns['category'].visible}"  custFilterBy="#{redFlag.type}" custFilterValue="#{bean.filterCategory}">
+            <rich:column id="category" style="width: 185px;" rendered="#{tableColumns['category'].visible}"  custFilterBy="#{redFlag.type}" custFilterValue="#{bean.filterCategory}">
                 <f:facet name="header">
                 	<h:panelGroup>
                     	<h:outputText value="#{messages.notes_redflags_category}" />
-                    	<rich:spacer style="display:block" height="2"/>
-                    	<h:selectOneMenu id="catFilter" value="#{bean.filterCategoryKey}" label="#{messages.notes_redflags_category}" style="height:22px;width:120px;size:auto;margin-top:0;letter-spacing:0;padding:3px">
+                    	<rich:spacer style="display:block" height="2" styleClass="wide_select"/>
+                    	<h:selectOneMenu id="catFilter"  value="#{bean.filterCategoryKey}" label="#{messages.notes_redflags_category}" 
+                    		style="height:22px;size:auto;margin-top:0;letter-spacing:0;padding:3px;"  styleClass="wide_select">
                         	<f:selectItems value="#{bean.filterCategories}" />
                         	<a4j:support event="onchange" 
                         		reRender="redFlags,redFlags-form:header, redFlags_pageHeader,redFlags-form:redFlags_bottomScroller" />
