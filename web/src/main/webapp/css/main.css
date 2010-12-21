@@ -3510,3 +3510,6 @@ hr.minorSeparator{
 	width: 100%;
 	height: 1px;
 }
+.wide_select {
+	width: 100px;
+}
