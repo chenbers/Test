@@ -586,6 +586,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
             context.addMessage("edit-form:editPerson-timeZone", message);
         }
+        //unique employee ID
+        if (!isBatchEdit() && (person.getEmpid() != null) && (person.getEmpid().length() > 0)) {
+            Integer groupID = person.getGroup().getGroupID();
+            List<Person> personsInGroup = personDAO.getPeopleInGroupHierarchy(groupID);
+            for(Person p: personsInGroup) {
+                if(p.getEmpid() != null && person.getEmpid() != null && p.getEmpid().equals(person.getEmpid())){
+                    valid = false;
+                    final String summary = MessageUtil.getMessageString("editPerson_empidTaken");
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                    context.addMessage("edit-form:editPerson-empid", message);
+                }
+            }
+        }
         // unique primary e-mail
         if (!isBatchEdit() && (person.getPriEmail() != null) && (person.getPriEmail().length() > 0)) {
             final Person byEmail = personDAO.findByEmail(person.getPriEmail());
