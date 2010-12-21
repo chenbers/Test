@@ -57,10 +57,11 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_getMileageByGroup(?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_getMileageByGroup(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
+            statement.setBoolean(4, noDriver);
             
             resultSet = statement.executeQuery();
 
@@ -101,10 +102,11 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         try
         {
             conn = getConnection();
-            statement = conn.prepareCall("{call hos_getVehicleMileageByGroup(?, ?, ?)}");
+            statement = conn.prepareCall("{call hos_getVehicleMileageByGroup2(?, ?, ?, ?)}");
             statement.setInt(1, groupID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
+            statement.setBoolean(4, noDriver);
             
             resultSet = statement.executeQuery();
 
@@ -366,6 +368,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             resultSet = statement.executeQuery();
+System.out.println("statement: " + statement.toString());            
 
             long stopOdometer;
             long milesDriven;

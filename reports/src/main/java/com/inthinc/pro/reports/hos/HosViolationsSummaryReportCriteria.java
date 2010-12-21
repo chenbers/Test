@@ -29,6 +29,7 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.hos.converter.Converter;
 import com.inthinc.pro.reports.hos.model.HosViolationsSummary;
 import com.inthinc.pro.reports.hos.model.ViolationsSummary;
 import com.inthinc.pro.reports.tabular.ColumnHeader;
@@ -64,14 +65,27 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         List<HOSGroupMileage> groupNoDriverMileageList = new ArrayList<HOSGroupMileage>();
 
         for (Group reportGroup : reportGroupList) {
-            groupMileageList.addAll(hosDAO.getHOSMileage(reportGroup.getGroupID(), interval, false));
-            groupNoDriverMileageList.addAll(hosDAO.getHOSMileage(reportGroup.getGroupID(), interval, true));
+            List<HOSGroupMileage> mileageList = hosDAO.getHOSMileage(reportGroup.getGroupID(), interval, false);
+            for (HOSGroupMileage mileage : mileageList)
+                if (!groupExists(groupMileageList, mileage.getGroupID()))
+                    groupMileageList.add(mileage);
+            List<HOSGroupMileage> zeroMileageList = hosDAO.getHOSMileage(reportGroup.getGroupID(), interval, true); 
+            for (HOSGroupMileage mileage : zeroMileageList)
+                if (!groupExists(groupNoDriverMileageList, mileage.getGroupID()))
+                    groupNoDriverMileageList.add(mileage);
         }
+        
 
         initDataSet(interval, accountGroupHierarchy, reportGroupList, driverHOSRecordMap, groupMileageList, groupNoDriverMileageList);
         
     }
 
+    private boolean groupExists(List<HOSGroupMileage> groupMileageList, Integer groupID) {
+        for (HOSGroupMileage mileage : groupMileageList)
+            if (mileage.getGroupID().equals(groupID))
+                return true;
+        return false;
+    }
     void initDataSet(Interval interval, GroupHierarchy groupHierarchy,  List<Group> reportGroupList, Map<Driver, List<HOSRecord>> driverHOSRecordMap,
             List<HOSGroupMileage> groupMileageList, List<HOSGroupMileage> groupNoDriverMileageList)
     {
@@ -131,15 +145,13 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
                 if (summary == null) {
                     continue;
                 }
-                summary.setTotalMiles(summary.getTotalMiles()+groupMileage.getDistance());
                 summary.setTotalMilesNoDriver(summary.getTotalMilesNoDriver()+groupMileage.getDistance());
-                
             }
         }
          
         List<HosViolationsSummary> dataList = new ArrayList<HosViolationsSummary>();
         for (HosViolationsSummary summary : dataMap.values()) { 
-            if (summary.getDriverCnt().intValue() != 0 || summary.getTotalMiles().intValue() != 0)
+            if (summary.getDriverCnt().intValue() != 0 || summary.getTotalMiles().intValue() != 0 || summary.getTotalMilesNoDriver().intValue() != 0)
                 dataList.add(summary);
         }
 
@@ -178,8 +190,11 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         ResourceBundle resourceBundle = ReportType.HOS_VIOLATIONS_SUMMARY_REPORT.getResourceBundle(getLocale());
         
         List<String> columnHeaders = new ArrayList<String>();
-        for (int i = 1; i <=16; i++)
-            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
+        for (int i = 1; i <=16; i++) {
+            if (i > 14 && getUseMetric())
+                columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular.METRIC"));
+            else columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
+        }
         
         return columnHeaders;
     }
@@ -209,8 +224,8 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
             row.add(new Result(summary.getOffDuty_2().toString(), summary.getOffDuty_2()));
             row.add(new Result(summary.getOffDuty_3().toString(), summary.getOffDuty_3()));
             row.add(new Result(summary.getDriverCnt().toString(), summary.getDriverCnt()));
-            row.add(new Result(summary.getTotalMiles().toString(), summary.getTotalMiles()));
-            row.add(new Result(summary.getTotalMilesNoDriver().toString(), summary.getTotalMilesNoDriver()));
+            row.add(new Result(Converter.convertRemarkDistance(summary.getTotalMiles(), getUseMetric(), getLocale()), summary.getTotalMiles()));
+            row.add(new Result(Converter.convertRemarkDistance(summary.getTotalMilesNoDriver(), getUseMetric(), getLocale()), summary.getTotalMilesNoDriver()));
             
             records.add(row);
         }
