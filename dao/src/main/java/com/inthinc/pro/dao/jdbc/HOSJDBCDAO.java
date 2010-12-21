@@ -62,6 +62,9 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, noDriver);
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
             
             resultSet = statement.executeQuery();
 
@@ -107,6 +110,9 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
             statement.setBoolean(4, noDriver);
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
             
             resultSet = statement.executeQuery();
 
@@ -173,7 +179,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         List<Integer> occupantDuplicateCheckList = new ArrayList<Integer>();
         List<HOSOccupantHistory> occupantHistoryList = new ArrayList<HOSOccupantHistory>();
 
-        for (int i = daysback; i <= 0; i++)
+        for (int i = 0; i >= daysback; i--)
         {
             for (HOSOccupantLog occupantLog: recordList)
             {
@@ -188,7 +194,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                     if (occupantDuplicateCheckList.indexOf(occupantLog.getDriverID()) == -1)
                     {
                         occupantDuplicateCheckList.add(occupantLog.getDriverID());
-                        occupantHistoryList.add(new HOSOccupantHistory((i * -1), occupantLog.getDriverID(), startDayOfYear));
+                        occupantHistoryList.add(new HOSOccupantHistory((i * -1)+1, occupantLog.getDriverID(), startDayOfYear));
                     }
                 }
             }
@@ -204,7 +210,6 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     
     @Override
     public List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval) {
-
         Date currentTime = new Date();
         
         Connection conn = null;
@@ -220,10 +225,11 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setInt(1, driverID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
             
             resultSet = statement.executeQuery();
-            if(logger.isDebugEnabled())
-                logger.debug("statment: " + statement.toString());            
 
             while (resultSet.next())
             {
@@ -367,8 +373,11 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setInt(1, driverID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+			
             resultSet = statement.executeQuery();
-System.out.println("statement: " + statement.toString());            
 
             long stopOdometer;
             long milesDriven;
@@ -427,6 +436,10 @@ System.out.println("statement: " + statement.toString());
             statement.setString(8, hosRecord.getServiceID());
             statement.setString(9, hosRecord.getLocation());
             statement.setInt(10, hosRecord.getEditUserID());
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+			
 
             resultSet = statement.executeQuery();
 
@@ -457,6 +470,9 @@ System.out.println("statement: " + statement.toString());
             conn = getConnection();
             statement = conn.prepareCall("{call hos_delete(?)}");
             statement.setInt(1, id);
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
             
             statement.executeUpdate();
 
@@ -487,8 +503,11 @@ System.out.println("statement: " + statement.toString());
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getFullRecord(?)}");
             statement.setInt(1, id);
-            
-            resultSet = statement.executeQuery();
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+
+				resultSet = statement.executeQuery();
 
             if (resultSet.next())
             {
@@ -564,7 +583,9 @@ System.out.println("statement: " + statement.toString());
             statement.setString(9, hosRecord.getServiceID());
             statement.setString(10, hosRecord.getLocation());
             statement.setInt(11, hosRecord.getEditUserID());
-
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
             
             statement.executeUpdate();
 
@@ -591,9 +612,6 @@ System.out.println("statement: " + statement.toString());
         {
             conn = getConnection();
             
-            if (conn == null)
-                throw new ProDAOException("conn is null", new Exception("conn is null"));;
-                
             statement = conn.prepareCall("{call hos_isValidLogin(?, ?, ?, ?, ?)}");
 
 
@@ -603,6 +621,8 @@ System.out.println("statement: " + statement.toString());
             statement.setBoolean(4, occupantFlag);
             statement.setInt(5, odometer);
             
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
 
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -647,6 +667,9 @@ System.out.println("statement: " + statement.toString());
             statement = conn.prepareCall("{call hos_getDriverForEmpid(?, ?)}");
             statement.setString(1, commAddress);
             statement.setString(2, employeeId);
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
             
             resultSet = statement.executeQuery();
 
@@ -688,6 +711,9 @@ System.out.println("statement: " + statement.toString());
             statement = conn.prepareCall("{call hos_getDriverForEmpidLastname(?, ?)}");
             statement.setString(1, employeeId);
             statement.setString(2, lastName);
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
             
             resultSet = statement.executeQuery();
 
@@ -728,6 +754,10 @@ System.out.println("statement: " + statement.toString());
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getDriverIDForCommAddress(?)}");
             statement.setString(1, address);
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+			
             resultSet = statement.executeQuery();
 
             if (resultSet.next())
@@ -743,18 +773,18 @@ System.out.println("statement: " + statement.toString());
                         startDate = record.getLogTime();
                     
                     if (record.getLogTime().after(endDate))
-                        startDate = record.getLogTime();
+                        endDate = record.getLogTime();
                 }
                 
                 Interval interval = new Interval(startDate.getTime(), endDate.getTime(), DateTimeZone.UTC);
-                recordList = getHOSRecords(driverID, interval, true);
 
+                recordList = getHOSRecords(driverID, interval, true);
                 //filter out the records that were contained in the date interval for the 
                 //driver but weren't in params list.
                 for (HOSRecord record : recordList) {
                     for (HOSRecord param : paramList) {
-                        if (record.getLogTime() == param.getLogTime() 
-                            && record.getStatus() == param.getStatus())
+                        if (record.getLogTime().equals(param.getLogTime()) 
+                            && record.getStatus().equals(param.getStatus()))
                         {
                             finalRecordList.add(record);
                         }
@@ -788,6 +818,9 @@ System.out.println("statement: " + statement.toString());
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getOccupantInfo(?)}");
             statement.setInt(1, driverID);
+			
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
             
             resultSet = statement.executeQuery();
 
