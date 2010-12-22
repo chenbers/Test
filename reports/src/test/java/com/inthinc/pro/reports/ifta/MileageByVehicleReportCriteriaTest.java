@@ -16,7 +16,6 @@ import mockit.Mocked;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.Interval;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.StateMileageDAO;
@@ -28,7 +27,7 @@ import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 
-@Ignore
+
 public class MileageByVehicleReportCriteriaTest extends BaseUnitTest {
     
     // Constant values
@@ -109,7 +108,6 @@ public class MileageByVehicleReportCriteriaTest extends BaseUnitTest {
        assertTrue(dataSet.size() == 1);
        MileageByVehicle bean = dataSet.get(0);
        assertEquals(bean.getGroupName(), GROUP_FULL_NAME);
-       assertEquals(bean.getState(), STATE);
        assertEquals(bean.getVehicleName(), VEHICLE);
        assertTrue(bean.getTotal().doubleValue() == MILES.doubleValue());
 
