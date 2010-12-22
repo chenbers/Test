@@ -92,7 +92,7 @@ public class RedFlagAlertMapper extends AbstractMapper
         if (!Map.class.isInstance(value) || alertEscalationItem == null)
             return;
         //contactType     INT NOT NULL,  -- 0=email, 1=phone
-//        ((Map<String, Object>)value).put("contactType",alertEscalationItem.getEscalationOrder() == -1? 0:1);
+        ((Map<String, Object>)value).put("contactType",alertEscalationItem.getEscalationOrder() == -1? 0:1);
         ((Map<String, Object>)value).put("escalationOrder", alertEscalationItem.getEscalationOrder());
     }
     @ConvertColumnToField(columnName = "contactType")
