@@ -13,10 +13,12 @@ public class AlertEscalationItem implements Serializable{
     }
     private Integer personID;
     private Integer escalationOrder; //-1 = last resort email
+    private Integer contactType;
     
     public AlertEscalationItem(Integer personID, Integer escalationOrder) {
         this.personID = personID;
         this.escalationOrder = escalationOrder;
+        this.contactType = escalationOrder == -1? 0:1;
     }
     public Integer getPersonID() {
         return personID;
@@ -27,10 +29,14 @@ public class AlertEscalationItem implements Serializable{
     public Integer getEscalationOrder() {
         return escalationOrder;
     }
-    public void setEscalationOrder(Integer escalationOrder) {
+    public Integer getContactType() {
+        return contactType;
+    }
+   public void setEscalationOrder(Integer escalationOrder) {
         this.escalationOrder = escalationOrder;
+        contactType = escalationOrder == -1? 0:1;
     }
     public String toString() {
-        return "AlertEscalationItem [personID="+getPersonID()+", escalationOrder="+getEscalationOrder()+"]";
+        return "AlertEscalationItem [personID="+getPersonID()+", escalationOrder="+getEscalationOrder()+", contactType"+contactType+"]";
     }
 }
