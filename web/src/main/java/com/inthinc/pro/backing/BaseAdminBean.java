@@ -27,6 +27,7 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
@@ -887,7 +888,10 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(clazz, propertyName);
             Object [] nullArgs = {};
             Object property = propertyDescriptor.getReadMethod().invoke(object, nullArgs);
-            
+            if (property instanceof ProductType){
+                return ((ProductType)property).getDescription().getProductName();
+            }
+            else
             if (property instanceof Enum){
                 return ((Enum)property).name();
             }

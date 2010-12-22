@@ -10,7 +10,7 @@ public class SelectedProductType {
 
 	public SelectedProductType() {
 		
-		productType = ProductType.TIWIPRO;
+		productType = ProductType.TIWIPRO_R74;
 	}
 
 	public ProductType getProductType() {
@@ -25,6 +25,6 @@ public class SelectedProductType {
 	}
 
 	public Integer getProductTypeCode() {
-		return productType.getCodes()[0];
+		return productType.getCode();
 	}
 }

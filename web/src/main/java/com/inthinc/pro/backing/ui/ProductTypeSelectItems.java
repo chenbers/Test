@@ -1,11 +1,12 @@
 package com.inthinc.pro.backing.ui;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.configurator.ProductName;
 import com.inthinc.pro.util.MessageUtil;
 
 public enum ProductTypeSelectItems {
@@ -24,9 +25,9 @@ public enum ProductTypeSelectItems {
         blankItem.setEscape(false);
         productTypesSelectItems.add(blankItem);
 
-        for (ProductType e : ProductType.getSet())
+        for (ProductName e : EnumSet.allOf(ProductName.class))
         {
-            productTypesSelectItems.add(new SelectItem(e,e.getDescription()));
+            productTypesSelectItems.add(new SelectItem(e.getProductName(),e.getProductName()));
         }
         selectItems = productTypesSelectItems;
     }

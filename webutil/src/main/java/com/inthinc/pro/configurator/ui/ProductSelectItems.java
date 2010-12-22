@@ -16,7 +16,7 @@ public class ProductSelectItems {
     	productTypeSelectItems = new ArrayList<SelectItem>();
         for (ProductType productType : ProductType.getSet()){
         	
-        	SelectItem selectItem = new SelectItem(productType.getCodes()[0],productType.getDescription());
+        	SelectItem selectItem = new SelectItem(productType.getCode(),productType.name());
         	productTypeSelectItems.add(selectItem);
         }
 	}

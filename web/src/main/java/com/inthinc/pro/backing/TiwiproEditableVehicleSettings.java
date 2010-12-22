@@ -30,7 +30,7 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
                                  Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
                                  Integer hardVertical) {
        
-        super(vehicleID, ProductType.TIWIPRO);
+        super(vehicleID, ProductType.TIWIPRO_R74);
 
         this.ephone = ephone;
         this.autologoffSeconds = autoLogoffSeconds;

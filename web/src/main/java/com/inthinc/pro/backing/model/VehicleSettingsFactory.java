@@ -34,7 +34,8 @@ public class VehicleSettingsFactory {
         switch (productType){
             case WAYSMART:
                return  new WaySmartSettingManager(configuratorDAO,productType,vehicleSetting==null?new VehicleSetting():vehicleSetting);
-            case TIWIPRO:
+            case TIWIPRO_R71:
+            case TIWIPRO_R74:
                 return new TiwiproSettingManager(configuratorDAO, productType,vehicleSetting==null?new VehicleSetting():vehicleSetting);
             default:
                 return new UnknownSettingManager(configuratorDAO,vehicleSetting==null?new VehicleSetting():vehicleSetting);

@@ -32,7 +32,7 @@ public class SettingsAndSlidersTest {
 
     @Test
     public void testGetSlider() {
-        SliderKey sliderKey = new SliderKey(SliderType.HARD_ACCEL_SLIDER.getCode(), ProductType.WAYSMART.getCodes()[0], 0, 1000000);
+        SliderKey sliderKey = new SliderKey(SliderType.HARD_ACCEL_SLIDER.getCode(), ProductType.WAYSMART.getCode(), 0, 1000000);
         Slider sands = new Slider(sliderKey);
         Map<Integer,String> settings = new HashMap<Integer,String>();
         Integer slider = sands.getSliderValueFromSettings(settings);

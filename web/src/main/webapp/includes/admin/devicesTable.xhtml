@@ -27,7 +27,7 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
-    <rich:column id="productVersion" sortBy="#{item.productVersion.description}" custFilterBy="#{item.productVersion.description}" filterValue="#{devicesBean.filterValues['productVersion']}">
+    <rich:column id="productVersion" sortBy="#{item.productVersion.description.productName}" custFilterBy="#{item.productVersion.description.productName}" filterValue="#{devicesBean.filterValues['productVersion']}">
       <f:facet name="header">
         <h:panelGroup>
 			<h:outputText value="#{messages.devicesHeader_productVer}" />
@@ -44,7 +44,7 @@
 			</h:panelGroup>
       	</h:panelGroup>
       </f:facet>
-      <h:outputText value="#{item.productVersion.description}" />
+      <h:outputText value="#{item.productVersion.description.productName}" />
     </rich:column>
     <rich:column id="imei" rendered="#{devicesBean.tableColumns['imei'].visible}" sortBy="#{item.imei}">
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_imei}" /></f:facet>

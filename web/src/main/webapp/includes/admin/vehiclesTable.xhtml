@@ -26,7 +26,7 @@
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
       <h:outputText value="#{item.driver.person.fullName}" />
     </rich:column>
-    <rich:column id="productVersion" custFilterBy="#{item.editableVehicleSettings.productType}" sortBy="#{item.editableVehicleSettings.productType.description}" filterValue="#{vehiclesBean.filterValues['productType']}">
+    <rich:column id="productVersion" custFilterBy="#{item.editableVehicleSettings.productType.description.productName}" sortBy="#{item.editableVehicleSettings.productType.description.productName}" filterValue="#{vehiclesBean.filterValues['productType']}">
       <f:facet name="header">
         <h:panelGroup>
 			<h:outputText value="#{messages.vehiclesHeader_productType}" />
@@ -44,7 +44,7 @@
 			</h:panelGroup>
         </h:panelGroup>
       </f:facet>
-      <h:outputText value="#{item.editableVehicleSettings.productType.description}" />
+      <h:outputText value="#{item.editableVehicleSettings.productType.description.productName}" />
     </rich:column>
     <rich:column id="group" rendered="#{vehiclesBean.tableColumns['groupID'].visible}" sortBy="#{item.group.name}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_groupID}" /></f:facet>

@@ -50,7 +50,7 @@ public class ConfigurationExtractorTest {
         deviceSettingDefinitionsByProductType.init();
 
         vehicleSettings = new VehicleSettings();
-        vehicleSettings.filterSettings(configuratorHessianDAO.getVehicleSettingsByGroupIDDeep(1), ProductType.TIWIPRO);
+        vehicleSettings.filterSettings(configuratorHessianDAO.getVehicleSettingsByGroupIDDeep(1), ProductType.TIWIPRO_R74);
 
     }
     private void makeupSettingsRandom( List<DeviceSettingDefinitionBean> list, List<VehicleSetting> vehicleSettings){
