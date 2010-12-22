@@ -209,8 +209,7 @@ public abstract class ReportsBean extends BaseBean {
             case STATE_MILEAGE_BY_MONTH:
                 reportCriteriaList.add(getReportCriteriaService().getStateMileageByMonthReportCriteria(
                         getAccountGroupHierarchy(), params.getGroupIDList(), 
-                        //params.getDateRange().getInterval(),
-                        TimeFrame.THREE_MONTHS.getInterval(),
+                        params.getDateRange().getInterval(),
                         params.getLocale(), 
                         getUser().getPerson().getMeasurementType(), params.getIsIfta() ));
                 break;
