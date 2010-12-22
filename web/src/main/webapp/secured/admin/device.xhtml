@@ -68,7 +68,7 @@
                                   <h:outputText value="#{messages.editDevice_productVer}" />
                                 </td>
                                 <td width="100" valign="top">
-                                  <h:outputText value="#{devicesBean.item.productVersion}" />
+                                  <h:outputText value="#{devicesBean.item.productVersion.description.productName}" />
                                 </td>
                               </tr>
                               <tr>
@@ -93,7 +93,7 @@
                                 <td><h:outputText value="#{devicesBean.item.phone}" /></td>
                               </tr>
                               </ui:fragment>
-                             <ui:fragment rendered="#{devicesBean.item.productVersion eq 'WS820'}">
+                             <ui:fragment rendered="#{devicesBean.item.productVersion eq 'WAYSMART'}">
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editDevice_mcmid}" /></td>
                                 <td><h:outputText value="#{devicesBean.item.mcmid}" /></td>
