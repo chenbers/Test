@@ -158,6 +158,15 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         alertView.setEmailTos(flag.getEmailTo()); 
         alertView.getEmailTos().add("");  //ensure empty slot
         
+        alertView.setDelay(Delay.valueOf(flag.getEscalationTimeBetweenRetries()));
+        if(flag.getMaxEscalationTries() != null) {
+            alertView.setLimitType(LimitType.COUNT);
+            alertView.setLimitValue(flag.getMaxEscalationTries());
+        } else {
+            alertView.setLimitType(LimitType.TIME);
+            alertView.setLimitValue(flag.getMaxEscalationTryTime());
+        }
+        
         return alertView;
     }
     public static String findOwnerName(Integer userID){
@@ -444,6 +453,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
             flag.setEmailTo(flag.getEmailTos());
             copyVoiceEscalationItems(flag, getItem());
+            
+            flag.setEscalationTimeBetweenRetries(item.getEscalationTimeBetweenRetries());
+            if(LimitType.COUNT.equals(item.getLimitType())) {
+                flag.setMaxEscalationTries(item.getLimitValue());
+                flag.setMaxEscalationTryTime(null);
+            } else if(LimitType.TIME.equals(item.getLimitType())) {
+                flag.setMaxEscalationTryTime(item.getLimitValue());
+                flag.setMaxEscalationTries(null);
+            }
+            flag.setEscalationTimeBetweenRetries(item.getDelay().getCode());
             if (create)
                 flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
             else
@@ -644,9 +663,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public void removePhNumber() {
             phNumbers.remove(redFlagOrZoneAlertsBean.phNumbersDataTable.getRowData());
         }
-
-        
-        
 
         public void removeEmailTo() {
             emailTos.remove(redFlagOrZoneAlertsBean.emailTosDataTable.getRowData());
