@@ -922,17 +922,18 @@
 								    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.phNumbersDataTable}" style="border: none;" rowKeyVar="rowIndex">
 								        <rich:column id="phNumInputCol" style="border: none;">
 								   	    	<rich:message id="phNumInputMessage#{index}" for="phNumInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-								            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput"  />
+								            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput" />
 								            
 								            <rich:suggestionbox id="suggestionBoxId" for="phNumInput"
 							                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.autocomplete}" 
-							                    var="suggestion" selfRendered="true">
+							                    var="suggestion" selfRendered="true" nothingLabel="#{messages.editAlerts_picker_unknownPhone}">
 							                    <h:column>
 									              <h:outputText value="#{suggestion.label}" id="phNumSuggestion" />
 									            </h:column>
             									<a4j:support event="onselect" action="#{redFlagOrZoneAlertsBean.addPhNumberSlot_plusAddItem}" reRender="pickerPanel, phNumbers, message" limitToList="true">
             									    <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" value="#{suggestion.value}"> </f:setPropertyActionListener>
-            									 </a4j:support>
+            									</a4j:support>
+            									
 							                </rich:suggestionbox>
 								        </rich:column>
 								        <rich:column id="phNumInputBtns" style="border: none;">
@@ -1013,7 +1014,7 @@
 									<h:inputText value="#{redFlagOrZoneAlertsBean.item.escEmail}" id="escEmailAddressInput" styleClass="emailInput" />
 								  	<rich:suggestionbox id="suggestionBoxId" for="escEmailAddressInput"
 					                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationEmailPicker.autocomplete}" 
-					                    var="suggestion" selfRendered="true">
+					                    var="suggestion" selfRendered="true" nothingLabel="#{messages.editAlerts_picker_unknownEmail}">
 					                    <h:column>
 							              <h:outputText value="#{suggestion.label}" id="escEmailSuggestion" />
 							            </h:column>
