@@ -82,7 +82,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -131,7 +131,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -250,7 +250,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
 
         }   // end catch
         finally
@@ -327,7 +327,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -403,7 +403,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -448,7 +448,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -479,7 +479,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -550,7 +550,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -592,7 +592,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -643,7 +643,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -687,7 +687,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -727,7 +727,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -794,7 +794,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -833,7 +833,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             }
         }   // end try
         catch (SQLException e) { 
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         } 
         finally
         { // clean up and release the connection

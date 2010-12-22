@@ -58,7 +58,7 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -104,7 +104,7 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -151,7 +151,7 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -199,7 +199,7 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -246,7 +246,7 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -292,7 +292,7 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
