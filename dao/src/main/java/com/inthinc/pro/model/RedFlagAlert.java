@@ -2,6 +2,7 @@ package com.inthinc.pro.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -89,7 +90,6 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
 
     public RedFlagAlert()
     {
-//        types = new ArrayList<AlertMessageType>();
     }
     
     public RedFlagAlert(List<AlertMessageType> types, Integer accountID, Integer userID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
@@ -100,7 +100,6 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     {
         super();
         this.types = types;
-//        this.alertTypeMask = AlertMessageType.convertTypes(types); 
         this.accountID = accountID;
         this.userID = userID;
         this.name = name;
@@ -126,7 +125,6 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         this.maxEscalationTries = maxEscalationTries;
         this.maxEscalationTryTime = maxEscalationTryTime;
         this.escalationTimeBetweenRetries = escalationTimeBetweenRetries;
-//        this.timeoutUnits = timeoutUnits;
     }
 
     public List<AlertMessageType> getTypes() {
@@ -137,17 +135,6 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         this.types = types;
     }
 
-//    public Set<AlertMessageType> getTypesSet() {
-//        if (types==null || types.isEmpty()) return Collections.emptySet();
-//        return EnumSet.copyOf(types);
-//    }
-
-//    public void setTypesSet(Set<AlertMessageType> types) {
-//        
-//        if(types == null) return;
-//        this.types = new ArrayList<AlertMessageType>(types);
-//    }
-    
     public Integer getAlertID() {
         return alertID;
     }
@@ -365,12 +352,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         if (this.maxEscalationTryTime == null)
             return 1;
         else return 0;
-//        return timeoutUnits;
     }
-
-//    public void setTimeoutUnits(Integer timeoutUnits) {
-//        this.timeoutUnits = timeoutUnits;
-//    }
     
     public int compareTo(RedFlagAlert o) {
 
@@ -484,6 +466,26 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         }
         return voice;
     }
+//    public void setVoiceEscalationPersonIDs(List<Integer> voicePersonIDs){
+//        if(escalationList == null){
+//            escalationList = new ArrayList<AlertEscalationItem>();          
+//        }
+//        if (!escalationList.isEmpty()) { 
+//            
+//            Iterator<AlertEscalationItem> it = escalationList.iterator();
+//            while (it.hasNext()) {
+//                AlertEscalationItem aei = it.next();
+//                if (aei.getEscalationOrder() != -1) {
+//                    it.remove();
+//                }
+//            }
+//        }
+//        if(voicePersonIDs == null || voicePersonIDs.isEmpty()) return;
+//        int i = 1;
+//        for(Integer id:voicePersonIDs){
+//            escalationList.add(new AlertEscalationItem(id, i++));
+//        }
+//    }
     public Integer getEmailEscalationPersonID(){
         if(escalationList == null) return null;
         for (AlertEscalationItem item : escalationList){

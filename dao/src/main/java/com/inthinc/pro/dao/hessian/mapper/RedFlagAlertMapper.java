@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
+import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
@@ -84,5 +85,19 @@ public class RedFlagAlertMapper extends AbstractMapper
             redFlagAlert.setTypes(new ArrayList<AlertMessageType>(AlertMessageType.getAlertMessageTypes((Long)value)));
         }
     }
+    @SuppressWarnings("unchecked")
+    @ConvertFieldToColumn(fieldName = "escalationOrder") 
+    public void escalationOrderToColumn(AlertEscalationItem alertEscalationItem, Object value){
         
+        if (!Map.class.isInstance(value) || alertEscalationItem == null)
+            return;
+        //contactType     INT NOT NULL,  -- 0=email, 1=phone
+        ((Map<String, Object>)value).put("contactType",alertEscalationItem.getEscalationOrder() == -1? 0:1);
+        ((Map<String, Object>)value).put("escalationOrder", alertEscalationItem.getEscalationOrder());
+    }
+    @ConvertColumnToField(columnName = "contactType")
+    public void contactTypeToModel(AlertEscalationItem alertEscalationItem, Object value)
+    {
+       //We don't care what this is on reading.
+    }
 }

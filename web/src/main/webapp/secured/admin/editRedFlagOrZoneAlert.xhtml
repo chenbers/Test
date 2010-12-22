@@ -885,7 +885,7 @@
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                       <td width="390" valign="top">
                       <div class="add_section_title">
-                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_phoneCallEscalation" value="#{redFlagOrZoneAlertsBean.updateField['escalationList']}" />
+<!--                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_phoneCallEscalation" value="#{redFlagOrZoneAlertsBean.updateField['escalationList']}" />-->
                           <h:outputText value="#{messages.editRedFlag_notificationsByPhone}" />
                         </div>
 
@@ -897,7 +897,7 @@
 										<ui:param name="required" value="FALSE"/>
 										<ui:param name="reRender" value="phNumbers"/>
 										<ui:param name="for" value="phNumbers"/>
-										<ui:param name="fieldName" value="phNumbers"/>
+										<ui:param name="fieldName" value="escalationPersonIDs"/>
 										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
 										<ui:param name="label" value="#{messages.editRedFlag_phoneNumbersLabel}"/>
         								<ui:param name="context" value="redFlagAlertsPhNumbers" />
@@ -987,7 +987,7 @@
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="escEmail"/>
 										<ui:param name="for" value="escEmail"/>
-										<ui:param name="fieldName" value="escEmail"/>
+										<ui:param name="fieldName" value="emailEscalationPersonID"/>
 										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
 										<ui:param name="label" value="#{messages.editRedFlag_escalationEmailLabel}"/>
         								<ui:param name="context" value="redFlagAlertsEscEmail" />
@@ -996,7 +996,7 @@
 								<td>
       								<!-- Escalation Email -->
       								<rich:message id="escEmailAddressesInputMessage" for="escEmailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-      								<h:inputHidden value="#{redFlagOrZoneAlertsBean.item.emailEscalationPersonID}"/>
+<!--      								<h:inputHidden value="#{redFlagOrZoneAlertsBean.item.emailEscalationPersonID}"/>-->
 									<h:inputText value="#{redFlagOrZoneAlertsBean.item.escEmail}" id="escEmailAddressInput" styleClass="emailInput" />
 								  	<rich:suggestionbox id="suggestionBoxId" for="escEmailAddressInput"
 					                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationEmailPicker.autocomplete}" 

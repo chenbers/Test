@@ -443,6 +443,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 flag.getEmailTos().remove("");
             }
             flag.setEmailTo(flag.getEmailTos());
+            copyVoiceEscalationItems(flag, getItem());
             if (create)
                 flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
             else
@@ -453,7 +454,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             context.addMessage(null, message);
         }
     }
-
+    private void copyVoiceEscalationItems(RedFlagOrZoneAlertView to, RedFlagOrZoneAlertView from){
+        if (getUpdateField().get("escalationPersonIDs")){
+            to.setEscalationPersonIDs(from.getVoiceEscalationPersonIDs());
+        }
+    }
     @Override
     protected String getDisplayRedirect() {
         
@@ -536,12 +541,17 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Column(updateable = false)
         private Integer removeId;
 
+        @Column(updateable = false)
         private Delay delay;
+        @Column(updateable = false)
         private Integer limitValue;
+        @Column(updateable = false)
         private LimitType limitType;
         
+        @Column(updateable = false)
         private String escEmail;
-        private List<String> phNumbers;
+        @Column(updateable = false)
+       private List<String> phNumbers;
         
         @Column(updateable = false)
         private List<String> emailTos;
@@ -892,6 +902,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
             return false;
         }
+        
         @Override
         public Integer getEmailEscalationPersonID() {
             return super.getEmailEscalationPersonID();
@@ -904,7 +915,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public void setEmailEscalationPersonID(Integer escEmailPersonID) {
             super.setEmailEscalationPersonID(escEmailPersonID);            
         }
-        
         @Override
         public void setEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs) {
             AlertEscalationItem lastResortEmail = null;

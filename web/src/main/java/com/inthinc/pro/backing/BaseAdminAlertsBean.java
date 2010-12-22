@@ -325,7 +325,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 if (!isPersonDeleted(person))
                     escPicked.add(new SelectItem(person.getPersonID(), person.getFullNameWithPriPhone()));
             }
-            // MiscUtil.sortSelectItems(notifyPeople);
         }
         return escPicked;
     }
@@ -365,7 +364,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             getAssignPicker().setPickFrom(getAssignPickFrom());
             getPeoplePicker().setPicked(getNotifyPicked());
             getEscalationPeoplePicker().setPicked(getEscalationPicked());
-            //getEscalationPeoplePicker().getPickFrom().removeAll(getEscalationPicked());
         }
         if ((item.getDayOfWeek() == null) || (item.getDayOfWeek().size() != 7))
         {
@@ -457,8 +455,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             userIDs.add((Integer) item.getValue());
         
         getItem().setNotifyPersonIDs(userIDs);
-        
-        if (!isBatchEdit() ||(isBatchEdit() && getUpdateField().get("escalationList"))){
+        if (!isBatchEdit() ||(isBatchEdit() && getUpdateField().get("escalationPersonIDs"))){
             // set notify user IDs
             final ArrayList<Integer> escalationUserIDs = new ArrayList<Integer>(getEscalationPeoplePicker().getPicked().size());
             for (final SelectItem item : getEscalationPeoplePicker().getPicked()) {
@@ -468,9 +465,9 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
                 else if(item.getValue() instanceof Integer)
                     escalationUserIDs.add((Integer)item.getValue());
             }
-    
             getItem().setEscalationPersonIDs(escalationUserIDs);
         }
+        
         if (!isBatchEdit()) {
             for (SelectItem selectItem : getAllGroupUsers()) {
                 if (selectItem.getValue().equals(item.getUserID())) {
