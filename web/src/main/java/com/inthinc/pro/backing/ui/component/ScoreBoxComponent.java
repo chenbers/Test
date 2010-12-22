@@ -24,7 +24,7 @@ public class ScoreBoxComponent extends HtmlOutputText
     public static final String INNER_DIV = "<div style='#position: relative;  #top: -50%; width:100%;text-align:center'>";
     public static final String DEFAULT_SIZE = "x_sm";
     public static final String sizes[] = {
-        DEFAULT_SIZE,   //0
+        "xx_sm",   //0
         "x_sm",   //1
         "sm",   //2
         "med",   //3
@@ -32,26 +32,41 @@ public class ScoreBoxComponent extends HtmlOutputText
         "x_lg"  //5
     };
 
+    ResponseWriter innerHtml; 
     public ScoreBoxComponent()
     {
         super();
     }
 
     @Override
-    public void encodeEnd(FacesContext context) throws IOException
+    public void encodeBegin(FacesContext context) throws IOException
     {
         ResponseWriter out = context.getResponseWriter();
 
         StringBuffer buffer = new StringBuffer();
         String scoreCssClass = "score_" + getSuffix(getValue());
         String sizeCssClass = "score_" + getSize(); 
-        
-        buffer.append("<span><div class='score " + scoreCssClass + " " + sizeCssClass + "'");
+        buffer.append("<span><div class='scoreBox'>");
+        buffer.append("<div class='score " + scoreCssClass + " " + sizeCssClass + "'>");
         buffer.append(OUTER_DIV);
         buffer.append(MIDDLE_DIV);
         buffer.append(INNER_DIV);
-        buffer.append(getDisplayValue(getValue()));
-        buffer.append("</div></div></div></div></span>");
+        out.write(buffer.toString());
+        
+    }
+    
+    @Override
+    public void encodeChildren(FacesContext context) throws IOException
+    {
+        super.encodeChildren(context);
+        
+    }
+    @Override
+    public void encodeEnd(FacesContext context) throws IOException
+    {
+        ResponseWriter out = context.getResponseWriter();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("</div></div></div></div></div></span>");
         out.write(buffer.toString());
     }
 

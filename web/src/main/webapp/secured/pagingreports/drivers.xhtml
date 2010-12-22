@@ -141,10 +141,13 @@
 												<ui:param name="bean" value="#{pagingDriverReportBean}" />
 												<ui:param name="type" value="overall" />
 											</ui:include>
-											<pretty:link mappingId="driverPerformance">
-									           <f:param value="#{item.driverID}" />
-											    <tiwi:scoreBoxComponent value="#{item.overallScore}" size="1"/>
-									        </pretty:link>
+										    <tiwi:scoreBoxComponent value="#{item.overallScore}" size="0">
+												<pretty:link mappingId="driverPerformance">
+												   <h:outputText value="#{item.overallScore}" converter="ScoreConverter"  />
+												   <h:outputText value="#{messages.NotApplicable}" rendered="#{item.overallScore == null}"  />
+										           <f:param value="#{item.driverID}" />
+										        </pretty:link>
+											</tiwi:scoreBoxComponent>
                                         </rich:column>
                                         <rich:column id="speedScore" rendered="#{tableColumns['speedScore'].visible}" 
                                         					sortBy="#{item.speedScore}" width="10%" 
@@ -154,10 +157,13 @@
 												<ui:param name="bean" value="#{pagingDriverReportBean}" />
 												<ui:param name="type" value="speed" />
 											</ui:include>
-											<pretty:link mappingId="driverPerformanceSpeed">
-											    <tiwi:scoreBoxComponent value="#{item.speedScore}" size="1"/>
-									            <f:param value="#{item.driverID}" />
-									        </pretty:link>
+											<tiwi:scoreBoxComponent value="#{item.speedScore}" size="0">
+												<pretty:link mappingId="driverPerformanceSpeed">
+												   <h:outputText value="#{item.speedScore}" converter="ScoreConverter" />
+												   <h:outputText value="#{messages.NotApplicable}" rendered="#{item.speedScore == null}"  />
+								            	   <f:param value="#{item.driverID}" />
+									        	</pretty:link>
+									        </tiwi:scoreBoxComponent>
                                         </rich:column>
                                         <rich:column id="styleScore" rendered="#{tableColumns['styleScore'].visible}" 
                                         					sortBy="#{item.styleScore}" width="10%"
@@ -167,10 +173,13 @@
 												<ui:param name="bean" value="#{pagingDriverReportBean}" />
 												<ui:param name="type" value="style" />
 											</ui:include>
-											<pretty:link mappingId="driverPerformanceStyle">
-											    <tiwi:scoreBoxComponent value="#{item.styleScore}" size="1"/>
-									            <f:param value="#{item.driverID}" />
-									        </pretty:link>
+										    <tiwi:scoreBoxComponent value="#{item.styleScore}" size="0">
+												<pretty:link mappingId="driverPerformanceStyle">
+													<h:outputText value="#{item.styleScore}" converter="ScoreConverter" />
+												    <h:outputText value="#{messages.NotApplicable}" rendered="#{item.styleScore == null}"  />
+									            	<f:param value="#{item.driverID}" />
+									        	</pretty:link>
+									        </tiwi:scoreBoxComponent>
                                         </rich:column>
                                         <rich:column id="seatbeltScore" rendered="#{tableColumns['seatBeltScore'].visible}" 
                                         					sortBy="#{item.seatbeltScore}" width="10%"
@@ -180,10 +189,13 @@
 												<ui:param name="bean" value="#{pagingDriverReportBean}" />
 												<ui:param name="type" value="seatbelt" />
 											</ui:include>
-											<pretty:link mappingId="driverPerformanceSeatBelt">
-										       <tiwi:scoreBoxComponent value="#{item.seatbeltScore}" size="1"/>
-									           <f:param value="#{item.driverID}" />
-									        </pretty:link>
+									       <tiwi:scoreBoxComponent value="#{item.seatbeltScore}" size="0">
+												<pretty:link mappingId="driverPerformanceSeatBelt">
+													<h:outputText value="#{item.seatbeltScore}" converter="ScoreConverter" />
+												   <h:outputText value="#{messages.NotApplicable}" rendered="#{item.seatbeltScore == null}"  />
+									           		<f:param value="#{item.driverID}" />
+									        	</pretty:link>
+									        </tiwi:scoreBoxComponent>
                                         </rich:column>
                                     </rich:dataTable> 
         	                        </div>
@@ -217,9 +229,5 @@
 			<ui:param name="context" value="#{context}" />
 		</ui:include>
 	</h:outputText>
-<!-- 
-
-	<rich:jQuery selector=".scoreBox" timing="onload" query="scoreBox({size:'x_sm'})"  />
- -->	
 	</ui:define>
 </ui:composition>

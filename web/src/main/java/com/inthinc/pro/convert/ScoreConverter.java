@@ -22,7 +22,7 @@ public class ScoreConverter extends BaseConverter
     
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
-        if ((value == null) || !Integer.class.isInstance(value) || Integer.class.cast(value).intValue() < 0) {
+        if ((value == null) || value.toString().isEmpty() || !Integer.class.isInstance(value) || Integer.class.cast(value).intValue() < 0) {
             return MessageUtil.getMessageString("NotApplicable",getLocale());
         }
         
