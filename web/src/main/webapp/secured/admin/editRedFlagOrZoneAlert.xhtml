@@ -862,10 +862,23 @@
 									</ui:include>
 								</td>
 								<td>
+								<script type="text/javascript">
+								  function emailListKeypress(e)
+							      {
+							        // keep the 'enter' key from submitting the form.
+							        if(e.keyCode == 13)
+							        {
+							        	jsAddAnother();
+							        	return false;
+							        }
+							      }
+							    </script>
+								<a4j:jsFunction name="jsAddAnother" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage" />
+								
 									<rich:dataTable value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="dataItem" id="emailTos" binding="#{redFlagOrZoneAlertsBean.emailTosDataTable}" style="border: none;" rowKeyVar="index">
 								        <rich:column  style="border: none;">
 									        <rich:message id="emailAddressesInputMessage#{index}" for="emailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-								            <h:inputText value="#{dataItem}" styleClass="emailInput" id="emailAddressesInput" >
+								            <h:inputText value="#{dataItem}" styleClass="emailInput" id="emailAddressesInput" onkeypress="return emailListKeypress(event);" >
 								            	<f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
 								            </h:inputText>
 								        </rich:column>
@@ -917,7 +930,7 @@
 							                    <h:column>
 									              <h:outputText value="#{suggestion.label}" id="phNumSuggestion" />
 									            </h:column>
-            									<a4j:support event="onselect" action="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.addItem}" reRender="pickerPanel" limitToList="true">
+            									<a4j:support event="onselect" action="#{redFlagOrZoneAlertsBean.addPhNumberSlot_plusAddItem}" reRender="pickerPanel, phNumbers, message" limitToList="true">
             									    <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" value="#{suggestion.value}"> </f:setPropertyActionListener>
             									 </a4j:support>
 							                </rich:suggestionbox>
@@ -928,7 +941,7 @@
             									    <f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.itemValue}" value="#{dataItem}"> </f:setPropertyActionListener>
             									 </a4j:support>
 								            </a4j:commandLink>
-								            <a4j:commandLink id="phNumAddSlotBtn" action="#{redFlagOrZoneAlertsBean.item.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}"><h:graphicImage value="/images/ico_addAnother_add.png" style="border: 0px; vertical-align: middle;" id="phAddLinkImg" /></a4j:commandLink>
+								            <a4j:commandLink id="phNumAddSlotBtn" action="#{redFlagOrZoneAlertsBean.addPhNumberSlot}" reRender="phNumbers, message"  rendered="#{dataItem == ''}"><h:graphicImage value="/images/ico_addAnother_add.png" style="border: 0px; vertical-align: middle;" id="phAddLinkImg" /></a4j:commandLink>
 								        </rich:column>	
 								    </rich:dataTable>
 								    <br/>

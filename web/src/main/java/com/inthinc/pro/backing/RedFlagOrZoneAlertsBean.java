@@ -518,6 +518,41 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     public void setEmailTosDataTable(HtmlDataTable emailTosDataTable) {
         this.emailTosDataTable = emailTosDataTable;
     }
+    
+    public void addPhNumberSlot_plusAddItem() {
+        addPhNumberSlot();
+        getEscalationPeoplePicker().addItem();
+    }
+    public void addPhNumberSlot() {
+        try {
+            boolean okToAddAnother = true;
+            FacesContext context = FacesContext.getCurrentInstance();
+            Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+            for (String key : map.keySet()) {
+                if (key.endsWith("phNumInput")) {
+                    String[] words = key.split(":");
+                    int fieldIndex = Integer.parseInt(words[2]);
+                    // if the user changed ANY fields update phNumbers
+                    if (!map.get(key).equalsIgnoreCase(getItem().getPhNumbers().get(fieldIndex))) {
+                        getItem().getPhNumbers().set(fieldIndex, map.get(key));
+                        //phNumberPersonIDs.set(fieldIndex, Integer.parseInt(map.get(key)));
+                    }
+                    // if there are ANY empty slots, it is NOT okToAddAnother
+                    if (map.get(key) == null || map.get(key).equals("")) {
+                        okToAddAnother = false;
+                    }
+                }
+            }
+
+            if (okToAddAnother) {
+                getItem().getPhNumbers().add("");
+            }
+        } catch (Exception e) {
+            logger.error(e);
+            logger.error("addPhNumberSlot() failed");
+        }
+    }
+    
 
     public static class RedFlagOrZoneAlertView extends RedFlagAlert implements BaseAdminAlertsBean.BaseAlertView {
 
@@ -610,35 +645,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             phNumbers.remove(redFlagOrZoneAlertsBean.phNumbersDataTable.getRowData());
         }
 
-        public void addPhNumberSlot() {
-            try {
-                boolean okToAddAnother = true;
-                FacesContext context = FacesContext.getCurrentInstance();
-                Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-                for (String key : map.keySet()) {
-                    if (key.endsWith("phNumInput")) {
-                        String[] words = key.split(":");
-                        int fieldIndex = Integer.parseInt(words[2]);
-                        // if the user changed ANY fields update phNumbers
-                        if (!map.get(key).equalsIgnoreCase(phNumbers.get(fieldIndex))) {
-                            phNumbers.set(fieldIndex, map.get(key));
-                            //phNumberPersonIDs.set(fieldIndex, Integer.parseInt(map.get(key)));
-                        }
-                        // if there are ANY empty slots, it is NOT okToAddAnother
-                        if (map.get(key) == null || map.get(key).equals("")) {
-                            okToAddAnother = false;
-                        }
-                    }
-                }
-
-                if (okToAddAnother) {
-                    phNumbers.add("");
-                }
-            } catch (Exception e) {
-                logger.error(e);
-                logger.error("addPhNumberSlot() failed");
-            }
-        }
+        
+        
 
         public void removeEmailTo() {
             emailTos.remove(redFlagOrZoneAlertsBean.emailTosDataTable.getRowData());
