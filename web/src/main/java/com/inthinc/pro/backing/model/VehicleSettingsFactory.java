@@ -32,10 +32,9 @@ public class VehicleSettingsFactory {
         
         if (productType == null) return new UnknownSettingManager(configuratorDAO,vehicleSetting==null?new VehicleSetting():vehicleSetting);
         switch (productType){
-            case WS820:
+            case WAYSMART:
                return  new WaySmartSettingManager(configuratorDAO,productType,vehicleSetting==null?new VehicleSetting():vehicleSetting);
-            case TIWIPRO_R71:
-            case TIWIPRO_R74:
+            case TIWIPRO:
                 return new TiwiproSettingManager(configuratorDAO, productType,vehicleSetting==null?new VehicleSetting():vehicleSetting);
             default:
                 return new UnknownSettingManager(configuratorDAO,vehicleSetting==null?new VehicleSetting():vehicleSetting);

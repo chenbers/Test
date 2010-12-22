@@ -26,7 +26,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
                                   			Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
                                   			Integer hardVertical) {
         
-        super(vehicleID,ProductType.WS820);
+        super(vehicleID,ProductType.WAYSMART);
         
         this.speedLimit = speedLimit;
         this.speedBuffer = speedBuffer;

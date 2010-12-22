@@ -131,7 +131,7 @@ public class SensitivitySliderValuesMapping {
         
         Map<SliderKey, Slider> sliders = new HashMap<SliderKey, Slider>();
         for (SensitivitySliderValues sensitivitySliderValues : sensitivitySliderValuesList){
-            if(EnumSet.of(ProductType.TIWIPRO_R71,ProductType.TIWIPRO_R74).contains(sensitivitySliderValues.getProductType()) && 
+            if(EnumSet.of(ProductType.TIWIPRO).contains(sensitivitySliderValues.getProductType()) && 
                    sensitivitySliderValues.getSettingID()==1225)
                 continue;
             SliderKey sliderKey = createSliderKey(sensitivitySliderValues);
@@ -143,7 +143,7 @@ public class SensitivitySliderValuesMapping {
     private static SliderKey createSliderKey(SensitivitySliderValues sensitivitySliderValues){
         
         return new SliderKey(sensitivitySliderValues.getSensitivityType(),
-                               sensitivitySliderValues.getProductType().getCode(),
+                               sensitivitySliderValues.getProductType().getCodes()[0],
                                 sensitivitySliderValues.getMinFirmwareVersion(),
                                  sensitivitySliderValues.getMaxFirmwareVersion());
     }
@@ -171,7 +171,7 @@ public class SensitivitySliderValuesMapping {
     
     public static Slider getSlider(SliderType sliderType, ProductType productType, Integer minFirmwareVersion, Integer maxFirmwareVersion){
         
-        SliderKey sliderKey = new SliderKey(sliderType.getCode(),productType.getCode(),minFirmwareVersion,maxFirmwareVersion);
+        SliderKey sliderKey = new SliderKey(sliderType.getCode(),productType.getCodes()[0],minFirmwareVersion,maxFirmwareVersion);
         
         return sensitivitySliders.get(sliderKey);
     }

@@ -206,7 +206,7 @@ public class Device extends BaseEntity implements HasAccountId
         //TODO: Jacquie added this to temporarily get the tests to pass - will make this always return false
         //this.productVersion = ProductType.TIWIPRO_R74;
 
-        return ProductType.WS820.equals(this.productVersion);
+        return ProductType.WAYSMART.equals(this.productVersion);
     }
     
     /**
@@ -216,11 +216,11 @@ public class Device extends BaseEntity implements HasAccountId
      */
     public boolean isCrashTraceAppletCapable(){
         //TODO: jwimmer: another stopgap until a better way to determine device capabilities is implemented
-        return (ProductType.WS820.equals(this.productVersion));
+        return (ProductType.WAYSMART.equals(this.productVersion));
     }
 
     public boolean isWaySmart() {
-        return ProductType.WS820.equals(this.productVersion);
+        return ProductType.WAYSMART.equals(this.productVersion);
     }
     public ProductType getProductVersion() {
         return productVersion;

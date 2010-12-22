@@ -181,7 +181,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         VehicleSetting vehicleSetting = new VehicleSetting();
         vehicleSetting.setVehicleID(vehicleID);
         vehicleSetting.setDesired(new HashMap<Integer, String>());
-        vehicleSetting.setProductType(ProductType.WS820);
+        vehicleSetting.setProductType(ProductType.WAYSMART);
 
         return vehicleSetting;
     }
