@@ -7,12 +7,15 @@ import java.util.Map;
 import com.inthinc.pro.backing.TiwiproSettingManager;
 import com.inthinc.pro.backing.WaySmartSettingManager;
 import com.inthinc.pro.dao.ConfiguratorDAO;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class VehicleSettingsFactory {
     
     private ConfiguratorDAO configuratorDAO;
+    private DeviceDAO deviceDAO;
+
 
     public Map<Integer, VehicleSettingManager> retrieveVehicleSettings(Integer groupID){
         
@@ -33,7 +36,7 @@ public class VehicleSettingsFactory {
         if (productType == null) return new UnknownSettingManager(configuratorDAO,vehicleSetting==null?new VehicleSetting():vehicleSetting);
         switch (productType){
             case WAYSMART:
-               return  new WaySmartSettingManager(configuratorDAO,productType,vehicleSetting==null?new VehicleSetting():vehicleSetting);
+               return  new WaySmartSettingManager(configuratorDAO,productType,vehicleSetting==null?new VehicleSetting():vehicleSetting,deviceDAO);
             case TIWIPRO_R71:
             case TIWIPRO_R74:
                 return new TiwiproSettingManager(configuratorDAO, productType,vehicleSetting==null?new VehicleSetting():vehicleSetting);
@@ -47,6 +50,9 @@ public class VehicleSettingsFactory {
     
     public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
         this.configuratorDAO = configuratorDAO;
+    }
+    public void setDeviceDAO(DeviceDAO deviceDAO) {
+        this.deviceDAO = deviceDAO;
     }
     
 }

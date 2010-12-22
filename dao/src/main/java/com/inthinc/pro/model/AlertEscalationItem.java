@@ -37,6 +37,6 @@ public class AlertEscalationItem implements Serializable{
         contactType = escalationOrder == -1? 0:1;
     }
     public String toString() {
-        return "AlertEscalationItem [personID="+getPersonID()+", escalationOrder="+getEscalationOrder()+", contactType"+contactType+"]";
+        return "AlertEscalationItem [personID="+getPersonID()+", escalationOrder="+getEscalationOrder()+", contactType="+contactType+"]";
     }
 }

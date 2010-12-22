@@ -449,6 +449,11 @@ enum forward_commands {
     SET_GPRS_APN(688, "apn string follows the forward command"),
     SET_SERVER_URL(692, "Set URL of server that unit communicates with. Parameter(String): url of server unit should communicate with"),
 //    SET_SERVER_CONTEXT(708, "context string follows the forward command"),	/ NOT SUPPORTED
+    SET_TRIAX_HARDACCEL_DELTAV(797,"next byte is the accel delta V thres in mph * 10"),
+    SET_TRIAX_HARDACCEL_LEVEL(795,"next byte is the accel level thres in g * 10 (-0.05g)"),
+    SET_TRIAX_DVY(772,"byte"),
+    SET_TRIAX_HARDVERT_PEAK_TO_PEAK_LEVEL_THRESHOLD(800,"next two bytes is the hard vertical peak to peak threshold in g * 100"),
+//  SET_TRIAX_SEVERE_HARDVERT_LEVEL = 802,                // next 4 bytes is Gs 100x
     SEVERE_PEAK_2_PEAK(802, "Severe Peak to Peak (sent in conjuction with 2091-2094).  Parameter(Integer): <severe peak to peak level>"),
     SYSTEM_RESET(2000, "Reboot the unit.  Parameter: NONE"),
 //    GET_DIAGNOSTICS_REPORT(2001),   ? NOT SUPPORTED
