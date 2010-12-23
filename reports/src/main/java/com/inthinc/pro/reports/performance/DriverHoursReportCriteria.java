@@ -26,6 +26,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
     private static final String DAY_FORMAT = "MM/dd/yy";
 	private static final String START_DATE_PARAM = "startDate";
 	private static final String END_DATE_PARAM = "endDate";
+	private static final Double ZERO = 0.0;
 	protected DateTimeFormatter dateTimeFormatter;
 	protected DateTimeFormatter dayFormatter;
 
@@ -64,13 +65,14 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 			String driverGroupName = groupHierarchy.getShortGroupName(driver.getGroupID(), SLASH_GROUP_SEPERATOR);
 	      	
 			for (DriverHoursRecord rec : entry.getValue()) {
-				DriverHours bean = new DriverHours();
-				bean.setGroupName(driverGroupName);
-				bean.setDate(dayFormatter.print(rec.getDay()));
-				bean.setDriverName(driver.getPerson().getFullName());
-				bean.setHours(rec.getHoursThisDay());
-
-				driverHoursList.add(bean);
+			    if (!(rec.getHoursThisDay()==null || ZERO.equals(rec.getHoursThisDay()))) {
+    				DriverHours bean = new DriverHours();
+    				bean.setGroupName(driverGroupName);
+    				bean.setDate(dayFormatter.print(rec.getDay()));
+    				bean.setDriverName(driver.getPerson().getFullName());
+    				bean.setHours(rec.getHoursThisDay());    
+    				driverHoursList.add(bean);
+			    }
 			}
 		}
 		Collections.sort(driverHoursList, new DriverHoursComparator());

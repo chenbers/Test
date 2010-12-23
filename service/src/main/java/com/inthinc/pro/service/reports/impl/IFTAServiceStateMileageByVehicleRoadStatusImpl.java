@@ -21,7 +21,7 @@ import com.inthinc.pro.util.GroupList;
 import com.inthinc.pro.util.ReportsUtil;
 
 @Component
-public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseIFTAServiceImpl 
+public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportServiceImpl 
                                 implements IFTAServiceStateMileageByVehicleRoadStatus {
 
     @Autowired

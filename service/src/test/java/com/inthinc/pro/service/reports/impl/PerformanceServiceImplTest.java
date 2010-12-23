@@ -13,6 +13,7 @@ import mockit.Mocked;
 
 import org.joda.time.Interval;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
@@ -25,9 +26,14 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
 public class PerformanceServiceImplTest extends BaseUnitTest {
     private static final Integer GROUP_ID = 1505;
     
-    private PerformanceServiceImpl serviceSUT = new PerformanceServiceImpl();
+    private PerformanceServiceImpl serviceSUT;
     
     @Mocked private ReportsFacade facadeMock;
+    
+    @Before
+    public void setUp() {
+        serviceSUT = new PerformanceServiceImpl(facadeMock, null);
+    }
     
     /**
      * Test the getTenHourViolations without an Interval.

@@ -14,6 +14,7 @@ import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
+import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
@@ -76,6 +77,17 @@ public class ReportsFacadeImpl implements ReportsFacade {
     @Override
     public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval) {
         ReportCriteria criteria = reportService.getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), groupID, interval, getLocale());
+        return criteria.getMainDataset();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.facade.ReportsFacade#getDriverHours(java.lang.Integer, org.joda.time.Interval)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<DriverHours> getDriverHours(Integer groupID, Interval interval) {
+        ReportCriteria criteria = reportService.getDriverHoursReportCriteria(getAccountGroupHierarchy(), groupID, interval, getLocale());
         return criteria.getMainDataset();
     }
 
@@ -157,4 +169,6 @@ public class ReportsFacadeImpl implements ReportsFacade {
         ReportCriteria criteria = reportService.getStateMileageFuelByVehicleReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, locale, measurementType, dotOnly);
         return criteria.getMainDataset();
     }
+
+
 }

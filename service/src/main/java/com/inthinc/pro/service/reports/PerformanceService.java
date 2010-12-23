@@ -14,6 +14,7 @@ import com.inthinc.pro.service.annotations.DateFormat;
  * Interface for HOS Reports Services.
  */
 @Path("/group/{groupID}/report/performance")
+@Produces("application/xml")
 public interface PerformanceService {
     String DATE_FORMAT = "yyyyMMdd";
 
@@ -26,7 +27,6 @@ public interface PerformanceService {
      */
     @GET
     @Path("/10HourViolations")
-    @Produces("application/xml")
     Response getTenHourViolations(@PathParam("groupID") Integer groupID);
 
     /**
@@ -40,8 +40,35 @@ public interface PerformanceService {
      */
     @GET
     @Path("/10HourViolations/{startDate}/{endDate}")
-    @Produces("application/xml")
     Response getTenHourViolations(@PathParam("groupID") Integer groupID,
+            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
+    
+    /*------------------------------------------------------------------------------------------------------*/
+    /**
+     * Service for Driver Hours Report with default Interval.
+     * @param groupID the Group ID
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.performance.model.> the list of driver's hours
+     * @HTTP HTTP 200 - OK if any record found
+     * @HTTP HTTP 404 - NOT FOUND if no record found
+     */
+    @GET
+    @Path("/driverHours")
+    Response getDriverHours(@PathParam("groupID") Integer groupID);
+
+    /**
+     * Service for Driver Hours Report with an explicite Interval.
+     * @param groupID the Group ID
+     * @param startDate the start date in format "YYYYMMDD"
+     * @param endDate the end date in format "YYYYMMDD"
+     * @returnWrapped java.util.List<com.inthinc.pro.reports.performance.model.DriverHours> the list of violations
+     * @HTTP HTTP 200 - OK if any record found
+     * @HTTP HTTP 404 - NOT FOUND if no record found
+     */
+    @GET
+    @Path("/driverHours/{startDate}/{endDate}")
+    @Produces("application/xml")
+    Response getDriverHours(@PathParam("groupID") Integer groupID,
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
             @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
 }

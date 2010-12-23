@@ -9,9 +9,9 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.util.ReportsUtil;
 
 /**
- * Base class with common utility for IFTA report services.
+ * Base class with common utility for Report services.
  */
-public class BaseIFTAServiceImpl {
+public class BaseReportServiceImpl {
 
     public static String DATE_FORMAT = "yyyyMMdd";
     static final Integer DAYS_BACK = -6;
@@ -19,7 +19,7 @@ public class BaseIFTAServiceImpl {
     protected ReportsFacade reportsFacade;
     protected ReportsUtil reportsUtil;
 
-    public BaseIFTAServiceImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
+    public BaseReportServiceImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
         this.reportsFacade = reportsFacade;
         this.reportsUtil = reportsUtil;
     }

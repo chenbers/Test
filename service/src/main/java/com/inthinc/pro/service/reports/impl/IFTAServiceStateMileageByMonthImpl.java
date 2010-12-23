@@ -21,7 +21,7 @@ import com.inthinc.pro.util.GroupList;
 import com.inthinc.pro.util.ReportsUtil;
 
 @Component
-public class IFTAServiceStateMileageByMonthImpl extends BaseIFTAServiceImpl implements IFTAServiceStateMileageByMonth {
+public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl implements IFTAServiceStateMileageByMonth {
 
     @Autowired
     public IFTAServiceStateMileageByMonthImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {

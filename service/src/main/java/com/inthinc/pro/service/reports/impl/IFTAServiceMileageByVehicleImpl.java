@@ -23,7 +23,7 @@ import com.inthinc.pro.util.ReportsUtil;
 import common.Logger;
 
 @Component
-public class IFTAServiceMileageByVehicleImpl extends BaseIFTAServiceImpl implements IFTAServiceMileageByVehicle {
+public class IFTAServiceMileageByVehicleImpl extends BaseReportServiceImpl implements IFTAServiceMileageByVehicle {
     private static Logger logger = Logger.getLogger(IFTAServiceMileageByVehicleImpl.class);
 
     @Autowired

@@ -1,6 +1,5 @@
 package com.inthinc.pro.service.reports.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,31 +12,36 @@ import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.service.reports.PerformanceService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.util.ReportsUtil;
 
 /**
  * PerformanceService implementation class.
  */
 @Component
-public class PerformanceServiceImpl implements PerformanceService {
-
-	private static final Integer DAYS_BACK = -6;
+public class PerformanceServiceImpl extends BaseReportServiceImpl implements PerformanceService {
     private static Logger logger = Logger.getLogger(PerformanceServiceImpl.class);
-    @Autowired private ReportsFacade reportsFacade;
-    
+
+	/**
+     * Default constructor.
+     * @param reportsFacade
+     * @param reportsUtil
+     */
+    @Autowired
+    public PerformanceServiceImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
+        super(reportsFacade, reportsUtil);
+    }
+
     /**
      * {@inheritDoc}
      * @see com.inthinc.pro.service.reports.PerformanceService#getTenHourViolations(java.lang.Integer)
      */
     @Override
     public Response getTenHourViolations(Integer groupID) {
-        Calendar endDate = Calendar.getInstance();
-        Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-        
-        return this.getTenHourViolations(groupID, startDate.getTime(), endDate.getTime());
+        return this.getTenHourViolations(groupID, null, null);
     }
 
     /**
@@ -46,23 +50,21 @@ public class PerformanceServiceImpl implements PerformanceService {
      */
     @Override
     public Response getTenHourViolations(Integer groupID, Date startDate, Date endDate) {
-        String method = "10HourViolations Request ";
-        Interval interval;
+        String method = "Ten Hour Day Violations Request ";
+        
+        Interval interval = getInterval(startDate, endDate);
 
         logger.debug(method+"("+groupID+", "+startDate+", "+endDate+") started");
-        // TODO check if we need this check
-        if (endDate.before(startDate)) {
-            interval = new Interval(endDate.getTime(), startDate.getTime());
-        }
-        interval = new Interval(startDate.getTime(), endDate.getTime());
         
         logger.debug(method+"calls ReportsFacade.getTenHourViolations()");
         List<TenHoursViolation> violations = null;
         try {
             violations = reportsFacade.getTenHourViolations(groupID, interval);
         } catch (Exception e) {
-            logger.error(method+": "+e.toString(), e);
+            logger.error(e.toString(), e);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
+        
         logger.debug(method+"done.");
         if (violations == null || violations.isEmpty()) {
             return Response.status(Status.NOT_FOUND).build();
@@ -78,6 +80,43 @@ public class PerformanceServiceImpl implements PerformanceService {
      */
     void setReportsFacade(ReportsFacade reportsFacade) {
         this.reportsFacade = reportsFacade;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.PerformanceService#getDriverHours(java.lang.Integer)
+     */
+    @Override
+    public Response getDriverHours(Integer groupID) {
+        return getDriverHours(groupID, null, null);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.reports.PerformanceService#getDriverHours(java.lang.Integer, java.util.Date, java.util.Date)
+     */
+    @Override
+    public Response getDriverHours(Integer groupID, Date startDate, Date endDate) {
+        String method = "Driver Hours Request ";
+        
+        Interval interval = getInterval(startDate, endDate);
+
+        logger.debug(method+"("+groupID+", "+startDate+", "+endDate+") started");
+        
+        logger.debug(method+"calls ReportsFacade.getDriverHours()");
+        List<DriverHours> driverHoursList = null;
+        try {
+            driverHoursList = reportsFacade.getDriverHours(groupID, interval);
+        } catch (Exception e) {
+            logger.error(e.toString(), e);
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+        }
+        logger.debug(method+"done.");
+        if (driverHoursList == null || driverHoursList.isEmpty()) {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+        
+        return Response.ok(new GenericEntity<List<DriverHours>>(driverHoursList) {}).build();
     }
 
 }

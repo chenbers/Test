@@ -1,5 +1,8 @@
 package com.inthinc.pro.reports.performance.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class DriverHours {
     private String groupName;
     private String date;
@@ -7,7 +10,6 @@ public class DriverHours {
     private Double hours;
 
     public DriverHours(){
-        
     }
     
     public DriverHours(String groupName, String date, String driverName, Double hours) {

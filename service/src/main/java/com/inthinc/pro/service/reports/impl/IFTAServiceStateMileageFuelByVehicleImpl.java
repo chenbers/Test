@@ -23,7 +23,7 @@ import com.inthinc.pro.util.GroupList;
 import com.inthinc.pro.util.ReportsUtil;
 
 @Component
-public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseIFTAServiceImpl implements IFTAServiceStateMileageFuelByVehicle {
+public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceImpl implements IFTAServiceStateMileageFuelByVehicle {
 
     @Autowired
     public IFTAServiceStateMileageFuelByVehicleImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {

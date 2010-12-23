@@ -10,6 +10,7 @@ import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
+import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 
 /**
@@ -18,6 +19,8 @@ import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 public interface ReportsFacade {
 
     List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval);
+
+    List<DriverHours> getDriverHours(Integer groupID, Interval interval);
    
     List<StateMileageByVehicleRoadStatus> getStateMileageByVehicleRoadStatus(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
     
@@ -30,4 +33,5 @@ public interface ReportsFacade {
     List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
     
     List<StateMileageFuelByVehicle> getStateMileageFuelByVehicle(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType measurementType);
+
 }

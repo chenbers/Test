@@ -22,7 +22,7 @@ import com.inthinc.pro.util.ReportsUtil;
 import common.Logger;
 
 @Component
-public class IFTAServiceStateMileageGroupComparisonImpl extends BaseIFTAServiceImpl 
+public class IFTAServiceStateMileageGroupComparisonImpl extends BaseReportServiceImpl 
     implements IFTAServiceStateMileageGroupComparison {
     private static Logger logger = Logger.getLogger(IFTAServiceStateMileageGroupComparisonImpl.class); 
 
