@@ -241,7 +241,7 @@
 									<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
-								<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="false">
+								<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
 									<reportElement key="textField" stretchType="RelativeToBandHeight" x="0" y="0" width="50" height="25"/>
 									<box>
 										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -260,8 +260,8 @@
 							<cellContents/>
 						</crosstabTotalColumnHeader>
 					</columnGroup>
-					<measure name="Total_Sum" class="java.lang.Double" calculation="Sum">
-						<measureExpression><![CDATA[$F{total}]]></measureExpression>
+					<measure name="Total_Sum" class="java.lang.Long" calculation="Sum">
+						<measureExpression><![CDATA[Math.round($F{total})]]></measureExpression>
 					</measure>
 					<crosstabCell width="50" height="20">
 						<cellContents mode="Transparent">
@@ -282,7 +282,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif"/>
 								</textElement>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -315,7 +315,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif"/>
 								</textElement>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -338,7 +338,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif"/>
 								</textElement>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -371,7 +371,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif"/>
 								</textElement>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -394,7 +394,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif"/>
 								</textElement>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -427,7 +427,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif"/>
 								</textElement>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
