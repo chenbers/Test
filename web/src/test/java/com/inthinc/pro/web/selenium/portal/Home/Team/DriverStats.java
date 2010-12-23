@@ -25,8 +25,6 @@ public class DriverStats extends SeleniumServerLib {
 	private final String dayssincecrashid = "//ul[@id='grid_nav']/li[6]";
 	private final String milessincecrashid = "//ul[@id='grid_nav']/li[7]";
 	
-	
-	
 	protected static CoreMethodLib selenium;
 	private long total;
 
@@ -80,8 +78,6 @@ public class DriverStats extends SeleniumServerLib {
 			selenium.getText(milessincecrashid +  " Miles since last crash", miles, error_name);
 		}
 		
-	
-	
 	public String SearchList(String searchtext, int total, String error_name){
 		//Initialize local variables 
 		String found = "no";	
