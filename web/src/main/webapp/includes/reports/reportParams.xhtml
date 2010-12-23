@@ -109,7 +109,7 @@
                 </h:outputText>
                 </ui:repeat>
                 <h:outputText id="groupInput" rendered="#{params.selectedEntityType eq 'ENTITY_GROUP'}">
-                <li  class="l">
+                <li  class="l select">
                     <table border="0" cellspacing="0" cellpadding="4">
                     <tr>
                         <td>
@@ -123,8 +123,8 @@
                                 <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
                             </h:selectOneMenu>
                             <ui:include src="/includes/dhtmlSelectBox.xhtml">   
-                                        <ui:param name="selectBoxID" value="#{context}_form:{context}-groupParam" />
-                            </ui:include>
+                                        <ui:param name="selectBoxID" value="#{context}_form:#{context}-groupParam" />
+                            </ui:include>                                               
                             </a4j:outputPanel>
                             
                         </td>
@@ -147,7 +147,7 @@
                                 <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
                             </h:selectOneMenu>
                             <ui:include src="/includes/dhtmlSelectBox.xhtml">   
-                                <ui:param name="selectBoxID" value="#{context}_form:{context}-driverParam" />
+                                <ui:param name="selectBoxID" value="#{context}_form:#{context}-driverParam" />
                             </ui:include>
                             </a4j:outputPanel>
                         </td>
