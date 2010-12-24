@@ -81,7 +81,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="false">
 				<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Transparent" x="192" y="0" width="64" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
