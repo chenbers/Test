@@ -8,9 +8,9 @@
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="PageFooter" isDefault="false" fontName="SansSerif" fontSize="12" isBold="true"/>
-	<style name="CrosstabCell" isDefault="false" fontName="SansSerif"/>
-	<style name="CrosstabLabel" isDefault="false" fontName="SansSerif" isBold="true"/>
+	<style name="PageFooter" fontName="SansSerif" fontSize="12" isBold="true"/>
+	<style name="CrosstabCell" fontName="SansSerif"/>
+	<style name="CrosstabLabel" fontName="SansSerif" isBold="true"/>
 	<parameter name="REPORT_LOGO_IMG" class="java.awt.Image" isForPrompting="false">
 		<defaultValueExpression><![CDATA[null]]></defaultValueExpression>
 	</parameter>
@@ -235,8 +235,8 @@
 							</cellContents>
 						</crosstabTotalColumnHeader>
 					</columnGroup>
-					<measure name="Total_Sum" class="java.lang.Double" calculation="Sum">
-						<measureExpression><![CDATA[$F{total}]]></measureExpression>
+					<measure name="Total_Sum" class="java.lang.Long" calculation="Sum">
+						<measureExpression><![CDATA[Math.round($F{total})]]></measureExpression>
 					</measure>
 					<crosstabCell width="50" height="15">
 						<cellContents mode="Transparent">
@@ -255,7 +255,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -276,7 +276,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -297,7 +297,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -318,7 +318,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -339,7 +339,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -360,7 +360,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
