@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.performance;
 
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -148,6 +149,25 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
 		assertTrue(EqualsBuilder.reflectionEquals(violation[1], violationsList.get(1))); //AZ
 		assertTrue(EqualsBuilder.reflectionEquals(violation[0], violationsList.get(2))); //BX
 	}
+	
+	/**
+     * Tests that the sort does not throw NPE.
+     */
+    @Test
+    public void testComparatorSortHandlesNullProperties(){
+        TenHoursViolation[] violation = new TenHoursViolation[3];
+        violation[0] = new TenHoursViolation(); 
+        violation[1] = new TenHoursViolation(); 
+        violation[2] = new TenHoursViolation(); 
+
+        List<TenHoursViolation> violationsList = Arrays.asList(violation);
+
+        try {
+            Collections.sort(violationsList, reportCriteriaSUT.new TenHoursViolationComparator());
+        } catch (NullPointerException e) {
+            fail(e.getClass() + " not expected.");
+        }
+    }
 	
 	private TenHoursViolation getViolation(String groupName, String driverName){
 		TenHoursViolation violation = new TenHoursViolation();

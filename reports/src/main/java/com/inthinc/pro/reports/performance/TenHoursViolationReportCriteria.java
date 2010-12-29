@@ -33,16 +33,40 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
 
 	class TenHoursViolationComparator implements Comparator<TenHoursViolation> {
 
-		@Override
-		public int compare(TenHoursViolation o1, TenHoursViolation o2) {
-			int groupNamesComparison = o1.getGroupName().compareTo(o2.getGroupName());
-			
-			// If Group Names are equal, then we compare the Driver Names
-			if (groupNamesComparison == 0)
-				return o1.getDriverName().compareTo(o2.getDriverName());
-			else
-				return groupNamesComparison;
-		}}    
+	    private static final int COMPARISON_SAME = 0;
+        private static final int COMPARISON_BEFORE = -1;
+        private static final int COMPARISON_AFTER = 1;
+
+        @Override
+        public int compare(TenHoursViolation o1, TenHoursViolation o2) {
+
+            // Checking for nulls on properties. Null values always goes at the end.
+            int comparison = compareValues(o1.getGroupName(), o2.getGroupName());
+
+            if (comparison == 0) {
+                comparison = compareValues(o1.getDriverName(), o2.getDriverName());
+            }
+
+            return comparison;
+        }
+
+        @SuppressWarnings("unchecked")
+        private int compareValues(Comparable o1, Object o2) {
+            if (o1 == null) {
+                if (o2 != null) {
+                    return COMPARISON_AFTER;
+                } else {
+                    return COMPARISON_SAME;
+                }
+            } else {
+                if (o2 == null) {
+                    return COMPARISON_BEFORE;
+                } else {
+                    return o1.compareTo(o2);
+                }
+            }
+        }
+	}    
     
     /**
      * Constructor
