@@ -591,11 +591,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             Integer groupID = person.getGroup().getGroupID();
             List<Person> personsInGroup = personDAO.getPeopleInGroupHierarchy(groupID);
             for(Person p: personsInGroup) {
-                if(p.getEmpid() != null && person.getEmpid() != null && p.getEmpid().equals(person.getEmpid())){
-                    valid = false;
-                    final String summary = MessageUtil.getMessageString("editPerson_empidTaken");
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    context.addMessage("edit-form:editPerson-empid", message);
+                // Augment to NOT check against themselves
+                if (!p.getPersonID().equals(person.getPersonID())) {
+                    if(p.getEmpid() != null && person.getEmpid() != null && p.getEmpid().equals(person.getEmpid())){
+                        valid = false;
+                        final String summary = MessageUtil.getMessageString("editPerson_empidTaken");
+                        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+                        context.addMessage("edit-form:editPerson-empid", message);
+                    }
                 }
             }
         }
