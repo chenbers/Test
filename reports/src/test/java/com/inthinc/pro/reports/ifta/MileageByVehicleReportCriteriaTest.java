@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.ifta;
 
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -130,6 +131,24 @@ public class MileageByVehicleReportCriteriaTest extends BaseUnitTest {
         assertTrue(EqualsBuilder.reflectionEquals(beans[2], dataList.get(0))); //AY
         assertTrue(EqualsBuilder.reflectionEquals(beans[1], dataList.get(1))); //AZ
         assertTrue(EqualsBuilder.reflectionEquals(beans[0], dataList.get(2))); //BX
+    }
+    
+    @Test
+    public void testComparatorSortWorksOnNulls(){
+        MileageByVehicle[] beans = new MileageByVehicle[3];
+        beans[0] = new MileageByVehicle();
+        beans[1] = new MileageByVehicle(); 
+        beans[2] = new MileageByVehicle(); 
+
+        List<MileageByVehicle> dataList = Arrays.asList(beans);
+        
+        try {
+            Collections.sort(dataList, reportCriteriaSUT.new MileageByVehicleComparator());
+        } catch (NullPointerException e) {
+            fail(e.getClass() + " not expected.");
+        }
+
+        
     }
     
     /* Helper to create a MileageByVehicle bean */

@@ -42,7 +42,7 @@
 		<groupFooter>
 			<band height="137" splitType="Stretch">
 				<crosstab columnBreakOffset="20">
-					<reportElement key="crosstab-1" x="1" y="9" width="775" height="119"/>
+					<reportElement key="crosstab-1" x="0" y="0" width="775" height="119"/>
 					<crosstabHeaderCell>
 						<cellContents mode="Transparent" style="CrosstabCell">
 							<box>
@@ -52,32 +52,6 @@
 								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textField isBlankWhenNull="false">
-								<reportElement key="textField-13" style="CrosstabLabel" x="0" y="0" width="100" height="14" forecolor="#000000"/>
-								<box>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-								</textElement>
-								<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1}]]></textFieldExpression>
-							</textField>
-							<textField isBlankWhenNull="false">
-								<reportElement key="textField-13" style="CrosstabLabel" mode="Transparent" x="100" y="0" width="100" height="14"/>
-								<box>
-									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									<bottomPen lineWidth="0.0" lineColor="#000000"/>
-									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-								</box>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-								</textElement>
-								<textFieldExpression class="java.lang.String"><![CDATA[$R{column.vehicle}]]></textFieldExpression>
-							</textField>
 						</cellContents>
 					</crosstabHeaderCell>
 					<rowGroup name="groupName" width="100" totalPosition="End">
@@ -182,7 +156,7 @@
 							</cellContents>
 						</crosstabTotalRowHeader>
 					</rowGroup>
-					<columnGroup name="State" height="14" totalPosition="End" headerPosition="Center">
+					<columnGroup name="State" height="0" totalPosition="End" headerPosition="Center">
 						<bucket>
 							<bucketExpression class="java.lang.String"><![CDATA[$R{column.distance}]]></bucketExpression>
 						</bucket>
@@ -191,19 +165,6 @@
 								<box>
 									<bottomPen lineWidth="1.0"/>
 								</box>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-									<reportElement key="textField" style="CrosstabLabel" x="0" y="0" width="58" height="14"/>
-									<box>
-										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-										<bottomPen lineWidth="0.0" lineColor="#000000"/>
-										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									</box>
-									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font isBold="true" pdfFontName="Helvetica-Bold"/>
-									</textElement>
-									<textFieldExpression class="java.lang.String"><![CDATA[$V{State}]]></textFieldExpression>
-								</textField>
 							</cellContents>
 						</crosstabColumnHeader>
 						<crosstabTotalColumnHeader>
@@ -212,26 +173,13 @@
 									<bottomPen lineWidth="1.0" lineStyle="Solid"/>
 									<rightPen lineWidth="1.0" lineStyle="Solid"/>
 								</box>
-								<textField isBlankWhenNull="false">
-									<reportElement key="textField" style="CrosstabLabel" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="58" height="14" backcolor="#999999"/>
-									<box>
-										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-										<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-										<bottomPen lineWidth="0.0" lineColor="#000000"/>
-										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-									</box>
-									<textElement textAlignment="Center" verticalAlignment="Middle">
-										<font isBold="true" pdfFontName="Helvetica-Bold"/>
-									</textElement>
-									<textFieldExpression class="java.lang.String"><![CDATA[$R{group.label}]]></textFieldExpression>
-								</textField>
 							</cellContents>
 						</crosstabTotalColumnHeader>
 					</columnGroup>
-					<measure name="Total_Sum" class="java.lang.Double" calculation="Sum">
-						<measureExpression><![CDATA[$F{total}]]></measureExpression>
+					<measure name="Total_Sum" class="java.lang.Long" calculation="Sum">
+						<measureExpression><![CDATA[Math.round($F{total})]]></measureExpression>
 					</measure>
-					<crosstabCell width="58" height="14">
+					<crosstabCell width="70" height="14">
 						<cellContents mode="Transparent">
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -240,7 +188,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" x="0" y="0" width="58" height="14"/>
+								<reportElement key="textField" style="CrosstabCell" x="0" y="0" width="70" height="14"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -248,11 +196,11 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="58" height="14" columnTotalGroup="State">
+					<crosstabCell width="70" height="14" columnTotalGroup="State">
 						<cellContents mode="Transparent">
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -261,7 +209,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="58" height="14" backcolor="#999999"/>
+								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -269,11 +217,11 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="58" height="14" rowTotalGroup="vehicle">
+					<crosstabCell width="70" height="14" rowTotalGroup="vehicle">
 						<cellContents mode="Transparent">
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -282,7 +230,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="58" height="14" backcolor="#CCCCCC"/>
+								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#CCCCCC"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -290,11 +238,11 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="58" height="14" rowTotalGroup="vehicle" columnTotalGroup="State">
+					<crosstabCell width="70" height="14" rowTotalGroup="vehicle" columnTotalGroup="State">
 						<cellContents mode="Transparent">
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -303,7 +251,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="58" height="14" backcolor="#999999"/>
+								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -311,11 +259,11 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="58" height="14" rowTotalGroup="groupName">
+					<crosstabCell width="70" height="14" rowTotalGroup="groupName">
 						<cellContents mode="Transparent">
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -324,7 +272,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="58" height="14" backcolor="#999999"/>
+								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -332,11 +280,11 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="58" height="14" rowTotalGroup="groupName" columnTotalGroup="State">
+					<crosstabCell width="70" height="14" rowTotalGroup="groupName" columnTotalGroup="State">
 						<cellContents mode="Transparent">
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -345,7 +293,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="58" height="14" backcolor="#999999"/>
+								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -353,7 +301,7 @@
 									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.Long"><![CDATA[$V{Total_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
@@ -421,7 +369,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="32" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<rectangle>
 				<reportElement key="rectangle-2" x="0" y="2" width="782" height="19" backcolor="#000000"/>
 				<graphicElement>
@@ -442,7 +390,60 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band splitType="Stretch"/>
+		<band height="14" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-13" style="CrosstabLabel" mode="Transparent" x="100" y="0" width="100" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.vehicle}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-13" style="CrosstabLabel" x="0" y="0" width="100" height="14" forecolor="#000000"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" style="CrosstabLabel" stretchType="RelativeToBandHeight" mode="Opaque" x="270" y="0" width="70" height="14" backcolor="#999999"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{group.label}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" style="CrosstabLabel" x="200" y="0" width="70" height="14"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.distance}]]></textFieldExpression>
+			</textField>
+		</band>
 	</columnHeader>
 	<detail>
 		<band splitType="Stretch"/>

@@ -68,7 +68,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.state}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.distance}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -94,7 +94,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="false">
 				<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Transparent" x="192" y="0" width="64" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
