@@ -12,11 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import jxl.write.DateTime;
-
 import mockit.Expectations;
 import mockit.Mocked;
-import mockit.Verifications;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.Interval;
@@ -35,11 +32,10 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitTest {
     
     // Constant values
-    private final Integer GROUP_ID = new Integer(1504);
-    private final Integer GROUP_ID2 = new Integer(1506);
+    private final Integer GROUP_ID = new Integer(177);
+    private final Integer GROUP_ID2 = new Integer(178);
     private final List<Integer> GROUP_IDS = new ArrayList<Integer>();
     private final String VEHICLE = "123456";
-    private final String GROUP_FULL_NAME = "Group Full Name";
     private final String GROUP_FULL_NAME_1 = "FLEET";
     private final String GROUP_FULL_NAME_2 = "FLEET - DIVISION - GOOD";
     private static final String STATE = "Ohio";
@@ -129,7 +125,7 @@ public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitT
      * Tests the init method of the StateMileageByVehicleRoadStatusReportCriteria class.
      */
     @Test
-    @SuppressWarnings({ "unchecked", "static-access" })
+    @SuppressWarnings("unchecked")
     public void testInitWithNonJMockData(){
 
         // General initializations
@@ -160,7 +156,7 @@ public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitT
 
        List<StateMileageByVehicleRoadStatus> dataSet = reportCriteriaSUT.getMainDataset();
        assertNotNull(dataSet);
-       assertTrue(dataSet.size() == 4);
+       assertTrue(dataSet.size() == 6);
        StateMileageByVehicleRoadStatus bean = dataSet.get(0);
        assertEquals(bean.getGroupName(), GROUP_FULL_NAME_1 );
        assertEquals(bean.getState(), "STUB Colorado");
@@ -184,10 +180,10 @@ public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitT
        
        bean = dataSet.get(3);
        assertEquals(bean.getGroupName(), GROUP_FULL_NAME_2 );
-       assertEquals(bean.getState(), "STUB UTAH");
-       assertEquals(bean.getVehicle(), "STUB 87654320");
-       assertTrue(bean.getTotal().doubleValue() == 1027d);
-       assertEquals(bean.getRoadStatus(),"On-Road");
+       assertEquals(bean.getState(), "STUB New Mexico");
+       assertEquals(bean.getVehicle(), "STUB 10740909");
+       assertTrue(bean.getTotal().doubleValue() == 827d);
+       assertEquals(bean.getRoadStatus(),"Off-Road");
 
     }    
     

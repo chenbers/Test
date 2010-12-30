@@ -82,8 +82,7 @@ public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
         // Strict JMockit expectations
         new Expectations() {
         	{
-        		stateMileageDAOMock.getFuelStateMileageByVehicle(GROUP_ID, INTERVAL, false);
-        		stateMileageDAOMock.getFuelStateMileageByVehicle(GROUP_ID2, INTERVAL, false);
+        		stateMileageDAOMock.getFuelStateMileageByVehicle(GROUP_ID, (Interval)any, false);
         		// returning null in purpose, so no processing is done in initDataSet
         	}
         };

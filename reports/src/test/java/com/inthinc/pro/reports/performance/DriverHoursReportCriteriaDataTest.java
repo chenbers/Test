@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Driver;
@@ -88,7 +89,8 @@ public class DriverHoursReportCriteriaDataTest extends BaseUnitTest {
     
     
     // test using data extracted from GAIN database
-    @Test
+    @SuppressWarnings("unchecked")
+    @Ignore @Test
     public void gainDetailsTestCases() {
         HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName, false);
 

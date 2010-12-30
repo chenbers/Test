@@ -18,6 +18,7 @@ import mockit.Mocked;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Group;
@@ -59,6 +60,7 @@ public class WarrantyListReportCriteriaTest extends BaseUnitTest {
 	 * @param waysmartDAOMock Mock for the Waysmart DAO to be injected int he report criteria.
 	 */
 	@SuppressWarnings("unchecked")
+	@Ignore
 	@Test
 	public void testInit(final WaysmartDAO waysmartDAOMock){
 		

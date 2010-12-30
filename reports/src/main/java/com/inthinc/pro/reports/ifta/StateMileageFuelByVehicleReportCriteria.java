@@ -21,6 +21,8 @@ import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
  */
 public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
 
+    private static final Long ZERO_DATA = 0L;
+
     /**
      * Default constructor.
      * 
@@ -49,6 +51,9 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
     void initDataSet(List<StateMileage> records) {
         List<StateMileageFuelByVehicle> dataList = new ArrayList<StateMileageFuelByVehicle>();
         for (StateMileage item : records) {
+            if (item.getMiles().equals(ZERO_DATA) && item.getTruckGallons().equals(ZERO_DATA.floatValue())) {
+               continue;
+            }
             StateMileageFuelByVehicle rec = new StateMileageFuelByVehicle();
             rec.setGroupName(getShortGroupName(item.getGroupID()));
             rec.setVehicleName(item.getVehicleName());
@@ -105,7 +110,7 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
         @Override
         public int compare(StateMileageFuelByVehicle o1, StateMileageFuelByVehicle o2) {
 
-            // Checking for nulls on properties. Null values always goes at the end.
+            // Checking for nulls on properties. Null values always go at the end.
             int comparison = compareValues(o1.getGroupName(), o2.getGroupName());
 
             if (comparison == 0) {
