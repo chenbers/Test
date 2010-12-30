@@ -188,7 +188,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" x="0" y="0" width="70" height="14"/>
+								<reportElement key="textField" style="CrosstabCell" stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="14"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -209,7 +209,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
+								<reportElement key="textField" style="CrosstabCell" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -230,7 +230,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#CCCCCC"/>
+								<reportElement key="textField" style="CrosstabCell" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#CCCCCC"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -251,7 +251,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
+								<reportElement key="textField" style="CrosstabCell" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -272,7 +272,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
+								<reportElement key="textField" style="CrosstabCell" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -293,7 +293,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" style="CrosstabCell" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
+								<reportElement key="textField" style="CrosstabCell" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="70" height="14" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
