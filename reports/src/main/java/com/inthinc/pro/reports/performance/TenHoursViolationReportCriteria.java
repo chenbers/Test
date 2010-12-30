@@ -22,18 +22,17 @@ import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 
-
 public class TenHoursViolationReportCriteria extends ReportCriteria {
     private static final String START_DATE_PARAM = "startDate";
     private static final String END_DATE_PARAM = "endDate";
-    protected DateTimeFormatter dateTimeFormatter; 
-    
+    protected DateTimeFormatter dateTimeFormatter;
+
     protected DriverDAO driverDAO;
     protected WaysmartDAO waysmartDAO;
 
-	class TenHoursViolationComparator implements Comparator<TenHoursViolation> {
+    class TenHoursViolationComparator implements Comparator<TenHoursViolation> {
 
-	    private static final int COMPARISON_SAME = 0;
+        private static final int COMPARISON_SAME = 0;
         private static final int COMPARISON_BEFORE = -1;
         private static final int COMPARISON_AFTER = 1;
 
@@ -66,54 +65,56 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
                 }
             }
         }
-	}    
-    
+    }
+
     /**
      * Constructor
-     * @param locale Local settings of the user - internationalization 
+     * 
+     * @param locale
+     *            Local settings of the user - internationalization
      */
-    public TenHoursViolationReportCriteria(Locale locale) 
-    {
+    public TenHoursViolationReportCriteria(Locale locale) {
         super(ReportType.TEN_HOUR_DAY_VIOLATIONS, "", locale);
         dateTimeFormatter = DateTimeFormat.forPattern(ReportCriteria.DATE_FORMAT).withLocale(locale);
     }
 
-    void initDataSet(GroupHierarchy groupHierarchy, Interval interval, 
-            Map<Driver, List<TenHoursViolationRecord>> recordMap)
-    {
-        
+    void initDataSet(GroupHierarchy groupHierarchy, Interval interval, Map<Driver, List<TenHoursViolationRecord>> recordMap) {
+
         List<TenHoursViolation> violationList = new ArrayList<TenHoursViolation>();
-        
+
         for (Entry<Driver, List<TenHoursViolationRecord>> entry : recordMap.entrySet()) {
             Driver driver = entry.getKey();
             String driverGroupName = groupHierarchy.getShortGroupName(driver.getGroupID(), SLASH_GROUP_SEPERATOR);
             for (TenHoursViolationRecord rec : entry.getValue()) {
-                TenHoursViolation bean = new TenHoursViolation();
-                bean.setGroupName(driverGroupName);
-                bean.setDate(dateTimeFormatter.print(rec.getDateTime()));
-                bean.setDriverName(driver.getPerson().getFullName());
-                bean.setEmployeeID(driver.getPerson().getEmpid());
-                bean.setVehicleName(rec.getVehicleName());
-                bean.setHoursThisDay(rec.getHoursThisDay().doubleValue());
-                
-                violationList.add(bean);
+                if (rec.getHoursThisDay() != null && rec.getHoursThisDay().doubleValue() > 0) {
+                    TenHoursViolation bean = new TenHoursViolation();
+                    bean.setGroupName(driverGroupName);
+                    bean.setDate(dateTimeFormatter.print(rec.getDateTime()));
+                    bean.setDriverName(driver.getPerson().getFullName());
+                    bean.setEmployeeID(driver.getPerson().getEmpid());
+                    bean.setVehicleName(rec.getVehicleName());
+                    bean.setHoursThisDay(rec.getHoursThisDay().doubleValue());
+
+                    violationList.add(bean);
+                }
             }
         }
-		Collections.sort(violationList, new TenHoursViolationComparator());        
+        Collections.sort(violationList, new TenHoursViolationComparator());
         setMainDataset(violationList);
     }
-    
+
     /**
      * Retrieve all report data and pass them to a Map.
      * 
-     * @param groupeID ID of the group chosen by the user
-     * @param interval Interval chosen by the user 
+     * @param groupeID
+     *            ID of the group chosen by the user
+     * @param interval
+     *            Interval chosen by the user
      */
-    public void init(GroupHierarchy groupHierarchy, Integer groupID, Interval interval)
-    {
+    public void init(GroupHierarchy groupHierarchy, Integer groupID, Interval interval) {
         addParameter(TenHoursViolationReportCriteria.START_DATE_PARAM, dateTimeFormatter.print(interval.getStart()));
-        addParameter(TenHoursViolationReportCriteria.END_DATE_PARAM,   dateTimeFormatter.print(interval.getEnd()));
-        Map<Driver, List<TenHoursViolationRecord>> violationRecordMap = new HashMap<Driver, List<TenHoursViolationRecord>> ();
+        addParameter(TenHoursViolationReportCriteria.END_DATE_PARAM, dateTimeFormatter.print(interval.getEnd()));
+        Map<Driver, List<TenHoursViolationRecord>> violationRecordMap = new HashMap<Driver, List<TenHoursViolationRecord>>();
 
         List<Driver> driverList = driverDAO.getAllDrivers(groupID);
         for (Driver driver : driverList) {
@@ -127,14 +128,14 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     }
 
     /**
-     * Getter for driverDAO property. 
+     * Getter for driverDAO property.
      */
     public DriverDAO getDriverDAO() {
         return driverDAO;
     }
 
     /**
-     * Setter for driverDAO property. 
+     * Setter for driverDAO property.
      */
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
@@ -147,5 +148,5 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
     public void setWaysmartDAO(WaysmartDAO waysmartDao) {
         this.waysmartDAO = waysmartDao;
     }
-    
+
 }

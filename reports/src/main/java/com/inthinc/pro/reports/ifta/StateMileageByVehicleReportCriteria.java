@@ -46,12 +46,14 @@ public class StateMileageByVehicleReportCriteria extends DOTReportCriteria {
     void initDataSet(List<StateMileage> records) {
         List<MileageByVehicle> dataList = new ArrayList<MileageByVehicle>();
         for (StateMileage item : records) {
-            MileageByVehicle rec = new MileageByVehicle();
-            rec.setVehicleName(item.getVehicleName());
-            rec.setState(item.getStateName());
-            rec.setGroupName(getShortGroupName(item.getGroupID()));
-            rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(item.getMiles(), getMeasurementType()).doubleValue());
-            dataList.add(rec);
+            if (item.getMiles() != null && item.getMiles() > 0) {
+                MileageByVehicle rec = new MileageByVehicle();
+                rec.setVehicleName(item.getVehicleName());
+                rec.setState(item.getStateName());
+                rec.setGroupName(getShortGroupName(item.getGroupID()));
+                rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(item.getMiles(), getMeasurementType()).doubleValue());
+                dataList.add(rec);
+            }
         }
         Collections.sort(dataList, new StateMileageByVehicleComparator());
         setMainDataset(dataList);
