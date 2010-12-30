@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.ifta;
 
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -204,6 +205,22 @@ public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitT
         assertTrue(EqualsBuilder.reflectionEquals(beans[2], dataList.get(0))); 
         assertTrue(EqualsBuilder.reflectionEquals(beans[1], dataList.get(1))); 
         assertTrue(EqualsBuilder.reflectionEquals(beans[0], dataList.get(2))); 
+    }
+    
+    @Test
+    public void testComparatorSortWorksOnNulls(){
+        StateMileageByVehicleRoadStatus[] beans = new StateMileageByVehicleRoadStatus[3];
+        beans[0] = new StateMileageByVehicleRoadStatus();
+        beans[1] = new StateMileageByVehicleRoadStatus(); 
+        beans[2] = new StateMileageByVehicleRoadStatus(); 
+
+        List<StateMileageByVehicleRoadStatus> dataList = Arrays.asList(beans);
+        
+        try {
+            Collections.sort(dataList, reportCriteriaSUT.new StateMileageByVehicleRoadStatusComparator());
+        } catch (NullPointerException e) {
+            fail(e.getClass() + " not expected.");
+        }
     }
     
     /* Helper to create a StateMileageByVehicleRoadStatus bean */

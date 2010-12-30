@@ -95,15 +95,5 @@ public class StateMileageByVehicleReportCriteria extends DOTReportCriteria {
                 }
             }
         }
-
-        // @Override
-        // public int compare(MileageByVehicle o1, MileageByVehicle o2) {
-        // int equal = o1.getGroupName().compareTo(o2.getGroupName());
-        // if (equal == 0) {
-        // return o1.getVehicleName().compareTo(o2.getVehicleName());
-        // } else {
-        // return equal;
-        // }
-        // }
     }
 }
