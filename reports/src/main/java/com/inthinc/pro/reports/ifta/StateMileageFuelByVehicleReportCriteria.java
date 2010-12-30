@@ -21,8 +21,6 @@ import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
  */
 public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
 
-    private static final Long ZERO_DATA = 0L;
-
     /**
      * Default constructor.
      * 

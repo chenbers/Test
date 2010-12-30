@@ -27,6 +27,9 @@ import com.inthinc.pro.reports.ReportType;
  * ReportCriteria parent class for DOT/IFTA reports.
  */
 public abstract class DOTReportCriteria extends GroupListReportCriteria {
+
+    public static final Long ZERO_DATA = 0L;
+
     protected DateTimeFormatter dateTimeFormatter;
     protected String units;
     protected GroupDAO groupDAO;

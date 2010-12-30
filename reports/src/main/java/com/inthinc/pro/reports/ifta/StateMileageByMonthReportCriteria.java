@@ -49,6 +49,9 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
     {   
         List<MileageByVehicle> dataList = new ArrayList<MileageByVehicle>();
         for (StateMileage item : records) {
+            if (item.getMiles().equals(ZERO_DATA)) {
+                continue;
+            }
             MileageByVehicle rec = new MileageByVehicle();
             rec.setMonth(item.getMonth());
             rec.setState(item.getStateName());
@@ -64,23 +67,44 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
     /* Comparator implementation for this report */
     class StateMileageByMonthComparator implements Comparator<MileageByVehicle> {
 
+        private static final int COMPARISON_SAME = 0;
+        private static final int COMPARISON_BEFORE = -1;
+        private static final int COMPARISON_AFTER = 1;
+
         @Override
         public int compare(MileageByVehicle o1, MileageByVehicle o2) {
-            int order = o1.getGroupName().compareTo(o2.getGroupName());
+            int order = compareValues(o1.getGroupName(),o2.getGroupName());
             if (order == 0) {
                 /*
                 int m1 = getMonthNumber(o1.getMonth());
                 int m2 = getMonthNumber(o2.getMonth());                    
                 if (m1 == m2) {*/
-                order = o1.getMonth().compareTo(o2.getMonth());
+                order = compareValues(o1.getMonth(),o2.getMonth());
                 if (order == 0) {
-                    return o1.getState().compareTo(o2.getState());
+                    return compareValues(o1.getState(),o2.getState());
                 }
                 return order; //(m1 < m2 ? 1 : -1);
             }
             return order;
         }
         
+        @SuppressWarnings("unchecked")
+        private int compareValues(Comparable o1, Object o2) {
+            if (o1 == null) {
+                if (o2 != null) {
+                    return COMPARISON_AFTER;
+                } else {
+                    return COMPARISON_SAME;
+                }
+            } else {
+                if (o2 == null) {
+                    return COMPARISON_BEFORE;
+                } else {
+                    return o1.compareTo(o2);
+                }
+            }
+        }
+
         @SuppressWarnings("unused")
         private int getMonthNumber(String month) {
             return format.parseDateTime(month.toUpperCase()+" 2000").monthOfYear().get();

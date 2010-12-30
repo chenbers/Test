@@ -48,8 +48,6 @@ public class StateMileageByMonthReportCriteriaTest extends BaseUnitTest {
     };
     private GroupHierarchy groupHierarchy = new GroupHierarchy(Arrays.asList(groupList));
 
-    // JMockit mocks
-    
     // The System Under Test
     private StateMileageByMonthReportCriteria reportCriteriaSUT = new StateMileageByMonthReportCriteria(LOCALE); 
 
