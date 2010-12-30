@@ -47,14 +47,31 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 
 		@Override
 		public int compare(DriverHours o1, DriverHours o2) {
-			int groupNamesComparison = o1.getGroupName().compareTo(o2.getGroupName());
+			int groupNamesComparison = compareValues(o1.getGroupName(),o2.getGroupName());
 			
 			// If Group Names are equal, then we compare the Driver Names
 			if (groupNamesComparison == 0)
-				return o1.getDriverName().compareTo(o2.getDriverName());
-			else
-				return groupNamesComparison;
-		}}
+				return compareValues(o1.getDriverName(),o2.getDriverName());
+			return groupNamesComparison;
+		}
+        @SuppressWarnings("unchecked")
+        private int compareValues(Comparable o1, Object o2) {
+            if (o1 == null) {
+                if (o2 != null) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                if (o2 == null) {
+                    return -1;
+                } else {
+                    return o1.compareTo(o2);
+                }
+            }
+        }
+
+	}
 	
 	void initDataSet(GroupHierarchy groupHierarchy, Map<Driver, List<DriverHoursRecord>> recordMap) {
 

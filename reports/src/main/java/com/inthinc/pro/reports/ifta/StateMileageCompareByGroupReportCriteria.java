@@ -49,10 +49,12 @@ public class StateMileageCompareByGroupReportCriteria extends DOTReportCriteria 
     void initDataSet(List<StateMileage> records) {
         List<StateMileageCompareByGroup> dataList = new ArrayList<StateMileageCompareByGroup>();
         for (StateMileage item : records) {
+            if (ZERO_DATA.equals(item.getMiles())) {
+                continue;
+            }
             StateMileageCompareByGroup rec = new StateMileageCompareByGroup();
             rec.setGroupName(getShortGroupName(item.getGroupID()));
             rec.setState(item.getStateName());
-            rec.setMonth(item.getMonth());
             rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(item.getMiles(), getMeasurementType()).doubleValue());
             dataList.add(rec);
         }

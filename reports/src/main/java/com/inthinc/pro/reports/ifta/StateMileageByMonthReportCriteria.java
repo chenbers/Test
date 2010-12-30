@@ -49,7 +49,7 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
     {   
         List<MileageByVehicle> dataList = new ArrayList<MileageByVehicle>();
         for (StateMileage item : records) {
-            if (item.getMiles().equals(ZERO_DATA)) {
+            if (ZERO_DATA.equals(item.getMiles())) {
                 continue;
             }
             MileageByVehicle rec = new MileageByVehicle();
