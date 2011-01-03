@@ -183,7 +183,7 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         
         final String summary = MessageUtil.getMessageString(errorMessage);
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-        context.addMessage("edit-form:editDevice-ephone", message);
+        context.addMessage("edit-form:editVehicle-ephone", message);
 
     }
 }
