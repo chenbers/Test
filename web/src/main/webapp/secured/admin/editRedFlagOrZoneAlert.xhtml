@@ -927,7 +927,9 @@
 								    <rich:dataTable value="#{redFlagOrZoneAlertsBean.item.phNumbers}" var="dataItem" id="phNumbers" binding="#{redFlagOrZoneAlertsBean.phNumbersDataTable}" style="border: none;" rowKeyVar="rowIndex">
 								        <rich:column id="phNumInputCol" style="border: none;">
 								   	    	<rich:message id="phNumInputMessage#{index}" for="phNumInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-								            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput" />
+								            <h:inputText value="#{dataItem}" styleClass="phoneInput" id="phNumInput">
+								            	<f:validator validatorId="com.inthinc.pro.validators.EscalationPhNumValidator" />
+								            </h:inputText>
 								            
 								            <rich:suggestionbox id="suggestionBoxId" for="phNumInput"
 							                    suggestionAction="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.autocomplete}" 
