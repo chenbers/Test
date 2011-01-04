@@ -51,13 +51,26 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
 		Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
 		
 		new Expectations(){{
-			reportServiceMock.getTenHoursDayViolationsCriteria(null, GROUP_ID, INTERVAL, null);
+			reportServiceMock.getTenHoursDayViolationsCriteria(null, GROUP_ID, INTERVAL, Locale.US);
 			result = new ReportCriteria();
 		}};
 
-		reportsFacadeSUTMock.getTenHourViolations(GROUP_ID, INTERVAL);
+		reportsFacadeSUTMock.getTenHourViolations(GROUP_ID, INTERVAL, Locale.US);
 	}	
 	
+    @Test
+    public void testGetDriverHours() {
+        
+        Deencapsulation.setField(reportsFacadeSUTMock, reportServiceMock);
+        
+        new Expectations(){{
+            reportServiceMock.getDriverHoursReportCriteria(null, GROUP_ID, INTERVAL, Locale.US);
+            result = new ReportCriteria();
+        }};
+
+        reportsFacadeSUTMock.getDriverHours(GROUP_ID, INTERVAL, Locale.US);
+    }
+    
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetStateMileageByVehicleRoadStatus() {

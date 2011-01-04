@@ -2,6 +2,7 @@ package com.inthinc.pro.service.reports.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -40,8 +41,8 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
      * @see com.inthinc.pro.service.reports.PerformanceService#getTenHourViolations(java.lang.Integer)
      */
     @Override
-    public Response getTenHourViolations(Integer groupID) {
-        return this.getTenHourViolations(groupID, null, null);
+    public Response getTenHourViolations(Integer groupID, Locale locale) {
+        return this.getTenHourViolations(groupID, null, null, locale);
     }
 
     /**
@@ -49,7 +50,7 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
      * @see com.inthinc.pro.service.reports.PerformanceService#getTenHourViolations(java.lang.Integer, java.util.Date, java.util.Date)
      */
     @Override
-    public Response getTenHourViolations(Integer groupID, Date startDate, Date endDate) {
+    public Response getTenHourViolations(Integer groupID, Date startDate, Date endDate, Locale locale) {
         String method = "Ten Hour Day Violations Request ";
         
         Interval interval = getInterval(startDate, endDate);
@@ -59,7 +60,7 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
         logger.debug(method+"calls ReportsFacade.getTenHourViolations()");
         List<TenHoursViolation> violations = null;
         try {
-            violations = reportsFacade.getTenHourViolations(groupID, interval);
+            violations = reportsFacade.getTenHourViolations(groupID, interval, locale);
         } catch (Exception e) {
             logger.error(e.toString(), e);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -87,8 +88,8 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
      * @see com.inthinc.pro.service.reports.PerformanceService#getDriverHours(java.lang.Integer)
      */
     @Override
-    public Response getDriverHours(Integer groupID) {
-        return getDriverHours(groupID, null, null);
+    public Response getDriverHours(Integer groupID, Locale locale) {
+        return getDriverHours(groupID, null, null, locale);
     }
 
     /**
@@ -96,7 +97,7 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
      * @see com.inthinc.pro.service.reports.PerformanceService#getDriverHours(java.lang.Integer, java.util.Date, java.util.Date)
      */
     @Override
-    public Response getDriverHours(Integer groupID, Date startDate, Date endDate) {
+    public Response getDriverHours(Integer groupID, Date startDate, Date endDate, Locale locale) {
         String method = "Driver Hours Request ";
         
         Interval interval = getInterval(startDate, endDate);
@@ -106,7 +107,7 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
         logger.debug(method+"calls ReportsFacade.getDriverHours()");
         List<DriverHours> driverHoursList = null;
         try {
-            driverHoursList = reportsFacade.getDriverHours(groupID, interval);
+            driverHoursList = reportsFacade.getDriverHours(groupID, interval, locale);
         } catch (Exception e) {
             logger.error(e.toString(), e);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();

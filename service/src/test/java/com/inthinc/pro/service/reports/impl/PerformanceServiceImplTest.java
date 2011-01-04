@@ -3,6 +3,7 @@ package com.inthinc.pro.service.reports.impl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
@@ -16,6 +17,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
@@ -49,12 +51,12 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
             {
                 List<TenHoursViolation> list = new ArrayList<TenHoursViolation>();
                 list.add(violation);
-                facadeMock.getTenHourViolations(GROUP_ID, (Interval)any); returns(list);
+                facadeMock.getTenHourViolations(GROUP_ID, (Interval)any, Locale.US); returns(list);
             }
         };
         
         // check the response
-        Response response = serviceSUT.getTenHourViolations(GROUP_ID);
+        Response response = serviceSUT.getTenHourViolations(GROUP_ID, Locale.US);
         Assert.assertNotNull(response);
         Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
                 
@@ -87,12 +89,12 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
             {
                 List<TenHoursViolation> list = new ArrayList<TenHoursViolation>();
                 list.add(violation);
-                facadeMock.getTenHourViolations(GROUP_ID, (Interval)any); returns(list);
+                facadeMock.getTenHourViolations(GROUP_ID, (Interval)any, Locale.US); returns(list);
             }
         };
         
         // check the response
-        Response response = serviceSUT.getTenHourViolations(GROUP_ID, startDate.getTime(), endDate.getTime());
+        Response response = serviceSUT.getTenHourViolations(GROUP_ID, startDate.getTime(), endDate.getTime(), Locale.US);
         
         Assert.assertNotNull(response);
         Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -106,7 +108,72 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
         Assert.assertEquals(violation, entity.getEntity().get(0));
         
         // check for wrong interval
-        response = serviceSUT.getTenHourViolations(GROUP_ID, endDate.getTime(), startDate.getTime());
+        response = serviceSUT.getTenHourViolations(GROUP_ID, endDate.getTime(), startDate.getTime(), Locale.US);
         Assert.fail("IllegalArgumentException expected to throw");
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetDriverHoursDefaults() {
+        final DriverHours driverHoursMock = new DriverHours("Mock group", "10/10/10", "Mock Driver", 2.5);
+        // set the mock facade
+        serviceSUT.setReportsFacade(facadeMock);
+        
+        new Expectations () {
+            {
+                List<DriverHours> list = new ArrayList<DriverHours>();
+                list.add(driverHoursMock);
+                facadeMock.getDriverHours(GROUP_ID, (Interval)any, Locale.US); returns(list);
+                facadeMock.getDriverHours(GROUP_ID, (Interval)any, null); returns(null);
+            }
+        };
+        
+        // check the response
+        Response response = serviceSUT.getDriverHours(GROUP_ID, Locale.US);
+        Assert.assertNotNull(response);
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+                
+        // check the content
+        GenericEntity<List<DriverHours>> entity = 
+            (GenericEntity<List<DriverHours>>) response.getEntity();
+        
+        Assert.assertNotNull(entity);
+        Assert.assertEquals(1, entity.getEntity().size());
+        Assert.assertEquals(driverHoursMock, entity.getEntity().get(0));
+        
+        // check the 404 response
+        response = serviceSUT.getDriverHours(GROUP_ID, null);
+        Assert.assertNotNull(response);
+        Assert.assertEquals(Status.NOT_FOUND.getStatusCode(), response.getStatus());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetDriverHoursWithInterval() {
+        final DriverHours driverHoursMock = new DriverHours("Mock group", "10/10/10", "Mock Driver", 2.5);
+        // set the mock facade
+        serviceSUT.setReportsFacade(facadeMock);
+        
+        new Expectations () {
+            {
+                List<DriverHours> list = new ArrayList<DriverHours>();
+                list.add(driverHoursMock);
+                facadeMock.getDriverHours(GROUP_ID, (Interval)any, Locale.US); returns(list);
+            }
+        };
+        
+        // check the response
+        Response response = serviceSUT.getDriverHours(GROUP_ID, 
+                buildDateFromString("20101001"), buildDateFromString("20101030"), Locale.US);
+        Assert.assertNotNull(response);
+        Assert.assertEquals(Status.OK.getStatusCode(), response.getStatus());
+                
+        // check the content
+        GenericEntity<List<DriverHours>> entity = 
+            (GenericEntity<List<DriverHours>>) response.getEntity();
+        
+        Assert.assertNotNull(entity);
+        Assert.assertEquals(1, entity.getEntity().size());
+        Assert.assertEquals(driverHoursMock, entity.getEntity().get(0));
     }
 }

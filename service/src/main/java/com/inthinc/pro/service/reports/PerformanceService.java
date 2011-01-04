@@ -1,11 +1,13 @@
 package com.inthinc.pro.service.reports;
 
 import java.util.Date;
+import java.util.Locale;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import com.inthinc.pro.service.annotations.DateFormat;
@@ -27,7 +29,8 @@ public interface PerformanceService {
      */
     @GET
     @Path("/10HourViolations")
-    Response getTenHourViolations(@PathParam("groupID") Integer groupID);
+    Response getTenHourViolations(@PathParam("groupID") Integer groupID, 
+            @QueryParam("locale") Locale locale);
 
     /**
      * Service for 10 Hours Violations Report with an explicite Interval.
@@ -42,7 +45,8 @@ public interface PerformanceService {
     @Path("/10HourViolations/{startDate}/{endDate}")
     Response getTenHourViolations(@PathParam("groupID") Integer groupID,
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate, 
+            @QueryParam("locale") Locale locale);
     
     /*------------------------------------------------------------------------------------------------------*/
     /**
@@ -54,7 +58,8 @@ public interface PerformanceService {
      */
     @GET
     @Path("/driverHours")
-    Response getDriverHours(@PathParam("groupID") Integer groupID);
+    Response getDriverHours(@PathParam("groupID") Integer groupID, 
+            @QueryParam("locale") Locale locale);
 
     /**
      * Service for Driver Hours Report with an explicite Interval.
@@ -70,5 +75,6 @@ public interface PerformanceService {
     @Produces("application/xml")
     Response getDriverHours(@PathParam("groupID") Integer groupID,
             @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate);
+            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate, 
+            @QueryParam("locale") Locale locale);
 }

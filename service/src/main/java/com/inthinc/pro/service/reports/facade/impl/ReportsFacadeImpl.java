@@ -75,8 +75,11 @@ public class ReportsFacadeImpl implements ReportsFacade {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval) {
-        ReportCriteria criteria = reportService.getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(), groupID, interval, getLocale());
+    public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval, Locale locale) {
+        if (locale == null) 
+            locale = getLocale();
+        ReportCriteria criteria = reportService.getTenHoursDayViolationsCriteria(
+                getAccountGroupHierarchy(), groupID, interval, locale);
         return criteria.getMainDataset();
     }
 
@@ -86,8 +89,11 @@ public class ReportsFacadeImpl implements ReportsFacade {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<DriverHours> getDriverHours(Integer groupID, Interval interval) {
-        ReportCriteria criteria = reportService.getDriverHoursReportCriteria(getAccountGroupHierarchy(), groupID, interval, getLocale());
+    public List<DriverHours> getDriverHours(Integer groupID, Interval interval, Locale locale) {
+        if (locale == null) 
+            locale = getLocale();
+        ReportCriteria criteria = reportService.getDriverHoursReportCriteria(
+                getAccountGroupHierarchy(), groupID, interval, locale);
         return criteria.getMainDataset();
     }
 
