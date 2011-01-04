@@ -69,7 +69,7 @@ public enum ZoneAvailableOption implements BaseEnum {
         this.id = id;
     }
     public OptionValue getDefaultValue() {
-        return defaultValue;
+        return (optionType == ZoneOptionType.SPEED) ? new SpeedValue(0) : defaultValue;
     }
     public void setDefaultValue(OptionValue defaultValue) {
         this.defaultValue = defaultValue;
