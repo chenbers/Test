@@ -49,7 +49,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("status");
         AVAILABLE_COLUMNS.add("mcmid");
         AVAILABLE_COLUMNS.add("altimei");
-        AVAILABLE_COLUMNS.add("productVersion");
+        AVAILABLE_COLUMNS.add("productVer");
         
     }
     private DeviceDAO deviceDAO;
