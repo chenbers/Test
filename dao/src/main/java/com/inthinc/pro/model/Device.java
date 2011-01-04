@@ -202,10 +202,6 @@ public class Device extends BaseEntity implements HasAccountId
      */
     public boolean isTextMsgReceiveCapable() {
         // TODO: jwimmer: this is a stopgap until a better way to determine device capabilities is implemented
-
-        //TODO: Jacquie added this to temporarily get the tests to pass - will make this always return false
-        //this.productVersion = ProductType.TIWIPRO_R74;
-
         return ProductType.WAYSMART.equals(this.productVersion);
     }
     
