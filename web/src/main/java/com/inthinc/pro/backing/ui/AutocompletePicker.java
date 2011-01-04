@@ -110,7 +110,7 @@ public class AutocompletePicker
 
     public void setItemValue(Object value)
     {
-        this.value = value.toString();
+        this.value = (value!=null)?value.toString():null;
     }
 
     public void addItem()
