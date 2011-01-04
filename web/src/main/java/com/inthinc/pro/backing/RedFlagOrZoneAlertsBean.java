@@ -153,10 +153,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
         }
         alertView.setPhNumbers(displayedPhNumbers);
-        alertView.getPhNumbers().add("");//ensure empty slot
+        ensureEmptySlot(alertView.getPhNumbers());//ensure empty slot
 
-        alertView.setEmailTos(flag.getEmailTo()); 
-        alertView.getEmailTos().add("");  //ensure empty slot
+        alertView.setEmailTos(flag.getEmailTo());
+        ensureEmptySlot(alertView.getEmailTos());//ensure empty slot
         
         alertView.setDelay(Delay.valueOf(flag.getEscalationTimeBetweenRetries()));
         if(flag.getMaxEscalationTries() != null) {
@@ -175,16 +175,18 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             results = userDAO.findByID(userID).getPerson().getFullName();
         return results;
     }
-//    private static void ensureEmptySlot(List<String> list) {
-//        if(null == list) list = new ArrayList<String>();
-//        if(!list.isEmpty()) {
-//            String lastString = null;
-//            lastString = list.get(list.size()-1);
-//            
-//            if(!"".equals(lastString))
-//                list.add("");
-//        }
-//    }
+    private static void ensureEmptySlot(List<String> list) {
+        if(null == list) list = new ArrayList<String>();
+        if(!list.isEmpty()) {
+            String lastString = null;
+            lastString = list.get(list.size()-1);
+            
+            if(!"".equals(lastString))
+                list.add("");
+        }else{
+            list.add("");
+        }
+    }
     private EventSubCategory deriveEventSubCategory(RedFlagAlert flag){
         
         AlertMessageType alertMessageType = flag.getTypes().get(0);
@@ -224,7 +226,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     @Override
     protected RedFlagOrZoneAlertView createAddItem() {
-
         final RedFlagAlert alert = new RedFlagAlert();
         final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         final String zoneID = parameterMap.get("zones-form:zone"); // TODO find out what this should be
@@ -272,6 +273,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     }
     @Override
     public String edit() {
+        RedFlagOrZoneAlertView view = this.getItem();
+        ensureEmptySlot(view.getPhNumbers());
+        ensureEmptySlot(view.getEmailTos());
+            
         String results = super.edit();
         return results;
     }
@@ -358,6 +363,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
             valid=false;
         }
+        
         if (EventSubCategory.SPEED.equals(saveItem.getEventSubCategory())){
             boolean speedValid = false;
             for(int i=0;i< saveItem.getSpeedSelected().length; i++){
@@ -415,6 +421,19 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
            
         }
+        //Validate escalation phone number(s)
+        if(true==true){
+            logger.fatal("//Validate escalation phone number(s) ");
+            logger.fatal(getExternalContext().getRequestParameterMap());//TODO: jwimmer: remove
+            Map<String, String> paramMap = getExternalContext().getRequestParameterMap();
+            for(String paramName: paramMap.keySet()){
+                if(paramName!=null && paramName.contains("phNumInput"))
+                paramMap.get(paramName);
+            }
+
+            getParameter("");
+        }
+        
         valid = saveItem.validateSelectedAlertTypes();
         if(!valid){
             
@@ -614,24 +633,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             super();
             phNumbers = new ArrayList<String>();
             emailTos = new ArrayList<String>();
-           
-            if(phNumbers.isEmpty()){
-                phNumbers.add("");
-            }
-            if(emailTos.isEmpty()) {
-                emailTos.add("");
-            }
 
-            //initialize to ensure that the last item is an empty slot
-            String lastString = phNumbers.get(phNumbers.size()-1);
-            if(null != lastString && !"".equals(lastString)){
-                phNumbers.add("");
-            }
-            lastString = emailTos.get(emailTos.size()-1);
-            if(null != lastString && !"".equals(lastString)){
-                emailTos.add("");
-            }
-            
+            ensureEmptySlot(phNumbers);
+            ensureEmptySlot(emailTos);
+
             initAlertMessageTypeMap();
         }
         private void initAlertMessageTypeMap(){
