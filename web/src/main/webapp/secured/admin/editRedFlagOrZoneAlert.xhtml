@@ -872,13 +872,18 @@
 							        	return false;
 							        }
 							      }
+
+								  function emailListBlur(e)
+							      {
+							      	jsAddAnother();
+							      }
 							    </script>
 								<a4j:jsFunction name="jsAddAnother" action="#{redFlagOrZoneAlertsBean.item.addEmailToSlot}" reRender="emailTos, emailAddressesInputMessage" />
 								
 									<rich:dataTable value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="dataItem" id="emailTos" binding="#{redFlagOrZoneAlertsBean.emailTosDataTable}" style="border: none;" rowKeyVar="index">
 								        <rich:column  style="border: none;">
 									        <rich:message id="emailAddressesInputMessage#{index}" for="emailAddressesInput" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-								            <h:inputText value="#{dataItem}" styleClass="emailInput" id="emailAddressesInput" onkeypress="return emailListKeypress(event);" >
+								           	<h:inputText value="#{dataItem}" styleClass="emailInput" id="emailAddressesInput" onkeypress="return emailListKeypress(event);" onblur="return emailListBlur(event);">
 								            	<f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
 								            </h:inputText>
 								        </rich:column>
