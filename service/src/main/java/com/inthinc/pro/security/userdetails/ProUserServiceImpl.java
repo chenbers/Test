@@ -21,6 +21,7 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.security.AccessPoint;
 import com.inthinc.pro.model.security.Roles;
+import com.inthinc.pro.model.security.SiteAccessPoint;
 
 public class ProUserServiceImpl implements UserDetailsService {
 	private static final Logger logger = Logger
@@ -89,14 +90,16 @@ public class ProUserServiceImpl implements UserDetailsService {
 		if (userIsAdmin(user)) {
 			// add all the access points
 			grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_ADMIN"));
-		} else {
-
-			for (AccessPoint ap : user.getAccessPoints()) {
-
-				grantedAuthoritiesList.add(new GrantedAuthorityImpl(
-						SiteAccessPoints.getAccessPointById(ap.getAccessPtID())
-								.toString()));
-			}
+// FIXME The code is causing a NullPointerException in SiteAccessPoints.getAccessPointById()
+//		} else {
+//
+//			for (AccessPoint ap : user.getAccessPoints()) {
+//
+//			    SiteAccessPoint sap = SiteAccessPoints.getAccessPointById(ap.getAccessPtID());
+//			    if (sap != null) {
+//			        grantedAuthoritiesList.add(new GrantedAuthorityImpl(sap.toString()));
+//			    }
+//			}
 		}
 		grantedAuthoritiesList.add(new GrantedAuthorityImpl("ROLE_NORMAL"));
 
