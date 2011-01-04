@@ -648,6 +648,10 @@
   <validator-class>com.inthinc.pro.validators.PhoneValidator</validator-class>
  </validator>
  <validator>
+  <validator-id>com.inthinc.pro.validators.EscalationPhNumValidator</validator-id>
+  <validator-class>com.inthinc.pro.validators.EscalationPhNumValidator</validator-class>
+ </validator>
+ <validator>
   <validator-id>com.inthinc.pro.validators.EmailValidator</validator-id>
   <validator-class>com.inthinc.pro.validators.EmailValidator</validator-class>
  </validator>
