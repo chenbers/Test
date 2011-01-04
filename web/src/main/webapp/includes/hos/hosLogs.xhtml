@@ -19,9 +19,9 @@
                   <tr>
 				  	<td>#{messages.hosLog_driver}</td>
 			  	 	<td>
-						<h:selectOneMenu value="#{hosBean.driverID}" id="#{context}_driverSelect" style="width:130px;size:auto;">
+						<h:selectOneMenu value="#{hosBean.driverID}" id="#{context}_driverSelect" style="width:130px;size:auto;" >
 							<f:selectItems value="#{hosBean.drivers}" />
-							<a4j:support reRender="#{context}-hosSendLogsStatus" event="onchange"/>  
+							<a4j:support reRender="#{context}-hosSendLogsStatus,hos-table-form:header, hos-table-form:#{context}, hos-table-form:#{context}-dataTableScroller" event="onchange"/>  
 						</h:selectOneMenu>
 					</td>
 					</tr>
