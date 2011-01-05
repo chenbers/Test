@@ -25,6 +25,7 @@ import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -436,9 +437,9 @@ public class TeamTripsBean extends BaseBean {
 		private List<Event> loadViolations( ) {
 	        	
             List<NoteType> violationEventTypeList = new ArrayList<NoteType>();
-            violationEventTypeList.add(NoteType.SPEEDING_EX3);
+            violationEventTypeList.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
             violationEventTypeList.add(NoteType.SEATBELT);
-            violationEventTypeList.add(NoteType.NOTEEVENT);
+            violationEventTypeList.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
             return eventDAO.getEventsForDriver(driverID, 
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart().toDateTime().toDate(), 
             		teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getEnd().toDateTime().toDate(), 

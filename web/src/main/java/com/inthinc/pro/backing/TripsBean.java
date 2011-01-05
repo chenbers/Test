@@ -26,6 +26,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.LatLng;
@@ -38,6 +39,7 @@ import com.inthinc.pro.util.MiscUtil;
 public class TripsBean extends BaseBean {
 
     private static final long serialVersionUID = 2409167667876030280L;
+    @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(TripsBean.class);
     private static final long THIRTY_DAYS = 30L * 24L * 60L * 60L * 1000L;
     private static final long ONE_SECOND = 1000L;
@@ -151,9 +153,9 @@ public class TripsBean extends BaseBean {
     public void initViolations(Date start, Date end) {
         if (violationEvents.isEmpty()) {
             List<NoteType> violationEventTypeList = new ArrayList<NoteType>();
-            violationEventTypeList.add(NoteType.SPEEDING_EX3);
+            violationEventTypeList.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
             violationEventTypeList.add(NoteType.SEATBELT);
-            violationEventTypeList.add(NoteType.NOTEEVENT);
+            violationEventTypeList.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
             List<NoteType> idleTypes = new ArrayList<NoteType>();
             idleTypes.add(NoteType.IDLE);
             List<NoteType> tamperEventTypeList = new ArrayList<NoteType>();

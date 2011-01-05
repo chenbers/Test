@@ -14,7 +14,11 @@ import com.inthinc.pro.util.MiscUtil;
 
 public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
     
-	private String ephone;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private String ephone;
 	private Integer autologoffSeconds;
 	private Integer[] speedSettings;
 	private Integer hardAcceleration;

@@ -1,16 +1,12 @@
 package com.inthinc.pro.backing;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
-import com.inthinc.pro.model.ForwardCommand;
-import com.inthinc.pro.model.ForwardCommandStatus;
-import com.inthinc.pro.model.ForwardCommandType;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.VehicleSetting;

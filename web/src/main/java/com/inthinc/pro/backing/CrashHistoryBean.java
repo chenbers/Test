@@ -1,7 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -24,12 +22,9 @@ import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
-import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.User;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.MiscUtil;
 
 public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportItem> implements TablePrefOptions<CrashHistoryReportItem> {
     /**
@@ -60,14 +55,14 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         AVAILABLE_COLUMNS.add("clear");
     }
 //    private String userRole;
-    private static DateFormat dateFormatter ;
+//    private static DateFormat dateFormatter ;
     private final static String UNKNOWN_DRIVER = "unknown_driver";
 
     @Override
     public void initBean() {
         
         super.initBean();
-        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), LocaleBean.getCurrentLocale());
+//        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), LocaleBean.getCurrentLocale());
         tablePref = new TablePref<CrashHistoryReportItem>(this);
     }
 

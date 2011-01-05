@@ -19,7 +19,6 @@ import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventSubCategory;
-import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.reports.ReportCriteria;

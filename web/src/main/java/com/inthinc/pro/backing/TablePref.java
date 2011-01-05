@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.model.TablePreference;
-import com.inthinc.pro.util.MessageUtil;
 
 public class TablePref<T>
 {

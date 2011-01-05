@@ -29,6 +29,7 @@ import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
@@ -80,7 +81,7 @@ public class DriverPerformanceBean extends BasePerformanceBean {
 
     protected Map<Long, Event> violationEventsMap;
 
-    private static final String NO_LAST_TRIP_FOUND = "no_last_trip_found";
+//    private static final String NO_LAST_TRIP_FOUND = "no_last_trip_found";
 
     public DriverPerformanceBean() {
         super();
@@ -108,9 +109,9 @@ public class DriverPerformanceBean extends BasePerformanceBean {
     public void initViolations(Date start, Date end) {
         if ((violationEventsMap == null) || violationEventsMap.isEmpty()) {
             List<NoteType> types = new ArrayList<NoteType>();
-            types.add(NoteType.SPEEDING_EX3);
+            types.addAll(EventSubCategory.SPEED.getNoteTypesInSubCategory());
             types.add(NoteType.SEATBELT);
-            types.add(NoteType.NOTEEVENT);
+            types.addAll(EventSubCategory.DRIVING_STYLE.getNoteTypesInSubCategory());
             types.add(NoteType.IDLE);
             types.add(NoteType.UNPLUGGED);
             types.add(NoteType.UNPLUGGED_ASLEEP);
