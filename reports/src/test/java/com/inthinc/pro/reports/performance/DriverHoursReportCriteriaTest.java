@@ -18,13 +18,16 @@ import mockit.NonStrict;
 import mockit.Verifications;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -36,7 +39,9 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
     
     // Constant values
     private final Integer GROUP_ID = new Integer(2);
+    private final Integer DRIVER_ID = new Integer(1);
     private final Double HOURS_THIS_DAY = new Double(7);
+    private final Long SECONDS_THIS_DAY = Long.valueOf(25200l);
     private final String GROUP_FULL_NAME = "Group Full Name";
     private final Locale LOCALE = Locale.US;
     private final Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
@@ -44,8 +49,9 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
     // JMockit mocks
     @NonStrict @Cascading private Driver driverMock;
     @Mocked private DriverDAO driverDAOMock; 
-    @Mocked private WaysmartDAO waysmartDAOMock; 
+//    @Mocked private WaysmartDAO waysmartDAOMock; 
     @Mocked private GroupHierarchy groupHierarchyMock;
+    @Mocked private DriveTimeDAO driveTimeDAOMock; 
     
 	// The System Under Test
 	private DriverHoursReportCriteria reportCriteriaSUT = new DriverHoursReportCriteria(LOCALE); 
@@ -60,7 +66,7 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
 
 		// General initializations
         reportCriteriaSUT.setDriverDAO(driverDAOMock);
-        reportCriteriaSUT.setWaysmartDAO(waysmartDAOMock);
+        reportCriteriaSUT.setDriveTimeDAO(driveTimeDAOMock);
         
 
         // JMockit Documentation:
@@ -79,11 +85,16 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
         	
            {
 
-              List<Driver> driverList = new ArrayList<Driver>(); driverList.add(driverMock);
+              List<Driver> driverList = new ArrayList<Driver>(); 
+              driverList.add(driverMock);
               driverDAOMock.getAllDrivers(GROUP_ID); returns(driverList);
 
-              waysmartDAOMock.getDriverHours(driverMock, INTERVAL); returns(getHoursList());
+//              waysmartDAOMock.getDriverHours(driverMock, INTERVAL); returns(getHoursList());
+              Interval queryInterval = new Interval(INTERVAL.getStart().minusDays(1), new DateMidnight(INTERVAL.getEnd()).toDateTime().plusDays(2));
 
+              driveTimeDAOMock.getDriveTimeRecordListForGroup(GROUP_ID, queryInterval); returns (getDriveTimeList());
+
+              driverMock.getDriverID(); returns(DRIVER_ID); 
               driverMock.getGroupID(); returns(GROUP_ID); 
               groupHierarchyMock.getShortGroupName(GROUP_ID, ReportCriteria.SLASH_GROUP_SEPERATOR); returns(GROUP_FULL_NAME); 
            }
@@ -94,6 +105,17 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
         	   DriverHoursRecord hours = new DriverHoursRecord(); 
         	   hours.setDay(new DateTime());
         	   hours.setHoursThisDay(HOURS_THIS_DAY); 
+               hoursList.add(hours);
+               
+               return hoursList;
+           }
+           // Helper method
+           private List<DriveTimeRecord> getDriveTimeList(){
+               List<DriveTimeRecord> hoursList = new ArrayList<DriveTimeRecord>();
+               DriveTimeRecord hours = new DriveTimeRecord(); 
+               hours.setDateTime(new DateMidnight(INTERVAL.getStart()).toDateTime());
+               hours.setDriveTimeSeconds(SECONDS_THIS_DAY);
+               hours.setDriverID(DRIVER_ID);
                hoursList.add(hours);
                
                return hoursList;
@@ -112,7 +134,8 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
            {
         	   // All the strict expectations were already verified automatically
                driverMock.getGroupID();
-               driverMock.getPerson(); 
+               driverMock.getDriverID();
+//               driverMock.getPerson(); 
            }
          };
 

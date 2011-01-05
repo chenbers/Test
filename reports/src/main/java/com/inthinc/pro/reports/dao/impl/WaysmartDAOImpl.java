@@ -10,9 +10,12 @@ import org.joda.time.Interval;
 import com.inthinc.hos.adjusted.HOSAdjustedList;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.assets.AssetWarrantyRecord;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
@@ -27,49 +30,39 @@ public class WaysmartDAOImpl implements WaysmartDAO {
     private HOSDAO hosDAO;
     private static final long TEN_HOURS_IN_MINUTES = 600l;    
     
+    private DriveTimeDAO driveTimeDAO;
+
+    
     @Override
     public List<DriverHoursRecord> getDriverHours(Driver driver, Interval queryInterval) {
         DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(queryInterval, driverTimeZone, 1, 1); 
 
-        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), expandedInterval, true);
-        return getDriverHoursList(driver, queryInterval, driverTimeZone, hosRecordList);
+        List<DriveTimeRecord> driveTimeRecordList = driveTimeDAO.getDriveTimeRecordList(driver, expandedInterval);
+        return getDriverHoursList(driver, queryInterval, driverTimeZone, driveTimeRecordList);
     }
 
-    private List<DriverHoursRecord> getDriverHoursList(Driver driver, Interval queryInterval, DateTimeZone driverTimeZone, List<HOSRecord> hosRecordList) {
-        HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
-
+    List<DriverHoursRecord> getDriverHoursList(Driver driver, Interval queryInterval, DateTimeZone driverTimeZone, List<DriveTimeRecord> driveTimeRecordList) {
         List<DateTime> dayList = DateTimeUtil.getDayList(queryInterval, driverTimeZone);
-        
         List<DriverHoursRecord> driverHoursRecordList = new ArrayList<DriverHoursRecord>();
-        
-        
-        DateTime currentTime = new DateTime();
         for (DateTime day : dayList) {
-            List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime.toDate(), true);
-            Long drivingMinutes = 0l;
-            for (HOSRecAdjusted hosRec : logListForDay) {
-                if (hosRec.getStatus() == HOSStatus.DRIVING)
-                    drivingMinutes += hosRec.getTotalRealMinutes();
-            }
-            
             DriverHoursRecord driverHoursRecord = new DriverHoursRecord();
             driverHoursRecord.setDay(day);
             driverHoursRecord.setDriverID(driver.getDriverID());
-            driverHoursRecord.setHoursThisDay(drivingMinutes.doubleValue()/60.0);
-            
+            long seconds = 0;
+            for (DriveTimeRecord driveTimeRecord : driveTimeRecordList) {
+                if (day.equals(driveTimeRecord.getDateTime())) {
+                    seconds += driveTimeRecord.getDriveTimeSeconds();
+                }
+            }
+            driverHoursRecord.setHoursThisDay(DateUtil.convertSecondsToDoubleHours(seconds));
             driverHoursRecordList.add(driverHoursRecord);
         }
-        
         return driverHoursRecordList;
     }
-    
-    // entry point for unit testing
-    public List<DriverHoursRecord> getDriverHours(Driver driver, Interval queryInterval, List<HOSRecord> hosRecordList) {
-        DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-        return getDriverHoursList(driver, queryInterval, driverTimeZone, hosRecordList);
-    }
 
+    
+    
     @Override
     public List<TenHoursViolationRecord> getTenHoursViolations(Driver driver, Interval queryInterval) {
         DateTimeZone driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
@@ -145,6 +138,14 @@ public class WaysmartDAOImpl implements WaysmartDAO {
 
     public void setHosDAO(HOSDAO hosDAO) {
         this.hosDAO = hosDAO;
+    }
+
+    public DriveTimeDAO getDriveTimeDAO() {
+        return driveTimeDAO;
+    }
+
+    public void setDriveTimeDAO(DriveTimeDAO driveTimeDAO) {
+        this.driveTimeDAO = driveTimeDAO;
     }
 
     /**

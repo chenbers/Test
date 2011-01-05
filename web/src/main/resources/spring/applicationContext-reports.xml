@@ -26,6 +26,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <property name="waysmartDAO" ref="waysmartDAO"/>
     <property name="stateMileageDAO" ref="stateMileageDAO"/>
     <property name="addressDAO" ref="addressDAO" />
+    <property name="driveTimeDAO" ref="driveTimeDAO" />
   </bean>
 
 </beans>

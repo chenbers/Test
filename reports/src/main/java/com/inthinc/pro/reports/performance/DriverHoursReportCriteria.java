@@ -9,18 +9,24 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.performance.model.DriverHours;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class DriverHoursReportCriteria extends ReportCriteria {
     private static final String DAY_FORMAT = "MM/dd/yy";
@@ -31,9 +37,10 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 	protected DateTimeFormatter dayFormatter;
 
 	protected DriverDAO driverDAO;
-	protected WaysmartDAO waysmartDAO;
+    private DriveTimeDAO driveTimeDAO;
 
-	/**
+
+    /**
 	 * Constructor to initiate the report type and locale.
 	 * @param locale
 	 */
@@ -100,26 +107,60 @@ public class DriverHoursReportCriteria extends ReportCriteria {
         addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));
         addParameter(DriverHoursReportCriteria.END_DATE_PARAM,  dateTimeFormatter.print(interval.getEnd()));
         
+Interval queryInterval = new Interval(interval.getStart().minusDays(1), new DateMidnight(interval.getEnd()).toDateTime().plusDays(2));
+System.out.println("interval: " + queryInterval);     
         List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        
+        List<DriveTimeRecord> driveTimeRecordList = driveTimeDAO.getDriveTimeRecordListForGroup(groupID, queryInterval);
 
 		Map<Driver, List<DriverHoursRecord>> driverHoursRecordMap = new HashMap<Driver, List<DriverHoursRecord>>();
 		for (Driver driver : driverList) {
 		    if (driver != null) {
-	            List<DriverHoursRecord> driverHoursList = waysmartDAO.getDriverHours(driver, interval);
+                List<DriverHoursRecord> driverHoursList = getDriverHoursList(driver, interval, driveTimeRecordList);
 	            driverHoursRecordMap.put(driver, driverHoursList);
 		    }
 		}
 
 		initDataSet(groupHierarchy, driverHoursRecordMap);
 	}
+	
+    List<DriverHoursRecord> getDriverHoursList(Driver driver, Interval interval, List<DriveTimeRecord> driveTimeList) {
+        List<DateTime> dayList = DateTimeUtil.getDayList(interval, DateTimeZone.getDefault());
+        List<DriverHoursRecord> driverHoursRecordList = new ArrayList<DriverHoursRecord>();
+        for (DateTime day : dayList) {
+            DriverHoursRecord driverHoursRecord = new DriverHoursRecord();
+            driverHoursRecord.setDay(day);
+            driverHoursRecord.setDriverID(driver.getDriverID());
+            long seconds = 0;
+            for (DriveTimeRecord driveTimeRecord : driveTimeList) {
+                if (!driveTimeRecord.getDriverID().equals(driver.getDriverID()))
+                    continue;
+                
+System.out.println(driver.getDriverID() + " Day: " + day + " " + day.getMillis());
+System.out.println(driveTimeRecord.getDateTime() + " " + driveTimeRecord.getDateTime().getMillis());
+                if (day.isEqual(driveTimeRecord.getDateTime())) {
+                    seconds += driveTimeRecord.getDriveTimeSeconds();
+System.out.println("seconds " + seconds);
+                 }
+            }
+            driverHoursRecord.setHoursThisDay(DateUtil.convertSecondsToDoubleHours(seconds));
+            driverHoursRecordList.add(driverHoursRecord);
+        }
+        return driverHoursRecordList;
+    }
+
 
 	public void setDriverDAO(DriverDAO driverDAO) {
 		this.driverDAO = driverDAO;
 	}
 
-	public void setWaysmartDAO(WaysmartDAO waysmartDao) {
-		this.waysmartDAO = waysmartDao;
-	}
 
+    public DriveTimeDAO getDriveTimeDAO() {
+        return driveTimeDAO;
+    }
+
+    public void setDriveTimeDAO(DriveTimeDAO driveTimeDAO) {
+        this.driveTimeDAO = driveTimeDAO;
+    }
 
 }

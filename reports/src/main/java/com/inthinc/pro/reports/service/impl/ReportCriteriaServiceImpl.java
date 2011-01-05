@@ -16,6 +16,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
@@ -97,6 +98,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private WaysmartDAO waysmartDAO;
     private AddressDAO addressDAO;
     private StateMileageDAO stateMileageDAO;
+    private DriveTimeDAO driveTimeDAO;
     
     private Locale locale;
 
@@ -738,7 +740,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     public ReportCriteria getDriverHoursReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale) {
     	DriverHoursReportCriteria criteria = new DriverHoursReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
-        criteria.setWaysmartDAO(waysmartDAO);
+        criteria.setDriveTimeDAO(driveTimeDAO);
                
         criteria.init(accountGroupHierarchy,groupID, interval);
         return criteria;
@@ -1108,5 +1110,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
+
+    
+    public DriveTimeDAO getDriveTimeDAO() {
+        return driveTimeDAO;
+    }
+
+
+    public void setDriveTimeDAO(DriveTimeDAO driveTimeDAO) {
+        this.driveTimeDAO = driveTimeDAO;
+    }
+
+
 
 }

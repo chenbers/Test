@@ -78,7 +78,7 @@ public class HOSUtil {
             HOSRec hosRec = new HOSRec("", HOSStatus.OFF_DUTY, 1440, new Date(leastRecent.getLogTimeDate().getTime()-MS_IN_DAY), leastRecent.getLogTimeZone(),
                     leastRecent.getRuleType(), "", leastRecent.isSingleDriver(), leastRecent.isNonDOTDriverDrivingDOTVehicle());
             recList.add(hosRec);
-            System.out.println(hosRec.getStatus().getName() + " " + hosRec.getTotalRealMinutes() + " " + hosRec.getLogTimeDate());
+//            System.out.println(hosRec.getStatus().getName() + " " + hosRec.getTotalRealMinutes() + " " + hosRec.getLogTimeDate());
             }
         return recList;
     }

@@ -500,7 +500,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                 AlertEscalationStatus status = AlertEscalationStatus.valueOf(resultSet.getInt(3));
                 RedFlag redFlag = redFlagMap.get(noteID);
                 redFlag.getMsgIDList().add(msgID);
-System.out.println("msgStatus: " + status + " redFlag status: " + redFlag.getSent());            
+//System.out.println("msgStatus: " + status + " redFlag status: " + redFlag.getSent());            
                 if (redFlag.getSent() != AlertSentStatus.PENDING && redFlag.getSent() != AlertSentStatus.CANCELED) {
                     
                     if (status == AlertEscalationStatus.CANCELED)
@@ -510,7 +510,7 @@ System.out.println("msgStatus: " + status + " redFlag status: " + redFlag.getSen
                     else if (status == AlertEscalationStatus.SENT || status == AlertEscalationStatus.ESCALATED_ACKNOWLEDGED)
                         redFlag.setSent(AlertSentStatus.SENT);
                 }
-System.out.println("new redFlag status: " + redFlag.getSent());            
+//System.out.println("new redFlag status: " + redFlag.getSent());            
             }
         }   // end try
         catch (SQLException e)

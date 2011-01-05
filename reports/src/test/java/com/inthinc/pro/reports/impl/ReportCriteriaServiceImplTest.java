@@ -12,6 +12,7 @@ import mockit.VerificationsInOrder;
 import org.joda.time.Interval;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
@@ -24,7 +25,6 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.reports.BaseUnitTest;
-import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
 import com.inthinc.pro.reports.hos.testData.MockData;
 import com.inthinc.pro.reports.ifta.StateMileageByMonthReportCriteria;
@@ -62,6 +62,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
     /**
      * Test for getDriverHoursReportCriteria method.
      */
+  
     @Test
     public void testGetDriverHoursReportCriteria(final DriverHoursReportCriteria criteriaMock) {
 
@@ -73,7 +74,7 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
             {
                 new DriverHoursReportCriteria(Locale.US);
                 criteriaMock.setDriverDAO((DriverDAO) any);
-                criteriaMock.setWaysmartDAO((WaysmartDAO) any);
+                criteriaMock.setDriveTimeDAO((DriveTimeDAO) any);
                 criteriaMock.init(groupHierarchy, mockGroupId, interval);
 
             }

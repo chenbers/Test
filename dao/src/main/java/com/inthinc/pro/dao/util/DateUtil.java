@@ -47,6 +47,10 @@ public class DateUtil
     {
         return seconds / 3600.0f;
     }
+    public static double convertSecondsToDoubleHours(long seconds)
+    {
+        return seconds / 3600.0d;
+    }
 
     public static int convertMillisecondsToSeconds(long milliseconds)
     {

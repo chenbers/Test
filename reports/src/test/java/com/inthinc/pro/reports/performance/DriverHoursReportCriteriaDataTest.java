@@ -3,119 +3,221 @@ package com.inthinc.pro.reports.performance;
 import static org.junit.Assert.assertEquals;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import org.junit.Ignore;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.DriveTimeDAO;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.performance.DriverHoursRecord;
+import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.DriverStops;
+import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl;
-import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
 import com.inthinc.pro.reports.performance.model.DriverHours;
 
 public class DriverHoursReportCriteriaDataTest extends BaseUnitTest {
     
 
-    // for gain data test
-    public static final String DATA_PATH = "violations/";
-    public static final String testCaseName = "vtest_01H1_07012010_07072010"; 
-    DriverHours driverHoursExpectedData[]= {
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/10"," Calvin Elias",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/02/10"," Calvin Elias",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/03/10"," Calvin Elias",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/10"," Calvin Elias",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/10"," Calvin Elias",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/06/10"," Calvin Elias",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/07/10"," Calvin Elias",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/10"," Collin Pierrot",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/02/10"," Collin Pierrot",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/03/10"," Collin Pierrot",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/10"," Collin Pierrot",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/10"," Collin Pierrot",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/06/10"," Collin Pierrot",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/07/10"," Collin Pierrot",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/10"," David  Francey",0.6),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/02/10"," David  Francey",0.23333333333333334),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/03/10"," David  Francey",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/10"," David  Francey",3.0833333333333335),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/10"," David  Francey",3.5166666666666666),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/06/10"," David  Francey",1.2),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/07/10"," David  Francey",1.0166666666666666),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/10"," Eugene Harris",0.8166666666666667),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/02/10"," Eugene Harris",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/03/10"," Eugene Harris",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/10"," Eugene Harris",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/10"," Eugene Harris",0.18333333333333332),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/06/10"," Eugene Harris",0.8833333333333333),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/07/10"," Eugene Harris",0.1),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/10"," Jack  Johnson",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/02/10"," Jack  Johnson",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/03/10"," Jack  Johnson",0.35),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/10"," Jack  Johnson",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/10"," Jack  Johnson",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/06/10"," Jack  Johnson",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/07/10"," Jack  Johnson",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/10"," James Szpuniarski",1.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/02/10"," James Szpuniarski",1.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/03/10"," James Szpuniarski",0.65),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/10"," James Szpuniarski",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/10"," James Szpuniarski",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/06/10"," James Szpuniarski",0.25),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/07/10"," James Szpuniarski",1.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/10"," Ramanathan Venkataraman",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/02/10"," Ramanathan Venkataraman",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/03/10"," Ramanathan Venkataraman",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/10"," Ramanathan Venkataraman",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/10"," Ramanathan Venkataraman",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/06/10"," Ramanathan Venkataraman",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/07/10"," Ramanathan Venkataraman",0.0),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/10"," Scott Giem",3.433333333333333),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/02/10"," Scott Giem",0.2833333333333333),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/03/10"," Scott Giem",1.2833333333333334),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/10"," Scott Giem",0.7833333333333333),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/10"," Scott Giem",0.31666666666666665),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/06/10"," Scott Giem",1.1166666666666667),
-            new DriverHours("Norman Wells"+ DriverHoursReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/07/10"," Scott Giem",1.0333333333333334),
-            
-    };
-    
-    
-    // test using data extracted from GAIN database
-    @SuppressWarnings("unchecked")
-    @Ignore @Test
-    public void gainDetailsTestCases() {
-        HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName, false);
+    private static final Integer GROUP_ID = Integer.valueOf(1);
+    private static final String GROUP_NAME = "TEST GROUP";
+    private static final String DAY_FORMAT = "MM/dd/yy";
 
-        Map<Driver, List<DriverHoursRecord>> driverHoursRecordMap = new HashMap<Driver, List<DriverHoursRecord>>();
-        for (Entry<Driver, List<HOSRecord>> dataEntry : testData.driverHOSRecordMap.entrySet()) {
-            List<DriverHoursRecord> driverHoursList = new WaysmartDAOImpl().getDriverHours(dataEntry.getKey(), testData.interval, dataEntry.getValue());
-            driverHoursRecordMap.put(dataEntry.getKey(), driverHoursList);
-        }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void gainDetailsTestCases() {
+        Interval interval = initInterval();
+        DateTimeFormatter dayFormatter = DateTimeFormat.forPattern(DAY_FORMAT);
+
         DriverHoursReportCriteria criteria = new DriverHoursReportCriteria(Locale.US);
-        criteria.initDataSet(testData.getGroupHierarchy(), driverHoursRecordMap);
+        criteria.setDriveTimeDAO(new MockDriveTimeDAO(interval));
+        criteria.setDriverDAO(new MockDriverDAO());
+        criteria.init(getMockGroupHierarchy(), GROUP_ID, interval);
         
         List<DriverHours> dataList = criteria.getMainDataset();
+        
+        assertEquals("data size", 4, dataList.size());
         DecimalFormat hoursFormatter = new DecimalFormat("###0.00"); 
-        int eCnt = 0;
+        int eCnt = 1;
         for (DriverHours data : dataList) {
-            DriverHours expected = driverHoursExpectedData[eCnt++];
-            assertEquals(testCaseName + "groupName " + eCnt, expected.getGroupName(), data.getGroupName());
-            assertEquals(testCaseName + "driverName " + eCnt, expected.getDriverName(), data.getDriverName());
-            assertEquals(testCaseName + "day " + eCnt, expected.getDate(), data.getDate());
-            assertEquals(testCaseName + "hours " + eCnt, hoursFormatter.format(expected.getHours()), hoursFormatter.format(data.getHours()));
+            data.dump();
+            assertEquals("groupName " + eCnt, GROUP_NAME, data.getGroupName());
+            assertEquals("driverName " + eCnt, "F"+eCnt+" L"+eCnt, data.getDriverName());
+            assertEquals("day " + eCnt, dayFormatter.print(interval.getStart()), data.getDate());
+            assertEquals("hours " + eCnt, hoursFormatter.format(1.0d), hoursFormatter.format(data.getHours()));
+            eCnt++;
         }
         
         dump("driverHoursTest", 1, criteria, FormatType.PDF);
         dump("driverHoursTest", 1, criteria, FormatType.EXCEL);
 
+    }
+    
+    private Interval initInterval()
+    {
+        int numDays = 1;
+        DateTime end = new DateMidnight(DateTimeZone.UTC).toDateTime();
+        DateTime start = new DateTime(end, DateTimeZone.UTC).minusDays(1);
+        return new Interval(start, end);
+
+    }
+    
+    private GroupHierarchy getMockGroupHierarchy() {
+        List<Group> groupList = new ArrayList<Group>();
+        groupList.add(new Group(GROUP_ID, Integer.valueOf(0), GROUP_NAME, Integer.valueOf(0)));
+        GroupHierarchy groupHierarchy = new GroupHierarchy();
+        groupHierarchy.setGroupList(groupList);
+        return groupHierarchy;
+    }
+
+
+    class MockDriverDAO implements DriverDAO {
+
+        @Override
+        public Driver findByPersonID(Integer personID) {
+            return null;
+        }
+
+        @Override
+        public Driver findByPhoneNumber(String phoneNumber) {
+            return null;
+        }
+
+        @Override
+        public List<Driver> getAllDrivers(Integer groupID) {
+            List<Driver> driverList = new ArrayList<Driver>();
+
+            for (int i = 1; i < 5; i++) {
+                Driver driver = new Driver(i, i, Status.ACTIVE, "", 0l, 0l, "", null, null, null, null, null, GROUP_ID);
+                Person person = new Person();
+                person.setPersonID(i);
+                person.setFirst("F" + i);
+                person.setLast("L"+i);
+                driver.setPerson(person);
+                driverList.add(driver);
+            }
+            return driverList;
+        }
+
+        @Override
+        public Integer getDriverIDByBarcode(String barcode) {
+            return null;
+        }
+
+        @Override
+        public List<DriverLocation> getDriverLocations(Integer groupID) {
+            return null;
+        }
+
+        @Override
+        public List<Driver> getDrivers(Integer groupID) {
+            return null;
+        }
+
+        @Override
+        public List<Driver> getDriversWithDisabledPhones() {
+            return null;
+        }
+
+        @Override
+        public LastLocation getLastLocation(Integer driverID) {
+            return null;
+        }
+
+        @Override
+        public Trip getLastTrip(Integer driverID) {
+            return null;
+        }
+
+        @Override
+        public List<Long> getRfidsByBarcode(String barcode) {
+            return null;
+        }
+
+        @Override
+        public List<DriverStops> getStops(Integer driverID, Interval interval) {
+            return null;
+        }
+
+        @Override
+        public List<Trip> getTrips(Integer driverID, Date startDate, Date endDate) {
+            return null;
+        }
+
+        @Override
+        public List<Trip> getTrips(Integer driverID, Interval interval) {
+            return null;
+        }
+
+        @Override
+        public Integer create(Integer id, Driver entity) {
+            return null;
+        }
+
+        @Override
+        public Integer deleteByID(Integer id) {
+            return null;
+        }
+
+        @Override
+        public Driver findByID(Integer id) {
+            return null;
+        }
+
+        @Override
+        public Integer update(Driver entity) {
+            return null;
+        }
+        
+    }
+    class MockDriveTimeDAO implements DriveTimeDAO{
+
+        Interval interval;
+        
+        public MockDriveTimeDAO(Interval interval)
+        {
+            this.interval = interval;
+        }
+        @Override
+        public List<DriveTimeRecord> getDriveTimeRecordList(Driver driver, Interval queryInterval) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public List<DriveTimeRecord> getDriveTimeRecordListForGroup(Integer groupID, Interval queryInterval) {
+            List<DriveTimeRecord> list = new ArrayList<DriveTimeRecord>();
+            LocalDate localDate = new LocalDate(interval.getStart());
+            DateTime day = localDate.toDateTimeAtStartOfDay();
+
+            for (int i = 1; i < 5; i++) {
+                  list.add(new DriveTimeRecord(day, i, "V" + i, i, 3600l));
+                  list.add(new DriveTimeRecord(interval.getEnd(), i, "V" + i, i, 3600l)); // should ignore this one
+            }
+            
+            
+            
+            return list;
+        }
+        
     }
     
 }
