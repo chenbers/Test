@@ -155,7 +155,7 @@
                           <h:commandButton id="zonesAdd" action="#{zonesBean.add}" oncomplete="clearOutline()" reRender="displayZone,headerForm" styleClass="left"><span class="add"><h:outputText value="#{messages.zones_addZone}" /></span></h:commandButton>
                           <ui:fragment rendered="#{zonesBean.zonesCount gt 0}">
                             <h:outputText value=" " />
-                            <h:commandButton id="zoneAlertAdd" action="#{zoneAlertsBean.add}" styleClass="left">
+                            <h:commandButton id="zoneAlertAdd" action="#{redFlagOrZoneAlertsBean.add}" styleClass="left">
                               <f:param name="zoneID" value="#{zonesBean.item.zoneID}" />
                               <span class="addZoneAlert"><h:outputText value="#{messages.zones_addZoneAlert}" /></span>
                             </h:commandButton>

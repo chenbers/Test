@@ -231,8 +231,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         final String zoneID = parameterMap.get("zones-form:zone"); // TODO find out what this should be
         zonesBean.loadZones();
         
-        if (zoneID != null)
+        if (zoneID != null) 
+        {
             alert.setZoneID(Integer.valueOf(zoneID));
+            List<AlertMessageType> amtLst = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
+            alert.setTypes(amtLst);
+        }
         else
         {
             final List<SelectItem> zones = getZones();
@@ -242,6 +246,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         RedFlagOrZoneAlertView redFlagOrZoneAlertView = createRedFlagOrZoneAlertView(alert);
         redFlagOrZoneAlertView.setAccountID(getAccountID());
         redFlagOrZoneAlertView.setUserID(getUserID());
+        
         
         return redFlagOrZoneAlertView;
     }
