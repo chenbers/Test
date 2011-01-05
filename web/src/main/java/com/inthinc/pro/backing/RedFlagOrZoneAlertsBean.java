@@ -439,12 +439,22 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             getParameter("");
         }
         
-        valid = saveItem.validateSelectedAlertTypes();
-        if(!valid){
-            
-            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("atLeastOne"), null);
-            FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+        // validate escalation e-mail is supplied
+        if(saveItem.getEscEmail() == null || saveItem.getEscEmail().trim().length() == 0) {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
+            valid = false;            
         }
+        
+        // check on selected types
+        if ( valid ) {
+            if ( !saveItem.validateSelectedAlertTypes() ) {
+                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("atLeastOne"), null);
+                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
+                valid = false;
+            }
+        }
+
         return valid;
     }
 
