@@ -14,7 +14,7 @@ import com.inthinc.pro.model.zone.option.type.ZoneVehicleType;
 public enum ZoneAvailableOption implements BaseEnum {
     VEHICLE_TYPE(1, "VEHICLE_TYPE", ZoneOptionType.VEHICLE_TYPE, ZoneVehicleType.ALL, true),
     SPEED_LIMIT(2, "SPEED_LIMIT", ZoneOptionType.SPEED, new SpeedValue(0), true),
-    CAUTION_AREA(3, "CAUTION_AREA", ZoneOptionType.OFF_ON, OffOn.ON, true),
+    CAUTION_AREA(3, "CAUTION_AREA", ZoneOptionType.OFF_ON, OffOn.OFF, true),
     REPORT_ON_ARRIVAL_DEPARTURE(4, "REPORT_ON_ARRIVAL_DEPARTURE", ZoneOptionType.OFF_ON, OffOn.ON, false),
     MONITOR_IDLE(5, "MONITOR_IDLE", ZoneOptionType.OFF_ON, OffOn.ON, true),
     SEATBELT_VIOLATION(6, "SEATBELT_VIOLATION", ZoneOptionType.OFF_ON_DEVICE, OffOnDevice.DEVICE, true),
