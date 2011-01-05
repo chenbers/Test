@@ -588,7 +588,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         //unique employee ID
         if (!isBatchEdit() && (person.getEmpid() != null) && (person.getEmpid().length() > 0)) {
-            Integer groupID = person.getGroup().getGroupID();
+            // when checking for duplicate employee id, use the logged-in user's groupID and check from there.
+            Integer groupID = this.getProUser().getUser().getGroupID();
+//            Integer groupID = person.getGroup().getGroupID(); 
             List<Person> personsInGroup = personDAO.getPeopleInGroupHierarchy(groupID);
             for(Person p: personsInGroup) {
                 // Augment to NOT check against themselves
