@@ -1,6 +1,5 @@
 package com.inthinc.pro.backing;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.backing.ui.ColorSelectorStandard;
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.charts.Bar2DMultiAxisChart;
@@ -41,12 +39,13 @@ public class TeamSpeedBean extends BaseBean {
     
     private ScoreType scoreType = ScoreType.SCORE_SPEEDING;
 
+    @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(TeamSpeedBean.class);
 
     public TeamSpeedBean() {
         
         // Get the colors for the table. 
-        ColorSelectorStandard css = new ColorSelectorStandard();
+//        ColorSelectorStandard css = new ColorSelectorStandard();
         colors = new HashMap<String,String>();
         colors.put("0", "#fd0500");
         colors.put("1", "#d71b2d");
@@ -136,7 +135,7 @@ public class TeamSpeedBean extends BaseBean {
         sb.append(pie.getControlParameters());
         sb.append(" caption = \'" + MessageUtil.getMessageString("teamSpeedPieLabel") + "\'>");
                
-        ColorSelectorStandard cs = new ColorSelectorStandard();
+//        ColorSelectorStandard cs = new ColorSelectorStandard();
         if (scoreDataList.size() > 0) {
             ScoreableEntity se = null;
             for (int i = 0; i < scoreDataList.size(); i++)
@@ -146,7 +145,7 @@ public class TeamSpeedBean extends BaseBean {
                 
                 if(percent == 0) // Do not display 0% pie slices.
                     continue;
-                sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'Worst offender(s): &lt;BR&gt;" + 
+                sb.append("<set value=\'" + percent.toString() + "\' " + "toolText=\'"+MessageUtil.getMessageString("teamSpeedWorstOffenders")+": &lt;BR&gt;" + 
                         worstOffenders.get(i)+ "\'" +   
                       " color=\'" + (colors.get(String.valueOf(i))) + "\'/>");                        
 //                        " color=\'" + (reds[i]) + "\'/>");
@@ -363,11 +362,11 @@ public class TeamSpeedBean extends BaseBean {
     
     
     public List<HashMap<String,String>> getSpeedTotalsTable() {
-        ArrayList<HashMap<String,String>> speedTot = new ArrayList<HashMap<String,String>>();
+        List<HashMap<String,String>> speedTot;
         HashMap<String,String> totals = new HashMap<String,String>();
                 
         // Get the total events and the percentages        
-        speedTot = (ArrayList)getSpeedTotals();        
+        speedTot = (ArrayList<HashMap<String,String>>)getSpeedTotals();        
         List<ScoreableEntity> scoreDataList = getScoreableEntitiesPie();
         
         ScoreableEntity se = scoreDataList.get(0);
@@ -393,12 +392,12 @@ public class TeamSpeedBean extends BaseBean {
         return speedTot;
     }
     
-    private float toTwoDecimalPlaces(double factor,int value) {       
-        DecimalFormat df = new DecimalFormat("#,###,###,##0.00");
-        float f = (float)(factor*(float)value);
-        
-        return new Float(df.format(f)).floatValue();
-    }
+//    private float toTwoDecimalPlaces(double factor,int value) {       
+//        DecimalFormat df = new DecimalFormat("#,###,###,##0.00");
+//        float f = (float)(factor*(float)value);
+//        
+//        return new Float(df.format(f)).floatValue();
+//    }
     
     public HashMap<String,String> getGraphicLabels() {
         return graphicLabels;
