@@ -2,10 +2,16 @@ package com.inthinc.pro.service.providers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.MessageFormat;
 
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
 import javax.ws.rs.ext.ExceptionMapper;
+
+import org.apache.http.Header;
 
 /**
  * RestEasy base exception mapper template method. The template method will get the {@link Status} object it should return from children classes and wrap it in a {@link Response}
@@ -34,13 +40,17 @@ import javax.ws.rs.ext.ExceptionMapper;
  */
 public abstract class BaseExceptionMapper<E extends Throwable> implements ExceptionMapper<E> {
 
+    private static final String ERROR_WRAPPER = "<exception>{0}</exception>";
     /**
      * @see javax.ws.rs.ext.ExceptionMapper#toResponse(java.lang.Throwable)
      */
     @Override
     public Response toResponse(E exception) {
         String stackTract = getExceptionStackTrace(exception);
+        
+        //return Response.status(getStatus()).type(MediaType.TEXT_PLAIN).entity(stackTract).build();
         return Response.status(getStatus()).entity(stackTract).build();
+        
     }
 
     private String getExceptionStackTrace(Throwable exception) {
@@ -49,7 +59,7 @@ public abstract class BaseExceptionMapper<E extends Throwable> implements Except
 
         try {
             exception.printStackTrace(pWriter);
-            String stackTrace = sWriter.toString();
+            String stackTrace = MessageFormat.format(ERROR_WRAPPER, sWriter.toString());
             return stackTrace;
         } finally {
             pWriter.close();
