@@ -345,7 +345,8 @@
       	<h:form id="tripsMapForm">
 <!--    	<rich:jQuery selector="document" query="ready(function(){getAddresses()})" />-->
 
-         <rich:panel id="tripBubbles" rendered="#{driverTripsBean.selectedTripID != null}">
+			<rich:panel id="tripBubbles">
+			<rich:panel id="tripBubblesInner"  rendered="#{driverTripsBean.selectedTripID != null}">
             <!-- BEGIN GOOGLE BUBBLES -->
             <ui:param name="trip" value="#{driverTripsBean.tripsMap[driverTripsBean.selectedTripID]}"/>
                 <ui:include src="/includes/tripBubble.xhtml">
@@ -382,8 +383,9 @@
  					<ui:param name="context" value="driverTripsInProgress" />
                 </ui:include>
 		</rich:panel>
+		</rich:panel>
 		<rich:panel id="eventBubbles" >
-<!-- 		<rich:panel id="eventBubbles" rendered="#{driverTripsBean.selectedViolationID != null}">-->	
+ 		<rich:panel id="eventBubblesInner" rendered="#{driverTripsBean.selectedViolationID != null}">-->	
 				<ui:param name="violation" value="#{driverTripsBean.allEventsMap[driverTripsBean.selectedViolationID]}"/>
                 <ui:include src="/includes/eventBubble.xhtml">
                     <ui:param name="eventType" value="#{violation.eventType}" />
@@ -402,6 +404,7 @@
                     <ui:param name="eventHighIdle" value="#{violation.highIdleDuration}" />
  					<ui:param name="context" value="driverTrips" />
                 </ui:include>
+        </rich:panel>
         </rich:panel>
                 </h:form>
 

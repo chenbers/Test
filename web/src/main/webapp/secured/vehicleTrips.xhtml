@@ -343,8 +343,8 @@
 		<ui:define name="content">
 
 				<h:form id="tripsMapForm">
-
-						<rich:panel id="tripBubbles" rendered="#{vehicleTripsBean.selectedTripID != null}">
+						<rich:panel id="tripBubbles">
+						<rich:panel id="tripBubblesInner" rendered="#{vehicleTripsBean.selectedTripID ne null}">
 								<!-- BEGIN GOOGLE BUBBLES -->
 								<ui:param name="trip" value="#{vehicleTripsBean.tripsMap[vehicleTripsBean.selectedTripID]}" />
 								<ui:include src="/includes/tripBubble.xhtml">
@@ -377,6 +377,7 @@
 										<ui:param name="tripBubbleAddress" value="tripInProgressAddress" />
 										<ui:param name="context" value="vehicleTripsInProgress" />
 								</ui:include>
+						</rich:panel>
 						</rich:panel>
 						<rich:panel id="eventBubbles">
 								<!-- 		<rich:panel id="eventBubbles" rendered="#{vehicleTripsBean.selectedViolationID != null}">-->
