@@ -48,10 +48,11 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
 
                 record.setGroupID(resultSet.getInt(1));
                 record.setStateName(resultSet.getString(2));
-                record.setMonth(resultSet.getString(3));
-                record.setMiles(resultSet.getLong(4));
-                record.setTruckGallons(resultSet.getFloat(5));
-                record.setTrailerGallons(resultSet.getFloat(6));
+                record.setStateAbbrev(resultSet.getString(3));
+                record.setMonth(resultSet.getString(4));
+                record.setMiles(resultSet.getLong(5));
+                record.setTruckGallons(resultSet.getFloat(6));
+                record.setTrailerGallons(resultSet.getFloat(7));
                 
                 recordList.add(record);
             }
@@ -96,9 +97,10 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
 
                 record.setGroupID(resultSet.getInt(1));
                 record.setStateName(resultSet.getString(2));
-                record.setMiles(resultSet.getLong(3));
-                record.setTruckGallons(resultSet.getFloat(4));
-                record.setTrailerGallons(resultSet.getFloat(5));
+                record.setStateAbbrev(resultSet.getString(3));
+                record.setMiles(resultSet.getLong(4));
+                record.setTruckGallons(resultSet.getFloat(5));
+                record.setTrailerGallons(resultSet.getFloat(6));
                 recordList.add(record);
             }
         }   // end try
@@ -143,9 +145,10 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 record.setGroupID(resultSet.getInt(1));
                 record.setVehicleName(resultSet.getString(2));
                 record.setStateName(resultSet.getString(3));
-                record.setMiles(resultSet.getLong(4));
-                record.setTruckGallons(resultSet.getFloat(5));
-                record.setTrailerGallons(resultSet.getFloat(6));
+                record.setStateAbbrev(resultSet.getString(4));
+                record.setMiles(resultSet.getLong(5));
+                record.setTruckGallons(resultSet.getFloat(6));
+                record.setTrailerGallons(resultSet.getFloat(7));
                 recordList.add(record);
             }
         }   // end try
@@ -190,10 +193,11 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 record.setGroupID(resultSet.getInt(1));
                 record.setVehicleName(resultSet.getString(2));
                 record.setStateName(resultSet.getString(3));
-                record.setOnRoadFlag(resultSet.getBoolean(4));
-                record.setMiles(resultSet.getLong(5));
-                record.setTruckGallons(resultSet.getFloat(6));
-                record.setTrailerGallons(resultSet.getFloat(7));
+                record.setStateAbbrev(resultSet.getString(4));
+                record.setOnRoadFlag(resultSet.getBoolean(5));
+                record.setMiles(resultSet.getLong(6));
+                record.setTruckGallons(resultSet.getFloat(7));
+                record.setTrailerGallons(resultSet.getFloat(8));
                 recordList.add(record);
             }
         }   // end try
@@ -238,9 +242,10 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 record.setGroupID(resultSet.getInt(1));
                 record.setVehicleName(resultSet.getString(2));
                 record.setStateName(resultSet.getString(3));
-                record.setMiles(resultSet.getLong(4));
-                record.setTruckGallons(resultSet.getFloat(5));
-                record.setTrailerGallons(resultSet.getFloat(6));
+                record.setStateAbbrev(resultSet.getString(4));
+                record.setMiles(resultSet.getLong(5));
+                record.setTruckGallons(resultSet.getFloat(6));
+                record.setTrailerGallons(resultSet.getFloat(7));
                 recordList.add(record);
             }
         }   // end try

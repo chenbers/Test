@@ -7,6 +7,7 @@ public class StateMileage extends BaseEntity
     private Integer groupID;
     private String vehicleName;
     private String stateName;
+    private String stateAbbrev;
     private Boolean onRoadFlag;
     private String month;
     private Long miles;
@@ -33,6 +34,14 @@ public class StateMileage extends BaseEntity
     public void setStateName(String stateName) {
         this.stateName = stateName;
     }
+
+    public String getStateAbrev() {
+        return stateAbbrev;
+    }
+    public void setStateAbbrev(String stateAbbrev) {
+        this.stateAbbrev = stateAbbrev;
+    }
+    
     public Boolean isOnRoadFlag() {
         return onRoadFlag;
     }
