@@ -417,4 +417,13 @@ public class CoreMethodLib extends DefaultSelenium{
 		errors = new ErrorCatcher();
 		super.start();
 	}
+	
+	public Boolean inSession(){
+		try{
+			getAllWindowNames();
+		}catch(NullPointerException e){
+			return false;
+		}
+		return true;
+	}
 }
