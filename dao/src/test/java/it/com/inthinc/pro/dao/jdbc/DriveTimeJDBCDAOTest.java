@@ -147,8 +147,8 @@ System.out.println(interval);
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
         
         int numDays = 7;
-        DateTime end = new DateMidnight(DateTimeZone.UTC).toDateTime();
-        DateTime start = new DateTime(end, DateTimeZone.UTC).minusDays(numDays-1);
+        DateTime end = new DateMidnight().toDateTime();
+        DateTime start = new DateTime(end).minusDays(numDays-1);
         Interval interval  = new Interval(start, end);
 System.out.println(interval);        
         
