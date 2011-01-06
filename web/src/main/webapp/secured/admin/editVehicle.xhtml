@@ -154,8 +154,15 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-color" value="#{vehiclesBean.updateField['color']}" />
-                                  <h:outputText value="#{messages.editVehicle_color}" />
+<!--                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-color" value="#{vehiclesBean.updateField['color']}" />-->
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="FALSE"/>
+										<ui:param name="for" value="editVehicle-color"/>
+										<ui:param name="fieldName" value="color"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+								  		<ui:param name="label" value="#{messages.editVehicle_color}"/>
+										<ui:param name="context" value="editVehicleColor"/>
+								  </ui:include>
                                 </td>
                                 <td>
                                   <h:inputText value="#{vehiclesBean.item.color}" id="editVehicle-color" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="14" />
@@ -163,7 +170,14 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-weight" value="#{vehiclesBean.updateField['weight']}" />
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="FALSE"/>
+										<ui:param name="for" value="editVehicle-weight"/>
+										<ui:param name="fieldName" value="weight"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+<!--								  		<ui:param name="label" value="#{messages.editVehicle_weight}"/>-->
+										<ui:param name="context" value="editVehicleWeight"/>
+								  </ui:include>
                                   <h:outputText value="editVehicle_weight" converter="MeasurementTextConverter" />
                                 </td>
                                 <td>
@@ -185,8 +199,16 @@
                               </ui:fragment>
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_state" value="#{vehiclesBean.updateField['state']}" />
-                                  <h:outputText value="#{messages.editVehicle_state}" />
+<!--                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_state" value="#{vehiclesBean.updateField['state']}" />-->
+<!--                                  <h:outputText value="#{messages.editVehicle_state}" />-->
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="for" value="editVehicle-state"/>
+										<ui:param name="fieldName" value="state"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+								  		<ui:param name="label" value="#{messages.editVehicle_state}"/>
+										<ui:param name="context" value="editVehicleState"/>
+								  </ui:include>
                                 </td>
                                 <td>
                                   <rich:message for="editVehicle-state" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -200,7 +222,15 @@
                               <!-- Odometer -->
                               <tr>
                                 <td width="100" valign="top">
-                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-odometer" value="#{vehiclesBean.updateField['odometer']}" />
+<!--                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-odometer" value="#{vehiclesBean.updateField['odometer']}" />-->
+                                  <ui:include src="../../includes/admin/inputLabel.xhtml">
+										<ui:param name="required" value="TRUE"/>
+										<ui:param name="for" value="editVehicle-odometer"/>
+										<ui:param name="fieldName" value="odometer"/>
+										<ui:param name="editBean" value="#{vehiclesBean}"/>
+<!--								  		<ui:param name="label" value="#{messages.editVehicle_odometer}"/>-->
+										<ui:param name="context" value="editVehicleOdometer"/>
+								  </ui:include>
                                   <h:outputText value="editVehicle_odometer" converter="MeasurementTextConverter"/>
                                 </td>
                                 
