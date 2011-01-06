@@ -22,7 +22,7 @@ public class CellcontrolEndpointSmokeTest implements ApplicationContextAware {
     /**
      * Cell phone test number provided by Cellcontrol.
      */
-    private final String CELL_PHONE_NUMBER = "2259388363";
+    private final String CELL_PHONE_NUMBER = "2145348306";
 
     /**
      * Dummy test required to avoid JUnit initialization errors.
@@ -49,7 +49,7 @@ public class CellcontrolEndpointSmokeTest implements ApplicationContextAware {
     // @Test
     public void testEnablePhone() {
         PhoneControlAdapterFactory factory = (PhoneControlAdapterFactory) BeanFactoryUtils.beanOfType(this.applicationContext, PhoneControlAdapterFactory.class);
-        PhoneControlAdapter cellcontrolAdapter = factory.createAdapter(CellProviderType.CELL_CONTROL);
+        PhoneControlAdapter cellcontrolAdapter = factory.createAdapter(CellProviderType.ZOOM_SAFER);
 
         cellcontrolAdapter.enablePhone(CELL_PHONE_NUMBER);
     }

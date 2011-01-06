@@ -17,7 +17,7 @@ import com.inthinc.pro.service.phonecontrol.client.ZoomsaferEndPoint;
 public class ZoomsaferAdapter implements PhoneControlAdapter {
 
     private static final Logger logger = Logger.getLogger(ZoomsaferAdapter.class);
-    
+
     public static final String ZOOM_SAFER_TIMESTAMP_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS Z";
 
     private ZoomsaferEndPoint zoomsaferEndpoint;
@@ -44,7 +44,7 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
     @Override
     public void disablePhone(String cellPhoneNumber) {
         Date now = clock.getNow();
-        Response response = zoomsaferEndpoint.disablePhone(cellPhoneNumber, this.dateFormatter.format(now));
+        Response response = zoomsaferEndpoint.disablePhone(ZoomsaferEndPoint.DISABLE_PHONE_EVENT_TYPE, cellPhoneNumber, this.dateFormatter.format(now));
         logger.debug("A request was sent to Zoomsafer endpoint to disable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
     }
 
@@ -54,7 +54,7 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
     @Override
     public void enablePhone(String cellPhoneNumber) {
         Date now = clock.getNow();
-        Response response = zoomsaferEndpoint.enablePhone(cellPhoneNumber, this.dateFormatter.format(now));
+        Response response = zoomsaferEndpoint.enablePhone(ZoomsaferEndPoint.ENABLE_PHONE_EVENT_TYPE, cellPhoneNumber, this.dateFormatter.format(now));
         logger.debug("A request was sent to Zoomsafer endpoint to enable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
     }
 }

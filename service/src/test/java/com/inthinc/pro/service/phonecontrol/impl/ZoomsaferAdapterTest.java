@@ -28,7 +28,7 @@ public class ZoomsaferAdapterTest {
         // Expectations & stubbing
         new NonStrictExpectations() {
             {
-                zoomsaferEndpointMock.disablePhone(cellPhoneNumber, expectedTimestamp);
+                zoomsaferEndpointMock.disablePhone(ZoomsaferEndPoint.DISABLE_PHONE_EVENT_TYPE, cellPhoneNumber, expectedTimestamp);
                 result = Response.ok().build();
 
                 clockMock.getNow();
@@ -42,7 +42,7 @@ public class ZoomsaferAdapterTest {
         // Verification
         new Verifications() {
             {
-                zoomsaferEndpointMock.disablePhone(cellPhoneNumber, expectedTimestamp);
+                zoomsaferEndpointMock.disablePhone(ZoomsaferEndPoint.DISABLE_PHONE_EVENT_TYPE, cellPhoneNumber, expectedTimestamp);
                 times = 1;
             }
         };
@@ -50,31 +50,31 @@ public class ZoomsaferAdapterTest {
 
     @Test
     public void testEnablePhone(final ZoomsaferEndPoint zoomsaferEndpointMock, final Clock clockMock) {
-        
+
         final String cellPhoneNumber = "15145555555";
         final Date now = new Date();
         final String expectedTimestamp = new SimpleDateFormat(ZoomsaferAdapter.ZOOM_SAFER_TIMESTAMP_FORMAT).format(now);
-        
+
         PhoneControlAdapter zoomsaferAdapter = new ZoomsaferAdapter(zoomsaferEndpointMock, clockMock);
-        
+
         // Expectations & stubbing
         new NonStrictExpectations() {
             {
-                zoomsaferEndpointMock.enablePhone(cellPhoneNumber, expectedTimestamp);
+                zoomsaferEndpointMock.enablePhone(ZoomsaferEndPoint.ENABLE_PHONE_EVENT_TYPE, cellPhoneNumber, expectedTimestamp);
                 result = Response.ok().build();
-                
+
                 clockMock.getNow();
                 result = now;
             }
         };
-        
+
         // Execution
         zoomsaferAdapter.enablePhone(cellPhoneNumber);
-        
+
         // Verification
         new Verifications() {
             {
-                zoomsaferEndpointMock.enablePhone(cellPhoneNumber, expectedTimestamp);
+                zoomsaferEndpointMock.enablePhone(ZoomsaferEndPoint.ENABLE_PHONE_EVENT_TYPE,cellPhoneNumber, expectedTimestamp);
                 times = 1;
             }
         };
