@@ -17,7 +17,6 @@ package com.inthinc.pro.web.selenium;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
 
 import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
 import com.thoughtworks.selenium.CommandProcessor;
