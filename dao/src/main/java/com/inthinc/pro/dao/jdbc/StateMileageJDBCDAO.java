@@ -243,9 +243,10 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 record.setVehicleName(resultSet.getString(2));
                 record.setStateName(resultSet.getString(3));
                 record.setStateAbbrev(resultSet.getString(4));
-                record.setMiles(resultSet.getLong(5));
-                record.setTruckGallons(resultSet.getFloat(6));
-                record.setTrailerGallons(resultSet.getFloat(7));
+                record.setMonth(resultSet.getString(5));
+                record.setMiles(resultSet.getLong(6));
+                record.setTruckGallons(resultSet.getFloat(7));
+                record.setTrailerGallons(resultSet.getFloat(8));
                 recordList.add(record);
             }
         }   // end try
