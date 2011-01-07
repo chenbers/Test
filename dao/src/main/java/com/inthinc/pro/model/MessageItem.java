@@ -32,6 +32,9 @@ public class MessageItem {
     @Column(name = "created")
     private Date fromPortalSent;
     
+    private Integer dmrOffset;
+    private Integer type;
+    
     public String getFromPortalTo() {
         return from;
     }
@@ -116,6 +119,22 @@ public class MessageItem {
     }
     public void setFromPortalSent(Date fromPortalSent) {
         this.fromPortalSent = fromPortalSent;
+    }
+
+    public void setDmrOffset(Integer dmrOffset) {
+        this.dmrOffset = dmrOffset;
+    }
+
+    public Integer getDmrOffset() {
+        return dmrOffset;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getType() {
+        return type;
     }
 }
 
