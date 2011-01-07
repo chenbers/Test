@@ -19,12 +19,15 @@ import mockit.NonStrict;
 import mockit.Verifications;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.joda.time.DateMidnight;
 import org.joda.time.Interval;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -36,8 +39,10 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
     
     // Constant values
     private final Integer GROUP_ID = new Integer(2);
+    private final Integer DRIVER_ID = new Integer(1);
     private final String VEHICLE_NAME = "Stub Vehicle Name";
     private final Double HOURS_THIS_DAY = new Double(15);
+    private final Long SECONDS_THIS_DAY = Long.valueOf(54000l);
     private final String GROUP_FULL_NAME = "Group Full Name";
     private final Locale LOCALE = Locale.US;
     private final Interval INTERVAL = new Interval(new Date().getTime() - 3600, new Date().getTime());
@@ -45,8 +50,8 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
     // JMockit mocks
     @NonStrict @Cascading private Driver driverMock;
     @Mocked private DriverDAO driverDAOMock; 
-    @Mocked private WaysmartDAO waysmartDAOMock; 
     @Mocked private GroupHierarchy groupHierarchyMock;
+    @Mocked private DriveTimeDAO driveTimeDAOMock; 
     
 	// The System Under Test
 	private TenHoursViolationReportCriteria reportCriteriaSUT = new TenHoursViolationReportCriteria(LOCALE); 
@@ -61,7 +66,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
 
 		// General initializations
         reportCriteriaSUT.setDriverDAO(driverDAOMock);
-        reportCriteriaSUT.setWaysmartDAO(waysmartDAOMock);
+        reportCriteriaSUT.setDriveTimeDAO(driveTimeDAOMock);
 
         // JMockit Documentation:
         // http://jmockit.googlecode.com/svn/trunk/www/tutorial/BehaviorBasedTesting.html
@@ -86,22 +91,28 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
               List<Driver> driverList = new ArrayList<Driver>(); driverList.add(driverMock);
               driverDAOMock.getAllDrivers(GROUP_ID); returns(driverList);
 
-              waysmartDAOMock.getTenHoursViolations(driverMock, INTERVAL); returns(getViolationList());
+              Interval queryInterval = new Interval(INTERVAL.getStart().minusDays(1), new DateMidnight(INTERVAL.getEnd()).toDateTime().plusDays(2));
 
+              driveTimeDAOMock.getDriveTimeRecordListForGroup(GROUP_ID, queryInterval); returns (getDriveTimeList());
+
+              driverMock.getDriverID(); returns(DRIVER_ID); 
               driverMock.getGroupID(); returns(GROUP_ID); 
               groupHierarchyMock.getShortGroupName(GROUP_ID, ReportCriteria.SLASH_GROUP_SEPERATOR); returns(GROUP_FULL_NAME);
            }
-           
+
            // Helper method
-           private List<TenHoursViolationRecord> getViolationList(){
-               List<TenHoursViolationRecord> violationList = new ArrayList<TenHoursViolationRecord>();
-               TenHoursViolationRecord violation = new TenHoursViolationRecord(); 
-               violation.setVehicleName(VEHICLE_NAME); 
-               violation.setHoursThisDay(HOURS_THIS_DAY); 
-               violationList.add(violation);
+           private List<DriveTimeRecord> getDriveTimeList(){
+               List<DriveTimeRecord> hoursList = new ArrayList<DriveTimeRecord>();
+               DriveTimeRecord hours = new DriveTimeRecord(); 
+               hours.setDateTime(new DateMidnight(INTERVAL.getStart()).toDateTime());
+               hours.setDriveTimeSeconds(SECONDS_THIS_DAY);
+               hours.setDriverID(DRIVER_ID);
+               hours.setVehicleName(VEHICLE_NAME);
+               hoursList.add(hours);
                
-               return violationList;
+               return hoursList;
            }
+
            
         };
         
@@ -116,6 +127,7 @@ public class TenHoursViolationReportCriteriaTest extends BaseUnitTest {
            {
         	   // All the strict expectations were already verified automatically
                driverMock.getGroupID();
+               driverMock.getDriverID();
                driverMock.getPerson(); times = 2;
            }
          };

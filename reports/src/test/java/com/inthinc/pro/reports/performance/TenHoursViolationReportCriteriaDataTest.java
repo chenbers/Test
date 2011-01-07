@@ -10,6 +10,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Driver;
@@ -19,51 +22,43 @@ import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl;
 import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
+import com.inthinc.pro.reports.performance.BaseDriveTimeUnitTest.MockDriveTimeDAO;
+import com.inthinc.pro.reports.performance.BaseDriveTimeUnitTest.MockDriverDAO;
+import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 
 
-public class TenHoursViolationReportCriteriaDataTest extends BaseUnitTest {
+public class TenHoursViolationReportCriteriaDataTest extends BaseDriveTimeUnitTest {
     
-    // for gain data test
-    public static final String DATA_PATH = "violations/";
-    public static final String testCaseName = "vtest_01H1_07012010_07072010"; 
-    
-    TenHoursViolation[] expectedData = {
-        new TenHoursViolation("Norman Wells"+ TenHoursViolationReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/04/2010"," David  Francey",null,"02289734",3.0833333333333335),
-        new TenHoursViolation("Norman Wells"+ TenHoursViolationReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/05/2010"," David  Francey",null,"02289734",3.5166666666666666),
-        new TenHoursViolation("Norman Wells"+ TenHoursViolationReportCriteria.SLASH_GROUP_SEPERATOR +"Norman Wells - WS","07/01/2010"," Scott Giem",null,"00317263",3.433333333333333),
-    };
+    protected static final String DAY_FORMAT = "MM/dd/yyyy";
 
-    // test using data extracted from GAIN database
+    @SuppressWarnings("unchecked")
     @Test
-    public void gainDetailsTestCases() {
-        HosRecordDataSet testData = new HosRecordDataSet(DATA_PATH, testCaseName, false);
-        
-        Map<Driver, List<TenHoursViolationRecord>> violationRecordMap = new HashMap<Driver, List<TenHoursViolationRecord>> ();
-        for (Entry<Driver, List<HOSRecord>> dataEntry : testData.driverHOSRecordMap.entrySet()) {
-            List<TenHoursViolationRecord> tenHoursViolationRecordList = new WaysmartDAOImpl().getTenHoursViolations(dataEntry.getKey(), testData.interval, dataEntry.getValue(), 120);
-            violationRecordMap.put(dataEntry.getKey(), tenHoursViolationRecordList);
-        }
+    public void dataTestCases() {
+        Interval interval = initInterval();
+        DateTimeFormatter dayFormatter = DateTimeFormat.forPattern(DAY_FORMAT);
+
         TenHoursViolationReportCriteria criteria = new TenHoursViolationReportCriteria(Locale.US);
-        criteria.initDataSet(testData.getGroupHierarchy(), testData.interval, violationRecordMap);
+        criteria.setDriveTimeDAO(new MockDriveTimeDAO(interval, 11));
+        criteria.setDriverDAO(new MockDriverDAO());
+        criteria.init(getMockGroupHierarchy(), GROUP_ID, interval);
         
         List<TenHoursViolation> dataList = criteria.getMainDataset();
+        
+        assertEquals("data size", 4, dataList.size());
         DecimalFormat hoursFormatter = new DecimalFormat("###0.00"); 
-        int eCnt = 0;
+        int eCnt = 1;
         for (TenHoursViolation data : dataList) {
-//            data.dump();
-            TenHoursViolation expected = expectedData[eCnt++];
-            assertEquals(testCaseName + "groupName " + eCnt, expected.getGroupName(), data.getGroupName());
-            assertEquals(testCaseName + "driverName " + eCnt, expected.getDriverName(), data.getDriverName());
-            assertEquals(testCaseName + "employeeID " + eCnt, expected.getEmployeeID(), data.getEmployeeID());
-            assertEquals(testCaseName + "vehicleName " + eCnt, expected.getVehicleName(), data.getVehicleName());
-            assertEquals(testCaseName + "day " + eCnt, expected.getDate(), data.getDate());
-            assertEquals(testCaseName + "hours " + eCnt, hoursFormatter.format(expected.getHoursThisDay()), hoursFormatter.format(data.getHoursThisDay()));
+            data.dump();
+            assertEquals("groupName " + eCnt, GROUP_NAME, data.getGroupName());
+            assertEquals("driverName " + eCnt, "F"+eCnt+" L"+eCnt, data.getDriverName());
+            assertEquals("day " + eCnt, dayFormatter.print(interval.getStart()), data.getDate());
+            assertEquals("hours " + eCnt, hoursFormatter.format(11.0d), hoursFormatter.format(data.getHoursThisDay()));
+            eCnt++;
         }
         
         dump("tenHoursViolationTest", 1, criteria, FormatType.PDF);
         dump("tenHoursViolationTest", 1, criteria, FormatType.EXCEL);
-        
+
     }
-    
 }

@@ -9,26 +9,37 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
+import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class TenHoursViolationReportCriteria extends ReportCriteria {
+    
+    private static final Logger logger = Logger.getLogger(TenHoursViolationReportCriteria.class);
+    
     private static final String START_DATE_PARAM = "startDate";
     private static final String END_DATE_PARAM = "endDate";
     protected DateTimeFormatter dateTimeFormatter;
 
     protected DriverDAO driverDAO;
-    protected WaysmartDAO waysmartDAO;
+    private DriveTimeDAO driveTimeDAO;
+
 
     class TenHoursViolationComparator implements Comparator<TenHoursViolation> {
 
@@ -115,16 +126,61 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         addParameter(TenHoursViolationReportCriteria.START_DATE_PARAM, dateTimeFormatter.print(interval.getStart()));
         addParameter(TenHoursViolationReportCriteria.END_DATE_PARAM, dateTimeFormatter.print(interval.getEnd()));
         Map<Driver, List<TenHoursViolationRecord>> violationRecordMap = new HashMap<Driver, List<TenHoursViolationRecord>>();
+        Interval queryInterval = new Interval(interval.getStart().minusDays(1), new DateMidnight(interval.getEnd()).toDateTime().plusDays(2));
+//System.out.println("interval: " + queryInterval);     
 
         List<Driver> driverList = driverDAO.getAllDrivers(groupID);
+        List<DriveTimeRecord> driveTimeRecordList = driveTimeDAO.getDriveTimeRecordListForGroup(groupID, queryInterval);
+
         for (Driver driver : driverList) {
-            List<TenHoursViolationRecord> violationList = waysmartDAO.getTenHoursViolations(driver, interval);
+            List<TenHoursViolationRecord> violationList = getTenHourViolationsList(driver, interval, driveTimeRecordList);
+
             if (!violationList.isEmpty()) {
                 violationRecordMap.put(driver, violationList);
             }
         }
 
         initDataSet(groupHierarchy, interval, violationRecordMap);
+    }
+
+    private static final long TEN_HOURS_IN_SECONDS = 36000l;    
+
+    private List<TenHoursViolationRecord> getTenHourViolationsList(Driver driver, Interval interval, List<DriveTimeRecord> driveTimeList) {
+        List<DateTime> dayList = DateTimeUtil.getDayList(interval, DateTimeZone.getDefault());
+        List<TenHoursViolationRecord> violationList = new ArrayList<TenHoursViolationRecord>();
+        for (DateTime day : dayList) {
+            Integer vehicleID = null;
+            String vehicleName = null;
+            long seconds = 0;
+            for (DriveTimeRecord driveTimeRecord : driveTimeList) {
+                if (!driveTimeRecord.getDriverID().equals(driver.getDriverID()))
+                    continue;
+//System.out.println(driver.getDriverID() + " Day: " + day + " " + day.getMillis());
+//System.out.println(driveTimeRecord.getDateTime() + " " + driveTimeRecord.getDateTime().getMillis());
+                if (day.isEqual(driveTimeRecord.getDateTime())) {
+                    seconds += driveTimeRecord.getDriveTimeSeconds();
+                    vehicleID = driveTimeRecord.getVehicleID();
+                    vehicleName = driveTimeRecord.getVehicleName();
+//System.out.println("seconds " + seconds);
+                 }
+            }
+            
+            if (seconds > TEN_HOURS_IN_SECONDS) {
+                TenHoursViolationRecord tenHoursViolationRecord = new TenHoursViolationRecord();
+                tenHoursViolationRecord.setDateTime(day);
+                tenHoursViolationRecord.setDriverID(driver.getDriverID());
+                tenHoursViolationRecord.setHoursThisDay(DateUtil.convertSecondsToDoubleHours(seconds));
+                if (tenHoursViolationRecord.getHoursThisDay().doubleValue() > 24.0d) {
+                    logger.error("Ten Hours Violations for driverID " + driver.getDriverID() + " exceeds 24 hours (" + tenHoursViolationRecord.getHoursThisDay() + " hrs)");
+                    tenHoursViolationRecord.setHoursThisDay(24.0d);
+                }
+                tenHoursViolationRecord.setVehicleID(vehicleID);
+                tenHoursViolationRecord.setVehicleName(vehicleName);
+                violationList.add(tenHoursViolationRecord);
+            }
+
+        }
+        return violationList;
     }
 
     /**
@@ -141,12 +197,12 @@ public class TenHoursViolationReportCriteria extends ReportCriteria {
         this.driverDAO = driverDAO;
     }
 
-    public WaysmartDAO getWaysmartDAO() {
-        return waysmartDAO;
+    public DriveTimeDAO getDriveTimeDAO() {
+        return driveTimeDAO;
     }
 
-    public void setWaysmartDAO(WaysmartDAO waysmartDao) {
-        this.waysmartDAO = waysmartDao;
+    public void setDriveTimeDAO(DriveTimeDAO driveTimeDAO) {
+        this.driveTimeDAO = driveTimeDAO;
     }
 
 }

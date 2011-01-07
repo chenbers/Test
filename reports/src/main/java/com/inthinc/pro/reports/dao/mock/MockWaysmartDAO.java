@@ -28,58 +28,6 @@ public class MockWaysmartDAO implements WaysmartDAO {
      * {@inheritDoc}
      * @see com.inthinc.pro.reports.dao.WaysmartDAO#getTenHoursViolations(java.lang.Integer, org.joda.time.Interval)
      */
-    @Override
-    public List<TenHoursViolationRecord> getTenHoursViolations(Driver driver, Interval interval) {
-        Integer driverID = driver.getDriverID();
-        Calendar startDate = Calendar.getInstance();
-        startDate.set(interval.getStart().getYearOfEra(), interval.getStart().getMonthOfYear()-1, 
-                interval.getStart().getDayOfMonth()+1, 0, 0, 0);
-        
-        Calendar endDate = Calendar.getInstance();
-        endDate.set(interval.getEnd().getYearOfEra(), interval.getEnd().getMonthOfYear()-1, 
-                interval.getEnd().getDayOfMonth(), 0, 0, 0);
-        
-        List<TenHoursViolationRecord> filter = new ArrayList<TenHoursViolationRecord>(); 
-        List<TenHoursViolationRecord> list = getTenHoursViolationData(driverID);
-        if (list != null) {
-            for (TenHoursViolationRecord rec : list) {
-                if (rec.getDateTime().toDate().after(startDate.getTime())
-                        && rec.getDateTime().toDate().before(endDate.getTime())) {
-                    filter.add(rec);
-                }
-            }
-        }
-        return filter;
-    }
-
-    /** 
-     * {@inheritDoc}
-     * @see com.inthinc.pro.reports.dao.WaysmartDAO#getDriverHours(java.lang.Integer, org.joda.time.Interval)
-     */
-    @Override
-    public List<DriverHoursRecord> getDriverHours(Driver driver, Interval interval) {
-        Integer driverID = driver.getDriverID();
-        Calendar startDate = Calendar.getInstance();
-        startDate.set(interval.getStart().getYearOfEra(), interval.getStart().getMonthOfYear()-1, 
-                interval.getStart().getDayOfMonth()+1,0,0,0);
-        
-        Calendar endDate = Calendar.getInstance();
-        endDate.set(interval.getEnd().getYearOfEra(), interval.getEnd().getMonthOfYear()-1, 
-                interval.getEnd().getDayOfMonth(),0,0,0);
-
-        List<DriverHoursRecord> filter = new ArrayList<DriverHoursRecord>();
-        List<DriverHoursRecord> list = this.getDriverHoursData(driverID);
-        if (list != null) {
-            for (DriverHoursRecord rec : list) {
-                if (rec.getDay().toDate().after(startDate.getTime())
-                        && rec.getDay().toDate().before(endDate.getTime())) {
-                    filter.add(rec);
-                }
-            }
-        }
-        return filter;
-    }
-
     /** 
      * {@inheritDoc}
      * @see com.inthinc.pro.reports.dao.WaysmartDAO#getVehicleUsage(java.lang.Integer, org.joda.time.Interval)

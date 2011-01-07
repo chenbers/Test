@@ -726,7 +726,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     public ReportCriteria getTenHoursDayViolationsCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale) {
         TenHoursViolationReportCriteria criteria = new TenHoursViolationReportCriteria(locale);
         criteria.setDriverDAO(driverDAO);
-        criteria.setWaysmartDAO(waysmartDAO);
+        criteria.setDriveTimeDAO(driveTimeDAO);
                
         criteria.init(accountGroupHierarchy, groupID, interval);
         return criteria;

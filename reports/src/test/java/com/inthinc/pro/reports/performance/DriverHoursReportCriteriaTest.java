@@ -49,7 +49,6 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
     // JMockit mocks
     @NonStrict @Cascading private Driver driverMock;
     @Mocked private DriverDAO driverDAOMock; 
-//    @Mocked private WaysmartDAO waysmartDAOMock; 
     @Mocked private GroupHierarchy groupHierarchyMock;
     @Mocked private DriveTimeDAO driveTimeDAOMock; 
     
@@ -99,16 +98,6 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
               groupHierarchyMock.getShortGroupName(GROUP_ID, ReportCriteria.SLASH_GROUP_SEPERATOR); returns(GROUP_FULL_NAME); 
            }
            
-           // Helper method
-           private List<DriverHoursRecord> getHoursList(){
-        	   List<DriverHoursRecord> hoursList = new ArrayList<DriverHoursRecord>();
-        	   DriverHoursRecord hours = new DriverHoursRecord(); 
-        	   hours.setDay(new DateTime());
-        	   hours.setHoursThisDay(HOURS_THIS_DAY); 
-               hoursList.add(hours);
-               
-               return hoursList;
-           }
            // Helper method
            private List<DriveTimeRecord> getDriveTimeList(){
                List<DriveTimeRecord> hoursList = new ArrayList<DriveTimeRecord>();
