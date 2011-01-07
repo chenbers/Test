@@ -13,42 +13,42 @@
 	<field name="mileage" class="java.lang.Double"/>
 	<columnHeader>
 		<band height="21" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="81" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.group.raw}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="81" y="0" width="84" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.vehicle.raw}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="165" y="0" width="83" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.month.raw}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="248" y="0" width="59" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.state.raw}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="307" y="0" width="73" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.totalMiles.raw}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="380" y="0" width="74" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.totalTruckGas.raw}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="454" y="0" width="71" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.totalTrailerGas.raw}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement x="525" y="0" width="80" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.mileage.raw}]]></textFieldExpression>
@@ -57,43 +57,43 @@
 	</columnHeader>
 	<detail>
 		<band height="21" splitType="Stretch">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="0" width="81" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="81" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="81" y="0" width="84" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="81" y="0" width="84" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="165" y="0" width="83" height="20"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="165" y="0" width="83" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{month}]]></textFieldExpression>
 			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="248" y="0" width="59" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="248" y="0" width="59" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{state}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
-				<reportElement stretchType="RelativeToBandHeight" x="307" y="0" width="73" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="307" y="0" width="73" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalMiles}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
-				<reportElement stretchType="RelativeToBandHeight" x="380" y="0" width="74" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="380" y="0" width="74" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalTruckGas}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
-				<reportElement stretchType="RelativeToBandHeight" x="454" y="0" width="71" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="454" y="0" width="71" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{totalTrailerGas}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.00">
-				<reportElement stretchType="RelativeToBandHeight" x="525" y="0" width="80" height="20"/>
+			<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="525" y="0" width="80" height="20" isPrintWhenDetailOverflows="true"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{mileage}]]></textFieldExpression>
 			</textField>
