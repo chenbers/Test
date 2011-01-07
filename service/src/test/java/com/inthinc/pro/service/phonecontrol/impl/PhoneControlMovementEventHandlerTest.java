@@ -27,6 +27,7 @@ public class PhoneControlMovementEventHandlerTest {
 
         expectedDriver.setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
         expectedDriver.setProvider(expectedCellProvider);
+        expectedDriver.setProviderUsername("");
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -68,6 +69,7 @@ public class PhoneControlMovementEventHandlerTest {
 
         expectedDriver.setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
         expectedDriver.setProvider(expectedCellProvider);
+        expectedDriver.setProviderUsername("");
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -139,6 +141,7 @@ public class PhoneControlMovementEventHandlerTest {
         final Driver driver = new Driver();
         driver.setProvider(CellProviderType.CELL_CONTROL);
         driver.setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        driver.setProviderUsername("");
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -241,6 +244,48 @@ public class PhoneControlMovementEventHandlerTest {
             {
                 driverDaoMock.findByID(expectedDriverId);
                 times = 1;
+
+                adapterFactoryMock.createAdapter((CellProviderType) any, (String) any, (String) any);
+                times = 0;
+
+                phoneControlAdapterMock.enablePhone((String) any);
+                times = 0;
+            }
+        };
+    }
+
+    @Test
+    public void testHandlesEmptyUsername(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock, final PhoneControlAdapter phoneControlAdapterMock) {
+
+        final Driver expectedDriver = new Driver();
+        final Integer expectedDriverId = 666;
+
+        expectedDriver.setDriverID(expectedDriverId);
+        expectedDriver.setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        expectedDriver.setProvider(CellProviderType.CELL_CONTROL);
+
+        // Expectations & stubbing
+        new NonStrictExpectations() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                result = expectedDriver;
+
+                adapterFactoryMock.createAdapter((CellProviderType) any, (String) any, (String) any);
+                times = 0;
+            }
+        };
+
+        // Execution
+        MovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
+
+        handler.handleDriverStartedMoving(expectedDriverId);
+        handler.handleDriverStoppedMoving(expectedDriverId);
+
+        // Verification
+        new Verifications() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                times = 2;
 
                 adapterFactoryMock.createAdapter((CellProviderType) any, (String) any, (String) any);
                 times = 0;

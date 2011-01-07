@@ -86,10 +86,15 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         if (driver.getProvider() != null) {
 
             if (driver.getCellPhone() != null) {
-                logger.debug("Creating " + driver.getProvider() + " client endpoint proxy...");
-                PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider(), driver.getProviderUsername(), driver.getProviderPassword());
-                logger.debug("Sending request to " + driver.getProvider() + " client endpoint proxy to disable PH#-" + driver.getCellPhone());
-                phoneControlAdapter.disablePhone(driver.getCellPhone());
+                if (driver.getProviderUsername() != null) {
+                    logger.debug("Creating " + driver.getProvider() + " client endpoint proxy...");
+                    PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider(), driver.getProviderUsername(), driver.getProviderPassword());
+                    logger.debug("Sending request to " + driver.getProvider() + " client endpoint proxy to disable PH#-" + driver.getCellPhone());
+                    phoneControlAdapter.disablePhone(driver.getCellPhone());
+
+                } else {
+                    logger.warn("Driver DID-" + driver.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");
+                }
             } else {
                 logger.warn("Driver DID-" + driver.getDriverID() + " has no associated cell phone number.");
             }
@@ -103,11 +108,15 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         if (driver.getProvider() != null) {
 
             if (driver.getCellPhone() != null) {
-                logger.debug("Creating " + driver.getProvider() + " client endpoint proxy...");
-                PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider(), driver.getProviderUsername(), driver.getProviderPassword());
-                logger.debug("Requesting " + driver.getProvider() + " client endpoint proxy to enable PH#-" + driver.getCellPhone());
+                if (driver.getProviderUsername() != null) {
+                    logger.debug("Creating " + driver.getProvider() + " client endpoint proxy...");
+                    PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider(), driver.getProviderUsername(), driver.getProviderPassword());
+                    logger.debug("Requesting " + driver.getProvider() + " client endpoint proxy to enable PH#-" + driver.getCellPhone());
 
-                phoneControlAdapter.enablePhone(driver.getCellPhone());
+                    phoneControlAdapter.enablePhone(driver.getCellPhone());
+                } else {
+                    logger.warn("Driver DID-" + driver.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");
+                }
             } else {
                 logger.warn("Driver DID-" + driver.getDriverID() + " has no associated cell phone number.");
             }
