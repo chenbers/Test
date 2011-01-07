@@ -183,7 +183,7 @@ public abstract class ReportsBean extends BaseBean {
                 
             case MILEAGE_BY_VEHICLE:
                     reportCriteriaList.add(getReportCriteriaService().getMileageByVehicleReportCriteria(getAccountGroupHierarchy(), params.getGroupIDList(), params.getDateRange().getInterval(), 
-                            params.getLocale(), getUser().getPerson().getMeasurementType(), true));
+                            params.getLocale(), getUser().getPerson().getMeasurementType(), false));
                 break;
 
             case STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS:
