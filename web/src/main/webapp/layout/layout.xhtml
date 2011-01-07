@@ -13,10 +13,10 @@
 
 <f:view contentType="text/html" locale="#{localeBean.locale}"> 
 <f:loadBundle basename="com.inthinc.pro.resources.Messages" var="messages" />
+<f:loadBundle basename="tiwipro" var="properties" />
 
 <head>
-
-<!--<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>-->
+<script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
 
 <c:set var="titleText" value="#{title} - #{messages.title}"/>
 <title>#{title ne null ? titleText : messages.title}</title>
@@ -80,8 +80,11 @@
 
     <ui:insert name="footer">
         <ui:include src="/includes/footer.xhtml" />
-        <!--<script type="text/javascript">
-			var _sf_async_config={uid:8341,domain:"tiwipro.com"};
+        
+          
+        <f:verbatim rendered="#{properties.chartbeat_track}">
+        <script type="text/javascript">
+			var _sf_async_config={uid:#{properties.chartbeat_uid},domain:"#{properties.chartbeat_domain}"};
 			(function(){
 			  function loadChartbeat() {
 			    window._sf_endpt=(new Date()).getTime();
@@ -97,7 +100,8 @@
 			  window.onload = (typeof window.onload != 'function') ?
 			     loadChartbeat : function() { oldonload(); loadChartbeat(); };
 			})();		
-		</script>-->
+		</script>
+		</f:verbatim>
     </ui:insert>
     <ui:insert name="errorPopup">
         <ui:include src="/includes/errorPopup.xhtml" />
