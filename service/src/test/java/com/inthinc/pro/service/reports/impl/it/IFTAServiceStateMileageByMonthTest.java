@@ -1,16 +1,10 @@
 package com.inthinc.pro.service.reports.impl.it;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.core.Response;
-
-import org.jboss.resteasy.client.ClientResponse;
 import org.junit.Test;
 
-import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.service.it.BaseEmbeddedServerITCase;
 import com.inthinc.pro.util.GroupList;
 

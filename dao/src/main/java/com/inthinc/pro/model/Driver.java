@@ -2,14 +2,14 @@ package com.inthinc.pro.model;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.model.phone.CellProviderType;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import com.inthinc.pro.model.phone.CellStatusType;
 
 /**
  * You'll see this through out this bean. It is mainly used so that the table sorting on these fields treats "" and null the same. if(fieldName != null && fieldName.equals(""))
@@ -44,6 +44,8 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private String cellPhone;
     private CellStatusType cellStatus;
     private CellProviderType provider;
+    private String providerUsername;
+    private String providerPassword;
 
     public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
             Integer dot, Integer groupID) {
@@ -163,7 +165,6 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     public void setDot(Integer dot) {
         this.dot = dot;
     }
-    
 
     public RuleSetType getDriverDOTType() {
         return (dot == null) ? null : RuleSetType.valueOf(dot);
@@ -201,6 +202,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 
     /**
      * The cellPhone getter.
+     * 
      * @return the cellPhone
      */
     public String getCellPhone() {
@@ -209,7 +211,9 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 
     /**
      * The cellPhone setter.
-     * @param cellPhone the cellPhone to set
+     * 
+     * @param cellPhone
+     *            the cellPhone to set
      */
     public void setCellPhone(String cellPhone) {
         this.cellPhone = cellPhone;
@@ -217,14 +221,16 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 
     /**
      * The cellStatus getter.
+     * 
      * @return the cellStatus
      */
     public CellStatusType getCellStatus() {
         return this.cellStatus;
     }
-    
+
     /**
      * The provider getter.
+     * 
      * @return the provider
      */
     public CellProviderType getProvider() {
@@ -233,7 +239,9 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 
     /**
      * The cellStatus setter.
-     * @param cellStatus the cellStatus to set
+     * 
+     * @param cellStatus
+     *            the cellStatus to set
      */
     public void setCellStatus(CellStatusType cellStatus) {
         this.cellStatus = cellStatus;
@@ -241,7 +249,9 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 
     /**
      * The provider setter.
-     * @param provider the provider to set
+     * 
+     * @param provider
+     *            the provider to set
      */
     public void setProvider(CellProviderType provider) {
         this.provider = provider;
@@ -257,8 +267,23 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     @Override
     public String toString() {
         return "Driver [barcode=" + barcode + ", certifications=" + certifications + ", dot=" + dot + ", driverID=" + driverID + ", expiration=" + expiration + ", groupID=" + groupID + ", license="
-                + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status
-                + "]";
+                + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status + "]";
+    }
+
+    public String getProviderUsername() {
+        return providerUsername;
+    }
+
+    public void setProviderUsername(String providerUsername) {
+        this.providerUsername = providerUsername;
+    }
+
+    public String getProviderPassword() {
+        return providerPassword;
+    }
+
+    public void setProviderPassword(String providerPassword) {
+        this.providerPassword = providerPassword;
     }
 
 }

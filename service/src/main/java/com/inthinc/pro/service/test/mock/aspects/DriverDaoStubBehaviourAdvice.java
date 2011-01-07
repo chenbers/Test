@@ -67,6 +67,11 @@ import com.inthinc.pro.model.phone.CellProviderType;
 @Component
 public class DriverDaoStubBehaviourAdvice {
 
+    public static final String CELLCOPNTROL_USERNAME = "inthincapi";
+    public static final String CELLCONTROL_PASSWORD = "1qa@WS3ed";
+    public static final String ZOOMSAFER_USERNAME = "8012438873";
+    public static final String ZOOMSAFER_PASSWORD = "password";
+    
     /*
      * Test data stored in a map by driverId.
      */
@@ -81,19 +86,27 @@ public class DriverDaoStubBehaviourAdvice {
 
             Driver driver77701 = new Driver();
             driver77701.setProvider(CellProviderType.CELL_CONTROL);
+            driver77701.setProviderUsername(CELLCOPNTROL_USERNAME);
+            driver77701.setProviderPassword(CELLCONTROL_PASSWORD);
             driver77701.setDriverID(77701);
 
             Driver driver77702 = new Driver();
             driver77702.setProvider(CellProviderType.ZOOM_SAFER);
+            driver77702.setProviderUsername(ZOOMSAFER_USERNAME);
+            driver77702.setProviderPassword(ZOOMSAFER_PASSWORD);
             driver77702.setDriverID(77702);
 
             Driver driver77711 = new Driver();
             driver77711.setProvider(CellProviderType.CELL_CONTROL);
+            driver77711.setProviderUsername(CELLCOPNTROL_USERNAME);
+            driver77711.setProviderPassword(CELLCONTROL_PASSWORD);
             driver77711.setCellPhone(STUBBED_CELLCONTROL_PHONE_NUMBER);
             driver77711.setDriverID(77711);
 
             Driver driver77712 = new Driver();
             driver77712.setProvider(CellProviderType.ZOOM_SAFER);
+            driver77712.setProviderUsername(ZOOMSAFER_USERNAME);
+            driver77712.setProviderPassword(ZOOMSAFER_PASSWORD);
             driver77712.setCellPhone(STUBBED_ZOOMSAFER_PHONE_NUMBER);
             driver77712.setDriverID(77712);
 
@@ -114,7 +127,7 @@ public class DriverDaoStubBehaviourAdvice {
     /**
      * Cell phone number returned in all test drivers associated with Zoomsafer.
      */
-    public static final String STUBBED_ZOOMSAFER_PHONE_NUMBER = "8016737947";
+    public static final String STUBBED_ZOOMSAFER_PHONE_NUMBER = "8012438873";
 
     /**
      * Cell phone number returned in all test drivers without provider information.

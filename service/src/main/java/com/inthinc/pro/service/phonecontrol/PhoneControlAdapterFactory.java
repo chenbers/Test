@@ -12,8 +12,12 @@ public interface PhoneControlAdapterFactory {
      * 
      * @param providerType
      *            The provider type to create a service client endpoint for.
+     * @param username
+     *            The username for the Cellcontrol/Zoomsafer endpoint.
+     * @param password
+     *            The password for the Cellcontrol/Zoomsafer endpoint.
      * 
      * @return A client endpoint for the respective remote {@link PhoneControlAdapter}.
      */
-    PhoneControlAdapter createAdapter(CellProviderType providerType);
+    PhoneControlAdapter createAdapter(CellProviderType providerType, String username, String password);
 }

@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
+import com.inthinc.pro.service.test.mock.aspects.DriverDaoStubBehaviourAdvice;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = { "classpath*:spring/applicationContext-*.xml" })
@@ -31,24 +32,24 @@ public class ZoomsaferEndpointSmokeTest implements ApplicationContextAware {
      * This method should not be added to automatic execution during the integration test. It should be run manually as a smoke test since it hits the actual Cellcontrol service.
      */
     // DO NOT RUN THIS TEST AS PART OF THE AUTOMATED SUITE
-//     @Test
+    // @Test
     public void testDisablePhone() {
         PhoneControlAdapterFactory factory = (PhoneControlAdapterFactory) BeanFactoryUtils.beanOfType(this.applicationContext, PhoneControlAdapterFactory.class);
-        PhoneControlAdapter cellcontrolAdapter = factory.createAdapter(CellProviderType.ZOOM_SAFER);
+        PhoneControlAdapter zoomsaferAdapter = factory.createAdapter(CellProviderType.ZOOM_SAFER, DriverDaoStubBehaviourAdvice.ZOOMSAFER_USERNAME, DriverDaoStubBehaviourAdvice.ZOOMSAFER_PASSWORD);
 
-        cellcontrolAdapter.disablePhone(CELL_PHONE_NUMBER);
+        zoomsaferAdapter.disablePhone(CELL_PHONE_NUMBER);
     }
 
     /*
      * This method should not be added to automatic execution during the integration test. It should be run manually as a smoke test since it hits the actual Cellcontrol service.
      */
     // DO NOT RUN THIS TEST AS PART OF THE AUTOMATED SUITE
-//     @Test
+//    @Test
     public void testEnablePhone() {
         PhoneControlAdapterFactory factory = (PhoneControlAdapterFactory) BeanFactoryUtils.beanOfType(this.applicationContext, PhoneControlAdapterFactory.class);
-        PhoneControlAdapter cellcontrolAdapter = factory.createAdapter(CellProviderType.ZOOM_SAFER);
+        PhoneControlAdapter zoomsaferAdapter = factory.createAdapter(CellProviderType.ZOOM_SAFER, DriverDaoStubBehaviourAdvice.ZOOMSAFER_USERNAME, DriverDaoStubBehaviourAdvice.ZOOMSAFER_PASSWORD);
 
-        cellcontrolAdapter.enablePhone(CELL_PHONE_NUMBER);
+        zoomsaferAdapter.enablePhone(CELL_PHONE_NUMBER);
     }
 
     /**

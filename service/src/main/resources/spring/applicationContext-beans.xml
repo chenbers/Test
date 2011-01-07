@@ -15,7 +15,7 @@
 		<property name="basename" value="com.inthinc.pro.resources.Messages"
 		/> </bean>
 	-->
-	
+
 	<context:component-scan base-package="com.inthinc.pro.service.phonecontrol" />
 	<context:component-scan base-package="com.inthinc.pro.util" />
 	<context:component-scan base-package="com.inthinc.pro.service.reports" />
@@ -23,58 +23,34 @@
 	<context:component-scan base-package="com.inthinc.pro.service.params" />
 	<context:component-scan base-package="com.inthinc.pro.service.validation" />
 
-    <!-- TODO Temporary placeholder for QA testing. Remove when going to production -->	
+	<!--
+		TODO Temporary placeholder for QA testing. Remove when going to
+		production
+	-->
 	<context:component-scan base-package="com.inthinc.pro.service.test.mock.aspects" />
 
 	<!-- Phone control adapter factory configuration -->
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	<!-- Cell Control -->
-	<bean id="cellcontrolHttpConnection" class="com.inthinc.pro.service.phonecontrol.client.HttpClientFactoryBean">
+	<bean id="cellcontrolHttpConnectionFactory"
+		class="com.inthinc.pro.service.phonecontrol.client.HttpClientFactory">
 		<property name="host" value="${cellcontrol.service.host}" />
 		<property name="port" value="${cellcontrol.service.port}" />
-		<property name="username" value="${cellcontrol.service.username}" />
-		<property name="password" value="${cellcontrol.service.password}" />
 	</bean>
-	<bean id="cellcontrolClientEndpoint"
-		class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
-		<property name="httpClient" ref="cellcontrolHttpConnection" />
-		<property name="serviceInterface" value="com.inthinc.pro.service.phonecontrol.client.CellcontrolEndpoint" />
-		<property name="baseUri" value="http://${cellcontrol.service.host}" />
-	</bean>
-	<!-- Zoom Safer -->
-	<bean id="systemClock" class="com.inthinc.pro.service.phonecontrol.impl.SystemClock"/>
-	<bean id="zoomsaferHttpConnection" class="com.inthinc.pro.service.phonecontrol.client.HttpClientFactoryBean">
+	<bean id="zoomsaferHttpConnectionFactory"
+		class="com.inthinc.pro.service.phonecontrol.client.HttpClientFactory">
 		<property name="host" value="${zoomsafer.service.host}" />
 		<property name="port" value="${zoomsafer.service.port}" />
-		<property name="username" value="${zoomsafer.service.username}" />
-		<property name="password" value="${zoomsafer.service.password}" />
 	</bean>
-	<bean id="zoomsaferClientEndpoint"
-		class="org.jboss.resteasy.client.spring.RestClientProxyFactoryBean">
-		<property name="httpClient" ref="zoomsaferHttpConnection" />
-		<property name="serviceInterface" value="com.inthinc.pro.service.phonecontrol.client.ZoomsaferEndPoint" />
-		<property name="baseUri" value="http://${zoomsafer.service.host}" />
-	</bean>
+	<bean id="systemClock" class="com.inthinc.pro.service.phonecontrol.impl.SystemClock" />
+
 	<bean id="phoneControlAdapterFactory"
 		class="com.inthinc.pro.service.phonecontrol.impl.DefaultPhoneControlAdapterFactory">
-		<property name="factoryMap">
-			<map>
-				<entry>
-					<key><value>CELL_CONTROL</value></key>
-					<bean
-						class="com.inthinc.pro.service.phonecontrol.impl.CellcontrolAdapter">
-						<constructor-arg ref="cellcontrolClientEndpoint" />
-					</bean>
-				</entry>
-				<entry>
-					<key><value>ZOOM_SAFER</value></key>
-					<bean class="com.inthinc.pro.service.phonecontrol.impl.ZoomsaferAdapter">
-					    <constructor-arg type="com.inthinc.pro.service.phonecontrol.client.ZoomsaferEndPoint" ref="zoomsaferClientEndpoint"/>
-					    <constructor-arg type="com.inthinc.pro.service.phonecontrol.Clock" ref="systemClock"/>
-					</bean>
-				</entry>
-			</map>
-		</property>
+		<constructor-arg index="0"
+			ref="cellcontrolHttpConnectionFactory" />
+		<constructor-arg index="1"
+			ref="zoomsaferHttpConnectionFactory" />
+		<constructor-arg index="2" ref="systemClock" />
 	</bean>
 
 	<bean id="propertyPlaceholderConfigurer"
@@ -112,7 +88,10 @@
 		name="tigerDAO" ref="tigerDao"/> </bean>
 	-->
 
-    <!-- Adapters are declared as @Components do they do not need to be set up in XML -->
+	<!--
+		Adapters are declared as @Components do they do not need to be set up
+		in XML
+	-->
 	<bean id="accountService" class="com.inthinc.pro.service.impl.AccountServiceImpl">
 		<property name="dao" ref="accountDAOAdapter" />
 	</bean>
@@ -146,51 +125,54 @@
 		<property name="voxeoAudioURL" value="${voxeoAudioURL}" />
 		<property name="alertMessageDAO" ref="alertMessageDAO" />
 	</bean>
-	
-	<bean id="cellPhoneService" class="com.inthinc.pro.service.phonecontrol.impl.CellPhoneServiceImpl">
-		<property name="phoneDAO" ref="inMemoryDriverPhoneDAO"/>
+
+	<bean id="cellPhoneService"
+		class="com.inthinc.pro.service.phonecontrol.impl.CellPhoneServiceImpl">
+		<property name="phoneDAO" ref="inMemoryDriverPhoneDAO" />
 	</bean>
 	<!--
 		<bean class="com.inthinc.pro.service.impl.NoteServiceImpl"> <property
 		name="mcmService" ref="mcmServiceBean"/> </bean>
 	-->
 
-	<!-- Watchdog -->	
+	<!-- Watchdog -->
 	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-	  <property name="triggers">
-	    <list>
-	      <ref bean="phoneWatchdogCronTrigger"/>
-	    </list>
-	  </property>
-	  <property name="autoStartup" value="${phone.watchdog.enabled}" />
+		<property name="triggers">
+			<list>
+				<ref bean="phoneWatchdogCronTrigger" />
+			</list>
+		</property>
+		<property name="autoStartup" value="${phone.watchdog.enabled}" />
 	</bean>
 
 	<bean id="phoneWatchdogCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-	    <property name="jobDetail" ref="phoneWatchdogJob" />
-	    <property name="cronExpression" value="${phone.watchdog.cron}" />
-	</bean>	
-
-	<bean id="phoneWatchdogJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-	  <property name="targetObject" ref="phoneWatchdogImpl" />
-	  <property name="targetMethod" value="enablePhonesWhenLostComm" />
-	  <property name="concurrent" value="false" />
+		<property name="jobDetail" ref="phoneWatchdogJob" />
+		<property name="cronExpression" value="${phone.watchdog.cron}" />
 	</bean>
 
-	<bean id="reportCriteriaService" class="com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl">
-	  <property name="accountDAO" ref="accountDAO" />
-	  <property name="groupDAO" ref="groupDAO" />
-	  <property name="scoreDAO" ref="scoreDAO" />
-	  <property name="mpgDAO" ref="mpgDAO" />
-	  <property name="vehicleDAO" ref="vehicleDAO" />
-	  <property name="deviceDAO" ref="deviceDAO" />
-	  <property name="eventDAO" ref="eventDAO" />
-	  <property name="redFlagDAO" ref="redFlagDAO" />
-	  <property name="groupReportDAO" ref="groupReportDAO" />
-	  <property name="driverDAO" ref="driverDAO"/>
-	  <property name="driveTimeDAO" ref="driveTimeDAO"/>
-	  <property name="waysmartDAO" ref="waysmartDAO"/>
-	  <property name="stateMileageDAO" ref="stateMileageDAO"/>
-	  <property name="addressDAO" ref="addressDAO" />
+	<bean id="phoneWatchdogJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="phoneWatchdogImpl" />
+		<property name="targetMethod" value="enablePhonesWhenLostComm" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<bean id="reportCriteriaService"
+		class="com.inthinc.pro.reports.service.impl.ReportCriteriaServiceImpl">
+		<property name="accountDAO" ref="accountDAO" />
+		<property name="groupDAO" ref="groupDAO" />
+		<property name="scoreDAO" ref="scoreDAO" />
+		<property name="mpgDAO" ref="mpgDAO" />
+		<property name="vehicleDAO" ref="vehicleDAO" />
+		<property name="deviceDAO" ref="deviceDAO" />
+		<property name="eventDAO" ref="eventDAO" />
+		<property name="redFlagDAO" ref="redFlagDAO" />
+		<property name="groupReportDAO" ref="groupReportDAO" />
+		<property name="driverDAO" ref="driverDAO" />
+		<property name="driveTimeDAO" ref="driveTimeDAO" />
+		<property name="waysmartDAO" ref="waysmartDAO" />
+		<property name="stateMileageDAO" ref="stateMileageDAO" />
+		<property name="addressDAO" ref="addressDAO" />
 	</bean>
 
 

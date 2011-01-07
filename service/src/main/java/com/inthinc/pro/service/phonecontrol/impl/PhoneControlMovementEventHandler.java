@@ -87,7 +87,7 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
             if (driver.getCellPhone() != null) {
                 logger.debug("Creating " + driver.getProvider() + " client endpoint proxy...");
-                PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
+                PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider(), driver.getProviderUsername(), driver.getProviderPassword());
                 logger.debug("Sending request to " + driver.getProvider() + " client endpoint proxy to disable PH#-" + driver.getCellPhone());
                 phoneControlAdapter.disablePhone(driver.getCellPhone());
             } else {
@@ -104,7 +104,7 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
             if (driver.getCellPhone() != null) {
                 logger.debug("Creating " + driver.getProvider() + " client endpoint proxy...");
-                PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider());
+                PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getProvider(), driver.getProviderUsername(), driver.getProviderPassword());
                 logger.debug("Requesting " + driver.getProvider() + " client endpoint proxy to enable PH#-" + driver.getCellPhone());
 
                 phoneControlAdapter.enablePhone(driver.getCellPhone());

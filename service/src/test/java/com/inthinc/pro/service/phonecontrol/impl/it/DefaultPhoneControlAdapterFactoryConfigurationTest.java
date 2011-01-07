@@ -27,7 +27,7 @@ public class DefaultPhoneControlAdapterFactoryConfigurationTest implements Appli
     public void testCreatesCellcontrolAdapter() {
         PhoneControlAdapterFactory factory = (PhoneControlAdapterFactory) BeanFactoryUtils.beanOfType(this.applicationContext, PhoneControlAdapterFactory.class);
 
-        PhoneControlAdapter cellControlAdapter = factory.createAdapter(CellProviderType.CELL_CONTROL);
+        PhoneControlAdapter cellControlAdapter = factory.createAdapter(CellProviderType.CELL_CONTROL, null, null);
 
         assertSame(CellcontrolAdapter.class, cellControlAdapter.getClass());
     }
@@ -36,7 +36,7 @@ public class DefaultPhoneControlAdapterFactoryConfigurationTest implements Appli
     public void testCreatesZoomsaferAdapter() {
         PhoneControlAdapterFactory factory = (PhoneControlAdapterFactory) BeanFactoryUtils.beanOfType(this.applicationContext, PhoneControlAdapterFactory.class);
 
-        PhoneControlAdapter cellControlAdapter = factory.createAdapter(CellProviderType.ZOOM_SAFER);
+        PhoneControlAdapter cellControlAdapter = factory.createAdapter(CellProviderType.ZOOM_SAFER, null, null);
 
         assertSame(ZoomsaferAdapter.class, cellControlAdapter.getClass());
     }
