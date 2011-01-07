@@ -10,6 +10,9 @@ import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
@@ -26,12 +29,14 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MessageItem;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.util.MessageUtil;
 
 public class MessagesBean extends BaseBean {
 
+    protected static final Logger logger        = LogManager.getLogger(MessagesBean.class);
     protected final static String BLANK_SELECTION = "&#160;";
 
     private List<MessageItem> messageList;
@@ -312,7 +317,21 @@ public class MessagesBean extends BaseBean {
         PageParams pageParams = new PageParams();
         if (selectedGroupID != null)
             this.messageList.addAll(textMsgAlertDAO.getTextMsgPage(selectedGroupID, startDate, endDate, filterList, pageParams));
+        loadCannedMessageTexts();
         this.selectAll = Boolean.FALSE;
+    }
+    
+    /**
+     * Loads "Canned" message texts for current messages in <code>messageList</code> using the portal user's Locale.
+     */
+    public void loadCannedMessageTexts() {
+        if(this.messageList != null && !this.messageList.isEmpty()) {
+            for(MessageItem item: this.messageList) {
+                if(NoteType.WAYSMART_DMR.getCode().equals(item.getType()) && item.getDmrOffset() != null) {
+                    item.setMessage(MessageUtil.getMessageString("txtMsg_wsDMR_"+item.getDmrOffset(), getLocale()));
+                }
+            }
+        }
     }
 
     /**
@@ -557,8 +576,10 @@ public class MessagesBean extends BaseBean {
                             v.getVehicleID());
                     deviceDAO.queueForwardCommand(devID, fwdCmd);
 
-                    this.sendMessageList.add(String.format(MessageUtil.getMessageString("txtMsg_sendMsgSuccess"), (d != null) ? d.getPerson().getFullName() : MessageUtil
-                            .getMessageString("unknown_driver"), (v != null) ? v.getFullName() : MessageUtil.getMessageString("unknown_vehicle"), dev.getName()));
+                    this.sendMessageList.add(String.format(MessageUtil.getMessageString("txtMsg_sendMsgSuccess")
+                            , (d != null) ? d.getPerson().getFullName() : MessageUtil.getMessageString("unknown_driver")
+                            , (v != null) ? v.getFullName() : MessageUtil.getMessageString("unknown_vehicle")
+                            , dev.getName()));
                 } else {
                     this.sendMessageList.add(String.format(MessageUtil.getMessageString("txtMsg_sendMsgNotCapable"), dev.getName(), (d != null) ? d.getPerson().getFullName() : MessageUtil
                             .getMessageString("unknown_driver"), (v != null) ? v.getFullName() : MessageUtil.getMessageString("unknown_vehicle")));
