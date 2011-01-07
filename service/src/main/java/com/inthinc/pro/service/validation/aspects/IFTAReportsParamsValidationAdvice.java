@@ -64,10 +64,14 @@ public class IFTAReportsParamsValidationAdvice {
 	/*---------------------------------------------------------------------
 	 * Pointcuts. 
 	 */
-	@SuppressWarnings("unused")
-	@Pointcut("execution(* com.inthinc.pro.service.reports.impl.IFTAService*.*(..))")
-	private void isIFTAService() {};
-	  // Unfortunately we cannot advice the interface package because the annotation @ValidParams is not inherited
+    @SuppressWarnings("unused")
+    @Pointcut("execution(* com.inthinc.pro.service.reports.impl.IFTAService*.*(..))")
+    private void isIFTAService() {};
+      // Unfortunately we cannot advice the interface package because the annotation @ValidParams is not inherited
+
+    @SuppressWarnings("unused")
+    @Pointcut("execution(* com.inthinc.pro.service.reports.impl.PerformanceServiceImpl.*(..))")
+    private void isPerformanceService() {};
 
 	@SuppressWarnings("unused")
 	@Pointcut("@annotation(com.inthinc.pro.service.validation.annotations.ValidParams)")
@@ -80,6 +84,14 @@ public class IFTAReportsParamsValidationAdvice {
 	@SuppressWarnings("unused")
 	@Pointcut("args(groupID, locale, measurementType)")
 	private void withoutDates(Integer groupID, Locale locale, MeasurementType measurementType) {}
+
+    @SuppressWarnings("unused")
+    @Pointcut("args(groupID, startDate, endDate, locale)")
+    private void performanceWithDates(Integer groupID, Date startDate, Date endDate, Locale locale) {}
+    
+    @SuppressWarnings("unused")
+    @Pointcut("args(groupID, locale)")
+    private void performanceWithoutDates(Integer groupID, Locale locale) {}
 
 	@SuppressWarnings("unused")
 	@Pointcut("args(groupList, startDate, endDate, locale, measurementType)")
@@ -129,4 +141,21 @@ public class IFTAReportsParamsValidationAdvice {
 		return pjp.proceed(new Object[] {new GroupList(params.getGroupIDList()), params.getLocale(), params.getMeasurementType()});
 	}		
 	
+    @Around("isPerformanceService() && validateParams() && performanceWithDates(groupID, startDate, endDate, locale)") 
+    public Object validatePerformanceWithDates(ProceedingJoinPoint pjp, Integer groupID, Date startDate, Date endDate,
+            Locale locale) throws Throwable {
+
+        IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupID, startDate, endDate, locale);
+        violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
+        return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getStartDate(), params.getEndDate(), params.getLocale()});
+    }   
+
+    @Around("isPerformanceService() && validateParams() && performanceWithoutDates(groupID, locale)") 
+    public Object validatePerformanceWithoutDates(ProceedingJoinPoint pjp, Integer groupID, Locale locale) throws Throwable {
+
+        IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupID, locale);
+        violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
+        return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getLocale()});
+    }   
+
 }

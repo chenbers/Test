@@ -51,6 +51,7 @@
 	<bean id="eventDAO" class="com.inthinc.pro.dao.hessian.EventHessianDAO" parent="genericDAO"></bean>
 	<bean id="deviceDAO" class="com.inthinc.pro.dao.hessian.DeviceHessianDAO" parent="genericDAO"/>
 	<bean id="driverDAO" class="com.inthinc.pro.dao.hessian.DriverHessianDAO" parent="genericDAO"></bean>
+	<bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
 	<bean id="redFlagDAO" class="com.inthinc.pro.dao.hessian.RedFlagHessianDAO" parent="genericDAO"></bean>
 	<bean id="redFlagAlertDAO" class="com.inthinc.pro.dao.hessian.RedFlagAlertHessianDAO" parent="genericDAO"></bean>
 	<bean id="mpgDAO" class="com.inthinc.pro.dao.hessian.MpgHessianDAO" parent="genericDAO">

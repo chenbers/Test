@@ -81,7 +81,23 @@ public class IFTAReportsParamsBeanFactory {
 		return getBean(groupList.getValueList(), startDate, endDate, locale, measurementType);
 	}
 	
-	/**
+    /**
+     * Overloaded convenience method.
+     * @see #getBean(IFTAReportsParamsBean, List, Date, Date, Locale, MeasurementType)
+     */
+    public IFTAReportsParamsBean getBean(Integer groupID, Locale locale) {
+        return getBean(groupID, null, null, locale, null);   
+    }
+
+    /**
+     * Overloaded convenience method.
+     * @see #getBean(IFTAReportsParamsBean, List, Date, Date, Locale, MeasurementType)
+     */
+    public IFTAReportsParamsBean getBean(Integer groupID, Date startDate, Date endDate, Locale locale) {
+        return getBean(groupID, null, null, locale, null);   
+    }
+
+    /**
 	 * Simply fill the bean with the passed parameters.
 	 * @return Bean filled with the incoming parameters
 	 */

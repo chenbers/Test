@@ -17,6 +17,7 @@ import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.service.reports.PerformanceService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.ReportsUtil;
 
 /**
@@ -40,7 +41,7 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
      * {@inheritDoc}
      * @see com.inthinc.pro.service.reports.PerformanceService#getTenHourViolations(java.lang.Integer)
      */
-    @Override
+    @Override @ValidParams
     public Response getTenHourViolations(Integer groupID, Locale locale) {
         return this.getTenHourViolations(groupID, null, null, locale);
     }
@@ -49,7 +50,7 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
      * {@inheritDoc}
      * @see com.inthinc.pro.service.reports.PerformanceService#getTenHourViolations(java.lang.Integer, java.util.Date, java.util.Date)
      */
-    @Override
+    @Override @ValidParams
     public Response getTenHourViolations(Integer groupID, Date startDate, Date endDate, Locale locale) {
         String method = "Ten Hour Day Violations Request ";
         
@@ -87,7 +88,7 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
      * {@inheritDoc}
      * @see com.inthinc.pro.service.reports.PerformanceService#getDriverHours(java.lang.Integer)
      */
-    @Override
+    @Override @ValidParams
     public Response getDriverHours(Integer groupID, Locale locale) {
         return getDriverHours(groupID, null, null, locale);
     }
@@ -96,7 +97,7 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
      * {@inheritDoc}
      * @see com.inthinc.pro.service.reports.PerformanceService#getDriverHours(java.lang.Integer, java.util.Date, java.util.Date)
      */
-    @Override
+    @Override @ValidParams
     public Response getDriverHours(Integer groupID, Date startDate, Date endDate, Locale locale) {
         String method = "Driver Hours Request ";
         

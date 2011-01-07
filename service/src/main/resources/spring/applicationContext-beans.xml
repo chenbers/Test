@@ -187,6 +187,7 @@
 	  <property name="redFlagDAO" ref="redFlagDAO" />
 	  <property name="groupReportDAO" ref="groupReportDAO" />
 	  <property name="driverDAO" ref="driverDAO"/>
+	  <property name="driveTimeDAO" ref="driveTimeDAO"/>
 	  <property name="waysmartDAO" ref="waysmartDAO"/>
 	  <property name="stateMileageDAO" ref="stateMileageDAO"/>
 	  <property name="addressDAO" ref="addressDAO" />
