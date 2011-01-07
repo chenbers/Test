@@ -385,6 +385,9 @@ public class HosDailyDriverLogReportCriteria {
             if (deferralDay2Record != null) 
                 remarkLogList.add(0, deferralDay2Record);
         }
+        if (remarkLogList.size() == 0 && hosRecordList.size() != 0) {
+            remarkLogList.add(populateRemarkLog(hosRecordList.get(0)));
+        }
 
         return remarkLogList;
     }
