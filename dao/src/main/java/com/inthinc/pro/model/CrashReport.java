@@ -45,6 +45,7 @@ public class CrashReport extends BaseEntity {
     @Column(updateable = false, name = "dataPts")
     private List<CrashDataPoint> crashDataPoints; // Detailed Crash Data
     private byte[] trace;
+    private Integer hasTrace;
 
     public CrashReport() {
     }
@@ -216,5 +217,19 @@ public class CrashReport extends BaseEntity {
 
     public void setTrace(byte[] trace) {
         this.trace = trace;
+    }
+
+    /**
+     * @return the hasTrace
+     */
+    public Integer getHasTrace() {
+        return hasTrace;
+    }
+
+    /**
+     * @param hasTrace the hasTrace to set
+     */
+    public void setHasTrace(Integer hasTrace) {
+        this.hasTrace = hasTrace;
     }
 }
