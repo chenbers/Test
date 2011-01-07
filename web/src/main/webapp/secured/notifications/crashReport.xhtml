@@ -431,7 +431,7 @@
 						</h:panelGroup>
 
 						<f:facet name="footer">
-							<h:panelGroup rendered="#{crashReportBean.device.crashTraceAppletCapable}">
+							<h:panelGroup rendered="#{crashReportBean.device.crashTraceAppletCapable and crashReportBean.crashReport.hasTrace == 1}">
 								<div class="panel_nw">
 									<div class="panel_title" style="z-index: #{zorder}">
 										#{messages.crashReport_crashTrace} 
