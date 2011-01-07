@@ -76,8 +76,6 @@ public class ReportsFacadeImpl implements ReportsFacade {
     @SuppressWarnings("unchecked")
     @Override
     public List<TenHoursViolation> getTenHourViolations(Integer groupID, Interval interval, Locale locale) {
-        if (locale == null) 
-            locale = getLocale();
         ReportCriteria criteria = reportService.getTenHoursDayViolationsCriteria(
                 getAccountGroupHierarchy(), groupID, interval, locale);
         return criteria.getMainDataset();
@@ -90,8 +88,6 @@ public class ReportsFacadeImpl implements ReportsFacade {
     @SuppressWarnings("unchecked")
     @Override
     public List<DriverHours> getDriverHours(Integer groupID, Interval interval, Locale locale) {
-        if (locale == null) 
-            locale = getLocale();
         ReportCriteria criteria = reportService.getDriverHoursReportCriteria(
                 getAccountGroupHierarchy(), groupID, interval, locale);
         return criteria.getMainDataset();
@@ -162,7 +158,8 @@ public class ReportsFacadeImpl implements ReportsFacade {
     @SuppressWarnings("unchecked")
     @Override
     public List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type) {
-        ReportCriteria criteria = reportService.getStateMileageByMonthReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, locale, type, dotOnly);
+        ReportCriteria criteria = reportService.getStateMileageByMonthReportCriteria(
+                getAccountGroupHierarchy(), groupIDList, interval, locale, type, dotOnly);
         return criteria.getMainDataset();
     }
 
@@ -172,7 +169,8 @@ public class ReportsFacadeImpl implements ReportsFacade {
     @SuppressWarnings("unchecked")
     @Override
     public List<StateMileageFuelByVehicle> getStateMileageFuelByVehicle(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType measurementType) {
-        ReportCriteria criteria = reportService.getStateMileageFuelByVehicleReportCriteria(getAccountGroupHierarchy(), groupIDList, interval, locale, measurementType, dotOnly);
+        ReportCriteria criteria = reportService.getStateMileageFuelByVehicleReportCriteria(
+                getAccountGroupHierarchy(), groupIDList, interval, locale, measurementType, dotOnly);
         return criteria.getMainDataset();
     }
 

@@ -94,7 +94,7 @@ public class IFTAReportsParamsBeanFactory {
      * @see #getBean(IFTAReportsParamsBean, List, Date, Date, Locale, MeasurementType)
      */
     public IFTAReportsParamsBean getBean(Integer groupID, Date startDate, Date endDate, Locale locale) {
-        return getBean(groupID, null, null, locale, null);   
+        return getBean(groupID, startDate, endDate, locale, null);   
     }
 
     /**
