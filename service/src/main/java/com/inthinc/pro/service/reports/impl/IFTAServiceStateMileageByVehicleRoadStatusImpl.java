@@ -18,15 +18,14 @@ import com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatu
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.GroupList;
-import com.inthinc.pro.util.ReportsUtil;
 
 @Component
 public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportServiceImpl 
                                 implements IFTAServiceStateMileageByVehicleRoadStatus {
 
     @Autowired
-    public IFTAServiceStateMileageByVehicleRoadStatusImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
-        super(reportsFacade, reportsUtil);
+    public IFTAServiceStateMileageByVehicleRoadStatusImpl(ReportsFacade reportsFacade) {
+        super(reportsFacade);
     }
 
     /**

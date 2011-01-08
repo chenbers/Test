@@ -10,7 +10,6 @@ import org.junit.Test;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
-import com.inthinc.pro.util.ReportsUtil;
 
 /*******************************************************************************************************
  * State Mileage by Vehicle / Group Comparison by State-Province Services Unit Tests
@@ -23,21 +22,14 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
     @Mocked
     private ReportsFacade reportsFacadeMock;
 
-    @Mocked
-    private ReportsUtil reportsUtilMock;
-
-    IFTAServiceStateMileageByVehicleRoadStatusImpl roadStatusServiceSUT;
-    IFTAServiceStateMileageGroupComparisonImpl groupComparisonServiceSUT;
-    IFTAServiceStateMileageByMonthImpl mileageByMonthServiceSUT;
+    private IFTAServiceStateMileageGroupComparisonImpl serviceSUT;
 
     @Before
     public void setUp() {
-        roadStatusServiceSUT = new IFTAServiceStateMileageByVehicleRoadStatusImpl(reportsFacadeMock, reportsUtilMock);
-        groupComparisonServiceSUT = new IFTAServiceStateMileageGroupComparisonImpl(reportsFacadeMock, reportsUtilMock);
-        mileageByMonthServiceSUT = new IFTAServiceStateMileageByMonthImpl(reportsFacadeMock, reportsUtilMock);
+        serviceSUT = new IFTAServiceStateMileageGroupComparisonImpl(reportsFacadeMock);
     }
 
-    private Integer expectedGroupID = 1504;
+    private Integer expectedGroupID = 2;
     
     @Test(expected=IllegalArgumentException.class)
     public void getStateMileageByVehicleGroupComparisonTestWihInvalidInput1() {
@@ -45,7 +37,7 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
         final String expectedStartDate = "20110101";
         final String expectedEndDate = "20100202";
 
-        groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithDates(expectedGroupID, 
+        serviceSUT.getStateMileageByVehicleStateComparisonWithDates(expectedGroupID, 
                 buildDateFromString(expectedStartDate), buildDateFromString(expectedEndDate), locale, measureType);
 
     }
@@ -71,7 +63,7 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
 //            }
 //        };
 //
-//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(expectedGroupID, 
+//        Response response = serviceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(expectedGroupID, 
 //                startDate, endDate, locale, measureType);
 //
 //        assertNotNull(response);
@@ -98,7 +90,7 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
 //            }
 //        };
 //
-//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(expectedGroupID, 
+//        Response response = serviceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(expectedGroupID, 
 //                startDate, endDate, locale, measureType);
 //
 //        assertNotNull(response);
@@ -124,7 +116,7 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
 //            }
 //        };
 //
-//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(
+//        Response response = serviceSUT.getStateMileageByVehicleStateComparisonWithIftaAndDates(
 //                expectedGroupID, startDate, endDate, locale, measureType);
 //
 //        assertNotNull(response);
@@ -147,7 +139,7 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
 //            }
 //        };
 //
-//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithIfta(expectedGroupID, locale, measureType);
+//        Response response = serviceSUT.getStateMileageByVehicleStateComparisonWithIfta(expectedGroupID, locale, measureType);
 //
 //        assertNotNull(response);
 //        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
@@ -166,7 +158,7 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
 //            }
 //        };
 //
-//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonDefaults(expectedGroupID, locale, measureType);
+//        Response response = serviceSUT.getStateMileageByVehicleStateComparisonDefaults(expectedGroupID, locale, measureType);
 //
 //        assertNotNull(response);
 //        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
@@ -192,7 +184,7 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
 //            }
 //        };
 //
-//        Response response = groupComparisonServiceSUT.getStateMileageByVehicleStateComparisonWithDates(expectedGroupID, 
+//        Response response = serviceSUT.getStateMileageByVehicleStateComparisonWithDates(expectedGroupID, 
 //                startDate, endDate, locale, measureType);
 //
 //        assertNotNull(response);

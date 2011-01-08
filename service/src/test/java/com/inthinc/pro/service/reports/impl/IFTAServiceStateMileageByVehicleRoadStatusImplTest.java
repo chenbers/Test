@@ -34,11 +34,11 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
 
     @Before
     public void setUp() {
-        serviceSUT = new IFTAServiceStateMileageByVehicleRoadStatusImpl(reportsFacadeMock, null);
+        serviceSUT = new IFTAServiceStateMileageByVehicleRoadStatusImpl(reportsFacadeMock);
     }
 
-    private Integer expectedGroupID = 1504;
-    private Integer expectedGroupID2 = 1505;
+    private Integer expectedGroupID = 2;
+    private Integer expectedGroupID2 = 6;
     private List<Integer> expectedGroupIDList;
     
     @Test

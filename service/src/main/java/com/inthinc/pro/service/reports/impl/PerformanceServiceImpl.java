@@ -18,7 +18,6 @@ import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 import com.inthinc.pro.service.reports.PerformanceService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
-import com.inthinc.pro.util.ReportsUtil;
 
 /**
  * PerformanceService implementation class.
@@ -33,8 +32,8 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
      * @param reportsUtil
      */
     @Autowired
-    public PerformanceServiceImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
-        super(reportsFacade, reportsUtil);
+    public PerformanceServiceImpl(ReportsFacade reportsFacade) {
+        super(reportsFacade);
     }
 
     /**

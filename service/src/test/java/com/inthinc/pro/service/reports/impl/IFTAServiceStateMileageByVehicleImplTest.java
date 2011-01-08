@@ -36,7 +36,7 @@ public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
 
     @Before
     public void setUp() {
-        serviceSUT = new IFTAServiceStateMileageByVehicleImpl(reportsFacadeMock, null);
+        serviceSUT = new IFTAServiceStateMileageByVehicleImpl(reportsFacadeMock);
     }
 
     @SuppressWarnings("unchecked")

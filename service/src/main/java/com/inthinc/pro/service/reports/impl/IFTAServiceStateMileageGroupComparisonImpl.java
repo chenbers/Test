@@ -18,7 +18,6 @@ import com.inthinc.pro.service.reports.IFTAServiceStateMileageGroupComparison;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.GroupList;
-import com.inthinc.pro.util.ReportsUtil;
 import common.Logger;
 
 @Component
@@ -32,8 +31,8 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseReportServic
      * @param reportsUtil
      */
     @Autowired
-    public IFTAServiceStateMileageGroupComparisonImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
-        super(reportsFacade, reportsUtil);
+    public IFTAServiceStateMileageGroupComparisonImpl(ReportsFacade reportsFacade) {
+        super(reportsFacade);
     }
 
    

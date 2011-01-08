@@ -26,7 +26,7 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
  * Unit test for PerformanceServiceImpl class.
  */
 public class PerformanceServiceImplTest extends BaseUnitTest {
-    private static final Integer GROUP_ID = 1505;
+    private static final Integer GROUP_ID = 6;
     
     private PerformanceServiceImpl serviceSUT;
     
@@ -34,7 +34,7 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
     
     @Before
     public void setUp() {
-        serviceSUT = new PerformanceServiceImpl(facadeMock, null);
+        serviceSUT = new PerformanceServiceImpl(facadeMock);
     }
     
     /**

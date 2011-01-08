@@ -1,7 +1,6 @@
 package com.inthinc.pro.service.reports.impl;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -20,14 +19,13 @@ import com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.GroupList;
-import com.inthinc.pro.util.ReportsUtil;
 
 @Component
 public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceImpl implements IFTAServiceStateMileageFuelByVehicle {
 
     @Autowired
-    public IFTAServiceStateMileageFuelByVehicleImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
-        super(reportsFacade, reportsUtil);
+    public IFTAServiceStateMileageFuelByVehicleImpl(ReportsFacade reportsFacade) {
+        super(reportsFacade);
     }
 
     /**
@@ -67,7 +65,7 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     Response getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(List<Integer> groupList, Date startDate, Date endDate, boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
         List<StateMileageFuelByVehicle> list = null;
-        Interval interval = new Interval(startDate.getTime(), endDate.getTime());
+        Interval interval = getInterval(startDate, endDate);
 
         try {
             list = reportsFacade.getStateMileageFuelByVehicle(groupList, interval, iftaOnly, locale, measurementType);
@@ -92,12 +90,7 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     @Override
     @ValidParams
     public Response getStateMileageFuelByVehicleDefaults(Integer groupID, Locale locale, MeasurementType measurementType) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate.getTime(), today.getTime(), false, locale, measurementType);
+        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, null, null, false, locale, measurementType);
     }
 
     /**
@@ -115,12 +108,7 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     @Override
     @ValidParams
     public Response getStateMileageFuelByVehicleWithIfta(Integer groupID, Locale locale, MeasurementType measurementType) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, startDate.getTime(), today.getTime(), true, locale, measurementType);
+        return getStateMileageByVehicleRoadStatusWithFullParameters(groupID, null, null, true, locale, measurementType);
     }
 
     /**
@@ -138,12 +126,7 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     @Override
     @ValidParams
     public Response getStateMileageFuelByVehicleDefaultsMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), false, locale, measurementType);
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), null, null, false, locale, measurementType);
     }
 
     /**
@@ -162,12 +145,7 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     @Override
     @ValidParams
     public Response getStateMileageFuelByVehicleWithIftaMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        Calendar today = reportsUtil.getMidnight();
-
-        Calendar startDate = reportsUtil.getMidnight();
-        startDate.add(Calendar.DAY_OF_MONTH, DAYS_BACK);
-
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate.getTime(), today.getTime(), true, locale, measurementType);
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), null, null, true, locale, measurementType);
     }
 
     /**

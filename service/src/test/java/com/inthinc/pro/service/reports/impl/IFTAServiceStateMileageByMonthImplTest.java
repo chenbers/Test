@@ -37,7 +37,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
     @Before
     public void setUp() {
-        serviceSUT = new IFTAServiceStateMileageByMonthImpl(reportsFacadeMock, null);
+        serviceSUT = new IFTAServiceStateMileageByMonthImpl(reportsFacadeMock);
     }
 
     private Integer expectedGroupID = 1504;

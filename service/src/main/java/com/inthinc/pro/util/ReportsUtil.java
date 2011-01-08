@@ -10,13 +10,12 @@ import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.AccessDeniedException;
-import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 
-@Component
+@Deprecated
 public class ReportsUtil {
 
     @Autowired

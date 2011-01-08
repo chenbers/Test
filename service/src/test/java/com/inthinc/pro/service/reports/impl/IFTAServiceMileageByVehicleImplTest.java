@@ -24,7 +24,6 @@ import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.impl.ReportsFacadeImpl;
 import com.inthinc.pro.util.GroupList;
-import com.inthinc.pro.util.ReportsUtil;
 
 /**
  * Unit tests for MileageByVehicle IFTA Services.
@@ -51,8 +50,6 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
 
     @Mocked
     private ReportsFacadeImpl reportsFacadeMock;
-    @Mocked
-    private ReportsUtil reportsUtilMock;
 
     private IFTAServiceMileageByVehicleImpl iftaServiceSUT;
 
@@ -61,7 +58,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
         list = new ArrayList<MileageByVehicle>();
         list.add(new MileageByVehicle());
 
-        iftaServiceSUT = new IFTAServiceMileageByVehicleImpl(reportsFacadeMock, reportsUtilMock);
+        iftaServiceSUT = new IFTAServiceMileageByVehicleImpl(reportsFacadeMock);
     }
 
     @Test

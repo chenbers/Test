@@ -19,7 +19,6 @@ import com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
 import com.inthinc.pro.util.GroupList;
-import com.inthinc.pro.util.ReportsUtil;
 import common.Logger;
 
 @Component
@@ -27,8 +26,8 @@ public class IFTAServiceMileageByVehicleImpl extends BaseReportServiceImpl imple
     private static Logger logger = Logger.getLogger(IFTAServiceMileageByVehicleImpl.class);
 
     @Autowired
-    public IFTAServiceMileageByVehicleImpl(ReportsFacade reportsFacade, ReportsUtil reportsUtil) {
-        super(reportsFacade, reportsUtil);
+    public IFTAServiceMileageByVehicleImpl(ReportsFacade reportsFacade) {
+        super(reportsFacade);
     }
 
     /**
