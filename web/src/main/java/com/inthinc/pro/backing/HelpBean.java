@@ -21,7 +21,8 @@ public class HelpBean extends BaseBean {
 		lang = Locale.ENGLISH.getLanguage();
 		path = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath() + "/secured/lochelp/" + lang + "/"  + lang + "/";
         
-		String prettyID = (PrettyContext.getCurrentInstance() == null || PrettyContext.getCurrentInstance().getCurrentInstance() == null) ? null : PrettyContext.getCurrentInstance().getCurrentMapping().getId();
+//		System.out.println("PrettyContext.getCurrentInstance() is null ? " + (PrettyContext.getCurrentInstance() == null));
+		String prettyID = (PrettyContext.getCurrentInstance() == null || PrettyContext.getCurrentInstance().getCurrentMapping() == null) ? null : PrettyContext.getCurrentInstance().getCurrentMapping().getId();
 		if (prettyID == null || getHelpConfigProperties().get(prettyID) == null)
 		    return path+getHelpConfigProperties().getDefault();
 		
