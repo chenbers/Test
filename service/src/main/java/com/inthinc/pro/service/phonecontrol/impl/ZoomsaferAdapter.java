@@ -4,9 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.service.exceptions.RemoteErrorException;
 import com.inthinc.pro.service.phonecontrol.Clock;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.client.ZoomsaferEndPoint;
@@ -46,6 +48,10 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
         Date now = clock.getNow();
         Response response = zoomsaferEndpoint.disablePhone(ZoomsaferEndPoint.DISABLE_PHONE_EVENT_TYPE, cellPhoneNumber, this.dateFormatter.format(now));
         logger.debug("A request was sent to Zoomsafer endpoint to disable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
+
+        if (response.getStatus() != Status.OK.getStatusCode()) {
+            throw new RemoteErrorException("Request to Zoomsafer endpoint returned an unexpected status code: " + response.getStatus());
+        }
     }
 
     /**
@@ -56,5 +62,9 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
         Date now = clock.getNow();
         Response response = zoomsaferEndpoint.enablePhone(ZoomsaferEndPoint.ENABLE_PHONE_EVENT_TYPE, cellPhoneNumber, this.dateFormatter.format(now));
         logger.debug("A request was sent to Zoomsafer endpoint to enable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
+
+        if (response.getStatus() != Status.OK.getStatusCode()) {
+            throw new RemoteErrorException("Request to Zoomsafer endpoint returned an unexpected status code: " + response.getStatus());
+        }
     }
 }

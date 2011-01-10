@@ -31,6 +31,10 @@
 
 	<!-- Phone control adapter factory configuration -->
 	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<util:map id="providerStatusUpdateStrategyMap" map-class="java.util.HashMap">
+        <entry key="CELL_CONTROL" value="${cellcontrol.update.strategy}"/>
+        <entry key="ZOOM_SAFER" value="${zoomsafer.update.strategy}"/>
+    </util:map>
 	<!-- Cell Control -->
 	<bean id="cellcontrolHttpConnectionFactory"
 		class="com.inthinc.pro.service.phonecontrol.client.HttpClientFactory">

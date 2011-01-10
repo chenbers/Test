@@ -1,7 +1,12 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static junit.framework.Assert.fail;
+
+import java.util.HashMap;
+
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
 
@@ -10,6 +15,7 @@ import org.junit.Test;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellProviderType;
+import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
@@ -292,6 +298,98 @@ public class PhoneControlMovementEventHandlerTest {
 
                 phoneControlAdapterMock.enablePhone((String) any);
                 times = 0;
+            }
+        };
+    }
+
+    @SuppressWarnings("serial")
+    @Test
+    public void testDoesNotUpdatePhoneStatusOnAsynchonousCalls(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock, final PhoneControlAdapter phoneControlAdapterMock) {
+
+        final Driver expectedDriver = new Driver();
+        final Integer expectedDriverId = 666;
+
+        expectedDriver.setDriverID(expectedDriverId);
+        expectedDriver.setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        expectedDriver.setProvider(CellProviderType.CELL_CONTROL);
+        expectedDriver.setProviderUsername("");
+
+        // Expectations & stubbing
+        new NonStrictExpectations() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                result = expectedDriver;
+
+                adapterFactoryMock.createAdapter((CellProviderType) any, (String) any, (String) any);
+                result = phoneControlAdapterMock;
+            }
+        };
+
+        // Execution
+        PhoneControlMovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
+        handler.setStatusUpdateStrategyMap(new HashMap<CellProviderType, UpdateStrategy>() {
+            {
+                put(CellProviderType.CELL_CONTROL, UpdateStrategy.ASYNCHRONOUS);
+            }
+        });
+
+        assertNull(expectedDriver.getCellStatus());
+        handler.handleDriverStartedMoving(expectedDriverId);
+        assertNull(expectedDriver.getCellStatus());
+        handler.handleDriverStoppedMoving(expectedDriverId);
+        assertNull(expectedDriver.getCellStatus());
+
+        // Verification
+        new Verifications() {
+            {
+                driverDaoMock.update(expectedDriver);
+                times = 0;
+            }
+        };
+    }
+
+    @SuppressWarnings("serial")
+    @Test
+    public void testUpdatePhoneStatusOnSynchonousCalls(final DriverDAO driverDaoMock, final PhoneControlAdapterFactory adapterFactoryMock, final PhoneControlAdapter phoneControlAdapterMock) {
+
+        final Driver expectedDriver = new Driver();
+        final Integer expectedDriverId = 666;
+
+        expectedDriver.setDriverID(expectedDriverId);
+        expectedDriver.setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        expectedDriver.setProvider(CellProviderType.CELL_CONTROL);
+        expectedDriver.setProviderUsername("");
+
+        // Expectations & stubbing
+        new NonStrictExpectations() {
+            {
+                driverDaoMock.findByID(expectedDriverId);
+                result = expectedDriver;
+
+                adapterFactoryMock.createAdapter((CellProviderType) any, (String) any, (String) any);
+                result = phoneControlAdapterMock;
+            }
+        };
+
+        // Execution
+        PhoneControlMovementEventHandler handler = new PhoneControlMovementEventHandler(driverDaoMock, adapterFactoryMock);
+        handler.setStatusUpdateStrategyMap(new HashMap<CellProviderType, UpdateStrategy>() {
+            {
+                put(CellProviderType.CELL_CONTROL, UpdateStrategy.SYNCHRONOUS);
+            }
+        });
+
+        assertNull(expectedDriver.getCellStatus());
+        handler.handleDriverStartedMoving(expectedDriverId);
+        assertEquals(CellStatusType.DISABLED, expectedDriver.getCellStatus());
+        handler.handleDriverStoppedMoving(expectedDriverId);
+        assertEquals(CellStatusType.ENABLED, expectedDriver.getCellStatus());
+
+        // Verification
+        new Verifications() {
+            {
+                driverDaoMock.update(expectedDriver);
+                times = 2;
             }
         };
     }

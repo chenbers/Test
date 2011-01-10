@@ -3,12 +3,19 @@
  */
 package com.inthinc.pro.service.phonecontrol.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.phone.CellProviderType;
+import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
@@ -23,6 +30,8 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
     private final DriverDAO driverDao;
     private PhoneControlAdapterFactory serviceFactory;
+
+    private Map<CellProviderType, UpdateStrategy> statusUpdateStrategyMap = new HashMap<CellProviderType, UpdateStrategy>();
 
     /**
      * Creates an instance of {@link PhoneControlMovementEventHandler}.
@@ -92,6 +101,12 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
                     logger.debug("Sending request to " + driver.getProvider() + " client endpoint proxy to disable PH#-" + driver.getCellPhone());
                     phoneControlAdapter.disablePhone(driver.getCellPhone());
 
+                    if (statusUpdateStrategyMap.get(driver.getProvider()) == UpdateStrategy.SYNCHRONOUS) {
+                        logger.debug("Synchronous status update strategy. Updating phone status to " + CellStatusType.DISABLED);
+                        driver.setCellStatus(CellStatusType.DISABLED);
+                        driverDao.update(driver);
+                        logger.debug("Phone status has been updated successfully.");
+                    }
                 } else {
                     logger.warn("Driver DID-" + driver.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");
                 }
@@ -114,6 +129,13 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
                     logger.debug("Requesting " + driver.getProvider() + " client endpoint proxy to enable PH#-" + driver.getCellPhone());
 
                     phoneControlAdapter.enablePhone(driver.getCellPhone());
+
+                    if (statusUpdateStrategyMap.get(driver.getProvider()) == UpdateStrategy.SYNCHRONOUS) {
+                        logger.debug("Synchronous status update strategy. Updating phone status to " + CellStatusType.ENABLED);
+                        driver.setCellStatus(CellStatusType.ENABLED);
+                        driverDao.update(driver);
+                        logger.debug("Phone status has been updated successfully.");
+                    }
                 } else {
                     logger.warn("Driver DID-" + driver.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");
                 }
@@ -124,5 +146,14 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         } else {
             logger.warn("No provider information is available for the driver DID-" + driver.getDriverID() + ".");
         }
+    }
+
+    public Map<CellProviderType, UpdateStrategy> getStatusUpdateStrategyMap() {
+        return statusUpdateStrategyMap;
+    }
+
+    @Resource(name = "providerStatusUpdateStrategyMap")
+    public void setStatusUpdateStrategyMap(Map<CellProviderType, UpdateStrategy> statusUpdateStrategyMap) {
+        this.statusUpdateStrategyMap = statusUpdateStrategyMap;
     }
 }

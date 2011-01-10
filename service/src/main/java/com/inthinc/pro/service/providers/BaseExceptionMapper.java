@@ -4,14 +4,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
 import javax.ws.rs.ext.ExceptionMapper;
-
-import org.apache.http.Header;
 
 /**
  * RestEasy base exception mapper template method. The template method will get the {@link Status} object it should return from children classes and wrap it in a {@link Response}
