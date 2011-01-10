@@ -136,7 +136,7 @@
 		      <f:facet name="header"><h:outputText value="#{messages.hosLogs_location}" /></f:facet>
 		      <h:outputText value="#{item.location}" />
 		    </rich:column>
-		    <rich:column id="status" rendered="#{hosTableColumns.tableColumns['status'].visible}" sortBy="#{item.status.description}">
+		    <rich:column id="status" rendered="#{hosTableColumns.tableColumns['status'].visible}" sortBy="#{messages[item.status.name]}">
       			<f:facet name="header"><h:outputText value="#{messages.hosLogs_status}" /></f:facet>
       			<h:outputText value="#{messages[item.status.name]}" />
     		</rich:column>
