@@ -118,6 +118,8 @@ public class JasperReport implements Report
        
     }
 
+    private static final Integer EXCEL_MAX_ROWS = Integer.valueOf(65535);
+
     private void exportToExcelStream(OutputStream out,JasperPrint jasperPrint) throws JRException
     {   
         JRXlsExporter jexcelexporter = new JRXlsExporter();
@@ -130,6 +132,9 @@ public class JasperReport implements Report
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_COLLAPSE_ROW_SPAN, Boolean.TRUE);
         jexcelexporter.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE, Boolean.TRUE);
+        
+        jexcelexporter.setParameter(JRXlsExporterParameter.MAXIMUM_ROWS_PER_SHEET, EXCEL_MAX_ROWS);
+        
         
         jexcelexporter.setParameter(JRXlsExporterParameter.CHARACTER_ENCODING, "UTF-8");
 
