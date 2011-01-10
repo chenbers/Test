@@ -196,7 +196,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     public List<String> getAvailableColumns() {
         if (!getProUser().isAdmin()) {
-            return AVAILABLE_COLUMNS.subList(0, 4);
+            return AVAILABLE_COLUMNS.subList(0, 5);
         }
         return AVAILABLE_COLUMNS;
     }
