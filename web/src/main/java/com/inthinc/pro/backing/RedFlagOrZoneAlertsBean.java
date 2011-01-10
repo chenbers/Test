@@ -440,11 +440,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         
         // validate escalation e-mail is supplied
-        if(saveItem.getEscEmail() == null || saveItem.getEscEmail().trim().length() == 0) {
-            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
-            valid = false;            
-        }
+//        if(saveItem.getEscEmail() == null || saveItem.getEscEmail().trim().length() == 0) {
+//            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+//            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
+//            valid = false;            
+//        }
         
         // check on selected types
         if ( valid ) {
