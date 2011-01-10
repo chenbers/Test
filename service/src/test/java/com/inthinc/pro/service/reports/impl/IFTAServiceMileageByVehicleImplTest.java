@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -31,11 +30,11 @@ import com.inthinc.pro.util.GroupList;
 public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
 
     private final Integer expectedGroupID = 15;
-    private final Date startDate = getMidnight().getTime();
-    private final Date endDate = new Date();
+    private final Date startDate;
+    private final Date endDate;
     private final Locale locale = Locale.US;
     private final MeasurementType measureType = MeasurementType.ENGLISH;
-    private List<MileageByVehicle> list;
+    private final List<MileageByVehicle> returnList;
     
     @SuppressWarnings("serial")
     private List<Integer> expectedIds = new ArrayList<Integer>() {{
@@ -53,11 +52,14 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
 
     private IFTAServiceMileageByVehicleImpl iftaServiceSUT;
 
+    public IFTAServiceMileageByVehicleImplTest() {
+        startDate = buildDateFromString("20101205");
+        endDate = buildDateFromString("20101225");
+        returnList = new ArrayList<MileageByVehicle>();
+        returnList.add(new MileageByVehicle());
+    }
     @Before
     public void beforeTest() {
-        list = new ArrayList<MileageByVehicle>();
-        list.add(new MileageByVehicle());
-
         iftaServiceSUT = new IFTAServiceMileageByVehicleImpl(reportsFacadeMock);
     }
 
@@ -66,7 +68,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
         new Expectations() {
             {
                 reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, true, locale, measureType);
-                returns(list);
+                returns(returnList);
             }
         };
         // happy path
@@ -84,7 +86,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
                 returns(null);
             }
         };
-        // check for null list
+        // check for null returnList
         Response response = iftaServiceSUT.getMileageByVehicle(expectedGroupID, 
                 startDate, endDate, true, locale, measureType);
         assertNotNull(response);
@@ -99,7 +101,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
                 returns(new ArrayList<MileageByVehicle>());
             }
         };
-        // check for empty list
+        // check for empty returnList
         Response response = iftaServiceSUT.getMileageByVehicle(expectedGroupID, 
                 startDate, endDate, true, locale, measureType);
         assertNotNull(response);
@@ -110,7 +112,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
     public void testGetMileageByVehicleWhenExceptionThrown() {
         new Expectations() {
             {
-                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, false, locale, measureType);
+                reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, anyBoolean, locale, measureType);
                 returns(Exception.class);
             }
         };
@@ -126,7 +128,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
         new Expectations() {
             {
                 reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, false, locale, measureType);
-                returns(list);
+                returns(returnList);
             }
         };
         Response response = iftaServiceSUT.getMileageByVehicleDefaults(expectedGroupID, locale, measureType);
@@ -139,13 +141,12 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
         new Expectations() {
             {
                 reportsFacadeMock.getMileageByVehicle(withEqual(sampleIds), (Interval) any, false, locale, measureType);
-                returns(list);
+                returns(returnList);
             }
         };
         
-        GroupList list = new GroupList(sampleIds);
-        
-        Response response = iftaServiceSUT.getMileageByVehicleDefaultsMultiGroup(list, locale, measureType);
+        Response response = iftaServiceSUT.getMileageByVehicleDefaultsMultiGroup(
+                new GroupList(sampleIds), locale, measureType);
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
@@ -155,7 +156,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
         new Expectations() {
             {
                 reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, true, locale, measureType);
-                returns(list);
+                returns(returnList);
             }
         };
 
@@ -169,7 +170,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
         new Expectations() {
             {
                 reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, false, locale, measureType);
-                returns(list);
+                returns(returnList);
             }
         };
 
@@ -184,7 +185,7 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
         new Expectations() {
             {
                 reportsFacadeMock.getMileageByVehicle(expectedIds, (Interval) any, true, locale, measureType);
-                returns(list);
+                returns(returnList);
             }
         };
 
@@ -192,14 +193,5 @@ public class IFTAServiceMileageByVehicleImplTest extends BaseUnitTest {
                 startDate, endDate, locale, measureType);
         assertNotNull(response);
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
-    }
-
-    private Calendar getMidnight() {
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0); // set hour to midnight
-        today.set(Calendar.MINUTE, 0); // set minute in hour
-        today.set(Calendar.SECOND, 0); // set second in minute
-        today.set(Calendar.MILLISECOND, 0); // set millis in second
-        return today;
     }
 }

@@ -42,7 +42,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     private List<Integer> expectedGroupIDList;
     
     @Test
-    public void getStateMileageByVehicleRoadStatusTest() {
+    public void getStateMileageRoadStatusWithIftaAndDatesTest() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -70,7 +70,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusWithEmptyResultTest1() {
+    public void getStateMileageRoadStatusWithIftaAndDatesEmptyResultTest() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -79,14 +79,13 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
         Date startDate = buildDateFromString(expectedStrStartDate);
         Date endDate = buildDateFromString(expectedStrEndDate);
 
-        final List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
         expectedGroupIDList = new ArrayList<Integer>();
         expectedGroupIDList.add(expectedGroupID);
         
         new Expectations() {
             {
                 reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
-                result = list;
+                result = new ArrayList<StateMileageByVehicleRoadStatus>();;
             }
         };
 
@@ -97,7 +96,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusWithEmptyResultTest2() {
+    public void getStateMileageRoadStatusWithIftaAndDatesNullResultTest() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -123,7 +122,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusDefaultRangeTest() {
+    public void getStateMileageRoadStatusWithIftaTest() {
 
         final boolean expectedIfta = true;
 
@@ -146,7 +145,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusNoParamTest() {
+    public void getStateMileageRoadStatusDefaultsTest() {
 
         final List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
         list.add(new StateMileageByVehicleRoadStatus());
@@ -167,7 +166,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusOnlyRangeTest() {
+    public void getStateMileageRoadStatusWithDatesTest() {
 
         final String expectedStrStartDate = "20100101";
         final String expectedStrEndDate = "20100202";
@@ -196,7 +195,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     // ----- Multi Group selection
     
     @Test
-    public void getStateMileageByVehicleRoadStatusMultiGroupTest() {
+    public void getStateMileageRoadStatusWithIftaAndDatesMultiGroupTest() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -226,7 +225,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusWithEmptyResultMultiGroupTest1() {
+    public void getStateMileageRoadStatusWithIftaAndDatesMultiGroupEmptyResultTest() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -235,7 +234,6 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
         Date startDate = buildDateFromString(expectedStrStartDate);
         Date endDate = buildDateFromString(expectedStrEndDate);
 
-        final List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
         expectedGroupIDList = new ArrayList<Integer>();
         expectedGroupIDList.add(expectedGroupID);
         expectedGroupIDList.add(expectedGroupID2);
@@ -244,7 +242,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
         new Expectations() {
             {
                 reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
-                result = list;
+                result = new ArrayList<StateMileageByVehicleRoadStatus>();
             }
         };
 
@@ -255,7 +253,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusWithEmptyResultTestMultiGroup2() {
+    public void getStateMileageRoadStatusWithIftaAndDatesMultiGroupNullResultTest() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -283,7 +281,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusDefaultRangeMultiGroupTest() {
+    public void getStateMileageRoadStatusWithIftaMultiGroupTest() {
 
         final boolean expectedIfta = true;
 
@@ -308,7 +306,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusNoParamMultiGroupTest() {
+    public void getStateMileageRoadStatusDefaultsMultiGroupTest() {
 
         final List<StateMileageByVehicleRoadStatus> list = new ArrayList<StateMileageByVehicleRoadStatus>();
         list.add(new StateMileageByVehicleRoadStatus());
@@ -331,7 +329,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
     }
 
     @Test
-    public void getStateMileageByVehicleRoadStatusOnlyRangeMultiGroupTest() {
+    public void getStateMileageRoadStatusWithDatesMultiGroupTest() {
 
         final String expectedStrStartDate = "20100101";
         final String expectedStrEndDate = "20100202";

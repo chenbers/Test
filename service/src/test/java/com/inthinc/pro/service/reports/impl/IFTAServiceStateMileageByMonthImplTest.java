@@ -47,7 +47,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
     // One group selection
     @Test
-    public void getStateMileageByVehicleByMonthTest() {
+    public void getStateMileageByMonthWithIftaAndDates() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -75,7 +75,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthWithEmptyResult() {
+    public void getStateMileageByMonthWithIftaAndDatesEmptyResult() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -102,7 +102,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthWithNullResult() {
+    public void getStateMileageByMonthWithIftaAndDatesNullResult() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -127,7 +127,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthDefaultRangeTest() {
+    public void getStateMileageByMonthWithIfta() {
 
         final boolean expectedIfta = true;
 
@@ -150,7 +150,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthNoParamTest() {
+    public void getStateMileageByMonthDefaults() {
 
         final List<StateMileage> list = new ArrayList<StateMileage>();
         list.add(new StateMileage());
@@ -171,7 +171,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthOnlyRangeTest() {
+    public void getStateMileageByMonthWithDates() {
 
         final String expectedStrStartDate = "20100101";
         final String expectedStrEndDate = "20100202";
@@ -199,7 +199,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     
     // Multi group selection
     @Test
-    public void getStateMileageByVehicleByMonthMultiGroupTest() {
+    public void getStateMileageByMonthWithIftaAndDatesMultiGroupTest() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -231,7 +231,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthWithEmptyResultMultiGroupTest1() {
+    public void getStateMileageByMonthWithIftaAndDatesEmptyResultMultiGroupTest() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -248,8 +248,6 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-//                reportsUtilMock.checkParametersMultiGroup(expectedGroupIDList, (Date)any, (Date)any);
-//                result = null;
                 reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = emptyList;
             }
@@ -262,7 +260,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthWithEmptyResultTestMultiGroup2() {
+    public void getStateMileageByMonthWithIftaAndDatesNullResultMultiGroupTest() {
 
         final boolean expectedIfta = true;
         final String expectedStrStartDate = "20100101";
@@ -277,8 +275,6 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-//                reportsUtilMock.checkParametersMultiGroup(expectedGroupIDList, (Date)any, (Date)any);
-//                result = null;
                 reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = null;
             }
@@ -292,7 +288,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthDefaultRangeTestMultiGroup() {
+    public void getStateMileageByMonthWithIftaMultiGroupTest() {
 
         final boolean expectedIfta = true;
 
@@ -305,8 +301,6 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-//                reportsUtilMock.checkParametersMultiGroup(expectedGroupIDList, (Date)any, (Date)any);
-//                result = null;
                 reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = list;
             }
@@ -319,7 +313,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthNoParamTestMultiGroup() {
+    public void getStateMileageByVehicleByMonthDefaultsMultiGroupTest() {
 
         final List<StateMileage> list = new ArrayList<StateMileage>();
         list.add(new StateMileage());
@@ -330,8 +324,6 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
         
         new Expectations() {
             {
-//                reportsUtilMock.checkParametersMultiGroup(expectedGroupIDList, (Date)any, (Date)any);
-//                result = null;
                 reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, false, locale, measureType);
                 result = list;
             }
@@ -344,7 +336,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
     }
 
     @Test
-    public void getStateMileageByVehicleByMonthOnlyRangeTestMultiGroup() {
+    public void getStateMileageByVehicleByMonthWithDatesMultiGroupTest() {
 
         final String expectedStrStartDate = "20100101";
         final String expectedStrEndDate = "20100202";
@@ -362,8 +354,6 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-//                reportsUtilMock.checkParametersMultiGroup(expectedGroupIDList, (Date)any, (Date)any);
-//                result = null;
                 reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, interval, false, locale, measureType);
                 result = list;
             }
