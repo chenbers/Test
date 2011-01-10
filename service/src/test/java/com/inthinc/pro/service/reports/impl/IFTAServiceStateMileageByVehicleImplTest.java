@@ -10,9 +10,12 @@ import java.util.Locale;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import junit.framework.Assert;
+
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
+import mockit.Verifications;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.Interval;
@@ -20,8 +23,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.util.GroupList;
 
 public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
 
@@ -29,6 +34,11 @@ public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
     private static final int SIX_UNITS = 6;
     private final Locale locale = Locale.US;
     private final MeasurementType measureType = MeasurementType.ENGLISH;
+    private List<Integer> expectedGroupIDList;
+    private List<MileageByVehicle> returnList;
+    private Date expectedStartDate;
+    private Date expectedEndDate;
+    private Interval interval;
 
     @Mocked private ReportsFacade reportsFacadeMock;
 
@@ -37,92 +47,82 @@ public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
     @Before
     public void setUp() {
         serviceSUT = new IFTAServiceStateMileageByVehicleImpl(reportsFacadeMock);
+        returnList = new ArrayList<MileageByVehicle>();
+        returnList.add(new MileageByVehicle());
+        expectedStartDate = buildDateFromString("20101201");
+        expectedEndDate = buildDateFromString("20101231");
+        interval = serviceSUT.getInterval(expectedStartDate, expectedEndDate);
+        expectedGroupIDList = new ArrayList<Integer>();
+        expectedGroupIDList.add(SAMPLE_GROUP_ID);
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testGetStateMileageByVehicleDefaults() {
 
-        final DateMidnight dateMidnight = new DateMidnight();
-        final Date expectedStartDate = dateMidnight.minusDays(SIX_UNITS).toDate();
-        final Date expectedEndDate = dateMidnight.toDate();
-
-        final Interval interval = new Interval(expectedStartDate.getTime(), expectedEndDate.getTime());
-
         // Expectations & stubbing
         new Expectations() {
             {
                 reportsFacadeMock.getStateMileageByVehicle((List<Integer>)any, 
-                        withEqual(interval), withEqual(false), locale, measureType);
+                        (Interval)any, withEqual(false), locale, measureType);returns(returnList);
             }
         };
 
-        serviceSUT.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID, locale, measureType);
+        Response response = serviceSUT.getStateMileageByVehicleDefaults(SAMPLE_GROUP_ID, locale, measureType);
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testGetStateMileageByVehicleWithDates() {
 
-        final DateMidnight dateMidnight = new DateMidnight();
-        final Date expectedStartDate = dateMidnight.minusYears(SIX_UNITS).toDate();
-        final Date expectedEndDate = dateMidnight.minusMonths(SIX_UNITS).toDate();
-
-        final Interval interval = new Interval(expectedStartDate.getTime(), expectedEndDate.getTime());
-
         // Expectations & stubbing
         new Expectations() {
             {
                 reportsFacadeMock.getStateMileageByVehicle((List<Integer>)any, 
                         withEqual(interval), withEqual(false), locale, measureType);
+                returns(returnList);
             }
         };
 
-        serviceSUT.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, 
+        Response response = serviceSUT.getStateMileageByVehicleWithDates(SAMPLE_GROUP_ID, 
                 expectedStartDate, expectedEndDate, locale, measureType);
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testGetStateMileageByVehicleWithIfta() {
 
-        final DateMidnight dateMidnight = new DateMidnight();
-        final Date expectedStartDate = dateMidnight.minusDays(SIX_UNITS).toDate();
-        final Date expectedEndDate = dateMidnight.toDate();
-
-        final Interval interval = new Interval(expectedStartDate.getTime(), expectedEndDate.getTime());
-
         // Expectations & stubbing
         new Expectations() {
             {
                 reportsFacadeMock.getStateMileageByVehicle((List<Integer>)any, 
-                        withEqual(interval), withEqual(true), locale, measureType);
+                        (Interval)any, withEqual(true), locale, measureType);
+                returns(returnList);
             }
         };
 
-        serviceSUT.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID, locale, measureType);
+        Response response = serviceSUT.getStateMileageByVehicleWithIfta(SAMPLE_GROUP_ID, locale, measureType);
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testGetStateMileageByVehicleWithIftaAndDates() {
 
-        final DateMidnight dateMidnight = new DateMidnight();
-        final Date expectedStartDate = dateMidnight.minusYears(SIX_UNITS).toDate();
-        final Date expectedEndDate = dateMidnight.minusMonths(SIX_UNITS).toDate();
-
-        final Interval interval = new Interval(expectedStartDate.getTime(), expectedEndDate.getTime());
-
         // Expectations & stubbing
         new Expectations() {
             {
                 reportsFacadeMock.getStateMileageByVehicle((List<Integer>)any, 
                         withEqual(interval), withEqual(true), locale, measureType);
+                returns(returnList);
             }
         };
 
-        serviceSUT.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, 
+        Response response = serviceSUT.getStateMileageByVehicleWithIftaAndDates(SAMPLE_GROUP_ID, 
                 expectedStartDate, expectedEndDate, locale, measureType);
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
     }
 
     @SuppressWarnings("unchecked")
@@ -223,4 +223,109 @@ public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
                 expectedStartDate, expectedEndDate, locale, measureType);
         assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
+
+    // Multi-group support tests
+    @Test
+    public void testGetStateMileageByVehicleMultiGroupDefaults() {
+
+        GroupList groupList = new GroupList(expectedGroupIDList);
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                reportsFacadeMock.getStateMileageByVehicle(withEqual(expectedGroupIDList), 
+                        (Interval)any, withEqual(false), locale, measureType);
+                returns(returnList);
+            }
+        };
+
+        Response res = serviceSUT.getStateMileageByVehicleDefaultsMultiGroup(groupList, locale, measureType);
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), res.getStatus());
+        
+        new Verifications() {
+            {
+                serviceSUT.getInterval(null, null);
+            }            
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetStateMileageByVehicleMultiGroupWithDates() {
+
+        GroupList groupList = new GroupList(expectedGroupIDList);
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                reportsFacadeMock.getStateMileageByVehicle((List<Integer>)any, 
+                        withEqual(interval), withEqual(false), locale, measureType);
+                returns(returnList);
+            }
+        };
+
+        Response response = serviceSUT.getStateMileageByVehicleWithDatesMultiGroup(
+                groupList, expectedStartDate, expectedEndDate, locale, measureType);
+        
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        
+        new Verifications() {
+            {
+                serviceSUT.getInterval(expectedStartDate, expectedEndDate);
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetStateMileageByVehicleMultiGroupWithIfta() {
+
+        GroupList groupList = new GroupList(expectedGroupIDList);
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                reportsFacadeMock.getStateMileageByVehicle((List<Integer>)any, 
+                        (Interval)any, withEqual(true), locale, measureType);
+                returns(returnList);
+            }
+        };
+
+        Response response = serviceSUT.getStateMileageByVehicleWithIftaMultiGroup(groupList, locale, measureType);
+        
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        
+        new Verifications() {
+            {
+                serviceSUT.getInterval(null, null);
+            }
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void testGetStateMileageByVehicleMultiGroupWithIftaAndDates() {
+
+        GroupList groupList = new GroupList(expectedGroupIDList);
+
+        // Expectations & stubbing
+        new Expectations() {
+            {
+                reportsFacadeMock.getStateMileageByVehicle((List<Integer>)any, 
+                        withEqual(interval), withEqual(true), locale, measureType);
+                returns(returnList);
+            }
+        };
+
+        Response response = serviceSUT.getStateMileageByVehicleWithIftaAndDatesMultiGroup(
+                groupList, expectedStartDate, expectedEndDate, locale, measureType);
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
+        
+        new Verifications() {
+            {
+                serviceSUT.getInterval(expectedStartDate, expectedEndDate);
+            }
+        };
+    }
+    
 }
