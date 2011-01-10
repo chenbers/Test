@@ -509,7 +509,14 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             doSave(selected, add);
             if (items == null)
                 getItems();
-            else applyFilter(this.getPage());
+            else {
+                if (add)
+                {
+                    items.add(item);
+                    applyFilter(1);
+                }
+                else applyFilter(this.getPage());
+            }
         }
         catch (HessianException e)
         {
@@ -519,11 +526,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             return null;
         }
 
-        if (add)
-        {
-            items.add(item);
-            applyFilter(1);
-        }
 
         // deselect all edited items
         for (final T item : getSelectedItems())
