@@ -15,11 +15,10 @@ import org.springframework.stereotype.Component;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellProviderType;
-import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
-import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
+import com.inthinc.pro.service.phonecontrol.PhoneStatusController;
 
 /**
  * {@link MovementEventHandler} which requests phone control service provider to disable/enable driver's cell phone once it starts/stops driving.
@@ -29,12 +28,11 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
     private static final Logger logger = Logger.getLogger(PhoneControlMovementEventHandler.class);
 
-    private final DriverDAO driverDao;
+    private DriverDAO driverDao;
     private PhoneControlAdapterFactory serviceFactory;
+    private PhoneStatusController phoneStatusController;
 
     private Map<CellProviderType, UpdateStrategy> statusUpdateStrategyMap = new HashMap<CellProviderType, UpdateStrategy>();
-    
-    @Autowired private DriverPhoneDAO phoneDAO;
 
     /**
      * Creates an instance of {@link PhoneControlMovementEventHandler}.
@@ -43,13 +41,14 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
      *            The {@link DriverDAO} instance to use to obtain information about the driver.
      * @param serviceFactory
      *            An instance of the {@link PhoneControlAdapterFactory} to be used to create {@link PhoneControlAdapter} client endpoints.
-     * @param phoneDao TODO
+     * @param phoneDao
+     *            TODO
      */
     @Autowired
-    public PhoneControlMovementEventHandler(DriverDAO driverDao, PhoneControlAdapterFactory serviceFactory, DriverPhoneDAO phoneDao) {
-        this.driverDao = driverDao;
+    public PhoneControlMovementEventHandler(DriverDAO driverDao, PhoneControlAdapterFactory serviceFactory, PhoneStatusController phoneStatusController) {
         this.serviceFactory = serviceFactory;
-        this.phoneDAO = phoneDao;
+        this.phoneStatusController = phoneStatusController;
+        this.driverDao = driverDao;
     }
 
     /**
@@ -88,28 +87,32 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
         if (driver == null) {
             logger.warn("No information is available for driver DID-" + driverId + ".");
         } else {
-            logger.debug("Obtained driver info from the back end. DID-" + driverId + ", PH#-" + driver.getCellProviderInfo().getCellPhone() + ", provider: " + driver.getCellProviderInfo().getProvider());
+            Driver.CellProviderInfo info = driver.getCellProviderInfo();
+
+            if (info == null) {
+                info = new Driver.CellProviderInfo();
+            }
+
+            logger.debug("Obtained driver info from the back end. DID-" + driverId + ", PH#-" + info.getCellPhone() + ", provider: "
+                    + info.getProvider());
         }
 
         return driver;
     }
 
     private void disableDriverPhone(Driver driver) {
-        if (driver.getCellProviderInfo().getProvider() != null) {
+        if (driver.getCellProviderInfo() != null && driver.getCellProviderInfo().getProvider() != null) {
 
             if (driver.getCellProviderInfo().getCellPhone() != null) {
                 if (driver.getCellProviderInfo().getProviderUsername() != null) {
                     logger.debug("Creating " + driver.getCellProviderInfo().getProvider() + " client endpoint proxy...");
-                    PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getCellProviderInfo().getProvider(), driver.getCellProviderInfo().getProviderUsername(), driver.getCellProviderInfo().getProviderPassword());
+                    PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getCellProviderInfo().getProvider(), driver.getCellProviderInfo().getProviderUsername(), driver
+                            .getCellProviderInfo().getProviderPassword());
                     logger.debug("Sending request to " + driver.getCellProviderInfo().getProvider() + " client endpoint proxy to disable PH#-" + driver.getCellProviderInfo().getCellPhone());
                     phoneControlAdapter.disablePhone(driver.getCellProviderInfo().getCellPhone());
 
                     if (statusUpdateStrategyMap.get(driver.getCellProviderInfo().getProvider()) == UpdateStrategy.SYNCHRONOUS) {
-                        logger.debug("Synchronous status update strategy. Updating phone status to " + CellStatusType.DISABLED);
-                        driver.getCellProviderInfo().setCellStatus(CellStatusType.DISABLED);
-                        driverDao.update(driver);
-                        phoneDAO.addDriverToDisabledPhoneList(driver.getDriverID());
-                        logger.debug("Phone status has been updated successfully. Driver has been added to disabled phone list.");
+                        phoneStatusController.setPhoneStatusDisabled(driver);
                     }
                 } else {
                     logger.warn("Driver DID-" + driver.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");
@@ -124,22 +127,19 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
     }
 
     private void enableDriverPhone(Driver driver) {
-        if (driver.getCellProviderInfo().getProvider() != null) {
+        if (driver.getCellProviderInfo() != null && driver.getCellProviderInfo().getProvider() != null) {
 
             if (driver.getCellProviderInfo().getCellPhone() != null) {
                 if (driver.getCellProviderInfo().getProviderUsername() != null) {
                     logger.debug("Creating " + driver.getCellProviderInfo().getProvider() + " client endpoint proxy...");
-                    PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getCellProviderInfo().getProvider(), driver.getCellProviderInfo().getProviderUsername(), driver.getCellProviderInfo().getProviderPassword());
+                    PhoneControlAdapter phoneControlAdapter = serviceFactory.createAdapter(driver.getCellProviderInfo().getProvider(), driver.getCellProviderInfo().getProviderUsername(), driver
+                            .getCellProviderInfo().getProviderPassword());
                     logger.debug("Requesting " + driver.getCellProviderInfo().getProvider() + " client endpoint proxy to enable PH#-" + driver.getCellProviderInfo().getCellPhone());
 
                     phoneControlAdapter.enablePhone(driver.getCellProviderInfo().getCellPhone());
 
                     if (statusUpdateStrategyMap.get(driver.getCellProviderInfo().getProvider()) == UpdateStrategy.SYNCHRONOUS) {
-                        logger.debug("Synchronous status update strategy. Updating phone status to " + CellStatusType.ENABLED);
-                        driver.getCellProviderInfo().setCellStatus(CellStatusType.ENABLED);
-                        driverDao.update(driver);
-                        phoneDAO.removeDriverFromDisabledPhoneList(driver.getDriverID());
-                        logger.debug("Phone status has been updated successfully. Driver has been removed from disabled phone list.");
+                        phoneStatusController.setPhoneStatusEnabled(driver);
                     }
                 } else {
                     logger.warn("Driver DID-" + driver.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");

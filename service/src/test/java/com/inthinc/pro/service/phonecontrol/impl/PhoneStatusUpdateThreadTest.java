@@ -10,39 +10,53 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.adapters.DriverDAOAdapter;
 import com.inthinc.pro.service.impl.BaseUnitTest;
-import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
+import com.inthinc.pro.service.phonecontrol.PhoneStatusController;
 
 /**
  * Test for PhoneStatusUpdateThread.
  */
 public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
     private final String phoneID = "1234567890";
-    private final Integer driverID = 10;
-    
     private PhoneStatusUpdateThread threadSUT;
-    
-    //Mock
-    @Mocked private DriverDAOAdapter driverAdapterMock;
-    @Mocked private DriverPhoneDAO phoneDaoMock;
-    @Cascading private Driver driverMock;
-    
-    /**
-     * Test for run() method.
-     */
+
+    // Mock
+    @Mocked
+    private DriverDAOAdapter driverAdapterMock;
+    @Mocked
+    private PhoneStatusController phoneStatusControllerMock;
+    @Cascading
+    private Driver driverMock;
+
     @Test
     public void testEnablePhone() {
         threadSUT = new PhoneStatusUpdateThread(phoneID, CellStatusType.ENABLED);
         threadSUT.setDriverDAOAdapter(driverAdapterMock);
-        threadSUT.setDriverPhoneDAO(phoneDaoMock);
+        threadSUT.setPhoneStatusController(phoneStatusControllerMock);
+
+        new Expectations() {
+            {
+                driverAdapterMock.findByPhoneNumber(phoneID);
+                returns(driverMock);
+                phoneStatusControllerMock.setPhoneStatusEnabled(driverMock);
+                times = 1;
+            }
+        };
+
+        threadSUT.run();
+    }
+
+    @Test
+    public void testDisablePhone() {
+        threadSUT = new PhoneStatusUpdateThread(phoneID, CellStatusType.DISABLED);
+        threadSUT.setDriverDAOAdapter(driverAdapterMock);
+        threadSUT.setPhoneStatusController(phoneStatusControllerMock);
         
         new Expectations() {
             {
-                driverAdapterMock.findByPhoneNumber(phoneID); returns(driverMock);
-                driverMock.getCellProviderInfo().setCellStatus(CellStatusType.ENABLED);
-                driverAdapterMock.update(driverMock); returns(0);
-                driverMock.getDriverID(); returns(driverID); 
-                phoneDaoMock.removeDriverFromDisabledPhoneList(driverID); returns(null);
-                driverMock.getDriverID(); returns(driverID); 
+                driverAdapterMock.findByPhoneNumber(phoneID);
+                returns(driverMock);
+                phoneStatusControllerMock.setPhoneStatusDisabled(driverMock);
+                times = 1;
             }
         };
         
@@ -56,14 +70,15 @@ public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
     public void testRunWhenNullDriver() {
         threadSUT = new PhoneStatusUpdateThread(phoneID, CellStatusType.ENABLED);
         threadSUT.setDriverDAOAdapter(driverAdapterMock);
-        threadSUT.setDriverPhoneDAO(phoneDaoMock);
-        
+        threadSUT.setPhoneStatusController(phoneStatusControllerMock);
+
         new Expectations() {
             {
-                driverAdapterMock.findByPhoneNumber(phoneID); returns(null);
+                driverAdapterMock.findByPhoneNumber(phoneID);
+                returns(null);
             }
         };
-        
+
         threadSUT.run();
     }
 

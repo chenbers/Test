@@ -130,10 +130,6 @@
 		<property name="alertMessageDAO" ref="alertMessageDAO" />
 	</bean>
 
-	<bean id="cellPhoneService"
-		class="com.inthinc.pro.service.phonecontrol.impl.CellPhoneServiceImpl">
-		<property name="phoneDAO" ref="inMemoryDriverPhoneDAO" />
-	</bean>
 	<!--
 		<bean class="com.inthinc.pro.service.impl.NoteServiceImpl"> <property
 		name="mcmService" ref="mcmServiceBean"/> </bean>
