@@ -41,11 +41,48 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     @Column(updateable = false)
     private Person person;
     private Integer groupID;
-    private String cellPhone;
-    private CellStatusType cellStatus;
-    private CellProviderType provider;
-    private String providerUsername;
-    private String providerPassword;
+    private CellProviderInfo cellProviderInfo;
+    
+    public static class CellProviderInfo {
+        private String cellPhone;
+        private CellStatusType cellStatus;
+        private CellProviderType provider;
+        private String providerUsername;
+        
+        private String providerPassword;
+        
+        public String getProviderPassword() {
+            return providerPassword;
+        }
+        @XmlTransient
+        public void setProviderPassword(String providerPassword) {
+            this.providerPassword = providerPassword;
+        }
+        public String getCellPhone() {
+            return cellPhone;
+        }
+        public void setCellPhone(String cellPhone) {
+            this.cellPhone = cellPhone;
+        }
+        public CellStatusType getCellStatus() {
+            return cellStatus;
+        }
+        public void setCellStatus(CellStatusType cellStatus) {
+            this.cellStatus = cellStatus;
+        }
+        public CellProviderType getProvider() {
+            return provider;
+        }
+        public void setProvider(CellProviderType provider) {
+            this.provider = provider;
+        }
+        public String getProviderUsername() {
+            return providerUsername;
+        }
+        public void setProviderUsername(String providerUsername) {
+            this.providerUsername = providerUsername;
+        }   
+    }
 
     public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
             Integer dot, Integer groupID) {
@@ -67,6 +104,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 
     public Driver() {
         super();
+        this.cellProviderInfo = new CellProviderInfo();
     }
 
     public Integer getDriverID() {
@@ -200,62 +238,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.groupID = groupID;
     }
 
-    /**
-     * The cellPhone getter.
-     * 
-     * @return the cellPhone
-     */
-    public String getCellPhone() {
-        return this.cellPhone;
-    }
-
-    /**
-     * The cellPhone setter.
-     * 
-     * @param cellPhone
-     *            the cellPhone to set
-     */
-    public void setCellPhone(String cellPhone) {
-        this.cellPhone = cellPhone;
-    }
-
-    /**
-     * The cellStatus getter.
-     * 
-     * @return the cellStatus
-     */
-    public CellStatusType getCellStatus() {
-        return this.cellStatus;
-    }
-
-    /**
-     * The provider getter.
-     * 
-     * @return the provider
-     */
-    public CellProviderType getProvider() {
-        return this.provider;
-    }
-
-    /**
-     * The cellStatus setter.
-     * 
-     * @param cellStatus
-     *            the cellStatus to set
-     */
-    public void setCellStatus(CellStatusType cellStatus) {
-        this.cellStatus = cellStatus;
-    }
-
-    /**
-     * The provider setter.
-     * 
-     * @param provider
-     *            the provider to set
-     */
-    public void setProvider(CellProviderType provider) {
-        this.provider = provider;
-    }
+   
 
     @Override
     public int compareTo(Driver o) {
@@ -269,21 +252,12 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         return "Driver [barcode=" + barcode + ", certifications=" + certifications + ", dot=" + dot + ", driverID=" + driverID + ", expiration=" + expiration + ", groupID=" + groupID + ", license="
                 + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status + "]";
     }
-
-    public String getProviderUsername() {
-        return providerUsername;
+    
+    public CellProviderInfo getCellProviderInfo() {
+        return this.cellProviderInfo;
     }
 
-    public void setProviderUsername(String providerUsername) {
-        this.providerUsername = providerUsername;
+    public void setCellProviderInfo(CellProviderInfo cellProviderInfo) {
+        this.cellProviderInfo = cellProviderInfo;
     }
-
-    public String getProviderPassword() {
-        return providerPassword;
-    }
-
-    public void setProviderPassword(String providerPassword) {
-        this.providerPassword = providerPassword;
-    }
-
 }

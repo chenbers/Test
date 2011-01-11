@@ -102,7 +102,7 @@ public class DriverDaoStub implements DriverDAO {
 
     @Override
     public Driver findByPhoneNumber(String phoneID) {
-        this.driver.setCellPhone(phoneID);
+        this.driver.getCellProviderInfo().setCellPhone(phoneID);
         return this.driver;
     }
 

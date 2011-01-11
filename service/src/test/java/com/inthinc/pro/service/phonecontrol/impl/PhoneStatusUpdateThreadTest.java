@@ -38,7 +38,7 @@ public class PhoneStatusUpdateThreadTest extends BaseUnitTest {
         new Expectations() {
             {
                 driverAdapterMock.findByPhoneNumber(phoneID); returns(driverMock);
-                driverMock.setCellStatus(CellStatusType.ENABLED);
+                driverMock.getCellProviderInfo().setCellStatus(CellStatusType.ENABLED);
                 driverAdapterMock.update(driverMock); returns(0);
                 driverMock.getDriverID(); returns(driverID); 
                 phoneDaoMock.removeDriverFromDisabledPhoneList(driverID); returns(null);

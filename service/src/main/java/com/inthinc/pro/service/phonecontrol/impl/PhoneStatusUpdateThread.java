@@ -50,7 +50,7 @@ public class PhoneStatusUpdateThread extends Thread {
             logger.debug(LOG_PREFIX + "called driverDAO.findByPhoneID(), returned: " + driver);
             if (driver != null) {
                 logger.debug(LOG_PREFIX + " is updating driver.. ");
-                driver.setCellStatus(status);
+                driver.getCellProviderInfo().setCellStatus(status);
                 driverDAOAdapter.update(driver);
                 
                 if (status == CellStatusType.DISABLED) {
