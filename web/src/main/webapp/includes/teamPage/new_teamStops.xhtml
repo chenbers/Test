@@ -174,9 +174,9 @@
  							</rich:column>
  							
 							<rich:column>
-								<div style="position: relative; background-color:#{teamStopsBean.colors[index]}; border: 1px solid black; width: 16px;height: 16px">					
-									<div class="trips_label" style="color:#{teamStopsBean.textColors[index]};">
-										#{teamStopsBean.labels[index]}
+								<div style="position: relative; background-color:#{teamStopsBean.colors[index%25]}; border: 1px solid black; width: 16px;height: 16px">					
+									<div class="trips_label" style="color:#{teamStopsBean.textColors[index%25]};">
+										#{teamStopsBean.labels[index%25]}
 									</div>
 								</div>
 							</rich:column> 	
