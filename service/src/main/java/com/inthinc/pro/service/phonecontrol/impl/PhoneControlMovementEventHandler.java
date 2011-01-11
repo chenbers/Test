@@ -19,6 +19,7 @@ import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
+import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
 
 /**
  * {@link MovementEventHandler} which requests phone control service provider to disable/enable driver's cell phone once it starts/stops driving.
@@ -32,6 +33,8 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
     private PhoneControlAdapterFactory serviceFactory;
 
     private Map<CellProviderType, UpdateStrategy> statusUpdateStrategyMap = new HashMap<CellProviderType, UpdateStrategy>();
+    
+    @Autowired private DriverPhoneDAO phoneDAO;
 
     /**
      * Creates an instance of {@link PhoneControlMovementEventHandler}.
@@ -40,11 +43,13 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
      *            The {@link DriverDAO} instance to use to obtain information about the driver.
      * @param serviceFactory
      *            An instance of the {@link PhoneControlAdapterFactory} to be used to create {@link PhoneControlAdapter} client endpoints.
+     * @param phoneDao TODO
      */
     @Autowired
-    public PhoneControlMovementEventHandler(DriverDAO driverDao, PhoneControlAdapterFactory serviceFactory) {
+    public PhoneControlMovementEventHandler(DriverDAO driverDao, PhoneControlAdapterFactory serviceFactory, DriverPhoneDAO phoneDao) {
         this.driverDao = driverDao;
         this.serviceFactory = serviceFactory;
+        this.phoneDAO = phoneDao;
     }
 
     /**
@@ -53,7 +58,6 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
      * 
      * @see com.inthinc.pro.service.phonecontrol.MovementEventHandler#handleDriverStartedMoving(java.lang.Integer)
      */
-    // TODO Add logic to handle error once retry user story is implemented.
     @Override
     public void handleDriverStartedMoving(Integer driverId) {
         Driver driver = getDriverInfo(driverId);
@@ -66,7 +70,6 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
     /**
      * @see com.inthinc.pro.service.phonecontrol.MovementEventHandler#handleDriverStoppedMoving(java.lang.Integer)
      */
-    // TODO Add logic to handle error once retry user story is implemented.
     @Override
     public void handleDriverStoppedMoving(Integer driverId) {
         Driver driver = getDriverInfo(driverId);
@@ -105,7 +108,8 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
                         logger.debug("Synchronous status update strategy. Updating phone status to " + CellStatusType.DISABLED);
                         driver.setCellStatus(CellStatusType.DISABLED);
                         driverDao.update(driver);
-                        logger.debug("Phone status has been updated successfully.");
+                        phoneDAO.addDriverToDisabledPhoneList(driver.getDriverID());
+                        logger.debug("Phone status has been updated successfully. Driver has been added to disabled phone list.");
                     }
                 } else {
                     logger.warn("Driver DID-" + driver.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");
@@ -134,7 +138,8 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
                         logger.debug("Synchronous status update strategy. Updating phone status to " + CellStatusType.ENABLED);
                         driver.setCellStatus(CellStatusType.ENABLED);
                         driverDao.update(driver);
-                        logger.debug("Phone status has been updated successfully.");
+                        phoneDAO.removeDriverFromDisabledPhoneList(driver.getDriverID());
+                        logger.debug("Phone status has been updated successfully. Driver has been removed from disabled phone list.");
                     }
                 } else {
                     logger.warn("Driver DID-" + driver.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");
