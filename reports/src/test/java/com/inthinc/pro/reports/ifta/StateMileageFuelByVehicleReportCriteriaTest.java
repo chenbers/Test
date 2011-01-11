@@ -308,7 +308,7 @@ public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
 	        .append(bean.getGroupName(), expectedGroupNames.get(record.getGroupID()))
 	        .append(bean.getVehicleName(), record.getVehicleName())
 	        .append(bean.getMonth(), record.getMonth())
-	        .append(bean.getState(), record.getStateName())
+	        .append(bean.getState(), record.getStateAbrev())
 	        .append(bean.getTotalMiles().doubleValue(), record.getMiles().doubleValue())
 	        .append(bean.getTotalTruckGas().doubleValue(), record.getTruckGallons().doubleValue())
 	        .append(bean.getTotalTrailerGas().doubleValue(), record.getTrailerGallons().doubleValue())
@@ -320,7 +320,7 @@ public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
 		sm.setGroupID(groupID);
 		sm.setVehicleName("VN");
 		sm.setMonth("October, 2010");
-		sm.setStateName("UT");
+		sm.setStateAbbrev("UT");
 		sm.setMiles(500L);
 		sm.setTruckGallons(20F);
 		sm.setTrailerGallons(30F);
