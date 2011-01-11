@@ -56,7 +56,7 @@ public class StateMileageFuelByVehicleReportCriteria extends DOTReportCriteria {
             rec.setGroupName(getShortGroupName(item.getGroupID()));
             rec.setVehicleName(item.getVehicleName());
             rec.setMonth(item.getMonth());
-            rec.setState(item.getStateName());
+            rec.setState(item.getStateAbrev());
             rec.setTotalMiles(MeasurementConversionUtil.convertMilesToKilometers(item.getMiles(), getMeasurementType()).doubleValue());
 
             Double totalTruckGas = item.getTruckGallons().doubleValue();
