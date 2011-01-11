@@ -104,7 +104,6 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
 
     public Driver() {
         super();
-        this.cellProviderInfo = new CellProviderInfo();
     }
 
     public Integer getDriverID() {

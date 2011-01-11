@@ -81,16 +81,19 @@ public class DriverDaoStubBehaviourAdvice {
             driver77700.setDriverID(77700);
 
             Driver driver77710 = new Driver();
+            driver77710.setCellProviderInfo(new Driver.CellProviderInfo());
             driver77710.getCellProviderInfo().setCellPhone(STUBBED_PHONE_NUMBER);
             driver77710.setDriverID(77710);
 
             Driver driver77701 = new Driver();
+            driver77701.setCellProviderInfo(new Driver.CellProviderInfo());
             driver77701.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
             driver77701.getCellProviderInfo().setProviderUsername(CELLCOPNTROL_USERNAME);
             driver77701.getCellProviderInfo().setProviderPassword(CELLCONTROL_PASSWORD);
             driver77701.setDriverID(77701);
 
             Driver driver77702 = new Driver();
+            driver77702.setCellProviderInfo(new Driver.CellProviderInfo());
             driver77702.getCellProviderInfo().setProvider(CellProviderType.ZOOM_SAFER);
             driver77702.getCellProviderInfo().setProviderUsername(ZOOMSAFER_USERNAME);
             driver77702.getCellProviderInfo().setProviderPassword(ZOOMSAFER_PASSWORD);
@@ -98,6 +101,7 @@ public class DriverDaoStubBehaviourAdvice {
 
             Driver driver77711 = new Driver();
             driver77711.setLicense("123465AA");
+            driver77711.setCellProviderInfo(new Driver.CellProviderInfo());
             driver77711.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
             driver77711.getCellProviderInfo().setProviderUsername(CELLCOPNTROL_USERNAME);
             driver77711.getCellProviderInfo().setProviderPassword(CELLCONTROL_PASSWORD);
@@ -105,6 +109,7 @@ public class DriverDaoStubBehaviourAdvice {
             driver77711.setDriverID(77711);
 
             Driver driver77712 = new Driver();
+            driver77712.setCellProviderInfo(new Driver.CellProviderInfo());
             driver77712.getCellProviderInfo().setProvider(CellProviderType.ZOOM_SAFER);
             driver77712.getCellProviderInfo().setProviderUsername(ZOOMSAFER_USERNAME);
             driver77712.getCellProviderInfo().setProviderPassword(ZOOMSAFER_PASSWORD);

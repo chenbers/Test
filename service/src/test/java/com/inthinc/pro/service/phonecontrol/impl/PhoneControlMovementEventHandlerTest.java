@@ -28,6 +28,7 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
+        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
         final Integer expectedDriverId = 666;
         final CellProviderType expectedCellProvider = CellProviderType.CELL_CONTROL;
 
@@ -71,6 +72,7 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
+        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
         final Integer expectedDriverId = 666;
         final CellProviderType expectedCellProvider = CellProviderType.CELL_CONTROL;
 
@@ -147,6 +149,7 @@ public class PhoneControlMovementEventHandlerTest {
         final RuntimeException expectedException = new RuntimeException("Dummy exception");
 
         final Driver driver = new Driver();
+        driver.setCellProviderInfo(new Driver.CellProviderInfo());
         driver.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
         driver.getCellProviderInfo().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
         driver.getCellProviderInfo().setProviderUsername("");
@@ -267,6 +270,7 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
+        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
         final Integer expectedDriverId = 666;
 
         expectedDriver.setDriverID(expectedDriverId);
@@ -311,6 +315,7 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
+        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
         final Integer expectedDriverId = 666;
 
         expectedDriver.setDriverID(expectedDriverId);
@@ -358,6 +363,7 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
+        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
         final Integer expectedDriverId = 666;
 
         expectedDriver.setDriverID(expectedDriverId);
@@ -402,6 +408,7 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
+        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
         final Integer expectedDriverId = 666;
 
         expectedDriver.setDriverID(expectedDriverId);

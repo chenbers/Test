@@ -15,6 +15,7 @@ public class PhoneStatusControllerImplTest {
     @Test
     public void testSetStausToEnabled(final DriverDAO driverDaoMock, final DriverPhoneDAO phoneDaoMock) {
         final Driver driver = new Driver();
+        driver.setCellProviderInfo(new Driver.CellProviderInfo());
         driver.setDriverID(1);
 
         PhoneStatusController controller = new PhoneStatusControllerImpl(driverDaoMock, phoneDaoMock);
@@ -37,6 +38,7 @@ public class PhoneStatusControllerImplTest {
     @Test
     public void testSetStausToDisabled(final DriverDAO driverDaoMock, final DriverPhoneDAO phoneDaoMock) {
         final Driver driver = new Driver();
+        driver.setCellProviderInfo(new Driver.CellProviderInfo());
         driver.setDriverID(1);
 
         PhoneStatusController controller = new PhoneStatusControllerImpl(driverDaoMock, phoneDaoMock);
