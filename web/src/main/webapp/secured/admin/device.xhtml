@@ -47,10 +47,19 @@
                         <li class="l text"><a4j:htmlCommandLink id="deviceBack1"
                         	action="#{devicesBean.cancelDisplay}" value="#{messages.device_backToDevices}" /></li>
                         <li class="r">
-                          <a4j:commandButton id="deviceDelete1"
-                          styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;">
-                          <span class="delete"><h:outputText value="#{messages.button_delete}" /></span></a4j:commandButton>
-                          <h:outputText value=" " /><h:commandButton id="deviceEdit1" action="#{devicesBean.edit}" styleClass="left"><span class="edit"><h:outputText value="#{messages.button_edit}" /></span></h:commandButton>
+                        <!--  
+                          <a4j:commandButton id="deviceDelete1" styleClass="left" onclick="Richfaces.showModalPanel('confirmDelete'); return false;">
+                          	<span class="delete">	
+                          		<h:outputText value="#{messages.button_delete}" />
+                          	</span>
+                          </a4j:commandButton>
+                        -->
+                          <h:outputText value=" " />
+                          <h:commandButton id="deviceEdit1" action="#{devicesBean.edit}" styleClass="left">
+                          	<span class="edit">
+                          		<h:outputText value="#{messages.button_edit}" />
+                          	</span>
+                          </h:commandButton>
                         </li>
                       </ul>
 
