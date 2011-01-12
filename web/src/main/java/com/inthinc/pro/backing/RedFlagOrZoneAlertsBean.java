@@ -320,16 +320,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
             getItem().setSpeedSettings(settings);
         }
-//        else if (EventSubCategory.DRIVING_STYLE.equals(getItem().getEventSubCategory())) {
-//            if (!getItem().isHardAccelerationSelected())
-//                getItem().setHardAcceleration(null);
-//            if (!getItem().isHardTurnSelected())
-//                getItem().setHardTurn(null);
-//            if (!getItem().isHardBrakeSelected())
-//                getItem().setHardBrake(null);
-//            if (!getItem().isHardVerticalSelected())
-//                getItem().setHardVertical(null);
-//        }
+        else if (EventSubCategory.DRIVING_STYLE.equals(getItem().getEventSubCategory())) {
+            if (!getItem().isHardAccelerationSelected())
+                getItem().setHardAcceleration(null);
+            if (!getItem().isHardTurnSelected())
+                getItem().setHardTurn(null);
+            if (!getItem().isHardBrakeSelected())
+                getItem().setHardBrake(null);
+            if (!getItem().isHardVerticalSelected())
+                getItem().setHardVertical(null);
+        }
         
         return super.save();
     }
