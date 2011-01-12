@@ -147,7 +147,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         if(flag.getEscalationList() != null && !flag.getEscalationList().isEmpty()){
             for(AlertEscalationItem item: flag.getEscalationList()){
                 if(item.getEscalationOrder().equals(-1))
-                    alertView.setEscEmail(personDAO.findByID(item.getPersonID()).getPriEmail());
+                    alertView.setEscEmail(personDAO.findByID(item.getPersonID()).getFullNameWithPriEmail());
                 else
                     displayedPhNumbers.add(personDAO.findByID(item.getPersonID()).getFullNameWithPriPhone());
             }
@@ -433,8 +433,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         //Validate escalation phone number(s)
         if(true==true){
-            logger.fatal("//Validate escalation phone number(s) ");
-            logger.fatal(getExternalContext().getRequestParameterMap());//TODO: jwimmer: remove
             Map<String, String> paramMap = getExternalContext().getRequestParameterMap();
             for(String paramName: paramMap.keySet()){
                 if(paramName!=null && paramName.contains("phNumInput"))
