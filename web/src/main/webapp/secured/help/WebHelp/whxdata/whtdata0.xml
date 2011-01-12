@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<tocdata>
+<item name="inthinc® Portal User Guide" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideFrontMatter/inthinc®_Portal_User_Guide.htm" />
+<book name="Portal Overview" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Portal_Overview.htm" >
+  <item name="Supported Browsers" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Supported_Browsers.htm" />
+  <item name="What’s New this Release" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/What’s_New_this_Release.htm" />
+</book>
+<item name="Log In to inthinc® Portal" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Log_In_to_inthinc®_Portal.htm" />
+<item name="Maintain Your Account Profile" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Maintain_Your_Account_Profile.htm" />
+<book name="Explore inthinc® Portal" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Explore_inthinc®_Portal.htm" >
+  <item name="Toolbar and Navigation Bar" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Toolbar_and_Navigation_Bar.htm" />
+  <item name="Navigation Tree" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Navigation_Tree.htm" />
+  <item name="Home Pages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm" />
+  <item name="Team Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm" />
+  <item name="Reports Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Reports_Page.htm" />
+  <item name="Notifications Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Notifications_Page.htm" />
+  <item name="Live Fleet Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Live_Fleet_Page.htm" />
+  <item name="HOS Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/HOS_Page.htm" />
+  <item name="Admin Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Admin_Page.htm" />
+</book>
+<book name="Add and Maintain Fleet Information" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_and_Maintain_Fleet_Information.htm" >
+  <item name="Add a Group" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Group.htm" />
+  <item name="Create a Custom Role" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Create_a_Custom_Role.htm" />
+  <item name="View a Vehicle List" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_Vehicle_List.htm" />
+  <item name="Add a Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Vehicle.htm" />
+  <item name="Update a Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Update_a_Vehicle.htm" />
+  <item name="View a User List" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_User_List.htm" />
+  <item name="Add a User" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_User.htm" />
+  <item name="Update a User" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Update_a_User.htm" />
+  <item name="View a Device List" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_Device_List.htm" />
+  <item name="Update a Device" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Update_a_Device.htm" />
+  <item name="Set Up RFID Card for a Driver of tiwi™ Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_RFID_Card_for_a_Driver_of_tiwi™_Vehicle.htm" />
+  <item name="Delete a User, Vehicle, or Device" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Delete_a_User_Vehicle_or_Device.htm" />
+</book>
+<book name="Set Up Mentoring, Zones, and Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_Mentoring_Zones_and_Notifications.htm" >
+  <item name="View or Edit Admin Portal Account" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_or_Edit_Admin_Portal_Account.htm" />
+  <item name="Set Up In-Cab Mentoring" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_In-Cab_Mentoring.htm" />
+  <item name="Create a Zone" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Create_a_Zone.htm" />
+  <item name="Edit or Delete a Zone" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Edit_or_Delete_a_Zone.htm" />
+  <item name="Add a Red Flag Notification" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Red_Flag_Notification.htm" />
+  <item name="Submit Speed-Limit Change Request" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Submit_Speed-Limit_Change_Request.htm" />
+</book>
+<book name="View Reports and Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Reports_and_Notifications.htm" >
+  <item name="View a Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_Report.htm" />
+  <item name="View Fleet or Division Scores" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Fleet_or_Division_Scores.htm" />
+  <item name="View Team Pages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Team_Pages.htm" />
+  <item name="View Drivers, Vehicles, Idling, and Devices Reports" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Drivers_Vehicles_Idling_and_Devices_Reports.htm" />
+  <item name="View Driver or Vehicle Performance Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Driver_or_Vehicle_Performance_Page.htm" />
+  <item name="View All Trips" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_All_Trips.htm" />
+  <item name="View Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Notifications.htm" />
+  <item name="Customize Columns in Reports and Notifica­tions" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifica­tions.htm" />
+  <item name="Set up a Periodic Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_up_a_Periodic_Report.htm" />
+</book>
+<book name="Use waySmart™ Messaging and Reporting Features" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Use_waySmart™_Messaging_and_Reporting_Features.htm" >
+  <item name="Read waySmart™ Text Messages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Read_waySmart™_Text_Messages.htm" />
+  <item name="Compose a waySmart™ Text Message" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Compose_a_waySmart™_Text_Message.htm" />
+  <item name="Review waySmart™ Sent Messages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Review_waySmart™_Sent_Messages.htm" />
+  <item name="Generate a waySmart™ Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart™_Report.htm" />
+  <item name="View HOS Log for a Driver" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_HOS_Log_for_a_Driver.htm" />
+  <item name="Generate HOS Report for a Group" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_HOS_Report_for_a_Group.htm" />
+</book>
+<book name="Manage Crash History for inthinc® Devices" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Manage_Crash_History_for_inthinc®_Devices.htm" >
+  <item name="Introduction" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Introduction.htm" />
+  <item name="View Crash History for Group" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Crash_History_for_Group.htm" />
+  <item name="View Individual Crash Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Individual_Crash_Report.htm" />
+  <item name="View Crash Summary for Group, Driver, or Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Crash_Summary_for_Group_Driver_or_Vehicle.htm" />
+  <item name="Add or Edit a Crash Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_or_Edit_a_Crash_Report.htm" />
+  <item name="Export or Email a Crash Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Export_or_Email_a_Crash_Report.htm" />
+  <item name="Disable Crash Events, Rollover Events, or Crash Data" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Disable_Crash_Events_Rollover_Events_or_Crash_Data.htm" />
+</book>
+<book name="Appendix A - Report Samples" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/Appendix_A_-_Report_Samples.htm" >
+<chunk name="Appendix A - Report Samples" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/Appendix_A_-_Report_Samples.htm" ref="whtdata1.xml" />
+</book>
+<book name="Appendix B - Notification Samples" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Appendix_B_-_Notification_Samples.htm" >
+  <item name="Red Flags Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Red_Flags_Notifications.htm" />
+  <item name="Safety Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Safety_Notifications.htm" />
+  <item name="Diagnostics Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Diagnostics_Notifications.htm" />
+  <item name="Zones Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Zones_Notifications.htm" />
+  <item name="HOS Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/HOS_Notifications.htm" />
+  <item name="Emergency Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Emergency_Notifications.htm" />
+  <item name="Crash History Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Crash_History_Notifications.htm" />
+</book>
+<item name="Appendix C - FAQ for Portal Users" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_FAQ/Appendix_C_-_FAQ_for_Portal_Users.htm" />
+<item name="Appendix C - Troubleshooting Guide" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Troubleshoot/Appendix_C_-_Troubleshooting_Guide.htm" />
+<item name="Limited Warranty" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideEndMatter/Limited_Warranty.htm" />
+<item name="Privacy Policy" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideEndMatter/Privacy_Policy.htm" />
+<item name="Glossary" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideEndMatter/Glossary.htm" />
+
+</tocdata>

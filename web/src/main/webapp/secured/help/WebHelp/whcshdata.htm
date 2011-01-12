@@ -1,0 +1,160 @@
+﻿<html>
+<head>
+<title>inthinc Portal User Guide</title>
+
+<meta name="generator" content="Adobe RoboHelp - www.adobe.com">
+<meta name="description" content="WebHelp 5.50">
+</head>
+<body>
+<script language="javascript1.2" src="whver.js"></script>
+<script language="javascript1.2" src="whutils.js"></script>
+<script language="JavaScript">
+<!--
+var gaCsh=new Array();
+
+var gaWindow=new Array();
+
+var gaRmtProj=new Array();
+
+var gsProjPath=_getPath(document.location.href);
+
+function CshEntityItem(strAliasId,nTopicNum,strUrl)
+{
+	this.strAliasId=strAliasId;
+	this.nTopicNum=nTopicNum;
+	this.strUrl=strUrl;
+}
+
+function CshWindow(sWName,bBUseDefault,nWBOptions,sWBLeft,sWBTop,sWBWidth,sWBHeight,sWCaption,nWPanes,nWPOptions,sWPButtons,sWPDefBtn)
+{
+	this.sName=sWName;
+	this.bUseDefault=bBUseDefault;
+	if(!this.bUseDefault)
+	{
+		this.nBOptions=nWBOptions;
+		this.sBLeft=sWBLeft;
+		this.sBTop=sWBTop;
+		this.sBWidth=sWBWidth;
+		this.sBHeight=sWBHeight;
+	}
+	this.sCaption=sWCaption;
+	this.nPanes=nWPanes;
+	if(this.nPanes==2)
+	{
+		this.nPOptions=nWPOptions;
+		this.sPButtons=sWPButtons;
+		this.sPDefBtn=sWPDefBtn;
+	}
+}
+
+function addRemoteProject(sPath)
+{
+	if(sPath.length!=0)
+	{
+		if(sPath.lastIndexOf("/")!=sPath.length-1)
+			sPath+="/";
+		gaRmtProj[gaRmtProj.length]=sPath;	
+	}
+}
+
+//Set Context-sensitive help entity...
+function SetCsh(n,strAliasId,nTopicNum,strUrl)
+{
+	gaCsh[n]=new CshEntityItem(strAliasId,nTopicNum,strUrl);
+}
+
+function addWindow(sWName,bBUseDefault,nWBOptions,sWBLeft,sWBTop,sWBWidth,sWBHeight,sWCaption,nWPanes,nWPOptions,sWPButtons,sWPDefBtn)
+{
+	gaWindow[gaWindow.length]=new CshWindow(sWName,bBUseDefault,nWBOptions,sWBLeft,sWBTop,sWBWidth,sWBHeight,sWCaption,nWPanes,nWPOptions,sWPButtons,sWPDefBtn);
+}
+
+SetCsh(0,"View_a_Vehicle_List_CSH_19",53,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_Vehicle_List.htm#CSH_19");
+SetCsh(1,"Red_Flags_Notifications_CSH_65",34,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Red_Flags_Notifications.htm#CSH_65");
+SetCsh(2,"View_Individual_Crash_Report_CSH_45",59,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Individual_Crash_Report.htm#CSH_45");
+SetCsh(3,"Update_a_Device_CSH_26",48,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Update_a_Device.htm#CSH_26");
+SetCsh(4,"Review_waySmart™_Sent_Messages_CSH_40",36,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Review_waySmart™_Sent_Messages.htm#CSH_40");
+SetCsh(5,"waySmart™_State_Mileage_Fuel_by_Vehicle_CSH_61",69,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_Fuel_by_Vehicle.htm#CSH_61");
+SetCsh(6,"Update_a_Vehicle_CSH_21",50,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Update_a_Vehicle.htm#CSH_21");
+SetCsh(7,"Notifications_Page_CSH_13",32,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Notifications_Page.htm#CSH_13");
+SetCsh(8,"HOS_Driver_DOT_Log_Report_CSH_49",25,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Driver_DOT_Log_Report.htm#CSH_49");
+SetCsh(9,"Customize_Columns_in_Reports_and_Notifica­tions_CSH_36",13,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifica­tions.htm#CSH_36");
+SetCsh(10,"View_All_Trips_CSH_35",54,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_All_Trips.htm#CSH_35");
+SetCsh(11,"Crash_History_Notifications_CSH_71",10,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Crash_History_Notifications.htm#CSH_71");
+SetCsh(12,"waySmart™_State_Mileage_by_Month_CSH_58",66,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_by_Month.htm#CSH_58");
+SetCsh(13,"Team_Page_CSH_4",42,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_4");
+SetCsh(14,"HOS_Notifications_CSH_69",26,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/HOS_Notifications.htm#CSH_69");
+SetCsh(15,"Home_Pages_CSH_1",21,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#CSH_1");
+SetCsh(16,"Emergency_Notifications_CSH_70",18,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Emergency_Notifications.htm#CSH_70");
+SetCsh(17,"Zones_Notifications_CSH_68",72,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Zones_Notifications.htm#CSH_68");
+SetCsh(18,"Team_Page_CSH_5",43,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_5");
+SetCsh(19,"HOS_Violations_Detail_Report_CSH_50",28,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Violations_Detail_Report.htm#CSH_50");
+SetCsh(20,"HOS_Page_CSH_15",27,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/HOS_Page.htm#CSH_15");
+SetCsh(21,"Home_Pages_CSH_2",22,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#CSH_2");
+SetCsh(22,"Generate_HOS_Report_for_a_Group_CSH_43",20,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_HOS_Report_for_a_Group.htm#CSH_43");
+SetCsh(23,"Add_a_Red_Flag_Notification_CSH_31",3,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Red_Flag_Notification.htm#CSH_31");
+SetCsh(24,"waySmart™_Driver_Hours_report_CSH_53",61,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Driver_Hours_report.htm#CSH_53");
+SetCsh(25,"Team_Page_CSH_6",44,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_6");
+SetCsh(26,"Home_Pages_CSH_3",23,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#CSH_3");
+SetCsh(27,"Admin_Page_CSH_16",7,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Admin_Page.htm#CSH_16");
+SetCsh(28,"waySmart™_IFTA_Group_Comparison_by_State_CSH_54",62,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_IFTA_Group_Comparison_by_State.htm#CSH_54");
+SetCsh(29,"View_or_Edit_Admin_Portal_Account_CSH_28",60,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_or_Edit_Admin_Portal_Account.htm#CSH_28");
+SetCsh(30,"Team_Page_CSH_7",45,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_7");
+SetCsh(31,"waySmart™_State_Mileage_By_Vehicle_Road_Status_CSH_60",67,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_By_Vehicle_-_Road_Status.htm#CSH_60");
+SetCsh(32,"View_Drivers_Vehicles_Idling_and_Devices_Reports_CSH_33",57,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Drivers_Vehicles_Idling_and_Devices_Reports.htm#CSH_33");
+SetCsh(33,"Update_a_User_CSH_24",49,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Update_a_User.htm#CSH_24");
+SetCsh(34,"Team_Page_CSH_8",46,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_8");
+SetCsh(35,"Delete_a_User_Vehicle_or_Device_CSH_27",14,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Delete_a_User_Vehicle_or_Device.htm#CSH_27");
+SetCsh(36,"Compose_a_waySmart™_Text_Message_CSH_39",9,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Compose_a_waySmart™_Text_Message.htm#CSH_39");
+SetCsh(37,"Add_a_Group_CSH_17",2,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Group.htm#CSH_17");
+SetCsh(38,"waySmart™_Payroll_Summary_Report_CSH_57",65,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Payroll_Summary_Report.htm#CSH_57");
+SetCsh(39,"View_Crash_History_for_Group_CSH_44",55,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Crash_History_for_Group.htm#CSH_44");
+SetCsh(40,"Team_Page_CSH_9",47,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_9");
+SetCsh(41,"Set_up_a_Periodic_Report_CSH_37",38,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_up_a_Periodic_Report.htm#CSH_37");
+SetCsh(42,"Live_Fleet_Page_CSH_14",31,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Live_Fleet_Page.htm#CSH_14");
+SetCsh(43,"DOT_Time_Remaining_CSH_47",16,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/DOT_Time_Remaining.htm#CSH_47");
+SetCsh(44,"Add_or_Edit_a_Crash_Report_CSH_46",6,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_or_Edit_a_Crash_Report.htm#CSH_46");
+SetCsh(45,"waySmart™_Payroll_Report_Driver_Signoff_CSH_56",64,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Payroll_Report_Driver_Signoff.htm#CSH_56");
+SetCsh(46,"Submit_Speed_Limit_Change_Request_CSH_32",39,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Submit_Speed-Limit_Change_Request.htm#CSH_32");
+SetCsh(47,"Create_a_Custom_Role_CSH_18",11,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Create_a_Custom_Role.htm#CSH_18");
+SetCsh(48,"Add_a_User_CSH_23",4,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_User.htm#CSH_23");
+SetCsh(49,"HOS_Violations_Summary_Report_CSH_51",29,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Violations_Summary_Report.htm#CSH_51");
+SetCsh(50,"waySmart™_Mileage_by_Vehicle_CSH_55",63,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Mileage_by_Vehicle.htm#CSH_55");
+SetCsh(51,"HOS_Zero_Miles_CSH_52",30,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Zero_Miles.htm#CSH_52");
+SetCsh(52,"HOS_Daily_Driver_Log_Report_CSH_48",24,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Daily_Driver_Log_Report.htm#CSH_48");
+SetCsh(53,"Create_a_Zone_CSH_29",12,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Create_a_Zone.htm#CSH_29");
+SetCsh(54,"Appendix_B_Notification_Samples_CSH_64",8,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Appendix_B_-_Notification_Samples.htm#CSH_64");
+SetCsh(55,"inthinc_Portal_User_GuideFrontMatter",1,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideFrontMatter/inthinc_Portal_User_GuideFrontMatter.htm");
+SetCsh(56,"waySmart™_Warranty_List_CSH_63",71,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Warranty_List.htm#CSH_63");
+SetCsh(57,"Generate_a_waySmart™_Report_CSH_41",19,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart™_Report.htm#CSH_41");
+SetCsh(58,"View_HOS_Log_for_a_Driver_CSH_42",58,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_HOS_Log_for_a_Driver.htm#CSH_42");
+SetCsh(59,"Edit_or_Delete_a_Zone_CSH_30",17,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Edit_or_Delete_a_Zone.htm#CSH_30");
+SetCsh(60,"Diagnostics_Notifications_CSH_67",15,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Diagnostics_Notifications.htm#CSH_67");
+SetCsh(61,"waySmart™_Ten_Hour_Day_Violations_CSH_62",70,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Ten_Hour_Day_Violations.htm#CSH_62");
+SetCsh(62,"View_Driver_or_Vehicle_Performance_Page_CSH_34",56,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Driver_or_Vehicle_Performance_Page.htm#CSH_34");
+SetCsh(63,"Team_Page_CSH_10",40,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_10");
+SetCsh(64,"Read_waySmart™_Text_Messages_CSH_38",33,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Read_waySmart™_Text_Messages.htm#CSH_38");
+SetCsh(65,"Add_a_Vehicle_CSH_20",5,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Vehicle.htm#CSH_20");
+SetCsh(66,"waySmart™_State_Mileage_by_Vehicle_CSH_59",68,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_by_Vehicle.htm#CSH_59");
+SetCsh(67,"View_a_User_List_CSH_22",52,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_User_List.htm#CSH_22");
+SetCsh(68,"View_a_Device_List_CSH_25",51,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_Device_List.htm#CSH_25");
+SetCsh(69,"Team_Page_CSH_11",41,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_11");
+SetCsh(70,"Safety_Notifications_CSH_66",37,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Safety_Notifications.htm#CSH_66");
+SetCsh(71,"Reports_Page_CSH_12",35,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Reports_Page.htm#CSH_12");
+
+addWindow("NewWindow",true,0,"","","","","NewWindow",2,2,"toc|ndx|nls|gls","toc");
+
+
+
+window.onload=window_OnLoad;
+
+function window_OnLoad()
+{
+	if(parent&&parent!=this&&parent.putCshData)
+	{
+		parent.putCshData(gsProjPath,gaCsh,gaWindow,gaRmtProj);
+	}
+}
+//-->
+</script>
+</body>
+</html>

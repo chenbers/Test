@@ -27,7 +27,8 @@
 			}
 		</script>		
 
-	<rich:tab id="teamStyle" oncomplete="Team.tabChange();">
+	<rich:tab id="teamStyle" oncomplete="Team.tabChange();" reRender="headerForm:contextSensitiveHelp">
+		<f:setPropertyActionListener value="teamStyle" target="#{helpBean.subID}" /> 
 		<f:facet name="label">
 	 		<h:panelGroup>
 	 			<h:graphicImage value="/images/ico_vehicle.png" />

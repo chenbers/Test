@@ -116,7 +116,8 @@
 		
  </script>
  
-    <rich:tab id="teamTrips" oncomplete="Team.tabChange();" ontableave="GUnload();">
+    <rich:tab id="teamTrips" oncomplete="Team.tabChange();" ontableave="GUnload();" reRender="headerForm:contextSensitiveHelp">
+	<f:setPropertyActionListener value="teamTrips" target="#{helpBean.subID}" /> 		
    	
 	 <a4j:queue name="tripsQueue"/>    
 	 <f:facet name="label">

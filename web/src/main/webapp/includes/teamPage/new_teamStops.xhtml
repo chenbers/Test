@@ -85,7 +85,8 @@
             }
         </style>		    
  
-    <rich:tab id="teamStops" oncomplete="Team.tabChange();">
+    <rich:tab id="teamStops" oncomplete="Team.tabChange();" reRender="headerForm:contextSensitiveHelp">
+<f:setPropertyActionListener value="teamStops" target="#{helpBean.subID}" /> 		
    	   
 	 	<ui:param name="context" value="teamStops" />   	   
    	   

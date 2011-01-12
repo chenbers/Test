@@ -34,7 +34,8 @@
 	//]]>
  </script>
 
-	<rich:tab id="teamLive" oncomplete="Team.tabChange();" ontableave="GUnload();">
+	<rich:tab id="teamLive" oncomplete="Team.tabChange();" ontableave="GUnload();" reRender="headerForm:contextSensitiveHelp">
+		<f:setPropertyActionListener value="teamLive" target="#{helpBean.subID}" />
 		<f:facet name="label">
 	 		<h:panelGroup>
 	 			<h:graphicImage value="/images/ico_line.png" />

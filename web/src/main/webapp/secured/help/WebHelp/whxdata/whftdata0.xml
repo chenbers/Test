@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<ftstdata>
+<topic name="Appendix C - FAQ for Portal Users" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_FAQ/Appendix_C_-_FAQ_for_Portal_Users.htm" />
+<topic name="Appendix B - Notification Samples" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Appendix_B_-_Notification_Samples.htm" />
+<topic name="Crash History Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Crash_History_Notifications.htm" />
+<topic name="Diagnostics Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Diagnostics_Notifications.htm" />
+<topic name="Emergency Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Emergency_Notifications.htm" />
+<topic name="HOS Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/HOS_Notifications.htm" />
+<topic name="Red Flags Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Red_Flags_Notifications.htm" />
+<topic name="Safety Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Safety_Notifications.htm" />
+<topic name="Zones Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Zones_Notifications.htm" />
+<topic name="Appendix A - Report Samples" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/Appendix_A_-_Report_Samples.htm" />
+<topic name="DOT Time Remaining" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/DOT_Time_Remaining.htm" />
+<topic name="HOS Daily Driver Log Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Daily_Driver_Log_Report.htm" />
+<topic name="HOS Driver DOT Log Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Driver_DOT_Log_Report.htm" />
+<topic name="HOS Violations Detail Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Violations_Detail_Report.htm" />
+<topic name="HOS Violations Summary Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Violations_Summary_Report.htm" />
+<topic name="HOS Zero Miles" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Zero_Miles.htm" />
+<topic name="waySmart™ Driver Hours report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Driver_Hours_report.htm" />
+<topic name="waySmart™ IFTA Group Comparison by State" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_IFTA_Group_Comparison_by_State.htm" />
+<topic name="waySmart™ Mileage by Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Mileage_by_Vehicle.htm" />
+<topic name="waySmart™ Payroll Report Driver Signoff" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Payroll_Report_Driver_Signoff.htm" />
+<topic name="waySmart™ Payroll Summary Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Payroll_Summary_Report.htm" />
+<topic name="waySmart™ State Mileage by Month" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_by_Month.htm" />
+<topic name="waySmart™ State Mileage by Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_by_Vehicle.htm" />
+<topic name="waySmart™ State Mileage By Vehicle - Road Status" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_By_Vehicle_-_Road_Status.htm" />
+<topic name="waySmart™ State Mileage/Fuel by Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_Fuel_by_Vehicle.htm" />
+<topic name="waySmart™ Ten Hour Day Violations" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Ten_Hour_Day_Violations.htm" />
+<topic name="waySmart™ Warranty List" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Warranty_List.htm" />
+<topic name="Appendix C - Troubleshooting Guide" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Troubleshoot/Appendix_C_-_Troubleshooting_Guide.htm" />
+<topic name="Glossary" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideEndMatter/Glossary.htm" />
+<topic name="Limited Warranty" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideEndMatter/Limited_Warranty.htm" />
+<topic name="Privacy Policy" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideEndMatter/Privacy_Policy.htm" />
+<topic name="inthinc® Portal User Guide" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideFrontMatter/inthinc®_Portal_User_Guide.htm" />
+<topic name="Add a Group" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Group.htm" />
+<topic name="Add a Red Flag Notification" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Red_Flag_Notification.htm" />
+<topic name="Add a User" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_User.htm" />
+<topic name="Add a Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Vehicle.htm" />
+<topic name="Add and Maintain Fleet Information" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_and_Maintain_Fleet_Information.htm" />
+<topic name="Add or Edit a Crash Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_or_Edit_a_Crash_Report.htm" />
+<topic name="Admin Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Admin_Page.htm" />
+<topic name="Compose a waySmart™ Text Message" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Compose_a_waySmart™_Text_Message.htm" />
+<topic name="Create a Custom Role" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Create_a_Custom_Role.htm" />
+<topic name="Create a Zone" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Create_a_Zone.htm" />
+<topic name="Customize Columns in Reports and Notifica­tions" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifica­tions.htm" />
+<topic name="Delete a User, Vehicle, or Device" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Delete_a_User_Vehicle_or_Device.htm" />
+<topic name="Disable Crash Events, Rollover Events, or Crash Data" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Disable_Crash_Events_Rollover_Events_or_Crash_Data.htm" />
+<topic name="Edit or Delete a Zone" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Edit_or_Delete_a_Zone.htm" />
+<topic name="Explore inthinc® Portal" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Explore_inthinc®_Portal.htm" />
+<topic name="Export or Email a Crash Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Export_or_Email_a_Crash_Report.htm" />
+<topic name="Generate a waySmart™ Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart™_Report.htm" />
+<topic name="Generate HOS Report for a Group" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_HOS_Report_for_a_Group.htm" />
+<topic name="Home Pages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm" />
+<topic name="HOS Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/HOS_Page.htm" />
+<topic name="Introduction" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Introduction.htm" />
+<topic name="Live Fleet Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Live_Fleet_Page.htm" />
+<topic name="Log In to inthinc® Portal" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Log_In_to_inthinc®_Portal.htm" />
+<topic name="Maintain Your Account Profile" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Maintain_Your_Account_Profile.htm" />
+<topic name="Manage Crash History for inthinc® Devices" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Manage_Crash_History_for_inthinc®_Devices.htm" />
+<topic name="Navigation Tree" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Navigation_Tree.htm" />
+<topic name="Notifications Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Notifications_Page.htm" />
+<topic name="Portal Overview" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Portal_Overview.htm" />
+<topic name="Read waySmart™ Text Messages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Read_waySmart™_Text_Messages.htm" />
+<topic name="Reports Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Reports_Page.htm" />
+<topic name="Review waySmart™ Sent Messages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Review_waySmart™_Sent_Messages.htm" />
+<topic name="Set up a Periodic Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_up_a_Periodic_Report.htm" />
+<topic name="Set Up In-Cab Mentoring" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_In-Cab_Mentoring.htm" />
+<topic name="Set Up Mentoring, Zones, and Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_Mentoring_Zones_and_Notifications.htm" />
+<topic name="Set Up RFID Card for a Driver of tiwi™ Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_RFID_Card_for_a_Driver_of_tiwi™_Vehicle.htm" />
+<topic name="Submit Speed-Limit Change Request" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Submit_Speed-Limit_Change_Request.htm" />
+<topic name="Supported Browsers" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Supported_Browsers.htm" />
+
+</ftstdata>  

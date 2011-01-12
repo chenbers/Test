@@ -1,0 +1,332 @@
+﻿<html>
+<head>
+<title>inthinc Portal User Guide</title>
+
+<meta name="generator" content="Adobe RoboHelp - www.adobe.com">
+<meta name="description" content="WebHelp 5.50">
+<script language="javascript1.2" src="whutils.js"></script>
+</head>
+<body>
+<script language="JavaScript">
+<!--
+
+var gArrayCsh = new Array();
+
+var gstrWindowOption = "";
+var gstrURL = "";
+var gbWithNavPane = false;
+
+function CshEntityItem(strAliasId, nTopicNum, strUrl) 
+{
+    this.strAliasId = strAliasId;
+    this.nTopicNum = nTopicNum;
+    this.strUrl = strUrl;
+}
+
+
+//Try to get to topic number from hash string
+function GetTopicNumberAuto(strMayBeNumber)
+{
+   var nNum = -1;
+   if (strMayBeNumber.length >= 1)
+   {
+		var strTmp = strMayBeNumber;
+		var iEnd = strTmp.length;
+		for (var i=0; i<iEnd; i++)
+		{
+			  var ch = strTmp.charAt(i);
+			  if (!((ch == "0") || (ch == "1") ||
+			        (ch == "2") || (ch == "3") ||
+			        (ch == "4") || (ch == "5") ||
+			        (ch == "6") || (ch == "7") ||
+			        (ch == "8") || (ch == "9")))
+			      return GetTopicNumberById(strTmp);
+		}
+		nNum = parseInt(strTmp);
+   }
+   return nNum;
+}
+
+function GetTopicNumber(strHashString)
+{
+	var nTopicEndPos = strHashString.indexOf(',')
+	if (nTopicEndPos == -1) { // no window option.
+		return GetTopicNumberOnly(strHashString);
+	}
+	else {
+		var strWindowOption = strHashString.substring(nTopicEndPos + 1, strHashString.length);
+		var strWithNavPane = 'withnavpane=true';
+		if (strWindowOption.toLowerCase().indexOf(strWithNavPane) == 0)
+		{
+			if (strWindowOption.length > strWithNavPane.length)
+				gstrWindowOption = strWindowOption.substring(strWithNavPane.length + 1);
+			else
+				gstrWindowOption = "";
+			gbWithNavPane = true;
+		}
+		else
+			gstrWindowOption = strWindowOption;
+		return GetTopicNumberOnly(strHashString.substring(0, nTopicEndPos));		
+	}
+}
+
+function GetTopicNumberOnly(strTopicString)
+{
+	var nEqualPos = strTopicString.indexOf('=');
+	if (nEqualPos == -1) {
+		return GetTopicNumberAuto(strTopicString);
+	}
+	else {
+		var strValue=strTopicString.substring(nEqualPos + 1, strTopicString.length);
+		if (strTopicString.toLowerCase().indexOf("topicnumber") == 0) {
+			return parseInt(strValue);
+		} else if (strTopicString.toLowerCase().indexOf("context") == 0) {
+			return GetTopicNumberById(strValue);
+		} else if (strTopicString.toLowerCase().indexOf("remoteurl") == 0) {
+			if(IsInternal(strValue))
+				gstrURL = _textToHtml(strValue);
+			return -1;
+		}
+
+	}
+}
+
+//Find HomePage of the WebHelp system
+// we try to get the topic from remote project if it exists.
+function RedirectToHomePage()
+{
+	if (parent && parent != this && parent.goNext)
+	{
+		var sHome = parent.goNext();
+		if (sHome != "")
+			RedirectTo(sHome);
+	}
+}
+
+function getHomePage()
+{
+	if (parent && parent != this && parent.getRelHomePage)
+	{
+		return parent.getRelHomePage(document.location.href);
+	}
+	return "";
+}
+
+function addRemoteProject(strPath)
+{
+	if (parent && parent != this && parent.addProject)
+	{
+		parent.addProject(strPath);
+	}
+}
+
+//Redirect page to...
+function RedirectTo(strUrl)
+{
+   if (gstrWindowOption.length != 0) {
+		var wnd = window.open(strUrl, "HelpStub", gstrWindowOption);
+		// close current window and rename the stub window to current window.
+		if (wnd)
+			wnd.focus();
+		if (parent)
+			parent.close();
+   }
+   else {
+	parent.document.location.href = strUrl;
+	window.focus();
+  }
+}
+
+//Prompt the user that we can not find...
+function FailToFind(strMsg)
+{
+    RedirectToHomePage();
+}
+
+//Find topic by topic number (defined in h file)
+function FindTopicByTopicNum(nTopicNum)
+{
+	var i = 0;
+	var iEnd = gArrayCsh.length;
+	for (i=0; i<iEnd; i++)
+	{
+		if (gArrayCsh[i].nTopicNum == nTopicNum)
+		{
+			var strURL = gArrayCsh[i].strUrl;
+			if (gbWithNavPane)
+			{
+				var strHomePage = getHomePage();
+				if (strHomePage.length != 0)
+					strURL = strHomePage + strURL;
+			}	
+			RedirectTo(strURL);
+			return true;
+		}
+	}
+	FailToFind("Fail to find topic assocaite with topic number: " + nTopicNum);
+	return false;
+}
+
+var oldPrefix = "HelpIdFromHTMLHelp_"
+//Find topic by topic id (alias id defined in ali file)
+function GetTopicNumberById(strTopicId)
+{
+   if (strTopicId.indexOf(oldPrefix) == 0)
+   {
+		strTopicId = strTopicId.substring(oldPrefix.length);
+   }
+
+   var i = 0;
+   var iEnd = gArrayCsh.length;
+   for (i=0; i<iEnd; i++)
+   {
+	if (gArrayCsh[i].strAliasId.toLowerCase() == strTopicId.toLowerCase())
+	{
+	    return gArrayCsh[i].nTopicNum;
+	 }
+   }
+   gstrURL = "";
+   return -1;
+}
+
+//Set Context-sensitive help entity...
+function SetCsh(n, strAliasId, nTopicNum, strUrl)
+{
+   gArrayCsh[n] = new CshEntityItem(strAliasId,nTopicNum,strUrl);
+}
+
+
+function getHash()
+{
+	if (parent && parent != this)
+		return parent.location.hash;
+	else
+		return "";
+}
+//-->
+</script>
+<script language="javascript">
+<!--
+  SetCsh(0,"53",0,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_Vehicle_List.htm#CSH_19");
+  SetCsh(1,"34",1,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Red_Flags_Notifications.htm#CSH_65");
+  SetCsh(2,"59",2,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Individual_Crash_Report.htm#CSH_45");
+  SetCsh(3,"48",3,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Update_a_Device.htm#CSH_26");
+  SetCsh(4,"36",4,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Review_waySmart™_Sent_Messages.htm#CSH_40");
+  SetCsh(5,"69",5,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_Fuel_by_Vehicle.htm#CSH_61");
+  SetCsh(6,"50",6,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Update_a_Vehicle.htm#CSH_21");
+  SetCsh(7,"32",7,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Notifications_Page.htm#CSH_13");
+  SetCsh(8,"25",8,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Driver_DOT_Log_Report.htm#CSH_49");
+  SetCsh(9,"13",9,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifica­tions.htm#CSH_36");
+  SetCsh(10,"54",10,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_All_Trips.htm#CSH_35");
+  SetCsh(11,"10",11,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Crash_History_Notifications.htm#CSH_71");
+  SetCsh(12,"66",12,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_by_Month.htm#CSH_58");
+  SetCsh(13,"42",13,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_4");
+  SetCsh(14,"26",14,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/HOS_Notifications.htm#CSH_69");
+  SetCsh(15,"21",15,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#CSH_1");
+  SetCsh(16,"18",16,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Emergency_Notifications.htm#CSH_70");
+  SetCsh(17,"72",17,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Zones_Notifications.htm#CSH_68");
+  SetCsh(18,"43",18,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_5");
+  SetCsh(19,"28",19,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Violations_Detail_Report.htm#CSH_50");
+  SetCsh(20,"27",20,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/HOS_Page.htm#CSH_15");
+  SetCsh(21,"22",21,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#CSH_2");
+  SetCsh(22,"20",22,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_HOS_Report_for_a_Group.htm#CSH_43");
+  SetCsh(23,"3",23,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Red_Flag_Notification.htm#CSH_31");
+  SetCsh(24,"61",24,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Driver_Hours_report.htm#CSH_53");
+  SetCsh(25,"44",25,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_6");
+  SetCsh(26,"23",26,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#CSH_3");
+  SetCsh(27,"7",27,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Admin_Page.htm#CSH_16");
+  SetCsh(28,"62",28,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_IFTA_Group_Comparison_by_State.htm#CSH_54");
+  SetCsh(29,"60",29,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_or_Edit_Admin_Portal_Account.htm#CSH_28");
+  SetCsh(30,"45",30,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_7");
+  SetCsh(31,"67",31,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_By_Vehicle_-_Road_Status.htm#CSH_60");
+  SetCsh(32,"57",32,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Drivers_Vehicles_Idling_and_Devices_Reports.htm#CSH_33");
+  SetCsh(33,"49",33,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Update_a_User.htm#CSH_24");
+  SetCsh(34,"46",34,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_8");
+  SetCsh(35,"14",35,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Delete_a_User_Vehicle_or_Device.htm#CSH_27");
+  SetCsh(36,"9",36,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Compose_a_waySmart™_Text_Message.htm#CSH_39");
+  SetCsh(37,"2",37,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Group.htm#CSH_17");
+  SetCsh(38,"65",38,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Payroll_Summary_Report.htm#CSH_57");
+  SetCsh(39,"55",39,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Crash_History_for_Group.htm#CSH_44");
+  SetCsh(40,"47",40,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_9");
+  SetCsh(41,"38",41,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_up_a_Periodic_Report.htm#CSH_37");
+  SetCsh(42,"31",42,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Live_Fleet_Page.htm#CSH_14");
+  SetCsh(43,"16",43,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/DOT_Time_Remaining.htm#CSH_47");
+  SetCsh(44,"6",44,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_or_Edit_a_Crash_Report.htm#CSH_46");
+  SetCsh(45,"64",45,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Payroll_Report_Driver_Signoff.htm#CSH_56");
+  SetCsh(46,"39",46,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Submit_Speed-Limit_Change_Request.htm#CSH_32");
+  SetCsh(47,"11",47,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Create_a_Custom_Role.htm#CSH_18");
+  SetCsh(48,"4",48,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_User.htm#CSH_23");
+  SetCsh(49,"29",49,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Violations_Summary_Report.htm#CSH_51");
+  SetCsh(50,"63",50,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Mileage_by_Vehicle.htm#CSH_55");
+  SetCsh(51,"30",51,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Zero_Miles.htm#CSH_52");
+  SetCsh(52,"24",52,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Daily_Driver_Log_Report.htm#CSH_48");
+  SetCsh(53,"12",53,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Create_a_Zone.htm#CSH_29");
+  SetCsh(54,"8",54,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Appendix_B_-_Notification_Samples.htm#CSH_64");
+  SetCsh(55,"1",55,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideFrontMatter/inthinc_Portal_User_GuideFrontMatter.htm");
+  SetCsh(56,"71",56,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Warranty_List.htm#CSH_63");
+  SetCsh(57,"19",57,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart™_Report.htm#CSH_41");
+  SetCsh(58,"58",58,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_HOS_Log_for_a_Driver.htm#CSH_42");
+  SetCsh(59,"17",59,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Edit_or_Delete_a_Zone.htm#CSH_30");
+  SetCsh(60,"15",60,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Diagnostics_Notifications.htm#CSH_67");
+  SetCsh(61,"70",61,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_Ten_Hour_Day_Violations.htm#CSH_62");
+  SetCsh(62,"56",62,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Driver_or_Vehicle_Performance_Page.htm#CSH_34");
+  SetCsh(63,"40",63,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_10");
+  SetCsh(64,"33",64,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Read_waySmart™_Text_Messages.htm#CSH_38");
+  SetCsh(65,"5",65,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Vehicle.htm#CSH_20");
+  SetCsh(66,"68",66,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart™_State_Mileage_by_Vehicle.htm#CSH_59");
+  SetCsh(67,"52",67,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_User_List.htm#CSH_22");
+  SetCsh(68,"51",68,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_Device_List.htm#CSH_25");
+  SetCsh(69,"41",69,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#CSH_11");
+  SetCsh(70,"37",70,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Notifications/Safety_Notifications.htm#CSH_66");
+  SetCsh(71,"35",71,"inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Reports_Page.htm#CSH_12");
+
+
+//-->
+</script>
+<script language="javascript">
+<!--
+//Find CSH according to hash string after this page
+if (getHash().length > 0)
+{
+   // VH 05/16/00 now support 
+   // TopicID=
+   // TopicNumber=
+   // RemoteURL=   
+   // and WindowsOptions
+   // with the format #a=xxx,b=xxx,c=xxx...
+   var strHashString = getHash().toString();
+   // change ? to : for remote URL. because java applet have some problem to pass a URL with two : inside the URL so we changed it. 
+   // so here need to change it back.
+   strHashString = strHashString.substring(1,strHashString.length);
+   strHashString = strHashString.replace("%072%057%057", "://");
+   var nTopicNum = GetTopicNumber(strHashString);
+
+   if (nTopicNum != -1)
+   {
+      FindTopicByTopicNum(nTopicNum);
+   }
+   else
+   {
+      if (gstrURL.length > 0) 
+	RedirectTo(gstrURL);
+      else
+      	RedirectToHomePage();
+   }
+}
+else
+{
+   RedirectToHomePage();
+}
+//-->
+</script>
+<noscript>
+ <p> Your browser does not support JavaScript. WebHelp Context-Sensitive Help requires JavaScript support to run.</p>
+</noscript>
+</body>
+</html>
+
+
+
+
+
+

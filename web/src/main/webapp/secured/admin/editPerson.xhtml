@@ -9,7 +9,7 @@
      xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
      xmlns:t="http://myfaces.apache.org/tomahawk">
  
- 
+  <ui:param name="helpMapIDOverride" value="#{(personBean.add) ? '4' :''}"/>
   <ui:param name="adminSelected" value="current" />
   <ui:param name="title" value="#{personBean.add ? messages.adminHeader_addPerson : (personBean.batchEdit ? messages.adminHeader_editPeople : messages.adminHeader_editPerson)}"/>
   <ui:define name="scripts">
@@ -35,7 +35,7 @@
           <!-- START PANEL -->
    		<rich:dragIndicator id="indicator" />
 
-        <a4j:form id="edit-form">
+        <a4j:form id="edit-form" >
 		
           <div class="">
             <div class="panel_nw">
@@ -896,6 +896,7 @@
     	showSection("rfidSection", document.getElementById("edit-form:editPerson-isDriver").checked);
     }
     </script>
+
 
   </ui:define>
 

@@ -14,8 +14,13 @@
             </pretty:link></div>
             <div id="horz_nav">
             <ul>
-                <li class="l text"><a class="tb-help" href="#{helpBean.path}"
-                    target="new">#{messages.header_help}</a></li>
+                <li class="l text">
+                <a4j:outputPanel id="contextSensitiveHelp">
+                	<a class="tb-help" href='javascript:RH_ShowHelp(0, "#{helpBean.path}", 15, #{(empty helpMapIDOverride) ? helpBean.mapID : helpMapIDOverride})'>
+                		#{messages.header_help}
+                	</a>
+				</a4j:outputPanel>
+				</li>
                 <li class="l text">
                      <pretty:link id="headerMyMessages" mappingId="inbox" styleClass="tb-messages"> 
                         <h:outputText value="My Messages"/>

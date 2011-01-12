@@ -56,7 +56,6 @@ public class MyAccountBean extends BaseBean
         try
         {
             personDAO.update(getUser().getPerson());
-            helpBean.setPath(null);
         }
         catch (DuplicateEmailException ex)
         {

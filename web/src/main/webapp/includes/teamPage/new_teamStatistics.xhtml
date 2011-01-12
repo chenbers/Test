@@ -10,7 +10,8 @@
 	xmlns:pretty="http://ocpsoft.com/prettyfaces"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 
-	<rich:tab  id="teamStatistics" oncomplete="Team.tabChange();decorateScoreBox();">
+	<rich:tab  id="teamStatistics" oncomplete="Team.tabChange();decorateScoreBox();" reRender="headerForm:contextSensitiveHelp">
+		<f:setPropertyActionListener value="teamStatistics" target="#{helpBean.subID}" /> 
 		<a4j:loadStyle src="/css/jquery.scorebox.css"/>
  		<a4j:loadScript src="/js/jquery.scorebox.js"/>
 		<a4j:keepAlive beanName="teamStatisticsTableColumns" />

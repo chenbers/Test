@@ -27,7 +27,8 @@
 			}
 		</script>	
 
-	<rich:tab id="teamOverall" oncomplete="Team.tabChange();">
+	<rich:tab id="teamOverall" oncomplete="Team.tabChange();" reRender="headerForm:contextSensitiveHelp">
+		<f:setPropertyActionListener value="teamOverall" target="#{helpBean.subID}" /> 
 	
 		<f:facet name="label">
 	 		<h:panelGroup>

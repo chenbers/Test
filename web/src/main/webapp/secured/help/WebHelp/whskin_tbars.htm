@@ -1,0 +1,112 @@
+﻿<html>
+<head>
+<title> WebHelp Navigation Toolbar </title>
+
+<meta name="generator" content="Adobe RoboHelp - www.adobe.com">
+<meta name="description" content="WebHelp 5.50">
+<style>
+<!--
+body {margin:0;}
+-->
+</style>
+<script language="javascript" src="whver.js"></script>
+<script language="javascript1.2" src="whutils.js"></script>
+<script language="javascript1.2" src="whmsg.js"></script>
+<script language="javascript1.2" src="whproxy.js"></script>
+<script language="javascript1.2" src="whmozemu.js"></script>
+<script language="javascript1.2" src="whtbar.js"></script>
+
+<script language="JavaScript1.2">
+<!--
+var printAction = function()
+{
+       var topicPane = top.frames[1].frames[1];
+       topicPane.focus();
+       topicPane.print();
+}
+
+
+//-->
+</script>
+</head>
+<body marginheight="0"  marginwidth="0"  bgcolor="Black"    background="toolbar_bg.jpg"  scroll="no">
+<script language="javascript1.2">
+<!--
+if (window.gbWhTBar)
+{
+	setButtonFont("toc","Arial","9pt","White","Normal","Normal","none");
+setButtonFont("toc","Arial","9pt","Black","Normal","Normal","none", true);
+setButtonFont("idx","Arial","9pt","White","Normal","Normal","none");
+setButtonFont("idx","Arial","9pt","Black","Normal","Normal","none", true);
+setButtonFont("fts","Arial","9pt","White","Normal","Normal","none");
+setButtonFont("fts","Arial","9pt","Black","Normal","Normal","none", true);
+setButtonFont("glo","Arial","9pt","White","Normal","Normal","none");
+setButtonFont("glo","Arial","9pt","Black","Normal","Normal","none", true);
+setButtonFont("searchform","Arial","9pt","White","Normal","Normal","none");
+setButtonFont("searchform","","","","","","", true);
+setButtonFont("banner","","","","","","");
+setButtonFont("banner","","","","","","", true);
+setButtonFont("custom28447","Arial","9pt","White","Normal","Normal","none");
+setButtonFont("custom28447","Arial","9pt","Black","Normal","Normal","none", true);
+
+	gsIToc = "wht_toc_n.gif";
+	gsITocS = "wht_toc_h.gif";
+	gsIIndex = "wht_idx_n.gif";
+	gsIIndexS = "wht_idx_h.gif";
+	gsISearch = "wht_fts_n.gif";
+	gsISearchS = "wht_fts_h.gif";
+	gsIGlossary = "wht_glo_n.gif";
+	gsIGlossaryS = "wht_glo_h.gif";
+	gsIWebSearch = "wht_ws.gif";
+	gsIWebSearchD = "wht_ws_g.gif";
+	gsIBanner = "wht_logo1.gif";
+	gsIGo = "wht_go.gif";
+	setBackgroundcolor("Black");
+	setBackground("toolbar_bg.jpg");
+	setAlignment("left");
+	setGoImage("toolbar_searchbtn.gif");
+	
+	if (!gsBgImage)
+	{
+	setButtonBgColor("toc", gsBgColor);
+	setButtonBgColor("idx", gsBgColor);
+	setButtonBgColor("fts", gsBgColor);
+	setButtonBgColor("glo", gsBgColor);
+	setButtonBgColor("toc", gsTBSelectedBgColor, true);
+	setButtonBgColor("idx", gsTBSelectedBgColor, true);
+	setButtonBgColor("fts", gsTBSelectedBgColor, true);
+	setButtonBgColor("glo", gsTBSelectedBgColor, true);
+	setButtonBgColor("toc","Black");
+setButtonBgColor("idx","Black");
+setButtonBgColor("fts","Black");
+setButtonBgColor("glo","Black");
+setButtonBgColor("searchform","");
+setButtonBgColor("banner","");
+setButtonBgColor("custom28447","Black");
+
+	}
+	setButtonBgColor("toc","#b8d5df", true);
+setButtonBgColor("idx","#b8d5df", true);
+setButtonBgColor("fts","#b8d5df", true);
+setButtonBgColor("glo","#b8d5df", true);
+setButtonBgColor("searchform","", true);
+setButtonBgColor("banner","", true);
+setButtonBgColor("custom28447","#b8d5df", true);
+
+	addButton("toc",BTN_TEXT|BTN_IMG,"Contents","","","","",0,0,"bv-toolbaricon_toc.gif","bv-toolbaricon_toc.gif","","bv-toolbaricon_toc.gif","","");
+addButton("idx",BTN_TEXT|BTN_IMG,"Index","","","","",0,0,"bv-toolbaricon_index.gif","bv-toolbaricon_index.gif","","bv-toolbaricon_index.gif","","");
+addButton("fts",BTN_TEXT|BTN_IMG,"Search","","","","",0,0,"bv-toolbaricon_search.gif","bv-toolbaricon_search.gif","","bv-toolbaricon_search.gif","","");
+addButton("searchform",BTN_TEXT,"","","","","",0,0,"","","","","","");
+addButton("custom28447",BTN_TEXT|BTN_IMG,"","","printAction()","","",0,0,"bv-toolbaricon_print.gif","bv-toolbaricon_print.gif","","bv-toolbaricon_print.gif","","");
+
+	addButton("blankblock");
+	writeStyle(false);
+	ReSortToolbarButtons();
+	writeToolBar();
+}
+else
+	document.location.reload();
+//-->
+</script>
+</body>
+</html>
