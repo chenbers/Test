@@ -94,11 +94,11 @@
                 <h:outputText rendered="#{event.vehicleName == messages.reports_none_assigned}" value="#{event.vehicleName}">
                 </h:outputText>
             </rich:column>
-            <rich:column id="category" rendered="#{tableColumns['category'].visible}"  custFilterBy="#{event.type}" custFilterValue="#{bean.filterCategory}">
+            <rich:column id="category" style="width: 185px;" rendered="#{tableColumns['category'].visible}"  custFilterBy="#{event.type}" custFilterValue="#{bean.filterCategory}">
                 <f:facet name="header">
                 	<h:panelGroup>
                     	<h:outputText value="#{messages.notes_category}" />
-                    	<rich:spacer style="display:block" height="2"/>
+                    	<rich:spacer style="display:block" height="2" styleClass="wide_select"/>
                     	<h:selectOneMenu id="catFilter" value="#{bean.filterCategoryKey}" label="#{messages.notes_category}" 
                     	style="height:22px;size:auto;letter-spacing:0;padding:3px;" styleClass="wide_select">
                         	<f:selectItems value="#{bean.filterCategories}" />
