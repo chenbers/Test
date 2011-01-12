@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.joda.time.DateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Account;
@@ -41,11 +42,11 @@ public class AccountCreationITCase extends BaseITCase {
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
     private static int randomInt = RandomUtils.nextInt(99999);
     
-    @Test
+    @Test @Ignore
     public void accountDummyTest() throws Exception {
         
     }
-    //@Test
+    @Test @Ignore
     public void accountTest() throws Exception {
         // TODO: This test really needs some help. I'll come back to it, just need to get something going right now.
 
