@@ -289,7 +289,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     public String save() {
         final Map<String, Boolean> updateField = getUpdateField();
-        setAlertTypesFromSubCategory();
+        
+        // only do this for individual items, not batch edit?
+        if ( !isBatchEdit() ) {
+            setAlertTypesFromSubCategory();
+        }
+        
         if (isBatchEdit()) {
             boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
             updateField.put("severityLevel", updateType);
@@ -362,7 +367,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             valid = false;
         }
   
-        if (saveItem.getEventSubCategory() == null)
+        if (saveItem.getEventSubCategory() == null )
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeTypeMessage"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
@@ -479,9 +484,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 flag.setStopTOD(RedFlagAlert.MIN_TOD);
             }
             // since getItem auto-creates the below, null 'em here before saving
-            if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
-                flag.setSpeedSettings(null);
-            }
+//            if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
+//                flag.setSpeedSettings(null);
+//            }
             if(flag.getEmailTos() != null && !flag.getEmailTos().isEmpty()) {
                 flag.getEmailTos().remove("");
             }
