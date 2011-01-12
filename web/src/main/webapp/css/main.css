@@ -669,6 +669,8 @@ form input.txt {
 	background-repeat:no-repeat;
 	background-position: 3px 0px;
 	padding-left:23px;
+	padding-bottom:2px;
+	line-height:19px;
 }
 .phoneInput {
 	background-image:url('../images/ico_telephone.gif');
@@ -3512,4 +3514,5 @@ hr.minorSeparator{
 }
 .wide_select {
 	width: 100px;
+	margin-top: 0px;
 }

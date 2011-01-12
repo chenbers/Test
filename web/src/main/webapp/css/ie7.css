@@ -76,4 +76,7 @@ table.left_tab_table td
       
 .wide_select {
 	width: 210px;
+	margin-top: 2px;
+	line-height: 22px;
+	font-size: 22px;
 }
