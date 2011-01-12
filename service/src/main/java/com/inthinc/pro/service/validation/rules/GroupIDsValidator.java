@@ -70,5 +70,8 @@ public class GroupIDsValidator extends AbstractServiceValidator implements Const
 
         return true;
 	}
-
+	// Setter for testing purpose
+	void setGroupDAOAdapter(GroupDAOAdapter groupDAOAdapter){
+	    this.groupDAOAdapter = groupDAOAdapter;
+	}
 }
