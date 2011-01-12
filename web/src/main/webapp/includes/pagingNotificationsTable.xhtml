@@ -100,7 +100,7 @@
                     	<h:outputText value="#{messages.notes_category}" />
                     	<rich:spacer style="display:block" height="2"/>
                     	<h:selectOneMenu id="catFilter" value="#{bean.filterCategoryKey}" label="#{messages.notes_category}" 
-                    	style="height:22px;size:auto;margin-top:0;letter-spacing:0;padding:3px" styleClass="wide_select">
+                    	style="height:22px;size:auto;letter-spacing:0;padding:3px;" styleClass="wide_select">
                         	<f:selectItems value="#{bean.filterCategories}" />
                         	<a4j:support event="onchange" 
                         		reRender="#{context},#{context}-form:header, #{context}_pageHeader,#{context}-form:#{context}_bottomScroller" />
