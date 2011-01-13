@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -19,9 +20,11 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 
+@SuppressWarnings("serial")
 public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implements EventDAO
 {
 
+    @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(EventHessianDAO.class);
 
     public EventHessianDAO()
@@ -189,7 +192,15 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     @Override
     public Event findByID(Long id)
     {
-        return getMapper().convertToModelObject(this.getSiloService().getNote(id), Event.class);
+        try
+        {
+            Map<String, Object> returnMap = getSiloService().getNote(id);
+            return getMapper().convertToModelObject(returnMap, Event.class);
+        }
+        catch (EmptyResultSetException e)
+        {
+            return null;
+        }
     }
 	@Override
 	public Integer getEventCount(Integer groupID, Date startDate, Date endDate,

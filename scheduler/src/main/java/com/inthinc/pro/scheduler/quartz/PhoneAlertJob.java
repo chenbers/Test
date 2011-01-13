@@ -21,8 +21,11 @@ public class PhoneAlertJob extends BaseAlertJob
         
         for (AlertMessageBuilder message : messageList)
         {
+            if (message == null) continue;
+            
             String text = LocalizedMessage.getStringWithValues(message.getAlertMessageType().toString(),message.getLocale(),(String[])message.getParamterList().toArray(new String[message.getParamterList().size()]));
             logger.debug("PHONE Message: " + message.getAddress() + " " + text);
+            
             getPhoneDispatcher().send(message.getAddress(),text, message.getMessageID(), message.getAcknowledge());
         }
         logger.debug("PhoneAlertJob: END");

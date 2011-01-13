@@ -1,15 +1,13 @@
 package com.inthinc.pro.scheduler.dispatch;
 
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.log4j.Logger;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import com.inthinc.pro.dao.AlertMessageDAO;
 
 public class PhoneDispatcher {
     private String callerID;
@@ -79,6 +77,8 @@ public class PhoneDispatcher {
         
         @Override
         public void run() {
+            //This starts the process with Voxeo - sends the phone number, token, and parameters for the call to Voxeo
+            //voxeo sends response here - and calls our service with the parameters we send here to get the vxml for the call 
             HttpClient httpClient = new HttpClient();
 
             // TODO dispatch to specfic data center based on country code??

@@ -11,17 +11,19 @@ import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventAttr;
 import com.inthinc.pro.model.event.NoteType;
 
+@SuppressWarnings("serial")
 public class EventHessianMapper extends AbstractMapper
 {
     private static final Logger logger = Logger.getLogger(EventHessianMapper.class);
     
+    @SuppressWarnings("unchecked")
     @ConvertColumnToField(columnName = "attrMap")
     public void attrMapToModel(Event event, Object value)
     {
         if (event == null || value == null)
             return;
 
-        if (value instanceof Map)
+        if (value instanceof Map<?,?>)
         {
             Map<Integer, Object> attrMap = (Map<Integer, Object>) value;
             for (Map.Entry<Integer, Object> attrEntry : attrMap.entrySet())
@@ -61,13 +63,15 @@ public class EventHessianMapper extends AbstractMapper
     @Override
     public <E> E  convertToModelObject(Map<String, Object> map, Class<E> type)
     {
+        if (map == null) return null;
+        
         if (type == Event.class)
         {
             NoteType noteType = NoteType.valueOf((Integer) map.get("type"));
             if (noteType != null && noteType.getEventClass()!=null)
             {
                 E e = type.cast(super.convertToModelObject(map, noteType.getEventClass()));
-                Event event=(Event) e;
+//                Event event=(Event) e;
                 return e;
             }
             else

@@ -32,6 +32,7 @@ import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
@@ -139,6 +140,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             conn = getConnection();
             statement = conn.prepareStatement(FETCH_ALERT_MESSAGE);
             statement.setInt(1, id);
+            System.out.println("findAlertMessageByID - statement is: "+FETCH_ALERT_MESSAGE+id);
             resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 AlertMessage alertMessage = new AlertMessage();
@@ -207,7 +209,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
 
 //TODO the backend needs to insert escalations with status=3 and escalationOrdinal=1
 
-
+//update the owner (ie the job number) in the new message records that don't have an owner yet
             statement = (PreparedStatement) conn.prepareStatement(
                     "UPDATE message SET owner=?, message.modified=utc_timestamp() WHERE owner=0 AND status = 1 AND deliveryMethodID = ? LIMIT 100");
             statement.setLong(1, uid);
@@ -218,7 +220,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             {
                 conn.setAutoCommit(false);
 
-                //prepare to send escalations
+                //prepare to send escalations to those that have status=3 (Awaiting acknowledge) and that are due to be sent
                 statement = (PreparedStatement) conn.prepareStatement(
                     "UPDATE message" 
                         + " JOIN alert ON alert.alertID=message.alertID"
@@ -228,7 +230,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                 statement.setInt(2, messageType.getCode());
                 numEscalationMsgs=statement.executeUpdate();               
 
-                //update escalations
+                //update escalations with the next person to be called or emailed if all calls have failed
                 if (numEscalationMsgs>0)
                 {
                     statement = (PreparedStatement) conn.prepareStatement(
@@ -249,7 +251,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                 conn.commit();
                 conn.setAutoCommit(true);
             }
-            
+            // Grab all the messages for this job
             statement = (PreparedStatement) conn.prepareStatement(
                     "SELECT msgID,noteID,personID,alertID,alertTypeID,created,modified,deliveryMethodID,address,message,status,level,owner,zoneID, IF(status=2,0,1) as acknowledge FROM message WHERE (status=1 OR status=3) AND owner=?");
             statement.setLong(1, uid);
@@ -276,7 +278,9 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                 
                 Event event = eventDAO.findByID(alertMessage.getNoteID());
                 AlertMessageBuilder alertMessageBuilder = this.createAlertMessageBuilder(alertMessage, event, messageType);
-                recordList.add(alertMessageBuilder);    
+                if(alertMessageBuilder != null){
+                    recordList.add(alertMessageBuilder); 
+                }
                 
                 statement = (PreparedStatement) conn.prepareStatement("INSERT INTO messageLog (msgID, personID, created) VALUES(?, ?, utc_timestamp())");
                 statement.setInt(1,alertMessage.getMessageID());
@@ -330,95 +334,157 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
     
     private AlertMessageBuilder createAlertMessageBuilder(AlertMessage alertMessage, Event event, AlertMessageDeliveryType messageType) {
         if (alertMessage.getPersonID() == null || alertMessage.getPersonID() == 0 || event == null) {
-            logger.debug("Person ID or Event is Null");
+            logger.debug("Person ID or Event is Null " + alertMessage.getPersonID() + event);
             return null;
         }
         
         Person person = personDAO.findByID(alertMessage.getPersonID());
-        logger.debug("Preparing message for: " + person.getFullName());
-        Driver driver = driverDAO.findByID(event.getDriverID());
-        Vehicle vehicle = vehicleDAO.findByID(event.getVehicleID());
-        Locale locale = Locale.ENGLISH;
-        if (person != null && person.getLocale() != null)
-            locale = person.getLocale();
+        if (person == null) return null;
         
-        //TODO if person is null we are screwed
-        //TODO is primaryXXX the correct thing to send to?
-        if (person!=null)
+        logger.debug("Preparing message for: " + person.getFullName());
+        
+        AlertMessageBuilder alertMessageBuilder = createBuilder(alertMessage, person, messageType);
+        
+        List<String> parameterList = getParameterList(event, alertMessage, person);
+        alertMessageBuilder.setParamterList(parameterList);
+        
+        return alertMessageBuilder;
+    }
+    
+    private String getAddress(Person person, AlertMessageDeliveryType messageType){
+        if (AlertMessageDeliveryType.EMAIL.equals(messageType))
         {
-            if (AlertMessageDeliveryType.EMAIL.equals(messageType))
-            {
-                alertMessage.setAddress(person.getPriEmail());    
-            }
-            else if (AlertMessageDeliveryType.PHONE.equals(messageType))
-            {
-                alertMessage.setAddress(person.getPriPhone());    
-            }                
+            return person.getPriEmail();    
         }
+        else if (AlertMessageDeliveryType.PHONE.equals(messageType))
+        {
+            return person.getPriPhone();    
+        }                
+        return null;
+    }
+    private AlertMessageBuilder createBuilder(AlertMessage alertMessage, Person person, AlertMessageDeliveryType messageType){
+        
+        alertMessage.setAddress(getAddress(person, messageType));
         
         AlertMessageBuilder alertMessageBuilder = new AlertMessageBuilder();
-        alertMessageBuilder.setLocale(locale);
+        alertMessageBuilder.setLocale(getLocale(person));
         alertMessageBuilder.setAddress(alertMessage.getAddress());
         alertMessageBuilder.setAlertID(alertMessage.getAlertID());
         alertMessageBuilder.setMessageID(alertMessage.getMessageID());
         alertMessageBuilder.setAlertMessageType(alertMessage.getAlertMessageType());
         alertMessageBuilder.setAcknowledge(alertMessage.getAcknowledge());
+        
+        return alertMessageBuilder;
+    }
+    private Locale getLocale(Person person){
+        Locale locale = Locale.ENGLISH;
+        if (person != null && person.getLocale() != null)
+            locale = person.getLocale();
+        return locale;
+    }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+    private List<String> getParameterList(Event event, AlertMessage alertMessage,Person person){
         
-        // Check for unknown driver
-        if ( (driver != null) && (driver.getPerson() != null) ) {
-            simpleDateFormat.setTimeZone(driver.getPerson().getTimeZone());
-        } else {
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        }
+      List<String> parameterList = new ArrayList<String>();
+      
+      parameterList = addDriverRelatedData(event, parameterList);
+      parameterList = addVehicleRelatedData(event, parameterList);
+      parameterList = addAlertRelatedData(event, person, alertMessage, parameterList);
+      
+      return parameterList;
+    }
+    private List<String> addDriverRelatedData(Event event, List<String> parameterList){
         
+        Driver driver = driverDAO.findByID(event.getDriverID());
+        
+        SimpleDateFormat driverDateFormat = getDriverDate(driver);     
         // Construct the message parameter list
-        List<String> parameterList = new ArrayList<String>();
-        parameterList.add(simpleDateFormat.format(event.getTime()));
-        if (driver != null && driver.getPerson() != null)
-            parameterList.add(driver.getPerson().getFullName());
-        else {
-            parameterList.add("");
+        parameterList.add(driverDateFormat.format(event.getTime()));
+        
+        String driverFullName = getDriverFullName(driver);
+        parameterList.add(driverFullName);
+        
+        return parameterList;
+    }
+    private SimpleDateFormat getDriverDate(Driver driver){
+        
+        SimpleDateFormat driverDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+        
+        if ( (driver != null) && (driver.getPerson() != null) ) {
+            driverDateFormat.setTimeZone(driver.getPerson().getTimeZone());
+        } else {
+            driverDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
         }
+        return driverDateFormat;
+    }
+    private String getDriverFullName(Driver driver){
+        
+        if (driver != null && driver.getPerson() != null)
+           return driver.getPerson().getFullName();
+        else {
+            return "";
+        }
+        
+    }
+    private List<String> addVehicleRelatedData(Event event, List<String> parameterList){
+        
+        Vehicle vehicle = vehicleDAO.findByID(event.getVehicleID());
         parameterList.add(vehicle.getName());
+        
+        return parameterList;
+    }
+    private List<String> addAlertRelatedData(Event event, Person person, AlertMessage alertMessage, List<String> parameterList){
+        
         switch (alertMessage.getAlertMessageType()) {
             case ALERT_TYPE_ENTER_ZONE:
             case ALERT_TYPE_EXIT_ZONE:
-                Zone zone = zoneDAO.findByID(alertMessage.getZoneID());
-                if (zone == null) {
-                    logger.error("Zone could not be found for zoneID: " + alertMessage.getZoneID());
-                }
-                else {
-                    parameterList.add(zone.getName());
-                }
+                
+                parameterList = addZoneRelatedData(alertMessage.getZoneID(), parameterList);
                 break;
             case ALERT_TYPE_SPEEDING:
-                Number topSpeed = MeasurementConversionUtil.convertSpeed(((SpeedingEvent) event).getTopSpeed(), person.getMeasurementType());
-                Number speedLimit = MeasurementConversionUtil.convertSpeed(((SpeedingEvent) event).getSpeedLimit(), person.getMeasurementType());
-                parameterList.add(String.valueOf(topSpeed));
-                parameterList.add(String.valueOf(speedLimit));
-                try {
-                    parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
-                }
-                catch (NoAddressFoundException nafe){
-                    //Shouldn't happen because returning lat lng when there is no address
-                }
+                parameterList = addSpeedingRelatedData((SpeedingEvent) event,  person.getMeasurementType(), parameterList);
+                break;
             case ALERT_TYPE_TAMPERING:
             case ALERT_TYPE_LOW_BATTERY:
                 break;
             default:
-                try {
-                    parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
-                }
-                catch (NoAddressFoundException nafe){
-                    //Shouldn't happen because returning lat lng when there is no address
-                }
+                parameterList = addAddress(event, parameterList);
         }
-        alertMessageBuilder.setParamterList(parameterList);
-        return alertMessageBuilder;
+       return parameterList;
     }
- 
+    private List<String> addZoneRelatedData(Integer zoneID, List<String> parameterList){
+        
+        Zone zone = zoneDAO.findByID(zoneID);
+        if (zone == null) {
+            logger.error("Zone could not be found for zoneID: " + zoneID);
+        }
+        else {
+            parameterList.add(zone.getName());
+        }
+
+        return parameterList;
+    }
+
+    private List<String> addSpeedingRelatedData(SpeedingEvent event, MeasurementType measurementType, List<String> parameterList){
+        Number topSpeed = MeasurementConversionUtil.convertSpeed(event.getTopSpeed(), measurementType);
+        Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), measurementType);
+        parameterList.add(String.valueOf(topSpeed));
+        parameterList.add(String.valueOf(speedLimit));
+        parameterList = addAddress(event, parameterList);
+        
+        return parameterList;
+
+    }
+    private List<String> addAddress(Event event, List<String> parameterList){
+        
+        try {
+            parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
+        }
+        catch (NoAddressFoundException nafe){
+            //Shouldn't happen because returning lat lng when there is no address
+        }
+        return parameterList;
+    }
     public void setEventDAO(EventDAO eventDAO) {
         this.eventDAO = eventDAO;
     }
