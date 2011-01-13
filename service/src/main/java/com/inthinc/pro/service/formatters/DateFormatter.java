@@ -29,6 +29,7 @@ public class DateFormatter implements StringParameterUnmarshaller<Date> {
     public void setAnnotations(Annotation[] annotations) {
         DateFormat format = FindAnnotation.findAnnotation(annotations, DateFormat.class);
         formatter = new SimpleDateFormat(format.value());
+        formatter.setLenient(false);
     }
 
     /**
