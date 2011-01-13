@@ -56,7 +56,6 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
     }
 //    private String userRole;
 //    private static DateFormat dateFormatter ;
-    private final static String UNKNOWN_DRIVER = "unknown_driver";
 
     @Override
     public void initBean() {
@@ -161,13 +160,13 @@ logger.info("initTableData() - end");
                     }
                     else {
                     	logger.error("Group not found for driverID:" + driver.getDriverID());
-                        reportItem.setDriverName(MessageUtil.getMessageString(UNKNOWN_DRIVER));
+                    	reportItem.setDriverName(getUnknownDriver().getPerson().getFullName());
                         reportItem.setGroup("");
                         reportItem.setGroupID(null);
                     }
                     	
                 } else {
-                    reportItem.setDriverName(MessageUtil.getMessageString(UNKNOWN_DRIVER));
+                    reportItem.setDriverName(getUnknownDriver().getPerson().getFullName());
                     reportItem.setGroup("");
                     reportItem.setGroupID(null);
                 }

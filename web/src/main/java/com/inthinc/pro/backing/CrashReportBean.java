@@ -421,10 +421,10 @@ public class CrashReportBean extends BaseBean {
         if ( this.crashReport.getDriver().getDriverID() != null ) {
             Account acct = this.getAccountDAO().findByID(this.getProUser().getUser().getPerson().getAcctID());
             if ( this.crashReport.getDriver().getDriverID().equals(acct.getUnkDriverID()) ) {
-                Person p = new Person();
-                p.setFirst(MessageUtil.getMessageString("notes_general_unknown",getLocale()));
-                p.setLast(MessageUtil.getMessageString("notes_general_driver",getLocale()));
-                this.crashReport.getDriver().setPerson(p);
+//                Person p = new Person();
+//                p.setFirst(MessageUtil.getMessageString("notes_general_unknown",getLocale()));
+//                p.setLast(MessageUtil.getMessageString("notes_general_driver",getLocale()));
+//                this.crashReport.getDriver().setPerson(p);
                 this.unkDriver = this.crashReport.getDriver();
             }
         }

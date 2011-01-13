@@ -59,10 +59,7 @@
 				<div id="#{redFlag.event.noteID}" style="display: none;">
                 	<h:panelGrid columns="2" styleClass="google_popup" width="230" rowClasses="google_popups_rows" headerClass="google_popups_header">
 						<f:facet name="header">
-                            <pretty:link id="redFlagsDriverPerformance" mappingId="driverPerformance">
-                                <f:param value="#{redFlag.event.driverID}"/>
-                                #{redFlag.event.driverName}
-                            </pretty:link>
+							<h:outputText  value="#{redFlag.event.driverName}" />
 						</f:facet>
 						<h:outputText rendered="#{redFlag.event.zoneName ne null}" value="#{messages.zones_zone}"/>
 						<h:outputText rendered="#{redFlag.event.zoneName ne null}" value="#{redFlag.event.zoneName}" />
