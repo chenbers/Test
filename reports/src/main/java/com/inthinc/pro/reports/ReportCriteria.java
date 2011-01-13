@@ -45,6 +45,7 @@ public class ReportCriteria
     public static final String GROUP_SEPARATOR="->";
     public static final String SLASH_GROUP_SEPERATOR = "/";
     public static final String DATE_FORMAT = "MM/dd/yyyy";
+    public static final String REPORT_IFTA_ONLY = "iftaVehiclesOnly";
 
     private int subsetIndex = 1;
     
