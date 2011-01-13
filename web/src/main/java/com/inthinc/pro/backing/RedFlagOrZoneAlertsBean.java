@@ -111,14 +111,31 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     private RedFlagOrZoneAlertView createRedFlagOrZoneAlertView(RedFlagAlert flag) {
         final RedFlagOrZoneAlertView alertView = new RedFlagOrZoneAlertView();
         alertView.setAnytime(true);
-        if (alertView.getStartTOD() == null)
-            alertView.setStartTOD(RedFlagAlert.MIN_TOD);
-        if (alertView.getStopTOD() == null)
-            alertView.setStopTOD(RedFlagAlert.MIN_TOD);
-        alertView.setAnytime(isAnytime(alertView));
+        
+        // i think this should be checking the passed in alert, if not null?
+        if ( flag == null ) {
+            if (alertView.getStartTOD() == null)
+                alertView.setStartTOD(RedFlagAlert.MIN_TOD);
+            if (alertView.getStopTOD() == null)
+                alertView.setStopTOD(RedFlagAlert.MIN_TOD);
+            alertView.setAnytime(isAnytime(alertView));
+
+        } else {
+            if (flag.getStartTOD() == null) {
+                alertView.setStartTOD(RedFlagAlert.MIN_TOD);
+            } else {
+                alertView.setStartTOD(flag.getStartTOD());
+            }
+            if (flag.getStopTOD() == null) {
+                alertView.setStopTOD(RedFlagAlert.MIN_TOD);   
+            } else {
+                alertView.setStopTOD(flag.getStopTOD());
+            }
+            alertView.setAnytime(isAnytime(alertView));            
+        }
+        
         alertView.setSelected(false);
         alertView.setRedFlagOrZoneAlertsBean(this);
-
         
         if(flag != null){
             if (flag.getTypes() == null || flag.getTypes().isEmpty()){
@@ -293,13 +310,17 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //        setAlertTypesFromSubCategory();
         
         if (isBatchEdit()) {
+            
+            // the following appears to be a business rule that, if you aren't changing the red flag type,
+            //  you can't change some other fields? removing severity level from rule....
             boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
-            updateField.put("severityLevel", updateType);
+//            updateField.put("severityLevel", updateType);
             updateField.put("speedSettings", updateType);
             updateField.put("hardAcceleration", updateType);
             updateField.put("hardBrake", updateType);
             updateField.put("hardTurn", updateType);
             updateField.put("hardVertical", updateType);
+            
             if (updateField.get("anytime")) {
                 updateField.put("startTOD", true);
                 updateField.put("stopTOD", true);
