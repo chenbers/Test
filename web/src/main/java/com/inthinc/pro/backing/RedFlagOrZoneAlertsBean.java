@@ -290,10 +290,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     public String save() {
         final Map<String, Boolean> updateField = getUpdateField();
         
-        // only do this for individual items, not batch edit?
-        if ( !isBatchEdit() ) {
-            setAlertTypesFromSubCategory();
-        }
+//        setAlertTypesFromSubCategory();
         
         if (isBatchEdit()) {
             boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
@@ -361,17 +358,28 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     protected boolean validateSaveItem(RedFlagOrZoneAlertView saveItem) {
         
         boolean valid = super.validateSaveItem(saveItem);
+        boolean checkSubTypes = false;  // see if we need to check the subtypes for the category
+        
         if ((saveItem.getName() == null) || (saveItem.getName().length() == 0) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name")))) {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlag-name", message);
             valid = false;
         }
   
-        if (saveItem.getEventSubCategory() == null )
+        if (saveItem.getEventSubCategory() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("eventSubCategory"))))
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeTypeMessage"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
             valid=false;
+        
+        // single flag
+        } else if ( !isBatchEdit() ) {
+                if ( saveItem.getEventSubCategory() != null ) {
+                    checkSubTypes = true;
+                }
+        // multiple flags
+        } else if ( getUpdateField().get("eventSubCategory") ) {
+                    checkSubTypes = true;
         }
         
         if (EventSubCategory.SPEED.equals(saveItem.getEventSubCategory())){
@@ -450,7 +458,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //        }
         
         // check on selected types
-        if ( valid ) {
+        if ( valid  && checkSubTypes ) {
             if ( !saveItem.validateSelectedAlertTypes() ) {
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("atLeastOne"), null);
                 FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
