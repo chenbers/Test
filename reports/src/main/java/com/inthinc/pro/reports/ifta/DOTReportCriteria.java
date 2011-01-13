@@ -92,6 +92,7 @@ public abstract class DOTReportCriteria extends GroupListReportCriteria {
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval, boolean dotOnly) {
         addParameter(ReportCriteria.REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
         addParameter(ReportCriteria.REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
+        addParameter(ReportCriteria.REPORT_IFTA_ONLY, (dotOnly?1:0));
         addParameter("units", units);
         this.accountGroupHierarchy = accountGroupHierarchy;
 

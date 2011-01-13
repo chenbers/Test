@@ -248,7 +248,7 @@
 								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="false">
-								<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="74" height="20" backcolor="#999999"/>
+								<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="0" width="75" height="20" backcolor="#999999"/>
 								<box>
 									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -292,7 +292,7 @@
 				<textElement textAlignment="Right">
 					<font size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{stateMileageCompareByGroup.title}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($P{iftaVehiclesOnly}==0?$R{stateMileageCompareByGroup.title}:$R{stateMileageCompareByGroupIFTA.title})]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line" x="0" y="48" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
