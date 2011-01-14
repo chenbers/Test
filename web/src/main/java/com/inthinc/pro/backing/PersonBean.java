@@ -49,6 +49,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
+import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.security.Roles;
 import com.inthinc.pro.util.BeanUtil;
@@ -111,6 +112,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("rfid1");
         AVAILABLE_COLUMNS.add("rfid2");
         AVAILABLE_COLUMNS.add("driver_groupID");
+        AVAILABLE_COLUMNS.add("driver_provider");
+        AVAILABLE_COLUMNS.add("driver_providerUsername");
+        AVAILABLE_COLUMNS.add("driver_providerPassword");
+        AVAILABLE_COLUMNS.add("driver_providerCellPhone");
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
         for (int i = MIN_HEIGHT; i < MAX_HEIGHT; i++)
@@ -383,6 +388,30 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         		return person.getRolesString();
         	}
         	else return null;
+        } else if (column.equals("driver_provider")) {
+            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
+                return person.getDriver().getCellProviderInfo().getProvider().toString();
+            }
+            
+            return null;
+        } else if (column.equals("driver_providerUsername")) {
+            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
+                return person.getDriver().getCellProviderInfo().getProviderUsername();
+            }
+            
+            return null;
+        } else if (column.equals("driver_providerPassword")) {
+            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
+                return person.getDriver().getCellProviderInfo().getProviderPassword();
+            }
+            
+            return null;
+        } else if (column.equals("driver_providerCellPhone")) {
+            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
+                return person.getDriver().getCellProviderInfo().getCellPhone();
+            }
+            
+            return null;
         }
         else
             return super.fieldValue(person, column);
@@ -456,6 +485,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (item.getDriver() == null) {
             item.setDriver(new Driver());
             item.getDriver().setPersonID(item.getPersonID());
+        }
+
+        if (item.getDriver().getCellProviderInfo() == null) {
+            item.getDriver().setCellProviderInfo(new Driver.CellProviderInfo());
         }
 //        if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 1))
 //            item.getDriver().setRFID(null);
@@ -955,6 +988,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     public Map<String, String> getLicenseClasses() {
         return LICENSE_CLASSES;
+    }
+
+    public List<SelectItem> getProviderTypes() {
+        return SelectItemUtil.toList(CellProviderType.class, false);
     }
 
     public Map<String, State> getStates() {

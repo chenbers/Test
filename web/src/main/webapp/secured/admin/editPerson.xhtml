@@ -223,7 +223,7 @@
 
                       <div class="add_section_title">
                         <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isDriver" value="#{personBean.item.driverSelected}">
-                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked); showSection('rfidSection', this.checked);" ajaxSingle="true" reRender="editPerson-isDriver" limitToList="true" />
+                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked); showSection('rfidSection', this.checked); showSection('cellProviderSection', this.checked);" ajaxSingle="true" reRender="editPerson-isDriver" limitToList="true" />
                          </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_driverInformation}" />
                       </div>
@@ -413,7 +413,54 @@
                        </table>
                        </div>
                        </ui:fragment>
-                    </td>
+                       <div id="cellProviderSection">
+                       <div class="add_section_title"><h:outputText value="#{messages.editPerson_cellProviderSection}" /></div>
+                       <table id="cellProviderTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
+	                       <tr>
+	                         <td width="100" valign="top">
+	                           <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_editPerson-driver-providerType" value="#{personBean.updateField['driver_providerType']}" />
+	                           <h:outputText value="#{messages.editPerson_driver_providerType}" />
+	                         </td>
+	                         <td>
+	                           <h:selectOneMenu value="#{personBean.item.driver.cellProviderInfo.provider}" id="editPerson_driver_provider" onchange="checkMultiple(this)">
+	                             <f:selectItem itemLabel="" />
+	                             <f:selectItems value="#{personBean.providerTypes}" />
+	                           </h:selectOneMenu>
+	                         </td>
+	                       </tr>
+                           <tr>
+                               <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
+                                   id="update_editPerson-driver-providerUsername" disabled="#{!personBean.item.userEditable}"
+                                   value="#{personBean.updateField['driver_providerUsername']}" /> <h:outputText
+                                   value="#{messages.editPerson_driver_providerUsername}" /></td>
+                               <td><rich:message for="editPerson-driver_providerUsername" errorClass="field-error"
+                                   fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
+                                   value="#{personBean.item.driver.cellProviderInfo.providerUsername}" id="editPerson_driver_providerUsername"
+                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" /></td>
+                           </tr>
+                           <tr>
+                               <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
+                                   id="update_editPerson-driver-providerPassword" disabled="#{!personBean.item.userEditable}"
+                                   value="#{personBean.updateField['driver_providerPassword']}" /> <h:outputText
+                                   value="#{messages.editPerson_driver_providerPassword}" /></td>
+                               <td><rich:message for="editPerson-driver_providerPassword" errorClass="field-error"
+                                   fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret
+                                   value="#{personBean.item.driver.cellProviderInfo.providerPassword}" id="editPerson_driver_providerPassword"
+                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" /></td>
+                           </tr>
+                           <tr>
+                               <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
+                                   id="update_editPerson-driver-providerCellPhone" disabled="#{!personBean.item.userEditable}"
+                                   value="#{personBean.updateField['driver_providerCellPhone']}" /> <h:outputText
+                                   value="#{messages.editPerson_driver_providerCellPhone}" /></td>
+                               <td><rich:message for="editPerson-driver_providerCellPhone" errorClass="field-error"
+                                   fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
+                                   value="#{personBean.item.driver.cellProviderInfo.cellPhone}" id="editPerson_driver_providerCellPhone"
+                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" /></td>
+                           </tr>
+                       </table>
+                       </div>
+					</td>
                     <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
                     <td width="390" valign="top">
 
@@ -894,6 +941,7 @@
     if(document.getElementById("edit-form:editPerson-isDriver")){
         showSection("driverTable", document.getElementById("edit-form:editPerson-isDriver").checked);
     	showSection("rfidSection", document.getElementById("edit-form:editPerson-isDriver").checked);
+    	showSection("cellProviderSection", document.getElementById("edit-form:editPerson-isDriver").checked);
     }
     </script>
 
