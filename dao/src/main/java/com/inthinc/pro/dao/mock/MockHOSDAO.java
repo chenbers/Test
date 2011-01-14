@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import com.inthinc.hos.model.HOSOrigin;
@@ -316,6 +317,11 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Integer> {
         
         
         return hosFilteredRecordList;
+    }
+
+    @Override
+    public Number fetchMileageForDayDriverVehicle(DateTime day, Integer driverID, Integer vehicleID) {
+        return 0;
     }
     
 }

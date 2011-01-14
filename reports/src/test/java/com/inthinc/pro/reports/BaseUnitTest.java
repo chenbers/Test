@@ -24,6 +24,7 @@ public class BaseUnitTest {
     
     // switch to true to get a file dump of the report for debug/test
     public static final boolean DUMP_TO_FILE = false;
+//    public static final boolean DUMP_TO_FILE = true;
     
     @Test
     public void dummy() {

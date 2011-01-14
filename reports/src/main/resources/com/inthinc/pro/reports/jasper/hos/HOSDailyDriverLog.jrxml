@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="HOSDDL" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="207"/>
 	<subDataset name="remarksDataset">
 		<field name="logTimeDate" class="java.util.Date"/>
 		<field name="logTimeZone" class="java.util.TimeZone"/>
@@ -12,6 +12,7 @@
 		<field name="startOdometer" class="java.lang.Number"/>
 		<field name="deleted" class="java.lang.Boolean"/>
 		<field name="edited" class="java.lang.Boolean"/>
+		<field name="locationEdited" class="java.lang.Boolean"/>
 	</subDataset>
 	<subDataset name="vehiclesDataset">
 		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
@@ -420,7 +421,7 @@
 						</textField>
 						<textField isStretchWithOverflow="true">
 							<reportElement x="90" y="13" width="179" height="10" isRemoveLineWhenBlank="true">
-								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
+								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
 								<font size="7"/>
@@ -464,7 +465,7 @@
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement mode="Opaque" x="90" y="14" width="179" height="10" isRemoveLineWhenBlank="true" backcolor="#999999">
-								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
+								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
 								<font size="7"/>

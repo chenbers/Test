@@ -23,10 +23,11 @@ public class HOSUtil {
         List<HOSRecAdjusted> adjustedList = new ArrayList<HOSRecAdjusted>();
         for (HOSRecord hosRec : hosRecList)
         {
-            if (hosRec.getStatus() == null || !hosRec.getStatus().isGraphable() || hosRec.getDeleted())
+            HOSStatus status = hosRec.getStatus(); 
+            if (status  == null || !status.isGraphable() || hosRec.getDeleted())
                 continue;
             HOSRecAdjusted hosDDLRec = new HOSRecAdjusted(hosRec.getHosLogID().toString(), 
-                    hosRec.getStatus(), 
+                    status, 
                     hosRec.getLogTime(), 
                     hosRec.getTimeZone());
             
@@ -43,6 +44,35 @@ public class HOSUtil {
         return new HOSAdjustedList(adjustedList);
 
     }
+    public static HOSAdjustedList getOriginalAdjustedListFromLogList(List<HOSRecord> hosRecList)
+    {
+        List<HOSRecAdjusted> adjustedList = new ArrayList<HOSRecAdjusted>();
+        for (HOSRecord hosRec : hosRecList)
+        {
+            if (hosRec.getOrigin().equals(HOSOrigin.PORTAL))
+                continue;
+            HOSStatus status = (hosRec.getEdited() && hosRec.getOriginalStatus() != null) ? hosRec.getOriginalStatus() : hosRec.getStatus(); 
+            if (status  == null || !status.isGraphable() || hosRec.getDeleted())
+                continue;
+            HOSRecAdjusted hosDDLRec = new HOSRecAdjusted(hosRec.getHosLogID().toString(), 
+                    status,
+                    hosRec.getLogTime(),
+                    hosRec.getTimeZone());
+            
+            hosDDLRec.setEdited(false);
+            hosDDLRec.setServiceID(hosRec.getServiceID());
+            hosDDLRec.setTrailerID(hosRec.getTrailerID());
+            hosDDLRec.setVehicleID(hosRec.getVehicleID());
+            hosDDLRec.setRuleType(hosRec.getDriverDotType());
+
+            adjustedList.add(hosDDLRec);
+
+        }
+        Collections.reverse(adjustedList);
+        return new HOSAdjustedList(adjustedList);
+
+    }
+    
     
     public static List<HOSRec> getRecListFromLogList(List<HOSRecord> hosRecList, Date endDate, boolean isDriverDOT)
     {

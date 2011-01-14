@@ -69,6 +69,7 @@ public class DDLDataSet {
     public static final int logTimeIdx = 23;
     public static final int ruleIdIdx = 24;
     public static final int licenseIdx = 25;
+    public static final int originalStatusIdx = 26;
     
     //2010-01-29 17:11:08.0
     public  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -138,6 +139,8 @@ public class DDLDataSet {
                 rec.setChangedCnt(0);
                 rec.setTrailerGallons(0f);
                 rec.setTruckGallons(0f);
+                if (values.length > originalStatusIdx)
+                    rec.setOriginalStatus(values[originalStatusIdx] == null ? null : HOSStatus.valueOf(Integer.valueOf(values[originalStatusIdx])));
                 
 
                 if (rec.getStatus().equals(HOSStatus.DRIVING)) {

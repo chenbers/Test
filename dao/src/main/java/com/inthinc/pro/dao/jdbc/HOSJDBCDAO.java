@@ -2,6 +2,7 @@ package com.inthinc.pro.dao.jdbc;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,14 +13,22 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.FuelEfficiencyType;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
@@ -28,8 +37,6 @@ import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
-import com.inthinc.pro.model.FuelEfficiencyType;
-import com.inthinc.pro.model.MeasurementType;
 
 
 
@@ -282,7 +289,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setBoolean(4, driverStatusOnly);
             if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
-            
+
             resultSet = statement.executeQuery();
 
             while (resultSet.next())
@@ -321,6 +328,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 hosRecord.setEmployeeID(resultSet.getString(28));
                 hosRecord.setEditUserID(resultSet.getInt(29));
                 hosRecord.setSingleDriver(resultSet.getBoolean(30));
+                hosRecord.setOriginalStatus(HOSStatus.valueOf(resultSet.getInt(31)));
                 
                 recordList.add(hosRecord);
             }
@@ -844,5 +852,44 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
         return occupantInfo;
     }
+
+    private static final String FETCH_MILEAGE = "select odometer5 from agg where driverID = ? and vehicleID = ? and aggDate = ?";
+    private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    
+    @Override
+    public Number fetchMileageForDayDriverVehicle(DateTime day, Integer driverID, Integer vehicleID) {
+        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try
+        {
+            conn = getConnection();
+            statement = (PreparedStatement) conn.prepareStatement(FETCH_MILEAGE);
+            statement.setInt(1, driverID);
+            statement.setInt(2, vehicleID);
+            statement.setDate(3, java.sql.Date.valueOf(dateFormatter.print(day)));
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                
+                return resultSet.getLong(1);
+            }
+                
+
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException(statement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally   
+        
+        return 0l;
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.inthinc.pro.dao;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.model.hos.HOSDriverLogin;
@@ -20,7 +21,8 @@ public interface HOSDAO extends GenericDAO<HOSRecord, Integer> {
     List<HOSGroupMileage> getHOSMileage(Integer groupID, Interval interval, Boolean noDriver);
     List<HOSVehicleMileage> getHOSVehicleMileage(Integer groupID, Interval interval, Boolean noDriver);
     
-    HOSDriverLogin getDriverForEmpidLastName(String employeeId, String lastName); 
+    HOSDriverLogin getDriverForEmpidLastName(String employeeId, String lastName);
+    Number fetchMileageForDayDriverVehicle(DateTime day, Integer driverID, Integer vehicleID); 
 
 
 }

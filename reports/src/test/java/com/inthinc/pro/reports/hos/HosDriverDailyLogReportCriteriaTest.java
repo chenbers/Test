@@ -182,8 +182,9 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             {     // test12_07132010_07172010_personalTime
             },
             {     // test13_06062010_06102010_travelTimeOccupant
-                new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1200l,0,80,false,"","",1196l,RuleSetType.US_OIL, 58),
-                new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL, 53),
+                new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1020l,0,68,false,"","",1022l,RuleSetType.US_OIL, 1),
+                new HOSRecAdjusted("54",HOSStatus.ON_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),180l,68,12,false,"","",174l,RuleSetType.US_OIL, 5),
+                new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL, 5),
             },
     };
     public Boolean expectedEdited[] = {
@@ -264,6 +265,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
                 recCnt = 0;
                 for (HOSRecAdjusted originalRec : originalList) {
                     compareHOSRecAdjusted(expectedOriginalList[testCaseCnt][recCnt], originalRec, recCnt, testCaseCnt);
+//                    originalRec.dump();
                     recCnt++;
                 }
             }

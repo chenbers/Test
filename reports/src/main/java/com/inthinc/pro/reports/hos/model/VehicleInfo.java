@@ -5,7 +5,14 @@ public class VehicleInfo {
     private Number startOdometer;
     private String name;
     private Number milesDriven;
+    private Integer vehicleID;
 
+    public Integer getVehicleID() {
+        return vehicleID;
+    }
+    public void setVehicleID(Integer vehicleID) {
+        this.vehicleID = vehicleID;
+    }
     public Number getStartOdometer() {
         return startOdometer;
     }
