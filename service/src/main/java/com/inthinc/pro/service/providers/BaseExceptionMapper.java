@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -44,7 +45,7 @@ public abstract class BaseExceptionMapper<E extends Throwable> implements Except
         String stackTract = getExceptionStackTrace(exception);
         
         //return Response.status(getStatus()).type(MediaType.TEXT_PLAIN).entity(stackTract).build();
-        return Response.status(getStatus()).entity(stackTract).build();
+        return Response.status(getStatus()).type(MediaType.APPLICATION_XML).entity(stackTract).build();
         
     }
 

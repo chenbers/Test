@@ -20,6 +20,7 @@ import com.inthinc.pro.util.GroupList;
  * Interface for IFTA/DOT State Mileage by Vehicle / Road Status Report Services.
  */
 @Produces("application/xml")
+@Path("")
 public interface IFTAServiceStateMileageByVehicleRoadStatus {
     String DATE_FORMAT = "yyyyMMdd";
 
