@@ -266,7 +266,7 @@
 			}
         function getAddresses()
         {
-            if (#{driverTripsBean.addressFormat == 3}){
+            if (#{vehicleTripsBean.addressFormat == 3}){
   	    		geocoder = new GClientGeocoder();
   	    		jQuery('td[id$="end_column"]').each(function(n){
   	
@@ -296,7 +296,7 @@
 
         function getEventAddresses()
         {
-            if (#{driverTripsBean.addressFormat == 3}){
+            if (#{vehicleTripsBean.addressFormat == 3}){
 	    		geocoder = new GClientGeocoder();
 
 	    		jQuery('td[id$="address_column"]').each(function(n){
@@ -350,8 +350,9 @@
 								<ui:include src="/includes/tripBubble.xhtml">
 										<ui:param name="hiddenDivID" value="tripStartBubble" />
 										<ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-										<ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeStartShort}" />
-										<ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
+										<ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
+										<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+										<ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
 										<ui:param name="eventLocation" value="#{trip.startAddress}" />
 										<ui:param name="addressLookupAddressFormat" value="#{vehicleTripsBean.addressFormat}" />
 										<ui:param name="tripBubbleAddress" value="tripStartAddress" />
@@ -360,8 +361,9 @@
 								<ui:include src="/includes/tripBubble.xhtml">
 										<ui:param name="hiddenDivID" value="tripEndBubble" />
 										<ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
-										<ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeEndShort}" />
-										<ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
+										<ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
+										<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
+										<ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
 										<ui:param name="eventLocation" value="#{trip.endAddress}" />
 										<ui:param name="addressLookupAddressFormat" value="#{vehicleTripsBean.addressFormat}" />
 										<ui:param name="tripBubbleAddress" value="tripEndAddress" />
@@ -370,8 +372,9 @@
 								<ui:include src="/includes/tripBubble.xhtml">
 										<ui:param name="hiddenDivID" value="tripInProgressBubble" />
 										<ui:param name="bubbleTitle" value="#{messages.TRIP_INPROGRESS}" />
-										<ui:param name="eventDateTime" value="#{trip.dateShort} #{trip.timeEndShort}" />
+										<ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
 										<ui:param name="dateFormatPattern" value="#{messages.dateTimeFormat}" />
+										<ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
 										<ui:param name="eventLocation" value="#{trip.endAddress}" />
 										<ui:param name="addressLookupAddressFormat" value="#{vehicleTripsBean.addressFormat}" />
 										<ui:param name="tripBubbleAddress" value="tripInProgressAddress" />

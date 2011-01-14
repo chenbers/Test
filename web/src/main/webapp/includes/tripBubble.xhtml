@@ -30,9 +30,8 @@
 			<h:outputText value="#{bubbleTitle}" />
 		</f:facet>
 		<h:outputText value="#{eventDateTime}" >
-			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{datePattern}"/>
-		</h:outputText> 
-		
+			<iwi:dateTimeOutputConverter timeZone="#{timeZoneObject}" pattern="#{datePattern}"/>
+		</h:outputText>
 		<!--
 		 Format DateTime with TimeZone in bean if this include is used in ui:repeater.
 		 
