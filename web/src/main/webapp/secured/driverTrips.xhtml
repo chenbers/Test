@@ -385,7 +385,7 @@
 		</rich:panel>
 		</rich:panel>
 		<rich:panel id="eventBubbles" >
- 		<rich:panel id="eventBubblesInner" rendered="#{driverTripsBean.selectedViolationID != null}">-->	
+ 		<rich:panel id="eventBubblesInner" rendered="#{driverTripsBean.selectedViolationID != null}">
 				<ui:param name="violation" value="#{driverTripsBean.allEventsMap[driverTripsBean.selectedViolationID]}"/>
                 <ui:include src="/includes/eventBubble.xhtml">
                     <ui:param name="eventType" value="#{violation.eventType}" />
