@@ -145,10 +145,39 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 alertView.setEventSubCategory(deriveEventSubCategory(flag));
             }
             alertView.setAlertID(flag.getAlertID());
-            alertView.setHardAccelerationSelected(!flag.isHardAccelerationNull());
-            alertView.setHardBrakeSelected(!flag.isHardBrakeNull());
-            alertView.setHardTurnSelected(!flag.isHardTurnNull());
-            alertView.setHardVerticalSelected(!flag.isHardVerticalNull());
+            
+            boolean found = false;
+            if ( findType(flag,AlertMessageType.ALERT_TYPE_HARD_ACCEL) ) {
+                if( flag.getHardAcceleration() != null ) {
+                    found = true;
+                }
+            }           
+            alertView.setHardAccelerationSelected(found);
+            
+                    found = false;
+            if ( findType(flag,AlertMessageType.ALERT_TYPE_HARD_BRAKE) ) {
+                if( flag.getHardBrake() != null ) {
+                    found = true;
+                }
+            }
+            alertView.setHardBrakeSelected(found);
+            
+                    found = false;
+            if ( findType(flag,AlertMessageType.ALERT_TYPE_HARD_TURN) ) {
+                if( flag.getHardTurn() != null ) {
+                    found = true;
+                }
+            }        
+            alertView.setHardTurnSelected(found);
+            
+                found = false;
+            if ( findType(flag,AlertMessageType.ALERT_TYPE_HARD_BUMP) ) {
+                if( flag.getHardVertical() != null ) {
+                    found = true;
+                }
+            }             
+            alertView.setHardVerticalSelected(found);
+            
             BeanUtils.copyProperties(flag, alertView);
         }
         else{
@@ -185,6 +214,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         
         return alertView;
+    }
+    
+    private boolean findType(RedFlagAlert flg,AlertMessageType amtIn) {
+        for (int i = 0; i<flg.getTypes().size();i++) {
+            AlertMessageType amt = flg.getTypes().get(i);
+            if ( amt.equals(amtIn)) {
+                return true;
+            }
+        }
+        return false;
     }
     public static String findOwnerName(Integer userID){
         String results ="";
@@ -307,7 +346,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     public String save() {
         final Map<String, Boolean> updateField = getUpdateField();
         
-//        setAlertTypesFromSubCategory();
+        setAlertTypesFromSubCategory();
         
         if (isBatchEdit()) {
             
@@ -529,10 +568,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 flag.setMaxEscalationTries(null);
             }
             flag.setEscalationTimeBetweenRetries(item.getDelay().getCode());
-            if (create)
+            
+            if (create) {
                 flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
-            else
+            }
+            else {
                 redFlagAlertsDAO.update(flag);
+            }
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "redFlag_added" : "redFlag_updated", flag.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -544,6 +586,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             to.setEscalationPersonIDs(from.getVoiceEscalationPersonIDs());
         }
     }
+
     @Override
     protected String getDisplayRedirect() {
         
@@ -811,7 +854,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardAccelerationSelected() {
-            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name());
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name())) {
+                return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name()).booleanValue();
+            }
+            return false;
         }
 
         public void setHardAccelerationSelected(boolean hardAccelerationSelected) {
@@ -820,7 +866,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardBrakeSelected() {
-            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name());
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name())) {
+                return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name()).booleanValue();
+            }
+            return false;
         }
 
         public void setHardBrakeSelected(boolean hardBrakeSelected) {
@@ -828,7 +877,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardTurnSelected() {
-            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_TURN.name());
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name())) {
+                return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_TURN.name()).booleanValue();
+            }
+            return false;
 
         }
 
@@ -837,7 +889,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardVerticalSelected() {
-            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BUMP.name());
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_BUMP.name())) {
+                return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BUMP.name()).booleanValue();
+            }
+            return false;
         }
 
         public void setHardVerticalSelected(boolean hardVerticalSelected) {
