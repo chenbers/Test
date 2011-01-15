@@ -147,7 +147,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setAlertID(flag.getAlertID());
             
             boolean found = false;
-            if ( findType(flag,AlertMessageType.ALERT_TYPE_HARD_ACCEL) ) {
+            if ( flag.getTypes() != null && findType(flag,AlertMessageType.ALERT_TYPE_HARD_ACCEL) ) {
                 if( flag.getHardAcceleration() != null ) {
                     found = true;
                 }
@@ -155,7 +155,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setHardAccelerationSelected(found);
             
                     found = false;
-            if ( findType(flag,AlertMessageType.ALERT_TYPE_HARD_BRAKE) ) {
+            if ( flag.getTypes() != null && findType(flag,AlertMessageType.ALERT_TYPE_HARD_BRAKE) ) {
                 if( flag.getHardBrake() != null ) {
                     found = true;
                 }
@@ -163,7 +163,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setHardBrakeSelected(found);
             
                     found = false;
-            if ( findType(flag,AlertMessageType.ALERT_TYPE_HARD_TURN) ) {
+            if ( flag.getTypes() != null && findType(flag,AlertMessageType.ALERT_TYPE_HARD_TURN) ) {
                 if( flag.getHardTurn() != null ) {
                     found = true;
                 }
@@ -171,7 +171,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setHardTurnSelected(found);
             
                 found = false;
-            if ( findType(flag,AlertMessageType.ALERT_TYPE_HARD_BUMP) ) {
+            if ( flag.getTypes() != null && findType(flag,AlertMessageType.ALERT_TYPE_HARD_BUMP) ) {
                 if( flag.getHardVertical() != null ) {
                     found = true;
                 }
@@ -187,6 +187,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setHardTurnSelected(false);
             alertView.setHardVerticalSelected(false);
         }
+        
+        // this loads the selected types
         alertView.getSelectedAlertMessageTypes(flag);
 
         List<String> displayedPhNumbers = new ArrayList<String>();
@@ -345,14 +347,18 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     public String save() {
         final Map<String, Boolean> updateField = getUpdateField();
-        
-        setAlertTypesFromSubCategory();
+
+        // can't set if the red flag type is not set on the edit
+        if ( getItem().getEventSubCategory() != null ) {
+            setAlertTypesFromSubCategory();
+        }
         
         if (isBatchEdit()) {
             
             // the following appears to be a business rule that, if you aren't changing the red flag type,
             //  you can't change some other fields? removing severity level from rule....
-            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
+//            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
+            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("eventSubCategory"));            
 //            updateField.put("severityLevel", updateType);
             updateField.put("speedSettings", updateType);
             updateField.put("hardAcceleration", updateType);
@@ -397,6 +403,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         for(AlertMessageType amt:alertMessageTypes){
             if(redFlagAlert.getSelectedAlertTypes().get(amt.name())){
                 selectedTypes.add(amt);
+                
+                // if you find one, tell the update to do it
+                if ( this.isBatchEdit() ) {
+                    this.getUpdateField().put("types", true);
+                }
             }
         }
         redFlagAlert.setTypes(selectedTypes);
@@ -854,7 +865,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardAccelerationSelected() {
-            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name())) {
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name()) &&
+                 selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name()) != null ) {
                 return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name()).booleanValue();
             }
             return false;
@@ -866,7 +878,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardBrakeSelected() {
-            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name())) {
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name()) &&
+                 selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name()) != null ) {
                 return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name()).booleanValue();
             }
             return false;
@@ -877,7 +890,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardTurnSelected() {
-            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name())) {
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name()) &&
+                 selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_TURN.name()) != null ) {
                 return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_TURN.name()).booleanValue();
             }
             return false;
@@ -889,7 +903,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardVerticalSelected() {
-            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_BUMP.name())) {
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_BUMP.name()) && 
+                 selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BUMP.name()) != null ) {
                 return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BUMP.name()).booleanValue();
             }
             return false;
