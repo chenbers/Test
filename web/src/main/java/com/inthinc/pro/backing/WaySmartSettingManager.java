@@ -13,12 +13,12 @@ import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class WaySmartSettingManager extends VehicleSettingManager {
 
-	private DeviceDAO deviceDAO;
+//	private DeviceDAO deviceDAO;
 
     public WaySmartSettingManager(ConfiguratorDAO configuratorDAO, ProductType productType, VehicleSetting vehicleSetting, DeviceDAO deviceDAO) {
         
         super(configuratorDAO,productType, vehicleSetting);
-        this.deviceDAO = deviceDAO;
+//        this.deviceDAO = deviceDAO;
     }
     @Override
     public void init() {

@@ -382,7 +382,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     private int getFirstSelectedItem(List<VehicleView> inViewItems){
         int firstSelected = 0;
-        for(VehicleView vehicleView : filteredItems){
+        for(VehicleView vehicleView : inViewItems){
             
             if (vehicleView.isSelected()) return firstSelected;
             firstSelected++;
