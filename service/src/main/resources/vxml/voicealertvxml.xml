@@ -13,18 +13,13 @@
 			<!-- Do not allow bargein, require message to be fully heard -->
 			<property name="bargein" value="false"/>
 			
-<!--			<audio expr="welcomeAudio"  fetchhint="prefetch"/>-->
-			<prompt>
-				<value expr="welcomeMessage"/>
-			</prompt>
+			<audio expr="welcomeAudio"  fetchhint="prefetch"/>
 			<prompt>
 				<value expr="messageText"/> 
 			</prompt>
 			<property name="bargein" value="true"/>
-			<prompt>
-				<value expr="acknowledgeMessage"/>
-			</prompt>
-<!--			<audio expr="pressOneAudio"  fetchhint="prefetch"/>-->
+
+			<audio expr="pressOneAudio"  fetchhint="prefetch"/>
   		
     			<choice dtmf="1" expr="ackQuery"/> 
 	    		<!-- Message played if any error occured --> 
@@ -33,17 +28,11 @@
 				</error> 
 				<!-- Message played if the caller does not press a key --> 
 				<noinput count="1"> 
-<!-- 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>-->
-			<prompt>
-				<value expr="acknowledgeMessage"/>
-			</prompt>
+ 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>
 				</noinput> 
 				<!-- Message played if the caller enters something that does not match --> 
 				<nomatch count="1"> 
-<!-- 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>-->
-			<prompt>
-				<value expr="acknowledgeMessage"/>
-			</prompt>
+ 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>
 	    		</nomatch> 
   			</menu> 
 </vxml>
