@@ -453,7 +453,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                     checkSubTypes = true;
         }
         
-        if (EventSubCategory.SPEED.equals(saveItem.getEventSubCategory())){
+        // only check the speed settings if they select the type
+        if (EventSubCategory.SPEED.equals(saveItem.getEventSubCategory()) && checkSubTypes){
             boolean speedValid = false;
             for(int i=0;i< saveItem.getSpeedSelected().length; i++){
                 
@@ -490,24 +491,34 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //                valid = false;
 //            }
 //        }
-        else if(EventSubCategory.ZONES.equals(saveItem.getEventSubCategory())){
-            if ((!Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE)) && 
-                    !Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE))) 
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("defineAlerts"))))
-            {
-                final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-arrival", message);
-            }
+        
+        // just validating if a zone id is selected, the subtypes will be checked later
+        else if(EventSubCategory.ZONES.equals(saveItem.getEventSubCategory()) && checkSubTypes){
+//            if ((!Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE)) && 
+//                    !Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE))) 
+//                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("defineAlerts"))))
+//            {
+//                final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-arrival", message);
+//                valid = false;
+//            }
             
-            //Validate required name field
-            if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
-            {
+            //Validate required Zone id is selected
+            if ((saveItem.getZoneID() == null)) {
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-name", message);
+                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-zoneID", message); 
                 valid = false;
             }
+            
+            //Validate required name is valid
+//            if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
+//                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
+//            {
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+//                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-name", message);
+//                valid = false;
+//            }
            
         }
         //Validate escalation phone number(s)
@@ -1040,10 +1051,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         
         private boolean validateSelectedAlertTypes(){
-            Set<AlertMessageType> selectedSet = eventSubCategory.getAlertMessageTypeSet();
-            for(AlertMessageType amt:selectedSet){
-                if (selectedAlertTypes.get(amt.name())){
-                    return true;
+            if ( selectedAlertTypes != null ) {
+                Set<AlertMessageType> selectedSet = eventSubCategory.getAlertMessageTypeSet();
+                for(AlertMessageType amt:selectedSet){
+                    if (selectedAlertTypes.get(amt.name())){
+                        return true;
+                    }
                 }
             }
             return false;
