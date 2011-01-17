@@ -2,7 +2,7 @@
 <vxml version = "2.1">  
 	<var name="voxeoAudio" expr="'%s'"/> 
 	<var name="messageText" expr="'%s'"/> 
-	<var name="welcomeAudio" expr="voxeoAudio + 'inthinc-welcome.wav'"/> 
+	<var name="welcomeAudio" expr="voxeoAudio + 'iwi-welcome-new.wav'"/> 
 	<form>
 		<block>
 			<audio expr="welcomeAudio"  fetchhint="prefetch"/>

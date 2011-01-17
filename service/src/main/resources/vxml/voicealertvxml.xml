@@ -3,8 +3,8 @@
 			<var name="voxeoAudio" expr="'%s'"/> 
 			<var name="ackQuery" expr="'%s'"/> 
 			<var name="messageText" expr="'%s'"/> 
-			<var name="welcomeAudio" expr="voxeoAudio + 'inthinc-welcome.wav'"/> 
-			<var name="pressOneAudio" expr="voxeoAudio + 'inthinc-press1.wav'"/> 
+			<var name="welcomeAudio" expr="voxeoAudio + 'iwi-welcome-new.wav'"/> 
+			<var name="pressOneAudio" expr="voxeoAudio + 'iwi-acknowledge.wav'"/> 
 
     		<menu id="menuselection" dtmf="false"> 
     		
