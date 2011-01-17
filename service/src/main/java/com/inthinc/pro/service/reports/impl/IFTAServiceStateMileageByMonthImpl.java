@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.reports.ifta.model.StateMileageByMonth;
 import com.inthinc.pro.service.reports.IFTAServiceStateMileageByMonth;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
@@ -53,11 +53,11 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
     Response getStateMileageByVehicleByMonthWithFullParametersMultiGroup(List<Integer> groupList, 
             Date startDate, Date endDate, boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
-        List<MileageByVehicle> list = null;
+        List<StateMileageByMonth> list = null;
 
         Interval interval = getInterval(startDate, endDate);
         try {
-            list = reportsFacade.getStateMileageByVehicleByMonth(groupList, interval, iftaOnly, locale, measurementType);
+            list = reportsFacade.getStateMileageByMonth(groupList, interval, iftaOnly, locale, measurementType);
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -67,7 +67,7 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
             return Response.status(Status.NOT_FOUND).build();            
         }
         // Some data found
-        return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
+        return Response.ok(new GenericEntity<List<StateMileageByMonth>>(list) {}).build();
     }
 
     @Override

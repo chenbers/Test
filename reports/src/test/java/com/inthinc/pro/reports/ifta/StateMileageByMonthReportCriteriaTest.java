@@ -26,6 +26,7 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.reports.ifta.model.StateMileageByMonth;
 
 /**
  * Test for StateMileageByMonthReportCriteria.
@@ -118,13 +119,13 @@ public class StateMileageByMonthReportCriteriaTest extends BaseUnitTest {
      */
     @Test
     public void testComparatorSort(){
-        MileageByVehicle[] beans = new MileageByVehicle[4];
+        StateMileageByMonth[] beans = new StateMileageByMonth[4];
         beans[0] = this.createBean("Group B", MONTH, STATE, 3453D); 
         beans[1] = this.createBean("Group A", "October", STATE, 3653D); 
         beans[2] = this.createBean("Group A", MONTH, STATE,2353D); 
         beans[3] = this.createBean("Group A", "October", "Utah", 3653D); 
 
-        List<MileageByVehicle> dataList = Arrays.asList(beans.clone());
+        List<StateMileageByMonth> dataList = Arrays.asList(beans.clone());
         Collections.sort(dataList, reportCriteriaSUT.new StateMileageByMonthComparator());
 
         // verify the correct order
@@ -134,9 +135,9 @@ public class StateMileageByMonthReportCriteriaTest extends BaseUnitTest {
         assertTrue(EqualsBuilder.reflectionEquals(beans[0], dataList.get(3))); 
     }
     
-    /* Helper to create a MileageByVehicle bean */
-    private MileageByVehicle createBean(String groupName, String month, String state,  Double total){
-        MileageByVehicle bean = new MileageByVehicle();
+    /* Helper to create a StateMileageByMonth bean */
+    private StateMileageByMonth createBean(String groupName, String month, String state, Double total){
+        StateMileageByMonth bean = new StateMileageByMonth();
         bean.setGroupName(groupName);
         bean.setMonth(month);
         bean.setTotal(total);

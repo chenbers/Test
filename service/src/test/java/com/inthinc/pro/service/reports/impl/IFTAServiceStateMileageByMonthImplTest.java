@@ -63,7 +63,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = list;
             }
         };
@@ -90,7 +90,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = emptyList;
             }
         };
@@ -115,7 +115,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = null;
             }
         };
@@ -138,7 +138,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = list;
             }
         };
@@ -159,7 +159,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, false, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, false, locale, measureType);
                 result = list;
             }
         };
@@ -186,7 +186,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, false, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, false, locale, measureType);
                 result = list;
             }
         };
@@ -219,7 +219,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
             {
 //                reportsUtilMock.checkParametersMultiGroup(expectedGroupIDList, (Date)any, (Date)any);
 //                result = null;
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = list;
             }
         };
@@ -248,7 +248,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = emptyList;
             }
         };
@@ -275,7 +275,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = null;
             }
         };
@@ -301,7 +301,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
                 result = list;
             }
         };
@@ -324,7 +324,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
         
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, (Interval)any, false, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, false, locale, measureType);
                 result = list;
             }
         };
@@ -354,7 +354,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleByMonth(expectedGroupIDList, interval, false, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, interval, false, locale, measureType);
                 result = list;
             }
         };

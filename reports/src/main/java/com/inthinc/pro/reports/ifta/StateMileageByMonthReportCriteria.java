@@ -13,7 +13,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.ReportType;
-import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.reports.ifta.model.StateMileageByMonth;
 
 /**
  * ReportCriteria for StateMileageByMonth report.
@@ -47,12 +47,12 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
      */
     void initDataSet(List<StateMileage> records)
     {   
-        List<MileageByVehicle> dataList = new ArrayList<MileageByVehicle>();
+        List<StateMileageByMonth> dataList = new ArrayList<StateMileageByMonth>();
         for (StateMileage item : records) {
             if (ZERO_DATA.equals(item.getMiles())) {
                 continue;
             }
-            MileageByVehicle rec = new MileageByVehicle();
+            StateMileageByMonth rec = new StateMileageByMonth();
             rec.setMonth(item.getMonth());
             rec.setState(item.getStateName());
             rec.setGroupName(getShortGroupName(item.getGroupID()));
@@ -65,14 +65,14 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
     }
 
     /* Comparator implementation for this report */
-    class StateMileageByMonthComparator implements Comparator<MileageByVehicle> {
+    class StateMileageByMonthComparator implements Comparator<StateMileageByMonth> {
 
         private static final int COMPARISON_SAME = 0;
         private static final int COMPARISON_BEFORE = -1;
         private static final int COMPARISON_AFTER = 1;
 
         @Override
-        public int compare(MileageByVehicle o1, MileageByVehicle o2) {
+        public int compare(StateMileageByMonth o1, StateMileageByMonth o2) {
             int order = compareValues(o1.getGroupName(),o2.getGroupName());
             if (order == 0) {
                 /*

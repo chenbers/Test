@@ -138,7 +138,7 @@ public class ReportsFacadeImplTest extends BaseUnitTest {
             result = new ServiceDelegate();
         }};
         
-        reportsFacadeSUTMock.getStateMileageByVehicleByMonth(groupIDList, INTERVAL, IFTA_ONLY, locale, measureType);
+        reportsFacadeSUTMock.getStateMileageByMonth(groupIDList, INTERVAL, IFTA_ONLY, locale, measureType);
     }
 	
 	/**
