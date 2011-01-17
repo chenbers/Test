@@ -194,6 +194,35 @@
                             </td>
                           </tr>
                         </table>
+                        
+                        
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_cellProviderSection}"/></div>
+                  
+                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                           <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_providerType}:" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.cellProviderInfo.provider.name}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_providerUsername}:" /></td>
+                            <td>
+                              <h:outputText value="#{personBean.item.driver.cellProviderInfo.providerUsername}">
+                                <f:converter converterId="HexConverter" />
+                              </h:outputText>
+                            </td>
+                          </tr>                          
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_providerCellPhone}:" /></td>
+                            <td>
+                              <h:outputText value="#{personBean.item.driver.cellProviderInfo.cellPhone}">
+                                <f:converter converterId="HexConverter" />
+                              </h:outputText>
+                            </td>
+                          </tr>
+                        </table>
+                        
+                        
+                        
                         </ui:fragment>
                       </td>
                       <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>

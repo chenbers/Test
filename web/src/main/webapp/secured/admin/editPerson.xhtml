@@ -419,7 +419,7 @@
 	                       <tr>
 	                         <td width="100" valign="top">
 	                           <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_editPerson_driver_provider" value="#{personBean.updateField['driver.cellProviderInfo.provider']}" />
-	                           <h:outputText value="#{messages.editPerson_driver_providerType}" />
+	                           <h:outputText value="#{messages.editPerson_driver_providerType}:" />
 	                         </td>
 	                         <td>
 	                           <h:selectOneMenu value="#{personBean.item.driver.cellProviderInfo.provider}" id="editPerson_driver_provider" onchange="checkMultiple(this)">
@@ -432,7 +432,7 @@
                                <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
                                    id="update_editPerson_driver_providerUsername" disabled="#{!personBean.item.userEditable}"
                                    value="#{personBean.updateField['driver.cellProviderInfo.providerUsername']}" /> <h:outputText
-                                   value="#{messages.editPerson_driver_providerUsername}" /></td>
+                                   value="#{messages.editPerson_driver_providerUsername}:" /></td>
                                <td><rich:message for="editPerson_driver_providerUsername" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
                                    value="#{personBean.item.driver.cellProviderInfo.providerUsername}" id="editPerson_driver_providerUsername"
@@ -442,7 +442,7 @@
                                <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
                                    id="update_editPerson_driver_providerPassword" disabled="#{!personBean.item.userEditable}"
                                    value="#{personBean.updateField['driver.cellProviderInfo.providerPassword']}" /> <h:outputText
-                                   value="#{messages.editPerson_driver_providerPassword}" /></td>
+                                   value="#{messages.editPerson_driver_providerPassword}:" /></td>
                                <td><rich:message for="editPerson_driver_providerPassword" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret
                                    value="#{personBean.item.driver.cellProviderInfo.providerPassword}" id="editPerson_driver_providerPassword"
@@ -452,7 +452,7 @@
                            <tr>
                                <td>
                                <h:outputText
-                                   value="#{messages.editPerson_driver_providerCellPhone}" /></td>
+                                   value="#{messages.editPerson_driver_providerCellPhone}:" /></td>
                                <td><rich:message for="editPerson-driver_providerCellPhone" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
                                    value="#{personBean.item.driver.cellProviderInfo.cellPhone}" id="editPerson_driver_providerCellPhone"
