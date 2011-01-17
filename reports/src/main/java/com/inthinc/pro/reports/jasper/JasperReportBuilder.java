@@ -81,12 +81,14 @@ public class JasperReportBuilder
         try
         {
             JasperReport jr = ReportUtils.loadReport(reportCriteria.getReport(),formatType);
-            InputStream imageInputStream = ReportUtils.loadFile("InthincLogoBlack_small.png");
+//            InputStream imageInputStream = ReportUtils.loadFile("InthincLogoBlack_small.png");
+            InputStream imageInputStream = ReportUtils.loadFile("New_inthinc.png");
             if(imageInputStream != null)
             {
                 reportCriteria.getPramMap().put("REPORT_LOGO", imageInputStream);
             }
-            reportCriteria.getPramMap().put("REPORT_LOGO_IMG", ReportUtils.getLogoImage("InthincLogoBlack_small.png"));
+//            reportCriteria.getPramMap().put("REPORT_LOGO_IMG", ReportUtils.getLogoImage("InthincLogoBlack_small.png"));
+            reportCriteria.getPramMap().put("REPORT_LOGO_IMG", ReportUtils.getLogoImage("New_inthinc.png"));
             
             Locale locale = DEFAULT_LOCALE;
             if(reportCriteria.getLocale() != null)
