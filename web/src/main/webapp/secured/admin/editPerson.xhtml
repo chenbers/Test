@@ -418,7 +418,7 @@
                        <table id="cellProviderTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
 	                       <tr>
 	                         <td width="100" valign="top">
-	                           <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_editPerson-driver-providerType" value="#{personBean.updateField['driver_providerType']}" />
+	                           <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_editPerson_driver_provider" value="#{personBean.updateField['driver.cellProviderInfo.provider']}" />
 	                           <h:outputText value="#{messages.editPerson_driver_providerType}" />
 	                         </td>
 	                         <td>
@@ -430,34 +430,35 @@
 	                       </tr>
                            <tr>
                                <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
-                                   id="update_editPerson-driver-providerUsername" disabled="#{!personBean.item.userEditable}"
-                                   value="#{personBean.updateField['driver_providerUsername']}" /> <h:outputText
+                                   id="update_editPerson_driver_providerUsername" disabled="#{!personBean.item.userEditable}"
+                                   value="#{personBean.updateField['driver.cellProviderInfo.providerUsername']}" /> <h:outputText
                                    value="#{messages.editPerson_driver_providerUsername}" /></td>
-                               <td><rich:message for="editPerson-driver_providerUsername" errorClass="field-error"
+                               <td><rich:message for="editPerson_driver_providerUsername" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
                                    value="#{personBean.item.driver.cellProviderInfo.providerUsername}" id="editPerson_driver_providerUsername"
-                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" /></td>
+                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" /></td>
                            </tr>
                            <tr>
                                <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
-                                   id="update_editPerson-driver-providerPassword" disabled="#{!personBean.item.userEditable}"
-                                   value="#{personBean.updateField['driver_providerPassword']}" /> <h:outputText
+                                   id="update_editPerson_driver_providerPassword" disabled="#{!personBean.item.userEditable}"
+                                   value="#{personBean.updateField['driver.cellProviderInfo.providerPassword']}" /> <h:outputText
                                    value="#{messages.editPerson_driver_providerPassword}" /></td>
-                               <td><rich:message for="editPerson-driver_providerPassword" errorClass="field-error"
+                               <td><rich:message for="editPerson_driver_providerPassword" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret
                                    value="#{personBean.item.driver.cellProviderInfo.providerPassword}" id="editPerson_driver_providerPassword"
-                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" /></td>
+                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" /></td>
                            </tr>
+                           <ui:fragment rendered="#{not personBean.batchEdit}">
                            <tr>
-                               <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
-                                   id="update_editPerson-driver-providerCellPhone" disabled="#{!personBean.item.userEditable}"
-                                   value="#{personBean.updateField['driver_providerCellPhone']}" /> <h:outputText
+                               <td>
+                               <h:outputText
                                    value="#{messages.editPerson_driver_providerCellPhone}" /></td>
                                <td><rich:message for="editPerson-driver_providerCellPhone" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
                                    value="#{personBean.item.driver.cellProviderInfo.cellPhone}" id="editPerson_driver_providerCellPhone"
                                    onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" /></td>
                            </tr>
+                           </ui:fragment>
                        </table>
                        </div>
 					</td>
