@@ -20,6 +20,7 @@
 	<field name="day" class="java.lang.String"/>
 	<field name="status" class="com.inthinc.hos.model.HOSStatus"/>
 	<field name="totalAdjustedMinutes" class="java.lang.Long"/>
+	<field name="dayDate" class="java.util.Date"/>
 	<sortField name="groupName"/>
 	<group name="dummy">
 		<groupExpression><![CDATA[$P{REPORT_LOGO_IMG}]]></groupExpression>
@@ -30,6 +31,7 @@
 			<band height="50" splitType="Stretch">
 				<crosstab>
 					<reportElement key="crosstab-1" x="1" y="1" width="776" height="44"/>
+					<crosstabDataset isDataPreSorted="true"/>
 					<crosstabHeaderCell>
 						<cellContents mode="Transparent">
 							<box>
@@ -207,6 +209,7 @@
 					<columnGroup name="day" height="20" headerPosition="Center">
 						<bucket order="Descending">
 							<bucketExpression class="java.lang.String"><![CDATA[$F{day}]]></bucketExpression>
+							<comparatorExpression><![CDATA[$F{dayDate}]]></comparatorExpression>
 						</bucket>
 						<crosstabColumnHeader>
 							<cellContents backcolor="#CCCCCC" mode="Opaque">
