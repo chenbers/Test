@@ -69,7 +69,7 @@
 	<bean id="driverReportDAO" class="com.inthinc.pro.dao.hessian.report.DriverReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="vehicleReportDAO" class="com.inthinc.pro.dao.hessian.report.VehicleReportHessianDAO" parent="abstractReportDAO" />
 	<bean id="groupReportDAO" class="com.inthinc.pro.dao.hessian.report.GroupReportHessianDAO" parent="abstractReportDAO" />
-	<bean id="alertMessageDAO" class="com.inthinc.pro.dao.hessian.AlertMessageHessianDAO" parent="genericDAO"></bean>
+	<bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO"></bean>
 	<bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"/>
   	<bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"/>
 <!--  	<bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"/>-->

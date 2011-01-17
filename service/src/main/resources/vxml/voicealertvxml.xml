@@ -6,7 +6,7 @@
 			<var name="welcomeAudio" expr="voxeoAudio + 'inthinc-welcome.wav'"/> 
 			<var name="pressOneAudio" expr="voxeoAudio + 'inthinc-press1.wav'"/> 
 
-    		<menu id="menuselection" dtfm="false"> 
+    		<menu id="menuselection" dtmf="false"> 
     		
 			<!-- Do not allow bargein, require message to be fully heard -->
 			<property name="bargein" value="false"/>
