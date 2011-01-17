@@ -3,6 +3,8 @@
 			<var name="voxeoAudio" expr="'%s'"/> 
 			<var name="ackQuery" expr="'%s'"/> 
 			<var name="messageText" expr="'%s'"/> 
+			<var name="welcomeMessage" expr="'This is an important message.  Please listen to the entire message before hanging up'"/>
+			<var name="acknowledgeMessage" expr="'Please press 1 to acknowledge the alert.  Please press any other key to repeat the alert'"/>
 			<var name="welcomeAudio" expr="voxeoAudio + 'iwi-welcome-new.wav'"/> 
 			<var name="pressOneAudio" expr="voxeoAudio + 'iwi-acknowledge.wav'"/> 
 
@@ -11,13 +13,18 @@
 			<!-- Do not allow bargein, require message to be fully heard -->
 			<property name="bargein" value="false"/>
 			
-			<audio expr="welcomeAudio"  fetchhint="prefetch"/>
+<!--			<audio expr="welcomeAudio"  fetchhint="prefetch"/>-->
+			<prompt>
+				<value expr="welcomeMessage"/>
+			</prompt>
 			<prompt>
 				<value expr="messageText"/> 
 			</prompt>
 			<property name="bargein" value="true"/>
-
-			<audio expr="pressOneAudio"  fetchhint="prefetch"/>
+			<prompt>
+				<value expr="acknowledgeMessage"/>
+			</prompt>
+<!--			<audio expr="pressOneAudio"  fetchhint="prefetch"/>-->
   		
     			<choice dtmf="1" expr="ackQuery"/> 
 	    		<!-- Message played if any error occured --> 
@@ -26,11 +33,17 @@
 				</error> 
 				<!-- Message played if the caller does not press a key --> 
 				<noinput count="1"> 
- 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>
+<!-- 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>-->
+			<prompt>
+				<value expr="acknowledgeMessage"/>
+			</prompt>
 				</noinput> 
 				<!-- Message played if the caller enters something that does not match --> 
 				<nomatch count="1"> 
- 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>
+<!-- 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>-->
+			<prompt>
+				<value expr="acknowledgeMessage"/>
+			</prompt>
 	    		</nomatch> 
   			</menu> 
 </vxml>
