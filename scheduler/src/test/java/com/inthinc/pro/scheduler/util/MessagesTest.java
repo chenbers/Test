@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.scheduler.dispatch.PhoneDispatcher;
 
+@Ignore
 public class MessagesTest {
 
 	
