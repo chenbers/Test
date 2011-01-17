@@ -25,7 +25,6 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.BaseUnitTest;
-import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByMonth;
 
 /**
@@ -103,10 +102,10 @@ public class StateMileageByMonthReportCriteriaTest extends BaseUnitTest {
         //------------------------------------------------------------------
         // 3. Third we verify the results
 
-       List<MileageByVehicle> dataSet = reportCriteriaSUT.getMainDataset();
+       List<StateMileageByMonth> dataSet = reportCriteriaSUT.getMainDataset();
        assertNotNull(dataSet);
        assertTrue(dataSet.size() == 1);
-       MileageByVehicle bean = dataSet.get(0);
+       StateMileageByMonth bean = dataSet.get(0);
        assertEquals(bean.getGroupName(), GROUP_FULL_NAME);
        assertEquals(bean.getState(), STATE);
        assertEquals(bean.getMonth(), MONTH);
