@@ -134,6 +134,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             filterValues.put(column, null);
         }
     }
+    @Override
+    public void refreshItems()
+    {
+        super.refreshItems();
+        setBatchEdit(false);
+    }
+
+    
     public boolean isFilterProductChoice(ProductType productType){
         
         return filterValues.get("productType") == null || filterValues.get("productType").equals(productType);

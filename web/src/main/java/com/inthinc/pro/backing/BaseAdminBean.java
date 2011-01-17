@@ -602,6 +602,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     {
         return batchEdit;
     }
+    
+    public void setBatchEdit(boolean batchEdit)
+    {
+        this.batchEdit = batchEdit;
+    }
 
     /**
      * @return A map for storing whether a given field should be updated when editing multiple items.
