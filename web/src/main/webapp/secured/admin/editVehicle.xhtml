@@ -225,20 +225,22 @@
                                 <td width="100" valign="top">
 <!--                                  <h:selectBooleanCheckbox rendered="#{vehiclesBean.batchEdit}" id="update_editVehicle-odometer" value="#{vehiclesBean.updateField['odometer']}" />-->
                                   <ui:include src="../../includes/admin/inputLabel.xhtml">
-										<ui:param name="required" value="TRUE"/>
+										<ui:param name="required" value="#{vehiclesBean.item.productType != 'WAYSMART'}"/>
 										<ui:param name="for" value="editVehicle-odometer"/>
 										<ui:param name="fieldName" value="odometer"/>
 										<ui:param name="editBean" value="#{vehiclesBean}"/>
 <!--								  		<ui:param name="label" value="#{messages.editVehicle_odometer}"/>-->
 										<ui:param name="context" value="editVehicleOdometer"/>
 								  </ui:include>
-                                  <h:outputText value="editVehicle_odometer" converter="MeasurementTextConverter"/>
+                                  <h:outputText value="editVehicle_odometer" converter="MeasurementTextConverter"
+                                  	rendered="#{vehiclesBean.item.productType != 'WAYSMART'}"/>
                                 </td>
                                 
                                 <td>                                       
                                   <rich:message for="editVehicle-odometer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.odometer}" id="editVehicle-odometer" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="8"
-                                    converterMessage="#{messages.editVehicle_odometerFormat}" validatorMessage="#{messages.editVehicle_odometerFormat}">
+                                    converterMessage="#{messages.editVehicle_odometerFormat}" validatorMessage="#{messages.editVehicle_odometerFormat}"
+                                    rendered="#{vehiclesBean.item.productType != 'WAYSMART'}">
                                     <f:validateLongRange minimum="1"  />
                                     <f:converter converterId="MilesToKilometersConverterInput"/>
                                   </h:inputText>
