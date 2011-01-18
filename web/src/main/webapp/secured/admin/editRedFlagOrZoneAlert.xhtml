@@ -127,7 +127,10 @@
                     <tr>
                     <td>
                   <div class="add_section_title">
+                          <h:outputText value="#{messages.editRedFlag_redFlagType}" />
+                  </div> 
                   <!-- 
+                  <div class="add_section_title">
                   <ui:include src="../../includes/admin/inputLabel.xhtml">
                      <ui:param name="required" value="false"/>
                      <ui:param name="for" value="alertType"/>
@@ -136,14 +139,15 @@
                      <ui:param name="label" value="#{messages.editRedFlag_redFlagType}"/>
         			<ui:param name="context" value="editRedFlagType" />
                   </ui:include>
-                  -->
                   </div>
+                  -->
                   	  <div class="spacer"></div>
                       <table width="790" border="0" cellspacing="0" cellpadding="0">
                     	<tr>
                 		<td width="160" valign="top">
                         <h:selectOneMenu id="alertType" value="#{redFlagOrZoneAlertsBean.item.eventSubCategory}" 
                         	disabled="#{redFlagOrZoneAlertsBean.batchEdit}" onchange="checkMultiple(this)">
+                        	<!-- disabled="#{redFlagOrZoneAlertsBean.batchEdit or !redFlagOrZoneAlertsBean.add}" onchange="checkMultiple(this)">   -->                      	
                           <a4j:support event="onclick" reRender="editRedFlagType, zonePoints-panel" limitToList="true" oncomplete="loadMap()" />
                           <f:selectItems value="#{redFlagOrZoneAlertsBean.alertTypeSelectItems}" />
                         </h:selectOneMenu>
