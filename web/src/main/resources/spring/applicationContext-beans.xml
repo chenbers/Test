@@ -26,6 +26,10 @@
     </property>
   </bean>
 
+  <bean id="HTTPSRedirectFilter" class="com.inthinc.pro.filter.HTTPSRedirectFilter">
+  	<property name="redirectToHTTPS" value="${redirectToHTTPS}"/>
+  </bean>
+
   <!-- <bean id="junkBean" class="com.inthinc.pro.junk.JunkBean" scope="request" init-method="init" /> -->
 
   <!-- Global Application Context (singleton scoped) beans -->

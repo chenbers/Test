@@ -1,217 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-	<context-param>
-		<param-name>webAppRootKey</param-name>
-		<param-value>tiwipro</param-value>
-	</context-param>
-	<!-- JSF -->
-	<context-param>
-		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-		<param-value>.xhtml</param-value>
-	</context-param>
-	<context-param>
-		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
-		<param-value>server</param-value>
-	</context-param>
-	<!-- changed to see if has effect on random prettyfaces param missing issue -->
-	<context-param>
-		<param-name>com.sun.faces.responseBufferSize</param-name>
-		<param-value>500000</param-value>
-	</context-param>
-	<context-param>
-		<param-name>facelets.REFRESH_PERIOD</param-name>
-		<param-value>2</param-value>
-		<!--<param-value>${facelets.REFRESH_PERIOD}</param-value>-->
-	</context-param>
-	<context-param>
-		<param-name>facelets.LIBRARIES</param-name>
-		<param-value>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>tiwipro</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+    <param-value>.xhtml</param-value>
+  </context-param>
+  <context-param>
+    <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+    <param-value>server</param-value>
+  </context-param>
+  <context-param>
+    <param-name>com.sun.faces.responseBufferSize</param-name>
+    <param-value>500000</param-value>
+  </context-param>
+  <context-param>
+    <param-name>facelets.REFRESH_PERIOD</param-name>
+    <param-value>2</param-value>
+  </context-param>
+  <context-param>
+    <param-name>facelets.LIBRARIES</param-name>
+    <param-value>
         	/WEB-INF/taglib/security.taglib.xml;
         	/WEB-INF/taglib/iwi-tiwipro.taglib.xml;
         	/WEB-INF/taglib/iwi-tiwipro-functions.taglib.xml
         </param-value>
-	</context-param>
-
-	<!-- Spring -->
-	<context-param>
-		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:spring/applicationContext-*.xml</param-value>
-	</context-param>
-
-	<!--
-		FACELET DEBUG PARAMETERS Special Debug Output for Development (not
-		sure if needed)
-	-->
-	<context-param>
-		<param-name>facelets.SKIP_COMMENTS</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>facelets.DEVELOPMENT</param-name>
-		<param-value>false</param-value>
-		<!--<param-value>${development.mode}</param-value>-->
-	</context-param>
-
-	<!--
-		These params have been enable as of jsf 1.2_14. The following are notes from the change log found here: https://javaserverfaces.dev.java.net/nonav/rlnotes/1.2_14/changelog.html This parameter
-		(com.sun.faces.IS_SAVE_BINDINGS_STATE), in conjuction with two facelets-specific parameters, makes it possible to achieve 30% - 60% memory savings for Facelet pages. This setting is only useful in
-		conjuction with two parameters that direct the behavior of Facelets version 1.1.15 for JSF 1.2
-	-->
-
-	<!--<context-param>
-		<param-name>com.sun.faces.IS_SAVE_BINDINGS_STATE</param-name>
-		<param-value>false</param-value>
-	</context-param>-->
-	<context-param>
-		<param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<context-param>
-		<param-name>facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<!-- Optional JSF-RI Parameters to Help Debug -->
-	<context-param>
-		<param-name>com.sun.faces.validateXml</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.displayConfiguration</param-name>
-		<param-value>true</param-value>
-		<!--<param-value>${development.mode}</param-value>-->
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.developmentMode</param-name>
-		<param-value>false</param-value>
-		<!--<param-value>${development.mode}</param-value>-->
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.sendPoweredByHeader</param-name>
-		<param-value>false</param-value>
-	</context-param>
- 
-	<filter>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-
-	<filter>
-		<filter-name>Pretty Filter</filter-name>
-		<filter-class>com.ocpsoft.pretty.PrettyFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>Pretty Filter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>ERROR</dispatcher>
-	</filter-mapping>
-
-	<filter>
-		<filter-name>charsetFilter</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value>
-		</init-param>
-		<init-param>
-			<param-name>forceEncoding</param-name>
-			<param-value>true</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>charsetFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-
-	<filter>
-		<display-name>RichFaces Filter</display-name>
-		<filter-name>richfaces</filter-name>
-<!--  		<filter-class>org.ajax4jsf.Filter</filter-class> -->
-		<filter-class>com.inthinc.pro.ajax4jsf.SessionLockFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>richfaces</filter-name>
-		<servlet-name>Faces Servlet</servlet-name>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>FORWARD</dispatcher>
-		<dispatcher>INCLUDE</dispatcher>
-	</filter-mapping>
-
-
-	<listener>
-		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-	<listener>
-		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-	</listener>
-
-	<!--
-		This is to help with preventing a user from logging in concurrently
-		(i.e. having 2 sessions open at the same time)
-	-->
-	<listener>
-		<listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
-	</listener>
-	<!-- Faces Servlet -->
-	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<!--
-		This is serve up images for jasperreports when viewed as html in the web site.
-	-->
-	<servlet>
-		<servlet-name>ImageServlet</servlet-name>
-		<servlet-class>
+  </context-param>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath*:spring/applicationContext-*.xml</param-value>
+  </context-param>
+  <context-param>
+    <param-name>facelets.SKIP_COMMENTS</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>facelets.DEVELOPMENT</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <context-param>
+    <param-name>facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <context-param>
+    <param-name>com.sun.faces.validateXml</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <context-param>
+    <param-name>com.sun.faces.displayConfiguration</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>com.sun.faces.developmentMode</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <context-param>
+    <param-name>com.sun.faces.sendPoweredByHeader</param-name>
+    <param-value>false</param-value>
+  </context-param>
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
+  <filter>
+    <filter-name>Pretty Filter</filter-name>
+    <filter-class>com.ocpsoft.pretty.PrettyFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>Pretty Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>ERROR</dispatcher>
+  </filter-mapping>
+  <filter>
+    <filter-name>charsetFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+    <init-param>
+      <param-name>forceEncoding</param-name>
+      <param-value>true</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>charsetFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <display-name>RichFaces Filter</display-name>
+    <filter-name>richfaces</filter-name>
+    <filter-class>com.inthinc.pro.ajax4jsf.SessionLockFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>richfaces</filter-name>
+    <servlet-name>Faces Servlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+    <dispatcher>INCLUDE</dispatcher>
+  </filter-mapping>  
+  <!--<filter>
+    <display-name>HTTPSRedirectFilter</display-name>
+    <filter-name>HTTPSRedirectFilter</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>-->
+  <!--<filter-mapping>
+    <filter-name>HTTPSRedirectFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>-->
+  <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>Faces Servlet</servlet-name>
+    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet>
+    <servlet-name>ImageServlet</servlet-name>
+    <servlet-class>
 			net.sf.jasperreports.j2ee.servlets.ImageServlet
 		</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ImageServlet</servlet-name>
-		<url-pattern>/images</url-pattern>
-	</servlet-mapping>
-
-	<!-- extension mapping -->
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.faces</url-pattern>
-	</servlet-mapping>
-	<!-- Welcome files -->
-	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
-	</welcome-file-list>
-	<!-- length of session before logging off -->
-	<session-config>
-		<session-timeout>60</session-timeout>
-	</session-config>
-
-	<!-- Error Pages -->
-	<error-page>
-		<error-code>500</error-code>
-		<location>/error/500.faces</location>
-	</error-page>
-	<error-page>
-		<error-code>403</error-code>
-		<location>/error/403.faces</location>
-	</error-page>
-	<error-page>
-		<error-code>404</error-code>
-		<location>/error/404.faces</location>
-	</error-page>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImageServlet</servlet-name>
+    <url-pattern>/images</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Faces Servlet</servlet-name>
+    <url-pattern>*.faces</url-pattern>
+  </servlet-mapping>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  <session-config>
+    <session-timeout>60</session-timeout>
+  </session-config>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/error/500.faces</location>
+  </error-page>
+  <error-page>
+    <error-code>403</error-code>
+    <location>/error/403.faces</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error/404.faces</location>
+  </error-page>
 </web-app>
