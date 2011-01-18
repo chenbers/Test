@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<indexdata>
+<key name="Main menu options" >
+  <topic name="Home Pages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#IX_Main_menu_options" />
+  <topic name="Reports Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Reports_Page.htm#IX_Main_menu_options_1" />
+  <topic name="Live Fleet Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Live_Fleet_Page.htm#IX_Main_menu_options_2" />
+  <topic name="HOS Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/HOS_Page.htm#IX_Main_menu_options_3" />
+  <topic name="Admin Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Admin_Page.htm#IX_Main_menu_options_4" />
+</key>
+<key name="Maintain Your Account Profile" >
+  <topic name="Maintain Your Account Profile" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Maintain_Your_Account_Profile.htm#IX_Maintain_Your_Account" />
+</key>
+<key name="Manage Crash History for tiwi Devices" >
+  <topic name="Manage Crash History for inthinc Devices" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Manage_Crash_History_for_inthinc_Devices.htm#IX_Manage_Crash_History_for" />
+</key>
+<key name="Map icons" >
+  <topic name="Team Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#IX_Map_icons" />
+  <topic name="Team Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#IX_Map_icons_1" />
+  <topic name="View All Trips" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_All_Trips.htm#IX_Map_icons_2" />
+</key>
+<key name="Mentoring" >
+  <topic name="Set Up In-Cab Mentoring" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_In-Cab_Mentoring.htm#IX_Mentoring" />
+</key>
+<key name="Navigation Bar" >
+  <topic name="Toolbar and Navigation Bar" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Toolbar_and_Navigation_Bar.htm#IX_Navigation_Bar" />
+  <topic name="Navigation Tree" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Navigation_Tree.htm#IX_Navigation_Bar_1" />
+</key>
+<key name="Navigation Tree" >
+  <topic name="Navigation Tree" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Navigation_Tree.htm#IX_Navigation_Tree" />
+</key>
+<key name="Notifications" >
+  <topic name="Maintain Your Account Profile" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Maintain_Your_Account_Profile.htm#IX_Notifications" />
+  <key name="Red Flag" >
+    <topic name="Add a Red Flag Notification" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Red_Flag_Notification.htm#IX_Red_Flag" />
+  </key>
+  <key name="View" >
+    <topic name="View Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Notifications.htm#IX_View_1" />
+  </key>
+</key>
+<key name="Notifications Page" >
+  <topic name="Notifications Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Notifications_Page.htm#IX_Notifications_Page" />
+</key>
+<key name="Overall Score page" >
+  <topic name="Team Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#IX_Overall_Score_page" />
+</key>
+<key name="Performance Reports" >
+  <topic name="Generate a waySmart Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart_Report.htm#IX_Performance_Reports" />
+</key>
+<key name="Portal Overview" >
+  <topic name="Portal Overview" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Portal_Overview.htm#IX_Portal_Overview" />
+</key>
+<key name="Preferences" >
+  <topic name="Set Up Mentoring, Zones, and Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_Mentoring_Zones_and_Notifications.htm#IX_Preferences" />
+</key>
+<key name="Print a report or notification" >
+  <topic name="View Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Notifications.htm#IX_Print_a_report_or" />
+</key>
+<key name="Red Flags" >
+  <topic name="Add a Red Flag Notification" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_Red_Flag_Notification.htm#IX_Red_Flags" />
+</key>
+<key name="Report Descriptions, HOS" >
+  <topic name="Generate HOS Report for a Group" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_HOS_Report_for_a_Group.htm#IX_Report_Descriptions_HOS" />
+</key>
+<key name="Report Descriptions, waySmart" >
+  <topic name="Generate a waySmart Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart_Report.htm#IX_Report_Descriptions" />
+</key>
+<key name="Reports" >
+  <key name="Devices" >
+    <topic name="View Drivers, Vehicles, Idling, and Devices Reports" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Drivers_Vehicles_Idling_and_Devices_Reports.htm#IX_Devices" />
+  </key>
+  <key name="DOT Time Remaining" >
+    <topic name="DOT Time Remaining" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/DOT_Time_Remaining.htm#IX_DOT_Time_Remaining" />
+  </key>
+  <key name="Drivers" >
+    <topic name="View Drivers, Vehicles, Idling, and Devices Reports" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Drivers_Vehicles_Idling_and_Devices_Reports.htm#IX_Drivers" />
+  </key>
+  <key name="Generate a waySmart Report" >
+    <topic name="Generate a waySmart Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart_Report.htm#IX_Generate_a_waySmart" />
+  </key>
+  <key name="HOS Daily Driver Log Report" >
+    <topic name="HOS Daily Driver Log Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Daily_Driver_Log_Report.htm#IX_HOS_Daily_Driver_Log" />
+  </key>
+  <key name="HOS Driver DOT Log Report" >
+    <topic name="HOS Driver DOT Log Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Driver_DOT_Log_Report.htm#IX_HOS_Driver_DOT_Log_Report" />
+  </key>
+  <key name="HOS Violations Detail Report" >
+    <topic name="HOS Violations Detail Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Violations_Detail_Report.htm#IX_HOS_Violations_Detail" />
+  </key>
+  <key name="HOS Violations Summary Report" >
+    <topic name="HOS Violations Summary Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Violations_Summary_Report.htm#IX_HOS_Violations_Summary" />
+  </key>
+  <key name="HOS Zero Miles" >
+    <topic name="HOS Zero Miles" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Zero_Miles.htm#IX_HOS_Zero_Miles" />
+  </key>
+  <key name="Idling" >
+    <topic name="View Drivers, Vehicles, Idling, and Devices Reports" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Drivers_Vehicles_Idling_and_Devices_Reports.htm#IX_Idling" />
+  </key>
+  <key name="Vehicles" >
+    <topic name="View Drivers, Vehicles, Idling, and Devices Reports" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Drivers_Vehicles_Idling_and_Devices_Reports.htm#IX_Vehicles" />
+  </key>
+  <key name="View a Report" >
+    <topic name="View a Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_Report.htm#IX_View_a_Report" />
+  </key>
+  <key name="waySmart" >
+    <topic name="Use waySmart Messaging and Reporting Features" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Use_waySmart_Messaging_and_Reporting_Features.htm#IX_waySmart" />
+  </key>
+  <key name="waySmart Driver Hours report" >
+    <topic name="waySmart Driver Hours report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_Driver_Hours_report.htm#IX_waySmart_Driver_Hours" />
+  </key>
+  <key name="waySmart IFTA Group Comparison by State report" >
+    <topic name="waySmart IFTA Group Comparison by State" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_IFTA_Group_Comparison_by_State.htm#IX_waySmart_IFTA_Group" />
+  </key>
+  <key name="waySmart Mileage by Vehicle" >
+    <topic name="waySmart Mileage by Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_Mileage_by_Vehicle.htm#IX_waySmart_Mileage_by" />
+  </key>
+  <key name="waySmart Payroll Report Driver Signoff" >
+    <topic name="waySmart Payroll Report Driver Signoff" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_Payroll_Report_Driver_Signoff.htm#IX_waySmart_Payroll_Report" />
+  </key>
+  <key name="waySmart Payroll Summary Report" >
+    <topic name="waySmart Payroll Summary Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_Payroll_Summary_Report.htm#IX_waySmart_Payroll_Summary" />
+  </key>
+  <key name="waySmart State Mileage By Month" >
+    <topic name="waySmart State Mileage by Month" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_State_Mileage_by_Month.htm#IX_waySmart_State_Mileage" />
+  </key>
+  <key name="waySmart State Mileage By Vehicle" >
+    <topic name="waySmart State Mileage by Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_State_Mileage_by_Vehicle.htm#IX_waySmart_State_Mileage_2" />
+  </key>
+  <key name="waySmart State Mileage/Fuel By Vehicle" >
+    <topic name="waySmart State Mileage/Fuel by Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_State_Mileage_Fuel_by_Vehicle.htm#IX_waySmart_State_Mileage_4" />
+  </key>
+  <key name="waySmart Ten Hour Day Violations" >
+    <topic name="waySmart Ten Hour Day Violations" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_Ten_Hour_Day_Violations.htm#IX_waySmart_Ten_Hour_Day" />
+  </key>
+  <key name="waySmart Warranty List" >
+    <topic name="waySmart Warranty List" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/waySmart_Warranty_List.htm#IX_waySmart_Warranty_List" />
+  </key>
+</key>
+<key name="Reports Page" >
+  <topic name="Reports Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Reports_Page.htm#IX_Reports_Page" />
+</key>
+<key name="RFID Card setup" >
+  <topic name="Set Up RFID Card for a Driver of tiwi Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_RFID_Card_for_a_Driver_of_tiwi_Vehicle.htm#IX_RFID_Card_setup" />
+</key>
+<key name="Rights" >
+  <topic name="Add a User" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_User.htm#IX_Rights" />
+</key>
+<key name="Roles" >
+  <topic name="Add a User" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_a_User.htm#IX_Roles" />
+</key>
+<key name="Search feature" >
+  <topic name="Toolbar and Navigation Bar" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Toolbar_and_Navigation_Bar.htm#IX_Search_feature" />
+</key>
+<key name="Set preferences" >
+  <topic name="Set Up Mentoring, Zones, and Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_Mentoring_Zones_and_Notifications.htm#IX_Set_preferences" />
+</key>
+<key name="Set preferences for Columns" >
+  <topic name="Customize Columns in Reports and Notifica­tions" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifica­tions.htm#IX_Set_preferences_for" />
+</key>
+<key name="Set Up In-Cab Mentoring" >
+  <topic name="Set Up In-Cab Mentoring" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_In-Cab_Mentoring.htm#IX_Set_Up_In_Cab_Mentoring" />
+</key>
+<key name="Set Up RFID Card for a Driver" >
+  <topic name="Set Up RFID Card for a Driver of tiwi Vehicle" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_RFID_Card_for_a_Driver_of_tiwi_Vehicle.htm#IX_Set_Up_RFID_Card_for_a" />
+</key>
+
+</indexdata>

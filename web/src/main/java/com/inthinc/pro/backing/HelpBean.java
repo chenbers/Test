@@ -13,7 +13,8 @@ public class HelpBean extends BaseBean {
 
     private HelpConfigProperties helpConfigProperties;
 
-    private static final String BASE_HELP_FILE = "/secured/help/WebHelp/inthinc_Portal_User_Guide.htm";
+//    private static final String BASE_HELP_FILE = "/secured/help/WebHelp/inthinc_Portal_User_Guide.htm";
+    private static final String BASE_HELP_FILE = "/secured/help/WebHelp/inthincPortalUserGuide.htm";
     private static final String DEFAULT = "default";
 
     public String getPath() {
