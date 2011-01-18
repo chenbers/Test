@@ -214,7 +214,9 @@ public class MessagesBean extends BaseBean {
     public void setVehicleSelectFromList(List<SelectItem> vehicleSelectFromList) {
         this.vehicleSelectFromList = vehicleSelectFromList;
     }
-
+    public void initSelectFromLists() {
+        //TODO: jwimmer:  initializing  ALL the select lists in one method should be  quicker? and gives me the ability to ONLY include Groups that include waySmart devices
+    }
     public List<SelectItem> getGroupSelectFromList() {
 
         if (this.groupSelectFromList.size() == 0) {
@@ -325,8 +327,8 @@ public class MessagesBean extends BaseBean {
      * Loads "Canned" message texts for current messages in <code>messageList</code> using the portal user's Locale.
      */
     public void loadCannedMessageTexts() {
-        if(this.messageList != null && !this.messageList.isEmpty()) {
-            for(MessageItem item: this.messageList) {
+        if(this.messageList != null && !this.messageList.isEmpty()) { 
+            for(MessageItem item: this.messageList) { 
                 if(NoteType.WAYSMART_DMR.getCode().equals(item.getType()) && item.getDmrOffset() != null) {
                     item.setMessage(MessageUtil.getMessageString("txtMsg_wsDMR_"+item.getDmrOffset(), getLocale()));
                 }
@@ -512,9 +514,6 @@ public class MessagesBean extends BaseBean {
 
         // Groups, careful here, need to recurse the group hierarchy
         sendList.addAll(getDevicesForGroups());
-
-        // Remove any duplicate devices
-        // ???
 
         // send to each device
         for (SendListItem item : sendList) {
