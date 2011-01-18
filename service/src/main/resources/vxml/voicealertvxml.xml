@@ -32,8 +32,7 @@
 				</noinput> 
 				<!-- Message played if the caller enters something that does not match --> 
 				<nomatch count="1"> 
-<!-- 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>-->
-					<goto nextitem="menuselection"/>
+ 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>
 	    		</nomatch> 
   			</menu> 
 </vxml>
