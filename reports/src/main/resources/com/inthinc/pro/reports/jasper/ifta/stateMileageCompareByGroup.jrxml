@@ -61,7 +61,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 								</textElement>
-								<textFieldExpression class="java.lang.String"><![CDATA[$R{column.1}]]></textFieldExpression>
+								<textFieldExpression class="java.lang.String"><![CDATA[$R{column.group}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabHeaderCell>
@@ -162,7 +162,7 @@
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 									</textElement>
-									<textFieldExpression class="java.lang.String"><![CDATA[$R{total}]]></textFieldExpression>
+									<textFieldExpression class="java.lang.String"><![CDATA[$R{column.total}]]></textFieldExpression>
 								</textField>
 							</cellContents>
 						</crosstabTotalColumnHeader>
@@ -282,7 +282,7 @@
 	<title>
 		<band height="50" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" x="316" y="5" width="465" height="40"/>
+				<reportElement key="textField-3" x="316" y="5" width="465" height="26"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -292,7 +292,7 @@
 				<textElement textAlignment="Right">
 					<font size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($P{iftaVehiclesOnly}==0?$R{stateMileageCompareByGroup.title}:$R{stateMileageCompareByGroupIFTA.title})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{title.stateMileageCompareByGroup}, ($P{iftaVehiclesOnly}==0?"":"IFTA "))]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement key="line" x="0" y="48" width="781" height="1" forecolor="#000000" backcolor="#FFFFFF"/>
@@ -312,6 +312,13 @@
 				</box>
 				<imageExpression class="java.awt.Image"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="481" y="31" width="300" height="17"/>
+				<textElement textAlignment="Right">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{uom.label}+($P{units}.equals("english")?$R{uom.english}:$R{uom.metric})]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
