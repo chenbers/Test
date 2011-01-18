@@ -14,12 +14,32 @@
 		<constructor-arg value="${proxy.siloDataAccessHost}" />
 		<constructor-arg value="${proxy.siloDataAccessPort}" />
 	</bean>
-	<bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<!-- bean id="tiwiJDBCDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	  <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
 	  <property name="url" value="${jdbc.mysql.url}"/>
 	  <property name="username" value="${jdbc.mysql.username}"/>
 	  <property name="password" value="${jdbc.mysql.password}"/>
+	</bean -->
+	
+	<bean id="tiwiJDBCDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	   <property name="driverClassName" value="${jdbc.mysql.driverClassName}" />
+	   <property name="url" value="${jdbc.mysql.url}"/>
+	   <property name="connectionProperties" value="${jdbc.mysql.connectionProperties}"/>
+	   <property name="username" value="${jdbc.mysql.username}"/>
+	   <property name="password" value="${jdbc.mysql.password}"/>
+	   <property name="initialSize" value="${jdbc.dbcp.initialSize}"/>
+	   <property name="maxActive" value="${jdbc.dbcp.maxActive}"/>
+	   <property name="validationQuery" value="${jdbc.dbcp.validationQuery}"/>
+	   <property name="validationQueryTimeout" value="${jdbc.dbcp.validationQueryTimeout}"/>
+	   <property name="testOnBorrow" value="${jdbc.dbcp.testOnBorrow}"/>
+	   <property name="testOnReturn" value="${jdbc.dbcp.testOnReturn}"/>
+	   <property name="testWhileIdle" value="${jdbc.dbcp.testWhileIdle}"/>
+	   <property name="timeBetweenEvictionRunsMillis" value="${jdbc.dbcp.timeBetweenEvictionRunsMillis}"/>
+	   <property name="removeAbandoned" value="${jdbc.dbcp.removeAbandoned}"/>
+	   <property name="logAbandoned" value="${jdbc.dbcp.logAbandoned}"/>
 	</bean>
+	
+	
 	<!--
 		<bean id="mcmServiceCreator" class="com.inthinc.pro.dao.hessian.proserver.MCMServiceCreator"> <constructor-arg value="${proxy.mcmDataAccessHost}" /> <constructor-arg
 		value="${proxy.mcmDataAccessPort}" /> </bean>
