@@ -195,7 +195,7 @@ function ShowWebHelp(strHelpPath, strWnd, uCommand, nMapId)
 	if (strWnd)
 		a_pszHelpFile += ">>wnd=" + strWnd;
 
-	alert(a_pszHelpFile);
+//	alert(a_pszHelpFile);
 	if (a_pszHelpFile)
 	{
 		if (gbIE4) {
