@@ -427,7 +427,8 @@
 	                           <h:outputText value="#{messages.editPerson_driver_providerType}:" />
 	                         </td>
 	                         <td>
-	                           <h:selectOneMenu value="#{personBean.item.driver.cellProviderInfo.provider}" id="editPerson_driver_provider" onchange="checkMultiple(this)">
+	                           <h:selectOneMenu value="#{personBean.item.driver.cellProviderInfo.provider}" id="editPerson_driver_provider" required="#{personBean.item.providerInfoSelected and (not personBean.batchEdit)}" 
+                                        requiredMessage="#{messages.required}" onchange="checkMultiple(this)">
 	                             <f:selectItems value="#{personBean.providerTypes}" />
 	                           </h:selectOneMenu>
 	                         </td>

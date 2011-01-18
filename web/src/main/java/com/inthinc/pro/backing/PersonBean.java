@@ -296,6 +296,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             personView.setAddress(new Address());
         personView.setUserSelected(person.getUser() != null);
         personView.setDriverSelected(person.getDriver() != null);
+        
+        if (person.getDriver() != null) {
+            personView.setProviderInfoSelected(person.getDriver().getCellProviderInfo() != null);
+        }
+        
         personView.setSelected(false);
         if (person.getUser() != null) {
             personView.getUser().setPerson(personView);
@@ -467,6 +472,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setDriver(new Driver());
         person.setUserSelected(true);
         person.setDriverSelected(true);
+        person.setProviderInfoSelected(true);
         person.setAcctID(getAccountID());
         return person;
     }
@@ -544,6 +550,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (item != null) {
             item.setUserSelected(true);
             item.setDriverSelected(true);
+            item.setProviderInfoSelected(true);
  //           item.prepareRolesForDragnDrop();
         }
         return returnValue;
