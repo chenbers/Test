@@ -195,12 +195,13 @@ function ShowWebHelp(strHelpPath, strWnd, uCommand, nMapId)
 	if (strWnd)
 		a_pszHelpFile += ">>wnd=" + strWnd;
 
+	alert(a_pszHelpFile);
 	if (a_pszHelpFile)
 	{
-		if (gbIE4)
+		if (gbIE4) {
 			loadData(a_pszHelpFile);
-		else if (gbNav4)
-		{
+		}
+		else if (gbNav4) {
 			var sParam = "left="+screen.width+",top="+screen.height+",width=100,height=100";
 			window.open(a_pszHelpFile, "__webCshStub", sParam);
 		}

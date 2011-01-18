@@ -109,7 +109,7 @@ function SwitchURL()
 				sURL=_getPath(document.location.href)+gHomePage;
 			oWnd=goFullWnd;
 		}
-alert('switch: ' + sURL);
+
 		if(gsWindow)
 		{
 			if(!IsWndReady())
@@ -144,7 +144,7 @@ alert('switch: ' + sURL);
 
 		if(sURL&&oWnd)
 		{
-alert(sURL);
+
 			strURLOpt="";
 			if(oWnd.sCaption)
 				strURLOpt+=">>cap="+oWnd.sCaption;

@@ -9,6 +9,7 @@
               xmlns:security="http://pro.tiwi.com/jsf/security"
               xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
+  <ui:param name="helpMapIDOverride" value="#{(redFlagOrZoneAlertsBean.add) ? '5' :''}"/>
   <ui:param name="adminSelected" value="current" />
   <ui:param name="title" value="#{redFlagOrZoneAlertsBean.add ? messages.adminHeader_addRedFlag : (redFlagOrZoneAlertsBean.batchEdit ? messages.adminHeader_editRedFlags : messages.adminHeader_editRedFlag)}"/>
   

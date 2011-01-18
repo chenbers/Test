@@ -13,7 +13,6 @@ public class HelpBean extends BaseBean {
 
     private HelpConfigProperties helpConfigProperties;
 
-//    private static final String BASE_HELP_FILE = "/secured/help/WebHelp/inthinc_Portal_User_Guide.htm";
     private static final String BASE_HELP_FILE = "/secured/help/WebHelp/inthincPortalUserGuide.htm";
     private static final String DEFAULT = "default";
 
@@ -24,11 +23,11 @@ public class HelpBean extends BaseBean {
     public String getMapID() {
         
         String prettyID = (PrettyContext.getCurrentInstance() == null || PrettyContext.getCurrentInstance().getCurrentMapping() == null) ? null : PrettyContext.getCurrentInstance().getCurrentMapping().getId();
+//System.out.println("prettyID: " + prettyID + " subID: " + getSubID());        
         
         if (prettyID == null || getHelpConfigProperties().get(prettyID) == null)
-            return getHelpConfigProperties().get(DEFAULT).toString();;
+            return getHelpConfigProperties().get(DEFAULT).toString();
         
-System.out.println("prettyID: " + prettyID + " subID: " + getSubID());        
         if (getSubID() != null && getHelpConfigProperties().get(prettyID+"_"+getSubID()) != null)
             return getHelpConfigProperties().get(prettyID+"_"+getSubID()).toString();
         
