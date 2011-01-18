@@ -354,11 +354,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         
         if (isBatchEdit()) {
+            // eventSubCategory is ALWAYS true now...
+            getUpdateField().put("eventSubCategory", true);
             
             // the following appears to be a business rule that, if you aren't changing the red flag type,
             //  you can't change some other fields? removing severity level from rule....
-//            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
-            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("eventSubCategory"));            
+//            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));            
+            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("eventSubCategory"));               
 //            updateField.put("severityLevel", updateType);
             updateField.put("speedSettings", updateType);
             updateField.put("hardAcceleration", updateType);
@@ -437,21 +439,21 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             valid = false;
         }
   
-        if (saveItem.getEventSubCategory() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("eventSubCategory"))))
+        // this check is only relevant if single editing. if batch editing, eventSubCategory will either be set (all the same) which
+        //  will correctly expose the subtype and will then HAVE to be edited, or null (bunch of different ones) which
+        //  implies the only thing that can be edited is the common stuff...
+        if (saveItem.getEventSubCategory() == null && !isBatchEdit() )
+//        if (saveItem.getEventSubCategory() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("eventSubCategory"))))          
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeTypeMessage"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
             valid=false;
         
-        // single flag
+        // single flag, always check
         } else if ( !isBatchEdit() ) {
-                if ( saveItem.getEventSubCategory() != null ) {
-                    checkSubTypes = true;
-                }
-        // multiple flags
-        } else if ( getUpdateField().get("eventSubCategory") ) {
-                    checkSubTypes = true;
-        }
+            checkSubTypes = true;
+        // multiple flags, never check
+        } 
         
         // only check the speed settings if they select the type
         if (EventSubCategory.SPEED.equals(saveItem.getEventSubCategory()) && checkSubTypes){
@@ -630,7 +632,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     }
     @Override
     public String getAlertPage() {
-
         return "editRedFlag";
     }
     public List<SelectItem> getZones()
@@ -702,7 +703,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             logger.error("addPhNumberSlot() failed");
         }
     }
-    
 
     public static class RedFlagOrZoneAlertView extends RedFlagAlert implements BaseAdminAlertsBean.BaseAlertView {
 
