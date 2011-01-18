@@ -423,8 +423,14 @@
                        <table id="cellProviderTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
 	                       <tr>
 	                         <td width="100" valign="top">
-	                           <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_editPerson_driver_provider" value="#{personBean.updateField['driver.cellProviderInfo.provider']}" />
-	                           <h:outputText value="#{messages.editPerson_driver_providerType}:" />
+	                           <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                           <ui:param name="required" value="TRUE"/>
+		                           <ui:param name="for" value="editPerson_driver_provider"/>
+		                           <ui:param name="fieldName" value="driver.cellProviderInfo.provider"/>
+		                           <ui:param name="editBean" value="#{personBean}"/>
+		                           <ui:param name="label" value="#{messages.editPerson_driver_providerType}:"/>
+		                           <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />
+                               </ui:include>
 	                         </td>
 	                         <td>
 	                           <h:selectOneMenu value="#{personBean.item.driver.cellProviderInfo.provider}" id="editPerson_driver_provider" required="#{personBean.item.providerInfoSelected and (not personBean.batchEdit)}" 
@@ -434,20 +440,34 @@
 	                         </td>
 	                       </tr>
                            <tr>
-                               <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
-                                   id="update_editPerson_driver_providerUsername" disabled="#{!personBean.item.userEditable}"
-                                   value="#{personBean.updateField['driver.cellProviderInfo.providerUsername']}" /> <h:outputText
-                                   value="#{messages.editPerson_driver_providerUsername}:" /></td>
+                               <td width="100" valign="top">
+                                   
+                                   <ui:include src="../../includes/admin/inputLabel.xhtml">
+	                                   <ui:param name="required" value="TRUE"/>
+	                                   <ui:param name="for" value="editPerson_driver_providerUsername"/>
+	                                   <ui:param name="fieldName" value="driver.cellProviderInfo.providerUsername"/>
+	                                   <ui:param name="editBean" value="#{personBean}"/>
+	                                   <ui:param name="label" value="#{messages.editPerson_driver_providerUsername}:"/>
+	                                   <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />
+                                   </ui:include>   
+                               </td> 
                                <td><rich:message for="editPerson_driver_providerUsername" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
                                    value="#{personBean.item.driver.cellProviderInfo.providerUsername}" id="editPerson_driver_providerUsername"
                                    onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" /></td>
                            </tr>
                            <tr>
-                               <td width="100" valign="top"><h:selectBooleanCheckbox rendered="#{personBean.batchEdit}"
-                                   id="update_editPerson_driver_providerPassword" disabled="#{!personBean.item.userEditable}"
-                                   value="#{personBean.updateField['driver.cellProviderInfo.providerPassword']}" /> <h:outputText
-                                   value="#{messages.editPerson_driver_providerPassword}:" /></td>
+                               <td width="100" valign="top">
+                                   
+                                   <ui:include src="../../includes/admin/inputLabel.xhtml">
+                                       <ui:param name="required" value="TRUE"/>
+                                       <ui:param name="for" value="editPerson_driver_providerPassword"/>
+                                       <ui:param name="fieldName" value="driver.cellProviderInfo.providerPassword"/>
+                                       <ui:param name="editBean" value="#{personBean}"/>
+                                       <ui:param name="label" value="#{messages.editPerson_driver_providerPassword}:"/>
+                                       <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />
+                                   </ui:include>  
+                               </td>  
                                <td><rich:message for="editPerson_driver_providerPassword" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret
                                    value="#{personBean.item.driver.cellProviderInfo.providerPassword}" id="editPerson_driver_providerPassword"
@@ -456,8 +476,15 @@
                            <ui:fragment rendered="#{not personBean.batchEdit}">
                            <tr>
                                <td>
-                               <h:outputText
-                                   value="#{messages.editPerson_driver_providerCellPhone}:" /></td>
+                                    <ui:include src="../../includes/admin/inputLabel.xhtml">
+                                       <ui:param name="required" value="TRUE"/>
+                                       <ui:param name="for" value="editPerson_driver_providerCellPhone"/>
+                                       <ui:param name="fieldName" value="driver.cellProviderInfo.cellPhone"/>
+                                       <ui:param name="editBean" value="#{personBean}"/>
+                                       <ui:param name="label" value="#{messages.editPerson_driver_providerCellPhone}:"/>
+                                       <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />
+                                   </ui:include> 
+                               </td>
                                <td><rich:message for="editPerson-driver_providerCellPhone" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
                                    value="#{personBean.item.driver.cellProviderInfo.cellPhone}" id="editPerson_driver_providerCellPhone"
