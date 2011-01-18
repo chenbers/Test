@@ -828,10 +828,16 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if(person.getUser() != null){
 //TODO            	person.setUsersRolesFromTargetRoles();
             }
-            if (!person.isDriverSelected() && (person.getDriver() != null)) {
-                if (person.getDriver().getDriverID() != null)
-                    driverDAO.deleteByID(person.getDriver().getDriverID());
-                person.setDriver(null);
+            if (!person.isDriverSelected()) {
+                if (person.getDriver() != null) {
+                    if (person.getDriver().getDriverID() != null)
+                        driverDAO.deleteByID(person.getDriver().getDriverID());
+                    person.setDriver(null);
+                }
+            } else {
+                if (!person.isProviderInfoSelected() && person.getDriver().getCellProviderInfo() != null) {
+                    person.getDriver().setCellProviderInfo(null);
+                }
             }
             // set null dropdown items to empty
             if (person.getSuffix() == null)
@@ -1031,6 +1037,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         @Column(updateable = false)
         private boolean driverSelected;
         @Column(updateable = false)
+        private boolean providerInfoSelected;
+        @Column(updateable = false)
         private boolean selected;
 //        @Column(updateable = false)
 //        private List<Role> rolesSource;
@@ -1227,6 +1235,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     		}
     		return "";
     	}
+
+        public boolean isProviderInfoSelected() {
+            return providerInfoSelected;
+        }
+
+        public void setProviderInfoSelected(boolean providerInfoSelected) {
+            this.providerInfoSelected = providerInfoSelected;
+        }
 
 
 //		public List<Role> getRolesSource() {
