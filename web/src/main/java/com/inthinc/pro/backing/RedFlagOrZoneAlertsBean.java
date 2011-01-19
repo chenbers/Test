@@ -523,23 +523,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //            }
            
         }
-        //Validate escalation phone number(s)
-        if(true==true){
-            Map<String, String> paramMap = getExternalContext().getRequestParameterMap();
-            for(String paramName: paramMap.keySet()){
-                if(paramName!=null && paramName.contains("phNumInput"))
-                paramMap.get(paramName);
-            }
-
-            getParameter("");
-        }
         
-        // validate escalation e-mail is supplied
-//        if(saveItem.getEscEmail() == null || saveItem.getEscEmail().trim().length() == 0) {
-//            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-//            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
-//            valid = false;            
-//        }
+        // validate escalation e-mail matches an existing email address for this user
+        boolean isInPicker = this.getEscalationEmailPicker().containsLabel(saveItem.getEscEmail());
+        if(saveItem.getEscEmail() == null || saveItem.getEscEmail().trim().length() == 0 || !isInPicker) {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editAlerts_picker_unknownEmail"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
+            valid = false;            
+        }
         
         // check on selected types
         if ( valid  && checkSubTypes ) {
