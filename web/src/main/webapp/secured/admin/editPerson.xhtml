@@ -422,7 +422,7 @@
                        </div>
                        <table id="cellProviderTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
 	                       <tr>
-	                         <td width="100" valign="top">
+	                         <td width="110" valign="top">
 	                           <ui:include src="../../includes/admin/inputLabel.xhtml">
 		                           <ui:param name="required" value="TRUE"/>
 		                           <ui:param name="for" value="editPerson_driver_provider"/>
@@ -433,14 +433,14 @@
                                </ui:include>
 	                         </td>
 	                         <td>
-	                           <h:selectOneMenu value="#{personBean.item.driver.cellProviderInfo.provider}" id="editPerson_driver_provider" required="#{personBean.item.providerInfoSelected and (not personBean.batchEdit)}" 
+	                           <h:selectOneMenu value="#{personBean.item.driver.cellProviderInfo.provider}" id="editPerson_driver_provider" required="#{not personBean.batchEdit}" 
                                         requiredMessage="#{messages.required}" onchange="checkMultiple(this)">
 	                             <f:selectItems value="#{personBean.providerTypes}" />
 	                           </h:selectOneMenu>
 	                         </td>
 	                       </tr>
                            <tr>
-                               <td width="100" valign="top">
+                               <td width="110" valign="top">
                                    
                                    <ui:include src="../../includes/admin/inputLabel.xhtml">
 	                                   <ui:param name="required" value="TRUE"/>
@@ -454,10 +454,10 @@
                                <td><rich:message for="editPerson_driver_providerUsername" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
                                    value="#{personBean.item.driver.cellProviderInfo.providerUsername}" id="editPerson_driver_providerUsername"
-                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" /></td>
+                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" required="#{not personBean.batchEdit}" requiredMessage="#{messages.required}"/></td>
                            </tr>
                            <tr>
-                               <td width="100" valign="top">
+                               <td width="110" valign="top">
                                    
                                    <ui:include src="../../includes/admin/inputLabel.xhtml">
                                        <ui:param name="required" value="TRUE"/>
@@ -471,9 +471,17 @@
                                <td><rich:message for="editPerson_driver_providerPassword" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret
                                    value="#{personBean.item.driver.cellProviderInfo.providerPassword}" id="editPerson_driver_providerPassword"
-                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" /></td>
+                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" required="#{not personBean.batchEdit}" requiredMessage="#{messages.required}"/></td>
                            </tr>
-                           <ui:fragment rendered="#{not personBean.batchEdit}">
+						   <tr>
+							 <td width="110" valign="top"><h:outputText value="#{messages.editPerson_confirmPassword}" /> <h:outputText
+								 rendered="#{empty personBean.item.driver.cellProviderInfo.providerPassword and not personBean.batchEdit}" styleClass="required" value="*" /></td>
+							 <td><rich:message for="editPerson_driver_confirmProviderPassword" errorClass="field-error"
+								 fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret
+								 value="#{personBean.item.confirmProviderPassword}" id="editPerson_driver_confirmProviderPassword"
+								 onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" required="#{not personBean.batchEdit}" requiredMessage="#{messages.required}"/></td>
+						   </tr>
+						   <ui:fragment rendered="#{not personBean.batchEdit}">
                            <tr>
                                <td>
                                     <ui:include src="../../includes/admin/inputLabel.xhtml">
@@ -485,10 +493,10 @@
                                        <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />
                                    </ui:include> 
                                </td>
-                               <td><rich:message for="editPerson-driver_providerCellPhone" errorClass="field-error"
+                               <td><rich:message for="editPerson_driver_providerCellPhone" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
                                    value="#{personBean.item.driver.cellProviderInfo.cellPhone}" id="editPerson_driver_providerCellPhone"
-                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" /></td>
+                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" required="#{not personBean.batchEdit}" requiredMessage="#{messages.required}"/></td>
                            </tr>
                            </ui:fragment>
                        </table>

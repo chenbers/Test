@@ -24,6 +24,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.lang.StringUtils;
 import org.jasypt.util.password.PasswordEncryptor;
 import org.springframework.beans.BeanUtils;
 
@@ -115,6 +116,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("driver_provider");
         AVAILABLE_COLUMNS.add("driver_providerUsername");
         AVAILABLE_COLUMNS.add("driver_providerPassword");
+        AVAILABLE_COLUMNS.add("driver_confirmProviderPassword");
         AVAILABLE_COLUMNS.add("driver_providerCellPhone");
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
@@ -721,6 +723,49 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	            	}
             	}
             
+            } 
+            
+            if (person.isProviderInfoSelected()){
+            	// mandatory provider type
+            	if (person.getDriver().getCellProviderInfo().getProvider() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.provider")))) {
+                    valid = false;
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                    context.addMessage("edit-form:editPerson_driver_provider", message);
+               	}
+            	// mandatory provider username
+            	if (StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getProviderUsername()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerUsername")))) {
+            	    valid = false;
+            	    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+            	    context.addMessage("edit-form:editPerson_driver_providerUsername", message);
+            	}
+            	// mandatory provider password
+            	if (StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
+            	 valid = false;
+                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                 context.addMessage("edit-form:editPerson_driver_providerPassword", message);
+            	}
+            	
+            	// mandatory provider confirm password
+                if (StringUtils.isEmpty(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
+                    valid = false;
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                    context.addMessage("edit-form:editPerson_driver_confirmProviderPassword", message);
+                }
+            	
+            	// mandatory provider cell phone
+            	if (StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getCellPhone()) && !isBatchEdit()) {
+               	    valid = false;
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+                    context.addMessage("edit-form:editPerson_driver_providerCellPhone", message);
+               	}
+            	
+                // matching passwords
+                if ((!StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getProviderPassword()))
+                        && !person.getDriver().getCellProviderInfo().getProviderPassword().equals(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
+                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
+                    context.addMessage("edit-form:editPerson_driver_providerPassword", message);
+                    valid = false;
+                }
             }
             // unique RFID
 //            if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 1)) {
@@ -1046,6 +1091,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         @Column(updateable = false)
         private boolean providerInfoSelected;
         @Column(updateable = false)
+        private String confirmProviderPassword;
+        @Column(updateable = false)
         private boolean selected;
 //        @Column(updateable = false)
 //        private List<Role> rolesSource;
@@ -1249,6 +1296,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
         public void setProviderInfoSelected(boolean providerInfoSelected) {
             this.providerInfoSelected = providerInfoSelected;
+        }
+
+        public String getConfirmProviderPassword() {
+            return confirmProviderPassword;
+        }
+
+        public void setConfirmProviderPassword(String confirmProviderPassword) {
+            this.confirmProviderPassword = confirmProviderPassword;
         }
 
 
