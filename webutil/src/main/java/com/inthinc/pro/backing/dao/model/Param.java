@@ -127,31 +127,39 @@ public class Param
    		return null;
     }
 
-	public Object getConvertedParamValue() {
+	public Object getConvertedParamValue() throws Exception {
 
 		
-		if (paramType.isArray()) {
-			if (paramValueList != null) {
-				Class<?> componentType = paramValueList.toArray().getClass().getComponentType();
-				if (ConvertUtil.converterExists(componentType, paramType.getComponentType())) {
-					return ConvertUtil.convertList(paramValueList, componentType, paramType.getComponentType());
-				}
-			}
-			else {
-				String params[] = paramValue.toString().trim().split(",");
-				Object values[] = new Object[params.length]; 
-				for (int i = 0; i < params.length; i++)
-	            {
-	                values[i] = ConvertUtil.convert(params[i], paramType.getComponentType());
-	            }
-				return values;
-			}
-		}
-		if (ConvertUtil.converterExists(paramValue, paramType)) {
-			return ConvertUtil.convert(paramValue, paramType);
-			
-		}
-		return paramValue;
+        try {
+            if (paramType.isArray()) {
+            	if (paramValueList != null) {
+            		Class<?> componentType = paramValueList.toArray().getClass().getComponentType();
+            		if (ConvertUtil.converterExists(componentType, paramType.getComponentType())) {
+            			return ConvertUtil.convertList(paramValueList, componentType, paramType.getComponentType());
+            		}
+            	}
+            	else {
+            		String params[] = paramValue.toString().trim().split(",");
+            		Object values[] = new Object[params.length]; 
+            		for (int i = 0; i < params.length; i++)
+                    {
+            		        values[i] = ConvertUtil.convert(params[i], paramType.getComponentType());
+                    }
+            		return values;
+            	}
+            }
+            if (paramValue == null)
+                return null;
+            
+            if (ConvertUtil.converterExists(paramValue, paramType)) {
+            	return ConvertUtil.convert(paramValue, paramType);
+            	
+            }
+            return paramValue;
+        }
+        catch (Throwable t) {
+            throw new Exception("Param: " + paramName + " is invalid [Root Cause: " + t.getMessage() + "]");
+        }
 	}
 
 	public Boolean getIsAccountID() {

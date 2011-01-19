@@ -13,77 +13,77 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 @SuppressWarnings("serial")
 public class SiloServiceImpl implements SiloService {
     @Override
-    @MethodDescription(description = "Creates a new account.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new account.", crudType=CrudType.CREATE, populateMethod="getAcct")
     public Map<String, Object> createAcct(@DaoParam(name = "siloID") Integer siloID,
             @DaoParam(name = "Account", type = com.inthinc.pro.model.Account.class) Map<String, Object> acctMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new address.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new address.", crudType=CrudType.CREATE, populateMethod="getAddr")
     public Map<String, Object> createAddr(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "Address", type = com.inthinc.pro.model.Address.class) Map<String, Object> addrMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new device.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new device.", crudType=CrudType.CREATE, populateMethod="getDevice")
     public Map<String, Object> createDevice(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "Device", type = com.inthinc.pro.model.Device.class) Map<String, Object> deviceMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new driver.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new driver.", crudType=CrudType.CREATE, populateMethod="getDriver")
     public Map<String, Object> createDriver(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "Driver", type = com.inthinc.pro.model.Driver.class) Map<String, Object> driverMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new group.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new group.", crudType=CrudType.CREATE, populateMethod="getGroup")
     public Map<String, Object> createGroup(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "Group", type = com.inthinc.pro.model.Group.class) Map<String, Object> groupMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new person.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new person.", crudType=CrudType.CREATE, populateMethod="getPerson")
     public Map<String, Object> createPerson(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "Person", type = com.inthinc.pro.model.Person.class) Map<String, Object> personMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new red flag alert preferences.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new red flag alert preferences.", crudType=CrudType.CREATE, populateMethod="getAlert")
     public Map<String, Object> createAlert(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "RedFlagAlert", type = com.inthinc.pro.model.RedFlagAlert.class) Map<String, Object> redFlagAlertMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new table preference.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new table preference.", crudType=CrudType.CREATE, populateMethod="getTablePref")
     public Map<String, Object> createTablePref(@DaoParam(name = "userID") Integer userID,
             @DaoParam(name = "TablePreference", type = com.inthinc.pro.model.TablePreference.class) Map<String, Object> tablePrefMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new user.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new user.", crudType=CrudType.CREATE, populateMethod="getUser")
     public Map<String, Object> createUser(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "User", type = com.inthinc.pro.model.User.class) Map<String, Object> userMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new vehicle.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new vehicle.", crudType=CrudType.CREATE, populateMethod="getVehicle")
     public Map<String, Object> createVehicle(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "Vehicle", type = com.inthinc.pro.model.Vehicle.class) Map<String, Object> vehicleMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Creates a new zone.", crudType=CrudType.CREATE)
+    @MethodDescription(description = "Creates a new zone.", crudType=CrudType.CREATE, populateMethod="getZone")
     public Map<String, Object> createZone(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "Zone", type = com.inthinc.pro.model.Zone.class) Map<String, Object> zoneMap) throws ProDAOException {
         return null;
@@ -491,28 +491,28 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Update an account.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update an account.", crudType=CrudType.UPDATE, populateMethod="getAcct")
     public Map<String, Object> updateAcct(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "Account", type = com.inthinc.pro.model.Account.class) Map<String, Object> acctMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update an address.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update an address.", crudType=CrudType.UPDATE, populateMethod="getAddr")
     public Map<String, Object> updateAddr(@DaoParam(name = "addressID") Integer addrID,
             @DaoParam(name = "Address", type = com.inthinc.pro.model.Address.class) Map<String, Object> addrMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update a device.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a device.", crudType=CrudType.UPDATE, populateMethod="getDevice")
     public Map<String, Object> updateDevice(@DaoParam(name = "deviceID") Integer deviceID,
             @DaoParam(name = "Device", type = com.inthinc.pro.model.Device.class) Map<String, Object> deviceMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update a driver.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a driver.", crudType=CrudType.UPDATE, populateMethod="getDriver")
     public Map<String, Object> updateDriver(@DaoParam(name = "driverID") Integer driverID,
             @DaoParam(name = "Driver", type = com.inthinc.pro.model.Driver.class) Map<String, Object> driverMap) throws ProDAOException {
         return null;
@@ -525,49 +525,49 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Update a group.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a group.", crudType=CrudType.UPDATE, populateMethod="getGroup")
     public Map<String, Object> updateGroup(@DaoParam(name = "groupID") Integer groupID,
             @DaoParam(name = "Group", type = com.inthinc.pro.model.Group.class) Map<String, Object> groupMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update a person.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a person.", crudType=CrudType.UPDATE, populateMethod="getPerson")
     public Map<String, Object> updatePerson(@DaoParam(name = "personID") Integer personID,
             @DaoParam(name = "Person", type = com.inthinc.pro.model.Person.class) Map<String, Object> personMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update a red flag alert preference.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a red flag alert preference.", crudType=CrudType.UPDATE, populateMethod="getAlert")
     public Map<String, Object> updateAlert(@DaoParam(name = "redFlagAlertID") Integer redFlagAlertID,
             @DaoParam(name = "RedFlagAlert", type = com.inthinc.pro.model.RedFlagAlert.class) Map<String, Object> redFlagAlertMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update a table preference.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a table preference.", crudType=CrudType.UPDATE, populateMethod="getTablePref")
     public Map<String, Object> updateTablePref(@DaoParam(name = "tablePrefID") Integer tablePrefID,
             @DaoParam(name = "TablePreference", type = com.inthinc.pro.model.TablePreference.class) Map<String, Object> tablePrefMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update a user.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a user.", crudType=CrudType.UPDATE, populateMethod="getUser")
     public Map<String, Object> updateUser(@DaoParam(name = "userID") Integer userID, @DaoParam(name = "User", type = com.inthinc.pro.model.User.class) Map<String, Object> userMap)
             throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update a vehicle.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a vehicle.", crudType=CrudType.UPDATE, populateMethod="getVehicle")
     public Map<String, Object> updateVehicle(@DaoParam(name = "vehicleID") Integer vehicleID,
             @DaoParam(name = "Vehicle", type = com.inthinc.pro.model.Vehicle.class) Map<String, Object> vehicleMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update a zone.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a zone.", crudType=CrudType.UPDATE, populateMethod="getZone")
     public Map<String, Object> updateZone(@DaoParam(name = "zoneID") Integer zoneID, @DaoParam(name = "Zone", type = com.inthinc.pro.model.Zone.class) Map<String, Object> zoneMap)
             throws ProDAOException {
         return null;
@@ -661,7 +661,7 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Update report scheduler preference.", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update report scheduler preference.", crudType=CrudType.UPDATE, populateMethod="getReportPref")
     public Map<String, Object> updateReportPref(@DaoParam(name = "reportPrefID") Integer reportPrefID,
             @DaoParam(name = "ReportSchedule", type = com.inthinc.pro.model.ReportSchedule.class) Map<String, Object> reportPrefMap) throws ProDAOException {
         return null;
@@ -810,7 +810,7 @@ public class SiloServiceImpl implements SiloService {
 	}
 
 	@Override
-    @MethodDescription(description = "Update a Role", crudType=CrudType.UPDATE)
+    @MethodDescription(description = "Update a Role", crudType=CrudType.UPDATE, populateMethod="getRole")
 	public Map<String, Object> updateRole(@DaoParam(name = "roleID") Integer roleID,
 			@DaoParam(name = "Role", type = com.inthinc.pro.model.security.Role.class) Map<String, Object> roleMap) throws ProDAOException {
 		return null;

@@ -45,7 +45,7 @@
 						<h:outputText value="Method:" style="font-size:12px;font-weight:bold;"/><br/>
                     	<h:selectOneMenu id="method-select-menu" value="#{daoUtilBean.selectedMethod}">
                         	<f:selectItems value="#{daoUtilBean.methodSelectList}" />
-                        	<a4j:support event="onchange" reRender="paramsForm,resultsForm,description" />
+                        	<a4j:support event="onchange" reRender="paramsForm,paramsPopulateForm,resultsForm,description" />
                     	</h:selectOneMenu>
                     </h:panelGrid>
                 </a4j:form>
@@ -55,6 +55,19 @@
 	                	<h:outputText value="#{daoUtilBean.selectedMethodDescription}" style="font-size:11px;" />
 	                </h:panelGroup>
 	            </a4j:outputPanel>
+            	<a4j:form id="paramsPopulateForm" >
+		           	<h:panelGroup  rendered="#{daoUtilBean.populateAvailable}" >
+		           		<br/>
+	                	<h:outputText value="Populate Parameters:" style="font-size:12px;font-weight:bold;"/><br/>
+		           		<rich:spacer height="3"/>
+						<h:outputText value="The parameters panel can be populated with the data from an existing object of the same type.  If you would like to do this, please enter a valid object ID below and click the button." style="font-size:11px"/><br/>
+						<h:outputText value="ID:  " style="font-size:12px;font-weight:bold;float:left;"/>
+		           		<rich:spacer width="10"/>
+						<h:inputText id="populateID" value="#{daoUtilBean.populateID}" size="10"/><br/>
+	                	<a4j:commandButton id="populate" value="Populate" reRender="paramsForm"  
+	                		style="float:left" action="#{daoUtilBean.populateAction}"/>
+					</h:panelGroup>
+            	</a4j:form>
     	    </h:panelGroup>
 	    	<h:panelGroup>
     	    <a4j:region id="paramsRegion">
@@ -80,7 +93,7 @@
                             <h:outputText value="Value" />
                         </f:facet>
                         <h:panelGroup rendered="#{p.uiInputType == 'DEFAULT'}">
-                            <h:inputText id="value" value="#{p.paramValue}" size="40" required="true" requiredMessage="required" validator="#{p.validate}"/>
+                            <h:inputText id="value" value="#{p.paramValue}" size="40" validator="#{p.validate}"/>
                             <rich:message for="value" style="color:red"/>
                         </h:panelGroup>
                         <h:panelGroup rendered="#{p.uiInputType == 'BOOLEAN'}">
@@ -91,7 +104,7 @@
                             <rich:message for="booleanValue" />
                         </h:panelGroup>
                         <h:panelGroup rendered="#{p.uiInputType == 'CALENDAR'}">
-                            <rich:calendar id="calendar" inputSize="20" value="#{p.paramValue}" currentDate="#{p.paramValue}" required="true" requiredMessage="required"
+                            <rich:calendar id="calendar" inputSize="20" value="#{p.paramValue}" currentDate="#{p.paramValue}" 
                                 enableManualInput="true" datePattern="MM/dd/yy hh:mm a" timeZone="#{dateFormatBean.timeZone}"/>
                             <rich:message for="calendar" />
                         </h:panelGroup>
@@ -158,9 +171,9 @@
             </rich:dataTable>
 			<rich:panel rendered="#{daoUtilBean.errorMsg != null}" width="99%" style="padding-bottom: 15px">
 			 	<f:facet name="header">
-                	<h:outputText value="#{daoUtilBean.selectedMethod} - ERROR" style=""></h:outputText>
+                	<h:outputText value="#{daoUtilBean.selectedMethod} - ERROR"></h:outputText>
             	</f:facet>
-            	<h:outputText value="#{daoUtilBean.errorMsg}" />
+            	<h:outputText value="#{daoUtilBean.errorMsg}" style="color:red;"/>
             </rich:panel>
         </a4j:form>
 		</div>
