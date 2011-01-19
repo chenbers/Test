@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -54,6 +55,14 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
             }
             StateMileageByMonth rec = new StateMileageByMonth();
             rec.setMonth(item.getMonth());
+            // TODO to be revised when setDate() is implemented
+            if (item.getDate()==null) {
+                DateTime date = new DateTime(2010, getMonthNumber(item.getMonth()),1,0,0,0,0);
+                rec.setDate(date.toDate());
+            } else {
+                rec.setDate(item.getDate());
+            }
+
             rec.setState(item.getStateName());
             rec.setGroupName(getShortGroupName(item.getGroupID()));
             rec.setTotal(MeasurementConversionUtil.convertMilesToKilometers(
@@ -64,6 +73,11 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
         setMainDataset(dataList);
     }
 
+    private int getMonthNumber(String month) {
+        if (month == null) return 0;
+        return format.parseDateTime(month.toUpperCase()+" 2000").monthOfYear().get();
+    }
+    
     /* Comparator implementation for this report */
     class StateMileageByMonthComparator implements Comparator<StateMileageByMonth> {
 
@@ -75,15 +89,12 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
         public int compare(StateMileageByMonth o1, StateMileageByMonth o2) {
             int order = compareValues(o1.getGroupName(),o2.getGroupName());
             if (order == 0) {
-                /*
-                int m1 = getMonthNumber(o1.getMonth());
-                int m2 = getMonthNumber(o2.getMonth());                    
-                if (m1 == m2) {*/
-                order = compareValues(o1.getMonth(),o2.getMonth());
+                //order = compareValues(o1.getMonth(),o2.getMonth());
+                order = compareValues(o1.getDate(), o2.getDate());
                 if (order == 0) {
                     return compareValues(o1.getState(),o2.getState());
                 }
-                return order; //(m1 < m2 ? 1 : -1);
+                return order;
             }
             return order;
         }
@@ -105,9 +116,5 @@ public class StateMileageByMonthReportCriteria extends DOTReportCriteria {
             }
         }
 
-        @SuppressWarnings("unused")
-        private int getMonthNumber(String month) {
-            return format.parseDateTime(month.toUpperCase()+" 2000").monthOfYear().get();
-        }
     }
 }

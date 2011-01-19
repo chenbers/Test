@@ -1,5 +1,7 @@
 package com.inthinc.pro.model;
 
+import java.util.Date;
+
 public class StateMileage extends BaseEntity
 {
     private static final long serialVersionUID = -5095660906917230045L;
@@ -10,6 +12,7 @@ public class StateMileage extends BaseEntity
     private String stateAbbrev;
     private Boolean onRoadFlag;
     private String month;
+    private Date date;
     private Long miles;
     private Float truckGallons;
     private Float trailerGallons;
@@ -71,5 +74,19 @@ public class StateMileage extends BaseEntity
     }
     public void setTrailerGallons(Float trailerGallons) {
         this.trailerGallons = trailerGallons;
+    }
+    /**
+     * The date setter.
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    /**
+     * The date getter.
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
     }
 }

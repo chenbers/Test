@@ -68,7 +68,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="10" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.state.raw}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.distance}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -107,7 +107,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" pattern="#,##0" isBlankWhenNull="false">
 				<reportElement key="textField" stretchType="RelativeToBandHeight" mode="Transparent" x="128" y="0" width="64" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -115,10 +115,10 @@
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Top">
+				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{column.distance}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

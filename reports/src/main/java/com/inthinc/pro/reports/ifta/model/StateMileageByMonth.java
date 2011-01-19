@@ -1,6 +1,9 @@
 package com.inthinc.pro.reports.ifta.model;
 
+import java.util.Date;
+
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Bean for StateMileageByMonth report.
@@ -12,6 +15,8 @@ public class StateMileageByMonth {
     private String state;
     private Double total;
     private String month;
+    @XmlTransient
+    private Date date;
 
     /**
      * Default constructor.
@@ -80,5 +85,13 @@ public class StateMileageByMonth {
      */
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

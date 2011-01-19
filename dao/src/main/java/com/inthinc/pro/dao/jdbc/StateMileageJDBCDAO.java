@@ -4,7 +4,6 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,9 +12,7 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.StateMileageDAO;
-
 import com.inthinc.pro.model.StateMileage;
-import com.inthinc.pro.model.hos.HOSGroupMileage;
 
 public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileageDAO{
 
@@ -49,6 +46,9 @@ public class StateMileageJDBCDAO  extends GenericJDBCDAO  implements StateMileag
                 record.setGroupID(resultSet.getInt(1));
                 record.setStateName(resultSet.getString(2));
                 record.setStateAbbrev(resultSet.getString(3));
+                //TODO For sorting purpose the month to be returned 
+                // either as a Date, like 01/01/2010, or as string 2010/01
+                //record.setDate(resultSet.getDate(4)); 
                 record.setMonth(resultSet.getString(4));
                 record.setMiles(resultSet.getLong(5));
                 record.setTruckGallons(resultSet.getFloat(6));

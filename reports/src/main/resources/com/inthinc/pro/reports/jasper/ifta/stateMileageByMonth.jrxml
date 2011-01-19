@@ -30,6 +30,7 @@
 	<field name="month" class="java.lang.String"/>
 	<field name="state" class="java.lang.String"/>
 	<field name="total" class="java.lang.Double"/>
+	<field name="date" class="java.util.Date"/>
 	<sortField name="groupName"/>
 	<group name="dummy">
 		<groupExpression><![CDATA[]]></groupExpression>
@@ -125,7 +126,7 @@
 					</rowGroup>
 					<rowGroup name="Month" width="100" totalPosition="End">
 						<bucket>
-							<bucketExpression class="java.lang.String"><![CDATA[$F{month}]]></bucketExpression>
+							<bucketExpression class="java.util.Date"><![CDATA[$F{date}]]></bucketExpression>
 						</bucket>
 						<crosstabRowHeader>
 							<cellContents mode="Transparent">
@@ -135,7 +136,7 @@
 									<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 								</box>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isStretchWithOverflow="true" pattern="MMMMM" isBlankWhenNull="false">
 									<reportElement key="textField" stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="30"/>
 									<box>
 										<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -144,7 +145,7 @@
 										<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 									</box>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
-									<textFieldExpression class="java.lang.String"><![CDATA[$V{Month}]]></textFieldExpression>
+									<textFieldExpression class="java.util.Date"><![CDATA[$V{Month}]]></textFieldExpression>
 								</textField>
 							</cellContents>
 						</crosstabRowHeader>
