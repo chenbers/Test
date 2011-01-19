@@ -79,13 +79,26 @@ public class AutocompletePicker
             if (matches)
                 suggestions.add(item);
         }
-       
         
         suggestions.removeAll(picked);
         removeByLabel(suggestions, picked);
         MiscUtil.sortSelectItems(suggestions);
       
         return suggestions;
+    }
+    public boolean containsLabel(String label) {
+        return listContainsLabel(picked, label) || listContainsLabel(pickFrom, label);
+    }
+    public boolean listContainsLabel(List<SelectItem> list, String label) {
+        boolean result = false;
+        for(final Iterator<SelectItem> iterator = list.iterator(); iterator.hasNext();){
+            SelectItem item = iterator.next();
+            if(item.getLabel().equalsIgnoreCase(label)) {
+                result = true;
+                break;
+            }     
+        }
+        return result;
     }
     public boolean removeByLabel(List<SelectItem> orig, List<SelectItem> remove){
         boolean changed = false;
