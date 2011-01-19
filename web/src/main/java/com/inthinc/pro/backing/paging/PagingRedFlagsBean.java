@@ -135,7 +135,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
         this.sentDetailsItem = sentDetailsItem;
         
         List<Integer> redFlagMsgIDList = sentDetailsItem.getMsgIDList();
-System.out.println("Number of messages: " + redFlagMsgIDList.size());        
+     
         detailsMap = new HashMap<Integer, RedFlagEscalationDetails>();
         alertItems = new ArrayList<SelectItem>();
         alertItems.add(new SelectItem(null, ""));
@@ -322,12 +322,14 @@ System.out.println("Number of messages: " + redFlagMsgIDList.size());
         alertItems = null;
         detailsMap = null;
         selectedAlertID = null;
+        sentDetailsItem = null;
     }
     
     public void cancelPendingAction() {
         if (details == null)
             return;
         details.cancelPendingAction();
+        closeDetailsAction();
         refreshPage();
     }
 
