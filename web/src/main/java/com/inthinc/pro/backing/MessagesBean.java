@@ -33,6 +33,7 @@ import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.validators.TextMessageValidator;
 
 public class MessagesBean extends BaseBean {
 
@@ -502,31 +503,32 @@ public class MessagesBean extends BaseBean {
      * Sends <code>this.messageToSend</code> once to each device for all selected drivers/vehicles/groups.
      */
     public void sendMessage() {
-        Set<SendListItem> sendList = new HashSet<SendListItem>();
-
         this.sendMessageList.clear();
+        if(TextMessageValidator.isValid(this.messageToSend)) {
+            Set<SendListItem> sendList = new HashSet<SendListItem>();
+    
+            // Drivers
+            sendList.addAll(getDevicesForDrivers());
+    
+            // Vehicles
+            sendList.addAll(getDevicesForVehicles());
+    
+            // Groups, careful here, need to recurse the group hierarchy
+            sendList.addAll(getDevicesForGroups());
+    
+            // send to each device
+            for (SendListItem item : sendList) {
+                sendDevice(item.getDeviceID());
+            }
 
-        // Drivers
-        sendList.addAll(getDevicesForDrivers());
-
-        // Vehicles
-        sendList.addAll(getDevicesForVehicles());
-
-        // Groups, careful here, need to recurse the group hierarchy
-        sendList.addAll(getDevicesForGroups());
-
-        // send to each device
-        for (SendListItem item : sendList) {
-            sendDevice(item.getDeviceID());
+            // Prep for next interaction
+            this.messageToSend = "";
+            this.driverSelectedList = new ArrayList<Integer>();
+            this.vehicleSelectedList = new ArrayList<Integer>();
+            this.groupSelectedList = new ArrayList<Integer>();
+        } else {
+            this.sendMessageList.add(MessageUtil.getMessageString("txtMsg_illegalCharacter"));   
         }
-        if (this.sendMessageList.size() < 1) {
-            this.sendMessageList.add(MessageUtil.getMessageString("txtMsg_noMsgSent"));
-        }
-        // Prep for next interaction
-        this.messageToSend = "";
-        this.driverSelectedList = new ArrayList<Integer>();
-        this.vehicleSelectedList = new ArrayList<Integer>();
-        this.groupSelectedList = new ArrayList<Integer>();
     }
 
     /**
