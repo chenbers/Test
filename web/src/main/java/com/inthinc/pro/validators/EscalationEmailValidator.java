@@ -19,12 +19,15 @@ public class EscalationEmailValidator implements Validator {
             throw new ValidatorException(getError(component));
 
     }
-
+    public static Boolean hasUserEmail(String value) {
+        return (value.contains("[") && value.contains("]"));
+    }
+    public static String getEmailPortion(String value) {
+        return hasUserEmail(value)? value.substring(value.indexOf("[")+1, value.indexOf("]")-1).trim():"ERROR";
+    }
     private Boolean isValid(String value, UIComponent component) {
-        boolean hasUserEmail = (value.contains("[") && value.contains("]"));
-        String emailPortion = hasUserEmail? value.substring(value.indexOf("[")+1, value.indexOf("]")-1).trim():"ERROR";
-        boolean isValidEmail = EmailValidator.EMAIL_REGEX.matcher(emailPortion).matches();
-        return (value != null) && (!value.startsWith("ERROR")) && hasUserEmail && isValidEmail;
+        boolean isValidEmail = EmailValidator.EMAIL_REGEX.matcher(getEmailPortion(value)).matches();
+        return (value != null) && (!value.startsWith("ERROR")) && hasUserEmail(value) && isValidEmail;
     }
 
     protected FacesMessage getError(UIComponent component) {
