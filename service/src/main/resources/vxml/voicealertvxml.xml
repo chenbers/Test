@@ -30,8 +30,9 @@
 				<noinput count="1"> 
  					<audio expr="pressOneAudio"  fetchhint="prefetch"/>
 				</noinput>
-				<noinput count="3"> 
+				<noinput count="2"> 
  					Sorry we could not reach you.  Goodbye.
+ 					<exit/>
 				</noinput>
 				 
 				<!-- Message played if the caller enters something that does not match --> 
