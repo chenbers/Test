@@ -243,7 +243,6 @@ public class GoogleAddressLookup extends AddressLookup {
         ArrayList<Placemark> results = new ArrayList<Placemark>();
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         XMLStreamReader reader = null;
-        StringBuffer text = new StringBuffer();;
         try {
             reader = inputFactory.createXMLStreamReader(is);
             Placemark placemark = new Placemark();
@@ -344,7 +343,7 @@ public class GoogleAddressLookup extends AddressLookup {
         ArrayList<KMLElement> children;
         
         public String toString(){
-            return "KMLElement: [name="+name+", value="+value+", attributes="+attributes+", children="+children+", ]";
+            return "KMLElement: [name="+name+", value="+value+", attributes="+attributes+", children="+children+" ]";
         }
     }
     public class Placemark{
