@@ -32,6 +32,7 @@ public class MessageItem {
     @Column(name = "created")
     private Date fromPortalSent;
     
+    @Column(name = "textId")
     private Integer dmrOffset;
     private Integer type;
     
