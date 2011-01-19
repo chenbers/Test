@@ -13,6 +13,7 @@ import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.backing.ui.DeviceStatusSelectItems;
@@ -22,6 +23,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -92,6 +94,16 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 //        this.batchProductChoice = batchProductChoice;
 //    }
 
+    public String getViewPath() {
+        if(isAdd()){
+             
+            return getFinishedRedirect();
+        }
+        else {
+            
+            return getEditRedirect();
+        }
+    }
     @Override
     protected List<DeviceView> loadItems()
     {
@@ -399,7 +411,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     @Override
     protected String getEditRedirect()
     {
-        return "pretty:adminEditDevice";
+        return "pretty:adminEditDeviceAccess";
     }
 
     @Override

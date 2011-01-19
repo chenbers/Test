@@ -359,6 +359,10 @@
 	</url-mapping>
 	<url-mapping id="adminEditDevice">
 		<pattern>/app/admin/editDevice</pattern>
+		<view-id>#{devicesBean.getViewPath}</view-id>
+	</url-mapping>
+	<url-mapping id="adminEditDeviceAccess">
+		<pattern>/app/admin/editDevice</pattern>
 		<view-id>/secured/admin/editDevice.faces</view-id>
 	</url-mapping>
 	<url-mapping id="adminDevice">
