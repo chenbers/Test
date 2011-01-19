@@ -8,23 +8,40 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "groupList")
 public class GroupList {
-    private List<Integer> valueList;
+    private List<String> valueList;
 
     @XmlElement(name = "groupID")
-    public List<Integer> getValueList() {
+    public List<String> getValueList() {
         return this.valueList;
     }
 
-    public void setValue(List<Integer> value) {
+    public List<Integer> getValueListAsIntegers() {
+
+        ArrayList<Integer> result = new ArrayList<Integer>();
+
+        for (String value : valueList) {
+            result.add(Integer.parseInt(value));
+        }
+
+        return result;
+    }
+
+    public void setValue(List<String> value) {
         this.valueList = value;
     }
 
     public GroupList() {
-        this.valueList = new ArrayList<Integer>();
+        this.valueList = new ArrayList<String>();
     }
 
     public GroupList(List<Integer> l) {
-        this.valueList = l;
+        ArrayList<String> stringList = new ArrayList<String>();
+
+        for (Integer value : l) {
+            stringList.add(Integer.toString(value));
+        }
+
+        this.valueList = stringList;
     }
 
     @Override

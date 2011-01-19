@@ -79,8 +79,7 @@ public class IFTAServiceStateMileageFuelByVehicleImplTest {
             }
         };
 
-        GroupList groupList = new GroupList();
-        groupList.setValue(groupIds);
+        GroupList groupList = new GroupList(groupIds);
 
         // Expectations & stubbing
         new Expectations() {

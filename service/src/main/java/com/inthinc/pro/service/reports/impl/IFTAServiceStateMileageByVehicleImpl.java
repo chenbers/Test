@@ -128,7 +128,7 @@ public class IFTAServiceStateMileageByVehicleImpl extends BaseReportServiceImpl 
             boolean iftaOnly, Locale locale, MeasurementType measurementType) {
         
         GroupList groupList = new GroupList();
-        groupList.getValueList().add(groupID);
+        groupList.getValueList().add(Integer.toString(groupID));
         
         return getStateMileageByVehicleWithFullParamsMultiGroup(groupList, startDate, endDate, 
                 iftaOnly, locale, measurementType);
@@ -141,7 +141,7 @@ public class IFTAServiceStateMileageByVehicleImpl extends BaseReportServiceImpl 
 
         List<MileageByVehicle> list = null;
         try {
-            list = reportsFacade.getStateMileageByVehicle(groupList.getValueList(), interval, 
+            list = reportsFacade.getStateMileageByVehicle(groupList.getValueListAsIntegers(), interval, 
                     iftaOnly, locale, measurementType);
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
