@@ -667,6 +667,10 @@
   <validator-id>com.inthinc.pro.validators.IridiumIMEIValidator</validator-id>
   <validator-class>com.inthinc.pro.validators.IridiumIMEIValidator</validator-class>
  </validator>
+ <validator>
+  <validator-id>com.inthinc.pro.validators.TextMessageValidator</validator-id>
+  <validator-class>com.inthinc.pro.validators.TextMessageValidator</validator-class>
+ </validator>
  <!-- Facelets support -->
  <application>
   <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
