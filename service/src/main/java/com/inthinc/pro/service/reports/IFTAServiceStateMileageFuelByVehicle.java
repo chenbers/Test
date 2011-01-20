@@ -29,10 +29,21 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      * 
      * @param groupID
      *            the Group ID
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
+     * @param measurementType 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *         
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @GET
     @Path("/group/{groupID}/report/ifta/fuelConsumption")
     @Produces("application/xml")
@@ -50,10 +61,21 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
      * @param endDate
      *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
+     * @param measurementType 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @GET
     @Path("/group/{groupID}/report/ifta/fuelConsumption/{startDate}/{endDate}")
     @Produces("application/xml")
@@ -71,10 +93,21 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            the Group ID
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
+     * @param measurementType 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *          
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @GET
     @Path("/group/{groupID}/report/ifta/fuelConsumption/iftaOnly")
     @Produces("application/xml")
@@ -94,10 +127,21 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
+     * @param measurementType 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @GET
     @Path("/group/{groupID}/report/ifta/fuelConsumption/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
@@ -111,12 +155,31 @@ public interface IFTAServiceStateMileageFuelByVehicle {
     /**
      * Service for State mileage fuel by vehicle Report with an explicit Interval.
      * 
-     * @param groupList
-     *            the Group ID List
+     * @param groupList 
+     * It is possible to specify a list of groups in the request body using the following XML format:<p>
+     * <p>
+     * <code>
+     *   &lt;groupList&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;1&lt;/groupID&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;2&lt;/groupID&gt;</br>
+     *   ...</br>
+     *   &lt;/groupList&gt;</br>
+     * </code>  
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
+     * @param measurementType 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @POST
     @Path("/groups/report/ifta/fuelConsumption")
     @Produces("application/xml")
@@ -129,16 +192,35 @@ public interface IFTAServiceStateMileageFuelByVehicle {
     /**
      * Service for State mileage fuel by vehicle Report with an explicit Interval.
      * 
-     * @param groupList
-     *            the Group ID List
+     * @param groupList 
+     * It is possible to specify a list of groups in the request body using the following XML format:<p>
+     * <p>
+     * <code>
+     *   &lt;groupList&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;1&lt;/groupID&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;2&lt;/groupID&gt;</br>
+     *   ...</br>
+     *   &lt;/groupList&gt;</br>
+     * </code>  
      * @param startDate
      *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
      * @param endDate
      *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
+     * @param measurementType 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @POST
     @Path("/groups/report/ifta/fuelConsumption/{startDate}/{endDate}")
     @Produces("application/xml")
@@ -152,14 +234,33 @@ public interface IFTAServiceStateMileageFuelByVehicle {
     /**
      * Service for State mileage fuel by vehicle Report with an explicit Interval.
      * 
-     * @param groupList
-     *            the Group ID List
+     * @param groupList 
+     * It is possible to specify a list of groups in the request body using the following XML format:<p>
+     * <p>
+     * <code>
+     *   &lt;groupList&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;1&lt;/groupID&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;2&lt;/groupID&gt;</br>
+     *   ...</br>
+     *   &lt;/groupList&gt;</br>
+     * </code>  
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
+     * @param measurementType 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @POST
     @Path("/groups/report/ifta/fuelConsumption/iftaOnly")
     @Produces("application/xml")
@@ -171,18 +272,37 @@ public interface IFTAServiceStateMileageFuelByVehicle {
     /**
      * Service for State mileage fuel by vehicle Report with an explicit Interval.
      * 
-     * @param groupList
-     *            the Group ID List
+     * @param groupList 
+     * It is possible to specify a list of groups in the request body using the following XML format:<p>
+     * <p>
+     * <code>
+     *   &lt;groupList&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;1&lt;/groupID&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;2&lt;/groupID&gt;</br>
+     *   ...</br>
+     *   &lt;/groupList&gt;</br>
+     * </code>  
      * @param startDate
      *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
      * @param endDate
      *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
+     * @param measurementType 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageFuelByVehicle found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageFuelByVehicle found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @POST
     @Path("/groups/report/ifta/fuelConsumption/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")

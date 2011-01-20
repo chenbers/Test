@@ -129,32 +129,4 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
                 null, null, true, locale, measurementType);
     }
 
-    // TODO:  For Validation Testing. To be removed
-	@Override
-	@ValidParams
-	public Response getDefaultsMultiGroup(GroupList groupList, Locale locale,
-			MeasurementType measurementType) {
-		return Response.ok().build();
-	}
-
-	@Override
-	@ValidParams
-	public Response getDefaultsValidationTest(Integer groupID, Locale locale,
-			MeasurementType measurementType) {
-		return Response.ok().build();
-	}
-
-	@Override
-	@ValidParams
-	public Response getWithDatesMultiGroup(GroupList groupList, Date startDate,
-			Date endDate, Locale locale, MeasurementType measurementType) {
-		return Response.ok().build();
-	}
-
-	@Override
-	@ValidParams
-	public Response getWithDatesValidationTest(Integer groupID, Date startDate,
-			Date endDate, Locale locale, MeasurementType measurementType) {
-		return Response.ok().build();
-	}
 }
