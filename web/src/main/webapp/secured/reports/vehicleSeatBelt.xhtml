@@ -317,8 +317,11 @@
 								<f:facet name="header">
 									<h:outputText value="#{messages.vehicle_avg_speed}" />
 								</f:facet>
-								<strong><h:outputText value="#{item.event.avgSpeed}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
+								<ui:fragment rendered="#{item.event.avgSpeed ne null}">
+									<strong><h:outputText value="#{item.event.avgSpeed}" converter="MphToKphConverter"/>#{' '}<h:outputText value="mph" converter="MeasurementTextConverter" /></strong>
+								</ui:fragment>
 							</rich:column>
+							
 							
 							<rich:column id="topSpeed" sortBy="#{item.event.topSpeed}">
 								<f:facet name="header">
