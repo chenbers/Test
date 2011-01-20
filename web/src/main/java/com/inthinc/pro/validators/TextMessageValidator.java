@@ -11,6 +11,10 @@ import javax.faces.validator.ValidatorException;
 
 import com.inthinc.pro.util.MessageUtil;
 
+/**
+ * Validator for text messages sent from the portal to capable devices.
+ *
+ */
 public class TextMessageValidator implements Validator {
 
     private static final String ERROR_MESSSAGE_KEY = "errorMessage";
@@ -29,8 +33,14 @@ public class TextMessageValidator implements Validator {
         return isValid(value);
     }
 
+    /**
+     * Validates text message content.
+     * Text messages can contain Letters, Numbers, spaces, and period; but nothing else. 
+     * @param value the String to validate
+     * @return false ONLY if value contains characters that cannot be sent to text message capable devices
+     */
     public static Boolean isValid(String value) {
-        Pattern p = Pattern.compile("[*\\-%~,]");
+        Pattern p = Pattern.compile("[^\\w\\s\\d.]");
         final Matcher matcher = p.matcher(value);
         return !matcher.find();
     }
