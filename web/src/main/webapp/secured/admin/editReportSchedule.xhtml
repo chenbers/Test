@@ -167,7 +167,7 @@
 									</td>
 									<td>
 										<h:outputText rendered="#{reportScheduleBean.item.occurrence eq 'WEEKLY'}">
-                                            <rich:message for="day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                            <rich:message for="editReportSchedule-day0" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
       										<ui:include src="../../includes/dayPicker.xhtml">
       			                                <ui:param name="days" value="#{reportScheduleBean.item.dayOfWeek}" />
       			                                <ui:param name="onchange" value="checkMultiple('occurrence')" />

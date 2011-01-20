@@ -463,7 +463,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 if (!dayPicked) {
                     final String summary = MessageUtil.formatMessageString("editReportSchedule_noDays");
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    getFacesContext().addMessage("edit-form:editReportSchedule-day0", message);
+                    getFacesContext().addMessage("edit_form:editReportSchedule-day0", message);
                     valid = false;
                 }
             }
@@ -471,13 +471,13 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         if (reportScheduleView.getOccurrence() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("occurrence")))) {
             valid = false;
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-            getFacesContext().addMessage("edit-form:editReportSchedule-occurrence", message);
+            getFacesContext().addMessage("edit_form:editReportSchedule-occurrence", message);
         }
         if (reportScheduleView.getOccurrence() != null && reportScheduleView.getOccurrence().equals(Occurrence.MONTHLY) && reportScheduleView.getDayOfMonth() == null
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("dayOfMonth")))) {
             valid = false;
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-            getFacesContext().addMessage("edit-form:editReportSchedule-dayOfMonth", message);
+            getFacesContext().addMessage("edit_form:editReportSchedule-dayOfMonth", message);
         }
         return valid;
     }
