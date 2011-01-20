@@ -22,7 +22,7 @@ public enum EventSubCategory implements BaseEnum
     COMPLIANCE(3, EnumSet.of(EventType.SEATBELT, EventType.NO_DRIVER, EventType.PARKING_BRAKE),
             EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT, AlertMessageType.ALERT_TYPE_NO_DRIVER, AlertMessageType.ALERT_TYPE_PARKING_BRAKE)),
     FATIGUE(4, EnumSet.of(EventType.MICRO_SLEEP),EnumSet.of(AlertMessageType.ALERT_TYPE_DSS_MICROSLEEP)),
-    VEHICLE(5, EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.POTENTIAL_TAMPERING),
+    VEHICLE(5, EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.IGNITION_OFF, EventType.POTENTIAL_TAMPERING),
             EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON)), 
     WIRELINE(6, EnumSet.of(EventType.WIRELINE_ALARM),EnumSet.of(AlertMessageType.ALERT_TYPE_WIRELINE_ALARM)), 
     INSTALLATION(7, EnumSet.of(EventType.INSTALL, EventType.FIRMWARE_CURRENT, EventType.LOCATION_DEBUG, EventType.QSI_UPDATED, EventType.WITNESS_UPDATED, EventType.ZONES_CURRENT, EventType.NO_INTERNAL_THUMB_DRIVE, EventType.WITNESS_HEARTBEAT_VIOLATION ),

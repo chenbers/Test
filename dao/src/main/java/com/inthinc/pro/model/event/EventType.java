@@ -49,7 +49,8 @@ public enum EventType implements BaseEnum {
     DOT_STOPPED(34),
     HOS_NO_HOURS(35),
     TEXT_MESSAGE(36),
-    OFF_HOURS(37);
+    OFF_HOURS(37),
+    IGNITION_OFF(38),;
     private int code;
     private AggressiveDrivingEventType noteSubType;
     

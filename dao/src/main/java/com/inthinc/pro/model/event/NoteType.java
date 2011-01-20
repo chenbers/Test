@@ -37,7 +37,7 @@ public enum NoteType implements BaseEnum {
     WAYSMART_TEMPERATURE(18), //WAYSMART
     
     IGNITION_ON(19, EventType.IGNITION_ON),
-    IGNITION_OFF(20),
+    IGNITION_OFF(20, EventType.IGNITION_OFF),
     
     WAYSMART_MODEM_OFF(21), //WAYSMART
     
