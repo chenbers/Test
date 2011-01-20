@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +48,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Response getRedFlagCount(Integer groupID) {
         Date today = systemClock.getNow();
+        
         return getRedFlagCount(groupID, today, today);
     }
 
@@ -73,7 +75,7 @@ public class AssetServiceImpl implements AssetService {
     public Response getRedFlagCount(Integer groupID, Date startDate, Date endDate) {
 
         Date normalizedStartDate = getBeginningOfDay(startDate);
-        Date normalizedEndDate = getBeginningOfDay(endDate);
+        Date normalizedEndDate = getEndOfDay(endDate);
 
         if (normalizedStartDate.after(normalizedEndDate)) {
             return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be greater than end date (" + endDate + ").").build();
@@ -83,6 +85,14 @@ public class AssetServiceImpl implements AssetService {
         Integer result = this.redFlagDAO.getRedFlagCount(groupID, normalizedStartDate, normalizedEndDate, RedFlagDAO.INCLUDE_FORGIVEN, emptyList);
 
         return Response.ok(new GenericEntity<Integer>(new Integer(result)) {}).build();
+    }
+
+    /**
+     * @param endDate
+     * @return
+     */
+    private Date getEndOfDay(Date endDate) {
+        return new DateTime(new DateMidnight(endDate).plusDays(1)).minus(1).toDate();
     }
 
     /**

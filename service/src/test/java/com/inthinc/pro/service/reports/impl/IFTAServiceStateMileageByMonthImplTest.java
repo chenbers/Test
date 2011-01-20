@@ -344,7 +344,6 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
         Date startDate = buildDateFromString(expectedStrStartDate);
         Date endDate = buildDateFromString(expectedStrEndDate);
 
-        final Interval interval = new Interval(startDate.getTime(), endDate.getTime());
         final List<StateMileage> list = new ArrayList<StateMileage>();
         list.add(new StateMileage());
         expectedGroupIDList = new ArrayList<Integer>();
@@ -354,7 +353,7 @@ public class IFTAServiceStateMileageByMonthImplTest extends BaseUnitTest {
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, interval, false, locale, measureType);
+                reportsFacadeMock.getStateMileageByMonth(expectedGroupIDList, (Interval)any, false, locale, measureType);
                 result = list;
             }
         };

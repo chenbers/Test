@@ -29,7 +29,6 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
 	/**
      * Default constructor.
      * @param reportsFacade
-     * @param reportsUtil
      */
     @Autowired
     public PerformanceServiceImpl(ReportsFacade reportsFacade) {
