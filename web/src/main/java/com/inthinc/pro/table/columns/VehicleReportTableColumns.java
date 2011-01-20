@@ -3,8 +3,11 @@ package com.inthinc.pro.table.columns;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ajax4jsf.model.KeepAlive;
+
 import com.inthinc.pro.model.TableType;
 
+@KeepAlive
 public class VehicleReportTableColumns extends BaseTableColumns {
 
 	private static final long serialVersionUID = 3885950917957662486L;

@@ -5,7 +5,6 @@
             xmlns:rich="http://richfaces.org/rich"
             xmlns:a4j="http://richfaces.org/a4j"  			
   			xmlns:f="http://java.sun.com/jsf/core"
-            xmlns:t="http://myfaces.apache.org/tomahawk"
             xmlns:tiwi="http://pro.tiwi.com/jsf"
             xmlns:pretty="http://ocpsoft.com/prettyfaces">
 			
@@ -21,7 +20,6 @@
 	</ui:define>
 	<ui:define name="content">
 			<a4j:loadStyle src="/css/jquery.scorebox.css"/>
-			<a4j:keepAlive beanName="vehicleReportTableColumns" />
 		 	<ui:param name="tableColumns" value="#{vehicleReportTableColumns.tableColumns}" />
 			<table width="940" border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto 0 auto;">
 				<tr>
@@ -71,7 +69,6 @@
 										</ui:include>
 		                                <div class="spacer"></div> 
 										<div class="datagrid_panel" style="width: 925px;"> 
-										<t:saveState value="#{pagingVehicleReportBean}"/>
 	                                    <rich:dataTable id="#{context}" value="#{pagingVehicleReportBean.table.model}" var="item" 
     	                                     styleClass="datagrid filterabledatagrid" 
 								        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"

@@ -2,6 +2,7 @@ package com.inthinc.pro.backing.paging;
 
 import java.util.List;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.model.DriverReportItem;
@@ -11,6 +12,7 @@ import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 
+@KeepAlive
 public class PagingDriverReportBean extends BasePagingReportBean<DriverReportItem>
 {
 	private static final long serialVersionUID = 5349999687948286628L;
