@@ -207,9 +207,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             
             uid = getLastInsertID(conn);
 
-//TODO the backend needs to insert escalations with status=3 and escalationOrdinal=1
-
-//update the owner (ie the job number) in the new message records that don't have an owner yet
+//update the owner (ie the job number) in the new message records that are of the right delivery type and that don't have an owner yet and are not voice escalation items
             statement = (PreparedStatement) conn.prepareStatement(
                     "UPDATE message SET owner=?, message.modified=utc_timestamp() WHERE owner=0 AND status = 1 AND deliveryMethodID = ? LIMIT 100");
             statement.setLong(1, uid);
@@ -278,6 +276,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                 
                 Event event = eventDAO.findByID(alertMessage.getNoteID());
                 AlertMessageBuilder alertMessageBuilder = this.createAlertMessageBuilder(alertMessage, event, messageType);
+                //Just this time set it to cancelled
                 if(alertMessageBuilder != null){
                     recordList.add(alertMessageBuilder); 
                 }
@@ -589,7 +588,6 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             close(statement);
             close(conn);
         } // end finally   
-        
         
     }
 }

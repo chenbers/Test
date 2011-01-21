@@ -41,7 +41,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     private AutocompletePicker escalationPeoplePicker;
     private AutocompletePicker escalationEmailPicker;
     private T                  oldItem;
-    private String             oldEmailToString;
+//    private String             oldEmailToString;
 
     public void setPersonDAO(PersonDAO personDAO)
     {
@@ -359,7 +359,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         if (item != oldItem)
         {
             oldItem = item;
-            oldEmailToString = item.getEmailToString();
+//            oldEmailToString = item.getEmailToString();
             getAssignPicker().setPicked(getAssignPicked());
             getAssignPicker().setPickFrom(getAssignPickFrom());
             getPeoplePicker().setPicked(getNotifyPicked());
@@ -397,7 +397,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         getAssignPicker().setPicked(getAssignPicked());
         getPeoplePicker().setPicked(getNotifyPicked());
         getEscalationPeoplePicker().setPicked(getEscalationPicked());
-        getItem().setEmailToString(getOldEmailToString());
+//        getItem().setEmailToString(getOldEmailToString());
         return super.cancelEdit();
     }
 
@@ -546,15 +546,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return valid;
     }
 
-    protected String getOldEmailToString()
-    {
-        return oldEmailToString;
-    }
-
-    protected void setOldEmailToString(String oldEmailToString)
-    {
-        this.oldEmailToString = oldEmailToString;
-    }
+//    protected String getOldEmailToString()
+//    {
+//        return oldEmailToString;
+//    }
+//
+//    protected void setOldEmailToString(String oldEmailToString)
+//    {
+//        this.oldEmailToString = oldEmailToString;
+//    }
 
     protected static boolean isAnytime(BaseAlertView alert)
     {
@@ -623,13 +623,13 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         
         public void setEscalationPersonIDs(List<Integer> notifyPersonIDs);
 
-        public List<String> getEmailTo();
-
-        public void setEmailTo(List<String> emailTo);
-
-        public String getEmailToString();
-
-        public void setEmailToString(String emailToString);
+//        public List<String> getEmailTo();
+//
+//        public void setEmailTo(List<String> emailTo);
+//
+//        public String getEmailToString();
+//
+//        public void setEmailToString(String emailToString);
         
         public Integer getUserID();
         

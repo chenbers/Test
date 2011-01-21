@@ -816,7 +816,7 @@ public class MockData {
                 for (final Object person : people)
                     if (randomInt(0, 5) == 0)
                         emailTo.add(((Person) person).getPriEmail());
-                alert.setEmailTo(emailTo);
+//                alert.setEmailTo(emailTo);
             }
             storeObject(alert);
             alerts.add(alert);
@@ -900,7 +900,7 @@ public class MockData {
                 for (final Object person : people)
                     if (randomInt(0, 5) == 0)
                         emailTo.add(((Person) person).getPriEmail());
-                flag.setEmailTo(emailTo);
+//                flag.setEmailTo(emailTo);
             }
             storeObject(flag);
             flags.add(flag);

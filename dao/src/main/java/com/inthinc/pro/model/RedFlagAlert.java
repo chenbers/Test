@@ -53,7 +53,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     private List<VehicleType>   vehicleTypes;
 	private List<Integer>       notifyPersonIDs;
 	
-    private List<String>        emailTo;
+//    private List<String>        emailTo;
     private Status              status;
 
     @Column(updateable = false)
@@ -112,7 +112,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         this.vehicleIDs = vehicleIDs;
         this.vehicleTypes = vehicleTypes;
         this.notifyPersonIDs = notifyPersonIDs;
-        this.emailTo = emailTo;
+//        this.emailTo = emailTo;
         this.status = Status.ACTIVE;
         this.speedSettings = speedSettings;
         this.hardAcceleration = hardAcceleration;
@@ -263,38 +263,38 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         this.notifyPersonIDs = notifyPersonIDs;
     }
 
-    public List<String> getEmailTo()
-    {
-        if (emailTo == null)
-            return new ArrayList<String>();
-        return emailTo;
-    }
+//    public List<String> getEmailTo()
+//    {
+//        if (emailTo == null)
+//            return new ArrayList<String>();
+//        return emailTo;
+//    }
+//
+//    public void setEmailTo(List<String> emailTo)
+//    {
+//        this.emailTo = emailTo;
+//    }
 
-    public void setEmailTo(List<String> emailTo)
-    {
-        this.emailTo = emailTo;
-    }
-
-    public String getEmailToString()
-    {
-        final StringBuilder sb = new StringBuilder();
-        if (getEmailTo() != null)
-            for (final String email : getEmailTo())
-            {
-                if (sb.length() > 0)
-                    sb.append(", ");
-                sb.append(email);
-            }
-        return sb.toString();
-    }
-
-    public void setEmailToString(String emailToString)
-    {
-        if ((emailToString != null) && (emailToString.trim().length() > 0))
-            setEmailTo(new ArrayList<String>(Arrays.asList(emailToString.split("[,; ]+"))));
-        else
-            setEmailTo(new ArrayList<String>());
-    }
+//    public String getEmailToString()
+//    {
+//        final StringBuilder sb = new StringBuilder();
+//        if (getEmailTo() != null)
+//            for (final String email : getEmailTo())
+//            {
+//                if (sb.length() > 0)
+//                    sb.append(", ");
+//                sb.append(email);
+//            }
+//        return sb.toString();
+//    }
+//
+//    public void setEmailToString(String emailToString)
+//    {
+//        if ((emailToString != null) && (emailToString.trim().length() > 0))
+//            setEmailTo(new ArrayList<String>(Arrays.asList(emailToString.split("[,; ]+"))));
+//        else
+//            setEmailTo(new ArrayList<String>());
+//    }
 
     public Status getStatus()
     {
@@ -445,7 +445,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         return "RedFlagAlert [Types="+getTypes()+", severityLevel=" + severityLevel + ", hardAcceleration=" + hardAcceleration + ", hardBrake="
                 + hardBrake + ", hardTurn=" + hardTurn + ", hardVertical=" + hardVertical
                 + ", alertID=" + getAlertID() +  ", speedLevels="
-                + ", speedSettings=" + Arrays.toString(speedSettings) + ", zoneID=" + zoneID + ", emailTo="+getEmailTo()+", fullName="+fullName+"]";
+                + ", speedSettings=" + Arrays.toString(speedSettings) + ", zoneID=" + zoneID /*+ ", emailTo="+getEmailTo()*/ +", fullName="+fullName+"]";
     }
 
     public List<AlertEscalationItem> getEscalationList() {

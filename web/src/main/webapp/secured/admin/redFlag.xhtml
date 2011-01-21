@@ -308,20 +308,20 @@
 
                       </td>
                     </tr>
-                    <tr>
-                    <td>
-                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>
-
-                        <div>
-                          <a href="mailto:#{email}"><h:outputText value="#{redFlagOrZoneAlertsBean.item.emailTos[0]}" /></a>
-                          <ui:repeat value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="email" offset="1">
-                            <h:outputText value=", " />
-                            <a href="mailto:#{email}"><h:outputText value="#{email}" /></a>
-                          </ui:repeat>
-                        </div>
-                    
-                    </td>
-                    </tr>
+<!--                    <tr>-->
+<!--                    <td>-->
+<!--                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>-->
+<!---->
+<!--                        <div>-->
+<!--                          <a href="mailto:#{email}"><h:outputText value="#{redFlagOrZoneAlertsBean.item.emailTos[0]}" /></a>-->
+<!--                          <ui:repeat value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="email" offset="1">-->
+<!--                            <h:outputText value=", " />-->
+<!--                            <a href="mailto:#{email}"><h:outputText value="#{email}" /></a>-->
+<!--                          </ui:repeat>-->
+<!--                        </div>-->
+<!--                    -->
+<!--                    </td>-->
+<!--                    </tr>-->
                   </table>
 
                 </div>

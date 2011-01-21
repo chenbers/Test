@@ -203,8 +203,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         alertView.setPhNumbers(displayedPhNumbers);
         ensureEmptySlot(alertView.getPhNumbers());//ensure empty slot
 
-        alertView.setEmailTos(flag.getEmailTo());
-        ensureEmptySlot(alertView.getEmailTos());//ensure empty slot
+//        alertView.setEmailTos(flag.getEmailTo());
+//        ensureEmptySlot(alertView.getEmailTos());//ensure empty slot
         
         alertView.setDelay(Delay.valueOf(flag.getEscalationTimeBetweenRetries()));
         if(flag.getMaxEscalationTries() != null) {
@@ -568,10 +568,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //            if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
 //                flag.setSpeedSettings(null);
 //            }
-            if(flag.getEmailTos() != null && !flag.getEmailTos().isEmpty()) {
-                flag.getEmailTos().remove("");
-            }
-            flag.setEmailTo(flag.getEmailTos());
+//            if(flag.getEmailTos() != null && !flag.getEmailTos().isEmpty()) {
+//                flag.getEmailTos().remove("");
+//            }
+//            flag.setEmailTo(flag.getEmailTos());
             copyVoiceEscalationItems(flag, getItem());
             
             flag.setEscalationTimeBetweenRetries(item.getEscalationTimeBetweenRetries());
