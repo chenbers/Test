@@ -14,20 +14,22 @@ public class EscalationEmailValidator implements Validator {
 
     @Override
     public void validate(FacesContext arg0, UIComponent component, Object value) throws ValidatorException {
-
         if (!isValid((String) value, component))
             throw new ValidatorException(getError(component));
 
     }
+
     public static Boolean hasUserEmail(String value) {
         return (value.contains("[") && value.contains("]"));
     }
+
     public static String getEmailPortion(String value) {
-        return hasUserEmail(value)? value.substring(value.indexOf("[")+1, value.indexOf("]")-1).trim():"ERROR";
+        return hasUserEmail(value) ? value.substring(value.indexOf("[") + 1, value.indexOf("]") - 1).trim() : "ERROR";
     }
+
     private Boolean isValid(String value, UIComponent component) {
         boolean isValidEmail = EmailValidator.EMAIL_REGEX.matcher(getEmailPortion(value)).matches();
-        return (value != null) && (!value.startsWith("ERROR")) && hasUserEmail(value) && isValidEmail;
+        return (value == null) || ((!value.startsWith("ERROR")) && hasUserEmail(value) && isValidEmail);
     }
 
     protected FacesMessage getError(UIComponent component) {

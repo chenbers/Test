@@ -526,7 +526,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         // validate escalation e-mail matches an existing email address for this user
         boolean isInPicker = this.getEscalationEmailPicker().containsLabel(saveItem.getEscEmail());
-        if(saveItem.getEscEmail() == null || saveItem.getEscEmail().trim().length() == 0 || !isInPicker) {
+        if((saveItem.getEscEmail() != null && saveItem.getEscEmail().trim().length() > 0) && !isInPicker) {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editAlerts_picker_unknownEmail"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
             valid = false;            
