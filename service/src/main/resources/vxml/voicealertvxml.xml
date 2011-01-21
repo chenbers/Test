@@ -21,7 +21,13 @@
 
 			<audio expr="pressOneAudio"  fetchhint="prefetch"/>
   		
-    			<choice dtmf="1" expr="ackQuery"/> 
+    			<choice dtmf="1" expr="ackQuery"/>
+    			<choice accept="exact" expr="ackQuery">
+    				1
+    			</choice>
+    			<choice accept="approximate" expr="ackQuery">
+    				acknowledge
+    			</choice>	
 	    		<!-- Message played if any error occured --> 
 				<error count="1"> 
 					An error has occurred. 
