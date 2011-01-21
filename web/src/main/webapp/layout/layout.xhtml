@@ -13,7 +13,6 @@
 
 <f:view contentType="text/html" locale="#{localeBean.locale}"> 
 <f:loadBundle basename="com.inthinc.pro.resources.Messages" var="messages" />
-<f:loadBundle basename="tiwipro" var="properties" />
 
 <head>
 <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
@@ -81,11 +80,10 @@
 
     <ui:insert name="footer">
         <ui:include src="/includes/footer.xhtml" />
-        
-          
-        <f:verbatim rendered="#{properties.chartbeat_track}">
+
+        <f:verbatim rendered="#{chartBeatBean.track}">
         <script type="text/javascript">
-			var _sf_async_config={uid:#{properties.chartbeat_uid},domain:"#{properties.chartbeat_domain}"};
+			var _sf_async_config={uid:#{chartBeatBean.uid},domain:#{chartBeatBean.domain}"};
 			(function(){
 			  function loadChartbeat() {
 			    window._sf_endpt=(new Date()).getTime();
