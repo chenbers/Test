@@ -217,6 +217,9 @@ public class HosDailyDriverLogReportCriteria {
             LocalDate localDate = new LocalDate(intervalDay);
             DateTimeZone dateTimeZone = getBestTimeZone(intervalDay.toDate(), hosRecordList);
             DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
+            if (day.toDate().after(currentTime)) 
+                break;
+            
             List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true); 
             List<HOSOccupantLog> occupantLogListForDay = getOccupantLogsForDay(logListForDay, hosOccupantLogList);
             HOSRec firstHosRecForDay = getFirstRecordForDay(intervalDay.toDate(), hosRecapList);
