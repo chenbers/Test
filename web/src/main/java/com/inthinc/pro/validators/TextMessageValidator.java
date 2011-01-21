@@ -18,6 +18,7 @@ import com.inthinc.pro.util.MessageUtil;
 public class TextMessageValidator implements Validator {
 
     private static final String ERROR_MESSSAGE_KEY = "errorMessage";
+    private static final Integer MAX_MESSAGE_LENGTH = 200;
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
@@ -26,7 +27,6 @@ public class TextMessageValidator implements Validator {
             context.addMessage(component.getId(), getError(component));
             throw new ValidatorException(getError(component));
         }
-
     }
 
     private Boolean isValid(String value, UIComponent component) {
@@ -35,14 +35,16 @@ public class TextMessageValidator implements Validator {
 
     /**
      * Validates text message content.
-     * Text messages can contain Letters, Numbers, spaces, and period; but nothing else. 
+     * Text messages can contain Letters, Numbers, spaces, and period; but nothing else.
+     * Additionally only the first <code>MAX_MESSAGE_LENGTH</code> characters are saved, and subsequently sent.
      * @param value the String to validate
      * @return false ONLY if value contains characters that cannot be sent to text message capable devices
      */
     public static Boolean isValid(String value) {
+        //anything other than: words, spaces, digits, and periods
         Pattern p = Pattern.compile("[^\\w\\s\\d.]");
         final Matcher matcher = p.matcher(value);
-        return !matcher.find();
+        return !matcher.find() && (value.length() <= MAX_MESSAGE_LENGTH);
     }
 
     protected FacesMessage getError(UIComponent component) {
