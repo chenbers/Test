@@ -676,7 +676,11 @@
   <bean id="supportBean" class="com.inthinc.pro.backing.SupportBean" parent="baseBean">
   	<property name="defaultSupportContacts" value="${supportContact.default}" />
   </bean>
- 
+ <bean id="chartBeatBean" class="com.inthinc.pro.backing.ChartBeatBean" parent="baseBean">
+    <property name="track" value="${chartbeat_track}" />
+    <property name="domain" value="${chartbeat_domain}" />
+    <property name="uid" value="${chartbeat_uid}" />
+ </bean>
 
   <bean id="hosBean" class="com.inthinc.pro.backing.HosBean" scope="session" init-method="init">
   </bean>
