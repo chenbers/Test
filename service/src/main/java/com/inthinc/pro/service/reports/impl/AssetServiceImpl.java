@@ -88,11 +88,13 @@ public class AssetServiceImpl implements AssetService {
     }
 
     /**
+     * Returns the Date with time set to end of the day.
      * @param endDate
      * @return
      */
     private Date getEndOfDay(Date endDate) {
-        return new DateTime(new DateMidnight(endDate).plusDays(1)).minus(1).toDate();
+        DateMidnight midnight = new DateMidnight(endDate).plusDays(1);
+        return new DateTime(midnight).minus(1).toDate();
     }
 
     /**

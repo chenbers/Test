@@ -14,7 +14,7 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
 public class BaseReportServiceImpl {
 
     public static String DATE_FORMAT = "yyyyMMdd";
-    static final Integer DAYS_BACK = 6;
+    static final Integer DAYS_BACK = 7;
 
     protected ReportsFacade reportsFacade;
 
@@ -42,7 +42,7 @@ public class BaseReportServiceImpl {
     
     private Date getMidnight(int daysBack) {
        DateMidnight date = new DateMidnight(); 
-       date.minusDays(daysBack);
+       date = date.minusDays(daysBack);
        return date.toDate();
     }
 
