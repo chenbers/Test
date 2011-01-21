@@ -278,7 +278,6 @@ public class HOSUtil {
             //If any more messages will push us over the limit, add that much to list
             if(((count + 1) > recordsInEmailCount) && recordsInEmailCount > 0 && count > 0)
             {
-System.out.println("count = " + count +  " recordsInEmailCount " + recordsInEmailCount);                
                 attachmentStream.close();
                 logger.debug("Email Sent count = : " + count + " recordsInEmailCount= " + recordsInEmailCount);
                 count = 0;
