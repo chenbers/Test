@@ -214,8 +214,8 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             statement.setInt(2, messageType.getCode());
             numNoEscalationMsgs=statement.executeUpdate();    
 
-            if (AlertMessageDeliveryType.PHONE.equals(messageType))
-            {
+//            if (AlertMessageDeliveryType.PHONE.equals(messageType))
+//            {
                 conn.setAutoCommit(false);
 
                 //prepare to send escalations to those that have status=3 (Awaiting acknowledge) and that are due to be sent
@@ -244,11 +244,21 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                                 + "        OR ((alert.escalationTryLimit IS NOT NULL) AND message.escalationTryCount > alert.escalationTryLimit))");
                     statement.setLong(1, uid);
                     statement.executeUpdate(); 
+                    
+                    //remove from the job those that now don't have the chosen delivery type. 
+                    statement = (PreparedStatement) conn.prepareStatement(
+                            "UPDATE message "
+                            + "SET owner=0, modified=utc_timestamp()"
+                            + " WHERE owner = ? AND deliveryMethodID != ?"
+                            );
+                    statement.setLong(1, uid);
+                    statement.setInt(2, messageType.getCode());
+                    statement.executeUpdate(); 
                 }
                 
                 conn.commit();
                 conn.setAutoCommit(true);
-            }
+//            }
             // Grab all the messages for this job
             statement = (PreparedStatement) conn.prepareStatement(
                     "SELECT msgID,noteID,personID,alertID,alertTypeID,created,modified,deliveryMethodID,address,message,status,level,owner,zoneID, IF(status=2,0,1) as acknowledge FROM message WHERE (status=1 OR status=3) AND owner=?");
