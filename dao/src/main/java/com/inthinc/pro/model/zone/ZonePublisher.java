@@ -19,13 +19,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.tools.tar.TarEntry;
-import org.apache.tools.tar.TarOutputStream;
 import org.geotools.data.shapefile.dbf.DbaseFileHeader;
 import org.geotools.data.shapefile.dbf.DbaseFileWriter;
 import org.geotools.data.shapefile.shp.ShapeType;
 import org.geotools.data.shapefile.shp.ShapefileWriter;
 
+import com.ice.tar.TarEntry;
+import com.ice.tar.TarOutputStream;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
