@@ -488,13 +488,13 @@ public class HosDailyDriverLogReportCriteria {
         if (hosRecord.getStatus() == HOSStatus.FUEL_STOP) {
             if (defaultUseMetric) {
                 String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.fuelStopDescription.METRIC");
-                return statusString + " " + MessageFormat.format(formatString, new Object[] {hosRecord.getTruckGallons(),hosRecord.getTrailerGallons()});
-            }
-            else {
-                String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.fuelStopDescription");
                 return statusString + " " + MessageFormat.format(formatString, new Object[] {
                         MeasurementConversionUtil.fromGallonsToLiters(hosRecord.getTruckGallons()),
                         MeasurementConversionUtil.fromGallonsToLiters(hosRecord.getTrailerGallons())});
+            }
+            else {
+                String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.fuelStopDescription");
+                return statusString + " " + MessageFormat.format(formatString, new Object[] {hosRecord.getTruckGallons(),hosRecord.getTrailerGallons()});
             }
         }
         
