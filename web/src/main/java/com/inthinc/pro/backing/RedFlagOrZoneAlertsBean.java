@@ -38,6 +38,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(RedFlagOrZoneAlertsBean.class);
+    private static final int[] CALL_LIMIT_COUNT = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+    private static final int[] CALL_LIMIT_MINUTES = new int[] {10, 15, 30, 45, 60, 120};
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 3, 4 };
     private static final int[] DEFAULT_ADMIN_COLUMN_INDICES = new int[] { 5 };
@@ -429,7 +431,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         return Boolean.FALSE;
     }
     protected boolean validateSaveItem(RedFlagOrZoneAlertView saveItem) {
-        
         boolean valid = super.validateSaveItem(saveItem);
         boolean checkSubTypes = false;  // see if we need to check the subtypes for the category
         
@@ -531,6 +532,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
             valid = false;            
         }
+        //if batch editing, users cannot remove escEmail (as this may be required because of other entries in escalationList)
+        boolean batchEditingEscEmail = (isBatchEdit() && getUpdateField().get("emailEscalationPersonID")); 
+        if(batchEditingEscEmail && (this.getItem().getEscEmail() == null  || this.getItem().getEscEmail().equals(""))) {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editAlerts_noBatchRemoveEscEmail"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
+            valid = false;  
+        }
         
         // check on selected types
         if ( valid  && checkSubTypes ) {
@@ -572,6 +580,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //                flag.getEmailTos().remove("");
 //            }
 //            flag.setEmailTo(flag.getEmailTos());
+            if(flag.getEscEmail() == null || flag.getEscEmail().equals(""))
+                flag.clearEscEmail();
+            
             copyVoiceEscalationItems(flag, getItem());
             
             flag.setEscalationTimeBetweenRetries(item.getEscalationTimeBetweenRetries());
@@ -741,6 +752,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             ensureEmptySlot(emailTos);
 
             initAlertMessageTypeMap();
+        }
+        public void clearEscEmail() {
+            Iterator<AlertEscalationItem> iterator =getEscalationList().iterator();
+            while(iterator.hasNext()){
+                AlertEscalationItem item = iterator.next();
+                if(item.getEscalationOrder()<0) {
+                    iterator.remove();
+                    break;
+                }
+            }
         }
         private void initAlertMessageTypeMap(){
             
@@ -963,12 +984,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             return SelectItemUtil.toList(LimitType.class, false);
         }
         public List<SelectItem> getLimitValues() {
-            //TODO: jwimmer: what are the ACTUAL values and how to we want to get them?
             List<SelectItem> results = new ArrayList<SelectItem>();
-            results.add(new SelectItem(4,"4"));
-            results.add(new SelectItem(5,"5"));
-            results.add(new SelectItem(6,"6"));
-            results.add(new SelectItem(7,"7"));
+            int[] limitBy;
+            if(LimitType.COUNT.equals(getLimitType()))
+                limitBy = CALL_LIMIT_COUNT;
+            else
+                limitBy = CALL_LIMIT_MINUTES;
+            
+            for(int i: limitBy){
+             results.add(new SelectItem(i*60, i+""));   
+            }
             return results;
         }
         public Delay getDelay() {
