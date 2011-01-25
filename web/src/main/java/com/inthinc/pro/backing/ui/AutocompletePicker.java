@@ -87,12 +87,13 @@ public class AutocompletePicker
         return suggestions;
     }
     public boolean containsLabel(String label) {
-        return listContainsLabel(picked, label) || listContainsLabel(pickFrom, label);
+        String labelNoDupSpaces = (label != null)?label.replaceAll(" +", " "): null;
+        return listContainsLabel(picked, labelNoDupSpaces) || listContainsLabel(pickFrom, labelNoDupSpaces);
     }
     public boolean listContainsLabel(List<SelectItem> list, String label) {
         boolean result = false;
         for(final Iterator<SelectItem> iterator = list.iterator(); iterator.hasNext();){
-            SelectItem item = iterator.next();
+            SelectItem item = iterator.next(); 
             if(item.getLabel().equalsIgnoreCase(label)) {
                 result = true;
                 break;
