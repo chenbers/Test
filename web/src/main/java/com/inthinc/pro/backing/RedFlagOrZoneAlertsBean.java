@@ -21,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.backing.ui.AlertTypeSelectItems;
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Delay;
@@ -580,7 +581,19 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //                flag.getEmailTos().remove("");
 //            }
 //            flag.setEmailTo(flag.getEmailTos());
-            
+            if(item.getPhNumbers() == null || item.getPhNumbers().isEmpty()) {
+                flag.clearPhNumbers();
+            } else {
+                ArrayList<AlertEscalationItem> newPhNums = new ArrayList<AlertEscalationItem>();
+                for(AlertEscalationItem item: flag.getEscalationList()){
+                    if(item.getEscalationOrder()>=0){
+                        newPhNums.add(item);
+                    }
+                }
+                flag.clearPhNumbers();
+                flag.getEscalationList().addAll(newPhNums);
+
+            }
             if(item.getEscEmail() == null || item.getEscEmail().equals("")){
                 flag.clearEscEmail();
             } else {
@@ -758,6 +771,15 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             ensureEmptySlot(emailTos);
 
             initAlertMessageTypeMap();
+        }
+        public void clearPhNumbers() {
+            Iterator<AlertEscalationItem> iterator =getEscalationList().iterator();
+            while(iterator.hasNext()){
+                AlertEscalationItem item = iterator.next();
+                if(item.getEscalationOrder()>=0) {
+                    iterator.remove();
+                }
+            }
         }
         public void clearEscEmail() {
             Iterator<AlertEscalationItem> iterator =getEscalationList().iterator();
@@ -998,7 +1020,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 limitBy = CALL_LIMIT_MINUTES;
             
             for(int i: limitBy){
-             results.add(new SelectItem(i*60, i+""));   
+             results.add(new SelectItem(i*DateUtil.SECONDS_IN_MINUTE, i+""));   
             }
             return results;
         }
@@ -1009,7 +1031,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public void setDelay(Delay delay) {
             this.delay = delay;
         }
-
+        public String getLimitValueDisplay() {
+            if(LimitType.COUNT.equals(getLimitType()))
+                return limitValue+"";
+            return (limitValue/DateUtil.SECONDS_IN_MINUTE)+"";
+        }
         public Integer getLimitValue() {
             return limitValue;
         }
