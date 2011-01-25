@@ -580,8 +580,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //                flag.getEmailTos().remove("");
 //            }
 //            flag.setEmailTo(flag.getEmailTos());
-            if(flag.getEscEmail() == null || flag.getEscEmail().equals(""))
+            
+            if(item.getEscEmail() == null || item.getEscEmail().equals("")){
                 flag.clearEscEmail();
+            } else {
+                AlertEscalationItem newEscEmail = new AlertEscalationItem(flag.getEmailEscalationPersonID(), -1);
+                flag.clearEscEmail();
+                flag.getEscalationList().add(newEscEmail);
+            }
             
             copyVoiceEscalationItems(flag, getItem());
             
