@@ -9,9 +9,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public enum Delay implements BaseEnum
 {
-    MINUTES05(5,  "MINUTES05"),
-    MINUTES15(15, "MINUTES15"),
-    MINUTES30(30, "MINUTES30");
+    MINUTES05(5*60,  "MINUTES05"),
+    MINUTES10(10*60,  "MINUTES10"),
+    MINUTES15(15*60, "MINUTES15"),
+    MINUTES30(30*60, "MINUTES30");
 
     private String description;
     private int code;
