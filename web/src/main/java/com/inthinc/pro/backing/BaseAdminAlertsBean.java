@@ -459,7 +459,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             // set notify user IDs
             final ArrayList<Integer> escalationUserIDs = new ArrayList<Integer>(getEscalationPeoplePicker().getPicked().size());
             for (final SelectItem item : getEscalationPeoplePicker().getPicked()) {
-                //TODO: jwimmer: test this!
                 if(item.getValue() instanceof Person)
                     escalationUserIDs.add((Integer) ((Person)item.getValue()).getPersonID());
                 else if(item.getValue() instanceof Integer)
@@ -482,6 +481,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     @Override
     protected boolean validateSaveItem(T saveItem)
     {
+        logger.debug("protected boolean validateSaveItem(T "+saveItem+")");
         final FacesContext context = FacesContext.getCurrentInstance();
 
         boolean valid = true;
