@@ -274,6 +274,8 @@ public class CustomRolesBean extends BaseAdminBean<CustomRolesBean.CustomRoleVie
 			    String msgKey = SiteAccessPoints.getAccessPointById(ap.getAccessPtID()).getMsgKey(); 
 			    if (msgKey != null && msgKey.toLowerCase().contains("hos") && !bean.getAccountIsHOS())
 			        continue;
+                if (msgKey != null && msgKey.toLowerCase().contains("waysmart") && !bean.getAccountIsWaysmart())
+                    continue;
 			        
 				accessPointSelection.put(ap.getAccessPtID(), new AccessPointView(ap));
 			}

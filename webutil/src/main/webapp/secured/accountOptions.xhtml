@@ -39,10 +39,19 @@
         	    </f:facet>
                 <table>
 					<tr>
-                    	<td width="50" style="vertical-align: middle;"><h:outputText value="HOS: " /></td>
+                    	<td width="100" style="vertical-align: middle;"><h:outputText value="HOS: " /></td>
                         <td>
 							<h:selectOneMenu id="editAccount-hos" value="#{accountOptionsBean.account.hos}">
 								<f:selectItems value="#{accountOptionsBean.HOSTypes}"/>
+							</h:selectOneMenu>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+                    	<td width="100" style="vertical-align: middle;"><h:outputText value="WaySmart Support: " /></td>
+                        <td>
+							<h:selectOneMenu id="editAccount-waySmart" value="#{accountOptionsBean.account.props.waySmart}">
+								<f:selectItem itemLabel="Disabled" itemValue="false"/>
+								<f:selectItem itemLabel="Enabled" itemValue="true"/>
 							</h:selectOneMenu>
                         </td>                              	                           	
 					</tr>

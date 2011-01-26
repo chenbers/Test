@@ -55,7 +55,9 @@ public class AccountOptionsBean extends BaseBean {
     public void saveAction() {
         if (account != null) {
             accountDAO.update(account);
-            setSaveActionMsg("Success: HOS has been " + (account.getHos() == AccountHOSType.NONE ? "Disabled" : "Enabled") + " for Account: " + account.getAcctName());
+            setSaveActionMsg("Success: HOS is " + (account.getHos() == AccountHOSType.NONE ? "Disabled" : "Enabled") +
+                                " and Waysmart is " + (account.getWaySmartSupport() ? "Enabled" : "Disabled") +
+                                " for Account: " + account.getAcctName());
         }
     }
 

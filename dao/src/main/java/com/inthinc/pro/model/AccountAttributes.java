@@ -23,8 +23,10 @@ public class AccountAttributes extends BaseEntity {
     private String  supportContact3;
     private String  supportContact4;
     private String  supportContact5;
+    private String  waySmart;
 
     
+
     @Column(updateable = false)
     private String supportContacts[];
 
@@ -116,6 +118,15 @@ public class AccountAttributes extends BaseEntity {
         setSupportContact3(supportContacts[2]);
         setSupportContact4(supportContacts[3]);
         setSupportContact5(supportContacts[4]);
+    }
+
+    public String getWaySmart() {
+        if (waySmart == null)
+            return "false";
+        return waySmart;
+    }
+    public void setWaySmart(String waySmart) {
+        this.waySmart = waySmart;
     }
 
 }
