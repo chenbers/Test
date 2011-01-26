@@ -205,9 +205,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         alertView.setPhNumbers(displayedPhNumbers);
         ensureEmptySlot(alertView.getPhNumbers());//ensure empty slot
-
-//        alertView.setEmailTos(flag.getEmailTo());
-//        ensureEmptySlot(alertView.getEmailTos());//ensure empty slot
         
         alertView.setDelay(Delay.valueOf(flag.getEscalationTimeBetweenRetries()));
         if(flag.getMaxEscalationTries() != null) {
@@ -1035,9 +1032,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.delay = delay;
         }
         public String getLimitValueDisplay() {
-            if(LimitType.COUNT.equals(getLimitType()))
-                return limitValue+"";
-            return (limitValue/DateUtil.SECONDS_IN_MINUTE)+"";
+            if(LimitType.TIME.equals(getLimitType()) && limitValue != null)
+                return (limitValue/DateUtil.SECONDS_IN_MINUTE)+"";
+            
+            return limitValue+"";
         }
         public Integer getLimitValue() {
             return limitValue;
