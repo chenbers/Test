@@ -581,27 +581,30 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //                flag.getEmailTos().remove("");
 //            }
 //            flag.setEmailTo(flag.getEmailTos());
-            if(item.getPhNumbers() == null || item.getPhNumbers().isEmpty()) {
-                flag.clearPhNumbers();
-            } else {
-                ArrayList<AlertEscalationItem> newPhNums = new ArrayList<AlertEscalationItem>();
-                for(AlertEscalationItem item: flag.getEscalationList()){
-                    if(item.getEscalationOrder()>=0){
-                        newPhNums.add(item);
-                    }
-                }
-                flag.clearPhNumbers();
-                flag.getEscalationList().addAll(newPhNums);
-
-            }
+            
             if(item.getEscEmail() == null || item.getEscEmail().equals("")){
                 flag.clearEscEmail();
             } else {
                 AlertEscalationItem newEscEmail = new AlertEscalationItem(flag.getEmailEscalationPersonID(), -1);
                 flag.clearEscEmail();
-                flag.getEscalationList().add(newEscEmail);
+                flag.getEscalationList().add(0,newEscEmail);
             }
-            
+
+            if(isBatchEdit()){
+                if(item.getPhNumbers() == null || item.getPhNumbers().isEmpty()) {
+                    flag.clearPhNumbers();
+                } else {
+                    ArrayList<AlertEscalationItem> newPhNums = new ArrayList<AlertEscalationItem>();
+                    for(AlertEscalationItem item: flag.getEscalationList()){
+                        if(item.getEscalationOrder()>=0){
+                            newPhNums.add(item);
+                        }
+                    }
+                    flag.clearPhNumbers();
+                    flag.getEscalationList().addAll(newPhNums);
+                }
+            }
+           
             copyVoiceEscalationItems(flag, getItem());
             
             flag.setEscalationTimeBetweenRetries(item.getEscalationTimeBetweenRetries());
