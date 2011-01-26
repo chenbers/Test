@@ -62,6 +62,9 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
 
     @Override
     public Boolean acknowledgeMessage(Integer msgID) {
+        
+        if (msgID==null) return false;
+        
         Connection conn = null;
         Integer numRows=0;
         PreparedStatement statement = null;
