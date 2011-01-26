@@ -42,7 +42,7 @@ public class TextMessageValidator implements Validator {
      */
     public static Boolean isValid(String value) {
         //anything other than: words, spaces, digits, and periods
-        Pattern p = Pattern.compile("[^\\w\\s\\d.]");
+        Pattern p = Pattern.compile("[^\\w\\d. ]");
         final Matcher matcher = p.matcher(value);
         return !matcher.find() && (value.length() <= MAX_MESSAGE_LENGTH);
     }
