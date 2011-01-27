@@ -3,7 +3,7 @@
 <item name="Web Portal | User Guide" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideFrontMatter/Web_Portal_User_Guide.htm" />
 <book name="Portal Overview" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Portal_Overview.htm" >
   <item name="Supported Browsers" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Supported_Browsers.htm" />
-  <item name="What’s New this Release" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/What’s_New_this_Release.htm" />
+  <item name="What’s New this Release" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/What_is_New_this_Release.htm" />
 </book>
 <item name="Log In to inthinc Portal" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Log_In_to_inthinc_Portal.htm" />
 <item name="Maintain Your Account Profile" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Maintain_Your_Account_Profile.htm" />
@@ -50,7 +50,7 @@
   <item name="Submit Speed-Limit Change Request" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Submit_Speed-Limit_Change_Request.htm" />
 </book>
 <book name="View Reports and Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Reports_and_Notifications.htm" >
-  <item name="Customize Columns in Reports and Notifica­tions" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifica­tions.htm" />
+  <item name="Customize Columns in Reports and Notifica­tions" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifications.htm" />
   <item name="View a Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_a_Report.htm" />
   <item name="View Fleet or Division Scores" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Fleet_or_Division_Scores.htm" />
   <item name="View Team Pages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Team_Pages.htm" />
