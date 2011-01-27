@@ -3,8 +3,6 @@
 			<var name="voxeoAudio" expr="'%s'"/> 
 			<var name="ackQuery" expr="'%s'"/> 
 			<var name="messageText" expr="'%s'"/> 
-			<var name="welcomeMessage" expr="'This is an important message.  Please listen to the entire message before hanging up'"/>
-			<var name="acknowledgeMessage" expr="'Please press 1 to acknowledge the alert.  Please press any other key to repeat the alert'"/>
 			<var name="welcomeAudio" expr="voxeoAudio + 'iwi-welcome-new.wav'"/> 
 			<var name="pressOneAudio" expr="voxeoAudio + 'iwi-acknowledge.wav'"/> 
 
@@ -37,9 +35,8 @@
  					<exit/>
 				</noinput>
 				 
-				<!-- Message played if the caller enters something that does not match --> 
+				<!-- Re-prompt if the caller enters something that does not match --> 
 				<nomatch count="1"> 
-<!-- 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>-->
 						<reprompt/>
 	    		</nomatch> 
   			</menu> 
