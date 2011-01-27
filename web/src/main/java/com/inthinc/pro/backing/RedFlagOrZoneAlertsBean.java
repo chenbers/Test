@@ -599,6 +599,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                     }
                     flag.clearPhNumbers();
                     flag.getEscalationList().addAll(newPhNums);
+                    
                 }
             }
            
@@ -773,21 +774,25 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             initAlertMessageTypeMap();
         }
         public void clearPhNumbers() {
-            Iterator<AlertEscalationItem> iterator =getEscalationList().iterator();
-            while(iterator.hasNext()){
-                AlertEscalationItem item = iterator.next();
-                if(item.getEscalationOrder()>=0) {
-                    iterator.remove();
+            if(getEscalationList() != null){
+                Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
+                while(iterator.hasNext()){
+                    AlertEscalationItem item = iterator.next();
+                    if(item.getEscalationOrder()>=0) {
+                        iterator.remove();
+                    }
                 }
             }
         }
         public void clearEscEmail() {
-            Iterator<AlertEscalationItem> iterator =getEscalationList().iterator();
-            while(iterator.hasNext()){
-                AlertEscalationItem item = iterator.next();
-                if(item.getEscalationOrder()<0) {
-                    iterator.remove();
-                    break;
+            if(getEscalationList() != null) {
+                Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
+                while(iterator.hasNext()){
+                    AlertEscalationItem item = iterator.next();
+                    if(item.getEscalationOrder()<0) {
+                        iterator.remove();
+                        break;
+                    }
                 }
             }
         }
