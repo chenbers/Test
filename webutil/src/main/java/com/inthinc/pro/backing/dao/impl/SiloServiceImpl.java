@@ -768,7 +768,7 @@ public class SiloServiceImpl implements SiloService {
 
 	@Override
     @MethodDescription(description = "Get a subset of Red flags for the specifed group and time frame.", 
-    		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.event.Event.class,
+    		crudType=CrudType.READ, modelClass=com.inthinc.pro.model.RedFlag.class,
 			mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper.class)
 	public List<Map<String, Object>> getRedFlagsPage(@DaoParam(name = "groupID", validator=ValidatorType.GROUP)Integer groupID,
             @DaoParam(name = "startDate", type=java.util.Date.class, inputDesc = "MM/dd/yyyy hh:mm") Long startDate,

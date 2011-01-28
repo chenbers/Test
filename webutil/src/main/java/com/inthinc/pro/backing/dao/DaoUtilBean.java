@@ -329,12 +329,12 @@ public class DaoUtilBean extends BaseBean
         }
         catch (Exception e)
         {
-//            e.printStackTrace();
+            e.printStackTrace();
             setErrorMsg(e.getMessage() + e);
         }
         catch (Throwable t)
         {
-//            t.printStackTrace();
+            t.printStackTrace();
             setErrorMsg(t.getMessage() + t);
         }
     }
@@ -464,7 +464,11 @@ public class DaoUtilBean extends BaseBean
 			Result result = new Result();
 			if (formattedRecordMap != null)
 				result.setDisplay(formattedRecordMap.get(header) == null ? "" : formattedRecordMap.get(header).toString());
-			else result.setDisplay(recordMap.get(header) == null ? "" : recordMap.get(header).toString());
+//			else result.setDisplay(recordMap.get(header) == null ? "" : recordMap.get(header).toString());
+			if(result.getDisplay() == null || result.getDisplay().isEmpty()){
+			    
+			    result.setDisplay(recordMap.get(header) == null ? "" : recordMap.get(header).toString());
+			}
 			Object obj = recordMap.get(header);
 			if (obj != null && java.util.Map.class.isAssignableFrom(obj.getClass()))
 				result.setSort(obj.toString());
