@@ -195,7 +195,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         alertView.getSelectedAlertMessageTypes(flag);
 
         List<String> displayedPhNumbers = new ArrayList<String>();
-        if(flag.getEscalationList() != null && !flag.getEscalationList().isEmpty()){
+        if(!flag.getEscalationList().isEmpty()){
             for(AlertEscalationItem item: flag.getEscalationList()){
                 if(item.getEscalationOrder().equals(-1))
                     alertView.setEscEmail(personDAO.findByID(item.getPersonID()).getFullNameWithPriEmail());
@@ -591,16 +591,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 if(item.getPhNumbers() == null || item.getPhNumbers().isEmpty()) {
                     flag.clearPhNumbers();
                 } else {
-                    if(flag.getEscalationList() != null) {
-                        ArrayList<AlertEscalationItem> newPhNums = new ArrayList<AlertEscalationItem>();
-                        for(AlertEscalationItem item: flag.getEscalationList()){
-                            if(item.getEscalationOrder()>=0){
-                                newPhNums.add(item);
-                            }
+                    ArrayList<AlertEscalationItem> newPhNums = new ArrayList<AlertEscalationItem>();
+                    for(AlertEscalationItem item: flag.getEscalationList()){
+                        if(item.getEscalationOrder()>=0){
+                            newPhNums.add(item);
                         }
-                        flag.clearPhNumbers();
-                        flag.getEscalationList().addAll(newPhNums);
                     }
+                    flag.clearPhNumbers();
+                    flag.getEscalationList().addAll(newPhNums);
                 }
             }
            
@@ -775,25 +773,21 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             initAlertMessageTypeMap();
         }
         public void clearPhNumbers() {
-            if(getEscalationList() != null){
-                Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
-                while(iterator.hasNext()){
-                    AlertEscalationItem item = iterator.next();
-                    if(item.getEscalationOrder()>=0) {
-                        iterator.remove();
-                    }
+            Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
+            while(iterator.hasNext()){
+                AlertEscalationItem item = iterator.next();
+                if(item.getEscalationOrder()>=0) {
+                    iterator.remove();
                 }
             }
         }
         public void clearEscEmail() {
-            if(getEscalationList() != null) {
-                Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
-                while(iterator.hasNext()){
-                    AlertEscalationItem item = iterator.next();
-                    if(item.getEscalationOrder()<0) {
-                        iterator.remove();
-                        break;
-                    }
+            Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
+            while(iterator.hasNext()){
+                AlertEscalationItem item = iterator.next();
+                if(item.getEscalationOrder()<0) {
+                    iterator.remove();
+                    break;
                 }
             }
         }
