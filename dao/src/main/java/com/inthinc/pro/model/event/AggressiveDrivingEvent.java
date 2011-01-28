@@ -24,6 +24,7 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
                         // in the range of 1 to 5, 5 being the most extreme.
                         // This may need to be changed.
     private Integer speedLimit;
+    @SuppressWarnings("unused")
     private String eventTypeString;
     
     public AggressiveDrivingEvent()
@@ -44,9 +45,10 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
 
     public EventType getEventType()
     {
-        EventType eventType = super.getEventType();
+//        EventType eventType = super.getEventType();
+        EventType eventType = EventType.UNKNOWN;
         
-        if (eventType == EventType.UNKNOWN && deltaX != null && deltaY != null && deltaZ != null)
+        if (/*eventType == EventType.UNKNOWN && */ deltaX != null && deltaY != null && deltaZ != null)
         {
                 if (Math.abs(deltaZ / 10.0f) > Math.abs(deltaX / 10.0f)
                         && Math.abs(deltaZ / 10.0f) > Math.abs(deltaY / 10.0f))
