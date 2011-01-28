@@ -448,8 +448,12 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
                 + ", speedSettings=" + Arrays.toString(speedSettings) + ", zoneID=" + zoneID /*+ ", emailTo="+getEmailTo()*/ +", fullName="+fullName+"]";
     }
 
+    /**
+     * Returns a non-null escalationList.  Empty if necessary, but never null. 
+     * @return a non-null escalationList
+     */
     public List<AlertEscalationItem> getEscalationList() {
-        return escalationList;
+        return (escalationList!=null)?escalationList: new ArrayList<AlertEscalationItem>();
     }
 
     public void setEscalationList(List<AlertEscalationItem> escalationList) {
