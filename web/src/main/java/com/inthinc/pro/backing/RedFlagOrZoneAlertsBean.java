@@ -591,15 +591,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 if(item.getPhNumbers() == null || item.getPhNumbers().isEmpty()) {
                     flag.clearPhNumbers();
                 } else {
-                    ArrayList<AlertEscalationItem> newPhNums = new ArrayList<AlertEscalationItem>();
-                    for(AlertEscalationItem item: flag.getEscalationList()){
-                        if(item.getEscalationOrder()>=0){
-                            newPhNums.add(item);
+                    if(flag.getEscalationList() != null) {
+                        ArrayList<AlertEscalationItem> newPhNums = new ArrayList<AlertEscalationItem>();
+                        for(AlertEscalationItem item: flag.getEscalationList()){
+                            if(item.getEscalationOrder()>=0){
+                                newPhNums.add(item);
+                            }
                         }
+                        flag.clearPhNumbers();
+                        flag.getEscalationList().addAll(newPhNums);
                     }
-                    flag.clearPhNumbers();
-                    flag.getEscalationList().addAll(newPhNums);
-                    
                 }
             }
            
