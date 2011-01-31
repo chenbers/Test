@@ -71,7 +71,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final Map<String, TimeZone> TIMEZONES;
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
-    private static final Map<String, String> LICENSE_CLASSES;
     private static final Map<String, State> STATES;
     private static final String REQUIRED_KEY = "required";
     static {
@@ -145,10 +144,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             else
                 TIMEZONES.put(timeZone.getID() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
         }
-        // license classes
-        LICENSE_CLASSES = new TreeMap<String, String>();
-        for (char c = 'A'; c <= 'P'; c++)
-            LICENSE_CLASSES.put(String.valueOf(c), String.valueOf(c));
         // states
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
@@ -953,9 +948,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 //        return roleList;
 //    }
 
-    public Map<String, String> getLicenseClasses() {
-        return LICENSE_CLASSES;
-    }
 
     public Map<String, State> getStates() {
         return STATES;
