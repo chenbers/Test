@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
@@ -42,6 +43,7 @@ import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 
+@KeepAlive
 public class VehiclePerformanceBean extends BasePerformanceBean
 {
     /**
@@ -500,7 +502,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         reportCriteria.addParameter("DRIVER_NAME", getVehicle().getFullName());
         reportCriteria.addParameter("ENABLE_GOOGLE_MAPS", enableGoogleMapsInReports);
 
-        if (lastTrip != null) {
+        if (getLastTrip() != null) {
             reportCriteria.addParameter("START_TIME", lastTrip.getStartDateString());
             reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
             reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());

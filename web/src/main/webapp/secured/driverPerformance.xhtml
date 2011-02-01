@@ -133,11 +133,9 @@
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
             <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.startTime}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.startAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
-            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
             <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
  			<ui:param name="context" value="driverPerformanceStart" />
 	</ui:include>
@@ -148,8 +146,6 @@
             <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.endTime}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.endAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
-            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
-            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
             <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
  			<ui:param name="context" value="driverPerformanceEnd" />
 	</ui:include>
@@ -159,8 +155,6 @@
             <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.endTime}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.endAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
-            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
-            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
             <ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
  			<ui:param name="context" value="driverPerformanceInProgress" />
 	</ui:include>
