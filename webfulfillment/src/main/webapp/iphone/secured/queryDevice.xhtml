@@ -62,9 +62,7 @@
 				<br/>
 				<h:outputText value="EMUHash: #{daoUtilBean.device.emuMd5}" rendered="#{not empty daoUtilBean.device}"/>
 				<br/>
-<!--				<h:outputText value="EPhone: #{daoUtilBean.device.ephone}" rendered="#{not empty daoUtilBean.device}"/>-->
-<!--				<br/>-->
-				<h:outputText value="#{daoUtilBean.lastLocationDisplay}" rendered="#{not empty daoUtilBean.vehicle}" escape="false"/>
+				<h:outputText value="Last Location: #{daoUtilBean.lastLocationDisplay}" rendered="#{not empty daoUtilBean.vehicle}" escape="false"/>
 				<br/>
 				<br/>
 				<h:outputLink target="_blank" 
