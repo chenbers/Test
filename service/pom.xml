@@ -2,14 +2,14 @@
 	<parent>
 		<artifactId>root</artifactId>
 		<groupId>com.inthinc.pro</groupId>
-		<version>1.2.6</version>
+		<version>1.2.7-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.inthinc.pro.service</groupId>
 	<artifactId>service</artifactId>
 	<packaging>war</packaging>
 	<name>Pro Portal - Services</name>
-	<version>1.2.6</version>
+	<version>1.2.7-SNAPSHOT</version>
 	<build>
 		<finalName>service</finalName>
 		<plugins>
