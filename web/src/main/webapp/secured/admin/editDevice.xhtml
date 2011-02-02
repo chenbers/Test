@@ -85,12 +85,9 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_editDevice-name" value="#{devicesBean.updateField['name']}" />
                                   <h:outputText value="#{messages.editDevice_name}" />
-                                  <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <h:message for="editDevice-name" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                                  <h:inputText value="#{devicesBean.item.name}" id="editDevice-name" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="20" />
+                                  <h:outputText value="#{devicesBean.item.name}" />
                                 </td>
                               </tr>
                               <tr>
@@ -111,32 +108,22 @@
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_sim" value="#{devicesBean.updateField['sim']}" />
                                   <h:outputText value="#{messages.editDevice_sim}" />
-                                  <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <h:message for="editDevice-sim" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                                  <h:inputText value="#{devicesBean.item.sim}" id="editDevice-sim" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="20"  validatorMessage="#{messages.editDevice_simFormat}">
-                                    <f:validateLength minimum="19" maximum="20" />
-                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-                                    <f:attribute name="regex" value="[0-9]+" />
-                                  </h:inputText>
+								  <h:outputText value="#{devicesBean.item.sim}" /> <!-- //TODO: jwimmer: remove comment on checkin DE6128 -->
                                 </td>
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
                                   <h:selectBooleanCheckbox rendered="#{devicesBean.batchEdit}" id="update_editDevice-phone" value="#{devicesBean.updateField['phone']}" />
                                   <h:outputText value="#{messages.editDevice_phone}" />
-                                  <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <h:message for="editDevice-phone" errorClass="rich-message field-msg field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="rich-message" />
-                                  <h:inputText value="#{devicesBean.item.phone}" id="editDevice-phone" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="22" />
+                                  <h:outputText value="#{devicesBean.item.phone}" />
                                 </td>
                               </tr>
                               </ui:fragment>
-                              <ui:fragment rendered="#{devicesBean.item.productVersion eq 'WAYSMART'}">
+                              <ui:fragment rendered="#{devicesBean.item.waySmart}">
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editDevice_mcmid}" /></td>
                                 <td><h:outputText value="#{devicesBean.item.mcmid}" /></td>
