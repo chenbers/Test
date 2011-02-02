@@ -22,7 +22,6 @@
 	<field name="vehicleName" class="java.lang.String"/>
 	<field name="category" class="java.lang.String"/>
 	<field name="detail" class="java.lang.String"/>
-	<field name="redFlag.alert" class="java.lang.Boolean"/>
 	<field name="eventType" class="java.lang.String"/>
 	<field name="excluded" class="java.lang.Boolean"/>
 	<background>
@@ -72,11 +71,6 @@
 				<reportElement key="rectangle-3" mode="Opaque" x="0" y="10" width="781" height="22" forecolor="#999999" backcolor="#E7E6E6"/>
 			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-2" x="58" y="13" width="29" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.alert}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
 				<reportElement key="textField-3" x="93" y="13" width="172" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.date.time}]]></textFieldExpression>
@@ -118,11 +112,6 @@
 	</columnHeader>
 	<detail>
 		<band height="30">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="59" y="3" width="29" height="17"/>
-				<textElement rotation="None"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{redFlag.alert}.booleanValue() ? $R{yes} : $R{no}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-2" x="93" y="3" width="173" height="17"/>
 				<textElement/>
