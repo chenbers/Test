@@ -1,5 +1,7 @@
 package com.inthinc.pro.validators;
 
+import java.util.regex.Pattern;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -12,6 +14,7 @@ import com.inthinc.pro.util.MiscUtil;
 public class PhoneValidator implements Validator {
 
     private static final String ERROR_MESSSAGE_KEY = "regexErrorMessage";
+    public static final Pattern PHONE_REGEX = Pattern.compile("[0-9 \\(\\)\\-]+");
 
 	@Override
 	public void validate(FacesContext arg0, UIComponent component, Object value)
@@ -23,8 +26,10 @@ public class PhoneValidator implements Validator {
 	}
 	
 	private Boolean isValid(String value, UIComponent component){
-		
-		return (value != null) && (MiscUtil.unformatPhone(value).length() < 16);
+		return (value != null) 
+		    && (MiscUtil.unformatPhone(value).length() < 16) 
+		    && (MiscUtil.unformatPhone(value).length() >= 10)
+		    && PHONE_REGEX.matcher(value).matches();
 	}
 
     protected FacesMessage getError(UIComponent component)
