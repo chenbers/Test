@@ -247,7 +247,8 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
         
         for ( EventReportItem eri: evnts) {
             try{      
-                String addr = googleAddressLookupBean.getAddress(eri.getEvent().getLatLng());
+//                String addr = googleAddressLookupBean.getAddress(eri.getEvent().getLatLng());
+                String addr = "Lat: " + eri.getEvent().getLatitude() + " Lng: " + eri.getEvent().getLongitude();
                 eri.getEvent().setAddressStr(addr);
             } catch (Exception e) {
                 eri.getEvent().setAddressStr(
