@@ -134,6 +134,10 @@ public class HessianExceptionConverter
         {
             return new DuplicateIMEIException(REMOTESERVER_EXCEPTION_MAP.get(errorCode), remoteMethodName, errorCode);
         }
+        else if(errorCode == 345)
+        {
+            return new DuplicateEmpIDException(REMOTESERVER_EXCEPTION_MAP.get(errorCode), remoteMethodName, errorCode);
+        }
         else if (HESSIAN_CONNECTION_EXCEPTION_MAP.containsKey(errorCode))
         {
             return new HessianConnectionException(HESSIAN_CONNECTION_EXCEPTION_MAP.get(errorCode), remoteMethodName, errorCode);

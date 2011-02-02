@@ -36,6 +36,7 @@ import com.inthinc.pro.dao.hessian.UserHessianDAO;
 import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
+import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmpIDException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateIMEIException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
@@ -741,23 +742,31 @@ System.out.println("retryCnt: " + retryCnt);
         // create a person
         Person person = new Person(0, acctID, ReportTestConst.timeZone, address.getAddrID(), 
         		first + mi + last + groupID+"@email" + Util.randomInt(0, 20) + ".com", null, "5555555555", "5555555555", 
-        		null, null, null, null, null, "emp" + Util.randomInt(0, 9999), 
+        		null, null, null, null, null, acctID+"emp" + Util.randomInt(0, 99999), 
                 null, "title", "dept", first, mi, last, "", Util.randomInt(0, 1) == 0 ? Gender.MALE : Gender.FEMALE, 
                 Util.randomInt(60, 75), Util.randomInt(150, 220), DateUtil.getDaysBackDate(new Date(), Util.randomInt(18*365, 50*365)), Status.ACTIVE, 
                 MeasurementType.ENGLISH, 
                 FuelEfficiencyType.MPG_US, Locale.ENGLISH);
 
-        try
-        {
-        	Integer personID = personDAO.create(acctID, person);
-        	person.setPersonID(personID);
-        }
-        catch (DuplicateEmailException ex)
-        {
-        	person.setPriEmail(first+mi+last+groupID+  "@email" + Util.randomInt(0, 20)+ ".com");
+        for (int i = 0; i < 100; i++) {
+            try
+            {
+            	Integer personID = personDAO.create(acctID, person);
+            	person.setPersonID(personID);
+                return person;
+            }
+            catch (DuplicateEmailException ex)
+            {
+            	person.setPriEmail(first+mi+last+groupID+  "@email" + Util.randomInt(0, 20) + i + ".com");
+            }
+            catch (DuplicateEmpIDException ex)
+            {
+                person.setEmpid(acctID+"emp" +Util.randomInt(0, 99999)+i);
+            }
         }
 
-        return person;
+
+        return null;
     }
 
     private void createAccount()
