@@ -47,6 +47,10 @@
         <pattern>/app/dashboard/#{dashBoardBean.groupID}</pattern>
         <view-id>#{dashBoardBean.getViewPath}</view-id>
     </url-mapping>
+    <url-mapping id="dashboardTabbed">
+        <pattern>/app/dashboard/#{dashBoardBean.groupID}/tab/#{teamCommonBean.selectedTabId}</pattern>
+        <view-id>#{dashBoardBean.getViewPath}</view-id>
+    </url-mapping>
     <url-mapping id="detailedDashboard">
         <pattern>/app/dashboard/detail/#{dashBoardDetailBean.groupID}/#{dashBoardDetailBean.tabType}</pattern>
         <view-id>/secured/dashboard/details.faces</view-id>
