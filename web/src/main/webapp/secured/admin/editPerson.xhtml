@@ -6,8 +6,7 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security"
-     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
-     xmlns:t="http://myfaces.apache.org/tomahawk">
+     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
  
   <ui:param name="helpMapIDOverride" value="#{(personBean.add) ? '6' :''}"/>
   <ui:param name="adminSelected" value="current" />
@@ -244,7 +243,10 @@
                             <h:outputText value="#{messages.editPerson_driver_licenseClass}" />
                           </td>
                           <td>
-                            <h:inputText value="#{personBean.item.driver.licenseClass}" id="editPerson-driver_licenseClass" onchange="checkMultiple(this)" styleClass="text" size="10" maxlength="4" />
+                            <h:selectOneMenu value="#{personBean.item.driver.licenseClass}" id="editPerson-driver_licenseClass" onchange="checkMultiple(this)">
+                              <f:selectItem itemLabel="" />
+                              <f:selectItems value="#{personBean.licenseClasses}" />
+                            </h:selectOneMenu>
                           </td>
                         </tr>
                         <tr>
@@ -536,7 +538,7 @@
                       <rich:message for="editPerson-isUser" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                       <div class="add_section_title">
                         <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isUser" disabled="#{!personBean.item.userEditable}" value="#{personBean.item.userSelected}">
-                          <a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isUser,userInfoPanel,editPerson-emailRequired" limitToList="true" />
+                          <a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isUser,userInfoPanel" limitToList="true" />
                         </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_userInformation}" />
                       </div>
@@ -670,15 +672,13 @@
                         <tr>
                           <td width="100" valign="top">
                             <h:outputText value="#{messages.editPerson_priEmail}" />
-                            <a4j:outputPanel id="emailRequired">
-                              <h:outputText rendered="#{personBean.item.userSelected}" styleClass="required" value=" *" />
-                            </a4j:outputPanel>
+                            <h:outputText styleClass="required" value=" *" />
                           </td>
                           <td>
                             <rich:message for="editPerson-priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.priEmail}" id="editPerson-priEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
-                             <t:validateEmail />
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
                             </h:inputText>
                           </td>
                         </tr>
@@ -688,7 +688,7 @@
                             <rich:message for="editPerson-secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.secEmail}" id="editPerson-secEmail" disabled="#{!personBean.item.userEditable}" onkeyup="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="62" validatorMessage="#{messages.editPerson_emailFormat}">
-                              <t:validateEmail />
+                              <f:validator validatorId="com.inthinc.pro.validators.EmailValidator" />
                             </h:inputText>
                           </td>
                         </tr>
