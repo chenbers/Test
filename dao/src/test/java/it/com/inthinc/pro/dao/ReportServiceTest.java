@@ -752,7 +752,6 @@ public class ReportServiceTest {
         }
     }
     @Test
-    @Ignore
     public void getVehicleTrendDaily() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
