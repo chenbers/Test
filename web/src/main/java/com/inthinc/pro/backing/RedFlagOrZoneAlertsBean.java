@@ -984,16 +984,15 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Override
         public Integer getZoneID() {
             if( super.getZoneID() == null){
-                setZoneID(((Integer)redFlagOrZoneAlertsBean.getZones().get(0).getValue()));
+                if (redFlagOrZoneAlertsBean.getZones() != null && !redFlagOrZoneAlertsBean.getZones().isEmpty()){
+                    setZoneID(((Integer)redFlagOrZoneAlertsBean.getZones().get(0).getValue()));
+                }
             }
             return super.getZoneID();
         }
         public Zone getZone()
         {
-            if (getZoneID() == null){
-                setZoneID(((Integer)redFlagOrZoneAlertsBean.getZones().get(0).getValue()));
-            }
-            if (/*zone == null && */getZoneID() != null)
+            if (getZoneID() != null)
                 zone = redFlagOrZoneAlertsBean.getZoneByID(getZoneID());
             return zone;
         }
