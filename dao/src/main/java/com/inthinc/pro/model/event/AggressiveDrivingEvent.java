@@ -7,6 +7,8 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -26,7 +28,10 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
     private Integer speedLimit;
     @SuppressWarnings("unused")
     private String eventTypeString;
-    
+
+    @SuppressWarnings("unused")
+    private static final Logger logger = Logger.getLogger(AggressiveDrivingEvent.class);
+
     public AggressiveDrivingEvent()
     {
         super();
@@ -45,26 +50,39 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
 
     public EventType getEventType()
     {
-//        EventType eventType = super.getEventType();
-        EventType eventType = EventType.UNKNOWN;
-        
-        if (/*eventType == EventType.UNKNOWN && */ deltaX != null && deltaY != null && deltaZ != null)
+        if (deltaX != null && deltaY != null && deltaZ != null)
         {
-                if (Math.abs(deltaZ / 10.0f) > Math.abs(deltaX / 10.0f)
-                        && Math.abs(deltaZ / 10.0f) > Math.abs(deltaY / 10.0f))
-                    eventType = EventType.HARD_VERT;
-                else if (Math.abs(deltaX / 10.0f) > (Math.abs(deltaY / 10.0f) * 1.1f) && deltaX / 10.0f > 0f)
-                    eventType = EventType.HARD_ACCEL;
-                else if (Math.abs(deltaX / 10.0f) > (Math.abs(deltaY / 10.0f) * 1.1f) && deltaX / 10.0f < 0f)
-                    eventType = EventType.HARD_BRAKE;
-                // TODO: Distinguish between hard left and hard right
-                else if (Math.abs(deltaY / 10.0f) * 1.1f > Math.abs(deltaX / 10.0f)
-                        && Math.abs(deltaY / 10.0f) > Math.abs(deltaZ / 10.0f))
-                    eventType = EventType.HARD_TURN;
+            return deriveEventType();
         }
-        return eventType;
+        
+        return EventType.UNKNOWN;
     }
-
+    
+    private EventType deriveEventType(){
+        
+        // For tiwipro the unused deltas == 0
+        // For waySmart the unused deltas == 5 or -5
+        
+        int fives = 0;
+        
+        fives += Math.abs(deltaX)==5?1:0;
+        fives += Math.abs(deltaY)==5?1:0;
+        fives += Math.abs(deltaZ)==5?1:0;
+        
+        if (fives == 2){
+            //convert 5s to zeros
+            deltaX = Math.abs(deltaX)==5?0:deltaX;
+            deltaY = Math.abs(deltaY)==5?0:deltaY;
+            deltaZ = Math.abs(deltaZ)==5?0:deltaZ;
+        }
+        
+        if ( deltaX < 0)  return EventType.HARD_BRAKE;
+        if ( deltaX > 0)  return EventType.HARD_ACCEL;
+        if ( deltaY != 0) return EventType.HARD_TURN;
+        if ( deltaZ != 0) return EventType.HARD_VERT;
+        
+        return EventType.UNKNOWN;
+    }
     public Integer getSeverity()
     {
         return severity;
