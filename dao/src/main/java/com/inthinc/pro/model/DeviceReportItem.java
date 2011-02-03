@@ -16,7 +16,6 @@ public class DeviceReportItem extends BaseEntity
     private Integer vehicleID;
     private String deviceIMEI;
     private String devicePhone;
-    private String deviceEPhone;
     private DeviceStatus deviceStatus;
     
     @Column(updateable = false)
@@ -68,14 +67,6 @@ public class DeviceReportItem extends BaseEntity
 
 	public void setDevicePhone(String devicePhone) {
 		this.devicePhone = devicePhone;
-	}
-
-	public String getDeviceEPhone() {
-		return deviceEPhone;
-	}
-
-	public void setDeviceEPhone(String deviceEPhone) {
-		this.deviceEPhone = deviceEPhone;
 	}
 
 	public DeviceStatus getDeviceStatus() {

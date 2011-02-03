@@ -20,7 +20,6 @@
 	<field name="deviceIMEI" class="java.lang.String"/>
 	<field name="devicePhone" class="java.lang.String"/>
 	<field name="deviceStatus.code" class="java.lang.Integer"/>
-	<field name="deviceEPhone" class="java.lang.String"/>
 	<background>
 		<band/>
 	</background>
@@ -82,11 +81,6 @@
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.status}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-6" x="650" y="12" width="120" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.ecall.phone}]]></textFieldExpression>
-			</textField>
 			<rectangle>
 				<reportElement key="rectangle-2" x="196" y="17" width="0" height="0"/>
 			</rectangle>
@@ -118,11 +112,6 @@
 				<reportElement key="textField-5" x="580" y="3" width="70" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("status"+$F{deviceStatus.code}.intValue())]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-6" x="650" y="3" width="120" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceEPhone}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" x="328" y="3" width="150" height="17"/>
