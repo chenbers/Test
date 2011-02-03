@@ -365,13 +365,11 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
     
     private String getAddress(Person person, AlertMessageDeliveryType messageType){
         if (AlertMessageDeliveryType.EMAIL.equals(messageType))
-        {
             return person.getPriEmail();    
-        }
+        else if(AlertMessageDeliveryType.TEXT_MESSAGE.equals(messageType))
+            return person.getPriText();
         else if (AlertMessageDeliveryType.PHONE.equals(messageType))
-        {
             return person.getPriPhone();    
-        }                
         return null;
     }
     private AlertMessageBuilder createBuilder(AlertMessage alertMessage, Person person, AlertMessageDeliveryType messageType){
