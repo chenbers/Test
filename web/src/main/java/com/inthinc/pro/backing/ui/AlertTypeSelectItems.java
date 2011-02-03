@@ -12,14 +12,14 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class AlertTypeSelectItems {
     
-    public static List<SelectItem> getAlertTypeSelectItems(Boolean hosEnabled, Boolean waySmartEnabled) {
+    public static List<SelectItem> getAlertTypeSelectItems(Boolean hosEnabled, Boolean waySmartEnabled, Boolean hasZones) {
         
         List<SelectItem> alertTypeSelectItems = new ArrayList<SelectItem>();
 
         alertTypeSelectItems = addDefaultTypes(alertTypeSelectItems);
         alertTypeSelectItems = addHosTypes(alertTypeSelectItems,hosEnabled);
         alertTypeSelectItems = addWaySmartTypes(alertTypeSelectItems,waySmartEnabled);
-      
+        alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addDefaultTypes(List<SelectItem> alertTypeSelectItems){
@@ -29,8 +29,7 @@ public class AlertTypeSelectItems {
                                                       EventSubCategory.INSTALLATION,
                                                       EventSubCategory.EMERGENCY,
                                                       EventSubCategory.SPEED,
-                                                      EventSubCategory.VEHICLE,
-                                                      EventSubCategory.ZONES);
+                                                      EventSubCategory.VEHICLE);
         for (EventSubCategory e : defaultSet)
         {
             alertTypeSelectItems.add(new SelectItem(e.name(),MessageUtil.getMessageString(e.toString())));
@@ -57,6 +56,14 @@ public class AlertTypeSelectItems {
             {
                 alertTypeSelectItems.add(new SelectItem(e.name(),MessageUtil.getMessageString(e.toString())));
             }
+        }
+        return alertTypeSelectItems;
+    }
+    private static List<SelectItem> addZones(List<SelectItem> alertTypeSelectItems, Boolean hasZones){
+        
+        if (hasZones){
+                alertTypeSelectItems.add(new SelectItem(EventSubCategory.ZONES.name(),
+                                                    MessageUtil.getMessageString(EventSubCategory.ZONES.toString())));
         }
         return alertTypeSelectItems;
     }

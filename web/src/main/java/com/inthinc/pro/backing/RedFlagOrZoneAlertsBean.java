@@ -68,7 +68,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     public List<SelectItem> getAlertTypeSelectItems() {
         
-        return AlertTypeSelectItems.getAlertTypeSelectItems(getAccountIsHOS(), getAccountIsWaysmart());
+        return AlertTypeSelectItems.getAlertTypeSelectItems(getAccountIsHOS(), getAccountIsWaysmart(), zonesBean.getZonesCount()>0);
     }
     @Override
     public void initFilterValues(){
@@ -1060,13 +1060,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.escEmail = escEmail;
         }
         public String getZonePointsString(){
-            if ((getEventSubCategory() != null) && (EventSubCategory.ZONES.equals(getEventSubCategory()))){
+            if ((getEventSubCategory() != null) && EventSubCategory.ZONES.equals(getEventSubCategory()) && (getZone() != null)){
                return getZone().getPointsString();
             }
-            return null;
+            return "";
         }
         public void setZonePointsString(String pointsString){
-            if ((getEventSubCategory() != null) && (EventSubCategory.ZONES.equals(getEventSubCategory()))){
+            if ((getEventSubCategory() != null) && EventSubCategory.ZONES.equals(getEventSubCategory()) && (getZone() != null)){
                 getZone().setPointsString(pointsString);
             }
         }
