@@ -75,6 +75,9 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private Integer deviceID;
     private Integer speedLimit;
     private Map<Object, Object> attrMap;
+    
+    @SuppressWarnings("unused")
+    private String eventTypeString;    
 
     public Event() {
         super();
@@ -403,4 +406,13 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         return false;
     }
 
+    public String getEventTypeString()
+    {
+        return this.getEventType().toString();
+    }
+
+    public void setEventTypeString(String eventTypeString)
+    {
+        this.eventTypeString = eventTypeString;
+    }
 }

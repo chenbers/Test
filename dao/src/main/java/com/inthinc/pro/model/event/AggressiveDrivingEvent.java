@@ -26,8 +26,6 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
                         // in the range of 1 to 5, 5 being the most extreme.
                         // This may need to be changed.
     private Integer speedLimit;
-    @SuppressWarnings("unused")
-    private String eventTypeString;
 
     @SuppressWarnings("unused")
     private static final Logger logger = Logger.getLogger(AggressiveDrivingEvent.class);
@@ -144,16 +142,6 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
     public void setSpeedLimit(Integer speedLimit)
     {
         this.speedLimit = speedLimit;
-    }
-
-    public String getEventTypeString()
-    {
-        return this.getEventType().toString();
-    }
-
-    public void setEventTypeString(String eventTypeString)
-    {
-        this.eventTypeString = eventTypeString;
     }
 
     @Override
