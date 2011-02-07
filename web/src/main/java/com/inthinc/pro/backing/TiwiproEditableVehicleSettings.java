@@ -21,10 +21,10 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
     private String ephone;
 	private Integer autologoffSeconds;
 	private Integer[] speedSettings;
-	private Integer hardAcceleration;
-	private Integer hardBrake;
-	private Integer hardTurn;
-    private Integer hardVertical;
+	private Integer hardAcceleration; //Slider value
+	private Integer hardBrake; //Slider value
+	private Integer hardTurn; //Slider value
+    private Integer hardVertical; //Slider value
      
     public TiwiproEditableVehicleSettings() {
         super();
@@ -50,9 +50,9 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         if (speedSettings == null)
         {
             this.speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
-            for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++)
+            for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
                 this.speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING; 
-                
+            }    
         }
         else {
         	
@@ -173,21 +173,21 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
                 
         if (ephone == null || ephone.isEmpty())
         {
-            addErrorMessage(context,"required");
+            addErrorMessage(context,"edit-form:editVehicle-ephone","required");
             return false;
         }
         if( (ephone.length() >22) || (MiscUtil.unformatPhone(ephone).length() > 15) )
         {
-            addErrorMessage(context,"editDevice_phoneFormat");
+            addErrorMessage(context,"edit-form:editVehicle-ephone","editDevice_phoneFormat");
             return false;
         }
        return true;
     }
-    private void addErrorMessage(FacesContext context, String errorMessage){
+    private void addErrorMessage(FacesContext context, String field, String errorMessage){
         
         final String summary = MessageUtil.getMessageString(errorMessage);
         final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-        context.addMessage("edit-form:editVehicle-ephone", message);
+        context.addMessage(field, message);
 
     }
 }

@@ -45,10 +45,10 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Double speedBuffer = NumberUtil.convertStringToDouble(vs.getCombined(SettingType.SPEED_BUFFER.getSettingID()));
         Double severeSpeed = NumberUtil.convertStringToDouble(vs.getCombined(SettingType.SEVERE_SPEED.getSettingID()));
  
-        Integer hardVertical = extractHardVerticalValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardVerticalSlider()));
-        Integer hardTurn = extractHardTurnValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardTurnSlider()));
-        Integer hardAcceleration = extractHardAccelerationValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardAccelerationSlider()));
-        Integer hardBrake = extractHardBrakeValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardBrakeSlider()));
+        Integer hardVertical = extractHardVerticalValue(getVehicleSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardVerticalSlider()));
+        Integer hardTurn = extractHardTurnValue(getVehicleSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardTurnSlider()));
+        Integer hardAcceleration = extractHardAccelerationValue(getVehicleSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardAccelerationSlider()));
+        Integer hardBrake = extractHardBrakeValue(getVehicleSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardBrakeSlider()));
 
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
 

@@ -23,8 +23,8 @@ public class UnknownSettingManager extends VehicleSettingManager {
 
 
     @Override
-    protected Map<Integer, String> getVehiclSettingsForSliderSettingIDs(VehicleSetting vehicleSetting, Slider slider) {
-        return super.getVehiclSettingsForSliderSettingIDs(vehicleSetting, slider);
+    protected Map<Integer, String> getVehicleSettingsForSliderSettingIDs(VehicleSetting vehicleSetting, Slider slider) {
+        return super.getVehicleSettingsForSliderSettingIDs(vehicleSetting, slider);
     }
 
  

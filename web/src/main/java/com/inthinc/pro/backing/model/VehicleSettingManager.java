@@ -92,7 +92,7 @@ public abstract class VehicleSettingManager {
         return vehicleSensitivitySliders.getHardVerticalSlider();
     }
 
-    protected Map<Integer, String> getVehiclSettingsForSliderSettingIDs(VehicleSetting vehicleSetting,Slider slider){
+    protected Map<Integer, String> getVehicleSettingsForSliderSettingIDs(VehicleSetting vehicleSetting,Slider slider){
         
         Map<Integer, String> vehicleSettings = new HashMap<Integer, String>();
         

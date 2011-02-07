@@ -40,10 +40,10 @@ public class TiwiproSettingManager extends VehicleSettingManager{
         
         String ephone = vs.getCombined(SettingType.EPHONE_SETTING.getSettingID());
         Integer autoLogoffSeconds = NumberUtil.convertString(vs.getCombined(SettingType.AUTOLOGOFF_SETTING.getSettingID()));
-        Integer hardVertical = extractHardVerticalValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardVerticalSlider()));
-        Integer hardTurn = extractHardTurnValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardTurnSlider()));
-        Integer hardAcceleration = extractHardAccelerationValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardAccelerationSlider()));
-        Integer hardBrake = extractHardBrakeValue(getVehiclSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardBrakeSlider()));
+        Integer hardVertical = extractHardVerticalValue(getVehicleSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardVerticalSlider()));
+        Integer hardTurn = extractHardTurnValue(getVehicleSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardTurnSlider()));
+        Integer hardAcceleration = extractHardAccelerationValue(getVehicleSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardAccelerationSlider()));
+        Integer hardBrake = extractHardBrakeValue(getVehicleSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardBrakeSlider()));
         Integer[] speedSettings = convertFromSpeedSettings(vs.getCombined(SettingType.SPEED_SETTING.getSettingID()));        
 
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
