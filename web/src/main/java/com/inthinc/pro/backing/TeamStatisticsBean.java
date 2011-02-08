@@ -7,15 +7,11 @@ import java.util.List;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.log4j.Logger;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
 
 import com.inthinc.pro.backing.ui.ScoreBox;
 import com.inthinc.pro.backing.ui.ScoreBoxSizes;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -90,18 +86,21 @@ public class TeamStatisticsBean extends BaseBean {
 
         } else {
             // Not there, grab it
-            //  0: day value, start/end day the same
-            //  1: week value, 
-            //  2: month or year: use interval
+            //  0: day value, start/end day the same, if no driving will show last DAY score
+            //  1: week value, calculate start and add seven, if no driving will show last DAY score
+            //  2: month or year, use duration identifier, if no driving will show last MONTH score
             switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
                 case 0:
                     driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
                             teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()).getStart());
                     break;
                 case 1:
-                case 2:    
                     driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
                             teamCommonBean.getTimeFrame().getInterval(getDateTimeZone()));
+                    break;
+                case 2:
+                    driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
+                            teamCommonBean.getTimeFrame().getAggregationDuration());
                     break;
             }
 
