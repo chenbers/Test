@@ -59,12 +59,13 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     protected static UserDAO             userDAO;
     protected List<SelectItem>   	  allGroupUsers;
     protected Map<String,Object>      filterValues;
+    protected int  filteredListSize;
 
     public void initBean()
     {
         tablePref = new TablePref<T>(this);
         initFilterValues();
-
+        filteredListSize = 0;
     }
     public void initFilterValues(){
         filterValues = new HashMap<String,Object>();
@@ -930,7 +931,13 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public List<T> getFilteredItems() {
         // TODO Auto-generated method stub
         getItems();
-        return getInViewItems();
+        int oldFilterListSize = filteredListSize;
+        List<T> inViewItems = getInViewItems();
+        if(oldFilterListSize != inViewItems.size()){
+            page = 1;
+            filteredListSize = inViewItems.size();
+        }
+        return inViewItems;
     }
     public Map<String, Object> getFilterValues() {
         return filterValues;
