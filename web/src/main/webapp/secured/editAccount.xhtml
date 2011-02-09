@@ -135,6 +135,9 @@
                   <table width="100%" border="0" cellpadding="4" cellspacing="0">
                     <tbody>
                       <tr>
+                      	<td colspan="3"><rich:message for="editAccount-info" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /></td>
+                      </tr>
+                      <tr>
                         <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
                         <td width="76"><h:outputText value="#{messages.myAccount_information}" /></td>
                         <td>
@@ -194,7 +197,7 @@
                           <td>
                             <rich:message for="editAccount-priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-priEmail" value="#{myAccountBean.user.person.priEmail}" size="40" maxlength="62"
-                              onkeyup="populateAlertText()" required="true" requiredMessage="#{messages.required}" validator="#{myAccountBean.validateEmail}" />
+                              onblur="populateAlertText()" required="true" requiredMessage="#{messages.required}" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
                         <tr>
@@ -202,7 +205,7 @@
                           <td>
                             <rich:message for="editAccount-secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-secEmail" value="#{myAccountBean.user.person.secEmail}" 
-                              size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}" />
+                              size="40" maxlength="62" onblur="populateAlertText()" validator="#{myAccountBean.validateEmail}" />
                           </td>
                         </tr>
                       </tbody>
@@ -215,7 +218,7 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_priPhone}" /></td>
                           <td>
                             <rich:message for="editAccount-priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="editAccount-priPhone" value="#{myAccountBean.user.person.priPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
+                            <h:inputText id="editAccount-priPhone" value="#{myAccountBean.user.person.priPhone}" size="40" maxlength="22" onblur="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
                                   <f:validateLength  maximum="22" />
                              	  <f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />
 <!--                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />-->
@@ -227,7 +230,7 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_secPhone}" /></td>
                           <td>
                             <rich:message for="editAccount-secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="editAccount-secPhone" value="#{myAccountBean.user.person.secPhone}" size="40" maxlength="22" onkeyup="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
+                            <h:inputText id="editAccount-secPhone" value="#{myAccountBean.user.person.secPhone}" size="40" maxlength="22" onblur="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
                                   <f:validateLength  maximum="22" />
                              	  <f:validator validatorId="com.inthinc.pro.validators.PhoneValidator" />
 <!--                              <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />-->
@@ -245,7 +248,7 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_priText}" /></td>
                           <td>
                             <rich:message for="editAccount-priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="editAccount-priText" value="#{myAccountBean.user.person.priText}" size="40" maxlength="62" onkeyup="populateAlertText()" >
+                            <h:inputText id="editAccount-priText" value="#{myAccountBean.user.person.priText}" size="40" maxlength="62" onblur="populateAlertText()" >
        	                          <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
 	                              <f:attribute name="regex" value="#{messages.smsTextRegex}" />
                               	  <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
@@ -256,7 +259,7 @@
                           <td width="100"><h:outputText value="#{messages.myAccount_secText}" /></td>
                           <td>
                             <rich:message for="editAccount-secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText id="editAccount-secText" value="#{myAccountBean.user.person.secText}" size="40" maxlength="62" onkeyup="populateAlertText()" validator="#{myAccountBean.validateEmail}">
+                            <h:inputText id="editAccount-secText" value="#{myAccountBean.user.person.secText}" size="40" maxlength="62" onblur="populateAlertText()" validator="#{myAccountBean.validateEmail}">
        	                          <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
 	                              <f:attribute name="regex" value="#{messages.smsTextRegex}" />
                               	  <f:attribute name="regexErrorMessage" value="#{messages.myAccount_textMessageFormat}" />
