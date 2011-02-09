@@ -572,7 +572,29 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             context.addMessage(null, message);
         }
     }
-
+    public static boolean validatePreferedNotification(FacesContext context, PersonBean personBean) {
+        return validatePreferedNotifications(context, personBean.getItem());
+    }
+    public static boolean validatePreferedNotifications(FacesContext context, Person person){
+        return validatePreferedNotifications(context, "edit-form:editPerson-info", person);
+    }
+    public static boolean validatePreferedNotifications(FacesContext context,String facesClientID, Person person){
+        boolean valid = true;
+        Boolean[] validNotifications = {true,//None
+                MiscUtil.notEmpty(person.getPriEmail()),
+                MiscUtil.notEmpty(person.getSecEmail()),
+                MiscUtil.notEmpty(person.getPriPhone()),
+                MiscUtil.notEmpty(person.getSecPhone()),
+                false,//cellphone
+                MiscUtil.notEmpty(person.getPriText()),
+                MiscUtil.notEmpty(person.getSecText())};
+        if(!validNotifications[person.getInfo()] || !validNotifications[person.getWarn()] || !validNotifications[person.getCrit()]) {
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_notificationPref"), null);
+            context.addMessage(facesClientID, message);
+        } 
+        return valid;
+    }
     @Override
     protected boolean validateSaveItem(PersonView person) {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -612,19 +634,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             }
         }
         //selected notification option must be valid
-        Boolean[] validNotifications = {true,//None
-                MiscUtil.notEmpty(person.getPriEmail()),
-                MiscUtil.notEmpty(person.getSecEmail()),
-                MiscUtil.notEmpty(person.getPriPhone()),
-                MiscUtil.notEmpty(person.getSecPhone()),
-                false,//cellphone
-                MiscUtil.notEmpty(person.getPriText()),
-                MiscUtil.notEmpty(person.getSecText())};
-        if(!validNotifications[person.getInfo()] || !validNotifications[person.getWarn()] || !validNotifications[person.getCrit()]) {
-            valid = false;
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_notificationPref"), null);
-            context.addMessage("edit-form:editPerson-info", message);
-        }
+        valid &= validatePreferedNotifications(context, person);
+        
         // birth date
         if (!isBatchEdit() && (person.getDob() != null)) {
             Calendar latest = Calendar.getInstance();
