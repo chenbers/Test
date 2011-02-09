@@ -118,5 +118,12 @@ public class MiscUtil
         
         return rc;
     }
-    
+    /**
+     * Check to see if a String contains data.
+     * @param s the String to test
+     * @return true if the String contains data.
+     */
+    public static boolean notEmpty(String s){
+        return s!=null && s.length()>0;
+    }
 }
