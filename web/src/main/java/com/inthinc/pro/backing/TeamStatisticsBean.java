@@ -86,9 +86,9 @@ public class TeamStatisticsBean extends BaseBean {
 
         } else {
             // Not there, grab it
-            //  0: day value, start/end day the same, if no driving will show last DAY score
-            //  1: week value, calculate start and add seven, if no driving will show last DAY score
-            //  2: month or year, use duration identifier, if no driving will show last MONTH score
+            //  0: day value, start/end day the same, if no driving in time frame will show last DAY score
+            //  1: week value, calculate start and add seven, if no driving in time frame will show last DAY score
+            //  2: month or year, use duration identifier, if no driving in time frame will show last MONTH score
             switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
                 case 0:
                     driverStatistics = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 
