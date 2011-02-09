@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -53,6 +54,7 @@ import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.security.Roles;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
 /**
@@ -609,6 +611,20 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 context.addMessage("edit-form:editPerson-priEmail", message);
             }
         }
+        //selected notification option must be valid
+        Boolean[] validNotifications = {true,//None
+                MiscUtil.notEmpty(person.getPriEmail()),
+                MiscUtil.notEmpty(person.getSecEmail()),
+                MiscUtil.notEmpty(person.getPriPhone()),
+                MiscUtil.notEmpty(person.getSecPhone()),
+                false,//cellphone
+                MiscUtil.notEmpty(person.getPriText()),
+                MiscUtil.notEmpty(person.getSecText())};
+        if(!validNotifications[person.getInfo()] || !validNotifications[person.getWarn()] || !validNotifications[person.getCrit()]) {
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_notificationPref"), null);
+            context.addMessage("edit-form:editPerson-info", message);
+        }
         // birth date
         if (!isBatchEdit() && (person.getDob() != null)) {
             Calendar latest = Calendar.getInstance();
@@ -752,6 +768,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         // must be a user or a driver or both while not in batch edit.
         else if (!person.isDriverSelected() && !isBatchEdit()) {
+            person.setDriverSelected(true);
+            person.setUserSelected(true);
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_userOrDriver"), null);
             context.addMessage("edit-form:editPerson-isUser", message);
             valid = false;
@@ -881,8 +899,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // alert options
         LinkedHashMap<String, Integer> alertOptions = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < 8; i++) {
-            if (i == 5 ||  // skip cell phone 
-              (!isEnablePhoneAlerts() && (i == 3 || i == 4)))  // skip phone alerts if account is set to this
+            if (i == AlertText.PHONE_CELL.getCode() ||  // skip cell phone 
+              (!isEnablePhoneAlerts() && (i == AlertText.PHONE_1.getCode() || i == AlertText.PHONE_2.getCode())))  // skip phone alerts if account is set to this
             	continue;
             alertOptions.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
         }
@@ -1119,8 +1137,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         
     	private Integer validAccountAlertValue(Integer value) {
-            if (value == null || value == 5 ||  // skip cell phone 
-               (!bean.isEnablePhoneAlerts() && (value == 3 || value == 4)))  // skip phone alerts if account is set to this
+            if (value == null || value == AlertText.PHONE_CELL.getCode() ||  // skip cell phone 
+               (!bean.isEnablePhoneAlerts() && (value == AlertText.PHONE_1.getCode() || value == AlertText.PHONE_2.getCode())))  // skip phone alerts if account is set to this
                return 0;
     		return value;
     	}
@@ -1373,4 +1391,37 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	public void setRoleDAO(RoleDAO roleDAO) {
 		this.roleDAO = roleDAO;
 	}
+	
+    public enum AlertText {
+        NONE(0),
+        EMAIL_1(1),
+        EMAIL_2(2),
+        PHONE_1(3),
+        PHONE_2(4),
+        PHONE_CELL(5),
+        TEXT_MSG_1(6),
+        TEXT_MSG_2(7);
+
+        private Integer code;
+
+        private AlertText(Integer code) {
+            this.code = code;
+        };
+
+        public Integer getCode() {
+            return this.code;
+        }
+
+
+        private static final Map<Integer, AlertText> lookup = new HashMap<Integer, AlertText>();
+        static {
+            for (AlertText p : EnumSet.allOf(AlertText.class)) {
+                lookup.put(p.code, p);
+            }
+        }
+
+        public static AlertText getAlertText(Integer code) {
+            return lookup.get(code);
+        }
+    }
 }
