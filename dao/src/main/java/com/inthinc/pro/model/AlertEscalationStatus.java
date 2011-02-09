@@ -12,6 +12,7 @@ public enum AlertEscalationStatus implements BaseEnum
     //3 escalated awaiting acknowledge
     //4 escalated acknowledged
     //5 canceled 
+    //6 in progress
     
     NONE(0),
     NEW(1),
@@ -19,7 +20,7 @@ public enum AlertEscalationStatus implements BaseEnum
     ESCALATED_AWAITING_ACKNOWLEDGE(3),
     ESCALATED_ACKNOWLEDGED(4),
     CANCELED(5);
-
+    
     private int code;
 
     private AlertEscalationStatus(int code)

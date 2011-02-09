@@ -31,7 +31,7 @@ public class MphToKphLabelConverter extends BaseConverter{
 		if (Long.class.isInstance(value))
         {
             if (getMeasurementType().equals(MeasurementType.METRIC))
-                return MathUtil.roundToNearestFive(MeasurementConversionUtil.fromMPHtoKPH(Long.class.cast(value).intValue())).toString();
+                return MathUtil.roundToNearestFive(MeasurementConversionUtil.fromMPHtoKPH(Long.class.cast(value).longValue())).toString();
         }
         
         if (Integer.class.isInstance(value))

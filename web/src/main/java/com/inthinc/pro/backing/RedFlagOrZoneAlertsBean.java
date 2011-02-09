@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -197,7 +198,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         List<String> displayedPhNumbers = new ArrayList<String>();
         if(!flag.getEscalationList().isEmpty()){
             for(AlertEscalationItem item: flag.getEscalationList()){
-                if(item.getEscalationOrder().equals(-1))
+                if(item.getEscalationOrder().equals(0))
                     alertView.setEscEmail(personDAO.findByID(item.getPersonID()).getFullNameWithPriEmail());
                 else
                     displayedPhNumbers.add(personDAO.findByID(item.getPersonID()).getFullNameWithPriPhone());
@@ -582,7 +583,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if(item.getEscEmail() == null || item.getEscEmail().equals("")){
                 flag.clearEscEmail();
             } else {
-                AlertEscalationItem newEscEmail = new AlertEscalationItem(flag.getEmailEscalationPersonID(), -1);
+                AlertEscalationItem newEscEmail = new AlertEscalationItem(flag.getEmailEscalationPersonID(), 0);
                 flag.clearEscEmail();
                 flag.getEscalationList().add(0,newEscEmail);
             }
@@ -593,7 +594,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 } else {
                     ArrayList<AlertEscalationItem> newPhNums = new ArrayList<AlertEscalationItem>();
                     for(AlertEscalationItem item: flag.getEscalationList()){
-                        if(item.getEscalationOrder()>=0){
+                        if(item.getEscalationOrder()>0){
                             newPhNums.add(item);
                         }
                     }
@@ -609,7 +610,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 flag.setMaxEscalationTries(item.getLimitValue());
                 flag.setMaxEscalationTryTime(null);
             } else if(LimitType.TIME.equals(item.getLimitType())) {
-                flag.setMaxEscalationTryTime(item.getLimitValue());
+                flag.setMaxEscalationTryTime(item.getLimitValue()*DateUtil.SECONDS_IN_MINUTE);
                 flag.setMaxEscalationTries(null);
             }
             flag.setEscalationTimeBetweenRetries(item.getDelay().getCode());
@@ -776,7 +777,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
             while(iterator.hasNext()){
                 AlertEscalationItem item = iterator.next();
-                if(item.getEscalationOrder()>=0) {
+                if(item.getEscalationOrder() > 0) {
                     iterator.remove();
                 }
             }
@@ -785,7 +786,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
             while(iterator.hasNext()){
                 AlertEscalationItem item = iterator.next();
-                if(item.getEscalationOrder()<0) {
+                if(item.getEscalationOrder()==0) {
                     iterator.remove();
                     break;
                 }
@@ -1010,6 +1011,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public List<SelectItem> getLimitTypes() {
             return SelectItemUtil.toList(LimitType.class, false);
         }
+        public void updateLimitValues(ValueChangeEvent event) {
+            
+            setLimitType((LimitType)event.getNewValue());
+        }
         public List<SelectItem> getLimitValues() {
             List<SelectItem> results = new ArrayList<SelectItem>();
             int[] limitBy;
@@ -1019,8 +1024,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 limitBy = CALL_LIMIT_MINUTES;
             
             for(int i: limitBy){
-             results.add(new SelectItem(i*DateUtil.SECONDS_IN_MINUTE, i+""));   
+                results.add(new SelectItem(i, i+""));   
             }
+//            for(int i: limitBy){
+//             results.add(new SelectItem(i*DateUtil.SECONDS_IN_MINUTE, i+""));   
+//            }
             return results;
         }
         public Delay getDelay() {
@@ -1031,8 +1039,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.delay = delay;
         }
         public String getLimitValueDisplay() {
-            if(LimitType.TIME.equals(getLimitType()) && limitValue != null)
-                return (limitValue/DateUtil.SECONDS_IN_MINUTE)+"";
+//            if(LimitType.TIME.equals(getLimitType()) && limitValue != null)
+//                return (limitValue/DateUtil.SECONDS_IN_MINUTE)+"";
             
             return limitValue+"";
         }
@@ -1129,7 +1137,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             
             if(null != oldEscalationList) {
                 for(AlertEscalationItem item: oldEscalationList){
-                    if(item.getEscalationOrder().equals(-1)){
+                    if(item.getEscalationOrder().equals(0)){
                         lastResortEmail = item;
                     }
                 }
@@ -1138,9 +1146,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if(lastResortEmail != null){
                 escalationList.add(lastResortEmail);
             }
-            int i=1;
+            int i=voiceEscalationPersonIDs.size();
             for(Integer personID : voiceEscalationPersonIDs){
-                escalationList.add(new AlertEscalationItem(personID,i++));
+                escalationList.add(new AlertEscalationItem(personID,i--));
             }
             setEscalationList(escalationList);
         }

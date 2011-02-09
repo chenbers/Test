@@ -338,6 +338,8 @@ public class DriverPerformanceBean extends BasePerformanceBean {
         reportCriteria.addParameter("SPEED_DUR", speedDurationBean.getDuration().toString());
         reportCriteria.addParameter("STYLE_DUR", styleDurationBean.getDuration().toString());
         reportCriteria.addParameter("SEATBELT_DUR", seatBeltDurationBean.getDuration().toString());
+        reportCriteria.addParameter("CRASHES_PER_MILLION_MILES", crashSummary.getCrashesPerMillionMilesString());
+        reportCriteria.addParameter("TOTAL_CRASHES",crashSummary.getTotalCrashes());
         reportCriteria.addChartDataSet(createSingleJasperDef(driverID, ScoreType.SCORE_OVERALL, durationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(driverID, ScoreType.SCORE_SPEEDING, speedDurationBean.getDuration()));
         reportCriteria.addChartDataSet(createSingleJasperDef(driverID, ScoreType.SCORE_DRIVING_STYLE, styleDurationBean.getDuration()));

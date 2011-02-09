@@ -2,7 +2,6 @@ package com.inthinc.pro.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -112,7 +111,6 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         this.vehicleIDs = vehicleIDs;
         this.vehicleTypes = vehicleTypes;
         this.notifyPersonIDs = notifyPersonIDs;
-//        this.emailTo = emailTo;
         this.status = Status.ACTIVE;
         this.speedSettings = speedSettings;
         this.hardAcceleration = hardAcceleration;
@@ -262,39 +260,6 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     {
         this.notifyPersonIDs = notifyPersonIDs;
     }
-
-//    public List<String> getEmailTo()
-//    {
-//        if (emailTo == null)
-//            return new ArrayList<String>();
-//        return emailTo;
-//    }
-//
-//    public void setEmailTo(List<String> emailTo)
-//    {
-//        this.emailTo = emailTo;
-//    }
-
-//    public String getEmailToString()
-//    {
-//        final StringBuilder sb = new StringBuilder();
-//        if (getEmailTo() != null)
-//            for (final String email : getEmailTo())
-//            {
-//                if (sb.length() > 0)
-//                    sb.append(", ");
-//                sb.append(email);
-//            }
-//        return sb.toString();
-//    }
-//
-//    public void setEmailToString(String emailToString)
-//    {
-//        if ((emailToString != null) && (emailToString.trim().length() > 0))
-//            setEmailTo(new ArrayList<String>(Arrays.asList(emailToString.split("[,; ]+"))));
-//        else
-//            setEmailTo(new ArrayList<String>());
-//    }
 
     public Status getStatus()
     {
@@ -459,41 +424,28 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     public void setEscalationList(List<AlertEscalationItem> escalationList) {
         this.escalationList = escalationList;
     }
+    /*
+     * returns just the voice escalation items
+     */
     public List<Integer>getVoiceEscalationPersonIDs(){
         
         List<Integer> voice = new ArrayList<Integer>();
         if(escalationList == null) return voice;
         for (AlertEscalationItem item : escalationList){
-            if (item.getEscalationOrder() != -1){
+            if (!item.getEscalationOrder().equals(0)){
                 voice.add(item.getPersonID());
             }
         }
         return voice;
     }
-//    public void setVoiceEscalationPersonIDs(List<Integer> voicePersonIDs){
-//        if(escalationList == null){
-//            escalationList = new ArrayList<AlertEscalationItem>();          
-//        }
-//        if (!escalationList.isEmpty()) { 
-//            
-//            Iterator<AlertEscalationItem> it = escalationList.iterator();
-//            while (it.hasNext()) {
-//                AlertEscalationItem aei = it.next();
-//                if (aei.getEscalationOrder() != -1) {
-//                    it.remove();
-//                }
-//            }
-//        }
-//        if(voicePersonIDs == null || voicePersonIDs.isEmpty()) return;
-//        int i = 1;
-//        for(Integer id:voicePersonIDs){
-//            escalationList.add(new AlertEscalationItem(id, i++));
-//        }
-//    }
+    /*
+     * returns just the email escalation item
+     */
     public Integer getEmailEscalationPersonID(){
+        
         if(escalationList == null) return null;
         for (AlertEscalationItem item : escalationList){
-            if (item.getEscalationOrder() == -1){
+            if (item.getEscalationOrder().equals(0)){
                 return item.getPersonID();
             }
         }
@@ -508,7 +460,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
             }
             if (!escalationList.isEmpty()) {                                    
                 for (AlertEscalationItem item : escalationList) {
-                    if (item.getEscalationOrder() == -1) {
+                    if (item.getEscalationOrder().equals(0)) {
                         item.setPersonID(escEmailPersonID);
                         foundExistingEscEmailPersonID = true;
                         break;
@@ -517,7 +469,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
             }
     
             if (!foundExistingEscEmailPersonID) {
-                escalationList.add(new AlertEscalationItem(escEmailPersonID, -1));
+                escalationList.add(new AlertEscalationItem(escEmailPersonID, 0));
             }
         }
     }

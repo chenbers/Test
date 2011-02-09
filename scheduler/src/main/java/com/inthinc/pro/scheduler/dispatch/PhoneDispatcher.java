@@ -169,12 +169,11 @@ public class PhoneDispatcher {
             // TODO HTTPS!!!!
 
             try {
-                boolean callOK = true;
                 int httpCode = httpClient.executeMethod(httpMethod);
                 if (httpCode != 200) {
-                    callOK = false;
                     logger.error("PhoneMessageJob Http Error " + httpCode);
-                } else {
+                } 
+                else {
                     // warning, this returns "success" even if the service fails to return vxml!
                     String body = httpMethod.getResponseBodyAsString();
                     if (!body.startsWith("success"))

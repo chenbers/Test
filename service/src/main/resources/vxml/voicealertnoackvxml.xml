@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <vxml version = "2.1">  
-	<var name="voxeoAudio" expr="'%s'"/> 
-	<var name="messageText" expr="'%s'"/> 
-	<var name="welcomeAudio" expr="voxeoAudio + 'iwi-welcome-new.wav'"/> 
-	<form>
-		<block>
-			<audio expr="welcomeAudio"  fetchhint="prefetch"/>
-			<prompt>
-				<value expr="messageText"/> 
-			</prompt>
-		</block>
-	</form>			
+<form>
+	<block>	
+		Sorry we could not reach you.  Goodbye.
+	</block>
+</form>
 </vxml>

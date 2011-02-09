@@ -244,7 +244,7 @@ public class DataGenForHelpScreenShots {
         notifyPersonIDList.add(notifyPersonIDs[0]);
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(notifyPersonIDs[0],1));
-        escalationList.add(new AlertEscalationItem(notifyPersonIDs[1], -1));
+        escalationList.add(new AlertEscalationItem(notifyPersonIDs[1], 0));
         List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
         RedFlagAlert zoneAlert = new RedFlagAlert(list,acctID, 
         		fleetUser.getUserID(),

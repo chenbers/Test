@@ -260,6 +260,5 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         // TODO Auto-generated method stub
         
     }
-    
 
 }

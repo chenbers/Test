@@ -582,7 +582,7 @@ public class SiloServiceTest {
         notifyPersonIDs.add(this.personList.get(1).getPersonID());
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(this.personList.get(0).getPersonID(),1));
-        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), -1));
+        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), 0));
         Integer[] speedSettings = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80 };
         List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING));
         RedFlagAlert redFlagAlert = new RedFlagAlert(list,acctID, userID, 
@@ -797,7 +797,7 @@ public class SiloServiceTest {
         notifyPersonIDs.add(this.personList.get(1).getPersonID());
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(this.personList.get(0).getPersonID(),1));
-        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), -1));
+        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(),0));
         List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
         RedFlagAlert zoneAlert = new RedFlagAlert(list,acctID, userID, 
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1339, dayOfWeek, groupIDList, null, // driverIDs

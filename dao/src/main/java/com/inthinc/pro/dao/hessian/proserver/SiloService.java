@@ -440,7 +440,4 @@ public interface SiloService extends HessianService
     Map<String, Object> setVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason);
     Map<String, Object> updateVehicleSettings(Integer vehicleID, Map<Integer, String> setMap, Integer userID, String reason);
     List<Map<String, Object>> getSensitivitySliderValues();
-    
-    // Alert escalation
-//    List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID);
 }

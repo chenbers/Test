@@ -1014,13 +1014,18 @@
 									</ui:include>
 								</td>
 								<td>
-      								<h:selectOneMenu id="redFlagAlertsLimitType" value="#{redFlagOrZoneAlertsBean.item.limitType}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+								<a4j:outputPanel id="limits">
+      								<h:selectOneMenu id="redFlagAlertsLimitType" value="#{redFlagOrZoneAlertsBean.item.limitType}" immediate="true" converter="SimpleBeanConverter" valueChangeListener="#{redFlagOrZoneAlertsBean.item.updateLimitValues}">
       									<f:selectItems value="#{redFlagOrZoneAlertsBean.item.limitTypes}"/> 
+							            <a4j:support event="onchange" reRender="redFlagAlertsLimitValue" ajaxSingle="true">
+							            
+							            </a4j:support>
       								</h:selectOneMenu>
       								<rich:spacer width="5px" height="1px" style="float:left;" />
-      								<h:selectOneMenu id="redFlagAlertsLimitValue" value="#{redFlagOrZoneAlertsBean.item.limitValue}" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
+      								<h:selectOneMenu id="redFlagAlertsLimitValue" value="#{redFlagOrZoneAlertsBean.item.limitValue}" immediate="true" converter="SimpleBeanConverter" onchange="checkMultiple(this)">
       									<f:selectItems value="#{redFlagOrZoneAlertsBean.item.limitValues}"/> 
       								</h:selectOneMenu>
+      							</a4j:outputPanel>
 								</td>
 							</tr>
 							<tr>

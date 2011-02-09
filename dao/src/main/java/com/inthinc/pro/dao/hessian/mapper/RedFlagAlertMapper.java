@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.inthinc.pro.dao.annotations.ConvertColumnToField;
 import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
-import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;

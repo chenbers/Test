@@ -322,7 +322,7 @@ System.out.println("account id " + itData.account.getAcctID());
         emailList.add("cjennings@inthinc.com");
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(itData.fleetUser.getPersonID(), 1));
-        escalationList.add(new AlertEscalationItem(itData.districtUser.getPersonID(), -1));
+        escalationList.add(new AlertEscalationItem(itData.districtUser.getPersonID(), 0));
         zoneAlert.setStartTOD(0);
         zoneAlert.setStopTOD(1439);
         List<Integer> emptyList = new ArrayList<Integer>();
@@ -418,7 +418,7 @@ System.out.println("account id " + itData.account.getAcctID());
         List<VehicleType> emptyVTList = new ArrayList<VehicleType>();
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(itData.fleetUser.getPersonID(), 1));
-        escalationList.add(new AlertEscalationItem(itData.districtUser.getPersonID(), -1));
+        escalationList.add(new AlertEscalationItem(itData.districtUser.getPersonID(), 0));
 
         redFlagAlert.setStartTOD(0);
         redFlagAlert.setStopTOD(1439);

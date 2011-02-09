@@ -1,5 +1,6 @@
 package com.inthinc.pro.dao.jdbc;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -182,141 +183,181 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         return null;
     }
 
+//    @Override
+//    public synchronized List<AlertMessageBuilder> getMessageBuilders(AlertMessageDeliveryType messageType) 
+//    {
+//        Connection conn = null;
+//        PreparedStatement statement = null;
+//        ResultSet resultSet = null;
+//        Long uid=-1L;
+//        Integer numEscalationMsgs=0; //used to avoid unnecessary queries that won't have results
+//        Integer numNoEscalationMsgs=0;
+//        ArrayList<AlertMessageBuilder> recordList = new ArrayList<AlertMessageBuilder>();
+//              
+//        try
+//        {
+//            conn = getConnection();
+///* 
+//            
+//            statement = (PreparedStatement) conn.prepareStatement("UPDATE msgQueueGuid set id = LAST_INSERT_ID((id+1)%1000000000) WHERE sequence=1", Statement.RETURN_GENERATED_KEYS);
+//            statement.executeUpdate();
+//             We are using the mysql driver specfic method to retreive the LastInsertID(). If there are issues with this, we can use one of the following methods:
+//             http://dev.mysql.com/doc/refman/5.1/en/connector-j-usagenotes-basic.html#connector-j-examples-autoincrement-getgeneratedkeys
+//             http://dev.mysql.com/doc/refman/5.1/en/connector-j-usagenotes-basic.html#connector-j-examples-autoincrement-select
+//             
+//             this was throwing class cast exception, so went with  #2 above
+//            uid=((com.mysql.jdbc.PreparedStatement)statement).getLastInsertID();
+//*/
+//            
+//            uid = getLastInsertID(conn);
+//
+////update the owner (ie the job number) in the new message records that are of the right delivery type and that don't have an owner yet and are not voice escalation items
+//            statement = (PreparedStatement) conn.prepareStatement(
+//                    "UPDATE message SET owner=?, message.modified=utc_timestamp() WHERE owner=0 AND status = 1 AND deliveryMethodID = ? LIMIT 100");
+//            statement.setLong(1, uid);
+//            statement.setInt(2, messageType.getCode());
+//            numNoEscalationMsgs=statement.executeUpdate();    
+//
+////            if (AlertMessageDeliveryType.PHONE.equals(messageType))
+////            {
+//                conn.setAutoCommit(false);
+//                
+//                //prepare to send escalations to those that have status=3 (Awaiting acknowledge) and that are due to be sent
+//                statement = (PreparedStatement) conn.prepareStatement(
+//                    "UPDATE message" 
+//                        + " JOIN alert ON alert.alertID=message.alertID"
+//                        + " SET message.owner=?, message.escalationTryTime=utc_timestamp(), message.escalationTryCount=ifnull(message.escalationTryCount,0)+1, message.modified=utc_timestamp(), message.escalationStartTime=IF(ISNULL(message.escalationStartTime),utc_timestamp(),message.escalationStartTime)"
+//                        + " WHERE message.status=3 AND message.deliveryMethodID = ? AND (message.owner=0 OR DATE_ADD(message.escalationTryTime, INTERVAL alert.escalationCallDelay SECOND) < utc_timestamp())");
+//                statement.setLong(1, uid);
+//                statement.setInt(2, messageType.getCode());
+//                numEscalationMsgs=statement.executeUpdate();               
+//
+//                //update escalations with the next person to be called or emailed if all calls have failed
+//                if (numEscalationMsgs>0)
+//                {
+//                    if(AlertMessageDeliveryType.PHONE.equals(messageType)){
+//                        statement = (PreparedStatement) conn.prepareStatement(
+//                                "UPDATE message "
+//                                    + " JOIN alert ON alert.alertID=message.alertID"
+//                                    + " LEFT JOIN alertEscalationPersons nextPerson ON message.alertID=nextPerson.alertID AND message.escalationOrdinal+1 = nextPerson.escalationOrder"
+//                                    + " JOIN alertEscalationPersons mailPerson ON message.alertID=mailPerson.alertID AND mailPerson.escalationOrder = -1"
+//                                    + " SET message.escalationStartTime=utc_timestamp(), message.escalationTryCount=1, message.modified=utc_timestamp(), message.escalationOrdinal=message.escalationOrdinal+1"
+//                                    + " , message.personID = IF(ISNULL(nextPerson.personID), mailPerson.personID, nextPerson.personID)"
+//                                    + " , message.deliveryMethodID = IF(ISNULL(nextPerson.personID), 3, message.deliveryMethodID)"
+//                                    + " WHERE message.status=3 AND message.owner = ? "
+//                                    + " AND (((alert.escalationTryTimeLimit IS NOT NULL) AND DATE_ADD(message.escalationStartTime, INTERVAL alert.escalationTryTimeLimit SECOND) < utc_timestamp())"
+//                                    + "        OR ((alert.escalationTryLimit IS NOT NULL) AND message.escalationTryCount > alert.escalationTryLimit))");
+//                        statement.setLong(1, uid);
+//                        statement.executeUpdate(); 
+//                        
+//                        //remove from the job those that now don't have the chosen delivery type. 
+//                        statement = (PreparedStatement) conn.prepareStatement(
+//                                "UPDATE message "
+//                                + "SET owner=0, modified=utc_timestamp()"
+//                                + " WHERE owner = ? AND deliveryMethodID != ?"
+//                                );
+//                        statement.setLong(1, uid);
+//                        statement.setInt(2, messageType.getCode());
+//                        statement.executeUpdate(); 
+//                        
+//                    }                    
+//                    statement = (PreparedStatement) conn.prepareStatement(
+//                            "UPDATE message "
+//                            + "SET status=2, modified=utc_timestamp()"
+//                            + " WHERE status=1 and owner = ?"
+//                            );
+//                    statement.setLong(1, uid);
+//                    statement.executeUpdate();  
+//
+//                }
+//                
+//                conn.commit();
+//                conn.setAutoCommit(true);
+////            }
+//            // Grab all the messages for this job
+//            statement = (PreparedStatement) conn.prepareStatement(
+//                    "SELECT msgID,noteID,personID,alertID,alertTypeID,created,modified,deliveryMethodID,address,message,status,level,owner,zoneID, IF(status=2,0,1) as acknowledge FROM message WHERE owner=?");
+//            statement.setLong(1, uid);
+//            resultSet = statement.executeQuery();
+//
+//            AlertMessage alertMessage = null;
+//            while ((numNoEscalationMsgs>0 || numEscalationMsgs>0) && resultSet.next())
+//            {
+//                alertMessage = new AlertMessage();
+//                alertMessage.setMessageID(resultSet.getInt("msgID"));
+//                alertMessage.setNoteID(resultSet.getLong("noteID"));
+//                alertMessage.setPersonID(resultSet.getInt("personID"));
+//                alertMessage.setAlertID(resultSet.getInt("alertID"));
+//                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt("alertTypeID")));
+////System.out.println("alertMessage type: " + alertMessage.getAlertMessageType());                
+//                alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt("deliveryMethodID")));
+//                alertMessage.setMessage(resultSet.getString("message"));
+//                
+//                //We ignore what harry returns in address column for address aka phone/email
+//                
+//                alertMessage.setLevel(RedFlagLevel.valueOf(resultSet.getInt("level")));
+//                alertMessage.setZoneID(resultSet.getInt("zoneID"));
+//                alertMessage.setAcknowledge(resultSet.getBoolean("acknowledge"));
+//                
+//                Event event = eventDAO.findByID(alertMessage.getNoteID());
+//                AlertMessageBuilder alertMessageBuilder = this.createAlertMessageBuilder(alertMessage, event, messageType);
+//                //Just this time set it to cancelled
+//                if(alertMessageBuilder != null){
+//                    recordList.add(alertMessageBuilder); 
+//                }
+//                
+//                statement = (PreparedStatement) conn.prepareStatement("INSERT INTO messageLog (msgID, personID, created) VALUES(?, ?, utc_timestamp())");
+//                statement.setInt(1,alertMessage.getMessageID());
+//                statement.setInt(2,alertMessage.getPersonID());
+//                statement.execute();
+//            }
+//            
+//        }   // end try
+//        catch (SQLException e)
+//        { // handle database hosLogs in the usual manner
+//            throw new ProDAOException(statement.toString(), e);
+//        }   // end catch
+//        finally
+//        { // clean up and release the connection
+//            close(resultSet);
+//            close(statement);
+//            close(conn);
+//        } // end finally
+//
+//        return recordList;
+//        
+//    }
     @Override
-    public List<AlertMessageBuilder> getMessageBuilders(AlertMessageDeliveryType messageType) 
+    public synchronized List<AlertMessageBuilder> getMessageBuilders(AlertMessageDeliveryType messageType) 
     {
         Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        Long uid=-1L;
-        Integer numEscalationMsgs=0; //used to avoid unnecessary queries that won't have results
-        Integer numNoEscalationMsgs=0;
-        ArrayList<AlertMessageBuilder> recordList = new ArrayList<AlertMessageBuilder>();
+        Long owner=-1L;
+        List<AlertMessageBuilder> recordList = new ArrayList<AlertMessageBuilder>();
               
         try
         {
             conn = getConnection();
-/* 
             
-            statement = (PreparedStatement) conn.prepareStatement("UPDATE msgQueueGuid set id = LAST_INSERT_ID((id+1)%1000000000) WHERE sequence=1", Statement.RETURN_GENERATED_KEYS);
-            statement.executeUpdate();
-             We are using the mysql driver specfic method to retreive the LastInsertID(). If there are issues with this, we can use one of the following methods:
-             http://dev.mysql.com/doc/refman/5.1/en/connector-j-usagenotes-basic.html#connector-j-examples-autoincrement-getgeneratedkeys
-             http://dev.mysql.com/doc/refman/5.1/en/connector-j-usagenotes-basic.html#connector-j-examples-autoincrement-select
-             
-             this was throwing class cast exception, so went with  #2 above
-            uid=((com.mysql.jdbc.PreparedStatement)statement).getLastInsertID();
-*/
+            owner = getNextJobOwner(conn);
             
-            uid = getLastInsertID(conn);
-
-//update the owner (ie the job number) in the new message records that are of the right delivery type and that don't have an owner yet and are not voice escalation items
-            statement = (PreparedStatement) conn.prepareStatement(
-                    "UPDATE message SET owner=?, message.modified=utc_timestamp() WHERE owner=0 AND status = 1 AND deliveryMethodID = ? LIMIT 100");
-            statement.setLong(1, uid);
-            statement.setInt(2, messageType.getCode());
-            numNoEscalationMsgs=statement.executeUpdate();    
-
-//            if (AlertMessageDeliveryType.PHONE.equals(messageType))
-//            {
-                conn.setAutoCommit(false);
-
-                //prepare to send escalations to those that have status=3 (Awaiting acknowledge) and that are due to be sent
-                statement = (PreparedStatement) conn.prepareStatement(
-                    "UPDATE message" 
-                        + " JOIN alert ON alert.alertID=message.alertID"
-                        + " SET message.owner=?, message.escalationTryTime=utc_timestamp(), message.escalationTryCount=message.escalationTryCount+1, message.modified=utc_timestamp(), message.escalationStartTime=IF(ISNULL(message.escalationStartTime),utc_timestamp(),message.escalationStartTime)"
-                        + " WHERE message.status=3 AND message.deliveryMethodID = ? AND (message.owner=0 OR DATE_ADD(message.escalationTryTime, INTERVAL alert.escalationCallDelay SECOND) < utc_timestamp())");
-                statement.setLong(1, uid);
-                statement.setInt(2, messageType.getCode());
-                numEscalationMsgs=statement.executeUpdate();               
-
-                //update escalations with the next person to be called or emailed if all calls have failed
-                if (numEscalationMsgs>0)
-                {
-                    statement = (PreparedStatement) conn.prepareStatement(
-                            "UPDATE message "
-                                + " JOIN alert ON alert.alertID=message.alertID"
-                                + " LEFT JOIN alertEscalationPersons nextPerson ON message.alertID=nextPerson.alertID AND message.escalationOrdinal+1 = nextPerson.escalationOrder"
-                                + " JOIN alertEscalationPersons mailPerson ON message.alertID=mailPerson.alertID AND mailPerson.escalationOrder = -1"
-                                + " SET message.escalationStartTime=utc_timestamp(), message.escalationTryCount=1, message.modified=utc_timestamp(), message.escalationOrdinal=message.escalationOrdinal+1"
-                                + " , message.personID = IF(ISNULL(nextPerson.personID), mailPerson.personID, nextPerson.personID)"
-                                + " , message.deliveryMethodID = IF(ISNULL(nextPerson.personID), 3, message.deliveryMethodID)"
-                                + " WHERE message.status=3 AND message.owner = ? "
-                                + " AND (((alert.escalationTryTimeLimit IS NOT NULL) AND DATE_ADD(message.escalationStartTime, INTERVAL alert.escalationTryTimeLimit SECOND) < utc_timestamp())"
-                                + "        OR ((alert.escalationTryLimit IS NOT NULL) AND message.escalationTryCount > alert.escalationTryLimit))");
-                    statement.setLong(1, uid);
-                    statement.executeUpdate(); 
-                    
-                    //remove from the job those that now don't have the chosen delivery type. 
-                    statement = (PreparedStatement) conn.prepareStatement(
-                            "UPDATE message "
-                            + "SET owner=0, modified=utc_timestamp()"
-                            + " WHERE owner = ? AND deliveryMethodID != ?"
-                            );
-                    statement.setLong(1, uid);
-                    statement.setInt(2, messageType.getCode());
-                    statement.executeUpdate(); 
-                }
-                
-                conn.commit();
-                conn.setAutoCommit(true);
-//            }
-            // Grab all the messages for this job
-            statement = (PreparedStatement) conn.prepareStatement(
-                    "SELECT msgID,noteID,personID,alertID,alertTypeID,created,modified,deliveryMethodID,address,message,status,level,owner,zoneID, IF(status=2,0,1) as acknowledge FROM message WHERE (status=1 OR status=3) AND owner=?");
-            statement.setLong(1, uid);
-            resultSet = statement.executeQuery();
-
-            AlertMessage alertMessage = null;
-            while ((numNoEscalationMsgs>0 || numEscalationMsgs>0) && resultSet.next())
-            {
-                alertMessage = new AlertMessage();
-                alertMessage.setMessageID(resultSet.getInt("msgID"));
-                alertMessage.setNoteID(resultSet.getLong("noteID"));
-                alertMessage.setPersonID(resultSet.getInt("personID"));
-                alertMessage.setAlertID(resultSet.getInt("alertID"));
-                alertMessage.setAlertMessageType(AlertMessageType.valueOf(resultSet.getInt("alertTypeID")));
-//System.out.println("alertMessage type: " + alertMessage.getAlertMessageType());                
-                alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(resultSet.getInt("deliveryMethodID")));
-                alertMessage.setMessage(resultSet.getString("message"));
-                
-                //We ignore what harry returns in address column for address aka phone/email
-                
-                alertMessage.setLevel(RedFlagLevel.valueOf(resultSet.getInt("level")));
-                alertMessage.setZoneID(resultSet.getInt("zoneID"));
-                alertMessage.setAcknowledge(resultSet.getBoolean("acknowledge"));
-                
-                Event event = eventDAO.findByID(alertMessage.getNoteID());
-                AlertMessageBuilder alertMessageBuilder = this.createAlertMessageBuilder(alertMessage, event, messageType);
-                //Just this time set it to cancelled
-                if(alertMessageBuilder != null){
-                    recordList.add(alertMessageBuilder); 
-                }
-                
-                statement = (PreparedStatement) conn.prepareStatement("INSERT INTO messageLog (msgID, personID, created) VALUES(?, ?, utc_timestamp())");
-                statement.setInt(1,alertMessage.getMessageID());
-                statement.setInt(2,alertMessage.getPersonID());
-                statement.execute();
-            }
+            runMessageWatchDog(conn, owner, messageType);
             
-        }   // end try
+            recordList = getScheduledMessages(conn, owner, messageType);
+            
+        }
         catch (SQLException e)
-        { // handle database hosLogs in the usual manner
-            throw new ProDAOException(statement.toString(), e);
+        { // handle database errors in the usual manner
+            throw new ProDAOException("getMessageBuilders", e);
         }   // end catch
         finally
         { // clean up and release the connection
-            close(resultSet);
-            close(statement);
             close(conn);
         } // end finally
 
         return recordList;
-        
     }
 
-    private Long getLastInsertID(Connection conn) 
+    private Long getNextJobOwner(Connection conn) 
     {
         Statement statement = null;
         ResultSet resultSet = null;
@@ -333,17 +374,106 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             }
         }   // end try
         catch (SQLException e)
-        { // handle database hosLogs in the usual manner
+        { // handle database errors in the usual manner
             throw new ProDAOException(statement.toString(), e);
         }   // end catch
         finally
-        { // clean up and release the connection
+        { // clean up 
             close(resultSet);
             close(statement);
         } // end finally   
         return uid;
     }
+    private void runMessageWatchDog(Connection conn, Long owner, AlertMessageDeliveryType messageType){
+        
+        //call stored procedure to update escalations and pick messages to send
+        CallableStatement callableStatement = null;
+        try{
+            callableStatement = conn.prepareCall("call messageWatchDog(?,?)"); 
+            callableStatement.setInt(1, messageType.getCode()); 
+            callableStatement.setLong(2, owner); 
     
+            callableStatement.execute();
+        }
+        catch (SQLException e)
+        { // handle database errors in the usual manner
+            throw new ProDAOException(callableStatement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up 
+            close(callableStatement);
+        } // end finally   
+    }
+    
+    private List<AlertMessageBuilder> getScheduledMessages(Connection conn, Long owner,AlertMessageDeliveryType messageType){
+        
+        List<AlertMessageBuilder> recordList = new ArrayList<AlertMessageBuilder>();
+        
+        PreparedStatement preparedStatement = null;
+        ResultSet messageResultSet = null;
+        try{
+            // Grab all the messages for this job
+            preparedStatement = (PreparedStatement) conn.prepareStatement(
+                    "SELECT msgID,noteID,personID,alertID,alertTypeID,created,modified,deliveryMethodID,address,message,status,level,owner,zoneID, IF(status=2,0,1) as acknowledge FROM message WHERE owner=?");
+            preparedStatement.setLong(1, owner);
+            messageResultSet = preparedStatement.executeQuery();
+            
+            AlertMessage alertMessage = null;
+            while (messageResultSet.next())
+            {
+                alertMessage = new AlertMessage();
+                alertMessage.setMessageID(messageResultSet.getInt("msgID"));
+                alertMessage.setNoteID(messageResultSet.getLong("noteID"));
+                alertMessage.setPersonID(messageResultSet.getInt("personID"));
+                alertMessage.setAlertID(messageResultSet.getInt("alertID"));
+                alertMessage.setAlertMessageType(AlertMessageType.valueOf(messageResultSet.getInt("alertTypeID")));
+    //System.out.println("alertMessage type: " + alertMessage.getAlertMessageType());                
+                alertMessage.setAlertMessageDeliveryType(AlertMessageDeliveryType.valueOf(messageResultSet.getInt("deliveryMethodID")));
+                alertMessage.setMessage(messageResultSet.getString("message"));
+                              
+                alertMessage.setLevel(RedFlagLevel.valueOf(messageResultSet.getInt("level")));
+                alertMessage.setZoneID(messageResultSet.getInt("zoneID"));
+                alertMessage.setAcknowledge(messageResultSet.getBoolean("acknowledge"));
+                
+                Event event = eventDAO.findByID(alertMessage.getNoteID());
+                AlertMessageBuilder alertMessageBuilder = this.createAlertMessageBuilder(alertMessage, event, messageType);
+                //Just this time set it to cancelled
+                if(alertMessageBuilder != null){
+                    recordList.add(alertMessageBuilder); 
+                }
+                
+                logMessage(conn, alertMessage.getMessageID(), alertMessage.getPersonID());
+            }
+        }
+        catch (SQLException e)
+        { // handle database errors in the usual manner
+            throw new ProDAOException(preparedStatement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up 
+            close(preparedStatement);
+            close(messageResultSet);
+        } // end finally   
+        return recordList;
+    }
+    private void logMessage(Connection conn, Integer messageID,Integer personID){
+        PreparedStatement preparedStatement = null;
+        try{
+            preparedStatement = conn.prepareStatement("INSERT INTO messageLog (msgID, personID, created) VALUES(?, ?, utc_timestamp())");
+            preparedStatement.setInt(1,messageID);
+            preparedStatement.setInt(2,personID);
+            preparedStatement.execute();
+        }
+        catch (SQLException e)
+        { // handle database errors in the usual manner
+            throw new ProDAOException(preparedStatement.toString(), e);
+        }   // end catch
+        finally
+        { // clean up 
+            close(preparedStatement);
+        } // end finally   
+
+    }
     private AlertMessageBuilder createAlertMessageBuilder(AlertMessage alertMessage, Event event, AlertMessageDeliveryType messageType) {
         if (alertMessage.getPersonID() == null || alertMessage.getPersonID() == 0 || event == null) {
             logger.debug("Person ID or Event is Null " + alertMessage.getPersonID() + event);
@@ -581,7 +711,8 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                     
                     if (status == AlertEscalationStatus.CANCELED)
                         redFlag.setSent(AlertSentStatus.CANCELED);
-                    else if (status == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE || status == AlertEscalationStatus.NEW)
+                    else if (status == AlertEscalationStatus.ESCALATED_AWAITING_ACKNOWLEDGE || 
+                                status == AlertEscalationStatus.NEW)
                         redFlag.setSent(AlertSentStatus.PENDING);
                     else if (status == AlertEscalationStatus.SENT || status == AlertEscalationStatus.ESCALATED_ACKNOWLEDGED)
                         redFlag.setSent(AlertSentStatus.SENT);

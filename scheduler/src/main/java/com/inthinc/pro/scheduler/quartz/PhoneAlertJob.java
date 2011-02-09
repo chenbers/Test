@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import com.inthinc.pro.dao.util.PhoneNumberUtil;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
-import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
 public class PhoneAlertJob extends BaseAlertJob
 {
@@ -19,33 +19,44 @@ public class PhoneAlertJob extends BaseAlertJob
     protected void executeInternal(JobExecutionContext ctx) throws JobExecutionException
     {
         logger.debug("PhoneAlertJob: START");
-//        List<AlertMessageBuilder> messageList = getMessageBuilders(AlertMessageDeliveryType.PHONE);
-//        //send all messages for one person the same thread so they don't get calls piling up
-//        //First sort by address
-//        Collections.sort(messageList);
-//        
-//        List<AlertMessageBuilder> userList =  new ArrayList<AlertMessageBuilder>();
-//        String currentAddress = null;
-//        for (AlertMessageBuilder message : messageList)
-//        {
-//            if (message == null) continue;
-//            
-//            if (message.getAddress().equalsIgnoreCase(currentAddress)){
-//                userList.add(message);
-//            }
-//            else {
-//                //dispatch this list
-//                dispatchList(userList);
-//                //set to get next batch
-//                userList = new ArrayList<AlertMessageBuilder>();
-//                currentAddress = message.getAddress();
-//                userList.add(message);
-//            }
-//            
-//        }
+        List<AlertMessageBuilder> messageList = getMessageBuilders(AlertMessageDeliveryType.PHONE);
+        
+        if (messageList.isEmpty()) return;
+        
+        //send all messages for one person the same thread so they don't get calls piling up
+        //First sort by address
+        unformatPhoneNumbers(messageList);
+        Collections.sort(messageList);
+        
+        List<AlertMessageBuilder> userList =  new ArrayList<AlertMessageBuilder>();
+        String currentAddress = messageList.get(0).getAddress();
+        for (AlertMessageBuilder message : messageList)
+        {
+            if (message == null) continue;
+            
+            if (message.getAddress().equalsIgnoreCase(currentAddress)){
+                userList.add(message);
+            }
+            else {
+                //dispatch this list
+                dispatchList(userList);
+                //set to get next batch
+                userList = new ArrayList<AlertMessageBuilder>();
+                currentAddress = message.getAddress();
+                userList.add(message);
+            }
+        }
+        //Send last list
+        if (!userList.isEmpty()){
+            dispatchList(userList);
+        }
         logger.debug("PhoneAlertJob: END");
     }
-    
+    private void unformatPhoneNumbers(List<AlertMessageBuilder> messageList){
+        for (AlertMessageBuilder message : messageList){
+            message.setAddress(PhoneNumberUtil.formatPhone(message.getAddress(),"{0}{1}{2}"));
+        }        
+    }
     private void dispatchList(List<AlertMessageBuilder> userList){
         
 //        for (AlertMessageBuilder message : userList)
