@@ -73,7 +73,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         {
             conn = getConnection();
             // if (status == 1) status=2; else if (status == 3) status= 4; else status = status;
-            statement = (PreparedStatement) conn.prepareStatement("UPDATE message SET status=IF(status=1,2,IF(status=6,4,status)), modified=utc_timestamp() WHERE msgID=?");
+            statement = (PreparedStatement) conn.prepareStatement("UPDATE message SET status=IF(status=1,2,IF(status=3 or status=6,4,status)), modified=utc_timestamp() WHERE msgID=?");
             statement.setInt(1, msgID);
             numRows=statement.executeUpdate();
         }   // end try
