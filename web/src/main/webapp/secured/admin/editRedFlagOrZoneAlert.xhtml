@@ -200,15 +200,15 @@
                               <h:outputText value="#{messages.editRedFlag_notification}" />
                             </td>
                             <td>
-								<h:selectOneMenu id="severityLevel" value="#{redFlagOrZoneAlertsBean.item.severityLevel}" onchange="checkMultiple(this);">
-                                      <f:selectItem itemValue="INFO" itemLabel="#{messages.redFlag_info}" />
-                                      <f:selectItem itemValue="WARNING" itemLabel="#{messages.redFlag_warning}" />
-                                      <f:selectItem itemValue="CRITICAL" itemLabel="#{messages.redFlag_critical}" />
+								<h:selectOneMenu id="severityLevel" value="#{redFlagOrZoneAlertsBean.item.severityLevel}" converter="SimpleBeanConverter" onchange="checkMultiple(this);" >
+                                      <f:selectItems value="#{redFlagOrZoneAlertsBean.item.severityValues}" />
+                                      <a4j:support event="onblur" reRender="redFlagAlertsLimitValue" ajaxSingle="true">
+                                      	<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.severityLevel}" value="#{redFlagOrZoneAlertsBean.item.severityLevel}"></f:setPropertyActionListener>
+                                      	<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.peoplePicker.outdated}" value="#{true}"></f:setPropertyActionListener>
+							          </a4j:support>
                                 </h:selectOneMenu>
                             </td>
                           </tr>
-                          
-                          <h:outputText value="#{messages.editRedFlag_notification}" />
 							<tr>
 								<td width="115" valign="top">
 									<ui:include src="../../includes/admin/inputLabel.xhtml">

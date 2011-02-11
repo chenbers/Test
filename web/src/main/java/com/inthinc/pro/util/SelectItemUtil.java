@@ -12,7 +12,8 @@ public class SelectItemUtil
     /**
      * 
      * @param clazz - Enumeration (i.g. GroupType.class)
-     * @param includeEmptySet - If TRUE will insert an empty select item in the begining of the list
+     * @param includeEmptySet - If TRUE will insert an empty select item in the beginning of the list
+     * @param ignoreList - any Enum<T> elements that should not be included in the returned list of SelectItems
      * @return List of Select Items
      */
     public static <T extends Enum<T>> List<SelectItem> toList(Class<T> clazz,Boolean includeEmptySet,T... ignoreList)
