@@ -17,6 +17,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -42,7 +43,10 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     private AutocompletePicker escalationEmailPicker;
     private T                  oldItem;
 //    private String             oldEmailToString;
-
+    @Override
+    public String toString() {
+        return "BaseAdminAlertsBean: [assignType="+assignType+", oldItem="+oldItem+", this.getClass()="+this.getClass()+"]";
+    }
     public void setPersonDAO(PersonDAO personDAO)
     {
         this.personDAO = personDAO;
@@ -241,13 +245,20 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
     public AutocompletePicker getPeoplePicker()
     {
-        if (peoplePicker == null)
+        RedFlagLevel severityLevel = (this.oldItem instanceof RedFlagAlert)?((RedFlagAlert)this.oldItem).getSeverityLevel():null;
+        if (peoplePicker == null || (peoplePicker.size() < 1) || peoplePicker.isOutdated())
         {
             //final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
             final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            for (final Person person : people) 
-                allUsers.add(new SelectItem(person.getPersonID(), person.getFirst() + " " + person.getLast()));
+            for (final Person person : people) {
+                //only add users if they have values for the severity level of this alert
+                if(   (RedFlagLevel.INFO.equals(severityLevel)     && person.getInfo() != null && person.getInfo()>0)
+                   || (RedFlagLevel.WARNING.equals(severityLevel)  && person.getWarn() != null && person.getWarn()>0)
+                   || (RedFlagLevel.CRITICAL.equals(severityLevel) && person.getCrit() != null && person.getCrit()>0)) {
+                    allUsers.add(new SelectItem(person.getPersonID(), person.getFirst() + " " + person.getLast()));
+                }
+            }
             MiscUtil.sortSelectItems(allUsers);
 
             final ArrayList<SelectItem> notifyPeople = getNotifyPicked();

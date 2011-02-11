@@ -17,6 +17,7 @@ public class AutocompletePicker
     private List<SelectItem> pickFrom;
     private List<SelectItem> picked;
     private String           value;
+    private boolean          isOutdated = false;
 
     public AutocompletePicker(List<SelectItem> pickFrom)
     {
@@ -28,7 +29,15 @@ public class AutocompletePicker
         this.pickFrom = pickFrom;
         this.picked = picked;
     }
-
+        
+    @Override
+    public String toString() {
+        return "AutoCompletePicker: [pickFrom.size()="+pickFrom.size()+", picked.size()="+picked.size()+", value="+this.value+"]";
+    }
+    public Integer size(){
+        return ((pickFrom!=null)?pickFrom.size():0)
+            +((picked!=null)?picked.size():0);
+    }
     public List<SelectItem> getPickFrom()
     {
         return pickFrom;
@@ -101,7 +110,7 @@ public class AutocompletePicker
         }
         return result;
     }
-    public boolean removeByLabel(List<SelectItem> orig, List<SelectItem> remove){
+    public static boolean removeByLabel(List<SelectItem> orig, List<SelectItem> remove){
         boolean changed = false;
         for (final Iterator<SelectItem> origIterator = orig.iterator(); origIterator.hasNext();) {
             SelectItem item = origIterator.next();
@@ -140,7 +149,6 @@ public class AutocompletePicker
         }
         value = null;
     }
-    
     public void removeItem() {
         if (value != null) {
             for (final Iterator<SelectItem> pickedIterator = picked.iterator(); pickedIterator.hasNext();) {
@@ -155,4 +163,13 @@ public class AutocompletePicker
             value = null;
         }
     }
+
+    public void setOutdated(boolean isOutdated) {
+        this.isOutdated = isOutdated;
+    }
+
+    public boolean isOutdated() {
+        return isOutdated;
+    }
+
 }

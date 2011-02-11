@@ -793,7 +793,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
         }
         private void initAlertMessageTypeMap(){
-            
             selectedAlertTypes = new HashMap<String, Boolean>();
             for (AlertMessageType amt : EnumSet.allOf(AlertMessageType.class)){
                 selectedAlertTypes.put(amt.name(), false);
@@ -1012,8 +1011,10 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             return SelectItemUtil.toList(LimitType.class, false);
         }
         public void updateLimitValues(ValueChangeEvent event) {
-            
             setLimitType((LimitType)event.getNewValue());
+        }
+        public List<SelectItem> getSeverityValues() {
+            return SelectItemUtil.toList(RedFlagLevel.class, false, RedFlagLevel.NONE);
         }
         public List<SelectItem> getLimitValues() {
             List<SelectItem> results = new ArrayList<SelectItem>();
@@ -1179,5 +1180,4 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     public void setRedFlagAlertsDAO(RedFlagAlertDAO redFlagAlertsDAO) {
         this.redFlagAlertsDAO = redFlagAlertsDAO;
     }
-
 }
