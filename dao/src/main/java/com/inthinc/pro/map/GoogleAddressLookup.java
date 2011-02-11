@@ -278,7 +278,7 @@ public class GoogleAddressLookup extends AddressLookup {
                             placemark.setAccuracy(Integer.parseInt(attributes.get("Accuracy")));
                         } else {
                             //not finding accuracy is a problem, but because there are typicaly multiple results we don't want to Throw an exception
-                            System.out.println("there was a problem... accuracy was not found on ONE of the placemarks?");
+                            //System.out.println("there was a problem... accuracy was not found on ONE of the placemarks?");
                         }
                     } else if ("address".equalsIgnoreCase(name)) {
                         if(placemark.getAddress() == null)//TODO: catching weird artifacts on address, looks like it's because of the newline?

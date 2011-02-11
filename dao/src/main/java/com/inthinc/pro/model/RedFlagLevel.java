@@ -57,5 +57,3 @@ public enum RedFlagLevel implements BaseEnum
         return description;
     }
 }
-
-

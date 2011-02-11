@@ -239,4 +239,8 @@ public class Device extends BaseEntity implements HasAccountId
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
+    @Override
+    public String toString() {
+        return "Device: [name="+name+", deviceID="+deviceID+", imei="+this.imei+", altimei="+this.altimei+" ]";
+    }
 }
