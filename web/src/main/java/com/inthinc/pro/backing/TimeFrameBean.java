@@ -23,8 +23,19 @@ public class TimeFrameBean  extends BaseBean {
     
 	private List<SelectItem> selectItems;
 	private Map<String, TimeFrame> timeFrameMap;
+	
+	private boolean yearSelection;
 
-	public List<SelectItem> getSelectItems() {
+	public boolean isYearSelection() {
+        return yearSelection;
+    }
+
+    public void setYearSelection(boolean yearSelection) {
+        this.yearSelection = yearSelection;
+        this.selectItems = null;
+    }
+
+    public List<SelectItem> getSelectItems() {
 		if (selectItems == null) {
 			timeFrameMap = new HashMap<String, TimeFrame>();
 			selectItems = new ArrayList<SelectItem>();
@@ -38,7 +49,8 @@ public class TimeFrameBean  extends BaseBean {
 			addItem(TimeFrame.WEEK);
 			addItem(TimeFrame.MONTH);
 			addItem(TimeFrame.LAST_THIRTY_DAYS);
-			addItem(TimeFrame.YEAR);
+			if (yearSelection)
+			    addItem(TimeFrame.YEAR);
 			
 			if (getTimeFrameKey() == null)
 				setTimeFrameKey(TimeFrame.TODAY.name());

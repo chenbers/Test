@@ -34,7 +34,8 @@ import com.inthinc.pro.util.MessageUtil;
 public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 	
 
-	/**
+
+    /**
 	 * 
 	 */
 	private static final long serialVersionUID = 3166689931697428969L;
@@ -74,6 +75,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
     private Integer selectedAlertID;
     
 
+    
     public Map<Integer, RedFlagEscalationDetails> getDetailsMap() {
         return detailsMap;
     }
@@ -213,6 +215,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
         
 		tableDataProvider.setDateTimeZone(DateTimeZone.forTimeZone(getUser().getPerson().getTimeZone()));
         tableDataProvider.setSort(new TableSortField(SortOrder.DESCENDING, "time"));
+        tableDataProvider.getTimeFrameBean().setYearSelection(true);
 		
 		table = new BasePaginationTable<RedFlag>();
 		table.initModel(tableDataProvider);

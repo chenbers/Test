@@ -31,6 +31,14 @@ public class PagingEmergencyEventsBean extends PagingEventsBean {
 	public PagingEmergencyEventsBean()
 	{
 	}
+	
+    @Override
+    public void init()
+    {
+        super.init();
+        getTableDataProvider().getTimeFrameBean().setYearSelection(true);
+    }
+
 
     @Override
     protected ReportCriteria getReportCriteria()

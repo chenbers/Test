@@ -54,7 +54,9 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
 		tableDataProvider.setDateTimeZone(DateTimeZone.forTimeZone(getUser().getPerson().getTimeZone()));
 		tableDataProvider.setEventCategory(getEventCategory());
         tableDataProvider.setSort(new TableSortField(SortOrder.DESCENDING, "time"));
+        tableDataProvider.getTimeFrameBean().setYearSelection(false);
 		table.initModel(tableDataProvider);
+		
     }
     
     
