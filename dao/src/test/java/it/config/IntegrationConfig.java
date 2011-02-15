@@ -24,6 +24,7 @@ public class IntegrationConfig extends Properties
     public final static String JDBC_MYSQL_URL = "jdbc.mysql.url";
     public final static String JDBC_MYSQL_USERNAME = "jdbc.mysql.username";
     public final static String JDBC_MYSQL_PASSWORD = "jdbc.mysql.password";
+    public final static String JDBC_MYSQL_CONNECTION_PROPERTIES = "jdbc.mysql.connectionProperties";
 
 
     public IntegrationConfig()
