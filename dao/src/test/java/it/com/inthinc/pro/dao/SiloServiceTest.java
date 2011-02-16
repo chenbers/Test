@@ -1583,7 +1583,7 @@ public class SiloServiceTest {
         String ignoreFields[] = { "modified", "person", "barcode", "rfid1", "rfid2" };
         for (Person person : groupPersonList) {
             Date expired = Util.genDate(2010, 9, 30);
-            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, RuleSetType.US_OIL.getCode(), groupID);
+            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, RuleSetType.US_OIL, groupID);
             
             // create
             Integer driverID = driverDAO.create(person.getPersonID(), driver);

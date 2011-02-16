@@ -447,7 +447,7 @@ logger.info("in loadItems()");
         hosRecord.setTimeZone(driver.getPerson().getTimeZone());
         hosRecord.setLogTime(new Date());
         hosRecord.setDriverID(driverID);
-        hosRecord.setDriverDotType(driver.getDriverDOTType());
+        hosRecord.setDriverDotType(driver.getDot());
         
         return createLogView(hosRecord);
     }
@@ -760,13 +760,9 @@ logger.info("in loadItems()");
         }
     }
     private List<HOSRecord> getHosLogsForDriver(Driver driver) {
-        final RuleSetType dotType = driver.getDriverDOTType() == null ? RuleSetType.NON_DOT : driver.getDriverDOTType();
+        final RuleSetType dotType = driver.getDot() == null ? RuleSetType.NON_DOT : driver.getDot();
 
         final int daysBack = dotType.getLogShipDaysBack();
-
-//        GregorianCalendar startDayCalendar = new GregorianCalendar();
-//        startDayCalendar.setTime(new Date());
-//        startDayCalendar.add(Calendar.DATE, daysback);
         DateTime currentDate = new DateTime();
         Interval interval = new Interval(currentDate.minusDays(daysBack), currentDate);
 

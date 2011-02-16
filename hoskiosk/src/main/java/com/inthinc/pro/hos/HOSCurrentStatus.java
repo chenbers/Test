@@ -59,7 +59,7 @@ public class HOSCurrentStatus extends HOSBase {
         if (hosRecordList == null)
             return;
   
-        RuleSetType driverRuleSetType = driver.getDriverDOTType();
+        RuleSetType driverRuleSetType = driver.getDot();
         List<HOSRec> recListForHoursRemainingCalc = HOSUtil.getRecListFromLogList(hosRecordList, currentDate.toDate(), true);
         HOSRules hosRules =  RuleSetFactory.getRulesForRuleSetType(driverRuleSetType); 
         

@@ -34,7 +34,7 @@ public class MockData {
         Integer driverID = 10;
         Driver driver = new Driver();
         driver.setDriverID(driverID);
-        driver.setDot(RuleSetType.US.getCode());
+        driver.setDot(RuleSetType.US);
         
         Person person = new Person();
         person.setFirst("First");
@@ -47,7 +47,7 @@ public class MockData {
     public static Driver createMockDriver(Integer acctID, Integer driverID, String first, String last) {
         Driver driver = new Driver();
         driver.setDriverID(driverID);
-        driver.setDot(RuleSetType.US.getCode());
+        driver.setDot(RuleSetType.US);
         
         Person person = new Person();
         person.setFirst(first);

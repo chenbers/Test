@@ -394,7 +394,7 @@ System.out.println("numHosRecords " + numHosRecords);
         
         
         HOSRecord hosRecord = new HOSRecord();
-        hosRecord.setDriverDotType(driver.getDriverDOTType());
+        hosRecord.setDriverDotType(driver.getDot());
         hosRecord.setDriverID(driver.getDriverID());
         hosRecord.setLocation(INITIAL_LOCATION);
         hosRecord.setLogTime(hosRecordDate);
@@ -465,7 +465,7 @@ System.out.println("numHosRecords " + numHosRecords);
         Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
         Vehicle testVehicle = testGroupData.vehicle;
         
-        RuleSetType dotType = testDriver.getDriverDOTType() == null ? RuleSetType.NON_DOT : testDriver.getDriverDOTType();
+        RuleSetType dotType = testDriver.getDot();
         int daysBack = dotType.getLogShipDaysBack();
         
         System.out.println("daysBack " + daysBack);

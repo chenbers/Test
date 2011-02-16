@@ -24,7 +24,7 @@ public class HOSBase {
     }
     
     protected List<HOSRecord> fetchHosRecordList(DateTime currentDate, Driver driver) {
-        RuleSetType driverRuleSetType = driver.getDriverDOTType();
+        RuleSetType driverRuleSetType = driver.getDot();
         if (driverRuleSetType == null || driverRuleSetType == RuleSetType.NON_DOT)
             return null;
         

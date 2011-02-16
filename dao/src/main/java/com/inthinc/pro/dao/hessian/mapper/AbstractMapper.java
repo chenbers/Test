@@ -24,6 +24,7 @@ import com.inthinc.pro.dao.annotations.ConvertFieldToColumn;
 import com.inthinc.pro.dao.hessian.exceptions.MappingException;
 import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.ReferenceEntity;
+import com.inthinc.hos.model.EnumIntegerMapping;
 
 public abstract class AbstractMapper implements Mapper {
     private static final long serialVersionUID = 4820133473373187598L;
@@ -218,6 +219,10 @@ public abstract class AbstractMapper implements Mapper {
                 Method valueOf = propertyType.getMethod("valueOf", Integer.class);
                 if (valueOf != null)
                     value = valueOf.invoke(null, value);
+            } else if (EnumIntegerMapping.class.isAssignableFrom(propertyType) && value instanceof Integer) {
+                Method valueOf = propertyType.getMethod("valueOf", Integer.class);
+                if (valueOf != null)
+                    value = valueOf.invoke(null, value);
             } else if (Enum.class.isAssignableFrom(propertyType) && value instanceof String) {
                 Method valueOf = propertyType.getMethod("valueOf", String.class);
                 if (valueOf != null)
@@ -326,6 +331,8 @@ public abstract class AbstractMapper implements Mapper {
                     map.put(name, convertToHessian(value, handled, field, includeNonUpdateables));
                 } else if (BaseEnum.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType())) {
                     map.put(name, 0);
+                } else if (EnumIntegerMapping.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType())) {
+                    map.put(name, 0);
                 } else if (Date.class.isAssignableFrom(field.getType())) {
                     // use 1 to mean an empty date: January 1, 1970 at 12:01am
                     map.put(name, 1L);
@@ -394,6 +401,8 @@ public abstract class AbstractMapper implements Mapper {
             value = ((Locale) value).toString();
         } else if (BaseEnum.class.isInstance(value)) {
             value = ((BaseEnum) value).getCode();
+        } else if (EnumIntegerMapping.class.isInstance(value)) {
+            value = ((EnumIntegerMapping) value).getCode();
         }
         // if the property is not a standardProperty it must be some kind of bean/pojo/object. convert the property to a map
         else if (!isStandardProperty(value)) {
