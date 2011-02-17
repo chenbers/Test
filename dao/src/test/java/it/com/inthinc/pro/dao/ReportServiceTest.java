@@ -770,7 +770,8 @@ public class ReportServiceTest {
                     int expected = expectedTeamOverall[teamType].intValue();
                     Integer scoreVal = item.getScore();
 //                    System.out.println("" + scoreVal);
-                    assertNotNull("Unexpected null overall trend score", scoreVal);
+                    assertNotNull("Unexpected null overall trend score at idx " + idx + " date:" + item.getDate(), scoreVal);
+                    idx++;
                     
                     // we use this call for mileage only, not score so commenting out for now
 //                    assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " VehicleID: " + vehicleID, (scoreVal >= expected - TOLERANCE && scoreVal <= expected + TOLERANCE));
