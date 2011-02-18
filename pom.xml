@@ -59,6 +59,7 @@
 		<module>reports</module>
 		<module>webfulfillment</module>
 		<module>hoskiosk</module>
+		<module>i18nutil</module>
 	</modules>
 	<properties>
 		<compileSource>1.6</compileSource>
