@@ -6,7 +6,7 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:security="http://pro.tiwi.com/jsf/security"
-     xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+    xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
  
   <ui:param name="helpMapIDOverride" value="#{(personBean.add) ? '6' :''}"/>
   <ui:param name="adminSelected" value="current" />
@@ -559,19 +559,22 @@
                               maxlength="30" required="#{personBean.item.userSelected and ((not personBean.batchEdit) or personBean.updateField['user.username'])}" requiredMessage="#{messages.required}" />
                           </td>
                         </tr>
-                        
                         <tr>
                           <td width="100" valign="top">
                             <h:outputText value="#{messages.editPerson_user_password}" />
                             <h:outputText rendered="#{empty personBean.item.user.password}" styleClass="required" value=" *" />
                           </td>
                           <td>
+                          	<ui:include src="/includes/passwordStrength.xhtml" />
                             <rich:message for="editPerson-user_password" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputSecret value="#{personBean.item.password}" id="editPerson-user_password" disabled="#{!personBean.item.userEditable}" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_passwordFormat}">
+                              maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_passwordFormat}"
+                              onkeyup="testPasswordStrength(this.value, #{personBean.item.user.person.requiredPwdStrength})">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\S{6,12}" />
                             </h:inputSecret>
+                            
+                            
                           </td>
                         </tr>
                         <tr>
