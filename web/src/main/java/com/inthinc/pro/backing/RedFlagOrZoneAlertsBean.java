@@ -61,6 +61,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     private HtmlDataTable phNumbersDataTable;
     private HtmlDataTable emailTosDataTable;
+    private boolean hasEsc;
     
     public void setZonesBean(ZonesBean zonesBean)
     {
@@ -532,9 +533,17 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             valid = false;            
         }
         //if batch editing, users cannot remove escEmail (as this may be required because of other entries in escalationList)
-        boolean batchEditingEscEmail = (isBatchEdit() && getUpdateField().get("emailEscalationPersonID")); 
-        if(batchEditingEscEmail && (this.getItem().getEscEmail() == null  || this.getItem().getEscEmail().equals(""))) {
+        boolean batchEditingEscEmail = (isBatchEdit() && getUpdateField().get("emailEscalationPersonID"));
+        boolean hasEmail = !(this.getItem().getEscEmail() == null  || this.getItem().getEscEmail().equals(""));
+        if(batchEditingEscEmail && hasEmail) {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editAlerts_noBatchRemoveEscEmail"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
+            valid = false;  
+        }
+        //if  there are ANY phoneNums there MUST be an escEmal
+        boolean hasPhNums = (this.getItem().getEscalationList().size() > 0);
+        if(hasPhNums && !hasEmail) {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
             valid = false;  
         }
@@ -550,7 +559,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
         return valid;
     }
-
+    //public boolean countNonEmpties(List<String> list) { } 
     @Override
     protected void doSave(List<RedFlagOrZoneAlertView> saveItems, boolean create) {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -758,7 +767,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Column(updateable = false)
         private String escEmail;
         @Column(updateable = false)
-       private List<String> phNumbers;
+        private List<String> phNumbers;
         
         @Column(updateable = false)
         private List<String> emailTos;
@@ -1179,5 +1188,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     
     public void setRedFlagAlertsDAO(RedFlagAlertDAO redFlagAlertsDAO) {
         this.redFlagAlertsDAO = redFlagAlertsDAO;
+    }
+
+    public void setHasEsc(boolean hasEsc) {
+        this.hasEsc = hasEsc;
+    }
+
+    public boolean isHasEsc() {
+        return hasEsc;
     }
 }
