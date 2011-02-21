@@ -437,7 +437,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                 
                 Event event = eventDAO.findByID(alertMessage.getNoteID());
                 AlertMessageBuilder alertMessageBuilder = this.createAlertMessageBuilder(alertMessage, event, messageType);
-                //Just this time set it to cancelled
+
                 if(alertMessageBuilder != null){
                     recordList.add(alertMessageBuilder); 
                 }

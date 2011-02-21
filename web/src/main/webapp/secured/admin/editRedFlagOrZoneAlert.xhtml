@@ -147,7 +147,7 @@
                     	<tr>
                 		<td width="160" valign="top">
                         <h:selectOneMenu id="alertType" value="#{redFlagOrZoneAlertsBean.item.eventSubCategory}" 
-                        	disabled="#{redFlagOrZoneAlertsBean.batchEdit}" onchange="checkMultiple(this)">
+                        	disabled="#{redFlagOrZoneAlertsBean.batchEdit}" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
                         	<!-- disabled="#{redFlagOrZoneAlertsBean.batchEdit or !redFlagOrZoneAlertsBean.add}" onchange="checkMultiple(this)">   -->                      	
                           <a4j:support event="onclick" reRender="editRedFlagType, zonePoints-panel" limitToList="true" oncomplete="loadMap()" />
                           <f:selectItems value="#{redFlagOrZoneAlertsBean.alertTypeSelectItems}" />

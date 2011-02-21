@@ -20,6 +20,7 @@ public class AlertTypeSelectItems {
         alertTypeSelectItems = addHosTypes(alertTypeSelectItems,hosEnabled);
         alertTypeSelectItems = addWaySmartTypes(alertTypeSelectItems,waySmartEnabled);
         alertTypeSelectItems = addZones(alertTypeSelectItems,hasZones);
+        
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addDefaultTypes(List<SelectItem> alertTypeSelectItems){
@@ -30,41 +31,40 @@ public class AlertTypeSelectItems {
                                                       EventSubCategory.EMERGENCY,
                                                       EventSubCategory.SPEED,
                                                       EventSubCategory.VEHICLE);
-        for (EventSubCategory e : defaultSet)
-        {
-            alertTypeSelectItems.add(new SelectItem(e.name(),MessageUtil.getMessageString(e.toString())));
-        }
-        return alertTypeSelectItems;
+        return addSet(alertTypeSelectItems,defaultSet);
     }
     private static List<SelectItem> addHosTypes(List<SelectItem> alertTypeSelectItems, Boolean hosEnabled){
         
         if (hosEnabled){
-            alertTypeSelectItems.add(new SelectItem(EventSubCategory.HOS.name(),
-                                                    MessageUtil.getMessageString(EventSubCategory.HOS.toString())));
+            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.HOS));
         }
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addWaySmartTypes(List<SelectItem> alertTypeSelectItems, Boolean waySmartEnabled){
         
         if(waySmartEnabled){
-            
             Set<EventSubCategory> waySmartSet = EnumSet.of(EventSubCategory.WIRELINE,
                                                            EventSubCategory.FATIGUE,
                                                            EventSubCategory.TEXTMESSAGE);
             
-            for (EventSubCategory e : waySmartSet)
-            {
-                alertTypeSelectItems.add(new SelectItem(e.name(),MessageUtil.getMessageString(e.toString())));
-            }
+            alertTypeSelectItems = addSet(alertTypeSelectItems,waySmartSet);
         }
         return alertTypeSelectItems;
     }
     private static List<SelectItem> addZones(List<SelectItem> alertTypeSelectItems, Boolean hasZones){
         
         if (hasZones){
-                alertTypeSelectItems.add(new SelectItem(EventSubCategory.ZONES.name(),
-                                                    MessageUtil.getMessageString(EventSubCategory.ZONES.toString())));
+            alertTypeSelectItems = addSet(alertTypeSelectItems,EnumSet.of(EventSubCategory.ZONES));
         }
+        return alertTypeSelectItems;
+    }
+    private static List<SelectItem> addSet(List<SelectItem> alertTypeSelectItems,Set<EventSubCategory> setOfAlertTypes){
+        
+        for (EventSubCategory e : setOfAlertTypes)
+        {
+            alertTypeSelectItems.add(new SelectItem(e,MessageUtil.getMessageString(e.toString())));
+        }
+
         return alertTypeSelectItems;
     }
 }

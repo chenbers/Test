@@ -30,12 +30,16 @@
 	</bean>
 
    <bean id="phoneDispatcher" class="com.inthinc.pro.scheduler.dispatch.PhoneDispatcher" init-method="init">
-         <property name="phoneServerURL" value="${voxeo.phoneServerURL}" />
-         <property name="callerID" value="${voxeo.callerID}" />
-         <property name="tokenID" value="${voxeo.tokenID}" />
+<!--         <property name="phoneServerURL" value="${voxeo.phoneServerURL}" />-->
+<!--         <property name="callerID" value="${voxeo.callerID}" />-->
+<!--         <property name="tokenID" value="${voxeo.tokenID}" />-->
          <property name="maxThreads" value="${voxeo.maxThreads}" />
 	</bean>
-   
+   <bean id="callServiceMessageSender" class="${callServiceMessageSender}">
+        <property name="phoneServerURL" value="${voxeo.phoneServerURL}" />
+        <property name="callerID" value="${voxeo.callerID}" />
+        <property name="tokenID" value="${voxeo.tokenID}" />
+   </bean>
    <!--  QUARTZ (jobs and triggers) -->
 	<bean id="baseAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean">
 		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.BaseAlertJob"/>
