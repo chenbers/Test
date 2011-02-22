@@ -61,6 +61,8 @@ public class CrashReportHessianDAO extends GenericHessianDAO<CrashReport, Intege
 
     @Override
     public Integer update(CrashReport entity) {
+        if(entity.getHasTrace() == 1)
+            entity.setTrace(null);
         return super.update(entity);
     }
 
