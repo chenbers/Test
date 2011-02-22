@@ -753,6 +753,7 @@ logger.info("in loadItems()");
             for (ByteArrayOutputStream output :  logShipList ) {    
               queueForwardCommand(device.getImei(), output.toByteArray(), ForwardCommandID.HOSLOG_SUMMARY);
             }
+            setSendLogsMsg("hosSendLogsToDevice.success");
         }
         catch (Exception e) {
             setSendLogsMsg("hosSendLogsToDevice.logShippingError");
