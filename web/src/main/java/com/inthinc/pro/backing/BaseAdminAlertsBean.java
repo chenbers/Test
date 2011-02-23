@@ -282,21 +282,21 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         }
         return escalationEmailPicker;
     }
-    public AutocompletePicker getEscalationPeoplePicker()
-    {
-        if (escalationPeoplePicker == null)
-        {
+
+    public AutocompletePicker getEscalationPeoplePicker() {
+        if (escalationPeoplePicker == null || escalationPeoplePicker.isOutdated()) {
             final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            for (final Person person : people) { 
-                if(null != person.getPriPhone() && !"".equals(person.getPriPhone()))
+            for (final Person person : people) {
+                if (null != person.getPriPhone() && !"".equals(person.getPriPhone()))
                     allUsers.add(new SelectItem(person, person.getFullNameWithPriPhone()));
             }
             MiscUtil.sortSelectItems(allUsers);
 
-            final ArrayList<SelectItem> notifyPeople = getEscalationPicked();
-
-            escalationPeoplePicker = new AutocompletePicker(allUsers, notifyPeople);
+            // TODO: refactor: when this method is called, getEscalationPicked() is returning nothing even when there ARE phoneNumbers in the list already. 
+            // NOTE: getEscalationPicked() returns the correct value LATER (when called by getItem())
+            ArrayList<SelectItem> picked = getEscalationPicked();
+            escalationPeoplePicker = new AutocompletePicker(allUsers, picked);
         }
         return escalationPeoplePicker;
     }
@@ -340,20 +340,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return escPicked;
     }
 
-    private boolean isPersonDeleted(Person person)
-    {
-    	if (person == null)
-    		return true;
-    	
-    	if (person.getStatus() == null) {
-    		if ((person.getUser() != null && person.getUser().getStatus() != null && !person.getUser().getStatus().equals(Status.DELETED)) ||
-    			(person.getDriver() != null && person.getDriver().getStatus() != null && !person.getDriver().getStatus().equals(Status.DELETED)))
-    			 return false;
-    		else return true;
-    	}
-    	
-    	return person.getStatus().equals(Status.DELETED);
-    		
+    private boolean isPersonDeleted(Person person) {
+        if (person == null)
+            return true;
+
+        if (person.getStatus() == null) 
+            return !((person.getUser() != null && person.getUser().getStatus() != null && !person.getUser().getStatus().equals(Status.DELETED))
+                    || (person.getDriver() != null && person.getDriver().getStatus() != null && !person.getDriver().getStatus().equals(Status.DELETED)));      
+
+        return person.getStatus().equals(Status.DELETED);
     }
     @Override
     public void personListChanged()
