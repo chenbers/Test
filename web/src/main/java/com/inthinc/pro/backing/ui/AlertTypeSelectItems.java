@@ -27,7 +27,6 @@ public class AlertTypeSelectItems {
         
         Set<EventSubCategory> defaultSet = EnumSet.of(EventSubCategory.COMPLIANCE,
                                                       EventSubCategory.DRIVING_STYLE,
-                                                      EventSubCategory.INSTALLATION,
                                                       EventSubCategory.EMERGENCY,
                                                       EventSubCategory.SPEED,
                                                       EventSubCategory.VEHICLE);
@@ -43,7 +42,8 @@ public class AlertTypeSelectItems {
     private static List<SelectItem> addWaySmartTypes(List<SelectItem> alertTypeSelectItems, Boolean waySmartEnabled){
         
         if(waySmartEnabled){
-            Set<EventSubCategory> waySmartSet = EnumSet.of(EventSubCategory.WIRELINE,
+            Set<EventSubCategory> waySmartSet = EnumSet.of(EventSubCategory.INSTALLATION,
+                                                           EventSubCategory.WIRELINE,
                                                            EventSubCategory.FATIGUE,
                                                            EventSubCategory.TEXTMESSAGE);
             
