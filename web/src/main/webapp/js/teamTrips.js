@@ -599,7 +599,7 @@
 			 i = driverIDArray.length;
 			 driverIDArray.push(driverTrips.driverID);
 			 tripsSelected.push(document.getElementById("tripsTableForm:driversTrips:"+pageIndex+":checkDriver").checked);
-			 colorArray.push(pageIndex);
+			 colorArray.push(pageIndex%25);
 			 overlaysArray.push(new Array()); 	//just a place holder for now
 			 markersArray.push(new Array());
 			 createTripOverlays(driverTrips,i);
@@ -649,8 +649,8 @@
 		// i will be the index of the data arrays that contains existing data
 		// for this driver.
 		// Selection needs to go off whether the checkbox is checked rather than the selected array.
-		
-		var i = findColorIndex(pageIndex);
+		var colorIndex = pageIndex%25;
+		var i = findColorIndex(colorIndex);
 		
 		if ((i>-1) && driverIDArray[i] && (overlaysArray[i].length != 0)){
 			
