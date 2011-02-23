@@ -2,6 +2,7 @@ package com.inthinc.pro.util;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.model.SelectItem;
@@ -18,6 +19,46 @@ public class MiscUtil
         return (int) (Math.random() * ((max - min) + 1)) + min;
     }
 
+    /**
+     * Removes any duplicates from a given list of SelectItems
+     * @param items the list of SelectItems to de-duplicate
+     * @return true if the original list of SelectItems changed
+     */
+    public static boolean deDupSelectItems(List<SelectItem> items) {
+        boolean changed = false;
+        sortSelectItems(items);
+        SelectItem temp = new SelectItem();
+        for(final Iterator<SelectItem> it = items.iterator(); it.hasNext();){
+            SelectItem i = it.next();
+            if(!i.getLabel().equals(temp.getLabel()))
+                temp = i;
+            else {
+                it.remove();
+                changed = true;
+            }
+        }
+        return changed;
+    }
+    /**
+     * Removes from <code>orig</code> any SelectItems that are contained in <code>remove</code>, comparing on label only.
+     * @param orig the list of SelectItems that might be modified
+     * @param remove the list of SelectItems that will be removed from <code>orig</code>
+     * @return true if <code>orig</code> was modified
+     */
+    public static boolean removeAllByLabel(List<SelectItem> orig, List<SelectItem> remove){
+        boolean changed = false;
+        for (final Iterator<SelectItem> origIterator = orig.iterator(); origIterator.hasNext();) {
+            SelectItem item = origIterator.next();
+            for(SelectItem removeItem: remove){
+                if(item.getLabel().equalsIgnoreCase(removeItem.getLabel())){
+                    origIterator.remove();
+                    changed = true;
+                    break;
+                }
+            }
+        }
+        return changed;
+    }
     public static void sortSelectItems(List<SelectItem> items)
     {
         Collections.sort(items, new Comparator<SelectItem>()
