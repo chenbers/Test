@@ -534,22 +534,22 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         //if batch editing, users cannot remove escEmail (as this may be required because of other entries in escalationList)
         boolean batchEditingEscEmail = (isBatchEdit() && getUpdateField().get("emailEscalationPersonID"));
-        boolean hasEmail = !(this.getItem().getEscEmail() == null  || this.getItem().getEscEmail().equals(""));
+        boolean hasEmail = !(this.getItem().getEscEmail() == null || this.getItem().getEscEmail().equals(""));
         if(batchEditingEscEmail && hasEmail) {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editAlerts_noBatchRemoveEscEmail"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
             valid = false;  
         }
-        //if  there are ANY phoneNums there MUST be an escEmal
-        boolean hasPhNums = (this.getItem().getEscalationList().size() > 0);
-        if(hasPhNums && !hasEmail) {
+        
+        //if there are ANY phoneNums there MUST be an escEmail
+        if(hasPhNums() && !hasEmail) {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
             valid = false;  
         }
         
         // check on selected types
-        if ( valid  && checkSubTypes ) {
+        if (checkSubTypes) {
             if ( !saveItem.validateSelectedAlertTypes() ) {
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("atLeastOne"), null);
                 FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
@@ -558,6 +558,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         return valid;
+    }
+
+    private boolean hasPhNums() {
+        boolean hasPhNums = false;
+        for (String phNum : this.getItem().getPhNumbers()) {
+            hasPhNums |= (phNum != null && !phNum.isEmpty());
+        }
+        return hasPhNums;
     }
     //public boolean countNonEmpties(List<String> list) { } 
     @Override
