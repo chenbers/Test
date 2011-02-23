@@ -91,8 +91,9 @@ public class VehicleStyleBeanTest extends BaseBeanTest
         // Test Events
         List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
         AggressiveDrivingEvent e = new AggressiveDrivingEvent();
-        e.setDeltaX(1);
-        e.setDeltaY(1);
+        //For tiwipro inactive deltas are 0, for waySmart inactive deltas are + or - 5
+        e.setDeltaX(0);
+        e.setDeltaY(0);
         e.setDeltaZ(5);
         e.setTime(new Date());
         e.setNoteID(new Long(123456));
