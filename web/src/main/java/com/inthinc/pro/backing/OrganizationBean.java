@@ -127,7 +127,7 @@ public class OrganizationBean extends BaseBean
         {
 //            organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getTopGroup().getGroupID()));
             organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getUser().getGroupID()));
-            final Group topLevelGroup = organizationHierarchy.getTopGroup();
+            final Group topLevelGroup = organizationHierarchy.getGroup(getUser().getGroupID());
             rootGroupNode = createNewGroupNode(topLevelGroup);
             // UnassignedDevicesTreeNodeImpl devicesTreeNodeImpl = new UnassignedDevicesTreeNodeImpl(getAccountID());
             // devicesTreeNodeImpl.setDeviceDAO(deviceDAO);
