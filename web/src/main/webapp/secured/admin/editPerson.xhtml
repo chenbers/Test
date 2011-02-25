@@ -565,11 +565,9 @@
                             <h:outputText rendered="#{empty personBean.item.user.password}" styleClass="required" value=" *" />
                           </td>
                           <td>
-                          	<ui:include src="/includes/passwordStrength.xhtml" />
                             <rich:message for="editPerson-user_password" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputSecret value="#{personBean.item.password}" id="editPerson-user_password" disabled="#{!personBean.item.userEditable}" redisplay="true" onchange="checkMultiple(this)" styleClass="text" size="30"
-                              maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_passwordFormat}"
-                              onkeyup="testPasswordStrength(this.value, #{personBean.item.user.person.requiredPwdStrength})">
+                              maxlength="30" required="#{personBean.item.userSelected and empty personBean.item.user.password}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editPerson_passwordFormat}">
                               <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
                               <f:attribute name="regex" value="\S{6,12}" />
                             </h:inputSecret>
