@@ -1,10 +1,14 @@
 package com.inthinc.pro.backing;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -13,7 +17,6 @@ import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.backing.ui.DeviceStatusSelectItems;
@@ -23,7 +26,6 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -58,9 +60,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private VehicleDAO vehicleDAO;
     private VehiclesBean vehiclesBean;
 
-//    private String batchProductChoice;
-//    private String filterStatus;
-
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
         this.deviceDAO = deviceDAO;
@@ -87,12 +86,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         
         return ProductTypeSelectItems.INSTANCE.getSelectItems();
     }
-//    public String getBatchProductChoice() {
-//        return batchProductChoice;
-//    }
-//    public void setBatchProductChoice(String batchProductChoice) {
-//        this.batchProductChoice = batchProductChoice;
-//    }
 
     public String getViewPath() {
         if(isAdd()){
@@ -130,6 +123,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setVehicleDAO(vehicleDAO);
         deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
+        deviceView.setFirmwareVersionDate();
         if (device.getPhone() != null)
             deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
         return deviceView;
@@ -446,7 +440,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         private Vehicle vehicle;
         @Column(updateable = false)
         private boolean selected;
-
+        @Column(updateable = false)
+        private Date firmwareVersionDate;
+        
         public Integer getId()
         {
             return getDeviceID();
@@ -501,40 +497,21 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         {
             this.selected = selected;
         }
-    }
-//    @Override
-//    public void doSelectAll() {
-//
-//        if (getFilterValues().get("productVersion") == null){
-//            
-//             super.doSelectAll();
-//        }
-//        else{
-//            
-//            for(DeviceView deviceView : filteredItems){
-//                                   
-//                deviceView.setSelected(selectAll && deviceView.getProductVersion().getDescription().equals(getFilterValues().get("productVersion")));
-//            }
-//        }
-//    }
 
-//    @Override
-//    public boolean isSelectAll() {
-//        
-//         if (getFilterValues().get("productVersion") == null || getFilteredItems().size() == 0){
-//        
-//            return super.isSelectAll();
-//        }
-//        else{
-//                
-//            for(DeviceView deviceView : filteredItems){
-//                
-//                if (!deviceView.isSelected() && deviceView.getProductVersion().getDescription().equals(getFilterValues().get("productVersion")))
-//                    return false;
-//            }
-//            return true;
-//        }
-//    }
+        public String getFirmwareVersionDate() {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm:ss");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return simpleDateFormat.format(firmwareVersionDate);
+        }
+
+        public void setFirmwareVersionDate() {
+            if (getFirmwareVersion() == null) {
+                firmwareVersionDate = null;
+                return;
+            }
+            firmwareVersionDate = new Date(getFirmwareVersion()*1000L);
+        }
+    }
     public boolean isBatchProductChoice(ProductType productType){
         
         return getFilterValues().get("productVersion") == null || getFilterValues().get("productVersion").equals(productType.getDescription());
