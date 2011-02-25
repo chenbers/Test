@@ -137,5 +137,8 @@ public class MessageItem {
     public Integer getType() {
         return type;
     }
+    public String getName(){
+        return message;
+    }
 }
 

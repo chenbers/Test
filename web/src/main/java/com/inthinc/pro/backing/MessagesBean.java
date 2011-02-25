@@ -337,15 +337,6 @@ public class MessagesBean extends BaseBean {
         }
     }
 
-    /**
-     * Removes the filter from the current view.
-     */
-    public void removeFilter() {
-        this.sentMessageList.clear();
-        this.messageList.clear();
-        this.selectAll = Boolean.FALSE;
-    }
-
     public void refreshSent() {
         this.sentMessageList.clear();
         this.sentMessageList.addAll(textMsgAlertDAO.getSentTextMsgsByGroupID(selectedGroupID, startDate, endDate));
@@ -608,7 +599,16 @@ public class MessagesBean extends BaseBean {
             }
         }
     }
-
+    public List<MessageItem> getSelectedItems(){
+        
+        List<MessageItem> selectedItems = new ArrayList<MessageItem>();
+        for (MessageItem mi : messageList) {
+            if (mi.isSelected()) {
+                selectedItems.add(mi);
+            }
+        }
+        return selectedItems;
+    }
     protected static void sort(List<SelectItem> selectItemList) {
         Collections.sort(selectItemList, new Comparator<SelectItem>() {
             @Override
@@ -638,10 +638,8 @@ public class MessagesBean extends BaseBean {
             }
         }
         sort(teams);
-
         return teams;
     }
-
     public Integer getSelectedGroupID() {
         return selectedGroupID;
     }
