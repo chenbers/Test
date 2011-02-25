@@ -43,7 +43,7 @@ public class TeamStopsBeanTest extends BaseBeanTest  {
         List<Driver> d = bean.getDrivers();
         assertNotNull(d);
         
-        // Set the driver id, get their data, and check on result
+        // Set the driver id, get their summary data, and check on result
         bean.setSelectedDriverID(1);
         if ( d.size() > 0 ) {
             bean.setSelectedDriverID(d.get(0).getDriverID());
