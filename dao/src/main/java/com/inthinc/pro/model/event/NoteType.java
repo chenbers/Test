@@ -232,6 +232,7 @@ public enum NoteType implements BaseEnum {
     ROLLOVER(209,FullEvent.class),
     COACHING_SPEEDING(210),
     COACHING_SEATBELT(211),
+    SUB_THRESH_CRASH(212), //tiwiPro
     UNPLUGGED_ASLEEP(213,EventType.TAMPERING),
     STRIPPED_ACKNOWLEDGE_ID_WITH_DATA(246),
     
