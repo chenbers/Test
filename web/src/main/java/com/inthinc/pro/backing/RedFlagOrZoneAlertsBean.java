@@ -307,6 +307,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         redFlagOrZoneAlertView.setAccountID(getAccountID());
         redFlagOrZoneAlertView.setUserID(getUserID());
         
+        // set default severity level to eliminate user confusion for people picker i.e. nothing returned
+        redFlagOrZoneAlertView.setSeverityLevel(RedFlagLevel.CRITICAL);
         
         return redFlagOrZoneAlertView;
     }

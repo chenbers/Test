@@ -31,18 +31,21 @@ import com.inthinc.pro.util.SelectItemUtil;
 public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T> implements PersonChangeListener
 {
     //protected static UserDAO   userDAO;
-    protected PersonDAO personDAO;
-    protected DriverDAO        driverDAO;
-    private VehiclesBean       vehiclesBean;
-    private String             assignType;
-    private List<SelectItem>   allVehicles;
-    private List<SelectItem>   allDrivers;
-    private ListPicker         assignPicker;
-    private AutocompletePicker peoplePicker;
-    private AutocompletePicker escalationPeoplePicker;
-    private AutocompletePicker escalationEmailPicker;
-    private T                  oldItem;
+    protected PersonDAO         personDAO;
+    protected DriverDAO         driverDAO;
+    private VehiclesBean        vehiclesBean;
+    private String              assignType;
+    private List<SelectItem>    allVehicles;
+    private List<SelectItem>    allDrivers;
+    private ListPicker          assignPicker;
+    private AutocompletePicker  peoplePicker;
+    private AutocompletePicker  escalationPeoplePicker;
+    private AutocompletePicker  escalationEmailPicker;
+    private T                   oldItem;
 //    private String             oldEmailToString;
+    
+    private List<Person>        peopleInGroupHierarchy = new ArrayList<Person>();
+    
     @Override
     public String toString() {
         return "BaseAdminAlertsBean: [assignType="+assignType+", oldItem="+oldItem+", this.getClass()="+this.getClass()+"]";
@@ -185,6 +188,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return allDrivers;
     }
 
+    public List<Person> getPeopleInGroupHierarchy() {
+        
+        if( peopleInGroupHierarchy.size() == 0 ) {
+            peopleInGroupHierarchy = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());            
+        }
+        
+        return peopleInGroupHierarchy;
+    }
+ 
     protected List<SelectItem> getAllVehicles(Integer groupID)
     {
     	List<Group> subGroupList = getGroupHierarchy().getSubGroupList(groupID);
@@ -249,9 +261,9 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         if (peoplePicker == null || (peoplePicker.size() < 1) || peoplePicker.isOutdated())
         {
             //final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
-            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
-            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            for (final Person person : people) {
+//            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
+            for (final Person person : getPeopleInGroupHierarchy()) {
                 //only add users if they have values for the severity level of this alert
                 if(   (RedFlagLevel.INFO.equals(severityLevel)     && person.getInfo() != null && person.getInfo()>0)
                    || (RedFlagLevel.WARNING.equals(severityLevel)  && person.getWarn() != null && person.getWarn()>0)
@@ -270,9 +282,9 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     public AutocompletePicker getEscalationEmailPicker() {
         if (escalationEmailPicker == null)
         {
-            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
-            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            for (final Person person : people) { 
+//            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
+            for (final Person person : getPeopleInGroupHierarchy()) {
                 if(null != person.getPriEmail() && !"".equals(person.getPriEmail()))
                     allUsers.add(new SelectItem(person, person.getFullNameWithPriEmail().replaceAll(" +", " ")));
             }
@@ -285,9 +297,9 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
     public AutocompletePicker getEscalationPeoplePicker() {
         if (escalationPeoplePicker == null || escalationPeoplePicker.isOutdated()) {
-            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
-            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            for (final Person person : people) {
+//            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
+            for (final Person person : getPeopleInGroupHierarchy()) {
                 if (null != person.getPriPhone() && !"".equals(person.getPriPhone()))
                     allUsers.add(new SelectItem(person, person.getFullNameWithPriPhone()));
             }
