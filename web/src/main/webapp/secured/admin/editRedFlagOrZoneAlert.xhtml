@@ -201,8 +201,8 @@
                             </td>
                             <td>
 								<h:selectOneMenu id="severityLevel" value="#{redFlagOrZoneAlertsBean.item.severityLevel}" converter="SimpleBeanConverter" onchange="checkMultiple(this);" >
-                                      <f:selectItems value="#{redFlagOrZoneAlertsBean.item.severityValues}" />
-                                      <a4j:support event="onblur" reRender="redFlagAlertsLimitValue" ajaxSingle="true">
+                                      <f:selectItems value="#{redFlagOrZoneAlertsBean.item.severityValues}" />    
+                                      <a4j:support event="onclick" reRender="redFlagAlertsLimitValue,namePickerPnl,namePickerHint" ajaxSingle="true">
                                       	<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.severityLevel}" value="#{redFlagOrZoneAlertsBean.item.severityLevel}"></f:setPropertyActionListener>
                                       	<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.peoplePicker.outdated}" value="#{true}"></f:setPropertyActionListener>
 							          </a4j:support>
@@ -646,7 +646,15 @@
                                     <h:selectBooleanCheckbox id="lowBatterySelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_LOW_BATTERY']}" onchange="checkMultiple(this)" />
                                     <h:outputText value="#{messages.alertTypeLowBattery}" />
                                   </td>
+                               </tr>
+                               <!--  
+                                <tr class="tableEven">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                    <h:selectBooleanCheckbox id="rfSwitchSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_RF_SWITCH']}" onchange="checkMultiple(this)" />
+                                    <h:outputText value="#{messages.alertTypeRFSwitch}" />
+                                  </td>
                               </tr>
+                              -->
                               </table>
                            </h:panelGroup>
                         </a4j:outputPanel>
@@ -855,15 +863,24 @@
                         </div>
 
                         <div class="instructions"><h:outputText value="#{messages.editAlerts_notificationsByNameInstructions}" /></div>
-
-                        <ui:include src="../../includes/autocompletePicker.xhtml">
-                          <ui:param name="autocompleter" value="#{redFlagOrZoneAlertsBean.peoplePicker}" />
-                          <ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" />
- 						  <ui:param name="context" value="editRedFlag"/>
- 						  <ui:param name="formName" value="edit-form"/>
-                        </ui:include>
                         
-                         
+                        <h:panelGroup id="namePickerPnl">
+                        	<rich:panel id="namePickerEnabled" rendered="#{redFlagOrZoneAlertsBean.item.severityLevel ne null}">
+                          	<ui:include src="../../includes/autocompletePicker.xhtml" > 
+                         		<ui:param name="autocompleter" value="#{redFlagOrZoneAlertsBean.peoplePicker}" />
+                         		<ui:param name="onchange" value="checkMultiple('notifyPersonIDs')" /> 
+ 							  	<ui:param name="context" value="editRedFlag"/>
+ 						  		<ui:param name="formName" value="edit-form"/>
+                        	</ui:include> 
+                        	</rich:panel>  
+                        </h:panelGroup> 
+                        
+                        <h:panelGroup id="namePickerHint">
+                        	<rich:panel id="namePickerHintEnabled" rendered="#{redFlagOrZoneAlertsBean.item.severityLevel eq null}">
+                        		<h:inputText id="hint" value="Please select a Notification type above." size="50" disabled="true"/>
+                        	</rich:panel>
+                        </h:panelGroup>                
+                        
 <!--                        <div class="add_section_title">-->
 <!--                          <h:selectBooleanCheckbox rendered="#{redFlagOrZoneAlertsBean.batchEdit}" id="update_emailToString" value="#{redFlagOrZoneAlertsBean.updateField['emailToString']}" />-->
 <!--                          <h:outputText value="#{messages.editAlerts_notificationsByEmail}" />-->

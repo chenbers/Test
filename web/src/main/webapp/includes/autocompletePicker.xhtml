@@ -48,7 +48,10 @@
           </ui:repeat>
           <h:outputText value=" " />
           <h:inputText id="#{context}-picker-input" value="" style="border:0px solid white;" size="1" onkeyup="pickerKeyup(this, event)" onblur="this.value = ''; this.size = 1; empty = true;" />
-          <rich:suggestionbox for="#{context}-picker-input" suggestionAction="#{autocompleter.autocomplete}" var="suggestion" usingSuggestObjects="true" onobjectchange="updateItemValue(suggestion)" eventsQueue="pickerQueue" ignoreDupResponses="true">
+          <rich:suggestionbox for="#{context}-picker-input" suggestionAction="#{autocompleter.autocomplete}" 
+          	var="suggestion" usingSuggestObjects="true" onobjectchange="updateItemValue(suggestion)" 
+          	nothingLabel="Nothing found matching your input" 
+          	eventsQueue="pickerQueue" ignoreDupResponses="true">
             <h:column>
               <h:outputText value="#{suggestion.label}" />
             </h:column>

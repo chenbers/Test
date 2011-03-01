@@ -308,7 +308,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         redFlagOrZoneAlertView.setUserID(getUserID());
         
         // set default severity level to eliminate user confusion for people picker i.e. nothing returned
-        redFlagOrZoneAlertView.setSeverityLevel(RedFlagLevel.CRITICAL);
+//        redFlagOrZoneAlertView.setSeverityLevel(RedFlagLevel.CRITICAL);
         
         return redFlagOrZoneAlertView;
     }
@@ -1033,7 +1033,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             setLimitType((LimitType)event.getNewValue());
         }
         public List<SelectItem> getSeverityValues() {
-            return SelectItemUtil.toList(RedFlagLevel.class, false, RedFlagLevel.NONE);
+            return SelectItemUtil.toList(RedFlagLevel.class, true, RedFlagLevel.NONE);
         }
         public List<SelectItem> getLimitValues() {
             List<SelectItem> results = new ArrayList<SelectItem>();
