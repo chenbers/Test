@@ -36,7 +36,6 @@ public class Role extends BaseEntity implements Comparable<Role>{
 
 	public Role() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Integer getRoleID() {
@@ -66,7 +65,13 @@ public class Role extends BaseEntity implements Comparable<Role>{
 	public List<AccessPoint> getAccessPts() {
 		return accessPts;
 	}
-
+	public boolean isAdmin(){
+	    return "Admin".equalsIgnoreCase(name);
+	}
+	public boolean contains(Integer accessPointID){
+	    
+	     return accessPointsMap.containsKey(accessPointID);
+	}
 	public void setAccessPts(List<AccessPoint> accessPoints) {
 		
 		this.accessPts = accessPoints;
@@ -86,16 +91,6 @@ public class Role extends BaseEntity implements Comparable<Role>{
         return "ROLE_" + getName().toUpperCase();
     }
     
-//    public static Role valueOf(Integer ID)
-//    {
-//        return Roles.getRoleById(ID);
-//    }
-
-//	@Override
-//	public Integer retrieveID() {
-//		// TODO Auto-generated method stub
-//		return roleID;
-//	}
     @Override
     public boolean equals(Object obj)
     {

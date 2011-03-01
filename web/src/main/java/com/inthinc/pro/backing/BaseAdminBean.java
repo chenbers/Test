@@ -3,10 +3,12 @@ package com.inthinc.pro.backing;
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -19,6 +21,7 @@ import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.backing.ui.TableColumn;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.TablePreferenceDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
@@ -28,6 +31,7 @@ import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.TablePreference;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
@@ -38,11 +42,14 @@ import com.inthinc.pro.util.MiscUtil;
 public abstract class BaseAdminBean<T extends EditItem> extends BaseBean implements TablePrefOptions<T>
 {
     private static final long serialVersionUID = 1L;
-
+    private static final int REDFLAG_ACCESS_POINT=7;
+    
     protected static final Logger logger        = LogManager.getLogger(BaseAdminBean.class);
 
     private List<Group>           allGroups;
     protected GroupDAO            groupDAO;
+    protected RoleDAO             roleDAO;
+    protected List<Role>          roles;
     protected List<T>             items;
     protected List<T>             filteredItems = new LinkedList<T>();
     protected String              filterValue;
@@ -155,15 +162,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         return items;
     }
 
-//    /**
-//     * @return the filteredItems
-//     */
-//    public List<T> getFilteredItems()
-//    {
-//        getItems();
-//        return filteredItems;
-//    }
-
     /**
      * Load the list of items.
      * 
@@ -174,10 +172,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     /**
      * @return the number of filtered items.
      */
-//    public int getItemCount()
-//    {
-//        return filteredItems.size();
-//    }
     
     public void refreshItems()
     {
@@ -852,7 +846,8 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     public List<SelectItem> getAllGroupUsers() {
     	if (allGroupUsers == null) {
     		allGroupUsers = new ArrayList<SelectItem>();
-    		List<User> users = userDAO.getUsersInGroupHierarchy(getUser().getGroupID());
+    		List<User> users = filterOnRole(userDAO.getUsersInGroupHierarchy(getUser().getGroupID()));
+    		
             for (User user : users) {
             	if (user.getPerson() != null)
             		allGroupUsers.add(new SelectItem(user.getUserID(), user.getPerson().getFirst() + ' ' + user.getPerson().getLast()));
@@ -862,13 +857,58 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     	}
 		return allGroupUsers;
 	}
-
+    private List<User> filterOnRole(List<User> users){
+        
+        if (users == null || users.isEmpty()) return users;
+        
+        Set<User> filteredUsers = new HashSet<User>();
+        for(User user : users){
+            
+            for(int roleID :user.getRoles()){
+               
+                Role role = getRole(roleID);
+                if (canRedFlag(role)){
+                    filteredUsers.add(user);
+                    break;
+                }
+            }
+        }
+        return new ArrayList<User>(filteredUsers);
+    }
+    private Boolean canRedFlag(Role role){
+        
+        return role.isAdmin() || role.contains(REDFLAG_ACCESS_POINT);
+    }
+    private Role getRole(Integer roleID){
+        if (roles == null) {
+            
+            roles = roleDAO.getRoles(getAccountID());
+        }
+        for (Role role : roles){
+            if (role.getRoleID().equals(roleID)){
+                return role;
+            }
+        }
+        return null;
+    }
 	public void setAllGroupUsers(List<SelectItem> allGroupUsers) {
 		this.allGroupUsers = allGroupUsers;
 	}
     public Boolean getAdmin()
     {
     	return getProUser().isAdmin();
+    }
+    public Boolean getRedFlagRole(){
+        
+        List<Integer> roles = this.getProUser().getUser().getRoles();
+        
+        for(Integer roleID:roles){
+            Role role = getRole(roleID);
+            if (canRedFlag(role)){
+                return true;
+            }
+        }
+        return false;
     }
     protected List<T> getInViewItems(){
         List<T> viewedItems = new ArrayList<T>(filteredItems);
@@ -941,6 +981,18 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
     }
     public Map<String, Object> getFilterValues() {
         return filterValues;
+    }
+    public RoleDAO getRoleDAO() {
+        return roleDAO;
+    }
+    public void setRoleDAO(RoleDAO roleDAO) {
+        this.roleDAO = roleDAO;
+    }
+    public List<Role> getRoles() {
+        return roles;
+    }
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
     
 
