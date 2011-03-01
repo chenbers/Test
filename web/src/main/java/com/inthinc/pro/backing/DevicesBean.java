@@ -499,6 +499,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
 
         public String getFirmwareVersionDate() {
+            if (firmwareVersionDate == null)
+                return "";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm:ss");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
             return simpleDateFormat.format(firmwareVersionDate);
