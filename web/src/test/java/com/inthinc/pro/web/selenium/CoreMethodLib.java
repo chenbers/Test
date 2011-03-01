@@ -28,6 +28,16 @@ public class CoreMethodLib extends DefaultSelenium{
 
 	private static ErrorCatcher errors;
 	
+
+	
+	private String getLocator(SeleniumEnums checkIt) {
+		if (checkIt.getID()!=null)return checkIt.getID();
+		else if (checkIt.getXpath()!=null)return checkIt.getXpath();
+		else if (checkIt.getXpath_alt()!=null)return checkIt.getXpath_alt();
+		return null;
+	}
+
+	
 	public CoreMethodLib(CommandProcessor processor) {
 		super(processor);
 	}
@@ -425,4 +435,57 @@ public class CoreMethodLib extends DefaultSelenium{
 		}
 		return true;
 	}
+
+	public void click(SeleniumEnums checkIt, String errorName) {
+		click(getLocator(checkIt),errorName);		
+	}
+	
+	
+	public void isNotVisible(SeleniumEnums checkIt, String errorName) {
+		isNotVisible(getLocator(checkIt),errorName);		
+	}
+
+
+	public void isVisible(SeleniumEnums checkIt, String errorName) {
+		isVisible(getLocator(checkIt),errorName);
+	}
+
+
+	public String getText(SeleniumEnums checkIt, String expected,
+			String errorName) {
+		return getText(checkIt.getText(), expected, errorName);
+	}
+
+
+	public void type(SeleniumEnums checkIt, String expected,
+			String errorName) {
+		type(getLocator(checkIt), expected, errorName);
+	}
+
+
+	public void isElementPresent(SeleniumEnums checkIt,	String errorName) {
+		isElementPresent(getLocator(checkIt), errorName);		
+	}
+	
+	public void isElementNotPresent(SeleniumEnums checkIt,	String errorName) {
+		isElementNotPresent(getLocator(checkIt), errorName);		
+	}
+
+
+	public void getText(SeleniumEnums checkIt, String errorName) {
+		getText(getLocator(checkIt), checkIt.getText(), errorName);
+	}
+
+
+	public void isVisible(SeleniumEnums checkIt) {
+		getText(getLocator(checkIt));
+	}
+
+
+	public void type(SeleniumEnums checkIt, String password) {
+		type(getLocator(checkIt), password);
+	}
+	
+	
+
 }
