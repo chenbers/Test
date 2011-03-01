@@ -16,7 +16,7 @@ public class LoginTest extends InthincTest {
 	
 		
 
-	@Test
+//	@Test
 	public void LoginButton() {
 		//create instance of library objects
 		Login l = new Login();
