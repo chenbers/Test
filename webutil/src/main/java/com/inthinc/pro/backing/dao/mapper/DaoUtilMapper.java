@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.inthinc.hos.model.EnumIntegerMapping;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.BaseEnum;
 import com.inthinc.pro.model.ReferenceEntity;
@@ -94,6 +95,8 @@ public class DaoUtilMapper extends BaseUtilMapper {
                 }
                 else if (BaseEnum.class.isAssignableFrom(field.getType()) || ReferenceEntity.class.isAssignableFrom(field.getType()))
                 {
+                    map.put(name, 0);
+                } else if (EnumIntegerMapping.class.isAssignableFrom(field.getType()) && value instanceof Integer) {
                     map.put(name, 0);
                 }
                 else if (Date.class.isAssignableFrom(field.getType()))
@@ -196,6 +199,10 @@ public class DaoUtilMapper extends BaseUtilMapper {
         else if (BaseEnum.class.isInstance(value))
         {
             value = ((BaseEnum) value).toString() + "(" + ((BaseEnum) value).getCode() + ")";
+        }
+        else if (EnumIntegerMapping.class.isInstance(value))
+        {
+            value = ((EnumIntegerMapping) value).toString() + "(" + ((EnumIntegerMapping) value).getCode() + ")";
         }
         // if the property is not a standardProperty it must be some kind of bean/pojo/object. convert the property to a map
         else if (!isStandardProperty(value))
