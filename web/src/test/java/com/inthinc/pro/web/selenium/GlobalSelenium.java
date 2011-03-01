@@ -80,9 +80,9 @@ public class GlobalSelenium {
     	if (globalSelenium==null)globalSelenium = new GlobalSelenium();
     	Long whosYourFather = Thread.currentThread().getId();
     	
-    	System.out.println(whosYourFather);
+//    	System.out.println(whosYourFather);
     	if (!multiplicative.containsKey(whosYourFather) || multiplicative.get(whosYourFather)==null) {
-    		String host = "localhost";
+    		String host = "192.168.3.201";
     		String browser = "*iexplore";
     		String url = "https://qa.tiwipro.com:8423/tiwipro/";
         	try{
@@ -93,7 +93,7 @@ public class GlobalSelenium {
         			throw new NullArgumentException("No environment Variables");
         		}
         	}catch(Exception e){
-        		host = "localhost";
+        		host = "192.168.3.201";
         		browser = "*iexplore";
         		url = "https://qa.tiwipro.com:8423/tiwipro/";
         	}

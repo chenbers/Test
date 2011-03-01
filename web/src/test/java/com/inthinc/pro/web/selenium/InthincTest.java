@@ -37,13 +37,13 @@ public abstract class InthincTest
 	private final static String workspace = "Sand Box";
 	
 	private static CoreMethodLib selenium;
-	private static SeleniumServer seleniumserver;
+//	private static SeleniumServer seleniumserver;
 	
 	@BeforeClass
 	public static void start_server(){
 		try{
-				seleniumserver = new SeleniumServer();
-		        seleniumserver.start();
+//				seleniumserver = new SeleniumServer();
+//		        seleniumserver.start();
 				rally = new RallyAPILib(username, password);
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -88,7 +88,7 @@ public abstract class InthincTest
 	@AfterClass
 	public static void stop_server(){
 		GlobalSelenium.dieSeleniumDie();
-		seleniumserver.stop();
+//		seleniumserver.stop();
 		
 	}//tear down
 	

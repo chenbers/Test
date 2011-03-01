@@ -16,7 +16,7 @@ public class LoginTest extends InthincTest {
 	
 		
 
-//	@Test
+	@Test
 	public void LoginButton() {
 		//create instance of library objects
 		Login l = new Login();
@@ -25,7 +25,7 @@ public class LoginTest extends InthincTest {
 		set_test_case("Tiwi_data.xls", "TC1247");
 	
 		//login to portal
-		l.login_to_portal(get_data("Login","USERNAME"), get_data("Login","PASSWORD"));
+		l.login_to_portal(getUsername(), getPassword());
 	}
 	
 //	@Test
