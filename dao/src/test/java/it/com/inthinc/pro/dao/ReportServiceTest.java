@@ -465,6 +465,8 @@ public class ReportServiceTest {
         long fleetExpectedDailyIdlingTime = 6 * (ReportTestConst.LO_IDLE_TIME + ReportTestConst.HI_IDLE_TIME); // 6 idling events per day (1 - intermediate, 5 - bad)
 //        System.out.println("fleetExpectedDailyDriveTime: " + fleetExpectedDailyDriveTime + " fleetExpectedDailyIdlingTime: " + fleetExpectedDailyIdlingTime);
 
+        int numVehicles = 0;
+        int numEMUVehicles = 0;
         for (IdlePercentItem item : list) {
             long driveTime = item.getDrivingTime();
             long idleTime = item.getIdlingTime();
@@ -473,10 +475,12 @@ public class ReportServiceTest {
 // TODO: drive time is 60 seconds off            
 //            assertEquals("Fleet: Unexpected drive Time ", fleetExpectedDailyDriveTime, driveTime);
             assertEquals("Fleet: Unexpected idle Time ", fleetExpectedDailyIdlingTime, idleTime);
-            assertEquals("Fleet: Unexpected vehicles ", 3, item.getNumVehicles().intValue());
-            assertEquals("Fleet: Unexpected emu vehicles ", 3, item.getNumEMUVehicles().intValue());
+            numVehicles = item.getNumVehicles().intValue();
+            numEMUVehicles = item.getNumEMUVehicles().intValue();
 
         }
+        assertEquals("Fleet: Unexpected vehicles ", 3, numVehicles);
+        assertEquals("Fleet: Unexpected emu vehicles ", 3, numEMUVehicles);
     }
 
     // TODO: FIX THIS!!
