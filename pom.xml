@@ -4,7 +4,7 @@
 	<groupId>com.inthinc.pro</groupId>
 	<artifactId>root</artifactId>
 	<packaging>pom</packaging>
-	<version>2.0.1</version>
+	<version>2.0.2-SNAPSHOT</version>
 	<name>TIWI Pro Application</name>
 	<url>http://www.iwiglobal.com</url>
 	<organization>
@@ -20,9 +20,9 @@
 		<url>http://testteen.iwiglobal.com:8091/hudson</url>
 	</ciManagement>
 	<scm>
-		<connection>scm:svn:https://svn.iwiglobal.com/pro/pro/tags/root-2.0.1</connection>
-		<developerConnection>scm:svn:https://svn.iwiglobal.com/pro/pro/tags/root-2.0.1</developerConnection>
-		<url>http://svn.iwiglobal.com/pro/tags/root-2.0.1</url>
+		<connection>scm:svn:https://svn.iwiglobal.com/pro/pro/trunk</connection>
+		<developerConnection>scm:svn:https://svn.iwiglobal.com/pro/pro/trunk</developerConnection>
+		<url>http://svn.iwiglobal.com/pro</url>
 	</scm>
 	<developers>
 		<developer>
