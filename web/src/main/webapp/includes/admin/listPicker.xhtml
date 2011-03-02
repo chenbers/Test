@@ -42,7 +42,7 @@
     <table border="0" cellspacing="4" cellpadding="2" width="100%">
       <tr>
         <td width="46%">
-          <h:selectManyListbox id="#{context}-from" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
+          <h:selectManyListbox id="#{context}-from" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons();checkMultiple('#{id}')">
             <f:selectItems value="#{bean.pickFrom}" />
           </h:selectManyListbox>
         </td>
@@ -66,8 +66,8 @@
           </table>
         </td>
         <td width="46%">
-          <h:inputHidden id="#{context}-pickedIDs" value="#{bean.pickedIDs}" />
-          <h:selectManyListbox id="#{context}-picked" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons()">
+          <h:inputHidden id="#{context}-pickedIDs" value="#{bean.pickedIDs}"/>
+          <h:selectManyListbox id="#{context}-picked" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons();checkMultiple('#{id}')">
             <f:selectItems value="#{bean.picked}" />
           </h:selectManyListbox>
         </td>

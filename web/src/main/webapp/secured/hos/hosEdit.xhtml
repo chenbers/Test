@@ -101,9 +101,13 @@
                               </ui:fragment>
                               <tr>
 		                          <td width="100" valign="top">
-		                            <h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="editHosLog_statusBatch" value="#{hosBean.updateField['status']}" />
-		                            <h:outputText value="#{messages.hosLog_status}" />
-	                                <span class="required">*</span>
+		                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editHosLog_status"/>
+		                                 <ui:param name="fieldName" value="status"/>
+		                                 <ui:param name="editBean" value="#{hosBean}"/>
+		                                 <ui:param name="label" value="#{messages.hosLog_status}"/>
+		                              </ui:include>
 		                          </td>
 		                          <td>
 		                            <h:selectOneMenu value="#{hosBean.item.status}" 
@@ -116,8 +120,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-								   	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_trailer" value="#{hosBean.updateField['trailerID']}" />
-                            	 	<h:outputText value="#{messages.hosLog_trailer}" />
+		                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="FALSE"/>
+		                                 <ui:param name="for" value="editHosLog_trailer"/>
+		                                 <ui:param name="fieldName" value="trailerID"/>
+		                                 <ui:param name="editBean" value="#{hosBean}"/>
+		                                 <ui:param name="label" value="#{messages.hosLog_trailer}"/>
+		                              </ui:include>
                                 </td>
                                 <td>
                                   <rich:message for="editHosLog_trailer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -127,8 +136,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-								   	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_service" value="#{hosBean.updateField['serviceID']}" />
-                            	 	<h:outputText value="#{messages.hosLog_service}" />
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="FALSE"/>
+		                                 <ui:param name="for" value="editHosLog_service"/>
+		                                 <ui:param name="fieldName" value="serviceID"/>
+		                                 <ui:param name="editBean" value="#{hosBean}"/>
+		                                 <ui:param name="label" value="#{messages.hosLog_service}"/>
+	                              </ui:include>
                                 </td>
                                 <td>
                                   <rich:message for="editHosLog_service" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -138,9 +152,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-								   	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_driver" value="#{hosBean.updateField['driverID']}" />
-                            	 	<h:outputText value="#{messages.hosLog_driver}" />
-	                                <span class="required">*</span>
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editHosLog_driver"/>
+		                                 <ui:param name="fieldName" value="driverID"/>
+		                                 <ui:param name="editBean" value="#{hosBean}"/>
+		                                 <ui:param name="label" value="#{messages.hosLog_driver}"/>
+	                              </ui:include>
                                 </td>
                                 <td>
                                   <rich:message for="editHosLog_driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -154,8 +172,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-								   	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_vehicle" value="#{hosBean.updateField['vehicleID']}" />
-                            	 	<h:outputText value="#{messages.hosLog_vehicle}" />
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="FALSE"/>
+		                                 <ui:param name="for" value="editHosLog_vehicle"/>
+		                                 <ui:param name="fieldName" value="vehicleID"/>
+		                                 <ui:param name="editBean" value="#{hosBean}"/>
+		                                 <ui:param name="label" value="#{messages.hosLog_vehicle}"/>
+	                              </ui:include>
                                 </td>
                                 <td>
                                   <rich:message for="editHosLog_vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -168,9 +191,13 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-                                	<h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="batchEditHosLog_location" value="#{hosBean.updateField['location']}" />
-                            		<h:outputText value="#{messages.hosLog_location}" />
-                                    <span class="required">*</span>
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editHosLog_location"/>
+		                                 <ui:param name="fieldName" value="location"/>
+		                                 <ui:param name="editBean" value="#{hosBean}"/>
+		                                 <ui:param name="label" value="#{messages.hosLog_location}"/>
+	                              </ui:include>
                                 </td>
                                 <td>
                                   <rich:message for="editHosLog_location" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
@@ -187,9 +214,13 @@
 							  </tr>	
                               <tr>
 		                          <td width="100" valign="top">
-		                            <h:selectBooleanCheckbox rendered="#{hosBean.batchEdit}" id="editHosLog_dotBatch" value="#{hosBean.updateField['driverDotType']}" />
-		                            <h:outputText value="#{messages.hosLog_dot}" />
-	                                <span class="required">*</span>
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editHosLog_dot"/>
+		                                 <ui:param name="fieldName" value="driverDotType"/>
+		                                 <ui:param name="editBean" value="#{hosBean}"/>
+		                                 <ui:param name="label" value="#{messages.hosLog_dot}"/>
+	                              </ui:include>
 		                          </td>
 		                          <td>
 		                            <h:selectOneMenu value="#{hosBean.item.driverDotType}" 

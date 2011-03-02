@@ -1,0 +1,148 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+
+<a4j:region>                
+<div class="spacer"></div>
+<div class="add_section_title"><h:outputText value="#{messages.wirelineInformation}" /></div>
+<table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+	<tr>
+    	<td width="150" valign="top">
+        	<ui:include src="../../includes/admin/inputLabel.xhtml">
+				<ui:param name="required" value="TRUE"/>
+				<ui:param name="for" value="wirelineModule"/>
+				<ui:param name="fieldName" value="editableVehicleSettings.wirelineModule"/>
+				<ui:param name="editBean" value="#{vehiclesBean}"/>
+				<ui:param name="label" value="#{messages.wirelineModuleEnable}"/>
+  			</ui:include>
+		</td>
+		<td>
+        	<h:selectOneMenu value="#{vehiclesBean.item.editableVehicleSettings.wirelineModule}" id="wirelineModule" converter="SimpleBeanConverter" >
+            	<f:selectItems value="#{vehiclesBean.wirelineStatuses}"/>
+            	<a4j:support event="onchange" reRender="edit-form:options1,edit-form:options2,edit-form:options3" limitToList="true" ajaxSingle="true" oncomplete="checkMultiple(this)"/>
+			</h:selectOneMenu>
+		</td>
+	</tr>
+</table>
+
+<a4j:outputPanel id="options1" layout="block">
+<h:panelGroup id="options1Panel" rendered="#{vehiclesBean.item.editableVehicleSettings.wirelineModule == 'ENABLE'}">	
+	<table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+	<tr>
+    	<td width="150" valign="top">
+        	<ui:include src="../../includes/admin/inputLabel.xhtml">
+				<ui:param name="required" value="TRUE"/>
+				<ui:param name="for" value="wirelineKillMotor"/>
+				<ui:param name="fieldName" value="editableVehicleSettings.killMotor"/>
+				<ui:param name="editBean" value="#{vehiclesBean}"/>
+				<ui:param name="label" value="#{messages.wirelineKillMotor}"/>
+  			</ui:include>
+		</td>
+        <td>
+        	<h:selectOneMenu value="#{vehiclesBean.item.editableVehicleSettings.killMotor}" id="wirelineKillMotor" converter="SimpleBeanConverter">
+            	<f:selectItems value="#{vehiclesBean.wirelineStatuses}"/>
+            	<a4j:support event="onchange" reRender="edit-form:options1" limitToList="true" ajaxSingle="true" oncomplete="checkMultiple(this)"/>
+			</h:selectOneMenu>
+		</td>
+	</tr>
+	<ui:fragment rendered="#{vehiclesBean.item.editableVehicleSettings.killMotor == 'ENABLE'}">
+    <tr>
+    	<td width="150" valign="top">
+        	<ui:include src="../../includes/admin/inputLabel.xhtml">
+				<ui:param name="required" value="#{vehiclesBean.item.editableVehicleSettings.killMotor == 'ENABLE'}" />
+				<ui:param name="for" value="wireline_killMotorPasscode"/>
+				<ui:param name="fieldName" value="editableVehicleSettings.killMotorPasscode"/>
+				<ui:param name="editBean" value="#{vehiclesBean}"/>
+				<ui:param name="label" value="#{messages.wirelineKillMotorPasscode}"/>
+  			</ui:include>
+		</td>
+        <td>
+        	<rich:message for="wireline_killMotorPasscode" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+            <h:inputText value="#{vehiclesBean.item.editableVehicleSettings.killMotorPasscode}" id="wireline_killMotorPasscode" onchange="checkMultiple(this)" styleClass="text" size="6"
+                             maxlength="4" validatorMessage="#{messages.wirelineInvalidPasscode}">
+					<f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+	                <f:attribute name="regex" value="[0-9]{4}" />
+			</h:inputText>
+		</td>
+	</tr>
+	</ui:fragment>
+	</table>
+</h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="options2" layout="block">
+<h:panelGroup id="options2Panel" rendered="#{vehiclesBean.item.editableVehicleSettings.wirelineModule == 'ENABLE'}">	
+	<table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+    <tr>
+    	<td width="150" valign="top">
+        	<ui:include src="../../includes/admin/inputLabel.xhtml">
+				<ui:param name="required" value="TRUE"/>
+				<ui:param name="for" value="wireline_doorAlarm"/>
+				<ui:param name="fieldName" value="editableVehicleSettings.doorAlarm"/>
+				<ui:param name="editBean" value="#{vehiclesBean}"/>
+				<ui:param name="label" value="#{messages.wirelineDoorAlarm}"/>
+  			</ui:include>
+		</td>
+        <td>
+        	<h:selectOneMenu value="#{vehiclesBean.item.editableVehicleSettings.doorAlarm}" id="wireline_doorAlarm" converter="SimpleBeanConverter" >
+            	<f:selectItems value="#{vehiclesBean.wirelineStatuses}"/>
+            	<a4j:support event="onchange" reRender="edit-form:options2" limitToList="true" ajaxSingle="true" oncomplete="checkMultiple(this)"/>
+			</h:selectOneMenu>
+		</td>
+	</tr>
+	<ui:fragment rendered="#{vehiclesBean.item.editableVehicleSettings.doorAlarm == 'ENABLE'}">
+    <tr>
+    	<td width="150" valign="top">
+        	<ui:include src="../../includes/admin/inputLabel.xhtml">
+				<ui:param name="required" value="#{vehiclesBean.item.editableVehicleSettings.doorAlarm == 'ENABLE'}"/>
+				<ui:param name="for" value="wireline_doorAlarmPasscode"/>
+				<ui:param name="fieldName" value="editableVehicleSettings.doorAlarmPasscode"/>
+				<ui:param name="editBean" value="#{vehiclesBean}"/>
+				<ui:param name="label" value="#{messages.wirelineDoorAlarmPasscode}"/>
+  			</ui:include>
+		</td>
+        <td>
+        	<rich:message for="wireline_doorAlarmPasscode" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+            <h:inputText value="#{vehiclesBean.item.editableVehicleSettings.doorAlarmPasscode}" id="wireline_doorAlarmPasscode" 
+            				onchange="checkMultiple(this)" styleClass="text" size="6"
+                            maxlength="4" validatorMessage="#{messages.wirelineInvalidPasscode}">
+					<f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+	                <f:attribute name="regex" value="[0-9]{4}" />
+			</h:inputText>
+		</td>
+	</tr>
+	</ui:fragment>
+	</table>
+</h:panelGroup>
+</a4j:outputPanel>
+<a4j:outputPanel id="options3" layout="block">
+<h:panelGroup id="options3Panel" rendered="#{vehiclesBean.item.editableVehicleSettings.wirelineModule == 'ENABLE'}">	
+	<table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+    <tr>
+    	<td width="150" valign="top">
+        	<ui:include src="../../includes/admin/inputLabel.xhtml">
+				<ui:param name="required" value="TRUE"/>
+				<ui:param name="for" value="wireline_autoArm"/>
+				<ui:param name="fieldName" value="editableVehicleSettings.autoArmTime"/>
+				<ui:param name="editBean" value="#{vehiclesBean}"/>
+				<ui:param name="label" value="#{messages.wirelineAutoArmTime}"/>
+  			</ui:include>
+		</td>
+        <td>
+			<rich:inputNumberSpinner value="#{vehiclesBean.item.editableVehicleSettings.autoArmTime}" id="wireline_autoArm" step="5"
+    				inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;background:white;" 
+    				minValue="0" maxValue="255" enableManualInput="true" validatorMessage="#{messages.wirelineInvalidAutoArmMin}"
+    				onchange="checkMultiple('edit-form:wireline_autoArm')">
+    				</rich:inputNumberSpinner>
+		</td>
+	</tr>
+</table>
+</h:panelGroup>
+</a4j:outputPanel>
+
+</a4j:region>
+	</ui:composition>

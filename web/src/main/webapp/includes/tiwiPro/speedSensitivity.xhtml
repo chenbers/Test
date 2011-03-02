@@ -148,7 +148,7 @@
                                  <tr class="tableOdd'}">
                                      <td style="padding: 0px 12px 5px 12px; border-bottom: 1px solid #8BAD37;">
                      	               <ui:param name="messageKey" value="editDevice_hardAcceleration"/>
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update-hardAcceleration" value="#{updateField['editableVehicleSettings.hardAcceleration']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardAcceleration" value="#{updateField['editableVehicleSettings.hardAcceleration']}" />
                                        <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -188,7 +188,7 @@
                                  <tr class="tableEven">
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                      	               <ui:param name="messageKey" value="editDevice_hardBrake"/>
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update-hardBrake" value="#{updateField['editableVehicleSettings.hardBrake']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardBrake" value="#{updateField['editableVehicleSettings.hardBrake']}" />
                                        <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -228,7 +228,7 @@
                                  <tr class="tableOdd">
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                      	               <ui:param name="messageKey" value="editDevice_hardVertical"/>
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update-hardVertical" value="#{updateField['editableVehicleSettings.hardVertical']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardVertical" value="#{updateField['editableVehicleSettings.hardVertical']}" />
                                        <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -268,7 +268,7 @@
                                  <tr class="tableEven">
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                      	               <ui:param name="messageKey" value="editDevice_hardTurn"/>
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update-hardTurn" value="#{updateField['editableVehicleSettings.hardTurn']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardTurn" value="#{updateField['editableVehicleSettings.hardTurn']}" />
                                        <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">

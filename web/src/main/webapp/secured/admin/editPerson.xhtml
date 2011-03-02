@@ -264,14 +264,15 @@
                         </tr>
                         <tr>
                           <td width="100" valign="top">
-                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_editPerson-driver_expiration" value="#{personBean.updateField['driver.expiration']}" />
+                            <h:selectBooleanCheckbox rendered="#{personBean.batchEdit}" id="update_editPerson-driver_expiration" 
+                            value="#{personBean.updateField['driver.expiration']}" />
                             <h:outputText value="#{messages.editPerson_driver_expiration}" />
                           </td>
                           <td>
                             <rich:message for="editPerson-driver_expiration" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <rich:calendar value="#{personBean.item.driverExp}" id="editPerson-driver_expiration" 
-                              onchange="checkMultiple('driver_expiration')" 
-                              oninputchange="checkMultiple('driver_expiration')" ondateselect="checkMultiple('driver_expiration')" 
+                              onchange="checkMultiple('edit-form:editPerson-driver_expiration')" 
+                              oninputchange="checkMultiple('edit-form:editPerson-driver_expiration')" ondateselect="checkMultiple('edit-form:editPerson-driver_expiration')" 
                               enableManualInput="true" 
                               converterMessage="#{messages.editPerson_dateFormat}" 
                               timeZone="#{personBean.utcTimeZone}" /> 
@@ -326,7 +327,6 @@
                            <ui:param name="fieldName" value="driver.groupID"/>
                            <ui:param name="editBean" value="#{personBean}"/>
                            <ui:param name="label" value="#{messages.editPerson_driver_team}"/>
-        					<ui:param name="context" value="editPersonDriverGroup" />
                        </ui:include>
                           </td>
                           <td>
@@ -334,7 +334,7 @@
 		  	 					<h:selectOneMenu value="#{personBean.item.driver.groupID}" id="editPerson-driver_groupID" style="width:200px;float:none;"
     	                          		required="#{personBean.item.driverSelected and (not personBean.batchEdit)}" 
         	                      		requiredMessage="#{messages.required}"
-            	                  		onchange="checkMultiple(this)">
+        	                      		onchange="checkMultiple('edit-form:editPerson-driver_groupID')">
  		        	    			<f:selectItem itemLabel="" />
      		        	    		<f:selectItems value="#{personBean.teams}" />
 								</h:selectOneMenu>
@@ -354,7 +354,6 @@
                            <ui:param name="for" value="editPerson-driver_status"/>
                            <ui:param name="editBean" value="#{personBean}"/>
                            <ui:param name="label" value="#{messages.editPerson_driver_status}"/>
-         					<ui:param name="context" value="editPersonDriverStatus" />
                       		</ui:include>
                           </td>
                           <td>
@@ -384,7 +383,6 @@
                           		<ui:param name="for" value="editPerson-driver_barcode"/>
                            		<ui:param name="editBean" value="#{personBean}"/>
                            		<ui:param name="label" value="#{messages.editPerson_driver_rfid_barcode}"/>
-         						<ui:param name="context" value="editPersonDriverBarcode" />
          					</ui:include>
 						  </td>
                           <td>
@@ -461,7 +459,6 @@
                                     <ui:param name="for" value="editPerson-user_locale"/>
                                     <ui:param name="editBean" value="#{personBean}"/>
                                     <ui:param name="label" value="#{messages.editPerson_user_locale}"/>
-         							<ui:param name="context" value="editPersonLocale" />
                                  </ui:include>
                              </td>
                              <td>
@@ -505,7 +502,6 @@
                                     <ui:param name="for" value="editPerson-user_person_measurementType"/>
                                     <ui:param name="editBean" value="#{personBean}"/>
                                     <ui:param name="label" value="#{messages.editPerson_user_measurementType}"/>
-         					<ui:param name="context" value="editPersonMeasurementType" />
                                  </ui:include>
                              </td>
                              <td>
@@ -524,7 +520,6 @@
                                     <ui:param name="for" value="editPerson-user_person_fuelEfficiencyType"/>
                                     <ui:param name="editBean" value="#{personBean}"/>
                                     <ui:param name="label" value="#{messages.editPerson_user_fuelEfficiencyType}"/>
-          					<ui:param name="context" value="editPersonFuelEfficiencyType" />
                                  </ui:include>
                              </td>
                              <td>
@@ -596,7 +591,6 @@
                                 <ui:param name="for" value="editPerson-user_groupID"/>
 								<ui:param name="editBean" value="#{personBean}"/>
 								<ui:param name="label" value="#{messages.editPerson_user_group}"/>
-        					<ui:param name="context" value="editPersonGroupId" />
 							</ui:include>
                           </td>
                           <td>
@@ -604,14 +598,13 @@
 	  	 					<h:selectOneMenu value="#{personBean.item.user.groupID}" id="editPerson-user_groupID" style="width:200px;"
   	                            	required="#{not personBean.batchEdit}" 
  	                                requiredMessage="#{messages.required}"
-                              		onchange="checkMultiple(this)">
+                              		onchange="checkMultiple('edit-form:editPerson-user_groupID')">
  		            			<f:selectItem itemLabel="" />
      		            		<f:selectItems value="#{personBean.groups}" />
 							</h:selectOneMenu>
-								<ui:include src="/includes/dhtmlSelectBox.xhtml">	
-     			 					<ui:param name="selectBoxID" value="edit-form:editPerson-user_groupID" />
-								</ui:include>
-							
+							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+    			 					<ui:param name="selectBoxID" value="edit-form:editPerson-user_groupID" />
+							</ui:include>
                           </td>
                         </tr>
  	<security:authorize ifAnyGranted="ROLE_ADMIN">
@@ -623,14 +616,13 @@
 								<ui:param name="fieldName" value="user.roles"/>
 								<ui:param name="editBean" value="#{personBean}"/>
 								<ui:param name="label" value="#{messages.editPerson_user_role}"/>
-        					<ui:param name="context" value="editPersonRole" />
 							</ui:include>
                           </td>
                           <td>
                             <rich:message for="editPerson-user_role" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 						    <ui:include src="../../includes/admin/listPicker.xhtml">
-						      <ui:param name="bean" value="#{personBean .rolePicker}" />
-						      <ui:param name="id" value="rolesAssign" />
+						      <ui:param name="bean" value="#{personBean.rolePicker}" />
+						      <ui:param name="id" value="editPerson-user_role" />
 						      <ui:param name="formName" value="edit-form" />
 						      <ui:param name="context" value="editPerson" />
 						    </ui:include>
@@ -646,7 +638,6 @@
 								<ui:param name="fieldName" value="user.status"/>
 								<ui:param name="editBean" value="#{personBean}"/>
 								<ui:param name="label" value="#{messages.editPerson_user_status}"/>
-        					<ui:param name="context" value="editPersonStatus" />
 							</ui:include>
                           </td>
                           <td>
@@ -759,7 +750,6 @@
                                  <ui:param name="iconSrc" value="/images/ico_info.png"/>
                                  <ui:param name="editBean" value="#{personBean}"/>
                                  <ui:param name="label" value="#{messages.myAccount_information}"/>
-        					<ui:param name="context" value="editPersonInfo" />
                             </ui:include>
                           </td>
                           <td>
@@ -795,7 +785,6 @@
                                  <ui:param name="iconSrc" value="/images/ico_critical.png"/>
                                  <ui:param name="editBean" value="#{personBean}"/>
                                  <ui:param name="label" value="#{messages.myAccount_critical}"/>
-         					<ui:param name="context" value="editPersonCrit" />
                             </ui:include>
                           </td>
                           <td>

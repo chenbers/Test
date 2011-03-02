@@ -170,11 +170,10 @@
                             <td width="105" valign="top">
                               <ui:include src="../../includes/admin/inputLabel.xhtml">
                                  <ui:param name="required" value="TRUE"/>
-                                 <ui:param name="for" value="name"/>
+                                 <ui:param name="for" value="editRedFlag-name"/>
                                  <ui:param name="fieldName" value="name"/>
                                  <ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
                                  <ui:param name="label" value="#{messages.editAlerts_name}"/>
-        					<ui:param name="context" value="editRedFlagName" />
                               </ui:include>
                             </td>
                             <td>
@@ -189,7 +188,7 @@
                               <h:outputText value="#{messages.editAlerts_description}" />
                             </td>
                             <td>
-                              <h:inputText value="#{redFlagOrZoneAlertsBean.item.description}" id="description" onchange="checkMultiple(this)" styleClass="text" size="30"
+                              <h:inputText value="#{redFlagOrZoneAlertsBean.item.description}" id="editRedFlag-description" onchange="checkMultiple(this)" styleClass="text" size="30"
                                 maxlength="64" />
                             </td>
                           </tr>
@@ -200,7 +199,7 @@
                               <h:outputText value="#{messages.editRedFlag_notification}" />
                             </td>
                             <td>
-								<h:selectOneMenu id="severityLevel" value="#{redFlagOrZoneAlertsBean.item.severityLevel}" converter="SimpleBeanConverter" onchange="checkMultiple(this);" >
+								<h:selectOneMenu id="editRedFlag-severityLevel" value="#{redFlagOrZoneAlertsBean.item.severityLevel}" converter="SimpleBeanConverter" onchange="checkMultiple(this);" >
                                       <f:selectItems value="#{redFlagOrZoneAlertsBean.item.severityValues}" />    
                                       <a4j:support event="onclick" reRender="redFlagAlertsLimitValue,namePickerPnl,namePickerHint" ajaxSingle="true">
                                       	<f:setPropertyActionListener target="#{redFlagOrZoneAlertsBean.item.severityLevel}" value="#{redFlagOrZoneAlertsBean.item.severityLevel}"></f:setPropertyActionListener>
@@ -213,12 +212,10 @@
 								<td width="115" valign="top">
 									<ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
-										<ui:param name="reRender" value="status"/>
-										<ui:param name="for" value="status"/>
+										<ui:param name="for" value="redFlagAlertsStatus"/>
 										<ui:param name="fieldName" value="status"/>
 										<ui:param name="editBean" value="#{redFlagOrZoneAlertsBean}"/>
 										<ui:param name="label" value="#{messages.editAlerts_status}"/>
-        								<ui:param name="context" value="redFlagAlertsStatus" />
 									</ui:include>
 								</td>
 								<td>

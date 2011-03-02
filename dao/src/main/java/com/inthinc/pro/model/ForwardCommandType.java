@@ -424,6 +424,7 @@ enum forward_commands {
     SET_TRIAX_ORIENTATION(554),
     DOWNLOAD_NEW_WITNESSII_FIRMWARE(556, "Download new witness II firmware.  Parameter(Integer): Firmware version number", Boolean.FALSE),
     SEND_TRIAX_CALIBRATE(578),
+    WIRELINE_LIGHT_DISARM(590),
     SET_SPEED_LIMIT_VARIABLE(629),
     SET_SEVERE_SPEED_LIMIT_VARIABLE(630),
     SET_SPEED_BUFFER_VARIABLE(631),
@@ -431,7 +432,7 @@ enum forward_commands {
     SET_SEVERE_SPEED_LIMIT_VARIABLE_KPH(634),
     SET_SPEED_BUFFER_VARIABLE_KPH(635),
     DOWNLOAD_NEW_SMTOOLS_EMULATION(636, "Download new sm tools emulation.  Parameters: NONE", Boolean.FALSE),
-    DOWNLOAD_NEW_SMTOOLS_FIRMWARE(637, "Download new sm tools firmwar.  Parameters(Integer): revision number"),
+    DOWNLOAD_NEW_SMTOOLS_FIRMWARE(637, "Download new sm tools firmware.  Parameters(Integer): revision number"),
     SET_007_MODEM_PWR_STATE(638),
     SET_007_GPS_PWR_STATE(639),
     SET_007_BATT_PWR_STATE(640),
@@ -449,6 +450,20 @@ enum forward_commands {
     SET_GPRS_APN(688, "apn string follows the forward command"),
     SET_SERVER_URL(692, "Set URL of server that unit communicates with. Parameter(String): url of server unit should communicate with"),
 //    SET_SERVER_CONTEXT(708, "context string follows the forward command"),	/ NOT SUPPORTED
+
+    WIRELINE_ENABLE_DOOR_ALARM(728),
+    WIRELINE_DISABLE_DOOR_ALARM(729),
+    WIRELINE_SET_DOOR_ALARM_PASSCODE(730, "Enter a 4 Digit Passcode. Parameter(Integer): "),
+    WIRELINE_ENABLE_KILL_MOTOR(731),
+    WIRELINE_DISABLE_KILL_MOTOR(732),
+    WIRELINE_SET_KILL_MOTOR_PASSCODE(733, "Enter a 4 Digit Passcode. Parameter(Integer): "),
+    WIRELINE_SET_AUTO_ARM_TIME(734, "Time in minutes (0 to 255). Parameter(Integer): "),
+    WIRELINE_GET_STATUS(735),
+    WIRELINE_RUN_IGNITION_TEST(736),
+    WIRELINE_LIGHT_ENABLE(752),
+    WIRELINE_ENABLE_MODULE(753),
+    WIRELINE_DISABLE_MODULE(754),
+
     SET_TRIAX_HARDACCEL_DELTAV(797,"next byte is the accel delta V thres in mph * 10"),
     SET_TRIAX_HARDACCEL_LEVEL(795,"next byte is the accel level thres in g * 10 (-0.05g)"),
     SET_TRIAX_DVY(772,"byte"),
@@ -495,9 +510,6 @@ enum forward_commands {
     SET_AUTO_LOGOUT_SECONDS(2146, "Set auto logout seconds. Parameter(Integer): <seconds>", Boolean.FALSE),
     SET_NO_DRIVER_VIOLATION_OVERRIDE_ENABLE(2157, "Enable NO DRIVER violation override. Parameter: NONE", Boolean.FALSE),
     SET_NO_DRIVER_VIOLATION_OVERRIDE_DISABLE(2158, "Disable NO DRIVER violation override. Parameter: NONE", Boolean.FALSE),
- 
-
-
     ;
     
     

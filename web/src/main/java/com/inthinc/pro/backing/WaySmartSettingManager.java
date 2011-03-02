@@ -7,6 +7,8 @@ import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
+import com.inthinc.pro.model.MeasurementType;
+import com.inthinc.pro.model.WirelineStatus;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
@@ -34,9 +36,9 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Integer hardTurn = vehicleSensitivitySliders.getHardTurnSlider().getDefaultValueIndex();
         Integer hardAcceleration =  vehicleSensitivitySliders.getHardAccelerationSlider().getDefaultValueIndex();
         Integer hardBrake = vehicleSensitivitySliders.getHardBrakeSlider().getDefaultValueIndex();
-        
         return new WaySmartEditableVehicleSettings(vehicleID==null?-1:vehicleID, speedLimit,speedBuffer,severeSpeed,
-                                        hardAcceleration, hardBrake, hardTurn,hardVertical);
+                                        hardAcceleration, hardBrake, hardTurn,hardVertical, getMeasurementType(), WirelineStatus.DISABLE,
+                                        WirelineStatus.DISABLE, null, WirelineStatus.DISABLE, null, 15);
     }
     
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
@@ -51,10 +53,22 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Integer hardBrake = extractHardBrakeValue(getVehicleSettingsForSliderSettingIDs(vs,vehicleSensitivitySliders.getHardBrakeSlider()));
 
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
+        
+        WirelineStatus wirelineModule = WirelineStatus.valueOf(NumberUtil.convertString(vs.getCombined(SettingType.WIRELINE_MODULE.getSettingID())));
+        String  doorAlarmPasscode = vs.getCombined(SettingType.WIRELINE_DOOR_ALARM_PASSCODE.getSettingID());
+        String  killMotorPasscode = vs.getCombined(SettingType.WIRELINE_KILL_MOTOR_PASSCODE.getSettingID());
+        WirelineStatus  doorAlarm = (doorAlarmPasscode == null || doorAlarmPasscode.trim().isEmpty()) ? WirelineStatus.DISABLE : WirelineStatus.ENABLE;
+        WirelineStatus  killMotor = (killMotorPasscode == null || killMotorPasscode.trim().isEmpty()) ? WirelineStatus.DISABLE : WirelineStatus.ENABLE;
+        Integer autoArmTime = NumberUtil.convertString(vs.getCombined(SettingType.WIRELINE_AUTO_ARM_TIME.getSettingID()));
+
 
         return new WaySmartEditableVehicleSettings(vehicleID, speedLimit,speedBuffer,severeSpeed, 
-                                          hardAcceleration, hardBrake, hardTurn,hardVertical);
+                                          hardAcceleration, hardBrake, hardTurn,hardVertical, getMeasurementType(),
+                                          wirelineModule, doorAlarm, doorAlarmPasscode, killMotor, killMotorPasscode, autoArmTime);
     }
+    
+    
+    // TODO: is there a difference between evaluateChangedSettings and evaluateSettings() ??
     
     @Override
     public Map<Integer, String> evaluateChangedSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings) {
@@ -84,7 +98,22 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 	        getSliderValuesForHardAcceleration(changedSettings,waySmartEditableVehicleSettings);
 	        getSliderValuesForHardBrake(changedSettings,waySmartEditableVehicleSettings);
 	        getSliderValuesForHardTurn(changedSettings,waySmartEditableVehicleSettings);
+
 	        
+            changedSettings.addSettingIfNeeded(SettingType.WIRELINE_MODULE,
+                    ""+waySmartEditableVehicleSettings.getWirelineModule().getCode(), 
+                    vehicleSetting.getCombined(SettingType.WIRELINE_MODULE.getSettingID()));
+            changedSettings.addSettingIfNeeded(SettingType.WIRELINE_KILL_MOTOR_PASSCODE,
+                    ""+waySmartEditableVehicleSettings.getKillMotorPasscode(), 
+                    vehicleSetting.getCombined(SettingType.WIRELINE_KILL_MOTOR_PASSCODE.getSettingID()));
+            changedSettings.addSettingIfNeeded(SettingType.WIRELINE_DOOR_ALARM_PASSCODE,
+                    ""+waySmartEditableVehicleSettings.getDoorAlarmPasscode(), 
+                    vehicleSetting.getCombined(SettingType.WIRELINE_DOOR_ALARM_PASSCODE.getSettingID()));
+            changedSettings.addSettingIfNeeded(SettingType.WIRELINE_AUTO_ARM_TIME,
+                    ""+waySmartEditableVehicleSettings.getAutoArmTime(), 
+                    vehicleSetting.getCombined(SettingType.WIRELINE_AUTO_ARM_TIME.getSettingID()));
+
+            
 	        return changedSettings.getDesiredSettings();
 	    }
 	    catch(IllegalArgumentException iae){
@@ -122,6 +151,19 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 	        getSliderValuesForHardBrake(newSettings,waySmartEditableVehicleSettings);
 	        getSliderValuesForHardTurn(newSettings,waySmartEditableVehicleSettings);
 	        
+	        newSettings.addSettingIfNeeded(SettingType.WIRELINE_MODULE,
+                    ""+waySmartEditableVehicleSettings.getWirelineModule().getCode(), 
+                    vehicleSetting.getCombined(SettingType.WIRELINE_MODULE.getSettingID()));
+	        newSettings.addSettingIfNeeded(SettingType.WIRELINE_KILL_MOTOR_PASSCODE,
+                    ""+waySmartEditableVehicleSettings.getKillMotorPasscode(), 
+                    vehicleSetting.getCombined(SettingType.WIRELINE_KILL_MOTOR_PASSCODE.getSettingID()));
+	        newSettings.addSettingIfNeeded(SettingType.WIRELINE_DOOR_ALARM_PASSCODE,
+                    ""+waySmartEditableVehicleSettings.getDoorAlarmPasscode(), 
+                    vehicleSetting.getCombined(SettingType.WIRELINE_DOOR_ALARM_PASSCODE.getSettingID()));
+	        newSettings.addSettingIfNeeded(SettingType.WIRELINE_AUTO_ARM_TIME,
+                    ""+waySmartEditableVehicleSettings.getAutoArmTime(), 
+                    vehicleSetting.getCombined(SettingType.WIRELINE_AUTO_ARM_TIME.getSettingID()));
+
 	        return newSettings.getDesiredSettings();
         
         }

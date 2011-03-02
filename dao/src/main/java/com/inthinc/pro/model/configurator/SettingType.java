@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.model.BaseEnum;
+import com.inthinc.pro.model.WirelineStatus;
 
 @XmlRootElement
 public enum SettingType implements BaseEnum
@@ -65,7 +66,11 @@ public enum SettingType implements BaseEnum
     SPEED_11(36,0,10,60,"speed11"),
     SPEED_12(37,0,10,65,"speed12"),
     SPEED_13(38,0,10,70,"speed13"),
-    SPEED_14(39,0,10,75,"speed14");
+    SPEED_14(39,0,10,75,"speed14"),
+    WIRELINE_MODULE(40, 1172, 0, 0, "wireline_module"),
+    WIRELINE_DOOR_ALARM_PASSCODE(41, 1149, 0, 0, "wireline_door_alarm_passwd"),
+    WIRELINE_KILL_MOTOR_PASSCODE(42, 1150, 0, 0, "wireline_kill_motor_passwd"),
+    WIRELINE_AUTO_ARM_TIME(43, 1151, 0, 0, "wireline_auto_armtime");
     
     private Integer       settingsCount; //This is how many possible values there are for this device setting
     private Integer       settingID; //SettingID in settingDefs table

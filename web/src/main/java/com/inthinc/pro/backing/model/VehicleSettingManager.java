@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.EditableVehicleSettings;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -11,7 +12,7 @@ import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.Slider;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
-public abstract class VehicleSettingManager {
+public abstract class VehicleSettingManager extends BaseBean {
 
 	protected ConfiguratorDAO configuratorDAO;
     protected VehicleSetting  vehicleSetting;
