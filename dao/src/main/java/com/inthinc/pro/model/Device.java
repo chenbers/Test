@@ -37,6 +37,7 @@ public class Device extends BaseEntity implements HasAccountId
     @Column(name="productVer", updateable = false)
     private ProductType productVersion;
     private String mcmid;   //Waysmart mcmid
+    @Column(name = "altImei")
     private String altimei; //Alternate Waysmart imei
 /* 
  * waySmartSerialNumber
