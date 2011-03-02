@@ -52,6 +52,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			open(locator);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -63,6 +65,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			click(locator);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -75,6 +79,8 @@ public class CoreMethodLib extends DefaultSelenium{
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
 			return 0;
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 			return 0;
@@ -89,6 +95,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			}catch(SeleniumException e){
 				errors.Error(error_name, e);
 				return "no";
+			}catch(RuntimeException e) {
+				throw new RuntimeException(e);
 			}catch(Exception e){
 				errors.Error(error_name, e);
 				return "no";
@@ -104,6 +112,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			errors.Error(error_name, "Failed");
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -116,6 +126,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			errors.Error(error_name, "Failed");
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -130,6 +142,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			AssertNotEqual(truefalse, -1, error_name);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -146,6 +160,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			errors.Expected(error_name, expected);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}finally{			
@@ -162,6 +178,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			text = getText(locator);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}finally{			
@@ -181,6 +199,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			errors.Error(error_name, getTable(locator));
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}finally{
@@ -201,6 +221,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			errors.Expected(error_name, expected);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}finally{
@@ -216,6 +238,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			type(locator, text);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -229,6 +253,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			errors.Error(error_name, e);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -242,6 +268,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			errors.Error(error_name, e);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -254,6 +282,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			errors.Error(error_name, e);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -266,6 +296,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			errors.Error(error_name, e);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -276,6 +308,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			waitForPageToLoad(timeout);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -285,28 +319,6 @@ public class CoreMethodLib extends DefaultSelenium{
 		return errors;
 	}
 
-	public void TextPresent( String text){
-		try {
-			assertTrue(isTextPresent(text));
-			}catch (AssertionError e){
-				
-			}
-	}
-	
-	public void ElementPresent( String element){
-		try {
-			assertTrue(isElementPresent(element));
-			}catch (AssertionError e){
-				
-			}
-	}
-	
-	public void GetText( String location, String text){
-	try {
-		AssertEquals(getText(location), text, "error");
-		}catch (AssertionError e){
-		}
-	}
 	
 	public void AssertEquals( String actual, String expected, String error_name){
 		try {
@@ -314,6 +326,8 @@ public class CoreMethodLib extends DefaultSelenium{
 		}catch(AssertionError e){
 			errors.Error(error_name, actual);
 			errors.Expected(error_name, expected);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -325,6 +339,8 @@ public class CoreMethodLib extends DefaultSelenium{
 		}catch(AssertionError e){
 			errors.Error(error_name, actual.toString());
 			errors.Expected(error_name, expected.toString());
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -336,6 +352,8 @@ public class CoreMethodLib extends DefaultSelenium{
 		}catch(AssertionError e){
 			errors.Error(error_name, actual);
 			errors.Expected(error_name, "not"+not_expected);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -346,6 +364,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			assertFalse(actual==not_expected);
 		}catch(AssertionError e){
 			errors.Error(error_name, "False");
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
@@ -357,6 +377,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			Thread.sleep((long)(timeout_in_secs * 1000));
 		}catch(InterruptedException e){
 			e.printStackTrace();
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	
@@ -366,6 +388,8 @@ public class CoreMethodLib extends DefaultSelenium{
 			Pause(5);
 		}catch(SeleniumException e){
 			errors.Error(error_name, e);
+		}catch(RuntimeException e) {
+			throw new RuntimeException(e);
 		}catch(Exception e){
 			errors.Error(error_name, e);
 		}
