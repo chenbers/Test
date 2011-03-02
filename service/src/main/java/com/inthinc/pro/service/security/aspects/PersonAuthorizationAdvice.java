@@ -113,8 +113,8 @@ public class PersonAuthorizationAdvice implements EntityAuthorization<Person> {
      */
     public void doAccessCheck(Person entity) {
         if (entity != null) {
-            Address address = addressDao.findByID(entity.getAddressID());
-            baseAuthorizationAdvice.doAccessCheck(address);
+//            Address address = addressDao.findByID(entity.getAddressID());
+            baseAuthorizationAdvice.doAccessCheck(entity);
         }
     }
 
