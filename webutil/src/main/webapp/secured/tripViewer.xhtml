@@ -146,7 +146,7 @@
 			function renderLineChart(element, div, width, height)
 			{
 				var elemDef = document.getElementById(element);
-				var elemChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusioncharts/MSLine.swf", 
+				var elemChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusion/MSLine.swf", 
 					"ChartId", width, height, "0", "1");														
 				elemChart.setDataXML(elemDef.value);	
 				elemChart.setTransparent(true);								   	   
