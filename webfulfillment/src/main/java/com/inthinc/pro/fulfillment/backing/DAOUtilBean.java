@@ -49,6 +49,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.security.userdetails.ProUser;
@@ -361,6 +362,8 @@ public class DAOUtilBean implements PhaseListener {
 				device.setAccountID(shipAccountID);
 
 //				device.setEphone(null);
+                if (device.getProductVersion() == null || device.getProductVersion() == ProductType.UNKNOWN)
+                    device.setProductVersion(ProductType.TIWIPRO_R74);
 				deviceDAO.create(shipAccountID, device);
 				setSuccessMsg("Device " + serialNum
 						+ " successfully moved to account: "
@@ -387,6 +390,8 @@ public class DAOUtilBean implements PhaseListener {
 				device.setAccountID(selectedAccountID);
 
 //				device.setEphone(null);
+				if (device.getProductVersion() == null || device.getProductVersion() == ProductType.UNKNOWN)
+				    device.setProductVersion(ProductType.TIWIPRO_R74);
 				deviceDAO.create(selectedAccountID, device);
 				setSuccessMsg("Device " + serialNum
 						+ " successfully assigned to account: "
