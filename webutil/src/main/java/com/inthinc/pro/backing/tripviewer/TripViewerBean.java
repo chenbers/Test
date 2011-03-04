@@ -431,7 +431,10 @@ public class TripViewerBean extends BaseBean {
         for (Event event:evt){
             
             if (eventInInterval(event.getTime(), startTime, endTime)){
-                EventAndAttr eaa = new EventAndAttr(event.getSats(),event.getSpeed(),event.getSpeedLimit(),event.getLatitude(),event.getLongitude(),event.getTime(),event.getAttrMap());
+                EventAndAttr eaa = new EventAndAttr(
+                        event.getSats(),event.getSpeed(),event.getSpeedLimit(),
+                        event.getLatitude(),event.getLongitude(),event.getTime(),
+                        event.getAttrMap(),event.getCreated());
                 eaa.setDecodedAttrMap(event.getAttrMap()); 
                 tripEvents.add(eaa);
             }

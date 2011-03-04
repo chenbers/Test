@@ -13,14 +13,15 @@ public class EventAndAttr extends Event {
         super();
     }
     
-    public EventAndAttr(int sats,int speed,int speedLimit, double latitude, double longitude, Date time, Map<Object,Object> attrMap) {
+    public EventAndAttr(int sats,int speed,int speedLimit, double latitude, double longitude, Date time, Map<Object,Object> attrMap, Date created) {
         setSats(sats);
         setSpeed(speed);
         setSpeedLimit(speedLimit);
         setLongitude(longitude);
         setLatitude(latitude);
         setTime(time);
-        this.setAttrMap(attrMap);
+        setAttrMap(attrMap);
+        setCreated(created);
     }
 
     public String getDecodedAttrMap() {

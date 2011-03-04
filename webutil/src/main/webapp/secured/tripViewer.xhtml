@@ -316,7 +316,7 @@
 	    </table> 
 	    
 	<h:panelGroup id="statusPanel">
-		<rich:modalPanel id="tripNotes" width="750" height="500" zindex="2000">
+		<rich:modalPanel id="tripNotes" width="900" height="500" zindex="2000">
 		    <f:facet name="header">
 		      <h:outputText value="Trip Notes" />
 		    </f:facet>
@@ -334,6 +334,12 @@
                         </f:facet>
                         <h:outputText id="tim" value="#{n.time}" />
                     </rich:column>  
+                    <rich:column style="width:150px">
+                        <f:facet name="header">
+                            <h:outputText value="Created" />
+                        </f:facet>
+                        <h:outputText id="creat" value="#{n.created}" />
+                    </rich:column>                      
                     <rich:column width="100px">
                         <f:facet name="header">
                             <h:outputText value="Attribute Map" />
