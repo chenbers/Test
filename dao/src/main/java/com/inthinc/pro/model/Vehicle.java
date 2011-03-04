@@ -1,7 +1,5 @@
 package com.inthinc.pro.model;
 
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -36,11 +34,9 @@ public class Vehicle extends BaseEntity
     private Integer           deviceID;
     
     private Integer           odometer;
-    private Boolean           hos;
     
     private Boolean           dot;
     private Boolean           ifta;
-    private Integer           zoneType; //1=light, 2=heavy -TODO make enum for this
     
     public Vehicle()
     {
@@ -61,14 +57,6 @@ public class Vehicle extends BaseEntity
 
     public void setIfta(Boolean ifta) {
         this.ifta = ifta;
-    }
-
-    public Integer getZoneType() {
-        return zoneType;
-    }
-
-    public void setZoneType(Integer zoneType) {
-        this.zoneType = zoneType;
     }
 
     public static long getSerialversionuid() {
@@ -261,14 +249,6 @@ public class Vehicle extends BaseEntity
         this.vtype = vtype;
     }
 
-    public Boolean getHos() {
-        return hos;
-    }
-
-    public void setHos(Boolean hos) {
-        this.hos = hos;
-    }
-
     public String getFullName()
     {
         if ((this.year == null) && (this.make == null) && (this.model == null))
@@ -287,12 +267,9 @@ public class Vehicle extends BaseEntity
     public String toString() {
         return "Vehicle [VIN=" + VIN + ", color=" + color + ", deviceID=" + deviceID + ", driverID=" + driverID + ", groupID=" + groupID
                 + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", state=" + state + ", status=" + status + ", vehicleID=" + vehicleID
-                + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + ", hos="+ hos+
+                + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + //", hos="+ hos+
                 ", dot="+dot+
                 ", ifta="+ifta+
-                ", zoneType="+zoneType+
-//                ", warrantyStart="+warrantyStart==null?"":warrantyStart.toString()+
-//                ", warrantyStop="+warrantyStop==null?"":warrantyStop.toString()+
                "]";
     }
 }

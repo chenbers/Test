@@ -706,18 +706,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public List<SelectItem> getStatusSelectItems() {
         return DeviceStatusSelectItems.INSTANCE.getSelectItems();
     }
-    public List<SelectItem> getZoneTypeSelectItems()
-    {
-        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-
-        for (VehicleType p : EnumSet.allOf(VehicleType.class))
-        {
-            SelectItem selectItem = new SelectItem(p.getCode(),MessageUtil.getMessageString(p.toString()));
-            selectItemList.add(selectItem);
-        }
-
-        return selectItemList;
-    }
 
     public Map<String, State> getStates()
     {

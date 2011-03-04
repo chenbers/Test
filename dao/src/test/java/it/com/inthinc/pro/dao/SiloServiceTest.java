@@ -1162,7 +1162,7 @@ public class SiloServiceTest {
         for (int i = 0; i < VEHICLE_COUNT; i++) {
             Vehicle vehicle = new Vehicle(0, groupID, Status.INACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, VehicleType.valueOf(Util.randomInt(0,
                     VehicleType.values().length - 1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, randomState());
-            vehicle.setHos((i == 0));   // set just 1st to hos 
+//            vehicle.setHos((i == 0));   // set just 1st to hos 
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
             assertNotNull(vehicleID);
             vehicle.setVehicleID(vehicleID);
