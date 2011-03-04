@@ -316,7 +316,7 @@
 	    </table> 
 	    
 	<h:panelGroup id="statusPanel">
-		<rich:modalPanel id="tripNotes" width="600" height="500" zindex="2000">
+		<rich:modalPanel id="tripNotes" width="750" height="500" zindex="2000">
 		    <f:facet name="header">
 		      <h:outputText value="Trip Notes" />
 		    </f:facet>
@@ -328,36 +328,48 @@
                 	<f:facet name="header">
     	                <h:outputText value="Notes Found" />
         	    	</f:facet>
-                    <rich:column style="width:20%" sortBy="#{n.time}" sortOrder="ASCENDING">
+                    <rich:column style="width:150px" sortBy="#{n.time}" sortOrder="ASCENDING">
                         <f:facet name="header">
                             <h:outputText value="Time" />
                         </f:facet>
                         <h:outputText id="tim" value="#{n.time}" />
-                    </rich:column>               	    	
-                    <rich:column style="width:20%">
+                    </rich:column>  
+                    <rich:column width="100px">
+                        <f:facet name="header">
+                            <h:outputText value="Attribute Map" />
+                        </f:facet>
+                        <h:outputText id="attr" value="#{n.decodedAttrMap}" />
+                    </rich:column>                                   	    	
+                    <rich:column width="100px">
                         <f:facet name="header">
                             <h:outputText value="Latitude" />
                         </f:facet>
-                        <h:outputText id="id" value="#{n.latitude}" />
+                        <h:outputText id="lat" value="#{n.latitude}" />
                     </rich:column>                    
-                    <rich:column width="20%">
+                    <rich:column width="100px">
                         <f:facet name="header">
                             <h:outputText value="Longitude" />
                         </f:facet>
-                        <h:outputText id="strtTime" value="#{n.longitude}" />
+                        <h:outputText id="lng" value="#{n.longitude}" />
                     </rich:column>
-                    <rich:column width="20%" >
+                    <rich:column width="100px" >
                         <f:facet name="header">
                             <h:outputText value="Speed" />
                         </f:facet>
-                        <h:outputText id="endTime" value="#{n.speed}" />
+                        <h:outputText id="speed" value="#{n.speed}" />
                     </rich:column>
-                    <rich:column width="20%" >
+                    <rich:column width="100px" >
                         <f:facet name="header">
                             <h:outputText value="Speed Limit" />
                         </f:facet>
-                        <h:outputText id="miles" value="#{n.speedLimit}" />
-                    </rich:column>                                                            
+                        <h:outputText id="lim" value="#{n.speedLimit}" />
+                    </rich:column>  
+                    <rich:column width="100px" >
+                        <f:facet name="header">
+                            <h:outputText value="Satellites" />
+                        </f:facet>
+                        <h:outputText id="sats" value="#{n.sats}" />
+                    </rich:column>                                                                               
                 </rich:dataTable>
 
                 <rich:datascroller align="center" for="trps" id="trpsScroller"  maxPages="5" reRender="trps">

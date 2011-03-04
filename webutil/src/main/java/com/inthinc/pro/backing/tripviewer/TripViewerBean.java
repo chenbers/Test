@@ -26,6 +26,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.tripviewer.model.EventAndAttr;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TripViewerBean extends BaseBean {
@@ -55,7 +56,7 @@ public class TripViewerBean extends BaseBean {
     private LatLng tripStart;
     private LatLng tripEnd;
     
-    private List<Event> tripNotes = new ArrayList<Event>();
+    private List<EventAndAttr> tripNotes = new ArrayList<EventAndAttr>();
     
     public List<SelectItem> getAccounts()
     {
@@ -149,7 +150,7 @@ public class TripViewerBean extends BaseBean {
                     eventTypeList, 1);
             
             // Toss out 
-            List<Event> events = this.getTripEvents(tmp, trp.getStartTime(), trp.getEndTime());
+            List<EventAndAttr> events = getTripEvents(tmp, trp.getStartTime(), trp.getEndTime());
             float mpgAdj = 0.0f;
             
             // Looking for one ignition off only
@@ -306,7 +307,7 @@ public class TripViewerBean extends BaseBean {
                 eventTypeList, 1);
         
         // Toss out 
-        tripNotes = this.getTripEvents(tmp, this.tripToShow.getStartTime(), this.tripToShow.getEndTime());
+        tripNotes = getTripEvents(tmp, this.tripToShow.getStartTime(), this.tripToShow.getEndTime());
         
         // Have the selected trip, create speed line plot
         StringBuffer sb = new StringBuffer();
@@ -409,11 +410,11 @@ public class TripViewerBean extends BaseBean {
         this.tripEnd = tripEnd;
     }
 
-    public List<Event> getTripNotes() {
+    public List<EventAndAttr> getTripNotes() {
         return tripNotes;
     }
 
-    public void setTripNotes(List<Event> tripNotes) {
+    public void setTripNotes(List<EventAndAttr> tripNotes) {
         this.tripNotes = tripNotes;
     }
 
@@ -423,15 +424,16 @@ public class TripViewerBean extends BaseBean {
         eventTime.equals(startTime) || eventTime.equals(endTime);
     }
     
-    private List<Event> getTripEvents(List<Event> violations,Date startTime, Date endTime){
+    private List<EventAndAttr> getTripEvents(List<Event> evt,Date startTime, Date endTime){
         
-        List<Event> tripEvents = new ArrayList<Event>();
+        List<EventAndAttr> tripEvents = new ArrayList<EventAndAttr>();
         
-        for (Event event:violations){
+        for (Event event:evt){
             
             if (eventInInterval(event.getTime(), startTime, endTime)){
-
-                tripEvents.add(event);
+                EventAndAttr eaa = new EventAndAttr(event.getSats(),event.getSpeed(),event.getSpeedLimit(),event.getLatitude(),event.getLongitude(),event.getTime(),event.getAttrMap());
+                eaa.setDecodedAttrMap(event.getAttrMap()); 
+                tripEvents.add(eaa);
             }
         }
         return tripEvents;
