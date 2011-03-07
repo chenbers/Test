@@ -91,10 +91,9 @@ public class SpeedingEvent extends Event
     {
         this.avgRPM = avgRPM;
     }
-
-
+    
     @Override
-    public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
+    public String getDetails(String formatStr,MeasurementType measurementType,String... mString)
     {
         Integer topSpeed = 0;
         if(this.topSpeed != null)
@@ -104,14 +103,27 @@ public class SpeedingEvent extends Event
         if(this.speedLimit != null)
             speedLimit = this.speedLimit;
         
+        // distance is x100
+        float distance = 0.0f;
+        if(this.distance != null) {
+            distance = this.distance.floatValue()/100.0f;
+        }
+        
         if(measurementType.equals(MeasurementType.METRIC))
         {
             topSpeed = MeasurementConversionUtil.fromMPHtoKPH(topSpeed).intValue();
             speedLimit = MeasurementConversionUtil.fromMPHtoKPHSpeedLimit(speedLimit).intValue();
+            distance = MeasurementConversionUtil.fromMilesToKilometers(distance).floatValue();
         }
         
-        return MessageFormat.format(formatStr, topSpeed, speedLimit , mphString, mphString);
-    }
+        return MessageFormat.format(
+                formatStr, 
+                topSpeed, 
+                speedLimit , 
+                new Float(distance),
+                mString[0],
+                mString[1]);        
+    }        
     @Override
 	public boolean isValidEvent() {
 		// TODO Auto-generated method stub

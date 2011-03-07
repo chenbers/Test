@@ -32,9 +32,9 @@ public class DOTStoppedEvent extends Event implements StatusEvent {
 
     
     @Override
-    public String getDetails(String formatStr,MeasurementType measurementType, String dotStoppedString)
+    public String getDetails(String formatStr,MeasurementType measurementType, String... dotStoppedString)
     {
-        return MessageFormat.format(formatStr, new Object[] {dotStoppedString});
+        return MessageFormat.format(formatStr, new Object[] {dotStoppedString[0]});
     }
 
 

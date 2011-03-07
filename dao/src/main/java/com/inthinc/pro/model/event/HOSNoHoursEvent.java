@@ -32,9 +32,9 @@ public class HOSNoHoursEvent extends Event implements StatusEvent {
 
     
     @Override
-    public String getDetails(String formatStr,MeasurementType measurementType, String hosNoHoursStateString)
+    public String getDetails(String formatStr,MeasurementType measurementType, String... hosNoHoursStateString)
     {
-        return MessageFormat.format(formatStr, new Object[] {hosNoHoursStateString});
+        return MessageFormat.format(formatStr, new Object[] {hosNoHoursStateString[0]});
     }
 
 

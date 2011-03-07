@@ -261,7 +261,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
      * @param measurementType
      * @return Formatted Message String
      */
-    public String getDetails(String formatStr, MeasurementType measurementType, String mphString) {
+    public String getDetails(String formatStr, MeasurementType measurementType, String... strings) {
         return formatStr;
     }
 

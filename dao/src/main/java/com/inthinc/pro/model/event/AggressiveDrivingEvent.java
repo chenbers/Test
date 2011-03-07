@@ -92,7 +92,7 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
     }
     
     @Override
-    public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
+    public String getDetails(String formatStr,MeasurementType measurementType,String... mphString)
     {
         Integer speed = 0;
         
@@ -101,7 +101,8 @@ public class AggressiveDrivingEvent extends Event implements MultipleEventTypes
         
         if(measurementType.equals(MeasurementType.METRIC))
             speed = MeasurementConversionUtil.fromMPHtoKPH(speed).intValue();
-        return MessageFormat.format(formatStr, new Object[] {speed, mphString});
+      
+        return MessageFormat.format(formatStr, new Object[] {speed, mphString[0]});
     }
 
     public Integer getDeltaX()

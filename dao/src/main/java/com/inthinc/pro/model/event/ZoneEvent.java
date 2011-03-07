@@ -52,7 +52,7 @@ public abstract class ZoneEvent extends Event {
 	}
 
 	@Override
-    public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
+    public String getDetails(String formatStr,MeasurementType measurementType,String... mphString)
     {
         return MessageFormat.format(formatStr, new Object[] {zoneName == null ? "" : zoneName});
     }

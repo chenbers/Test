@@ -32,9 +32,9 @@ public class ParkingBrakeEvent extends Event implements StatusEvent {
 
     
     @Override
-    public String getDetails(String formatStr,MeasurementType measurementType, String parkingBrakeStateString)
+    public String getDetails(String formatStr,MeasurementType measurementType, String... parkingBrakeStateString)
     {
-        return MessageFormat.format(formatStr, new Object[] {parkingBrakeStateString});
+        return MessageFormat.format(formatStr, new Object[] {parkingBrakeStateString[0]});
     }
 
 
