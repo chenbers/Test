@@ -1,6 +1,7 @@
 package com.inthinc.pro.dao.hessian.mapper;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -26,15 +27,17 @@ public class EventHessianMapper extends AbstractMapper
         if (value instanceof Map<?,?>)
         {
             Map<Integer, Object> attrMap = (Map<Integer, Object>) value;
+            Map<String, String> attrValueMap = new HashMap<String, String>();
             for (Map.Entry<Integer, Object> attrEntry : attrMap.entrySet())
             {
                 String propertyName = EventAttr.getFieldName(attrEntry.getKey());
                 Object propertyData = attrEntry.getValue();
                 if (propertyName == null || propertyData == null)
                     continue;
+                attrValueMap.put(propertyName, propertyData.toString());
                 try
                 {
-                    PropertyUtils.setProperty(event, propertyName, propertyData);
+                    PropertyUtils.setProperty(event, "attrMap", attrValueMap);
                 }
                 catch (IllegalAccessException e)
                 {
