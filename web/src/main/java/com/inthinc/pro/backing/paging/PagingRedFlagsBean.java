@@ -232,6 +232,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
         
        	MeasurementType measurementType = this.getMeasurementType();
         String mphString = MessageUtil.getMessageString(measurementType.toString()+"_mph");
+        String miString  = MessageUtil.getMessageString(measurementType.toString()+"_miles");
         String dateFormatString = MessageUtil.getMessageString("dateTimeFormat", LocaleBean.getCurrentLocale());
 		        
         for (RedFlag redFlag : redFlagList)
@@ -245,7 +246,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
             if (redFlag.getEvent() instanceof StatusEvent) {
                 statusString = MessageUtil.getMessageString(((StatusEvent)redFlag.getEvent()).getStatusMessageKey());
             }
-            redFlagReportItemList.add(new RedFlagReportItem(redFlag, getMeasurementType(), dateFormatString, detailsFormatStr, (statusString == null) ? mphString : statusString, LocaleBean.getCurrentLocale()));
+            redFlagReportItemList.add(new RedFlagReportItem(redFlag, getMeasurementType(), dateFormatString, detailsFormatStr, (statusString == null) ? mphString : statusString, miString, LocaleBean.getCurrentLocale()));
         }
         return redFlagReportItemList;
     }
