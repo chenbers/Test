@@ -160,6 +160,9 @@ public class TripViewerBean extends BaseBean {
                 
                 if ( attrMap != null ) {
                     mpgVal = (String)attrMap.get("149");
+                    if ( mpgVal == null ) {
+                        mpgVal = (String)attrMap.get("MPG");
+                    }
                     
                     if ( mpgVal == null ) {
                         mpgAdj = 0.0f;
@@ -431,14 +434,22 @@ public class TripViewerBean extends BaseBean {
         for (Event event:evt){
             
             if (eventInInterval(event.getTime(), startTime, endTime)){
+                
+                // Sanitize bad data
                 EventAndAttr eaa = new EventAndAttr(
-                        event.getSats(),event.getSpeed(),event.getSpeedLimit(),
-                        event.getLatitude(),event.getLongitude(),event.getTime(),
-                        event.getAttrMap(),event.getCreated());
+                        event.getSats()!=null?event.getSats():0,
+                        event.getSpeed()!=null?event.getSpeed():0,
+                        event.getSpeedLimit()!=null?event.getSpeedLimit():0,
+                        event.getLatitude()!=null?event.getLatitude():0.0,
+                        event.getLongitude()!=null?event.getLongitude():0.0,
+                        event.getTime()!=null?event.getTime():new Date(),
+                        event.getAttrMap()!=null?event.getAttrMap():null,
+                        event.getCreated()!=null?event.getCreated():new Date());
                 eaa.setDecodedAttrMap(event.getAttrMap()); 
                 tripEvents.add(eaa);
             }
         }
         return tripEvents;
     }    
+
 }
