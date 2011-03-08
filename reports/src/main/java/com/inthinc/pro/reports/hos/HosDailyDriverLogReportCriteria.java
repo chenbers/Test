@@ -102,24 +102,42 @@ public class HosDailyDriverLogReportCriteria {
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
         
         for (Driver driver : reportDriverList) {
-            if (account == null)
-                account = accountDAO.findByID(driver.getPerson().getAcctID());
-                if (account.getAddress() == null && account.getAddressID() != null) {
-                    account.setAddress(addressDAO.findByID(account.getAddressID()));
+                if (account == null) {
+                    account = accountDAO.findByID(driver.getPerson().getAcctID());
+                    if (account.getAddress() == null && account.getAddressID() != null) {
+                        account.setAddress(addressDAO.findByID(account.getAddressID()));
+                    }
                 }
-                Group group = groupDAO.findByID(driver.getGroupID());
-                group.setAddress(getTerminalAddress(group, accountGroupHierarchy)); 
                 Integer driverID = driver.getDriverID();
-                List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
-                List<HOSVehicleDayData> hosVehicleDayData = hosDAO.getHOSVehicleDataByDay(driverID, expandedInterval);
-                List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
-        
-                initCriteriaList(interval, hosRecordList, hosVehicleDayData, hosOccupantLogList, driver, account, group);
+                initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account);
                 groupCriteriaList.addAll(criteriaList);
         }
         
         criteriaList = groupCriteriaList;
     }
+
+    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
+    {
+        Driver driver = driverDAO.findByID(driverID);
+        Account account = accountDAO.findByID(driver.getPerson().getAcctID());
+        if (account.getAddress() == null && account.getAddressID() != null) {
+            account.setAddress(addressDAO.findByID(account.getAddressID()));
+        }
+        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
+        initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account);
+    }
+
+    private void initDriverCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Interval expandedInterval, Driver driver, Account account) {
+        Group group = groupDAO.findByID(driver.getGroupID());
+        group.setAddress(getTerminalAddress(group, accountGroupHierarchy)); 
+
+
+        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
+        List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
+        initCriteriaList(interval, hosRecordList, null, hosOccupantLogList, driver, account, group);
+    }
+    
+
     
     private Address getTerminalAddress(Group group, GroupHierarchy groupHierarchy) {
         if (group.getAddress() == null && group.getAddressID() != null) {
@@ -162,24 +180,6 @@ public class HosDailyDriverLogReportCriteria {
 
 
 
-    public void init(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval)
-    {
-        Driver driver = driverDAO.findByID(driverID);
-        Account account = accountDAO.findByID(driver.getPerson().getAcctID());
-        if (account.getAddress() == null && account.getAddressID() != null) {
-            account.setAddress(addressDAO.findByID(account.getAddressID()));
-        }
-        Group group = groupDAO.findByID(driver.getGroupID());
-        if (group.getAddress() == null && group.getAddressID() != null) {
-            group.setAddress(addressDAO.findByID(group.getAddressID()));
-        }
-        Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
-
-        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
-        List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
-        initCriteriaList(interval, hosRecordList, null, hosOccupantLogList, driver, account, group);
-    }
-    
 
     public List<ReportCriteria> getCriteriaList()
     {
