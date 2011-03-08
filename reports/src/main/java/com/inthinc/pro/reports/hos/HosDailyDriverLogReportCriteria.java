@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
@@ -427,6 +426,8 @@ public class HosDailyDriverLogReportCriteria {
         }
         if (remarkLogList.size() == 0 && hosRecordList.size() != 0) {
             remarkLogList.add(populateRemarkLog(hosRecordList.get(0)));
+            if (hosRecordList.size() != 1)
+                remarkLogList.add(populateRemarkLog(hosRecordList.get(hosRecordList.size() - 1)));
         }
 
         return remarkLogList;
@@ -647,7 +648,8 @@ public class HosDailyDriverLogReportCriteria {
 
     private List<HOSRec> getRecapList(HOSAdjustedList adjustedList, Date endDate) {
         List<HOSRec> hosRecapList = new ArrayList<HOSRec>();
-        adjustedList.initAdjustedTimeAndMinutes(true, endDate);
+        Date currentDate = new Date();
+        adjustedList.initAdjustedTimeAndMinutes(true, endDate.after(currentDate) ? currentDate : endDate);
 
         List<HOSRecAdjusted> adjustedRecapList = new ArrayList<HOSRecAdjusted>(adjustedList.getHosList());
         Collections.reverse(adjustedRecapList);
