@@ -88,6 +88,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
@@ -1062,6 +1063,7 @@ public class SiloServiceTest {
                     "555555123" + i);
 //            , // phone
 //                    "555555987" + i); // ephone
+            device.setProductVersion(ProductType.TIWIPRO_R74);
             Integer deviceID = deviceDAO.create(acctID, device);
             assertNotNull(deviceID);
             device.setDeviceID(deviceID);
@@ -1086,7 +1088,7 @@ public class SiloServiceTest {
             assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
         }
         // find
-        String ignoreFields[] = { "modified", "baseID", "productVersion"};  
+        String ignoreFields[] = { "modified", "baseID"};  
         for (Device device : deviceList) {
             Device returnedDevice = deviceDAO.findByID(device.getDeviceID());
             Util.compareObjects(device, returnedDevice, ignoreFields);
@@ -1116,6 +1118,7 @@ public class SiloServiceTest {
                 "5555551239");
 //        , // phone
 //                "5555559879"); // ephone
+        device.setProductVersion(ProductType.TIWIPRO_R74);
         Integer deviceID = deviceDAO.create(acctID, device);
         assertNotNull(deviceID);
         device.setDeviceID(deviceID);
