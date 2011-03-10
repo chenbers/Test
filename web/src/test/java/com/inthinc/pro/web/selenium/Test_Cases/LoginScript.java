@@ -54,6 +54,7 @@ public class LoginScript extends InthincTest {
         set_test_case("Tiwi_data.xls", "TC4632");
 
 // prototype for testing a page driven by data only
+/* cj -- commenting out because it wasn't compiling and broke the build        
         for (int row = 0; row < cmds.length; row++) {
             String [] cmd = cmds[row];
             System.out.println("Running: " + cmd[0]);
@@ -72,7 +73,7 @@ public class LoginScript extends InthincTest {
                 }
             
         }
-
+*/
     }
     
     private Class<?> [] loadArgs(int sz) {
