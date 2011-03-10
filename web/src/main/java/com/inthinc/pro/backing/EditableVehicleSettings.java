@@ -4,10 +4,8 @@ import java.util.Map;
 
 import javax.faces.context.FacesContext;
 
-import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.configurator.ProductType;
 
-@SuppressWarnings("serial")
 public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed this extends because it breaks the batch editing
 
 

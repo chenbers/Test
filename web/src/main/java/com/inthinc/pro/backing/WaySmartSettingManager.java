@@ -7,7 +7,6 @@ import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
-import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.WirelineStatus;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
@@ -15,6 +14,10 @@ import com.inthinc.pro.model.configurator.VehicleSetting;
 
 public class WaySmartSettingManager extends VehicleSettingManager {
 
+/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 //	private DeviceDAO deviceDAO;
 
     public WaySmartSettingManager(ConfiguratorDAO configuratorDAO, ProductType productType, VehicleSetting vehicleSetting, DeviceDAO deviceDAO) {
