@@ -76,6 +76,7 @@ public class GroupHierarchy implements Serializable
     
     public Group getTopGroup()
     {
+        //TODO: warning. this does not (necessarily) return the top group in the hierarchy, it returns the group with the LOWEST groupID
         return groupMap.values().iterator().next();
     }
     public Group getGroup(Integer groupID)
