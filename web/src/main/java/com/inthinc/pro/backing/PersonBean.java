@@ -30,12 +30,14 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.ui.ListPicker;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
@@ -44,6 +46,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.PreferenceLevelOption;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
@@ -151,6 +154,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
     }
+    private AccountDAO accountDAO;
     private PersonDAO personDAO;
     private UserDAO userDAO;
     private DriverDAO driverDAO;
@@ -159,10 +163,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private List<PersonChangeListener> changeListeners;
 
     private FuelEfficiencyBean fuelEfficiencyBean;
+    private UpdateCredentialsBean updateCredentialsBean;
 //    private AccountOptionsBean accountOptionsBean;
     private Roles accountRoles;
     private CacheBean cacheBean;
     private ListPicker         rolePicker;
+    private Account account;
 
     public CacheBean getCacheBean() {
 		return cacheBean;
@@ -249,7 +255,59 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         return picked;
     }
+    public Account getAccount() {
+        if(account == null)
+            account = accountDAO.findByID(this.getPerson().getAccountID());
+        return account;
+    }
+    public boolean isInitialLogin() {
+        return this.getUser().getLastLogin() == null;
+    }
+    public boolean isPasswordChangeRequired() {
+        return PreferenceLevelOption.REQUIRE.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange()) && isInitialLogin();
+    }
+    public boolean isPasswordChangeWarn() {
+        return PreferenceLevelOption.WARN.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange());
+    }
+    public Integer getLoginDaysRemaining() {
+        return getLoginDaysRemaining(getAccount(), this.getUser());
+    }
+    public boolean isLoginExpired() {
+        return isLoginExpired(getAccount(), this.getUser());
+    }
+    public static boolean isLoginExpired(Account account, User user) {
+        return (getLoginDaysRemaining(account, user) <= 0);
+    }
+    public static Integer getLoginDaysRemaining(Account account, User user) {
+        Integer loginExpire;
+        Integer daysSinceLastLogin = (user.getLastLogin()!=null)?DateUtil.differenceInDays(user.getLastLogin(), new Date()):0;
+        try {
+            if(account.getProps().getLoginExpire() == null)
+                return 1;//not set for this account, so any positive non-zero integer will do
+            loginExpire= Integer.parseInt(account.getProps().getLoginExpire());
+        } catch (NumberFormatException nfe) {
+            loginExpire = -1;
+            //TODO: jwimmer: something bad happened handle/catch appropriately
+        }
+        return loginExpire - daysSinceLastLogin;
+    }
+    public Integer getPasswordDaysRemaining() {
+        return getPasswordDaysRemaining(getAccount(), this.getUser());
+    }
+    public static Integer getPasswordDaysRemaining(Account account, User user) {
+        Integer passwordExpire;
+        try {
+            if(account.getProps().getPasswordExpire() == null)
+                return 365;//return an integer greater than ever need be shown on the password change warning/reminder
+            passwordExpire= Integer.parseInt(account.getProps().getPasswordExpire());
+        } catch (NumberFormatException nfe) {
+            return -1;
+            //TODO: jwimmer: something bad happened handle/catch appropriately
+        }
+        Integer daysSinceModified = (user.getModified()!=null)?DateUtil.differenceInDays(user.getModified(), new Date()):0;
+        return passwordExpire - daysSinceModified;
 
+    }
     @Override
     protected List<PersonView> loadItems() {
         // get the people
@@ -292,6 +350,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (person.getUser() != null) {
             personView.getUser().setPerson(personView);
         }
+        updateCredentialsBean.setUserID(person.getUserID());
         if (logger.isTraceEnabled())
             logger.trace("createPersonView: END " + personView);
         return personView;
@@ -768,6 +827,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     context.addMessage("edit-form:editPerson-confirmPassword", message);
                     valid = false;
                 }
+                // validate password strength handled via f:validator tag reference to PasswordStrengthValidator
             }
             // required pri email
             if (!isBatchEdit() && (person.getPriEmail() == null || person.getPriEmail().equals(""))) {
@@ -776,6 +836,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 context.addMessage("edit-form:editPerson-priEmail", message);
             }
+
         }
         // must be a user or a driver or both while not in batch edit.
         else if (!person.isDriverSelected() && !isBatchEdit()) {
@@ -1434,5 +1495,21 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         public static AlertText getAlertText(Integer code) {
             return lookup.get(code);
         }
+    }
+
+    public UpdateCredentialsBean getUpdateCredentialsBean() {
+        return updateCredentialsBean;
+    }
+
+    public void setUpdateCredentialsBean(UpdateCredentialsBean updateCredentialsBean) {
+        this.updateCredentialsBean = updateCredentialsBean;
+    }
+
+    public AccountDAO getAccountDAO() {
+        return accountDAO;
+    }
+
+    public void setAccountDAO(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
     }
 }

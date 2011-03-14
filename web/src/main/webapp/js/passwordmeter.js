@@ -59,12 +59,12 @@ level 1 (2 points): mixed case letters, numbers and special
 
 
 ************************************************************ */
-//TODO: jwimmer: following lines not working in IE 8
-var formSubmit = document.getElementById("formSubmit");
-var meterFull = document.getElementById("meterFull");
-var strengthMsg = document.getElementById("strengthMsg");
+//TODO: jwimmer: following lines not working in IE 8, BUT they work if called IN the function (so they are called as needed IN the function right now)
+//var formSubmit = document.getElementById("formSubmit");
+//var meterFull = document.getElementById("meterFull");
+//var strengthMsg = document.getElementById("strengthMsg");
 
-function testPasswordStrength(passwd, minScore)
+function testPasswordStrength(passwd, formName)
 {
 	var intScore   = 0;
 	var strVerdict = 0;
@@ -78,11 +78,11 @@ function testPasswordStrength(passwd, minScore)
 	{
 		intScore = (intScore+6);
 	}
-	else if (passwd.length>7 && passwd.length<12)// length between 8 and 15
+	else if (passwd.length>7 && passwd.length<12)// length between 8 and 11
 	{
 		intScore = (intScore+12);
 	}
-	else if (passwd.length>11)                    // length 16 or more
+	else if (passwd.length>11)                    // length 12 or more
 	{
 		intScore = (intScore+18);
 	}
@@ -170,18 +170,20 @@ function testPasswordStrength(passwd, minScore)
 	
 	var percentScore = (intScore*100)/50;
 	document.getElementById("meterFull").style.width = percentScore+"%";
-	if (intScore >= minScore)
+	if (intScore >= minPasswordStrength)
 	{
 		//document.getElementById("formSubmit").disabled = false;
 	}
 	else
 	{
 		//document.getElementById("formSubmit").disabled = true;
-	   if (intScore < minScore)
+	   if (intScore < minPasswordStrength)
 	   {
 			strVerdict = passwordMessages[0];
 	   }
 	}
-
+	//alert(formName+':passwordStrength');
+	document.getElementById(formName+':passwordStrength').value = intScore + ":" + minPasswordStrength;
 	document.getElementById("strengthMsg").innerHTML= (strVerdict);
+	return intScore +":"+minPasswordStrength;
 }

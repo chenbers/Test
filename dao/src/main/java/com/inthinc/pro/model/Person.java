@@ -58,7 +58,6 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
     private MeasurementType measurementType;
     @Column(name = "fuelEffType")
     private FuelEfficiencyType fuelEfficiencyType;
-    private Integer requiredPwdStrength = 0;//0 to 50 //TODO: jwimmer: defaulting to 0... want account setting for team/group/company? minimum
     
     private Locale locale;
 
@@ -505,20 +504,4 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
                 + ", secText=" + secText + ", status=" + status + ", suffix=" + suffix + ", timeZone=" + timeZone + ", title=" + title + ", warn=" + warn
                 + ", weight=" + weight + "]";
     }
-
-    /**
-     * @return the requiredPwdStrength
-     */
-    public Integer getRequiredPwdStrength() {
-        return requiredPwdStrength;
-    }
-
-    /**
-     * @param requiredPwdStrength the requiredPwdStrength to set
-     */
-    public void setRequiredPwdStrength(Integer requiredPwdStrength) {
-        this.requiredPwdStrength = requiredPwdStrength;
-    }
-
-
 }

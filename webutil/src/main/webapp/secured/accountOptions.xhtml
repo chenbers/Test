@@ -7,7 +7,7 @@
     <ui:param name="groupSelected" value="MAIN" />
     <ui:define name="util_content">
     <div style="margin: 10px auto 20px auto;background: #fff;">
-    <div style="width:400px">
+    <div style="width:500px">
 		<a4j:form id="account-select-form">
 			<table>
 			<tr><td>
@@ -39,7 +39,7 @@
         	    </f:facet>
                 <table>
 					<tr>
-                    	<td width="100" style="vertical-align: middle;"><h:outputText value="HOS: " /></td>
+                    	<td style="vertical-align: middle;"><h:outputText value="HOS: " /></td>
                         <td>
 							<h:selectOneMenu id="editAccount-hos" value="#{accountOptionsBean.account.hos}">
 								<f:selectItems value="#{accountOptionsBean.HOSTypes}"/>
@@ -47,11 +47,43 @@
                         </td>                              	                           	
 					</tr>
 					<tr>
-                    	<td width="100" style="vertical-align: middle;"><h:outputText value="WaySmart Support: " /></td>
+                    	<td style="vertical-align: middle;"><h:outputText value="WaySmart Support: " /></td>
                         <td>
 							<h:selectOneMenu id="editAccount-waySmart" value="#{accountOptionsBean.account.props.waySmart}">
 								<f:selectItem itemLabel="Disabled" itemValue="false"/>
 								<f:selectItem itemLabel="Enabled" itemValue="true"/>
+							</h:selectOneMenu>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+                    	<td style="vertical-align: middle;"><h:outputText value="Login Expire: " /></td>
+                        <td>
+							<h:selectOneMenu id="editAccount-loginExpire" value="#{accountOptionsBean.account.props.loginExpire}">
+								<f:selectItems value="#{accountOptionsBean.loginExpireOptions}"/>
+							</h:selectOneMenu>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+                    	<td style="vertical-align: middle;"><h:outputText value="Password Expire: " /></td>
+                        <td>
+							<h:selectOneMenu id="editAccount-passwordExpire" value="#{accountOptionsBean.account.props.passwordExpire}">
+								<f:selectItems value="#{accountOptionsBean.passwordExpireOptions}"/>
+							</h:selectOneMenu>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+                    	<td style="vertical-align: middle;"><h:outputText value="Minimum Password Strength: " /></td>
+                        <td>
+							<h:selectOneMenu id="editAccount-passwordStrengh" value="#{accountOptionsBean.account.props.passwordStrength}">
+								<f:selectItems value="#{accountOptionsBean.passwordStrengthOptions}"/>
+							</h:selectOneMenu>
+                        </td>                              	                           	
+					</tr>
+					<tr>
+                    	<td style="vertical-align: middle;"><h:outputText value="Initial Password Change: " /></td>
+                        <td>
+                        	<h:selectOneMenu id="editAccount-initialChange" value="#{accountOptionsBean.account.props.passwordChange}">
+                        		<f:selectItems value="#{accountOptionsBean.passwordChangeOptions}" />
 							</h:selectOneMenu>
                         </td>                              	                           	
 					</tr>

@@ -56,6 +56,7 @@ public class ChangePasswordBean extends BaseBean
             context.addMessage("changePasswordForm:confirmPassword", message);
             return;
         }
+        // validate password strength handled via f:validator tag reference to PasswordStrengthValidator
 
         final String newPasswordEncrypt = passwordEncryptor.encryptPassword(newPassword);
         final User user = getUser();

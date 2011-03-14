@@ -145,7 +145,7 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         roles.init(user.getPerson().getAcctID());
 
  //       String roleName = user.getRolesString();
-        ProUser proUser = new ProUser(user,getGrantedAuthorities(user));
+        ProUser proUser = new ProUser(user, true, true,getGrantedAuthorities(user));
         mockLogin(proUser);
         // TODO: this is a bit of a kludge -- probably can include our authentication provider in the list when logging in here
         initGroupHierarchy();
