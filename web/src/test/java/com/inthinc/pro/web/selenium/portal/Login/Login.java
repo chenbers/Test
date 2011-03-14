@@ -73,7 +73,7 @@ public class Login {
 			if (location.indexOf("tiwipro/app") == -1){
 				ck_error_msg();
 				error_ok();
-			}
+			} 
 		}
 	
 	public void error_ok(){
@@ -222,6 +222,9 @@ public class Login {
 		selenium.click(LoginEnum.CHANGE_PASSWORD_BUTTON, "Change Password Button");
 	}
 	
+	public CoreMethodLib getSelenium() {
+	    return this.selenium;
+	}
 	
 
 	public ErrorCatcher get_errors(){
