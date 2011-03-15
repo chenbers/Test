@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.security.userdetails.ProUser;
 
 public class ProAuthenticationProcessingFilter extends AuthenticationProcessingFilter
@@ -52,11 +53,12 @@ public class ProAuthenticationProcessingFilter extends AuthenticationProcessingF
 
     @Override
     protected void onUnsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws java.io.IOException {
-//        BadCredentialsException.class
-        if(!(failed instanceof BadCredentialsException) && (failed.getAuthentication() != null) && (failed.getAuthentication().getPrincipal() instanceof ProUser)) {
-            ProUser proUser = (ProUser)failed.getAuthentication().getPrincipal();
-            proUser.getUser().setStatus(Status.INACTIVE);
-            userDAO.update(proUser.getUser());
+        if(!(failed instanceof BadCredentialsException) && (failed.getAuthentication() != null)) {
+            User user = userDAO.findByUserName(failed.getAuthentication().getPrincipal().toString());
+            if(user != null){
+                user.setStatus(Status.INACTIVE);
+                userDAO.update(user);
+            }
         }
     }
     @Override
@@ -68,8 +70,6 @@ public class ProAuthenticationProcessingFilter extends AuthenticationProcessingF
             userDAO.update(proUser.getUser());
         }        
     }
-    
-    
     
     private String getTargetUrlFromGroupHierarchy(GroupHierarchy groupHierarchy)
     {
