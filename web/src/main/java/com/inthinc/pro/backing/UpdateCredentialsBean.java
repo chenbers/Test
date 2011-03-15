@@ -23,7 +23,6 @@ import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.validators.PasswordStrengthValidator;
 
 public class UpdateCredentialsBean extends BaseBean
 {
@@ -36,7 +35,7 @@ public class UpdateCredentialsBean extends BaseBean
     private String confirmPassword;
     private String encryptPassword;
     private String passwordStrengthString;
-    private Integer minPasswordStrength;
+    private Integer minPasswordStrength = 0;
     private Integer passwordStrength;
     private int daysValid;
     private MessageSource messageSource;

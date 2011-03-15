@@ -169,7 +169,7 @@ function testPasswordStrength(passwd, formName)
 	}
 	
 	var percentScore = (intScore*100)/50;
-	document.getElementById("meterFull").style.width = percentScore+"%";
+	document.getElementById(formName+"_meterFull").style.width = percentScore+"%";
 	if (intScore >= minPasswordStrength)
 	{
 		//document.getElementById("formSubmit").disabled = false;
@@ -184,6 +184,6 @@ function testPasswordStrength(passwd, formName)
 	}
 	//alert(formName+':passwordStrength');
 	document.getElementById(formName+':passwordStrength').value = intScore + ":" + minPasswordStrength;
-	document.getElementById("strengthMsg").innerHTML= (strVerdict);
+	document.getElementById(formName+":strengthMsg").innerHTML= (strVerdict);
 	return intScore +":"+minPasswordStrength;
 }
