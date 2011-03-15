@@ -140,4 +140,10 @@ public class EventDaoStub implements EventDAO {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

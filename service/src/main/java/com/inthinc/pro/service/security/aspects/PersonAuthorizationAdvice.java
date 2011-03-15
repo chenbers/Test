@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
-import com.inthinc.pro.dao.AddressDAO;
-import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.service.adapters.BaseDAOAdapter;
 import com.inthinc.pro.service.adapters.PersonDAOAdapter;
@@ -28,9 +26,6 @@ public class PersonAuthorizationAdvice implements EntityAuthorization<Person> {
 
     @Autowired
     private BaseAuthorizationAdvice baseAuthorizationAdvice;
-
-    @Autowired
-    private AddressDAO addressDao;
 
     /**
      * Pointcut definition.
@@ -64,7 +59,8 @@ public class PersonAuthorizationAdvice implements EntityAuthorization<Person> {
     /**
      * Advice definition.
      * <p/>
-     * Access to Person entities also require that the address passes validation. Aspects are additive. So we only require to define the check for Address, since the check on
+     * Access to Person entities also require that the address passes validation.  Not true! 
+     * Aspects are additive. So we only require to define the check for Address, since the check on
      * person is done by the BaseAuthenticationAspect.
      */
     @SuppressWarnings("unused")
@@ -76,7 +72,7 @@ public class PersonAuthorizationAdvice implements EntityAuthorization<Person> {
     /**
      * Advice definition.
      * <p/>
-     * Access to Person entities also require that the address passes validation.
+     * Access to Person entities also require that the address passes validation. Not true!
      * <p/>
      * It needs a distinct joinpoint and advice for delete so it does not conflict with other methods which receives an Integer.
      */
@@ -85,27 +81,21 @@ public class PersonAuthorizationAdvice implements EntityAuthorization<Person> {
     private void doDeleteAccessCheck(JoinPoint jp, Integer entityId) {
         BaseDAOAdapter<?> adapter = (BaseDAOAdapter<?>) jp.getTarget();
         Person entity = (Person) adapter.findByID(entityId);
-        Address address = null;
-
-        if (entity != null) {
-            address = addressDao.findByID(entity.getAddressID());
-        }
 
         baseAuthorizationAdvice.doAccessCheck(entity);
-        baseAuthorizationAdvice.doAccessCheck(address);
     }
 
     /**
      * Advice definition.
      * <p/>
-     * Access to Person entities also require that the address passes validation. Aspects are additive. So we only require to define the check for Address, since the check on
+     * Access to Person entities also require that the address passes validation. Not true!
+     * Aspects are additive. So we only require to define the check for Address, since the check on
      * person is done by the BaseAuthenticationAspect.
      */
     @SuppressWarnings("unused")
     @AfterReturning(value = "inPersonDAOAdapter() && com.inthinc.pro.service.security.aspects.BaseAuthorizationAdvice.findByJoinPoint()", returning = "retVal", argNames = "retVal")
     private void doFindByAccessCheck(Person retVal) {
-        Address address = addressDao.findByID(retVal.getAddressID());
-        baseAuthorizationAdvice.doAccessCheck(address);
+        baseAuthorizationAdvice.doAccessCheck(retVal);
     }
 
     /**
@@ -113,16 +103,7 @@ public class PersonAuthorizationAdvice implements EntityAuthorization<Person> {
      */
     public void doAccessCheck(Person entity) {
         if (entity != null) {
-//            Address address = addressDao.findByID(entity.getAddressID());
             baseAuthorizationAdvice.doAccessCheck(entity);
         }
-    }
-
-    public AddressDAO getAddressDao() {
-        return addressDao;
-    }
-
-    public void setAddressDao(AddressDAO addressDao) {
-        this.addressDao = addressDao;
     }
 }

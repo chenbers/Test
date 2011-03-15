@@ -11,7 +11,7 @@ public class EventAttr
     public static final Map<Integer, String> mapping = new HashMap<Integer, String>();
     static
     {
-        // Attribute Id (128->191 have one byte values)
+        // Attribute Id (1->127 have one byte values)
         mapping.put(1, "topSpeed");
         mapping.put(2, "avgSpeed");
         mapping.put(3, "speedLimit");
@@ -74,7 +74,11 @@ public class EventAttr
         mapping.put(255, "string");
         mapping.put(8272, "xcatData");
         mapping.put(8273, "xcatEvent");
+        mapping.put(8279, "hazMatFlag");
         mapping.put(24577, "TextMsg");
+        mapping.put(24584, "serviceId");
+        mapping.put(24587, "trailerId");
+        
     }
     
     public static String getFieldName(Integer key)

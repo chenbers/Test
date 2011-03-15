@@ -1,17 +1,27 @@
 package com.inthinc.pro.service;
 
+import java.util.Date;
+
 import javax.ws.rs.GET;
+import javax.ws.rs.MatrixParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.PathSegment;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.springframework.security.annotation.Secured;
 
-@Path("/eventService")
+import com.inthinc.pro.service.annotations.DateFormat;
+
+@Path("/")
 public interface NoteService {
 	
 	
 	@GET
-	@Path("/createSpeedEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{averageSpeed}/{distance}")
+	@Path("eventService/createSpeedEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{averageSpeed}/{distance}")
 	public String createSpeedEvent(@PathParam("imei")String imei,
 			@PathParam("lat")Double latitude,
 			@PathParam("lng")Double longitude,
@@ -22,7 +32,7 @@ public interface NoteService {
 	
 
     @GET
-    @Path("/createIdlingEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{averageSpeed}/{distance}")
+    @Path("eventService/createIdlingEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{averageSpeed}/{distance}")
     public String createIdlingEvent(
             @PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
@@ -33,7 +43,7 @@ public interface NoteService {
             @PathParam("distance")Integer distance);
        
     @GET
-    @Path("/createHardAccelerationEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{deltaX}/{deltaY}/{deltaZ}")
+    @Path("eventService/createHardAccelerationEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{deltaX}/{deltaY}/{deltaZ}")
     public String createHardAccelerationEvent(
             @PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
@@ -54,14 +64,14 @@ public interface NoteService {
             @PathParam("currentSpeed")Integer speed);
 	
 	@GET
-	@Path("/createIgnitionOffEvent/{imei}/{lat}/{lng}/{currentSpeed}")
+	@Path("eventService/createIgnitionOffEvent/{imei}/{lat}/{lng}/{currentSpeed}")
 	public String createEndTripEvent(@PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
             @PathParam("lng")Double longitude,
             @PathParam("currentSpeed")Integer speed);
 	
 	@GET
-	@Path("/createCurrentLocationEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}")
+	@Path("eventService/createCurrentLocationEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}")
 	public String createCurrentLocationEvent(@PathParam("imei")String imei,
 			@PathParam("lat")Double latitude,
 			@PathParam("lng")Double longitude,
@@ -84,7 +94,7 @@ public interface NoteService {
             @PathParam("deltaZ")Integer deltaZ);
 	
 	@GET
-    @Path("/createZoneArrivalEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{zoneID}")
+    @Path("eventService/createZoneArrivalEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{zoneID}")
     public String createZoneArrivalEvent(
             @PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
@@ -95,7 +105,7 @@ public interface NoteService {
             @PathParam("zoneID")Integer zoneID);
 	
 	@GET
-    @Path("/createTamperingEvent/{imei}/{lat}/{lng}/{currentSpeed}/{bearing}")
+    @Path("eventService/createTamperingEvent/{imei}/{lat}/{lng}/{currentSpeed}/{bearing}")
     public String createTamperingEvent(
             @PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
@@ -104,7 +114,7 @@ public interface NoteService {
             @PathParam("bearing")Integer bearing);
 	
 	@GET
-    @Path("/createVehicleLowBatteryEvent/{imei}/{lat}/{lng}/{currentSpeed}/{bearing}")
+    @Path("eventService/createVehicleLowBatteryEvent/{imei}/{lat}/{lng}/{currentSpeed}/{bearing}")
     public String createVehicleLowBatteryEvent(@PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
             @PathParam("lng")Double longitude,
@@ -112,7 +122,7 @@ public interface NoteService {
             @PathParam("bearing")Integer bearing);
 	
 	@GET
-    @Path("/createSeatBeltEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{distance}")
+    @Path("eventService/createSeatBeltEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{bearing}/{distance}")
     public String createSeatBeltEvent(@PathParam("imei")String imei,
             @PathParam("lat")Double latitude,
             @PathParam("lng")Double longitude,
@@ -120,4 +130,30 @@ public interface NoteService {
             @PathParam("speedLimit")Integer speedLimit,
             @PathParam("bearing")Integer bearing,
             @PathParam("distance")Integer distance);
+	
+    @GET
+    @Path("group/{groupID}/events/{noteTypes:all|.*}/{startDate}/{endDate}/count")
+    public Response getEventCount(@PathParam("groupID")Integer groupID,
+            @PathParam("noteTypes")String noteTypes,
+            @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate,
+            @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate);
+	@GET
+	@Produces("application/xml")
+	@Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}/{endDate}/{page}")
+	public Response getEvents(@PathParam("entity") String entity,
+	        @PathParam("entityID")Integer entityID,
+	        @PathParam("eventTypes")String eventTypes,
+	        @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate,
+	        @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate,
+	        @PathParam("page") PathSegment page,
+	        @Context UriInfo uriInfo);
+    @GET
+    @Produces("application/xml")
+    @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}/{page}")
+    public Response getEvents(@PathParam("entity") String entity,
+            @PathParam("entityID")Integer entityID,
+            @PathParam("eventTypes")String eventTypes,
+            @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate,
+            @PathParam("page") PathSegment page,
+            @Context UriInfo uriInfo);
 }

@@ -17,7 +17,8 @@ import com.inthinc.pro.service.adapters.GroupDAOAdapter;
 import com.inthinc.pro.service.validation.annotations.ValidGroupIDs;
 
 /**
- * Constraint validator for Grou. Implements the validation rules for Locales
+ * Constraint validator for GroupIDs. 
+ * Implements the validation rules for GroupIDs
  * 
  * @author dcueva
  */

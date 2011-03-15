@@ -53,6 +53,7 @@ public enum EventType implements BaseEnum {
     OFF_HOURS(37, EnumSet.of(EventAccountFilter.WAYSMART)),
     IGNITION_OFF(38),
     RF_SWITCH(39, EnumSet.of(EventAccountFilter.WAYSMART));
+    
     private int code;
     private AggressiveDrivingEventType noteSubType;
     private Set<EventAccountFilter> eventAccountFilters;

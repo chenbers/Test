@@ -3,6 +3,7 @@ package com.inthinc.pro.service.note;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import com.inthinc.pro.model.event.NoteType;
 
 public class Note {
 
