@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -25,10 +24,8 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.dao.HOSDAO;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
@@ -150,11 +147,13 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return recordList;
     }
     
+    @Override
     public List<HOSOccupantHistory> getHOSOccupantHistory(String commAddress, String employeeId) {
         HOSDriverLogin driverLogin = getDriverForEmpid(commAddress, employeeId);
         return getHOSOccupantHistory(driverLogin);
     }
 
+    @Override
     public List<HOSOccupantHistory> getHOSOccupantHistory(HOSDriverLogin driverLogin) {
         final RuleSetType dotType = driverLogin.getDriverDotType();
 
@@ -610,6 +609,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return hosRecord.getHosLogID();
     }
 
+    @Override
     public HOSDriverLogin isValidLogin(String commAddress, String employeeId, long loginTime, boolean occupantFlag, int odometer) 
     {
         Connection conn = null;
@@ -663,6 +663,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return driverLogin;
     }
 
+    @Override
     public HOSDriverLogin getDriverForEmpid(String commAddress, String employeeId) 
     {
         Connection conn = null;
@@ -707,6 +708,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return driverLogin;
     }
 
+    @Override
     public HOSDriverLogin getDriverForEmpidLastName(String employeeId, String lastName) 
     {
         Connection conn = null;
@@ -747,7 +749,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return driverLogin;
     }
 
-    
+    @Override
     public List<HOSRecord> getHOSRecordsForCommAddress(String address, List<HOSRecord> paramList)  
     {
         Connection conn = null;
@@ -814,6 +816,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return finalRecordList;
     }
 
+    @Override
     public HOSOccupantInfo getOccupantInfo(Integer driverID) {
         Connection conn = null;
         CallableStatement statement = null;

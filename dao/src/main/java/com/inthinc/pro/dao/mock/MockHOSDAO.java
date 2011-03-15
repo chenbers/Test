@@ -16,6 +16,8 @@ import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
+import com.inthinc.pro.model.hos.HOSOccupantHistory;
+import com.inthinc.pro.model.hos.HOSOccupantInfo;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
@@ -322,6 +324,42 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Integer> {
     @Override
     public Number fetchMileageForDayDriverVehicle(DateTime day, Integer driverID, Integer vehicleID) {
         return 0;
+    }
+
+    @Override
+    public HOSDriverLogin getDriverForEmpid(String commAddress, String employeeId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<HOSOccupantHistory> getHOSOccupantHistory(HOSDriverLogin driverLogin) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<HOSOccupantHistory> getHOSOccupantHistory(String commAddress, String employeeId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<HOSRecord> getHOSRecordsForCommAddress(String address, List<HOSRecord> paramList) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public HOSOccupantInfo getOccupantInfo(Integer driverID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public HOSDriverLogin isValidLogin(String commAddress, String employeeId, long loginTime, boolean occupantFlag, int odometer) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }
