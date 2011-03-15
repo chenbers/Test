@@ -67,7 +67,7 @@ public class ProUserServiceImpl implements UserDetailsService
             user.setAccessPoints(roleDAO.getUsersAccessPts(user.getUserID()));
             
             boolean loginDaysRemaining = PersonBean.getLoginDaysRemaining(account, user) > 0;
-            boolean passwordDaysRemaining = !PersonBean.isLoginExpired(account, user);
+            boolean passwordDaysRemaining = PersonBean.getPasswordDaysRemaining(account, user) > 0;
 
             boolean isAdmin = userIsAdmin(user);
             ProUser proUser = new ProUser(user, loginDaysRemaining, passwordDaysRemaining, getGrantedAuthorities(user, isAdmin, account.getHos() == AccountHOSType.HOS_SUPPORT ));
