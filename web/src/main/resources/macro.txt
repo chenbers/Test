@@ -1,0 +1,3 @@
+// frequently used values
+passwordElm=j_password
+usernameElm=j_username

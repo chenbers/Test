@@ -1,0 +1,8 @@
+// Each line is the selenium method to invoke followed by the arguments it requires
+// - Log in
+open,logout, page not found.
+type,macro:usernameElm,0001, Password type text
+type,macro:passwordElm,password, Password type text
+click,loginLogin, Login button click
+wait_for_element_present,Admin,  lnk
+getLocation,tiwipro/app, Login button click 

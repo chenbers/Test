@@ -1,0 +1,32 @@
+// Each line is the selenium method to invoke followed by the arguments it requires
+// - Log in
+script:login.txt
+//
+// - Re-position to login page
+//
+open,logout, page not found.
+//
+// - Examine the ui for completeness, start with forgot your password
+//
+getText,//a[@title='Forgot your user name or password?'],Forgot your user name or password?, text not present
+isElementPresent,//a[@title='Forgot your user name or password?'], element not present
+//
+// - Login page
+//
+isTextPresent,LogIn, element not present
+getText,//form[@id='loginForm']/table/tbody/tr[3]/td/button/span,Login, text not present
+isElementPresent,//form[@id='loginForm']/table/tbody/tr[3]/td/button/span, element not present
+//
+isElementPresent,loginLogin, element not present
+//
+// - User name
+//
+isTextPresent,User Name:, text not present
+isElementPresent,//form[@id='loginForm']/table/tbody/tr[1]/td[1], element not present
+getText,//form[@id='loginForm']/table/tbody/tr[1]/td[1],User Name:, text not present
+//
+// - Password
+//
+isTextPresent,Password:, text not present
+isElementPresent,//form[@id='loginForm']/table/tbody/tr[2]/td[1], element not present
+getText,//form[@id='loginForm']/table/tbody/tr[2]/td[1],Password:, text not present  
