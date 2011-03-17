@@ -27,7 +27,8 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Creates a new device.", crudType=CrudType.CREATE, populateMethod="getDevice")
+    @MethodDescription(description = "Creates a new device.", crudType=CrudType.CREATE, populateMethod="getDevice",
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilDeviceMapper.class)
     public Map<String, Object> createDevice(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
             @DaoParam(name = "Device", type = com.inthinc.pro.model.Device.class) Map<String, Object> deviceMap) throws ProDAOException {
         return null;
@@ -193,13 +194,15 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Fetches a device.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Device.class)
+    @MethodDescription(description = "Fetches a device.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Device.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilDeviceMapper.class)
     public Map<String, Object> getDevice(@DaoParam(name = "deviceID", validator=ValidatorType.DEVICE) Integer deviceID) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Fetches all devices in the account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Device.class)
+    @MethodDescription(description = "Fetches all devices in the account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Device.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilDeviceMapper.class)
     public List<Map<String, Object>> getDevicesByAcctID(@DaoParam(name = "accountID", isAccountID=true) Integer accountID) throws ProDAOException {
         return null;
     }
@@ -505,7 +508,8 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Update a device.", crudType=CrudType.UPDATE, populateMethod="getDevice")
+    @MethodDescription(description = "Update a device.", crudType=CrudType.UPDATE, populateMethod="getDevice",
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilDeviceMapper.class)
     public Map<String, Object> updateDevice(@DaoParam(name = "deviceID") Integer deviceID,
             @DaoParam(name = "Device", type = com.inthinc.pro.model.Device.class) Map<String, Object> deviceMap) throws ProDAOException {
         return null;
