@@ -7,6 +7,7 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.reports.ifta.model.StateMileageByMonth;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
@@ -30,7 +31,7 @@ public interface ReportsFacade {
     
     List<MileageByVehicle> getStateMileageByVehicle(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
 
-    List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
+    List<StateMileageByMonth> getStateMileageByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type);
     
     List<StateMileageFuelByVehicle> getStateMileageFuelByVehicle(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType measurementType);
 

@@ -22,7 +22,6 @@
 	<field name="vehicleName" class="java.lang.String"/>
 	<field name="category" class="java.lang.String"/>
 	<field name="detail" class="java.lang.String"/>
-	<field name="redFlag.alert" class="java.lang.Boolean"/>
 	<field name="eventType" class="java.lang.String"/>
 	<background>
 		<band/>
@@ -35,11 +34,6 @@
 	</pageHeader>
 	<columnHeader>
 		<band height="20">
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-2" x="56" y="3" width="47" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.alert}]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-3" x="105" y="3" width="179" height="16"/>
 				<textElement verticalAlignment="Middle"/>
@@ -79,11 +73,6 @@
 	</columnHeader>
 	<detail>
 		<band height="22">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="56" y="3" width="47" height="17"/>
-				<textElement rotation="None"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{redFlag.alert}.booleanValue() ? $R{yes} : $R{no}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-2" x="105" y="3" width="179" height="17"/>
 				<textElement/>

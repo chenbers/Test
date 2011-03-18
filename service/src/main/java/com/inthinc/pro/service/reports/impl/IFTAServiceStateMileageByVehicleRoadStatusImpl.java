@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.reports.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -44,10 +45,10 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportSe
     Response getStateMileageRoadStatusWithFullParameters(Integer groupID, Date startDate, Date endDate,
             boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
-        // Creating a GroupList with only one group ID.
-        GroupList groupList = new GroupList();
-        groupList.getValueList().add(groupID);
-        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate,
+        // Creating a list with only one group ID.
+        ArrayList<Integer> idList = new ArrayList<Integer>();
+        idList.add(groupID);
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(idList, startDate, endDate,
                 iftaOnly, locale, measurementType);
     }
 
@@ -143,7 +144,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportSe
     @ValidParams
     public Response getStateMileageRoadStatusDefaultsMultiGroup(GroupList groupList, 
             Locale locale, MeasurementType measurementType) {
-        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), null, null, 
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), null, null, 
                 false, locale, measurementType);
     }
 
@@ -155,7 +156,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportSe
     @ValidParams
     public Response getStateMileageRoadStatusWithDatesMultiGroup(GroupList groupList, Date startDate, Date endDate,
             Locale locale, MeasurementType measurementType) {
-        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate,
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), startDate, endDate,
                 false, locale, measurementType);
     }
 
@@ -167,7 +168,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportSe
     @ValidParams
     public Response getStateMileageRoadStatusWithIftaAndDatesMultiGroup(GroupList groupList, Date startDate, Date endDate,
             Locale locale, MeasurementType measurementType) {
-        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate,
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), startDate, endDate,
                 true, locale, measurementType);
     }
 
@@ -179,7 +180,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportSe
     @ValidParams
     public Response getStateMileageRoadStatusWithIftaMultiGroup(GroupList groupList,
             Locale locale, MeasurementType measurementType) {
-        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), null, null,
+        return getStateMileageRoadStatusWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), null, null,
                 true, locale, measurementType);
     }
 }

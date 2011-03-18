@@ -15,7 +15,6 @@
 						<ui:param name="fieldName" value="vtype"/>
 						<ui:param name="editBean" value="#{vehiclesBean}"/>
 						<ui:param name="label" value="#{messages.editVehicle_type}"/>
-						<ui:param name="context" value="editVehicleType"/>
 					</ui:include>
                   </td>
                   <td>
@@ -32,7 +31,7 @@
               </td>
               
               <td>                                       
-                <h:selectBooleanCheckbox id="editVehicle-DOT" value="#{vehiclesBean.item.dot}" />
+                <h:selectBooleanCheckbox id="editVehicle-DOT" value="#{vehiclesBean.item.dot}" onchange="checkMultiple(this)"/>
               </td>
             </tr>
         </ui:fragment>

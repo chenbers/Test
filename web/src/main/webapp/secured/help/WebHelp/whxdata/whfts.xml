@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding='utf-8' ?>
 <fts>
-<chunkinfo url="whfwdata0.xml" first="!" last="applica­tion"/>
-<chunkinfo url="whfwdata1.xml" first="apply" last="corner"/>
-<chunkinfo url="whfwdata2.xml" first="correct" last="expir"/>
-<chunkinfo url="whfwdata3.xml" first="explain" last="input"/>
-<chunkinfo url="whfwdata4.xml" first="insert" last="o2"/>
-<chunkinfo url="whfwdata5.xml" first="obd" last="replacement"/>
-<chunkinfo url="whfwdata6.xml" first="report" last="tabularh"/>
-<chunkinfo url="whfwdata7.xml" first="tak" last="your"/>
-<chunkinfo url="whfwdata8.xml" first="yourself" last="™"/>
+<chunkinfo url="whfwdata0.xml" first="!" last="analysi"/>
+<chunkinfo url="whfwdata1.xml" first="analyz" last="conduct"/>
+<chunkinfo url="whfwdata2.xml" first="confidentiality" last="ensur"/>
+<chunkinfo url="whfwdata3.xml" first="ent" last="identifi"/>
+<chunkinfo url="whfwdata4.xml" first="identifiabl" last="mov"/>
+<chunkinfo url="whfwdata5.xml" first="movement" last="provider"/>
+<chunkinfo url="whfwdata6.xml" first="provinc" last="sole"/>
+<chunkinfo url="whfwdata7.xml" first="solicitation" last="vary"/>
+<chunkinfo url="whfwdata8.xml" first="vehicl" last="™"/>
 
-<tchunkinfo first="0" last="68" url="whftdata0.xml" />
-<tchunkinfo first="69" last="92" url="whftdata1.xml" />
+<tchunkinfo first="0" last="69" url="whftdata0.xml" />
+<tchunkinfo first="70" last="100" url="whftdata1.xml" />
 
 </fts>

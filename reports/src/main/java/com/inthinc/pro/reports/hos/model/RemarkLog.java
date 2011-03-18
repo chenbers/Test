@@ -15,7 +15,14 @@ public class RemarkLog {
     private Boolean     deleted;
     private Number      startOdometer;
     private String      statusDescription;
+    private Boolean     locationEdited;
     
+    public Boolean getLocationEdited() {
+        return locationEdited;
+    }
+    public void setLocationEdited(Boolean locationEdited) {
+        this.locationEdited = locationEdited;
+    }
     public String getStatusDescription() {
         return statusDescription;
     }

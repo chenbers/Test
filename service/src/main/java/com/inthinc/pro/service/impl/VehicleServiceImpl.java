@@ -22,7 +22,6 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.aggregation.Score;
 import com.inthinc.pro.model.aggregation.Trend;
-import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.service.VehicleService;
 import com.inthinc.pro.service.adapters.VehicleDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
@@ -129,21 +128,21 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
         return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();
     }
 
-    @Override
-    public Response getEvents(Integer vehicleID, String day) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
-        DateTime startDate = formatter.parseDateTime(day).minusDays(1);
-        List<Event> list = getDao().getEvents(vehicleID, startDate.toDate(), new Date());
-
-        return Response.ok(new GenericEntity<List<Event>>(list) {}).build();
-    }
-
-    @Override
-    public Response getEvents(Integer vehicleID) {
-        DateTime startDate = new DateTime().minusDays(30);
-        List<Event> list = getDao().getEvents(vehicleID, startDate.toDate(), new Date());
-        return Response.ok(new GenericEntity<List<Event>>(list) {}).build();
-    }
+//    @Override
+//    public Response getEvents(Integer vehicleID, String day) {
+//        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
+//        DateTime startDate = formatter.parseDateTime(day).minusDays(1);
+//        List<Event> list = getDao().getEvents(vehicleID, startDate.toDate(), new Date());
+//
+//        return Response.ok(new GenericEntity<List<Event>>(list) {}).build();
+//    }
+//
+//    @Override
+//    public Response getEvents(Integer vehicleID) {
+//        DateTime startDate = new DateTime().minusDays(30);
+//        List<Event> list = getDao().getEvents(vehicleID, startDate.toDate(), new Date());
+//        return Response.ok(new GenericEntity<List<Event>>(list) {}).build();
+//    }
 
     // fuel consumption for vehicle (parameter:day)"
     // @Override

@@ -9,6 +9,8 @@ import it.config.ITDataSource;
 import it.config.IntegrationConfig;
 import it.util.DataGenForHOSTesting;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +31,7 @@ import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.jdbc.HOSJDBCDAO;
+import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
@@ -391,7 +394,7 @@ System.out.println("numHosRecords " + numHosRecords);
         
         
         HOSRecord hosRecord = new HOSRecord();
-        hosRecord.setDriverDotType(driver.getDriverDOTType());
+        hosRecord.setDriverDotType(driver.getDot());
         hosRecord.setDriverID(driver.getDriverID());
         hosRecord.setLocation(INITIAL_LOCATION);
         hosRecord.setLogTime(hosRecordDate);
@@ -448,4 +451,39 @@ System.out.println("numHosRecords " + numHosRecords);
         
         return driverDAO.findByID(driverID);
     }
+
+
+
+    // TODO: need to make a real test from this
+    @Test
+    @Ignore
+    public void hosLogShipPackageTest() throws IOException {
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+
+        GroupData testGroupData = itData.teamGroupData.get(ITData.INTERMEDIATE);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        Vehicle testVehicle = testGroupData.vehicle;
+        
+        RuleSetType dotType = testDriver.getDot();
+        int daysBack = dotType.getLogShipDaysBack();
+        
+        System.out.println("daysBack " + daysBack);
+
+        DateTime currentDate = new DateTime();
+        Interval interval = new Interval(currentDate.minusDays(daysBack), currentDate);
+
+        System.out.println("interval " + interval);
+
+        List<HOSRecord> driverRecords = hosDAO.getHOSRecords(testDriver.getDriverID(), interval, true);
+        
+        System.out.println("driverRecords size " + driverRecords.size());
+        
+        
+        List<ByteArrayOutputStream> list = HOSUtil.packageLogsToShip(driverRecords, testDriver);
+        
+        System.out.println("list size " + list.size());
+        
+    }
+
 }

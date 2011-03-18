@@ -1,5 +1,8 @@
 package com.inthinc.pro.device;
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 import com.inthinc.pro.device.waysmart.WaysmartDevice;
 
@@ -10,4 +13,11 @@ public class TestWaysmart {
 		waysmart.set_url("QA");
 		waysmart.dump_settings();
 	}
+	
+    @Test
+    public void dummy()
+    {
+        assertEquals("", 1,1);
+    }
+	
 }

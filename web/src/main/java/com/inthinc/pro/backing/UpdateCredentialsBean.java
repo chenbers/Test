@@ -19,7 +19,9 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.context.MessageSource;
 
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.User;
 
 public class UpdateCredentialsBean extends BaseBean
@@ -27,13 +29,18 @@ public class UpdateCredentialsBean extends BaseBean
     private static final Logger logger = Logger.getLogger(UpdateCredentialsBean.class);
     private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddDDDFFWww");
 
+    private Integer userID= null;
     private String username = null;
     private String newPassword;
     private String confirmPassword;
     private String encryptPassword;
+    private String passwordStrengthString;
+    private Integer minPasswordStrength = 0;
+    private Integer passwordStrength;
     private int daysValid;
     private MessageSource messageSource;
     private UserDAO userDAO;
+    private AccountDAO accountDAO;
 
     private UIInput newPasswordInput;
     private UIInput confirmPasswordInput;
@@ -42,7 +49,6 @@ public class UpdateCredentialsBean extends BaseBean
     {
         super();
     }
-
     public void setPassKey(String passkey)
     {
         if (username == null)
@@ -170,7 +176,7 @@ public class UpdateCredentialsBean extends BaseBean
         // if both input components are valid at this point, meaning that they
         // have passed conversion and validation
         if (newPasswordInput.isValid() && confirmPasswordInput.isValid())
-        {
+        {            
             String password = (String) newPasswordInput.getLocalValue();
             String confirmPassword = (String) value;
 
@@ -193,5 +199,66 @@ public class UpdateCredentialsBean extends BaseBean
         userDAO.update(user);
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
+    }
+
+    public void setMinPasswordStrength(Integer minPasswordStrength) {
+        this.minPasswordStrength = minPasswordStrength;
+    }
+
+    private Integer findMinPasswordStrength() {
+        User user;
+        Integer results = null;
+        if(username != null && !username.equals("")) {
+            user = userDAO.findByUserName(username);
+        } else if(userID != null) {
+            user = userDAO.findByID(userID);
+        } else {
+            return 0; //TODO: jwimmer: something bad happened handle appropriately?
+        }
+        Account account = accountDAO.findByID(user.getPerson().getAccountID());
+        try{
+            results = Integer.parseInt(account.getProps().getPasswordStrength());
+        } catch(NumberFormatException nfe) {
+            logger.warn("Couldn't parse an Integer for passwordStrength from "+account.getProps().getPasswordStrength());
+        }
+        return results;
+    }
+    public Integer getMinPasswordStrength() {
+        if(minPasswordStrength == null){
+           minPasswordStrength = findMinPasswordStrength();
+        }
+        return minPasswordStrength;
+    }
+
+    public String getPasswordStrengthString() {
+        return passwordStrengthString;
+    }
+
+    public void setPasswordStrengthString(String passwordStrengthString) {
+        this.passwordStrengthString = passwordStrengthString;
+    }
+
+    public Integer getPasswordStrength() {
+        return passwordStrength;
+    }
+
+    public void setPasswordStrength(Integer passwordStrength) {
+        this.passwordStrength = passwordStrength;
+    }
+
+    public Integer getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Integer userID) {
+        this.userID = userID;
+    }
+
+    public AccountDAO getAccountDAO() {
+        return accountDAO;
+    }
+
+    public void setAccountDAO(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
     }
 }

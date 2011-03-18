@@ -26,6 +26,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventSubCategory;
+import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -826,9 +827,14 @@ public class TeamTripsBean extends BaseBean {
 			else {
 				
 				setEventName(MessageUtil.getMessageString(event.getEventType().toString()));
-		        setEventDescription(	event.getDetails(MessageUtil.getMessageString("redflags_details" +event.getEventType().name(),LocaleBean.getCurrentLocale()),
-						getMeasurementType(),
-						MessageUtil.getMessageString(getMeasurementType().toString()+"_mph")));
+                setEventDescription(
+                        event.getDetails(
+                                MessageUtil.getMessageString(
+                                        "redflags_details" +event.getEventType().name(),
+                                        LocaleBean.getCurrentLocale()),
+                                        getMeasurementType(),
+                                        MessageUtil.getMessageString(getMeasurementType().toString()+"_mph"),
+                                        MessageUtil.getMessageString(getMeasurementType().toString()+"_miles")));				
 			}
 	        SimpleDateFormat sdf = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), getLocale());
 	        sdf.setTimeZone(getPerson().getTimeZone());

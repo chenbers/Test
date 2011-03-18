@@ -64,8 +64,11 @@ public class GroupHierarchy implements Serializable
     {
         List<Group> subGroupList = getSubGroupList(groupID);
         List<Integer> idList = new ArrayList<Integer>();
-        for (Group group : subGroupList) {
-            idList.add(group.getGroupID());
+
+        if (subGroupList != null) {
+            for (Group group : subGroupList) {
+                idList.add(group.getGroupID());
+            }
         }
         
         return idList;
@@ -73,6 +76,7 @@ public class GroupHierarchy implements Serializable
     
     public Group getTopGroup()
     {
+        //TODO: warning. this does not (necessarily) return the top group in the hierarchy, it returns the group with the LOWEST groupID
         return groupMap.values().iterator().next();
     }
     public Group getGroup(Integer groupID)

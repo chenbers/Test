@@ -17,6 +17,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
+import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
@@ -30,19 +31,25 @@ import com.inthinc.pro.util.SelectItemUtil;
 public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T> implements PersonChangeListener
 {
     //protected static UserDAO   userDAO;
-    protected PersonDAO personDAO;
-    protected DriverDAO        driverDAO;
-    private VehiclesBean       vehiclesBean;
-    private String             assignType;
-    private List<SelectItem>   allVehicles;
-    private List<SelectItem>   allDrivers;
-    private ListPicker         assignPicker;
-    private AutocompletePicker peoplePicker;
-    private AutocompletePicker escalationPeoplePicker;
-    private AutocompletePicker escalationEmailPicker;
-    private T                  oldItem;
-    private String             oldEmailToString;
-
+    protected PersonDAO         personDAO;
+    protected DriverDAO         driverDAO;
+    private VehiclesBean        vehiclesBean;
+    private String              assignType;
+    private List<SelectItem>    allVehicles;
+    private List<SelectItem>    allDrivers;
+    private ListPicker          assignPicker;
+    private AutocompletePicker  peoplePicker;
+    private AutocompletePicker  escalationPeoplePicker;
+    private AutocompletePicker  escalationEmailPicker;
+    private T                   oldItem;
+//    private String             oldEmailToString;
+    
+    private List<Person>        peopleInGroupHierarchy = new ArrayList<Person>();
+    
+    @Override
+    public String toString() {
+        return "BaseAdminAlertsBean: [assignType="+assignType+", oldItem="+oldItem+", this.getClass()="+this.getClass()+"]";
+    }
     public void setPersonDAO(PersonDAO personDAO)
     {
         this.personDAO = personDAO;
@@ -181,6 +188,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return allDrivers;
     }
 
+    public List<Person> getPeopleInGroupHierarchy() {
+        
+        if( peopleInGroupHierarchy.size() == 0 ) {
+            peopleInGroupHierarchy = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());            
+        }
+        
+        return peopleInGroupHierarchy;
+    }
+ 
     protected List<SelectItem> getAllVehicles(Integer groupID)
     {
     	List<Group> subGroupList = getGroupHierarchy().getSubGroupList(groupID);
@@ -241,13 +257,20 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
     public AutocompletePicker getPeoplePicker()
     {
-        if (peoplePicker == null)
+        RedFlagLevel severityLevel = (this.oldItem instanceof RedFlagAlert)?((RedFlagAlert)this.oldItem).getSeverityLevel():null;
+        if (peoplePicker == null || (peoplePicker.size() < 1) || peoplePicker.isOutdated())
         {
             //final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
-            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
-            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            for (final Person person : people) 
-                allUsers.add(new SelectItem(person.getPersonID(), person.getFirst() + " " + person.getLast()));
+//            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
+            for (final Person person : getPeopleInGroupHierarchy()) {
+                //only add users if they have values for the severity level of this alert
+                if(   (RedFlagLevel.INFO.equals(severityLevel)     && person.getInfo() != null && person.getInfo()>0)
+                   || (RedFlagLevel.WARNING.equals(severityLevel)  && person.getWarn() != null && person.getWarn()>0)
+                   || (RedFlagLevel.CRITICAL.equals(severityLevel) && person.getCrit() != null && person.getCrit()>0)) {
+                    allUsers.add(new SelectItem(person.getPersonID(), person.getFirst() + " " + person.getLast()));
+                }
+            }
             MiscUtil.sortSelectItems(allUsers);
 
             final ArrayList<SelectItem> notifyPeople = getNotifyPicked();
@@ -259,11 +282,11 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     public AutocompletePicker getEscalationEmailPicker() {
         if (escalationEmailPicker == null)
         {
-            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
-            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            for (final Person person : people) { 
+//            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
+            for (final Person person : getPeopleInGroupHierarchy()) {
                 if(null != person.getPriEmail() && !"".equals(person.getPriEmail()))
-                    allUsers.add(new SelectItem(person, person.getFullNameWithPriEmail()));
+                    allUsers.add(new SelectItem(person, person.getFullNameWithPriEmail().replaceAll(" +", " ")));
             }
             MiscUtil.sortSelectItems(allUsers);
 
@@ -271,21 +294,21 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         }
         return escalationEmailPicker;
     }
-    public AutocompletePicker getEscalationPeoplePicker()
-    {
-        if (escalationPeoplePicker == null)
-        {
-            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
-            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(people.size());
-            for (final Person person : people) { 
-                if(null != person.getPriPhone() && !"".equals(person.getPriPhone()))
+
+    public AutocompletePicker getEscalationPeoplePicker() {
+        if (escalationPeoplePicker == null || escalationPeoplePicker.isOutdated()) {
+//            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
+            final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
+            for (final Person person : getPeopleInGroupHierarchy()) {
+                if (null != person.getPriPhone() && !"".equals(person.getPriPhone()))
                     allUsers.add(new SelectItem(person, person.getFullNameWithPriPhone()));
             }
             MiscUtil.sortSelectItems(allUsers);
 
-            final ArrayList<SelectItem> notifyPeople = getEscalationPicked();
-
-            escalationPeoplePicker = new AutocompletePicker(allUsers, notifyPeople);
+            // TODO: refactor: when this method is called, getEscalationPicked() is returning nothing even when there ARE phoneNumbers in the list already. 
+            // NOTE: getEscalationPicked() returns the correct value LATER (when called by getItem())
+            ArrayList<SelectItem> picked = getEscalationPicked();
+            escalationPeoplePicker = new AutocompletePicker(allUsers, picked);
         }
         return escalationPeoplePicker;
     }
@@ -329,20 +352,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return escPicked;
     }
 
-    private boolean isPersonDeleted(Person person)
-    {
-    	if (person == null)
-    		return true;
-    	
-    	if (person.getStatus() == null) {
-    		if ((person.getUser() != null && person.getUser().getStatus() != null && !person.getUser().getStatus().equals(Status.DELETED)) ||
-    			(person.getDriver() != null && person.getDriver().getStatus() != null && !person.getDriver().getStatus().equals(Status.DELETED)))
-    			 return false;
-    		else return true;
-    	}
-    	
-    	return person.getStatus().equals(Status.DELETED);
-    		
+    private boolean isPersonDeleted(Person person) {
+        if (person == null)
+            return true;
+
+        if (person.getStatus() == null) 
+            return !((person.getUser() != null && person.getUser().getStatus() != null && !person.getUser().getStatus().equals(Status.DELETED))
+                    || (person.getDriver() != null && person.getDriver().getStatus() != null && !person.getDriver().getStatus().equals(Status.DELETED)));      
+
+        return person.getStatus().equals(Status.DELETED);
     }
     @Override
     public void personListChanged()
@@ -359,7 +377,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         if (item != oldItem)
         {
             oldItem = item;
-            oldEmailToString = item.getEmailToString();
+//            oldEmailToString = item.getEmailToString();
             getAssignPicker().setPicked(getAssignPicked());
             getAssignPicker().setPickFrom(getAssignPickFrom());
             getPeoplePicker().setPicked(getNotifyPicked());
@@ -397,7 +415,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         getAssignPicker().setPicked(getAssignPicked());
         getPeoplePicker().setPicked(getNotifyPicked());
         getEscalationPeoplePicker().setPicked(getEscalationPicked());
-        getItem().setEmailToString(getOldEmailToString());
+//        getItem().setEmailToString(getOldEmailToString());
         return super.cancelEdit();
     }
 
@@ -459,7 +477,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             // set notify user IDs
             final ArrayList<Integer> escalationUserIDs = new ArrayList<Integer>(getEscalationPeoplePicker().getPicked().size());
             for (final SelectItem item : getEscalationPeoplePicker().getPicked()) {
-                //TODO: jwimmer: test this!
                 if(item.getValue() instanceof Person)
                     escalationUserIDs.add((Integer) ((Person)item.getValue()).getPersonID());
                 else if(item.getValue() instanceof Integer)
@@ -482,6 +499,7 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     @Override
     protected boolean validateSaveItem(T saveItem)
     {
+        logger.debug("protected boolean validateSaveItem(T "+saveItem+")");
         final FacesContext context = FacesContext.getCurrentInstance();
 
         boolean valid = true;
@@ -546,15 +564,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return valid;
     }
 
-    protected String getOldEmailToString()
-    {
-        return oldEmailToString;
-    }
-
-    protected void setOldEmailToString(String oldEmailToString)
-    {
-        this.oldEmailToString = oldEmailToString;
-    }
+//    protected String getOldEmailToString()
+//    {
+//        return oldEmailToString;
+//    }
+//
+//    protected void setOldEmailToString(String oldEmailToString)
+//    {
+//        this.oldEmailToString = oldEmailToString;
+//    }
 
     protected static boolean isAnytime(BaseAlertView alert)
     {
@@ -623,13 +641,13 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         
         public void setEscalationPersonIDs(List<Integer> notifyPersonIDs);
 
-        public List<String> getEmailTo();
-
-        public void setEmailTo(List<String> emailTo);
-
-        public String getEmailToString();
-
-        public void setEmailToString(String emailToString);
+//        public List<String> getEmailTo();
+//
+//        public void setEmailTo(List<String> emailTo);
+//
+//        public String getEmailToString();
+//
+//        public void setEmailToString(String emailToString);
         
         public Integer getUserID();
         

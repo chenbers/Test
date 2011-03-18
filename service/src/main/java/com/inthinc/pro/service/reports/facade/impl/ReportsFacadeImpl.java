@@ -11,6 +11,7 @@ import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.reports.ifta.model.StateMileageByMonth;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
@@ -157,7 +158,7 @@ public class ReportsFacadeImpl implements ReportsFacade {
      */
     @SuppressWarnings("unchecked")
     @Override
-    public List<MileageByVehicle> getStateMileageByVehicleByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type) {
+    public List<StateMileageByMonth> getStateMileageByMonth(List<Integer> groupIDList, Interval interval, boolean dotOnly, Locale locale, MeasurementType type) {
         ReportCriteria criteria = reportService.getStateMileageByMonthReportCriteria(
                 getAccountGroupHierarchy(), groupIDList, interval, locale, type, dotOnly);
         return criteria.getMainDataset();

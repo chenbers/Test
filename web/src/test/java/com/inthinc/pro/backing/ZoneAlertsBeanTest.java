@@ -69,7 +69,7 @@ public class ZoneAlertsBeanTest extends BaseAdminBeanTest<RedFlagOrZoneAlertsBea
         final List<SelectItem> pickedGroups = new ArrayList<SelectItem>();
         pickedGroups.add(new SelectItem("group101"));
         ((RedFlagOrZoneAlertsBean) adminBean).getAssignPicker().setPicked(pickedGroups);
-        editItem.setEmailToString("hello@dolly.com");
+//        editItem.setEmailToString("hello@dolly.com");
     }
 
     @Override

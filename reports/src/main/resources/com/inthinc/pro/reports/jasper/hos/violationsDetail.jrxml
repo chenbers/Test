@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="273"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -336,7 +336,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
-			<textField evaluationTime="Report" pattern="MM/dd/yyyy HH:mm" isBlankWhenNull="false">
+			<textField isStretchWithOverflow="true" evaluationTime="Report" pattern="MM/dd/yyyy HH:mm" isBlankWhenNull="false">
 				<reportElement key="textField-20" style="PageFooter" x="678" y="5" width="100" height="18"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

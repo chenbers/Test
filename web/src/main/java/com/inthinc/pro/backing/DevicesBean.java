@@ -1,10 +1,14 @@
 package com.inthinc.pro.backing;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -56,9 +60,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private VehicleDAO vehicleDAO;
     private VehiclesBean vehiclesBean;
 
-//    private String batchProductChoice;
-//    private String filterStatus;
-
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
         this.deviceDAO = deviceDAO;
@@ -85,13 +86,17 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         
         return ProductTypeSelectItems.INSTANCE.getSelectItems();
     }
-//    public String getBatchProductChoice() {
-//        return batchProductChoice;
-//    }
-//    public void setBatchProductChoice(String batchProductChoice) {
-//        this.batchProductChoice = batchProductChoice;
-//    }
 
+    public String getViewPath() {
+        if(isAdd()){
+             
+            return getFinishedRedirect();
+        }
+        else {
+            
+            return getEditRedirect();
+        }
+    }
     @Override
     protected List<DeviceView> loadItems()
     {
@@ -118,6 +123,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setVehicleDAO(vehicleDAO);
         deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
+        deviceView.setFirmwareVersionDate();
         if (device.getPhone() != null)
             deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
         return deviceView;
@@ -399,7 +405,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     @Override
     protected String getEditRedirect()
     {
-        return "pretty:adminEditDevice";
+        return "pretty:adminEditDeviceAccess";
     }
 
     @Override
@@ -434,7 +440,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         private Vehicle vehicle;
         @Column(updateable = false)
         private boolean selected;
-
+        @Column(updateable = false)
+        private Date firmwareVersionDate;
+        
         public Integer getId()
         {
             return getDeviceID();
@@ -489,40 +497,23 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         {
             this.selected = selected;
         }
-    }
-//    @Override
-//    public void doSelectAll() {
-//
-//        if (getFilterValues().get("productVersion") == null){
-//            
-//             super.doSelectAll();
-//        }
-//        else{
-//            
-//            for(DeviceView deviceView : filteredItems){
-//                                   
-//                deviceView.setSelected(selectAll && deviceView.getProductVersion().getDescription().equals(getFilterValues().get("productVersion")));
-//            }
-//        }
-//    }
 
-//    @Override
-//    public boolean isSelectAll() {
-//        
-//         if (getFilterValues().get("productVersion") == null || getFilteredItems().size() == 0){
-//        
-//            return super.isSelectAll();
-//        }
-//        else{
-//                
-//            for(DeviceView deviceView : filteredItems){
-//                
-//                if (!deviceView.isSelected() && deviceView.getProductVersion().getDescription().equals(getFilterValues().get("productVersion")))
-//                    return false;
-//            }
-//            return true;
-//        }
-//    }
+        public String getFirmwareVersionDate() {
+            if (firmwareVersionDate == null)
+                return "";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm:ss");
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return simpleDateFormat.format(firmwareVersionDate);
+        }
+
+        public void setFirmwareVersionDate() {
+            if (getFirmwareVersion() == null) {
+                firmwareVersionDate = null;
+                return;
+            }
+            firmwareVersionDate = new Date(getFirmwareVersion()*1000L);
+        }
+    }
     public boolean isBatchProductChoice(ProductType productType){
         
         return getFilterValues().get("productVersion") == null || getFilterValues().get("productVersion").equals(productType.getDescription());

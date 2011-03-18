@@ -111,7 +111,7 @@ public class IFTAReportsParamsValidationAdvice {
 
 		IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupID, startDate, endDate, locale, measurementType);
 		violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
-		return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getStartDate(), params.getEndDate(), params.getLocale(), params.getMeasurementType()});
+		return pjp.proceed(new Object[] {params.getGroupIDListAsInteger().get(0), params.getStartDate(), params.getEndDate(), params.getLocale(), params.getMeasurementType()});
 	}	
 
 	@Around("isIFTAService() && validateParams() && withoutDates(groupID, locale, measurementType)") 
@@ -120,7 +120,7 @@ public class IFTAReportsParamsValidationAdvice {
 
 		IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupID, locale, measurementType);
 		violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
-		return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getLocale(), params.getMeasurementType()});
+		return pjp.proceed(new Object[] {params.getGroupIDListAsInteger().get(0), params.getLocale(), params.getMeasurementType()});
 	}	
 
 	@Around("isIFTAService() && validateParams() && withDatesMultiGroup(groupList, startDate, endDate, locale, measurementType)") 
@@ -129,7 +129,9 @@ public class IFTAReportsParamsValidationAdvice {
 
 		IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupList, startDate, endDate, locale, measurementType);
 		violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
-		return pjp.proceed(new Object[] {new GroupList(params.getGroupIDList()), params.getStartDate(), params.getEndDate(), params.getLocale(), params.getMeasurementType()});
+		GroupList list = new GroupList();
+		list.setValue(params.getGroupIDList());
+		return pjp.proceed(new Object[] {list, params.getStartDate(), params.getEndDate(), params.getLocale(), params.getMeasurementType()});
 	}	
 
 	@Around("isIFTAService() && validateParams() && withoutDatesMultiGroup(groupList, locale, measurementType)") 
@@ -138,7 +140,9 @@ public class IFTAReportsParamsValidationAdvice {
 
 		IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupList, locale, measurementType);
 		violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
-		return pjp.proceed(new Object[] {new GroupList(params.getGroupIDList()), params.getLocale(), params.getMeasurementType()});
+		GroupList list = new GroupList();
+        list.setValue(params.getGroupIDList());
+		return pjp.proceed(new Object[] {list, params.getLocale(), params.getMeasurementType()});
 	}		
 	
     @Around("isPerformanceService() && validateParams() && performanceWithDates(groupID, startDate, endDate, locale)") 
@@ -147,7 +151,7 @@ public class IFTAReportsParamsValidationAdvice {
 
         IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupID, startDate, endDate, locale);
         violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
-        return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getStartDate(), params.getEndDate(), params.getLocale()});
+        return pjp.proceed(new Object[] {params.getGroupIDListAsInteger().get(0), params.getStartDate(), params.getEndDate(), params.getLocale()});
     }   
 
     @Around("isPerformanceService() && validateParams() && performanceWithoutDates(groupID, locale)") 
@@ -155,7 +159,7 @@ public class IFTAReportsParamsValidationAdvice {
 
         IFTAReportsParamsBean params = iftaBeanFactory.getBean(groupID, locale);
         violationToExceptionMapper.raiseExceptionIfConstraintViolated(validator.validate(params));
-        return pjp.proceed(new Object[] {params.getGroupIDList().get(0), params.getLocale()});
+        return pjp.proceed(new Object[] {params.getGroupIDListAsInteger().get(0), params.getLocale()});
     }   
 
 }

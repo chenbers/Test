@@ -265,4 +265,8 @@ public class BaseBean implements Serializable {
 	    return getProUser().getAccountHOSType() != null && getProUser().getAccountHOSType() != AccountHOSType.NONE; 
 	}
 	
+    public boolean getAccountIsWaysmart() {
+        String waySmart = getProUser().getAccountAttributes().getWaySmart();
+        return (waySmart == null) ? false : Boolean.valueOf(waySmart); 
+    }
 }

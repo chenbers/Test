@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Bean for MileageByVehicle report.
  */
-@XmlRootElement
+@XmlRootElement(name="stateComparison")
 public class StateMileageCompareByGroup {
 
     private String groupName;

@@ -12,8 +12,8 @@ public class RedFlagReportItem extends EventReportItem {
 	String eventType;
 	
 	public RedFlagReportItem(RedFlag redFlag, MeasurementType measurementType,
-			String dateFormat, String detailsFormat, String mphString, Locale locale) {
-		super(redFlag.getEvent(), measurementType, dateFormat, detailsFormat, mphString, locale);
+			String dateFormat, String detailsFormat, String mphString, String miString, Locale locale) {
+		super(redFlag.getEvent(), measurementType, dateFormat, detailsFormat, mphString, miString, locale);
 		this.redFlag = redFlag;
 //		this.level = redFlag.getLevel();
 //		this.alert = redFlag.getAlert();

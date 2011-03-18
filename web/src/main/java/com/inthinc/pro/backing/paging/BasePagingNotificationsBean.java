@@ -80,7 +80,9 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
                     continue;
                 for (EventSubCategory subCategory : category.getSubCategorySet()) {
                     String subCategoryStr = MessageUtil.getMessageString(subCategory.toString(), getLocale());
-                    filterCategories.add(new SelectItemGroup(subCategoryStr, subCategoryStr, false, getItemsBySubCategory(subCategory)));
+                    SelectItem[] items = getItemsBySubCategory(subCategory);
+                    if (items != null && items.length > 0)
+                        filterCategories.add(new SelectItemGroup(subCategoryStr, subCategoryStr, false, items));
                 }
             }
 
@@ -91,6 +93,9 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
     private SelectItem[] getItemsBySubCategory(EventSubCategory subCategory) {
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (EventType eventType : subCategory.getEventTypeSet()) {
+            if ((eventType.isHOSOnlyEvent() && !getAccountIsHOS()) ||
+                (eventType.isWaysmartOnlyEvent() && !getAccountIsWaysmart()))
+                continue;
             items.add(new SelectItem(eventType.getCode(), MessageUtil.getMessageString(eventType.toString())));
             eventCategoryMap.put(eventType.getCode(), eventType.getEventCategoryFilter());
         }

@@ -34,16 +34,16 @@ public abstract class InthincTest
 	
 	private final static String username = "dtanner@inthinc.com";
 	private final static String password = "aOURh7PL5v";
-	private final static String workspace = "Inthinc";
+	private final static String workspace = "Sand Box";
 	
 	private static CoreMethodLib selenium;
-	private static SeleniumServer seleniumserver;
+//	private static SeleniumServer seleniumserver;
 	
 	@BeforeClass
 	public static void start_server(){
 		try{
-				seleniumserver = new SeleniumServer();
-		        seleniumserver.start();
+//				seleniumserver = new SeleniumServer();
+//		        seleniumserver.start();
 				rally = new RallyAPILib(username, password);
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -54,7 +54,7 @@ public abstract class InthincTest
 	
 	@Before
 	public void start_selenium(){
-		selenium = GlobalSelenium.getSingleton().getSelenium();
+		selenium = GlobalSelenium.getYourOwn();
 		try{
 			selenium.start();
 			currentTime = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -87,7 +87,8 @@ public abstract class InthincTest
 	
 	@AfterClass
 	public static void stop_server(){
-		seleniumserver.stop();
+		GlobalSelenium.dieSeleniumDie();
+//		seleniumserver.stop();
 		
 	}//tear down
 	
@@ -132,6 +133,14 @@ public abstract class InthincTest
 		
 		return value; 
 	}//end set test case
+	
+	public String getUsername() {
+		return get_data("Login", "USERNAME");
+	}
+	
+	public String getPassword() {
+		return get_data("Login", "PASSWORD");
+	}
 	
 	public void record_results(){
 		errors = selenium.getErrors().get_errors();

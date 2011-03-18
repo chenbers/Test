@@ -83,7 +83,7 @@ public class IFTAServiceMileageByVehicleImpl extends BaseReportServiceImpl imple
     @Override
     @ValidParams
     public Response getMileageByVehicleDefaultsMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        return getMileageByVehicleMultiGroup(groupList.getValueList(), null, null, false, locale, measurementType);
+        return getMileageByVehicleMultiGroup(groupList.getValueListAsIntegers(), null, null, false, locale, measurementType);
     }
 
     /**
@@ -93,7 +93,7 @@ public class IFTAServiceMileageByVehicleImpl extends BaseReportServiceImpl imple
     @Override
     @ValidParams
     public Response getMileageByVehicleWithDatesMultiGroup(GroupList groupList, Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {
-        return getMileageByVehicleMultiGroup(groupList.getValueList(), startDate, endDate, false, locale, measurementType);
+        return getMileageByVehicleMultiGroup(groupList.getValueListAsIntegers(), startDate, endDate, false, locale, measurementType);
     }
 
     /**
@@ -103,7 +103,7 @@ public class IFTAServiceMileageByVehicleImpl extends BaseReportServiceImpl imple
     @Override
     @ValidParams
     public Response getMileageByVehicleWithIftaMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        return getMileageByVehicleMultiGroup(groupList.getValueList(), null, null, true, locale, measurementType);
+        return getMileageByVehicleMultiGroup(groupList.getValueListAsIntegers(), null, null, true, locale, measurementType);
     }
 
     /**
@@ -113,7 +113,7 @@ public class IFTAServiceMileageByVehicleImpl extends BaseReportServiceImpl imple
     @Override
     @ValidParams
     public Response getMileageByVehicleWithIftaAndDatesMultiGroup(GroupList groupList, Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {
-        return getMileageByVehicleMultiGroup(groupList.getValueList(), startDate, endDate, true, locale, measurementType);
+        return getMileageByVehicleMultiGroup(groupList.getValueListAsIntegers(), startDate, endDate, true, locale, measurementType);
     }
 
     /** Service implementation for Mileage by Vehicle report */

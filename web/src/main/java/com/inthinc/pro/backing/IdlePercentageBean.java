@@ -82,6 +82,8 @@ public class IdlePercentageBean extends BaseBean {
 
 		Long totalDriving = 0l;
 		Long totalIdling = 0l;
+        setTotalEMUVehicles(0);
+        setTotalVehicles(0);
 		for (IdlePercentItem item : idlePercentItemList) {
 			Float driveTime = getHours(item.getDrivingTime());
 			Float idleTime = getHours(item.getIdlingTime());
@@ -95,10 +97,11 @@ public class IdlePercentageBean extends BaseBean {
 			totalDriving += item.getDrivingTime();
 			totalIdling += item.getIdlingTime();
 			
-			// this ends up being the last count in the list (i.e. last item)
-			setTotalEMUVehicles(item.getNumEMUVehicles());
-			setTotalVehicles(item.getNumVehicles());
-
+			// this ends up being the last count in the list that is > 0(i.e. last item)
+			if (item.getNumVehicles() != null && item.getNumVehicles() > 0) {
+			    setTotalEMUVehicles(item.getNumEMUVehicles());
+			    setTotalVehicles(item.getNumVehicles());
+			}
 			String dateLabel = (getDurationBean().getDuration().equals(Duration.DAYS)) ? dateLabels.getDayLabel(item.getDate()) : dateLabels.getMonthLabel(item.getDate()); 
 
 			toolTipText.add(MessageFormat.format(toolTipTextTemplate, dateLabel, 

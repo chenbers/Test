@@ -92,7 +92,7 @@ public class VehicleSpeedBeanTest extends BaseBeanTest
         score = vehicleSpeedBean.getScoreMap().get( ScoreType.SCORE_SPEEDING_65_80.toString()); 
         assertEquals( score.toString(), "48");
         assertEquals( vehicleSpeedBean.getStyleMap().get( ScoreType.SCORE_SPEEDING_65_80.toString() ) , "score_med_5" );
-        
+       
         // Test Event Sorting
         List<EventReportItem> speedingEvents = new ArrayList<EventReportItem>();
         

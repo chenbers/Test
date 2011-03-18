@@ -25,8 +25,8 @@
                       
                  <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
                     <tr>
-                     <td width="100"><h:outputText value="#{messages.vehiclesHeader_productVersion}" /></td>
-                     <td><h:outputText value="#{vehicle.editableVehicleSettings.productType.description}" /></td>
+                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductType}" /></td>
+                     <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.productType.description}" /></td>
                    </tr>
                     <tr>
                      <td width="100"><h:outputText value="#{messages.editVehicle_VIN}" /></td>
@@ -65,6 +65,10 @@
                      <td width="100"><h:outputText value="#{messages.editVehicle_state}" /></td>
                      <td><h:outputText value="#{vehicle.state.name}" /></td>
                    </tr>
+				   <tr>
+					 <td width="100"><h:outputText value="#{messages.editDevice_ephone}" /></td>
+					 <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.ephone}" /></td>
+				   </tr>
                  </table>
 	             <div class="spacer"></div>      
 	              <div class="add_section_title"><h:outputText value="#{messages.editVehicle_vehicleProfile}" /></div>
@@ -89,8 +93,8 @@
                  <div class="add_section_title"><h:outputText value="#{messages.organization_deviceAssignments}" /></div>
                   <table width="500" border="0" cellspacing="2" cellpadding="4" align="center">
                     <tr>
-                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductVersion}" /></td>
-                     <td><h:outputText value="#{vehicle.editableVehicleSettings.productType.description}" /></td>
+                     <td width="100"><h:outputText value="#{messages.editVehicle_ProductType}" /></td>
+                     <td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.productType.description}" /></td>
                     </tr>
                     <tr>
                       <td width="100"><h:outputText value="#{messages.organization_assignedDevice}:" /></td>

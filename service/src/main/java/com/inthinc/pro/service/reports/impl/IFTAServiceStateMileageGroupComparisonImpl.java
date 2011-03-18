@@ -41,8 +41,8 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseReportServic
 
         // Creating a GroupList with only one group ID.
         GroupList groupList = new GroupList();
-        groupList.getValueList().add(groupID);
-        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, iftaOnly, locale, measurementType);
+        groupList.getValueList().add(Integer.toString(groupID));
+        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), startDate, endDate, iftaOnly, locale, measurementType);
     }
     
     Response getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(List<Integer> groupList, Date startDate, Date endDate, 
@@ -112,8 +112,9 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseReportServic
      * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison#getStateMileageByVehicleStateComparisonDefaultsMultiGroup(com.inthinc.pro.util.GroupList, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
+    @ValidParams
     public Response getStateMileageByVehicleStateComparisonDefaultsMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), null, null, false, locale, measurementType);
+        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), null, null, false, locale, measurementType);
     }
 
 
@@ -122,8 +123,9 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseReportServic
      * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison#getStateMileageByVehicleStateComparisonWithDatesMultiGroup(com.inthinc.pro.util.GroupList, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
+    @ValidParams
     public Response getStateMileageByVehicleStateComparisonWithDatesMultiGroup(GroupList groupList, Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, false, locale, measurementType);
+        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), startDate, endDate, false, locale, measurementType);
     }
 
     /**
@@ -131,8 +133,9 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseReportServic
      * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison#getStateMileageByVehicleStateComparisonWithIftaAndDatesMultiGroup(com.inthinc.pro.util.GroupList, java.util.Date, java.util.Date, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
+    @ValidParams
     public Response getStateMileageByVehicleStateComparisonWithIftaAndDatesMultiGroup(GroupList groupList, Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, true, locale, measurementType);
+        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), startDate, endDate, true, locale, measurementType);
     }
 
     /**
@@ -140,7 +143,8 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseReportServic
      * @see com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleGroupComparison#getStateMileageByVehicleStateComparisonWithIftaMultiGroup(com.inthinc.pro.util.GroupList, java.util.Locale, com.inthinc.pro.model.MeasurementType)
      */
     @Override
+    @ValidParams
     public Response getStateMileageByVehicleStateComparisonWithIftaMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueList(), null, null, true, locale, measurementType);
+        return getStateMileageByVehicleStateComparisonWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), null, null, true, locale, measurementType);
     }
 }

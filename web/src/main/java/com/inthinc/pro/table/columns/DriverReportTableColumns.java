@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ajax4jsf.model.KeepAlive;
+
 import com.inthinc.pro.model.TableType;
 
+@KeepAlive
 public class DriverReportTableColumns extends BaseTableColumns {
 
 	private static final long serialVersionUID = 4988590781244679436L;

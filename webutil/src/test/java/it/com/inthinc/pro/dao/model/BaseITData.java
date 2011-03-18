@@ -442,7 +442,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
     protected List<AlertEscalationItem>escalationList(){
         List<AlertEscalationItem> escalationPersonIDList = new ArrayList<AlertEscalationItem>();
         escalationPersonIDList.add(new AlertEscalationItem(fleetUser.getPersonID(), 1));
-//        escalationPersonIDList.add(new AlertEscalationItem(districtUser.getPersonID(), -1));
+        escalationPersonIDList.add(new AlertEscalationItem(fleetUser.getPersonID(), 0));
         return escalationPersonIDList;
         
     }

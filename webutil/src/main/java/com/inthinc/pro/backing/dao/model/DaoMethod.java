@@ -11,6 +11,7 @@ public class DaoMethod
     CrudType crudType;
     Class<?> modelClass;
     Class<? extends com.inthinc.pro.backing.dao.mapper.BaseUtilMapper> mapperClass;
+    String populateMethod;
     
     public DaoMethod(Method method, int interfaceIdx)
     {
@@ -58,6 +59,12 @@ public class DaoMethod
     public void setInterfaceIdx(int interfaceIdx)
     {
         this.interfaceIdx = interfaceIdx;
+    }
+    public String getPopulateMethod() {
+        return populateMethod;
+    }
+    public void setPopulateMethod(String populateMethod) {
+        this.populateMethod = populateMethod;
     }
     
     

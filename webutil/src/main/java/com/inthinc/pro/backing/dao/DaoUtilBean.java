@@ -69,6 +69,9 @@ public class DaoUtilBean extends BaseBean
 
     private DateFormatBean dateFormatBean;
     
+    private Integer populateID;
+    private Boolean populateAvailable;
+    
     public static final String NO_RESULTS = "No results were returned";
 	public List<String> getExcludedMethods() {
     	return excludedMethods;
@@ -116,6 +119,7 @@ public class DaoUtilBean extends BaseBean
                     	daoMethod.setMapperClass(methods[i].getAnnotation(MethodDescription.class).mapperClass());
                     }
                     daoMethod.setDescription(methods[i].getAnnotation(MethodDescription.class).description());
+                    daoMethod.setPopulateMethod(methodDescription.populateMethod());
                 }
                 
                 methodMap.put(methods[i].getName(), daoMethod);
@@ -146,10 +150,14 @@ public class DaoUtilBean extends BaseBean
         setRecords(null);
         setSelectedMethodDescription(null);
         columnHeaders = null;
+        setPopulateAvailable(false);
         if (selectedMethod != null) {
         	DaoMethod m = getMethodMap().get(selectedMethod);
         	setSelectedMethodDescription((m == null || m.getDescription() == null) ? "" : m.getDescription());
+        	setPopulateAvailable(methodMap.get(m.getPopulateMethod()) != null);
         }
+        
+
     }
 
     public List<SelectItem> getMethodSelectList()
@@ -228,7 +236,7 @@ public class DaoUtilBean extends BaseBean
 			                    Param param = new Param();
 	                            param.setParamName(fieldName);
 	                            param.setParamInputDesc(webParm.name() + " " + fieldName + " (" + fieldType.getSimpleName() + ")");
-	                            param.setParamType(fieldType);
+	                            param.setParamType(fieldType.equals(java.util.Date.class) ? Long.class : fieldType);
 //	                            param.setParamType(webParm.type());
 	                            param.setInputType(fieldType);
 	                            param.setIndex(i);
@@ -331,7 +339,7 @@ public class DaoUtilBean extends BaseBean
         }
     }
     
-    public Object[] getArgsFromParamList() {
+    public Object[] getArgsFromParamList() throws Exception {
     	
         Method method = methodMap.get(selectedMethod).getMethod();
         Class<?>[] paramTypes = method.getParameterTypes();
@@ -370,7 +378,8 @@ public class DaoUtilBean extends BaseBean
 		                }
 		                Param p = findParam(mname, i);
 		                if (p != null) {
-		                	map.put(mname, p.getConvertedParamValue());
+		                	if (!p.getParamValue().toString().isEmpty())
+		                		map.put(mname, p.getConvertedParamValue());
 		                }
 					}
 					args[cnt++] = map;
@@ -646,5 +655,62 @@ public class DaoUtilBean extends BaseBean
 	public void setRecordCount(int recordCount) {
 		this.recordCount = recordCount;
 	}
+    public Integer getPopulateID() {
+        return populateID;
+    }
+    public void setPopulateID(Integer populateID) {
+        this.populateID = populateID;
+    }
+    public void populateAction() {
+        DaoMethod selected = this.methodMap.get(this.selectedMethod);
+        DaoMethod populateMethod = this.methodMap.get(selected.getPopulateMethod());
+        System.out.println("populateAction -- ID: " + getPopulateID() + " " + selected.getPopulateMethod() + " " + (populateMethod == null ? "not found" : "found"));
 
+        if (populateMethod != null && getPopulateID() != null) {
+            Object dataAccess;
+            try {
+                dataAccess = getDataAccess(populateMethod.getInterfaceIdx());
+                InvocationHandler handler = Proxy.getInvocationHandler(dataAccess);
+
+                Method method = populateMethod.getMethod();
+                processPopulateResults(method, handler.invoke(dataAccess, method, new Object[] {getPopulateID()}));
+            } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (Throwable e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        
+    }
+    private void processPopulateResults(Method method, Object returnObject) throws InstantiationException, IllegalAccessException
+    {
+        DaoMethod daoMethod = getMethodMap().get(selectedMethod);
+        Map<String, Object> recordMap = (Map<String, Object>)returnObject;
+        
+        for (Param param : paramList) {
+            Object value = recordMap.get(param.getParamName());
+            
+            if (param.getInputType().equals(java.util.Date.class) && value != null) {
+                param.setParamValue(new Date(Long.parseLong(value.toString()) * 1000l));
+            }
+            else param.setParamValue(value);
+            System.out.println(param.getParamName() + " = " + param.getParamValue() + " " + (param.getParamValue() != null ? param.getParamValue().getClass().getName() : "") + " "+ param.getParamType().getName());     
+        }
+        
+    }
+
+    public Boolean getPopulateAvailable() {
+        return populateAvailable;
+    }
+    public void setPopulateAvailable(Boolean populateAvailable) {
+        this.populateAvailable = populateAvailable;
+    }
 }

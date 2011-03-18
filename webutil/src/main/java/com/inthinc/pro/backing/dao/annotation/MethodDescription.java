@@ -16,5 +16,6 @@ public @interface MethodDescription
     CrudType crudType();
     Class<?> modelClass() default java.util.Map.class;
     Class<? extends com.inthinc.pro.backing.dao.mapper.BaseUtilMapper> mapperClass() default com.inthinc.pro.backing.dao.mapper.DaoUtilMapper.class;
+    String populateMethod() default "";
 
 }

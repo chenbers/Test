@@ -34,9 +34,10 @@ public class Device extends BaseEntity implements HasAccountId
     @Column(name="witnessVer", updateable = false)
     private Integer	witnessVersion;
     private String emuMd5;
-    @Column(name="productVer", updateable = false)
+    @Column(name="productVer")
     private ProductType productVersion;
     private String mcmid;   //Waysmart mcmid
+    @Column(name = "altImei")
     private String altimei; //Alternate Waysmart imei
 /* 
  * waySmartSerialNumber
@@ -238,5 +239,9 @@ public class Device extends BaseEntity implements HasAccountId
     }
     public static long getSerialversionuid() {
         return serialVersionUID;
+    }
+    @Override
+    public String toString() {
+        return "Device: [name="+name+", deviceID="+deviceID+", imei="+this.imei+", altimei="+this.altimei+" ]";
     }
 }

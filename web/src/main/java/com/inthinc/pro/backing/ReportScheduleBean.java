@@ -17,6 +17,7 @@ import java.util.TreeMap;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 
 import org.springframework.beans.BeanUtils;
 
@@ -39,6 +40,7 @@ import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.TimeFrame;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.reports.ReportCategory;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
@@ -63,11 +65,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final String REDIRECT_REPORT_SCHEDULES = "pretty:adminReportSchedules";
     private static final String REDIRECT_REPORT_SCHEDULE = "pretty:adminReportSchedule";
     private static final String REDIRECT_EDIT_REPORT_SCHEDULE = "pretty:adminEditReportSchedule";
-    private List<SelectItem> reportGroups;
     private List<Driver> driverList;
     protected final static String BLANK_SELECTION = " ";
-
-
 
     /*
      * Spring managed beans
@@ -107,23 +106,50 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             }
         });
     }
+    
+    public List<SelectItemGroup> getReportGroups() {
 
-    public List<SelectItem> getReportGroups() {
-        reportGroups = new ArrayList<SelectItem>();
-        for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
-            if (rt.isIfta() && !getAccountIsHOS())
-                continue;
-            if (rt.getRequiresHOSAccount() && !getAccountIsHOS())
-                continue;
-            List<GroupType> groupTypes = Arrays.asList(rt.getGroupTypes());
-            if (rt.getEntityType() != EntityType.ENTITY_GROUP || getGroupHierarchy().containsGroupTypes(groupTypes)) {
-                reportGroups.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
-            }
+        List<SelectItemGroup> reportGroups = new ArrayList<SelectItemGroup>();
+        reportGroups.add(getBlankGroup());
+        
+        reportGroups.add(new SelectItemGroup("", "", false, getItemsByCategory(null)));
+        for (ReportCategory cat : ReportCategory.values()) {
+            SelectItem[] items = getItemsByCategory(cat);
+            if (items != null && items.length > 0)
+                reportGroups.add(new SelectItemGroup(cat.getLabel(), cat.getLabel(), false, items));
         }
-        sort(reportGroups);
-        reportGroups.add(0, new SelectItem(null, ""));
+        
         return reportGroups;
     }
+    
+    protected SelectItemGroup getBlankGroup(){
+        SelectItem[] items = new SelectItem[1]; 
+        items[0] = new SelectItem(null, "");
+        return new SelectItemGroup("","",false,items);      
+    }
+
+    /**
+     * Returns all the report types pertaining to a given Report Category. 
+     * @param category Category of reports
+     * @return Array of report types as Faces SelectItems
+     */
+    private SelectItem[] getItemsByCategory(ReportCategory category) {
+        List<SelectItem> items = new ArrayList<SelectItem>();
+        for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
+            if (category == null && rt.getReportCategory() == null) {
+                items.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
+                continue;
+            }
+            if (!rt.isCategory(category)) continue;
+            if (rt.getRequiresHOSAccount() && !getAccountIsHOS())
+                continue;
+            if (rt.getRequiresWaySmartAccount() && !getAccountIsWaysmart())
+                continue;
+            items.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
+        }
+        return items.toArray(new SelectItem[0]);
+    }
+    
     
     public List<SelectItem> getAllGroupUsers() {
         if (allGroupUsers == null) {
@@ -463,7 +489,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 if (!dayPicked) {
                     final String summary = MessageUtil.formatMessageString("editReportSchedule_noDays");
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    getFacesContext().addMessage("edit-form:editReportSchedule-day0", message);
+                    getFacesContext().addMessage("edit_form:editReportSchedule-day0", message);
                     valid = false;
                 }
             }
@@ -471,13 +497,13 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         if (reportScheduleView.getOccurrence() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("occurrence")))) {
             valid = false;
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-            getFacesContext().addMessage("edit-form:editReportSchedule-occurrence", message);
+            getFacesContext().addMessage("edit_form:editReportSchedule-occurrence", message);
         }
         if (reportScheduleView.getOccurrence() != null && reportScheduleView.getOccurrence().equals(Occurrence.MONTHLY) && reportScheduleView.getDayOfMonth() == null
                 && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("dayOfMonth")))) {
             valid = false;
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-            getFacesContext().addMessage("edit-form:editReportSchedule-dayOfMonth", message);
+            getFacesContext().addMessage("edit_form:editReportSchedule-dayOfMonth", message);
         }
         return valid;
     }

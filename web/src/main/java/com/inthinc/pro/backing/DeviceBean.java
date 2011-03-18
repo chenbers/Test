@@ -144,7 +144,6 @@ public class DeviceBean extends BaseBean implements IdentifiableEntityBean {
     public String getLongName() {
         if (device != null) {
             return device.getName() + " - " + device.getFirmwareVersion();
-            // TODO: jwimmer: not sure what intention of getLongName is, or IF/WHEN/WHERE it would get used ?
         }
         return null;
     }

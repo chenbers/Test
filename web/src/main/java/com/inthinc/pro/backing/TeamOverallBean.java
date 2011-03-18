@@ -276,9 +276,9 @@ public class TeamOverallBean extends BaseBean {
         List<DriverVehicleScoreWrapper> local = teamCommonBean.getCachedResults().get(teamCommonBean.getTimeFrame().name());
         if (local == null) {
             // Not there, grab it
-            //  0: day value, start/end day the same
-            //  1: week value, calculate start and add seven
-            //  2: month or year, use duration identifier
+            //  0: day value, start/end day the same, if no driving in time frame will show last DAY score
+            //  1: week value, calculate start and add seven, if no driving in time frame will show last DAY score
+            //  2: month or year, use duration identifier, if no driving in time frame will show last MONTH score
             switch( MiscUtil.whichMethodToUse(teamCommonBean) ) {
                 case 0:
                     local = groupReportDAO.getDriverScores(teamCommonBean.getGroupID(), 

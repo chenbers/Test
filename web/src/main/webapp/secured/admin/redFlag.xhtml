@@ -301,27 +301,27 @@
 	                    	<tr>
 	                      		<td width="100"><h:outputText value="#{messages.editRedFlag_limitByLabel}" /></td>
 	                            <td>
-	                              <h:outputText value="#{redFlagOrZoneAlertsBean.item.limitValue}" />&#160;<h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.limitType]}" />
+	                              <h:outputText value="#{redFlagOrZoneAlertsBean.item.limitValueDisplay}" />&#160;<h:outputText value="#{messages[redFlagOrZoneAlertsBean.item.limitType]}" />
 	                            </td>
 	                    	</tr>
                       	</table>
 
                       </td>
                     </tr>
-                    <tr>
-                    <td>
-                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>
-
-                        <div>
-                          <a href="mailto:#{email}"><h:outputText value="#{redFlagOrZoneAlertsBean.item.emailTos[0]}" /></a>
-                          <ui:repeat value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="email" offset="1">
-                            <h:outputText value=", " />
-                            <a href="mailto:#{email}"><h:outputText value="#{email}" /></a>
-                          </ui:repeat>
-                        </div>
-                    
-                    </td>
-                    </tr>
+<!--                    <tr>-->
+<!--                    <td>-->
+<!--                        <div class="add_section_title"><h:outputText value="#{messages.editAlerts_notificationsByEmail}" /></div>-->
+<!---->
+<!--                        <div>-->
+<!--                          <a href="mailto:#{email}"><h:outputText value="#{redFlagOrZoneAlertsBean.item.emailTos[0]}" /></a>-->
+<!--                          <ui:repeat value="#{redFlagOrZoneAlertsBean.item.emailTos}" var="email" offset="1">-->
+<!--                            <h:outputText value=", " />-->
+<!--                            <a href="mailto:#{email}"><h:outputText value="#{email}" /></a>-->
+<!--                          </ui:repeat>-->
+<!--                        </div>-->
+<!--                    -->
+<!--                    </td>-->
+<!--                    </tr>-->
                   </table>
 
                 </div>

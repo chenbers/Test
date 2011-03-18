@@ -144,7 +144,7 @@ public abstract class BaseITData {
         Date expired = Util.genDate(2012, 9, 30);
         
         Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l"+person.getPersonID(), 
-                                        States.getStateByAbbrev("UT"), "ABCD", expired, null, RuleSetType.US_OIL.getCode(), group.getGroupID());
+                                        States.getStateByAbbrev("UT"), "ABCD", expired, null, RuleSetType.US_OIL, group.getGroupID());
 
         Integer driverID = driverDAO.create(person.getPersonID(), driver);
         driver.setDriverID(driverID);
@@ -479,7 +479,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(11));
     protected List<AlertEscalationItem>escalationList(){
         List<AlertEscalationItem> escalationPersonIDList = new ArrayList<AlertEscalationItem>();
         escalationPersonIDList.add(new AlertEscalationItem(fleetUser.getPersonID(), 1));
-        escalationPersonIDList.add(new AlertEscalationItem(districtUser.getPersonID(), -1));
+        escalationPersonIDList.add(new AlertEscalationItem(districtUser.getPersonID(),0));
         return escalationPersonIDList;
         
     }

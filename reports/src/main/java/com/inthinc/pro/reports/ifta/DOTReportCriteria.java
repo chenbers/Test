@@ -126,8 +126,10 @@ public abstract class DOTReportCriteria extends GroupListReportCriteria {
         }
 
         for (Integer groupId : groupIDList) {
-            if (!childrenIds.contains(groupId)) {
-                result.add(groupHierarchy.getGroup(groupId));
+            Group group = groupHierarchy.getGroup(groupId);
+
+            if (group != null && !childrenIds.contains(groupId)) {
+                result.add(group);
             }
         }
 

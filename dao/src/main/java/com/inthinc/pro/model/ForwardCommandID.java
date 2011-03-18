@@ -76,6 +76,8 @@ public interface ForwardCommandID
     public static Integer SET_SPEED_MODULE_ENABLED = 299;
     public static Integer SET_SPEED_MODULE_DISABLED = 300;
     
+    public static Integer HOSLOG_SUMMARY = 333;
+
     public static Integer SEND_TEXT_MESSAGE = 355;
 
     public static Integer DOWNLOAD_NEW_FIRMWARE = 365;

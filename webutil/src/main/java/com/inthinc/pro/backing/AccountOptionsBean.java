@@ -10,6 +10,7 @@ import javax.faces.model.SelectItem;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountHOSType;
+import com.inthinc.pro.model.PreferenceLevelOption;
 
 public class AccountOptionsBean extends BaseBean {
     
@@ -43,19 +44,64 @@ public class AccountOptionsBean extends BaseBean {
             }
         });
     }
-
-
+    public List<SelectItem> getPasswordChangeOptions() {
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        selectItemList.add(new SelectItem(PreferenceLevelOption.NONE.getCode().toString(), "None"));
+        selectItemList.add(new SelectItem(PreferenceLevelOption.WARN.getCode().toString(), "Warn"));
+        selectItemList.add(new SelectItem(PreferenceLevelOption.REQUIRE.getCode().toString(), "Require"));
+        return selectItemList;
+    }
     public List<SelectItem> getHOSTypes() {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         selectItemList.add(new SelectItem(AccountHOSType.NONE, "Disabled"));
         selectItemList.add(new SelectItem(AccountHOSType.HOS_SUPPORT, "Enabled"));
         return selectItemList;
     }
+    
+    public List<SelectItem> getPasswordStrengthOptions() {
+        List<SelectItem> strengthOptions = new ArrayList<SelectItem>();
+        //number of points (max = 50) required before password will be considered valid
+        strengthOptions.add(new SelectItem(0 , "No Restrictions"));
+        strengthOptions.add(new SelectItem(16, "Weak"));
+        strengthOptions.add(new SelectItem(25, "Fair"));
+        strengthOptions.add(new SelectItem(35, "Strong"));
+        return strengthOptions;
+    }
+    
+    public List<SelectItem> getLoginExpireOptions() {
+        List<SelectItem> expireOptions = new ArrayList<SelectItem>();
+        //number of days before password will expire regardless of use
+        expireOptions.add(new SelectItem(0, "Never"));
+        expireOptions.add(new SelectItem(15, "15"));
+        expireOptions.add(new SelectItem(30, "30"));
+        expireOptions.add(new SelectItem(45, "45"));
+        expireOptions.add(new SelectItem(60, "60"));
+        expireOptions.add(new SelectItem(75, "75"));
+        expireOptions.add(new SelectItem(90, "90"));
+        return expireOptions;
+    }
+    
+    public List<SelectItem> getPasswordExpireOptions() {
+        List<SelectItem> expireOptions = new ArrayList<SelectItem>();
+        //number of days before login will expire if not used
+        expireOptions.add(new SelectItem(0, "Never"));
+        expireOptions.add(new SelectItem(90, "90"));
+        expireOptions.add(new SelectItem(120, "120"));
+        expireOptions.add(new SelectItem(180, "180"));
+        expireOptions.add(new SelectItem(360, "360"));
+        return expireOptions;
+    }
 
     public void saveAction() {
         if (account != null) {
             accountDAO.update(account);
-            setSaveActionMsg("Success: HOS has been " + (account.getHos() == AccountHOSType.NONE ? "Disabled" : "Enabled") + " for Account: " + account.getAcctName());
+            setSaveActionMsg("Success: HOS is " + (account.getHos() == AccountHOSType.NONE ? "Disabled" : "Enabled") +
+                                " , Waysmart is " + (account.getWaySmartSupport() ? "Enabled" : "Disabled") + 
+                                " , Login Expire is " +(account.getProps().getLoginExpire()) + 
+                                " , Password Expire is "+(account.getProps().getPasswordExpire()) +
+                                " , Password Strength is "+(account.getProps().getPasswordStrength()) +
+                                " and Password Change Required is "+(account.getProps().getPasswordChange())+
+                                " for Account: " + account.getAcctName());
         }
     }
 

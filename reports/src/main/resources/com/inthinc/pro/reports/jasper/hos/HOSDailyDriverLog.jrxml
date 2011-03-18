@@ -12,6 +12,7 @@
 		<field name="startOdometer" class="java.lang.Number"/>
 		<field name="deleted" class="java.lang.Boolean"/>
 		<field name="edited" class="java.lang.Boolean"/>
+		<field name="locationEdited" class="java.lang.Boolean"/>
 	</subDataset>
 	<subDataset name="vehiclesDataset">
 		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
@@ -411,7 +412,7 @@
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
-						<textField isStretchWithOverflow="true">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement stretchType="RelativeToTallestObject" x="90" y="0" width="180" height="13">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
@@ -420,7 +421,7 @@
 						</textField>
 						<textField isStretchWithOverflow="true">
 							<reportElement x="90" y="13" width="179" height="10" isRemoveLineWhenBlank="true">
-								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
+								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
 								<font size="7"/>
@@ -428,7 +429,7 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement stretchType="RelativeToTallestObject" x="270" y="0" width="193" height="13">
+							<reportElement stretchType="RelativeToBandHeight" x="270" y="0" width="193" height="13">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
@@ -455,7 +456,7 @@
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
-						<textField isStretchWithOverflow="true">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="90" y="0" width="179" height="13" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
@@ -464,7 +465,7 @@
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement mode="Opaque" x="90" y="14" width="179" height="10" isRemoveLineWhenBlank="true" backcolor="#999999">
-								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
+								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
 								<font size="7"/>
@@ -472,7 +473,7 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="270" y="0" width="193" height="13" backcolor="#999999">
+							<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="270" y="0" width="193" height="13" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>

@@ -76,7 +76,9 @@
 		<!-- SEAT BELT EVENT -->
 		<h:outputText rendered="#{eventType.code eq '2'}" >
 			<ul>
+			<ui:fragment rendered="#{eventAvgSpeed ne null}">
 				<li>#{messages.eventBubble_averageSpeed}: <h:outputText value="#{eventAvgSpeed}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
+			</ui:fragment>
 				<li>#{messages.eventBubble_topSpeed}: <h:outputText value="#{eventTopSpeed}" converter="MphToKphConverter" />#{' '} <h:outputText value="mph" converter="MeasurementTextConverter" /></li>
 				<li>#{messages.eventBubble_distance}: <h:outputText value="#{eventDistance}" converter="DistanceConverter" />#{' '}<h:outputText value="mi" converter="MeasurementTextConverter" /></li>
 			</ul>

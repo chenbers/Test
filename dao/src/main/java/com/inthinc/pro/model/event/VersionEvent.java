@@ -32,9 +32,9 @@ public class VersionEvent extends Event implements StatusEvent {
 
     
     @Override
-    public String getDetails(String formatStr,MeasurementType measurementType, String versionString)
+    public String getDetails(String formatStr,MeasurementType measurementType, String... versionString)
     {
-        return MessageFormat.format(formatStr, new Object[] {versionString});
+        return MessageFormat.format(formatStr, new Object[] {versionString[0]});
     }
 
 

@@ -47,7 +47,7 @@ public class HardVertical820Event extends Event
     }
 
     @Override
-    public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
+    public String getDetails(String formatStr,MeasurementType measurementType,String... mphString)
     {
         Integer speed = 0;
         
@@ -56,7 +56,8 @@ public class HardVertical820Event extends Event
         
         if(measurementType.equals(MeasurementType.METRIC))
             speed = MeasurementConversionUtil.fromMPHtoKPH(speed).intValue();
-        return MessageFormat.format(formatStr, new Object[] {speed, mphString});
+        
+        return MessageFormat.format(formatStr, new Object[] {speed, mphString[0]});
     }
 
 

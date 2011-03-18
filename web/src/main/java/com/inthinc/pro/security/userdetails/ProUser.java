@@ -1,10 +1,14 @@
 package com.inthinc.pro.security.userdetails;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.security.GrantedAuthority;
 
+import com.inthinc.pro.backing.PersonBean;
+import com.inthinc.pro.backing.UpdateCredentialsBean;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.AccountHOSType;
 import com.inthinc.pro.model.Driver;
@@ -31,18 +35,22 @@ public class ProUser extends org.springframework.security.userdetails.User
     private boolean isAdmin;
     private AccountAttributes accountAttributes;
     private AccountHOSType accountHOSType;
-  
-    public ProUser(User user, GrantedAuthority[] grantedAuthorities)
-    {
+    private Date previousLogin;
+    
+    public ProUser(User user, boolean loginNonExpired, boolean passwordNonExpired, GrantedAuthority[] grantedAuthorities)
+    { 
         super(  user.getUsername(),
                 user.getPassword(),
                 user.getStatus().equals(Status.ACTIVE), // boolean enabled,
-                true, // boolean accountNonExpired,
-                true, // boolean credentialsNonExpired
+                loginNonExpired, // boolean accountNonExpired,
+                passwordNonExpired, // boolean credentialsNonExpired // password expired
                 true, // boolean accountNonLocked,
                 grantedAuthorities);
         
         this.user = user;
+        if(user != null && user.getLastLogin() != null) {
+            this.previousLogin = new Date(user.getLastLogin().getTime()); //defensive copy
+        }
     }
 
 //    public ProUser(String username, String password, boolean enabled, boolean accountNonExpired,
@@ -118,6 +126,14 @@ public class ProUser extends org.springframework.security.userdetails.User
 
     public void setAccountHOSType(AccountHOSType accountHOSType) {
         this.accountHOSType = accountHOSType;
+    }
+
+    public Date getPreviousLogin() {
+        return previousLogin;
+    }
+
+    public void setPreviousLogin(Date previousLogin) {
+        this.previousLogin = previousLogin;
     }
 
 }

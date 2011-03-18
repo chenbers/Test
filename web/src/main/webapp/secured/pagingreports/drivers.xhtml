@@ -5,7 +5,6 @@
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
-              xmlns:t="http://myfaces.apache.org/tomahawk"
               xmlns:security="http://pro.tiwi.com/jsf/security"
               xmlns:tiwi="http://pro.tiwi.com/jsf"
               xmlns:pretty="http://ocpsoft.com/prettyfaces">
@@ -22,7 +21,6 @@
 	
 	<ui:define name="content">
 		<a4j:loadStyle src="/css/jquery.scorebox.css"/>
-		<a4j:keepAlive beanName="driverReportTableColumns" />
 		<ui:param name="tableColumns" value="#{driverReportTableColumns.tableColumns}" />
 		
 	
@@ -55,7 +53,7 @@
            								</li> 
            								<li class="r grid_icon">
            									<h:panelGroup id="#{context}_reportToolImageId">
-												<h:graphicImage value="/images/ico_tools.png"/>
+												<h:graphicImage title="#{messages.contextMenu_tools_menu}" style="cursor: pointer;" value="/images/ico_tools.png"/>
 											</h:panelGroup>
 										</li>
 										<li class="r divider"><img src="#{facesContext.externalContext.request.contextPath}/images/grid_nav_divider.png" />
@@ -75,7 +73,6 @@
 									</ui:include>
 	                                <div class="spacer"></div>
     	                            <div class="datagrid_panel" style="width: 925px;">
-									<t:saveState value="#{pagingDriverReportBean}"/>
                                     <rich:dataTable id="#{context}" value="#{pagingDriverReportBean.table.model}" var="item"                                    	 
                                          styleClass="datagrid filterabledatagrid" 
 							        	 reRender="#{context}-form:header,#{context}-form:#{context}-bottomScroller"

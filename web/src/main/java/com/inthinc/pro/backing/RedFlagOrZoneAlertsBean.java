@@ -12,6 +12,7 @@ import java.util.Set;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -21,6 +22,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.backing.ui.AlertTypeSelectItems;
 import com.inthinc.pro.dao.RedFlagAlertDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.AlertEscalationItem;
 import com.inthinc.pro.model.AlertMessageType;
 import com.inthinc.pro.model.Delay;
@@ -38,6 +40,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     private static final long serialVersionUID = 1L;
     private static final Logger logger = Logger.getLogger(RedFlagOrZoneAlertsBean.class);
+    private static final int[] CALL_LIMIT_COUNT = new int[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+    private static final int[] CALL_LIMIT_MINUTES = new int[] {10, 15, 30, 45, 60, 120};
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 3, 4 };
     private static final int[] DEFAULT_ADMIN_COLUMN_INDICES = new int[] { 5 };
@@ -57,6 +61,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     private HtmlDataTable phNumbersDataTable;
     private HtmlDataTable emailTosDataTable;
+    private boolean hasEsc;
     
     public void setZonesBean(ZonesBean zonesBean)
     {
@@ -65,7 +70,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
     public List<SelectItem> getAlertTypeSelectItems() {
         
-        return AlertTypeSelectItems.INSTANCE.getSelectItems();
+        return AlertTypeSelectItems.getAlertTypeSelectItems(getAccountIsHOS(), getAccountIsWaysmart(), zonesBean.getZonesCount()>0);
     }
     @Override
     public void initFilterValues(){
@@ -145,10 +150,39 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 alertView.setEventSubCategory(deriveEventSubCategory(flag));
             }
             alertView.setAlertID(flag.getAlertID());
-            alertView.setHardAccelerationSelected(!flag.isHardAccelerationNull());
-            alertView.setHardBrakeSelected(!flag.isHardBrakeNull());
-            alertView.setHardTurnSelected(!flag.isHardTurnNull());
-            alertView.setHardVerticalSelected(!flag.isHardVerticalNull());
+            
+            boolean found = false;
+            if ( flag.getTypes() != null && findType(flag,AlertMessageType.ALERT_TYPE_HARD_ACCEL) ) {
+                if( flag.getHardAcceleration() != null ) {
+                    found = true;
+                }
+            }           
+            alertView.setHardAccelerationSelected(found);
+            
+                    found = false;
+            if ( flag.getTypes() != null && findType(flag,AlertMessageType.ALERT_TYPE_HARD_BRAKE) ) {
+                if( flag.getHardBrake() != null ) {
+                    found = true;
+                }
+            }
+            alertView.setHardBrakeSelected(found);
+            
+                    found = false;
+            if ( flag.getTypes() != null && findType(flag,AlertMessageType.ALERT_TYPE_HARD_TURN) ) {
+                if( flag.getHardTurn() != null ) {
+                    found = true;
+                }
+            }        
+            alertView.setHardTurnSelected(found);
+            
+                found = false;
+            if ( flag.getTypes() != null && findType(flag,AlertMessageType.ALERT_TYPE_HARD_BUMP) ) {
+                if( flag.getHardVertical() != null ) {
+                    found = true;
+                }
+            }             
+            alertView.setHardVerticalSelected(found);
+            
             BeanUtils.copyProperties(flag, alertView);
         }
         else{
@@ -158,12 +192,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setHardTurnSelected(false);
             alertView.setHardVerticalSelected(false);
         }
+        
+        // this loads the selected types
         alertView.getSelectedAlertMessageTypes(flag);
 
         List<String> displayedPhNumbers = new ArrayList<String>();
-        if(flag.getEscalationList() != null && !flag.getEscalationList().isEmpty()){
+        if(!flag.getEscalationList().isEmpty()){
             for(AlertEscalationItem item: flag.getEscalationList()){
-                if(item.getEscalationOrder().equals(-1))
+                if(item.getEscalationOrder().equals(0))
                     alertView.setEscEmail(personDAO.findByID(item.getPersonID()).getFullNameWithPriEmail());
                 else
                     displayedPhNumbers.add(personDAO.findByID(item.getPersonID()).getFullNameWithPriPhone());
@@ -171,9 +207,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         alertView.setPhNumbers(displayedPhNumbers);
         ensureEmptySlot(alertView.getPhNumbers());//ensure empty slot
-
-        alertView.setEmailTos(flag.getEmailTo());
-        ensureEmptySlot(alertView.getEmailTos());//ensure empty slot
         
         alertView.setDelay(Delay.valueOf(flag.getEscalationTimeBetweenRetries()));
         if(flag.getMaxEscalationTries() != null) {
@@ -185,6 +218,16 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         
         return alertView;
+    }
+    
+    private boolean findType(RedFlagAlert flg,AlertMessageType amtIn) {
+        for (int i = 0; i<flg.getTypes().size();i++) {
+            AlertMessageType amt = flg.getTypes().get(i);
+            if ( amt.equals(amtIn)) {
+                return true;
+            }
+        }
+        return false;
     }
     public static String findOwnerName(Integer userID){
         String results ="";
@@ -264,6 +307,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         redFlagOrZoneAlertView.setAccountID(getAccountID());
         redFlagOrZoneAlertView.setUserID(getUserID());
         
+        // set default severity level to eliminate user confusion for people picker i.e. nothing returned
+//        redFlagOrZoneAlertView.setSeverityLevel(RedFlagLevel.CRITICAL);
         
         return redFlagOrZoneAlertView;
     }
@@ -306,14 +351,20 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     public String save() {
         final Map<String, Boolean> updateField = getUpdateField();
-        
-//        setAlertTypesFromSubCategory();
+
+        // can't set if the red flag type is not set on the edit
+        if ( getItem().getEventSubCategory() != null ) {
+            setAlertTypesFromSubCategory();
+        }
         
         if (isBatchEdit()) {
+            // eventSubCategory is ALWAYS true now...
+            getUpdateField().put("eventSubCategory", true);
             
             // the following appears to be a business rule that, if you aren't changing the red flag type,
             //  you can't change some other fields? removing severity level from rule....
-            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));
+//            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("type"));            
+            boolean updateType = Boolean.TRUE.equals(getUpdateField().get("eventSubCategory"));               
 //            updateField.put("severityLevel", updateType);
             updateField.put("speedSettings", updateType);
             updateField.put("hardAcceleration", updateType);
@@ -358,6 +409,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         for(AlertMessageType amt:alertMessageTypes){
             if(redFlagAlert.getSelectedAlertTypes().get(amt.name())){
                 selectedTypes.add(amt);
+                
+                // if you find one, tell the update to do it
+                if ( this.isBatchEdit() ) {
+                    this.getUpdateField().put("types", true);
+                }
             }
         }
         redFlagAlert.setTypes(selectedTypes);
@@ -377,7 +433,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         return Boolean.FALSE;
     }
     protected boolean validateSaveItem(RedFlagOrZoneAlertView saveItem) {
-        
         boolean valid = super.validateSaveItem(saveItem);
         boolean checkSubTypes = false;  // see if we need to check the subtypes for the category
         
@@ -387,23 +442,24 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             valid = false;
         }
   
-        if (saveItem.getEventSubCategory() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("eventSubCategory"))))
+        // this check is only relevant if single editing. if batch editing, eventSubCategory will either be set (all the same) which
+        //  will correctly expose the subtype and will then HAVE to be edited, or null (bunch of different ones) which
+        //  implies the only thing that can be edited is the common stuff...
+        if (saveItem.getEventSubCategory() == null && !isBatchEdit() )
+//        if (saveItem.getEventSubCategory() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("eventSubCategory"))))          
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeTypeMessage"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
             valid=false;
         
-        // single flag
+        // single flag, always check
         } else if ( !isBatchEdit() ) {
-                if ( saveItem.getEventSubCategory() != null ) {
-                    checkSubTypes = true;
-                }
-        // multiple flags
-        } else if ( getUpdateField().get("eventSubCategory") ) {
-                    checkSubTypes = true;
-        }
+            checkSubTypes = true;
+        // multiple flags, never check
+        } 
         
-        if (EventSubCategory.SPEED.equals(saveItem.getEventSubCategory())){
+        // only check the speed settings if they select the type
+        if (EventSubCategory.SPEED.equals(saveItem.getEventSubCategory()) && checkSubTypes){
             boolean speedValid = false;
             for(int i=0;i< saveItem.getSpeedSelected().length; i++){
                 
@@ -440,46 +496,62 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //                valid = false;
 //            }
 //        }
-        else if(EventSubCategory.ZONES.equals(saveItem.getEventSubCategory())){
-            if ((!Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE)) && 
-                    !Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE))) 
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("defineAlerts"))))
-            {
-                final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-arrival", message);
-            }
+        
+        // just validating if a zone id is selected, the subtypes will be checked later
+        else if(EventSubCategory.ZONES.equals(saveItem.getEventSubCategory()) && checkSubTypes){
+//            if ((!Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE)) && 
+//                    !Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE))) 
+//                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("defineAlerts"))))
+//            {
+//                final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+//                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-arrival", message);
+//                valid = false;
+//            }
             
-            //Validate required name field
-            if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
-                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
-            {
+            //Validate required Zone id is selected
+            if ((saveItem.getZoneID() == null)) {
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-name", message);
+                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-zoneID", message); 
                 valid = false;
             }
+            
+            //Validate required name is valid
+//            if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
+//                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
+//            {
+//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+//                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-name", message);
+//                valid = false;
+//            }
            
         }
-        //Validate escalation phone number(s)
-        if(true==true){
-            Map<String, String> paramMap = getExternalContext().getRequestParameterMap();
-            for(String paramName: paramMap.keySet()){
-                if(paramName!=null && paramName.contains("phNumInput"))
-                paramMap.get(paramName);
-            }
-
-            getParameter("");
+        
+        // validate escalation e-mail matches an existing email address for this user
+        boolean isInPicker = this.getEscalationEmailPicker().containsLabel(saveItem.getEscEmail());
+        if((saveItem.getEscEmail() != null && saveItem.getEscEmail().trim().length() > 0) && !isInPicker) {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editAlerts_picker_unknownEmail"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
+            valid = false;            
+        }
+        //if batch editing, users cannot remove escEmail (as this may be required because of other entries in escalationList)
+        boolean batchEditingEscEmail = (isBatchEdit() && getUpdateField().get("emailEscalationPersonID"));
+        boolean hasEmail = !(this.getItem().getEscEmail() == null || this.getItem().getEscEmail().equals(""));
+        if(batchEditingEscEmail && hasEmail) {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editAlerts_noBatchRemoveEscEmail"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
+            valid = false;  
         }
         
-        // validate escalation e-mail is supplied
-//        if(saveItem.getEscEmail() == null || saveItem.getEscEmail().trim().length() == 0) {
-//            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-//            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
-//            valid = false;            
-//        }
+        //if there are ANY phoneNums there MUST be an escEmail
+        if(hasPhNums() && !hasEmail) {
+            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
+            FacesContext.getCurrentInstance().addMessage("edit-form:escEmailAddressInput", message);
+            valid = false;  
+        }
         
         // check on selected types
-        if ( valid  && checkSubTypes ) {
+        if (checkSubTypes) {
             if ( !saveItem.validateSelectedAlertTypes() ) {
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("atLeastOne"), null);
                 FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
@@ -490,6 +562,14 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         return valid;
     }
 
+    private boolean hasPhNums() {
+        boolean hasPhNums = false;
+        for (String phNum : this.getItem().getPhNumbers()) {
+            hasPhNums |= (phNum != null && !phNum.isEmpty());
+        }
+        return hasPhNums;
+    }
+    //public boolean countNonEmpties(List<String> list) { } 
     @Override
     protected void doSave(List<RedFlagOrZoneAlertView> saveItems, boolean create) {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -514,10 +594,34 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 //            if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
 //                flag.setSpeedSettings(null);
 //            }
-            if(flag.getEmailTos() != null && !flag.getEmailTos().isEmpty()) {
-                flag.getEmailTos().remove("");
+//            if(flag.getEmailTos() != null && !flag.getEmailTos().isEmpty()) {
+//                flag.getEmailTos().remove("");
+//            }
+//            flag.setEmailTo(flag.getEmailTos());
+            
+            if(item.getEscEmail() == null || item.getEscEmail().equals("")){
+                flag.clearEscEmail();
+            } else {
+                AlertEscalationItem newEscEmail = new AlertEscalationItem(flag.getEmailEscalationPersonID(), 0);
+                flag.clearEscEmail();
+                flag.getEscalationList().add(0,newEscEmail);
             }
-            flag.setEmailTo(flag.getEmailTos());
+
+            if(isBatchEdit()){
+                if(item.getPhNumbers() == null || item.getPhNumbers().isEmpty()) {
+                    flag.clearPhNumbers();
+                } else {
+                    ArrayList<AlertEscalationItem> newPhNums = new ArrayList<AlertEscalationItem>();
+                    for(AlertEscalationItem item: flag.getEscalationList()){
+                        if(item.getEscalationOrder()>0){
+                            newPhNums.add(item);
+                        }
+                    }
+                    flag.clearPhNumbers();
+                    flag.getEscalationList().addAll(newPhNums);
+                }
+            }
+           
             copyVoiceEscalationItems(flag, getItem());
             
             flag.setEscalationTimeBetweenRetries(item.getEscalationTimeBetweenRetries());
@@ -525,14 +629,17 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 flag.setMaxEscalationTries(item.getLimitValue());
                 flag.setMaxEscalationTryTime(null);
             } else if(LimitType.TIME.equals(item.getLimitType())) {
-                flag.setMaxEscalationTryTime(item.getLimitValue());
+                flag.setMaxEscalationTryTime(item.getLimitValue()*DateUtil.SECONDS_IN_MINUTE);
                 flag.setMaxEscalationTries(null);
             }
             flag.setEscalationTimeBetweenRetries(item.getDelay().getCode());
-            if (create)
+            
+            if (create) {
                 flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
-            else
+            }
+            else {
                 redFlagAlertsDAO.update(flag);
+            }
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "redFlag_added" : "redFlag_updated", flag.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -544,6 +651,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             to.setEscalationPersonIDs(from.getVoiceEscalationPersonIDs());
         }
     }
+
     @Override
     protected String getDisplayRedirect() {
         
@@ -565,7 +673,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     }
     @Override
     public String getAlertPage() {
-
         return "editRedFlag";
     }
     public List<SelectItem> getZones()
@@ -637,7 +744,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             logger.error("addPhNumberSlot() failed");
         }
     }
-    
 
     public static class RedFlagOrZoneAlertView extends RedFlagAlert implements BaseAdminAlertsBean.BaseAlertView {
 
@@ -671,7 +777,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Column(updateable = false)
         private String escEmail;
         @Column(updateable = false)
-       private List<String> phNumbers;
+        private List<String> phNumbers;
         
         @Column(updateable = false)
         private List<String> emailTos;
@@ -686,8 +792,26 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
             initAlertMessageTypeMap();
         }
+        public void clearPhNumbers() {
+            Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
+            while(iterator.hasNext()){
+                AlertEscalationItem item = iterator.next();
+                if(item.getEscalationOrder() > 0) {
+                    iterator.remove();
+                }
+            }
+        }
+        public void clearEscEmail() {
+            Iterator<AlertEscalationItem> iterator = getEscalationList().iterator();
+            while(iterator.hasNext()){
+                AlertEscalationItem item = iterator.next();
+                if(item.getEscalationOrder()==0) {
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
         private void initAlertMessageTypeMap(){
-            
             selectedAlertTypes = new HashMap<String, Boolean>();
             for (AlertMessageType amt : EnumSet.allOf(AlertMessageType.class)){
                 selectedAlertTypes.put(amt.name(), false);
@@ -811,7 +935,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardAccelerationSelected() {
-            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name());
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name()) &&
+                 selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name()) != null ) {
+                return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_ACCEL.name()).booleanValue();
+            }
+            return false;
         }
 
         public void setHardAccelerationSelected(boolean hardAccelerationSelected) {
@@ -820,7 +948,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardBrakeSelected() {
-            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name());
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name()) &&
+                 selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name()) != null ) {
+                return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BRAKE.name()).booleanValue();
+            }
+            return false;
         }
 
         public void setHardBrakeSelected(boolean hardBrakeSelected) {
@@ -828,7 +960,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardTurnSelected() {
-            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_TURN.name());
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_TURN.name()) &&
+                 selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_TURN.name()) != null ) {
+                return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_TURN.name()).booleanValue();
+            }
+            return false;
 
         }
 
@@ -837,7 +973,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
 
         public boolean isHardVerticalSelected() {
-            return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BUMP.name());
+            if ( selectedAlertTypes.containsKey(AlertMessageType.ALERT_TYPE_HARD_BUMP.name()) && 
+                 selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BUMP.name()) != null ) {
+                return selectedAlertTypes.get(AlertMessageType.ALERT_TYPE_HARD_BUMP.name()).booleanValue();
+            }
+            return false;
         }
 
         public void setHardVerticalSelected(boolean hardVerticalSelected) {
@@ -863,16 +1003,15 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         @Override
         public Integer getZoneID() {
             if( super.getZoneID() == null){
-                setZoneID(((Integer)redFlagOrZoneAlertsBean.getZones().get(0).getValue()));
+                if (redFlagOrZoneAlertsBean.getZones() != null && !redFlagOrZoneAlertsBean.getZones().isEmpty()){
+                    setZoneID(((Integer)redFlagOrZoneAlertsBean.getZones().get(0).getValue()));
+                }
             }
             return super.getZoneID();
         }
         public Zone getZone()
         {
-            if (getZoneID() == null){
-                setZoneID(((Integer)redFlagOrZoneAlertsBean.getZones().get(0).getValue()));
-            }
-            if (/*zone == null && */getZoneID() != null)
+            if (getZoneID() != null)
                 zone = redFlagOrZoneAlertsBean.getZoneByID(getZoneID());
             return zone;
         }
@@ -890,13 +1029,26 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public List<SelectItem> getLimitTypes() {
             return SelectItemUtil.toList(LimitType.class, false);
         }
+        public void updateLimitValues(ValueChangeEvent event) {
+            setLimitType((LimitType)event.getNewValue());
+        }
+        public List<SelectItem> getSeverityValues() {
+            return SelectItemUtil.toList(RedFlagLevel.class, true, RedFlagLevel.NONE);
+        }
         public List<SelectItem> getLimitValues() {
-            //TODO: jwimmer: what are the ACTUAL values and how to we want to get them?
             List<SelectItem> results = new ArrayList<SelectItem>();
-            results.add(new SelectItem(4,"4"));
-            results.add(new SelectItem(5,"5"));
-            results.add(new SelectItem(6,"6"));
-            results.add(new SelectItem(7,"7"));
+            int[] limitBy;
+            if(LimitType.COUNT.equals(getLimitType()))
+                limitBy = CALL_LIMIT_COUNT;
+            else
+                limitBy = CALL_LIMIT_MINUTES;
+            
+            for(int i: limitBy){
+                results.add(new SelectItem(i, i+""));   
+            }
+//            for(int i: limitBy){
+//             results.add(new SelectItem(i*DateUtil.SECONDS_IN_MINUTE, i+""));   
+//            }
             return results;
         }
         public Delay getDelay() {
@@ -906,7 +1058,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public void setDelay(Delay delay) {
             this.delay = delay;
         }
-
+        public String getLimitValueDisplay() {
+//            if(LimitType.TIME.equals(getLimitType()) && limitValue != null)
+//                return (limitValue/DateUtil.SECONDS_IN_MINUTE)+"";
+            
+            return limitValue+"";
+        }
         public Integer getLimitValue() {
             return limitValue;
         }
@@ -931,13 +1088,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.escEmail = escEmail;
         }
         public String getZonePointsString(){
-            if ((getEventSubCategory() != null) && (EventSubCategory.ZONES.equals(getEventSubCategory()))){
+            if ((getEventSubCategory() != null) && EventSubCategory.ZONES.equals(getEventSubCategory()) && (getZone() != null)){
                return getZone().getPointsString();
             }
-            return null;
+            return "";
         }
         public void setZonePointsString(String pointsString){
-            if ((getEventSubCategory() != null) && (EventSubCategory.ZONES.equals(getEventSubCategory()))){
+            if ((getEventSubCategory() != null) && EventSubCategory.ZONES.equals(getEventSubCategory()) && (getZone() != null)){
                 getZone().setPointsString(pointsString);
             }
         }
@@ -970,10 +1127,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         }
         
         private boolean validateSelectedAlertTypes(){
-            Set<AlertMessageType> selectedSet = eventSubCategory.getAlertMessageTypeSet();
-            for(AlertMessageType amt:selectedSet){
-                if (selectedAlertTypes.get(amt.name())){
-                    return true;
+            if ( selectedAlertTypes != null ) {
+                Set<AlertMessageType> selectedSet = eventSubCategory.getAlertMessageTypeSet();
+                for(AlertMessageType amt:selectedSet){
+                    if (selectedAlertTypes.get(amt.name())){
+                        return true;
+                    }
                 }
             }
             return false;
@@ -998,7 +1157,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             
             if(null != oldEscalationList) {
                 for(AlertEscalationItem item: oldEscalationList){
-                    if(item.getEscalationOrder().equals(-1)){
+                    if(item.getEscalationOrder().equals(0)){
                         lastResortEmail = item;
                     }
                 }
@@ -1007,9 +1166,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             if(lastResortEmail != null){
                 escalationList.add(lastResortEmail);
             }
-            int i=1;
+            int i=voiceEscalationPersonIDs.size();
             for(Integer personID : voiceEscalationPersonIDs){
-                escalationList.add(new AlertEscalationItem(personID,i++));
+                escalationList.add(new AlertEscalationItem(personID,i--));
             }
             setEscalationList(escalationList);
         }
@@ -1039,5 +1198,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     
     public void setRedFlagAlertsDAO(RedFlagAlertDAO redFlagAlertsDAO) {
         this.redFlagAlertsDAO = redFlagAlertsDAO;
+    }
+
+    public void setHasEsc(boolean hasEsc) {
+        this.hasEsc = hasEsc;
+    }
+
+    public boolean isHasEsc() {
+        return hasEsc;
     }
 }

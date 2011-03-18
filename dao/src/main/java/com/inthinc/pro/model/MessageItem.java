@@ -32,6 +32,7 @@ public class MessageItem {
     @Column(name = "created")
     private Date fromPortalSent;
     
+    @Column(name = "textId")
     private Integer dmrOffset;
     private Integer type;
     
@@ -135,6 +136,9 @@ public class MessageItem {
 
     public Integer getType() {
         return type;
+    }
+    public String getName(){
+        return message;
     }
 }
 

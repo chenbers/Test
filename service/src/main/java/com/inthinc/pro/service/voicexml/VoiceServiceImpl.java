@@ -41,6 +41,7 @@ public class VoiceServiceImpl implements VoiceService {
         }
         else
         {
+            if(msg == null) msg = "hello";
             InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(VXML_NOACK_FILE);
             response = String.format(StringUtil.convertInputStreamToString(stream), getVoxeoAudioURL(), msg);
             getAlertMessageDAO().acknowledgeMessage(msgID);

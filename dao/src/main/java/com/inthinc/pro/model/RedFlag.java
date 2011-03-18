@@ -13,6 +13,8 @@ import com.inthinc.pro.model.event.Event;
 @XmlRootElement
 public class RedFlag extends BaseEntity
 {
+    private static final long serialVersionUID = 1L;
+
     @Column(updateable=false)
     private RedFlagLevel level;
     

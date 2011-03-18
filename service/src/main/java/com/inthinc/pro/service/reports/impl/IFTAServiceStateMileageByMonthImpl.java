@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.reports.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.reports.ifta.model.StateMileageByMonth;
 import com.inthinc.pro.service.reports.IFTAServiceStateMileageByMonth;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
@@ -43,21 +44,21 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
     Response getStateMileageByVehicleByMonthWithFullParameters(Integer groupID, Date startDate, Date endDate,
              boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
-        // Creating a GroupList with only one group ID.
-        GroupList groupList = new GroupList();
-        groupList.getValueList().add(groupID);
-        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueList(), 
+        // Creating a list with only one group ID.
+        ArrayList<Integer> idList = new ArrayList<Integer>();
+        idList.add(groupID);
+        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(idList, 
                 startDate, endDate, iftaOnly, locale, measurementType);
     }
     
     Response getStateMileageByVehicleByMonthWithFullParametersMultiGroup(List<Integer> groupList, 
             Date startDate, Date endDate, boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
-        List<MileageByVehicle> list = null;
+        List<StateMileageByMonth> list = null;
 
         Interval interval = getInterval(startDate, endDate);
         try {
-            list = reportsFacade.getStateMileageByVehicleByMonth(groupList, interval, iftaOnly, locale, measurementType);
+            list = reportsFacade.getStateMileageByMonth(groupList, interval, iftaOnly, locale, measurementType);
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
@@ -67,7 +68,7 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
             return Response.status(Status.NOT_FOUND).build();            
         }
         // Some data found
-        return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
+        return Response.ok(new GenericEntity<List<StateMileageByMonth>>(list) {}).build();
     }
 
     @Override
@@ -100,7 +101,7 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
     @ValidParams
     public Response getStateMileageByVehicleByMonthDefaultsMultiGroup(GroupList groupList, 
             Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueList(), 
+        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), 
                 null, null, false, locale, measurementType);
     }
 
@@ -108,7 +109,7 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
     @ValidParams
     public Response getStateMileageByVehicleByMonthWithDatesMultiGroup(GroupList groupList, 
             Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueList(), 
+        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), 
                 startDate, endDate, false, locale, measurementType);
     }
 
@@ -116,7 +117,7 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
     @ValidParams
     public Response getStateMileageByVehicleByMonthWithIftaAndDatesMultiGroup(GroupList groupList, 
             Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueList(), 
+        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), 
                 startDate, endDate, true, locale, measurementType);
     }
 
@@ -124,36 +125,8 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
     @ValidParams
     public Response getStateMileageByVehicleByMonthWithIftaMultiGroup(GroupList groupList, 
             Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueList(), 
+        return getStateMileageByVehicleByMonthWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), 
                 null, null, true, locale, measurementType);
     }
 
-    // TODO:  For Validation Testing. To be removed
-	@Override
-	@ValidParams
-	public Response getDefaultsMultiGroup(GroupList groupList, Locale locale,
-			MeasurementType measurementType) {
-		return Response.ok().build();
-	}
-
-	@Override
-	@ValidParams
-	public Response getDefaultsValidationTest(Integer groupID, Locale locale,
-			MeasurementType measurementType) {
-		return Response.ok().build();
-	}
-
-	@Override
-	@ValidParams
-	public Response getWithDatesMultiGroup(GroupList groupList, Date startDate,
-			Date endDate, Locale locale, MeasurementType measurementType) {
-		return Response.ok().build();
-	}
-
-	@Override
-	@ValidParams
-	public Response getWithDatesValidationTest(Integer groupID, Date startDate,
-			Date endDate, Locale locale, MeasurementType measurementType) {
-		return Response.ok().build();
-	}
 }

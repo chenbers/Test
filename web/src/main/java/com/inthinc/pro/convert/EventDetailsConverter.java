@@ -32,7 +32,8 @@ public class EventDetailsConverter extends BaseConverter
 	      }
 		  else {
 		      String mphString = MessageUtil.getMessageString(getMeasurementType().toString()+"_mph");
-		      return event.getDetails(formatString, getMeasurementType(), mphString);
+		      String miString  = MessageUtil.getMessageString(getMeasurementType().toString()+"_miles");
+		      return event.getDetails(formatString, getMeasurementType(), mphString, miString);      
 		  }
 	  }
 

@@ -8,7 +8,6 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.joda.time.DateMidnight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +19,7 @@ import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.service.phonecontrol.Clock;
 import com.inthinc.pro.service.reports.AssetService;
+import com.inthinc.pro.util.dateUtil.DateUtil;
 
 /**
  * Default interface for Asset Reports Services.
@@ -47,6 +47,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Response getRedFlagCount(Integer groupID) {
         Date today = systemClock.getNow();
+        
         return getRedFlagCount(groupID, today, today);
     }
 
@@ -57,7 +58,7 @@ public class AssetServiceImpl implements AssetService {
     public Response getRedFlagCount(Integer groupID, Date startDate) {
         Date today = systemClock.getNow();
 
-        Date oneYearThreshold = getOneYearThresholdDate(today);
+        Date oneYearThreshold = DateUtil.getOneYearThresholdDate(today);
 
         if (startDate.before(oneYearThreshold)) {
             return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be before today minus one year.").build();
@@ -72,8 +73,8 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Response getRedFlagCount(Integer groupID, Date startDate, Date endDate) {
 
-        Date normalizedStartDate = getBeginningOfDay(startDate);
-        Date normalizedEndDate = getBeginningOfDay(endDate);
+        Date normalizedStartDate = DateUtil.getBeginningOfDay(startDate);
+        Date normalizedEndDate = DateUtil.getEndOfDay(endDate);
 
         if (normalizedStartDate.after(normalizedEndDate)) {
             return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be greater than end date (" + endDate + ").").build();
@@ -101,7 +102,7 @@ public class AssetServiceImpl implements AssetService {
     public Response getRedFlags(Integer groupID, Integer firstRecord, Integer lastRecord, Date startDate) {
         Date today = systemClock.getNow();
 
-        Date oneYearThreshold = getOneYearThresholdDate(today);
+        Date oneYearThreshold = DateUtil.getOneYearThresholdDate(today);
 
         if (startDate.before(oneYearThreshold)) {
             return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "Start date (" + startDate + ") can't be before today minus one year.").build();
@@ -115,8 +116,8 @@ public class AssetServiceImpl implements AssetService {
      */
     @Override
     public Response getRedFlags(Integer groupID, Integer firstRecord, Integer lastRecord, Date startDate, Date endDate) {
-        Date normalizedStartDate = getBeginningOfDay(startDate);
-        Date normalizedEndDate = getBeginningOfDay(endDate);
+        Date normalizedStartDate = DateUtil.getBeginningOfDay(startDate);
+        Date normalizedEndDate = DateUtil.getBeginningOfDay(endDate);
 
         if (firstRecord > lastRecord) {
             return Response.status(Status.BAD_REQUEST).header(HEADER_ERROR_MESSAGE, "First recourd number can't be greater than last record number.").build();
@@ -135,14 +136,6 @@ public class AssetServiceImpl implements AssetService {
         }
 
         return Response.ok(new GenericEntity<List<RedFlag>>(result) {}).build();
-    }
-
-    private Date getBeginningOfDay(Date day) {
-        return new DateMidnight(day).toDate();
-    }
-
-    private Date getOneYearThresholdDate(Date day) {
-        return new DateMidnight(day).minusYears(1).toDate();
     }
 
     private PageParams createPageParams(Integer firstRecord, Integer lastRecord) {

@@ -9,7 +9,6 @@ import java.util.TimeZone;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.inthinc.pro.dao.annotations.Column;
@@ -76,6 +75,9 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private Integer deviceID;
     private Integer speedLimit;
     private Map<Object, Object> attrMap;
+    
+    @SuppressWarnings("unused")
+    private String eventTypeString;    
 
     public Event() {
         super();
@@ -259,7 +261,7 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
      * @param measurementType
      * @return Formatted Message String
      */
-    public String getDetails(String formatStr, MeasurementType measurementType, String mphString) {
+    public String getDetails(String formatStr, MeasurementType measurementType, String... strings) {
         return formatStr;
     }
 
@@ -404,4 +406,13 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
         return false;
     }
 
+    public String getEventTypeString()
+    {
+        return this.getEventType().toString();
+    }
+
+    public void setEventTypeString(String eventTypeString)
+    {
+        this.eventTypeString = eventTypeString;
+    }
 }

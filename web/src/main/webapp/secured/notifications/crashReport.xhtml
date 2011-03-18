@@ -237,11 +237,9 @@
 		<ui:include src="/includes/tripBubble.xhtml">
 			<ui:param name="hiddenDivID" value="#{trip.trip.startTime}_START" />
 			<ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-			<ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
 			<ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
 			<ui:param name="eventLocation" value="#{trip.startAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
-			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
             <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
     	 	<ui:param name="context" value="crashReportStart" />
 		</ui:include>
@@ -251,8 +249,6 @@
 			<ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
 			<ui:param name="eventLocation" value="#{trip.endAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
-			<ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
-			<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
             <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
     	 	<ui:param name="context" value="crashReportEnd" />
 		</ui:include>

@@ -81,7 +81,7 @@
                               </tr>
                                  <tr class="#{'tableOdd'}">
                                      <td style="padding: 6px 12px 0px 12px;border-bottom: 1px solid #8BAD37;" align="left">
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_speedLimit" value="#{updateField['speed_limit']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_speedLimit" value="#{updateField['editableVehicleSettings.speedLimit']}" />
                                        <h:outputText value="#{messages.WS820_maxSpeedSlider}" converter="MphToKphLabelConverter"/>
                                      </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -98,7 +98,7 @@
                                 </tr>
                                  <tr class="#{'tableEven'}">
                                      <td style="padding: 6px 12px 0px 12px;border-bottom: 1px solid #8BAD37;" align="left">
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_speedBuffer" value="#{updateField['speed_buffer']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_speedBuffer" value="#{updateField['editableVehicleSettings.speedBuffer']}" />
                                        <h:outputText value="#{messages.WS820_speedBuffer}" converter="MphToKphLabelConverter"/>
                                       </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -115,7 +115,7 @@
                                 </tr>
                                  <tr class="#{'tableOdd'}">
                                      <td style="padding: 6px 12px 0px 12px" align="left">
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_severeSpeed" value="#{updateField['severe_speed']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update_severeSpeed" value="#{updateField['editableVehicleSettings.severeSpeed']}" />
                                        <h:outputText value="#{messages.WS820_severeSpeeding}" converter="MphToKphLabelConverter"/>
                                      </td>
                                   <td style="padding: 6px 0px 6px 12px;">
@@ -159,7 +159,7 @@
                                  <tr class="tableOdd'}">
                                      <td style="padding: 0px 12px 5px 12px; border-bottom: 1px solid #8BAD37;">
                      	               <ui:param name="messageKey" value="editDevice_hardAcceleration"/>
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update-hardAcceleration" value="#{updateField['editableVehicleSettings.hardAcceleration']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardAcceleration" value="#{updateField['editableVehicleSettings.hardAcceleration']}" />
                                        <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -199,7 +199,7 @@
                                  <tr class="tableEven">
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                      	               <ui:param name="messageKey" value="editDevice_hardBrake"/>
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update-hardBrake" value="#{updateField['editableVehicleSettings.hardBrake']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardBrake" value="#{updateField['editableVehicleSettings.hardBrake']}" />
                                        <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -239,7 +239,7 @@
                                  <tr class="tableOdd">
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                      	               <ui:param name="messageKey" value="editDevice_hardVertical"/>
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update-hardVertical" value="#{updateField['editableVehicleSettings.hardVertical']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardVertical" value="#{updateField['editableVehicleSettings.hardVertical']}" />
                                        <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
@@ -279,7 +279,7 @@
                                  <tr class="tableEven">
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                      	               <ui:param name="messageKey" value="editDevice_hardTurn"/>
-                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="#{context}-update-hardTurn" value="#{updateField['editableVehicleSettings.hardTurn']}" />
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-hardTurn" value="#{updateField['editableVehicleSettings.hardTurn']}" />
                                        <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">

@@ -28,6 +28,7 @@ public class ITDataSource {
 		datasource = new org.apache.commons.dbcp.BasicDataSource();
 		datasource.setDriverClassName(config.getProperty(IntegrationConfig.JDBC_DRIVER_CLASS_NAME));
 		datasource.setUrl(config.getProperty(IntegrationConfig.JDBC_MYSQL_URL));
+		datasource.setConnectionProperties(IntegrationConfig.JDBC_MYSQL_CONNECTION_PROPERTIES);
 		datasource.setUsername(config.getProperty(IntegrationConfig.JDBC_MYSQL_USERNAME));
 		datasource.setPassword(config.getProperty(IntegrationConfig.JDBC_MYSQL_PASSWORD));
 		datasource.setInitialSize(1);

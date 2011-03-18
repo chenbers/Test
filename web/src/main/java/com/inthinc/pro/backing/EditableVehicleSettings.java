@@ -6,8 +6,7 @@ import javax.faces.context.FacesContext;
 
 import com.inthinc.pro.model.configurator.ProductType;
 
-@SuppressWarnings("serial")
-public abstract class EditableVehicleSettings extends BaseBean{
+public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed this extends because it breaks the batch editing
 
 
     //This is for the different settings that have to be displayed for different products on the Admin->vehicle pages
@@ -16,6 +15,7 @@ public abstract class EditableVehicleSettings extends BaseBean{
 	
     private Integer     vehicleID;
     private ProductType productType;
+    
     
     public EditableVehicleSettings() {
         super();
@@ -47,5 +47,6 @@ public abstract class EditableVehicleSettings extends BaseBean{
     	
     	return true;
     }
+    
     
 }

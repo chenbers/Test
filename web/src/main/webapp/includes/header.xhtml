@@ -16,15 +16,17 @@
             <ul>
                 <li class="l text">
                 <a4j:outputPanel id="contextSensitiveHelp">
-                	<a class="tb-help" href='javascript:RH_ShowHelp(0, "#{helpBean.path}", 15, #{(empty helpMapIDOverride) ? helpBean.mapID : helpMapIDOverride})'>
+                	<a class="tb-help" href='javascript:RH_ShowHelp(0, "#{helpBean.path}>NewWindow", 15, #{(empty helpMapIDOverride) ? helpBean.mapID : helpMapIDOverride})'>
                 		#{messages.header_help}
                 	</a>
 				</a4j:outputPanel>
 				</li>
                 <li class="l text">
+					<h:panelGroup rendered="#{treeNavigationBean.accountIsWaysmart}">
                      <pretty:link id="headerMyMessages" mappingId="inbox" styleClass="tb-messages"> 
                         <h:outputText value="My Messages"/>
                      </pretty:link>
+                     </h:panelGroup>
                      </li>                    
                 <li class="l text">
                      <pretty:link id="headerMyAccount" mappingId="myAccount" styleClass="tb-account"> 

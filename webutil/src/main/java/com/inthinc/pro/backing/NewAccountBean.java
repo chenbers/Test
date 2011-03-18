@@ -55,7 +55,7 @@ public class NewAccountBean {
         // create an account
         Integer acctID = accountDAO.create(account);
         // create the account's top level group
-        Group topGroup = new Group(0, acctID, "Top", 0, GroupType.FLEET, 0, "Initial top level group", 5, new LatLng(0.0, 0.0));
+        Group topGroup = new Group(0, acctID, "Top", 0, GroupType.FLEET, null, "Initial top level group", 5, new LatLng(0.0, 0.0));
         Integer groupID = groupDAO.create(acctID, topGroup);
         // create the person record for the superuser
         Person person = new Person(new Integer(0), acctID, TimeZone.getDefault(), null, email, null, "5555555555", "5555555555", null, null, null, null, null, "0", null,

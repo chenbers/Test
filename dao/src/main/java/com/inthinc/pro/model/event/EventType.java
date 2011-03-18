@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,28 +31,32 @@ public enum EventType implements BaseEnum {
 //    ROLLOVER(15),
     UNKNOWN(16),
     NO_DRIVER(17),
-    PARKING_BRAKE(18),
+    PARKING_BRAKE(18, EnumSet.of(EventAccountFilter.WAYSMART)),
     IGNITION_ON(19),
-    MICRO_SLEEP(20),
+    MICRO_SLEEP(20, EnumSet.of(EventAccountFilter.WAYSMART)),
     POTENTIAL_TAMPERING(21),
-    WIRELINE_ALARM(22),
-    INSTALL(23),
-    FIRMWARE_CURRENT(24),
-    LOCATION_DEBUG(25),
-    QSI_UPDATED(26),
-    WITNESS_UPDATED(27),
-    ZONES_CURRENT(28),
-    NO_INTERNAL_THUMB_DRIVE(29),
-    WITNESS_HEARTBEAT_VIOLATION(30),
-    PANIC(31),
-    MAN_DOWN(32),
-    MAN_DOWN_CANCELED(33),
-    DOT_STOPPED(34),
-    HOS_NO_HOURS(35),
-    TEXT_MESSAGE(36),
-    OFF_HOURS(37);
+    WIRELINE_ALARM(22, EnumSet.of(EventAccountFilter.WAYSMART)),
+    INSTALL(23, EnumSet.of(EventAccountFilter.WAYSMART)),
+    FIRMWARE_CURRENT(24, EnumSet.of(EventAccountFilter.WAYSMART)),
+    LOCATION_DEBUG(25, EnumSet.of(EventAccountFilter.WAYSMART)),
+    QSI_UPDATED(26, EnumSet.of(EventAccountFilter.WAYSMART)),
+    WITNESS_UPDATED(27, EnumSet.of(EventAccountFilter.WAYSMART)),
+    ZONES_CURRENT(28, EnumSet.of(EventAccountFilter.WAYSMART)),
+    NO_INTERNAL_THUMB_DRIVE(29, EnumSet.of(EventAccountFilter.WAYSMART)),
+    WITNESS_HEARTBEAT_VIOLATION(30, EnumSet.of(EventAccountFilter.WAYSMART)),
+    PANIC(31, EnumSet.of(EventAccountFilter.WAYSMART)),
+    MAN_DOWN(32, EnumSet.of(EventAccountFilter.WAYSMART)),
+    MAN_DOWN_CANCELED(33, EnumSet.of(EventAccountFilter.WAYSMART)),
+    DOT_STOPPED(34, EnumSet.of(EventAccountFilter.HOS)),
+    HOS_NO_HOURS(35, EnumSet.of(EventAccountFilter.HOS)),
+    TEXT_MESSAGE(36, EnumSet.of(EventAccountFilter.WAYSMART)),
+    OFF_HOURS(37, EnumSet.of(EventAccountFilter.WAYSMART)),
+    IGNITION_OFF(38),
+    RF_SWITCH(39, EnumSet.of(EventAccountFilter.WAYSMART));
+    
     private int code;
     private AggressiveDrivingEventType noteSubType;
+    private Set<EventAccountFilter> eventAccountFilters;
     
     private EventType(int code) {
         this.code = code;
@@ -59,6 +64,10 @@ public enum EventType implements BaseEnum {
     private EventType(int code, AggressiveDrivingEventType noteSubType) {
         this.code = code;
         this.noteSubType = noteSubType;
+    }
+    private EventType(int code, Set<EventAccountFilter> eventAccountFilters) {
+        this.code = code;
+        this.eventAccountFilters = eventAccountFilters;
     }
 
     private static final Map<Integer, EventType> lookup = new HashMap<Integer, EventType>();
@@ -117,4 +126,10 @@ public enum EventType implements BaseEnum {
         
     }
 
+    public Boolean isWaysmartOnlyEvent() {
+        return eventAccountFilters != null && eventAccountFilters.contains(EventAccountFilter.WAYSMART);
+    }
+    public Boolean isHOSOnlyEvent() {
+        return eventAccountFilters != null && eventAccountFilters.contains(EventAccountFilter.HOS);
+    }
 }

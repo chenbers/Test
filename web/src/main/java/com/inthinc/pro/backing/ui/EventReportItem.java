@@ -58,7 +58,9 @@ public class EventReportItem extends NotificationReportItem<EventReportItem> {
         }
         else {
             String mphString = MessageUtil.getMessageString(measurementType.toString() + "_mph");
-            setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, mphString));
+            String milesString = MessageUtil.getMessageString(measurementType.toString() + "_miles");
+            
+            setDetail(event.getDetails(MessageUtil.getMessageString("redflags_details" + event.getEventType()), measurementType, mphString, milesString));
         }
     }
 

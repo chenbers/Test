@@ -8,9 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
-import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 /**
@@ -28,8 +26,6 @@ public class TreeNavigationBean extends BaseBean {
 	private List<JsTreeNode> recentNodes;
 
     private GroupDAO groupDAO;
-    private DriverDAO driverDAO;
-    private VehicleDAO vehicleDAO;
     
     private Integer groupID;
     private Group group;
@@ -57,22 +53,6 @@ public class TreeNavigationBean extends BaseBean {
 
 	public void setGroupDAO(GroupDAO groupDAO) {
 		this.groupDAO = groupDAO;
-	}
-
-	public DriverDAO getDriverDAO() {
-		return driverDAO;
-	}
-
-	public void setDriverDAO(DriverDAO driverDAO) {
-		this.driverDAO = driverDAO;
-	}
-
-	public VehicleDAO getVehicleDAO() {
-		return vehicleDAO;
-	}
-
-	public void setVehicleDAO(VehicleDAO vehicleDAO) {
-		this.vehicleDAO = vehicleDAO;
 	}
 
 	public List<JsTreeNode> getRecentNodes() {
@@ -185,32 +165,6 @@ public class TreeNavigationBean extends BaseBean {
         checkRecents();
         openParentPath(group);
     }
-//    private void getDriverSubtree()
-//    {
-//        FacesContext facesContext =  getFacesContext();
-//        HttpServletResponse response = (HttpServletResponse)facesContext.getExternalContext().getResponse();
-//        JSONObject json = new JSONObject();
-//        try{
-//            json.append("data", "drivers");
-//        }
-//        catch (JSONException jsone){
-//            
-//        }
-//        populateWithJSON(response, json);
-//        facesContext.responseComplete();
-//     }
-//
-//    public void populateWithJSON(HttpServletResponse response,JSONObject json) {
-//        if(json!=null) {
-//            response.setContentType("text/x-json;charset=UTF-8");           
-//            response.setHeader("Cache-Control", "no-cache");
-//            try {
-//                 response.getWriter().write(json.toString());
-//            } catch (IOException e) {
-////                throw new Exception("IOException in populateWithJSON", e);
-//            }                               
-//        }
-//    }
     public class JsTreeRoot {
         
         private Map<Integer, JsTreeNode> navigationTreeMap;
@@ -286,24 +240,8 @@ public class TreeNavigationBean extends BaseBean {
             if (groupID == null) return null;
 
             return navigationTreeMap.get(groupID);
-            
-//            if (fromHere.getAttributes().get("groupid").equals(groupID.toString())) {
-//                
-//                return fromHere;
-//            }
-//            else {
-//                
-//                if (fromHere.getChildren() == null) return null;
-//                
-//                for(JsTreeNode child:fromHere.getChildren()){
-//                    
-//                    JsTreeNode theNode = findTreeNode(child,groupID);
-//                    if ( theNode != null) return theNode;
-//                }
-//            }
-//            return null;
         }
-       public JsTreeNode getCurrentNode() {
+        public JsTreeNode getCurrentNode() {
             return currentNode;
         }
 

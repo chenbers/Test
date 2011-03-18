@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,6 +26,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
@@ -32,11 +34,12 @@ import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
+import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO;
+import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandID;
-import com.inthinc.pro.model.ForwardCommandStatus;
+import com.inthinc.pro.model.ForwardCommandSpool;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.table.PageData;
@@ -56,6 +59,7 @@ public class HosBean extends BaseBean {
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private DeviceDAO deviceDAO;
+    private FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO;
     private PageData pageData;
     private int page;
     private List<SelectItem> drivers;
@@ -443,7 +447,7 @@ logger.info("in loadItems()");
         hosRecord.setTimeZone(driver.getPerson().getTimeZone());
         hosRecord.setLogTime(new Date());
         hosRecord.setDriverID(driverID);
-        hosRecord.setDriverDotType(driver.getDriverDOTType());
+        hosRecord.setDriverDotType(driver.getDot());
         
         return createLogView(hosRecord);
     }
@@ -741,15 +745,50 @@ logger.info("in loadItems()");
             return;
             
         }
+        List<HOSRecord> recordList = getHosLogsForDriver(driver);
         
-        ForwardCommand forwardCommand = new ForwardCommand();
-        forwardCommand.setCmd(ForwardCommandID.DOWNLOAD_HOS_LOGS);
-        forwardCommand.setStatus(ForwardCommandStatus.STATUS_QUEUED);
-        forwardCommand.setData(Integer.valueOf(0));
-        deviceDAO.queueForwardCommand(vehicle.getDeviceID(), forwardCommand);
-
-        setSendLogsMsg("hosSendLogsToDevice.success");
+        try {
+            List<ByteArrayOutputStream > logShipList = HOSUtil.packageLogsToShip(recordList, driver);
+            
+            for (ByteArrayOutputStream output :  logShipList ) {    
+              queueForwardCommand(device.getImei(), output.toByteArray(), ForwardCommandID.HOSLOG_SUMMARY);
+            }
+            setSendLogsMsg("hosSendLogsToDevice.success");
+        }
+        catch (Exception e) {
+            setSendLogsMsg("hosSendLogsToDevice.logShippingError");
+            return;
+        }
     }
+    private List<HOSRecord> getHosLogsForDriver(Driver driver) {
+        final RuleSetType dotType = driver.getDot() == null ? RuleSetType.NON_DOT : driver.getDot();
+
+        final int daysBack = dotType.getLogShipDaysBack();
+        DateTime currentDate = new DateTime();
+        Interval interval = new Interval(currentDate.minusDays(daysBack), currentDate);
+
+        return hosDAO.getHOSRecords(driver.getDriverID(), interval, true);
+    }
+    
+    private void queueForwardCommand(String address, byte[] data, int command) 
+    {
+        logger.debug("queueForwardCommand Begin");
+        ForwardCommandSpool fcs = new ForwardCommandSpool(data, command, address);
+        if (fcsIridiumDAO.add(fcs) == -1)
+            throw new ProDAOException("Iridium Forward command spool failed.");
+                
+    }
+
+
+    public FwdCmdSpoolWSIridiumJDBCDAO getFcsIridiumDAO() {
+        return fcsIridiumDAO;
+    }
+
+    public void setFcsIridiumDAO(FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
+        this.fcsIridiumDAO = fcsIridiumDAO;
+    }
+
+
 }
 
     

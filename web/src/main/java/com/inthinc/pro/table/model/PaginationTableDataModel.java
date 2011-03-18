@@ -98,11 +98,11 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 		} else { // if not serialized, than we request data from data provider
 //			wrappedKeys = Collections.synchronizedList(new ArrayList<Object>());
 			int endRow = firstRow + numberOfRows;
-			if (endRow >= rowC){
-				endRow = rowC-1; 
+			if (endRow > rowC){
+				endRow = rowC; 
 			}
 			Integer rowIndex = firstRow;
-			for (T item : loadData(firstRow, endRow)) {
+			for (T item : loadData(firstRow, endRow-1)) {
 				Object key = rowIndex;
 				wrappedKeys.add(key);
 				wrappedData.put(key, item);

@@ -74,7 +74,7 @@ public class DaoUtilBeanTest {
         new Param("mailID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),   
         new Param("billID", Integer.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(10)),   
         new Param("hos", com.inthinc.pro.model.AccountHOSType.class, 1, com.inthinc.pro.model.Account.class, Integer.valueOf(0)),   
-        new Param("zonePublishDate", Date.class, 1, com.inthinc.pro.model.Account.class, new Date()),   
+        new Param("zonePublishDate", Long.class, 1, com.inthinc.pro.model.Account.class, Long.valueOf(0)),   
 	};
 	
 	List<String>modelClassExcludeList = Arrays.asList(
@@ -160,7 +160,7 @@ public class DaoUtilBeanTest {
 	}
 	
 	@Test
-	public void testArgsFromParams() {
+	public void testArgsFromParams() throws Exception {
 		
 		dab.setExcludedTypes(Arrays.asList(CrudType.NOT_AVAILABLE));
     	dab.initMethodMap();
@@ -258,7 +258,7 @@ public class DaoUtilBeanTest {
 	}
 	
 	@Test
-	public void nullParam() {
+	public void nullParam() throws Exception {
 		
 		dab.setExcludedTypes(Arrays.asList(CrudType.NOT_AVAILABLE));
     	dab.initMethodMap();

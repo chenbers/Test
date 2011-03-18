@@ -1,8 +1,12 @@
 package com.inthinc.pro.model.event;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.model.MeasurementType;
 
 @XmlRootElement
 public class SeatBeltEvent extends Event
@@ -65,6 +69,26 @@ public class SeatBeltEvent extends Event
     {
         return EventType.SEATBELT;
     }
-
+    
+    @Override
+    public String getDetails(String formatStr,MeasurementType measurementType,String... mString)
+    {   
+        // distance is x100
+        float distance = 0.0f;
+        if(this.distance != null) {
+            distance = this.distance.floatValue()/100.0f;
+        }
+        
+        if(measurementType.equals(MeasurementType.METRIC))
+        {
+            distance = MeasurementConversionUtil.fromMilesToKilometers(distance).floatValue();
+        }
+        
+        return MessageFormat.format(
+                formatStr, 
+                new Float(distance),
+                mString[1]
+               );        
+    }        
 
 }

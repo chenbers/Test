@@ -11,7 +11,7 @@ img {
 
 #header {
 	width: 960px;
-	height: 50px;
+	height: 40px;
 	margin: 2px auto;
 }
 
@@ -19,19 +19,20 @@ img {
 	float: left;
 	margin: 0;
 	padding: 0;
-	background: url(../images/logo_main.png) no-repeat top left;
+	background: url(../images/New_inthinc_reverse_white_small.png) no-repeat top left;
+	
 }
 
 #login_header {
 	width: 960px;
-	height: 85px;
+	height: 60px;
 	margin: 2px auto;
 }
 #login_logo {
 	float: left;
 	margin: 0;
 	padding: 0;
-	background: url(../images/logo_main_big.png) no-repeat top left;
+	background: url(../images/New_inthinc_reverse_white_big.png) no-repeat top left;
 }
 
 #wrapper {

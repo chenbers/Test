@@ -56,7 +56,9 @@
 			ref="zoomsaferHttpConnectionFactory" />
 		<constructor-arg index="2" ref="systemClock" />
 	</bean>
-
+	
+	<bean id="eventGetter" class="com.inthinc.pro.service.model.EventGetter" init-method="init"/>
+	
 	<bean id="propertyPlaceholderConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="ignoreResourceNotFound" value="true" />
@@ -129,6 +131,7 @@
 		<property name="voxeoAudioURL" value="${voxeoAudioURL}" />
 		<property name="alertMessageDAO" ref="alertMessageDAO" />
 	</bean>
+	<bean id="noteService" class="com.inthinc.pro.service.impl.NoteServiceImpl"/>
 
 	<!--
 		<bean class="com.inthinc.pro.service.impl.NoteServiceImpl"> <property

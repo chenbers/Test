@@ -352,11 +352,9 @@
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="tripStartBubble" />
                     <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
                     <ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
                     <ui:param name="eventLocation" value="#{trip.startAddress}" />
         			<ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
-	                <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
            			<ui:param name="tripBubbleAddress" value="tripStartAddress"/>
  					<ui:param name="context" value="driverTripsStart" />
                 </ui:include>
@@ -366,8 +364,6 @@
                     <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
          			<ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
-                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
-                    <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
            			<ui:param name="tripBubbleAddress" value="tripEndAddress"/>
   					<ui:param name="context" value="driverTripsEnd" />
                 </ui:include>
@@ -377,15 +373,13 @@
                     <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
         			<ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
-                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
-                    <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
           			<ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
  					<ui:param name="context" value="driverTripsInProgress" />
                 </ui:include>
 		</rich:panel>
 		</rich:panel>
 		<rich:panel id="eventBubbles" >
- 		<rich:panel id="eventBubblesInner" rendered="#{driverTripsBean.selectedViolationID != null}">-->	
+ 		<rich:panel id="eventBubblesInner" rendered="#{driverTripsBean.selectedViolationID != null}">
 				<ui:param name="violation" value="#{driverTripsBean.allEventsMap[driverTripsBean.selectedViolationID]}"/>
                 <ui:include src="/includes/eventBubble.xhtml">
                     <ui:param name="eventType" value="#{violation.eventType}" />
@@ -486,7 +480,7 @@
                                     </tr>
                                     <tr>
                                         <td colspan="2" align="center"><a4j:commandButton id="driverTripsDate" action="#{driverTripsBean.DateChangedAction}"
-                                            reRender="dateError,script,statsPanel,tripsPanel,tripBubbles,selectedTrip,selectedTripMap,selectedTripTable,calendarStart" immediate="false" styleClass="left"
+                                            reRender="dateError,script,statsPanel,tripsPanel,tripBubbles,selectedTrip,selectedTripMap,selectedTripTable,calendarStart,calendarEnd" immediate="false" styleClass="left"
                                             oncomplete="bodyLoad();getAddresses()">
                                             <span class="edit"> <h:outputText value="#{messages.drivertrip_updateDateRange}" /> </span>
                                         </a4j:commandButton></td>                                      

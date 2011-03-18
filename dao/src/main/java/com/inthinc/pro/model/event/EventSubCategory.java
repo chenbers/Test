@@ -22,8 +22,8 @@ public enum EventSubCategory implements BaseEnum
     COMPLIANCE(3, EnumSet.of(EventType.SEATBELT, EventType.NO_DRIVER, EventType.PARKING_BRAKE),
             EnumSet.of(AlertMessageType.ALERT_TYPE_SEATBELT, AlertMessageType.ALERT_TYPE_NO_DRIVER, AlertMessageType.ALERT_TYPE_PARKING_BRAKE)),
     FATIGUE(4, EnumSet.of(EventType.MICRO_SLEEP),EnumSet.of(AlertMessageType.ALERT_TYPE_DSS_MICROSLEEP)),
-    VEHICLE(5, EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.POTENTIAL_TAMPERING),
-            EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON)), 
+    VEHICLE(5, EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.IGNITION_OFF, EventType.POTENTIAL_TAMPERING,EventType.RF_SWITCH),
+            EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON,AlertMessageType.ALERT_TYPE_RF_SWITCH)), 
     WIRELINE(6, EnumSet.of(EventType.WIRELINE_ALARM),EnumSet.of(AlertMessageType.ALERT_TYPE_WIRELINE_ALARM)), 
     INSTALLATION(7, EnumSet.of(EventType.INSTALL, EventType.FIRMWARE_CURRENT, EventType.LOCATION_DEBUG, EventType.QSI_UPDATED, EventType.WITNESS_UPDATED, EventType.ZONES_CURRENT, EventType.NO_INTERNAL_THUMB_DRIVE, EventType.WITNESS_HEARTBEAT_VIOLATION ),
             EnumSet.of(AlertMessageType.ALERT_TYPE_INSTALL, AlertMessageType.ALERT_TYPE_FIRMWARE_CURRENT, AlertMessageType.ALERT_TYPE_LOCATION_DEBUG, AlertMessageType.ALERT_TYPE_QSI_UPDATED, 
@@ -33,7 +33,8 @@ public enum EventSubCategory implements BaseEnum
                     AlertMessageType.ALERT_TYPE_MAN_DOWN, AlertMessageType.ALERT_TYPE_MAN_DOWN_OK)),
     ZONES(9, EnumSet.of(EventType.ZONES_ARRIVAL, EventType.ZONES_DEPARTURE),EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE)),
     HOS(10, EnumSet.of(EventType.DOT_STOPPED, EventType.HOS_NO_HOURS),EnumSet.of(AlertMessageType.ALERT_TYPE_HOS_DOT_STOPPED, AlertMessageType.ALERT_TYPE_HOS_NO_HOURS_REMAINING)),
-    TEXTMESSAGE(11,EnumSet.of(EventType.TEXT_MESSAGE),EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED));
+    TEXTMESSAGE(11,EnumSet.of(EventType.TEXT_MESSAGE),EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED)),
+    RF_SWITCH(12,EnumSet.of(EventType.RF_SWITCH),EnumSet.of(AlertMessageType.ALERT_TYPE_RF_SWITCH));
 //    OFFHOURS(12,EnumSet.of(EventType.OFF_HOURS),EnumSet.of(AlertMessageType.ALERT_TYPE_OFF_HOURS));
     
     private int code;

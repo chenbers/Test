@@ -31,10 +31,12 @@
   <topic name="View All Trips" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_All_Trips.htm#IX_All_Trips" />
 </key>
 <key name="Asset Report" >
-  <topic name="Generate a waySmart™ Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart™_Report.htm#IX_Asset_Report" />
+  <topic name="Generate a waySmart Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart_Report.htm#IX_Asset_Report" />
 </key>
 <key name="Columns" >
-  <topic name="Customize Columns in Reports and Notifica­tions" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifica­tions.htm#IX_Columns" />
+  <topic name="Customize Columns in Reports and Notifica­tions" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifications.htm#IX_Columns" />
+</key>
+<key name="Crash information" >
   <key name="Add or Edit a Crash Report" >
     <topic name="Add or Edit a Crash Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Add_or_Edit_a_Crash_Report.htm#IX_Add_or_Edit_a_Crash" />
   </key>
@@ -73,7 +75,7 @@
   <topic name="Set Up Mentoring, Zones, and Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Set_Up_Mentoring_Zones_and_Notifications.htm#IX_Custom_settings" />
 </key>
 <key name="Customize Columns in Reports and Notifications" >
-  <topic name="Customize Columns in Reports and Notifica­tions" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifica­tions.htm#IX_Customize_Columns_in" />
+  <topic name="Customize Columns in Reports and Notifica­tions" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Customize_Columns_in_Reports_and_Notifications.htm#IX_Customize_Columns_in" />
 </key>
 <key name="Delete a zone" >
   <topic name="Edit or Delete a Zone" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Edit_or_Delete_a_Zone.htm#IX_Delete_a_zone" />
@@ -88,7 +90,7 @@
   <topic name="DOT Time Remaining" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/DOT_Time_Remaining.htm#IX_DOT_Time_Remaining_1" />
 </key>
 <key name="DOT/IFTA Reports" >
-  <topic name="Generate a waySmart™ Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart™_Report.htm#IX_DOT_IFTA_Reports" />
+  <topic name="Generate a waySmart Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Generate_a_waySmart_Report.htm#IX_DOT_IFTA_Reports" />
 </key>
 <key name="Driver Logs, HOS" >
   <topic name="HOS Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/HOS_Page.htm#IX_Driver_Logs_HOS" />
@@ -108,8 +110,8 @@
 <key name="Edit or Delete a Zone" >
   <topic name="Edit or Delete a Zone" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Edit_or_Delete_a_Zone.htm#IX_Edit_or_Delete_a_Zone" />
 </key>
-<key name="Explore the tiwiPRO™ Portal" >
-  <topic name="Explore inthinc® Portal" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Explore_inthinc®_Portal.htm#IX_Explore_the_tiwiPRO" />
+<key name="Explore the inthinc® Portal" >
+  <topic name="Explore inthinc Portal" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Explore_inthinc_Portal.htm#IX_Explore_the_inthinc" />
 </key>
 <key name="Export a report or notification" >
   <topic name="View Notifications" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_Notifications.htm#IX_Export_a_report_or" />
@@ -128,7 +130,8 @@
   <topic name="Home Pages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#IX_Fleet_view" />
 </key>
 <key name="GPS icons" >
-  <topic name="View All Trips" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_All_Trips.htm#IX_GPS_icons" />
+  <topic name="Team Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#IX_GPS_icons" />
+  <topic name="View All Trips" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_All_Trips.htm#IX_GPS_icons_1" />
 </key>
 <key name="Home page" >
   <topic name="Home Pages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#IX_Home_page" />
@@ -143,7 +146,7 @@
   <topic name="HOS Driver DOT Log Report" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideApp_-_Reports/HOS_Driver_DOT_Log_Report.htm#IX_HOS_Driver_DOT_Log_Report_1" />
 </key>
 <key name="HOS Logs and Reports" >
-  <topic name="Use waySmart™ Messaging and Reporting Features" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Use_waySmart™_Messaging_and_Reporting_Features.htm#IX_HOS_Logs_and_Reports" />
+  <topic name="Use waySmart Messaging and Reporting Features" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Use_waySmart_Messaging_and_Reporting_Features.htm#IX_HOS_Logs_and_Reports" />
 </key>
 <key name="HOS Page" >
   <topic name="HOS Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/HOS_Page.htm#IX_HOS_Page" />
@@ -161,7 +164,8 @@
   <topic name="HOS Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/HOS_Page.htm#IX_Hours_of_Service" />
 </key>
 <key name="Icons" >
-  <topic name="View All Trips" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_All_Trips.htm#IX_Icons" />
+  <topic name="Team Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#IX_Icons" />
+  <topic name="View All Trips" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/View_All_Trips.htm#IX_Icons_1" />
 </key>
 <key name="Icons on maps" >
   <topic name="Team Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#IX_Icons_on_maps" />
@@ -178,18 +182,11 @@
 <key name="Live Team page" >
   <topic name="Team Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Team_Page.htm#IX_Live_Team_page" />
 </key>
-<key name="Log In to tiwiPro™ Portal" >
-  <topic name="Log In to inthinc® Portal" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Log_In_to_inthinc®_Portal.htm#IX_Log_In_to_tiwiPro_Portal" />
+<key name="Log in to inthinc® Portal" >
+  <topic name="Log In to inthinc Portal" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Log_In_to_inthinc_Portal.htm#IX_Log_in_to_inthinc_Portal" />
 </key>
 <key name="Main menu" >
   <topic name="Notifications Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Notifications_Page.htm#IX_Main_menu" />
-</key>
-<key name="Main menu options" >
-  <topic name="Home Pages" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Home_Pages.htm#IX_Main_menu_options" />
-  <topic name="Reports Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Reports_Page.htm#IX_Main_menu_options_1" />
-  <topic name="Live Fleet Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Live_Fleet_Page.htm#IX_Main_menu_options_2" />
-  <topic name="HOS Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/HOS_Page.htm#IX_Main_menu_options_3" />
-  <topic name="Admin Page" url="inthinc_Portal_User_Guide/inthinc_Portal_User_GuideMain/Admin_Page.htm#IX_Main_menu_options_4" />
 </key>
 
 </indexdata>

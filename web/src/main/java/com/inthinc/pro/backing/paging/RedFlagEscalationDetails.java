@@ -142,12 +142,12 @@ public class RedFlagEscalationDetails {
     public void setEscalationEmail(String escalationEmail) {
         this.escalationEmail = escalationEmail;
     }
-    public List<String> getEmailTo() {
-        if (alert.getEmailTo() == null || alert.getEmailTo().size() == 0)
-            return null;
-        
-        return alert.getEmailTo();
-    }
+//    public List<String> getEmailTo() {
+//        if (alert.getEmailTo() == null || alert.getEmailTo().size() == 0)
+//            return null;
+//        
+//        return alert.getEmailTo();
+//    }
     public AlertMessageDAO getAlertMessageDAO() {
         return alertMessageDAO;
     }

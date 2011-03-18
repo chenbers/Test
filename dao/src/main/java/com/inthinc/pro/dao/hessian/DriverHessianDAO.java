@@ -186,7 +186,7 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
     public Driver findByPhoneNumber(String phoneID) {
         // TODO To be implemented
         return new Driver(1, 2, Status.ACTIVE, null, null, null, "", 
-                new State(), "5", new Date(), "", 1, 2);
+                new State(), "5", new Date(), "", null, 2);
     }
 
 	@Override

@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import org.apache.log4j.Logger;
+
 import com.inthinc.pro.util.MiscUtil;
 
 /**
@@ -14,9 +16,12 @@ import com.inthinc.pro.util.MiscUtil;
  */
 public class AutocompletePicker
 {
+    private static final Logger logger = Logger.getLogger(AutocompletePicker.class);
+    
     private List<SelectItem> pickFrom;
     private List<SelectItem> picked;
     private String           value;
+    private boolean          isOutdated = false;
 
     public AutocompletePicker(List<SelectItem> pickFrom)
     {
@@ -27,10 +32,21 @@ public class AutocompletePicker
     {
         this.pickFrom = pickFrom;
         this.picked = picked;
+        pickFrom.removeAll(picked);
     }
-
+        
+    @Override
+    public String toString() {
+        return "AutoCompletePicker: [pickFrom.size()="+pickFrom.size()+", picked.size()="+picked.size()+", value="+this.value+"]";
+    }
+    public Integer size(){
+        return ((pickFrom!=null)?pickFrom.size():0)
+            +((picked!=null)?picked.size():0);
+    }
     public List<SelectItem> getPickFrom()
     {
+        if(this.isOutdated)
+            pickFrom.removeAll(picked);
         return pickFrom;
     }
 
@@ -60,15 +76,15 @@ public class AutocompletePicker
         this.picked = picked;
     }
 
-    public List<SelectItem> autocomplete(Object value)
-    {
+    public List<SelectItem> autocomplete(Object value) {
+      //TODO: refactor: the following line is only necessary because an AutocompletePicker can be created with a SelectItem in the pickFrom list with a duplicate(same label, so duplicate to the end user) in the pickedList.  Ideally, removal of duplicates would happen ONCE rather than every time autocomplete is called
+        MiscUtil.removeAllByLabel(pickFrom, picked);
+
         final LinkedList<SelectItem> suggestions = new LinkedList<SelectItem>();
         final String[] words = value.toString().toLowerCase().split("[, ]");
-        for (final SelectItem item : getPickFrom())
-        {
+        for (final SelectItem item : getPickFrom()) {
             boolean matches = true;
-            for (final String word : words)
-            {
+            for (final String word : words) {
                 matches = false;
                 final String[] itemWords = item.getLabel().toLowerCase().split("[, ]");
                 for (final String itemWord : itemWords)
@@ -79,29 +95,22 @@ public class AutocompletePicker
             if (matches)
                 suggestions.add(item);
         }
-       
-        
-        suggestions.removeAll(picked);
-        removeByLabel(suggestions, picked);
         MiscUtil.sortSelectItems(suggestions);
-      
         return suggestions;
     }
-    public boolean removeByLabel(List<SelectItem> orig, List<SelectItem> remove){
-        boolean changed = false;
-        for (final Iterator<SelectItem> origIterator = orig.iterator(); origIterator.hasNext();) {
-            SelectItem item = origIterator.next();
-            for(SelectItem removeItem: remove){
-                if(item.getLabel().equalsIgnoreCase(removeItem.getLabel())){
-                    origIterator.remove();
-                    changed = true;
-                    break;
-                }
-            }
-        }
-        
-        return changed;
+    public boolean containsLabel(String label) {
+        String labelNoDupSpaces = (label != null)?label.replaceAll(" +", " "): null;
+        return listContainsLabel(picked, labelNoDupSpaces) || listContainsLabel(pickFrom, labelNoDupSpaces);
     }
+   
+    public boolean listContainsLabel(List<SelectItem> list, String label) {
+        for (final Iterator<SelectItem> it = list.iterator(); it.hasNext();) {
+            if (it.next().getLabel().equals(label))
+                return true;
+        }
+        return false;
+    }
+
 
     public Object getItemValue()
     {
@@ -126,19 +135,32 @@ public class AutocompletePicker
         }
         value = null;
     }
-    
     public void removeItem() {
+        boolean success = false;
         if (value != null) {
             for (final Iterator<SelectItem> pickedIterator = picked.iterator(); pickedIterator.hasNext();) {
                 SelectItem item = pickedIterator.next();
                 if (value.equalsIgnoreCase(item.getLabel())) {
-                    pickFrom.add(item);
+                    if(!listContainsLabel(pickFrom,item.getLabel()))
+                        pickFrom.add(item);
                     pickedIterator.remove();
                     value = null;
+                    success = true;
                     break;
                 } 
             }
             value = null;
         }
+        if(!success) {
+            logger.warn("did not succeed in removing value: "+value);
+        }
     }
+    public void setOutdated(boolean isOutdated) {
+        this.isOutdated = isOutdated;
+    }
+
+    public boolean isOutdated() {
+        return isOutdated;
+    }
+
 }

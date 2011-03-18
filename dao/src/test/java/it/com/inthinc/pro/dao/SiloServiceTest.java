@@ -88,6 +88,7 @@ import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
@@ -582,7 +583,7 @@ public class SiloServiceTest {
         notifyPersonIDs.add(this.personList.get(1).getPersonID());
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(this.personList.get(0).getPersonID(),1));
-        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), -1));
+        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), 0));
         Integer[] speedSettings = { 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80 };
         List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_SPEEDING));
         RedFlagAlert redFlagAlert = new RedFlagAlert(list,acctID, userID, 
@@ -797,7 +798,7 @@ public class SiloServiceTest {
         notifyPersonIDs.add(this.personList.get(1).getPersonID());
         List<AlertEscalationItem> escalationList = new ArrayList<AlertEscalationItem>();
         escalationList.add(new AlertEscalationItem(this.personList.get(0).getPersonID(),1));
-        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(), -1));
+        escalationList.add(new AlertEscalationItem(this.personList.get(1).getPersonID(),0));
         List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
         RedFlagAlert zoneAlert = new RedFlagAlert(list,acctID, userID, 
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1339, dayOfWeek, groupIDList, null, // driverIDs
@@ -1062,6 +1063,7 @@ public class SiloServiceTest {
                     "555555123" + i);
 //            , // phone
 //                    "555555987" + i); // ephone
+            device.setProductVersion(ProductType.TIWIPRO_R74);
             Integer deviceID = deviceDAO.create(acctID, device);
             assertNotNull(deviceID);
             device.setDeviceID(deviceID);
@@ -1086,7 +1088,7 @@ public class SiloServiceTest {
             assertEquals("Device update count " + device.getName(), Integer.valueOf(1), changedCount);
         }
         // find
-        String ignoreFields[] = { "modified", "baseID", "productVersion"};  
+        String ignoreFields[] = { "modified", "baseID"};  
         for (Device device : deviceList) {
             Device returnedDevice = deviceDAO.findByID(device.getDeviceID());
             Util.compareObjects(device, returnedDevice, ignoreFields);
@@ -1116,6 +1118,7 @@ public class SiloServiceTest {
                 "5555551239");
 //        , // phone
 //                "5555559879"); // ephone
+        device.setProductVersion(ProductType.TIWIPRO_R74);
         Integer deviceID = deviceDAO.create(acctID, device);
         assertNotNull(deviceID);
         device.setDeviceID(deviceID);
@@ -1162,7 +1165,7 @@ public class SiloServiceTest {
         for (int i = 0; i < VEHICLE_COUNT; i++) {
             Vehicle vehicle = new Vehicle(0, groupID, Status.INACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, VehicleType.valueOf(Util.randomInt(0,
                     VehicleType.values().length - 1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, randomState());
-            vehicle.setHos((i == 0));   // set just 1st to hos 
+//            vehicle.setHos((i == 0));   // set just 1st to hos 
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
             assertNotNull(vehicleID);
             vehicle.setVehicleID(vehicleID);
@@ -1583,7 +1586,7 @@ public class SiloServiceTest {
         String ignoreFields[] = { "modified", "person", "barcode", "rfid1", "rfid2" };
         for (Person person : groupPersonList) {
             Date expired = Util.genDate(2010, 9, 30);
-            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, RuleSetType.US_OIL.getCode(), groupID);
+            Driver driver = new Driver(0, person.getPersonID(), Status.ACTIVE, null, null, null, "l" + person.getPersonID(), randomState(), "ABCD", expired, null, RuleSetType.US_OIL, groupID);
             
             // create
             Integer driverID = driverDAO.create(person.getPersonID(), driver);
@@ -1723,7 +1726,7 @@ public class SiloServiceTest {
         personDAO.setSiloService(siloService);
         Date expired = Util.genDate(2010, 8, 30);
         Address address = new Address(null, Util.randomInt(100, 999) + " Street", null, "City " + Util.randomInt(10, 99), randomState(), "12345", acctID);
-        Driver driver = new Driver(0, 0, Status.ACTIVE,null, null, null, "l" + groupID, randomState(), "ABCD", expired, null, null, groupID);
+        Driver driver = new Driver(0, 0, Status.ACTIVE,null, null, null, "l" + groupID, randomState(), "ABCD", expired, null, RuleSetType.NON_DOT, groupID);
         User user = new User(0, 0, randomRole(acctID), Status.ACTIVE, "deepuser_" + groupID, PASSWORD, groupID);
         Date dob = Util.genDate(1959, 8, 30);
         Person person = new Person(0, acctID, TimeZone.getDefault(), 

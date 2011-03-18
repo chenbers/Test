@@ -33,7 +33,7 @@ public class AssetServiceImplTest {
 
         final DateMidnight dateMidnight = new DateMidnight();
         final Date expectedStartDate = dateMidnight.toDate();
-        final Date expectedEndDate = dateMidnight.toDate();
+        final Date expectedEndDate = dateMidnight.plusDays(1).toDate();
 
         // Some pseudo random time for today date.
         final Date today = new DateTime(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth(), 12, 35, 47, 647).toDate();
@@ -44,8 +44,8 @@ public class AssetServiceImplTest {
                 systemClock.getNow();
                 result = today;
 
-                redflagDaoMock.getRedFlagCount(withEqual(SAMPLE_GROUP_ID), withEqual(expectedStartDate), withEqual(expectedEndDate), withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
-                        withEqual(new ArrayList<TableFilterField>()));
+                redflagDaoMock.getRedFlagCount(withEqual(SAMPLE_GROUP_ID), withEqual(expectedStartDate), (Date)any, 
+                        withEqual(RedFlagDAO.INCLUDE_FORGIVEN), withEqual(new ArrayList<TableFilterField>()));
                 result = 200;
             }
         };
@@ -74,7 +74,7 @@ public class AssetServiceImplTest {
                 systemClock.getNow();
                 result = today;
 
-                redflagDaoMock.getRedFlagCount(withEqual(77), withEqual(expectedStartDate), withEqual(expectedEndDate), withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
+                redflagDaoMock.getRedFlagCount(withEqual(77), withEqual(expectedStartDate), (Date)any, withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
                         withEqual(new ArrayList<TableFilterField>()));
                 result = 200;
             }
@@ -95,7 +95,7 @@ public class AssetServiceImplTest {
         // Expectations & stubbing
         new Expectations() {
             {
-                redflagDaoMock.getRedFlagCount(withEqual(SAMPLE_GROUP_ID), withEqual(startDate), withEqual(endDate), withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
+                redflagDaoMock.getRedFlagCount(withEqual(SAMPLE_GROUP_ID), withEqual(startDate), (Date)any, withEqual(RedFlagDAO.INCLUDE_FORGIVEN),
                         withEqual(new ArrayList<TableFilterField>()));
                 result = 200;
             }

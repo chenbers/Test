@@ -11,7 +11,6 @@
   		editBean: backing bean reference.
   		fieldName: field name on backing bean.
   		label: text for label.
-  		reRender: list of id's of components to reRender
   		required: is field required.
   		for: id of input
   		iconSrc: path to an icon to display next to this field (optional)
@@ -20,11 +19,11 @@
      <a4j:region>
       	 <h:selectBooleanCheckbox 
       	 		rendered="#{editBean.batchEdit}" 
-      	 		id="#{context}-update_#{for}" 
+      	 		id="update_#{for}" 
       	 		value="#{editBean.updateField[fieldName]}"
       	 		disabled="#{enableCheckbox}">
       	 </h:selectBooleanCheckbox>
-      	 <h:graphicImage rendered="#{!personBean.batchEdit and iconSrc ne null}" value="#{iconSrc}" width="16" height="16" style="valign:middle" />
+      	 <h:graphicImage rendered="#{!editBean.batchEdit and iconSrc ne null}" value="#{iconSrc}" width="16" height="16" style="valign:middle" />
            <h:outputText value=" #{label}" />
       	 <h:outputText 
       	 		id="update_#{for}_required_flag" 

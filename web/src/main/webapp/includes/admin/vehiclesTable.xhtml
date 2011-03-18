@@ -150,10 +150,6 @@
       </f:facet>
       <h:outputText value="#{item.ifta eq null?'':item.ifta}" />
     </rich:column>
-    <rich:column id="zoneType" rendered="#{vehiclesBean.tableColumns['zoneType'].visible}" sortBy="#{item.zoneType}">
-      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_zoneType}" /></f:facet>
-      <h:outputText value="#{item.zoneType eq null?'':item.zoneType}" />
-    </rich:column>
   </ui:define>
 
 </ui:composition>

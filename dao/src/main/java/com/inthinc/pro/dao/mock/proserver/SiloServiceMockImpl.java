@@ -1334,19 +1334,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 		return getAlertsByAcctID(user.getPerson().getAcctID());
 	}
 
-//	@Override
-//	public List<Map<String, Object>> getZoneAlertsByUserIDDeep(Integer userID) {
-//        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
-//        Person person = (Person) MockData.getInstance().lookupObject(Person.class, "personID", user.getPersonID());
-//		return getZoneAlertsByAcctID(person.getAcctID());
-//	}
-//
-//	@Override
-//	public List<Map<String, Object>> getZoneAlertsByUserID(Integer userID) {
-//        User user= (User) MockData.getInstance().lookupObject(User.class, "userID", userID);
-//		return getZoneAlertsByAcctID(user.getPerson().getAcctID());
-//	}
-
 	@Override
 	public List<Map<String, Object>> getReportPrefsByUserIDDeep(Integer userID)
 			throws ProDAOException {
@@ -1425,11 +1412,6 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         // TODO Auto-generated method stub
         return null;
     }
-//    @Override
-//    public List<Map<String, Object>> getAlertEscalationItemsByAlert(Integer alertID) {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
 
     @Override
     public Map<String, Object> publishZones(Integer accountID) {

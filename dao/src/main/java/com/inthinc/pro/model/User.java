@@ -1,6 +1,7 @@
 package com.inthinc.pro.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,6 +28,7 @@ public class User extends BaseEntity {
     private String username;
     private String password;
     private Integer groupID;
+    private Date lastLogin;
 
     public User(Integer userID, Integer personID, List<Integer> roles, Status status, String username, String password, Integer groupID) {
         super();
@@ -125,4 +127,12 @@ public class User extends BaseEntity {
 	public void setAccessPoints(List<AccessPoint> accessPoints) {
 		this.accessPoints = accessPoints;
 	}
+
+    public void setLastLogin(Date lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Date getLastLogin() {
+        return lastLogin;
+    }
 }

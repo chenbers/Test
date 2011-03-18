@@ -54,7 +54,9 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
 		tableDataProvider.setDateTimeZone(DateTimeZone.forTimeZone(getUser().getPerson().getTimeZone()));
 		tableDataProvider.setEventCategory(getEventCategory());
         tableDataProvider.setSort(new TableSortField(SortOrder.DESCENDING, "time"));
+        tableDataProvider.getTimeFrameBean().setYearSelection(false);
 		table.initModel(tableDataProvider);
+		
     }
     
     
@@ -68,6 +70,7 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
         
        	MeasurementType measurementType = this.getMeasurementType();
         String mphString = MessageUtil.getMessageString(measurementType.toString()+"_mph");
+        String miString  = MessageUtil.getMessageString(measurementType.toString()+"_miles");
         String dateFormatStr = MessageUtil.getMessageString("dateTimeFormat", LocaleBean.getCurrentLocale());
 
         for (Event event : eventList)
@@ -80,7 +83,7 @@ public abstract class PagingEventsBean extends BasePagingNotificationsBean<Event
             if (event instanceof StatusEvent) {
                 statusString = MessageUtil.getMessageString(((StatusEvent)event).getStatusMessageKey());
             }
-            eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, (statusString == null) ? mphString : statusString, LocaleBean.getCurrentLocale()));
+            eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, (statusString == null) ? mphString : statusString, miString, LocaleBean.getCurrentLocale()));
             
         }
         

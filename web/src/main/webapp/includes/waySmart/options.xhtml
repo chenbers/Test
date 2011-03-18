@@ -1,0 +1,44 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:rich="http://richfaces.org/rich"
+                xmlns:a4j="http://richfaces.org/a4j"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+<div class="spacer"></div>
+<h:panelGroup rendered="#{vehiclesBean.item.editableVehicleSettings.wirelineModule == 'ENABLE'}">
+    <div class="add_section_title"><h:outputText value="#{messages.wirelineInformation}"/></div>
+	<table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+	<tr>
+		<td width="150"><h:outputText value="#{messages.wirelineKillMotor}: " /></td>
+		<td><h:outputText value="#{messages[vehiclesBean.item.editableVehicleSettings.killMotor]}" /></td>  
+	</tr>
+	<ui:fragment rendered="#{vehiclesBean.item.editableVehicleSettings.killMotor == 'ENABLE'}">
+	<tr>
+		<td width="150"><h:outputText value="#{messages.wirelineKillMotorPasscode}: " /></td>
+		<td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.killMotorPasscode}" /></td>  
+	</tr>
+	</ui:fragment>
+	<tr>
+		<td width="150"><h:outputText value="#{messages.wirelineDoorAlarm}: " /></td>
+		<td><h:outputText value="#{messages[vehiclesBean.item.editableVehicleSettings.doorAlarm]}" /></td>  
+	</tr>
+	<ui:fragment rendered="#{vehiclesBean.item.editableVehicleSettings.doorAlarm == 'ENABLE'}">
+	<tr>
+		<td width="150"><h:outputText value="#{messages.wirelineDoorAlarmPasscode}: " /></td>
+		<td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.doorAlarmPasscode}" /></td>  
+	</tr>
+	</ui:fragment>
+	<tr>
+		<td width="150"><h:outputText value="#{messages.wirelineAutoArmTime}: " /></td>
+		<td><h:outputText value="#{vehiclesBean.item.editableVehicleSettings.autoArmTime}" /></td>  
+	</tr>
+	</table>                  
+</h:panelGroup>   
+    
+<h:panelGroup rendered="#{vehiclesBean.item.editableVehicleSettings.wirelineModule == 'DISABLE'}">
+    <div class="add_section_title"><h:outputText value="#{messages.wirelineInformation} - Disabled" /></div>
+</h:panelGroup>   
+
+</ui:composition>

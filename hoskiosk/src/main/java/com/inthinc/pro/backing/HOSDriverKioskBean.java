@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.report.ReportRenderer;
 import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.HOSDAO;
@@ -52,7 +53,7 @@ public class HOSDriverKioskBean extends BaseBean {
         hosRecord.setTimeZone(getPerson().getTimeZone());
         hosRecord.setLogTime(new Date());
         hosRecord.setDriverID(getDriver().getDriverID());
-        hosRecord.setDriverDotType(getDriver().getDriverDOTType());
+        hosRecord.setDriverDotType(getDriver().getDot() == null ? RuleSetType.NON_DOT : getDriver().getDot());
         hosRecord.setEditUserID(0);
         hosRecord.setLocation(location);
         hosDAO.create(getDriver().getDriverID(), hosRecord);

@@ -23,8 +23,12 @@ public class AccountAttributes extends BaseEntity {
     private String  supportContact3;
     private String  supportContact4;
     private String  supportContact5;
+    private String  waySmart;
+    private String  passwordExpire;
+    private String  passwordStrength;
+    private String  loginExpire;
+    private String  passwordChange;
 
-    
     @Column(updateable = false)
     private String supportContacts[];
 
@@ -118,4 +122,36 @@ public class AccountAttributes extends BaseEntity {
         setSupportContact5(supportContacts[4]);
     }
 
+    public String getWaySmart() {
+        if (waySmart == null)
+            return "false";
+        return waySmart;
+    }
+    public void setWaySmart(String waySmart) {
+        this.waySmart = waySmart;
+    }
+    public String getPasswordExpire() {
+        return passwordExpire;
+    }
+    public void setPasswordExpire(String passwordExpire) {
+        this.passwordExpire = passwordExpire;
+    }
+    public String getPasswordStrength() {
+        return passwordStrength;
+    }
+    public void setPasswordStrength(String passwordStrength) {
+        this.passwordStrength = passwordStrength;
+    }
+    public String getLoginExpire() {
+        return loginExpire;
+    }
+    public void setLoginExpire(String loginExpire) {
+        this.loginExpire = loginExpire;
+    }
+    public void setPasswordChange(String passwordChange) {
+        this.passwordChange = passwordChange;
+    }
+    public String getPasswordChange() {
+        return passwordChange;
+    }
 }

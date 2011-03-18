@@ -64,7 +64,6 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
     public Person() {
         super();
     }
-
     public Person(Integer personID, Integer acctID, TimeZone timeZone, Integer addressID, String priEmail, String secEmail, String priPhone, String secPhone,
             String priText, String secText, Integer info, Integer warn, Integer crit, String empid, String reportsTo, String title, String dept, String first, String middle,
             String last, String suffix, Gender gender, Integer height, Integer weight, Date dob, Status status, MeasurementType measurementType,
@@ -505,6 +504,4 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
                 + ", secText=" + secText + ", status=" + status + ", suffix=" + suffix + ", timeZone=" + timeZone + ", title=" + title + ", warn=" + warn
                 + ", weight=" + weight + "]";
     }
-
-
 }

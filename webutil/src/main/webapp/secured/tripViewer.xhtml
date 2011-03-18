@@ -1,0 +1,390 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+	template="/template/template.xhtml" 
+	xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:a4j="http://richfaces.org/a4j" 
+    xmlns:rich="http://richfaces.org/rich">
+
+    <ui:param name="panelTitle" value="Trip Viewer" />
+    
+    <ui:define name="scripts">
+       	<a4j:loadScript src="/js/FusionCharts.js"/>
+        
+        <script src="https://maps-api-ssl.google.com/maps?file=api&amp;v=2&amp;client=gme-inthinc&amp;sensor=false"
+            type="text/javascript"></script>
+        
+        <script type="text/javascript">
+		var map;
+		var showWarnings = true;
+		var showIdleMarkers = true;
+		var showTamperMarkers = true;
+		var baseIcon = new GIcon();
+			baseIcon.iconSize = new GSize(21, 20);
+			baseIcon.iconAnchor = new GPoint(6, 20);
+			baseIcon.infoWindowAnchor = new GPoint(5, 1);
+		var ajaxCount = 0;
+		var currentElement;
+		
+		function initMap(lat,lng,zoom)
+		{
+   			if (GBrowserIsCompatible()) 
+			{
+		 	  	map = new GMap2(document.getElementById("map-canvas"));
+		 	  	
+
+		 	  	
+		        map.addControl(new GLargeMapControl());
+		        map.addControl(new GScaleControl());
+		        map.addControl(new GMenuMapTypeControl(true));
+	
+				map.setCenter(new GLatLng(lat, lng), zoom);
+		        map.enableScrollWheelZoom();
+	
+
+				
+				map.setMapType(G_NORMAL_MAP);
+				bounds = new GLatLngBounds();
+	    		geocoder = new GClientGeocoder();
+
+			
+			}
+		}	
+
+		//On page load and A4J Re-render
+		
+		function showTrips()
+		{
+			drawSelectedTrips();
+
+			if ( map != null ) {
+		    	map.setZoom(map.getBoundsZoomLevel(bounds));
+		    	map.setCenter(bounds.getCenter());
+			}
+	    }
+
+
+		</script> 
+   <rich:panel id="script">
+        <script type="text/javascript">
+		
+	    // Unload Google Map objects
+		function bodyUnload()
+		{
+			GUnload();
+		}	
+
+	    // This is called on pageLoad 
+		function bodyLoad()
+		{
+			if ( #{tripViewerBean.tripToShow ne null} ) {
+				initMap(#{tripViewerBean.tripToShow.route[0].lat},#{tripViewerBean.tripToShow.route[0].lng}, 14);
+		   		showTrips();
+			}
+		}
+
+   		function drawSelectedTrips()
+   		{
+				var polyline;
+				var marker;
+				var latlngSt;
+				var latLngEn;
+				var color;
+
+				if ( map == null ) {
+					return;
+				}
+				
+				map.clearOverlays();
+				
+
+
+					color = "#ee0000";
+   					   					
+					polyline = new GPolyline([
+							<ui:repeat value="#{tripViewerBean.tripToShow.route}" var="rt">
+									new GLatLng(#{rt.lat}, #{rt.lng}),
+							</ui:repeat>
+			  						], color, 6);
+					map.addOverlay(polyline);
+
+					<ui:repeat value="#{tripViewerBean.tripToShow.route}" var="rt2">
+						bounds.extend(new GLatLng(#{rt2.lat}, #{rt2.lng}));
+					</ui:repeat>
+					
+					//Start of trip marker
+					var baseIconSt = new GIcon();
+					baseIconSt.iconSize = new GSize(20, 20);
+					baseIconSt.iconAnchor = new GPoint(5, 13);
+					baseIconSt.infoWindowAnchor = new GPoint(5, 1);
+					baseIconSt.image = "#{facesContext.externalContext.request.contextPath}/images/ico_start.png";
+					var optionsSt = { icon:baseIconSt };
+						
+					latlngSt = new GLatLng(#{tripViewerBean.tripStart.lat}, 
+							#{tripViewerBean.tripStart.lng});
+  					var markerSt = new GMarker(latlngSt,optionsSt);
+					map.addOverlay(markerSt);
+					bounds.extend(markerSt.getPoint());
+					
+					//End of trip marker
+					var baseIconEn = new GIcon();
+					baseIconEn.iconSize = new GSize(20, 20);
+					baseIconEn.iconAnchor = new GPoint(5, 13);
+					baseIconEn.infoWindowAnchor = new GPoint(5, 1);
+					baseIconEn.image = "#{facesContext.externalContext.request.contextPath}/images/ico_end_trip.png";
+					var optionsEn = { icon:baseIconEn };
+
+					latlngEn = new GLatLng(#{tripViewerBean.tripEnd.lat}, 
+							#{tripViewerBean.tripEnd.lng});
+  					var markerEn = new GMarker(latlngEn,optionsEn);
+					map.addOverlay(markerEn);
+					bounds.extend(markerEn.getPoint());					
+			}
+
+			function renderLineChart(element, div, width, height)
+			{
+				var elemDef = document.getElementById(element);
+				var elemChart = new FusionCharts("#{facesContext.externalContext.request.contextPath}/fusion/MSLine.swf", 
+					"ChartId", width, height, "0", "1");														
+				elemChart.setDataXML(elemDef.value);	
+				elemChart.setTransparent(true);								   	   
+				elemChart.render(div);
+			}
+		</script>
+        </rich:panel>    			
+	</ui:define>	   
+    
+    <ui:define name="util_content">
+    	
+    	<div style="margin: 10px auto 20px auto;background: #fff;">
+    		<div style="width:600px">	
+    		<rich:panel>
+      			<f:facet name="header">
+            		<h:outputText value="How To Use"/>
+      			</f:facet>
+				<h:outputLabel value="Select, in the following order, account, group, driver then select 'Get Trips'."/>
+				<h:outputLabel value="When the table is populated with trips, you then need to select a trip by clicking on a row in the table. The map will the appear in the large box below."/>
+				<h:outputLabel value="A bug in the system requires you to select 'Speed vs Limit' for a trip before 'MPG All Trips' can be selected."/>
+				<h:outputLabel value="'Show Notes' can only be selected after a trip is selected."/>
+			</rich:panel>
+    		
+    			<a4j:form id="dataSelection">
+    			
+				<h:outputText id="error" value ="#{tripViewerBean.error}" style="font-weight:bold;color:red;"/>
+    			
+                <h:panelGrid id="data" cellspacing="10px;" columns="4">
+                	
+					<h:outputText value="System" />
+					<h:outputText value="Account" />
+					<h:outputText value="Group"/>
+					<h:outputText value="Driver"/>
+					
+					<h:selectOneMenu	value="" 
+										disabled="true"
+		                              	id="system" 
+		                              	style="width:180px">
+						<f:selectItem itemLabel="Option 1" itemValue="1"/>
+	                    <a4j:support event="onselect" action="submit()" ajaxSingle="true" />
+					</h:selectOneMenu>
+					
+					<h:selectOneMenu value="#{tripViewerBean.selectedAccount}" 
+		                              id="account" 
+		                              style="width:180px">
+						<f:selectItems value="#{tripViewerBean.accounts}"/>
+	                    <a4j:support event="onchange" action="#{tripViewerBean.findGroups}" reRender="dataSelection:group,dataSelection:error" ajaxSingle="true" />
+					</h:selectOneMenu>
+				
+					<h:selectOneMenu value="#{tripViewerBean.selectedGroup}" 
+		                              id="group" 
+		                              style="width:180px">
+						<f:selectItems value="#{tripViewerBean.groups}"/>
+	                    <a4j:support event="onchange" action="#{tripViewerBean.findDrivers}" reRender="dataSelection:driver,dataSelection:error"  ajaxSingle="true" />
+					</h:selectOneMenu>	
+					
+					<h:selectOneMenu value="#{tripViewerBean.selectedDriver}" 
+		                              id="driver" 
+		                              style="width:180px">
+						<f:selectItems value="#{tripViewerBean.drivers}"/>
+	                    <a4j:support event="onchange" reRender="dataSelection:trips,dataSelection:error" ajaxSingle="true" />
+					</h:selectOneMenu>	
+					
+					<h:outputText value="Start date"/>
+					<rich:calendar id="startCalendar" inputSize="10" value="#{tripViewerBean.startDate}" showFooter="false">  
+					</rich:calendar>	
+					<h:outputText value="End date" />
+					<rich:calendar id="endCalendar" inputSize="10" value="#{tripViewerBean.endDate}" showFooter="false">  
+					</rich:calendar>
+					
+					<a4j:commandButton value="Get Trips" action="#{tripViewerBean.findTrips}" enabled="#{tripViewerBean.selectedDriver ne null and tripViewerBean.startDate ne null and tripViewerBean.endDate ne null}"
+						reRender="dataSelection:trps,dataSelection:trpsScroller,speedVsLimit:speedLineElement,mpgOverTime:mpgLineElement,dataSelection:error"/>
+					<a4j:commandButton value="Speed vs Limit" enabled="#{tripViewerBean.tripToShow ne null}" reRender="speedVsLimit"/>
+					<a4j:commandButton value="MPG All Trips" enabeld="#{tripViewerBean.trips ne null}" reRender="mpgOverTime"/>
+					<a4j:commandButton value="Show Notes" oncomplete="#{rich:component('tripNotes')}.show()" />	
+																
+                </h:panelGrid>
+               
+                <table>
+                <tr>
+                <td>
+                <rich:dataTable id="trps" var="t" value="#{tripViewerBean.trips}" 
+                	width="100%" cellpadding="0" rows="2" >
+                
+                    <a4j:support event="onRowClick" reRender="script,selectedTripMap,statusPanel" oncomplete="bodyLoad();">
+                        <f:setPropertyActionListener value="#{t}" target="#{tripViewerBean.tripToShow}" />
+                    </a4j:support>
+                                
+                	<f:facet name="header">
+    	                <h:outputText value="Trips Found" />
+        	    	</f:facet>
+ 	    	
+                    <rich:column style="width:25%">
+                        <f:facet name="header">
+                            <h:outputText value="Trip ID" />
+                        </f:facet>
+                        <h:outputText id="id" value="#{t.tripID}" />
+                    </rich:column>
+                    <rich:column width="20%">
+                        <f:facet name="header">
+                            <h:outputText value="Start Time" />
+                        </f:facet>
+                        <h:outputText id="strtTime" value="#{t.startTime}" />
+                    </rich:column>
+                    <rich:column width="25%" >
+                        <f:facet name="header">
+                            <h:outputText value="End Time" />
+                        </f:facet>
+                        <h:outputText id="endTime" value="#{t.endTime}" />
+                    </rich:column>
+                    <rich:column width="25%" >
+                        <f:facet name="header">
+                            <h:outputText value="Mileage" />
+                        </f:facet>
+                        <h:outputText id="miles" value="#{t.mileage/100.0}" />
+                    </rich:column>                                                            
+                </rich:dataTable>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                <rich:datascroller align="center" for="trps" id="trpsScroller"  maxPages="5" reRender="trps">
+                </rich:datascroller>
+                </td>
+                </tr>               
+                </table>
+                </a4j:form>
+			</div>
+		</div>
+		
+		<table>
+		<tr>
+		<td valign="top">
+		<a4j:form id="selectedTripMap">
+                    <rich:panel style="border: 3px black solid;width: 620px; height: 820px;" >
+                        <h:outputText rendered="#{tripViewerBean.tripToShow ne null}">
+                            <h:panelGroup styleClass="map-border" layout="block">
+                                <div id="map-canvas" style="width: 600px; height: 800px; border: 0">
+                                </div>
+                            </h:panelGroup>
+                        </h:outputText>
+
+                    </rich:panel>
+        </a4j:form>
+        </td>
+
+        <td valign="top">
+      	<a4j:form id="speedVsLimit">
+        	<h:inputHidden id="speedLineElement" value="#{tripViewerBean.speedLineDef}">
+    		</h:inputHidden>
+         	<div id="speedLineDiv" align="center" style="border: 3px black solid;width:400px;height:400px;"></div>
+			<script type="text/javascript">
+				renderLineChart("speedVsLimit:speedLineElement","speedLineDiv","400","400");
+		 	</script>
+	    </a4j:form>
+
+      	<a4j:form id="mpgOverTime" >
+        	<h:inputHidden id="mpgLineElement" value="#{tripViewerBean.mpgLineDef}">
+    		</h:inputHidden>
+         	<div id="mpgLineDiv" align="center" style="border: 3px black solid;width:400px;height:400px;"></div>
+			<script type="text/javascript">
+				renderLineChart("mpgOverTime:mpgLineElement","mpgLineDiv","400","400");
+		 	</script>
+	    </a4j:form>	    
+	    </td>
+	    </tr>
+	    </table> 
+	    
+	<h:panelGroup id="statusPanel">
+		<rich:modalPanel id="tripNotes" width="900" height="500" zindex="2000">
+		    <f:facet name="header">
+		      <h:outputText value="Trip Notes" />
+		    </f:facet>
+
+                 <h:form>
+                <rich:dataTable id="trps" var="n" value="#{tripViewerBean.tripNotes}" 
+                	width="100%" cellpadding="0" rows="10" >
+                                
+                	<f:facet name="header">
+    	                <h:outputText value="Notes Found" />
+        	    	</f:facet>
+                    <rich:column style="width:150px" sortBy="#{n.time}" sortOrder="ASCENDING">
+                        <f:facet name="header">
+                            <h:outputText value="Time" />
+                        </f:facet>
+                        <h:outputText id="tim" value="#{n.time}" />
+                    </rich:column>  
+                    <rich:column style="width:150px">
+                        <f:facet name="header">
+                            <h:outputText value="Created" />
+                        </f:facet>
+                        <h:outputText id="creat" value="#{n.created}" />
+                    </rich:column>                      
+                    <rich:column width="100px">
+                        <f:facet name="header">
+                            <h:outputText value="Attribute Map" />
+                        </f:facet>
+                        <h:outputText id="attr" value="#{n.decodedAttrMap}" />
+                    </rich:column>                                   	    	
+                    <rich:column width="100px">
+                        <f:facet name="header">
+                            <h:outputText value="Latitude" />
+                        </f:facet>
+                        <h:outputText id="lat" value="#{n.latitude}" />
+                    </rich:column>                    
+                    <rich:column width="100px">
+                        <f:facet name="header">
+                            <h:outputText value="Longitude" />
+                        </f:facet>
+                        <h:outputText id="lng" value="#{n.longitude}" />
+                    </rich:column>
+                    <rich:column width="100px" >
+                        <f:facet name="header">
+                            <h:outputText value="Speed" />
+                        </f:facet>
+                        <h:outputText id="speed" value="#{n.speed}" />
+                    </rich:column>
+                    <rich:column width="100px" >
+                        <f:facet name="header">
+                            <h:outputText value="Speed Limit" />
+                        </f:facet>
+                        <h:outputText id="lim" value="#{n.speedLimit}" />
+                    </rich:column>  
+                    <rich:column width="100px" >
+                        <f:facet name="header">
+                            <h:outputText value="Satellites" />
+                        </f:facet>
+                        <h:outputText id="sats" value="#{n.sats}" />
+                    </rich:column>                                                                               
+                </rich:dataTable>
+
+                <rich:datascroller align="center" for="trps" id="trpsScroller"  maxPages="5" reRender="trps">
+                </rich:datascroller>
+		    	</h:form>
+		    	
+		    	<h:commandButton onclick="Richfaces.hideModalPanel('tripNotes')" value="OK" />
+		    	
+		</rich:modalPanel>    
+	</h:panelGroup>	    
+    </ui:define>
+</ui:composition>

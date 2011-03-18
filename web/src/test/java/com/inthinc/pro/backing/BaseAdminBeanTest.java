@@ -241,7 +241,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<T> adminBean = getAdminBean();
         adminBean.getItems();
-        setProductType(adminBean);
+        setProductType(adminBean, null);
 
         // select items to edit
         int selected = selectItems(adminBean, 3);
@@ -325,7 +325,7 @@ public abstract class BaseAdminBeanTest<T extends EditItem> extends BaseBeanTest
         assertNull(adminBean.getItem().getId());
 
     }
-    public void setProductType(BaseAdminBean<T> adminBean){
+    public void setProductType(BaseAdminBean<T> adminBean, String type){
         
     }
 }

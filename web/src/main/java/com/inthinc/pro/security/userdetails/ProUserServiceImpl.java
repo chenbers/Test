@@ -4,17 +4,21 @@ package com.inthinc.pro.security.userdetails;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
+import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
 //import com.inthinc.pro.backing.ExternalConfigBean;
+import com.inthinc.pro.backing.PersonBean;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
@@ -61,9 +65,12 @@ public class ProUserServiceImpl implements UserDetailsService
             Account account = accountDAO.findByID(user.getPerson().getAcctID());        
             
             user.setAccessPoints(roleDAO.getUsersAccessPts(user.getUserID()));
+            
+            boolean loginDaysRemaining = PersonBean.getLoginDaysRemaining(account, user) > 0;
+            boolean passwordDaysRemaining = PersonBean.getPasswordDaysRemaining(account, user) > 0;
 
             boolean isAdmin = userIsAdmin(user);
-            ProUser proUser = new ProUser(user, getGrantedAuthorities(user, isAdmin, account.getHos() == AccountHOSType.HOS_SUPPORT ));
+            ProUser proUser = new ProUser(user, loginDaysRemaining, passwordDaysRemaining, getGrantedAuthorities(user, isAdmin, account.getHos() == AccountHOSType.HOS_SUPPORT ));
             proUser.setAdmin(isAdmin);
             
             Group topGroup = groupDAO.findByID(user.getGroupID());
@@ -72,17 +79,21 @@ public class ProUserServiceImpl implements UserDetailsService
             List<Group> groupList = getUserGroupList(accountGroupList, user.getGroupID());                  
             proUser.setGroupHierarchy(new GroupHierarchy(groupList));
             
-            
             List<Zone> zoneList = zoneDAO.getZones(user.getPerson().getAcctID());
             proUser.setZones(zoneList);
 
             proUser.setAccountAttributes(account.getProps());
             proUser.setAccountHOSType(account.getHos());
             
-            
             Driver unknownDriver = driverDAO.findByID(account.getUnkDriverID());
             unknownDriver.getPerson().setDriver(unknownDriver);
             proUser.setUnknownDriver(unknownDriver);
+            
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if(auth != null) {
+                user.setLastLogin(new Date());
+                userDAO.update(user);
+            }
             
             return proUser;
         }

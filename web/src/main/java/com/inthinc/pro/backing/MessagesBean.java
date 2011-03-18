@@ -33,6 +33,7 @@ import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.pagination.PageParams;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.validators.TextMessageValidator;
 
 public class MessagesBean extends BaseBean {
 
@@ -214,7 +215,9 @@ public class MessagesBean extends BaseBean {
     public void setVehicleSelectFromList(List<SelectItem> vehicleSelectFromList) {
         this.vehicleSelectFromList = vehicleSelectFromList;
     }
-
+    public void initSelectFromLists() {
+        //TODO: jwimmer:  initializing  ALL the select lists in one method should be  quicker? and gives me the ability to ONLY include Groups that include waySmart devices
+    }
     public List<SelectItem> getGroupSelectFromList() {
 
         if (this.groupSelectFromList.size() == 0) {
@@ -325,22 +328,13 @@ public class MessagesBean extends BaseBean {
      * Loads "Canned" message texts for current messages in <code>messageList</code> using the portal user's Locale.
      */
     public void loadCannedMessageTexts() {
-        if(this.messageList != null && !this.messageList.isEmpty()) {
-            for(MessageItem item: this.messageList) {
+        if(this.messageList != null && !this.messageList.isEmpty()) { 
+            for(MessageItem item: this.messageList) { 
                 if(NoteType.WAYSMART_DMR.getCode().equals(item.getType()) && item.getDmrOffset() != null) {
                     item.setMessage(MessageUtil.getMessageString("txtMsg_wsDMR_"+item.getDmrOffset(), getLocale()));
                 }
             }
         }
-    }
-
-    /**
-     * Removes the filter from the current view.
-     */
-    public void removeFilter() {
-        this.sentMessageList.clear();
-        this.messageList.clear();
-        this.selectAll = Boolean.FALSE;
     }
 
     public void refreshSent() {
@@ -500,34 +494,32 @@ public class MessagesBean extends BaseBean {
      * Sends <code>this.messageToSend</code> once to each device for all selected drivers/vehicles/groups.
      */
     public void sendMessage() {
-        Set<SendListItem> sendList = new HashSet<SendListItem>();
-
         this.sendMessageList.clear();
+        if(TextMessageValidator.isValid(this.messageToSend)) {
+            Set<SendListItem> sendList = new HashSet<SendListItem>();
+    
+            // Drivers
+            sendList.addAll(getDevicesForDrivers());
+    
+            // Vehicles
+            sendList.addAll(getDevicesForVehicles());
+    
+            // Groups, careful here, need to recurse the group hierarchy
+            sendList.addAll(getDevicesForGroups());
+    
+            // send to each device
+            for (SendListItem item : sendList) {
+                sendDevice(item.getDeviceID());
+            }
 
-        // Drivers
-        sendList.addAll(getDevicesForDrivers());
-
-        // Vehicles
-        sendList.addAll(getDevicesForVehicles());
-
-        // Groups, careful here, need to recurse the group hierarchy
-        sendList.addAll(getDevicesForGroups());
-
-        // Remove any duplicate devices
-        // ???
-
-        // send to each device
-        for (SendListItem item : sendList) {
-            sendDevice(item.getDeviceID());
+            // Prep for next interaction
+            this.messageToSend = "";
+            this.driverSelectedList = new ArrayList<Integer>();
+            this.vehicleSelectedList = new ArrayList<Integer>();
+            this.groupSelectedList = new ArrayList<Integer>();
+        } else {
+            this.sendMessageList.add(MessageUtil.getMessageString("txtMsg_illegalCharacter"));   
         }
-        if (this.sendMessageList.size() < 1) {
-            this.sendMessageList.add(MessageUtil.getMessageString("txtMsg_noMsgSent"));
-        }
-        // Prep for next interaction
-        this.messageToSend = "";
-        this.driverSelectedList = new ArrayList<Integer>();
-        this.vehicleSelectedList = new ArrayList<Integer>();
-        this.groupSelectedList = new ArrayList<Integer>();
     }
 
     /**
@@ -607,7 +599,16 @@ public class MessagesBean extends BaseBean {
             }
         }
     }
-
+    public List<MessageItem> getSelectedItems(){
+        
+        List<MessageItem> selectedItems = new ArrayList<MessageItem>();
+        for (MessageItem mi : messageList) {
+            if (mi.isSelected()) {
+                selectedItems.add(mi);
+            }
+        }
+        return selectedItems;
+    }
     protected static void sort(List<SelectItem> selectItemList) {
         Collections.sort(selectItemList, new Comparator<SelectItem>() {
             @Override
@@ -637,10 +638,8 @@ public class MessagesBean extends BaseBean {
             }
         }
         sort(teams);
-
         return teams;
     }
-
     public Integer getSelectedGroupID() {
         return selectedGroupID;
     }

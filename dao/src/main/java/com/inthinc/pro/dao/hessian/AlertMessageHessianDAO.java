@@ -26,6 +26,7 @@ import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.RedFlag;
+import com.inthinc.pro.model.Silo;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -61,7 +62,10 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     public List<AlertMessage> getMessages(AlertMessageDeliveryType messageType) {
         try {
             List<AlertMessage> messages = new ArrayList<AlertMessage>();
-            for (Integer siloID = 0; siloID < MAX_SILO_ID; siloID++) {
+//            for (Integer siloID = 0; siloID < MAX_SILO_ID; siloID++)
+            Silo silo = getMapper().convertToModelObject(getSiloService().getNextSilo(), Silo.class);
+            Integer siloID = silo.getSiloID();
+            {
                 try {
                     messages.addAll(getMapper().convertToModelObject(getSiloService().getMessages(siloID << 24, messageType.getCode()), AlertMessage.class));
                 }
@@ -91,7 +95,10 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     public List<AlertMessageBuilder> getMessageBuilders(AlertMessageDeliveryType messageType) {
         try {
             List<AlertMessageBuilder> messages = new ArrayList<AlertMessageBuilder>();
-            for (Integer siloID = 0; siloID < MAX_SILO_ID; siloID++) {
+//            for (Integer siloID = 0; siloID < MAX_SILO_ID; siloID++) {
+            Silo silo = getMapper().convertToModelObject(getSiloService().getNextSilo(), Silo.class);
+            Integer siloID = silo.getSiloID();
+            {
                 try {
                     List<AlertMessage> alertMessageList = getMapper().convertToModelObject(getSiloService().getMessages(siloID << 24, messageType.getCode()), AlertMessage.class);
                     for (AlertMessage alertMessage : alertMessageList) {
@@ -260,6 +267,5 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
         // TODO Auto-generated method stub
         
     }
-    
 
 }

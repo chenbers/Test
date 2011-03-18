@@ -42,6 +42,7 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.model.WirelineStatus;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.util.MessageUtil;
@@ -134,6 +135,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             filterValues.put(column, null);
         }
     }
+    @Override
+    public void refreshItems()
+    {
+        super.refreshItems();
+        setBatchEdit(false);
+    }
+
+    
     public boolean isFilterProductChoice(ProductType productType){
         
         return filterValues.get("productType") == null || filterValues.get("productType").equals(productType);
@@ -251,6 +260,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicleView.setOldGroupID(vehicle.getGroupID());
         vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
+
 
         return vehicleView;
     }
@@ -382,7 +392,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     private int getFirstSelectedItem(List<VehicleView> inViewItems){
         int firstSelected = 0;
-        for(VehicleView vehicleView : filteredItems){
+        for(VehicleView vehicleView : inViewItems){
             
             if (vehicleView.isSelected()) return firstSelected;
             firstSelected++;
@@ -696,18 +706,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public List<SelectItem> getStatusSelectItems() {
         return DeviceStatusSelectItems.INSTANCE.getSelectItems();
     }
-    public List<SelectItem> getZoneTypeSelectItems()
-    {
-        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
-
-        for (VehicleType p : EnumSet.allOf(VehicleType.class))
-        {
-            SelectItem selectItem = new SelectItem(p.getCode(),MessageUtil.getMessageString(p.toString()));
-            selectItemList.add(selectItem);
-        }
-
-        return selectItemList;
-    }
 
     public Map<String, State> getStates()
     {
@@ -728,6 +726,11 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     public ProductType getBatchEditProductChoice() {
         return batchEditProductChoice;
+    }
+    
+    public List<SelectItem> getWirelineStatuses()
+    {
+        return SelectItemUtil.toList(WirelineStatus.class, false);
     }
 
     public static class VehicleView extends Vehicle implements EditItem
@@ -751,7 +754,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         private EditableVehicleSettings editableVehicleSettings;
         @Column(updateable = false)
         private boolean           selected;
-
         
         public VehicleView() {
             super();

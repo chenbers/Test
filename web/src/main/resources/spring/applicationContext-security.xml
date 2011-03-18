@@ -34,6 +34,7 @@
 
         <!--  our additional properties  -->
         <beans:property name="groupDAO" ref="groupDAO" />
+        <beans:property name="userDAO" ref="userDAO" />
     </beans:bean>
     <beans:bean id="authenticationProcessingFilterEntryPoint" class="com.inthinc.pro.security.ProAuthenticationProcessingFilterEntryPoint">
         <beans:property name="loginFormUrl" value="/login" />

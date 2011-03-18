@@ -31,11 +31,12 @@ public class PagingSafetyEventsBean extends PagingEventsBean {
 		return CATEGORIES;
 	}
 	
-	public PagingSafetyEventsBean()
-	{
-		logger.info("PagingSafetyEventsBean - constructor");
-	}
-
+    @Override
+    public void init()
+    {
+        super.init();
+        getTableDataProvider().getTimeFrameBean().setYearSelection(true);
+    }
 
     @Override
     protected ReportCriteria getReportCriteria() {

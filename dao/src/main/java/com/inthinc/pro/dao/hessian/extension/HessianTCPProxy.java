@@ -186,6 +186,7 @@ public class HessianTCPProxy implements InvocationHandler
         }
         catch (HessianProtocolException e)
         {
+            log.error(e);
             throw new HessianRuntimeException(e);
         }
         finally

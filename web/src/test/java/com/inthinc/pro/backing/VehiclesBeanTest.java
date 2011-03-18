@@ -53,9 +53,9 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
 
         assertEquals(adminBean.getItem().getId().intValue(), -1);
     }
-//    @Override
-    public void setProductType(BaseAdminBean<VehicleView> adminBean){
-        ((BaseAdminBean<VehicleView>)adminBean).getFilterValues().put("productType","tiwiPro");
+    @Override
+    public void setProductType(BaseAdminBean<VehicleView> adminBean, String type){
+        ((BaseAdminBean<VehicleView>)adminBean).getFilterValues().put("productType",type);
     }
     @Override
     public void batchEdit() throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
@@ -66,52 +66,13 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
         // get the bean from the applicationContext (initialized by Spring injection)
         BaseAdminBean<VehicleView> adminBean = getAdminBean();
         adminBean.getItems();
-        setProductType(adminBean);
+        setProductType(adminBean,null);
 
         // select items to edit
         int selected = selectItems(adminBean, 3);
         assertEquals(selected, adminBean.getSelectedItems().size());
+        setProductType(adminBean,null);
 
-        // edit
-//        assertFalse(adminBean.isBatchEdit());
-//        assertEquals(adminBean.batchEdit(), adminBean.getEditRedirect());
-//        assertFalse(adminBean.isAdd());
-//        assertFalse(adminBean.isBatchEdit());
-//
-//        // edit item
-//        assertNotNull(adminBean.getItem());
-//        
-//        checkBatchEditId(adminBean);
-//
-//        // cancel edit
-//        assertEquals(adminBean.cancelEdit(), adminBean.getFinishedRedirect());
-//        assertEquals(adminBean.getSelectedItems().size(), 0);
-//
-//        // start another edit
-//        selected = selectItems(adminBean, 3);
-//        assertEquals(selected, adminBean.getSelectedItems().size());
-//        adminBean.batchEdit();
-//
-//        // populate
-//        populate(adminBean.getItem(), adminBean);
-//        for (final String field : getBatchUpdateFields()) {
-//            adminBean.getUpdateField().put(field, true);
-//        }
-//
-//        // save
-//        int count = adminBean.getItemCount();
-//        assertEquals(adminBean.save(), adminBean.getFinishedRedirect());
-//        assertEquals(adminBean.getItemCount(), count);
-//        assertEquals(adminBean.getSelectedItems().size(), 0);
-//
-//        // test batch update fields
-//        for (final VehicleView item : adminBean.getSelectedItems())
-//            for (final String field : getBatchUpdateFields())
-//            {
-//                final PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(item.getClass(), field);
-//                if (descriptor != null)
-//                    assertEquals(descriptor.getReadMethod().invoke(item, new Object[0]), descriptor.getReadMethod().invoke(adminBean.getItem(), new Object[0]));
-//            }
     }
     
 }

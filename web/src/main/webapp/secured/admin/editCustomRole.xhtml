@@ -8,6 +8,7 @@
               xmlns:security="http://pro.tiwi.com/jsf/security"
               xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
+  <ui:param name="helpMapIDOverride" value="#{(customRolesBean.add) ? '13' :''}"/>
   <ui:param name="adminSelected" value="current" />
   <ui:param name="title" value="#{customRolesBean.add ? messages.adminHeader_addCustomRole : (customRolesBean.batchEdit ? messages.adminHeader_editCustomRoles : messages.adminHeader_editCustomRole)}"/>
   <ui:define name="scripts">

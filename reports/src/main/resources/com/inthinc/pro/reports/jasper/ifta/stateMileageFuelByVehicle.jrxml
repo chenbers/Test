@@ -46,9 +46,9 @@
 			<band splitType="Stretch"/>
 		</groupHeader>
 		<groupFooter>
-			<band height="125" splitType="Stretch">
+			<band height="126" splitType="Stretch">
 				<crosstab columnBreakOffset="3">
-					<reportElement key="crosstab-1" isPrintRepeatedValues="false" x="0" y="6" width="402" height="114"/>
+					<reportElement key="crosstab-1" x="0" y="6" width="402" height="114"/>
 					<crosstabHeaderCell>
 						<cellContents mode="Transparent"/>
 					</crosstabHeaderCell>
@@ -58,8 +58,8 @@
 						</bucket>
 						<crosstabRowHeader>
 							<cellContents mode="Transparent">
-								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement key="textField-13" x="0" y="1" width="125" height="38" isPrintWhenDetailOverflows="true"/>
+								<textField isBlankWhenNull="true">
+									<reportElement key="textField-13" x="1" y="1" width="124" height="57" isPrintWhenDetailOverflows="true"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{groupName}]]></textFieldExpression>
 								</textField>
@@ -75,19 +75,19 @@
 						</bucket>
 						<crosstabRowHeader>
 							<cellContents mode="Transparent">
-								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-									<reportElement key="textField" x="1" y="0" width="65" height="16" isPrintWhenDetailOverflows="true"/>
+								<textField isBlankWhenNull="true">
+									<reportElement key="textField" x="1" y="1" width="66" height="36" isPrintWhenDetailOverflows="true"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{vehicle}]]></textFieldExpression>
 								</textField>
 							</cellContents>
 						</crosstabRowHeader>
 						<crosstabTotalRowHeader>
-							<cellContents mode="Transparent">
+							<cellContents backcolor="#808080" mode="Transparent">
 								<textField isBlankWhenNull="false">
-									<reportElement key="textField" x="0" y="0" width="67" height="17"/>
+									<reportElement key="textField" x="0" y="0" width="67" height="16"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
-									<textFieldExpression class="java.lang.String"><![CDATA[$R{total.vehicle}]]></textFieldExpression>
+									<textFieldExpression class="java.lang.String"><![CDATA[$R{total.group}]]></textFieldExpression>
 								</textField>
 							</cellContents>
 						</crosstabTotalRowHeader>
@@ -98,7 +98,7 @@
 						</bucket>
 						<crosstabRowHeader>
 							<cellContents mode="Transparent">
-								<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<textField isBlankWhenNull="true">
 									<reportElement key="textField" x="0" y="0" width="70" height="16" isPrintWhenDetailOverflows="true"/>
 									<textElement textAlignment="Right" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{month}]]></textFieldExpression>
@@ -106,11 +106,11 @@
 							</cellContents>
 						</crosstabRowHeader>
 						<crosstabTotalRowHeader>
-							<cellContents mode="Transparent">
+							<cellContents backcolor="#C0C0C0" mode="Transparent">
 								<textField isBlankWhenNull="false">
-									<reportElement key="textField-13" x="0" y="5" width="70" height="16"/>
+									<reportElement key="textField-13" x="0" y="3" width="70" height="16"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
-									<textFieldExpression class="java.lang.String"><![CDATA[$R{total}]]></textFieldExpression>
+									<textFieldExpression class="java.lang.String"><![CDATA[$R{total.vehicle}]]></textFieldExpression>
 								</textField>
 							</cellContents>
 						</crosstabTotalRowHeader>
@@ -121,7 +121,7 @@
 						</bucket>
 						<crosstabColumnHeader>
 							<cellContents mode="Transparent">
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField" x="0" y="0" width="45" height="29"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{State}]]></textFieldExpression>
@@ -130,7 +130,7 @@
 						</crosstabColumnHeader>
 						<crosstabTotalColumnHeader>
 							<cellContents mode="Transparent">
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField" x="0" y="0" width="50" height="29"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$R{column.total}]]></textFieldExpression>
@@ -143,54 +143,54 @@
 					</measure>
 					<crosstabCell width="45" height="16">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField-15" x="0" y="0" width="45" height="16"/>
-								<textElement textAlignment="Center"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckFuel_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
 					<crosstabCell width="50" height="16" columnTotalGroup="State">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField-15" x="0" y="0" width="50" height="16"/>
-								<textElement textAlignment="Center"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckFuel_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="45" height="22" rowTotalGroup="month">
+					<crosstabCell width="45" height="26" rowTotalGroup="month">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-15" x="0" y="5" width="45" height="16"/>
-								<textElement textAlignment="Center"/>
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-15" x="0" y="3" width="45" height="16"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckFuel_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="50" height="22" rowTotalGroup="month" columnTotalGroup="State">
+					<crosstabCell width="50" height="26" rowTotalGroup="month" columnTotalGroup="State">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-15" x="0" y="5" width="50" height="16"/>
-								<textElement textAlignment="Center"/>
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-15" x="0" y="3" width="50" height="16"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckFuel_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="45" height="30" rowTotalGroup="vehicle">
-						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-15" x="0" y="5" width="45" height="16"/>
-								<textElement textAlignment="Center"/>
+					<crosstabCell width="45" height="26" rowTotalGroup="vehicle">
+						<cellContents backcolor="#808080" mode="Transparent">
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-15" x="0" y="3" width="45" height="16"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckFuel_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="50" height="30" rowTotalGroup="vehicle" columnTotalGroup="State">
-						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-15" x="0" y="5" width="50" height="16"/>
-								<textElement textAlignment="Center"/>
+					<crosstabCell width="50" height="26" rowTotalGroup="vehicle" columnTotalGroup="State">
+						<cellContents backcolor="#404040" mode="Transparent">
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-15" x="0" y="3" width="50" height="16"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTruckFuel_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -252,17 +252,17 @@
 						</bucket>
 						<crosstabColumnHeader>
 							<cellContents mode="Transparent">
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField" x="0" y="0" width="85" height="15" isPrintWhenDetailOverflows="true"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{State}]]></textFieldExpression>
 								</textField>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField-16" x="0" y="15" width="45" height="14"/>
 									<textElement textAlignment="Center"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[($P{metric}.booleanValue()) ? "kms" : "miles"]]></textFieldExpression>
 								</textField>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField-16" x="45" y="15" width="40" height="14"/>
 									<textElement textAlignment="Center"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[($P{metric}.booleanValue()) ? "km/li" : "mi/gal"]]></textFieldExpression>
@@ -271,21 +271,21 @@
 						</crosstabColumnHeader>
 						<crosstabTotalColumnHeader>
 							<cellContents mode="Transparent">
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField-16" x="55" y="15" width="45" height="14"/>
 									<textElement textAlignment="Center" verticalAlignment="Top">
 										<font size="10"/>
 									</textElement>
 									<textFieldExpression class="java.lang.String"><![CDATA[($P{metric}.booleanValue()) ? "km/li" : "mi/gal"]]></textFieldExpression>
 								</textField>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField-16" x="0" y="15" width="55" height="14"/>
 									<textElement textAlignment="Center" verticalAlignment="Top">
 										<font size="10"/>
 									</textElement>
 									<textFieldExpression class="java.lang.String"><![CDATA[($P{metric}.booleanValue()) ? "kms" : "miles"]]></textFieldExpression>
 								</textField>
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField" x="0" y="0" width="99" height="15" isPrintWhenDetailOverflows="true"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle">
 										<font size="10"/>
@@ -306,19 +306,19 @@
 					</measure>
 					<crosstabCell width="85" height="16">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+							<textField pattern="###0" isBlankWhenNull="false">
 								<reportElement key="textField" x="0" y="0" width="45" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Long"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField-16" x="45" y="0" width="40" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
+							<textField pattern="###0.00" isBlankWhenNull="false">
 								<reportElement key="textField-16" x="45" y="0" width="40" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
 								</reportElement>
@@ -329,19 +329,19 @@
 					</crosstabCell>
 					<crosstabCell width="100" height="16" columnTotalGroup="State">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
+							<textField pattern="###0" isBlankWhenNull="false">
 								<reportElement key="textField" x="0" y="0" width="55" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Long"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+							<textField pattern="###0.00" isBlankWhenNull="true">
 								<reportElement key="textField-16" x="55" y="0" width="45" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
+							<textField pattern="###0.00" isBlankWhenNull="true">
 								<reportElement key="textField-16" x="55" y="0" width="45" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
 								</reportElement>
@@ -350,17 +350,17 @@
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="85" height="21" rowTotalGroup="month">
+					<crosstabCell width="85" height="26" rowTotalGroup="month">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
-								<reportElement key="textField-13" x="0" y="5" width="45" height="16"/>
+							<textField pattern="###0" isBlankWhenNull="false">
+								<reportElement key="textField-13" x="0" y="3" width="45" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10"/>
 								</textElement>
 								<textFieldExpression class="java.lang.Long"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-16" x="45" y="5" width="40" height="16" isPrintWhenDetailOverflows="true">
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-16" x="45" y="3" width="40" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -368,8 +368,8 @@
 								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-16" x="45" y="5" width="40" height="16" isPrintWhenDetailOverflows="true">
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-16" x="45" y="3" width="40" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -379,17 +379,17 @@
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="100" height="21" rowTotalGroup="month" columnTotalGroup="State">
+					<crosstabCell width="100" height="26" rowTotalGroup="month" columnTotalGroup="State">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
-								<reportElement key="textField" x="0" y="5" width="55" height="16"/>
+							<textField pattern="###0" isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="3" width="55" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10"/>
 								</textElement>
 								<textFieldExpression class="java.lang.Long"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
-								<reportElement key="textField-16" x="55" y="5" width="45" height="16" isPrintWhenDetailOverflows="true">
+							<textField pattern="###0.00" isBlankWhenNull="true">
+								<reportElement key="textField-16" x="55" y="3" width="45" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -397,8 +397,8 @@
 								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
-								<reportElement key="textField-16" x="55" y="5" width="45" height="16" isPrintWhenDetailOverflows="true">
+							<textField pattern="###0.00" isBlankWhenNull="true">
+								<reportElement key="textField-16" x="55" y="3" width="45" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -408,17 +408,17 @@
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="85" height="30" rowTotalGroup="vehicle">
+					<crosstabCell width="85" height="26" rowTotalGroup="vehicle">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
-								<reportElement key="textField" x="0" y="5" width="45" height="16"/>
+							<textField pattern="###0" isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="3" width="45" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10"/>
 								</textElement>
 								<textFieldExpression class="java.lang.Long"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-16" x="45" y="5" width="40" height="16" isPrintWhenDetailOverflows="true">
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-16" x="45" y="3" width="40" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} != 0]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -426,8 +426,8 @@
 								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMiles_Sum} / $V{totalTruckGas_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField-16" x="45" y="5" width="40" height="16" isPrintWhenDetailOverflows="true">
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField-16" x="45" y="3" width="40" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalTruckGas_Sum} == 0]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -437,17 +437,17 @@
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="100" height="30" rowTotalGroup="vehicle" columnTotalGroup="State">
+					<crosstabCell width="100" height="26" rowTotalGroup="vehicle" columnTotalGroup="State">
 						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="false">
-								<reportElement key="textField" x="0" y="5" width="55" height="16"/>
+							<textField pattern="###0" isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="3" width="55" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="10"/>
 								</textElement>
 								<textFieldExpression class="java.lang.Long"><![CDATA[$V{totalMiles_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
-								<reportElement key="textField-16" x="55" y="5" width="45" height="16" isPrintWhenDetailOverflows="true">
+							<textField pattern="###0.00" isBlankWhenNull="true">
+								<reportElement key="textField-16" x="55" y="3" width="45" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalMileage_Sum} != null]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -455,8 +455,8 @@
 								</textElement>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalMileage_Sum}]]></textFieldExpression>
 							</textField>
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="true">
-								<reportElement key="textField-16" x="55" y="5" width="45" height="16" isPrintWhenDetailOverflows="true">
+							<textField pattern="###0.00" isBlankWhenNull="true">
+								<reportElement key="textField-16" x="55" y="3" width="45" height="16" isPrintWhenDetailOverflows="true">
 									<printWhenExpression><![CDATA[$V{totalMileage_Sum} == null]]></printWhenExpression>
 								</reportElement>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -520,7 +520,7 @@
 						</bucket>
 						<crosstabColumnHeader>
 							<cellContents mode="Transparent">
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField" x="0" y="0" width="45" height="29"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$V{State}]]></textFieldExpression>
@@ -529,7 +529,7 @@
 						</crosstabColumnHeader>
 						<crosstabTotalColumnHeader>
 							<cellContents mode="Transparent">
-								<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<textField isBlankWhenNull="false">
 									<reportElement key="textField" x="0" y="0" width="55" height="29"/>
 									<textElement textAlignment="Center" verticalAlignment="Middle"/>
 									<textFieldExpression class="java.lang.String"><![CDATA[$R{total.state}]]></textFieldExpression>
@@ -550,7 +550,7 @@
 						</cellContents>
 					</crosstabCell>
 					<crosstabCell width="55" height="16" columnTotalGroup="State">
-						<cellContents mode="Transparent">
+						<cellContents backcolor="#999999" mode="Transparent">
 							<textField pattern="###0.00" isBlankWhenNull="true">
 								<reportElement key="textField" x="0" y="0" width="55" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
@@ -558,37 +558,37 @@
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="45" height="21" rowTotalGroup="month">
+					<crosstabCell width="45" height="26" rowTotalGroup="month">
 						<cellContents mode="Transparent">
 							<textField pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField" x="0" y="5" width="45" height="16"/>
+								<reportElement key="textField" x="0" y="3" width="45" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTrailerGas_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="55" height="21" rowTotalGroup="month" columnTotalGroup="State">
+					<crosstabCell width="55" height="26" rowTotalGroup="month" columnTotalGroup="State">
+						<cellContents backcolor="#404040" mode="Transparent">
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="3" width="55" height="16"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTrailerGas_Sum}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabCell>
+					<crosstabCell width="45" height="26" rowTotalGroup="vehicle">
 						<cellContents mode="Transparent">
 							<textField pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField" x="0" y="5" width="55" height="16"/>
+								<reportElement key="textField" x="0" y="3" width="45" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTrailerGas_Sum}]]></textFieldExpression>
 							</textField>
 						</cellContents>
 					</crosstabCell>
-					<crosstabCell width="45" height="30" rowTotalGroup="vehicle">
-						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField" x="0" y="5" width="45" height="16"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle"/>
-								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTrailerGas_Sum}]]></textFieldExpression>
-							</textField>
-						</cellContents>
-					</crosstabCell>
-					<crosstabCell width="55" height="30" rowTotalGroup="vehicle" columnTotalGroup="State">
-						<cellContents mode="Transparent">
-							<textField isStretchWithOverflow="true" pattern="###0.00" isBlankWhenNull="false">
-								<reportElement key="textField" x="0" y="5" width="55" height="16"/>
+					<crosstabCell width="55" height="26" rowTotalGroup="vehicle" columnTotalGroup="State">
+						<cellContents backcolor="#404040" mode="Transparent">
+							<textField pattern="###0.00" isBlankWhenNull="false">
+								<reportElement key="textField" x="0" y="3" width="55" height="16"/>
 								<textElement textAlignment="Center" verticalAlignment="Middle"/>
 								<textFieldExpression class="java.lang.Double"><![CDATA[$V{totalTrailerGas_Sum}]]></textFieldExpression>
 							</textField>
@@ -625,9 +625,7 @@
 				<imageExpression class="java.awt.Image"><![CDATA[$P{REPORT_LOGO_IMG}]]></imageExpression>
 			</image>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-9" x="316" y="5" width="486" height="30">
-					<printWhenExpression><![CDATA[new Boolean($P{units}.equalsIgnoreCase("metric"))]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="textField-9" x="316" y="2" width="486" height="30"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -637,34 +635,19 @@
 				<textElement textAlignment="Right">
 					<font size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{stateMileageFuelByVehicle.title.metric}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-10" x="316" y="5" width="486" height="30">
-					<printWhenExpression><![CDATA[new Boolean($P{units}.equalsIgnoreCase("english"))]]></printWhenExpression>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Right">
-					<font size="20" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{stateMileageFuelByVehicle.title.english}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{title.stateMileageFuelByVehicle}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="475" y="35" width="328" height="14"/>
+				<reportElement x="453" y="33" width="350" height="18"/>
 				<textElement textAlignment="Right">
-					<font isBold="true"/>
+					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{fuelEfficiencyType.label} + " " + str($P{FUEL_EFFICIENCY_TYPE})]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="53" splitType="Stretch">
+		<band height="51" splitType="Stretch">
 			<rectangle>
 				<reportElement key="rectangle-2" x="0" y="2" width="803" height="19" backcolor="#000000"/>
 				<graphicElement>

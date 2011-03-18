@@ -6,6 +6,7 @@ import it.config.ReportTestConst;
 
 import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Date;
 
@@ -43,7 +44,14 @@ public class DataGenForAlertMessageTesting  extends DataGenForTesting {
         }
         
         xmlPath = args[0];
-        
+
+        File file = new File(xmlPath); 
+        if (!file.exists()) {
+            
+            String dir = file.getParent();
+            new File(dir).mkdirs();
+        }
+
         
 	}
 
@@ -61,6 +69,7 @@ public class DataGenForAlertMessageTesting  extends DataGenForTesting {
         try
         {
         	System.out.println(" -- test data generation start -- ");
+        	
 	        xml = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(testData.xmlPath)));
 	        System.out.println(" saving output to " + testData.xmlPath);
 	        testData.createTestData();

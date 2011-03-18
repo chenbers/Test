@@ -16,15 +16,22 @@
     <property name="basename" value="com.inthinc.pro.resources.Messages" />
   </bean>
 
+  <!--  -->
+  <!-- This is where the selenium script files need to be referenced (script.txt and macro.txt below) -->
+  <!--  -->
   <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="ignoreResourceNotFound" value="true" />
     <property name="locations">
       <list>
         <value>classpath:tiwipro.properties</value>
         <value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
+        <value>classpath:script.txt</value>
+        <value>classpath:macro.txt</value>
+        <value>classpath:login.txt</value>
       </list>
     </property>
   </bean>
+
 
   <!-- <bean id="junkBean" class="com.inthinc.pro.junk.JunkBean" scope="request" init-method="init" /> -->
 
@@ -672,7 +679,11 @@
   <bean id="supportBean" class="com.inthinc.pro.backing.SupportBean" parent="baseBean">
   	<property name="defaultSupportContacts" value="${supportContact.default}" />
   </bean>
- 
+ <bean id="chartBeatBean" class="com.inthinc.pro.backing.ChartBeatBean" parent="baseBean">
+    <property name="track" value="${chartbeat_track}" />
+    <property name="domain" value="${chartbeat_domain}" />
+    <property name="uid" value="${chartbeat_uid}" />
+ </bean>
 
   <bean id="hosBean" class="com.inthinc.pro.backing.HosBean" scope="session" init-method="init">
   </bean>

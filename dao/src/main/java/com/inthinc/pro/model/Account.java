@@ -175,5 +175,18 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
     public String toString() {
         return "Account [acctID=" + acctID + ", acctName=" + acctName + ", status=" + status + ", unkDriverID=" + unkDriverID + "]";
     }
+    
+    public Boolean getWaySmartSupport() {
+        AccountAttributes options = getProps();
+        if (options == null)
+            return false;
+        
+        String waySmart = options.getWaySmart();
+        if (waySmart == null)
+            return false;
+        
+        return Boolean.valueOf(waySmart);
+        
+    }
 
 }

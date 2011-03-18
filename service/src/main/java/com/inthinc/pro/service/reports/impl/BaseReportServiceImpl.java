@@ -1,8 +1,9 @@
 package com.inthinc.pro.service.reports.impl;
 
-import java.util.Calendar;
 import java.util.Date;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
@@ -13,7 +14,7 @@ import com.inthinc.pro.service.reports.facade.ReportsFacade;
 public class BaseReportServiceImpl {
 
     public static String DATE_FORMAT = "yyyyMMdd";
-    static final Integer DAYS_BACK = -6;
+    static final Integer DAYS_BACK = 7;
 
     protected ReportsFacade reportsFacade;
 
@@ -32,22 +33,20 @@ public class BaseReportServiceImpl {
      */
     public Interval getInterval(Date startDate, Date endDate) {
         if (startDate == null || endDate == null) {
-            Calendar start = getMidnight();
-            start.add(Calendar.DAY_OF_YEAR, DAYS_BACK);
-            startDate = start.getTime();
-            endDate = getMidnight().getTime();
-        }        
-        return new Interval(startDate.getTime(), endDate.getTime());
+            startDate = getMidnight(DAYS_BACK);
+            endDate = getMidnight(0);
+        }
+        
+        return new Interval(startDate.getTime(), getEndOfDay(endDate).getTime());
     }
     
-    private Calendar getMidnight() {
-        Calendar date = Calendar.getInstance();
-        // set time to midnight
-       date.set(Calendar.HOUR_OF_DAY, 0);
-       date.set(Calendar.MINUTE, 0);
-       date.set(Calendar.SECOND, 0);
-       date.set(Calendar.MILLISECOND, 0);
-       return date;
+    private Date getMidnight(int daysBack) {
+       DateMidnight date = new DateMidnight(); 
+       date = date.minusDays(daysBack);
+       return date.toDate();
     }
 
+    private Date getEndOfDay(Date date) {
+        return new DateTime(new DateMidnight(date).plusDays(1)).minus(1).toDate();
+    }
 }

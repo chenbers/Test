@@ -1,5 +1,6 @@
 package com.inthinc.pro.model.configurator;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -55,13 +56,30 @@ public class Slider {
             
             Integer settingID = settingEntry.getKey(); //settingID
             String settingValue = settingEntry.getValue();//setting value
+            SensitivitySliderValues sensitvitySliderValues = settingsForThisSlider.get(settingID);
             
-            match = settingsForThisSlider.get(settingID).getValues().get(sliderValue).equals(settingValue);
+            match = subValuesMatch(settingValue,sensitvitySliderValues.getValues().get(sliderValue));
             
-            if (!match) return false;
+            if (match) return true;
+        }
+        return false;
+        
+    }
+    private Boolean subValuesMatch(String settingValue, String thisSliderValue){
+
+        if (null == settingValue) return false;
+        
+        List<String> settingValues = Arrays.asList(settingValue.split(" "));
+        List<String> sliderValues = Arrays.asList(thisSliderValue.split(" "));
+        if (sliderValues.size()!= settingValues.size()) return false;
+        for(int i=0; i<sliderValues.size();i++){
+            
+            if(i==2) continue; //slider position value shouldn't be counted
+            if (!settingValues.get(i).equals(sliderValues.get(i))){
+                return false;
+            }
         }
         return true;
-        
     }
     public SliderKey getSliderKey() {
         return sliderKey;

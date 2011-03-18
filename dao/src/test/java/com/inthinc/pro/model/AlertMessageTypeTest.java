@@ -61,14 +61,19 @@ public class AlertMessageTypeTest {
     @Test
     public void testAlertMessageTypeMapping2() {
         Long mask = 0l;
+        mask |= AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask();
+        System.out.println(AlertMessageType.ALERT_TYPE_ENTER_ZONE + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(AlertMessageType.ALERT_TYPE_ENTER_ZONE.getBitMask()));
+        mask |= AlertMessageType.ALERT_TYPE_EXIT_ZONE.getBitMask();
+        System.out.println(AlertMessageType.ALERT_TYPE_EXIT_ZONE + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(AlertMessageType.ALERT_TYPE_EXIT_ZONE.getBitMask()));
         
         
+        mask = 0l;
         for (AlertMessageType type : AlertMessageType.values()) {
             mask |= type.getBitMask();
-            System.out.println("mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(type.getBitMask()));
+            System.out.println(type + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(type.getBitMask()));
         }
         
-        assertEquals("3ffdfffff", Long.toHexString(mask));
+        assertEquals("7ffdfffff", Long.toHexString(mask));
         
         List<AlertMessageType> allTypes = AlertMessageType.getAlertMessageTypes(mask);
         for (AlertMessageType type : allTypes)

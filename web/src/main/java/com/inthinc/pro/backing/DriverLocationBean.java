@@ -78,8 +78,7 @@ public class DriverLocationBean extends BaseBean {
 	{
 //		logger.info("-----getDriverLocations groupid: " + navigation.getGroupID());	
 		// cj 2/13/10 -- this was commented out, but put it back in because this method gets called several times and getDVLByGroupId is expensive
-	    if (driverLocationsMap != null && driverLocationsMap.size() > 0) {
-	    	
+	    if (driverLocationsMap != null) {
 	    	return new ArrayList<DriverLocation>(driverLocationsMap.values());
 	    }
 	    

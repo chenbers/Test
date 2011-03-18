@@ -152,11 +152,8 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
     {
         return getChangedCount(getSiloService().unforgive(driverID, noteID));
     }
-	@Override
-	public List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Integer daysBack) {
-
-        Date endDate = new Date();
-        Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+    @Override
+    public List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Date startDate, Date endDate) {
 
         List<Vehicle> vehicleList = getMapper().convertToModelObject(this.getSiloService().getVehiclesByGroupIDDeep(groupID), Vehicle.class);
         List<Event> eventList = new ArrayList<Event>();
@@ -170,6 +167,14 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
             }
         }
         return Event.cleanEvents(eventList);
+    }
+
+	@Override
+	public List<Event> getEventsForGroupFromVehicles(Integer groupID, List<NoteType> eventTypes, Integer daysBack) {
+
+        Date endDate = new Date();
+        Date startDate = DateUtil.getDaysBackDate(endDate, daysBack);
+        return getEventsForGroupFromVehicles(groupID,eventTypes, startDate,endDate);
 	}
 
 	@Override

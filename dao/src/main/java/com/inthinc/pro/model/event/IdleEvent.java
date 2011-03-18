@@ -71,7 +71,7 @@ public class IdleEvent extends Event
 	}
     
     @Override
-    public String getDetails(String formatStr,MeasurementType measurementType,String mphString)
+    public String getDetails(String formatStr,MeasurementType measurementType,String... mphString)
     {
         return MessageFormat.format(formatStr, new Object[] {getLowIdle() == null ? 0 : getLowIdle(), getHighIdle() == null ? 0 : getHighIdle()});
     }

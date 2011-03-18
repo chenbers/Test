@@ -2,6 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Device Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -17,34 +20,33 @@
 	<field name="deviceIMEI" class="java.lang.String"/>
 	<field name="devicePhone" class="java.lang.String"/>
 	<field name="deviceStatus.code" class="java.lang.Integer"/>
-	<field name="deviceEPhone" class="java.lang.String"/>
 	<background>
 		<band/>
 	</background>
 	<title>
 		<band height="52">
-			<image scaleImage="RetainShape" vAlign="Top" hyperlinkType="None">
+			<image scaleImage="RetainShape" vAlign="Top">
 				<reportElement key="image-1" x="1" y="2" width="51" height="47"/>
 				<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
 			</image>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-14" x="53" y="21" width="115" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="16"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.header}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-15" x="55" y="5" width="122" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.system.name}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-16" x="628" y="1" width="153" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-17" x="543" y="14" width="238" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.count} + " " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
@@ -59,35 +61,30 @@
 			<rectangle radius="2">
 				<reportElement key="rectangle-3" mode="Opaque" x="0" y="10" width="781" height="22" forecolor="#999999" backcolor="#E7E6E6"/>
 			</rectangle>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-2" x="3" y="12" width="143" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.id}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-3" x="146" y="12" width="182" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.assigned.vehicle}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-4" x="480" y="12" width="100" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.phone}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-5" x="580" y="12" width="70" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.status}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-6" x="650" y="12" width="120" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.ecall.phone}]]></textFieldExpression>
-			</textField>
 			<rectangle>
 				<reportElement key="rectangle-2" x="196" y="17" width="0" height="0"/>
 			</rectangle>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-12" x="328" y="12" width="150" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.imei}]]></textFieldExpression>
@@ -96,35 +93,30 @@
 	</columnHeader>
 	<detail>
 		<band height="22">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-1" x="5" y="3" width="141" height="17"/>
 				<textElement rotation="None"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceName}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-2" x="146" y="3" width="182" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true" hyperlinkType="None">
+			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true">
 				<reportElement key="textField-4" x="480" y="3" width="100" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{devicePhone}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-5" x="580" y="3" width="70" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("status"+$F{deviceStatus.code}.intValue())]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-6" x="650" y="3" width="120" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceEPhone}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" pattern="000000000000000" isBlankWhenNull="true" hyperlinkType="None">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" x="328" y="3" width="150" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.Long"><![CDATA[java.lang.Long.valueOf($F{deviceIMEI})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceIMEI}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -136,12 +128,12 @@
 			<line>
 				<reportElement key="line-1" x="0" y="5" width="781" height="1"/>
 			</line>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-12" x="638" y="7" width="143" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-14" x="0" y="8" width="198" height="14"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>
@@ -153,12 +145,12 @@
 			<line>
 				<reportElement key="line-2" x="0" y="5" width="781" height="1"/>
 			</line>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-13" x="638" y="7" width="143" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.footer.page} + " " + $V{PAGE_NUMBER}.toString()]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-15" x="0" y="8" width="198" height="14"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>

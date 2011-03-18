@@ -21,28 +21,15 @@ public class LoginTest extends InthincTest {
 	public void LoginButton() {
 		//create instance of library objects
 		Login l = new Login();
-		Masthead mh = new Masthead();
 		
 		//Set up test data
 		set_test_case("Tiwi_data.xls", "TC1247");
 	
 		//login to portal
-		l.login_to_portal(get_data("Login","USERNAME"), get_data("Login","PASSWORD"));
-			
-				
-		//Verify Mast Head Screen
-		mh.ck_header();
-		mh.ck_footer();
-		mh.click_support();
-		mh.click_privacy();
-		mh.click_legal();
-		
-		//exit Portal
-		mh.click_logout();
-		
+		l.login_to_portal(getUsername(), getPassword());
 	}
 	
-	@Test
+//	@Test
 	public void UI() {
 		//create instance of library objects
 		Login l = new Login();

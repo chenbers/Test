@@ -4,10 +4,8 @@
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />
             <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.startTime}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.startAddress}" />
-            <ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
             <ui:param name="context" value="#{context}-pageName"/> 
 	</ui:include>
 -->
@@ -30,9 +28,8 @@
 			<h:outputText value="#{bubbleTitle}" />
 		</f:facet>
 		<h:outputText value="#{eventDateTime}" >
-			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{datePattern}"/>
-		</h:outputText> 
-		
+			<iwi:dateTimeOutputConverter/>
+		</h:outputText>
 		<!--
 		 Format DateTime with TimeZone in bean if this include is used in ui:repeater.
 		 

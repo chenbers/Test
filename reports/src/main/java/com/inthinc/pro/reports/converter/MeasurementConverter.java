@@ -15,6 +15,8 @@ public class MeasurementConverter {
     private static final Logger logger = Logger.getLogger(MeasurementConverter.class);
 
     public static String convertSpeed(Integer speed, Boolean convertToMetric, Locale locale) {
+        if (speed == null)
+            return "";
         NumberFormat nf = NumberFormat.getNumberInstance(locale);
         nf.setMaximumFractionDigits(1);
         nf.setMinimumFractionDigits(1);

@@ -149,7 +149,7 @@
                 <h:selectBooleanCheckbox id="checkDriver" value="#{driverTrips.driverSelected}" disabled="#{not teamTripsBean.validTimeFrame}">
                   <a4j:support event="onclick" status="teamStatus" eventsQueue="tripsQueue" 
                   				action="#{driverTrips.selectivelyLoadTrips}" data="#{driverTrips}" 
-                  				oncomplete="toggleDriverTrips(TeamTrips.map, #{index%25}, data)" ajaxSingle="true">
+                  				oncomplete="toggleDriverTrips(TeamTrips.map, #{index}, data)" ajaxSingle="true">
                    </a4j:support>
                 </h:selectBooleanCheckbox>
                 </a4j:outputPanel>

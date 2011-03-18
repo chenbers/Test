@@ -126,7 +126,7 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     @Override
     @ValidParams
     public Response getStateMileageFuelByVehicleDefaultsMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), null, null, false, locale, measurementType);
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), null, null, false, locale, measurementType);
     }
 
     /**
@@ -136,7 +136,7 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     @Override
     @ValidParams
     public Response getStateMileageFuelByVehicleWithDatesMultiGroup(GroupList groupList, Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, false, locale, measurementType);
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), startDate, endDate, false, locale, measurementType);
     }
 
     /**
@@ -145,7 +145,7 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     @Override
     @ValidParams
     public Response getStateMileageFuelByVehicleWithIftaMultiGroup(GroupList groupList, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), null, null, true, locale, measurementType);
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), null, null, true, locale, measurementType);
     }
 
     /**
@@ -155,6 +155,6 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     @Override
     @ValidParams
     public Response getStateMileageFuelByVehicleWithIftaAndDatesMultiGroup(GroupList groupList, Date startDate, Date endDate, Locale locale, MeasurementType measurementType) {
-        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueList(), startDate, endDate, true, locale, measurementType);
+        return getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(groupList.getValueListAsIntegers(), startDate, endDate, true, locale, measurementType);
     }
 }

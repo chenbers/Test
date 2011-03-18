@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * Data Bean for the StateMileageFuelByVehicle report.
  */
-@XmlRootElement
+@XmlRootElement(name="fuelConsumption")
 public class StateMileageFuelByVehicle {
 
     private String groupName;

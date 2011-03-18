@@ -28,6 +28,7 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     private Date addedTime;
     private TimeZone timeZone;
     private HOSStatus status;
+    private HOSStatus originalStatus;
     private HOSOrigin origin;
     private String location;
     private Float lat;
@@ -307,6 +308,12 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     }
     public void setDateLastUpdated(Date dateLastUpdated) {
         this.dateLastUpdated = dateLastUpdated;
+    }
+    public HOSStatus getOriginalStatus() {
+        return originalStatus;
+    }
+    public void setOriginalStatus(HOSStatus originalStatus) {
+        this.originalStatus = originalStatus;
     }
     public void dump () {
         System.out.println("new HOSRecord(" +

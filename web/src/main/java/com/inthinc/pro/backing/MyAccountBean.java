@@ -50,9 +50,10 @@ public class MyAccountBean extends BaseBean
             new EmailValidator().validate(context, component, value);
         }
     }
-
     public String saveFormAction()
     {
+        boolean valid = PersonBean.validatePreferedNotifications(FacesContext.getCurrentInstance(), "my_form:editAccount-info",  getUser().getPerson());
+        String result = null;
         try
         {
             personDAO.update(getUser().getPerson());
@@ -63,12 +64,16 @@ public class MyAccountBean extends BaseBean
             FacesMessage message = new FacesMessage();
             message.setSummary(MessageUtil.getMessageString("editPerson_uniqueEmail") + " " + getUser().getPerson().getPriEmail());
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            context.addMessage("my_form:priEmail", message);
+            context.addMessage("my_form:editAccount-priEmail", message);
             restorePerson();
-            return null;
+            valid = false;
         }
-        userDAO.update(getUser());
-        return "pretty:myAccount";
+        
+        if(valid) {
+            userDAO.update(getUser());
+            result = "pretty:myAccount";
+        }
+        return result;
     }
 
     private void restorePerson()

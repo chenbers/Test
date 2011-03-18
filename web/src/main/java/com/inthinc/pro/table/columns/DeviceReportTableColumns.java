@@ -21,7 +21,6 @@ public class DeviceReportTableColumns extends BaseTableColumns {
         AVAILABLE_COLUMNS.add("device_imei");
         AVAILABLE_COLUMNS.add("device_phone");
         AVAILABLE_COLUMNS.add("device_status");
-        AVAILABLE_COLUMNS.add("device_ephone");
     }
 
 

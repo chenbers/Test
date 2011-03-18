@@ -109,7 +109,7 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
             if ( (dvsc.getScore().getOverall() != null) && 
                  (dvsc.getScore().getOverall().intValue() >= 0) ) {
                 totScore += dvsc.getScore().getOverall().intValue();
-                totScoringDrivers++;
+                totScoringDrivers++;                
             }
             if ( dvsc.getScore().getTrips() != null ) {
                 totTrips += dvsc.getScore().getTrips().intValue();
@@ -192,7 +192,7 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
         // The total miles are determined by setting ending to the total
         //  and starting to 0. 
         Score tmp = new Score();
-        tmp.setOverall((totScoringDrivers != 0)?totScore/totScoringDrivers:0);
+        tmp.setOverall((totScoringDrivers != 0 && totScore != 0)?totScore/totScoringDrivers:50);
         tmp.setTrips(totTrips);
         tmp.setIdleHi(totIdleHi);
         tmp.setIdleLo(totIdleLo);

@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -30,12 +31,14 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.ui.ListPicker;
+import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.RoleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
@@ -44,6 +47,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
+import com.inthinc.pro.model.PreferenceLevelOption;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
@@ -55,6 +59,7 @@ import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.security.Roles;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 
 /**
@@ -73,7 +78,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private static final Map<String, TimeZone> TIMEZONES;
     private static final int MILLIS_PER_MINUTE = 1000 * 60;
     private static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * 60;
-    private static final Map<String, String> LICENSE_CLASSES;
     private static final Map<String, State> STATES;
     private static final String REQUIRED_KEY = "required";
     static {
@@ -152,15 +156,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             else
                 TIMEZONES.put(timeZone.getID() + " (GMT+" + offsetHours + ':' + format.format(offsetMinutes) + ')', timeZone);
         }
-        // license classes
-        LICENSE_CLASSES = new TreeMap<String, String>();
-        for (char c = 'A'; c <= 'P'; c++)
-            LICENSE_CLASSES.put(String.valueOf(c), String.valueOf(c));
         // states
         STATES = new TreeMap<String, State>();
         for (final State state : States.getStates().values())
             STATES.put(state.getName(), state);
     }
+    private AccountDAO accountDAO;
     private PersonDAO personDAO;
     private UserDAO userDAO;
     private DriverDAO driverDAO;
@@ -169,10 +170,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private List<PersonChangeListener> changeListeners;
 
     private FuelEfficiencyBean fuelEfficiencyBean;
+    private UpdateCredentialsBean updateCredentialsBean;
 //    private AccountOptionsBean accountOptionsBean;
     private Roles accountRoles;
     private CacheBean cacheBean;
     private ListPicker         rolePicker;
+    private Account account;
 
     public CacheBean getCacheBean() {
 		return cacheBean;
@@ -259,7 +262,59 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         return picked;
     }
+    public Account getAccount() {
+        if(account == null)
+            account = accountDAO.findByID(this.getPerson().getAccountID());
+        return account;
+    }
+    public boolean isInitialLogin() {
+        return this.getUser().getLastLogin() == null;
+    }
+    public boolean isPasswordChangeRequired() {
+        return PreferenceLevelOption.REQUIRE.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange()) && isInitialLogin();
+    }
+    public boolean isPasswordChangeWarn() {
+        return PreferenceLevelOption.WARN.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange());
+    }
+    public Integer getLoginDaysRemaining() {
+        return getLoginDaysRemaining(getAccount(), this.getUser());
+    }
+    public boolean isLoginExpired() {
+        return isLoginExpired(getAccount(), this.getUser());
+    }
+    public static boolean isLoginExpired(Account account, User user) {
+        return (getLoginDaysRemaining(account, user) <= 0);
+    }
+    public static Integer getLoginDaysRemaining(Account account, User user) {
+        Integer loginExpire;
+        Integer daysSinceLastLogin = (user.getLastLogin()!=null)?DateUtil.differenceInDays(user.getLastLogin(), new Date()):0;
+        try {
+            if(account.getProps().getLoginExpire() == null)
+                return 1;//not set for this account, so any positive non-zero integer will do
+            loginExpire= Integer.parseInt(account.getProps().getLoginExpire());
+        } catch (NumberFormatException nfe) {
+            loginExpire = -1;
+            //TODO: jwimmer: something bad happened handle/catch appropriately
+        }
+        return loginExpire - daysSinceLastLogin;
+    }
+    public Integer getPasswordDaysRemaining() {
+        return getPasswordDaysRemaining(getAccount(), this.getUser());
+    }
+    public static Integer getPasswordDaysRemaining(Account account, User user) {
+        Integer passwordExpire;
+        try {
+            if(account.getProps().getPasswordExpire() == null)
+                return 365;//return an integer greater than ever need be shown on the password change warning/reminder
+            passwordExpire= Integer.parseInt(account.getProps().getPasswordExpire());
+        } catch (NumberFormatException nfe) {
+            return -1;
+            //TODO: jwimmer: something bad happened handle/catch appropriately
+        }
+        Integer daysSinceModified = (user.getModified()!=null)?DateUtil.differenceInDays(user.getModified(), new Date()):0;
+        return passwordExpire - daysSinceModified;
 
+    }
     @Override
     protected List<PersonView> loadItems() {
         // get the people
@@ -307,6 +362,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (person.getUser() != null) {
             personView.getUser().setPerson(personView);
         }
+        updateCredentialsBean.setUserID(person.getUserID());
         if (logger.isTraceEnabled())
             logger.trace("createPersonView: END " + personView);
         return personView;
@@ -617,7 +673,29 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             context.addMessage(null, message);
         }
     }
-
+    public static boolean validatePreferedNotification(FacesContext context, PersonBean personBean) {
+        return validatePreferedNotifications(context, personBean.getItem());
+    }
+    public static boolean validatePreferedNotifications(FacesContext context, Person person){
+        return validatePreferedNotifications(context, "edit-form:editPerson-info", person);
+    }
+    public static boolean validatePreferedNotifications(FacesContext context,String facesClientID, Person person){
+        boolean valid = true;
+        Boolean[] validNotifications = {true,//None
+                MiscUtil.notEmpty(person.getPriEmail()),
+                MiscUtil.notEmpty(person.getSecEmail()),
+                MiscUtil.notEmpty(person.getPriPhone()),
+                MiscUtil.notEmpty(person.getSecPhone()),
+                false,//cellphone
+                MiscUtil.notEmpty(person.getPriText()),
+                MiscUtil.notEmpty(person.getSecText())};
+        if(!validNotifications[person.getInfo()] || !validNotifications[person.getWarn()] || !validNotifications[person.getCrit()]) {
+            valid = false;
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_notificationPref"), null);
+            context.addMessage(facesClientID, message);
+        } 
+        return valid;
+    }
     @Override
     protected boolean validateSaveItem(PersonView person) {
         final FacesContext context = FacesContext.getCurrentInstance();
@@ -656,6 +734,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 context.addMessage("edit-form:editPerson-priEmail", message);
             }
         }
+        //selected notification option must be valid
+        valid &= validatePreferedNotifications(context, person);
+        
         // birth date
         if (!isBatchEdit() && (person.getDob() != null)) {
             Calendar latest = Calendar.getInstance();
@@ -831,6 +912,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     context.addMessage("edit-form:editPerson-confirmPassword", message);
                     valid = false;
                 }
+                // validate password strength handled via f:validator tag reference to PasswordStrengthValidator
             }
             // required pri email
             if (!isBatchEdit() && (person.getPriEmail() == null || person.getPriEmail().equals(""))) {
@@ -839,9 +921,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 context.addMessage("edit-form:editPerson-priEmail", message);
             }
+
         }
         // must be a user or a driver or both while not in batch edit.
         else if (!person.isDriverSelected() && !isBatchEdit()) {
+            person.setDriverSelected(true);
+            person.setUserSelected(true);
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_userOrDriver"), null);
             context.addMessage("edit-form:editPerson-isUser", message);
             valid = false;
@@ -919,7 +1004,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             	person.getDriver().setRfid1(0l);
             	person.getDriver().setRfid2(0l);
             }
-
+           
+            person.getUser().setLastLogin(null);
             // insert or update
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
@@ -977,8 +1063,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // alert options
         LinkedHashMap<String, Integer> alertOptions = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < 8; i++) {
-            if (i == 5 ||  // skip cell phone 
-              (!isEnablePhoneAlerts() && (i == 3 || i == 4)))  // skip phone alerts if account is set to this
+            if (i == AlertText.PHONE_CELL.getCode() ||  // skip cell phone 
+              (!isEnablePhoneAlerts() && (i == AlertText.PHONE_1.getCode() || i == AlertText.PHONE_2.getCode())))  // skip phone alerts if account is set to this
             	continue;
             alertOptions.put(MessageUtil.getMessageString("myAccount_alertText" + i), i);
         }
@@ -1044,9 +1130,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 //        return roleList;
 //    }
 
-    public Map<String, String> getLicenseClasses() {
-        return LICENSE_CLASSES;
-    }
 
     public List<SelectItem> getProviderTypes() {
         return SelectItemUtil.toList(CellProviderType.class, false);
@@ -1226,8 +1309,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         
     	private Integer validAccountAlertValue(Integer value) {
-            if (value == null || value == 5 ||  // skip cell phone 
-               (!bean.isEnablePhoneAlerts() && (value == 3 || value == 4)))  // skip phone alerts if account is set to this
+            if (value == null || value == AlertText.PHONE_CELL.getCode() ||  // skip cell phone 
+               (!bean.isEnablePhoneAlerts() && (value == AlertText.PHONE_1.getCode() || value == AlertText.PHONE_2.getCode())))  // skip phone alerts if account is set to this
                return 0;
     		return value;
     	}
@@ -1496,4 +1579,53 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 	public void setRoleDAO(RoleDAO roleDAO) {
 		this.roleDAO = roleDAO;
 	}
+	
+    public enum AlertText {
+        NONE(0),
+        EMAIL_1(1),
+        EMAIL_2(2),
+        PHONE_1(3),
+        PHONE_2(4),
+        PHONE_CELL(5),
+        TEXT_MSG_1(6),
+        TEXT_MSG_2(7);
+
+        private Integer code;
+
+        private AlertText(Integer code) {
+            this.code = code;
+        };
+
+        public Integer getCode() {
+            return this.code;
+        }
+
+
+        private static final Map<Integer, AlertText> lookup = new HashMap<Integer, AlertText>();
+        static {
+            for (AlertText p : EnumSet.allOf(AlertText.class)) {
+                lookup.put(p.code, p);
+            }
+        }
+
+        public static AlertText getAlertText(Integer code) {
+            return lookup.get(code);
+        }
+    }
+
+    public UpdateCredentialsBean getUpdateCredentialsBean() {
+        return updateCredentialsBean;
+    }
+
+    public void setUpdateCredentialsBean(UpdateCredentialsBean updateCredentialsBean) {
+        this.updateCredentialsBean = updateCredentialsBean;
+    }
+
+    public AccountDAO getAccountDAO() {
+        return accountDAO;
+    }
+
+    public void setAccountDAO(AccountDAO accountDAO) {
+        this.accountDAO = accountDAO;
+    }
 }

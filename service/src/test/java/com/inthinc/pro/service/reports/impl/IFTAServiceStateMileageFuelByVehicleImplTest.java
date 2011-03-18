@@ -79,8 +79,7 @@ public class IFTAServiceStateMileageFuelByVehicleImplTest {
             }
         };
 
-        GroupList groupList = new GroupList();
-        groupList.setValue(groupIds);
+        GroupList groupList = new GroupList(groupIds);
 
         // Expectations & stubbing
         new Expectations() {
@@ -99,12 +98,10 @@ public class IFTAServiceStateMileageFuelByVehicleImplTest {
         final Date expectedStartDate = dateMidnight.minusYears(SIX_UNITS).toDate();
         final Date expectedEndDate = dateMidnight.minusMonths(SIX_UNITS).toDate();
 
-        final Interval interval = new Interval(expectedStartDate.getTime(), expectedEndDate.getTime());
-
         // Expectations & stubbing
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageFuelByVehicle(withEqual(groupIdList), withEqual(interval), withEqual(false), withSameInstance(sampleLocale), withSameInstance(sampleMeasurementType));
+                reportsFacadeMock.getStateMileageFuelByVehicle(withEqual(groupIdList), (Interval)any, withEqual(false), withSameInstance(sampleLocale), withSameInstance(sampleMeasurementType));
             }
         };
 
@@ -132,12 +129,10 @@ public class IFTAServiceStateMileageFuelByVehicleImplTest {
         final Date expectedStartDate = dateMidnight.minusYears(SIX_UNITS).toDate();
         final Date expectedEndDate = dateMidnight.minusMonths(SIX_UNITS).toDate();
 
-        final Interval interval = new Interval(expectedStartDate.getTime(), expectedEndDate.getTime());
-
         // Expectations & stubbing
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageFuelByVehicle(withEqual(groupIdList), withEqual(interval), withEqual(true), withSameInstance(sampleLocale), withSameInstance(sampleMeasurementType));
+                reportsFacadeMock.getStateMileageFuelByVehicle(withEqual(groupIdList), (Interval)any, withEqual(true), withSameInstance(sampleLocale), withSameInstance(sampleMeasurementType));
             }
         };
 

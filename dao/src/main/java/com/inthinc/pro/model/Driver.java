@@ -37,7 +37,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private Date expiration;
     @Column(name = "certs")
     private String certifications;
-    private Integer dot;
+    private RuleSetType dot;
     @Column(updateable = false)
     private Person person;
     private Integer groupID;
@@ -86,7 +86,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     }
 
     public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
-            Integer dot, Integer groupID) {
+            RuleSetType dot, Integer groupID) {
         super();
         this.driverID = driverID;
         this.personID = personID;
@@ -196,21 +196,14 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.certifications = certifications;
     }
 
-    public Integer getDot() {
+    public RuleSetType getDot() {
         return dot;
     }
 
-    public void setDot(Integer dot) {
+    public void setDot(RuleSetType dot) {
         this.dot = dot;
     }
 
-    public RuleSetType getDriverDOTType() {
-        return (dot == null) ? null : RuleSetType.valueOf(dot);
-    }
-
-    public void setDriverDOTType(RuleSetType driverDOTType) {
-        this.dot = driverDOTType == null ? null : driverDOTType.getCode();
-    }
 
     @XmlTransient
     // Prevent Circular Reference on XML rendering

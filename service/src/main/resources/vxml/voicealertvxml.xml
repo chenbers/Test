@@ -3,10 +3,10 @@
 			<var name="voxeoAudio" expr="'%s'"/> 
 			<var name="ackQuery" expr="'%s'"/> 
 			<var name="messageText" expr="'%s'"/> 
-			<var name="welcomeAudio" expr="voxeoAudio + 'inthinc-welcome.wav'"/> 
-			<var name="pressOneAudio" expr="voxeoAudio + 'inthinc-press1.wav'"/> 
+			<var name="welcomeAudio" expr="voxeoAudio + 'iwi-welcome-new.wav'"/> 
+			<var name="pressOneAudio" expr="voxeoAudio + 'iwi-acknowledge.wav'"/> 
 
-    		<menu id="menuselection" dtfm="false"> 
+    		<menu id="menuselection" dtmf="false"> 
     		
 			<!-- Do not allow bargein, require message to be fully heard -->
 			<property name="bargein" value="false"/>
@@ -19,7 +19,9 @@
 
 			<audio expr="pressOneAudio"  fetchhint="prefetch"/>
   		
-    			<choice dtmf="1" expr="ackQuery"/> 
+    			<choice dtmf="1" expr="ackQuery">
+    				one
+    			</choice>
 	    		<!-- Message played if any error occured --> 
 				<error count="1"> 
 					An error has occurred. 
@@ -27,10 +29,15 @@
 				<!-- Message played if the caller does not press a key --> 
 				<noinput count="1"> 
  					<audio expr="pressOneAudio"  fetchhint="prefetch"/>
-				</noinput> 
-				<!-- Message played if the caller enters something that does not match --> 
+				</noinput>
+				<noinput count="2"> 
+ 					Sorry we could not reach you.  Goodbye.
+ 					<exit/>
+				</noinput>
+				 
+				<!-- Re-prompt if the caller enters something that does not match --> 
 				<nomatch count="1"> 
- 					<audio expr="pressOneAudio"  fetchhint="prefetch"/>
+						<reprompt/>
 	    		</nomatch> 
   			</menu> 
 </vxml>

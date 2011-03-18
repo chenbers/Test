@@ -253,21 +253,9 @@ p.FM_Heading0Chapter {
                       color:#000000; 
                       text-decoration:none; 
                       letter-spacing:0.00em;  }
-p.FM_figuretitle { 
-                  margin-left:1pt; 
-                  margin-right:1pt; 
-                  text-align:center; 
-                  text-indent:0.000pt; 
-                  margin-top:1pt; 
-                  margin-bottom:5.000pt; 
-                  word-spacing:0.250em; 
-                  font-family:Trebuchet MS; 
-                  font-style:italic; 
-                  font-weight:bold; 
-                  font-size:9.0pt; 
-                  color:#000000; 
-                  text-decoration:none; 
-                  letter-spacing:0.00em;  }
+h5 { 
+    font-weight:bold; 
+    font-size:10.0pt;  }
 p.FM_BalloonText { 
                   margin-left:1pt; 
                   margin-right:1pt; 
@@ -328,6 +316,21 @@ h2 {
     color:#000000; 
     letter-spacing:0.00em; 
     text-decoration:none;  }
+p.FM_figuretitle { 
+                  margin-left:1pt; 
+                  margin-right:1pt; 
+                  text-align:center; 
+                  text-indent:0.000pt; 
+                  margin-top:1pt; 
+                  margin-bottom:5.000pt; 
+                  word-spacing:0.250em; 
+                  font-family:Trebuchet MS; 
+                  font-style:italic; 
+                  font-weight:bold; 
+                  font-size:9.0pt; 
+                  color:#000000; 
+                  text-decoration:none; 
+                  letter-spacing:0.00em;  }
 p.FM_WarningRed { 
                  margin-left:36.000pt; 
                  margin-right:36.000pt; 
@@ -733,9 +736,6 @@ p.FM_Warning {
               color:#ff0000; 
               text-decoration:none; 
               letter-spacing:0.00em;  }
-h5 { 
-    font-weight:bold; 
-    font-size:10.0pt;  }
 p.FM_StepLargeLev1 { 
                     margin-left:18.000pt; 
                     margin-right:1pt; 
@@ -831,14 +831,11 @@ span.FM_Bullet10 {
                   font-size:12.0pt; 
                   color:#000000; 
                   text-decoration:none;  }
-span.FM_Bold { 
-              font-family:Garamond; 
-              font-style:italic; 
-              font-weight:normal; 
-              font-size:11.0pt; 
-              color:#000000; 
-              text-decoration:none; 
-              letter-spacing:0.00em;  }
+span.Bold { 
+           font-style:normal; 
+           font-weight:bold; 
+           color:#000000; 
+           letter-spacing:0.00em;  }
 span.FM_WarningChar { 
                      font-family:Garamond; 
                      font-style:italic; 
@@ -948,12 +945,7 @@ span.FM_Bullet16 {
                   font-size:12.0pt; 
                   color:#000000; 
                   text-decoration:none;  }
-span.FM_Hyperlink { 
-                   font-style:normal; 
-                   font-weight:normal; 
-                   font-size:12.0pt; 
-                   color:#0000ff; 
-                   text-decoration:underline;  }
+span.WebJump {  }
 span.FM_Heading4Char { 
                       font-family:Garamond; 
                       font-style:italic; 

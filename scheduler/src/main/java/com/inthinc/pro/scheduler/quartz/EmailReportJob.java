@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.joda.time.DateMidnight;

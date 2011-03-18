@@ -24,13 +24,16 @@
     				</li>
     				
     				<li class="r grid_icon">
-    				<h:outputLink value="#{helpBean.path}" target="new">
+	                <a4j:outputPanel id="contextSensitiveHelpDB">
+    	            	<a href='javascript:RH_ShowHelp(0, "#{helpBean.path}>NewWindow", 15, #{(empty helpMapIDOverride) ? helpBean.mapID : helpMapIDOverride})'>
     					<h:graphicImage value="/images/ico_help.png" style="border: 0px" title="#{messages.help}"/>
-    				</h:outputLink></li>
+        	        	</a>
+					</a4j:outputPanel>
+    				</li>
     				<h:outputText rendered="#{showContextMenu eq 'true'}">
     				<li class="r grid_icon">
     					<h:panelGroup id="overview_tools_icon">
-    						<h:graphicImage value="/images/ico_tools.png" style="cursor: pointer;" title="#{messages.tool_menu}"/>
+    						<h:graphicImage title="#{messages.contextMenu_tools_menu}" style="cursor: pointer;" value="/images/ico_tools.png"/>
     					</h:panelGroup>
     				</li>
     				</h:outputText>

@@ -58,7 +58,7 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImplTest extends BaseUnit
 
         new Expectations() {
             {
-                reportsFacadeMock.getStateMileageByVehicleRoadStatus(expectedGroupIDList, (Interval)any, expectedIfta, locale, measureType);
+                reportsFacadeMock.getStateMileageByVehicleRoadStatus(withEqual(expectedGroupIDList), (Interval)any, withEqual(expectedIfta), withEqual(locale), withEqual(measureType));
                 result = list;
             }
         };

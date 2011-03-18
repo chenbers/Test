@@ -49,7 +49,7 @@ public class IFTAReportsParamsBeanFactory {
 	 * Overloaded convenience method.
 	 * @see #getBean(IFTAReportsParamsBean, List, Date, Date, Locale, MeasurementType)
 	 */
-	public IFTAReportsParamsBean getBean(List<Integer> groupIDList, Locale locale, MeasurementType measurementType) {
+	public IFTAReportsParamsBean getBean(List<String> groupIDList, Locale locale, MeasurementType measurementType) {
 	    return getBean(groupIDList, null, null, locale, measurementType);	
 	}
 	
@@ -59,8 +59,8 @@ public class IFTAReportsParamsBeanFactory {
 	 */
 	public IFTAReportsParamsBean getBean(Integer groupID, Date startDate, Date endDate, Locale locale,
 			MeasurementType measurementType) {
-		List<Integer> groupIDList = new ArrayList<Integer>();
-		groupIDList.add(groupID);
+		List<String> groupIDList = new ArrayList<String>();
+		groupIDList.add(Integer.toString(groupID));
 		return getBean(groupIDList, startDate, endDate, locale, measurementType);
 	}
 	
@@ -101,7 +101,7 @@ public class IFTAReportsParamsBeanFactory {
 	 * Simply fill the bean with the passed parameters.
 	 * @return Bean filled with the incoming parameters
 	 */
-	public IFTAReportsParamsBean getBean(List<Integer> groupIDList, Date startDate, Date endDate, 
+	public IFTAReportsParamsBean getBean(List<String> groupIDList, Date startDate, Date endDate, 
 			Locale locale, MeasurementType measurementType) {
 		
 		IFTAReportsParamsBean paramsBean = getBeanInstanceFromSpring();

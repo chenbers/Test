@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.security.AccountExpiredException;
 import org.springframework.security.AuthenticationServiceException;
 import org.springframework.security.BadCredentialsException;
+import org.springframework.security.CredentialsExpiredException;
 import org.springframework.security.DisabledException;
 import org.springframework.security.LockedException;
 import org.springframework.security.ui.AbstractProcessingFilter;
@@ -22,11 +23,12 @@ public class AuthErrorBean
     
     
     @SuppressWarnings("unchecked")
-    private static Map<Class, String>errorMap = new HashMap<Class, String>();
+    public static Map<Class, String>errorMap = new HashMap<Class, String>();
     
     static
     {
         errorMap.put(BadCredentialsException.class, "login_error_BadCredentialsException");
+        errorMap.put(CredentialsExpiredException.class, "login_error_CredentialsExpiredException");
         errorMap.put(AccountExpiredException.class, "login_error_AccountExpiredException");
         errorMap.put(DisabledException.class, "login_error_AccountExpiredException");
         errorMap.put(LockedException.class, "login_error_LockedException");

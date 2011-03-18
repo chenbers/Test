@@ -1,6 +1,7 @@
 package com.inthinc.pro.web.selenium;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -305,25 +306,41 @@ public class RallyAPILib {
 	 * --------Error Message Stack Trace
 	 * 
 	 * 
-	 * @param errors
+	 * @param whatHappened
 	 * @return
 	 */
-	private String formatString(HashMap<String, HashMap<String, String>> errors){
-		String errorString = "";
-		Set<String> outerKeys = errors.keySet();
-		Iterator<String> outerItr = outerKeys.iterator();
-		while (outerItr.hasNext()){
-			String outerKey = outerItr.next();
-			errorString += (outerKey + "<br />");
-			Set<String> innerKeys = errors.get(outerKey).keySet();
+	private String formatString(HashMap<String, HashMap<String, String>> whatHappened){
+		StringWriter aStringAString = new StringWriter();
+		Iterator<String> pitcher = whatHappened.keySet().iterator();
+		
+		String oneTab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+		while (pitcher.hasNext()){
+			String outsideBall = pitcher.next();
+			aStringAString.write(outsideBall + "<br />");
+			Set<String> innerKeys = whatHappened.get(outsideBall).keySet();
 			Iterator<String> innerItr = innerKeys.iterator();
 			while (innerItr.hasNext()){
-				String innerKey = innerItr.next();
-				errorString += ("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+innerKey+"<br />");
-				errorString += ("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+errors.get(outerKey).get(innerKey)+"<br /><br />");
+				String insideBall = innerItr.next();
+				String callIt = whatHappened.get(outsideBall).get(insideBall);
+				
+				aStringAString.write(oneTab);
+				aStringAString.write(insideBall);
+				aStringAString.write("<br />");
+				aStringAString.write(oneTab);
+				aStringAString.write(oneTab);
+				aStringAString.write(callIt);
+				aStringAString.write("<br />");
+				aStringAString.write("<br />");
 			}
 		}
-		return errorString;
+		String sendMeOut = aStringAString.toString();
+		try {
+			aStringAString.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return sendMeOut;
 	}
     
     /**
@@ -378,9 +395,13 @@ public class RallyAPILib {
     
     
     public static void main(String[] args){
-    	RallyAPILib rally = new RallyAPILib("dtanner@inthinc.com", "aOURh7PL5v");    	
+    	RallyAPILib rally = new RallyAPILib("dtanner@inthinc.com", "aOURh7PL5v");    
+    	HashMap<String, HashMap<String, String>> outerStuff = new HashMap<String, HashMap<String, String>>();
+    	HashMap<String, String> innerStuff = new HashMap<String, String>();
+    	innerStuff.put("Testing", "testing");
+    	outerStuff.put("Testing", innerStuff);
     	try {
-    		rally.createJSON("Sand Box", "TC158", "3.0", (GregorianCalendar) GregorianCalendar.getInstance(), "This was done in Java<br>We successfully sent the results", "Pass");
+    		rally.createJSON("Sand Box", "TC158", "3.0", (GregorianCalendar) GregorianCalendar.getInstance(), outerStuff, "Pass");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

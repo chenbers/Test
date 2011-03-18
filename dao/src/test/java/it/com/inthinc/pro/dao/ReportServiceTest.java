@@ -465,6 +465,8 @@ public class ReportServiceTest {
         long fleetExpectedDailyIdlingTime = 6 * (ReportTestConst.LO_IDLE_TIME + ReportTestConst.HI_IDLE_TIME); // 6 idling events per day (1 - intermediate, 5 - bad)
 //        System.out.println("fleetExpectedDailyDriveTime: " + fleetExpectedDailyDriveTime + " fleetExpectedDailyIdlingTime: " + fleetExpectedDailyIdlingTime);
 
+        int numVehicles = 0;
+        int numEMUVehicles = 0;
         for (IdlePercentItem item : list) {
             long driveTime = item.getDrivingTime();
             long idleTime = item.getIdlingTime();
@@ -473,10 +475,12 @@ public class ReportServiceTest {
 // TODO: drive time is 60 seconds off            
 //            assertEquals("Fleet: Unexpected drive Time ", fleetExpectedDailyDriveTime, driveTime);
             assertEquals("Fleet: Unexpected idle Time ", fleetExpectedDailyIdlingTime, idleTime);
-            assertEquals("Fleet: Unexpected vehicles ", 3, item.getNumVehicles().intValue());
-            assertEquals("Fleet: Unexpected emu vehicles ", 3, item.getNumEMUVehicles().intValue());
+            numVehicles = item.getNumVehicles().intValue();
+            numEMUVehicles = item.getNumEMUVehicles().intValue();
 
         }
+        assertEquals("Fleet: Unexpected vehicles ", 3, numVehicles);
+        assertEquals("Fleet: Unexpected emu vehicles ", 3, numEMUVehicles);
     }
 
     // TODO: FIX THIS!!
@@ -752,7 +756,6 @@ public class ReportServiceTest {
         }
     }
     @Test
-    //@Ignore
     public void getVehicleTrendDaily() {
         ScoreHessianDAO scoreDAO = new ScoreHessianDAO();
         scoreDAO.setReportService(reportService);
@@ -771,7 +774,8 @@ public class ReportServiceTest {
                     int expected = expectedTeamOverall[teamType].intValue();
                     Integer scoreVal = item.getScore();
 //                    System.out.println("" + scoreVal);
-                    assertNotNull("Unexpected null overall trend score", scoreVal);
+                    assertNotNull("Unexpected null overall trend score at idx " + idx + " date:" + item.getDate(), scoreVal);
+                    idx++;
                     
                     // we use this call for mileage only, not score so commenting out for now
 //                    assertTrue((idx++) + ": Unexpected Overall trend score " + scoreVal + " expected: " + expected + " VehicleID: " + vehicleID, (scoreVal >= expected - TOLERANCE && scoreVal <= expected + TOLERANCE));

@@ -6,7 +6,7 @@ import java.util.Locale;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class AlertMessageBuilder
+public class AlertMessageBuilder implements Comparable<AlertMessageBuilder>
 {
     private Integer alertID;
     private Integer messageID;
@@ -69,6 +69,12 @@ public class AlertMessageBuilder
     }
     public void setAcknowledge(Boolean acknowledge) {
         this.acknowledge = acknowledge;
+    }
+    @Override
+    public int compareTo(AlertMessageBuilder other) {
+        //compare by address
+        
+        return this.getAddress().compareToIgnoreCase(other.getAddress());
     }
 
 }

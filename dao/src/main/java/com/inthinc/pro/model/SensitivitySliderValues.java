@@ -10,12 +10,15 @@ import com.inthinc.pro.model.configurator.ProductType;
 @XmlRootElement
 public class SensitivitySliderValues {
 	
-	private Integer sensitivityType;
-	private Integer sensitivitySubtype;
-	private Integer settingID;
+    //Slider values from the database
+    
+    private Integer sensitivityType;
 	private ProductType productType;
 	private Integer minFirmwareVersion;
 	private Integer maxFirmwareVersion;
+	
+	private Integer sensitivitySubtype;
+	private Integer settingID;
 	@Column (name="fwdCmd")
 	private Integer forwardCommand;
 	@Column (name="fwdcmdname")

@@ -22,7 +22,7 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
     "r_refaddr as fraddr,r_nrefaddr as toaddr,l_postcode as zipL,r_postcode as zipR,"+
     "distance(the_geom,setsrid(GeomFromText(?,32767),4326)) as dist, "+
     "astext(the_geom) as tigerline, speed_cat, fr_spd_lim, to_spd_lim, kph "+
-    "from streets_tiwiPro1 "+
+    "from streets_view4 "+
     "where the_geom && " +
     "expand(setsrid(geomFromText(?,32767),4326),0.0008) order by dist limit 10";
 	

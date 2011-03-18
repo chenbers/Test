@@ -33,15 +33,21 @@ public interface IFTAServiceStateMileageGroupComparison {
      *            the start date in format "yyyyMMdd" as Path Parameter
      * @param endDate
      *            the end date in format "yyyyMMdd" as Path Parameter
-     * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @param measurementType 
-     *            the required user measurementType from Query string, ex: measurementType=METRIC
-     * 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @GET
     @Path("/group/{groupID}/report/ifta/stateComparison/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
@@ -54,21 +60,35 @@ public interface IFTAServiceStateMileageGroupComparison {
     /**
      * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & IFTA only & given dates.
      * 
-     * @param groupList
-     *            the Group ID List
+     * @param groupList 
+     * It is possible to specify a list of groups in the request body using the following XML format:<p>
+     * <p>
+     * <code>
+     *   &lt;groupList&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;1&lt;/groupID&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;2&lt;/groupID&gt;</br>
+     *   ...</br>
+     *   &lt;/groupList&gt;</br>
+     * </code>  
      * @param startDate
      *            the start date in format "yyyyMMdd" as Path Parameter
      * @param endDate
      *            the end date in format "yyyyMMdd" as Path Parameter
-     * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @param measurementType 
-     *            the required user measurementType from Query string, ex: measurementType=METRIC
-     * 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @POST
     @Path("/groups/report/ifta/stateComparison/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
@@ -85,15 +105,21 @@ public interface IFTAServiceStateMileageGroupComparison {
      * 
      * @param groupID
      *            the Group ID as Path Parameter
-     * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @param measurementType 
-     *            the required user measurementType from Query string, ex: measurementType=METRIC
-     * 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
-     */
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
+     */ 
     @GET
     @Path("/group/{groupID}/report/ifta/stateComparison/iftaOnly")
     @Produces("application/xml")
@@ -104,16 +130,31 @@ public interface IFTAServiceStateMileageGroupComparison {
     /**
      * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & IFTA only & default dates.
      * 
-     * @param groupList
-     *            the Group ID List
-     * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     * @param groupList 
+     * It is possible to specify a list of groups in the request body using the following XML format:<p>
+     * <p>
+     * <code>
+     *   &lt;groupList&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;1&lt;/groupID&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;2&lt;/groupID&gt;</br>
+     *   ...</br>
+     *   &lt;/groupList&gt;</br>
+     * </code>  
+     * 
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @param measurementType 
-     *            the required user measurementType from Query string, ex: measurementType=METRIC
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      * 
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */
     @POST
     @Path("/groups/report/ifta/stateComparison/iftaOnly")
@@ -129,14 +170,20 @@ public interface IFTAServiceStateMileageGroupComparison {
      * 
      * @param groupID
      *            the Group ID as Path Parameter
-     * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @param measurementType 
-     *            the required user measurementType from Query string, ex: measurementType=METRIC
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
      * 
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */
     @GET
     @Path("/group/{groupID}/report/ifta/stateComparison")
@@ -149,16 +196,31 @@ public interface IFTAServiceStateMileageGroupComparison {
     /**
      * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & default ifta (false) & default dates
      * 
-     * @param groupList
-     *            the Group ID List
-     * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
-     * @param measurementType 
-     *            the required user measurementType from Query string, ex: measurementType=METRIC
+     * @param groupList 
+     * It is possible to specify a list of groups in the request body using the following XML format:<p>
+     * <p>
+     * <code>
+     *   &lt;groupList&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;1&lt;/groupID&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;2&lt;/groupID&gt;</br>
+     *   ...</br>
+     *   &lt;/groupList&gt;</br>
+     * </code>  
      * 
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
+     * @param measurementType 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */
     @POST
     @Path("/groups/report/ifta/stateComparison")
@@ -178,14 +240,20 @@ public interface IFTAServiceStateMileageGroupComparison {
      *            the start date in format "yyyyMMdd" as Path Parameter
      * @param endDate
      *            the end date in format "yyyyMMdd" as Path Parameter
-     * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @param measurementType 
-     *            the required user measurementType from Query string, ex: measurementType=METRIC
-     * 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */
     @GET
     @Path("/group/{groupID}/report/ifta/stateComparison/{startDate}/{endDate}")
@@ -199,20 +267,35 @@ public interface IFTAServiceStateMileageGroupComparison {
     /**
      * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & given dates & default ifta (false).
      * 
-     * @param groupList
-     *            the Group ID List
+     * @param groupList 
+     * It is possible to specify a list of groups in the request body using the following XML format:<p>
+     * <p>
+     * <code>
+     *   &lt;groupList&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;1&lt;/groupID&gt;</br>
+     *   &nbsp;&nbsp;&lt;groupID&gt;2&lt;/groupID&gt;</br>
+     *   ...</br>
+     *   &lt;/groupList&gt;</br>
+     * </code>  
+     * 
      * @param startDate
      *            the start date in format "yyyyMMdd" as Path Parameter
      * @param endDate
      *            the end date in format "yyyyMMdd" as Path Parameter
-     * @param locale 
-     *            the required user locale from Query string, ex: locale=fr_CA
+     * @param locale  
+     *            Overrides the Locale associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @param measurementType 
-     *            the required user measurementType from Query string, ex: measurementType=METRIC
-     * 
+     *            Overrides the Measurement Type associated with the authenticated user. </br>
+     *            Example:</br> <code>http://server:8080/service?measurementType=METRIC</code></br>
+     *            More information in the <a href="javascript:{var apiUrl = document.URL.substring(0,document.URL.indexOf('jaxrsdocs')) + 'jaxrsdocs/group/{groupID}/report/ifta/mileage/index.html'; window.location = apiUrl;}">mileage Web Service documentation</a></br><p>  
+     *
      * @returnWrapped java.util.List<com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup> the list of beans
      * @HTTP HTTP 200 - OK if any StateMileageCompareByGroup found
      * @HTTP HTTP 404 - NOT FOUND if no StateMileageCompareByGroup found
+     * @HTTP HTTP 400 - BAD REQUEST if locale or measurement type are invalid
      */
     @POST
     @Path("/groups/report/ifta/stateComparison/{startDate}/{endDate}")

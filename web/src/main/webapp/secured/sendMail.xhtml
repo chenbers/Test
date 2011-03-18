@@ -77,10 +77,13 @@
 										<div class="add_section_title"><h:outputText
 											value="#{messages.txtMsg_composeTitle}" /></div>
 										<br></br>
-	
+										<rich:message id="msgTextValidMessage" for="msgText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 										<h:inputTextarea id="msgText"
 											value="#{messagesBean.messageToSend}"
-											style="font-size:12px;width:350px;height:300px;margin-left:10px" />
+											style="font-size:12px;width:350px;height:300px;margin-left:10px" >
+											<f:validator validatorId="com.inthinc.pro.validators.TextMessageValidator" />
+											<f:attribute name="errorMessage" value="#{messages.txtMsg_illegalCharacter}" />	
+										</h:inputTextarea>
 										<br></br>
 									</td>
 								</tr>
@@ -116,7 +119,7 @@
 											<li class="r"><a4j:commandButton id="send"
 												styleClass="left" action="#{messagesBean.sendMessage}"
 												reRender="#{context}-sendList,#{context}-sendListBottomScroller,display-form:toList,display-form:msgText,display-form:driverList,display-form:vehicleList,display-form:groupList"
-												oncomplete="javascript:Richfaces.showModalPanel('summary')">
+												oncomplete="javascript:if(#{facesContext.maximumSeverity==null})Richfaces.showModalPanel('summary')">
 												<span class="email"> <h:outputText value="#{messages.txtMsg_sendMsg}" /> </span>
 											</a4j:commandButton></li>
 										</ul>
@@ -136,7 +139,7 @@
 				<rich:modalPanel id="summary" headerClass="popupHeader"
 					controlsClass="popupControls" width="500" height="140"
 					autosized="true" resizeable="false" zindex="2001">
-					<f:facet name="header">
+					<f:facet name="header" >
 						<h:outputText value="#{messages.txtMsg_sendMsgSummary}" />
 					</f:facet>
 					<f:facet name="controls">
@@ -147,7 +150,7 @@
 
 					<div class="popupsubtitle"><h:outputText
 						value="#{messages.txtMsg_sendMsgSummaryDetail}" /></div>
-
+						
 					<h:form id="confirmCloseSummary">
 						<rich:dataTable id="#{context}-sendList"
 							value="#{messagesBean.sendMessageList}" var="item"
@@ -157,7 +160,7 @@
 
 							<rich:column width="100%">
 								<f:facet name="header">
-									<h:outputText value="To" />
+									<h:outputText value="#{messages.txtMsg_addressedTo}" />
 								</f:facet>
 								<h:outputText id="entity" value="#{item}" />
 							</rich:column>

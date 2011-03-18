@@ -137,36 +137,13 @@
 			}
 
 			Team.tabChange = function(tab){
-				//Set the hash to be the id of the selected tab
-				jQuery.address.value("/tab/" + Team.getSelectedTabId().replace("_lbl",""));
-				var tabId = jQuery.address.pathNames();
+				//TODO: jwimmer: could probably implement without using jQuery.address lib at all?
+				//set the window location to something "bookmarkable" for direct entry
+				window.location=jQuery.address.baseURL().replace(/\/tab\/.+/i,"")+"/tab/"+Team.getSelectedTabId().replace("_lbl","");
 				return false;
 			}
 
-			//This is used for manually changing the tab. Only needed for use of bookmarks and back button.
-			//Clicking a tab should be handled by the rich faces tab control.
-			Team.selectTab = function(tabId){
-				selectTab(tabId);
-			}
-			
-			jQuery(function(){
-				var tab = jQuery.address.pathNames()[1];
-				if(tab == undefined){
-					Team.defaultTabId = tab;
-				}
-				/*<![CDATA[*/  
-				jQuery.address.change(function(){
-					var tabId = jQuery.address.pathNames()[1];
-					//alert(tabId);
-					if(tabId != undefined && tabId != Team.getSelectedTabId().replace("_lbl","")){
-						Team.selectTab(tabId);
-					}else if(tabId == undefined && Team.getSelectedTabId().replace("_lbl","") != "teamStatistics"){
-						//If there is no tabId and the current selectedTab is not the default, set it to the default tab
-						Team.selectTab("teamStatistics");
-					}
-				});
-				/*]]>*/
-			});	
+
 		</script>	
 						
     </ui:define>
