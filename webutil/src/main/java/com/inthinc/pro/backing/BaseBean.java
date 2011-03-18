@@ -12,16 +12,20 @@ import com.inthinc.pro.security.userdetails.ProUser;
 public class BaseBean {
 	
 	private SuperuserDAO superuserDAO;
+	private Boolean superuserFlag;
 	
-	public boolean isLoggedIn() {
+    public boolean isLoggedIn() {
         return isProUserLoggedIn();
     }
 
     public boolean isSuperuser() {
+        
+        if (superuserFlag == null) {
+            Integer userID = getProUser().getUser().getUserID();
     	
-    	Integer userID = getProUser().getUser().getUserID();
-    	
-    	return superuserDAO.isSuperuser(userID);
+            setSuperuserFlag(superuserDAO.isSuperuser(userID));
+        }
+        return getSuperuserFlag();
     }
 
    
@@ -64,5 +68,13 @@ public class BaseBean {
     public GroupHierarchy getGroupHierarchy() {
         return getProUser().getGroupHierarchy();
     }
+    public Boolean getSuperuserFlag() {
+        return superuserFlag;
+    }
+
+    public void setSuperuserFlag(Boolean superuserFlag) {
+        this.superuserFlag = superuserFlag;
+    }
+
 
 }

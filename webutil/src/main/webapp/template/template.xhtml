@@ -41,6 +41,8 @@
                                 </rich:panelMenuItem>
                                 <rich:panelMenuItem label="Trip Viewer" action="go_tripViewer" ajaxSingle="false" rendered="#{daoUtilBean.isSuperuser}">
                                 </rich:panelMenuItem>
+                                <rich:panelMenuItem label="Bulk Import" action="go_bulkImport" ajaxSingle="false" rendered="#{baseBean.isSuperuser}">
+                                </rich:panelMenuItem>
                             </rich:panelMenuGroup>
                         </rich:panelMenu>
                     </a4j:form></td></tr>

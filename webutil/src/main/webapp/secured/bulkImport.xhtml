@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="/template/template.xhtml" xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+
+    <ui:param name="panelTitle" value="Bulk Import" />
+    <ui:param name="groupSelected" value="MAIN" />
+    <ui:define name="util_content">
+    <div style="margin: 10px auto 20px auto;background: #fff;">
+    <div style="width:400px">
+    	<table>
+    	<tr>
+    	<td>
+		<a4j:form id="typeSelectForm">
+			<table cellspacing="5">
+			<tr>
+			<td >
+				<h:outputText value="Import Type:" style="font-size:12px;font-weight:bold;padding:10px;"/>
+			</td>
+			<td>	
+				<h:selectOneMenu id="import-type-menu" value="#{bulkImportBean.importType}">
+					<f:selectItems value="#{bulkImportBean.importTypes}" />
+					<a4j:support event="onchange" action="submit()" reRender="optionsForm, downloadForm, feedbackPanel" />
+				</h:selectOneMenu>
+			</td>
+<!-- 			
+			<td>
+		    	<a4j:status for="optionsRegion">
+					<f:facet name="start">
+        		   		<h:outputText>
+            	    		<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+						</h:outputText>
+            		</f:facet>
+    			</a4j:status>
+			</td>
+ -->			
+			</tr>
+			</table>
+		</a4j:form>
+		</td>
+		<td>			
+		<a4j:region id="downloadRegion">
+			<a4j:form id="downloadForm">
+				<table cellspacing="5">
+				<tr>
+				<td>
+					<h:commandButton id="download" value="Download Template" action="#{bulkImportBean.downloadTemplateAction}"  rendered="#{bulkImportBean.importType != null}"/>
+				</td>
+				</tr>
+				</table>	
+			</a4j:form>
+		</a4j:region>
+		</td>
+		</tr>
+		</table>
+		<a4j:region id="optionsRegion">
+	        <h:form id="optionsForm">
+            <rich:panel rendered="#{bulkImportBean.importType != null}">
+	            <f:facet name="header">
+					<h:outputText value="Bulk Import: Select a #{bulkImportBean.importType} file" />
+        	    </f:facet>
+                <table>
+					<tr>
+<!--  <td width="100" style="vertical-align: middle;"><h:outputText value="Import File: " /></td>-->                    	
+                        <td>
+ 							<rich:fileUpload fileUploadListener="#{bulkImportBean.fileUploadListener}"
+ 								addControlLabel="Browse"
+                				id="upload"
+                				immediateUpload="true" 
+                				autoclear="true"
+                				listHeight="0px"
+                				listWidth="100px"
+                				acceptedTypes="xls" allowFlash="false">
+                				<a4j:support event="onuploadcomplete" reRender="info" />
+            				</rich:fileUpload>                        
+                        </td>                              	                           	
+					</tr>
+				</table>
+				<h:panelGroup id="info">
+				<h:panelGroup rendered="#{bulkImportBean.uploadFile != null}">
+				<table>	
+					<tr>
+						<td><h:outputText value="Selected File:" style="font: 12px Verdana, Arial, Helvetica, bold, sans-serif"/>  </td>
+						<td><h:outputText value="#{bulkImportBean.uploadFile.name}"  style="font: 12px Verdana, Arial, Helvetica, bold, sans-serif"/> </td>
+					</tr>
+					<tr>
+						<td>
+			                <a4j:commandButton id="check" value="Check" action="#{bulkImportBean.checkAction}" reRender="feedbackPanel"/>
+						</td>
+						<td>
+			                <a4j:commandButton id="import" value="Import" action="#{bulkImportBean.importAction}" reRender="feedbackPanel"/>
+						</td>
+					</tr>
+                </table>
+                </h:panelGroup>
+                </h:panelGroup>
+			</rich:panel>
+           </h:form>
+		</a4j:region>
+		<a4j:region id="feedbackRegion">
+			<h:panelGroup id="feedbackPanel">
+            <rich:panel rendered="#{bulkImportBean.feedback != null}">
+	            <f:facet name="header">
+					<h:outputText value="Results" />
+        	    </f:facet>
+        	    <h:outputText value="#{bulkImportBean.feedback}" />
+			</rich:panel>
+			</h:panelGroup>
+		</a4j:region>			
+		<a4j:form id="clearForm">
+			<a4j:commandButton id="clear" value="Reset" action="#{bulkImportBean.resetAction}" reRender="optionsForm, feedbackPanel"/>
+		</a4j:form>
+		</div>
+		</div>
+    </ui:define>
+</ui:composition>
