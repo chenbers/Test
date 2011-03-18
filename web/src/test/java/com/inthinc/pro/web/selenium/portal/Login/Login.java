@@ -27,79 +27,84 @@ public class Login {
 			selenium = sel;
 		}
 	
-	public void page_log_in_open(){
+	public void open_login(){
 			//go to login screen
 			selenium.open("logout");  
-//			ck_login_page();
+			ck_login_page();
 		}
 	
-	public void portal_log_in_process(String username, String password){
-			if (selenium.getLocation().indexOf("/tiwipro/login")==-1){page_log_in_open();}
-			text_field_username_type(username);
-			text_field_password_type(password);
-			button_log_in_click();
+	public void login_to_portal(String username, String password){
+			if (selenium.getLocation().indexOf("/tiwipro/login")==-1){open_login();}
+			type_username(username);
+			type_password(password);
+			click_login();
 		}
 
-	public void button_forgot_password_close_click() {
+	public void forgot_close_window() {
 			selenium.click(LoginEnum.FORGOT_CLOSE, "Forgot Close click");
 		}
 
-	public void button_forgot_password_cancel_click() {
+	public void forgot_cancel() {
 			selenium.click(LoginEnum.FORGOT_CANCEL_BUTTON, "Forgot Cancel click");		
 			selenium.isNotVisible(LoginEnum.FORGOT_CANCEL_BUTTON,"Forgot Cancel clicked");
 		}
 
-	public void message_forgot_password_error_validate() {
+	public void forgot_error() {
 			selenium.isVisible(LoginEnum.FORGOT_ERROR, "Required Message element");
 			selenium.getText(LoginEnum.FORGOT_ERROR, "Required", "Required Message text");
 		}
 
-	public void button_forgot_password_submit_click() {
+	public void forgot_submit() {
 			selenium.click(LoginEnum.FORGOT_SEND, "Submit Button");
 		}
 
-	public void text_field_forgot_password_email_type(String email) {
+	public void forgot_email_type(String email) {
 			selenium.type(LoginEnum.FORGOT_EMAIL_FIELD, email, "Email field");
 		}
 
-	public void text_field_forgot_password_password_type() {
+	public void forgot_password() {
 			selenium.click(LoginEnum.FORGOT_TEXT, LoginEnum.FORGOT_TEXT.getText()+" button click");
 		}
 	
-	public void button_log_in_click(){
+	public void click_login(){
 			selenium.click(LoginEnum.LOGIN_BUTTON, "Login button click");
 			selenium.wait_for_element_present("Admin", "link");
 			String location = selenium.getLocation("tiwipro/app", "Login button click");
 			if (location.indexOf("tiwipro/app") == -1){
-				System.out.println(location);
-				popup_error_validate();
-				button_forgot_password_ok_click();
+				ck_error_msg();
+				error_ok();
 			} 
 		}
 	
-	public void button_forgot_password_ok_click(){
+	public void error_ok(){
 			selenium.click(LoginEnum.ERROR_BUTTON, "Login Error OK button click");
 			selenium.Pause(2);
 			selenium.isNotVisible(LoginEnum.ERROR_HEADER.getID(), "Login Error closed by OK button");
 		}
 	
-	public void button_forgot_password_x_click(){
+	public void error_close(){
 			selenium.click(LoginEnum.ERROR_CLOSE,"Login Error X button click");
 			selenium.Pause(2);
 			selenium.isNotVisible(LoginEnum.ERROR_HEADER, "Login Error closed by X button");
 		}
 	
-	public void text_field_username_type(String username){
+//	public void click_login(String error_name){
+//			selenium.click(login_id, error_name);
+//			selenium.waitForPageToLoad("30000", error_name);
+//			selenium.getLocation("tiwipro/app", error_name);
+//		}
+	
+	public void type_username(String username){
 			//enter tiwipro username
 			selenium.type(LoginEnum.USERNAME_FIELD, username, "Username type text");
 		}
 	
-	public void text_field_password_type(String password){
+	public void type_password(String password){
 			//enter tiwipro password
 			selenium.type(LoginEnum.PASSWORD_FIELD, password, "Password type text");
 		}
 
-	public void popup_forgot_password_validate() {
+	public void ck_forgot_password() {
 			//verify Forgot password window is displayed as expected
 			selenium.isVisible(LoginEnum.FORGOT_TITLE, "Forgot Pop Up element visible");
 			
@@ -113,7 +118,7 @@ public class Login {
 			selenium.getText(LoginEnum.FORGOT_EMAIL_LABEL, "E-mail Address label");
 		}
 	
-	private void popup_error_validate(){
+	private void ck_error_msg(){
 			//verify error message is displayed as expected
 			selenium.isVisible(LoginEnum.ERROR_HEADER);
 			
@@ -127,7 +132,7 @@ public class Login {
 		}
 	
 
-	public void page_log_in_validate(){
+	public void ck_login_page(){
 		selenium.getText(LoginEnum.FORGOT_TEXT, LoginEnum.FORGOT_TEXT.getText()+" text present");
 		selenium.isElementPresent(LoginEnum.FORGOT_TEXT, LoginEnum.FORGOT_TEXT.getText()+" element present");
 		
@@ -146,48 +151,53 @@ public class Login {
 		selenium.getText(LoginEnum.PASSWORD_LABEL, "Password:", "Password: text match");
 	}
 	
-//	public void forgotPassword(){
-//		forgotPassword( false, "" ); //Set up a default value, so we don't always have to specify
-//	}
-//	
-//	public void forgotPassword( String email ){
-//		forgotPassword( false, email );
-//	}
-//	
-//	public void forgotPassword( Boolean cancel ){
-//		forgotPassword( cancel, "" );
-//	}
-//	
-//	public void forgotPassword( String email, Boolean cancel){
-//		forgotPassword( cancel, email );
-//	}
-//	
-//	
-//	
-//	public void forgotPassword(Boolean cancel, String email){
-//		//verify all screen elements and text
-//		selenium.open("/tiwipro/login");
-//		popup_text_field_forgot_password_password_type();
-//		popup_forgot_password_validate();
-//				//select Cancel Button
-//				if (cancel){
-//						popup_button_forgot_password_cancel_click();
-//					}
-//						//select close window
-//						popup_button_forgot_password_close_click();
-//						//request password email
-//						popup_text_field_forgot_password_password_type();
-//						// email needs to be verbalized
-//						popup_text_field_forgot_password_email_type(email);
-//						popup_button_forgot_password_submit_click();
-//						
-//				if ( email=="" ){
-//						popup_message_forgot_password_error_validate();
-//					}
-//			}
+	public void ck_sent_page(){
+		selenium.isTextPresent("Message Sent Succesfullly", "Message Sent Successfully text");
+		selenium.getText("//ul[@id='grid_nav']/li[2]", "Message Sent Successfully", "Message Sent Successfully text");
+	}
+	
+	public void forgotPassword(){
+		forgotPassword( false, "" ); //Set up a default value, so we don't always have to specify
+	}
+	
+	public void forgotPassword( String email ){
+		forgotPassword( false, email );
+	}
+	
+	public void forgotPassword( Boolean cancel ){
+		forgotPassword( cancel, "" );
+	}
+	
+	public void forgotPassword( String email, Boolean cancel){
+		forgotPassword( cancel, email );
+	}
 	
 	
-	public void page_sent_forgot_password_validate() {
+	
+	public void forgotPassword(Boolean cancel, String email){
+		//verify all screen elements and text
+		selenium.open("/tiwipro/login");
+		forgot_password();
+		ck_forgot_password();
+				//select Cancel Button
+				if (cancel){
+						forgot_cancel();
+					}
+						//select close window
+						forgot_close_window();
+						//request password email
+						forgot_password();
+						// email needs to be verbalized
+						forgot_email_type(email);
+						forgot_submit();
+						
+				if ( email=="" ){
+						forgot_error();
+					}
+			}
+	
+	
+	public void forgotMessageSent() {
 		selenium.getText(LoginEnum.MESSAGE_SENT_TITLE, "Forgot Username/Password title");
 		selenium.getText(LoginEnum.FIRST_PARAGRAPH, "Forgot Username/Password sent message");
 		
@@ -196,15 +206,19 @@ public class Login {
 		selenium.getText(LoginEnum.BULLET_2, "Second Bullet Forgot Username/Password");
 		selenium.getText(LoginEnum.BULLET_3, "Third Bullet Forgot Username/Password");
 	}
- 
-	public void text_field_new_password_type(String password) {
+	
+	public void ck_change_password() {
+		
+	}
+	
+	public void type_new_password(String password) {
 		selenium.type(LoginEnum.NEW_PASSWORD, password);
 	}
-	public void text_field_confirm_password_type(String password) {
+	public void type_confirm_password(String password) {
 		selenium.type(LoginEnum.CONFIRM_PASSWORD, password);
 	}
 	
-	public void button_confirm_change_click() {
+	public void click_change_password() {
 		selenium.click(LoginEnum.CHANGE_PASSWORD_BUTTON, "Change Password Button");
 	}
 	
