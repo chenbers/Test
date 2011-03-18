@@ -1,5 +1,7 @@
 package com.inthinc.pro.backing.importer;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -58,10 +60,24 @@ public class BulkImportBean extends BaseBean {
     
     
     public void checkAction() {
-        System.out.println("checkAction called " + uploadFile.getName());
-        System.out.println("" + uploadFile.getData() == null ? "data is null" : "data is not null");
-        
         setFeedback("Check file goes here.");
+        
+        try {
+            List<String> msgList = new ImportFile().checkFile(importType, new FileInputStream(uploadFile.getFile()));
+            if (msgList.size() == 0)
+                setFeedback("The file check was SUCCESSFUL.  No issues were found.");
+            else {
+                StringBuffer buffer = new StringBuffer();
+                for (String msg : msgList) {
+                    buffer.append(msg);
+                    buffer.append("<br/>");
+                }
+                setFeedback(buffer.toString());
+            }
+        } catch (FileNotFoundException e) {
+            setFeedback("File upload failed.  File not found. " + e.getMessage());
+        }
+        
     }
     
     public void importAction() {
@@ -82,7 +98,7 @@ public class BulkImportBean extends BaseBean {
         try
         {
             out = response.getOutputStream();
-            InputStream downloadStream = loadFile(importType.getTemplate());
+            InputStream downloadStream = importType.loadTemplate();
             byte[] downloadBytes = new byte[4096];
             int len = 0;
             while((len = downloadStream.read(downloadBytes, 0, 4096)) != -1)
@@ -105,16 +121,6 @@ public class BulkImportBean extends BaseBean {
         }
     }
     
-    public static String PACKAGE_PATH = "com/inthinc/pro/download/";
-    public static InputStream loadFile(String fileName) throws IOException
-    {
-        String path = PACKAGE_PATH + fileName;
-        InputStream inputStream = BulkImportBean.class.getClassLoader().getResourceAsStream(path);
-        if(inputStream == null){
-            throw new IOException("Could not find file: " + fileName);
-        }
-        return inputStream;
-    }
     public void resetAction()
     {
         uploadFile = null;
@@ -122,10 +128,9 @@ public class BulkImportBean extends BaseBean {
     }
     
     public void fileUploadListener(UploadEvent event) throws Exception{
-System.out.println("upload listener");        
         UploadItem item = event.getUploadItem();
         uploadFile = new UploadFile();
         uploadFile.setName(item.getFileName());
-        uploadFile.setData(item.getData());
+        uploadFile.setFile(item.getFile());
     }  
 }

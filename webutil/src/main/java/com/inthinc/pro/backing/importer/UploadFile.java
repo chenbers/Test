@@ -1,16 +1,19 @@
 package com.inthinc.pro.backing.importer;
 
+import java.io.File;
+
 public class UploadFile {
 
     private String name;
     private String mime;
     private long length;
-    private byte[] data;
-    public byte[] getData() {
-        return data;
+    private File file;
+    
+    public File getFile() {
+        return file;
     }
-    public void setData(byte[] data) {
-        this.data = data;
+    public void setFile(File file) {
+        this.file = file;
     }
     public String getName() {
         return name;
