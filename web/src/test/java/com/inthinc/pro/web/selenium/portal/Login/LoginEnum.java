@@ -81,7 +81,7 @@ public enum LoginEnum implements SeleniumEnums {
 		this.xpath=xpath;
 		this.xpath_alt=xpath_alt;
 	}
-
+	
 	public String getText() {
 		return text;
 	}
