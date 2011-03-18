@@ -41,7 +41,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
                                   			WirelineStatus doorAlarm, String doorAlarmPasscode, 
                                   			WirelineStatus killMotor, String killMotorPasscode, Integer autoArmTime) {
         
-        super(vehicleID,ProductType.WAYSMART);
+        super(vehicleID,ProductType.WAYSMART,"");
         
         this.speedLimit = speedLimit;
         this.speedBuffer = speedBuffer;
@@ -225,7 +225,5 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     public void setMeasurementType(MeasurementType measurementType) {
         this.measurementType = measurementType;
     }
-
-
 
 }

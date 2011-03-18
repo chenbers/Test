@@ -101,7 +101,7 @@ public class DaoUtilBeanTest {
 	}
 	
 	@Test
-	public void init() {
+	public void initForSuperuser() {
 		((MockSuperuserDAO)superuserDAO).setSuperuser(Boolean.TRUE);
 		dab.init();
 
@@ -128,18 +128,21 @@ public class DaoUtilBeanTest {
 		assertEquals(CrudType.NOT_AVAILABLE, excludedTypes.get(0));
 		
 
-		((MockSuperuserDAO)superuserDAO).setSuperuser(Boolean.FALSE);
-		dab.init();
-		methodMap = dab.getMethodMap();
-		for (DaoMethod daoMethod : methodMap.values()) {
-			assertEquals("only read methods available " + daoMethod.getMethod().getName(), CrudType.READ, daoMethod.getCrudType());
-		}
-		
-		dab.setSelectedMethod("getAcct");
-		List<Param> paramList = dab.getParamList();
-		assertEquals("first param should be account id", Boolean.TRUE, paramList.get(0).getIsAccountID());
-		assertEquals("first param should be account id", "1", paramList.get(0).getParamValue());
 	}
+    @Test
+    public void initForNonSuperuser() {
+        ((MockSuperuserDAO)superuserDAO).setSuperuser(Boolean.FALSE);
+        dab.init();
+        Map<String, DaoMethod> methodMap = dab.getMethodMap();
+        for (DaoMethod daoMethod : methodMap.values()) {
+            assertEquals("only read methods available " + daoMethod.getMethod().getName(), CrudType.READ, daoMethod.getCrudType());
+        }
+        
+        dab.setSelectedMethod("getAcct");
+        List<Param> paramList = dab.getParamList();
+        assertEquals("first param should be account id", Boolean.TRUE, paramList.get(0).getIsAccountID());
+        assertEquals("first param should be account id", "1", paramList.get(0).getParamValue());
+    }
 
 	@Test
 	public void methodList() {

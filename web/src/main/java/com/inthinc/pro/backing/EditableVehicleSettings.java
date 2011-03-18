@@ -16,16 +16,19 @@ public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed
     private Integer     vehicleID;
     private ProductType productType;
     
+    private String      ephone;
+    
     
     public EditableVehicleSettings() {
         super();
         
     }
 
-    protected EditableVehicleSettings(Integer vehicleID, ProductType productType) {
+    protected EditableVehicleSettings(Integer vehicleID, ProductType productType, String ephone) {
 
         this.vehicleID = vehicleID;
         this.productType = productType;
+        this.ephone = ephone;
     }
     
     public void init(){}
@@ -41,6 +44,14 @@ public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
+    }
+
+    public String getEphone() {
+        return ephone;
+    }
+
+    public void setEphone(String ephone) {
+        this.ephone = ephone;
     }
 
     public boolean validateSaveItems(FacesContext context, boolean isBatchEdit, Map<String, Boolean> updateField){

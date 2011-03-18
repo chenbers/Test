@@ -18,7 +18,7 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
      * 
      */
     private static final long serialVersionUID = 1L;
-    private String ephone;
+//    private String ephone;
 	private Integer autologoffSeconds;
 	private Integer[] speedSettings;
 	private Integer hardAcceleration; //Slider value
@@ -34,9 +34,8 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
                                  Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
                                  Integer hardVertical) {
        
-        super(vehicleID, ProductType.TIWIPRO_R74);
+        super(vehicleID, ProductType.TIWIPRO_R74, ephone);
 
-        this.ephone = ephone;
         this.autologoffSeconds = autoLogoffSeconds;
         setSpeedSettings(speedSettings);
         setHardAcceleration(hardAcceleration);
@@ -59,13 +58,6 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         	this.speedSettings = speedSettings;
         }
     }
-    public String getEphone() {
-		return ephone;
-	}
-
-	public void setEphone(String ephone) {
-		this.ephone = ephone;
-	}
 
 	public Integer getAutologoffSeconds() {
 		return autologoffSeconds;
@@ -171,12 +163,12 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
     }
     private boolean validateEPhone(FacesContext context){
                 
-        if (ephone == null || ephone.isEmpty())
+        if (getEphone() == null || getEphone().isEmpty())
         {
             addErrorMessage(context,"edit-form:editVehicle-ephone","required");
             return false;
         }
-        if( (ephone.length() >22) || (MiscUtil.unformatPhone(ephone).length() > 15) )
+        if( (getEphone().length() >22) || (MiscUtil.unformatPhone(getEphone()).length() > 15) )
         {
             addErrorMessage(context,"edit-form:editVehicle-ephone","editDevice_phoneFormat");
             return false;

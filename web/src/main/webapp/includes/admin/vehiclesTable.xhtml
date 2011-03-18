@@ -144,6 +144,12 @@
       </f:facet>
       <h:outputText value="#{item.dot}" />
     </rich:column>
+    <rich:column id="ePhone" rendered="#{vehiclesBean.tableColumns['ephone'].visible}" filterValue="#{vehiclesBean.filterValues['ephone']}" sortBy="#{item.editableVehicleSettings.ephone}">
+      <f:facet name="header">
+		<h:outputText value="#{messages.vehiclesHeader_ephone}" />    
+      </f:facet>
+      <h:outputText value="#{item.editableVehicleSettings.ephone}" />
+    </rich:column>
     <rich:column id="IFTA" rendered="#{vehiclesBean.tableColumns['IFTA'].visible}" filterValue="#{vehiclesBean.filterValues['IFTA']}" sortBy="#{item.ifta}">
       <f:facet name="header">
 		<h:outputText value="#{messages.vehiclesHeader_IFTA}" />      
