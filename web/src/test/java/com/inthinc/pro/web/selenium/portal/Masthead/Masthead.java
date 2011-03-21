@@ -237,7 +237,8 @@ public class Masthead extends SeleniumServerLib{
 			Login login = new Login(masthead.get_selenium());
 			Masthead.selenium.start();
 			masthead.test_self_before_login();
-			login.login_to_portal("Automation1", "password");
+			login.portal_log_in_process("Automation1","password");
+//			login.login_to_portal("Automation1", "password");
 			masthead.test_self_after_login();
 			
 			errors = masthead.get_errors().get_errors().toString();
