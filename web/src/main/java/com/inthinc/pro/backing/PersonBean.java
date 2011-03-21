@@ -27,6 +27,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.StringUtils;
 import org.jasypt.util.password.PasswordEncryptor;
+import org.jfree.util.Log;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.RuleSetType;
@@ -268,7 +269,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return account;
     }
     public boolean isInitialLogin() {
-        return this.getUser().getLastLogin() == null;
+        return this.getProUser().getPreviousLogin() == null;
     }
     public boolean isPasswordChangeRequired() {
         return PreferenceLevelOption.REQUIRE.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange()) && isInitialLogin();
@@ -293,8 +294,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 return 1;//not set for this account, so any positive non-zero integer will do
             loginExpire= Integer.parseInt(account.getProps().getLoginExpire());
         } catch (NumberFormatException nfe) {
-            loginExpire = -1;
-            //TODO: jwimmer: something bad happened handle/catch appropriately
+            Log.error("NumberFormatException for account.props.loginExpire:"+account.getProps().getLoginExpire());
+            return 1; //log but do not break.  return as though not set
         }
         return loginExpire - daysSinceLastLogin;
     }
@@ -308,12 +309,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 return 365;//return an integer greater than ever need be shown on the password change warning/reminder
             passwordExpire= Integer.parseInt(account.getProps().getPasswordExpire());
         } catch (NumberFormatException nfe) {
-            return -1;
-            //TODO: jwimmer: something bad happened handle/catch appropriately
+            Log.error("NumberFormatException for account.props.passwordExpire:"+account.getProps().getPasswordExpire());
+            return 365; //log but do not break;  return as though not set
         }
         Integer daysSinceModified = (user.getModified()!=null)?DateUtil.differenceInDays(user.getModified(), new Date()):0;
         return passwordExpire - daysSinceModified;
-
     }
     @Override
     protected List<PersonView> loadItems() {
