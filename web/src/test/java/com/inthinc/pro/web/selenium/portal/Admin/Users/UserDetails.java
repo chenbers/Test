@@ -1,4 +1,4 @@
-package com.inthinc.pro.web.selenium.portal.Users;
+package com.inthinc.pro.web.selenium.portal.Admin.Users;
 import static org.junit.Assert.*;
 import com.inthinc.pro.web.selenium.InthincTest;
 import com.inthinc.pro.web.selenium.CoreMethodLib;
