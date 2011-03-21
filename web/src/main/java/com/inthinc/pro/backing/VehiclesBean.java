@@ -482,39 +482,22 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     @Override
     public String save()
     {
-        // prefix the sensitivity settings with "device." x
-        // prefix the sensitivity settings with "editableVehicleSettings."
-//        final Map<String, Boolean> updateField = getUpdateField();
-//        Map<String,Boolean> tempUpdateField = new HashMap<String, Boolean>();
-//        
-//        
-//        if (updateField != null)
-//        {
-//            for (final String key : updateField.keySet())
-//            {
-//                if (key.startsWith("hard"))
-//                {
-//                    tempUpdateField.put("editableVehicleSettings." + key,  updateField.get(key));
-//                }
-//            }
-//            
-//            for(final String key : tempUpdateField.keySet())
-//            {
-//                updateField.put(key, tempUpdateField.get(key));
-//            }
-//        }
-//        
-//        updateField.put("device.speedSettings", false);
-//        updateField.put("device.deviceID", false);
-//        updateField.put("device.accountID", false);
-//        updateField.put("device.vehicleID", false);
-//        updateField.put("device.status", false);
-//        updateField.put("device.name", false);
-//        updateField.put("device.imei", false);
-//        updateField.put("device.sim", false);
+        // for batch edit only
+        if ( isBatchEdit() ) {
 
-        // if ((getItem().getDevice() != null) && getItem().getDevice().isSensitivitiesInverted())
-        // getItem().getDevice().invertSensitivities();
+            if (    getItem().editableVehicleSettings.getEphone() != null && 
+                    getItem().editableVehicleSettings.getEphone().trim().length() != 0 ) {
+                getUpdateField().put("editableVehicleSettings.ephone", true);
+            }
+
+            if (    getItem().editableVehicleSettings instanceof TiwiproEditableVehicleSettings ) {
+                TiwiproEditableVehicleSettings tevs = (TiwiproEditableVehicleSettings) getItem().editableVehicleSettings;
+            
+                if ( tevs.getAutoLogoffSlider() != null & tevs.getAutoLogoffSlider() != 0 ) {
+                    getUpdateField().put("editableVehicleSettings.autologoffSeconds", true);
+                }
+            }
+        }
 
         // TODO: this should be refactored, but to be on the save side, just clear the cache and force a refresh when vehicle(s) change
         cacheBean.setVehicleMap(null);
