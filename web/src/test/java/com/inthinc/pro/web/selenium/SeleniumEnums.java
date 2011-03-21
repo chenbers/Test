@@ -1,6 +1,7 @@
 package com.inthinc.pro.web.selenium;
 
 public interface SeleniumEnums {
+	
 	public String getText();
 	
 	public void setText(String text);
@@ -10,4 +11,5 @@ public interface SeleniumEnums {
 	public String getXpath();
 
 	public String getXpath_alt();
+	
 }

@@ -8,6 +8,7 @@ import com.inthinc.pro.web.selenium.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Masthead.*;
 import com.inthinc.pro.web.selenium.portal.Notifications.*;
 
+@Ignore
 public class NotificationTest extends InthincTest {
 	//instantiate VAR for data reader
 	DataReaderLib testdata = new DataReaderLib();
@@ -25,6 +26,8 @@ public class NotificationTest extends InthincTest {
 		set_test_case("Tiwi_data.xls", "TC4631");		
 	
 		//login to portal
+		l.portal_log_in_process(getUsername(), getPassword());
+			
 //		l.login_to_portal(getUsername(), getPassword());
 		l.portal_log_in_process(getUsername(), getPassword());	
 

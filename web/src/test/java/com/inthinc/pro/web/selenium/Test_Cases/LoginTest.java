@@ -26,6 +26,10 @@ public class LoginTest extends InthincTest {
 		set_test_case("Tiwi_data.xls", "TC1247");
 	
 		//login to portal
+		l.portal_log_in_process(getUsername(), getPassword());
+		l.text_field_password_type("password");
+		l.text_field_username_type("");
+		l.button_log_in_click();
 		l.portal_log_in_process(getUsername(),getPassword());
 //		l.login_to_portal(getUsername(), getPassword());
 	}
@@ -37,11 +41,10 @@ public class LoginTest extends InthincTest {
 		//Set up test data
 		set_test_case("Tiwi_data.xls", "TC4632");
 		//go to Login Screen
-//		l.open_login();
-		l.page_log_in_open();
+		l.bookmark_login_open();
 		//verify login screen is displayed correctly
-//		l.ck_login_page();
-		l.page_log_in_validate();	
+		l.page_log_in_validate();
+			
 			
 		}
 	

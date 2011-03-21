@@ -496,8 +496,8 @@ public class CoreMethodLib extends DefaultSelenium{
 	}
 
 
-	public void getText(SeleniumEnums checkIt, String errorName) {
-		getText(getLocator(checkIt), checkIt.getText(), errorName);
+	public String getText(SeleniumEnums checkIt, String errorName) {
+		return getText(getLocator(checkIt), checkIt.getText(), errorName);
 	}
 
 

@@ -25,8 +25,8 @@ public class TemplateTest extends InthincTest {
 		set_test_case("ExcelFileName", "TestCaseName");
 	
 		//login to portal
-//		l.login_to_portal(get_data("WorksheetName","ColumnHeader"), get_data("WorksheetName","ColumnHeader"));
 		l.portal_log_in_process(get_data("WorksheetName","ColumnHeader"), get_data("WorksheetName","ColumnHeader"));
+			
 				
 		/*Call Test Methods using the syntax below
 		//ScreenClass.FunctionName
@@ -58,8 +58,8 @@ public class TemplateTest extends InthincTest {
 		set_test_case("ExcelFileName", "TestCaseName");
 	
 		//login to portal
-//		l.login_to_portal(get_data("WorksheetName","ColumnHeader"), get_data("WorksheetName","ColumnHeader"));
 		l.portal_log_in_process(get_data("WorksheetName","ColumnHeader"), get_data("WorksheetName","ColumnHeader"));
+			
 				
 		/*Call Test Methods using the syntax below
 		//ScreenClass.FunctionName

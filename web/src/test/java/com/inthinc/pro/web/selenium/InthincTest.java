@@ -34,7 +34,7 @@ public abstract class InthincTest
 	
 	private final static String username = "dtanner@inthinc.com";
 	private final static String password = "aOURh7PL5v";
-	private final static String workspace = "Sand Box";
+	private final static String workspace = "Inthinc";
 	
 	private static CoreMethodLib selenium;
 //	private static SeleniumServer seleniumserver;

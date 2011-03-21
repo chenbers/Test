@@ -83,7 +83,7 @@ public class GlobalSelenium {
 //    	System.out.println(whosYourFather);
     	if (!multiplicative.containsKey(whosYourFather) || multiplicative.get(whosYourFather)==null) {
     		String host = "192.168.3.201";
-    		String browser = "*iexplore";
+    		String browser = "*chrome";
     		String url = "https://qa.tiwipro.com:8423/tiwipro/";
         	try{
         		host = System.getenv("Selenium_host");
@@ -94,7 +94,7 @@ public class GlobalSelenium {
         		}
         	}catch(Exception e){
         		host = "192.168.3.201";
-        		browser = "*iexplore";
+        		browser = "*chrome";
         		url = "https://qa.tiwipro.com:8423/tiwipro/";
         	}
         	globalSelenium.selenium = new CoreMethodLib(host, 4444, browser, url);

@@ -18,6 +18,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -313,7 +314,7 @@ public class RallyAPILib {
 		StringWriter aStringAString = new StringWriter();
 		Iterator<String> pitcher = whatHappened.keySet().iterator();
 		
-		String oneTab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+		String tab = StringUtils.repeat("&nbsp;",5);
 
 		while (pitcher.hasNext()){
 			String outsideBall = pitcher.next();
@@ -324,14 +325,12 @@ public class RallyAPILib {
 				String insideBall = innerItr.next();
 				String callIt = whatHappened.get(outsideBall).get(insideBall);
 				
-				aStringAString.write(oneTab);
+				aStringAString.write(tab);
 				aStringAString.write(insideBall);
 				aStringAString.write("<br />");
-				aStringAString.write(oneTab);
-				aStringAString.write(oneTab);
+				aStringAString.write(StringUtils.repeat(tab,2));
 				aStringAString.write(callIt);
-				aStringAString.write("<br />");
-				aStringAString.write("<br />");
+				aStringAString.write(StringUtils.repeat("<br />", 2));
 			}
 		}
 		String sendMeOut = aStringAString.toString();
@@ -376,20 +375,20 @@ public class RallyAPILib {
 	 * Depending on the status, print an error or success method, consume the body<br />
 	 * then finally release the connection
 	 * 
-	 * @param mehod
+	 * @param method
 	 * @throws IOException
 	 * @throws HttpException
 	 */
-	private void httpRequest(HttpMethod mehod) throws IOException, HttpException {
-		int statusCode = httpClient.executeMethod(mehod);
+	private void httpRequest(HttpMethod method) throws IOException, HttpException {
+		int statusCode = httpClient.executeMethod(method);
         if (statusCode != HttpStatus.SC_OK) {
-            System.out.println("POST method failed: " + mehod.getStatusLine());
-            mehod.getResponseBodyAsString();
+            System.out.println("POST method failed: " + method.getStatusLine());
+            method.getResponseBodyAsString();
         } else {
-            System.out.println("POST method succeeded: " + mehod.getStatusLine());
-            System.out.println(mehod.getResponseBodyAsString());
+            System.out.println("POST method succeeded: " + method.getStatusLine());
+            System.out.println(method.getResponseBodyAsString());
         }
-        mehod.releaseConnection();
+        method.releaseConnection();
 	}
      
     
