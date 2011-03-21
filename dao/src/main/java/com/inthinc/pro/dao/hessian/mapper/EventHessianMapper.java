@@ -38,6 +38,7 @@ public class EventHessianMapper extends AbstractMapper
                 try
                 {
                     PropertyUtils.setProperty(event, "attrMap", attrValueMap);
+                    PropertyUtils.setProperty(event, propertyName, propertyData);
                 }
                 catch (IllegalAccessException e)
                 {
