@@ -45,7 +45,7 @@ public class DriverStyleBeanTest extends BaseBeanTest
     {
         // team level login
         loginUser("custom101");
-        
+       
         // get the bean from the applicationContext (initialized by Spring injection)
         DriverStyleBean driverStyleBean = (DriverStyleBean)applicationContext.getBean("driverStyleBean");
         NavigationBean nav = (NavigationBean)applicationContext.getBean("navigationBean");
@@ -79,12 +79,12 @@ public class DriverStyleBeanTest extends BaseBeanTest
         Integer score = driverStyleBean.getScoreMap().get( ScoreType.SCORE_DRIVING_STYLE.toString());        
         assertEquals( score.toString(), "4");
         assertEquals( driverStyleBean.getStyleMap().get( ScoreType.SCORE_DRIVING_STYLE.toString() ) , "score_med_1" );
-        
+         
         // Test Events
         List<EventReportItem> styleEvents = new ArrayList<EventReportItem>();
         AggressiveDrivingEvent e = new AggressiveDrivingEvent();
-        e.setDeltaX(1);
-        e.setDeltaY(1);
+        e.setDeltaX(0);
+        e.setDeltaY(0);
         e.setDeltaZ(5);
         e.setTime(new Date());
         e.setNoteID(new Long(123456));

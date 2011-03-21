@@ -41,6 +41,7 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     @Column(updateable = false)
     private Person person;
     private Integer groupID;
+    @Column(updateable = false)
     private CellProviderInfo cellProviderInfo;
     
     public static class CellProviderInfo {
