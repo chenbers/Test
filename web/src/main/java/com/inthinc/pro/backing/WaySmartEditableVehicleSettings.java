@@ -19,8 +19,6 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     
     
     private WirelineStatus wirelineModule;
-    private WirelineStatus  doorAlarm;
-    private WirelineStatus  killMotor;
     private String  doorAlarmPasscode;
     private String  killMotorPasscode;
     private Integer autoArmTime;
@@ -38,8 +36,8 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
                                   			Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
                                   			Integer hardVertical, MeasurementType measurementType,
                                   			WirelineStatus wirelineModule, 
-                                  			WirelineStatus doorAlarm, String doorAlarmPasscode, 
-                                  			WirelineStatus killMotor, String killMotorPasscode, Integer autoArmTime) {
+                                  			String doorAlarmPasscode, 
+                                  			String killMotorPasscode, Integer autoArmTime) {
         
         super(vehicleID,ProductType.WAYSMART,"");
         
@@ -52,9 +50,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
         setHardVertical(hardVertical);
         this.measurementType = measurementType;
         this.wirelineModule = wirelineModule;
-        this.doorAlarm = doorAlarm;
         this.doorAlarmPasscode = doorAlarmPasscode; 
-        this.killMotor = killMotor;
         this.killMotorPasscode = killMotorPasscode;
         this.autoArmTime = autoArmTime;
     }
@@ -160,7 +156,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     }
 
     public Integer getSevereSpeedInteger() {
-        return severeSpeed.intValue();
+        return (severeSpeed == null) ? 0 : severeSpeed.intValue();
     }
 
     public void setSevereSpeedInteger(Integer severeSpeed) {
@@ -177,35 +173,17 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
         this.wirelineModule = wirelineModule;
     }
     public String getDoorAlarmPasscode() {
-        return (getDoorAlarm() == WirelineStatus.DISABLE) ? "" : doorAlarmPasscode;
+        return doorAlarmPasscode;
     }
     public void setDoorAlarmPasscode(String doorAlarmPasscode) {
         this.doorAlarmPasscode = doorAlarmPasscode;
     }
     public String getKillMotorPasscode() {
-        return (getKillMotor() == WirelineStatus.DISABLE) ? "" : killMotorPasscode;
+        return killMotorPasscode;
     }
     public void setKillMotorPasscode(String killMotorPasscode) {
         this.killMotorPasscode = killMotorPasscode;
     }
-    
-    public WirelineStatus getDoorAlarm() {
-        if (doorAlarm == null)
-            return WirelineStatus.DISABLE;
-        return doorAlarm;
-    }
-    public void setDoorAlarm(WirelineStatus doorAlarm) {
-        this.doorAlarm = doorAlarm;
-    }
-    public WirelineStatus getKillMotor() {
-        if (killMotor == null)
-            killMotor = WirelineStatus.DISABLE;
-        return killMotor;
-    }
-    public void setKillMotor(WirelineStatus killMotor) {
-        this.killMotor = killMotor;
-    }
-
     public Integer getAutoArmTime() {
         return autoArmTime;
     }

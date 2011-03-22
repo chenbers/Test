@@ -41,7 +41,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Integer hardBrake = vehicleSensitivitySliders.getHardBrakeSlider().getDefaultValueIndex();
         return new WaySmartEditableVehicleSettings(vehicleID==null?-1:vehicleID, speedLimit,speedBuffer,severeSpeed,
                                         hardAcceleration, hardBrake, hardTurn,hardVertical, getMeasurementType(), WirelineStatus.DISABLE,
-                                        WirelineStatus.DISABLE, null, WirelineStatus.DISABLE, null, 15);
+                                        null, null, 15);
     }
     
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
@@ -60,14 +60,12 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         WirelineStatus wirelineModule = WirelineStatus.valueOf(NumberUtil.convertString(vs.getCombined(SettingType.WIRELINE_MODULE.getSettingID())));
         String  doorAlarmPasscode = vs.getCombined(SettingType.WIRELINE_DOOR_ALARM_PASSCODE.getSettingID());
         String  killMotorPasscode = vs.getCombined(SettingType.WIRELINE_KILL_MOTOR_PASSCODE.getSettingID());
-        WirelineStatus  doorAlarm = (doorAlarmPasscode == null || doorAlarmPasscode.trim().isEmpty()) ? WirelineStatus.DISABLE : WirelineStatus.ENABLE;
-        WirelineStatus  killMotor = (killMotorPasscode == null || killMotorPasscode.trim().isEmpty()) ? WirelineStatus.DISABLE : WirelineStatus.ENABLE;
         Integer autoArmTime = NumberUtil.convertString(vs.getCombined(SettingType.WIRELINE_AUTO_ARM_TIME.getSettingID()));
 
 
         return new WaySmartEditableVehicleSettings(vehicleID, speedLimit,speedBuffer,severeSpeed, 
                                           hardAcceleration, hardBrake, hardTurn,hardVertical, getMeasurementType(),
-                                          wirelineModule, doorAlarm, doorAlarmPasscode, killMotor, killMotorPasscode, autoArmTime);
+                                          wirelineModule, doorAlarmPasscode, killMotorPasscode, autoArmTime);
     }
     
     
