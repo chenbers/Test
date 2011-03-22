@@ -19,7 +19,6 @@ import mockit.Verifications;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 import org.joda.time.Interval;
 import org.junit.Test;
 
@@ -28,10 +27,8 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.aggregation.DriveTimeRecord;
-import com.inthinc.pro.model.performance.DriverHoursRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.performance.model.DriverHours;
 
 
@@ -40,6 +37,7 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
     // Constant values
     private final Integer GROUP_ID = new Integer(2);
     private final Integer DRIVER_ID = new Integer(1);
+    private final String VEHICLE_NAME = "Stub Vehicle Name";
     private final Double HOURS_THIS_DAY = new Double(7);
     private final Long SECONDS_THIS_DAY = Long.valueOf(25200l);
     private final String GROUP_FULL_NAME = "Group Full Name";
@@ -88,7 +86,6 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
               driverList.add(driverMock);
               driverDAOMock.getAllDrivers(GROUP_ID); returns(driverList);
 
-//              waysmartDAOMock.getDriverHours(driverMock, INTERVAL); returns(getHoursList());
               Interval queryInterval = new Interval(INTERVAL.getStart().minusDays(1), new DateMidnight(INTERVAL.getEnd()).toDateTime().plusDays(2));
 
               driveTimeDAOMock.getDriveTimeRecordListForGroup(GROUP_ID, queryInterval); returns (getDriveTimeList());
@@ -105,11 +102,11 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
                hours.setDateTime(new DateMidnight(INTERVAL.getStart()).toDateTime());
                hours.setDriveTimeSeconds(SECONDS_THIS_DAY);
                hours.setDriverID(DRIVER_ID);
+               hours.setVehicleName(VEHICLE_NAME);
                hoursList.add(hours);
                
                return hoursList;
            }
-           
         };
         
         //------------------------------------------------------------------
@@ -124,7 +121,7 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
         	   // All the strict expectations were already verified automatically
                driverMock.getGroupID();
                driverMock.getDriverID();
-//               driverMock.getPerson(); 
+               driverMock.getPerson();
            }
          };
 
