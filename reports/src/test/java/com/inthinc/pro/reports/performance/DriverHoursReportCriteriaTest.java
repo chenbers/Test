@@ -27,12 +27,12 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.aggregation.DriveTimeRecord;
-import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.performance.model.DriverHours;
 
 
-public class DriverHoursReportCriteriaTest extends BaseUnitTest {
+//public class DriverHoursReportCriteriaTest extends BaseUnitTest {
+public class DriverHoursReportCriteriaTest {
     
     // Constant values
     private final Integer GROUP_ID = new Integer(2);
@@ -57,7 +57,6 @@ public class DriverHoursReportCriteriaTest extends BaseUnitTest {
 	/**
 	 * Tests the init method of the DriverHoursReportCriteria class.
 	 */
-	@SuppressWarnings("unchecked")
     @Test
     public void testInit(){
 

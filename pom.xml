@@ -76,6 +76,7 @@
 		<joda.version>1.6</joda.version>
 		<geotools.version>2.6.5</geotools.version>
 		<log4j.version>1.2.12</log4j.version>
+		<jmockit.version>0.999.4</jmockit.version>
 	</properties>
 	<build>
 		<finalName>pro</finalName>
@@ -243,7 +244,7 @@ WWUUnm]]>
 				<!-- JMockit MUST appear before JUnit -->
 				<groupId>mockit</groupId>
 				<artifactId>jmockit</artifactId>
-				<version>0.999.3</version>
+				<version>${jmockit.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -526,6 +527,8 @@ WWUUnm]]>
 			<!-- JMockit MUST appear before JUnit -->
 			<groupId>mockit</groupId>
 			<artifactId>jmockit</artifactId>
+			<version>${jmockit.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
