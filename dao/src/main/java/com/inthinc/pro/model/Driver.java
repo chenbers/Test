@@ -41,8 +41,8 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     @Column(updateable = false)
     private Person person;
     private Integer groupID;
-//    @Column(updateable = false)
-//    private CellProviderInfo cellProviderInfo;
+    @Column(updateable = false)
+    private CellProviderInfo cellProviderInfo;
     
     public static class CellProviderInfo {
         private String cellPhone;
@@ -246,11 +246,11 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
                 + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status + "]";
     }
     
-//    public CellProviderInfo getCellProviderInfo() {
-//        return this.cellProviderInfo;
-//    }
-//
-//    public void setCellProviderInfo(CellProviderInfo cellProviderInfo) {
-//        this.cellProviderInfo = cellProviderInfo;
-//    }
+    public CellProviderInfo getCellProviderInfo() {
+        return this.cellProviderInfo;
+    }
+
+    public void setCellProviderInfo(CellProviderInfo cellProviderInfo) {
+        this.cellProviderInfo = cellProviderInfo;
+    }
 }
