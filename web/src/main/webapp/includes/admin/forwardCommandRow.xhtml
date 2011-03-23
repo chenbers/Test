@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+    
+<!--
+  Parameters:
+  ==============
+         cmd: An instance of CommandDef or null to display header row
+         id: id to use
+         label: label to show 
+
+  To use:
+  ==============
+  <ui:include src="/includes/admin/forwardCommandRow.xhtml">
+    <ui:param name="cmd" value="#{myForwardCommandDef}" />
+  </ui:include>
+-->
+    
+<ui:composition>
+	<script type="text/javascript">
+		function smallButton()
+		{
+			jQuery(this).css({'border' : '', 'color' : 'red'});
+			
+		}
+    </script>
+
+
+<ui:fragment rendered="#{cmd eq null}">
+<tr>
+	<td colspan="3"/>
+	<td width="250">
+		<div class="add_section_title"><h:outputText value="#{messages.forwardCommandTimeSent}"/></div>
+	</td>
+	<td width="200">
+		<div class="add_section_title"><h:outputText value="#{messages.forwardCommandTimeReceived}"/></div>
+	</td>
+</tr>
+</ui:fragment>
+<ui:fragment rendered="#{cmd ne null}">
+<tr>
+	<td width="70">
+    	<h:outputText value="#{label}:" />
+	</td>
+	<td width="100">
+    	<h:selectOneMenu value="#{cmd.selected}" id="#{id}_selectItems" converter="SimpleBeanConverter" >
+        	<f:selectItems value="#{cmd.selectItems}"/>
+        	<a4j:support event="onchange" reRender="#{id}_sentDescription,#{id}_recDescription" limitToList="true" ajaxSingle="true"/>
+		</h:selectOneMenu>
+	</td>
+	<td width="80">
+	<!-- 
+		<a4j:commandButton id="#{id}_sendButton" action="#{cmd.sendCommand}" immediate="true" styleClass="left" ajaxSingle="true" reRender="#{id}_sentDescription,#{id}_recDescription">
+			<span class="email"><h:outputText value="#{messages.forwardCommandSend}"/></span>
+		</a4j:commandButton>
+ -->		
+ 
+		<a4j:commandButton id="#{id}_sendButton" action="#{cmd.sendCommand}" style="border:3px outset #f0f0f0; padding:0" immediate="true" ajaxSingle="true" 
+			reRender="#{id}_sentDescription,#{id}_recDescription" >
+			<h:outputText value="#{messages.forwardCommandSend}"/>
+		</a4j:commandButton>
+	</td>
+	<td width="250">
+		<h:panelGroup id="#{id}_sentDescription">
+			<h:outputText value="#{cmd.sentDescription}" escape="false"/>
+		</h:panelGroup>
+	</td>
+	<td width="200">
+		<h:panelGroup id="#{id}_recDescription">
+			<h:outputText value="#{cmd.receivedDescription}" escape="false"/>
+		</h:panelGroup>
+	</td>
+	
+</tr>
+</ui:fragment>
+</ui:composition>
+</html>

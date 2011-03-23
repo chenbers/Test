@@ -404,9 +404,36 @@
                         </li>
                       </ul>
                       </a4j:region>
-                      
                     </rich:tab>
 
+                    <rich:tab id="wirelineCmds" label="#{messages.wireline}" ontabenter="reRenderTab()" ontableave="reRenderTab()" 
+                    			rendered="#{not vehiclesBean.batchEdit and vehiclesBean.item.productType == 'WAYSMART' and vehiclesBean.item.editableVehicleSettings.wirelineModule == 'ENABLE'}">
+    	             <a4j:region>
+	                  <a4j:jsFunction name="reRenderTab" reRender="wirelineCmdsPanel"></a4j:jsFunction>
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="r"/>
+                      </ul>
+                      <h:panelGroup id="wirelineCmdsPanel">
+                            <table width="750" border="0" cellspacing="2" cellpadding="4" align="center">
+	                         <ui:include src="../../includes/admin/forwardCommandRow.xhtml">
+	                         </ui:include>
+	                         <ui:include src="../../includes/admin/forwardCommandRow.xhtml">
+	                             <ui:param name="cmd" value="#{vehiclesBean.item.wirelineKillMotor}" />
+    	                         <ui:param name="label" value="#{messages.wirelineKillMotor}" />
+        	                     <ui:param name="id" value="wirelineKillMotor" />
+                             </ui:include>
+	                         <ui:include src="../../includes/admin/forwardCommandRow.xhtml">
+	                             <ui:param name="cmd" value="#{vehiclesBean.item.wirelineDoorAlarm}" />
+    	                         <ui:param name="label" value="#{messages.wirelineDoorAlarm}" />
+        	                     <ui:param name="id" value="wirelineDoorAlarm" />
+                             </ui:include>
+                      	</table>
+                      </h:panelGroup>
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="r"/>
+                      </ul>
+                     </a4j:region>
+                    </rich:tab>
                   </rich:tabPanel>
 
                 </div>

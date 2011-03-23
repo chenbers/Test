@@ -24,6 +24,9 @@ import javax.faces.model.SelectItem;
 
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.backing.fwdcmd.WaysmartForwardCommand;
+import com.inthinc.pro.backing.fwdcmd.WirelineDoorAlarmCommand;
+import com.inthinc.pro.backing.fwdcmd.WirelineKillMotorCommand;
 import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.backing.model.VehicleSettingsFactory;
 import com.inthinc.pro.backing.ui.DeviceStatusSelectItems;
@@ -33,6 +36,7 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO;
 import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
@@ -122,6 +126,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
 
     private CacheBean cacheBean;
+    
+    private FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO;
+
     
     @Override
     public void initBean() {
@@ -260,6 +267,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicleView.setOldGroupID(vehicle.getGroupID());
         vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
+        vehicleView.initForwardCommandDefs();
 
 
         return vehicleView;
@@ -716,6 +724,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return SelectItemUtil.toList(WirelineStatus.class, false);
     }
 
+    public FwdCmdSpoolWSIridiumJDBCDAO getFcsIridiumDAO() {
+        return fcsIridiumDAO;
+    }
+
+    public void setFcsIridiumDAO(FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
+System.out.println("setFcsIridiumDAO");        
+        this.fcsIridiumDAO = fcsIridiumDAO;
+    }
+
     public static class VehicleView extends Vehicle implements EditItem
     {
         @Column(updateable = false)
@@ -738,12 +755,26 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         @Column(updateable = false)
         private boolean           selected;
         
+        @Column(updateable = false)
+        private WaysmartForwardCommand wirelineDoorAlarm;
+
+        @Column(updateable = false)
+        private WaysmartForwardCommand wirelineKillMotor;
+        
+        
+
+        
         public VehicleView() {
             super();
         }
         public VehicleView(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, Integer year, String color, VehicleType vtype, String vin, Integer weight,
                 String license, State state) {
             super(vehicleID, groupID, status, name, make, model, year, color, vtype, vin, weight, license, state);
+        }
+        
+        public void initForwardCommandDefs() {
+            wirelineDoorAlarm = new WirelineDoorAlarmCommand(getDeviceID(), getFwdCmdAddress(), bean.getFcsIridiumDAO());
+            wirelineKillMotor = new WirelineKillMotorCommand(getDeviceID(), getFwdCmdAddress(), bean.getFcsIridiumDAO());
         }
         public void setEditableVehicleSettings(EditableVehicleSettings editableVehicleSettings) {
             this.editableVehicleSettings = editableVehicleSettings;
@@ -848,6 +879,26 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         public void setSelected(boolean selected)
         {
             this.selected = selected;
+        }
+
+        public WaysmartForwardCommand getWirelineDoorAlarm() {
+            return wirelineDoorAlarm;
+        }
+        public void setWirelineDoorAlarm(WaysmartForwardCommand wirelineDoorAlarm) {
+            this.wirelineDoorAlarm = wirelineDoorAlarm;
+        }
+        public WaysmartForwardCommand getWirelineKillMotor() {
+            return wirelineKillMotor;
+        }
+        public void setWirelineKillMotor(WaysmartForwardCommand wirelineKillMotor) {
+            this.wirelineKillMotor = wirelineKillMotor;
+        }
+        
+        private String getFwdCmdAddress() {
+            if (getDevice() != null && getDevice().getImei() != null)
+                return getDevice().getImei();
+            
+            return null;
         }
     }
 

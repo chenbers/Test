@@ -20,8 +20,10 @@ public class ForwardCommandSpool extends BaseEntity {
     private Integer processed;
     private Date created;
     private Date modified;
-
+    ForwardCommandStatus status;
+    IridiumFCStatus iridiumStatus;
     
+
     public ForwardCommandSpool() 
     {
     }
@@ -173,4 +175,19 @@ public class ForwardCommandSpool extends BaseEntity {
     public void setModified(Date modified) {
         this.modified = modified;
     }
+    public ForwardCommandStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ForwardCommandStatus status) {
+        this.status = status;
+    }
+    public IridiumFCStatus getIridiumStatus() {
+        return iridiumStatus;
+    }
+
+    public void setIridiumStatus(IridiumFCStatus iridiumStatus) {
+        this.iridiumStatus = iridiumStatus;
+    }
+
 }
