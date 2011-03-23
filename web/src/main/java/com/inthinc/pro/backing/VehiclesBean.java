@@ -380,6 +380,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         ProductType productChoice = null;
         //set first value
         int firstSelected = getFirstSelectedItem(inViewItems);
+        if (firstSelected == -1) return;
         VehicleView firstSelectedVehicle = inViewItems.get(firstSelected);
         if(firstSelectedVehicle.getEditableVehicleSettings()!= null){
             productChoice = firstSelectedVehicle.getEditableVehicleSettings().getProductType();
