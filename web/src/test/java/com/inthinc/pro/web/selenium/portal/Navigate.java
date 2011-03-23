@@ -25,20 +25,12 @@ public class Navigate extends SeleniumServerLib {
 	private String curr_admin_menu = "";
 	
 	public Navigate(){
-			this(GlobalSelenium.getSingleton().getSelenium());
-		}
-	
-	public Navigate(GlobalSelenium tvar ){
-			this(tvar.getSelenium());
-		}
-	
-	public Navigate( CoreMethodLib sel ){
-			selenium = sel;
-		}
+		selenium = GlobalSelenium.getSelenium();
+	}
 	
 	public ErrorCatcher get_errors(){
-			return selenium.getErrors();
-		}
+		return selenium.getErrors();
+	}
 		
 	public void main_search(String texttosearch, String section, String errorname){
 		selenium.type(search_edit_box, texttosearch,errorname);
@@ -47,32 +39,32 @@ public class Navigate extends SeleniumServerLib {
 		selenium.waitForPageToLoad("30000");
 	}
 
-public void home_select(String link, String error_message){
+	public void home_select(String link, String error_message){
 		selenium.open(main_screen_id);
 		selenium.click(link, error_message);
 		selenium.waitForPageToLoad("30000");
 	}
 
-//Main Menu displayed on Master Head Screen 
-public void main_menu_select(String menuitem,String error_message){
+	//Main Menu displayed on Master Head Screen 
+	public void main_menu_select(String menuitem,String error_message){
 		//menuitem example: Admin , LiveFleet
 		selenium.click("//a[@id='navigation:layout-navigation" + menuitem + "']/span", error_message);
 		selenium.waitForPageToLoad("80000");
 	}
 
 
-public void admin_menu_select(String screen, String errorname){
-	selenium.click("link=" + screen);
-	selenium.waitForPageToLoad("30000");
+	public void admin_menu_select(String screen, String errorname){
+		selenium.click("link=" + screen);
+		selenium.waitForPageToLoad("30000");
 	}
 
-public void admin_menu_select(String screen, String errorname, String waittime){
-	//overloaded function that allows users to increase wait times 
-	selenium.click("link=" + screen);
-	selenium.waitForPageToLoad(waittime);
+	public void admin_menu_select(String screen, String errorname, String waittime){
+		//overloaded function that allows users to increase wait times 
+		selenium.click("link=" + screen);
+		selenium.waitForPageToLoad(waittime);
 	}
 
-public void notification_menu_select(String screen, String errorname){
+	public void notification_menu_select(String screen, String errorname){
 		//Since each button's id changes depending on what is currently select
 		//a var is set to the curbutton is used to append to the name of the button selected.
 		if (curr_notif_menu.contentEquals("")){
@@ -83,7 +75,7 @@ public void notification_menu_select(String screen, String errorname){
 			selenium.waitForPageToLoad("80000");
 			curr_notif_menu = screen;
 			selenium.open(notifications_page + screen,"Refresh Button on Section:" + screen);
-			}
+	}
 
 //used to select item form home tree by selecting link
 	public void select_home_tree (String tierone, String errorname){
@@ -111,5 +103,4 @@ public void notification_menu_select(String screen, String errorname){
  		selenium.click("link=" + tierthree, errorname);
  		selenium.waitForPageToLoad("80000");
  	}
-	
 }

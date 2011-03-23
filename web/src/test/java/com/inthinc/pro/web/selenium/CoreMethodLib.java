@@ -18,15 +18,29 @@ package com.inthinc.pro.web.selenium;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverBackedSelenium;
+
+import com.google.common.base.Supplier;
 import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
-import com.thoughtworks.selenium.CommandProcessor;
-import com.thoughtworks.selenium.DefaultSelenium;
+//import com.thoughtworks.selenium.CommandProcessor;
+//import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 
 
-public class CoreMethodLib extends DefaultSelenium{
+public class CoreMethodLib extends WebDriverBackedSelenium{
 
-	private static ErrorCatcher errors;
+public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
+		super(baseDriver, baseUrl);
+	}
+
+
+	public CoreMethodLib(Supplier<WebDriver> maker, String baseUrl) {
+		super(maker, baseUrl);
+	}
+
+
+	private static ErrorCatcher errors = new ErrorCatcher();
 	
 
 	
@@ -37,15 +51,6 @@ public class CoreMethodLib extends DefaultSelenium{
 		return null;
 	}
 
-	
-	public CoreMethodLib(CommandProcessor processor) {
-		super(processor);
-	}
-
-	public CoreMethodLib(String serverHost, int serverPort, String browserStartCommand,
-			String browserURL) {
-		super(serverHost, serverPort, browserStartCommand, browserURL);
-	}
 	
 	public void open(String locator,String error_name){
 		try{

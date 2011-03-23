@@ -34,12 +34,8 @@ public class UserAdmin extends InthincTest {
 	protected static CoreMethodLib selenium;
 
 	public UserAdmin(){
-			this(GlobalSelenium.getSingleton().getSelenium());
-		}
-	
-	public UserAdmin(GlobalSelenium tvar ){
-			this(tvar.getSelenium());
-		}
+		selenium = GlobalSelenium.getSelenium();
+	}
 	
 	public void chk_User_Admin_Screen(String error_name){
 		//check title
@@ -57,94 +53,93 @@ public class UserAdmin extends InthincTest {
 	}
 	
 	public String SearchList(String searchtext, int total, String error_name){
-			//Initialize local variables 
-			String found = "no";	
-			String curtext = "";
-			//loop though list incrementing by one
-			for (int currow = 0;currow<total; currow++){
-				//get text for current row
-				curtext = selenium.getText(userlistrowitem + currow + ":personTableName", error_name );
-				//when item matches set return flag and break out of loop
-				if (searchtext.contentEquals(curtext)){
-					found = "yes";
-					System.out.print(searchtext + "found in list " + error_name);
-					break;
-					}
+		//Initialize local variables 
+		String found = "no";	
+		String curtext = "";
+		//loop though list incrementing by one
+		for (int currow = 0;currow<total; currow++){
+			//get text for current row
+			curtext = selenium.getText(userlistrowitem + currow + ":personTableName", error_name );
+			//when item matches set return flag and break out of loop
+			if (searchtext.contentEquals(curtext)){
+				found = "yes";
+				System.out.print(searchtext + "found in list " + error_name);
+				break;
 				}
-			//return result
-			return found;
-		}
+			}
+		//return result
+		return found;
+	}
 	
 	
 	public void SelectCancelPopup(String error_name){
-			selenium.click(savepopupbutton);
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.click(savepopupbutton);
+		selenium.waitForPageToLoad("30000");
+	}
 	
 	public void SelectSavePopup(String error_name){
-			selenium.click(cancelpopupbutton);
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.click(cancelpopupbutton);
+		selenium.waitForPageToLoad("30000");
+	}
 	
 	public void SetColumnRadioButton (int col, String error_name){
 		String ck = selenium.isnotChecked(editcolradiobutton + col + ":personTable-col", error_name);
 		if (ck.contentEquals("yes")) {
-				selenium.click(editcolradiobutton + col + ":personTable-col", error_name);
-				}
+			selenium.click(editcolradiobutton + col + ":personTable-col", error_name);
 		}
+	}
 	
 	public void SelectEditColumnLink(String errorname){
-			selenium.click(editcolumnlink, errorname);
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.click(editcolumnlink, errorname);
+		selenium.waitForPageToLoad("30000");
+	}
 	
 	public void SelectBatchEditButton (String errorname){
-			selenium.click(batcheditbutton, errorname);
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.click(batcheditbutton, errorname);
+		selenium.waitForPageToLoad("30000");
+	}
 	
 	public void SelectULRadioButton(int item_num, String item_name, String errorname){
-			selenium.click(userlistrowitem + item_num + ":select", errorname);
-		}
+		selenium.click(userlistrowitem + item_num + ":select", errorname);
+	}
 	
 	public void SelectULEditLink(int item_num, String errorname){
-			selenium.click(userlistrowitem + item_num + ":edit", errorname);
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.click(userlistrowitem + item_num + ":edit", errorname);
+		selenium.waitForPageToLoad("30000");
+	}
 	
 	public void SelectListName(int item_num, String errorname){
-			selenium.click(userlistrowitem + item_num + ":personTableName", errorname );
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.click(userlistrowitem + item_num + ":personTableName", errorname );
+		selenium.waitForPageToLoad("30000");
+	}
 	
 	public void ClickUserDelete(String errorname){
-			selenium.click(userdeletebutton, errorname);
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.click(userdeletebutton, errorname);
+		selenium.waitForPageToLoad("30000");
+	}
 	
 	public void ClickCancelDelButton(String errorname){
-			selenium.click(canceldelbutton);
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.click(canceldelbutton);
+		selenium.waitForPageToLoad("30000");
+	}
+	
 	public void ClickConfirmDelButton(String errorname){
-			selenium.click(confirmdelbutton, errorname);
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.click(confirmdelbutton, errorname);
+		selenium.waitForPageToLoad("30000");
+	}
 	
 	public void search_admin(String text, String errorname){
-			selenium.type(search_text_box, text,errorname);
-			selenium.click(searchbutton, "Select Search Button");
-			selenium.waitForPageToLoad("30000");
-		}
+		selenium.type(search_text_box, text,errorname);
+		selenium.click(searchbutton, "Select Search Button");
+		selenium.waitForPageToLoad("30000");
+	}
 	
 	public UserAdmin( CoreMethodLib sel ){
-			selenium = sel;
-		}
+		selenium = sel;
+	}
 	
 	public ErrorCatcher get_errors(){
-			return selenium.getErrors();
-		}
-		
-	
+		return selenium.getErrors();
+	}
 }
 

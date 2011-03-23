@@ -16,7 +16,6 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import org.junit.*;
 import org.junit.runner.notification.StoppedByUserException;
-import org.openqa.selenium.server.SeleniumServer;
 
 public abstract class InthincTest
 {
@@ -37,17 +36,14 @@ public abstract class InthincTest
 	private final static String workspace = "Inthinc";
 	
 	private static CoreMethodLib selenium;
-//	private static SeleniumServer seleniumserver;
 	
 	@BeforeClass
 	public static void start_server(){
 		try{
-//				seleniumserver = new SeleniumServer();
-//		        seleniumserver.start();
-				rally = new RallyAPILib(username, password);
-			}catch (Exception e) {
-				e.printStackTrace();
-				throw new StoppedByUserException();
+			rally = new RallyAPILib(username, password);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new StoppedByUserException();
 		}
         
 	}//end setup
@@ -56,7 +52,6 @@ public abstract class InthincTest
 	public void start_selenium(){
 		selenium = GlobalSelenium.getYourOwn();
 		try{
-			selenium.start();
 			currentTime = (GregorianCalendar) GregorianCalendar.getInstance();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -88,10 +83,8 @@ public abstract class InthincTest
 	@AfterClass
 	public static void stop_server(){
 		GlobalSelenium.dieSeleniumDie();
-//		seleniumserver.stop();
 		
 	}//tear down
-	
 	
 	
 	public String set_test_case(String file_name, String test_case){

@@ -16,20 +16,12 @@ public class Login {
 	protected static CoreMethodLib selenium;
 
 	public Login(){
-		this(GlobalSelenium.getYourOwn());
-	}
-	
-	public Login(GlobalSelenium tvar ){
-		this(tvar.getSelenium());
-	}
-	
-	public Login( CoreMethodLib sel ){
-		selenium = sel;
+		selenium = GlobalSelenium.getSelenium();
 	}
 	
 	public void bookmark_login_open(){
 		//go to login screen
-		selenium.open("logout");  
+		selenium.open("logout");
 //		ck_login_page();
 	}
 	
@@ -207,11 +199,6 @@ public class Login {
 	public void button_confirm_change_click() {
 		selenium.click(LoginEnum.CHANGE_PASSWORD_BUTTON, "Change Password Button");
 	}
-	
-	public CoreMethodLib getSelenium() {
-	    return this.selenium;
-	}
-	
 
 	public ErrorCatcher get_errors(){
 			return selenium.getErrors();

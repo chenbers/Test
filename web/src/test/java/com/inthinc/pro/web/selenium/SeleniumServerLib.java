@@ -17,7 +17,7 @@ public class SeleniumServerLib {
 	}
 
 	public static void startSeleniumClient() throws Exception {
-		selenium = GlobalSelenium.getSingleton().getSelenium();
+		selenium = GlobalSelenium.getYourOwn();
 	}
 
 	public static void startSeleniumServer() throws Exception {

@@ -122,15 +122,15 @@ public class LoginScript extends InthincTest {
     private void runSeleniumCommand(Login l,String [] cmd) 
         throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         
-        Class<?> c = l.getSelenium().getClass();
-        Class<?>[] argTypes = loadArgs(cmd.length-1);
-        Method main = c.getDeclaredMethod(cmd[0], argTypes);
-        Object[] mainArgs = Arrays.copyOfRange(cmd, 1, cmd.length);
-        Object o = main.invoke(l.getSelenium(), mainArgs);
-
-        if ( o != null ) {
-            System.out.println(">>> Command returned: " + o.toString());
-        }
+//        Class<?> c = l.getSelenium().getClass();
+//        Class<?>[] argTypes = loadArgs(cmd.length-1);
+//        Method main = c.getDeclaredMethod(cmd[0], argTypes);
+//        Object[] mainArgs = Arrays.copyOfRange(cmd, 1, cmd.length);
+//        Object o = main.invoke(l.getSelenium(), mainArgs);
+//
+//        if ( o != null ) {
+//            System.out.println(">>> Command returned: " + o.toString());
+//        }
     }
     
     private void runSeleniumScript(Login l,String scriptLine,ApplicationContext applicationContext) 

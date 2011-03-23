@@ -66,12 +66,8 @@ public class UserAddEdit extends InthincTest {
 	protected static CoreMethodLib selenium;
 
 	public UserAddEdit(){
-			this(GlobalSelenium.getSingleton().getSelenium());
-		}
-	
-	public UserAddEdit(GlobalSelenium tvar ){
-			this(tvar.getSelenium());
-		}
+		selenium = GlobalSelenium.getSelenium();
+	}
 	
 	public void AddUser(String datasheet){
 		//enter new user info
@@ -85,11 +81,11 @@ public class UserAddEdit extends InthincTest {
 		ClickSave();
 	}
 
-public void confirmMessage(String msgtext, String error_name){
-	selenium.isTextPresent(msgtext,error_name);
-}
+	public void confirmMessage(String msgtext, String error_name){
+		selenium.isTextPresent(msgtext,error_name);
+	}
 
-public void chk_screen_headings(){
+	public void chk_screen_headings(){
 		//verify headings
 		selenium.isTextPresent("User Information","User Detail: Information heading");
 		selenium.isTextPresent("Employee Information", "User Detail Emp Info heading");
@@ -99,7 +95,7 @@ public void chk_screen_headings(){
 		selenium.isTextPresent("Notifications", "User Detail Notifications");
 	}
 	
-public void chk_screen_buttons(String error_name){
+	public void chk_screen_buttons(String error_name){
 		selenium.isTextPresent("Save",error_name);
 		selenium.isTextPresent("Cancel",error_name);
 		selenium.isTextPresent("Cancel",error_name);
@@ -107,7 +103,7 @@ public void chk_screen_buttons(String error_name){
 	}
 	
 
-public void chk_userInfo_labels(String error_name){
+	public void chk_userInfo_labels(String error_name){
 		//Title
 		selenium.isTextPresent("Admin: Add User", "Title Admin"+ error_name);
 		//User Information
@@ -155,45 +151,45 @@ public void chk_userInfo_labels(String error_name){
 		selenium.isTextPresent("exact:Critical:", "exact:Critical:" + error_name);
 	}
 
-public void SetDriverRadioButton (int col, String error_name){
-	String ck = selenium.isnotChecked(driverradiobutton, error_name);
-	if (ck.contentEquals("yes")) {
+	public void SetDriverRadioButton (int col, String error_name){
+		String ck = selenium.isnotChecked(driverradiobutton, error_name);
+		if (ck.contentEquals("yes")) {
 			selenium.click(driverradiobutton , error_name);
-			}
+		}
 	}
 
-public void SetLoginRadioButton (int col, String error_name){
-	String ck = selenium.isnotChecked(loginradiobutton , error_name);
-	if (ck.contentEquals("yes")) {
+	public void SetLoginRadioButton (int col, String error_name){
+		String ck = selenium.isnotChecked(loginradiobutton , error_name);
+		if (ck.contentEquals("yes")) {
 			selenium.click(loginradiobutton , error_name);
-			}
+		}
 	}
 
-public void ClicklSaveButton(){
+	public void ClicklSaveButton(){
 		selenium.click(lowersavebutton, "Select Save Button");
 		selenium.waitForPageToLoad("30000");
 	}
 
-public void ClicklCancelButton(){
+	public void ClicklCancelButton(){
 		selenium.click(lowercancelbutton,"Select Cancel Button");
 		selenium.waitForPageToLoad("30000");
 	}
 
-public void ClickSave(){
+	public void ClickSave(){
 		selenium.click(savebutton, "Select Save Button");
 		selenium.waitForPageToLoad("30000");
 	}
 
-public void ClickCancel(){
+	public void ClickCancel(){
 		selenium.click(cancelbutton,"Select Cancel Button");
 		selenium.waitForPageToLoad("30000");
 	}
 
-public void enter_rfid_information(String datasheet){
+	public void enter_rfid_information(String datasheet){
 		selenium.type(barcode_id, get_data(datasheet,"BarCode"));
 	}
 
-public void enter_notifications(String datasheet){
+	public void enter_notifications(String datasheet){
 		selenium.type(email_1, get_data(datasheet,"EMAIL1"));
 		selenium.type(email_2, get_data(datasheet,"EMAIL2"));
 		selenium.type(text_msg_1, get_data(datasheet,"TextMsg1"));
@@ -205,7 +201,7 @@ public void enter_notifications(String datasheet){
 		selenium.select(Notification_critical, "label=" + get_data(datasheet,"NCritical"));
 	}
 
-public void enter_login_information(String datasheet){
+	public void enter_login_information(String datasheet){
 		selenium.type(username , get_data(datasheet,"UserName"));
 		selenium.type(password, get_data(datasheet,"Password"));
 		selenium.type(password_confirm, get_data(datasheet,"Password"));
@@ -214,7 +210,7 @@ public void enter_login_information(String datasheet){
 		selenium.select(user_status, "label=" + get_data(datasheet,"Status"));
 	}
 
-public void enter_driver_information(String datasheet){
+	public void enter_driver_information(String datasheet){
 		selenium.type(driver_lic,get_data(datasheet,"DrivLicNum"));
 		selenium.select(driver_state, "label=" + get_data(datasheet,"DrivLicState"));
 		selenium.select(lic_class, "label=" + get_data(datasheet,"LicClass"));
@@ -224,7 +220,7 @@ public void enter_driver_information(String datasheet){
 		selenium.select(driver_status, "label=" + get_data(datasheet,"Status"));
 	}
 
-public void enter_user_info(String datasheet){
+	public void enter_user_info(String datasheet){
 		selenium.type(emp_firstname, get_data(datasheet,"FirstName"), "Employee First Name");
 		selenium.type(emp_middle_name, get_data(datasheet,"MiddleName"), "Employee Middle Name");
 		selenium.type(emp_lastname, get_data(datasheet,"LastName"), "Employee Last Name");
@@ -233,7 +229,7 @@ public void enter_user_info(String datasheet){
 		selenium.select(emp_gender, "label=" + get_data(datasheet,"Gender"), "Gender");
 	}
 	
-public void enter_employee_info(String datasheet){
+	public void enter_employee_info(String datasheet){
 		selenium.type(emp_id , get_data(datasheet,"EmpID"));
 		selenium.type(emp_reportsTo, get_data(datasheet,"ReportsTo"));
 		selenium.type(emp_title, get_data(datasheet,"Title"));
@@ -243,17 +239,13 @@ public void enter_employee_info(String datasheet){
 		selenium.select(emp_fuelefficiencytype, "label=" + get_data(datasheet,"FuelEffType"));
 	}
 
-public UserAddEdit(CoreMethodLib sel ){
+	public UserAddEdit(CoreMethodLib sel ){
 		selenium = sel;
 	}
 
-public ErrorCatcher get_errors(){
+	public ErrorCatcher get_errors(){
 		return selenium.getErrors();
 	}
-	
-
-
-
 }
 
 

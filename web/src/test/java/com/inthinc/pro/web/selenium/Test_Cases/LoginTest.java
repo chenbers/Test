@@ -9,7 +9,7 @@ import com.inthinc.pro.web.selenium.DataSenderLib;
 import com.inthinc.pro.web.selenium.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Masthead.*;
 
-@Ignore
+//@Ignore
 public class LoginTest extends InthincTest {
 	//instantiate var for data reader
 	DataReaderLib testdata = new DataReaderLib();
@@ -21,17 +21,17 @@ public class LoginTest extends InthincTest {
 	public void LoginButton() {
 		//create instance of library objects
 		Login l = new Login();
-		
+		Long start = System.currentTimeMillis()/1000;
 		//Set up test data
-		set_test_case("Tiwi_data.xls", "TC1247");
+		set_test_case("Tiwi_data.xls","TC1247");
 	
 		//login to portal
-		l.portal_log_in_process(getUsername(), getPassword());
+		l.bookmark_login_open();
 		l.text_field_password_type("password");
-		l.text_field_username_type("");
+		l.text_field_username_type("0001");
 		l.button_log_in_click();
-		l.portal_log_in_process(getUsername(),getPassword());
-//		l.login_to_portal(getUsername(), getPassword());
+		Long stop = System.currentTimeMillis()/1000;
+		System.out.println(stop-start);
 	}
 	
 //	@Test

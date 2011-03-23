@@ -40,20 +40,12 @@ public class ChartMapLib extends SeleniumServerLib {
 	protected static CoreMethodLib selenium;
 
 	public ChartMapLib(){
-			this(GlobalSelenium.getSingleton().getSelenium());
-		}
-	
-	public ChartMapLib(GlobalSelenium tvar ){
-			this(tvar.getSelenium());
-		}
-	
-	public ChartMapLib( CoreMethodLib sel ){
-			selenium = sel;
-		}
+		selenium = GlobalSelenium.getSelenium();
+	}
 	
 	public ErrorCatcher get_errors(){
-			return selenium.getErrors();
-		}
+		return selenium.getErrors();
+	}
 		
 	public void chkOverviewScreen(){
 		
@@ -73,10 +65,10 @@ public class ChartMapLib extends SeleniumServerLib {
 	}
 	
 	public void chkTopAvgTableHeading(String error_name){
-			selenium.isTextPresent("Division/Team", error_name);
-			selenium.isTextPresent("Score", error_name);
-			selenium.isTextPresent("Crash/Mil", error_name);
-		}
+		selenium.isTextPresent("Division/Team", error_name);
+		selenium.isTextPresent("Score", error_name);
+		selenium.isTextPresent("Crash/Mil", error_name);
+	}
 	
 	public String verifyTopAvgListItem(String divteam,String score, int pages, String crashmil, String error_name){
 		//Initialize local variables 	
@@ -91,10 +83,10 @@ public class ChartMapLib extends SeleniumServerLib {
 		for ( currow = 0;currow<count; currow++){
 			//if more pages
 			if (currow<count){
-					//reset counter and search next page
-					count = 0;
-					curpage++;
-					selenium.click(ffpageid);}
+				//reset counter and search next page
+				count = 0;
+				curpage++;
+				selenium.click(ffpageid);}
 			//get text for current row
 			curtext = selenium.getText(trendtblid + "." + currow + ".1", error_name );
 			//when item matches set return flag and break out of loop
@@ -119,51 +111,49 @@ public class ChartMapLib extends SeleniumServerLib {
 	}
 	
 	public void validateSpeedScoreBox(String escore, String error_name){
-			selenium.getText(speedboxid, escore, error_name);
-		}
+		selenium.getText(speedboxid, escore, error_name);
+	}
 	
 	public void validateStyleScoreBox(String escore, String error_name){
-			selenium.getText(styleboxid, escore, error_name);
-		}
+		selenium.getText(styleboxid, escore, error_name);
+	}
 	
 	public void validateSeatBeltScoreBox(String escore, String error_name){
-			selenium.getText(seatbeltboxid, escore, error_name);
-		}
+		selenium.getText(seatbeltboxid, escore, error_name);
+	}
 	
 	public void validateOverallScoreBox(String escore, String error_name){
-			selenium.getText(overallboxid, escore, error_name);
-		}
+		selenium.getText(overallboxid, escore, error_name);
+	}
 	
 	public void validateCrashPerMil(String emiles, String error_name){
-			selenium.getText(crashpermileid, emiles, error_name);
-		}
+		selenium.getText(crashpermileid, emiles, error_name);
+	}
 	
 	public void validateTotalCrashes(String ecrash, String error_name){
-			selenium.getText(totalcrashesid, ecrash, error_name);
-		}
+		selenium.getText(totalcrashesid, ecrash, error_name);
+	}
 	
 	
 	public static void main( String[] args){
-			try {
-						ChartMapLib.setUp();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					ChartMapLib cml;
-			cml = new ChartMapLib();
-			cml.test_self();
-			
-			Object errors = "";
-			errors = cml.get_errors().get_errors();
-			System.out.println(errors.toString());	
-			try{
-						tearDown();
-					}catch(Exception e){
-						e.printStackTrace();
-					}
-			assertTrue(errors.toString()=="{}");
+		try {
+			ChartMapLib.setUp();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-	
+		ChartMapLib cml;
+		cml = new ChartMapLib();
+		cml.test_self();
+		
+		Object errors = "";
+		errors = cml.get_errors().get_errors();
+		System.out.println(errors.toString());	
+		try{
+			tearDown();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		assertTrue(errors.toString()=="{}");
+	}
 }
 
