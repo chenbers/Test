@@ -118,11 +118,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("rfid1");
         AVAILABLE_COLUMNS.add("rfid2");
         AVAILABLE_COLUMNS.add("driver_groupID");
-        AVAILABLE_COLUMNS.add("driver_provider");
-        AVAILABLE_COLUMNS.add("driver_providerUsername");
-        AVAILABLE_COLUMNS.add("driver_providerPassword");
-        AVAILABLE_COLUMNS.add("driver_confirmProviderPassword");
-        AVAILABLE_COLUMNS.add("driver_providerCellPhone");
+//        AVAILABLE_COLUMNS.add("driver_provider");
+//        AVAILABLE_COLUMNS.add("driver_providerUsername");
+//        AVAILABLE_COLUMNS.add("driver_providerPassword");
+//        AVAILABLE_COLUMNS.add("driver_confirmProviderPassword");
+//        AVAILABLE_COLUMNS.add("driver_providerCellPhone");
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
         for (int i = MIN_HEIGHT; i < MAX_HEIGHT; i++)
@@ -354,9 +354,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         personView.setUserSelected(person.getUser() != null);
         personView.setDriverSelected(person.getDriver() != null);
         
-        if (person.getDriver() != null) {
-            personView.setProviderInfoSelected(person.getDriver().getCellProviderInfo() != null);
-        }
+//        if (person.getDriver() != null) {
+//            personView.setProviderInfoSelected(person.getDriver().getCellProviderInfo() != null);
+//        }
         
         personView.setSelected(false);
         if (person.getUser() != null) {
@@ -451,31 +451,32 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         		return person.getRolesString();
         	}
         	else return null;
-        } else if (column.equals("driver_provider")) {
-            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
-                return person.getDriver().getCellProviderInfo().getProvider().toString();
-            }
-            
-            return null;
-        } else if (column.equals("driver_providerUsername")) {
-            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
-                return person.getDriver().getCellProviderInfo().getProviderUsername();
-            }
-            
-            return null;
-        } else if (column.equals("driver_providerPassword")) {
-            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
-                return person.getDriver().getCellProviderInfo().getProviderPassword();
-            }
-            
-            return null;
-        } else if (column.equals("driver_providerCellPhone")) {
-            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
-                return person.getDriver().getCellProviderInfo().getCellPhone();
-            }
-            
-            return null;
         }
+//        else if (column.equals("driver_provider")) {
+//            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
+//                return person.getDriver().getCellProviderInfo().getProvider().toString();
+//            }
+//            
+//            return null;
+//        } else if (column.equals("driver_providerUsername")) {
+//            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
+//                return person.getDriver().getCellProviderInfo().getProviderUsername();
+//            }
+//            
+//            return null;
+//        } else if (column.equals("driver_providerPassword")) {
+//            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
+//                return person.getDriver().getCellProviderInfo().getProviderPassword();
+//            }
+//            
+//            return null;
+//        } else if (column.equals("driver_providerCellPhone")) {
+//            if (person.getDriver() != null && person.getDriver().getCellProviderInfo() != null) {
+//                return person.getDriver().getCellProviderInfo().getCellPhone();
+//            }
+//            
+//            return null;
+//        }
         else
             return super.fieldValue(person, column);
     }
@@ -517,8 +518,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         // TODO: maybe use the browser's time zone instead, if possible...
         person.setTimeZone(TimeZone.getDefault());
         person.setAddress(new Address());
-//        person.getRolePicker();
-//        person.prepareRolesForDragnDrop();
         person.getUser().setPerson(person);
         Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
         if (LocaleBean.supportedLocale(locale))
@@ -530,7 +529,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setDriver(new Driver());
         person.setUserSelected(true);
         person.setDriverSelected(true);
-        person.setProviderInfoSelected(true);
+//        person.setProviderInfoSelected(true);
         person.setAcctID(getAccountID());
         return person;
     }
@@ -543,7 +542,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (item.getUser() == null) {
             item.setUser(new User());
             item.getUser().setPerson(item);
- //           item.prepareRolesForDragnDrop();
 
         }
         if (item.getDriver() == null) {
@@ -551,11 +549,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             item.getDriver().setPersonID(item.getPersonID());
         }
 
-        if (item.getDriver().getCellProviderInfo() == null) {
-            item.getDriver().setCellProviderInfo(new Driver.CellProviderInfo());
-        }
-//        if ((item.getDriver().getRFID() != null) && (item.getDriver().getRFID() == 1))
-//            item.getDriver().setRFID(null);
+//        if (item.getDriver().getCellProviderInfo() == null) {
+//            item.getDriver().setCellProviderInfo(new Driver.CellProviderInfo());
+//        }
         if (fuelEfficiencyBean == null)
         {
         	fuelEfficiencyBean = new FuelEfficiencyBean();
@@ -590,8 +586,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (getItem().isUserSelected() && getItem().getUser().getUserID().equals(getUserID())) {
             item = revertItem(getItem());
         }
-//        item.prepareRolesForDragnDrop();
-
         return redirect;
     }
 
@@ -608,19 +602,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (item != null) {
             item.setUserSelected(true);
             item.setDriverSelected(true);
-            item.setProviderInfoSelected(true);
- //           item.prepareRolesForDragnDrop();
+//            item.setProviderInfoSelected(true);
         }
         return returnValue;
     }
 
     @Override
     public String save() {
-//        if (isBatchEdit()) {
-//            final boolean role = Boolean.TRUE.equals(getUpdateField().get("user.roles"));
-//            getUpdateField().put("user.role.roleID", role);
-//            getUpdateField().put("user.role.name", role);
-//        }
         // see if we're partially editing one of the batch items
     	boolean driverChange = getItem().isDriverSelected();
         boolean partialEdit = isBatchEdit() && getItem().isUserEditable();
@@ -710,7 +698,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         if (!isBatchEdit() && (person.getEmpid() != null) && (person.getEmpid().length() > 0)) {
             // when checking for duplicate employee id, use the logged-in user's groupID and check from there.
             Integer groupID = this.getProUser().getUser().getGroupID();
-//            Integer groupID = person.getGroup().getGroupID(); 
             List<Person> personsInGroup = personDAO.getPeopleInGroupHierarchy(groupID);
             for(Person p: personsInGroup) {
                 // Augment to NOT check against themselves
@@ -806,54 +793,45 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             
             } 
             
-            if (person.isProviderInfoSelected()){
-            	// mandatory provider type
-            	if (person.getDriver().getCellProviderInfo().getProvider() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.provider")))) {
-                    valid = false;
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                    context.addMessage("edit-form:editPerson_driver_provider", message);
-               	}
-            	// mandatory provider username
-            	if (StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getProviderUsername()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerUsername")))) {
-            	    valid = false;
-            	    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-            	    context.addMessage("edit-form:editPerson_driver_providerUsername", message);
-            	}
-            	// mandatory provider password
-            	if (StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
-            	 valid = false;
-                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                 context.addMessage("edit-form:editPerson_driver_providerPassword", message);
-            	}
-            	
-            	// mandatory provider confirm password
-                if (StringUtils.isEmpty(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
-                    valid = false;
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                    context.addMessage("edit-form:editPerson_driver_confirmProviderPassword", message);
-                }
-            	
-            	// mandatory provider cell phone
-            	if (StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getCellPhone()) && !isBatchEdit()) {
-               	    valid = false;
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-                    context.addMessage("edit-form:editPerson_driver_providerCellPhone", message);
-               	}
-            	
-                // matching passwords
-                if ((!StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getProviderPassword()))
-                        && !person.getDriver().getCellProviderInfo().getProviderPassword().equals(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
-                    context.addMessage("edit-form:editPerson_driver_providerPassword", message);
-                    valid = false;
-                }
-            }
-            // unique RFID
-//            if (!isBatchEdit() && (person.getDriver().getRFID() != null) && (person.getDriver().getRFID() != 1)) {
-//                final Integer byRFID = driverDAO.getDriverIDForRFID(person.getDriver().getRFID());
-//                if ((byRFID != null) && !byRFID.equals(person.getDriver().getDriverID())) {
-//                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_uniqueRFID"), null);
-//                    context.addMessage("edit-form:editPerson-driver_RFID", message);
+//            if (person.isProviderInfoSelected()){
+//            	// mandatory provider type
+//            	if (person.getDriver().getCellProviderInfo().getProvider() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.provider")))) {
+//                    valid = false;
+//                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+//                    context.addMessage("edit-form:editPerson_driver_provider", message);
+//               	}
+//            	// mandatory provider username
+//            	if (StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getProviderUsername()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerUsername")))) {
+//            	    valid = false;
+//            	    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+//            	    context.addMessage("edit-form:editPerson_driver_providerUsername", message);
+//            	}
+//            	// mandatory provider password
+//            	if (StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
+//            	 valid = false;
+//                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+//                 context.addMessage("edit-form:editPerson_driver_providerPassword", message);
+//            	}
+//            	
+//            	// mandatory provider confirm password
+//                if (StringUtils.isEmpty(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
+//                    valid = false;
+//                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+//                    context.addMessage("edit-form:editPerson_driver_confirmProviderPassword", message);
+//                }
+//            	
+//            	// mandatory provider cell phone
+//            	if (StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getCellPhone()) && !isBatchEdit()) {
+//               	    valid = false;
+//                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
+//                    context.addMessage("edit-form:editPerson_driver_providerCellPhone", message);
+//               	}
+//            	
+//                // matching passwords
+//                if ((!StringUtils.isEmpty(person.getDriver().getCellProviderInfo().getProviderPassword()))
+//                        && !person.getDriver().getCellProviderInfo().getProviderPassword().equals(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
+//                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
+//                    context.addMessage("edit-form:editPerson_driver_providerPassword", message);
 //                    valid = false;
 //                }
 //            }
@@ -866,14 +844,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                 context.addMessage("edit-form:editPerson-user_groupID", message);
             }
-            // required user role
-//            if (person.getUser().getRoles().isEmpty() && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.roles")))) {
-            //TODO put this backin
-//                if (person.getRolesTarget().isEmpty() && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.roles")))) {
-//               valid = false;
-//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
-//                context.addMessage("edit-form:editPerson-user_role", message);
-//            }
             // required user status
             if (person.getUser().getStatus() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("user.status")))) {
                 valid = false;
@@ -971,11 +941,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                         driverDAO.deleteByID(person.getDriver().getDriverID());
                     person.setDriver(null);
                 }
-            } else {
-                if (!person.isProviderInfoSelected() && person.getDriver().getCellProviderInfo() != null) {
-                    person.getDriver().setCellProviderInfo(null);
-                }
             }
+//            else {
+//                if (!person.isProviderInfoSelected() && person.getDriver().getCellProviderInfo() != null) {
+//                    person.getDriver().setCellProviderInfo(null);
+//                }
+//            }
             // set null dropdown items to empty
             if (person.getSuffix() == null)
                 person.setSuffix("");
@@ -986,9 +957,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 person.setHeight(0);
             if (person.getWeight() == null)
                 person.setWeight(0);
-            // approach to remove rfid from a driver
-//            if ((person.getDriver() != null) && (person.getDriver().getRFID() == null))
-//                person.getDriver().setRFID(1L);     
             // if create and no user info, check for "" on primary and secondary e-mail
             if ( create && !person.isUserSelected() ) {
                 if ( (person.getPriEmail() != null) && (person.getPriEmail().trim().length() == 0) ) {
@@ -1018,9 +986,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 if ((person.getUser() != null) && person.getUser().getUserID().equals(getUserID()))
                     BeanUtil.deepCopy(person.getUser(), getUser());
             }
-            // set 1 RFID back to null
-//            if ((person.getDriver() != null) && (person.getDriver().getRFID() == 1L))
-//                person.getDriver().setRFID(null);
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "person_added" : "person_updated", person.getFirst(), person.getLast());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -1099,42 +1064,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return getGroupHierarchy().getTeams();
     }
 
-//    public Map<String, Integer> getTeams() {
-//    	final TreeMap<String, Integer> teams = new TreeMap<String, Integer>();
-//	    for (final Group group : getGroupHierarchy().getGroupList())
-//	    	if (group.getType() == GroupType.TEAM) {
-//	    		String fullName = getGroupHierarchy().getFullGroupName(group.getGroupID());
-//	    		if (fullName.endsWith(GroupHierarchy.GROUP_SEPERATOR)) {
-//	    			fullName = fullName.substring(0, fullName.length() - GroupHierarchy.GROUP_SEPERATOR.length());
-//	    		}
-//	    		teams.put(fullName, group.getGroupID());
-//    	}
-//	    return teams;
-//    }
 
     public Map<String, TimeZone> getTimeZones() {
         return TIMEZONES;
     }
 
-//    public List<SelectItem> getRoles() {
-//        //TODO: improve detection of roles that are selectable by users
-////        Role inthincRole = Roles.getRoleByName("inthinc");
-//        List<SelectItem> roleList = new ArrayList<SelectItem>();
-//        getAccountRoles();
-//
-//        for (Role role : accountRoles.getRoleList()) {
-////            if (inthincRole == null || !role.getRoleID().equals(inthincRole.getRoleID()))
-//                roleList.add(new SelectItem(role, role.getName()));
-//        }
-//        roleList.add(0, new SelectItem(null, ""));
-//        return roleList;
+//    public List<SelectItem> getProviderTypes() {
+//        return SelectItemUtil.toList(CellProviderType.class, false);
 //    }
-
-
-
-    public List<SelectItem> getProviderTypes() {
-        return SelectItemUtil.toList(CellProviderType.class, false);
-    }
 
     public Map<String, State> getStates() {
         return STATES;
@@ -1172,20 +1109,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         private boolean userSelected;
         @Column(updateable = false)
         private boolean driverSelected;
-        @Column(updateable = false)
-        private boolean providerInfoSelected;
-        @Column(updateable = false)
-        private String confirmProviderPassword;
+//        @Column(updateable = false)
+//        private boolean providerInfoSelected;
+//        @Column(updateable = false)
+//        private String confirmProviderPassword;
         @Column(updateable = false)
         private boolean selected;
-//        @Column(updateable = false)
-//        private List<Role> rolesSource;
-//        @Column(updateable = false)
-//        private List<Role> rolesTarget;
-//        @Column(updateable = false)
-//        private EventBean dropEventBean;
-//        @Column(updateable = false)
-//        private ThrowAwayEventBean throwAwayEventBean;
 
 
         public Integer getId() {
@@ -1374,190 +1303,23 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     		return "";
     	}
 
-        public boolean isProviderInfoSelected() {
-            return providerInfoSelected;
-        }
+//        public boolean isProviderInfoSelected() {
+//            return providerInfoSelected;
+//        }
+//
+//        public void setProviderInfoSelected(boolean providerInfoSelected) {
+//            this.providerInfoSelected = providerInfoSelected;
+//        }
+//
+//        public String getConfirmProviderPassword() {
+//            return confirmProviderPassword;
+//        }
+//
+//        public void setConfirmProviderPassword(String confirmProviderPassword) {
+//            this.confirmProviderPassword = confirmProviderPassword;
+//        }
 
-        public void setProviderInfoSelected(boolean providerInfoSelected) {
-            this.providerInfoSelected = providerInfoSelected;
-        }
 
-        public String getConfirmProviderPassword() {
-            return confirmProviderPassword;
-        }
-
-        public void setConfirmProviderPassword(String confirmProviderPassword) {
-            this.confirmProviderPassword = confirmProviderPassword;
-        }
-
-
-//		public List<Role> getRolesSource() {
-//			return rolesSource;
-//		}
-//
-//		public void setRolesSource(List<Role> rolesSource) {
-//			this.rolesSource = rolesSource;
-//		}
-//		public void moveRole(Object role, Object acceptType) {
-//			
-//			if("role".equals(acceptType)){
-//				int roleIndex = rolesSource.indexOf(role);
-//				if (roleIndex >= 0){
-//					
-//					rolesTarget.add(rolesSource.get(roleIndex));
-//					rolesSource.remove(roleIndex);
-//				}
-//			}
-//			
-//		}
-//		public void restockRole(Object role, Object acceptType) {
-//			
-//			if("role".equals(acceptType)){
-//				int roleIndex = rolesTarget.indexOf(role);
-//				if(roleIndex >= 0){
-//					
-//					rolesSource.add(rolesTarget.get(roleIndex));
-//					rolesTarget.remove(roleIndex);
-//				}
-//			}
-//			
-//		}
-//		public void resetRoles(){
-//			
-//			prepareRolesForDragnDrop();
-//		}
-//		public EventBean getDropEventBean() {
-//			return dropEventBean;
-//		}
-//
-//		public void setDropEventBean(EventBean dropEventBean) {
-//			this.dropEventBean = dropEventBean;
-//		}
-//
-//		public List<Role> getRolesTarget() {
-//			return rolesTarget;
-//		}
-//
-//		public void setRolesTarget(List<Role> rolesTarget) {
-//			this.rolesTarget = rolesTarget;
-//		}
-//	    private void prepareRolesForDragnDrop(){
-//	    	
-//	    	bean.initAccountRoles();
-//	         setUpTargetRoles();
-//	         setUpSourceRoles();
-//	         dropEventBean = new EventBean(this);
-//	         throwAwayEventBean = new ThrowAwayEventBean(this);
-//	    }
-//	    private void setUpTargetRoles(){
-//	    	
-//	        rolesTarget = new ArrayList<Role>();
-//	        
-//	    	if ((getUser()== null) || (getUser().getRoles() == null) || getUser().getRoles().isEmpty()) {
-//	    		
-//	    		rolesTarget.add(bean.getAccountRoles().getRoleByName("Normal"));
-//	    		return;
-//	    	}
-//	    	
-//	    	for (Integer id:getUser().getRoles()){
-//	    		
-//	    		rolesTarget.add(bean.getAccountRoles().getRoleById(id));
-//	    	}
-//	    }
-//	    private void setUpSourceRoles(){
-//	    	
-//	         rolesSource = new ArrayList<Role>(bean.getAccountRoles().getRoleList());
-//	         
-//	         for(Role role :rolesTarget){
-//	        	 
-//	        	 removeRoleFromSource(role);
-//	         }
-//	    }
-//	    private void removeRoleFromSource(Role role){
-//	    	
-//			int roleIndex = rolesSource.indexOf(role);
-//			rolesSource.remove(roleIndex);
-//
-//	    }
-//	    private void setUsersRolesFromTargetRoles(){
-//	    	
-//            List<Integer> roleIDs = new ArrayList<Integer>();
-//            for(Role role:rolesTarget){
-//            	
-//            	roleIDs.add(role.getRoleID());
-//            }
-//            getUser().setRoles(roleIDs);
-//
-//	    }
-//		public class EventBean implements DropListener {
-//			private PersonView dndBean;
-//	
-//			public EventBean(){
-//				
-//			}
-//			public EventBean(PersonView dndBean) {
-//				super();
-//				this.dndBean = dndBean;
-//			}
-//			public void init(PersonView dndBean){
-//				
-//				this.dndBean = dndBean;
-//			}
-//			@Override
-//			public void processDrop(DropEvent dropEvent) {
-//				
-//				Dropzone dropzone = (Dropzone) dropEvent.getComponent();
-//				dndBean.moveRole(dropEvent.getDragValue(), dropzone.getDropValue());
-//			}
-//			public void reset(){
-//				dndBean.resetRoles();
-//			}
-//			public PersonView getDndBean() {
-//				return dndBean;
-//			}
-//	
-//			public void setDndBean(PersonView dndBean) {
-//				this.dndBean = dndBean;
-//			}
-//		}
-//		public class ThrowAwayEventBean implements DropListener {
-//			private PersonView dndBean;
-//	
-//			public ThrowAwayEventBean(){
-//				
-//			}
-//			public ThrowAwayEventBean(PersonView dndBean) {
-//				super();
-//				this.dndBean = dndBean;
-//			}
-//			public void init(PersonView dndBean){
-//				
-//				this.dndBean = dndBean;
-//			}
-//			@Override
-//			public void processDrop(DropEvent dropEvent) {
-//				
-//				Dropzone dropzone = (Dropzone) dropEvent.getComponent();
-//				dndBean.restockRole(dropEvent.getDragValue(), dropzone.getDropValue());
-//			}
-////			public void reset(){
-////				dndBean.resetRoles();
-////			}
-//			public PersonView getDndBean() {
-//				return dndBean;
-//			}
-//	
-//			public void setDndBean(PersonView dndBean) {
-//				this.dndBean = dndBean;
-//			}
-//		}
-//		public ThrowAwayEventBean getThrowAwayEventBean() {
-//			return throwAwayEventBean;
-//		}
-//
-//		public void setThrowAwayEventBean(ThrowAwayEventBean throwAwayEventBean) {
-//			this.throwAwayEventBean = throwAwayEventBean;
-//		}
    }
 		
 	public Roles getAccountRoles(){
@@ -1570,7 +1332,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         accountRoles = new Roles();
         accountRoles.setRoleDAO(roleDAO);
         accountRoles.init(getAccountID());
-//        accountRoles.removeDefaultRoles();
 	}
 	
 	public RoleDAO getRoleDAO() {
