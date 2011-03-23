@@ -32,7 +32,6 @@ public class DriverHoursReportCriteria extends ReportCriteria {
     private static final String DAY_FORMAT = "MM/dd/yy";
 	private static final String START_DATE_PARAM = "startDate";
 	private static final String END_DATE_PARAM = "endDate";
-	private static final Double ZERO = 0.0;
 	protected DateTimeFormatter dateTimeFormatter;
 	protected DateTimeFormatter dayFormatter;
 
@@ -89,7 +88,7 @@ public class DriverHoursReportCriteria extends ReportCriteria {
 			String driverGroupName = groupHierarchy.getShortGroupName(driver.getGroupID(), SLASH_GROUP_SEPERATOR);
 	      	
 			for (DriverHoursRecord rec : entry.getValue()) {
-			    if (!(rec.getHoursThisDay()==null || ZERO.equals(rec.getHoursThisDay()))) {
+			    if (rec.getHoursThisDay()!=null && rec.getHoursThisDay().doubleValue() != 0.0) {
     				DriverHours bean = new DriverHours();
     				bean.setGroupName(driverGroupName);
     				bean.setDate(dayFormatter.print(rec.getDay()));
@@ -107,8 +106,8 @@ public class DriverHoursReportCriteria extends ReportCriteria {
         addParameter(DriverHoursReportCriteria.START_DATE_PARAM,dateTimeFormatter.print(interval.getStart()));
         addParameter(DriverHoursReportCriteria.END_DATE_PARAM,  dateTimeFormatter.print(interval.getEnd()));
         
-Interval queryInterval = new Interval(interval.getStart().minusDays(1), new DateMidnight(interval.getEnd()).toDateTime().plusDays(2));
-System.out.println("interval: " + queryInterval);     
+        Interval queryInterval = new Interval(interval.getStart().minusDays(1), new DateMidnight(interval.getEnd()).toDateTime().plusDays(2));
+//System.out.println("interval: " + queryInterval);     
         List<Driver> driverList = driverDAO.getAllDrivers(groupID);
         
         List<DriveTimeRecord> driveTimeRecordList = driveTimeDAO.getDriveTimeRecordListForGroup(groupID, queryInterval);
@@ -136,11 +135,11 @@ System.out.println("interval: " + queryInterval);
                 if (!driveTimeRecord.getDriverID().equals(driver.getDriverID()))
                     continue;
                 
-System.out.println(driver.getDriverID() + " Day: " + day + " " + day.getMillis());
-System.out.println(driveTimeRecord.getDateTime() + " " + driveTimeRecord.getDateTime().getMillis());
+//System.out.println(driver.getDriverID() + " Day: " + day + " " + day.getMillis());
+//System.out.println(driveTimeRecord.getDateTime() + " " + driveTimeRecord.getDateTime().getMillis());
                 if (day.isEqual(driveTimeRecord.getDateTime())) {
                     seconds += driveTimeRecord.getDriveTimeSeconds();
-System.out.println("seconds " + seconds);
+//System.out.println("seconds " + seconds);
                  }
             }
             driverHoursRecord.setHoursThisDay(DateUtil.convertSecondsToDoubleHours(seconds));
