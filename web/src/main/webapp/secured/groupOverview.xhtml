@@ -7,13 +7,14 @@
             xmlns:iwi="http://pro.tiwi.com/jsf"
             xmlns:c="http://java.sun.com/jstl/core"
             xmlns:f="http://java.sun.com/jsf/core"
-            xmlns:t="http://myfaces.apache.org/tomahawk">
-         
+            xmlns:t="http://myfaces.apache.org/tomahawk">       
+   
    <ui:define name="scripts">
       <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>   
       <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
       <script src="#{facesContext.externalContext.request.contextPath}/js/markermanager.js"  type="text/javascript"></script>
    </ui:define>  
+   
    
    <ui:param name="homeSelected" value="current" />
    

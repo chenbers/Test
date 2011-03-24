@@ -19,6 +19,7 @@
 		</ui:include>
 	</ui:define>
 	
+	<ui:param name="title" value="#{messages.navigation_reports} - #{messages.report_driver}"/>
 	<ui:define name="content">
 		<a4j:loadStyle src="/css/jquery.scorebox.css"/>
 		<ui:param name="tableColumns" value="#{driverReportTableColumns.tableColumns}" />
@@ -130,8 +131,8 @@
                                                 <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
                                             </h:outputFormat>
                                         </rich:column>
-                                        <rich:column id="overallScore" rendered="#{tableColumns['overallScore'].visible}" 
-                                        				sortBy="#{item.overallScore}" width="10%" 
+                                        <rich:column id="overallScore" rendered="#{tableColumns['overallScore'].visible}"
+                   										sortBy="#{item.overallScore}" width="10%" 
                                          				custFilterBy="#{item.overallScore}" custFilterValue="#{pagingDriverReportBean.overallScoreFilter}">
                                             <ui:include src="/includes/table/scoreColumnHeader.xhtml">
 												<ui:param name="context" value="#{context}" />

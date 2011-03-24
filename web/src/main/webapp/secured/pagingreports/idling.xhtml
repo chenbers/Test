@@ -19,6 +19,7 @@
 		</ui:include>
 	</ui:define>
 	
+	<ui:param name="title" value="#{messages.navigation_reports} - #{messages.report_idling}"/>
 	<ui:define name="content">
 			<a4j:keepAlive beanName="idlingReportTableColumns" />
 		 	<ui:param name="tableColumns" value="#{idlingReportTableColumns.tableColumns}" />

@@ -9,7 +9,7 @@
             xmlns:f="http://java.sun.com/jsf/core"
             xmlns:t="http://myfaces.apache.org/tomahawk">
          
-        
+       <ui:param name="title" value="#{messages.group_team} - #{navigationBean.group.name}"/> 
        <ui:define name="scripts">
           <script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>   
           <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />

@@ -9,6 +9,7 @@
 	  			xmlns:t="http://myfaces.apache.org/tomahawk"
                 xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
+	<ui:param name="title" value="#{messages.driverPerformanceTab} - #{driverPerformanceBean.driver.person.fullName}"/>
 	<ui:define name="scripts">
 		<script src="#{facesContext.externalContext.request.contextPath}/js/FusionCharts.js" type="text/javascript"></script>	
 		<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />

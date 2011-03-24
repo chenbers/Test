@@ -11,6 +11,7 @@
                 xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
                 xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
+	<ui:param name="title" value="#{messages.vehiclePerformanceTab} - #{vehiclePerformanceBean.vehicle.name} - #{messages.vehicle_seatbelt}"/>
 	<ui:define name="scripts">
         <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
         <a4j:loadScript src="/js/FusionCharts.js" />

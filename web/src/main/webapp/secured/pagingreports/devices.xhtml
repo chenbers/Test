@@ -19,7 +19,8 @@
 		   <ui:param name="context" value="#{context}" />
 		</ui:include>
 	</ui:define>
-
+	<ui:param name="title" value="#{messages.navigation_reports} - #{messages.report_devices}"/>
+	
 	<ui:define name="content">
 			<!--<a4j:keepAlive beanName="deviceReportTableColumns" />-->
 		 	<ui:param name="tableColumns" value="#{deviceReportTableColumns.tableColumns}" />

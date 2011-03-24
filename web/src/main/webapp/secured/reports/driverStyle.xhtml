@@ -9,6 +9,7 @@
                 xmlns:pretty="http://ocpsoft.com/prettyfaces"
                 xmlns:security="http://pro.tiwi.com/jsf/security">
 
+	<ui:param name="title" value="#{messages.driverPerformanceTab} - #{driverPerformanceBean.driver.person.fullName} - #{messages.driver_driving_style}"/>
 	<ui:define name="scripts">
         <a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
         <a4j:loadScript src="/js/FusionCharts.js" />
