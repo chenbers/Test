@@ -12,15 +12,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellReference;
 
-public class ImportFile {
+public class FileChecker {
     
     
     public List<String> checkFile(ImportType importType, InputStream is) {
-
-//        HSSFWorkbook templatewb = getTemplate(importType);
-//        if (templatewb == null)
-//            return "Exception reading in template spreadsheet: " + importType.getTemplate();
-//        
         List<String> msgList = new ArrayList<String>();
         HSSFWorkbook wb;
         try {
@@ -40,17 +35,14 @@ public class ImportFile {
         boolean firstRow = true;
         for (Row row : sheet1) {
             
-            //skip blank rows
-//System.out.println(row.getRowNum() + ": " + row.getFirstCellNum() + " to " + row.getLastCellNum() + " phy: " + row.getPhysicalNumberOfCells() + " h: " + row.getHeight());            
   
             if (firstRow || isBlankRow(row)) {
-//                System.out.println(row.getRowNum() + " is Blank");
                 firstRow = false;
                 continue;
             }
             
             if (row.getLastCellNum() != validFormat.getNumColumns()) {
-                msgList.add("ERROR: Columns missing -- Number of columns found: " + row.getPhysicalNumberOfCells() + " Expected: " + validFormat.getNumColumns());
+                msgList.add("ERROR: Columns missing -- Number of columns found: " + row.getLastCellNum() + " Expected: " + validFormat.getNumColumns());
                 return msgList;
             }
           
@@ -63,6 +55,10 @@ public class ImportFile {
                     if (!validFormat.isColumnValid(columnIndex, cell.getRichStringCellValue().getString()))
                         msgList.add("ERROR: " + cellRef.formatAsString() + " " + validFormat.getInvalidMessage(columnIndex));
                     break;
+                  case Cell.CELL_TYPE_NUMERIC:
+                      if (!validFormat.isColumnValid(columnIndex, Double.valueOf(cell.getNumericCellValue()).toString()))
+                          msgList.add("ERROR: " + cellRef.formatAsString() + " " + validFormat.getInvalidMessage(columnIndex));
+                      break;
                   case Cell.CELL_TYPE_BLANK:
                      if (validFormat.isColumnManditory(columnIndex)) 
                           msgList.add("ERROR: " + cellRef.formatAsString() + " Mandatory cell is blank");
@@ -85,7 +81,4 @@ public class ImportFile {
         return true;
     }
 
-    private HSSFWorkbook getTemplate(ImportType importType) {
-        return null;
-    }
 }

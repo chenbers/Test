@@ -9,16 +9,16 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 
-public class ImportFileTest {
+public class FileCheckerTest {
     
 
-    @Ignore
+//    @Ignore
     @Test
     public void checkDriverFileMissing() {
         
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateMissing.xls");
         
-        ImportFile importFile = new ImportFile();
+        FileChecker importFile = new FileChecker();
         List<String> msgList = importFile.checkFile(ImportType.DRIVERS, stream);
         dumpErrors(msgList);
 
@@ -30,7 +30,7 @@ public class ImportFileTest {
         
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateErrors.xls");
 
-        ImportFile importFile = new ImportFile();
+        FileChecker importFile = new FileChecker();
         List<String> msgList = importFile.checkFile(ImportType.DRIVERS, stream);
         dumpErrors(msgList);
 
@@ -39,13 +39,13 @@ public class ImportFileTest {
         assertEquals("Error Count", 15, msgList.size());
     }
     
-    @Ignore
+//    @Ignore
     @Test
     public void checkDriverFileWithMissingColumn() {
         
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateMissingCol.xls");
 
-        ImportFile importFile = new ImportFile();
+        FileChecker importFile = new FileChecker();
         List<String> msgList = importFile.checkFile(ImportType.DRIVERS, stream);
         dumpErrors(msgList);
 

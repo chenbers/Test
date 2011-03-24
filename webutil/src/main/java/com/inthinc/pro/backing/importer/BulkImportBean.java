@@ -60,10 +60,8 @@ public class BulkImportBean extends BaseBean {
     
     
     public void checkAction() {
-        setFeedback("Check file goes here.");
-        
         try {
-            List<String> msgList = new ImportFile().checkFile(importType, new FileInputStream(uploadFile.getFile()));
+            List<String> msgList = new FileChecker().checkFile(importType, new FileInputStream(uploadFile.getFile()));
             if (msgList.size() == 0)
                 setFeedback("The file check was SUCCESSFUL.  No issues were found.");
             else {
@@ -81,8 +79,21 @@ public class BulkImportBean extends BaseBean {
     }
     
     public void importAction() {
-        setFeedback("Import file goes here.");
-        
+        try {
+            List<String> msgList = new FileImporter().importFile(importType, new FileInputStream(uploadFile.getFile()));
+            if (msgList.size() == 0)
+                setFeedback("The file import was SUCCESSFUL.");
+            else {
+                StringBuffer buffer = new StringBuffer();
+                for (String msg : msgList) {
+                    buffer.append(msg);
+                    buffer.append("<br/>");
+                }
+                setFeedback(buffer.toString());
+            }
+        } catch (FileNotFoundException e) {
+            setFeedback("File upload failed.  File not found. " + e.getMessage());
+        }
     }
 
     public void downloadTemplateAction() {

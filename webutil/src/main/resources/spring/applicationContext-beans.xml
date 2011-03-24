@@ -72,5 +72,11 @@
 	<bean id="zoneAlertIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneAlertIDValidator" parent="baseValidator"/>
 	<bean id="zoneIDValidator" class="com.inthinc.pro.backing.dao.validator.ZoneIDValidator" parent="baseValidator"/>
 	<bean id="validatorFactory" class="com.inthinc.pro.backing.dao.validator.ValidatorFactory" init-method="init"/>
-	
+
+
+	<!--  bulk importer beans (application scope) -->
+	<bean id="rowImporter" class="com.inthinc.pro.backing.importer.row.RowImporter" abstract="true"/>
+	<bean id="driverRowImporter" class="com.inthinc.pro.backing.importer.row.DriverRowImporter" parent="rowImporter"/>
+	<bean id="vehicleRowImporter" class="com.inthinc.pro.backing.importer.row.VehicleRowImporter" parent="rowImporter"/>
+	<bean id="rowImporterFactory" class="com.inthinc.pro.backing.importer.row.RowImporterFactory" init-method="init"/>
 </beans>

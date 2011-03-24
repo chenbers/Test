@@ -15,14 +15,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 //any classes that extend this one will also have access to these configurations
 @ContextConfiguration(locations={"classpath:spring/applicationContext-serverPropertiesTest.xml",
 								"classpath:spring/applicationContext-dao.xml",
-                              "classpath:spring/applicationContext-beans.xml"})
+                              "classpath:spring/applicationContext-beans.xml"},
+                              loader=com.inthinc.pro.spring.test.WebSessionContextLoader.class)
+                              
+                              
+                              
 
 public class BaseSpringTest implements ApplicationContextAware {
 
     protected ApplicationContext applicationContext;
 
 	@Override
-	public void setApplicationContext(ApplicationContext arg0)
+	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
 		this.applicationContext = applicationContext;
 		
