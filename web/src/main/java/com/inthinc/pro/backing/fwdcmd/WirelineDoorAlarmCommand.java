@@ -10,7 +10,10 @@ import com.inthinc.pro.model.ForwardCommandType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class WirelineDoorAlarmCommand extends WaysmartForwardCommand {
-
+    public WirelineDoorAlarmCommand()
+    {
+        super();
+    }
     public WirelineDoorAlarmCommand(Integer deviceID, String address, FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
         super(deviceID, address, fcsIridiumDAO);
     }

@@ -10,7 +10,10 @@ import com.inthinc.pro.model.ForwardCommandType;
 import com.inthinc.pro.util.MessageUtil;
 
 public class WirelineKillMotorCommand extends WaysmartForwardCommand {
-
+    public WirelineKillMotorCommand()
+    {
+        super();
+    }
     public WirelineKillMotorCommand(Integer deviceID, String address, FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
         super(deviceID, address, fcsIridiumDAO);
     }

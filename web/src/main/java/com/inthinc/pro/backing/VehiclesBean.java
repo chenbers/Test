@@ -267,11 +267,21 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicleView.setOldGroupID(vehicle.getGroupID());
         vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
-        vehicleView.initForwardCommandDefs();
+        if (!isBatchEdit())
+            vehicleView.initForwardCommandDefs();
 
 
         return vehicleView;
     }
+    
+    @Override
+    protected List<String> getBatchEditIgnoreField() {
+        List<String> ignoreFields = new ArrayList<String>();
+        ignoreFields.add("wirelineDoorAlarm");
+        ignoreFields.add("wirelineKillMotor");
+        return ignoreFields;
+    }
+
     @Override
     public String fieldValue(VehicleView vehicle, String column)
     {
@@ -730,7 +740,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
 
     public void setFcsIridiumDAO(FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
-System.out.println("setFcsIridiumDAO");        
         this.fcsIridiumDAO = fcsIridiumDAO;
     }
 

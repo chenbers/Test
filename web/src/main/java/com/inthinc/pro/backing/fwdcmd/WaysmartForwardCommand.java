@@ -29,7 +29,9 @@ public abstract class WaysmartForwardCommand {
     private FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO;
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss (a) z");
 
-    
+    public WaysmartForwardCommand()
+    {
+    }
     public WaysmartForwardCommand(Integer deviceID, String address, FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
         this.deviceID = deviceID;
         this.address = address;

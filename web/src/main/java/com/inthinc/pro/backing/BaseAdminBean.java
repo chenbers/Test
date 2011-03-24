@@ -649,7 +649,7 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
             {
                 batchEdit = true;
                 item = createAddItem();
-                BeanUtil.deepCopy(selection, item);
+                BeanUtil.deepCopy(selection, item, getBatchEditIgnoreField());
 
                 // null out properties that are not common
                 for (T t : getSelectedItems())
@@ -667,6 +667,9 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         return item;
     }
 
+    protected List<String> getBatchEditIgnoreField() {
+        return null;
+    }
     /**
      * @return The list of selected items.
      */

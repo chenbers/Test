@@ -175,7 +175,8 @@ public class BeanUtil
 
                         catch (Throwable ex)
                         {
-                            throw new FatalBeanException("Could not copy properties from source to target", ex);
+                            throw new FatalBeanException("Could not copy properties from source to target " + 
+                                    ((readMethod != null) ? readMethod.getName() : "") + " " + ((writeMethod != null) ? writeMethod.getName() : "") , ex);
                         }
                     }
                 }
