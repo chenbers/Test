@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -72,6 +71,7 @@ public class TestCaseResult {
 		testCaseResults = new JSONObject();
 		try {
 			testCaseResults.put("WorkSpace", http.getWorkspace());
+			setDate();
 		} catch (JSONException e) {
 			logger.fatal(StackToString.toString(e));
 		}
@@ -106,9 +106,13 @@ public class TestCaseResult {
 		}
 	}
 
-	public void setTestCase(NameValuePair searchParams) throws JSONException {
+	public void setTestCase(NameValuePair searchParams) {
 		TestCase testcase = new TestCase(http);
-		testCaseResults.put("TestCase", testcase.getTestCase(searchParams));
+		try {
+			testCaseResults.put("TestCase", testcase.getTestCase(searchParams));
+		} catch (JSONException e) {
+			logger.fatal(StackToString.toString(e));
+		}
 	}
 
 	public JSONObject getTestCase() {
@@ -128,9 +132,9 @@ public class TestCaseResult {
 	 * date object<br />
 	 * 
 	 * @param date
-	 * @throws JSONException
 	 */
-	public void setDate(GregorianCalendar date) {
+	public void setDate() {
+		GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
 		XsdDatetimeFormat xdf = new XsdDatetimeFormat();
 		xdf.setTimeZone("MST");
 		setDate(xdf.format(date.getTime()));
@@ -160,7 +164,6 @@ public class TestCaseResult {
 	 * also validate it is one of the valid options<br />
 	 * 
 	 * @param verdict
-	 * @throws JSONException
 	 */
 	public void setVerdict(String verdict) {
 		Boolean valid = false;
@@ -189,16 +192,12 @@ public class TestCaseResult {
 		}
 	}
 
-	public void setDuration(Double time) {
+	public void setDuration(Long time) {
 		try {
 			testCaseResults.put("Duration", time);
 		} catch (JSONException e) {
 			logger.fatal(StackToString.toString(e));
 		}
-	}
-
-	public void setDuration(Long time) {
-		setDuration(Double.longBitsToDouble(time));
 	}
 
 	public String getDuration() {

@@ -86,6 +86,7 @@ public class TestCase {
 				http.constructQuery(filter, 1, 200, fetch);
 			else
 				http.constructQuery(filter, 1, 200);
+
 			http.getObjects(RallyWebServices.TEST_CASE);
 			return http.getResults().getJSONObject(0);
 		} catch (HttpException e) {

@@ -158,6 +158,7 @@ public class RallyAPILib {
 		setNotes(notes);
 		setVerdict(verdict);
 		this.testCase.put("TestCaseResult", testCaseResults);
+		System.out.println(PrettyJSON.toString(this.testCase));
 		results = sendTestCaseResults();
 		return results;
     } 

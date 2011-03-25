@@ -135,7 +135,7 @@ public class Login {
 		
 		selenium.isTextPresent("Password:", "Password: text present");
 		selenium.isElementPresent(LoginEnum.PASSWORD_LABEL, "Password: element present");
-		selenium.getText(LoginEnum.PASSWORD_LABEL, "Password:", "Password: text match");
+		selenium.getText(LoginEnum.PASSWORD_LABEL, "Password: text match");
 	}
 	
 //	public void forgotPassword(){

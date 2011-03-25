@@ -15,7 +15,6 @@ package com.inthinc.pro.web.selenium;
 import java.util.HashMap;
 
 import org.apache.commons.httpclient.NameValuePair;
-import org.json.JSONException;
 import org.junit.*;
 import org.junit.runner.notification.StoppedByUserException;
 
@@ -28,7 +27,6 @@ public abstract class InthincTest {
 	private static HashMap<String, HashMap<String, String>> errors;
 	private static TestCaseResult rally;
 
-	private String testCaseID;
 	private String testVerdict = "Error";
 
 	private Boolean skip = false;
@@ -54,7 +52,7 @@ public abstract class InthincTest {
 	public void start_selenium() {
 		try {
 			selenium = GlobalSelenium.getYourOwn();
-			startTime = System.currentTimeMillis()/1000;
+			startTime = System.currentTimeMillis() / 1000;
 			rally.new_results();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,22 +66,25 @@ public abstract class InthincTest {
 	public void stop_selenium() {
 		if (!skip) {
 			try {
-				rally.setTestCase(new NameValuePair("FormattedID", testCaseID));
 				rally.setBuildNumber(selenium.getText("footerForm:version"));
 				errors = selenium.getErrors().get_errors();
+				selenium.stop();
+
 				// check error var for entries
 				if (errors.isEmpty())
 					testVerdict = "Pass"; // no errors = pass
 				else if (!errors.isEmpty())
 					testVerdict = "Fail"; // errors = fail
+
 				rally.setVerdict(testVerdict);
 				rally.setNotes(errors);
-				rally.setDuration(startTime-System.currentTimeMillis()/1000);
+				rally
+						.setDuration(System.currentTimeMillis() / 1000
+								- startTime);
+				rally.send_test_case_results();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			// test
-			selenium.stop();
 		}
 		startTime = null;
 	}
@@ -94,10 +95,7 @@ public abstract class InthincTest {
 
 	}// tear down
 
-	public void set_test_case(String test_case) {
-		try {
-			rally.setTestCase(new NameValuePair("FormattedID", test_case));
-		} catch (JSONException e) {
-		}
+	public void set_test_case(String formattedID) {
+		rally.setTestCase(new NameValuePair("FormattedID", formattedID));
 	}
 }
