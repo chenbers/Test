@@ -22,10 +22,10 @@ public class TemplateTest extends InthincTest {
 		Masthead mh = new Masthead();
 		
 		//Set up test data
-		set_test_case("ExcelFileName", "TestCaseName");
+		set_test_case("TestCaseName");
 	
 		//login to portal
-		l.portal_log_in_process(get_data("WorksheetName","ColumnHeader"), get_data("WorksheetName","ColumnHeader"));
+//		l.portal_log_in_process(get_data("WorksheetName","ColumnHeader"), get_data("WorksheetName","ColumnHeader"));
 			
 				
 		/*Call Test Methods using the syntax below
@@ -55,10 +55,10 @@ public class TemplateTest extends InthincTest {
 		Masthead mh = new Masthead();
 		
 		//Set up test data
-		set_test_case("ExcelFileName", "TestCaseName");
+//		set_test_case("ExcelFileName", "TestCaseName");
 	
 		//login to portal
-		l.portal_log_in_process(get_data("WorksheetName","ColumnHeader"), get_data("WorksheetName","ColumnHeader"));
+//		l.portal_log_in_process(get_data("WorksheetName","ColumnHeader"), get_data("WorksheetName","ColumnHeader"));
 			
 				
 		/*Call Test Methods using the syntax below

@@ -31,7 +31,7 @@ public class LoginScript extends InthincTest {
         Login l = new Login();
         
         // set up test data
-        set_test_case("Tiwi_data.xls", "TC4632");
+        set_test_case("TC4632");
 
         // prototype for running a test driven by data only   
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath*:spring/applicationContext-*.xml");

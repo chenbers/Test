@@ -69,17 +69,17 @@ public class UserAddEdit extends InthincTest {
 		selenium = GlobalSelenium.getSelenium();
 	}
 	
-	public void AddUser(String datasheet){
-		//enter new user info
-		enter_user_info(datasheet);
-		enter_employee_info(datasheet);
-		enter_driver_information(datasheet);
-		enter_login_information(datasheet);
-		enter_notifications(datasheet);
-		enter_rfid_information(datasheet);
-		//save new user
-		ClickSave();
-	}
+//	public void AddUser(String datasheet){
+//		//enter new user info
+//		enter_user_info(datasheet);
+//		enter_employee_info(datasheet);
+//		enter_driver_information(datasheet);
+//		enter_login_information(datasheet);
+//		enter_notifications(datasheet);
+//		enter_rfid_information(datasheet);
+//		//save new user
+//		ClickSave();
+//	}
 
 	public void confirmMessage(String msgtext, String error_name){
 		selenium.isTextPresent(msgtext,error_name);
@@ -185,59 +185,59 @@ public class UserAddEdit extends InthincTest {
 		selenium.waitForPageToLoad("30000");
 	}
 
-	public void enter_rfid_information(String datasheet){
-		selenium.type(barcode_id, get_data(datasheet,"BarCode"));
-	}
-
-	public void enter_notifications(String datasheet){
-		selenium.type(email_1, get_data(datasheet,"EMAIL1"));
-		selenium.type(email_2, get_data(datasheet,"EMAIL2"));
-		selenium.type(text_msg_1, get_data(datasheet,"TextMsg1"));
-		selenium.type(text_msg_2, get_data(datasheet,"TextMsg2"));
-		selenium.type(phone_1 , get_data(datasheet,"Phone1"));
-		selenium.type(phone_2, get_data(datasheet,"Phone2"));
-		selenium.select(Notification_info, "label=" + get_data(datasheet,"NInfo"));
-		selenium.select(Notification_warning, "label=" + get_data(datasheet,"NWarning"));
-		selenium.select(Notification_critical, "label=" + get_data(datasheet,"NCritical"));
-	}
-
-	public void enter_login_information(String datasheet){
-		selenium.type(username , get_data(datasheet,"UserName"));
-		selenium.type(password, get_data(datasheet,"Password"));
-		selenium.type(password_confirm, get_data(datasheet,"Password"));
-		selenium.selectDhxCombo(get_data(datasheet,"Group"), "Login Group");
-		selenium.addtoPanel(panel_id, "label=" + get_data(datasheet,"Panel"), "Login Role Panel");
-		selenium.select(user_status, "label=" + get_data(datasheet,"Status"));
-	}
-
-	public void enter_driver_information(String datasheet){
-		selenium.type(driver_lic,get_data(datasheet,"DrivLicNum"));
-		selenium.select(driver_state, "label=" + get_data(datasheet,"DrivLicState"));
-		selenium.select(lic_class, "label=" + get_data(datasheet,"LicClass"));
-		selenium.type(input_date, get_data(datasheet,"InputDate"));
-		selenium.type(certifications, "\"" + get_data(datasheet,"Certifications"));
-		selenium.selectDhxCombo(get_data(datasheet,"Team"), "Driver Information - Team");
-		selenium.select(driver_status, "label=" + get_data(datasheet,"Status"));
-	}
-
-	public void enter_user_info(String datasheet){
-		selenium.type(emp_firstname, get_data(datasheet,"FirstName"), "Employee First Name");
-		selenium.type(emp_middle_name, get_data(datasheet,"MiddleName"), "Employee Middle Name");
-		selenium.type(emp_lastname, get_data(datasheet,"LastName"), "Employee Last Name");
-		selenium.select(emp_name_suffix, "label=" + get_data(datasheet,"Suffix"), "Employee Name Suffix");
-		selenium.type(emp_DOB_inputDate, get_data(datasheet,"DOB"), "DOB");
-		selenium.select(emp_gender, "label=" + get_data(datasheet,"Gender"), "Gender");
-	}
-	
-	public void enter_employee_info(String datasheet){
-		selenium.type(emp_id , get_data(datasheet,"EmpID"));
-		selenium.type(emp_reportsTo, get_data(datasheet,"ReportsTo"));
-		selenium.type(emp_title, get_data(datasheet,"Title"));
-		selenium.select(emp_userlocale, "label=" + get_data(datasheet,"Locale"));
-		selenium.select(emp_timezone, "label=" + get_data(datasheet,"TimeZone"));
-		selenium.select(emp_measurement, "label=" + get_data(datasheet,"Measurement"));
-		selenium.select(emp_fuelefficiencytype, "label=" + get_data(datasheet,"FuelEffType"));
-	}
+//	public void enter_rfid_information(String datasheet){
+//		selenium.type(barcode_id, get_data(datasheet,"BarCode"));
+//	}
+//
+//	public void enter_notifications(String datasheet){
+//		selenium.type(email_1, get_data(datasheet,"EMAIL1"));
+//		selenium.type(email_2, get_data(datasheet,"EMAIL2"));
+//		selenium.type(text_msg_1, get_data(datasheet,"TextMsg1"));
+//		selenium.type(text_msg_2, get_data(datasheet,"TextMsg2"));
+//		selenium.type(phone_1 , get_data(datasheet,"Phone1"));
+//		selenium.type(phone_2, get_data(datasheet,"Phone2"));
+//		selenium.select(Notification_info, "label=" + get_data(datasheet,"NInfo"));
+//		selenium.select(Notification_warning, "label=" + get_data(datasheet,"NWarning"));
+//		selenium.select(Notification_critical, "label=" + get_data(datasheet,"NCritical"));
+//	}
+//
+//	public void enter_login_information(String datasheet){
+//		selenium.type(username , get_data(datasheet,"UserName"));
+//		selenium.type(password, get_data(datasheet,"Password"));
+//		selenium.type(password_confirm, get_data(datasheet,"Password"));
+//		selenium.selectDhxCombo(get_data(datasheet,"Group"), "Login Group");
+//		selenium.addtoPanel(panel_id, "label=" + get_data(datasheet,"Panel"), "Login Role Panel");
+//		selenium.select(user_status, "label=" + get_data(datasheet,"Status"));
+//	}
+//
+//	public void enter_driver_information(String datasheet){
+//		selenium.type(driver_lic,get_data(datasheet,"DrivLicNum"));
+//		selenium.select(driver_state, "label=" + get_data(datasheet,"DrivLicState"));
+//		selenium.select(lic_class, "label=" + get_data(datasheet,"LicClass"));
+//		selenium.type(input_date, get_data(datasheet,"InputDate"));
+//		selenium.type(certifications, "\"" + get_data(datasheet,"Certifications"));
+//		selenium.selectDhxCombo(get_data(datasheet,"Team"), "Driver Information - Team");
+//		selenium.select(driver_status, "label=" + get_data(datasheet,"Status"));
+//	}
+//
+//	public void enter_user_info(String datasheet){
+//		selenium.type(emp_firstname, get_data(datasheet,"FirstName"), "Employee First Name");
+//		selenium.type(emp_middle_name, get_data(datasheet,"MiddleName"), "Employee Middle Name");
+//		selenium.type(emp_lastname, get_data(datasheet,"LastName"), "Employee Last Name");
+//		selenium.select(emp_name_suffix, "label=" + get_data(datasheet,"Suffix"), "Employee Name Suffix");
+//		selenium.type(emp_DOB_inputDate, get_data(datasheet,"DOB"), "DOB");
+//		selenium.select(emp_gender, "label=" + get_data(datasheet,"Gender"), "Gender");
+//	}
+//	
+//	public void enter_employee_info(String datasheet){
+//		selenium.type(emp_id , get_data(datasheet,"EmpID"));
+//		selenium.type(emp_reportsTo, get_data(datasheet,"ReportsTo"));
+//		selenium.type(emp_title, get_data(datasheet,"Title"));
+//		selenium.select(emp_userlocale, "label=" + get_data(datasheet,"Locale"));
+//		selenium.select(emp_timezone, "label=" + get_data(datasheet,"TimeZone"));
+//		selenium.select(emp_measurement, "label=" + get_data(datasheet,"Measurement"));
+//		selenium.select(emp_fuelefficiencytype, "label=" + get_data(datasheet,"FuelEffType"));
+//	}
 
 	public UserAddEdit(CoreMethodLib sel ){
 		selenium = sel;

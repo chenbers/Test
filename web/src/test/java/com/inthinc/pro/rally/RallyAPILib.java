@@ -1,4 +1,4 @@
-package com.inthinc.pro.web.selenium;
+package com.inthinc.pro.rally;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -21,6 +21,7 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * 

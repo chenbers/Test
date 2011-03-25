@@ -12,139 +12,92 @@
 
 package com.inthinc.pro.web.selenium;
 
-import java.util.GregorianCalendar;
 import java.util.HashMap;
+
+import org.apache.commons.httpclient.NameValuePair;
+import org.json.JSONException;
 import org.junit.*;
 import org.junit.runner.notification.StoppedByUserException;
 
-public abstract class InthincTest
-{
-	
-	private GregorianCalendar currentTime;
-	private static HashMap<String, HashMap<String, String>> testCase, errors;
-	private static DataReaderLib data_file;
-	private static RallyAPILib rally;
-	
+import com.inthinc.pro.rally.RallyWebServices;
+import com.inthinc.pro.rally.TestCaseResult;
+
+public abstract class InthincTest {
+
+	private Long startTime;
+	private static HashMap<String, HashMap<String, String>> errors;
+	private static TestCaseResult rally;
+
 	private String testCaseID;
-	private String testVersion="No Version Found";
-	private String testVerdict="Error";
-	
+	private String testVerdict = "Error";
+
 	private Boolean skip = false;
-	
+
 	private final static String username = "dtanner@inthinc.com";
 	private final static String password = "aOURh7PL5v";
-	private final static String workspace = "Inthinc";
-	
+	private final static RallyWebServices workspace = RallyWebServices.INTHINC;
+
 	private static CoreMethodLib selenium;
-	
+
 	@BeforeClass
-	public static void start_server(){
-		try{
-			rally = new RallyAPILib(username, password);
-		}catch (Exception e) {
+	public static void start_server() {
+		try {
+			rally = new TestCaseResult(username, password, workspace);
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new StoppedByUserException();
 		}
-        
-	}//end setup
-	
+
+	}// end setup
+
 	@Before
-	public void start_selenium(){
-		selenium = GlobalSelenium.getYourOwn();
-		try{
-			currentTime = (GregorianCalendar) GregorianCalendar.getInstance();
-		}catch(Exception e){
+	public void start_selenium() {
+		try {
+			selenium = GlobalSelenium.getYourOwn();
+			startTime = System.currentTimeMillis()/1000;
+			rally.new_results();
+		} catch (Exception e) {
 			e.printStackTrace();
 			skip = true;
 			throw new StoppedByUserException();
 		}
-		
+
 	}
-	
+
 	@After
-	public void stop_selenium(){
-		if (!skip){
-			try{
-				//get version
-				testVersion = selenium.getText("footerForm:version", "Getting version from Portal");
-			}catch(Exception e){
+	public void stop_selenium() {
+		if (!skip) {
+			try {
+				rally.setTestCase(new NameValuePair("FormattedID", testCaseID));
+				rally.setBuildNumber(selenium.getText("footerForm:version"));
+				errors = selenium.getErrors().get_errors();
+				// check error var for entries
+				if (errors.isEmpty())
+					testVerdict = "Pass"; // no errors = pass
+				else if (!errors.isEmpty())
+					testVerdict = "Fail"; // errors = fail
+				rally.setVerdict(testVerdict);
+				rally.setNotes(errors);
+				rally.setDuration(startTime-System.currentTimeMillis()/1000);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			//reset output vars for next test and record results for execute test
+			// test
 			selenium.stop();
-			record_results();
 		}
-		data_file=null;
-		testCase=null;
-		currentTime=null;
-		
+		startTime = null;
 	}
-	
+
 	@AfterClass
-	public static void stop_server(){
+	public static void stop_server() {
 		GlobalSelenium.dieSeleniumDie();
-		
-	}//tear down
-	
-	
-	public String set_test_case(String file_name, String test_case){
-		//takes data file and test case Id as entries
-		//then builds HASHMap for the test case passed into method
-		String success = "Success";
-		testCaseID=test_case;
-		//append system path to file name
-		file_name = "src/test/resources/Data/" + file_name;
-		
-		if (data_file==null){
-			//instantiate data reader if needed
-			data_file = new DataReaderLib();	
+
+	}// tear down
+
+	public void set_test_case(String test_case) {
+		try {
+			rally.setTestCase(new NameValuePair("FormattedID", test_case));
+		} catch (JSONException e) {
 		}
-		
-		try{
-			//build test case HASHmap 
-			testCase = data_file.get_testcase_data(file_name, testCaseID);
-		}catch(NullPointerException e){
-			System.out.println("That Test Case ID was not found in the file.");
-			return "That Test Case ID was not found in the file.";
-		}
-		return success;
-	}//end set test case
-	
-	public void set_test_case(String test_case){
-		testCaseID=test_case;
 	}
-	
-	public String get_data( String sheet, String header){
-		//used to pull test data from HASHMap Variable Type
-		String value = "";		
-		try{
-			value = testCase.get(sheet).get(header); 
-		}catch(NullPointerException e){
-			System.out.println("That Entry was not found on the specified sheet");
-			return "That Entry was not found on the specified sheet";
-		}
-		
-		return value; 
-	}//end set test case
-	
-	public String getUsername() {
-		return get_data("Login", "USERNAME");
-	}
-	
-	public String getPassword() {
-		return get_data("Login", "PASSWORD");
-	}
-	
-	public void record_results(){
-		errors = selenium.getErrors().get_errors();
-		//check error var for entries
-		if (errors.isEmpty())testVerdict = "Pass"; //no errors = pass
-			else if (!errors.isEmpty())testVerdict = "Fail"; //errors = fail
-		try{
-			//send test result to Rally
-			rally.createJSON(workspace, testCaseID, testVersion, currentTime, errors, testVerdict);
-		}catch(Exception e1){
-			e1.printStackTrace();
-		}
-	}//end record results
 }

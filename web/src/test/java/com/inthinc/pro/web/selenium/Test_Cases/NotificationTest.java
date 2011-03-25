@@ -22,14 +22,10 @@ public class NotificationTest extends InthincTest {
 		Masthead mh = new Masthead();
 		Notifications N = new Notifications();
 		//Set up test data
-//		set_test_case("TC4631");
-		set_test_case("Tiwi_data.xls", "TC4631");		
+		
+		set_test_case("TC4631");		
 	
-		//login to portal
-		l.portal_log_in_process(getUsername(), getPassword());
-			
-//		l.login_to_portal(getUsername(), getPassword());
-		l.portal_log_in_process(getUsername(), getPassword());	
+		l.portal_log_in_process("0001", "password");
 
 		N.menuItem("redflags");
 		N.ckRedflagScr();

@@ -1,4 +1,4 @@
-package com.inthinc.pro.web.selenium;
+package com.inthinc.pro.rally;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
