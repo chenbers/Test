@@ -55,46 +55,23 @@
 	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
 	    function showWarningsChanged()
 	    {
-	    	if(document.getElementById('showWarningsCheckBox').checked == true)
-	    	{
-				showWarnings = true;
-				drawSelectedTrips();
-	    	}
-	    	else
-	    	{
-				showWarnings = false;
-				drawSelectedTrips();
-	    	}
+	    	showWarnings = document.getElementById('showWarningsCheckBox').checked;
+	    	drawSelectedTrips();
 		}
 
 		// Show Idle Markers Checkbox changed
 	    function showIdleChanged()
 	    {
-	      	if(document.getElementById('showIdleCheckBox').checked == true)
-	    	{
-	      		showIdleMarkers = true;
-	      		drawSelectedTrips();
-	    	}
-	    	else
-	    	{
-	    		showIdleMarkers = false;
-	    		drawSelectedTrips();
-	    	}
+	    	showIdleMarkers = document.getElementById('showIdleCheckBox').checked;
+      		drawSelectedTrips();
+	    	
 		}
 
 	 	// Show Tampering Markers Checkbox changed
 	    function showTamperingChanged(tamperingCheckBox)
 	    {
-	      	if(tamperingCheckBox.checked == true)
-	    	{
-	      		showTamperMarkers = true;
-	      		drawSelectedTrips();
-	    	}
-	    	else
-	    	{
-	    		showTamperMarkers = false;
-	    		drawSelectedTrips();
-	    	}
+	    	showTamperMarkers = tamperingCheckBox.checked;
+      		drawSelectedTrips();
 		}
 
 		//On page load and A4J Re-render
@@ -174,7 +151,7 @@
 		function bodyLoad()
 		{
 			if ( #{vehicleTripsBean.selectedTrips[0] ne null} ) {				
-				initMap(#{vehicleTripsBean.selectedTrips[0].routeLastStep.lat}0, #{vehicleTripsBean.selectedTrips[0].routeLastStep.lng}0, 14);
+				initMap(#{vehicleTripsBean.anchorLat}, #{vehicleTripsBean.anchorLng}, 14);
 			}
 	   		showTrips();
 		}
@@ -195,8 +172,7 @@
 				
    				<ui:repeat value="#{vehicleTripsBean.selectedTrips}" var="trip">
    				//alert('drawing selected trip #{trip.trip.startTime}');
-   				
-   					
+   				<ui:fragment rendered="#{trip.goodRoute}">
    					if ("#{trip.trip.quality}" == "BAD")
 						color = "#ee0000";
    					else if ("#{trip.trip.quality}" == "GOOD")
@@ -235,6 +211,7 @@
 					}
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
+					</ui:fragment>
   				</ui:repeat>
 
   				if(showWarnings == true)

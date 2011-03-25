@@ -40,7 +40,6 @@
 		        map.addControl(new GLargeMapControl());
 		        map.addControl(new GScaleControl());
 		        map.addControl(new GMenuMapTypeControl(true));
-	
 				map.setCenter(new GLatLng(lat, lng), zoom);
 		        map.enableScrollWheelZoom();
 	
@@ -61,46 +60,23 @@
 	    // Show Warnings Checkbox changed   //TODO: CLEANER WAY TO DO THIS??
 	    function showWarningsChanged()
 	    {
-	    	if(document.getElementById('showWarningsCheckBox').checked == true)
-	    	{
-				showWarnings = true;
-				drawSelectedTrips();
-	    	}
-	    	else
-	    	{
-				showWarnings = false;
-				drawSelectedTrips();
-	    	}
+	    	showWarnings = document.getElementById('showWarningsCheckBox').checked;
+	    	drawSelectedTrips();
 		}
 
 		// Show Idle Markers Checkbox changed
 	    function showIdleChanged()
 	    {
-	      	if(document.getElementById('showIdleCheckBox').checked == true)
-	    	{
-	      		showIdleMarkers = true;
-	      		drawSelectedTrips();
-	    	}
-	    	else
-	    	{
-	    		showIdleMarkers = false;
-	    		drawSelectedTrips();
-	    	}
+	    	showIdleMarkers = document.getElementById('showIdleCheckBox').checked;
+      		drawSelectedTrips();
+	    	
 		}
 
 	 	// Show Tampering Markers Checkbox changed
 	    function showTamperingChanged(tamperingCheckBox)
 	    {
-	      	if(tamperingCheckBox.checked == true)
-	    	{
-	      		showTamperMarkers = true;
-	      		drawSelectedTrips();
-	    	}
-	    	else
-	    	{
-	    		showTamperMarkers = false;
-	    		drawSelectedTrips();
-	    	}
+	    	showTamperMarkers = tamperingCheckBox.checked;
+      		drawSelectedTrips();
 		}
 
 		//On page load and A4J Re-render
@@ -180,7 +156,7 @@
 		function bodyLoad()
 		{
 			if ( #{driverTripsBean.selectedTrips[0] ne null} ) {
-				initMap(#{driverTripsBean.selectedTrips[0].routeLastStep.lat}0, #{driverTripsBean.selectedTrips[0].routeLastStep.lng}0, 14);
+				initMap(#{driverTripsBean.anchorLat}, #{driverTripsBean.anchorLng}, 14);
 		   		showTrips();
 			}
 		}
@@ -200,15 +176,14 @@
 				map.clearOverlays();
 				
    				<ui:repeat value="#{driverTripsBean.selectedTrips}" var="trip">
-
-   					if ("#{trip.trip.quality}" == "BAD")
+				<ui:fragment rendered="#{trip.goodRoute}">
+   			   		if ("#{trip.trip.quality}" == "BAD")
 						color = "#ee0000";
    					else if ("#{trip.trip.quality}" == "GOOD")
 						color = "#006600";
    					else if ("#{trip.trip.quality}" == "WAYSMART")
 						color = "#0000ee";
    					else color = "#0000ee";
-   					
    					
 					polyline = new GPolyline([
 							<ui:repeat value="#{trip.route}" var="rt">
@@ -239,6 +214,7 @@
 					}
 					map.addOverlay(marker);
 					bounds.extend(marker.getPoint());
+					</ui:fragment>
   				</ui:repeat>
 
   				if(showWarnings == true)

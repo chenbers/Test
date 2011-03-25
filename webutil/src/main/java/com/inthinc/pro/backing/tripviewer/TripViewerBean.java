@@ -3,9 +3,7 @@ package com.inthinc.pro.backing.tripviewer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.faces.model.SelectItem;
@@ -13,7 +11,6 @@ import javax.faces.model.SelectItem;
 import org.joda.time.DateTime;
 
 import com.inthinc.pro.backing.BaseBean;
-import com.inthinc.pro.charts.Line;
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
@@ -24,10 +21,8 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.tripviewer.model.EventAndAttr;
-import com.inthinc.pro.util.MessageUtil;
 
 public class TripViewerBean extends BaseBean {
     private AccountDAO accountDAO;
@@ -53,8 +48,8 @@ public class TripViewerBean extends BaseBean {
     
     private String error = "Page loaded successfully.";
     
-    private LatLng tripStart;
-    private LatLng tripEnd;
+//    private LatLng tripStart;
+//    private LatLng tripEnd;
     
     private List<EventAndAttr> tripNotes = new ArrayList<EventAndAttr>();
     
@@ -313,7 +308,7 @@ public class TripViewerBean extends BaseBean {
         tripNotes = getTripEvents(tmp, this.tripToShow.getStartTime(), this.tripToShow.getEndTime());
         
         // Have the selected trip, create speed line plot
-        StringBuffer sb = new StringBuffer();
+//        StringBuffer sb = new StringBuffer();
 
         // Control parms
         speedLineDef = "<chart caption=\'Speed vs Limit\' xAxisName=\'Time\' yAxisName=\'Speed\' showValues=\'0\'  labelDisplay=\'ROTATE\' labelStep=\'5\' >";
@@ -394,9 +389,9 @@ public class TripViewerBean extends BaseBean {
         return l;
     }
 
-    public void setTripStart(LatLng tripStart) {
-        this.tripStart = tripStart;
-    }
+//    public void setTripStart(LatLng tripStart) {
+//        this.tripStart = tripStart;
+//    }
 
     public LatLng getTripEnd() {
         LatLng l = new LatLng();
@@ -409,9 +404,9 @@ public class TripViewerBean extends BaseBean {
         return l;
     }
 
-    public void setTripEnd(LatLng tripEnd) {
-        this.tripEnd = tripEnd;
-    }
+//    public void setTripEnd(LatLng tripEnd) {
+//        this.tripEnd = tripEnd;
+//    }
 
     public List<EventAndAttr> getTripNotes() {
         return tripNotes;

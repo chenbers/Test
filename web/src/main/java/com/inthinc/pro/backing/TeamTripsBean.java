@@ -515,56 +515,16 @@ public class TeamTripsBean extends BaseBean {
 		    {
 
 		        route = compressRoute(trip.getRoute(), compressionFactor);
-		        
 		        //Need to fake start and end/progress events for trips
-		    	Event startEvent = new Event();
-		    	startEvent.setDriverID(trip.getDriverID());
-		        if(route.size() > 0)
-		        {
-		            beginningPoint = route.get(0);
-		            beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
-			    	startEvent.setLatitude(beginningPoint.getLat());
-			    	startEvent.setLongitude(beginningPoint.getLng());
-		        }
-		    	startEvent.setTime(trip.getStartTime());
-		    	startEvent.setNoteID(trip.getStartTime().getTime());
-		    	startEvent.setType(NoteType.TRIP_START);
-		    	startEventItem = new EventItem();
-		    	startEventItem.eventID = startEvent.getNoteID();
-		    	startEventItem.latLng = new LatLng(startEvent.getLatitude(), startEvent.getLongitude());
+		        createStartEvent(trip);
 		    	
-		    	eventsMap.put(startEvent.getNoteID(), startEvent);
-		    	
-		    	Event endEvent = new Event();
-		    	endEvent.setDriverID(trip.getDriverID());
-		        if(route.size() > 0)
-		        {
-		            routeLastStep = route.get(route.size()-1);
-		            routeLastStep.setLat(routeLastStep.getLat() + 0.00001);
-		            endEvent.setLatitude(routeLastStep.getLat());
-		            endEvent.setLongitude(routeLastStep.getLng());
-		        }
-		        endEvent.setTime(trip.getEndTime());
-		        endEvent.setNoteID(trip.getEndTime().getTime());
-		        if (trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS)){
-		        	
-		        	endEvent.setType(NoteType.TRIP_INPROGRESS);
-		        }
-		        else {
-		        	
-		        	endEvent.setType(NoteType.TRIP_END);
-		        }
-		        
-		    	endEventItem = new EventItem();
-		    	endEventItem.eventID = endEvent.getNoteID();
-		    	endEventItem.latLng = new LatLng(endEvent.getLatitude(), endEvent.getLongitude());
-
-		        eventsMap.put(endEvent.getNoteID(), endEvent);
+		    	createEndEvent(trip);
 		        
 		        startTime = trip.getStartTime();
 		        endTime = trip.getEndTime();
 		        
-		        inProgress = trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS);        
+		        inProgress = trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS);
+		        
 		        violations =  getTripViolations(violationEvents);
 		        idles = getTripIdles(idleEvents);
 		        tampers = getTripTampers(tamperEvents);
@@ -579,6 +539,61 @@ public class TeamTripsBean extends BaseBean {
 		    	}
 		    	compressedRoute.add(route.get(route.size()-1));
 		    	return compressedRoute;
+		    }
+		    private void createStartEvent(Trip trip){
+		    	
+		    	Event startEvent = new Event();
+		    	startEvent.setDriverID(trip.getDriverID());
+		    	startEvent.setTime(trip.getStartTime());
+		    	startEvent.setNoteID(trip.getStartTime().getTime());
+		    	startEvent.setType(NoteType.TRIP_START);
+		    	
+		    	startEventItem = new EventItem();
+		    	
+		        if(route.size() > 0){
+
+		            beginningPoint = route.get(0);
+		            beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
+			    	startEvent.setLatitude(beginningPoint.getLat());
+			    	startEvent.setLongitude(beginningPoint.getLng());
+			    	startEventItem.latLng = new LatLng(startEvent.getLatitude(), startEvent.getLongitude());
+		        }
+		    	eventsMap.put(startEvent.getNoteID(), startEvent);
+		    	
+		    	startEventItem.eventID = startEvent.getNoteID();
+
+		    }
+		    private void createEndEvent(Trip trip){
+		    	Event endEvent = new Event();
+		    	endEvent.setDriverID(trip.getDriverID());
+		    	
+		        endEvent.setTime(trip.getEndTime());
+		        endEvent.setNoteID(trip.getEndTime().getTime());
+		        if (trip.getStatus().equals(TripStatus.TRIP_IN_PROGRESS)){
+		        	
+		        	endEvent.setType(NoteType.TRIP_INPROGRESS);
+		        }
+		        else {
+		        	
+		        	endEvent.setType(NoteType.TRIP_END);
+		        }
+
+		        endEventItem = new EventItem();
+
+		        if(route.size() > 0)
+		        {
+		            routeLastStep = route.get(route.size()-1);
+		            routeLastStep.setLat(routeLastStep.getLat() + 0.00001);
+		            endEvent.setLatitude(routeLastStep.getLat());
+		            endEvent.setLongitude(routeLastStep.getLng());
+		            
+		            endEventItem.latLng = new LatLng(endEvent.getLatitude(), endEvent.getLongitude());
+		        }
+		        
+		    	endEventItem.eventID = endEvent.getNoteID();
+
+		        eventsMap.put(endEvent.getNoteID(), endEvent);
+
 		    }
 			private List<EventItem> getTripViolations(List<Event> violations){
 				

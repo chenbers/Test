@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -75,6 +76,7 @@ public class DriverPerformanceBean extends BasePerformanceBean {
     private String mpgHistory;
     private String coachingHistory;
     private Boolean hasLastTrip;
+    private Boolean emptyLastTrip;
     private Boolean tripMayExist;
 
     protected Long selectedViolationID;
@@ -88,7 +90,11 @@ public class DriverPerformanceBean extends BasePerformanceBean {
         tripMayExist = true;
     }
 
-    @Override
+    public Boolean getEmptyLastTrip() {
+		return emptyLastTrip;
+	}
+
+	@Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType) {
         return this.getPerformanceDataBean().getTrendCumulative(id, EntityType.ENTITY_DRIVER, duration, scoreType);
     }
@@ -205,14 +211,19 @@ public class DriverPerformanceBean extends BasePerformanceBean {
         if (lastTrip == null && tripMayExist) {
             Trip tempTrip = driverBean.getDriverDAO().getLastTrip(getDriver().getDriverID());
 
-            if (tempTrip != null && tempTrip.getRoute().size() > 0) {
+            if (tempTrip != null){
+            	
                 hasLastTrip = true;
+                emptyLastTrip = tempTrip.getRoute().size() == 0;
+                
                 TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), getAddressLookup());
-                if (trip.getStartAddress() == null) {
-                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), trip.getBeginningPoint()));
-                }
-                if (trip.getEndAddress() == null) {
-                    trip.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), new LatLng(trip.getEndPointLat(), trip.getEndPointLng())));
+                if(tempTrip.getRoute().size() > 0){
+	                if (trip.getStartAddress() == null) {
+	                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), trip.getBeginningPoint()));
+	                }
+	                if (trip.getEndAddress() == null) {
+	                    trip.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), new LatLng(trip.getEndPointLat(), trip.getEndPointLng())));
+	                }
                 }
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());

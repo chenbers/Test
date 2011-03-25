@@ -82,6 +82,11 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private VehicleSeatBeltBean vehicleSeatBeltBean;
     private CrashSummary 		crashSummary;
     private Boolean 			tripMayExist;
+    private Boolean				emptyLastTrip;
+    
+	public Boolean getEmptyLastTrip() {
+		return emptyLastTrip;
+	}
 
 	protected Long selectedViolationID;
 
@@ -207,20 +212,24 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         {
             Trip tempTrip = vehicleDAO.getLastTrip(getVehicle().getVehicleID());
 
-            if (tempTrip != null && tempTrip.getRoute().size() > 0)
+            if (tempTrip != null)
             {
-                hasLastTrip = true;
+            	hasLastTrip = true;
+                emptyLastTrip = tempTrip.getRoute().size() == 0;
+
                 setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
                 TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), getAddressLookup());
-                if ( trip.getStartAddress() == null ) {
-                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
-                            trip.getBeginningPoint()));
+                if(tempTrip.getRoute().size() > 0){
+	                if ( trip.getStartAddress() == null ) {
+	                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
+	                            trip.getBeginningPoint()));
+	                }
+	                if ( trip.getEndAddress() == null ) {
+	                    trip.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
+	                            new LatLng(trip.getEndPointLat(),trip.getEndPointLng())));
+	                }
                 }
-                if ( trip.getEndAddress() == null ) {
-                    trip.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
-                            new LatLng(trip.getEndPointLat(),trip.getEndPointLng())));
-                }                
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }

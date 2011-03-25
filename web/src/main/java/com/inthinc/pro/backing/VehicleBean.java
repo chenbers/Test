@@ -28,10 +28,12 @@ public class VehicleBean extends BaseBean implements IdentifiableEntityBean {
     }
 
     public void setVehicleID(Integer vehicleID) {
-        this.vehicle = vehicleDAO.findByID(vehicleID);
-        if (vehicle == null || getGroupHierarchy().getGroup(vehicle.getGroupID()) == null)
-            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
-        this.vehicleID = vehicleID;
+    	if(this.vehicleID == null || !this.vehicleID.equals(vehicleID)){
+	        this.vehicle = vehicleDAO.findByID(vehicleID);
+	        if (vehicle == null || getGroupHierarchy().getGroup(vehicle.getGroupID()) == null)
+	            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
+	        this.vehicleID = vehicleID;
+    	}
     }
 
     public Vehicle getVehicle() {

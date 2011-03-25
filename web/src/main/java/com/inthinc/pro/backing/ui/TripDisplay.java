@@ -2,6 +2,7 @@ package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -74,6 +75,11 @@ public class TripDisplay implements Comparable<TripDisplay>
             	
             	setEndAddress(MessageUtil.getMessageString(nafe.getMessage()));
             }
+        }
+        else{
+        	setEndAddress(MessageUtil.getMessageString("no_route_data_for_trip"));
+        	routeLastStep = null;
+        	beginningPoint = null;
         }
     }
     public String getStartDateString()
@@ -231,16 +237,21 @@ public class TripDisplay implements Comparable<TripDisplay>
 	public void setInProgress(boolean inProgress) {
 		this.inProgress = inProgress;
 	}
-	public void setEndPointLat(double endPointLat){
+	public void setEndPointLat(Double endPointLat){
 		
 	}
-	public void setEndPointLng(double endPointLng){
+	public void setEndPointLng(Double endPointLng){
 		
 	}
-	public double getEndPointLat() {
+	public Double getEndPointLat() {
+		if(route.size()==0) return null;
 		return route.get(route.size()-1).getLat();
 	}
-	public double getEndPointLng() {
+	public Double getEndPointLng() {
+		if(route.size()==0) return null;
 		return route.get(route.size()-1).getLng();
+	}
+	public boolean isGoodRoute(){
+		return !route.isEmpty();
 	}
 }

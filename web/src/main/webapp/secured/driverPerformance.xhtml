@@ -585,6 +585,9 @@
 							<h:outputText rendered="#{driverPerformanceBean.hasLastTrip eq false}">
 	  							<h3>#{messages.no_last_trip_found}</h3>
 	  						</h:outputText>
+							<h:outputText rendered="#{driverPerformanceBean.emptyLastTrip}">
+	  							<h3>#{messages.no_route_data_for_trip}</h3>
+	  						</h:outputText>
 							<div id="map-canvas" style="width:458px;height:300px;border:0"></div>
 					  	</h:panelGroup>
 					  </div>

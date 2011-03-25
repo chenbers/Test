@@ -30,10 +30,12 @@ public class DriverBean extends BaseBean implements IdentifiableEntityBean {
     }
 
     public void setDriverID(Integer driverID) {
-        driver = driverDAO.findByID(driverID);
-        if (driver == null || getGroupHierarchy().getGroup(driver.getGroupID()) == null)
-            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
-        this.driverID = driverID;
+    	if((this.driverID == null) || !this.driverID.equals(driverID)){
+	        driver = driverDAO.findByID(driverID);
+	        if (driver == null || getGroupHierarchy().getGroup(driver.getGroupID()) == null)
+	            throw new AccessDeniedException(MessageUtil.getMessageString("exception_accessDenied", getLocale()));
+	        this.driverID = driverID;
+    	}
     }
 
     public Driver getDriver() {

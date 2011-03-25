@@ -25,13 +25,14 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.LastLocation;
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventSubCategory;
 import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.NoteType;
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 
@@ -74,7 +75,7 @@ public class TripsBean extends BaseBean {
     private GroupTreeNodeImpl groupTreeNodeImpl;
     private Map<Integer, Driver> tripsDrivers = new HashMap<Integer, Driver>();
     private String dateStatus = MessageUtil.getMessageString("trip_valid_date_range",getLocale());
-
+    private LatLng lastLocation;
     
 
     
@@ -96,19 +97,21 @@ public class TripsBean extends BaseBean {
             }
             
             for (Trip trip : tempTrips) {
+            	            	
                 TripDisplay td = new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), getAddressLookup());
-                // If starting or ending address is null, try to set a zone name
-                if ( td.getStartAddress() == null ) {
-                    LatLng latLng = new LatLng(td.getRoute().get(0).getLat(),td.getRoute().get(0).getLng());
-                    td.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
-                }                
-                if ( td.getEndAddress() == null ) {
-                    LatLng latLng = new LatLng(td.getEndPointLat(),td.getEndPointLng());
-                    td.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
+                
+                if (td.getRoute().size() > 0){
+	                // If starting or ending address is null, try to set a zone name
+	                if ( td.getStartAddress() == null ) {
+	                    LatLng latLng = new LatLng(td.getRoute().get(0).getLat(),td.getRoute().get(0).getLng());
+	                    td.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
+	                }                
+	                if ( td.getEndAddress() == null ) {
+	                    LatLng latLng = new LatLng(td.getEndPointLat(),td.getEndPointLng());
+	                    td.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
+	                }
                 }
                 trips.add(td);
-                
-
             }
             Collections.sort(trips);
             Collections.reverse(trips);
@@ -123,15 +126,18 @@ public class TripsBean extends BaseBean {
                 totalDriveSeconds = 0;
                 idleSeconds = 0;
             }
-            tripsMap = new LinkedHashMap<Long,TripDisplay>();
-            
-            for(TripDisplay trip : trips){
-           	
-              tripsMap.put(trip.getTrip().getTripID(), trip);
-           }
+            makeTripMap(trips);
         }
     }
-
+    private void makeTripMap(List<TripDisplay> trips){
+        tripsMap = new LinkedHashMap<Long,TripDisplay>();
+        
+        for(TripDisplay trip : trips){
+       	
+          tripsMap.put(trip.getTrip().getTripID(), trip);
+       }
+    	
+    }
     private TimeZone getTimeZoneFromDriver(Integer driverID) {
         // Return TimeZone if this driver is known.
         if (tripsDrivers.containsKey(driverID))
@@ -174,9 +180,11 @@ public class TripsBean extends BaseBean {
                 tamperEvents = eventDAO.getEventsForVehicle(identifiableEntityBean.getId(), start, end, tamperEventTypeList, getShowExcludedEvents());
             }
             // Lookup Addresses for events
-            populateAddresses(violationEvents);
-            populateAddresses(idleEvents);
-            populateAddresses(tamperEvents);
+            if(selectedTrip.getBeginningPoint()!= null){
+	            populateAddresses(violationEvents);
+	            populateAddresses(idleEvents);
+	            populateAddresses(tamperEvents);
+            }
             
             // Get the correct timestamp for display (vehicle page only)
             populateFormattedDate(violationEvents);
@@ -199,12 +207,16 @@ public class TripsBean extends BaseBean {
 
     private void populateAddresses(List<Event> eventList) {
         LatLng lastValidLatLng = selectedTrip.getBeginningPoint();
+        if ((lastValidLatLng == null) && !eventList.isEmpty()){
+        	lastValidLatLng = eventList.get(0).getLatLng();
+        }
         for (Event event : eventList) {
+        	
             if ((event.getLatitude() < 0.005 && event.getLatitude() > -0.005) || (event.getLongitude() < 0.005 && event.getLongitude() > -0.005)) {
                 event.setLatitude(lastValidLatLng.getLat() + 0.00001);
                 event.setLongitude(lastValidLatLng.getLng());
             }
-            event.setAddressStr(getAddress(event.getLatLng()));
+              event.setAddressStr(getAddress(event.getLatLng()));
             // TODO: Refactor. Will set to a zone name if null back from retrieval, or could not find
             if ( event.getAddressStr() == null ) {
                 event.setAddressStr(MiscUtil.findZoneName(this.getProUser().getZones(), event.getLatLng()));
@@ -675,6 +687,33 @@ public class TripsBean extends BaseBean {
 	public void setSelectedViolationID(Long selectedViolationID) {
 		this.selectedViolationID = selectedViolationID;
 	}
-
-
+	public Double getAnchorLat(){
+		if(lastLocation==null) setLastLocation();
+		return lastLocation.getLat();
+	}
+	public Double getAnchorLng(){
+		if(lastLocation==null) setLastLocation();
+		return lastLocation.getLng();
+	}
+	private void setLastLocation(){
+		for(TripDisplay trip : selectedTrips){
+			if(trip.getRouteLastStep()!=null){
+				lastLocation= trip.getRouteLastStep();
+				break;
+			}
+		}
+		if(lastLocation==null){
+			lastLocation = getEntityLastLocation();
+		}
+	}
+	private LatLng  getEntityLastLocation(){
+		if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
+	        LastLocation ll = driverDAO.getLastLocation(identifiableEntityBean.getId());
+	        return ll.getLoc();
+	    }
+		else{
+	    	LastLocation ll = vehicleDAO.getLastLocation(identifiableEntityBean.getId());
+	        return ll.getLoc();
+	    }
+	}
 }
