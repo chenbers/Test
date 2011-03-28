@@ -141,13 +141,6 @@ public abstract class WaysmartForwardCommand {
         this.address = address;
     }
 
-    public FwdCmdSpoolWSIridiumJDBCDAO getFcsIridiumDAO() {
-        return fcsIridiumDAO;
-    }
-
-    public void setFcsIridiumDAO(FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
-        this.fcsIridiumDAO = fcsIridiumDAO;
-    }
 
     public Integer getDeviceID() {
         return deviceID;
