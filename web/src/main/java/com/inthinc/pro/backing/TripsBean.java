@@ -125,6 +125,12 @@ public class TripsBean extends BaseBean {
                 milesDriven = 0;
                 totalDriveSeconds = 0;
                 idleSeconds = 0;
+                setSelectedTrip(null);
+                selectedTrips.clear();
+                tamperEvents.clear();
+                violationEvents.clear();
+                idleEvents.clear();
+                allEvents.clear();
             }
             makeTripMap(trips);
         }

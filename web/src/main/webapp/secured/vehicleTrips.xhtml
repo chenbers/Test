@@ -9,6 +9,7 @@
 				<a4j:loadScript src="#{googleMapURLBean.mapUrl}&amp;hl=#{localeBean.locale.language}" />
 
 				<ui:include src="/includes/WMSMapLayers.xhtml" />
+ 		<rich:panel id="mapScript">	
 				<script type="text/javascript">
 		var map;
 		var showWarnings = new Boolean(true);
@@ -138,7 +139,6 @@
 		} 		 		
 		</script>
 
-				<rich:panel id="script">
 						<script type="text/javascript">
 		
 	    //Unload Google Map objects
@@ -150,10 +150,10 @@
 		// This is called on pageLoad and A4J re-renders
 		function bodyLoad()
 		{
+			initMap(#{vehicleTripsBean.anchorLat}, #{vehicleTripsBean.anchorLng}, 14);
 			if ( #{vehicleTripsBean.selectedTrips[0] ne null} ) {				
-				initMap(#{vehicleTripsBean.anchorLat}, #{vehicleTripsBean.anchorLng}, 14);
+		   		showTrips();
 			}
-	   		showTrips();
 		}
 		
    		function drawSelectedTrips()
@@ -441,7 +441,7 @@
 																		</tr>
 																		<tr>
 																				<td colspan="2" align="center"><a4j:commandButton id="vehicleTripsDate" action="#{vehicleTripsBean.DateChangedAction}"
-																						reRender="dateError,script,statsPanel,tripsPanel,tripBubbles,selectedEvents,selectedTripMap,calendarStart,calendarEnd" immediate="false" styleClass="left" oncomplete="bodyLoad();">
+																						reRender="dateError,mapScript,statsPanel,tripsPanel,tripBubbles,selectedEvents,selectedTripMap,calendarStart,calendarEnd" immediate="false" styleClass="left" oncomplete="bodyLoad();">
 																						<span class="edit"> <h:outputText value="#{messages.vehciletrip_updateDateRange}" /> </span>
 																				</a4j:commandButton></td>
 																		</tr>
@@ -699,7 +699,7 @@
 														<!-- Start Trip table -->
 														<rich:dataTable value="#{vehicleTripsBean.trips}" id="tripsTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" rows="4" width="100%">
 
-																<a4j:support event="onRowClick" reRender="script,tripBubbles,selectedEvents,showLastTenForm,selectDriverForm" oncomplete="bodyLoad();getAddresses();">
+																<a4j:support event="onRowClick" reRender="mapScript,tripBubbles,selectedEvents,showLastTenForm,selectDriverForm" oncomplete="bodyLoad();getAddresses();">
 																		<f:setPropertyActionListener value="#{item}" target="#{vehicleTripsBean.selectedTrip}" />
 																</a4j:support>
 
@@ -792,11 +792,11 @@
 								</h:form></div>
 								</div>
 								<div class="panel_w"><rich:panel bodyClass="panel_content" id="selectedTripMap">
-										<h:outputText rendered="#{vehicleTripsBean.numTrips gt 0}">
+<!--										<h:outputText rendered="#{vehicleTripsBean.numTrips gt 0}">-->
 												<h:panelGroup styleClass="map-border" layout="block">
 														<div id="map-canvas" style="width: 588px; height: 400px; border: 0"></div>
 												</h:panelGroup>
-										</h:outputText>
+<!--										</h:outputText>-->
 
 										<h:outputText rendered="#{vehicleTripsBean.numTrips lt 1}">
 												<h2>#{messages.no_trips_found}</h2>
