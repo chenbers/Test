@@ -70,7 +70,8 @@ public enum SettingType implements BaseEnum
     WIRELINE_MODULE(40, 1172, 0, 0, "wireline_module"),
     WIRELINE_DOOR_ALARM_PASSCODE(41, 1149, 0, 0, "wireline_door_alarm_passwd"),
     WIRELINE_KILL_MOTOR_PASSCODE(42, 1150, 0, 0, "wireline_kill_motor_passwd"),
-    WIRELINE_AUTO_ARM_TIME(43, 1151, 0, 0, "wireline_auto_armtime");
+    WIRELINE_AUTO_ARM_TIME(43, 1151, 0, 0, "wireline_auto_armtime"),
+    PARENT_MODE(44, 59, 0, 0, "parent_mode");
     
     private Integer       settingsCount; //This is how many possible values there are for this device setting
     private Integer       settingID; //SettingID in settingDefs table
