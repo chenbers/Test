@@ -25,7 +25,7 @@ public class NotificationTest extends InthincTest {
 		
 		set_test_case("TC4631");		
 	
-		l.portal_log_in_process("0001", "password");
+		l.page_login("0001", "password");
 
 		N.menuItem("redflags");
 		N.ckRedflagScr();

@@ -8,6 +8,8 @@ import com.inthinc.pro.web.selenium.SeleniumEnums;
 
 public enum LoginEnum implements SeleniumEnums {
 	
+    URL("/logout", "/login", null, null), //TODO: jwimmer: question for DTanner: I like the ideaof having ALL the page constants for each page in an enum.  how do you feel about keeping url/path info here?
+    
 	/* Main Login Page Elements*/
 	
 	USERNAME_LABEL("User Name:", null, "//form[@id='loginForm']/table/tbody/tr[1]/td[1]", null),
@@ -16,10 +18,12 @@ public enum LoginEnum implements SeleniumEnums {
 	PASSWORD_LABEL("Password:", null, "//form[@id='loginForm']/table/tbody/tr[2]/td[1]", null),
 	LOGIN_BUTTON("Login", "loginLogin", "form[@id='loginForm']/table/tbody/tr[3]/td/button", "//button[@type='submit']"),
 	LOGIN_TEXT("Log In", null, "//form[@id='loginForm']/table/tbody/tr[3]/td/button/span", "//span[@class='login']"),
-	FORGOT_USERNAME_LINK( "Forgot your user name or password?", "link=Forgot your user name or password", "//div/form/a", null),
+	FORGOT_USERNAME_LINK( "Forgot your user name or password?", "link=Forgot your user name or password?", "//div/form/a", null),
 	
 	/* Forgot Username/Password pop-up */
-	FORGOT_ERROR("Incorrect format (jdoe@tiwipro.com)",null,"//form[@id='changePasswordForm']/div[1]/div/span/span", null),
+	FORGOT_ERROR_EMAIL_FORMAT("Incorrect format (jdoe@tiwipro.com)",null,"//form[@id='changePasswordForm']/div[1]/div/span/span", "//span[@class='rich-message field-error field-msg']"),
+	FORGOT_ERROR_EMAIL_REQUIRED("Required",null,"//form[@id='changePasswordForm']/div[1]/div/span/span", null),
+	FORGOT_ERROR_EMAIL_UNKNOWN("Incorrect e-mail address",null,"//form[@id='changePasswordForm']/div[1]/div/span/span", null),
 	FORGOT_TITLE("Forgot User Name or Password?", null, "//div[@id='forgotPasswordPanelHeader']", null),
 	FORGOT_TEXT("Forgot your user name or password?", null, "//a[@title='Forgot your user name or password?']", null),
 	FORGOT_EMAIL_FIELD(null, "changePasswordForm:email", "//form[@id='changePasswordForm']/div[1]/input", "//input[@id='changePasswordForm:email']"),
@@ -33,20 +37,20 @@ public enum LoginEnum implements SeleniumEnums {
 	
 	
 	/* Error pop-up for the Forgot Username/Password pop-up */
-	ERROR_BUTTON(null,"loginErrorForm:loginOk", "//form[@id='loginErrorForm']/div/button", "//form[@id='loginErrorForm']/div/button/span"),
+	ERROR_BUTTON("OK","loginErrorForm:loginOk", "//form[@id='loginErrorForm']/div/button", "//form[@id='loginErrorForm']/div/button/span"),
 	ERROR_CLOSE(null,"Richfaces.hideModalPanel('errorPanel')","//div[@id='errorPanelContentDiv']/div","//div[@id='errorPanelContentDiv']/div/img"),
-	ERROR_HEADER(null, "errorPanelHeader", "//table[@id='errorPanelContentTable']/tbody/tr[1]/td/div",null),
+	ERROR_HEADER("Log In Error", "errorPanelHeader", "//table[@id='errorPanelContentTable']/tbody/tr[1]/td/div",null),
 	ERROR_MESSAGE(StringEscapeUtils.unescapeHtml("Incorrect user name or password<br/><br/>Please try again."), "//p",null,null),
 	
 	
 	/* Success with forgot Username/Password */
-	BULLET_1("Be patient, it may take a few minutes for the message to arrive in your Inbox.", null, "//table[@id='fd-table-1']/tbody/tr/td/div/ul/li[1]", null),
-	BULLET_2("Check your Junk folder.",null,"//table[@id='fd-table-1']/tbody/tr/td/div/ul/li[2]", null ),
-	BULLET_3("If problems still exist, perform the process again.",null,"//table[@id='fd-table-1']/tbody/tr/td/div/ul/li[3]", null ),
-	HEADER("Didn't get the message?",null,"//table[@id='fd-table-1']/tbody/tr/td/div/h2",null),
+	MESSAGE_SENT_BULLET_1("Be patient, it may take a few minutes for the message to arrive in your Inbox.", null, "//table[@id='fd-table-1']/tbody/tr/td/div/ul/li[1]", null),
+	MESSAGE_SENT_BULLET_2("Check your Junk folder.",null,"//table[@id='fd-table-1']/tbody/tr/td/div/ul/li[2]", null ),
+	MESSAGE_SENT_BULLET_3("If problems still exist, perform the process again.",null,"//table[@id='fd-table-1']/tbody/tr/td/div/ul/li[3]", null ),
+	MESSAGE_SENT_HEADER("Didn't get the message?",null,"//table[@id='fd-table-1']/tbody/tr/td/div/h2",null),
 	MESSAGE_SENT_TITLE("Message Sent Successfully", null, "//li[@class='l grid_title']", null),
 	
-	FIRST_PARAGRAPH("A message containing infromation about your user name and password has been sent to the e-mail address provided.", 
+	MESSAGE_SENT_FIRST_PARAGRAPH("A message containing infromation about your user name and password has been sent to the e-mail address provided.", 
 			null, "//table[@id='fd-table-1']/tbody/tr/td/div/div", null),
 	
 	/* Update Credentials Page */
@@ -100,5 +104,9 @@ public enum LoginEnum implements SeleniumEnums {
 
 	public String getXpath_alt() {
 		return xpath_alt;
+	}
+	
+	public String getError() {
+	    return this.name();
 	}
 }

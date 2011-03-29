@@ -1,3 +1,10 @@
+package com.inthinc.pro.web.selenium.Debug;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.HashMap;
+
 /****************************************************************************************
  * Purpose: To catch the errors raised by Selenium, and format them into a nice HashMap
  * <p>
@@ -7,92 +14,47 @@
  * @author dtanner
  * @see HashMap
  */
-
-package com.inthinc.pro.web.selenium.Debug;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.HashMap;
-
-import com.thoughtworks.selenium.SeleniumException;
-
-
 public class ErrorCatcher {
-	
 	
 	private static HashMap<String, HashMap<String, String>> errors = new HashMap<String, HashMap<String, String>>();
 	private static HashMap<String, String> errorList;
 	
-	/**
-	 * Take an Assertion Error and add it to the error list
-	 * 
-	 * @param errorName 
-	 * @param AssertionError
-	 */
-	public void Error(String name, AssertionError error){
-		
-		if (!errors.containsKey(name)){
-			add_error(name);
-		}
-		
-		errors.get(name).put("AssertionError", getStackTrace(error));
-	}
-	
-	/**
-	 * Take a Selenium Exception and add it to the error list
-	 * 
-	 * @param errorName
-	 * @param SeleniumException
-	 */
-	public void Error(String name, SeleniumException error){
-		
-		if (!errors.containsKey(name)){
-			add_error(name);
-		}
-		
-		errors.get(name).put("SeleniumException", getStackTrace(error));
-	}
-	
-	
-	/**
-	 * Take a general Exception and add it to the error list
-	 * 
-	 * @param errorName
-	 * @param Exception
-	 */
-	public void Error(String name, Exception error){
-		
-		if (!errors.containsKey(name)){
-			add_error(name);
-		}
-		
-		errors.get(name).put("Exception", getStackTrace(error));
-	}
-	
-	
-	/**
-	 * Take the Actual and add it to our string
-	 * 
-	 * @param name
-	 * @param String error
-	 */
-	public void Error(String name, String error){
-		
-		if (!errors.containsKey(name)){
-			add_error(name);
-		}
-		
-		errors.get(name).put("Actual", error);
-	}
-	
+    /**
+     * Helper method for other error(name, error) methods. 
+     * 
+     * @param name 
+     * @param type of error
+     * @param error text
+     */
+    private void addError(String name, String type, String error ) {
+        if (!errors.containsKey(name)){
+              add_error(name);
+          }
+          
+          errors.get(name).put(type, error);   
+    }
+    /**
+     * Adds the error to the error list
+     * @param name
+     * @param error
+     */
+    public void addError(String name, Object error) {
+        String errorStr = null;
+        String type = error.getClass().getSimpleName();
+        if(error instanceof String) {
+            errorStr = (String)error;
+            type = "Actual";
+        } else if(error instanceof Throwable)
+            errorStr = getStackTrace((Throwable)error);
+        addError(name, type, errorStr );
+    }
 	/**
 	 * Take the expected string for comparison against the actual
 	 * 
 	 * @param errorName
 	 * @param expected
 	 */
-	public void Expected( String name, String expected){
+	public void addExpected( String name, String expected){
 
 		if (!errors.containsKey(name)){
 			add_error(name);

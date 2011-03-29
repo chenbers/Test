@@ -1,3 +1,18 @@
+package com.inthinc.pro.web.selenium;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.Method;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverBackedSelenium;
+
+import com.google.common.base.Supplier;
+import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
+import com.thoughtworks.selenium.DefaultSelenium;
+import com.thoughtworks.selenium.SeleniumException;
+
 /****************************************************************************************
  * Extend the functionality of DefaultSelenium, but add some error handling around it
  * 
@@ -11,38 +26,18 @@
  * @author dtanner
  *
  */
-
-
-package com.inthinc.pro.web.selenium;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverBackedSelenium;
-
-import com.google.common.base.Supplier;
-import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
-//import com.thoughtworks.selenium.CommandProcessor;
-//import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.SeleniumException;
-
-
 public class CoreMethodLib extends WebDriverBackedSelenium{
+    public static Integer PAGE_TIMEOUT = 3000;
 
 public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		super(baseDriver, baseUrl);
 	}
 
-
 	public CoreMethodLib(Supplier<WebDriver> maker, String baseUrl) {
 		super(maker, baseUrl);
 	}
 
-
 	private static ErrorCatcher errors = new ErrorCatcher();
-	
-
 	
 	private String getLocator(SeleniumEnums checkIt) {
 		if (checkIt.getID()!=null)return checkIt.getID();
@@ -51,43 +46,49 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		return null;
 	}
 
-	
 	public void open(String locator,String error_name){
 		try{
 			open(locator);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 
-	
+    private void process(Method method, String locator, String error_name) {
+        try {
+            method.invoke(this, locator, error_name);
+        } catch (Exception e) {
+            if(e instanceof RuntimeException)
+                throw new RuntimeException(e);
+            errors.addError(error_name, e);
+        }
+    }
 	public void click(String locator, String error_name) {
 		try{
 			click(locator);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
-	
 	
 	public int isChecked(String element,String condition, String error_name){
 		try{
 			assertTrue( isChecked(element));
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 			return 0;
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 			return 0;
 		}
 		//returns 1 if checked 0 if not checked
@@ -98,12 +99,12 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 			try{
 				assertFalse( isChecked(element));
 			}catch(SeleniumException e){
-				errors.Error(error_name, e);
+				errors.addError(error_name, e);
 				return "no";
 			}catch(RuntimeException e) {
 				throw new RuntimeException(e);
 			}catch(Exception e){
-				errors.Error(error_name, e);
+				errors.addError(error_name, e);
 				return "no";
 			}
 			//returns 1 is not checked 0 if checked
@@ -114,13 +115,13 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			assertTrue( isElementPresent(element));
 		}catch(AssertionError e){
-			errors.Error(error_name, "Failed");
+			errors.addError(error_name, "Failed");
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -128,17 +129,21 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			assertFalse( isElementPresent(element));
 		}catch(AssertionError e){
-			errors.Error(error_name, "Failed");
+			errors.addError(error_name, "Failed");
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
-	public String getLocation(String expected, String error_name){
+   public void getLocation(SeleniumEnums checkIt) {
+        getLocation(getLocator(checkIt), "getLocation: "+checkIt.toString());     
+    }
+   
+	public String getLocation(String expected, String error_name){//TODO: jwimmer: question for DTanner: what does "getLocation(...)" do?  should it be changed/renamed to validate location???
 		Integer truefalse = -1;
 		String location = "Could not get location";
 		try{
@@ -146,32 +151,32 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 			truefalse = location.indexOf(expected);
 			AssertNotEqual(truefalse, -1, error_name);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 		return location;
 	}
 	
-	public String getText(String locator, String expected, String error_name){
+	public String getText(String locator, String expected, String error_name){//TODO: jwimmer: quesiton for DTanner: same as getLocation? should this be verify or getandverify ???
 		String text = "";
 		try{
 			text = getText(locator);
 			assertTrue(text.compareTo(expected)==0);
 		}catch(AssertionError e){
-			errors.Error(error_name, getText(locator));
-			errors.Expected(error_name, expected);
+			errors.addError(error_name, getText(locator));
+			errors.addExpected(error_name, expected);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}finally{			
 			if (text==""){
-				text = "Failed";
+				text = "Failed";//TODO: question for DavidTanner: what if the text really is FAILED
 			}
 		}
 		return text;
@@ -182,11 +187,11 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			text = getText(locator);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}finally{			
 			if (text==""){
 				text = "Failed";
@@ -201,13 +206,13 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			getTable(locator + "." + row + "." + col);
 		}catch(AssertionError e){
-			errors.Error(error_name, getTable(locator));
+			errors.addError(error_name, getTable(locator));
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}finally{
 			if (text==""){
 				text = "Failed";
@@ -222,14 +227,14 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			assertFalse( getTable(locator)==expected);
 		}catch(AssertionError e){
-			errors.Error(error_name, getTable(locator));
-			errors.Expected(error_name, expected);
+			errors.addError(error_name, getTable(locator));
+			errors.addExpected(error_name, expected);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}finally{
 			if (text==""){
 				text = "Failed";
@@ -242,11 +247,11 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			type(locator, text);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -255,13 +260,13 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			assertTrue(isTextPresent(text));
 		}catch(AssertionError e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -270,13 +275,13 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			assertFalse(isTextPresent(text));
 		}catch(AssertionError e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -284,13 +289,13 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			assertTrue( isVisible(element));
 		}catch(AssertionError e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -298,13 +303,13 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			assertFalse( isVisible(element) );
 		}catch(AssertionError e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -312,11 +317,11 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try{
 			waitForPageToLoad(timeout);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -329,12 +334,12 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try {
 			assertTrue(actual.compareTo(expected)==0);
 		}catch(AssertionError e){
-			errors.Error(error_name, actual);
-			errors.Expected(error_name, expected);
+			errors.addError(error_name, actual);
+			errors.addExpected(error_name, expected);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -342,12 +347,12 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try {
 			assertTrue(actual==expected);
 		}catch(AssertionError e){
-			errors.Error(error_name, actual.toString());
-			errors.Expected(error_name, expected.toString());
+			errors.addError(error_name, actual.toString());
+			errors.addExpected(error_name, expected.toString());
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -355,12 +360,12 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try {
 			assertFalse(actual.compareTo(not_expected)==0);
 		}catch(AssertionError e){
-			errors.Error(error_name, actual);
-			errors.Expected(error_name, "not"+not_expected);
+			errors.addError(error_name, actual);
+			errors.addExpected(error_name, "not"+not_expected);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -368,11 +373,11 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		try {
 			assertFalse(actual==not_expected);
 		}catch(AssertionError e){
-			errors.Error(error_name, "False");
+			errors.addError(error_name, "False");
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -392,11 +397,11 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 			select(locator, label);
 			Pause(5);
 		}catch(SeleniumException e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}catch(RuntimeException e) {
 			throw new RuntimeException(e);
 		}catch(Exception e){
-			errors.Error(error_name, e);
+			errors.addError(error_name, e);
 		}
 	}
 	
@@ -430,25 +435,37 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 	public void wait_for_element_present(String watch_for){
 		wait_for_element_present(watch_for, "link");
 	}
-	public void wait_for_element_present(String watch_for, String type){
-		Integer x = 0;
-		while (true){
-			x++;
-			try{
-				if (type.compareToIgnoreCase("link")==0){
-					if ( isElementPresent("link="+watch_for)) break;
-				}else if(type.compareToIgnoreCase("text")==0){
-					if ( isTextPresent(watch_for))break;
-				}else if (type.compareToIgnoreCase("element")==0){
-					if ( isElementPresent(watch_for))break;
-				}
-			}catch(Exception e){
-				continue;
-			}
-			Pause(2);
-			if (x==60)break;
-		}
+
+	public void wait_for_element_present(String watch_for, String type) {
+	    wait_for_element_present(watch_for, type, 180);
 	}
+	
+    public void wait_for_element_present(String watch_for, String type, Integer secondsToWait) {
+        Integer x = 0;
+        boolean found = false;
+        boolean doneWaiting = false;
+        while (!found || !doneWaiting) {
+            try {
+                if (type.compareToIgnoreCase("link") == 0) {
+                    found = isElementPresent("link=" + watch_for);
+                } else if (type.compareToIgnoreCase("text") == 0) {
+                    found = isTextPresent(watch_for);
+                } else if (type.compareToIgnoreCase("element") == 0) {
+                    found = isElementPresent(watch_for); 
+                } else {
+                    doneWaiting = true; //no need to wait if the type is not recognized
+                }
+            } catch (Exception e) {
+                e.printStackTrace(); //TODO: jwimmer: logging for debugging/learning purposes... should remove before in use 
+                continue;
+            } finally {
+                Pause(1); //second
+                x++;
+                doneWaiting = x > secondsToWait;
+            }
+        }
+
+    }
 	
 	@Override
 	public void start(){
@@ -456,65 +473,56 @@ public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
 		super.start();
 	}
 	
-	public Boolean inSession(){
-		try{
-			getAllWindowNames();
-		}catch(NullPointerException e){
-			return false;
-		}
-		return true;
-	}
+    public Boolean inSession() {
+        try {
+            getAllWindowNames();
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
 
-	public void click(SeleniumEnums checkIt, String errorName) {
-		click(getLocator(checkIt),errorName);		
-	}
-	
-	
-	public void isNotVisible(SeleniumEnums checkIt, String errorName) {
-		isNotVisible(getLocator(checkIt),errorName);		
-	}
-
-
-	public void isVisible(SeleniumEnums checkIt, String errorName) {
-		isVisible(getLocator(checkIt),errorName);
-	}
-
-
-	public String getText(SeleniumEnums checkIt, String expected,
-			String errorName) {
-		return getText(checkIt.getText(), expected, errorName);
-	}
-
-
-	public void type(SeleniumEnums checkIt, String expected,
-			String errorName) {
-		type(getLocator(checkIt), expected, errorName);
-	}
-
-
-	public void isElementPresent(SeleniumEnums checkIt,	String errorName) {
-		isElementPresent(getLocator(checkIt), errorName);		
+	public void click(SeleniumEnums checkIt) {
+		click(getLocator(checkIt), "click: "+checkIt.toString());		
 	}
 	
-	public void isElementNotPresent(SeleniumEnums checkIt,	String errorName) {
-		isElementNotPresent(getLocator(checkIt), errorName);		
+	public void waitForPageToLoad(SeleniumEnums pageURL) {
+	    waitForPageToLoad(pageURL, PAGE_TIMEOUT);
 	}
-
-
-	public String getText(SeleniumEnums checkIt, String errorName) {
-		return getText(getLocator(checkIt), checkIt.getText(), errorName);
+	public void waitForPageToLoad(SeleniumEnums pageURL, Integer wait ) {
+	    waitForPageToLoad(wait.toString(), "waitForPageToLoad: "+pageURL.toString());
+	}
+	
+	public void isNotVisible(SeleniumEnums checkIt) {
+		isNotVisible(getLocator(checkIt),"isNotVisible: "+checkIt.toString());		
 	}
 
 
 	public void isVisible(SeleniumEnums checkIt) {
-		getText(getLocator(checkIt));
+		isVisible(getLocator(checkIt),"isVisible: "+checkIt.toString());
 	}
 
 
-	public void type(SeleniumEnums checkIt, String password) {
-		type(getLocator(checkIt), password);
+	public String getText(SeleniumEnums checkIt, String expected) {
+		return getText(checkIt.getText(), expected, "getText: "+checkIt.toString());
+	}
+
+
+	public void type(SeleniumEnums checkIt, String expected) {
+		type(getLocator(checkIt), expected, "type: "+checkIt.toString());
+	}
+
+
+	public void isElementPresent(SeleniumEnums checkIt) {
+		isElementPresent(getLocator(checkIt), "isElementPresent: "+checkIt.toString());		
 	}
 	
-	
+	public void isElementNotPresent(SeleniumEnums checkIt) {
+		isElementNotPresent(getLocator(checkIt), "isElementNotPresent: "+checkIt.toString());		
+	}
 
+
+	public String getText(SeleniumEnums checkIt) {
+		return getText(getLocator(checkIt), checkIt.getText(), "getText: "+checkIt.toString());
+	}
 }

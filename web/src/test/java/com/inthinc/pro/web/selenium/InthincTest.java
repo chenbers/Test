@@ -1,26 +1,28 @@
-/****************************************************************************************
- * Purpose: To standardize the setup and teardown for System Test Automation tests
- * <p>
- * Update:  11/18/Added comments and made changes to adhere to Java Coding Standards<br />
- * Update:  11/19/Changed name to InthincTest and removed previous functionality that<br />
- * 				is no longer being used.  Also fixed start_selenium() so if we can't<br />
- * 				start the selenium instance we will fail the test, move to <br />
- * 				stop_selenium(), and skip the Rally stuff.<br />
- * 
- * @author larringt , dtanner
- */
-
 package com.inthinc.pro.web.selenium;
 
 import java.util.HashMap;
 
 import org.apache.commons.httpclient.NameValuePair;
-import org.junit.*;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.runner.notification.StoppedByUserException;
 
 import com.inthinc.pro.rally.RallyWebServices;
 import com.inthinc.pro.rally.TestCaseResult;
 
+/****************************************************************************************
+ * Purpose: To standardize the setup and teardown for System Test Automation tests
+ * <p>
+ * Update:  11/18/Added comments and made changes to adhere to Java Coding Standards<br />
+ * Update:  11/19/Changed name to InthincTest and removed previous functionality that<br />
+ *              is no longer being used.  Also fixed start_selenium() so if we can't<br />
+ *              start the selenium instance we will fail the test, move to <br />
+ *              stop_selenium(), and skip the Rally stuff.<br />
+ * 
+ * @author larringt , dtanner
+ */
 public abstract class InthincTest {
 
 	private Long startTime;

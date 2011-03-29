@@ -13,9 +13,9 @@ import com.inthinc.pro.web.selenium.SeleniumServerLib;
 import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
 
-public class Masthead extends SeleniumServerLib{	
-	
-	
+public class Masthead 
+//extends SeleniumServerLib
+{	
 	
 	private String version_text;
 	private String copyright_text_actual;
@@ -27,86 +27,90 @@ public class Masthead extends SeleniumServerLib{
 	}
 	
 	public String get_version(){
-		version_text = selenium.getText(MastheadEnum.VERSION, "Version return");
+		version_text = selenium.getText(MastheadEnum.VERSION);
 		return version_text;	
 	}
 	
 	public String get_copyright(){
-		copyright_text_actual = selenium.getText(MastheadEnum.COPYRIGHT, "Copyright text");
+		copyright_text_actual = selenium.getText(MastheadEnum.COPYRIGHT);
 		return copyright_text_actual;
 	}
 
 	public void click_my_account(){
-		selenium.click(MastheadEnum.MY_ACCOUNT, "My Account click");
-		selenium.waitForPageToLoad("30000", "My Account click");
-		selenium.getLocation("tiwipro/app/account","My Account click");		
+		selenium.click(MastheadEnum.MY_ACCOUNT);
+		selenium.waitForPageToLoad(MastheadEnum.MY_ACCOUNT);
+		selenium.getLocation(MastheadEnum.URL);		
 	}
 	
 	public void click_my_messages(){
-		selenium.click(MastheadEnum.MY_MESSAGES, "My Messages click");
-		selenium.waitForPageToLoad("30000", "My Messages click");
-		selenium.getLocation("tiwipro/app/messages/", "My Messages click");
+		selenium.click(MastheadEnum.MY_MESSAGES);
+		selenium.waitForPageToLoad(MastheadEnum.MY_MESSAGES);
+		selenium.getLocation("tiwipro/app/messages/", "My Messages click");//TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code
 	}
 	
 	public void click_logout(){
-		selenium.click(MastheadEnum.LOGOUT, "Logout click");
-		selenium.waitForPageToLoad("30000", "Logout click");
-		selenium.getLocation("tiwipro/login", "Logout click");
+		selenium.click(MastheadEnum.LOGOUT);
+		selenium.waitForPageToLoad(MastheadEnum.LOGOUT);
+		selenium.getLocation("tiwipro/login", "Logout click");//TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code
 	}
 	
 	public void click_support(){
-		selenium.click(MastheadEnum.SUPPORT, "Support click");
+		selenium.click(MastheadEnum.SUPPORT);
 		selenium.selectWindow(null);
 	}
 	
 	public void click_legal(){
-		selenium.click(MastheadEnum.LEGAL, "Legal Notice click");
-		selenium.waitForPopUp("popup", "30000");
+		selenium.click(MastheadEnum.LEGAL);
+		selenium.waitForPopUp("popup", CoreMethodLib.PAGE_TIMEOUT.toString());
 		selenium.selectPopUp("");
-		selenium.getText(MastheadEnum.LEGAL_NOTICE, "Legal Notice click");
+		selenium.getText(MastheadEnum.LEGAL_NOTICE);
 		selenium.close();
 		selenium.selectWindow(null);
 	}
 	
 	public void click_privacy(){
-		selenium.click(MastheadEnum.PRIVACY, "Privacy Policy click");
-		selenium.waitForPopUp("popup", "30000");
+		selenium.click(MastheadEnum.PRIVACY);
+		selenium.waitForPopUp("popup", CoreMethodLib.PAGE_TIMEOUT.toString());
 		selenium.selectPopUp("");
-		selenium.getText(MastheadEnum.PRIVACY_POLICY, "Privacy Policy text");
+		selenium.getText(MastheadEnum.PRIVACY_POLICY);
 		selenium.close();
 		selenium.selectWindow(null);
 	}
 	
 	public void click_help(String help_page){
-		if (help_page.indexOf(".htm")== -1){help_page += ".htm";}
-		selenium.click(MastheadEnum.HELP, "Help click");
-		selenium.waitForPageToLoad("30000", "Help click");
+		if (help_page.indexOf(".htm")== -1){help_page += ".htm";}//TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code... I'm not sure this line is doing anything (affective) anyway?
+		selenium.click(MastheadEnum.HELP);
+		selenium.waitForPageToLoad(MastheadEnum.HELP);
 	}
 
 	public void ck_header(){
-		selenium.isElementPresent(MastheadEnum.LOGO, "Logo element present");
-		selenium.isElementPresent(MastheadEnum.HELP, "Help link present");
-		selenium.isElementPresent(MastheadEnum.MY_MESSAGES, "My Messages element present");
-		selenium.isElementPresent(MastheadEnum.MY_ACCOUNT, "My Account element present");
-		selenium.isElementPresent(MastheadEnum.LOGOUT, "Log Out link present");
+		selenium.isElementPresent(MastheadEnum.LOGO);
+		selenium.isElementPresent(MastheadEnum.HELP);
+		selenium.isElementPresent(MastheadEnum.MY_MESSAGES);
+		selenium.isElementPresent(MastheadEnum.MY_ACCOUNT);
+		selenium.isElementPresent(MastheadEnum.LOGOUT);
 		
-		selenium.getText(MastheadEnum.HELP, "Help link text");
-		selenium.getText(MastheadEnum.MY_MESSAGES, "My Messages link text");
-		selenium.getText(MastheadEnum.MY_ACCOUNT, "My Account text");
-		selenium.getText(MastheadEnum.LOGOUT, "Log Out text");
+		selenium.getText(MastheadEnum.HELP);
+		selenium.getText(MastheadEnum.MY_MESSAGES);
+		selenium.getText(MastheadEnum.MY_ACCOUNT);
+		selenium.getText(MastheadEnum.LOGOUT);
 	}
 	
 	public void ck_footer(){
-		selenium.isElementPresent(MastheadEnum.COPYRIGHT, "Copyright element present");
-		selenium.isElementPresent(MastheadEnum.PRIVACY, "Privacy Policy element present");
-		selenium.isElementPresent(MastheadEnum.LEGAL, "Legal Notice element present");
-		selenium.isElementPresent(MastheadEnum.SUPPORT, "Support element present");
-		selenium.isElementPresent(MastheadEnum.VERSION, "Version element present");
+		selenium.isElementPresent(MastheadEnum.COPYRIGHT);
+		selenium.isElementPresent(MastheadEnum.PRIVACY);
+		selenium.isElementPresent(MastheadEnum.LEGAL);
+		selenium.isElementPresent(MastheadEnum.SUPPORT);
+		selenium.isElementPresent(MastheadEnum.VERSION);
 		
-		selenium.getText(MastheadEnum.COPYRIGHT, "Copyright text");
-		selenium.getText(MastheadEnum.PRIVACY, "Privacy Policy text");
-		selenium.getText(MastheadEnum.LEGAL, "Legal Notice text");
-		selenium.getText(MastheadEnum.SUPPORT, "Support text");
+		selenium.getText(MastheadEnum.COPYRIGHT);
+		selenium.getText(MastheadEnum.PRIVACY);
+		selenium.getText(MastheadEnum.LEGAL);
+		selenium.getText(MastheadEnum.SUPPORT);
+	}
+	public void page_validate() {
+	    this.ck_footer();
+	    this.ck_header();
 	}
 	
 	public void test_self_before_login(){
