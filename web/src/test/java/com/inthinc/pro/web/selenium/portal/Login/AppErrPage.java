@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import com.inthinc.pro.web.selenium.ByEnum;
+//import com.inthinc.pro.web.selenium.ByEnum;
 import com.inthinc.pro.web.selenium.CoreMethodLib;
 import com.inthinc.pro.web.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.Page;
@@ -37,18 +37,18 @@ public class AppErrPage implements Page {
         fieldUsername.clear();
         fieldUsername.sendKeys(input);
     }
-    public void btn_login_click() {
-        getBtnLogin().click();
-    }
-    public void page_action_login(String username, String password) {
-        fieldUsername.clear();
-        fieldUsername.sendKeys(username);
-        
-        fieldPassword.clear();
-        fieldPassword.sendKeys(password);
-        
-        getBtnLogin().click();
-    }
+//    public void btn_login_click() {
+//        getBtnLogin().click();
+//    }
+//    public void page_action_login(String username, String password) {
+//        fieldUsername.clear();
+//        fieldUsername.sendKeys(username);
+//        
+//        fieldPassword.clear();
+//        fieldPassword.sendKeys(password);
+//        
+//        getBtnLogin().click();
+//    }
     public void page_validate_loginSuccess() {
         selenium.wait_for_element_present("Admin", "link");//TODO:jwimmer: probably in NavigationBarEnum
     }
@@ -76,9 +76,9 @@ public class AppErrPage implements Page {
         driver.get("http://"+server+":"+port+"/"+appName+pagePath);
     }
 
-    public WebElement getBtnLogin() {
-        return driver.findElement(ByEnum.seleniumEnum(LoginEnum.LOGIN_BUTTON));
-    }
+//    public WebElement getBtnLogin() {
+//        return driver.findElement(ByEnum.seleniumEnum(LoginEnum.LOGIN_BUTTON));
+//    }
     @Override
     public WebDriver getDriver() {
         // TODO Auto-generated method stub
