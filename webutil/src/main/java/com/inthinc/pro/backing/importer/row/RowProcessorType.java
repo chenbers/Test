@@ -1,6 +1,6 @@
 package com.inthinc.pro.backing.importer.row;
 
-public enum RowImporterType {
+public enum RowProcessorType {
     DRIVER,
     VEHICLE;
 }

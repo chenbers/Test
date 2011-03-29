@@ -1,6 +1,8 @@
 package it.com.inthinc.pro.backing.importer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import it.com.inthinc.pro.BaseSpringTest;
+import it.config.IntegrationConfig;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -14,7 +16,6 @@ import org.junit.Test;
 
 import com.inthinc.pro.backing.importer.FileImporter;
 import com.inthinc.pro.backing.importer.ImportType;
-import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
@@ -35,9 +36,6 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.security.Role;
-
-import it.com.inthinc.pro.BaseSpringTest;
-import it.config.IntegrationConfig;
 
 
 public class FileImporterTest extends BaseSpringTest {

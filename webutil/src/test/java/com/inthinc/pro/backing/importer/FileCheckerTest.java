@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing.importer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import it.com.inthinc.pro.BaseSpringTest;
 
 import java.io.InputStream;
 import java.util.List;
@@ -9,7 +11,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 
-public class FileCheckerTest {
+public class FileCheckerTest extends BaseSpringTest {
     
 
 //    @Ignore
@@ -34,12 +36,18 @@ public class FileCheckerTest {
         List<String> msgList = importFile.checkFile(ImportType.DRIVERS, stream);
         dumpErrors(msgList);
 
+        // 2 rows (error message count)
+        assertEquals("Error Count", 2, msgList.size());
         // missing 10 mandatory columns
+        String row1Error[] = msgList.get(0).split(",");
+        assertEquals("Row 1 Error Count", 10, row1Error.length);
         // 5 invalid columns
-        assertEquals("Error Count", 15, msgList.size());
+        String row2Error[] = msgList.get(1).split(",");
+        assertEquals("Row 2 Error Count", 5, row2Error.length);
+        
     }
     
-//    @Ignore
+    //@Ignore
     @Test
     public void checkDriverFileWithMissingColumn() {
         
@@ -50,7 +58,8 @@ public class FileCheckerTest {
         dumpErrors(msgList);
 
         assertEquals("Error Count", 1, msgList.size());
-        assertTrue("unexpected error message " + msgList.get(0), msgList.get(0).contains("Number of columns"));
+        String row1Error[] = msgList.get(0).split(",");
+        assertEquals("Row 1 Error Count", 5, row1Error.length);
     }
     
     private void dumpErrors(List<String> msgList) {

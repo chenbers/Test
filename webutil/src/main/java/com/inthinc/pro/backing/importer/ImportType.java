@@ -8,27 +8,28 @@ import java.util.Map;
 
 import com.inthinc.pro.backing.importer.row.DriverRowImporter;
 import com.inthinc.pro.backing.importer.row.RowImporter;
-import com.inthinc.pro.backing.importer.row.RowImporterFactory;
-import com.inthinc.pro.backing.importer.row.RowImporterType;
+import com.inthinc.pro.backing.importer.row.RowProcessorFactory;
+import com.inthinc.pro.backing.importer.row.RowProcessorType;
+import com.inthinc.pro.backing.importer.row.RowValidator;
 import com.inthinc.pro.backing.importer.row.VehicleRowImporter;
 
 public enum ImportType {
-    DRIVERS(1, "Drivers", "DriverTemplate.xls", new DriverTemplateFormat(), RowImporterType.DRIVER),
-    VEHICLES(2, "Vehicles", "VehicleTemplate.xls", new VehicleTemplateFormat(), RowImporterType.VEHICLE);
+    DRIVERS(1, "Drivers", "DriverTemplate.xls", new DriverTemplateFormat(), RowProcessorType.DRIVER),
+    VEHICLES(2, "Vehicles", "VehicleTemplate.xls", new VehicleTemplateFormat(), RowProcessorType.VEHICLE);
     
     private int    code;
     private String description;
     private String template;
     private TemplateFormat templateFormat;
-    private RowImporterType rowImporterType;
+    private RowProcessorType rowProcessorType;
 
-    private ImportType(int code, String description, String template, TemplateFormat templateFormat, RowImporterType rowImporterType)
+    private ImportType(int code, String description, String template, TemplateFormat templateFormat, RowProcessorType rowProcessorType)
     {
         this.code = code;
         this.description = description;
         this.template = template;
         this.templateFormat = templateFormat;
-        this.rowImporterType = rowImporterType;
+        this.rowProcessorType = rowProcessorType;
     }
 
     public TemplateFormat getTemplateFormat() {
@@ -53,7 +54,11 @@ public enum ImportType {
     }
 
     public RowImporter getRowImporter() {
-        return RowImporterFactory.getRowImporter(rowImporterType);
+        return RowProcessorFactory.getRowImporter(rowProcessorType);
+    }
+
+    public RowValidator getRowValidator() {
+        return RowProcessorFactory.getRowValidator(rowProcessorType);
     }
 
 

@@ -78,5 +78,8 @@
 	<bean id="rowImporter" class="com.inthinc.pro.backing.importer.row.RowImporter" abstract="true"/>
 	<bean id="driverRowImporter" class="com.inthinc.pro.backing.importer.row.DriverRowImporter" parent="rowImporter"/>
 	<bean id="vehicleRowImporter" class="com.inthinc.pro.backing.importer.row.VehicleRowImporter" parent="rowImporter"/>
-	<bean id="rowImporterFactory" class="com.inthinc.pro.backing.importer.row.RowImporterFactory" init-method="init"/>
+	<bean id="rowValidator" class="com.inthinc.pro.backing.importer.row.RowValidator" abstract="true"/>
+	<bean id="driverRowValidator" class="com.inthinc.pro.backing.importer.row.DriverRowValidator" parent="rowValidator"/>
+	<bean id="vehicleRowValidator" class="com.inthinc.pro.backing.importer.row.VehicleRowValidator" parent="rowValidator"/>
+	<bean id="rowProcessorFactory" class="com.inthinc.pro.backing.importer.row.RowProcessorFactory" init-method="init"/>
 </beans>
