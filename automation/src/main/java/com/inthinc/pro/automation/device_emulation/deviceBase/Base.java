@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.junit.runner.notification.StoppedByUserException;
+//import org.junit.runner.notification.StoppedByUserException;
 
 //import com.inthinc.QA.hessian.MCMProxy;
 //import com.inthinc.QA.util.QALogger;
@@ -329,7 +329,7 @@ public abstract class Base {
 			}
 			if (reply instanceof Integer){
 				logger.info(reply.toString() + " We failed to send a note");
-				throw new StoppedByUserException();
+				//throw new StoppedByUserException();//TODO: jwimmer: dtanner: commented to get this to compile
 			}
 			else if (reply instanceof ArrayList<?>){
 				ackFwdCmds((List<HashMap<String, Object>>) reply);
