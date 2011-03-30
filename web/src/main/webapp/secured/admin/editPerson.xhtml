@@ -221,14 +221,17 @@
 
                       <div class="add_section_title">
                         <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isDriver" value="#{personBean.item.driverSelected}">
-<!--                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked); showSection('rfidSection', this.checked); showSection('cellProviderSection', this.checked);" ajaxSingle="true" reRender="editPerson-isDriver" limitToList="true" />-->
-                          <a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isDriver,driverInfoPanel, emailRequired" limitToList="true" />
+                          <a4j:support event="onclick" 
+                          onsubmit="showSection('driverTable', this.checked); showSection('rfidSection', this.checked); showSection('cellProviderSection', this.checked);
+                          showSection('edit-form:editPerson-cellProviderData', document.getElementById('edit-form:editPerson-isProviderSelected').checked);" 
+                          ajaxSingle="true" reRender="editPerson-isDriver" limitToList="true" />
+<!--                          <a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isDriver,driverInfoPanel, emailRequired" limitToList="true" />-->
                          </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_driverInformation}" />
                       </div>
 
 					  <h:panelGroup id="driverInfoPanel">
-                      <h:outputText rendered="#{personBean.item.driverSelected}">
+<!--                      <h:outputText rendered="#{personBean.item.driverSelected}">-->
                       <table id="driverTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
@@ -414,13 +417,13 @@
                        <div id="cellProviderSection">
                        <div class="add_section_title">
                            <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isProviderSelected" value="#{personBean.item.providerInfoSelected}">
-<!--                               <a4j:support event="onclick" onsubmit="showSection('cellProviderTable', this.checked);" ajaxSingle="true" reRender="editPerson-isProviderSelected" limitToList="true" />-->
-                          <a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isProviderSelected,editPerson-cellProviderData" limitToList="true" />
+                               <a4j:support event="onclick" onsubmit="showSection('edit-form:editPerson-cellProviderData', this.checked);" ajaxSingle="true" reRender="editPerson-isProviderSelected" limitToList="true" />
+<!--                          <a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isProviderSelected,editPerson-cellProviderData" limitToList="true" />-->
                            </h:selectBooleanCheckbox>
                            <h:outputText value="#{messages.editPerson_cellProviderSection}" />
                        </div>
                        <rich:panel id="editPerson-cellProviderData">
-                       <h:outputText rendered="#{personBean.item.providerInfoSelected}">
+<!--                       <h:outputText rendered="#{personBean.item.providerInfoSelected}">-->
                        <table id="cellProviderTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
 	                       <tr>
 	                         <td width="110" valign="top">
@@ -501,11 +504,11 @@
                            </tr>
                            </ui:fragment>
                        </table>
-                       </h:outputText>
+<!--                       </h:outputText>-->
                        </rich:panel>
                        </div>
 <!--                       </a4j:outputPanel>-->
-                       </h:outputText>
+<!--                       </h:outputText>-->
                        </h:panelGroup>
 					</td>
                     <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
@@ -980,7 +983,21 @@
     else
       option.text = option.text + value;
   }
+  
+  function showSection(id, show)
+  {
+    document.getElementById(id).style.display = show ? "" : "none";
+  }
 
+
+    if(document.getElementById("edit-form:editPerson-isUser"))
+    	showSection("userTable", document.getElementById("edit-form:editPerson-isUser").checked);
+	
+    if(document.getElementById("edit-form:editPerson-isDriver")){
+        showSection("driverTable", document.getElementById("edit-form:editPerson-isDriver").checked);
+    	showSection("rfidSection", document.getElementById("edit-form:editPerson-isDriver").checked);
+    	showSection("cellProviderSection", document.getElementById("edit-form:editPerson-isDriver").checked);
+    	showSection('edit-form:editPerson-cellProviderData', document.getElementById('edit-form:editPerson-isProviderSelected').checked);    }
     </script>
 
 
