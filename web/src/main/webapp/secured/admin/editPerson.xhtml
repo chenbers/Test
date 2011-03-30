@@ -221,7 +221,8 @@
 
                       <div class="add_section_title">
                         <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isDriver" value="#{personBean.item.driverSelected}">
-                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked); showSection('rfidSection', this.checked); showSection('cellProviderSection', this.checked);" ajaxSingle="true" reRender="editPerson-isDriver" limitToList="true" />
+<!--                          <a4j:support event="onclick" onsubmit="showSection('driverTable', this.checked); showSection('rfidSection', this.checked); showSection('cellProviderSection', this.checked);" ajaxSingle="true" reRender="editPerson-isDriver" limitToList="true" />-->
+                          <a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isDriver,driverInfoPanel, emailRequired" limitToList="true" />
                          </h:selectBooleanCheckbox>
                         <h:outputText value="#{messages.editPerson_driverInformation}" />
                       </div>
@@ -408,29 +409,32 @@
                        </table>
                        </div>
                        </ui:fragment>
-                      <a4j:outputPanel rendered="false">
+<!--                      <a4j:outputPanel rendered="#{personBean.item.providerInfoSelected}">-->
  
                        <div id="cellProviderSection">
                        <div class="add_section_title">
                            <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isProviderSelected" value="#{personBean.item.providerInfoSelected}">
-                               <a4j:support event="onclick" onsubmit="showSection('cellProviderTable', this.checked);" ajaxSingle="true" reRender="editPerson-isProviderSelected" limitToList="true" />
+<!--                               <a4j:support event="onclick" onsubmit="showSection('cellProviderTable', this.checked);" ajaxSingle="true" reRender="editPerson-isProviderSelected" limitToList="true" />-->
+                          <a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isProviderSelected,editPerson-cellProviderData" limitToList="true" />
                            </h:selectBooleanCheckbox>
                            <h:outputText value="#{messages.editPerson_cellProviderSection}" />
                        </div>
+                       <rich:panel id="editPerson-cellProviderData">
+                       <h:outputText rendered="#{personBean.item.providerInfoSelected}">
                        <table id="cellProviderTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
 	                       <tr>
 	                         <td width="110" valign="top">
 	                           <ui:include src="../../includes/admin/inputLabel.xhtml">
 		                           <ui:param name="required" value="TRUE"/>
 		                           <ui:param name="for" value="editPerson_driver_provider"/>
-		                           <ui:param name="fieldName" value="driver.cellProviderInfo.provider"/>
+		                           <ui:param name="fieldName" value="driver.cellblock.provider"/>
 		                           <ui:param name="editBean" value="#{personBean}"/>
 		                           <ui:param name="label" value="#{messages.editPerson_driver_providerType}:"/>
 		                           <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />
                                </ui:include>
 	                         </td>
 	                         <td>
-	                           <h:selectOneMenu value="#{personBean.item.driver.cellProviderInfo.provider}" id="editPerson_driver_provider" required="#{not personBean.batchEdit}" 
+	                           <h:selectOneMenu value="#{personBean.item.driver.cellblock.provider}" id="editPerson_driver_provider" required="#{not personBean.batchEdit}" 
                                         requiredMessage="#{messages.required}" onchange="checkMultiple(this)">
 	                             <f:selectItems value="#{personBean.providerTypes}" />
 	                           </h:selectOneMenu>
@@ -442,7 +446,7 @@
                                    <ui:include src="../../includes/admin/inputLabel.xhtml">
 	                                   <ui:param name="required" value="TRUE"/>
 	                                   <ui:param name="for" value="editPerson_driver_providerUsername"/>
-	                                   <ui:param name="fieldName" value="driver.cellProviderInfo.providerUsername"/>
+	                                   <ui:param name="fieldName" value="driver.cellblock.providerUsername"/>
 	                                   <ui:param name="editBean" value="#{personBean}"/>
 	                                   <ui:param name="label" value="#{messages.editPerson_driver_providerUsername}:"/>
 	                                   <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />
@@ -450,7 +454,7 @@
                                </td> 
                                <td><rich:message for="editPerson_driver_providerUsername" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
-                                   value="#{personBean.item.driver.cellProviderInfo.providerUsername}" id="editPerson_driver_providerUsername"
+                                   value="#{personBean.item.driver.cellblock.providerUsername}" id="editPerson_driver_providerUsername"
                                    onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" required="#{not personBean.batchEdit}" requiredMessage="#{messages.required}"/></td>
                            </tr>
                            <tr>
@@ -459,7 +463,7 @@
                                    <ui:include src="../../includes/admin/inputLabel.xhtml">
                                        <ui:param name="required" value="TRUE"/>
                                        <ui:param name="for" value="editPerson_driver_providerPassword"/>
-                                       <ui:param name="fieldName" value="driver.cellProviderInfo.providerPassword"/>
+                                       <ui:param name="fieldName" value="driver.cellblock.providerPassword"/>
                                        <ui:param name="editBean" value="#{personBean}"/>
                                        <ui:param name="label" value="#{messages.editPerson_driver_providerPassword}:"/>
                                        <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />
@@ -467,12 +471,12 @@
                                </td>  
                                <td><rich:message for="editPerson_driver_providerPassword" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret
-                                   value="#{personBean.item.driver.cellProviderInfo.providerPassword}" id="editPerson_driver_providerPassword"
+                                   value="#{personBean.item.driver.cellblock.providerPassword}" id="editPerson_driver_providerPassword"
                                    onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" required="#{not personBean.batchEdit}" requiredMessage="#{messages.required}"/></td>
                            </tr>
 						   <tr>
 							 <td width="110" valign="top"><h:outputText value="#{messages.editPerson_confirmPassword}" /> <h:outputText
-								 rendered="#{empty personBean.item.driver.cellProviderInfo.providerPassword and not personBean.batchEdit}" styleClass="required" value="*" /></td>
+								 rendered="#{empty personBean.item.driver.cellblock.providerPassword and not personBean.batchEdit}" styleClass="required" value="*" /></td>
 							 <td><rich:message for="editPerson_driver_confirmProviderPassword" errorClass="field-error"
 								 fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret
 								 value="#{personBean.item.confirmProviderPassword}" id="editPerson_driver_confirmProviderPassword"
@@ -484,7 +488,7 @@
                                     <ui:include src="../../includes/admin/inputLabel.xhtml">
                                        <ui:param name="required" value="TRUE"/>
                                        <ui:param name="for" value="editPerson_driver_providerCellPhone"/>
-                                       <ui:param name="fieldName" value="driver.cellProviderInfo.cellPhone"/>
+                                       <ui:param name="fieldName" value="driver.cellblock.cellPhone"/>
                                        <ui:param name="editBean" value="#{personBean}"/>
                                        <ui:param name="label" value="#{messages.editPerson_driver_providerCellPhone}:"/>
                                        <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />
@@ -492,13 +496,15 @@
                                </td>
                                <td><rich:message for="editPerson_driver_providerCellPhone" errorClass="field-error"
                                    fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputText
-                                   value="#{personBean.item.driver.cellProviderInfo.cellPhone}" id="editPerson_driver_providerCellPhone"
+                                   value="#{personBean.item.driver.cellblock.cellPhone}" id="editPerson_driver_providerCellPhone"
                                    onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="10" required="#{not personBean.batchEdit}" requiredMessage="#{messages.required}"/></td>
                            </tr>
                            </ui:fragment>
                        </table>
+                       </h:outputText>
+                       </rich:panel>
                        </div>
-                       </a4j:outputPanel>
+<!--                       </a4j:outputPanel>-->
                        </h:outputText>
                        </h:panelGroup>
 					</td>

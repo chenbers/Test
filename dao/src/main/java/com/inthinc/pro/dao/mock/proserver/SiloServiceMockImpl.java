@@ -1431,4 +1431,28 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return null;
     }
 
+    @Override
+    public Map<String, Object> createCellblock(Integer driverID, Map<String, Object> cellblockMap) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> deleteCellblock(Integer driverID) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> getCellblock(Integer driverID) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> updateCellblock(Integer driverID, Map<String, Object> cellblockMap) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

@@ -6,6 +6,7 @@ import mockit.Verifications;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.PhoneStatusController;
@@ -15,14 +16,14 @@ public class PhoneStatusControllerImplTest {
     @Test
     public void testSetStausToEnabled(final DriverDAO driverDaoMock, final DriverPhoneDAO phoneDaoMock) {
         final Driver driver = new Driver();
-        driver.setCellProviderInfo(new Driver.CellProviderInfo());
+        driver.setCellblock(new Cellblock());
         driver.setDriverID(1);
 
         PhoneStatusController controller = new PhoneStatusControllerImpl(driverDaoMock, phoneDaoMock);
 
         controller.setPhoneStatusEnabled(driver);
 
-        assertEquals(CellStatusType.ENABLED, driver.getCellProviderInfo().getCellStatus());
+        assertEquals(CellStatusType.ENABLED, driver.getCellblock().getCellStatus());
 
         new Verifications() {
             {
@@ -38,14 +39,14 @@ public class PhoneStatusControllerImplTest {
     @Test
     public void testSetStausToDisabled(final DriverDAO driverDaoMock, final DriverPhoneDAO phoneDaoMock) {
         final Driver driver = new Driver();
-        driver.setCellProviderInfo(new Driver.CellProviderInfo());
+        driver.setCellblock(new Cellblock());
         driver.setDriverID(1);
 
         PhoneStatusController controller = new PhoneStatusControllerImpl(driverDaoMock, phoneDaoMock);
 
         controller.setPhoneStatusDisabled(driver);
 
-        assertEquals(CellStatusType.DISABLED, driver.getCellProviderInfo().getCellStatus());
+        assertEquals(CellStatusType.DISABLED, driver.getCellblock().getCellStatus());
 
         new Verifications() {
             {

@@ -1,9 +1,14 @@
 package com.inthinc.pro.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
+
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.SimpleName;
+import com.inthinc.pro.model.phone.CellProviderType;
 @XmlRootElement
 @SimpleName(simpleName="AcctAttr")
 public class AccountAttributes extends BaseEntity {
@@ -28,9 +33,15 @@ public class AccountAttributes extends BaseEntity {
     private String  passwordStrength;
     private String  loginExpire;
     private String  passwordChange;
-
+    private String  phoneControlProvider1;
+    private String  phoneControlProvider2;
+    private String  phoneControlProvider3;
+    
     @Column(updateable = false)
     private String supportContacts[];
+    
+    @Column(updateable = false)
+    private List<CellProviderType> phoneControlProviders;
 
     public String getWmsURL() {
         return wmsURL;
@@ -153,5 +164,56 @@ public class AccountAttributes extends BaseEntity {
     }
     public String getPasswordChange() {
         return passwordChange;
+    }
+    public String getPhoneControlProvider1() {
+        return phoneControlProvider1;
+    }
+    public void setPhoneControlProvider1(String phoneControlProvider1) {
+        this.phoneControlProvider1 = phoneControlProvider1;
+    }
+    public String getPhoneControlProvider2() {
+        return phoneControlProvider2;
+    }
+    public void setPhoneControlProvider2(String phoneControlProvider2) {
+        this.phoneControlProvider2 = phoneControlProvider2;
+    }
+    public String getPhoneControlProvider3() {
+        return phoneControlProvider3;
+    }
+    public void setPhoneControlProvider3(String phoneControlProvider3) {
+        this.phoneControlProvider3 = phoneControlProvider3;
+    }
+    public List<CellProviderType> getPhoneControlProviders() {
+        phoneControlProviders = new ArrayList<CellProviderType>();
+        try{
+            if (phoneControlProvider1 != null) phoneControlProviders.add(CellProviderType.valueOf(Integer.parseInt(phoneControlProvider1)));
+        }
+        catch(NumberFormatException nfe){
+        }
+        try{
+            if (phoneControlProvider2 != null) phoneControlProviders.add(CellProviderType.valueOf(Integer.parseInt(phoneControlProvider2)));
+        }
+        catch(NumberFormatException nfe){
+        }
+        try{
+            if (phoneControlProvider3 != null) phoneControlProviders.add(CellProviderType.valueOf(Integer.parseInt(phoneControlProvider3)));
+        }
+        catch(NumberFormatException nfe){
+        }
+        return phoneControlProviders;
+    }
+    public void setPhoneControlProviders(List<CellProviderType> phoneControlProviders) {
+        if (!phoneControlProviders.isEmpty()){
+            if(phoneControlProviders.size()>=1){
+                phoneControlProvider1 = phoneControlProviders.get(0).getCode().toString();
+            }
+            if(phoneControlProviders.size()>=2){
+                phoneControlProvider1 = phoneControlProviders.get(1).getCode().toString();
+            }
+            if(phoneControlProviders.size()>=3){
+                phoneControlProvider1 = phoneControlProviders.get(2).getCode().toString();
+            }
+        }
+        this.phoneControlProviders = phoneControlProviders;
     }
 }

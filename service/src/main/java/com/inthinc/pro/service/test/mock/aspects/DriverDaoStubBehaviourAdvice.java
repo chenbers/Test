@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellProviderType;
 
@@ -81,39 +82,39 @@ public class DriverDaoStubBehaviourAdvice {
             driver77700.setDriverID(77700);
 
             Driver driver77710 = new Driver();
-            driver77710.setCellProviderInfo(new Driver.CellProviderInfo());
-            driver77710.getCellProviderInfo().setCellPhone(STUBBED_PHONE_NUMBER);
+            driver77710.setCellblock(new Cellblock());
+            driver77710.getCellblock().setCellPhone(STUBBED_PHONE_NUMBER);
             driver77710.setDriverID(77710);
 
             Driver driver77701 = new Driver();
-            driver77701.setCellProviderInfo(new Driver.CellProviderInfo());
-            driver77701.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
-            driver77701.getCellProviderInfo().setProviderUsername(CELLCOPNTROL_USERNAME);
-            driver77701.getCellProviderInfo().setProviderPassword(CELLCONTROL_PASSWORD);
+            driver77701.setCellblock(new Cellblock());
+            driver77701.getCellblock().setProvider(CellProviderType.CELL_CONTROL);
+            driver77701.getCellblock().setProviderUsername(CELLCOPNTROL_USERNAME);
+            driver77701.getCellblock().setProviderPassword(CELLCONTROL_PASSWORD);
             driver77701.setDriverID(77701);
 
             Driver driver77702 = new Driver();
-            driver77702.setCellProviderInfo(new Driver.CellProviderInfo());
-            driver77702.getCellProviderInfo().setProvider(CellProviderType.ZOOM_SAFER);
-            driver77702.getCellProviderInfo().setProviderUsername(ZOOMSAFER_USERNAME);
-            driver77702.getCellProviderInfo().setProviderPassword(ZOOMSAFER_PASSWORD);
+            driver77702.setCellblock(new Cellblock());
+            driver77702.getCellblock().setProvider(CellProviderType.ZOOM_SAFER);
+            driver77702.getCellblock().setProviderUsername(ZOOMSAFER_USERNAME);
+            driver77702.getCellblock().setProviderPassword(ZOOMSAFER_PASSWORD);
             driver77702.setDriverID(77702);
 
             Driver driver77711 = new Driver();
             driver77711.setLicense("123465AA");
-            driver77711.setCellProviderInfo(new Driver.CellProviderInfo());
-            driver77711.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
-            driver77711.getCellProviderInfo().setProviderUsername(CELLCOPNTROL_USERNAME);
-            driver77711.getCellProviderInfo().setProviderPassword(CELLCONTROL_PASSWORD);
-            driver77711.getCellProviderInfo().setCellPhone(STUBBED_CELLCONTROL_PHONE_NUMBER);
+            driver77711.setCellblock(new Cellblock());
+            driver77711.getCellblock().setProvider(CellProviderType.CELL_CONTROL);
+            driver77711.getCellblock().setProviderUsername(CELLCOPNTROL_USERNAME);
+            driver77711.getCellblock().setProviderPassword(CELLCONTROL_PASSWORD);
+            driver77711.getCellblock().setCellPhone(STUBBED_CELLCONTROL_PHONE_NUMBER);
             driver77711.setDriverID(77711);
 
             Driver driver77712 = new Driver();
-            driver77712.setCellProviderInfo(new Driver.CellProviderInfo());
-            driver77712.getCellProviderInfo().setProvider(CellProviderType.ZOOM_SAFER);
-            driver77712.getCellProviderInfo().setProviderUsername(ZOOMSAFER_USERNAME);
-            driver77712.getCellProviderInfo().setProviderPassword(ZOOMSAFER_PASSWORD);
-            driver77712.getCellProviderInfo().setCellPhone(STUBBED_ZOOMSAFER_PHONE_NUMBER);
+            driver77712.setCellblock(new Cellblock());
+            driver77712.getCellblock().setProvider(CellProviderType.ZOOM_SAFER);
+            driver77712.getCellblock().setProviderUsername(ZOOMSAFER_USERNAME);
+            driver77712.getCellblock().setProviderPassword(ZOOMSAFER_PASSWORD);
+            driver77712.getCellblock().setCellPhone(STUBBED_ZOOMSAFER_PHONE_NUMBER);
             driver77712.setDriverID(77712);
 
             put(77700, driver77700);

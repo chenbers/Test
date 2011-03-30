@@ -12,6 +12,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
 @SuppressWarnings("serial")
 public class SiloServiceImpl implements SiloService {
+
     @Override
     @MethodDescription(description = "Creates a new account.", crudType=CrudType.CREATE, populateMethod="getAcct")
     public Map<String, Object> createAcct(@DaoParam(name = "siloID") Integer siloID,
@@ -1082,6 +1083,31 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
 
+    @Override
+    @MethodDescription(description = "Create a phone control record for a driver.", crudType=CrudType.CREATE, modelClass=com.inthinc.pro.model.Cellblock.class)
+    public Map<String, Object> createCellblock(@DaoParam(name = "driverID")Integer driverID, 
+            @DaoParam(name = "PhoneControl", type = com.inthinc.pro.model.Cellblock.class)Map<String, Object> cellblockMap) throws ProDAOException {
+        return null;
+    }
+
+    @Override
+    @MethodDescription(description = "Delete a phone control record for a driver.", crudType=CrudType.DELETE, modelClass=com.inthinc.pro.model.Cellblock.class)
+    public Map<String, Object> deleteCellblock(@DaoParam(name = "driverID")Integer driverID) throws ProDAOException {
+        return null;
+    }
+
+    @Override
+    @MethodDescription(description = "Fetches a phone control record for a driver.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Cellblock.class)
+    public Map<String, Object> getCellblock(@DaoParam(name = "driverID")Integer driverID) throws ProDAOException {
+        return null;
+    }
+
+    @Override
+    @MethodDescription(description = "Update a phone control record for a driver.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.model.Cellblock.class)
+    public Map<String, Object> updateCellblock(@DaoParam(name = "driverID")Integer driverID, 
+            @DaoParam(name = "PhoneControl", type = com.inthinc.pro.model.Cellblock.class)Map<String, Object> cellblockMap) throws ProDAOException {
+        return null;
+    }
     
 	
 }

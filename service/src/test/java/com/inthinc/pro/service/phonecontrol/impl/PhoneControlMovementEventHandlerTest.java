@@ -12,6 +12,7 @@ import mockit.Verifications;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
@@ -28,13 +29,13 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
-        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
+        expectedDriver.setCellblock(new Cellblock());
         final Integer expectedDriverId = 666;
         final CellProviderType expectedCellProvider = CellProviderType.CELL_CONTROL;
 
-        expectedDriver.getCellProviderInfo().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
-        expectedDriver.getCellProviderInfo().setProvider(expectedCellProvider);
-        expectedDriver.getCellProviderInfo().setProviderUsername("");
+        expectedDriver.getCellblock().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        expectedDriver.getCellblock().setProvider(expectedCellProvider);
+        expectedDriver.getCellblock().setProviderUsername("");
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -72,13 +73,13 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
-        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
+        expectedDriver.setCellblock(new Cellblock());
         final Integer expectedDriverId = 666;
         final CellProviderType expectedCellProvider = CellProviderType.CELL_CONTROL;
 
-        expectedDriver.getCellProviderInfo().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
-        expectedDriver.getCellProviderInfo().setProvider(expectedCellProvider);
-        expectedDriver.getCellProviderInfo().setProviderUsername("");
+        expectedDriver.getCellblock().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        expectedDriver.getCellblock().setProvider(expectedCellProvider);
+        expectedDriver.getCellblock().setProviderUsername("");
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -149,10 +150,10 @@ public class PhoneControlMovementEventHandlerTest {
         final RuntimeException expectedException = new RuntimeException("Dummy exception");
 
         final Driver driver = new Driver();
-        driver.setCellProviderInfo(new Driver.CellProviderInfo());
-        driver.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
-        driver.getCellProviderInfo().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
-        driver.getCellProviderInfo().setProviderUsername("");
+        driver.setCellblock(new Cellblock());
+        driver.getCellblock().setProvider(CellProviderType.CELL_CONTROL);
+        driver.getCellblock().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        driver.getCellblock().setProviderUsername("");
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -270,12 +271,12 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
-        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
+        expectedDriver.setCellblock(new Cellblock());
         final Integer expectedDriverId = 666;
 
         expectedDriver.setDriverID(expectedDriverId);
-        expectedDriver.getCellProviderInfo().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
-        expectedDriver.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
+        expectedDriver.getCellblock().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        expectedDriver.getCellblock().setProvider(CellProviderType.CELL_CONTROL);
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -315,13 +316,13 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
-        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
+        expectedDriver.setCellblock(new Cellblock());
         final Integer expectedDriverId = 666;
 
         expectedDriver.setDriverID(expectedDriverId);
-        expectedDriver.getCellProviderInfo().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
-        expectedDriver.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
-        expectedDriver.getCellProviderInfo().setProviderUsername("");
+        expectedDriver.getCellblock().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        expectedDriver.getCellblock().setProvider(CellProviderType.CELL_CONTROL);
+        expectedDriver.getCellblock().setProviderUsername("");
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -342,11 +343,11 @@ public class PhoneControlMovementEventHandlerTest {
             }
         });
 
-        assertNull(expectedDriver.getCellProviderInfo().getCellStatus());
+        assertNull(expectedDriver.getCellblock().getCellStatus());
         handler.handleDriverStartedMoving(expectedDriverId);
-        assertNull(expectedDriver.getCellProviderInfo().getCellStatus());
+        assertNull(expectedDriver.getCellblock().getCellStatus());
         handler.handleDriverStoppedMoving(expectedDriverId);
-        assertNull(expectedDriver.getCellProviderInfo().getCellStatus());
+        assertNull(expectedDriver.getCellblock().getCellStatus());
 
         // Verification
         new Verifications() {
@@ -363,13 +364,13 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
-        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
+        expectedDriver.setCellblock(new Cellblock());
         final Integer expectedDriverId = 666;
 
         expectedDriver.setDriverID(expectedDriverId);
-        expectedDriver.getCellProviderInfo().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
-        expectedDriver.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
-        expectedDriver.getCellProviderInfo().setProviderUsername("");
+        expectedDriver.getCellblock().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        expectedDriver.getCellblock().setProvider(CellProviderType.CELL_CONTROL);
+        expectedDriver.getCellblock().setProviderUsername("");
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -390,7 +391,7 @@ public class PhoneControlMovementEventHandlerTest {
             }
         });
 
-        assertNull(expectedDriver.getCellProviderInfo().getCellStatus());
+        assertNull(expectedDriver.getCellblock().getCellStatus());
         handler.handleDriverStartedMoving(expectedDriverId);
 
         // Verification
@@ -408,13 +409,13 @@ public class PhoneControlMovementEventHandlerTest {
             final PhoneStatusController phoneStatusControllerMock) {
 
         final Driver expectedDriver = new Driver();
-        expectedDriver.setCellProviderInfo(new Driver.CellProviderInfo());
+        expectedDriver.setCellblock(new Cellblock());
         final Integer expectedDriverId = 666;
 
         expectedDriver.setDriverID(expectedDriverId);
-        expectedDriver.getCellProviderInfo().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
-        expectedDriver.getCellProviderInfo().setProvider(CellProviderType.CELL_CONTROL);
-        expectedDriver.getCellProviderInfo().setProviderUsername("");
+        expectedDriver.getCellblock().setCellPhone(EXPECTED_CELL_PHONE_NUMBER);
+        expectedDriver.getCellblock().setProvider(CellProviderType.CELL_CONTROL);
+        expectedDriver.getCellblock().setProviderUsername("");
 
         // Expectations & stubbing
         new NonStrictExpectations() {
@@ -435,7 +436,7 @@ public class PhoneControlMovementEventHandlerTest {
             }
         });
 
-        assertNull(expectedDriver.getCellProviderInfo().getCellStatus());
+        assertNull(expectedDriver.getCellblock().getCellStatus());
         handler.handleDriverStoppedMoving(expectedDriverId);
 
         // Verification

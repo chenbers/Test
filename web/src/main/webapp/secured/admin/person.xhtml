@@ -195,18 +195,18 @@
                           </tr>
                         </table>
                         
-                        <a4j:outputPanel rendered="false">
+                        <a4j:outputPanel rendered="true">
                         <div class="add_section_title"><h:outputText value="#{messages.editPerson_cellProviderSection}"/></div>
                   
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                            <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerType}:" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.cellProviderInfo.provider.name}" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.cellblock.provider.name}" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerUsername}:" /></td>
                             <td>
-                              <h:outputText value="#{personBean.item.driver.cellProviderInfo.providerUsername}">
+                              <h:outputText value="#{personBean.item.driver.cellblock.providerUsername}">
                                 <f:converter converterId="HexConverter" />
                               </h:outputText>
                             </td>
@@ -214,7 +214,7 @@
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerCellPhone}:" /></td>
                             <td>
-                              <h:outputText value="#{personBean.item.driver.cellProviderInfo.cellPhone}">
+                              <h:outputText value="#{personBean.item.driver.cellblock.cellPhone}">
                                 <f:converter converterId="HexConverter" />
                               </h:outputText>
                             </td>

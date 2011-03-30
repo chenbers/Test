@@ -110,6 +110,15 @@ public interface SiloService extends HessianService
 
     List<Long> getRfidsForBarcode(String barcode) throws ProDAOException;
     
+    // ------- Driver Phone Control
+    Map<String, Object> createCellblock(Integer driverID, Map<String, Object> cellblockMap) throws ProDAOException;
+
+    Map<String, Object> deleteCellblock(Integer driverID) throws ProDAOException;
+
+    Map<String, Object> getCellblock(Integer driverID) throws ProDAOException;
+
+    Map<String, Object> updateCellblock(Integer driverID, Map<String, Object> cellblockMap) throws ProDAOException;
+    
     // ------- User  ----------
     Map<String, Object> createUser(Integer personID, Map<String, Object> userMap) throws ProDAOException;
 

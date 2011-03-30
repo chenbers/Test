@@ -32,9 +32,9 @@ public class PhoneStatusControllerImpl implements PhoneStatusController {
      */
     @Override
     public void setPhoneStatusDisabled(Driver driver) {
-        if (driver.getCellProviderInfo() != null) {
+        if (driver.getCellblock() != null) {
             logger.debug("Updating driver phone status to " + CellStatusType.DISABLED);
-            driver.getCellProviderInfo().setCellStatus(CellStatusType.DISABLED);
+            driver.getCellblock().setCellStatus(CellStatusType.DISABLED);
             driverDao.update(driver);
             phoneDao.addDriverToDisabledPhoneList(driver.getDriverID());
             logger.debug("Phone status has been updated successfully. Driver has been added to disabled phone list.");
@@ -48,9 +48,9 @@ public class PhoneStatusControllerImpl implements PhoneStatusController {
      */
     @Override
     public void setPhoneStatusEnabled(Driver driver) {
-        if (driver.getCellProviderInfo() != null) {
+        if (driver.getCellblock() != null) {
             logger.debug("Updating driver phone status to " + CellStatusType.ENABLED);
-            driver.getCellProviderInfo().setCellStatus(CellStatusType.ENABLED);
+            driver.getCellblock().setCellStatus(CellStatusType.ENABLED);
             driverDao.update(driver);
             phoneDao.removeDriverFromDisabledPhoneList(driver.getDriverID());
             logger.debug("Phone status has been updated successfully. Driver has been removed from disabled phone list.");

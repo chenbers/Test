@@ -8,8 +8,6 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
-import com.inthinc.pro.model.phone.CellProviderType;
-import com.inthinc.pro.model.phone.CellStatusType;
 
 /**
  * You'll see this through out this bean. It is mainly used so that the table sorting on these fields treats "" and null the same. if(fieldName != null && fieldName.equals(""))
@@ -42,48 +40,8 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     private Person person;
     private Integer groupID;
     @Column(updateable = false)
-    private CellProviderInfo cellProviderInfo;
-    
-    public static class CellProviderInfo {
-        private String cellPhone;
-        private CellStatusType cellStatus;
-        private CellProviderType provider;
-        private String providerUsername;
-        
-        private String providerPassword;
-        
-        public String getProviderPassword() {
-            return providerPassword;
-        }
-        @XmlTransient
-        public void setProviderPassword(String providerPassword) {
-            this.providerPassword = providerPassword;
-        }
-        public String getCellPhone() {
-            return cellPhone;
-        }
-        public void setCellPhone(String cellPhone) {
-            this.cellPhone = cellPhone;
-        }
-        public CellStatusType getCellStatus() {
-            return cellStatus;
-        }
-        public void setCellStatus(CellStatusType cellStatus) {
-            this.cellStatus = cellStatus;
-        }
-        public CellProviderType getProvider() {
-            return provider;
-        }
-        public void setProvider(CellProviderType provider) {
-            this.provider = provider;
-        }
-        public String getProviderUsername() {
-            return providerUsername;
-        }
-        public void setProviderUsername(String providerUsername) {
-            this.providerUsername = providerUsername;
-        }   
-    }
+    private Cellblock cellblock;
+
 
     public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
             RuleSetType dot, Integer groupID) {
@@ -101,10 +59,12 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.certifications = certifications;
         this.dot = dot;
         this.groupID = groupID;
+        cellblock = new Cellblock();
     }
 
     public Driver() {
         super();
+        cellblock = new Cellblock();
     }
 
     public Integer getDriverID() {
@@ -245,12 +205,13 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         return "Driver [barcode=" + barcode + ", certifications=" + certifications + ", dot=" + dot + ", driverID=" + driverID + ", expiration=" + expiration + ", groupID=" + groupID + ", license="
                 + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status + "]";
     }
-    
-    public CellProviderInfo getCellProviderInfo() {
-        return this.cellProviderInfo;
+
+    public Cellblock getCellblock() {
+        return cellblock;
     }
 
-    public void setCellProviderInfo(CellProviderInfo cellProviderInfo) {
-        this.cellProviderInfo = cellProviderInfo;
+    public void setCellblock(Cellblock cellblock) {
+        this.cellblock = cellblock;
     }
+
 }

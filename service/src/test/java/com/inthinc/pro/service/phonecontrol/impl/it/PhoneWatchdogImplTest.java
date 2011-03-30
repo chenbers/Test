@@ -89,7 +89,7 @@ public class PhoneWatchdogImplTest {
 			returns(new ArrayList<Event>());
 			
 			// Verifies that the correct endpoint was called
-			cellcontrolEndpointMock.enablePhone(driver.getCellProviderInfo().getCellPhone());
+			cellcontrolEndpointMock.enablePhone(driver.getCellblock().getCellPhone());
 			returns(Response.status(STATUS).build());
 		}};
 		
