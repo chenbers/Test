@@ -1,7 +1,5 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
-import it.com.inthinc.pro.dao.Util;
-
 import java.util.Arrays;
 
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
@@ -123,7 +121,7 @@ public class EventGen {
             eventBytes[idx++] = (byte) (ATTR_TYPE_DELTAVZ & 0x000000FF);
             idx = puti2(eventBytes, idx, fullEvent.getDeltaZ());
             eventBytes[idx++] = (byte) (ATTR_TYPE_GPS_QUALITY & 0x000000FF);
-            idx = puti2(eventBytes, idx, Util.randomInt(0, 1000));
+            idx = puti2(eventBytes, idx, randomInt(0, 1000));
         }
         else if (event instanceof ZoneArrivalEvent)
         {
@@ -147,7 +145,7 @@ public class EventGen {
             eventBytes[idx++] = (byte) (ATTR_TYPE_DRIVETIME & 0x000000FF);
             idx = puti4(eventBytes, idx, ignitionOffEvent.getDriveTime());
             eventBytes[idx++] = (byte) (ATTR_TYPE_GPS_QUALITY & 0x000000FF);
-            idx = puti2(eventBytes, idx, Util.randomInt(0, 1000));
+            idx = puti2(eventBytes, idx, randomInt(0, 1000));
             
         }
         else if (event instanceof IdleEvent)
@@ -260,4 +258,8 @@ public class EventGen {
         return idx;
     }
     
+    public static int randomInt(int min, int max)
+    {
+        return (int) (Math.random() * ((max - min) + 1)) + min;
+    }    
 }
