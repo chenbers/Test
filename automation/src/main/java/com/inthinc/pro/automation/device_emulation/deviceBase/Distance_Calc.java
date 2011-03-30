@@ -2,9 +2,11 @@ package com.inthinc.pro.automation.device_emulation.deviceBase;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.utils.AutomationLogger;
+
 public class Distance_Calc {
 	
-	private final static Logger logger = Logger.getLogger(Distance_Calc.class);
+	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
     
     private final double earth_radius = 3960;
     private final double deg2rad = Math.PI / 180;

@@ -13,6 +13,8 @@ import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiNoteTypes;
 import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiProps;
 import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiGenerals.ViolationFlags;
+import com.inthinc.pro.automation.utils.CreateHessian;
+import com.inthinc.pro.automation.utils.StackToString;
 
 
 public class TiwiProDevice extends Base{
@@ -22,7 +24,7 @@ public class TiwiProDevice extends Base{
 	private final static Integer productVersion = 5;
 	private HashMap<TiwiAttrs, Integer> attrs;
 	private int trip_start, trip_stop;
-	//private CreateHessian getHessian;//TODO: jwimmer: dtanner: commented to get this to compile
+	private CreateHessian getHessian;
 	
 
 	public TiwiProDevice(String IMEI, String server, Map<Integer, String> map) {
@@ -73,7 +75,7 @@ public class TiwiProDevice extends Base{
 	public void construct_note(TiwiNoteTypes type, HashMap<TiwiAttrs, Integer> attrs){
 		try{attrs.put(TiwiAttrs.ATTR_TYPE_SPEED_LIMIT, speed_limit.intValue());}
 		catch (Exception e){
-			//logger.debug(StackToString.toString(e));//TODO: jwimmer: dtanner: commented to get this to compile
+			logger.debug(StackToString.toString(e));
 			e.printStackTrace();
 		}
 		Package_tiwiPro_Note note = new Package_tiwiPro_Note(type, time, sats, heading,
@@ -178,12 +180,11 @@ public class TiwiProDevice extends Base{
 	
 	@Override
 	protected void set_server(String server){
-		//TODO: jwimmer: dtanner: commented to get this to compile
-//		getHessian = new CreateHessian();
-//		logger.info("MCM Server is " + server);
-//        mcmProxy = getHessian.getMcmProxy(server) ;
-//		Settings.put(TiwiProps.PROPERTY_SERVER_PORT.getCode(), getHessian.getPort(false).toString());
-//    	Settings.put(TiwiProps.PROPERTY_SERVER_URL.getCode(), getHessian.getUrl(false));
+		getHessian = new CreateHessian();
+		logger.info("MCM Server is " + server);
+        mcmProxy = getHessian.getMcmProxy(server) ;
+		Settings.put(TiwiProps.PROPERTY_SERVER_PORT.getCode(), getHessian.getPort(false).toString());
+    	Settings.put(TiwiProps.PROPERTY_SERVER_URL.getCode(), getHessian.getUrl(false));
     }
 	
 	public void set_settings( TiwiProps key, String value){

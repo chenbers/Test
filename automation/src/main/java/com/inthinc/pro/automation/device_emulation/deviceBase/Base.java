@@ -12,19 +12,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-//import org.junit.runner.notification.StoppedByUserException;
+import org.junit.runner.notification.StoppedByUserException;
 
-//import com.inthinc.QA.hessian.MCMProxy;
-//import com.inthinc.QA.util.QALogger;
-//import com.inthinc.QA.util.StackToString;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 
+import com.inthinc.pro.automation.device_emulation.deviceBase.MCMProxy;
+import com.inthinc.pro.automation.utils.AutomationLogger;
+import com.inthinc.pro.automation.utils.StackToString;
+
 @SuppressWarnings("unchecked")
 public abstract class Base {
 	
-	private final static Logger logger = Logger.getLogger(Base.class);
+	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
 	
 	private ArrayList<byte[]> sendingQueue = new ArrayList<byte[]>();
 	protected ArrayList<byte[]> note_queue = new ArrayList<byte[]>();
@@ -60,7 +61,7 @@ public abstract class Base {
     protected long time;
     protected long time_last;
     
-    //protected MCMProxy mcmProxy;
+    protected MCMProxy mcmProxy;
     
 
     protected Object reply;
@@ -168,7 +169,7 @@ public abstract class Base {
 			while (check_error(reply)){
 				try{
 					System.out.println("dumping settings");
-					//reply = mcmProxy.dumpSet(imei, productVersion, Settings);//TODO: jwimmer: dtanner: commented to get this to compile
+					reply = mcmProxy.dumpSet(imei, productVersion, Settings);
 					System.out.println(reply);
 				}catch(GenericHessianException e){
 					reply = 0;
@@ -201,7 +202,7 @@ public abstract class Base {
 			reply = dbErrors[0];
 			while (check_error(reply)){
 				try{
-					//reply = mcmProxy.reqSet( imei );//TODO: jwimmer: dtanner: commented to get this to compile
+					reply = mcmProxy.reqSet( imei );
 				}catch(EmptyResultSetException e){
 					reply = 304;
 				}
@@ -324,12 +325,12 @@ public abstract class Base {
 			}
 			reply = dbErrors[0];
 			while (check_error(reply)){
-				//reply = mcmProxy.note(imei, sendingQueue);//TODO: jwimmer: dtanner: commented to get this to compile
+				reply = mcmProxy.note(imei, sendingQueue);
 				System.out.println(reply);
 			}
 			if (reply instanceof Integer){
 				logger.info(reply.toString() + " We failed to send a note");
-				//throw new StoppedByUserException();//TODO: jwimmer: dtanner: commented to get this to compile
+				throw new StoppedByUserException();
 			}
 			else if (reply instanceof ArrayList<?>){
 				ackFwdCmds((List<HashMap<String, Object>>) reply);
@@ -480,8 +481,8 @@ public abstract class Base {
 		try{
 			is_speeding();
 		}catch(Exception e){
-			//logger.debug(StackToString.toString(e));//TODO: jwimmer: dtanner: commented to get this to compile
-			e.printStackTrace(); //TODO: jwimmer: dtanner: without looking at StackToString this seemed a next best option?
+			logger.debug(StackToString.toString(e));
+			e.printStackTrace();
 		}
 	}
 	

@@ -11,9 +11,8 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiAttrs;
 import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiNoteTypes;
 import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiGenerals.FwdCmdStatus;
+import com.inthinc.pro.automation.utils.StackToString;
 
-//import com.inthinc.QA.util.QALogger;//TODO: jwimmer: dtanner: commented to get this to compile
-//import com.inthinc.QA.util.StackToString;
 
 public class Package_tiwiPro_Note {
 	private final static Logger logger = Logger.getLogger(Package_tiwiPro_Note.class);
@@ -125,7 +124,7 @@ public class Package_tiwiPro_Note {
             
           }
           catch (ParseException e){
-            //logger.debug(StackToString.toString(e));//TODO: jwimmer: dtanner: commented to get this to compile
+            logger.debug(StackToString.toString(e));
         	e.printStackTrace();
           }
         
@@ -137,7 +136,7 @@ public class Package_tiwiPro_Note {
     	try{
     		note = String.format("DeviceNote(nType=%d, nTime=\"%s\", sats=%d, heading=%d, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d)", nType, nTime, sats, heading, maprev, lat, lng, Speed, odometer);
     	}catch(Exception e){
-    		//logger.debug(StackToString.toString(e));//TODO: jwimmer: dtanner: commented to get this to compile
+    		logger.debug(StackToString.toString(e));
     		e.printStackTrace();
     	}
     	logger.debug(note);

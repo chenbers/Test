@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.enums;
 
-import java.util.EnumSet;
-import java.util.HashMap;
 
 public enum Addresses {
     
@@ -45,8 +43,7 @@ public enum Addresses {
     SLB_MCM_PORT("8090"),
     SLB_PORTAL("schlumberger.inthinc.com"),
     SLB_PORT("8099");
-    
-    
+
     
 //    PROD_MCM_EC2("my.inthinc.com"),
 //    PROD_MCM_PORT_EC2("8090"),
