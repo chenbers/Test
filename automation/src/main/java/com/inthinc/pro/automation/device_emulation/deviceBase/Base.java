@@ -1,4 +1,4 @@
-package com.inthinc.QA.deviceBase;
+package com.inthinc.pro.automation.device_emulation.deviceBase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,9 +14,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.junit.runner.notification.StoppedByUserException;
 
-import com.inthinc.QA.hessian.MCMProxy;
-import com.inthinc.QA.util.QALogger;
-import com.inthinc.QA.util.StackToString;
+//import com.inthinc.QA.hessian.MCMProxy;
+//import com.inthinc.QA.util.QALogger;
+//import com.inthinc.QA.util.StackToString;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
@@ -24,7 +24,7 @@ import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 @SuppressWarnings("unchecked")
 public abstract class Base {
 	
-	private final static Logger logger = Logger.getLogger(QALogger.class);
+	private final static Logger logger = Logger.getLogger(Base.class);
 	
 	private ArrayList<byte[]> sendingQueue = new ArrayList<byte[]>();
 	protected ArrayList<byte[]> note_queue = new ArrayList<byte[]>();
@@ -60,7 +60,7 @@ public abstract class Base {
     protected long time;
     protected long time_last;
     
-    protected MCMProxy mcmProxy;
+    //protected MCMProxy mcmProxy;
     
 
     protected Object reply;
@@ -168,7 +168,7 @@ public abstract class Base {
 			while (check_error(reply)){
 				try{
 					System.out.println("dumping settings");
-					reply = mcmProxy.dumpSet(imei, productVersion, Settings);
+					//reply = mcmProxy.dumpSet(imei, productVersion, Settings);//TODO: jwimmer: dtanner: commented to get this to compile
 					System.out.println(reply);
 				}catch(GenericHessianException e){
 					reply = 0;
@@ -201,7 +201,7 @@ public abstract class Base {
 			reply = dbErrors[0];
 			while (check_error(reply)){
 				try{
-					reply = mcmProxy.reqSet( imei );
+					//reply = mcmProxy.reqSet( imei );//TODO: jwimmer: dtanner: commented to get this to compile
 				}catch(EmptyResultSetException e){
 					reply = 304;
 				}
@@ -324,7 +324,7 @@ public abstract class Base {
 			}
 			reply = dbErrors[0];
 			while (check_error(reply)){
-				reply = mcmProxy.note(imei, sendingQueue);
+				//reply = mcmProxy.note(imei, sendingQueue);//TODO: jwimmer: dtanner: commented to get this to compile
 				System.out.println(reply);
 			}
 			if (reply instanceof Integer){
@@ -480,7 +480,8 @@ public abstract class Base {
 		try{
 			is_speeding();
 		}catch(Exception e){
-			logger.debug(StackToString.toString(e));
+			//logger.debug(StackToString.toString(e));//TODO: jwimmer: dtanner: commented to get this to compile
+			e.printStackTrace(); //TODO: jwimmer: dtanner: without looking at StackToString this seemed a next best option?
 		}
 	}
 	

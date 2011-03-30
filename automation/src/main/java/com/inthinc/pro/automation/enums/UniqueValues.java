@@ -1,4 +1,4 @@
-package com.inthinc.QA.enums;
+package com.inthinc.pro.automation.enums;
 
 public enum UniqueValues {
 	PERSONID_EMPID("", true),

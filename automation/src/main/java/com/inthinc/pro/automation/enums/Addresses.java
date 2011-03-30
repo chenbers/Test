@@ -1,4 +1,4 @@
-package com.inthinc.QA.enums;
+package com.inthinc.pro.automation.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;

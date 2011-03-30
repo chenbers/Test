@@ -1,4 +1,4 @@
-package com.inthinc.QA.tiwiPro.enums;
+package com.inthinc.pro.automation.device_emulation.tiwiPro.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;

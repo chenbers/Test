@@ -1,4 +1,4 @@
-package com.inthinc.QA.tiwiPro;
+package com.inthinc.pro.automation.device_emulation.tiwiPro;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,14 +8,15 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.QA.tiwiPro.enums.TiwiAttrs;
-import com.inthinc.QA.tiwiPro.enums.TiwiNoteTypes;
-import com.inthinc.QA.tiwiPro.enums.TiwiGenerals.FwdCmdStatus;
-import com.inthinc.QA.util.QALogger;
-import com.inthinc.QA.util.StackToString;
+import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiAttrs;
+import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiNoteTypes;
+import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiGenerals.FwdCmdStatus;
+
+//import com.inthinc.QA.util.QALogger;//TODO: jwimmer: dtanner: commented to get this to compile
+//import com.inthinc.QA.util.StackToString;
 
 public class Package_tiwiPro_Note {
-	private final static Logger logger = Logger.getLogger(QALogger.class);
+	private final static Logger logger = Logger.getLogger(Package_tiwiPro_Note.class);
     
     private Integer nType, sats, heading, maprev, Speed, odometer, nTime;
     private Double lat, lng;
@@ -124,7 +125,8 @@ public class Package_tiwiPro_Note {
             
           }
           catch (ParseException e){
-            logger.debug(StackToString.toString(e));   
+            //logger.debug(StackToString.toString(e));//TODO: jwimmer: dtanner: commented to get this to compile
+        	e.printStackTrace();
           }
         
         return epoch_time;
@@ -135,7 +137,8 @@ public class Package_tiwiPro_Note {
     	try{
     		note = String.format("DeviceNote(nType=%d, nTime=\"%s\", sats=%d, heading=%d, maprev=%d, lat=%.5f, lng=%.5f, speed=%d, odometer=%d)", nType, nTime, sats, heading, maprev, lat, lng, Speed, odometer);
     	}catch(Exception e){
-    		logger.debug(StackToString.toString(e));
+    		//logger.debug(StackToString.toString(e));//TODO: jwimmer: dtanner: commented to get this to compile
+    		e.printStackTrace();
     	}
     	logger.debug(note);
     	return note;

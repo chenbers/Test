@@ -1,21 +1,21 @@
-package com.inthinc.QA.waysmart;
+package com.inthinc.pro.automation.device_emulation.waysmart;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.QA.deviceBase.Base;
-import com.inthinc.QA.hessian.CreateHessian;
-import com.inthinc.QA.util.QALogger;
-import com.inthinc.QA.waysmart.enums.Ways_SETTINGS;
+import com.inthinc.pro.automation.device_emulation.deviceBase.Base;
+import com.inthinc.pro.automation.device_emulation.waysmart.enums.Ways_SETTINGS;
+
+
 
 public class WaysmartDevice extends Base {
 	
-	private final static Logger logger = Logger.getLogger(QALogger.class);
+	private final static Logger logger = Logger.getLogger(WaysmartDevice.class);
 	
 	protected final static Integer productVersion = 2;
-	private CreateHessian hessian;
+	//private CreateHessian hessian;//TODO: jwimmer: dtanner: commented to get this to compile
 
 	public WaysmartDevice(String IMEI, String server, HashMap<Integer, String> settings) {
 		super(IMEI, server, settings, productVersion);
@@ -94,7 +94,7 @@ public class WaysmartDevice extends Base {
 	
 	protected void set_IMEI( String imei, String server, HashMap<Integer, String> settings ){
 		logger.debug("IMEI: "+imei+", Server: " + server);
-		hessian = new CreateHessian();
+		//hessian = new CreateHessian();//TODO: jwimmer: dtanner: commented to get this to compile
         super.set_IMEI(imei, server, settings, productVersion);
         Settings.put(Ways_SETTINGS.MCM_ID.getCode(), imei);
         imei = imei.replaceAll("MCM", "WW");
@@ -109,11 +109,12 @@ public class WaysmartDevice extends Base {
 
 	@Override
 	protected void set_server(String server) {
-		mcmProxy = hessian.getMcmProxy(server);
-		String url, port;
-		url = hessian.getUrl(false);
-		port = hessian.getPort(false).toString();
-		Settings.put(get_setting_int(Ways_SETTINGS.SERVER_IP), url+":"+port);
+		//TODO: jwimmer: dtanner: commented to get this to compile
+//		mcmProxy = hessian.getMcmProxy(server);
+//		String url, port;
+//		url = hessian.getUrl(false);
+//		port = hessian.getPort(false).toString();
+//		Settings.put(get_setting_int(Ways_SETTINGS.SERVER_IP), url+":"+port);
 	}
 
 	@Override
