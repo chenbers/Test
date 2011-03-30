@@ -1,8 +1,5 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
-import it.util.EventGenerator;
-import it.util.MCMSimulator;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +26,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 
 public class DriveDevice {
-    private static MCMSimulator mcmSim;
+    private static MCMSim mcmSim;
 
     public static void main(String[] args) {
     
@@ -94,8 +91,8 @@ public class DriveDevice {
     
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
-            mcmSim = (MCMSimulator) factory.create(
-                MCMSimulator.class, 
+            mcmSim = (MCMSim) factory.create(
+                MCMSim.class, 
                 //"dev-pro.inthinc.com", 
                 "localhost",
                 8090);
@@ -191,7 +188,7 @@ public class DriveDevice {
     private boolean genEvent(Event event, String imei) {
         List<byte[]> noteList = new ArrayList<byte[]>();
 
-        byte[] eventBytes = EventGenerator.createDataBytesFromEvent(event);
+        byte[] eventBytes = EventGen.createDataBytesFromEvent(event);
         noteList.add(eventBytes);
         boolean errorFound = false;
         int retryCnt = 0;
