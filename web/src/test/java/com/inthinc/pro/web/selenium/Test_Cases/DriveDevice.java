@@ -1,6 +1,5 @@
 package com.inthinc.pro.web.selenium.Test_Cases;
 
-import it.config.IntegrationConfig;
 import it.util.EventGenerator;
 import it.util.MCMSimulator;
 
@@ -14,31 +13,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.commons.httpclient.Credentials;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.apache.commons.httpclient.params.HttpClientParams;
-
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.FullEvent;
 import com.inthinc.pro.model.event.IgnitionOffEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 
-import org.jboss.resteasy.client.ClientExecutor;
-import org.jboss.resteasy.client.ClientRequest;
-import org.jboss.resteasy.client.ClientResponse;
-import org.jboss.resteasy.client.ProxyFactory;
-import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
-import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
@@ -54,96 +39,6 @@ public class DriveDevice {
     }
     
     public DriveDevice() {}
- 
-    private void start(List<Data> trip) {    
-
-        // where to run
-//        String host = "http://dev-pro.inthinc.com";
-        String host = "http://localhost";
-        int port = 8080;
-        String url = host + ":" + port + "/service/api";
-        
-        // set up connectivity
-        HttpClientParams params = new HttpClientParams();
-        params.setAuthenticationPreemptive(true);
-        HttpClient httpClient = new HttpClient(params);
-        Credentials defaultcreds = new UsernamePasswordCredentials("cjennings","password");
-        httpClient.getState().setCredentials(new AuthScope("localhost", port, AuthScope.ANY_REALM), defaultcreds);
-        ClientExecutor clientExecutor = new ApacheHttpClientExecutor(httpClient); 
-        
-        ClientResponse<String> response = null;
-        ClientRequest request = null;
-        
-        // loop, generate trips
-        int startIndex = 0;
-        for (;;) {
-            startIndex = (int)(Math.random() * trip.size() );
-            System.out.println("Start index: " + startIndex);
-            
-            if ( startIndex != 0 && startIndex != trip.size() ) {
-  
-                // trip start: eventService/createIgnitionOnEvent/{imei}/{lat}/{lng}/{currentSpeed}
-                String reqx = url + "/eventService/createIgnitionOnEvent/500000000000002/33.0104/-117.1110/60";
-                request = new ClientRequest(reqx,clientExecutor);  
-
-                try {
-                    response = request.get(String.class);
-                    
-                } catch (Exception e) {
-                    System.out.println("Web Service invocation problem, start trip: " + e.getMessage());
-                }  
-                System.out.println("Response for start point was: " + response.getStatus());
-
-                // locations and other notes
-                for ( int i = startIndex; i < trip.size(); i++ ) {
-                    
-                    // Aggressive 
-                    if (        trip.get(i).getnType() == 2 ) {
-                        
-                    // Speeding: /eventService/createSpeedEvent/{imei}/{lat}/{lng}/{currentSpeed}/{speedLimit}/{averageSpeed}/{distance}
-                    } else if ( trip.get(i).getnType() == 93 ) {
-                        String req = url + "/eventService/createSpeedEvent/" +
-                            "500000000000002" + "/" +
-                            trip.get(i).getLatitude() + "/" +
-                            trip.get(i).getLongitude() + "/" +
-                            trip.get(i).getSpeed() + "/" +
-                            trip.get(i).getSpeedLimit() + "/" +
-                            trip.get(i).getAvgSpeed() + "/" +
-                            trip.get(i).getDistance();
-                        request = new ClientRequest(req,clientExecutor);     
-                        try {
-                            response = request.get(String.class);
-
-                        } catch (Exception e) {
-                            System.out.println("Web Service invocation problem: " + e.getMessage());
-                        }    
-                        System.out.println("Response for speeding point was: " + response.getStatus());
-                    // Everything else
-                    } else {
-                        
-                    }
-
-                }
-                
-                // trip end: /eventService/createIgnitionOffEvent/{imei}/{lat}/{lng}/{currentSpeed}
-                String reqy = url + "/eventService/createIgnitionOffEvent/500000000000002/33.0104/-117.1110/60";
-                request = new ClientRequest(reqy,clientExecutor);     
-                try {
-                    response = request.get(String.class);
- 
-                } catch (Exception e) {
-                    System.out.println("Web Service invocation problem, end trip: " + e.getMessage());
-                }  
-                
-                System.out.println("Response for end point was: " + response.getStatus());
-            }
-            
-            try {
-                Thread.sleep(2000);
-            } catch (Exception e) {}
-        }
-        
-    }
     
     private List<Data> readRoute() {
         List<Data> tmp = new ArrayList<Data>();
