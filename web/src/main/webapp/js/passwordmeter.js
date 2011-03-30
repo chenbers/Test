@@ -184,6 +184,6 @@ function testPasswordStrength(passwd, formName)
 	}
 	//alert(formName+':passwordStrength');
 	document.getElementById(formName+':passwordStrength').value = intScore + ":" + minPasswordStrength;
-	document.getElementById(formName+":strengthMsg").innerHTML= (strVerdict);
+	document.getElementById(formName+"_strengthMsg").innerHTML= (strVerdict);
 	return intScore +":"+minPasswordStrength;
 }
