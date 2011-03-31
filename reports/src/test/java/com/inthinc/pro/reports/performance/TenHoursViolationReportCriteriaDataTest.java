@@ -1,30 +1,17 @@
 package com.inthinc.pro.reports.performance;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.joda.time.Interval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.performance.TenHoursViolationRecord;
-import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
-import com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl;
-import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
-import com.inthinc.pro.reports.performance.BaseDriveTimeUnitTest.MockDriveTimeDAO;
-import com.inthinc.pro.reports.performance.BaseDriveTimeUnitTest.MockDriverDAO;
-import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
 
 

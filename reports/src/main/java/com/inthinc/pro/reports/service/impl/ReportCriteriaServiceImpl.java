@@ -71,6 +71,7 @@ import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.reports.model.PieScoreData;
 import com.inthinc.pro.reports.model.PieScoreRange;
 import com.inthinc.pro.reports.performance.DriverHoursReportCriteria;
+import com.inthinc.pro.reports.performance.DriverPerformanceReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollDetailReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSignoffReportCriteria;
 import com.inthinc.pro.reports.performance.PayrollSummaryReportCriteria;
@@ -1110,6 +1111,22 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         criteria.init(accountGroupHierarchy, groupIDList, interval);
         return criteria;
     }
+
+    @Override
+    public ReportCriteria getDriverPerformanceIndividualReportCriteria(Integer driverID, Interval interval, Locale locale) {
+        DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria (ReportType.DRIVER_PERORMANCE_INDIVIDUAL, locale);
+        criteria.init(driverID, interval);
+        return criteria;
+    }
+
+
+    @Override
+    public ReportCriteria getDriverPerformanceReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, boolean group) {
+        DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria (ReportType.DRIVER_PERFORMANCE_TEAM, locale);
+        criteria.init(accountGroupHierarchy, groupID, interval);
+        return criteria;
+    }
+
 
     
     public DriveTimeDAO getDriveTimeDAO() {

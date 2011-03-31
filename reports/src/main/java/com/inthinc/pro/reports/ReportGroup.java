@@ -149,7 +149,6 @@ public enum ReportGroup
              new GroupType[]{}, ReportCategory.Performance,
              EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS),
              ReportType.PAYROLL_SIGNOFF),       
-     
      TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
              new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
@@ -159,8 +158,18 @@ public enum ReportGroup
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
             EnumSet.of(ReportAccountType.WAYSMART),
-            ReportType.DRIVER_HOURS);
-   
+            ReportType.DRIVER_HOURS),
+    DRIVER_PERFORMANCE_TEAM("Driver Performance (Team)", 34, EntityType.ENTITY_GROUP,
+                    new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+                    new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+                    EnumSet.of(ReportAccountType.WAYSMART),
+                    ReportType.DRIVER_PERFORMANCE_TEAM),
+     DRIVER_PERORMANCE_INDIVIDUAL("Driver Performance (Individual)", 35, EntityType.ENTITY_INDIVIDUAL_DRIVER,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+            EnumSet.of(ReportAccountType.WAYSMART),
+            ReportType.DRIVER_PERORMANCE_INDIVIDUAL);
+
     /* VEHICLE_USAGE("Vehicle usage", 19, EntityType.ENTITY_GROUP_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,

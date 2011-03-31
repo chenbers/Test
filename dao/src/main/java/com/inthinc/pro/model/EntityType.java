@@ -18,7 +18,8 @@ public enum EntityType implements BaseEnum
     ENTITY_GROUP_OR_DRIVER(6, "ENTITY_GROUP_OR_DRIVER", true), 
     ENTITY_GROUP_LIST_AND_IFTA(7, "ENTITY_GROUP_LIST_AND_IFTA", true),
     ENTITY_GROUP_AND_EXPIRED(8, "ENTITY_GROUP_AND_EXPIRED", true),
-    ENTITY_DEVICE(9, "ENTITY_DEVICE", false);
+    ENTITY_DEVICE(9, "ENTITY_DEVICE", false),
+    ENTITY_INDIVIDUAL_DRIVER(10, "ENTITY_INDIVIDUAL_DRIVER", true);
 
     private String description;
     private int code;
