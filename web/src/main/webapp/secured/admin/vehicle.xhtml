@@ -213,7 +213,7 @@
 
 
                     <rich:tab id="wirelineCmds" label="#{messages.wireline}" ontabenter="reRenderTab()" ontableave="reRenderTab()" 
-                    			rendered="#{not vehiclesBean.batchEdit and vehiclesBean.item.productType == 'WAYSMART' and vehiclesBean.item.editableVehicleSettings.wirelineModule == 'ENABLE'}">
+                    			rendered="#{not vehiclesBean.batchEdit and vehiclesBean.item.productType == 'WAYSMART'}">
     	             <a4j:region>
 	                  <a4j:jsFunction name="reRenderTab" reRender="wirelineCmdsPanel"></a4j:jsFunction>
                       <ul id="grid_nav" style="margin: 0;">

@@ -11,28 +11,6 @@
 <div class="spacer"></div>
 <div class="add_section_title"><h:outputText value="#{messages.wirelineInformation}" /></div>
 <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-	<tr>
-    	<td width="150" valign="top">
-        	<ui:include src="../../includes/admin/inputLabel.xhtml">
-				<ui:param name="required" value="TRUE"/>
-				<ui:param name="for" value="wirelineModule"/>
-				<ui:param name="fieldName" value="editableVehicleSettings.wirelineModule"/>
-				<ui:param name="editBean" value="#{vehiclesBean}"/>
-				<ui:param name="label" value="#{messages.wirelineModuleEnable}"/>
-  			</ui:include>
-		</td>
-		<td>
-        	<h:selectOneMenu value="#{vehiclesBean.item.editableVehicleSettings.wirelineModule}" id="wirelineModule" converter="SimpleBeanConverter" >
-            	<f:selectItems value="#{vehiclesBean.wirelineStatuses}"/>
-            	<a4j:support event="onchange" reRender="edit-form:options1" limitToList="true" ajaxSingle="true" oncomplete="checkMultiple(this)"/>
-			</h:selectOneMenu>
-		</td>
-	</tr>
-</table>
-
-<a4j:outputPanel id="options1" layout="block">
-<h:panelGroup id="options1Panel" rendered="#{vehiclesBean.item.editableVehicleSettings.wirelineModule == 'ENABLE'}">	
-	<table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
     <tr>
     	<td width="150" valign="top">
         	<ui:include src="../../includes/admin/inputLabel.xhtml">
@@ -91,8 +69,5 @@
 		</td>
 	</tr>
 </table>
-</h:panelGroup>
-</a4j:outputPanel>
-
 </a4j:region>
 </ui:composition>

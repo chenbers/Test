@@ -42,7 +42,6 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
-import com.inthinc.pro.model.WirelineStatus;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.util.MessageUtil;
@@ -726,10 +725,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return batchEditProductChoice;
     }
     
-    public List<SelectItem> getWirelineStatuses()
-    {
-        return SelectItemUtil.toList(WirelineStatus.class, false);
-    }
 
     public FwdCmdSpoolWSIridiumJDBCDAO getFcsIridiumDAO() {
         return fcsIridiumDAO;

@@ -4,7 +4,6 @@ import javax.faces.convert.ConverterException;
 
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.WirelineStatus;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
@@ -18,7 +17,6 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     private Integer hardVertical;
     
     
-    private WirelineStatus wirelineModule;
     private String  doorAlarmPasscode;
     private String  killMotorPasscode;
     private Integer autoArmTime;
@@ -35,7 +33,6 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     public WaySmartEditableVehicleSettings(	int vehicleID, Double speedLimit, Double speedBuffer, Double severeSpeed,
                                   			Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
                                   			Integer hardVertical, MeasurementType measurementType,
-                                  			WirelineStatus wirelineModule, 
                                   			String doorAlarmPasscode, 
                                   			String killMotorPasscode, Integer autoArmTime) {
         
@@ -49,7 +46,6 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
         setHardTurn(hardTurn);
         setHardVertical(hardVertical);
         this.measurementType = measurementType;
-        this.wirelineModule = wirelineModule;
         this.doorAlarmPasscode = doorAlarmPasscode; 
         this.killMotorPasscode = killMotorPasscode;
         this.autoArmTime = autoArmTime;
@@ -166,12 +162,6 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 	    return this;
 	}
 
-    public WirelineStatus getWirelineModule() {
-        return wirelineModule;
-    }
-    public void setWirelineModule(WirelineStatus wirelineModule) {
-        this.wirelineModule = wirelineModule;
-    }
     public String getDoorAlarmPasscode() {
         return doorAlarmPasscode;
     }
