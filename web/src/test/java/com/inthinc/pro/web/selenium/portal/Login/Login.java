@@ -1,8 +1,8 @@
 package com.inthinc.pro.web.selenium.portal.Login;
 
-import com.inthinc.pro.web.selenium.CoreMethodLib;
-import com.inthinc.pro.web.selenium.GlobalSelenium;
-import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
+import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.selenium.ErrorCatcher;
+import com.inthinc.pro.automation.selenium.GlobalSelenium;
 import com.inthinc.pro.web.selenium.portal.Login.LoginEnum;
 
 /****************************************************************************************
@@ -26,8 +26,7 @@ public class Login {
 	
 	public void page_navigateTo(){
 		//go to login screen
-		selenium.open(LoginEnum.URL.getText());//TODO: jwimmer: DTanner I pulled this into the <page>Enum... I'm OK if it live somewhere else, but would like to maintain the GOAL of NO hardcoded strings in the FRAMEWORK code  (script code I think we can make the argument to let hardcoded strings fly
-		//TODO: jwimmer: DTanner, you'll also note that I set this to login as opposed to logout... It seems to me that there will/should be test cases where you want to navigate to login without logging out first (there is a modal telling the user they are already logged in, and a return to dashboard link ...)
+		selenium.open(LoginEnum.LOGIN_URL);
 //		ck_login_page();
 	}
 	
@@ -79,7 +78,7 @@ public class Login {
 		selenium.click(LoginEnum.FORGOT_SEND);
 	}
 	
-    public void button_badCredOk_click() {
+    public void button_badCredentialsOk_click() {
         selenium.click(LoginEnum.ERROR_BUTTON);
         selenium.Pause(2);
         selenium.isNotVisible(LoginEnum.ERROR_HEADER);

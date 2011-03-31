@@ -2,13 +2,14 @@ package com.inthinc.pro.web.selenium.portal.Login;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.inthinc.pro.web.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.selenium.SeleniumEnums;
 
 // Enums have format NAME( Text, ID, X-Path, X-Path-Alternate )
 
 public enum LoginEnum implements SeleniumEnums {
 	
-    URL("/logout", "/login", null, null), //TODO: jwimmer: question for DTanner: I like the ideaof having ALL the page constants for each page in an enum.  how do you feel about keeping url/path info here?
+    LOGIN_URL("login", null, null, null),
+    LOGOUT_URL("logout", null, null, null),
     
 	/* Main Login Page Elements*/
 	

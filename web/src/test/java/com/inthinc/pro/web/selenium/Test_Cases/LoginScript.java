@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 
-import com.inthinc.pro.web.selenium.InthincTest;
+import com.inthinc.pro.automation.selenium.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 
 import java.io.BufferedReader;

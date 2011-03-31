@@ -1,9 +1,9 @@
 package com.inthinc.pro.web.selenium.portal.Admin.Users;
 
-import com.inthinc.pro.web.selenium.InthincTest;
-import com.inthinc.pro.web.selenium.CoreMethodLib;
-import com.inthinc.pro.web.selenium.GlobalSelenium;
-import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
+import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.selenium.ErrorCatcher;
+import com.inthinc.pro.automation.selenium.GlobalSelenium;
+import com.inthinc.pro.automation.selenium.InthincTest;
 
 /****************************************************************************************
  * @author : Lee Arrington

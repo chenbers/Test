@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.inthinc.pro.web.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.selenium.SeleniumEnums;
 
 public enum MastheadEnum implements SeleniumEnums {
     URL("/logout", "/login", null, null), //TODO: jwimmer: question for DTanner: I like the ideaof having ALL the page constants for each page in an enum.  how do you feel about keeping url/path info here?  

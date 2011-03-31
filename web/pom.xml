@@ -207,6 +207,10 @@
 			<artifactId>dao</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.inthinc.pro.automation</groupId>
+			<artifactId>automation</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.inthinc.pro.reports</groupId>
 			<artifactId>reports</artifactId>
 		</dependency>
@@ -308,20 +312,6 @@
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 			<version>2.1.7</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.jexcelapi</groupId>
-			<artifactId>jxl</artifactId>
-			<version>2.6</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

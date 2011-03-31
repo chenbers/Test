@@ -8,9 +8,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 //import com.inthinc.pro.web.selenium.ByEnum;
-import com.inthinc.pro.web.selenium.CoreMethodLib;
-import com.inthinc.pro.web.selenium.GlobalSelenium;
-import com.inthinc.pro.web.selenium.Page;
+import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.selenium.GlobalSelenium;
+import com.inthinc.pro.automation.selenium.Page;
 
 public class AppErrPage implements Page {
 
@@ -66,7 +66,7 @@ public class AppErrPage implements Page {
     public void isLoaded() {
         // TODO Auto-generated method stub
         String url = driver.getCurrentUrl();
-        assertTrue("ERROR: "+LoginEnum.URL.name(), url.endsWith(LoginEnum.URL.getID()));
+        assertTrue("ERROR: "+LoginEnum.LOGIN_URL.name(), url.endsWith(LoginEnum.LOGIN_URL.getID()));
         
     }
 

@@ -4,11 +4,13 @@ package com.inthinc.pro.web.selenium.portal.Home.Team;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
-import com.inthinc.pro.web.selenium.CoreMethodLib;
+
+import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.selenium.ErrorCatcher;
+import com.inthinc.pro.automation.selenium.GlobalSelenium;
+import com.inthinc.pro.automation.selenium.SeleniumServerLib;
+
 import org.apache.commons.lang.StringEscapeUtils;
-import com.inthinc.pro.web.selenium.SeleniumServerLib;
-import com.inthinc.pro.web.selenium.Debug.ErrorCatcher;
-import com.inthinc.pro.web.selenium.GlobalSelenium;
 /****************************************************************************************
  * Purpose: 
  * @author 

@@ -1,6 +1,6 @@
 package com.inthinc.pro.web.selenium.portal.Notifications;
 
-import com.inthinc.pro.web.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.selenium.SeleniumEnums;
 
 public enum NotificationsBarEnum implements SeleniumEnums {
 	

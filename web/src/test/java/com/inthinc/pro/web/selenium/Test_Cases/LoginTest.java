@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.web.selenium.InthincTest;
+import com.inthinc.pro.automation.selenium.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
 import com.inthinc.pro.web.selenium.portal.Masthead.Masthead;
 @Ignore
@@ -65,7 +65,7 @@ public class LoginTest extends InthincTest {
         l.page_logIn_validate();
         l.button_logIn_click();
         l.modal_badCred_validate();
-        l.button_badCredOk_click(); //TODO: jwimmer: DTanner: this method verifies that the modal/popup closed... we should talk on this.
+        l.button_badCredentialsOk_click(); //TODO: jwimmer: DTanner: this method verifies that the modal/popup closed... we should talk on this.
     }
 
     private void forgotPassword_Scenario_enterEmailClickSend(String emailAddress) {
