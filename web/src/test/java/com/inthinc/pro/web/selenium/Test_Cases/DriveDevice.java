@@ -59,8 +59,8 @@ public class DriveDevice {
                 d.setSpeed(Integer.parseInt(st.nextToken().trim()));
                 d.setOdometer(Integer.parseInt(st.nextToken().trim()));
                 d.setFlags(Integer.parseInt(st.nextToken().trim()));
-                d.setLatitude(Double.parseDouble(st.nextToken().trim()));
-                d.setLongitude(Double.parseDouble(st.nextToken().trim()));
+                d.setLatitude(Double.parseDouble(st.nextToken()));
+                d.setLongitude(Double.parseDouble(st.nextToken()));
                 d.setTopSpeed(Integer.parseInt(st.nextToken().trim()));
                 d.setAvgSpeed(Integer.parseInt(st.nextToken().trim()));
                 d.setSpeedLimit(Integer.parseInt(st.nextToken().trim()));
@@ -93,8 +93,8 @@ public class DriveDevice {
         try {
             mcmSim = (MCMSim) factory.create(
                 MCMSim.class, 
-                //"dev-pro.inthinc.com", 
-                "localhost",
+                "dev-pro.inthinc.com", 
+//                "localhost",
                 8090);
         } catch ( Exception e) {
             System.out.println("Unable to get the mcmproxy: " + e.getMessage());
@@ -111,16 +111,17 @@ public class DriveDevice {
                 System.out.println("Start index: " + startIndex);
                 
                 Data start = trip.get(startIndex);
-                rc = genEvent("500000000000002", NoteType.IGNITION_ON.getCode(), start.getLatitude(), start.getLongitude());
+                rc = genEvent("500000000007272", NoteType.IGNITION_ON.getCode(), start.getLatitude(), start.getLongitude());
                 System.out.println("==> Start insert: " + rc);
                 Thread.sleep(15000);
 
                 // locations and other notes
                 for ( int i = startIndex + 1; i < trip.size() - 1; i++ ) {
                     Data d = trip.get(i);
-                    System.out.println("====> index: " + i + " is a note of type: " + d.getnType());
+                    System.out.println("====> index: " + i + " is a note of type: " + d.getnType() + 
+                            " lat " + d.getLatitude() + " lng: " + d.getLongitude());
                     
-                    rc = genEvent("500000000000002", d.getnType(), d.getLatitude(), d.getLongitude());
+                    rc = genEvent("500000000007272", d.getnType(), d.getLatitude(), d.getLongitude());
                     System.out.println("==> insert: " + rc);
                     Thread.sleep(15000);
                 }
@@ -129,7 +130,7 @@ public class DriveDevice {
                 System.out.println("End index: " + (trip.size()-1));
                 
                 Data end = trip.get(trip.size()-1);
-                rc = genEvent("500000000000002", NoteType.IGNITION_OFF.getCode(), end.getLatitude(), end.getLongitude() );
+                rc = genEvent("500000000007272", NoteType.IGNITION_OFF.getCode(), end.getLatitude(), end.getLongitude() );
                 System.out.println("==> End index: " + rc);
             }
 //        }
