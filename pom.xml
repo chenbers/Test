@@ -258,6 +258,11 @@ WWUUnm]]>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.inthinc.pro.automation</groupId>
+				<artifactId>automation</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.richfaces.framework</groupId>
 				<artifactId>richfaces-api</artifactId>
 				<version>${richfaces.version}</version>
