@@ -26,11 +26,13 @@
 			<groupId>com.inthinc.pro.dao</groupId>
 			<artifactId>dao</artifactId>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>com.inthinc.pro.webutil</groupId>
 			<artifactId>webutil</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
