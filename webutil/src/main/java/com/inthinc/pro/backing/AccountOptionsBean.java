@@ -71,7 +71,7 @@ public class AccountOptionsBean extends BaseBean {
     public List<SelectItem> getLoginExpireOptions() {
         List<SelectItem> expireOptions = new ArrayList<SelectItem>();
         //number of days before password will expire regardless of use
-        expireOptions.add(new SelectItem(0, "Never"));
+        expireOptions.add(new SelectItem(null, "Never"));
         expireOptions.add(new SelectItem(15, "15"));
         expireOptions.add(new SelectItem(30, "30"));
         expireOptions.add(new SelectItem(45, "45"));
@@ -84,7 +84,7 @@ public class AccountOptionsBean extends BaseBean {
     public List<SelectItem> getPasswordExpireOptions() {
         List<SelectItem> expireOptions = new ArrayList<SelectItem>();
         //number of days before login will expire if not used
-        expireOptions.add(new SelectItem(0, "Never"));
+        expireOptions.add(new SelectItem(null, "Never"));
         expireOptions.add(new SelectItem(90, "90"));
         expireOptions.add(new SelectItem(120, "120"));
         expireOptions.add(new SelectItem(180, "180"));

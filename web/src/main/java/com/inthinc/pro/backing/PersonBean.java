@@ -292,31 +292,33 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public static Integer getLoginDaysRemaining(Account account, User user) {
         Integer loginExpire;
         Integer daysSinceLastLogin = (user.getLastLogin()!=null)?DateUtil.differenceInDays(user.getLastLogin(), new Date()):0;
+        Integer NOT_SET_TO_EXPIRE = 1;//not set for this account, so any positive non-zero integer will do
         try {
             if(account.getProps().getLoginExpire() == null)
-                return 1;//not set for this account, so any positive non-zero integer will do
-            loginExpire= Integer.parseInt(account.getProps().getLoginExpire());
+                return NOT_SET_TO_EXPIRE;
+            loginExpire = Integer.parseInt(account.getProps().getLoginExpire());
         } catch (NumberFormatException nfe) {
             Log.error("NumberFormatException for account.props.loginExpire:"+account.getProps().getLoginExpire());
-            return 1; //log but do not break.  return as though not set
+            return NOT_SET_TO_EXPIRE;
         }
-        return loginExpire - daysSinceLastLogin;
+        return (loginExpire!=0)? loginExpire - daysSinceLastLogin:NOT_SET_TO_EXPIRE;
     }
     public Integer getPasswordDaysRemaining() {
         return getPasswordDaysRemaining(getAccount(), this.getUser());
     }
     public static Integer getPasswordDaysRemaining(Account account, User user) {
         Integer passwordExpire;
+        Integer EXPIRES_OUTSIDE_VIEWABLE_RANGE = 365;
         try {
             if(account.getProps().getPasswordExpire() == null)
-                return 365;//return an integer greater than ever need be shown on the password change warning/reminder
+                return EXPIRES_OUTSIDE_VIEWABLE_RANGE;
             passwordExpire= Integer.parseInt(account.getProps().getPasswordExpire());
         } catch (NumberFormatException nfe) {
             Log.error("NumberFormatException for account.props.passwordExpire:"+account.getProps().getPasswordExpire());
-            return 365; //log but do not break;  return as though not set
+            return EXPIRES_OUTSIDE_VIEWABLE_RANGE;
         }
         Integer daysSinceModified = (user.getModified()!=null)?DateUtil.differenceInDays(user.getModified(), new Date()):0;
-        return passwordExpire - daysSinceModified;
+        return (passwordExpire!=0)?passwordExpire - daysSinceModified:EXPIRES_OUTSIDE_VIEWABLE_RANGE;
     }
     @Override
     protected List<PersonView> loadItems() {
