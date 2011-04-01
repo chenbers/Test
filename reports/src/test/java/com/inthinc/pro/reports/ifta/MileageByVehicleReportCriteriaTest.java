@@ -29,7 +29,7 @@ import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 
 
-public class MileageByVehicleReportCriteriaTest extends BaseUnitTest {
+public class MileageByVehicleReportCriteriaTest { //extends BaseUnitTest {
     
     // Constant values
     private final Integer GROUP_ID = new Integer(2);

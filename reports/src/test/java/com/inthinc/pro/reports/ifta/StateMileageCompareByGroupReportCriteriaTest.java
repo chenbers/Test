@@ -27,7 +27,7 @@ import com.inthinc.pro.model.StateMileage;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
 
-public class StateMileageCompareByGroupReportCriteriaTest extends BaseUnitTest {
+public class StateMileageCompareByGroupReportCriteriaTest { // extends BaseUnitTest {
 
     // Constant values
     private final Integer GROUP_ID = new Integer(2);

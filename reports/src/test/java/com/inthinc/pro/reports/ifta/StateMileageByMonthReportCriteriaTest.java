@@ -31,7 +31,7 @@ import com.inthinc.pro.reports.ifta.model.StateMileageByMonth;
 /**
  * Test for StateMileageByMonthReportCriteria.
  */
-public class StateMileageByMonthReportCriteriaTest extends BaseUnitTest {
+public class StateMileageByMonthReportCriteriaTest {//extends BaseUnitTest {
     
     // Constant values
     private final Integer GROUP_ID = new Integer(2);

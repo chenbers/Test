@@ -30,7 +30,7 @@ import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.dao.mock.MockStateMileageDAO;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 
-public class StateMileageByVehicleRoadStatusReportCriteriaTest extends BaseUnitTest {
+public class StateMileageByVehicleRoadStatusReportCriteriaTest { //extends BaseUnitTest {
     
     // Constant values
     private final Integer GROUP_ID = new Integer(177);

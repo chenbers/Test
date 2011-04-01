@@ -38,7 +38,7 @@ import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
 /**
  * Unit Test for the StateMileageFuelByVehicle class.
  */
-public class StateMileageFuelByVehicleReportCriteriaTest extends BaseUnitTest {
+public class StateMileageFuelByVehicleReportCriteriaTest { //extends BaseUnitTest {
 
     private static final String GROUP_NAME_1 = "GN1";
 	private static final String GROUP_NAME_2 = "GN2";
