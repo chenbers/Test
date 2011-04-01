@@ -3,7 +3,6 @@ package com.inthinc.pro.web.selenium.portal.Admin.Users;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
-import com.inthinc.pro.automation.selenium.InthincTest;
 
 /****************************************************************************************
  * @author : Lee Arrington
@@ -11,7 +10,7 @@ import com.inthinc.pro.automation.selenium.InthincTest;
  * Last Update:  11/24/10
  ****************************************************************************************/
 
-public class UserAdmin extends InthincTest {
+public class UserAdmin {
 	
 	//Define Class Objects
 	private final String add_user_page = "/tiwipro/app/admin/editPerson";
@@ -59,7 +58,7 @@ public class UserAdmin extends InthincTest {
 		//loop though list incrementing by one
 		for (int currow = 0;currow<total; currow++){
 			//get text for current row
-			curtext = selenium.getText(userlistrowitem + currow + ":personTableName", error_name );
+			curtext = selenium.verifyText(userlistrowitem + currow + ":personTableName", error_name );
 			//when item matches set return flag and break out of loop
 			if (searchtext.contentEquals(curtext)){
 				found = "yes";

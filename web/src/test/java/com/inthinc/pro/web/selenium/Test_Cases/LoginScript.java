@@ -5,8 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 
-import com.inthinc.pro.automation.selenium.InthincTest;
 import com.inthinc.pro.web.selenium.portal.Login.Login;
+import com.inthinc.pro.web.selenium.Test_Cases.WebTest;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class LoginScript extends InthincTest {
+public class LoginScript extends WebTest {
     
     // map of frequently used elements
     private HashMap<String,String> macro = new HashMap<String,String>();

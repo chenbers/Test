@@ -3,11 +3,6 @@ package com.inthinc.pro.automation.selenium;
 import java.util.HashMap;
 
 import org.apache.commons.httpclient.NameValuePair;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.notification.StoppedByUserException;
 
 import com.inthinc.pro.rally.RallyWebServices;
 import com.inthinc.pro.rally.TestCaseResult;
@@ -39,19 +34,17 @@ public abstract class InthincTest {
 
 	private static CoreMethodLib selenium;
 
-	@BeforeClass
-	public static void start_server() {
+	public static void beforeClass() {
 		try {
 			rally = new TestCaseResult(username, password, workspace);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new StoppedByUserException();
+			throw new NullPointerException();
 		}
 
 	}// end setup
 
-	@Before
-	public void start_selenium() {
+	public void before() {
 		try {
 			selenium = GlobalSelenium.getYourOwn();
 			startTime = System.currentTimeMillis() / 1000;
@@ -59,13 +52,12 @@ public abstract class InthincTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			skip = true;
-			throw new StoppedByUserException();
+			throw new NullPointerException();
 		}
 
 	}
 
-	@After
-	public void stop_selenium() {
+	public void after() {
 		if (!skip) {
 			try {
 				rally.setBuildNumber(selenium.getText("footerForm:version"));
@@ -91,8 +83,7 @@ public abstract class InthincTest {
 		startTime = null;
 	}
 
-	@AfterClass
-	public static void stop_server() {
+	public static void afterClass() {
 		GlobalSelenium.dieSeleniumDie();
 
 	}// tear down

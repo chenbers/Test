@@ -31,7 +31,7 @@ public class Login {
 	}
 	
 	public void page_login(String username, String password){
-		if (selenium.getLocation().indexOf("login")==-1){page_navigateTo();}//TODO: jwimmer: DTanner: no hard coded String(s) in FRAMEWORK
+		if(selenium.verifyLocation(LoginEnum.LOGIN_URL)){page_navigateTo();}//TODO: jwimmer: DTanner: no hard coded String(s) in FRAMEWORK
 		textField_username_type(username);
 		textField_fieldPassword_type(password);
 		button_logIn_click();

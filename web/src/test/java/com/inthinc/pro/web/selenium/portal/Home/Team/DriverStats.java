@@ -1,23 +1,18 @@
 package com.inthinc.pro.web.selenium.portal.Home.Team;
 
 
-import static org.junit.Assert.*;
-
-import java.util.HashMap;
 
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
-import com.inthinc.pro.automation.selenium.SeleniumServerLib;
 
-import org.apache.commons.lang.StringEscapeUtils;
 /****************************************************************************************
  * Purpose: 
  * @author 
  * Last Update:  
  ****************************************************************************************/
 
-public class DriverStats extends SeleniumServerLib {
+public class DriverStats {
 	
 	//Define Class Objects
 	private final String driverstatsform = "teamStatisticsForm:drivers:";
@@ -57,19 +52,19 @@ public class DriverStats extends SeleniumServerLib {
 	}
 	
 	public void chkTeamName(String team, String error_name){
-		selenium.getText(teamnameid,team, error_name);
+		selenium.verifyText(teamnameid,team, error_name);
 	}
 	
 	public void chkTeamCrashes(String crashnum , String error_name){
-		selenium.getText(crashpermillid,crashnum + " Crashes per million miles", error_name);
+		selenium.verifyText(crashpermillid,crashnum + " Crashes per million miles", error_name);
 	}
 	
 	public void chkTeamCrashDays(String days, String error_name){
-		selenium.getText(dayssincecrashid + " Days since last crash",days, error_name);
+		selenium.verifyText(dayssincecrashid + " Days since last crash",days, error_name);
 	}
 	
 	public void chkTeamCrashMiles(String miles, String error_name){
-		selenium.getText(milessincecrashid +  " Miles since last crash", miles, error_name);
+		selenium.verifyText(milessincecrashid +  " Miles since last crash", miles, error_name);
 	}
 		
 	public String SearchList(String searchtext, int total, String error_name){
@@ -79,7 +74,7 @@ public class DriverStats extends SeleniumServerLib {
 		//loop though list incrementing by one
 		for (int currow = 0;currow<total; currow++){
 			//get text for current row
-			curtext = selenium.getText(driverstatsform + currow + ":j_id215", error_name );
+			curtext = selenium.verifyText(driverstatsform + currow + ":j_id215", error_name );
 			//when item matches set return flag and break out of loop
 			if (searchtext.contentEquals(curtext)){
 				found = "yes";
@@ -97,11 +92,11 @@ public class DriverStats extends SeleniumServerLib {
 		//loop though list incrementing by one
 		for (int currow = 0;currow<total; currow++){
 			//get text for current row
-			curtext = selenium.getText(driverstatsform + currow + ":j_id215", error_name );
+			curtext = selenium.verifyText(driverstatsform + currow + ":j_id215", error_name );
 			//when item matches set return flag and break out of loop
 			if (searchtext.contentEquals(curtext)){
 				//get selected item value for current row
-				curtext = selenium.getText(driverstatsform + currow + ":newTeamStatsTab-" + item, error_name );
+				curtext = selenium.verifyText(driverstatsform + currow + ":newTeamStatsTab-" + item, error_name );
 				System.out.print(searchtext + " found in list " + error_name);
 				break;
 				}
@@ -135,11 +130,11 @@ public class DriverStats extends SeleniumServerLib {
 		//loop though list incrementing by one
 		for (int currow = 0;currow<total; currow++){
 			//get text for current row
-			curtext = selenium.getText(driverstatsform + currow + ":j_id215", error_name );
+			curtext = selenium.verifyText(driverstatsform + currow + ":j_id215", error_name );
 			//when item matches set return flag and break out of loop
 			if (searchtext.contentEquals(curtext)){
 				//get selected item value for current row
-				curtext = selenium.getText(driverstatsform + currow + ":newTeamStatsTab-" + item, error_name );
+				curtext = selenium.verifyText(driverstatsform + currow + ":newTeamStatsTab-" + item, error_name );
 				//convert text value to integer
 				 try
 			        {
@@ -167,9 +162,9 @@ public class DriverStats extends SeleniumServerLib {
 				(colhead.contentEquals("saftyGroupLink"))|| (colhead.contentEquals("Stops")))){
 		//Special Case: Change var to handle
 		if (colhead.contentEquals("Stops")){colhead = "j_id184";}
-			curvalue = selenium.getText(totaldriverstatsform + colhead,error_name);
+			curvalue = selenium.verifyText(totaldriverstatsform + colhead,error_name);
 		}
-			curvalue = selenium.getText(totaldriverstatsform + "newTeamStatsTab-totals" + colhead,error_name);
+			curvalue = selenium.verifyText(totaldriverstatsform + "newTeamStatsTab-totals" + colhead,error_name);
         System.out.println("Value found: " + curvalue);
         //compare values
         selenium.AssertEquals(value, curvalue, error_name);
