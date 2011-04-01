@@ -248,6 +248,11 @@ WWUUnm]]>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
+				<groupId>com.inthinc.pro.automation</groupId>
+				<artifactId>automation</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.inthinc.pro.dao</groupId>
 				<artifactId>dao</artifactId>
 				<version>${project.version}</version>
@@ -258,8 +263,8 @@ WWUUnm]]>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.inthinc.pro.automation</groupId>
-				<artifactId>automation</artifactId>
+				<groupId>com.inthinc.pro.webutil</groupId>
+				<artifactId>webutil</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -512,7 +517,7 @@ WWUUnm]]>
 				<artifactId>selenium</artifactId>
 				<version>2.0b1</version>
 				<type>jar</type>
-				<scope>test</scope>
+				<scope>compile</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.seleniumhq.selenium</groupId>
@@ -539,13 +544,11 @@ WWUUnm]]>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>${log4j.version}</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 	<reporting>

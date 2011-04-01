@@ -266,7 +266,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 		</dependency>
-		<!-- added for spring junit tests -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -307,6 +306,10 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.lowagie</groupId>
@@ -366,6 +369,7 @@
 			<version>1.3</version>
 			<scope>compile</scope>
 		</dependency>
+		<!-- added for spring junit tests -->
 		 <!-- <dependency>
 		   <groupId>com.inthinc</groupId>
    			<artifactId>iwi_viewer</artifactId>
