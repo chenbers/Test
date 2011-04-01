@@ -27,8 +27,8 @@
 			<artifactId>dao</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.inthinc.pro.webutil</groupId>
-			<artifactId>webutil</artifactId>
+			<groupId>javax.faces</groupId>
+			<artifactId>jsf-api</artifactId>
 		</dependency>
 		<dependency>
 		    <groupId>commons-httpclient</groupId>
