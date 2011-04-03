@@ -417,7 +417,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 Group group = groupDAO.findByID(reportSchedule.getGroupID());
                 reportSchedule.setGroupName(group.getName());
             }
-            if (reportSchedule.getGroupIDList() != null) {
+            if (reportSchedule.getGroupIDList() != null && !reportSchedule.getGroupIDList().isEmpty()) {
                 StringBuffer buffer = new StringBuffer();
                 for (Integer grpID : reportSchedule.getGroupIDList()) {
                     Group group = this.getGroupHierarchy().getGroup(grpID);
@@ -622,7 +622,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 reportScheduleView.setGroupName(group.getName());
             }
         }
-        if (reportSchedule.getGroupIDList() != null) {
+        if (reportSchedule.getGroupIDList() != null && !reportSchedule.getGroupIDList().isEmpty()) {
             StringBuffer buffer = new StringBuffer();
             for (Integer  grpID : reportSchedule.getGroupIDList()) {
                 Group group = this.getGroupHierarchy().getGroup(grpID);
@@ -690,7 +690,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         if (getItem() == null || getItem().getReport() == null)
             return false;
         EntityType entityType = getItem().getReport().getEntityType();
-        if (entityType == EntityType.ENTITY_GROUP)
+        if (entityType == EntityType.ENTITY_GROUP || entityType == EntityType.ENTITY_INDIVIDUAL_DRIVER)
             return true;
         if (entityType == EntityType.ENTITY_GROUP_OR_DRIVER) {
             ReportParamType paramType = getItem().getParamType();

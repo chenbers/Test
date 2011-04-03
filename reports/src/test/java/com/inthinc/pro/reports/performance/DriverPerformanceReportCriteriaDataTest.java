@@ -18,7 +18,7 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
     @Test
     public void individualDriverTest() {
         
-        DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria(ReportType.DRIVER_PERORMANCE_INDIVIDUAL, Locale.US);
+        DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria(ReportType.DRIVER_PERFORMANCE_INDIVIDUAL, Locale.US);
         Interval interval = initInterval();
 
         criteria.setDriverPerformanceDAO(new MockDriverPerformanceDAO(interval));

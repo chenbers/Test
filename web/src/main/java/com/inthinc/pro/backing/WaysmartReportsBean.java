@@ -53,7 +53,7 @@ public class WaysmartReportsBean extends ReportsBean {
         itemGroups.add(getBlankGroup());
         
         itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
-        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance)));
+        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance, ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL)));
         
         itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
         		ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));
@@ -67,14 +67,25 @@ public class WaysmartReportsBean extends ReportsBean {
      * @param category Category of reports
      * @return Array of report types as Faces SelectItems
      */
-	private SelectItem[] getItemsByCategory(ReportCategory category) {
+	private SelectItem[] getItemsByCategory(ReportCategory category, ReportGroup... excludeItem) {
         List<SelectItem> items = new ArrayList<SelectItem>();
         for (ReportGroup rt : EnumSet.allOf(ReportGroup.class)) {
             if (!rt.isCategory(category)) continue;
             if (rt.getRequiresHOSAccount() && !getAccountIsHOS())
                 continue;
-            items.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
-            reportGroupMap.put(rt.getCode(), rt);
+            
+            boolean exclude = false;
+            for(int i=0;i<excludeItem.length;i++)
+                if(excludeItem[i] == rt) {
+                    exclude = true;
+                    break;
+                }
+                    
+                    
+            if (!exclude) {
+                items.add(new SelectItem(rt.getCode(), MessageUtil.getMessageString(rt.toString())));
+                reportGroupMap.put(rt.getCode(), rt);
+            }
         }
 		return items.toArray(new SelectItem[0]);
 	}

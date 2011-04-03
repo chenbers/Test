@@ -20,16 +20,19 @@ import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Occurrence;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
@@ -59,6 +62,7 @@ public class EmailReportJob extends QuartzJobBean {
     private UserDAO userDAO;
     private GroupDAO groupDAO;
     private AccountDAO accountDAO;
+    private DriverDAO driverDAO;
 
     private String webContextPath;
     private String encryptPassword;
@@ -103,9 +107,9 @@ public class EmailReportJob extends QuartzJobBean {
 
         for (ReportSchedule reportSchedule : reportSchedules) {
             logger.debug("Begin Validation: " + reportSchedule.getName());
-            if (emailReport(reportSchedule)) {
-                User user = userDAO.findByID(reportSchedule.getUserID());
-                if (user.getStatus().equals(Status.ACTIVE) && reportSchedule.getStatus().equals(Status.ACTIVE)) { // If the users status is not active, then the reports will no
+            User user = userDAO.findByID(reportSchedule.getUserID());
+            if (user != null && user.getStatus().equals(Status.ACTIVE) && reportSchedule.getStatus().equals(Status.ACTIVE)) { // If the users status is not active, then the reports will no
+                if (emailReport(reportSchedule, user.getPerson())) {
                     // longer go out for that user.
                     Calendar todaysDate = Calendar.getInstance(user.getPerson().getTimeZone());
                     if (logger.isDebugEnabled()) {
@@ -113,7 +117,32 @@ public class EmailReportJob extends QuartzJobBean {
                         logger.debug(reportSchedule.toString());
                     }
                     try {
-                        processReportSchedule(reportSchedule);
+                        ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
+                        if (reportGroup == null) {
+                            logger.error("null reportGroup for schedule ID " + reportSchedule.getReportID());
+                            continue;
+                        }
+                        if (reportGroup.getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER) {
+                            List<Driver> driverList = driverDAO.getAllDrivers(reportSchedule.getGroupID());
+                            List<String> emailToList = new ArrayList<String>();
+                            for (Driver driver : driverList) {
+                                if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
+                                    logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
+                                else {
+                                    emailToList.clear();
+                                    emailToList.add(driver.getPerson().getPriEmail());
+                                    reportSchedule.setDriverID(driver.getDriverID());
+                                    reportSchedule.setEmailTo(emailToList);
+                                    processReportSchedule(reportSchedule, driver.getPerson());
+                                }
+                            }
+                            reportSchedule.setDriverID(null);
+                            reportSchedule.setEmailTo(null);
+                            
+                        }
+                        else {
+                            processReportSchedule(reportSchedule, user.getPerson());
+                        }
                         reportSchedule.setLastDate(todaysDate.getTime());
                         Integer modified = reportScheduleDAO.update(reportSchedule);
                         if (logger.isDebugEnabled()) {
@@ -132,14 +161,13 @@ public class EmailReportJob extends QuartzJobBean {
     }
 
     @SuppressWarnings("unchecked")
-    private void processReportSchedule(ReportSchedule reportSchedule) {
+    private void processReportSchedule(ReportSchedule reportSchedule, Person person) {
         ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
         if (reportGroup == null) {
         	logger.error("null reportGroup for schedule ID " + reportSchedule.getReportID());
         	return;
         }
         List<ReportCriteria> reportCriteriaList = new ArrayList<ReportCriteria>();
-        User user = userDAO.findByID(reportSchedule.getUserID());
         for (int i = 0; i < reportGroup.getReports().length; i++) {
             Duration duration = reportSchedule.getReportDuration();
             if (duration == null) {
@@ -155,163 +183,172 @@ public class EmailReportJob extends QuartzJobBean {
             }
             switch (reportGroup.getReports()[i]) {
                 case OVERALL_SCORE:
-                    reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    reportCriteriaList.add(reportCriteriaService.getOverallScoreReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale()));
                     break;
                 case TREND:
-                    reportCriteriaList.add(reportCriteriaService.getTrendChartReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    reportCriteriaList.add(reportCriteriaService.getTrendChartReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale()));
                     break;
                 case MPG_GROUP:
-                    reportCriteriaList.add(reportCriteriaService.getMpgReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale()));
+                    reportCriteriaList.add(reportCriteriaService.getMpgReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale()));
                     break;
                 case DEVICES_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), user.getPerson().getLocale(), true));
+                    reportCriteriaList.add(reportCriteriaService.getDevicesReportCriteria(reportSchedule.getGroupID(), person.getLocale(), true));
                     break;
                 case DRIVER_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale(), true));
+                    reportCriteriaList.add(reportCriteriaService.getDriverReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale(), true));
                     break;
                 case VEHICLE_REPORT:
-                    reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), duration, user.getPerson().getLocale(), true));
+                    reportCriteriaList.add(reportCriteriaService.getVehicleReportCriteria(reportSchedule.getGroupID(), duration, person.getLocale(), true));
                     break;
                 case IDLING_REPORT:
                     Interval interval = new Interval(new DateMidnight(new DateTime().minusWeeks(1), dateTimeZone), new DateMidnight(new DateTime(), dateTimeZone).toDateTime().plusDays(1).minus(ONE_MINUTE));
-                    reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), interval, user.getPerson().getLocale(), true));
+                    reportCriteriaList.add(reportCriteriaService.getIdlingReportCriteria(reportSchedule.getGroupID(), interval, person.getLocale(), true));
                     break;
                 case TEAM_STATISTICS_REPORT:
                     reportCriteriaList.add(reportCriteriaService.getTeamStatisticsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
-                    		DateTimeZone.forTimeZone(user.getPerson().getTimeZone()), user.getPerson().getLocale(), true));
+                    		DateTimeZone.forTimeZone(person.getTimeZone()), person.getLocale(), true));
                 	break;
                 case TEAM_STOPS_REPORT:
                     reportCriteriaList.add(reportCriteriaService.getTeamStopsReportCriteria(reportSchedule.getGroupID(), timeFrame, 
-                            DateTimeZone.forTimeZone(user.getPerson().getTimeZone()), user.getPerson().getLocale(), true));
+                            DateTimeZone.forTimeZone(person.getTimeZone()), person.getLocale(), true));
                     break;     
                 case HOS_DAILY_DRIVER_LOG_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER )
                         reportCriteriaList.addAll(reportCriteriaService.getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), 
-                            timeFrame.getInterval(), user.getPerson().getLocale(), user.getPerson().getMeasurementType() == MeasurementType.METRIC));
+                            timeFrame.getInterval(), person.getLocale(), person.getMeasurementType() == MeasurementType.METRIC));
                     else 
                         reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),  
-                                reportSchedule.getGroupIDList(),timeFrame.getInterval(),  user.getPerson().getLocale(), user.getPerson().getMeasurementType() == MeasurementType.METRIC));
+                                reportSchedule.getGroupIDList(),timeFrame.getInterval(),  person.getLocale(), person.getMeasurementType() == MeasurementType.METRIC));
                     break;
                 case HOS_VIOLATIONS_SUMMARY_REPORT:
                     reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(), 
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                 case HOS_VIOLATIONS_DETAIL_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER )
                         reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), timeFrame.getInterval(), 
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     else
                         reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getGroupIDList(), timeFrame.getInterval(), 
-                                user.getPerson().getLocale()));
+                                person.getLocale()));
                     break;
                 case HOS_DRIVER_DOT_LOG_REPORT:
                     reportCriteriaList.add(reportCriteriaService.getHosDriverDOTLogReportCriteria(reportSchedule.getDriverID(), timeFrame.getInterval(), 
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                 case DOT_HOURS_REMAINING:
                     reportCriteriaList.add(reportCriteriaService.getDotHoursRemainingReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupIDList(),  
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                 case HOS_ZERO_MILES:
                     reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                 case HOS_EDITS:
                     reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                 case PAYROLL_DETAIL:
                     reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                 case PAYROLL_SIGNOFF:
                     reportCriteriaList.add(reportCriteriaService.getPayrollSignoffReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), timeFrame.getInterval(),  
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                 case PAYROLL_SUMMARY:
                     reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                     
                     
                 case TEN_HOUR_DAY_VIOLATIONS:
-                	reportCriteriaList.add(reportCriteriaService.getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),reportSchedule.getGroupID(), timeFrame.getInterval(), user.getPerson().getLocale()));
+                	reportCriteriaList.add(reportCriteriaService.getTenHoursDayViolationsCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale()));
                 	break;
                 	
                 case DRIVER_HOURS:
-                	reportCriteriaList.add(reportCriteriaService.getDriverHoursReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),reportSchedule.getGroupID(), timeFrame.getInterval(), user.getPerson().getLocale()));
+                	reportCriteriaList.add(reportCriteriaService.getDriverHoursReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),reportSchedule.getGroupID(), timeFrame.getInterval(), person.getLocale()));
                 	break;
                 	
                 case MILEAGE_BY_VEHICLE:
                 	reportCriteriaList.add(reportCriteriaService.getMileageByVehicleReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
                 			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_BY_VEHICLE:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
                 			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
                 			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_COMPARE_BY_GROUP:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
                 			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_BY_MONTH:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageByMonthReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
                 			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_FUEL_BY_VEHICLE:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageFuelByVehicleReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
                 			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                			user.getPerson().getLocale(), user.getPerson().getMeasurementType(), reportSchedule.getIftaOnly()));
+                			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT:
                     reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                 case DRIVING_TIME_VIOLATIONS_DETAIL_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER )
                         reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                                 reportSchedule.getDriverID(), timeFrame.getInterval(), 
-                                user.getPerson().getLocale()));
+                                person.getLocale()));
                     else
                         reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                                 reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                                user.getPerson().getLocale()));
+                                person.getLocale()));
                     break;
 
                 
                 case NON_DOT_VIOLATIONS_SUMMARY_REPORT:
                     reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
                             reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                            user.getPerson().getLocale()));
+                            person.getLocale()));
                     break;
                 case NON_DOT_VIOLATIONS_DETAIL_REPORT:
                     if (reportSchedule.getParamType() == ReportParamType.DRIVER )
                         reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                                 reportSchedule.getDriverID(), timeFrame.getInterval(), 
-                                user.getPerson().getLocale()));
+                                person.getLocale()));
                     else
                         reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                                 reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
-                                user.getPerson().getLocale()));
+                                person.getLocale()));
                     break;
                 
+                case DRIVER_PERFORMANCE_TEAM:
+                    reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                            reportSchedule.getGroupID(), timeFrame.getInterval(),  
+                            person.getLocale()));
+                    break;
 
+                case DRIVER_PERFORMANCE_INDIVIDUAL:
+                    reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(reportSchedule.getDriverID(),
+                            timeFrame.getInterval(), person.getLocale()));
+                    break;
                 default:
                     break;
 
@@ -319,18 +356,18 @@ public class EmailReportJob extends QuartzJobBean {
         }
         // Set the current date of the reports
         for (ReportCriteria reportCriteria : reportCriteriaList) {
-            reportCriteria.setReportDate(new Date(), user.getPerson().getTimeZone());
-            reportCriteria.setLocale(user.getPerson().getLocale());
-            reportCriteria.setUseMetric((user.getPerson().getMeasurementType() != null && user.getPerson().getMeasurementType().equals(MeasurementType.METRIC)));
-            reportCriteria.setMeasurementType(user.getPerson().getMeasurementType());
-            reportCriteria.setFuelEfficiencyType(user.getPerson().getFuelEfficiencyType());
+            reportCriteria.setReportDate(new Date(), person.getTimeZone());
+            reportCriteria.setLocale(person.getLocale());
+            reportCriteria.setUseMetric((person.getMeasurementType() != null && person.getMeasurementType().equals(MeasurementType.METRIC)));
+            reportCriteria.setMeasurementType(person.getMeasurementType());
+            reportCriteria.setFuelEfficiencyType(person.getFuelEfficiencyType());
         }
 
         Report report = reportCreator.getReport(reportCriteriaList);
         for (String address : reportSchedule.getEmailTo()) {
-            String subject = LocalizedMessage.getString("reportSchedule.emailSubject", user.getPerson().getLocale()) + reportSchedule.getName();
+            String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
             String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
-            String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", user.getPerson().getLocale(), user.getPerson().getFullName(), user.getPerson().getPriEmail(),
+            String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", person.getLocale(), person.getFullName(), person.getPriEmail(),
                     unsubscribeURL);
             
             // Change noreplyemail address based on account
@@ -363,15 +400,14 @@ public class EmailReportJob extends QuartzJobBean {
      * cannot be greater than the current time. Rule 4: The scheduled time has to be within the last hour from the current time. If not, it will not occurr till the next scheduled
      * date. Rule 5: Report Schedule must be active. Rule 7: OCCURRENCE.Monthly - Make sure currenty day of month is the same ans the start date day of month.
      */
-    protected boolean emailReport(ReportSchedule reportSchedule) {
-        User user = userDAO.findByID(reportSchedule.getUserID());
-        if (user == null || user.getPerson() == null) {
+    protected boolean emailReport(ReportSchedule reportSchedule, Person person) {
+        if (person == null) {
             logger.error("Unable to get Person record for userID" + reportSchedule.getUserID());
             return false;
         }
-        Calendar currentDateTime = Calendar.getInstance(user.getPerson().getTimeZone());
+        Calendar currentDateTime = Calendar.getInstance(person.getTimeZone());
         int dayOfWeek = currentDateTime.get(Calendar.DAY_OF_WEEK);
-        currentDateTime.setTimeZone(user.getPerson().getTimeZone());
+        currentDateTime.setTimeZone(person.getTimeZone());
 
         Calendar startCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         startCalendar.setTime(reportSchedule.getStartDate());
@@ -382,7 +418,7 @@ public class EmailReportJob extends QuartzJobBean {
         }
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss a z");
-        df.setTimeZone(user.getPerson().getTimeZone());
+        df.setTimeZone(person.getTimeZone());
 
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss a z");
         sdf2.setTimeZone(TimeZone.getTimeZone("www."));
@@ -598,5 +634,13 @@ public class EmailReportJob extends QuartzJobBean {
         return map.get(accountID);
     }
 
+
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
 
 }

@@ -346,11 +346,12 @@
 	                        	</tr>
 							</ui:fragment>                           
 						</table>
-						</h:panelGroup>
                   
+						<ui:fragment rendered="#{reportScheduleBean.item.report.entityType ne 'ENTITY_INDIVIDUAL_DRIVER'}">
                         <div class="spacer"></div>
-						<div class="add_section_title"><h:outputText
-								value="#{messages.reportSchedule_email}" /></div>
+						<div class="add_section_title">
+							<h:outputText value="#{messages.reportSchedule_email}" />
+						</div>
 						
 						<table width="370" border="0" cellspacing="2" cellpadding="4"
 							align="center">
@@ -360,8 +361,9 @@
 									<h:inputTextarea cols ="40" rows="5" value="#{reportScheduleBean.item.emailToString}" />
 								</td>
 							</tr>
-							
 						</table>
+						</ui:fragment>
+						</h:panelGroup>
 						</ui:fragment>
 						</td>
 					</tr>

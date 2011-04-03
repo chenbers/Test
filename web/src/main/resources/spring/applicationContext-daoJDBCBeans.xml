@@ -21,6 +21,7 @@ default-autowire="byName">
 <!--  <bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean>-->
   <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
   <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="driverPerformanceDAO" class="com.inthinc.pro.dao.mock.MockDriverPerformanceDAO"/>
 
   <bean id="fcsIridiumDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO" parent="genericJDBCDAO"/>
 	

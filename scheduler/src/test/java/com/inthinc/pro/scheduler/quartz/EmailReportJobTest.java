@@ -42,7 +42,7 @@ public class EmailReportJobTest
         
         EmailReportJob erj = new EmailReportJob();
         erj.setUserDAO(userDAO);
-        assertTrue(erj.emailReport(reportSchedule));
+        assertTrue(erj.emailReport(reportSchedule,p));
     }
     
     

@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.DriverPerformanceDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
@@ -100,7 +101,10 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private AddressDAO addressDAO;
     private StateMileageDAO stateMileageDAO;
     private DriveTimeDAO driveTimeDAO;
+    private DriverPerformanceDAO driverPerformanceDAO;
     
+
+
     private Locale locale;
 
     private static final Logger logger = Logger.getLogger(ReportCriteriaServiceImpl.class);
@@ -1114,15 +1118,17 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
     @Override
     public ReportCriteria getDriverPerformanceIndividualReportCriteria(Integer driverID, Interval interval, Locale locale) {
-        DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria (ReportType.DRIVER_PERORMANCE_INDIVIDUAL, locale);
+        DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria (ReportType.DRIVER_PERFORMANCE_INDIVIDUAL, locale);
+        criteria.setDriverPerformanceDAO(driverPerformanceDAO);
         criteria.init(driverID, interval);
         return criteria;
     }
 
 
     @Override
-    public ReportCriteria getDriverPerformanceReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale, boolean group) {
+    public ReportCriteria getDriverPerformanceReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Locale locale) {
         DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria (ReportType.DRIVER_PERFORMANCE_TEAM, locale);
+        criteria.setDriverPerformanceDAO(driverPerformanceDAO);
         criteria.init(accountGroupHierarchy, groupID, interval);
         return criteria;
     }
@@ -1138,6 +1144,14 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         this.driveTimeDAO = driveTimeDAO;
     }
 
+    public DriverPerformanceDAO getDriverPerformanceDAO() {
+        return driverPerformanceDAO;
+    }
+
+
+    public void setDriverPerformanceDAO(DriverPerformanceDAO driverPerformanceDAO) {
+        this.driverPerformanceDAO = driverPerformanceDAO;
+    }
 
 
 }

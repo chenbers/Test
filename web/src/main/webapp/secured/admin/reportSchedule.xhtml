@@ -219,6 +219,7 @@
                            </ui:fragment>
 						</table>
 						</h:panelGroup>
+						<ui:fragment rendered="#{reportScheduleBean.item.report.entityType ne 'ENTITY_INDIVIDUAL_DRIVER'}">
                             <div class="spacer"></div>
 							<div class="add_section_title"><h:outputText
 									value="#{messages.reportSchedule_email}" /></div>
@@ -232,6 +233,7 @@
 								</tr>
 								
 							</table>
+						</ui:fragment>	
 						</td>
 					</tr>
 				</table>
