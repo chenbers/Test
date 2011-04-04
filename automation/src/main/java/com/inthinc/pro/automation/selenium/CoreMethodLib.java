@@ -157,8 +157,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return truefalse;
     }
 
-    public String verifyText(String locator, String expected, String error_name) {// TODO: jwimmer: quesiton for DTanner: same as getLocation? should this be verify or getandverify
-                                                                               // ???
+    public String verifyText(String locator, String expected, String error_name) {
         String text = "";
         try {
             text = getText(locator);
@@ -172,10 +171,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             throw new RuntimeException(e);
         } catch (Exception e) {
             errors.addError(error_name, e);
-        } finally {
-            if (text == "") {
-                text = "Failed";// TODO: question for DavidTanner: what if the text really is FAILED
-            }
         }
         return text;
     }
@@ -190,11 +185,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             throw new RuntimeException(e);
         } catch (Exception e) {
             errors.addError(error_name, e);
-        } finally {
-            if (text == "") {
-                text = "Failed";
-            }
-        }
+        } 
         return text;
     }
 
@@ -210,11 +201,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             throw new RuntimeException(e);
         } catch (Exception e) {
             errors.addError(error_name, e);
-        } finally {
-            if (text == "") {
-                text = "Failed";
-            }
-        }
+        } 
         return text;
     }
 
@@ -231,11 +218,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             throw new RuntimeException(e);
         } catch (Exception e) {
             errors.addError(error_name, e);
-        } finally {
-            if (text == "") {
-                text = "Failed";
-            }
-        }
+        } 
         return text;
     }
 
@@ -279,9 +262,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
     }
 
-    public void isVisible(String element, String error_name) {
+    public Boolean isVisible(String element, String error_name) {
+        boolean visible = false;
         try {
-            assert(isVisible(element));
+            visible = isVisible(element);
+            assert(visible);
         } catch (AssertionError e) {
             errors.addError(error_name, e);
         } catch (SeleniumException e) {
@@ -291,11 +276,14 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
+        return visible;
     }
 
-    public void isNotVisible(String element, String error_name) {
+    public Boolean isNotVisible(String element, String error_name) {
+        boolean notVisible = false;
         try {
-            assert(!isVisible(element));
+            notVisible = !isVisible(element); 
+            assert(notVisible);
         } catch (AssertionError e) {
             errors.addError(error_name, e);
         } catch (SeleniumException e) {
@@ -305,6 +293,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
+        return notVisible;
     }
 
     public void waitForPageToLoad(String timeout, String error_name) {
@@ -441,7 +430,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         boolean doneWaiting = false;
         while (!found || !doneWaiting) {
             try {
-                if (type.compareToIgnoreCase("link") == 0) {
+                if (type.equals("link")) {
                     found = isElementPresent("link=" + watch_for);
                 } else if (type.compareToIgnoreCase("text") == 0) {
                     found = isTextPresent(watch_for);
@@ -451,7 +440,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
                     doneWaiting = true; // no need to wait if the type is not recognized
                 }
             } catch (Exception e) {
-                e.printStackTrace(); // TODO: jwimmer: logging for debugging/learning purposes... should remove before in use
                 continue;
             } finally {
                 Pause(1); // second
@@ -479,6 +467,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     public void click(SeleniumEnums checkIt) {
         click(getLocator(checkIt), "click: " + checkIt.toString());
+        Pause(2);
     }
 
     public void waitForPageToLoad(SeleniumEnums pageURL) {
@@ -489,12 +478,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         waitForPageToLoad(wait.toString(), "waitForPageToLoad: " + pageURL.toString());
     }
 
-    public void isNotVisible(SeleniumEnums checkIt) {
-        isNotVisible(getLocator(checkIt), "isNotVisible: " + checkIt.toString());
+    public Boolean isNotVisible(SeleniumEnums checkIt) {
+        return isNotVisible(getLocator(checkIt), "isNotVisible: " + checkIt.toString());
     }
 
-    public void isVisible(SeleniumEnums checkIt) {
-        isVisible(getLocator(checkIt), "isVisible: " + checkIt.toString());
+    public Boolean isVisible(SeleniumEnums checkIt) {
+        return isVisible(getLocator(checkIt), "isVisible: " + checkIt.toString());
     }
 
     public String getText(SeleniumEnums checkIt, String expected) {
@@ -514,6 +503,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
 
     public String getText(SeleniumEnums checkIt) {
+        isVisible(checkIt);
         return verifyText(getLocator(checkIt), checkIt.getText(), "getText: " + checkIt.toString());
     }
 

@@ -21,16 +21,10 @@ public class GlobalSelenium {
 		CoreMethodLib selenium;
 		Long currentThread = Thread.currentThread().getId();
 
-		if (!multiplicative.containsKey(currentThread)
-				|| multiplicative.get(currentThread) == null) {
-			String url = "https://qa.tiwipro.com:8423/tiwipro/";
-			selenium = new CoreMethodLib(driver, url);
-			multiplicative.put(currentThread, selenium);
-		} else {
-			String url = "https://qa.tiwipro.com:8423/tiwipro/";
-			selenium = new CoreMethodLib(driver, url);
-			multiplicative.put(currentThread, selenium);
-		}
+		String url = "https://qa.tiwipro.com:8423/tiwipro/";
+		selenium = new CoreMethodLib(driver, url);
+		multiplicative.put(currentThread, selenium);
+		
 		return multiplicative.get(currentThread);
 	}
 
