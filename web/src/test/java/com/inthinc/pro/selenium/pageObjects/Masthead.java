@@ -35,7 +35,6 @@ public class Masthead {
     public void link_myAccount_click() {
         selenium.click(MastheadEnum.MY_ACCOUNT);
         selenium.waitForPageToLoad(MastheadEnum.MY_ACCOUNT);
-        selenium.verifyLocation(MastheadEnum.URL);
     }
 
     public void link_myMessages_click() {
