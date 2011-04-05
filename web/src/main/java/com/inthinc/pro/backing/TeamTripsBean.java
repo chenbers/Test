@@ -371,12 +371,14 @@ public class TeamTripsBean extends BaseBean {
 	
 	       for (Trip trip : tripsList) {
 	    	   
-	    	   TeamTrip td = new TeamTrip(trip,
-			   						getTripViolations(violations,trip.getStartTime(),trip.getEndTime()),
-			   						getTripIdles(idles,trip.getStartTime(),trip.getEndTime()),
-			   						getTripTampers(tampers,trip.getStartTime(),trip.getEndTime()),
-			   						1);
-	    	   trips.add(td);
+	           if (trip.isGoodRoute()){
+    	    	   TeamTrip td = new TeamTrip(trip,
+    			   						getTripViolations(violations,trip.getStartTime(),trip.getEndTime()),
+    			   						getTripIdles(idles,trip.getStartTime(),trip.getEndTime()),
+    			   						getTripTampers(tampers,trip.getStartTime(),trip.getEndTime()),
+    			   						1);
+    	    	   trips.add(td);
+	           }
 	    	   
 	        }
 	       //add events to the event map
@@ -514,7 +516,7 @@ public class TeamTripsBean extends BaseBean {
 		    				int compressionFactor)
 		    {
 
-		        route = compressRoute(trip.getRoute(), compressionFactor);
+		        route = compressRoute(trip, compressionFactor);
 		        //Need to fake start and end/progress events for trips
 		        createStartEvent(trip);
 		    	
@@ -529,15 +531,18 @@ public class TeamTripsBean extends BaseBean {
 		        idles = getTripIdles(idleEvents);
 		        tampers = getTripTampers(tamperEvents);
 		    }
-		    private List<LatLng> compressRoute(List<LatLng> route, int compressionFactor){
+		    private List<LatLng> compressRoute(Trip trip, int compressionFactor){
 		    	
 		    	List<LatLng> compressedRoute = new ArrayList<LatLng>();
-		    	compressedRoute.add(route.get(0));
-		    	for (int i=compressionFactor; i< route.size();i+=compressionFactor){
-		    		
-		    		compressedRoute.add(route.get(i));
-		    	}
-		    	compressedRoute.add(route.get(route.size()-1));
+		    	if (trip.isGoodRoute()){
+		    	    List<LatLng> tripRoute = trip.getRoute();
+    		    	compressedRoute.add(tripRoute.get(0));
+    		    	for (int i=compressionFactor; i< tripRoute.size();i+=compressionFactor){
+    		    		
+    		    		compressedRoute.add(tripRoute.get(i));
+    		    	}
+    		    	compressedRoute.add(tripRoute.get(tripRoute.size()-1));
+		        }
 		    	return compressedRoute;
 		    }
 		    private void createStartEvent(Trip trip){
@@ -550,7 +555,7 @@ public class TeamTripsBean extends BaseBean {
 		    	
 		    	startEventItem = new EventItem();
 		    	
-		        if(route.size() > 0){
+		        if(trip.isGoodRoute()){
 
 		            beginningPoint = route.get(0);
 		            beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
@@ -580,7 +585,7 @@ public class TeamTripsBean extends BaseBean {
 
 		        endEventItem = new EventItem();
 
-		        if(route.size() > 0)
+		        if(trip.isGoodRoute())
 		        {
 		            routeLastStep = route.get(route.size()-1);
 		            routeLastStep.setLat(routeLastStep.getLat() + 0.00001);
@@ -634,6 +639,9 @@ public class TeamTripsBean extends BaseBean {
 				}
 				return tripTampers;
 			}
+//			private boolean isGoodRoute(){
+//			    return route !=null && route.size()>1;
+//			}
 
 		    public List<LatLng> getRoute()
 		    {

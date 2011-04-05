@@ -100,7 +100,7 @@ public class TripsBean extends BaseBean {
             	            	
                 TripDisplay td = new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), getAddressLookup());
                 
-                if (td.getRoute().size() > 0){
+                if ((td.getRoute() != null) && (td.getRoute().size() > 0)){
 	                // If starting or ending address is null, try to set a zone name
 	                if ( td.getStartAddress() == null ) {
 	                    LatLng latLng = new LatLng(td.getRoute().get(0).getLat(),td.getRoute().get(0).getLng());

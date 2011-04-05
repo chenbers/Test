@@ -54,7 +54,7 @@ public class TripDisplay implements Comparable<TripDisplay>
         
         setDistance(trip.getMileage() / 100D);
         
-        if(route.size() > 0)
+        if(isGoodRoute())
         {
             routeLastStep = route.get(route.size()-1);
             routeLastStep.setLat(routeLastStep.getLat() + 0.00001);
@@ -244,14 +244,14 @@ public class TripDisplay implements Comparable<TripDisplay>
 		
 	}
 	public Double getEndPointLat() {
-		if(route.size()==0) return null;
+		if(!isGoodRoute()) return null;
 		return route.get(route.size()-1).getLat();
 	}
 	public Double getEndPointLng() {
-		if(route.size()==0) return null;
+		if(!isGoodRoute()) return null;
 		return route.get(route.size()-1).getLng();
 	}
 	public boolean isGoodRoute(){
-		return !route.isEmpty();
+		return route !=null && route.size()>1;
 	}
 }
