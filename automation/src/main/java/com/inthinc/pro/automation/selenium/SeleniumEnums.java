@@ -7,9 +7,12 @@ public interface SeleniumEnums {
 	public void setText(String text);
 
 	public String getID();
+	
+	public String getURL();
 
 	public String getXpath();
 
 	public String getXpath_alt();
+	
 	
 }
