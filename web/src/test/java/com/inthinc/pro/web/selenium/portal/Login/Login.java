@@ -1,9 +1,9 @@
 package com.inthinc.pro.web.selenium.portal.Login;
 
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
-import com.inthinc.pro.web.selenium.portal.Login.LoginEnum;
+import com.inthinc.pro.automation.selenium.Page;
 
 /****************************************************************************************
  * Purpose: Includes all methods and variables to process the TiwiPro Login Screen
@@ -11,23 +11,15 @@ import com.inthinc.pro.web.selenium.portal.Login.LoginEnum;
  * Last Update:  11/18/Added comments and made changes to adhere to Java Coding Standards
  */
 
-public class Login {
+public class Login extends AbstractPage {
 	
-	protected static CoreMethodLib selenium;
-
 	public Login(){
 		selenium = GlobalSelenium.getSelenium();
 	}
 	
-	//public void load(); also page_load
-	//public boolean isLoaded(); also page_isLoaded
-	//public void validate(); also page_validate
-	//private 
-	
 	public void page_navigateTo(){
 		//go to login screen
-		selenium.open(LoginEnum.LOGIN_URL);
-//		ck_login_page();
+		load();
 	}
 	
 	public void page_login(String username, String password){
@@ -134,22 +126,7 @@ public class Login {
 	}
 	
 	public void page_logIn_validate(){
-		selenium.getText(LoginEnum.FORGOT_TEXT);
-		selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
-		
-		selenium.isTextPresent("Log In");
-		selenium.getText(LoginEnum.LOGIN_TEXT);
-		selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
-		
-		selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
-		
-		selenium.isTextPresent("User Name:");
-		selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
-		selenium.getText(LoginEnum.USERNAME_LABEL);
-		
-		selenium.isTextPresent("Password:");
-		selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
-		selenium.getText(LoginEnum.PASSWORD_LABEL);
+		validate();
 	}
 	
 //	public void forgotPassword(){
@@ -222,4 +199,31 @@ public class Login {
         selenium.getText(LoginEnum.ERROR_HEADER);
         selenium.getText(LoginEnum.ERROR_MESSAGE);        
     }
+
+	@Override
+	public Page load() {
+		selenium.open(LoginEnum.LOGIN_URL);
+		return this;
+	}
+
+	@Override
+	public boolean validate() {
+		selenium.getText(LoginEnum.FORGOT_TEXT);
+		selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
+		
+		selenium.isTextPresent("Log In");
+		selenium.getText(LoginEnum.LOGIN_TEXT);
+		selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
+		
+		selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
+		
+		selenium.isTextPresent("User Name:");
+		selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
+		selenium.getText(LoginEnum.USERNAME_LABEL);
+		
+		selenium.isTextPresent("Password:");
+		selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
+		selenium.getText(LoginEnum.PASSWORD_LABEL);
+		return true;
+	}
 }
