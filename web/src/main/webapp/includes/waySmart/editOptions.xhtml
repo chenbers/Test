@@ -26,7 +26,7 @@
             <h:inputText value="#{vehiclesBean.item.editableVehicleSettings.killMotorPasscode}" id="wireline_killMotorPasscode" onchange="checkMultiple(this)" styleClass="text" size="6"
                              maxlength="4" validatorMessage="#{messages.wirelineInvalidPasscode}">
 					<f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-	                <f:attribute name="regex" value="[0-9]{4}" />
+	                <f:attribute name="regex" value="[1-9]{1}[0-9]{3}" />
 			</h:inputText>
 		</td>
 	</tr>
@@ -46,7 +46,7 @@
             				onchange="checkMultiple(this)" styleClass="text" size="6"
                             maxlength="4" validatorMessage="#{messages.wirelineInvalidPasscode}">
 					<f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
-	                <f:attribute name="regex" value="[0-9]{4}" />
+	                <f:attribute name="regex" value="[1-9]{1}[0-9]{3}" />
 			</h:inputText>
 		</td>
 	</tr>
