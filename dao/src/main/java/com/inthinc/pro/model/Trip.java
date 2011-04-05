@@ -105,19 +105,21 @@ public class Trip extends BaseEntity {
     }
 
     public LatLng getStartLoc() {
-        if (route != null && route.size() > 0) {
+        if (isGoodRoute()) {
             return route.get(0);
         }
         return null;
     }
 
     public LatLng getEndLoc() {
-        if (route != null && route.size() > 0) {
+        if (isGoodRoute()) {
             return route.get(route.size() - 1);
         }
         return null;
     }
-
+    public boolean isGoodRoute(){
+        return route != null && route.size() > 1;
+    }
     public int compareTo(Trip trip) {
         return trip.getStartTime().compareTo(getStartTime());
     }
