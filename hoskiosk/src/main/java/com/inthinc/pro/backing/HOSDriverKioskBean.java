@@ -56,7 +56,7 @@ public class HOSDriverKioskBean extends BaseBean {
         hosRecord.setDriverDotType(getDriver().getDot() == null ? RuleSetType.NON_DOT : getDriver().getDot());
         hosRecord.setEditUserID(0);
         hosRecord.setLocation(location);
-        hosDAO.create(getDriver().getDriverID(), hosRecord);
+        hosDAO.create(0l, hosRecord);
         setHosCurrentStatus(null);
         
     }

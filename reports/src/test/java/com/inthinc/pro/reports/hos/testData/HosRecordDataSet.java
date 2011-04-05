@@ -164,7 +164,7 @@ public class HosRecordDataSet extends BaseDataSet {
 
 
                     HOSRecord hosRecord = new HOSRecord();
-                    hosRecord.setHosLogID(hosLogID++);
+                    hosRecord.setHosLogID(Long.valueOf(hosLogID++));
                     hosRecord.setDriverDotType(ruleType);
                     hosRecord.setLogTime(logTime);
                     hosRecord.setStatus(status);

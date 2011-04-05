@@ -15,7 +15,7 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
 
     private static final long serialVersionUID = 1L;
     
-    private Integer hosLogID;
+    private Long hosLogID;
     private Integer driverID;
     private Integer noteID;
     private RuleSetType driverDotType;
@@ -55,11 +55,19 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     {
         
     }
+    
     public HOSRecord(Integer hosLogID, Integer driverID,// String driverName,
             RuleSetType driverDotType, Integer vehicleID, String vehicleName, Boolean vehicleIsDOT,
             Long vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Float lat, Float lng, Long distance,
             String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted) {
-        super();
+        this(Long.valueOf(hosLogID.longValue()), driverID, driverDotType, vehicleID, vehicleName,
+                vehicleIsDOT, vehicleOdometer, logTime, addedTime, timeZone, status, origin, location, lat, lng, distance,
+                trailerID, serviceID, singleDriver, edited, editUserName, deleted);
+    }
+    public HOSRecord(Long hosLogID, Integer driverID,// String driverName,
+            RuleSetType driverDotType, Integer vehicleID, String vehicleName, Boolean vehicleIsDOT,
+            Long vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Float lat, Float lng, Long distance,
+            String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted) {
         this.hosLogID = hosLogID;
         this.driverID = driverID;
         this.driverDotType = driverDotType;
@@ -232,10 +240,10 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     public void setOrigin(HOSOrigin origin) {
         this.origin = origin;
     }
-    public Integer getHosLogID() {
+    public Long getHosLogID() {
         return hosLogID;
     }
-    public void setHosLogID(Integer hosLogID) {
+    public void setHosLogID(Long hosLogID) {
         this.hosLogID = hosLogID;
     }
     public Long getVehicleOdometer() {

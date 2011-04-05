@@ -402,7 +402,7 @@ System.out.println("numHosRecords " + numHosRecords);
         hosRecord.setTimeZone(driver.getPerson().getTimeZone());
         hosRecord.setEditUserID(itData.fleetUser.getUserID());
         hosRecord.setVehicleID(vehicleID);
-        Integer hosLogID = hosDAO.create(-1, hosRecord);
+        Long hosLogID = hosDAO.create(0l, hosRecord);
         System.out.println("hosLogID: " + hosLogID + " " + hosRecordDate);
         hosRecord.setHosLogID(hosLogID);
         return hosRecord;

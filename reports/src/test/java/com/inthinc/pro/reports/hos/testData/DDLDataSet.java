@@ -123,7 +123,7 @@ public class DDLDataSet {
                 rec.setDriverID(driver.getDriverID());
                 rec.setEdited(Boolean.valueOf(values[editedIdx]));
                 rec.setEditUserName(""+values[userIdIdx]);
-                rec.setHosLogID(cnt++);
+                rec.setHosLogID(Long.valueOf(cnt++));
                 rec.setLocation(values[tmpLocationIdx]);
                 rec.setLogTime(dateFormat.parse(values[logTimeIdx]));
                 rec.setAddedTime(dateFormat.parse(values[dateAddedIdx]));

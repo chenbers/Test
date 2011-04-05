@@ -354,7 +354,11 @@ logger.info("in loadItems()");
 
         public Integer getId()
         {
-            return getHosLogID();
+            if (getHosLogID() == null)
+                return null;
+            
+            return getHosLogID().intValue();
+
         }
 
         public boolean isSelected()
@@ -436,7 +440,7 @@ logger.info("in loadItems()");
             return VIEW_REDIRECT;   //shouldn't happen
         
         HosLogView delItem = selected.get(0);
-        hosDAO.deleteByID(delItem.getId());
+        hosDAO.deleteByID(delItem.getHosLogID());
         items.remove(delItem);
         
         return VIEW_REDIRECT;
@@ -655,7 +659,7 @@ logger.info("in loadItems()");
             log.setEditUserID(editUserID);
             log.setEdited(true);
             if (create)
-                log.setHosLogID(hosDAO.create(getDriverID(), log));
+                log.setHosLogID(hosDAO.create(0l, log));
             else
                 hosDAO.update(log);
 

@@ -295,7 +295,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             {
                 HOSRecord hosRecord = new HOSRecord();
                 
-                hosRecord.setHosLogID(resultSet.getInt(1));
+                hosRecord.setHosLogID(resultSet.getLong(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
                 hosRecord.setVehicleID(resultSet.getInt(3));
                 long ms = resultSet.getLong(4);
@@ -423,7 +423,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     }
 
     @Override
-    public Integer create(Integer id, HOSRecord hosRecord) {
+    public Long create(Long id, HOSRecord hosRecord) {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
@@ -451,7 +451,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             resultSet = statement.executeQuery();
 
             if (resultSet.next())
-                id = resultSet.getInt(1);
+                id = resultSet.getLong(1);
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
@@ -468,7 +468,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     }
 
     @Override
-    public Integer deleteByID(Integer id) {
+    public Integer deleteByID(Long id) {
         Connection conn = null;
         CallableStatement statement = null;
         
@@ -476,7 +476,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_delete(?)}");
-            statement.setInt(1, id);
+            statement.setLong(1, id);
 			
             if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
@@ -494,11 +494,11 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             close(conn);
         } // end finally
 
-        return id;
+        return 1;
     }
 
     @Override
-    public HOSRecord findByID(Integer id) {
+    public HOSRecord findByID(Long id) {
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
@@ -509,7 +509,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_getFullRecord(?)}");
-            statement.setInt(1, id);
+            statement.setLong(1, id);
 			
             if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
@@ -520,7 +520,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             {
                 
                 hosRecord = new HOSRecord();
-                hosRecord.setHosLogID(resultSet.getInt(1));
+                hosRecord.setHosLogID(resultSet.getLong(1));
                 hosRecord.setDriverID(resultSet.getInt(2));
                 hosRecord.setVehicleID(resultSet.getInt(3));
                 long ms = resultSet.getLong(4);
@@ -579,7 +579,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         {
             conn = getConnection();
             statement = conn.prepareCall("{call hos_update(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
-            statement.setInt(1, hosRecord.getHosLogID());
+            statement.setLong(1, hosRecord.getHosLogID());
             statement.setInt(2, hosRecord.getDriverID());
             statement.setInt(3, hosRecord.getVehicleID() == null ? 0 : hosRecord.getVehicleID());
             statement.setLong(4, hosRecord.getLogTime().getTime());
@@ -606,7 +606,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             close(statement);
             close(conn);
         } // end finally
-        return hosRecord.getHosLogID();
+        return 1;
     }
 
     @Override

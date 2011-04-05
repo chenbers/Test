@@ -23,7 +23,7 @@ import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 
-public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Integer> {
+public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
     List<HOSRecord> plainRecords;
     
     private List<HOSRecord> getMockHOSRecords() {
@@ -267,20 +267,20 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Integer> {
     }
 
     @Override
-    public Integer create(Integer id, HOSRecord entity) {
-        entity.setHosLogID(getMockHOSRecords().size());
+    public Long create(Long id, HOSRecord entity) {
+        entity.setHosLogID(Long.valueOf(getMockHOSRecords().size()));
         plainRecords.add(entity);
         return entity.getHosLogID();
     }
 
     @Override
-    public Integer deleteByID(Integer id) {
+    public Integer deleteByID(Long id) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public HOSRecord findByID(Integer id) {
+    public HOSRecord findByID(Long id) {
         for (HOSRecord rec :  getMockHOSRecords()) {
                 if (rec.getHosLogID().equals(id))
                     return rec;
@@ -292,8 +292,7 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Integer> {
     public Integer update(HOSRecord entity) {
         for (HOSRecord rec :  getMockHOSRecords()) {
             if (rec.getHosLogID().equals(entity.getHosLogID())) {
-//                BeanUtils.copyProperties(entity, rec);
-                return rec.getHosLogID();
+                return 1;
             }
         }
         return null;
