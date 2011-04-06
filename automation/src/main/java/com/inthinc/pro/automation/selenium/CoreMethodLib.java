@@ -47,7 +47,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     public void open(String locator, String error_name) {
         try {
             open(locator);
-            PageObject.setCurrentPage();
+            AbstractPage.setCurrentPage();
         } catch (SeleniumException e) {
             errors.addError(error_name, e);
         } catch (RuntimeException e) {
@@ -424,6 +424,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     public void open(SeleniumEnums url) {
         this.open(url.getURL());
-        PageObject.setCurrentPage();
+        AbstractPage.setCurrentPage();
     }
 }
