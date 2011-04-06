@@ -34,7 +34,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
 
 
-    private String getLocator(SeleniumEnums checkIt) {
+    public String getLocator(SeleniumEnums checkIt) {
         if (checkIt.getID() != null)
             return checkIt.getID();
         else if (checkIt.getXpath() != null)
@@ -332,15 +332,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         Pause(2);
     }
 
-    public void wait_for_element_present(String watch_for) {
-        wait_for_element_present(watch_for, "link");
+    public void waitForElementPresent(String watch_for) {
+        waitForElementPresent(watch_for, "link");
     }
 
-    public void wait_for_element_present(String watch_for, String type) {
-        wait_for_element_present(watch_for, type, 180);
+    public void waitForElementPresent(String watch_for, String type) {
+        waitForElementPresent(watch_for, type, 180);
     }
 
-    public void wait_for_element_present(String watch_for, String type, Integer secondsToWait) {
+    public void waitForElementPresent(String watch_for, String type, Integer secondsToWait) {
         Integer x = 0;
         boolean found = false;
         boolean doneWaiting = false;

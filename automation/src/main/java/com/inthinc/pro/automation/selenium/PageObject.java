@@ -19,7 +19,9 @@ public class PageObject {
     
     protected static void setCurrentPage(){
         Long currentThread = Thread.currentThread().getId();
-        currentLocation.put(currentThread, GlobalSelenium.getSelenium().getLocation());
+        String[] location = GlobalSelenium.getSelenium().getLocation().split("/");
+        String page = location[location.length-1];
+        currentLocation.put(currentThread, page);
     }
     
     protected static String getCurrentPage(){
@@ -34,5 +36,9 @@ public class PageObject {
     
     public void addError(String errorName, String error){
         selenium.getErrors().addError(errorName, error);
+    }
+    
+    public void addError(SeleniumEnums errorName, String error){
+        selenium.getErrors().addError(selenium.getLocator(errorName), error);
     }
 }

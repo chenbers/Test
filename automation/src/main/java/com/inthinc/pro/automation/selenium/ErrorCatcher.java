@@ -3,6 +3,7 @@ package com.inthinc.pro.automation.selenium;
 import java.util.HashMap;
 
 import com.inthinc.pro.automation.utils.StackToString;
+import com.thoughtworks.selenium.SeleniumException;
 
 /****************************************************************************************
  * Purpose: To catch the errors raised by Selenium, and format them into a nice HashMap<br />
@@ -29,8 +30,8 @@ public class ErrorCatcher {
         if (!errors.containsKey(name)) {
             add_error(name);
         }
-
         errors.get(name).put(type, error);
+        throw new SeleniumException(name + "  " + error);
     }
 
     /**
@@ -38,6 +39,7 @@ public class ErrorCatcher {
      * 
      * @param name
      * @param error
+     * @throws Throwable 
      */
     public void addError(String name, Object error) {
         String errorStr = null;
