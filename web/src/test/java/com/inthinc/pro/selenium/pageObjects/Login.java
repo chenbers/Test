@@ -1,7 +1,9 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
+import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.automation.selenium.PageObject;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
@@ -11,7 +13,7 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
  * @author larringt , dtanner Last Update: 11/18/Added comments and made changes to adhere to Java Coding Standards
  */
 
-public class Login extends PageObject{
+public class Login extends AbstractPage{
     
 
     // public void load(); also page_load
@@ -19,10 +21,41 @@ public class Login extends PageObject{
     // public void validate(); also page_validate
     // private
 
-    public void page_login_open() {
-        // go to login screen
+
+	@Override
+	public Page load() {
         selenium.open(LoginEnum.LOGIN_URL);
         setCurrentPage();
+		return this;
+	}
+
+	@Override
+	public boolean validate() {
+		try {
+			selenium.verifyText(LoginEnum.FORGOT_TEXT);
+	        selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
+	
+	        selenium.isTextPresent("Log In");
+	        selenium.verifyText(LoginEnum.LOGIN_TEXT);
+	        selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
+	
+	        selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
+	
+	        selenium.isTextPresent("User Name:");
+	        selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
+	        selenium.verifyText(LoginEnum.USERNAME_LABEL);
+	
+	        selenium.isTextPresent("Password:");
+	        selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
+	        selenium.verifyText(LoginEnum.PASSWORD_LABEL);
+		} catch (Exception e) {
+			return false;
+		}
+		return true;
+	}
+	
+    public void page_login_open() {
+    	page_load();
     }
     
     public void page_logout_open(){
@@ -135,22 +168,7 @@ public class Login extends PageObject{
     }
 
     public void page_logIn_validate() {
-        selenium.verifyText(LoginEnum.FORGOT_TEXT);
-        selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
-
-        selenium.isTextPresent("Log In");
-        selenium.verifyText(LoginEnum.LOGIN_TEXT);
-        selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
-
-        selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
-
-        selenium.isTextPresent("User Name:");
-        selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
-        selenium.verifyText(LoginEnum.USERNAME_LABEL);
-
-        selenium.isTextPresent("Password:");
-        selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
-        selenium.verifyText(LoginEnum.PASSWORD_LABEL);
+        validate();
     }
 
 
