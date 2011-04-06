@@ -71,7 +71,7 @@ public class UnsubscribeBean {
                 }
                 List<Integer> modIdList = new ArrayList<Integer>();
                 for (Integer id : idList) {
-                    if (id.equals(person.getDriverID()))
+                    if (id.equals(person.getDriverID()) || id.equals(ReportScheduleBean.ALL_DRIVERS_ID))
                         continue;
                     
                     modIdList.add(id);

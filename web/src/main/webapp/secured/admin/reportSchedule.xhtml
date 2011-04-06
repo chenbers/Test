@@ -183,7 +183,11 @@
 											<h:outputText value="#{messages.reportSchedule_drivers}" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_INDIVIDUAL_DRIVER'}"/>
 										</td>
 										<td>
-											<h:outputText value="#{reportScheduleBean.item.listDisplay}"/>
+											<ul style="list-style:none;margin:0;padding:0">
+											<a4j:repeat value="#{reportScheduleBean.item.listDisplay}" var="name">
+												<li><h:outputText value="#{name}"/></li>
+											</a4j:repeat>
+											</ul>
 										</td>
 									</tr>
 							</h:outputText>

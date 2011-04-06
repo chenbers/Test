@@ -67,6 +67,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     private static final String REDIRECT_EDIT_REPORT_SCHEDULE = "pretty:adminEditReportSchedule";
     private List<Driver> driverList;
     protected final static String BLANK_SELECTION = " ";
+    public static final Integer ALL_DRIVERS_ID = Integer.valueOf(0);
 
     /*
      * Spring managed beans
@@ -426,7 +427,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         }
     }
     
-    private String getListDisplay(ReportScheduleView reportSchedule) {
+    private String[] getListDisplay(ReportScheduleView reportSchedule) {
         if (reportSchedule.getIdList() != null && !reportSchedule.getIdList().isEmpty()) {
 
             
@@ -437,7 +438,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                     for (Driver driver : driverList) {
                         if (driver.getDriverID().equals(driverID)) {
                             if (buffer.length() > 0)
-                                buffer.append(", ");
+                                buffer.append("~");
                             buffer.append(driver.getPerson().getFullName());
                             break;
                         }
@@ -449,13 +450,13 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                     Group group = this.getGroupHierarchy().getGroup(grpID);
                     if (group != null) {
                         if (buffer.length() > 0)
-                            buffer.append(", ");
+                            buffer.append("~");
                         buffer.append(group.getName());
                     }
                 }
             }
             
-            return buffer.toString();
+            return buffer.toString().split("~");
         }
         return null;
             
@@ -717,7 +718,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     
     public Map<String, Integer> getTeamDrivers() {
         final TreeMap<String, Integer> teamDrivers = new TreeMap<String, Integer>();
-        teamDrivers.put(MessageUtil.getMessageString("reportSchedule_allDrivers", getLocale()), -1);
+        teamDrivers.put(MessageUtil.getMessageString("reportSchedule_allDrivers", getLocale()), ALL_DRIVERS_ID);
 
         Integer teamID =  item == null || item.getGroupID() == null ? null : item.getGroupID();
         if (teamID == null)
@@ -790,13 +791,13 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         private Integer dayOfMonth;
         private List<String> idSelectList;
         @Column(updateable = false)
-        private String listDisplay;
+        private String[] listDisplay;
         
         
-        public String getListDisplay() {
+        public String[] getListDisplay() {
             return listDisplay;
         }
-        public void setListDisplay(String listDisplay) {
+        public void setListDisplay(String[] listDisplay) {
             this.listDisplay = listDisplay;
         }
         @Override
