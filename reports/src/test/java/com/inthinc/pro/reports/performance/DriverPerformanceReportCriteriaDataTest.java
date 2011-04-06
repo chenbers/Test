@@ -25,7 +25,7 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         criteria.init(5, initInterval());
         
         dump("IndividualDriverPerformance", 1, criteria, FormatType.PDF);
-//        dump("payrollDetailTest", 1, criteria, FormatType.EXCEL);
+        dump("IndividualDriverPerformance", 1, criteria, FormatType.HTML);
 
     }
     @Test
@@ -38,7 +38,7 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         criteria.init(getMockGroupHierarchy(), GROUP_ID, initInterval());
         
         dump("TeamDriverPerformance", 1, criteria, FormatType.PDF);
-//        dump("payrollDetailTest", 1, criteria, FormatType.EXCEL);
+        dump("TeamDriverPerformance", 1, criteria, FormatType.HTML);
 
     }
     

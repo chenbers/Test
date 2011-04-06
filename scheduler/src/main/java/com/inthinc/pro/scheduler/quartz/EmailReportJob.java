@@ -218,11 +218,11 @@ public class EmailReportJob extends QuartzJobBean {
                             timeFrame.getInterval(), person.getLocale(), person.getMeasurementType() == MeasurementType.METRIC));
                     else 
                         reportCriteriaList.addAll(getReportCriteriaService().getHosDailyDriverLogReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),  
-                                reportSchedule.getGroupIDList(),timeFrame.getInterval(),  person.getLocale(), person.getMeasurementType() == MeasurementType.METRIC));
+                                reportSchedule.getIdList(),timeFrame.getInterval(),  person.getLocale(), person.getMeasurementType() == MeasurementType.METRIC));
                     break;
                 case HOS_VIOLATIONS_SUMMARY_REPORT:
                     reportCriteriaList.add(reportCriteriaService.getHosViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                            reportSchedule.getGroupIDList(), timeFrame.getInterval(), 
+                            reportSchedule.getIdList(), timeFrame.getInterval(), 
                             person.getLocale()));
                     break;
                 case HOS_VIOLATIONS_DETAIL_REPORT:
@@ -230,7 +230,7 @@ public class EmailReportJob extends QuartzJobBean {
                         reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getDriverID(), timeFrame.getInterval(), 
                             person.getLocale()));
                     else
-                        reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getGroupIDList(), timeFrame.getInterval(), 
+                        reportCriteriaList.add(reportCriteriaService.getHosViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), reportSchedule.getIdList(), timeFrame.getInterval(), 
                                 person.getLocale()));
                     break;
                 case HOS_DRIVER_DOT_LOG_REPORT:
@@ -239,22 +239,22 @@ public class EmailReportJob extends QuartzJobBean {
                     break;
                 case DOT_HOURS_REMAINING:
                     reportCriteriaList.add(reportCriteriaService.getDotHoursRemainingReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                            reportSchedule.getGroupIDList(),  
+                            reportSchedule.getIdList(),  
                             person.getLocale()));
                     break;
                 case HOS_ZERO_MILES:
                     reportCriteriaList.add(reportCriteriaService.getHosZeroMilesReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                            reportSchedule.getIdList(), timeFrame.getInterval(),  
                             person.getLocale()));
                     break;
                 case HOS_EDITS:
                     reportCriteriaList.add(reportCriteriaService.getHosEditsReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                            reportSchedule.getIdList(), timeFrame.getInterval(),  
                             person.getLocale()));
                     break;
                 case PAYROLL_DETAIL:
                     reportCriteriaList.add(reportCriteriaService.getPayrollDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                            reportSchedule.getIdList(), timeFrame.getInterval(),  
                             person.getLocale()));
                     break;
                 case PAYROLL_SIGNOFF:
@@ -263,7 +263,7 @@ public class EmailReportJob extends QuartzJobBean {
                     break;
                 case PAYROLL_SUMMARY:
                     reportCriteriaList.add(reportCriteriaService.getPayrollSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                            reportSchedule.getIdList(), timeFrame.getInterval(),  
                             person.getLocale()));
                     break;
                     
@@ -278,37 +278,37 @@ public class EmailReportJob extends QuartzJobBean {
                 	
                 case MILEAGE_BY_VEHICLE:
                 	reportCriteriaList.add(reportCriteriaService.getMileageByVehicleReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
-                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			reportSchedule.getIdList(), timeFrame.getInterval(),  
                 			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_BY_VEHICLE:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageByVehicleReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
-                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			reportSchedule.getIdList(), timeFrame.getInterval(),  
                 			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_BY_VEHICLE_ROAD_STATUS:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageByVehicleRoadStatusReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
-                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			reportSchedule.getIdList(), timeFrame.getInterval(),  
                 			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_COMPARE_BY_GROUP:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageCompareByGroupReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
-                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			reportSchedule.getIdList(), timeFrame.getInterval(),  
                 			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_BY_MONTH:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageByMonthReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
-                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			reportSchedule.getIdList(), timeFrame.getInterval(),  
                 			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case STATE_MILEAGE_FUEL_BY_VEHICLE:
                 	reportCriteriaList.add(reportCriteriaService.getStateMileageFuelByVehicleReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
-                			reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                			reportSchedule.getIdList(), timeFrame.getInterval(),  
                 			person.getLocale(), person.getMeasurementType(), reportSchedule.getIftaOnly()));
                 	break;
                 case DRIVING_TIME_VIOLATIONS_SUMMARY_REPORT:
                     reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                            reportSchedule.getIdList(), timeFrame.getInterval(),  
                             person.getLocale()));
                     break;
                 case DRIVING_TIME_VIOLATIONS_DETAIL_REPORT:
@@ -318,14 +318,14 @@ public class EmailReportJob extends QuartzJobBean {
                                 person.getLocale()));
                     else
                         reportCriteriaList.add(getReportCriteriaService().getDrivingTimeViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                                reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                                reportSchedule.getIdList(), timeFrame.getInterval(),  
                                 person.getLocale()));
                     break;
 
                 
                 case NON_DOT_VIOLATIONS_SUMMARY_REPORT:
                     reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsSummaryReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()),
-                            reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                            reportSchedule.getIdList(), timeFrame.getInterval(),  
                             person.getLocale()));
                     break;
                 case NON_DOT_VIOLATIONS_DETAIL_REPORT:
@@ -335,7 +335,7 @@ public class EmailReportJob extends QuartzJobBean {
                                 person.getLocale()));
                     else
                         reportCriteriaList.add(getReportCriteriaService().getNonDOTViolationsDetailReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                                reportSchedule.getGroupIDList(), timeFrame.getInterval(),  
+                                reportSchedule.getIdList(), timeFrame.getInterval(),  
                                 person.getLocale()));
                     break;
                 

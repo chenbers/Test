@@ -176,6 +176,17 @@
 										</td>
 									</tr>
 							</h:outputText>
+							<h:outputText rendered="#{not empty reportScheduleBean.item.listDisplay}">
+									<tr>
+										<td width="100" valign="top">
+											<h:outputText value="#{messages.reportSchedule_groups}" rendered="#{reportScheduleBean.item.report.entityType ne 'ENTITY_INDIVIDUAL_DRIVER'}"/>
+											<h:outputText value="#{messages.reportSchedule_drivers}" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_INDIVIDUAL_DRIVER'}"/>
+										</td>
+										<td>
+											<h:outputText value="#{reportScheduleBean.item.listDisplay}"/>
+										</td>
+									</tr>
+							</h:outputText>
 							<h:outputText rendered="#{not empty reportScheduleBean.item.driverName}">
 									<tr>
 										<td width="100" valign="top">

@@ -284,7 +284,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     
     public void reportGroupChangeAction() {
         allGroupUsers = null;
-        getItem().setGroupIDList(null);
+        getItem().setIdList(null);
         getItem().setGroupID(null);
         getItem().setDriverID(null);
         getItem().setVehicleID(null);
@@ -292,6 +292,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         getItem().setGroupName(null);
         getItem().setDriverName(null);
         getItem().setVehicleName(null);
+        getItem().setListDisplay(null);
         getAllGroupUsers();
 
     }
@@ -417,9 +418,34 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 Group group = groupDAO.findByID(reportSchedule.getGroupID());
                 reportSchedule.setGroupName(group.getName());
             }
-            if (reportSchedule.getGroupIDList() != null && !reportSchedule.getGroupIDList().isEmpty()) {
-                StringBuffer buffer = new StringBuffer();
-                for (Integer grpID : reportSchedule.getGroupIDList()) {
+            reportSchedule.setListDisplay(getListDisplay(reportSchedule));
+            
+            // add a message
+            final String summary = MessageUtil.formatMessageString(create ? "reportSchedule_added" : "reportSchedule_updated", reportSchedule.getName());
+            addInfoMessage(summary);
+        }
+    }
+    
+    private String getListDisplay(ReportScheduleView reportSchedule) {
+        if (reportSchedule.getIdList() != null && !reportSchedule.getIdList().isEmpty()) {
+
+            
+            StringBuffer buffer = new StringBuffer();
+            if (reportSchedule.getReport().getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER) {
+                List<Driver> driverList = getDriverList();
+                for (Integer driverID : reportSchedule.getIdList()) {
+                    for (Driver driver : driverList) {
+                        if (driver.getDriverID().equals(driverID)) {
+                            if (buffer.length() > 0)
+                                buffer.append(", ");
+                            buffer.append(driver.getPerson().getFullName());
+                            break;
+                        }
+                    }
+                }
+            }
+            else {
+                for (Integer grpID : reportSchedule.getIdList()) {
                     Group group = this.getGroupHierarchy().getGroup(grpID);
                     if (group != null) {
                         if (buffer.length() > 0)
@@ -427,12 +453,12 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                         buffer.append(group.getName());
                     }
                 }
-                reportSchedule.setGroupName(buffer.toString());
             }
-            // add a message
-            final String summary = MessageUtil.formatMessageString(create ? "reportSchedule_added" : "reportSchedule_updated", reportSchedule.getName());
-            addInfoMessage(summary);
+            
+            return buffer.toString();
         }
+        return null;
+            
     }
     
 
@@ -622,19 +648,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 reportScheduleView.setGroupName(group.getName());
             }
         }
-        if (reportSchedule.getGroupIDList() != null && !reportSchedule.getGroupIDList().isEmpty()) {
-            StringBuffer buffer = new StringBuffer();
-            for (Integer  grpID : reportSchedule.getGroupIDList()) {
-                Group group = this.getGroupHierarchy().getGroup(grpID);
-                if (group != null) {
-                    if (buffer.length() > 0)
-                        buffer.append(", ");
-                    buffer.append(group.getName());
-                }
-            }
-            reportScheduleView.setGroupName(buffer.toString());
-        }
-//        else reportScheduleView.setGroupIDSelectList(new ArrayList<String>());
+        reportScheduleView.setListDisplay(getListDisplay(reportScheduleView));
         if (reportSchedule.getStartDate() != null && reportSchedule.getOccurrence().equals(Occurrence.MONTHLY)) {
             Calendar calendar = Calendar.getInstance(getUtcTimeZone());
             calendar.setTime(reportSchedule.getStartDate());
@@ -700,6 +714,29 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         return false;
     }
 
+    
+    public Map<String, Integer> getTeamDrivers() {
+        final TreeMap<String, Integer> teamDrivers = new TreeMap<String, Integer>();
+        teamDrivers.put(MessageUtil.getMessageString("reportSchedule_allDrivers", getLocale()), -1);
+
+        Integer teamID =  item == null || item.getGroupID() == null ? null : item.getGroupID();
+        if (teamID == null)
+            return teamDrivers;
+        
+        // all eligible drivers for report owner
+        List<Driver> driverList = this.getDriverList();
+
+        for (Driver driver : driverList) {
+            if (driver.getGroupID().equals(teamID)) {
+                teamDrivers.put(driver.getPerson().getFullName(), driver.getDriverID());
+            }
+        }
+        return teamDrivers;
+
+    
+    }
+
+    
     public void setReportScheduleDAO(ReportScheduleDAO reportScheduleDAO) {
         this.reportScheduleDAO = reportScheduleDAO;
     }
@@ -751,8 +788,17 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         private ReportGroup report;
         @Column(updateable = true)
         private Integer dayOfMonth;
-        private List<String> groupIDSelectList;
+        private List<String> idSelectList;
+        @Column(updateable = false)
+        private String listDisplay;
         
+        
+        public String getListDisplay() {
+            return listDisplay;
+        }
+        public void setListDisplay(String listDisplay) {
+            this.listDisplay = listDisplay;
+        }
         @Override
         public Date getLastDate() {
             if (super.getLastDate() != null && super.getLastDate().getTime() == 0l)
@@ -765,39 +811,38 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             super.setReportID(reportID);
         }
 
-        public List<String> getGroupIDSelectList() {
-            if (getGroupIDList() != null) {
-                groupIDSelectList = new ArrayList<String>();
-                for (Integer id : getGroupIDList()) {
-                    groupIDSelectList.add(id.toString());
+        public List<String> getIdSelectList() {
+            if (getIdList() != null) {
+                idSelectList = new ArrayList<String>();
+                for (Integer id : getIdList()) {
+                    idSelectList.add(id.toString());
                 }
             }
             else {
-                groupIDSelectList = null;
+                idSelectList = null;
             }
             
-            return groupIDSelectList;
+            return idSelectList;
         }
 
-        public void setGroupIDSelectList(List<String> groupIDSelectList) {
-            if (groupIDSelectList == null) {
-                setGroupIDList(null);
+        public void setIdSelectList(List<String> idSelectList) {
+            if (idSelectList == null) {
+                setIdList(null);
                 return;
             }
             
-            List<Integer> groupIDList = new ArrayList<Integer>();
-            for (String groupIDStr : groupIDSelectList) {
+            List<Integer> idList = new ArrayList<Integer>();
+            for (String groupIDStr : idSelectList) {
                 try {
-                    groupIDList.add(Integer.valueOf(groupIDStr));
+                    idList.add(Integer.valueOf(groupIDStr));
                 }
                 catch (NumberFormatException ex) {
                     logger.error(ex);
                     
                 }
             }
-            setGroupIDList(groupIDList);
+            setIdList(idList);
         }
-
         @Override
         public boolean isSelected() {
             return selected;

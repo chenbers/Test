@@ -277,6 +277,7 @@
 										<h:selectOneMenu id="editReportSchedule-group" value="#{reportScheduleBean.item.groupID}" style="width:240px;"
 											required="true" requiredMessage="#{messages.required}">
 											<f:selectItems value="#{reportScheduleBean.groups}"/> 
+											<a4j:support event="onchange" reRender="driverListSelect" ajaxSingle="true"/>
 										</h:selectOneMenu>
 										<ui:include src="/includes/dhtmlSelectBox.xhtml">	
      					 					<ui:param name="selectBoxID" value="edit_form:editReportSchedule-group" />
@@ -294,7 +295,7 @@
 									</td>
 									<td>
 									<a4j:outputPanel id="groupListSelect">
-									<h:selectManyMenu id="editRSGroups" value="#{reportScheduleBean.item.groupIDSelectList}" style="width:240px;size:auto"
+									<h:selectManyMenu id="editRSGroups" value="#{reportScheduleBean.item.idSelectList}" style="width:240px;size:auto"
 											required="true" requiredMessage="#{messages.required}">
 										<f:selectItems value="#{reportScheduleBean.groups}"/>
 									</h:selectManyMenu>
@@ -321,6 +322,25 @@
 										</td>
 									</tr>
 							</h:outputText>
+							<ui:fragment rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_INDIVIDUAL_DRIVER'}">
+								<tr>
+									<td width="115" valign="top">
+										<h:outputText value="#{messages.reportSchedule_drivers}"/>
+										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
+									</td>
+									<td>
+									<a4j:outputPanel id="driverListSelect">
+									<h:selectManyMenu id="editRSDrivers" value="#{reportScheduleBean.item.idSelectList}" style="width:240px;size:auto"
+											required="true" requiredMessage="#{messages.required}">
+										<f:selectItems value="#{reportScheduleBean.teamDrivers}"/>
+									</h:selectManyMenu>
+									<rich:jQuery selector="#editRSDrivers" timing="onload"
+										query="dropdownchecklist({ icon: {placement: 'right', toOpen: 'ui-icon-triangle-1-s', toClose: 'ui-icon-triangle-1-n'}, 
+														width: 240,maxDropHeight: 150, firstItemChecksAll: true})"/>
+									</a4j:outputPanel>
+									</td>
+								</tr>
+							</ui:fragment>
 							<h:outputText id="iftaInput" rendered="#{reportScheduleBean.item.report.entityType eq 'ENTITY_GROUP_LIST_AND_IFTA'}">
 								<tr>
 									<td width="115" valign="top">
@@ -363,6 +383,9 @@
 							</tr>
 						</table>
 						</ui:fragment>
+
+
+
 						</h:panelGroup>
 						</ui:fragment>
 						</td>

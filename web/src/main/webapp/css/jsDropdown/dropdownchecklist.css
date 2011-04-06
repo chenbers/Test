@@ -1,6 +1,7 @@
 .ui-dropdownchecklist {
 	font-size: 10px;
 	color: black;
+	z-index: 999;
 }
 .ui-dropdownchecklist-selector {
 	height: 18px;

@@ -1417,7 +1417,7 @@ public class SiloServiceTest {
 //        reportScheduleMonthly.setGroupID(groupID);
         List<Integer> groupIDList = new ArrayList<Integer>();
         groupIDList.add(groupID);
-        reportScheduleMonthly.setGroupIDList(groupIDList);
+        reportScheduleMonthly.setIdList(groupIDList);
         reportScheduleMonthly.setReportID(10);    
         reportScheduleMonthly.setAccountID(acctID);      
         

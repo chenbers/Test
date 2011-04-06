@@ -1,6 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.faces.context.FacesContext;
@@ -8,8 +10,12 @@ import javax.faces.context.FacesContext;
 import org.apache.log4j.Logger;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
+import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ReportSchedule;
+import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.util.MessageUtil;
 
 public class UnsubscribeBean {
@@ -20,11 +26,15 @@ public class UnsubscribeBean {
     private Integer reportScheduleID;
     
     private ReportScheduleDAO reportScheduleDAO;
+    private PersonDAO personDAO;
     private String encryptPassword;
     
     private String messageType;
     private String messageName;
     
+    private Boolean showLoginLink = Boolean.TRUE;
+    
+
     public void unsubscribeToReportSchedule(){
         if(emailAddress == null || reportScheduleID == null){
             throw new InvalidParameterException("Email Address or reportScheduleID are null.");
@@ -42,7 +52,36 @@ public class UnsubscribeBean {
         
         ReportSchedule reportSchedule = reportScheduleDAO.findByID(reportScheduleID);
         if(reportSchedule != null){
-            reportSchedule.getEmailTo().remove(decryptedEmailAddress);
+            ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
+            if (reportGroup.getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER) {
+                
+                Person person = personDAO.findByEmail(decryptedEmailAddress);
+                if (person == null) {
+                    logger.debug("Cannot find person record with emailAddress = " + decryptedEmailAddress);
+                    return;
+                }
+                if (person.getDriverID() == null) {
+                    logger.debug("Cannot find driverID for person with emailAddress = " + decryptedEmailAddress);
+                    return;
+                }
+                List<Integer> idList = reportSchedule.getIdList();
+                if (idList == null) {
+                    logger.debug("Cannot find driverIDList for reportID = " + reportScheduleID);
+                    return;
+                }
+                List<Integer> modIdList = new ArrayList<Integer>();
+                for (Integer id : idList) {
+                    if (id.equals(person.getDriverID()))
+                        continue;
+                    
+                    modIdList.add(id);
+                }
+                reportSchedule.setIdList(modIdList);
+                setShowLoginLink(Boolean.FALSE);
+            }
+            else {
+                reportSchedule.getEmailTo().remove(decryptedEmailAddress);
+            }
             Integer result = reportScheduleDAO.update(reportSchedule);
             logger.debug("ReportSchedule Update Called, Result: " + result);
             messageType = MessageUtil.getMessageString("unsubscribe_report", locale);
@@ -103,5 +142,21 @@ public class UnsubscribeBean {
         return messageType;
     }
     
+    public PersonDAO getPersonDAO() {
+        return personDAO;
+    }
+
+    public void setPersonDAO(PersonDAO personDAO) {
+        this.personDAO = personDAO;
+    }
+
+    public Boolean getShowLoginLink() {
+        return showLoginLink;
+    }
+
+    public void setShowLoginLink(Boolean showLoginLink) {
+        this.showLoginLink = showLoginLink;
+    }
+
     
 }

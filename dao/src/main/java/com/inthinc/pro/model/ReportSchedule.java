@@ -43,7 +43,8 @@ public class ReportSchedule
     private String 				fullName;
     
 	private Occurrence occurrence;
-	private List<Integer> groupIDList;
+    @Column(name = "groupIDList")
+	private List<Integer> idList;
 	private ReportParamType paramType;
 	private Boolean iftaOnly;
 	
@@ -299,12 +300,12 @@ public class ReportSchedule
 		this.fullName = fullName;
 	}
 
-    public List<Integer> getGroupIDList() {
-        return groupIDList;
+    public List<Integer> getIdList() {
+        return idList;
     }
 
-    public void setGroupIDList(List<Integer> groupIDList) {
-        this.groupIDList = groupIDList;
+    public void setIdList(List<Integer> idList) {
+        this.idList = idList;
     }
 
     public ReportParamType getParamType() {

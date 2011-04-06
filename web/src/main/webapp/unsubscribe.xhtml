@@ -24,10 +24,11 @@
 							<f:param value="#{unsubscribeBean.messageName}"/>
 						</h:outputFormat>
 					</p>
-					
-					<p>
-                     <pretty:link id="unsubscribeLogin" mappingId="login">#{messages.unsubscribe_login}</pretty:link>
-                 </p>
+					<ui:fragment rendered="#{unsubscribeBean.showLoginLink}">
+						<p>
+                     	<pretty:link id="unsubscribeLogin" mappingId="login">#{messages.unsubscribe_login}</pretty:link>
+                   	</p>
+                    </ui:fragment>
 				</div>
 			</div>
 			<div class="panel_sw">
