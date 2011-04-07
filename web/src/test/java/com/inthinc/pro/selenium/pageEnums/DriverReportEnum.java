@@ -1,0 +1,63 @@
+package com.inthinc.pro.selenium.pageEnums;
+
+import com.inthinc.pro.automation.selenium.SeleniumEnums;
+
+public enum DriverReportEnum implements SeleniumEnums {
+    TEAM_SEARCH(null,"drivers-form:drivers:groupfsp",null,null,null),
+    DRIVER_SEARCH(null,"drivers-form:drivers:fullNamefsp",null,null,null),
+    VEHICLE_SEARCH(null,"drivers-form:drivers:vehiclenamefsp",null,null,null),
+    DRIVER_FORM(null,"drivers-form",null,null,null),
+    TEAM(null,"drivers-form:drivers:0:driversDashboard",null,null,null),
+    DRIVER(null,"drivers-form:drivers:0:driversDriverPerformance",null,null,null),
+    VEHICLE(null,"drivers-form:drivers:0:driversVehiclePerformance",null,null,null),
+    OVERALL(null,"drivers-form:drivers:0:overallScore",null,null,null),
+    STYLE(null,"drivers-form:drivers:0:styleScore",null,null,null),
+    SEATBELT(null,"drivers-form:drivers:0:seatbeltScore",null,null,null)
+    ;
+    
+    private String text, ID, xpath, xpath_alt, url;
+    
+    private DriverReportEnum( String text, String ID, String xpath, String xpath_alt, String url) {
+        this.text=text;
+        this.ID=ID;
+        this.xpath=xpath;
+        this.xpath_alt=xpath_alt;
+        this.url=url;
+    }
+
+    @Override
+    public String getID() {
+        // TODO Auto-generated method stub
+        return this.ID;
+    }
+
+    @Override
+    public String getText() {
+        // TODO Auto-generated method stub
+        return this.text;
+    }
+
+    @Override
+    public String getXpath() {
+        // TODO Auto-generated method stub
+        return this.xpath;
+    }
+
+    @Override
+    public String getXpath_alt() {
+        // TODO Auto-generated method stub
+        return this.xpath_alt;
+    }
+
+    @Override
+    public void setText(String text) {
+        // TODO Auto-generated method stub
+        this.text=text;
+    }
+
+    @Override
+    public String getURL() {
+        // TODO Auto-generated method stub
+        return this.url;
+    }
+}
