@@ -18,11 +18,7 @@ public class GroupListReportCriteria extends ReportCriteria {
     }
 
     public String getFullGroupName(GroupHierarchy groupHierarchy, Integer groupID) {
-        String fullName = groupHierarchy.getFullGroupName(groupID, GROUP_SEPARATOR);
-        if (fullName.endsWith(GROUP_SEPARATOR)) {
-            fullName = fullName.substring(0, fullName.length() - GROUP_SEPARATOR.length());
-        }
-        return fullName;
+        return groupHierarchy.getFullGroupName(groupID, GROUP_SEPARATOR);
 
     }
     protected List<Driver> getReportDriverList(List<Group> reportGroupList) {

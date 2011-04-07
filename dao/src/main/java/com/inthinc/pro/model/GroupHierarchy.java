@@ -105,8 +105,9 @@ public class GroupHierarchy implements Serializable
     	{
     		builder.append(getFullGroupName(group.getParentID(), separator));
     	}
+    	if (builder.length() != 0)
+            builder.append(separator);
     	builder.append(group.getName());
-    	builder.append(separator);
         return builder.toString();
     }
     

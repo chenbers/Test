@@ -8,7 +8,7 @@ import com.inthinc.pro.model.aggregation.DriverPerformance;
 
 public interface DriverPerformanceDAO {
     
-    public DriverPerformance getDriverPerformance(Integer driverID, Interval queryInterval);
-    public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, Interval queryInterval);
+    public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverID, Interval queryInterval);
+    public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval queryInterval);
 
 }

@@ -1,6 +1,6 @@
 package com.inthinc.pro.model.aggregation;
 
-public class DriverPerformance {
+public class DriverPerformance implements Comparable<DriverPerformance> {
     
     private String groupName;
     private Integer driverID;
@@ -13,7 +13,14 @@ public class DriverPerformance {
     private Integer hardTurnCount;
     private Integer hardVerticalCount;
     private Integer seatbeltCount;
+    private Integer speedCount0to7Over;
+    private Integer speedCount8to14Over;
+    private Integer speedCount15Over;
     
+    public DriverPerformance()
+    {
+        
+    }
     public DriverPerformance(String groupName, Integer driverID, String driverName, String employeeID, Integer score, Integer totalMiles, Integer hardAccelCount,
             Integer hardBrakeCount, Integer hardTurnCount, Integer hardVerticalCount, Integer seatbeltCount) {
         super();
@@ -98,6 +105,24 @@ public class DriverPerformance {
     public void setHardVerticalCount(Integer hardVerticalCount) {
         this.hardVerticalCount = hardVerticalCount;
     }
+    public Integer getSpeedCount0to7Over() {
+        return speedCount0to7Over;
+    }
+    public void setSpeedCount0to7Over(Integer speedCount0to7Over) {
+        this.speedCount0to7Over = speedCount0to7Over;
+    }
+    public Integer getSpeedCount8to14Over() {
+        return speedCount8to14Over;
+    }
+    public void setSpeedCount8to14Over(Integer speedCount8to14Over) {
+        this.speedCount8to14Over = speedCount8to14Over;
+    }
+    public Integer getSpeedCount15Over() {
+        return speedCount15Over;
+    }
+    public void setSpeedCount15Over(Integer speedCount15Over) {
+        this.speedCount15Over = speedCount15Over;
+    }
 /*
  * G - Green 4.1 - 5.0
     B - Blue 3.1 - 4.0
@@ -118,5 +143,21 @@ public class DriverPerformance {
             return "B";
         return "G";
     }
+    @Override
+    public int compareTo(DriverPerformance o) {
+        int cmp = 0;
+        if (naScore(score) && !naScore(o.getScore()))
+            return 1;
+        if (!naScore(score) && naScore(o.getScore()))
+            return -1;
+        if (!naScore(score) && !naScore(o.getScore()))
+            cmp = score.compareTo(o.getScore());
+        if (cmp == 0) 
+            cmp = driverName.compareTo(o.getDriverName());
+        return cmp;
+    }
     
+    private boolean naScore(Integer score) {
+        return score == null || score.intValue() == -1;
+    }
 }

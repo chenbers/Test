@@ -45,6 +45,7 @@
     </bean>
     
     <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO"  parent="genericDAO"/>
+    <bean id="driverPerformanceDAO" class="com.inthinc.pro.dao.hessian.report.DriverPerformanceReportHessianDAO"/>
     
      <!-- Address Lookup -->
     <bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">

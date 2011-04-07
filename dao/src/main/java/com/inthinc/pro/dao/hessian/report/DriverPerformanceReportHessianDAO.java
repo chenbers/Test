@@ -1,0 +1,84 @@
+package com.inthinc.pro.dao.hessian.report;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.joda.time.Interval;
+
+import com.inthinc.pro.dao.DriverPerformanceDAO;
+import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.aggregation.DriverPerformance;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
+import com.inthinc.pro.model.aggregation.Score;
+
+public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
+
+    GroupReportDAO groupReportDAO;
+    
+    @Override
+    public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval) {
+        return getFilteredDriverPerformanceListForGroup(groupID, groupName, driverIDList, interval);
+    }
+
+    @Override
+    public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval interval) {
+        return getFilteredDriverPerformanceListForGroup(groupID, groupName, null, interval);
+    }
+
+    private List<DriverPerformance> getFilteredDriverPerformanceListForGroup(Integer groupID, String groupName, List<Integer> driverIDList, Interval interval) {
+        List<DriverVehicleScoreWrapper> scoreList = groupReportDAO.getDriverScores(groupID, interval);
+        
+        List<DriverPerformance> driverPerformanceList = new ArrayList<DriverPerformance>();
+        if (scoreList == null || scoreList.isEmpty())
+            return driverPerformanceList;
+        
+        for (DriverVehicleScoreWrapper score : scoreList) {
+            if (!includeDriver(score.getDriver(), driverIDList))
+                continue;
+            DriverPerformance dp = new DriverPerformance();
+            dp.setDriverID(score.getDriver().getDriverID());
+            dp.setDriverName(score.getDriver().getPerson().getFullName());
+            dp.setEmployeeID(score.getDriver().getPerson().getEmpid());
+            dp.setGroupName(groupName);
+            Score s = score.getScore();
+            dp.setHardAccelCount(s.getAggressiveAccelEvents() == null ? 0 : s.getAggressiveAccelEvents().intValue());
+            dp.setHardBrakeCount(s.getAggressiveBrakeEvents() == null ? 0 : s.getAggressiveBrakeEvents().intValue());
+            dp.setHardTurnCount((s.getAggressiveLeftEvents() == null ? 0 : s.getAggressiveLeftEvents().intValue()) + 
+                                (s.getAggressiveRightEvents() == null ? 0 : s.getAggressiveRightEvents().intValue()));
+            dp.setHardVerticalCount(s.getAggressiveBumpEvents() == null ? 0 : s.getAggressiveBumpEvents().intValue());
+            dp.setScore(s.getOverall()==null ? -1 : s.getOverall().intValue());
+            dp.setSeatbeltCount(s.getSeatbeltEvents() == null ? 0 : s.getSeatbeltEvents().intValue());
+            dp.setTotalMiles(s.getEndingOdometer() == null || s.getStartingOdometer() == null ? 0 : s.getEndingOdometer().intValue() - s.getStartingOdometer().intValue());
+            dp.setSpeedCount0to7Over(s.getSpeedEvents0to7Over() == null ? 0 : s.getSpeedEvents0to7Over().intValue());
+            dp.setSpeedCount8to14Over(s.getSpeedEvents8to14Over() == null ? 0 : s.getSpeedEvents8to14Over().intValue());
+            dp.setSpeedCount15Over(s.getSpeedEvents15Over() == null ? 0 : s.getSpeedEvents15Over().intValue());
+            driverPerformanceList.add(dp);
+        }
+        
+        return driverPerformanceList;
+    }
+
+    public GroupReportDAO getGroupReportDAO() {
+        return groupReportDAO;
+    }
+
+    public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
+        this.groupReportDAO = groupReportDAO;
+    }
+
+    private boolean includeDriver(Driver driver, List<Integer> driverIDList) 
+    {
+        if (driver == null)
+            return false;
+
+        if (driverIDList == null)
+            return true;
+        
+        for (Integer driverID : driverIDList) 
+            if (driver.getDriverID().equals(driverID))
+                return true;
+        
+        return false;
+    }
+}

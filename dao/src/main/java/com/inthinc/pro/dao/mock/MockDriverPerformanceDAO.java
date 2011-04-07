@@ -11,17 +11,18 @@ import com.inthinc.pro.model.aggregation.DriverPerformance;
 public class MockDriverPerformanceDAO implements DriverPerformanceDAO {
 
     @Override
-    public DriverPerformance getDriverPerformance(Integer driverID, Interval queryInterval) {
-       return new DriverPerformance("Group", driverID, "Driver " + driverID, "Emp " + driverID, 25, 1000, 1,2,3,4,22);
+    public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverID, Interval queryInterval) {
+
+        return getDriverPerformanceListForGroup(groupID, groupName, queryInterval);
     }
 
     @Override
-    public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, Interval queryInterval) {
+    public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval queryInterval) {
         List<DriverPerformance> list = new ArrayList<DriverPerformance>();
 
-        list.add(new DriverPerformance("Group", 100, "Driver NA", "Emp NA", -1, 0, 0,0,0,0,0));
+        list.add(new DriverPerformance(groupName, 100, "Driver NA", "Emp NA", -1, 0, 0,0,0,0,0));
         for (int i = 0; i < 5; i++) {
-            list.add(new DriverPerformance("Group", i, "Driver " + i, "Emp " + i, i*10+1, i*1000, i,i,i,i,i));
+            list.add(new DriverPerformance(groupName, i, "Driver " + i, "Emp " + i, i*10+1, i*1000, i,i,i,i,i));
         }
         return list;
     }

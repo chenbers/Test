@@ -22,10 +22,12 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         Interval interval = initInterval();
 
         criteria.setDriverPerformanceDAO(new MockDriverPerformanceDAO(interval));
-        criteria.init(5, initInterval());
+        List<Integer> idList = new ArrayList<Integer>();
+        idList.add(Integer.valueOf(4));
+        criteria.init(getMockGroupHierarchy(), GROUP_ID, idList, initInterval());
         
-        dump("IndividualDriverPerformance", 1, criteria, FormatType.PDF);
-        dump("IndividualDriverPerformance", 1, criteria, FormatType.HTML);
+        dump("IndividualDriverPerformance", 1, criteria.getCriteriaList().get(0), FormatType.PDF);
+        dump("IndividualDriverPerformance", 1, criteria.getCriteriaList().get(0), FormatType.HTML);
 
     }
     @Test
@@ -51,14 +53,14 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
             this.interval = interval;
         }
         @Override
-        public DriverPerformance getDriverPerformance(Integer driverID, Interval queryInterval) {
+        public List<DriverPerformance> getDriverPerformance(Integer groupID, String groupName, List<Integer> driverID, Interval queryInterval) {
 //                String groupName, Integer driverID, String driverName, String employeeID, Integer score, Integer totalMiles, Integer hardAccelCount,
 //                Integer hardBrakeCount, Integer hardTurnCount, Integer hardVerticalCount
-                return new DriverPerformance("Group", driverID, "Driver " + driverID, "Emp " + driverID, 25, 1000, 1,2,3,4,22);
+                return getDriverPerformanceListForGroup(groupID, groupName, queryInterval);
         }
 
         @Override
-        public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, Interval queryInterval) {
+        public List<DriverPerformance> getDriverPerformanceListForGroup(Integer groupID, String groupName, Interval queryInterval) {
             List<DriverPerformance> list = new ArrayList<DriverPerformance>();
 
             list.add(new DriverPerformance("Group", 100, "Driver NA", "Emp NA", -1, 0, 0,0,0,0,0));

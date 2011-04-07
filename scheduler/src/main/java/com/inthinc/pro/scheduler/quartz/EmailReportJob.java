@@ -123,21 +123,8 @@ public class EmailReportJob extends QuartzJobBean {
                             continue;
                         }
                         if (reportGroup.getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER) {
-                            List<Driver> driverList = driverDAO.getAllDrivers(reportSchedule.getGroupID());
-                            List<String> emailToList = new ArrayList<String>();
-                            for (Driver driver : driverList) {
-                                if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
-                                    logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
-                                else {
-                                    emailToList.clear();
-                                    emailToList.add(driver.getPerson().getPriEmail());
-                                    reportSchedule.setDriverID(driver.getDriverID());
-                                    reportSchedule.setEmailTo(emailToList);
-                                    processReportSchedule(reportSchedule, driver.getPerson());
-                                }
-                            }
-                            reportSchedule.setDriverID(null);
-                            reportSchedule.setEmailTo(null);
+                            
+                            processIndividualDriverReportSchedule(reportSchedule, user.getPerson());
                             
                         }
                         else {
@@ -158,6 +145,57 @@ public class EmailReportJob extends QuartzJobBean {
             }
         }
 
+    }
+
+    private void processIndividualDriverReportSchedule(ReportSchedule reportSchedule, Person person) {
+        List<Integer> driverIDList = reportSchedule.getIdList();
+        List<Driver> driverList = driverDAO.getAllDrivers(reportSchedule.getGroupID());
+        ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
+        for (int i = 0; i < reportGroup.getReports().length; i++) {
+            TimeFrame timeFrame = reportSchedule.getReportTimeFrame();
+            if (timeFrame == null) {
+                timeFrame = TimeFrame.TODAY;
+            }
+            
+            switch (reportGroup.getReports()[i]) {
+                case DRIVER_PERFORMANCE_INDIVIDUAL:
+                    List<ReportCriteria> rcList = getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(
+                            getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                            reportSchedule.getGroupID(), driverIDList,
+                            timeFrame.getInterval(), person.getLocale());
+                    
+                    int cnt = 0;
+                    for (Integer driverID : driverIDList) {
+                        Driver driver = findDriver(driverList, driverID);
+                        if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
+                            logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
+                        else {
+                            List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
+                            driverReportCriteriaList.add(rcList.get(cnt));
+
+                            List<String> emailToList = new ArrayList<String>();
+                            emailToList.add(driver.getPerson().getPriEmail());
+                            reportSchedule.setDriverID(driver.getDriverID());
+                            reportSchedule.setEmailTo(emailToList);
+                            emailReport(reportSchedule, driver.getPerson(), driverReportCriteriaList);
+                        }
+                        cnt++;
+                    }
+                    break;
+            }
+        }
+        reportSchedule.setDriverID(null);
+        reportSchedule.setEmailTo(null);
+    }
+    
+    
+    private Driver findDriver(List<Driver> driverList, Integer driverID) {
+        
+        for (Driver driver : driverList) {
+            if (driver.getDriverID().equals(driverID))
+                return driver;
+        }
+        return null;
     }
 
     @SuppressWarnings("unchecked")
@@ -345,15 +383,16 @@ public class EmailReportJob extends QuartzJobBean {
                             person.getLocale()));
                     break;
 
-                case DRIVER_PERFORMANCE_INDIVIDUAL:
-                    reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(reportSchedule.getDriverID(),
-                            timeFrame.getInterval(), person.getLocale()));
-                    break;
                 default:
                     break;
 
             }
         }
+        emailReport(reportSchedule, person, reportCriteriaList);
+
+    }
+
+    private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList) {
         // Set the current date of the reports
         for (ReportCriteria reportCriteria : reportCriteriaList) {
             reportCriteria.setReportDate(new Date(), person.getTimeZone());
@@ -381,7 +420,6 @@ public class EmailReportJob extends QuartzJobBean {
             
             report.exportReportToEmail(address, FormatType.PDF, message, subject, noReplyEmailAddress);
         }
-
     }
 
     private String buildUnsubscribeURL(final String emailAddress, final Integer reportScheduleID) {

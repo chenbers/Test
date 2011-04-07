@@ -1117,11 +1117,11 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     }
 
     @Override
-    public ReportCriteria getDriverPerformanceIndividualReportCriteria(Integer driverID, Interval interval, Locale locale) {
+    public List<ReportCriteria> getDriverPerformanceIndividualReportCriteria(GroupHierarchy accountGroupHierarchy, Integer groupID, List<Integer> driverIDList, Interval interval, Locale locale) {
         DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria (ReportType.DRIVER_PERFORMANCE_INDIVIDUAL, locale);
         criteria.setDriverPerformanceDAO(driverPerformanceDAO);
-        criteria.init(driverID, interval);
-        return criteria;
+        criteria.init(accountGroupHierarchy, groupID, driverIDList, interval);
+        return criteria.getCriteriaList();
     }
 
 

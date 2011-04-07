@@ -153,11 +153,7 @@ public abstract class DOTReportCriteria extends GroupListReportCriteria {
     public String getFullGroupName(Integer groupID) {
         if (accountGroupHierarchy == null)
             return "";
-        String fullName = accountGroupHierarchy.getFullGroupName(groupID, GROUP_SEPARATOR);
-        if (fullName.endsWith(GROUP_SEPARATOR)) {
-            fullName = fullName.substring(0, fullName.length() - GROUP_SEPARATOR.length());
-        }
-        return fullName;
+        return accountGroupHierarchy.getFullGroupName(groupID, GROUP_SEPARATOR);
 
     }
 

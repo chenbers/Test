@@ -84,8 +84,12 @@ public class Score {
     private Number odometerLight;
 	private Number odometerMedium;
     private Number odometerHeavy;
-
-	public Date getStartingDate() {
+    private Number speedEvents0to7Over;
+    private Number speedEvents8to14Over;
+    private Number speedEvents15Over;
+    
+    
+    public Date getStartingDate() {
         return startingDate;
     }
 
@@ -733,6 +737,30 @@ public class Score {
     public Number getIdlePercent() {
     	return (driveTime == null || driveTime.longValue() == 0l) ? 0 : (getIdleTotal().doubleValue() * 100.0)/driveTime.doubleValue();
     }
+    public Number getSpeedEvents0to7Over() {
+        return speedEvents0to7Over;
+    }
+
+    public void setSpeedEvents0to7Over(Number speedEvents0to7Over) {
+        this.speedEvents0to7Over = speedEvents0to7Over;
+    }
+
+    public Number getSpeedEvents8to14Over() {
+        return speedEvents8to14Over;
+    }
+
+    public void setSpeedEvents8to14Over(Number speedEvents8to14Over) {
+        this.speedEvents8to14Over = speedEvents8to14Over;
+    }
+
+    public Number getSpeedEvents15Over() {
+        return speedEvents15Over;
+    }
+
+    public void setSpeedEvents15Over(Number speedEvents15Over) {
+        this.speedEvents15Over = speedEvents15Over;
+    }
+
 
     @Override
     public String toString() {

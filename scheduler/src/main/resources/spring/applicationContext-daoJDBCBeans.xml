@@ -22,6 +22,5 @@ default-autowire="byName">
     	<property name="addressLookup" ref="${addressLookup2}"></property>
   </bean>
   <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
-  <bean id="driverPerformanceDAO" class="com.inthinc.pro.dao.mock.MockDriverPerformanceDAO"/>
   
 </beans>
