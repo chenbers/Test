@@ -10,9 +10,9 @@ public enum DriverReportEnum implements SeleniumEnums {
     TEAM(null,"drivers-form:drivers:0:driversDashboard",null,null,null),
     DRIVER(null,"drivers-form:drivers:0:driversDriverPerformance",null,null,null),
     VEHICLE(null,"drivers-form:drivers:0:driversVehiclePerformance",null,null,null),
-    OVERALL(null,"drivers-form:drivers:0:overallScore",null,null,null),
-    STYLE(null,"drivers-form:drivers:0:styleScore",null,null,null),
-    SEATBELT(null,"drivers-form:drivers:0:seatbeltScore",null,null,null)
+    OVERALL(null,"drivers-form:drivers:0:overallScore",null,null,null),        // not correct search term
+    STYLE(null,"drivers-form:drivers:0:styleScore",null,null,null),            // not correct search term
+    SEATBELT(null,"drivers-form:drivers:0:seatbeltScore",null,null,null)       // not correct search term
     ;
     
     private String text, ID, xpath, xpath_alt, url;
