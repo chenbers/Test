@@ -25,33 +25,40 @@ public abstract class AbstractPage implements VerbosePage {
     /* (non-Javadoc)
      * @see com.inthinc.pro.web.selenium.ScripterPage#page_load()
      */
-    public AbstractPage page_load(){
+    public AbstractPage page_directURL_load(){
         return (AbstractPage) load();
     }
     
     /* (non-Javadoc)
      * @see com.inthinc.pro.web.selenium.ScripterPage#page_isLoaded()
      */
-    public boolean page_isLoaded() {
+    public boolean page_URL_validate() {
         return isLoaded();
     }
     /* (non-Javadoc)
      * @see com.inthinc.pro.web.selenium.Page#isLoaded()
      */
     public boolean isLoaded() {
-        return selenium.getUnderlyingWebDriver().getCurrentUrl().contains(getPath());
-    }
-    
-    /* (non-Javadoc)
-     * @see com.inthinc.pro.web.selenium.ScripterPage#page_getPath()
-     */
-    public String page_getPath(){
-        return getPath();
+    	boolean results = getActualPath().contains(getExpectedPath());
+    	//System.out.println("about to return: "+results);
+    	return results;
     }
     /* (non-Javadoc)
-     * @see com.inthinc.pro.web.selenium.Page#getPath()
+     * @see com.inthinc.pro.web.selenium.ScripterPage#page_getExpectedPath()
      */
-    public String getPath() {
+    public String page_path_getExpected(){
+        return getExpectedPath();
+    }
+    /* (non-Javadoc)
+     * @see com.inthinc.pro.web.selenium.ScripterPage#page_getActualPath()
+     */
+    public String browser_path_getActual(){
+        return getActualPath();
+    }
+    /* (non-Javadoc)
+     * @see com.inthinc.pro.web.selenium.Page#getActualPath()
+     */
+    public String getActualPath() {
         return selenium.getLocation();
     }
     //TODO: jwimmer: question for dTanner: when you get a minute, explain to me the difference between getPath() and getCurrentPage???
@@ -68,7 +75,7 @@ public abstract class AbstractPage implements VerbosePage {
     /* (non-Javadoc)
      * @see com.inthinc.pro.web.selenium.ScripterPage#page_validate()
      */
-    public boolean page_validate(){
+    public boolean page_bareMinimum_validate(){
         return validate();
     }
 }

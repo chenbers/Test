@@ -18,21 +18,12 @@ import com.inthinc.pro.rally.TestCaseResult;
  * 
  * @author larringt , dtanner
  */
-public abstract class InthincTest {
-
-	private Long startTime;
-	private static HashMap<String, HashMap<String, String>> errors;
+public abstract class RallyTest extends AutomatedTest {
 	private static TestCaseResult rally;
-
-	private String testVerdict = "Error";
-
-	private Boolean skip = false;
 
 	private final static String username = "dtanner@inthinc.com";
 	private final static String password = "aOURh7PL5v";
 	private final static RallyWebServices workspace = RallyWebServices.INTHINC;
-
-	private static CoreMethodLib selenium;
 
 	public static void beforeClass() {
 		try {
@@ -44,10 +35,10 @@ public abstract class InthincTest {
 
 	}// end setup
 
+	@Override
 	public void before() {
+		super.before();
 		try {
-			selenium = GlobalSelenium.getYourOwn();
-			startTime = System.currentTimeMillis() / 1000;
 			rally.new_results();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,24 +48,16 @@ public abstract class InthincTest {
 
 	}
 
+	@Override
 	public void after() {
+		super.after();
 		if (!skip) {
 			try {
 				rally.setBuildNumber(selenium.getText("footerForm:version"));
-				errors = selenium.getErrors().get_errors();
-				selenium.stop();
-
-				// check error var for entries
-				if (errors.isEmpty())
-					testVerdict = "Pass"; // no errors = pass
-				else if (!errors.isEmpty())
-					testVerdict = "Fail"; // errors = fail
 
 				rally.setVerdict(testVerdict);
-				rally.setNotes(errors);
-				rally
-						.setDuration(System.currentTimeMillis() / 1000
-								- startTime);
+                rally.setNotes(errors);
+                rally.setDuration(System.currentTimeMillis() / 1000 - startTime);
 				rally.send_test_case_results();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -82,11 +65,6 @@ public abstract class InthincTest {
 		}
 		startTime = null;
 	}
-
-	public static void afterClass() {
-		GlobalSelenium.dieSeleniumDie();
-
-	}// tear down
 
 	public void set_test_case(String formattedID) {
 		rally.setTestCase(new NameValuePair("FormattedID", formattedID));
