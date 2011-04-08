@@ -18,7 +18,7 @@ public interface Page {
      * Return the EXPECTED path for this Page object.
      * @return a String representation of the intended path.
      */
-    //public String getExpectedPath();
+    public String getExpectedPath();
     
     /**
      * Return the ACTUAL path of the browser.
@@ -32,6 +32,4 @@ public interface Page {
      */
     public boolean validate();
  
-    //TODO: jwimmer: IF there is a way to do this ... possibly by returning the Class instead? it could be helpfull... then getExpectedPath could be implemented in AbstractPage
-    //public SeleniumEnum getPageEnum();
 }
