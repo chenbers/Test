@@ -18,7 +18,7 @@ public interface Page {
      * Return the EXPECTED path for this Page object.
      * @return a String representation of the intended path.
      */
-    public String getExpectedPath();
+    //public String getExpectedPath();
     
     /**
      * Return the ACTUAL path of the browser.
