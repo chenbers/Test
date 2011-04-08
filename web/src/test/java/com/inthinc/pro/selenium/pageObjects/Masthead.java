@@ -23,12 +23,12 @@ public class Masthead {
     }
 
     public String text_version_get() {
-        String version_text = selenium.verifyText(MastheadEnum.VERSION);
+        String version_text = selenium.getText(MastheadEnum.VERSION);
         return version_text;
     }
 
     public String text_copyRight_get() {
-        String copyright_text_actual = selenium.verifyText(MastheadEnum.COPYRIGHT);
+        String copyright_text_actual = selenium.getText(MastheadEnum.COPYRIGHT);
         return copyright_text_actual;
     }
 
@@ -58,7 +58,7 @@ public class Masthead {
         selenium.click(MastheadEnum.LEGAL);
         selenium.waitForPopUp("popup", CoreMethodLib.PAGE_TIMEOUT.toString());
         selenium.selectPopUp("");
-        selenium.verifyText(MastheadEnum.LEGAL_NOTICE);
+        selenium.getText(MastheadEnum.LEGAL_NOTICE);
         selenium.close();
         selenium.selectWindow(null);
     }
@@ -67,7 +67,7 @@ public class Masthead {
         selenium.click(MastheadEnum.PRIVACY);
         selenium.waitForPopUp("popup", CoreMethodLib.PAGE_TIMEOUT.toString());
         selenium.selectPopUp("");
-        selenium.verifyText(MastheadEnum.PRIVACY_POLICY);
+        selenium.getText(MastheadEnum.PRIVACY_POLICY);
         selenium.close();
         selenium.selectWindow(null);
     }
@@ -87,10 +87,10 @@ public class Masthead {
         selenium.isElementPresent(MastheadEnum.MY_ACCOUNT);
         selenium.isElementPresent(MastheadEnum.LOGOUT);
 
-        selenium.verifyText(MastheadEnum.HELP);
-        selenium.verifyText(MastheadEnum.MY_MESSAGES);
-        selenium.verifyText(MastheadEnum.MY_ACCOUNT);
-        selenium.verifyText(MastheadEnum.LOGOUT);
+        selenium.getText(MastheadEnum.HELP);
+        selenium.getText(MastheadEnum.MY_MESSAGES);
+        selenium.getText(MastheadEnum.MY_ACCOUNT);
+        selenium.getText(MastheadEnum.LOGOUT);
     }
 
     public void section_footer_validate() {
@@ -100,10 +100,10 @@ public class Masthead {
         selenium.isElementPresent(MastheadEnum.SUPPORT);
         selenium.isElementPresent(MastheadEnum.VERSION);
 
-        selenium.verifyText(MastheadEnum.COPYRIGHT);
-        selenium.verifyText(MastheadEnum.PRIVACY);
-        selenium.verifyText(MastheadEnum.LEGAL);
-        selenium.verifyText(MastheadEnum.SUPPORT);
+        selenium.getText(MastheadEnum.COPYRIGHT);
+        selenium.getText(MastheadEnum.PRIVACY);
+        selenium.getText(MastheadEnum.LEGAL);
+        selenium.getText(MastheadEnum.SUPPORT);
     }
 
     public void page_validate() {

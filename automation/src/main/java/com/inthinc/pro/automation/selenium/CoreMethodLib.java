@@ -402,6 +402,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
 
     public String getText(SeleniumEnums checkIt) {
+        isVisible(checkIt);
         return getText(checkIt.getText(), "getText: " + checkIt.toString());
     }
 
@@ -415,11 +416,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     public Boolean isElementNotPresent(SeleniumEnums checkIt) {
         return isElementNotPresent(getLocator(checkIt), "isElementNotPresent: " + checkIt.toString());
-    }
-
-    public String verifyText(SeleniumEnums checkIt) {
-        isVisible(checkIt);
-        return getText(getLocator(checkIt), "getText: " + checkIt.toString());
     }
 
     public void open(SeleniumEnums url) {

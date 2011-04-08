@@ -2,7 +2,6 @@ package com.inthinc.pro.automation.selenium;
 
 import java.util.HashMap;
 
-import com.inthinc.pro.automation.utils.StackToString;
 import com.thoughtworks.selenium.SeleniumException;
 
 /****************************************************************************************
@@ -16,8 +15,8 @@ import com.thoughtworks.selenium.SeleniumException;
  */
 public class ErrorCatcher {
 
-    private static HashMap<String, HashMap<String, String>> errors = new HashMap<String, HashMap<String, String>>();
-    private static HashMap<String, String> errorList;
+    private HashMap<String, HashMap<String, String>> errors = new HashMap<String, HashMap<String, String>>();
+    private HashMap<String, String> errorList;
 
     /**
      * Helper method for other error(name, error) methods. <br />
@@ -31,7 +30,10 @@ public class ErrorCatcher {
             add_error(name);
         }
         errors.get(name).put(type, error);
-        throw new SeleniumException(name + "  " + error);
+        assert(type.equals("Warning"));
+        if (!type.equals("Warning")){
+            throw new SeleniumException(name + "  " + error);
+        }
     }
 
     /**
@@ -46,9 +48,14 @@ public class ErrorCatcher {
         String type = error.getClass().getSimpleName();
         if (error instanceof String) {
             errorStr = (String) error;
-            type = "Actual text or Message";
-        } else if (error instanceof Throwable)
-            errorStr = StackToString.toString((Throwable) error);
+            type = "Warning";
+        } else if (error instanceof Throwable){
+//            type = "Framework Thrown Exception";
+            errorStr = RallyStack.toString((Throwable) error);
+        } else if (error instanceof StackTraceElement[]){
+            type = "Tester Thrown Error";
+            errorStr = RallyStack.toString((StackTraceElement[]) error);
+        }
         addError(name, type, errorStr);
     }
 

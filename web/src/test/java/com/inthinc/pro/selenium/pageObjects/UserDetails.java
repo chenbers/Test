@@ -4,14 +4,13 @@ import static org.junit.Assert.*;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
-import com.inthinc.pro.automation.selenium.RallyTest;
 /****************************************************************************************
  * @author : Lee Arrington
  * Purpose: Define methods and objects to enter and manipulate information on Admin - User Screen
  * Last Update:  11/24/10
  ****************************************************************************************/
 
-public class UserDetails extends RallyTest {
+public class UserDetails {
 	
 	//Define Class Objects
 	private final String add_user_page = "/tiwipro/app/admin/editPerson";

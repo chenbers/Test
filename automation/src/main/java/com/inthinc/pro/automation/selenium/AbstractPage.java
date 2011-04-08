@@ -19,6 +19,9 @@ public abstract class AbstractPage implements VerbosePage {
         selenium.getErrors().addExpected(errorName, expected);
     }
     
+    public void addError(String errorName){
+        selenium.getErrors().addError(errorName, Thread.currentThread().getStackTrace());
+    }
     public void addError(String errorName, String error){
         selenium.getErrors().addError(errorName, error);
     }
@@ -77,5 +80,17 @@ public abstract class AbstractPage implements VerbosePage {
      */
     public boolean page_bareMinimum_validate(){
         return validate();
+    }
+    
+    public void assertEquals(String actual, String expected){
+        if (!actual.equals(expected)){
+            addError(actual +" != " + expected);
+        }
+    }
+    
+    public void assertNotEquals(String actual, String expected){
+        if (actual.equals(expected)){
+            addError(actual +" == " + expected);
+        }
     }
 }

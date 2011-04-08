@@ -10,7 +10,7 @@ import com.inthinc.pro.selenium.pageObjects.Login;
 import com.inthinc.pro.selenium.pageObjects.Masthead;
 import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
-@Ignore
+//@Ignore
 public class LoginTest extends WebTest {
     Login l;
     // TODO: jwimmer: question for DTanner: I can see a benefit from having SOME of these types of things defined in a non-page-specific enum? email is a good example (actually not
@@ -32,10 +32,11 @@ public class LoginTest extends WebTest {
         //set_test_case("TC1247");
 
         // login to portal
-        l.page_login_open();
-        l.textField_password_type("password");
-        l.textField_username_type("0001");
-        l.button_logIn_click();
+        l.page_login_open()
+        .textField_password_type("password")
+        .textField_username_type("0001")
+        .button_logIn_click()
+        .addError("Testing");
 
 //        Masthead m = new Masthead();
 //        m.page_validate();

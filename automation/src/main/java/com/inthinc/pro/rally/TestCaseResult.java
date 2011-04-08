@@ -241,7 +241,9 @@ public class TestCaseResult {
 				aStringAString.write(tab);
 				aStringAString.write(insideBall);
 				aStringAString.write("<br />");
-				aStringAString.write(StringUtils.repeat(tab, 2));
+				if (!callIt.startsWith(StringUtils.repeat(tab, 2))){
+				    aStringAString.write(StringUtils.repeat(tab, 2));    
+				}
 				aStringAString.write(callIt);
 				aStringAString.write(StringUtils.repeat("<br />", 2));
 			}
