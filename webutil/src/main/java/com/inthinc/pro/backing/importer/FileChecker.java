@@ -9,14 +9,14 @@ import com.inthinc.pro.backing.importer.row.RowValidator;
 public class FileChecker {
     
     
-    public List<String> checkFile(ImportType importType, InputStream is) {
+    public List<String> checkFile(ImportType importType, InputStream is, boolean includeWarnings) {
         
         
         List<DataRow> dataList = new ExcelFile().parseFile(is);
-        return checkDataList(importType, dataList);
+        return checkDataList(importType, dataList, includeWarnings);
     }
     
-    public List<String> checkDataList(ImportType importType, List<DataRow> dataList ) {
+    public List<String> checkDataList(ImportType importType, List<DataRow> dataList, boolean includeWarnings ) {
         List<String> msgList = new ArrayList<String>();
         if (dataList == null) {
             msgList.add("ERROR: Unable to read in excel document.");
@@ -25,9 +25,10 @@ public class FileChecker {
         
         RowValidator rowValidator = importType.getRowValidator();
         for (DataRow row : dataList) {
-            String msg = rowValidator.validateRow(row.getData());
-            if (msg != null) {
-                msgList.add("ERROR (" + row.getLabel() + "): " + msg);
+            List<String> errorList = rowValidator.validateRow(row.getData(), includeWarnings);
+            if (!errorList.isEmpty()) {
+                msgList.add("<b>Row: " + row.getLabel()+"</b>");
+                msgList.addAll(errorList);
             }
         }
         return msgList;

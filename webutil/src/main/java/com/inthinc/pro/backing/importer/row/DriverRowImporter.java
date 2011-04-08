@@ -31,24 +31,23 @@ public class DriverRowImporter extends RowImporter {
     @Override
     public String importRow(List<String> rowData) {
         
+        List<String> importLogList = new ArrayList<String>();
         try {
         
-            List<String> errorList = new ArrayList<String>();
-            
             String accountName = rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX);
             Account account = this.getAccountMap().get(accountName);
             
-            if (account == null) { 
-                return "Account " + accountName + " does not exist.";
-            }
+//            if (account == null) { 
+//                return "Account " + accountName + " does not exist.";
+//            }
             
     
             String groupPath = rowData.get(DriverTemplateFormat.TEAM_PATH_IDX);
             Integer groupID = findOrCreateGroupByPath(groupPath, account.getAccountID());
-            if (groupID == null) {
-                return "Group path " + groupPath + " must start with fleet level group.";
-                
-            }
+//            if (groupID == null) {
+//                return "Group path " + groupPath + " must start with fleet level group.";
+//                
+//            }
             
             
             Person person = findPersonByEmployeeID(account.getAccountID(), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));

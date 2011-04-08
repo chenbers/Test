@@ -21,6 +21,7 @@ public class BulkImportBean extends BaseBean {
 
     private ImportType importType;
     private String feedback;
+    private List<String> errorList;
     private UploadFile uploadFile;
 
     public String getFeedback() {
@@ -40,6 +41,13 @@ public class BulkImportBean extends BaseBean {
         this.uploadFile = uploadFile;
     }
 
+    public List<String> getErrorList() {
+        return errorList;
+    }
+
+    public void setErrorList(List<String> errorList) {
+        this.errorList = errorList;
+    }
 
     public ImportType getImportType() {
         return importType;
@@ -61,16 +69,14 @@ public class BulkImportBean extends BaseBean {
     
     public void checkAction() {
         try {
-            List<String> msgList = new FileChecker().checkFile(importType, new FileInputStream(uploadFile.getFile()));
+            setFeedback(null);
+            setErrorList(null);
+            List<String> msgList = new FileChecker().checkFile(importType, new FileInputStream(uploadFile.getFile()), true);
             if (msgList.size() == 0)
                 setFeedback("The file check was SUCCESSFUL.  No issues were found.");
             else {
-                StringBuffer buffer = new StringBuffer();
-                for (String msg : msgList) {
-                    buffer.append(msg);
-                    buffer.append("<br/>");
-                }
-                setFeedback(buffer.toString());
+                setFeedback("The file check was NOT SUCCESSFUL.  Please correct the following errors and try again:");
+                setErrorList(msgList);
             }
         } catch (FileNotFoundException e) {
             setFeedback("File upload failed.  File not found. " + e.getMessage());
@@ -80,16 +86,14 @@ public class BulkImportBean extends BaseBean {
     
     public void importAction() {
         try {
+            setFeedback(null);
+            setErrorList(null);
             List<String> msgList = new FileImporter().importFile(importType, new FileInputStream(uploadFile.getFile()));
             if (msgList.size() == 0)
                 setFeedback("The file import was SUCCESSFUL.");
             else {
-                StringBuffer buffer = new StringBuffer();
-                for (String msg : msgList) {
-                    buffer.append(msg);
-                    buffer.append("<br/>");
-                }
-                setFeedback(buffer.toString());
+                setFeedback("The file import was NOT SUCCESSFUL.  The following errors were found:");
+                setErrorList(msgList);
             }
         } catch (FileNotFoundException e) {
             setFeedback("File upload failed.  File not found. " + e.getMessage());

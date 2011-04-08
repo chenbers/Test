@@ -4,5 +4,5 @@ public abstract class Validator {
     
     public abstract boolean isValid(String value);
     
-    public abstract String getInvalidMessage(); 
+    public abstract String getInvalidMessage(String value); 
 }

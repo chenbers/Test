@@ -19,9 +19,9 @@ public class FuelEfficiencyTypeValidator extends Validator {
     }
     
     @Override
-    public String getInvalidMessage() {
+    public String getInvalidMessage(String value) {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("The Fuel Efficiency Type is invalid.  Valid types are: ");
+        buffer.append("The Fuel Efficiency Type: " +  value + " is invalid.  Valid types are: ");
         for (FuelEfficiencyType v : FuelEfficiencyType.values()) {
             buffer.append(v.name() + "  ");
         }

@@ -1,7 +1,7 @@
 package com.inthinc.pro.backing.importer;
 
-import com.inthinc.pro.backing.importer.validator.Validator;
 import com.inthinc.pro.backing.importer.validator.StringValidator;
+import com.inthinc.pro.backing.importer.validator.Validator;
 
 public class ColumnFormat {
     
@@ -9,9 +9,8 @@ public class ColumnFormat {
     private boolean manditory;
     private int maxLength;
     private Validator validator;
-    
+
     public ColumnFormat(String name, boolean manditory, int maxLength) {
-        super();
         this.name = name;
         this.manditory = manditory;
         this.maxLength = maxLength;
@@ -19,7 +18,6 @@ public class ColumnFormat {
     }
     
     public ColumnFormat(String name, boolean manditory, Validator validator) {
-        super();
         this.name = name;
         this.manditory = manditory;
         this.validator = validator;

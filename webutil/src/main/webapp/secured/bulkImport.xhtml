@@ -7,7 +7,7 @@
     <ui:param name="groupSelected" value="MAIN" />
     <ui:define name="util_content">
     <div style="margin: 10px auto 20px auto;background: #fff;">
-    <div style="width:400px">
+    <div style="width:800px">
     	<table>
     	<tr>
     	<td>
@@ -70,7 +70,7 @@
                 				autoclear="true"
                 				listHeight="0px"
                 				listWidth="100px"
-                				acceptedTypes="xls" allowFlash="false">
+                				acceptedTypes="xls, xslx" allowFlash="false">
                 				<a4j:support event="onuploadcomplete" reRender="info" />
             				</rich:fileUpload>                        
                         </td>                              	                           	
@@ -99,11 +99,18 @@
 		</a4j:region>
 		<a4j:region id="feedbackRegion">
 			<h:panelGroup id="feedbackPanel">
-            <rich:panel rendered="#{bulkImportBean.feedback != null}">
+            <rich:panel rendered="#{bulkImportBean.feedback != null}" style="height:400px;overflow:auto;"  >
 	            <f:facet name="header">
 					<h:outputText value="Results" />
         	    </f:facet>
         	    <h:outputText value="#{bulkImportBean.feedback}" escape="false"/>
+        	    <ui:fragment rendered="#{not empty bulkImportBean.errorList}">
+					<ul style="list-style:none;">        	    	
+        	    		<a4j:repeat value="#{bulkImportBean.errorList}" var="errorMsg">
+		        	    	<li><h:outputText value="#{errorMsg}" escape="false"/></li>
+        	    		</a4j:repeat>
+        	    	</ul>
+        	    </ui:fragment>
 			</rich:panel>
 			</h:panelGroup>
 		</a4j:region>			

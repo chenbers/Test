@@ -19,9 +19,9 @@ public class MeasurementTypeValidator extends Validator {
     }
     
     @Override
-    public String getInvalidMessage() {
+    public String getInvalidMessage(String value) {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("The Measurement Type is invalid.  Valid types are: ");
+        buffer.append("The Measurement Type: " + value + " is invalid.  Valid types are: ");
         for (MeasurementType v : MeasurementType.values()) {
             buffer.append(v.name() + "  ");
         }

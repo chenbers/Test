@@ -82,4 +82,19 @@
 	<bean id="driverRowValidator" class="com.inthinc.pro.backing.importer.row.DriverRowValidator" parent="rowValidator"/>
 	<bean id="vehicleRowValidator" class="com.inthinc.pro.backing.importer.row.VehicleRowValidator" parent="rowValidator"/>
 	<bean id="rowProcessorFactory" class="com.inthinc.pro.backing.importer.row.RowProcessorFactory" init-method="init"/>
+
+	<!--  bulk importer template formats (application scope) -->
+	<bean id="templateFormat" class="com.inthinc.pro.backing.importer.TemplateFormat" abstract="true"/>
+	<bean id="driverTemplateFormat" class="com.inthinc.pro.backing.importer.DriverTemplateFormat" parent="templateFormat"/>
+	<bean id="vehicleTemplateFormat" class="com.inthinc.pro.backing.importer.VehicleTemplateFormat" parent="templateFormat"/>
+
+	<!--  bulk importer data checker (application scope TODO: CHECK THE SCOPE) -->
+	<bean id="dataCache" class="com.inthinc.pro.backing.importer.datacheck.DataCache" init-method="init"/>
+	
+	<!--  bulk importer validators (application scope) -->
+<!-- 	
+	<bean id="validator" class="com.inthinc.pro.backing.importer.validator.Validator" abstract="true"/>
+	<bean id="stateValidator" class="com.inthinc.pro.backing.importer.validator.StateValidator" parent="validator"/>
+ -->	
+	
 </beans>

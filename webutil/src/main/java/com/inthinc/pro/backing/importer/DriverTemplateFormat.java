@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing.importer;
 
+import com.inthinc.pro.backing.importer.datacheck.AccountNameChecker;
 import com.inthinc.pro.backing.importer.validator.CountryValidator;
 import com.inthinc.pro.backing.importer.validator.FuelEfficiencyTypeValidator;
 import com.inthinc.pro.backing.importer.validator.LanguageValidator;
@@ -44,23 +45,9 @@ public class DriverTemplateFormat extends TemplateFormat {
             new ColumnFormat("Fuel Efficiency", true, new FuelEfficiencyTypeValidator()),
     };
 
-    @Override
-    public int getNumColumns() {
-        return columns.length;
-    }
 
     @Override
-    public boolean isColumnManditory(int columnIndex) {
-        return columns[columnIndex].isManditory();
-    }
-
-    @Override
-    public boolean isColumnValid(int columnIndex, String value) {
-        return columns[columnIndex].getValidator().isValid(value);
-    }
-
-    @Override
-    public String getInvalidMessage(int columnIndex) {
-        return columns[columnIndex].getValidator().getInvalidMessage();
+    public ColumnFormat[] getColumns() {
+        return columns;
     }
 }

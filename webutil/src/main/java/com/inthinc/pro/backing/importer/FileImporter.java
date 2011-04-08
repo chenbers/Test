@@ -10,7 +10,7 @@ public class FileImporter {
     public List<String> importFile(ImportType importType, InputStream is) {
         
         List<DataRow> dataList = new ExcelFile().parseFile(is);
-        List<String> msgList = new FileChecker().checkDataList(importType, dataList);
+        List<String> msgList = new FileChecker().checkDataList(importType, dataList, false);
         if (msgList.size() != 0)
             return msgList;
 

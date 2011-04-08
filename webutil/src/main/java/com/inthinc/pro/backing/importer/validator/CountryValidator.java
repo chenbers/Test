@@ -17,7 +17,7 @@ public class CountryValidator extends Validator {
     }
 
     @Override
-    public String getInvalidMessage() {
-        return "The country code is invalid. ";
+    public String getInvalidMessage(String value) {
+        return "The country code " + value + " is invalid. ";
     }
 }

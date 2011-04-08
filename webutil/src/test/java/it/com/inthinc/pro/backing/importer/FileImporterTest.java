@@ -41,7 +41,7 @@ import com.inthinc.pro.model.security.Role;
 public class FileImporterTest extends BaseSpringTest {
     
     // this must match the account name in importTest/DriverTemplateNoErrors.xls
-    private static final String TEST_ACCOUNT_NAME = "BulkImportTest_1";
+    private static final String TEST_ACCOUNT_NAME = "BulkImportTest_3";
     private static SiloServiceCreator siloServiceCreator;
     private static Account testAccount;
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
@@ -121,7 +121,7 @@ public class FileImporterTest extends BaseSpringTest {
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloServiceCreator.getService());
         String username = TEST_ACCOUNT_NAME;
-        User user = new User(0, person.getPersonID(), roleIDs, Status.ACTIVE, username, PASSWORD, groupID);
+        User user = new User(0, person.getPersonID(), roleIDs, Status.ACTIVE, username, PASSWORD, topGroup.getGroupID());
         Integer userID = null;
         try {
             userID = userDAO.create(personID, user);
@@ -140,7 +140,7 @@ public class FileImporterTest extends BaseSpringTest {
     @Test
     public void driversImport()
     {
-        System.out.println("RowImporterFactory " + this.applicationContext.containsBean("rowImporterFactory"));
+        System.out.println("rowProcessorFactory " + this.applicationContext.containsBean("rowProcessorFactory"));
         
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateGood.xls");
         List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream);
@@ -151,6 +151,25 @@ public class FileImporterTest extends BaseSpringTest {
         assertTrue(msgList.size() == 0);
         
     }
+
+    @Test
+    public void driversCheck()
+    {
+        System.out.println("RowImporterFactory " + this.applicationContext.containsBean("rowImporterFactory"));
+        
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateBad.xls");
+        List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream);
+        
+        dumpErrors(msgList);
+        System.out.println("size " + msgList.size()) ;
+        
+        
+        assertTrue(msgList.size() == 15);
+//        assertTrue(msgList.size() == 0);
+        
+    }
+
+    
     private void dumpErrors(List<String> msgList) {
         for (String msg : msgList)
             System.out.println(msg);

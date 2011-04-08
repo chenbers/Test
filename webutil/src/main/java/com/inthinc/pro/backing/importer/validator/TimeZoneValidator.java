@@ -18,8 +18,8 @@ public class TimeZoneValidator extends Validator {
     }
     
     @Override
-    public String getInvalidMessage() {
-        return "The timezone ID is invalid.";
+    public String getInvalidMessage(String value) {
+        return "The timezone ID " + value + " is invalid.";
     }
 
 }

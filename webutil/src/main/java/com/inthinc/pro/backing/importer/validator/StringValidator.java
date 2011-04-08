@@ -14,7 +14,7 @@ public class StringValidator extends Validator {
         return value.length() <= maxLength;
     }
     @Override
-    public String getInvalidMessage() {
-        return "The maximum length is " + maxLength + ".";
+    public String getInvalidMessage(String value) {
+        return "'" + value + "' is too long.  The maximum length is " + maxLength + ".";
     }
 }

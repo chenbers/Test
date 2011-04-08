@@ -18,7 +18,7 @@ public class LanguageValidator extends Validator {
     }
     
     @Override
-    public String getInvalidMessage() {
-        return "The language code is invalid. ";
+    public String getInvalidMessage(String value) {
+        return "The language code: " + value + " is invalid. ";
     }
 }
