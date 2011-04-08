@@ -45,10 +45,11 @@ public class DriverRowValidator extends RowValidator {
                 errorList.add(error);
         }
         if (includeWarnings) {
-            
-            String warning = new DuplicateEmployeeIDChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));
-            if (warning != null)
-                errorList.add(warning);
+            if (rowData.size() > DriverTemplateFormat.EMPLOYEE_ID_IDX) {
+                String warning = new DuplicateEmployeeIDChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));
+                if (warning != null)
+                    errorList.add(warning);
+            }
             
         }
         return errorList;
