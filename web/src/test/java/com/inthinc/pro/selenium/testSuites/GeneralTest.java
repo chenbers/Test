@@ -30,7 +30,7 @@ public class GeneralTest {
 //		selenium.type("j_username", "0001");
 //		selenium.type("j_password", "password");
 //		selenium.click("loginLogin");
-		WebDriver driverInstance = ((WebDriverBackedSelenium) selenium).getUnderlyingWebDriver();
+		WebDriver driverInstance = ((WebDriverBackedSelenium) selenium).getWrappedDriver();
 		selenium.stop();
 	}
 }
