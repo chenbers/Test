@@ -16,51 +16,51 @@ public class VehicleReport  extends AbstractPage {
         selenium = GlobalSelenium.getSelenium();
     }
     
-    public void link_team_click(Integer row,String error) {
-        clickIt(VehicleReportEnum.TEAM.getID(), row, error);   
+    public void link_team_click(Integer row) {
+        clickIt(VehicleReportEnum.TEAM.getID(), row);   
     }  
     
-    public void link_driver_click(Integer row,String error) {
-        clickIt(VehicleReportEnum.DRIVER.getID(), row, error); 
+    public void link_driver_click(Integer row) {
+        clickIt(VehicleReportEnum.DRIVER.getID(), row); 
     } 
     
-    public void link_vehicle_click(Integer row,String error) {
-        clickIt(VehicleReportEnum.VEHICLE.getID(), row, error);
+    public void link_vehicle_click(Integer row) {
+        clickIt(VehicleReportEnum.VEHICLE.getID(), row);
     }
     
-    public void link_overall_click(Integer row,String error) {
-        clickIt(VehicleReportEnum.OVERALL.getID(), row, error);
+    public void link_overall_click(Integer row) {
+        clickIt(VehicleReportEnum.OVERALL.getID(), row);
     }
     
-    public void link_style_click(Integer row,String error) {  
-        clickIt(VehicleReportEnum.STYLE.getID(), row, error);
+    public void link_style_click(Integer row) {  
+        clickIt(VehicleReportEnum.STYLE.getID(), row);
     }
     
-    public void link_seatbelt_click(Integer row,String error) {
-        clickIt(VehicleReportEnum.SEATBELT.getID(), row, error);        
+    public void link_seatbelt_click(Integer row) {
+        clickIt(VehicleReportEnum.SEATBELT.getID(), row);        
     }
     
     public void textField_driverSearch_type(String driver) {
-        selenium.type(VehicleReportEnum.DRIVER_SEARCH.getID(), driver);        
+        selenium.type(VehicleReportEnum.DRIVER_SEARCH, driver);        
     }
     
     public void textField_teamSearch_type(String driver) {
-        selenium.type(VehicleReportEnum.TEAM_SEARCH.getID(), driver);        
+        selenium.type(VehicleReportEnum.TEAM_SEARCH, driver);        
     }
     
     public void textField_vehicleSearch_type(String driver) {
-        selenium.type(VehicleReportEnum.VEHICLE_SEARCH.getID(), driver);        
+        selenium.type(VehicleReportEnum.VEHICLE_SEARCH, driver);        
     }
     
     public void form_driverSearch_submit() {
         selenium.submit(VehicleReportEnum.DRIVER_FORM.getID());
     }
     
-    private void clickIt(String rowQualifier, Integer row, String error) {
+    private void clickIt(String rowQualifier, Integer row) {
         if ( row != null ) {
             rowQualifier = insertRow(rowQualifier,row);
         }
-        selenium.click(rowQualifier, error);
+        selenium.click(rowQualifier);
     }
     
     private String insertRow(String rowQualifier,Integer row) {

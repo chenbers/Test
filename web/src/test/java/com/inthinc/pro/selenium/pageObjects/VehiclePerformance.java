@@ -14,8 +14,8 @@ public class VehiclePerformance extends AbstractPage {
         selenium = GlobalSelenium.getSelenium();
     }
     
-    public void link_viewTrips_click(String error) {
-        selenium.click(VehiclePerformanceEnum.VIEW_ALL_TRIPS.getID(), error);        
+    public void link_viewTrips_click() {
+        selenium.click(VehiclePerformanceEnum.VIEW_ALL_TRIPS);        
     }
 
     @Override

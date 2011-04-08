@@ -14,28 +14,28 @@ public class Navigation extends AbstractPage {
         selenium = GlobalSelenium.getSelenium();
     }  
     
-    public void link_reportsMainMenu_click(String error) {
-        selenium.click(NavigationEnum.NAVIGATE_TO_DRIVER_REPORT_MAIN_MENU.getID(), error);        
+    public void link_reportsMainMenu_click() {
+        selenium.click(NavigationEnum.NAVIGATE_TO_DRIVER_REPORT_MAIN_MENU);        
     }
     
-    public void link_driverSubMenu_click(String error) {
-        selenium.click(NavigationEnum.NAVIGATE_TO_DRIVER_REPORT.getXpath(), error);        
+    public void link_driverSubMenu_click() {
+        selenium.click(NavigationEnum.NAVIGATE_TO_DRIVER_REPORT);        
     }
     
-    public void link_vehicleSubMenu_click(String error) {
-        selenium.click(NavigationEnum.NAVIGATE_TO_VEHICLE_REPORT.getXpath(), error);        
+    public void link_vehicleSubMenu_click() {
+        selenium.click(NavigationEnum.NAVIGATE_TO_VEHICLE_REPORT);        
     }
     
-    public void link_idlingSubMenu_click(String error) {
-        selenium.click(NavigationEnum.NAVIGATE_TO_IDLING_REPORT.getXpath(), error);        
+    public void link_idlingSubMenu_click() {
+        selenium.click(NavigationEnum.NAVIGATE_TO_IDLING_REPORT);        
     }
     
-    public void link_devicesSubMenu_click(String error) {
-        selenium.click(NavigationEnum.NAVIGATE_TO_DEVICES_REPORT.getXpath(), error);        
+    public void link_devicesSubMenu_click() {
+        selenium.click(NavigationEnum.NAVIGATE_TO_DEVICES_REPORT);        
     }
     
-    public void link_waySmartSubMenu_click(String error) {
-        selenium.click(NavigationEnum.NAVIGATE_TO_WAYSMART_REPORT.getXpath(), error);        
+    public void link_waySmartSubMenu_click() {
+        selenium.click(NavigationEnum.NAVIGATE_TO_WAYSMART_REPORT);        
     }    
     public void dropdown_search_select(String typeOfSearch) {
         selenium.select(NavigationEnum.SEARCH_DROPDOWN.getID(), "label=" + typeOfSearch );
