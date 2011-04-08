@@ -68,8 +68,8 @@
 		<skipUT>false</skipUT>
 		<skipIT>false</skipIT>
 		<junit.version>4.8.2</junit.version>
-		<spring.version>2.5.1</spring.version>
-		<spring.security.version>2.0.5.RELEASE</spring.security.version>
+		<spring.version>2.5.6.SEC02</spring.version>
+		<spring.security.version>2.0.6.RELEASE</spring.security.version>
 		<richfaces.version>3.3.2.SR1</richfaces.version>
 		<jsf.version>1.2_14</jsf.version>
 		<facelets.version>1.1.15</facelets.version>
@@ -512,13 +512,12 @@ WWUUnm]]>
 				<version>2.0b1</version>
 				<type>jar</type>
 				<scope>compile</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-server</artifactId>
-				<version>2.0b1</version>
-				<type>jar</type>
-				<scope>compile</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>org.testng</groupId>
+						<artifactId>testng</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<!-- added for spring junit tests -->
 		</dependencies>
