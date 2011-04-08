@@ -12,5 +12,5 @@ public interface SeleniumEnum {
 
 	public String getXpath_alt();
 	
-	public String getError();
+	public String getURL();
 }

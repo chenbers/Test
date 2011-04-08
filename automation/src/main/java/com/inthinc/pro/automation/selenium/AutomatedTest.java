@@ -6,7 +6,7 @@ public abstract class AutomatedTest {
 
     protected Long startTime;
     protected static HashMap<String, HashMap<String, String>> errors;
-    protected String testVerdict = "Fail";
+    protected String testVerdict = "Fail";//TODO: jwimmer: right now there is no way to FAIL a test?  just "Pass" or "Errors"
 
     public void setTestVerdict(String testVerdict) {
         this.testVerdict = testVerdict;

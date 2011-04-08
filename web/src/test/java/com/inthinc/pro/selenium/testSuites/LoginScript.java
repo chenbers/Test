@@ -6,7 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 
 import com.inthinc.pro.selenium.pageObjects.Login;
-import com.inthinc.pro.selenium.testSuites.WebTest;
+import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class LoginScript extends WebTest {
+public class LoginScript extends WebRallyTest {
     
     // map of frequently used elements
     private HashMap<String,String> macro = new HashMap<String,String>();

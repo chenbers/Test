@@ -3,11 +3,17 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
-import com.inthinc.pro.automation.selenium.AutomatedTest;
+import com.inthinc.pro.automation.selenium.RallyTest;
 
-public class WebTest extends AutomatedTest{
-        
+public class WebRallyTest extends RallyTest{
+    
+    @BeforeClass
+    public static void beforeClass(){
+        RallyTest.beforeClass();
+    }
+    
     @Before
     @Override
     public void before(){
@@ -22,7 +28,7 @@ public class WebTest extends AutomatedTest{
     
     @AfterClass
     public static void afterClass(){
-        AutomatedTest.afterClass();
+        RallyTest.afterClass();
     }
     
 }

@@ -112,7 +112,7 @@ public class Login extends AbstractPage{
     }
 
     public void page_login_open() {
-    	page_load();
+    	page_directURL_load();
     	page_logIn_validate();
     }
 
@@ -160,7 +160,7 @@ public class Login extends AbstractPage{
 
         selenium.verifyText(LoginEnum.ERROR_HEADER);
         selenium.verifyText(LoginEnum.ERROR_MESSAGE);
-        selenium.getText(LoginEnum.ERROR_BUTTON.getXpath());
+        //selenium.getText(LoginEnum.ERROR_BUTTON.getXpath());//TODO: jwimmer: dTanner: compile error at this line
     }
 
     private Boolean popUp_forgotPassword_isVisible(){
@@ -211,22 +211,24 @@ public class Login extends AbstractPage{
 			selenium.verifyText(LoginEnum.FORGOT_TEXT);
 	        selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
 	
-	        selenium.isTextPresent("Log In");
 	        selenium.verifyText(LoginEnum.LOGIN_TEXT);
 	        selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
 	
 	        selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
 	
-	        selenium.isTextPresent("User Name:");
 	        selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
 	        selenium.verifyText(LoginEnum.USERNAME_LABEL);
 	
-	        selenium.isTextPresent("Password:");
 	        selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
 	        selenium.verifyText(LoginEnum.PASSWORD_LABEL);
 		} catch (Exception e) {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String getExpectedPath() {
+		return LoginEnum.LOGIN_URL.getURL();
 	}
 }

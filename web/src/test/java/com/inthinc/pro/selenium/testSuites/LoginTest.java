@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.selenium.pageObjects.Login;
 import com.inthinc.pro.selenium.pageObjects.Masthead;
-import com.inthinc.pro.selenium.testSuites.WebTest;
+import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
 @Ignore
 public class LoginTest extends WebTest {
@@ -29,7 +29,7 @@ public class LoginTest extends WebTest {
     public void LoginButton() {
         // create instance of library objects
         // Set up test data
-        set_test_case("TC1247");
+        //set_test_case("TC1247");
 
         // login to portal
         l.page_login_open();
@@ -45,7 +45,7 @@ public class LoginTest extends WebTest {
     public void UI() {
         // create instance of library objects
         // Set up test data
-        set_test_case("TC4632");
+        //set_test_case("TC4632");
         // go to Login Screen
         l.page_login_open();
         // verify login screen is displayed correctly
@@ -54,7 +54,7 @@ public class LoginTest extends WebTest {
 
     // @Test
     public void login_nullUsernamePassword_appError() {
-        set_test_case("unknown");
+        
         l.page_login_open();
         l.page_logIn_validate();
         l.button_logIn_click();
@@ -63,7 +63,7 @@ public class LoginTest extends WebTest {
 
     // @Test
     public void login_closeBadCredModal_noModal() {
-        set_test_case("none");
+       
         l.page_login_open();
         l.page_logIn_validate();
         l.button_logIn_click();
