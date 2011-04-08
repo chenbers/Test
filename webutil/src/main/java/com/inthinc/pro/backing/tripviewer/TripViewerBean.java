@@ -300,6 +300,7 @@ public class TripViewerBean extends BaseBean {
         eventTypeList.add(NoteType.IGNITION_ON);
         eventTypeList.add(NoteType.IGNITION_OFF);
         eventTypeList.add(NoteType.LOCATION);
+        eventTypeList.add(NoteType.CLEAR_DRIVER);
         
         List<Event> tmp = eventDAO.getEventsForDriver(this.selectedDriver, this.tripToShow.getStartTime(), this.tripToShow.getEndTime(), 
                 eventTypeList, 1);
