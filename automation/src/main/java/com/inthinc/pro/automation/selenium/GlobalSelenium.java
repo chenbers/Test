@@ -34,8 +34,7 @@ public class GlobalSelenium {
 
 	public static void dieSeleniumDie() {
 		Long currentThread = Thread.currentThread().getId();
-		((CoreMethodLib) multiplicative.get(currentThread))
-				.getUnderlyingWebDriver();
+		((CoreMethodLib) multiplicative.get(currentThread)).getWrappedDriver();
 		multiplicative.remove(currentThread);
 	}
 }
