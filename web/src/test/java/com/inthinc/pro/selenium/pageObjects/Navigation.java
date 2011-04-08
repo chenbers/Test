@@ -60,4 +60,10 @@ public class Navigation extends AbstractPage {
         // TODO Auto-generated method stub
         return false;
     }
+
+    @Override
+    public String getExpectedPath() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

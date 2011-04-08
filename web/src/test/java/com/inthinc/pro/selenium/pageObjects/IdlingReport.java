@@ -82,5 +82,11 @@ public class IdlingReport extends AbstractPage {
     public boolean validate() {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    @Override
+    public String getExpectedPath() {
+        // TODO Auto-generated method stub
+        return null;
     }    
 }
