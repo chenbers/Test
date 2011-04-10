@@ -68,7 +68,7 @@
 		<skipUT>false</skipUT>
 		<skipIT>false</skipIT>
 		<skipAT>true</skipAT>
-		<junit.version>4.8.2</junit.version>
+		<junit.version>4.4</junit.version>
 		<spring.version>2.5.6.SEC02</spring.version>
 		<spring.security.version>2.0.6.RELEASE</spring.security.version>
 		<richfaces.version>3.3.2.SR1</richfaces.version>
@@ -560,22 +560,27 @@ WWUUnm]]>
 			<plugin>
 				<groupId>com.atlassian.maven.plugins</groupId>
 				<artifactId>maven-clover2-plugin</artifactId>
+				<version>3.0.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.5</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.6</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.3.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>dashboard-maven-plugin</artifactId>
+				<version>1.0.0-beta-1</version>
 			</plugin>
 		</plugins>
 	</reporting>
