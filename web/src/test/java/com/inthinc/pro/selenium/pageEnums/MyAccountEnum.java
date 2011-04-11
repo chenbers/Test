@@ -7,10 +7,10 @@ public enum MyAccountEnum implements SeleniumEnums {
     MY_ACCOUNT_URL("account"),
 
     /* Buttons and Title */
-    CHANGE_PASSWORD("Change Password", "myAccountPassword", "//ul[@id='grid_nav']/li/button[1]", "//button[@type='submit']"),
-    EDIT("Edit", "myAccountEdit", "//ul[@id='grid_nav']/li/button[2]", "//button[@type='submit']"),
+    CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword", "//ul[@id='grid_nav']/li/button[1]", "//button[@type='submit']"),
+    EDIT_BUTTON("Edit", "myAccountEdit", "//ul[@id='grid_nav']/li/button[2]", "//button[@type='submit']"),
 
-    TITLE("My Account", null, "//div[@class='account']", "//div[@class='panel_title']"),
+    MAIN_TITLE("My Account", null, "//div[@class='account']", "//div[@class='panel_title']"),
 
     /* Account Information */
     ACCOUNT_TITLE("Account Information", null, "//td[1]/div[@class='add_section_title']", null),
@@ -27,16 +27,16 @@ public enum MyAccountEnum implements SeleniumEnums {
     /* Login Information */
     LOGIN_TITLE("Login Information", null, "//td[1]/div[@class='add_section_title']", null),
 
-    USER_NAME("User Name:", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[1]/td[1]", null),
+    USER_NAME_TITLE("User Name:", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[1]/td[1]", null),
     USER_NAME_TEXT(null, null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[1]/td[2]", null),
 
-    LOCALE("Locale:", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[2]/td[1]", null),
+    LOCALE_TITLE("Locale:", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[2]/td[1]", null),
     LOCALE_TEXT(null, null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[2]/td[2]", null),
 
-    MEASUREMENT("Measurement", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[3]/td[1]", null),
+    MEASUREMENT_TITLE("Measurement", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[3]/td[1]", null),
     MEASUREMENT_TEXT(null, null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[3]/td[2]", null),
 
-    FUEL_EFFICIENCY_RATIO("Fuel Efficiency Ratio:", null, "//td[@style='vertical-align: top;']/table/tbody/tr[4]/td[1]", null),
+    FUEL_EFFICIENCY_RATIO_TITLE("Fuel Efficiency Ratio:", null, "//td[@style='vertical-align: top;']/table/tbody/tr[4]/td[1]", null),
     FUEL_EFFICIENCY_RATIO_TEXT(null, null, "//td[@style='vertical-align: top;']/table/tbody/tr[4]/td[2]", null),
 
     /* Red Flag Preferences */
@@ -60,28 +60,28 @@ public enum MyAccountEnum implements SeleniumEnums {
     PHONE_TITLE("Phone Numbers", null, "//div[@class='panel_content']/div[2]", null),
     TEXT_TITLE("Text Messages", null, "//div[@class='panel_content']/div[3]", null),
 
-    EMAIL1("E-mail 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[1]", null),
+    EMAIL1_TITLE("E-mail 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[1]", null),
     EMAIL1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[2]", null),
 
-    EMAIL2("E-mail 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[1]", null),
+    EMAIL2_TITLE("E-mail 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[1]", null),
     EMAIL2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[2]", null),
 
-    PHONE1("Phone 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[3]/td[1]", null),
+    PHONE1_TITLE("Phone 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[3]/td[1]", null),
     PHONE1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[3]/td[2]", null),
 
-    PHONE2("Phone 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[4]/td[1]", null),
+    PHONE2_TITLE("Phone 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[4]/td[1]", null),
     PHONE2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[4]/td[2]", null),
 
-    TEXT_MESSAGES1("Text Message 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[5]/td[1]", null),
+    TEXT_MESSAGES1_TITLE("Text Message 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[5]/td[1]", null),
     TEXT_MESSAGES1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[5]/td[2]", null),
 
-    TEXT_MESSAGES2("Text Message 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[6]/td[1]", null),
+    TEXT_MESSAGES2_TITLE("Text Message 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[6]/td[1]", null),
     TEXT_MESSAGES2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[6]/td[2]", null),
 
     /* Edit Page Buttons */
 
-    SAVE("Save", "my_form:editAccountSave", "//li/button[@type='submit']", "//li/button[@class='left'][1]"),
-    CANCEL("Cancel", "editAccountCancel", "//li/button[@type='button']", "//li/button[@class='left'][2]"),
+    SAVE_BUTTON("Save", "my_form:editAccountSave", "//li/button[@type='submit']", "//li/button[@class='left'][1]"),
+    CANCEL_BUTTON("Cancel", "editAccountCancel", "//li/button[@type='button']", "//li/button[@class='left'][2]"),
 
     /* Edit Page Selects */
     INFORMATION_SELECT(null, "my_form:editAccountLocale", "//select[@name='my_form:editAccountLocale']", null),
@@ -108,18 +108,18 @@ public enum MyAccountEnum implements SeleniumEnums {
     CHANGE_PASSWORD_CANCEL("Cancel", "changePasswordForm:changePasswordCancel", "//button[@name='changePasswordForm:changePasswordCancel']", "//div/button[@class='left'][@type='button']"),
     CHANGE_PASSWORD_CHANGE("Change", "changePasswordForm:changePasswordSubmit", "//button[@name='changePasswordForm:changePasswordSubmit']", "//div/button[@class='left'][@type='submit']"),
 
-    CHANGE_PASSWORD_CURRENT_TITE("Current Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[1]/td[1]", null),
-    CHANGE_PASSWORD_CURRENT_FIELD(null, "changePasswordForm:oldPassword", "//inpute[@name='changePasswordForm:oldPassword", "//input[@type='password'][1]"),
+    CHANGE_PASSWORD_CURRENT_TITLE("Current Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[1]/td[1]", null),
+    CHANGE_PASSWORD_CURRENT_TEXTFIELD(null, "changePasswordForm:oldPassword", "//inpute[@name='changePasswordForm:oldPassword", "//input[@type='password'][1]"),
 
     CHANGE_PASSWORD_STRENGTH_MSG("Begin Typing", null, "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]", null),
     CHANGE_PASSWORD_STRENGTH_METER_EMPTY(null, "changePasswordForm_meterEmpty", "//div[@id='pwdTest']/span", null),
     CHANGE_PASSWORD_STRENGTH_METER_FULL(null, "changePasswordForm_meterFull", "//div[@id='pwdTest']/span/span", null),
 
     CHANGE_PASSWORD_NEW_TITLE("Current Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[2]/td[1]", null),
-    CHANGE_PASSWORD_NEW_FIELD(null, "changePasswordForm:newPassword", "//inpute[@name='changePasswordForm:newPassword", "//input[@type='password'][2]"),
+    CHANGE_PASSWORD_NEW_TEXTFIELD(null, "changePasswordForm:newPassword", "//inpute[@name='changePasswordForm:newPassword", "//input[@type='password'][2]"),
 
     CHANGE_PASSWORD_CONFIRM_TITLE("Current Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]", null),
-    CHANGE_PASSWORD_CONFIRM_FIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
+    CHANGE_PASSWORD_CONFIRM_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
 
     
     
