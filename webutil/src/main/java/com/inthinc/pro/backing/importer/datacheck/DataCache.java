@@ -5,22 +5,28 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
+import com.inthinc.pro.model.User;
 
 public class DataCache {
     
     private static Map<String, Account> accountMap;
     private static Map<Integer, List<Group>> groupMap;
     private static Map<Integer, List<Person>> personMap;
-    private AccountDAO accountDAO;
+    private static AccountDAO accountDAO;
     private static GroupDAO groupDAO;
     private static PersonDAO personDAO;
+    private static UserDAO userDAO;
+    private static DriverDAO driverDAO;
     
     public void init()
     {
@@ -34,19 +40,6 @@ public class DataCache {
     }
     public Map<Integer, List<Group>> getGroupMap() {
         return groupMap;
-    }
-
-    public AccountDAO getAccountDAO() {
-        return accountDAO;
-    }
-    public void setAccountDAO(AccountDAO accountDAO) {
-        this.accountDAO = accountDAO;
-    }
-    public GroupDAO getGroupDAO() {
-        return groupDAO;
-    }
-    public void setGroupDAO(GroupDAO groupDAO) {
-        this.groupDAO = groupDAO;
     }
 
     private void initAccountMap() {
@@ -104,14 +97,63 @@ public class DataCache {
         return null;
 
     }
+    public static User getUserForUsername(String username) {
+        return userDAO.findByUserName(username);
+    }
+
+    public static Person getPersonForEmail(String email) {
+        return personDAO.findByEmail(email);
+    }
+
+    public static Account getAccountForAccountID(Integer accountID) {
+        return accountDAO.findByID(accountID);
+    }
+
+    public static Driver getDriverForBarCode(String barcode) {
+        Integer driverID = driverDAO.getDriverIDByBarcode(barcode);
+        if (driverID == null)
+            return null;
+        
+        return driverDAO.findByID(driverID);
+    }
+
 
     public PersonDAO getPersonDAO() {
         return personDAO;
     }
 
     public void setPersonDAO(PersonDAO personDAO) {
-        this.personDAO = personDAO;
+        DataCache.personDAO = personDAO;
     }
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        DataCache.userDAO = userDAO;
+    }
+
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        DataCache.driverDAO = driverDAO;
+    }
+
+    public AccountDAO getAccountDAO() {
+        return accountDAO;
+    }
+    public void setAccountDAO(AccountDAO accountDAO) {
+        DataCache.accountDAO = accountDAO;
+    }
+    public GroupDAO getGroupDAO() {
+        return groupDAO;
+    }
+    public void setGroupDAO(GroupDAO groupDAO) {
+        DataCache.groupDAO = groupDAO;
+    }
+
 
 
 }

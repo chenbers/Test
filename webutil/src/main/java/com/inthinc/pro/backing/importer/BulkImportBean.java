@@ -12,12 +12,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
 
 import com.inthinc.pro.backing.BaseBean;
 
 public class BulkImportBean extends BaseBean {
+
+    private static final Logger logger = Logger.getLogger(BulkImportBean.class);
 
     private ImportType importType;
     private String feedback;
@@ -88,12 +91,16 @@ public class BulkImportBean extends BaseBean {
         try {
             setFeedback(null);
             setErrorList(null);
+            logger.info("Import File: " + uploadFile.getFile().getName());
             List<String> msgList = new FileImporter().importFile(importType, new FileInputStream(uploadFile.getFile()));
-            if (msgList.size() == 0)
+            if (msgList.size() == 0) {
                 setFeedback("The file import was SUCCESSFUL.");
+                logger.info("Import File: " + uploadFile.getName() + " SUCCESSFUL");
+            }
             else {
                 setFeedback("The file import was NOT SUCCESSFUL.  The following errors were found:");
                 setErrorList(msgList);
+                logger.info("Import File: " + uploadFile.getName() + " ERRORS");
             }
         } catch (FileNotFoundException e) {
             setFeedback("File upload failed.  File not found. " + e.getMessage());

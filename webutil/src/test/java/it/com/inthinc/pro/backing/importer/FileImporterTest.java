@@ -14,6 +14,7 @@ import java.util.TimeZone;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.backing.importer.FileChecker;
 import com.inthinc.pro.backing.importer.FileImporter;
 import com.inthinc.pro.backing.importer.ImportType;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
@@ -41,7 +42,7 @@ import com.inthinc.pro.model.security.Role;
 public class FileImporterTest extends BaseSpringTest {
     
     // this must match the account name in importTest/DriverTemplateNoErrors.xls
-    private static final String TEST_ACCOUNT_NAME = "BulkImportTest_3";
+    private static final String TEST_ACCOUNT_NAME = "BulkImportTest_5";
     private static SiloServiceCreator siloServiceCreator;
     private static Account testAccount;
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
@@ -94,8 +95,10 @@ public class FileImporterTest extends BaseSpringTest {
         personDAO.setSiloService(siloServiceCreator.getService());
         // create the person record for the main user
         String email = TEST_ACCOUNT_NAME+"@email.com";
-        Person person = new Person(new Integer(0), acctID, TimeZone.getDefault(), null, email, null, "5555555555", "5555555555", null, null, null, null, null, "0", null,
-                "title", "dept", "first", "m", "last", "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale
+        String empID = TEST_ACCOUNT_NAME;
+        Person person = new Person(new Integer(0), acctID, TimeZone.getDefault(), null, email, null, "5555555555", "5555555555",
+                null, null, null, null, null, empID, null,
+                "title", "dept", TEST_ACCOUNT_NAME, "m", TEST_ACCOUNT_NAME, "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale
                         .getDefault());
         person.setAddress(new Address(null, "", null, "", null, "", acctID));
         Integer personID = null;
@@ -137,6 +140,7 @@ public class FileImporterTest extends BaseSpringTest {
         
     }
 
+    
     @Test
     public void driversImport()
     {
@@ -153,7 +157,7 @@ public class FileImporterTest extends BaseSpringTest {
     }
 
     @Test
-    public void driversCheck()
+    public void driversCheckErrors()
     {
         System.out.println("RowImporterFactory " + this.applicationContext.containsBean("rowImporterFactory"));
         
@@ -162,11 +166,69 @@ public class FileImporterTest extends BaseSpringTest {
         
         dumpErrors(msgList);
         System.out.println("size " + msgList.size()) ;
+
+        assertTrue(msgList.size() == 26);
+        
+        // row 2 (missing fields) 
+        List<String> rowList = getRowList(msgList, "2");
+        assertTrue(rowList.size() == 10);  // 10 mandatory fields
+        
+        // row 3 (invalid account name)
+        rowList = getRowList(msgList, "3");
+        assertTrue(rowList.size() == 1);
+        
+        // row 4 (invalid fleet level group name)
+        rowList = getRowList(msgList, "4");
+        assertTrue(rowList.size() == 1);
+        
+        // row 5 (employeeID and username have different person records)
+        rowList = getRowList(msgList, "5");
+        assertTrue(rowList.size() == 1);
+
+        // row 6 (employeeID and email have different person records)
+        rowList = getRowList(msgList, "6");
+        assertTrue(rowList.size() == 1);
+
+        // row 7 (invalid data in several columns)
+        rowList = getRowList(msgList, "7");
+        assertTrue(rowList.size() == 6);
         
         
-        assertTrue(msgList.size() == 15);
-//        assertTrue(msgList.size() == 0);
+    }
+
+    private List<String> getRowList(List<String> msgList, String row) {
+        boolean inRow = false;
+        List<String>rowList = new ArrayList<String>();
+        for (String msg : msgList) {
+            if (msg.contains("Row " + row)) {
+                inRow = true;
+            }
+            else if (inRow && msg.contains("Row"))
+                return rowList;
+            else if (inRow) {
+                rowList.add(msg);
+            }
+        }
+        return rowList;
+    }
+
+    @Test
+    public void driversCheckWarnings()
+    {
+        System.out.println("RowImporterFactory " + this.applicationContext.containsBean("rowImporterFactory"));
         
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateBad.xls");
+        List<String> msgList = new FileChecker().checkFile(ImportType.DRIVERS, stream, true);
+        
+        dumpErrors(msgList);
+        System.out.println("size " + msgList.size()) ;
+        assertTrue(msgList.size() == 29);
+        
+        int warningCnt = 0;
+        for (String msg : msgList)
+            if (msg.startsWith("WARNING"))
+                warningCnt++;
+        assertTrue(warningCnt == 3);
     }
 
     

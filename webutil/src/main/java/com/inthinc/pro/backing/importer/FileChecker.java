@@ -25,6 +25,7 @@ public class FileChecker {
         
         RowValidator rowValidator = importType.getRowValidator();
         for (DataRow row : dataList) {
+System.out.println("row: " + row.getLabel());            
             List<String> errorList = rowValidator.validateRow(row.getData(), includeWarnings);
             if (!errorList.isEmpty()) {
                 msgList.add("<b>Row: " + row.getLabel()+"</b>");

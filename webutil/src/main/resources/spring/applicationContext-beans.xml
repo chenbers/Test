@@ -91,10 +91,5 @@
 	<!--  bulk importer data checker (application scope TODO: CHECK THE SCOPE) -->
 	<bean id="dataCache" class="com.inthinc.pro.backing.importer.datacheck.DataCache" init-method="init"/>
 	
-	<!--  bulk importer validators (application scope) -->
-<!-- 	
-	<bean id="validator" class="com.inthinc.pro.backing.importer.validator.Validator" abstract="true"/>
-	<bean id="stateValidator" class="com.inthinc.pro.backing.importer.validator.StateValidator" parent="validator"/>
- -->	
 	
 </beans>

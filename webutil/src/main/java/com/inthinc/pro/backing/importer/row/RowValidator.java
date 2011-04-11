@@ -32,5 +32,9 @@ public abstract class RowValidator {
         return errorList;
     }
 
+    protected void addToList(String str, List<String> strList) {
+        if (str != null)
+            strList.add(str);
+    }
     
 }

@@ -4,30 +4,16 @@ import java.util.List;
 
 import com.inthinc.pro.backing.importer.DriverTemplateFormat;
 import com.inthinc.pro.backing.importer.datacheck.AccountNameChecker;
+import com.inthinc.pro.backing.importer.datacheck.DuplicateEmailChecker;
 import com.inthinc.pro.backing.importer.datacheck.DuplicateEmployeeIDChecker;
+import com.inthinc.pro.backing.importer.datacheck.DuplicateUsernameChecker;
 import com.inthinc.pro.backing.importer.datacheck.GroupPathChecker;
 
 public class DriverRowValidator extends RowValidator {
 
     
     DriverTemplateFormat driverTemplateFormat;
-    /*
-            new ColumnFormat("Account Name", true, 30),
-            new ColumnFormat("Team (full path)", true, 255),
-            new ColumnFormat("Last Name", true, 30),
-            new ColumnFormat("First Name", true, 30),
-            new ColumnFormat("Middle Name", false, 30),
-            new ColumnFormat("Employee ID", true, 30),
-            new ColumnFormat("RFID Barcode", false, 19),
-            new ColumnFormat("username", false, 30),
-            new ColumnFormat("password", false, 64),
-            new ColumnFormat("e-mail", false, 62),
-            new ColumnFormat("TimeZone", true, new TimeZoneValidator()),
-            new ColumnFormat("Language", true, new LanguageValidator()),
-            new ColumnFormat("Country", true, new CountryValidator()),
-            new ColumnFormat("Measurement", true, new MeasurementTypeValidator()),
-            new ColumnFormat("Fuel Efficiency", true, new FuelEfficiencyTypeValidator()),
-     */
+
     @Override
     public List<String> validateRow(List<String> rowData, boolean includeWarnings) {
         
@@ -35,22 +21,37 @@ public class DriverRowValidator extends RowValidator {
         
         if (errorList.isEmpty()) {
             // check the actual data in the row
+            addToList(new AccountNameChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX)), errorList);
+            addToList(new GroupPathChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.TEAM_PATH_IDX)), errorList);
 
-            String error = new AccountNameChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX));
-            if (error != null)
-                errorList.add(error);
-            
-            error = new GroupPathChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.TEAM_PATH_IDX));
-            if (error != null)
-                errorList.add(error);
-        }
-        if (includeWarnings) {
             if (rowData.size() > DriverTemplateFormat.EMPLOYEE_ID_IDX) {
-                String warning = new DuplicateEmployeeIDChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));
-                if (warning != null)
-                    errorList.add(warning);
+                String error = new DuplicateEmployeeIDChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));
+                addToList(error, errorList);
+                if (includeWarnings && error == null)
+                    addToList(new DuplicateEmployeeIDChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX)), errorList);
             }
             
+            if (rowData.size() > DriverTemplateFormat.USERNAME_IDX ) {
+                String username = rowData.get(DriverTemplateFormat.USERNAME_IDX);
+                if (username != null && !username.isEmpty()) { 
+                    String error = new DuplicateUsernameChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX),  rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX), username);
+                    addToList(error, errorList);
+                    if (includeWarnings && error == null) {
+                        addToList(new DuplicateUsernameChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), username), errorList);
+                    }
+                }
+            }
+            if (rowData.size() > DriverTemplateFormat.EMAIL_IDX) {
+                String email = rowData.get(DriverTemplateFormat.EMAIL_IDX);
+                if (email != null && !email.isEmpty()) {
+                    String error = new DuplicateEmailChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX), email);
+                    addToList(error, errorList);
+                    if (includeWarnings && error == null) {
+                        addToList(new DuplicateEmailChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), email), errorList);
+                    }
+                }
+            }
+                    
         }
         return errorList;
     }

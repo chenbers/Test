@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.ProDAOException;
+import com.inthinc.pro.backing.importer.BulkImportBean;
 import com.inthinc.pro.backing.importer.DriverTemplateFormat;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
@@ -19,36 +23,26 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.security.Role;
-import org.jasypt.util.password.StrongPasswordEncryptor;
 
 public class DriverRowImporter extends RowImporter {
+
+    private static final Logger logger = Logger.getLogger(BulkImportBean.class);
 
     private PersonDAO personDAO;
     private DriverDAO driverDAO;
     private UserDAO userDAO;
     private static StrongPasswordEncryptor passwordEncryptor;
-
+    
     @Override
     public String importRow(List<String> rowData) {
-        
-        List<String> importLogList = new ArrayList<String>();
+
         try {
         
             String accountName = rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX);
             Account account = this.getAccountMap().get(accountName);
             
-//            if (account == null) { 
-//                return "Account " + accountName + " does not exist.";
-//            }
-            
-    
             String groupPath = rowData.get(DriverTemplateFormat.TEAM_PATH_IDX);
             Integer groupID = findOrCreateGroupByPath(groupPath, account.getAccountID());
-//            if (groupID == null) {
-//                return "Group path " + groupPath + " must start with fleet level group.";
-//                
-//            }
-            
             
             Person person = findPersonByEmployeeID(account.getAccountID(), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));
             Driver driver = null;
@@ -77,10 +71,10 @@ public class DriverRowImporter extends RowImporter {
             }
         }
         catch (ProDAOException proEx) {
-            return proEx.getMessage();
+            return "ERROR: " + proEx.getMessage();
         }
         catch (Throwable t) {
-            return t.getMessage();
+            return "ERROR: " + t.getMessage();
         }
         return null;
     }
@@ -116,9 +110,11 @@ public class DriverRowImporter extends RowImporter {
         if (isCreate) {
             Integer personID = personDAO.create(accountID, person);
             person.setPersonID(personID);
+            logger.info("Created  " + person.toString());
         }
         else {
             personDAO.update(person);
+            logger.info("Updated  " + person.toString());
         }
         return person;
     }
@@ -140,9 +136,11 @@ public class DriverRowImporter extends RowImporter {
         if (isCreate) {
             Integer driverID = driverDAO.create(person.getPersonID(), driver);
             driver.setDriverID(driverID);
+            logger.info("Created  " + driver.toString());
         }
         else {
             driverDAO.update(driver);
+            logger.info("Updated  " + driver.toString());
         }
         
         return driver;
@@ -178,9 +176,12 @@ public class DriverRowImporter extends RowImporter {
         if (isCreate) {
             Integer userID = userDAO.create(person.getPersonID(), user);
             user.setUserID(userID);
+            logger.info("Created  " + user.toString());
         }
         else {
             userDAO.update(user);
+            logger.info("Updated  " + user.toString());
+
         }
         return user;
     }
