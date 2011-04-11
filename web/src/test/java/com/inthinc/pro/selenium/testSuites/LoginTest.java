@@ -10,7 +10,7 @@ import com.inthinc.pro.selenium.pageObjects.Login;
 import com.inthinc.pro.selenium.pageObjects.Masthead;
 import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
-//@Ignore
+@Ignore
 public class LoginTest extends WebTest {
     Login l;
     // TODO: jwimmer: question for DTanner: I can see a benefit from having SOME of these types of things defined in a non-page-specific enum? email is a good example (actually not
