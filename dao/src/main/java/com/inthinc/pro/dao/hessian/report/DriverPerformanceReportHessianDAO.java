@@ -50,9 +50,9 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
             dp.setScore(s.getOverall()==null ? -1 : s.getOverall().intValue());
             dp.setSeatbeltCount(s.getSeatbeltEvents() == null ? 0 : s.getSeatbeltEvents().intValue());
             dp.setTotalMiles(s.getEndingOdometer() == null || s.getStartingOdometer() == null ? 0 : s.getEndingOdometer().intValue() - s.getStartingOdometer().intValue());
-            dp.setSpeedCount0to7Over(s.getSpeedEvents0to7Over() == null ? 0 : s.getSpeedEvents0to7Over().intValue());
-            dp.setSpeedCount8to14Over(s.getSpeedEvents8to14Over() == null ? 0 : s.getSpeedEvents8to14Over().intValue());
-            dp.setSpeedCount15Over(s.getSpeedEvents15Over() == null ? 0 : s.getSpeedEvents15Over().intValue());
+            dp.setSpeedCount0to7Over(s.getSpeedEvents1To7MphOver() == null ? 0 : s.getSpeedEvents1To7MphOver().intValue());
+            dp.setSpeedCount8to14Over(s.getSpeedEvents8To14MphOver() == null ? 0 : s.getSpeedEvents8To14MphOver().intValue());
+            dp.setSpeedCount15Over(s.getSpeedEvents15PlusMphOver() == null ? 0 : s.getSpeedEvents15PlusMphOver().intValue());
             driverPerformanceList.add(dp);
         }
         

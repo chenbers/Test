@@ -84,10 +84,10 @@ public class Score {
     private Number odometerLight;
 	private Number odometerMedium;
     private Number odometerHeavy;
-    private Number speedEvents0to7Over;
-    private Number speedEvents8to14Over;
-    private Number speedEvents15Over;
-    
+    private Number speedEvents1To7MphOver;
+    private Number speedEvents8To14MphOver;
+    private Number speedEvents15PlusMphOver;
+    private Number speedEventsOver80Mph;
     
     public Date getStartingDate() {
         return startingDate;
@@ -737,29 +737,37 @@ public class Score {
     public Number getIdlePercent() {
     	return (driveTime == null || driveTime.longValue() == 0l) ? 0 : (getIdleTotal().doubleValue() * 100.0)/driveTime.doubleValue();
     }
-    public Number getSpeedEvents0to7Over() {
-        return speedEvents0to7Over;
+    public Number getSpeedEvents1To7MphOver() {
+        return speedEvents1To7MphOver;
     }
 
-    public void setSpeedEvents0to7Over(Number speedEvents0to7Over) {
-        this.speedEvents0to7Over = speedEvents0to7Over;
+    public void setSpeedEvents1To7MphOver(Number speedEvents1To7MphOver) {
+        this.speedEvents1To7MphOver = speedEvents1To7MphOver;
     }
 
-    public Number getSpeedEvents8to14Over() {
-        return speedEvents8to14Over;
+    public Number getSpeedEvents8To14MphOver() {
+        return speedEvents8To14MphOver;
     }
 
-    public void setSpeedEvents8to14Over(Number speedEvents8to14Over) {
-        this.speedEvents8to14Over = speedEvents8to14Over;
+    public void setSpeedEvents8To14MphOver(Number speedEvents8To14MphOver) {
+        this.speedEvents8To14MphOver = speedEvents8To14MphOver;
     }
 
-    public Number getSpeedEvents15Over() {
-        return speedEvents15Over;
+    public Number getSpeedEvents15PlusMphOver() {
+        return speedEvents15PlusMphOver;
     }
 
-    public void setSpeedEvents15Over(Number speedEvents15Over) {
-        this.speedEvents15Over = speedEvents15Over;
+    public void setSpeedEvents15PlusMphOver(Number speedEvents15PlusMphOver) {
+        this.speedEvents15PlusMphOver = speedEvents15PlusMphOver;
     }
+    public Number getSpeedEventsOver80Mph() {
+        return speedEventsOver80Mph;
+    }
+
+    public void setSpeedEventsOver80Mph(Number speedEventsOver80Mph) {
+        this.speedEventsOver80Mph = speedEventsOver80Mph;
+    }
+
 
 
     @Override
