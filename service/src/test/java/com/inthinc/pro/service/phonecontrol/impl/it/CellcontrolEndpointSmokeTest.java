@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
-import com.inthinc.pro.service.test.mock.aspects.DriverDaoStubBehaviourAdvice;
+import com.inthinc.pro.service.test.mock.aspects.PhoneControlDaoStubBehaviourAdvice;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = { "classpath*:spring/applicationContext-*.xml" })
@@ -35,8 +35,8 @@ public class CellcontrolEndpointSmokeTest implements ApplicationContextAware {
 //    @Test
     public void testDisablePhone() {
         PhoneControlAdapterFactory factory = (PhoneControlAdapterFactory) BeanFactoryUtils.beanOfType(this.applicationContext, PhoneControlAdapterFactory.class);
-        PhoneControlAdapter cellcontrolAdapter = factory.createAdapter(CellProviderType.CELL_CONTROL, DriverDaoStubBehaviourAdvice.CELLCOPNTROL_USERNAME,
-                DriverDaoStubBehaviourAdvice.CELLCONTROL_PASSWORD);
+        PhoneControlAdapter cellcontrolAdapter = factory.createAdapter(CellProviderType.CELL_CONTROL, PhoneControlDaoStubBehaviourAdvice.CELLCOPNTROL_USERNAME,
+                PhoneControlDaoStubBehaviourAdvice.CELLCONTROL_PASSWORD);
 
         cellcontrolAdapter.disablePhone(CELL_PHONE_NUMBER);
     }
@@ -48,8 +48,8 @@ public class CellcontrolEndpointSmokeTest implements ApplicationContextAware {
 //    @Test
     public void testEnablePhone() {
         PhoneControlAdapterFactory factory = (PhoneControlAdapterFactory) BeanFactoryUtils.beanOfType(this.applicationContext, PhoneControlAdapterFactory.class);
-        PhoneControlAdapter cellcontrolAdapter = factory.createAdapter(CellProviderType.CELL_CONTROL, DriverDaoStubBehaviourAdvice.CELLCOPNTROL_USERNAME,
-                DriverDaoStubBehaviourAdvice.CELLCONTROL_PASSWORD);
+        PhoneControlAdapter cellcontrolAdapter = factory.createAdapter(CellProviderType.CELL_CONTROL, PhoneControlDaoStubBehaviourAdvice.CELLCOPNTROL_USERNAME,
+                PhoneControlDaoStubBehaviourAdvice.CELLCONTROL_PASSWORD);
 
         cellcontrolAdapter.enablePhone(CELL_PHONE_NUMBER);
     }

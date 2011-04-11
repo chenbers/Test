@@ -8,10 +8,10 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
-import org.joda.time.LocalDate;
 
-import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.PhoneControlDAO;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.DriverStops;
@@ -22,7 +22,6 @@ import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Trip;
-import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 
 public class BasePerformanceUnitTest extends BaseUnitTest {
@@ -60,10 +59,6 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
             return null;
         }
 
-        @Override
-        public Driver findByPhoneNumber(String phoneNumber) {
-            return null;
-        }
 
         @Override
         public List<Driver> getAllDrivers(Integer groupID) {
@@ -93,11 +88,6 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
 
         @Override
         public List<Driver> getDrivers(Integer groupID) {
-            return null;
-        }
-
-        @Override
-        public List<Driver> getDriversWithDisabledPhones() {
             return null;
         }
 
@@ -150,6 +140,44 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
         public Integer update(Driver entity) {
             return null;
         }
+        
+    }
+    
+    class MockPhoneControlDAO implements PhoneControlDAO{
+        @Override
+        public Cellblock findByPhoneNumber(String phoneNumber) {
+            return null;
+        }
+        @Override
+        public List<Cellblock> getDriversWithDisabledPhones() {
+            return null;
+        }
+        @Override
+        public Integer create(Integer id, Cellblock entity) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        @Override
+        public Integer deleteByID(Integer id) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        @Override
+        public Cellblock findByID(Integer id) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        @Override
+        public Integer update(Cellblock entity) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        @Override
+        public List<Cellblock> getCellblocksForAcctID(Integer acctID) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
         
     }
 }

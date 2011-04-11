@@ -12,7 +12,8 @@ import mockit.Mocked;
 
 import org.junit.Test;
 
-import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.PhoneControlDAO;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.Driver;
 
 /**
@@ -27,16 +28,16 @@ public class InMemoryDriverPhoneDAOTest {
 	
 	/** 
 	 * Happy path, 1 driver returned from the back end. 
-	 * @param driverDAOMock  Mock
+	 * @param phoneControlDAOMock  Mock
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testRegenerateDriverIDSet(@Mocked final DriverDAO driverDAOMock) {
+	public void testRegenerateDriverIDSet(@Mocked final PhoneControlDAO phoneControlDAOMock) {
 
-		Deencapsulation.setField(driverPhoneSUT, driverDAOMock);
+		Deencapsulation.setField(driverPhoneSUT, phoneControlDAOMock);
 		
 		new Expectations(){{
-			driverDAOMock.getDriversWithDisabledPhones(); returns(getDrivers(1));
+			phoneControlDAOMock.getDriversWithDisabledPhones(); returns(getDrivers(1));
 		}};
 		
 		// run test
@@ -54,7 +55,7 @@ public class InMemoryDriverPhoneDAOTest {
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testRegenerateDriverIDSetZeroDrivers(@Mocked final DriverDAO driverDAOMock) {
+	public void testRegenerateDriverIDSetZeroDrivers(@Mocked final PhoneControlDAO driverDAOMock) {
 
 		Deencapsulation.setField(driverPhoneSUT, driverDAOMock);
 
@@ -74,7 +75,7 @@ public class InMemoryDriverPhoneDAOTest {
 	 * @param driverDAOMock  Mock
 	 */
 	@Test
-	public void testRegenerateDriverIDException(@Mocked final DriverDAO driverDAOMock) {
+	public void testRegenerateDriverIDException(@Mocked final PhoneControlDAO driverDAOMock) {
 	
 		Deencapsulation.setField(driverPhoneSUT, driverDAOMock);
 
@@ -91,12 +92,12 @@ public class InMemoryDriverPhoneDAOTest {
 	 * Return a number of drivers in a list
 	 * 
 	 * @param numDrivers number of drivers to include in the list
-	 * @return lsit of numDrivers drivers.
+	 * @return list of numDrivers drivers.
 	 */
-	List<Driver> getDrivers(int numDrivers) {
-		List<Driver> driverList = new ArrayList<Driver>();
+	List<Cellblock> getDrivers(int numDrivers) {
+		List<Cellblock> driverList = new ArrayList<Cellblock>();
         for (int i= 0; i < numDrivers; ++i) {
-			Driver driver = new Driver();
+            Cellblock driver = new Cellblock();
 			driver.setDriverID(i);
 			driverList.add(driver);
 		}

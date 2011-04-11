@@ -265,15 +265,15 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
             return null;
         }
 
-        @Override
-        public Driver findByPhoneNumber(String phoneID) {
-            return null;
-        }
-
-		@Override
-		public List<Driver> getDriversWithDisabledPhones() {
-			return null;
-		}
+//        @Override
+//        public Driver findByPhoneNumber(String phoneID) {
+//            return null;
+//        }
+//
+//		@Override
+//		public List<Driver> getDriversWithDisabledPhones() {
+//			return null;
+//		}
     }
 
     class MockGroupDAO implements GroupDAO {

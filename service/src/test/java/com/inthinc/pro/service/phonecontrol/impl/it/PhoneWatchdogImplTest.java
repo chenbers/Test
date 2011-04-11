@@ -19,9 +19,9 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.dao.PhoneControlDAO;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
@@ -77,8 +77,8 @@ public class PhoneWatchdogImplTest {
 		driverPhoneDAO.addDriverToDisabledPhoneList(DRIVER_ID);
 		
 		// Get the phone number for the driver
-		DriverDAO driverDAO = (DriverDAO) applicationContext.getBean("driverDAO");
-		final Driver driver = driverDAO.findByID(DRIVER_ID);
+		PhoneControlDAO phoneControlDAO = (PhoneControlDAO) applicationContext.getBean("phoneControlDAO");
+		final Cellblock driver = phoneControlDAO.findByID(DRIVER_ID);
 		assertNotNull(driver);
 		
 		new Expectations() {{
@@ -89,7 +89,7 @@ public class PhoneWatchdogImplTest {
 			returns(new ArrayList<Event>());
 			
 			// Verifies that the correct endpoint was called
-			cellcontrolEndpointMock.enablePhone(driver.getCellblock().getCellPhone());
+			cellcontrolEndpointMock.enablePhone(driver.getCellPhone());
 			returns(Response.status(STATUS).build());
 		}};
 		

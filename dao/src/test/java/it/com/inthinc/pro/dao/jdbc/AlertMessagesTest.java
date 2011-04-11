@@ -288,22 +288,37 @@ System.out.println("account id " + itData.account.getAcctID());
             {
                 case ALERT_TYPE_SEATBELT:
                     eventTypes.add(EventType.SEATBELT);
+                    break;
                 case ALERT_TYPE_HARD_ACCEL:    
                     eventTypes.add(EventType.HARD_ACCEL);
+                    break;
                 case ALERT_TYPE_HARD_BRAKE:    
                     eventTypes.add(EventType.HARD_BRAKE);
+                    break;
                 case ALERT_TYPE_HARD_BUMP:    
                     eventTypes.add(EventType.HARD_VERT);
+                    break;
                 case ALERT_TYPE_HARD_TURN:    
                     eventTypes.add(EventType.HARD_TURN);
+                    break;
                 case ALERT_TYPE_CRASH:    
                     eventTypes.add(EventType.CRASH);
+                    break;
                 case ALERT_TYPE_TAMPERING:    
                     eventTypes.add(EventType.TAMPERING);
-                case ALERT_TYPE_LOW_BATTERY:    
+                    break;
+               case ALERT_TYPE_LOW_BATTERY:    
                     eventTypes.add(EventType.LOW_BATTERY);
-                case ALERT_TYPE_NO_DRIVER:    
-                    eventTypes.add(EventType.NO_DRIVER);                
+                    break;
+               case ALERT_TYPE_NO_DRIVER:    
+                    eventTypes.add(EventType.NO_DRIVER); 
+                    break;
+                case ALERT_TYPE_ENTER_ZONE:
+                    eventTypes.add(EventType.ZONES_ARRIVAL); 
+                    break;
+                case ALERT_TYPE_EXIT_ZONE:
+                    eventTypes.add(EventType.ZONES_DEPARTURE); 
+                    break;
                 default:
                     eventTypes.add(EventType.SPEEDING);
             }

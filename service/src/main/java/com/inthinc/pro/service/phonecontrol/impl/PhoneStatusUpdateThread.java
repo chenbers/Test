@@ -3,9 +3,9 @@ package com.inthinc.pro.service.phonecontrol.impl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.phone.CellStatusType;
-import com.inthinc.pro.service.adapters.DriverDAOAdapter;
+import com.inthinc.pro.service.adapters.PhoneControlDAOAdapter;
 import com.inthinc.pro.service.phonecontrol.PhoneStatusController;
 
 /**
@@ -19,12 +19,14 @@ public class PhoneStatusUpdateThread extends Thread {
     private String phoneId;
     private CellStatusType status;
 
-    @Autowired
-    private DriverDAOAdapter driverDAOAdapter;
+//    @Autowired
+//    private DriverDAOAdapter driverDAOAdapter;
 
     @Autowired
     private PhoneStatusController phoneStatusController;
 
+    @Autowired
+    private PhoneControlDAOAdapter phoneControlDAOAdapter;
     /**
      * Default constructor.
      * 
@@ -54,37 +56,37 @@ public class PhoneStatusUpdateThread extends Thread {
 
         logger.debug(LOG_PREFIX + "started for PH#-" + phoneId + " Status-" + status);
         try {
-            Driver driver = driverDAOAdapter.findByPhoneNumber(phoneId);
-            logger.debug(LOG_PREFIX + "called driverDAO.findByPhoneID(), returned: " + driver);
-            
-            if (driver != null) {
-                logger.debug(LOG_PREFIX + " is updating driver.. ");
-
+//            Driver driver = driverDAOAdapter.findByPhoneNumber(phoneId);
+//            logger.debug(LOG_PREFIX + "called driverDAO.findByPhoneID(), returned: " + driver);
+//            
+//            if (driver != null) {
+//                logger.debug(LOG_PREFIX + " is updating driver.. ");
+                Cellblock cellblock = phoneControlDAOAdapter.findByPhoneNumber(phoneId);
                 if (status == CellStatusType.DISABLED) {
-                    phoneStatusController.setPhoneStatusDisabled(driver);
-                    logger.debug(LOG_PREFIX + "added " + driver.getDriverID() + " to DisabledPhoneList");
+                    phoneStatusController.setPhoneStatusDisabled(cellblock);
+//                    logger.debug(LOG_PREFIX + "added " + cellblock.getDriverID() + " to DisabledPhoneList");
                 } else {
-                    phoneStatusController.setPhoneStatusEnabled(driver);
-                    logger.debug(LOG_PREFIX + "removed " + driver.getDriverID() + " from DisabledPhoneList");
+                    phoneStatusController.setPhoneStatusEnabled(cellblock);
+//                    logger.debug(LOG_PREFIX + "removed " + cellblock.getDriverID() + " from DisabledPhoneList");
                 }
 
-                logger.debug(LOG_PREFIX + status + " for PH#-" + phoneId); // should we log as info?
-            }
+//                logger.debug(LOG_PREFIX + status + " for PH#-" + phoneId); // should we log as info?
+//            }
 
         } catch (Exception e) {
             logger.error(LOG_PREFIX + " to " + status + " failed!", e);
         }
     }
 
-    /**
-     * The driverDAO setter.
-     * 
-     * @param driverDAO
-     *            the driverDAO to set
-     */
-    public void setDriverDAOAdapter(DriverDAOAdapter driverDAOAdapter) {
-        this.driverDAOAdapter = driverDAOAdapter;
-    }
+//    /**
+//     * The driverDAO setter.
+//     * 
+//     * @param driverDAO
+//     *            the driverDAO to set
+//     */
+//    public void setDriverDAOAdapter(DriverDAOAdapter driverDAOAdapter) {
+//        this.driverDAOAdapter = driverDAOAdapter;
+//    }
 
     /**
      * The driverPhoneDAO setter.
@@ -94,5 +96,9 @@ public class PhoneStatusUpdateThread extends Thread {
      */
     public void setPhoneStatusController(PhoneStatusController phoneStatusController) {
         this.phoneStatusController = phoneStatusController;
+    }
+
+    public void setPhoneControlDAOAdapter(PhoneControlDAOAdapter phoneControlDAOAdapter) {
+        this.phoneControlDAOAdapter = phoneControlDAOAdapter;
     }
 }

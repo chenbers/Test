@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.dao.PhoneControlDAO;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.service.phonecontrol.PhoneStatusController;
 import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
@@ -18,42 +19,42 @@ public class PhoneStatusControllerImpl implements PhoneStatusController {
 
     private static final Logger logger = Logger.getLogger(PhoneStatusControllerImpl.class);
 
-    private DriverDAO driverDao;
+    private PhoneControlDAO phoneControlDAO;
     private DriverPhoneDAO phoneDao;
 
     @Autowired
-    public PhoneStatusControllerImpl(DriverDAO driverDao, DriverPhoneDAO phoneDao) {
-        this.driverDao = driverDao;
+    public PhoneStatusControllerImpl(PhoneControlDAO phoneControlDAO, DriverPhoneDAO phoneDao) {
+        this.phoneControlDAO = phoneControlDAO;
         this.phoneDao = phoneDao;
     }
 
     /**
-     * @see com.inthinc.pro.service.phonecontrol.PhoneStatusController#setPhoneStatusDisabled(com.inthinc.pro.model.Driver)
+     * @see com.inthinc.pro.service.phonecontrol.PhoneStatusController#setPhoneStatusDisabled(com.inthinc.pro.model.Cellblock)
      */
     @Override
-    public void setPhoneStatusDisabled(Driver driver) {
-        if (driver.getCellblock() != null) {
+    public void setPhoneStatusDisabled(Cellblock driver) {
+        if (driver != null) {
             logger.debug("Updating driver phone status to " + CellStatusType.DISABLED);
-            driver.getCellblock().setCellStatus(CellStatusType.DISABLED);
-            driverDao.update(driver);
+            driver.setCellStatus(CellStatusType.DISABLED);
+            phoneControlDAO.update(driver);
             phoneDao.addDriverToDisabledPhoneList(driver.getDriverID());
-            logger.debug("Phone status has been updated successfully. Driver has been added to disabled phone list.");
+            logger.debug("Phone status has been updated successfully. Cellblock has been added to disabled phone list.");
         } else {
             logger.debug("Provider info is not set for the driver. Ignoring request to update phone status.");
         }
     }
 
     /**
-     * @see com.inthinc.pro.service.phonecontrol.PhoneStatusController#setPhoneStatusEnabled(com.inthinc.pro.model.Driver)
+     * @see com.inthinc.pro.service.phonecontrol.PhoneStatusController#setPhoneStatusEnabled(com.inthinc.pro.model.Cellblock)
      */
     @Override
-    public void setPhoneStatusEnabled(Driver driver) {
-        if (driver.getCellblock() != null) {
+    public void setPhoneStatusEnabled(Cellblock driver) {
+        if (driver != null) {
             logger.debug("Updating driver phone status to " + CellStatusType.ENABLED);
-            driver.getCellblock().setCellStatus(CellStatusType.ENABLED);
-            driverDao.update(driver);
+            driver.setCellStatus(CellStatusType.ENABLED);
+            phoneControlDAO.update(driver);
             phoneDao.removeDriverFromDisabledPhoneList(driver.getDriverID());
-            logger.debug("Phone status has been updated successfully. Driver has been removed from disabled phone list.");
+            logger.debug("Phone status has been updated successfully. Cellblock has been removed from disabled phone list.");
         } else {
             logger.debug("Provider info is not set for the driver. Ignoring request to update phone status.");
         }

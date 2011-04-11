@@ -81,50 +81,7 @@
                             <td width="100"><h:outputText value="#{messages.editPerson_gender}" /></td>
                             <td><h:outputText value="#{messages[personBean.item.gender]}" /></td>
                           </tr>
-                          <!--  <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_height}" /></td>
-                            <td>
-                              <ui:fragment rendered="#{personBean.item.height > 0}">
-                                <h:outputText value="#{(personBean.item.height - (personBean.item.height % 12)) / 12}"><f:convertNumber integerOnly="true" /></h:outputText>
-                                <h:outputText value="' " />
-                                <h:outputText value="#{personBean.item.height % 12}" />
-                                <h:outputText value="&quot;" />
-                              </ui:fragment>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_weight}" /></td>
-                            <td><h:outputText value="#{personBean.item.weight}" /></td>
-                          </tr> -->
                         </table>
-                        <!--  
-                        <div class="spacer"></div>
-   
-                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_contactInformation}" /></div>
-
-                        <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_address_addr1}" /></td>
-                            <td><h:outputText value="#{personBean.item.address.addr1}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_address_addr2}" /></td>
-                            <td><h:outputText value="#{personBean.item.address.addr2}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_address_city}" /></td>
-                            <td><h:outputText value="#{personBean.item.address.city}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_address_state}" /></td>
-                            <td><h:outputText value="#{personBean.item.address.state.name}" /></td>
-                          </tr>
-                          <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_address_zip}" /></td>
-                            <td><h:outputText value="#{personBean.item.address.zip}" /></td>
-                          </tr>
-                        </table>
-                        -->
                         <ui:fragment rendered="#{personBean.item.driverSelected}">
                
                         <div class="spacer"></div>
@@ -201,21 +158,19 @@
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                            <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerType}:" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.cellblock.provider.name}" /></td>
+                            <td><h:outputText value="#{personBean.item.cellblock.provider.name}" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerUsername}:" /></td>
                             <td>
-                              <h:outputText value="#{personBean.item.driver.cellblock.providerUsername}">
-                                <f:converter converterId="HexConverter" />
+                              <h:outputText value="#{personBean.item.cellblock.providerUser}">
                               </h:outputText>
                             </td>
                           </tr>                          
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerCellPhone}:" /></td>
                             <td>
-                              <h:outputText value="#{personBean.item.driver.cellblock.cellPhone}">
-                                <f:converter converterId="HexConverter" />
+                              <h:outputText value="#{personBean.item.cellblock.cellPhone}">
                               </h:outputText>
                             </td>
                           </tr>

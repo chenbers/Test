@@ -3,8 +3,6 @@ package com.inthinc.pro.dao;
 import java.util.Date;
 import java.util.List;
 
-import org.joda.time.DateTime;
-
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.ForgivenType;
 import com.inthinc.pro.model.Trip;

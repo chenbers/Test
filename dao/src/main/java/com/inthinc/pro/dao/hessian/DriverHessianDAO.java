@@ -11,6 +11,8 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
+import com.inthinc.pro.dao.hessian.mapper.CellblockMapper;
+import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
@@ -176,22 +178,5 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
             return Collections.emptyList();
         }	    
 	    
-	}
-
-    /**
-     * {@inheritDoc}
-     * @see com.inthinc.pro.dao.DriverDAO#findByPhoneNumber(java.lang.String)
-     */
-    @Override
-    public Driver findByPhoneNumber(String phoneID) {
-        // TODO To be implemented
-        return new Driver(1, 2, Status.ACTIVE, null, null, null, "", 
-                new State(), "5", new Date(), "", null, 2);
-    }
-
-	@Override
-	public List<Driver> getDriversWithDisabledPhones() {
-		// TODO To be implemented
-		return new ArrayList<Driver>();
 	}
 }

@@ -7,8 +7,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.inthinc.pro.dao.DriverDAO;
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.dao.PhoneControlDAO;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
 
 /**
@@ -24,7 +24,7 @@ public class InMemoryDriverPhoneDAO implements DriverPhoneDAO {
 	private Set<Integer> driverIDSet = new HashSet<Integer>(); 
 	
 	@Autowired
-	private DriverDAO driverDAO;
+	private PhoneControlDAO phoneControlDAO;
 	
 	/**
 	 * Constructor.
@@ -41,8 +41,8 @@ public class InMemoryDriverPhoneDAO implements DriverPhoneDAO {
 	 **/
 	void regenerateDriverIDSet() {
 		try {
-			List<Driver> drivers = driverDAO.getDriversWithDisabledPhones();
-			for (Driver driver : drivers) {
+			List<Cellblock> drivers = phoneControlDAO.getDriversWithDisabledPhones();
+			for (Cellblock driver : drivers) {
 				this.driverIDSet.add(driver.getDriverID());
 			}
 		} catch (Exception e){}

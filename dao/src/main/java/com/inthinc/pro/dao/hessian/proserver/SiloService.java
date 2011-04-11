@@ -119,6 +119,12 @@ public interface SiloService extends HessianService
 
     Map<String, Object> updateCellblock(Integer driverID, Map<String, Object> cellblockMap) throws ProDAOException;
     
+    Map<String, Object> findByPhoneNumber(String phoneID);
+    
+    List<Map<String, Object>> getDriversWithDisabledPhones(Integer siloID);
+
+    List<Map<String, Object>> getCellblocksForAcctID(Integer acctID);
+    
     // ------- User  ----------
     Map<String, Object> createUser(Integer personID, Map<String, Object> userMap) throws ProDAOException;
 

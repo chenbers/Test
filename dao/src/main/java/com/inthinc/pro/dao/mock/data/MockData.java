@@ -20,7 +20,6 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.dao.util.MiscUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AccountAttributes;
 import com.inthinc.pro.model.AccountHOSType;
@@ -28,9 +27,8 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.AlertMessageType;
-
 import com.inthinc.pro.model.AlertSentStatus;
-import com.inthinc.pro.model.BaseAlert;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.CrashDataPoint;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
@@ -72,6 +70,8 @@ import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
+import com.inthinc.pro.model.phone.CellProviderType;
+import com.inthinc.pro.model.phone.CellStatusType;
 
 public class MockData {
 
@@ -180,6 +180,7 @@ public class MockData {
         addDevices(accountID, randomInt(MAX_DEVICES / 2, MAX_DEVICES));
         addZones(accountID, randomInt(MAX_ZONES / 2, MAX_ZONES));
         addRedFlagAlerts(accountID, randomInt(MAX_RED_FLAG_PREFS / 2, MAX_RED_FLAG_PREFS));
+        addCellblocks(accountID, randomInt(MAX_DRIVERS_IN_GROUP / 2, MAX_DRIVERS_IN_GROUP));
     }
 
     private void addGroupData(Integer accountID) {
@@ -1119,7 +1120,32 @@ public class MockData {
 //        device.setSpeedSettings(speedSettings);
         return device;
     }
+    private List<Cellblock> addCellblocks(Integer accountID, int numCellblocks) {
+        List<Cellblock> cellblockList = new ArrayList<Cellblock>();
+        Integer idOffset = accountID * MAX_DEVICES;
+        for (int i = 0; i < numCellblocks; i++) {
+            int id = idOffset + i + 1;
+            Cellblock cellblock = createCellblock(id, accountID, CellProviderType.CELL_CONTROL, CellStatusType.DISABLED, 
+                                                    randomPhone(), "userName", "password");
+            storeObject(cellblock);
+            cellblockList.add(cellblock);
+        }
+        return cellblockList;
+    }
 
+    private Cellblock createCellblock(Integer driverID, Integer acctID, CellProviderType cellProviderType, CellStatusType status, 
+                                        String cellPhoneNumber, String providerUser, String providerPassword){
+        Cellblock cellblock = new Cellblock();
+        
+        cellblock.setAcctID(acctID);
+        cellblock.setDriverID(driverID);
+        cellblock.setProvider(cellProviderType);
+        cellblock.setCellPhone(cellPhoneNumber);
+        cellblock.setProviderPassword(providerPassword);
+        cellblock.setProviderUser(providerUser);
+        cellblock.setCellStatus(status);
+        return cellblock;
+    }
     // ------------ UTILITY METHODS ----------------
     static String randomScore() {
         int score = randomInt(0, 4);

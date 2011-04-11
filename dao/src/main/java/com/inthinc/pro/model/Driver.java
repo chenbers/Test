@@ -39,8 +39,8 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
     @Column(updateable = false)
     private Person person;
     private Integer groupID;
-    @Column(updateable = false)
-    private Cellblock cellblock;
+//    @Column(updateable = false)
+//    private Cellblock cellblock;
 
 
     public Driver(Integer driverID, Integer personID, Status status, String barcode, Long rfid1, Long rfid2, String license, State state, String licenseClass, Date expiration, String certifications,
@@ -59,12 +59,10 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
         this.certifications = certifications;
         this.dot = dot;
         this.groupID = groupID;
-        cellblock = new Cellblock();
     }
 
     public Driver() {
         super();
-        cellblock = new Cellblock();
     }
 
     public Integer getDriverID() {
@@ -206,12 +204,12 @@ public class Driver extends BaseEntity implements Comparable<Driver> {
                 + license + ", licenseClass=" + licenseClass + ", personID=" + personID + ", rfid1=" + rfid1 + ", rfid2=" + rfid2 + ", state=" + state + ", status=" + status + "]";
     }
 
-    public Cellblock getCellblock() {
-        return cellblock;
-    }
-
-    public void setCellblock(Cellblock cellblock) {
-        this.cellblock = cellblock;
-    }
+//    public Cellblock getCellblock() {
+//        return cellblock;
+//    }
+//
+//    public void setCellblock(Cellblock cellblock) {
+//        this.cellblock = cellblock;
+//    }
 
 }

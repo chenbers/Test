@@ -10,6 +10,7 @@ import mockit.Expectations;
 
 import org.junit.Test;
 
+import com.inthinc.pro.service.adapters.PhoneControlDAOAdapter;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 
@@ -26,8 +27,9 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
      * Test for Change Status Enabled acknowledgment.
      */
     @Test()
-    public void testSetStatusEnabled() {               
+    public void testSetStatusEnabled( final PhoneControlDAOAdapter phoneControlDAOMock) {               
         try {
+            serviceSUT.setDao(phoneControlDAOMock);
             Response response = serviceSUT.setStatusEnabled(phoneID);
             // check if the response is OK
             assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -53,10 +55,10 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
     }
 
     @Test 
-    public void testProcessStartMotionEvent(final MovementEventHandler movementEventHandler){
+    public void testProcessStartMotionEvent(final MovementEventHandler movementEventHandler, final PhoneControlDAOAdapter phoneControlDAOMock){
         CellPhoneServiceImpl serviceSUT = new CellPhoneServiceImpl();
         serviceSUT.setMovementEventHandler(movementEventHandler);
-         
+        serviceSUT.setDao(phoneControlDAOMock);
         //System under test
         Response response = serviceSUT.processStartMotionEvent(expecteDriverID);
         

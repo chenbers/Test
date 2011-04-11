@@ -94,7 +94,7 @@
   	<bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"/>
 <!--  	<bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"/>-->
 	<bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
-	
+	<bean id="phoneControlDAO" class="com.inthinc.pro.dao.hessian.PhoneControlHessianDAO" parent="genericDAO"></bean>
 	<!-- Address Lookup -->
 	<bean id="geonamesAddressLookupBean" class="com.inthinc.pro.map.GeonamesAddressLookup">
 		<property name="mapServerURLString" value="${mapserver.geonames.url}" />

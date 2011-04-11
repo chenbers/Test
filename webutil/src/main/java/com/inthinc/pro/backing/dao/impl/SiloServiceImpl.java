@@ -1084,28 +1084,56 @@ public class SiloServiceImpl implements SiloService {
     }
 
     @Override
-    @MethodDescription(description = "Create a phone control record for a driver.", crudType=CrudType.CREATE, modelClass=com.inthinc.pro.model.Cellblock.class)
+    @MethodDescription(description = "Create a phone control record for a driver.", crudType=CrudType.CREATE, modelClass=com.inthinc.pro.model.Cellblock.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilCellblockMapper.class)
     public Map<String, Object> createCellblock(@DaoParam(name = "driverID")Integer driverID, 
             @DaoParam(name = "PhoneControl", type = com.inthinc.pro.model.Cellblock.class)Map<String, Object> cellblockMap) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Delete a phone control record for a driver.", crudType=CrudType.DELETE, modelClass=com.inthinc.pro.model.Cellblock.class)
+    @MethodDescription(description = "Delete a phone control record for a driver.", crudType=CrudType.DELETE, modelClass=com.inthinc.pro.model.Cellblock.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilCellblockMapper.class)
     public Map<String, Object> deleteCellblock(@DaoParam(name = "driverID")Integer driverID) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Fetches a phone control record for a driver.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Cellblock.class)
+    @MethodDescription(description = "Fetches a phone control record for a driver.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Cellblock.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilCellblockMapper.class)
     public Map<String, Object> getCellblock(@DaoParam(name = "driverID")Integer driverID) throws ProDAOException {
         return null;
     }
 
     @Override
-    @MethodDescription(description = "Update a phone control record for a driver.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.model.Cellblock.class)
+    @MethodDescription(description = "Update a phone control record for a driver.", crudType=CrudType.UPDATE, modelClass=com.inthinc.pro.model.Cellblock.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilCellblockMapper.class)
     public Map<String, Object> updateCellblock(@DaoParam(name = "driverID")Integer driverID, 
             @DaoParam(name = "PhoneControl", type = com.inthinc.pro.model.Cellblock.class)Map<String, Object> cellblockMap) throws ProDAOException {
+        return null;
+    }
+
+    @Override
+    @MethodDescription(description = "Fetches the phone control record for a phon number.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Cellblock.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilCellblockMapper.class)
+    public Map<String, Object> findByPhoneNumber(String phoneID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @MethodDescription(description = "Fetches the list of all the phone control records for an account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Cellblock.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilCellblockMapper.class)
+    public List<Map<String, Object>> getCellblocksForAcctID(Integer acctID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    @MethodDescription(description = "Fetches the list of all the phone control records for drivers with disabled phones.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Cellblock.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilCellblockMapper.class)
+    public List<Map<String, Object>> getDriversWithDisabledPhones(Integer siloID) {
+        // TODO Auto-generated method stub
         return null;
     }
     

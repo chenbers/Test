@@ -29,7 +29,7 @@ import com.inthinc.pro.model.phone.CellProviderType;
  * </tr>
  * <tr>
  * <td>77710</td>
- * <td>Driver with cell phone number but no provider information. The cell phone number is equal to {@link DriverDaoStubBehaviourAdvice#STUBBED_PHONE_NUMBER}.</td>
+ * <td>Driver with cell phone number but no provider information. The cell phone number is equal to {@link PhoneControlDaoStubBehaviourAdvice#STUBBED_PHONE_NUMBER}.</td>
  * </tr>
  * <tr>
  * <td>77701</td>
@@ -42,12 +42,12 @@ import com.inthinc.pro.model.phone.CellProviderType;
  * <tr>
  * <td>77711</td>
  * <td>Driver with cell phone number and {@link CellProviderType#CELL_CONTROL} provider. The cell phone number is equal to
- * {@link DriverDaoStubBehaviourAdvice#STUBBED_CELLCONTROL_PHONE_NUMBER}.</td>
+ * {@link PhoneControlDaoStubBehaviourAdvice#STUBBED_CELLCONTROL_PHONE_NUMBER}.</td>
  * </tr>
  * <tr>
  * <td>77712</td>
  * <td>Driver with cell phone number and {@link CellProviderType#ZOOM_SAFER} provider. The cell phone number is equal to
- * {@link DriverDaoStubBehaviourAdvice#STUBBED_ZOOMSAFER_PHONE_NUMBER}.</td>
+ * {@link PhoneControlDaoStubBehaviourAdvice#STUBBED_ZOOMSAFER_PHONE_NUMBER}.</td>
  * </tr>
  * </table>
  * <p/>
@@ -66,7 +66,7 @@ import com.inthinc.pro.model.phone.CellProviderType;
 // TODO This aspect and package must be moved back to src/test once QA testing is performed.
 @Aspect
 @Component
-public class DriverDaoStubBehaviourAdvice {
+public class PhoneControlDaoStubBehaviourAdvice {
 
     public static final String CELLCOPNTROL_USERNAME = "inthincapi";
     public static final String CELLCONTROL_PASSWORD = "1qa@WS3ed";
@@ -76,45 +76,45 @@ public class DriverDaoStubBehaviourAdvice {
     /*
      * Test data stored in a map by driverId.
      */
-    private Map<Integer, Driver> testDrivers = new HashMap<Integer, Driver>() {
+    private Map<Integer, Cellblock> testDrivers = new HashMap<Integer, Cellblock>() {
         {
-            Driver driver77700 = new Driver();
+            Cellblock driver77700 = new Cellblock();
             driver77700.setDriverID(77700);
 
-            Driver driver77710 = new Driver();
-            driver77710.setCellblock(new Cellblock());
-            driver77710.getCellblock().setCellPhone(STUBBED_PHONE_NUMBER);
+            Cellblock driver77710 = new Cellblock();
+//            driver77710.setCellblock(new Cellblock());
+            driver77710.setCellPhone(STUBBED_PHONE_NUMBER);
             driver77710.setDriverID(77710);
 
-            Driver driver77701 = new Driver();
-            driver77701.setCellblock(new Cellblock());
-            driver77701.getCellblock().setProvider(CellProviderType.CELL_CONTROL);
-            driver77701.getCellblock().setProviderUsername(CELLCOPNTROL_USERNAME);
-            driver77701.getCellblock().setProviderPassword(CELLCONTROL_PASSWORD);
+            Cellblock driver77701 = new Cellblock();
+//            driver77701.setCellblock(new Cellblock());
+            driver77701.setProvider(CellProviderType.CELL_CONTROL);
+            driver77701.setProviderUser(CELLCOPNTROL_USERNAME);
+            driver77701.setProviderPassword(CELLCONTROL_PASSWORD);
             driver77701.setDriverID(77701);
 
-            Driver driver77702 = new Driver();
-            driver77702.setCellblock(new Cellblock());
-            driver77702.getCellblock().setProvider(CellProviderType.ZOOM_SAFER);
-            driver77702.getCellblock().setProviderUsername(ZOOMSAFER_USERNAME);
-            driver77702.getCellblock().setProviderPassword(ZOOMSAFER_PASSWORD);
+            Cellblock driver77702 = new Cellblock();
+//            driver77702.setCellblock(new Cellblock());
+            driver77702.setProvider(CellProviderType.ZOOM_SAFER);
+            driver77702.setProviderUser(ZOOMSAFER_USERNAME);
+            driver77702.setProviderPassword(ZOOMSAFER_PASSWORD);
             driver77702.setDriverID(77702);
 
-            Driver driver77711 = new Driver();
-            driver77711.setLicense("123465AA");
-            driver77711.setCellblock(new Cellblock());
-            driver77711.getCellblock().setProvider(CellProviderType.CELL_CONTROL);
-            driver77711.getCellblock().setProviderUsername(CELLCOPNTROL_USERNAME);
-            driver77711.getCellblock().setProviderPassword(CELLCONTROL_PASSWORD);
-            driver77711.getCellblock().setCellPhone(STUBBED_CELLCONTROL_PHONE_NUMBER);
+            Cellblock driver77711 = new Cellblock();
+//            driver77711.setLicense("123465AA");
+//            driver77711.setCellblock(new Cellblock());
+            driver77711.setProvider(CellProviderType.CELL_CONTROL);
+            driver77711.setProviderUser(CELLCOPNTROL_USERNAME);
+            driver77711.setProviderPassword(CELLCONTROL_PASSWORD);
+            driver77711.setCellPhone(STUBBED_CELLCONTROL_PHONE_NUMBER);
             driver77711.setDriverID(77711);
 
-            Driver driver77712 = new Driver();
-            driver77712.setCellblock(new Cellblock());
-            driver77712.getCellblock().setProvider(CellProviderType.ZOOM_SAFER);
-            driver77712.getCellblock().setProviderUsername(ZOOMSAFER_USERNAME);
-            driver77712.getCellblock().setProviderPassword(ZOOMSAFER_PASSWORD);
-            driver77712.getCellblock().setCellPhone(STUBBED_ZOOMSAFER_PHONE_NUMBER);
+            Cellblock driver77712 = new Cellblock();
+//            driver77712.setCellblock(new Cellblock());
+            driver77712.setProvider(CellProviderType.ZOOM_SAFER);
+            driver77712.setProviderUser(ZOOMSAFER_USERNAME);
+            driver77712.setProviderPassword(ZOOMSAFER_PASSWORD);
+            driver77712.setCellPhone(STUBBED_ZOOMSAFER_PHONE_NUMBER);
             driver77712.setDriverID(77712);
 
             put(77700, driver77700);
@@ -194,7 +194,7 @@ public class DriverDaoStubBehaviourAdvice {
             case 77712:
                 return testDrivers.get(driverId);
             default:
-                return (Driver) pjp.proceed();
+                return (Cellblock) pjp.proceed();
         }
     }
 

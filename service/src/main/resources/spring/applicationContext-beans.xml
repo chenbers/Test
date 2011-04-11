@@ -110,6 +110,9 @@
 	<bean id="driverService" class="com.inthinc.pro.service.impl.DriverServiceImpl">
 		<property name="dao" ref="driverDAOAdapter" />
 	</bean>
+	<bean id="cellPhoneService" class="com.inthinc.pro.service.phonecontrol.impl.CellPhoneServiceImpl">
+		<property name="dao" ref="phoneControlDAOAdapter" />
+	</bean>
 	<bean id="groupService" class="com.inthinc.pro.service.impl.GroupServiceImpl">
 		<property name="dao" ref="groupDAOAdapter" />
 	</bean>

@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationContext;
 
 public abstract class BaseEmbeddedServerITCase {
 
-    private static int port;
+    private static int port = 80;
     public static final String DOMAIN = "localhost";
 
     protected static final String url = "http://" + DOMAIN + ":" + port + "/service/api";

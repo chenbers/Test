@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
+import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.report.DriverReportDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;

@@ -6,6 +6,7 @@ import mockit.Verifications;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.PhoneControlDAO;
 import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.phone.CellStatusType;
@@ -14,20 +15,20 @@ import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
 
 public class PhoneStatusControllerImplTest {
     @Test
-    public void testSetStausToEnabled(final DriverDAO driverDaoMock, final DriverPhoneDAO phoneDaoMock) {
-        final Driver driver = new Driver();
-        driver.setCellblock(new Cellblock());
+    public void testSetStausToEnabled(final PhoneControlDAO phoneControlDAOMock, final DriverPhoneDAO phoneDaoMock) {
+        final Cellblock driver = new Cellblock();
+//        driver.setCellblock(new Cellblock());
         driver.setDriverID(1);
 
-        PhoneStatusController controller = new PhoneStatusControllerImpl(driverDaoMock, phoneDaoMock);
+        PhoneStatusController controller = new PhoneStatusControllerImpl(phoneControlDAOMock, phoneDaoMock);
 
         controller.setPhoneStatusEnabled(driver);
 
-        assertEquals(CellStatusType.ENABLED, driver.getCellblock().getCellStatus());
+        assertEquals(CellStatusType.ENABLED, driver.getCellStatus());
 
         new Verifications() {
             {
-                driverDaoMock.update(driver);
+                phoneControlDAOMock.update(driver);
                 times = 1;
 
                 phoneDaoMock.removeDriverFromDisabledPhoneList(driver.getDriverID());
@@ -37,20 +38,20 @@ public class PhoneStatusControllerImplTest {
     }
 
     @Test
-    public void testSetStausToDisabled(final DriverDAO driverDaoMock, final DriverPhoneDAO phoneDaoMock) {
-        final Driver driver = new Driver();
-        driver.setCellblock(new Cellblock());
+    public void testSetStausToDisabled(final PhoneControlDAO phoneControlDAOMock, final DriverPhoneDAO phoneDaoMock) {
+        final Cellblock driver = new Cellblock();
+//        driver.setCellblock(new Cellblock());
         driver.setDriverID(1);
 
-        PhoneStatusController controller = new PhoneStatusControllerImpl(driverDaoMock, phoneDaoMock);
+        PhoneStatusController controller = new PhoneStatusControllerImpl(phoneControlDAOMock, phoneDaoMock);
 
         controller.setPhoneStatusDisabled(driver);
 
-        assertEquals(CellStatusType.DISABLED, driver.getCellblock().getCellStatus());
+        assertEquals(CellStatusType.DISABLED, driver.getCellStatus());
 
         new Verifications() {
             {
-                driverDaoMock.update(driver);
+                phoneControlDAOMock.update(driver);
                 times = 1;
 
                 phoneDaoMock.addDriverToDisabledPhoneList(driver.getDriverID());

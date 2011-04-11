@@ -25,6 +25,7 @@ import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
@@ -41,6 +42,8 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.model.phone.CellProviderType;
+import com.inthinc.pro.model.phone.CellStatusType;
 
 public class SiloServiceMockImpl extends AbstractServiceMockImpl implements SiloService {
 
@@ -1445,12 +1448,39 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
     @Override
     public Map<String, Object> getCellblock(Integer driverID) throws ProDAOException {
+        Map<String,Object> cellblockMap = new HashMap<String,Object>();
+        cellblockMap.put("driverID", driverID);
+        cellblockMap.put("acctID", 1);
+        cellblockMap.put("cellPhone", "8017127234");
+        cellblockMap.put("cellStatus", CellStatusType.DISABLED);
+        cellblockMap.put("provider", CellProviderType.CELL_CONTROL);
+        cellblockMap.put("providerUser", "8017127234");
+        cellblockMap.put("provicerPass", "password");
+        return cellblockMap;
+//        return doMockLookup(Cellblock.class, "driverID", driverID, "No cellblock for ID: " + driverID, "getCellblock");
+    }
+
+    @Override
+    public Map<String, Object> updateCellblock(Integer driverID, Map<String, Object> cellblockMap) throws ProDAOException {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Map<String, Object> updateCellblock(Integer driverID, Map<String, Object> cellblockMap) throws ProDAOException {
+    public Map<String, Object> findByPhoneNumber(String phoneID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> getCellblocksForAcctID(Integer acctID) {
+        final SearchCriteria criteria = new SearchCriteria();
+        criteria.addKeyValue("acctID", acctID);
+        return MockData.getInstance().lookupList(Cellblock.class, criteria);
+    }
+
+    @Override
+    public List<Map<String, Object>> getDriversWithDisabledPhones(Integer siloID) {
         // TODO Auto-generated method stub
         return null;
     }

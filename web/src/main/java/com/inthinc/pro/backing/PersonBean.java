@@ -42,6 +42,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
@@ -49,7 +50,6 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.PreferenceLevelOption;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
@@ -58,6 +58,7 @@ import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
 import com.inthinc.pro.model.phone.CellProviderType;
+import com.inthinc.pro.model.phone.CellStatusType;
 import com.inthinc.pro.model.security.Role;
 import com.inthinc.pro.model.security.Roles;
 import com.inthinc.pro.util.BeanUtil;
@@ -360,8 +361,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         personView.setDriverSelected(person.getDriver() != null);
         
         if (person.getDriver() != null) {
-            person.getDriver().setCellblock(phoneControlDAO.findByID(person.getDriverID()));
-            personView.setProviderInfoSelected(person.getDriver().getCellblock() != null);
+            Cellblock cellblock = phoneControlDAO.findByID(person.getDriverID());
+            if(cellblock != null) cellblock.setProviderPassword("");
+            personView.setProviderInfoSelected(cellblock != null);
+            personView.setProviderInfoExists(cellblock != null);
+            personView.setCellblock(personView.isProviderInfoExists()?cellblock:new Cellblock());
+            
+            personView.setConfirmProviderPassword("");
         }
         
         personView.setSelected(false);
@@ -459,26 +465,26 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         	else return null;
         }
         else if (column.equals("driver_provider")) {
-            if (person.getDriver() != null && person.getDriver().getCellblock() != null) {
-                return person.getDriver().getCellblock().getProvider().toString();
+            if (person.getDriver() != null && person.getCellblock() != null) {
+                return person.getCellblock().getProvider().toString();
             }
             
             return null;
         } else if (column.equals("driver_providerUsername")) {
-            if (person.getDriver() != null && person.getDriver().getCellblock() != null) {
-                return person.getDriver().getCellblock().getProviderUsername();
+            if (person.getDriver() != null && person.getCellblock() != null) {
+                return person.getCellblock().getProviderUser();
             }
             
             return null;
         } else if (column.equals("driver_providerPassword")) {
-            if (person.getDriver() != null && person.getDriver().getCellblock() != null) {
-                return person.getDriver().getCellblock().getProviderPassword();
+            if (person.getDriver() != null && person.getCellblock() != null) {
+                return person.getCellblock().getProviderPassword();
             }
             
             return null;
         } else if (column.equals("driver_providerCellPhone")) {
-            if (person.getDriver() != null && person.getDriver().getCellblock() != null) {
-                return person.getDriver().getCellblock().getCellPhone();
+            if (person.getDriver() != null && person.getCellblock() != null) {
+                return person.getCellblock().getCellPhone();
             }
             
             return null;
@@ -533,9 +539,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setMeasurementType(MeasurementType.ENGLISH);
         person.setFuelEfficiencyType(FuelEfficiencyType.MPG_US);
         person.setDriver(new Driver());
+        person.setCellblock(new Cellblock());
         person.setUserSelected(true);
         person.setDriverSelected(true);
         person.setProviderInfoSelected(true);
+        person.setProviderInfoExists(false);
         person.setAcctID(getAccountID());
         return person;
     }
@@ -555,9 +563,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             item.getDriver().setPersonID(item.getPersonID());
         }
 
-//        if (item.getDriver().getCellblock() == null) {
-//            item.getDriver().setCellProviderInfo(new Driver.CellProviderInfo());
-//        }
+        if(item.getCellblock()==null){
+            item.setCellblock(new Cellblock());
+        }
         if (fuelEfficiencyBean == null)
         {
         	fuelEfficiencyBean = new FuelEfficiencyBean();
@@ -660,6 +668,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     protected void doDelete(List<PersonView> deleteItems) {
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final PersonView person : deleteItems) {
+            if(person.providerInfoExists){
+                phoneControlDAO.deleteByID(person.getDriverID());
+            }        
             personDAO.delete(person);
             // add a message
             final String summary = MessageUtil.formatMessageString("person_deleted", person.getFirst(), person.getLast());
@@ -801,41 +812,41 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             
             if (person.isProviderInfoSelected()){
             	// mandatory provider type
-            	if (person.getDriver().getCellblock().getProvider() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.provider")))) {
+            	if (person.getCellblock().getProvider() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("cellblock.provider")))) {
                     valid = false;
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                     context.addMessage("edit-form:editPerson_driver_provider", message);
                	}
             	// mandatory provider username
-            	if (StringUtils.isEmpty(person.getDriver().getCellblock().getProviderUsername()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerUsername")))) {
+            	if (StringUtils.isEmpty(person.getCellblock().getProviderUser()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("cellblock.providerUser")))) {
             	    valid = false;
             	    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
             	    context.addMessage("edit-form:editPerson_driver_providerUsername", message);
             	}
             	// mandatory provider password
-            	if (StringUtils.isEmpty(person.getDriver().getCellblock().getProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
+            	if (!person.isProviderInfoExists() && StringUtils.isEmpty(person.getCellblock().getProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("cellblock.providerPassword")))) {
             	 valid = false;
                  FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                  context.addMessage("edit-form:editPerson_driver_providerPassword", message);
             	}
             	
             	// mandatory provider confirm password
-                if (StringUtils.isEmpty(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
+                if (!person.isProviderInfoExists() && StringUtils.isEmpty(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("cellblock.providerPassword")))) {
                     valid = false;
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                     context.addMessage("edit-form:editPerson_driver_confirmProviderPassword", message);
                 }
             	
             	// mandatory provider cell phone
-            	if (StringUtils.isEmpty(person.getDriver().getCellblock().getCellPhone()) && !isBatchEdit()) {
+            	if (StringUtils.isEmpty(person.getCellblock().getCellPhone()) && !isBatchEdit()) {
                	    valid = false;
                     FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(REQUIRED_KEY), null);
                     context.addMessage("edit-form:editPerson_driver_providerCellPhone", message);
                	}
             	
                 // matching passwords
-                if ((!StringUtils.isEmpty(person.getDriver().getCellblock().getProviderPassword()))
-                        && !person.getDriver().getCellblock().getProviderPassword().equals(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
+                if ((!StringUtils.isEmpty(person.getCellblock().getProviderPassword())) && !StringUtils.isEmpty(person.getConfirmProviderPassword())
+                        && !person.getCellblock().getProviderPassword().equals(person.getConfirmProviderPassword()) && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("driver.cellProviderInfo.providerPassword")))) {
                     final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editPerson_passwordsMismatched"), null);
                     context.addMessage("edit-form:editPerson_driver_providerPassword", message);
                     valid = false;
@@ -943,14 +954,19 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             }
             if (!person.isDriverSelected()) {
                 if (person.getDriver() != null) {
-                    if (person.getDriver().getDriverID() != null)
-                        driverDAO.deleteByID(person.getDriver().getDriverID());
+                    if (person.getDriver().getDriverID() != null){
+                        if (person.getCellblock() != null) {
+                            phoneControlDAO.deleteByID(person.getDriverID());
+                            person.setCellblock(null);
+                        }
+                    }
+                    driverDAO.deleteByID(person.getDriver().getDriverID());
                     person.setDriver(null);
                 }
             }
             else {
-                if (!person.isProviderInfoSelected() && person.getDriver().getCellblock() != null) {
-                    person.getDriver().setCellblock(null);
+                if (!person.isProviderInfoSelected() && person.getCellblock() != null) {
+                    person.setCellblock(null);
                 }
             }
             // set null dropdown items to empty
@@ -986,8 +1002,20 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             else {
                 if (person.isUserEditable())
                     personDAO.update(person);
-                else if (person.isDriverSelected())
+                if (person.isDriverSelected()){
                     driverDAO.update(person.getDriver());
+                    if(person.isProviderInfoExists()){
+                        if (person.getCellblock().getProviderPassword().isEmpty()){
+                            person.getCellblock().setProviderPassword(null);
+                        }
+                        phoneControlDAO.update(person.getCellblock());
+                    }
+                    else{
+                        person.getCellblock().setDriverID(person.getDriverID());
+                        person.getCellblock().setAcctID(person.getAcctID());
+                        phoneControlDAO.create(person.getDriverID(),person.getCellblock());
+                    }
+                }
                 // if updating the currently-logged-in person, update the proUser
                 if ((person.getUser() != null) && person.getUser().getUserID().equals(getUserID()))
                     BeanUtil.deepCopy(person.getUser(), getUser());
@@ -1097,6 +1125,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public List<SelectItem> getStatuses() {
         return SelectItemUtil.toList(Status.class, false, Status.DELETED);
     }
+
+    public List<SelectItem> getCellStatuses() {
+        return SelectItemUtil.toList(CellStatusType.class, false);
+    }
     
     public List<SelectItem> getDotTypes() {
         return SelectItemUtil.toList(RuleSetType.class, false, RuleSetType.SLB_INTERNAL);
@@ -1129,10 +1161,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         @Column(updateable = false)
         private boolean providerInfoSelected;
         @Column(updateable = false)
+        private boolean providerInfoExists;
+        @Column(updateable = false)
         private String confirmProviderPassword;
         @Column(updateable = false)
         private boolean selected;
-
+        @Column(updateable = false)
+        private Cellblock cellblock;
 
         public Integer getId() {
             return getPersonID();
@@ -1232,6 +1267,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
         public void setDriverSelected(boolean driverSelected) {
             this.driverSelected = driverSelected;
+            if(!this.driverSelected){
+                setProviderInfoSelected(false);
+            }
         }
 
         public boolean isSelected() {
@@ -1334,6 +1372,22 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
         public void setConfirmProviderPassword(String confirmProviderPassword) {
             this.confirmProviderPassword = confirmProviderPassword;
+        }
+
+        public Cellblock getCellblock() {
+            return cellblock;
+        }
+
+        public void setCellblock(Cellblock cellblock) {
+            this.cellblock = cellblock;
+        }
+
+        public boolean isProviderInfoExists() {
+            return providerInfoExists;
+        }
+
+        public void setProviderInfoExists(boolean providerInfoExists) {
+            this.providerInfoExists = providerInfoExists;
         }
 
 

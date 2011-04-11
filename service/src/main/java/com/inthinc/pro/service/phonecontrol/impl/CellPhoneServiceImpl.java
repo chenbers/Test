@@ -1,13 +1,17 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
+import java.util.List;
+
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.phone.CellStatusType;
-import com.inthinc.pro.service.adapters.DriverDAOAdapter;
+import com.inthinc.pro.service.adapters.PhoneControlDAOAdapter;
+import com.inthinc.pro.service.impl.AbstractService;
 import com.inthinc.pro.service.phonecontrol.CellPhoneService;
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
 import com.inthinc.pro.service.phonecontrol.PhoneStatusController;
@@ -15,16 +19,19 @@ import com.inthinc.pro.service.phonecontrol.PhoneStatusController;
 /**
  * CellPhoneService implementation class.
  */
-@Component
-public class CellPhoneServiceImpl implements CellPhoneService {
+
+public class CellPhoneServiceImpl extends AbstractService<Cellblock, PhoneControlDAOAdapter>implements CellPhoneService {
     private static Logger logger = Logger.getLogger(CellPhoneServiceImpl.class);
 
     @Autowired
     private MovementEventHandler movementEventHandler;
 
-    @Autowired
-    private DriverDAOAdapter driverAdapter;
+//    @Autowired
+//    private DriverDAOAdapter driverAdapter;
 
+    @Autowired
+    private PhoneControlDAOAdapter phoneControlDAOAdapter;
+    
     @Autowired
     private PhoneStatusController phoneStatusController;
 
@@ -52,9 +59,7 @@ public class CellPhoneServiceImpl implements CellPhoneService {
     @Override
     public Response setStatusEnabled(String phoneId) {
         logger.debug("setStatus enabled Request received for phoneID: " + phoneId);
-        PhoneStatusUpdateThread update = new PhoneStatusUpdateThread(phoneId, CellStatusType.ENABLED);
-        update.setDriverDAOAdapter(this.driverAdapter);
-        update.setPhoneStatusController(this.phoneStatusController);
+        PhoneStatusUpdateThread update = createPhoneStatusUpdateThread(phoneId, CellStatusType.ENABLED);
         update.start();
 
         return Response.ok().build();
@@ -68,23 +73,28 @@ public class CellPhoneServiceImpl implements CellPhoneService {
     @Override
     public Response setStatusDisabled(String phoneId) {
         logger.debug("setStatus disabled Request received for phoneID: " + phoneId);
-        PhoneStatusUpdateThread update = new PhoneStatusUpdateThread(phoneId, CellStatusType.DISABLED);
-        update.setDriverDAOAdapter(this.driverAdapter);
-        update.setPhoneStatusController(this.phoneStatusController);
+        PhoneStatusUpdateThread update = createPhoneStatusUpdateThread(phoneId, CellStatusType.DISABLED);
         update.start();
 
         return Response.ok().build();
     }
-
+    
+    private PhoneStatusUpdateThread createPhoneStatusUpdateThread(String phoneId, CellStatusType status ){
+     
+        PhoneStatusUpdateThread update = new PhoneStatusUpdateThread(phoneId, status);
+        update.setPhoneControlDAOAdapter(this.phoneControlDAOAdapter);
+        update.setPhoneStatusController(this.phoneStatusController);
+        return update;
+    }
     /**
      * The driverDAOAdapter setter.
      * 
      * @param driverDAOAdapter
      *            the driverDAOAdapter to set
      */
-    public void setDriverDAOAdapter(DriverDAOAdapter driverDAOAdapter) {
-        this.driverAdapter = driverDAOAdapter;
-    }
+//    public void setDriverDAOAdapter(DriverDAOAdapter driverDAOAdapter) {
+//        this.driverAdapter = driverDAOAdapter;
+//    }
 
     public MovementEventHandler getMovementEventHandler() {
         return movementEventHandler;
@@ -96,5 +106,21 @@ public class CellPhoneServiceImpl implements CellPhoneService {
 
     public void setPhoneStatusController(PhoneStatusController phoneStatusController) {
         this.phoneStatusController = phoneStatusController;
+    }
+
+    public void setPhoneControlDAOAdapter(PhoneControlDAOAdapter phoneControlDAOAdapter) {
+        this.phoneControlDAOAdapter = phoneControlDAOAdapter;
+    }
+
+    @Override
+    public Response create(List<Cellblock> list, UriInfo uriInfo) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Response getAll() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

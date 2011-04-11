@@ -1,6 +1,5 @@
 package com.inthinc.pro.service.test.mock;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -99,19 +98,7 @@ public class DriverDaoStub implements DriverDAO {
     public Driver findByPersonID(Integer personID) {
         return this.driver;
     }
-
-    @Override
-    public Driver findByPhoneNumber(String phoneID) {
-        this.driver.getCellblock().setCellPhone(phoneID);
-        return this.driver;
-    }
-
     public void setExpectedDriver(Driver driver) {
         this.driver = driver;
     }
-
-	@Override
-	public List<Driver> getDriversWithDisabledPhones() {
-		return new ArrayList<Driver>();
-	}
 }

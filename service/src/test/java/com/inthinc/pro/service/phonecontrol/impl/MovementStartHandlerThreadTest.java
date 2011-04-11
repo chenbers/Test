@@ -4,6 +4,7 @@ import static junit.framework.Assert.fail;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.service.phonecontrol.MovementEventHandler;
@@ -25,7 +26,7 @@ public class MovementStartHandlerThreadTest {
             }
         };
     }
-
+//    @Ignore
     @Test
     public void doesNotPropagateExceptions(final MovementEventHandler movementEventHandler) {
         final int driverId = 777;

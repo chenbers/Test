@@ -1,6 +1,5 @@
 package com.inthinc.pro.dao;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,8 +10,6 @@ import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.IdlePercentItem;
-import com.inthinc.pro.model.IdlingReportData;
-import com.inthinc.pro.model.IdlingReportItem;
 import com.inthinc.pro.model.ScoreItem;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreTypeBreakdown;

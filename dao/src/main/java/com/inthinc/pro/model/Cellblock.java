@@ -2,16 +2,20 @@ package com.inthinc.pro.model;
 
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.annotations.ID;
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.model.phone.CellStatusType;
 
 public class Cellblock {
-    
+        @ID
+        private Integer driverID;
+        private Integer acctID;
         private String cellPhone;
         private CellStatusType cellStatus;
         private CellProviderType provider;
-        private String providerUsername;
-        
+        private String providerUser;
+        @Column(name="providerPass")
         private String providerPassword;
         
         public Cellblock() {
@@ -43,10 +47,22 @@ public class Cellblock {
         public void setProvider(CellProviderType provider) {
             this.provider = provider;
         }
-        public String getProviderUsername() {
-            return providerUsername;
+        public String getProviderUser() {
+            return providerUser;
         }
-        public void setProviderUsername(String providerUsername) {
-            this.providerUsername = providerUsername;
+        public void setProviderUser(String providerUser) {
+            this.providerUser = providerUser;
+        }
+        public Integer getDriverID() {
+            return driverID;
+        }
+        public void setDriverID(Integer driverID) {
+            this.driverID = driverID;
+        }
+        public Integer getAcctID() {
+            return acctID;
+        }
+        public void setAcctID(Integer acctID) {
+            this.acctID = acctID;
         }   
 }
