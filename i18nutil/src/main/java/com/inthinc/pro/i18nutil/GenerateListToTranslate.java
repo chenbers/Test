@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -43,6 +44,7 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
                 List<String> nonTranslatedList = NonTranslated.getList(lang, keyPath);
                 
                 List<String> toTranslateList = getToTranslateList(propFile, getLangPropFile(propFile, lang), lang, nonTranslatedList);
+//                List<String> toTranslateList = getAllToTranslateList(propFile);
                 if (toTranslateList.size() > 0) {
                     toTranslateWriter.println(BaseTranslationUtil.PROPERTIES_MARKER + " " + keyPath + " " + BaseTranslationUtil.PROPERTIES_MARKER);
                     for (String prop : toTranslateList) {
@@ -65,6 +67,41 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
     }
     
 
+    public List<String> getAllToTranslateList(File enPropFile) throws IOException{
+
+        List<String> toTranslate = new ArrayList<String>();
+        String name = enPropFile.getAbsolutePath().toLowerCase();
+        if (name.contains("log4j") || 
+                name.contains("it.properties") || 
+                name.contains("qa.properties") ||
+                name.contains("tiwipro.properties") ||
+                name.contains("totranslate") ||
+                name.contains("googlemapkeys") ||
+                name.contains("helpconfig") ||
+                name.contains("integrationtest") ||
+                name.contains("dbutil.properties"))
+            return toTranslate;
+        
+        
+        Properties english = readPropertiesFile(enPropFile);
+
+        List<String> propNameList = new ArrayList<String>();
+        Enumeration<?> propNames = english.propertyNames();
+        while (propNames.hasMoreElements()) {
+            propNameList.add(propNames.nextElement().toString());
+        }
+        Collections.sort(propNameList);
+        for (String key : propNameList) {
+            String value = english.getProperty(key);
+            if (value != null)
+                value = value.replaceAll("\\r", " ").replaceAll("\\n", " ");
+            toTranslate.add(key + " = " + value);
+        }
+        return toTranslate;
+        
+        
+    }
+
     public List<String> getToTranslateList(File enPropFile, File langPropFile, String lang, List<String> nonTranslatedList) throws IOException{
 
         List<String> toTranslate = new ArrayList<String>();
@@ -80,14 +117,19 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
         }
 
 
-        Enumeration<?> propNames = english.propertyNames(); 
+        List<String> propNameList = new ArrayList<String>();
+        Enumeration<?> propNames = english.propertyNames();
         while (propNames.hasMoreElements()) {
-            String key = propNames.nextElement().toString();
+            propNameList.add(propNames.nextElement().toString());
+        }
+        Collections.sort(propNameList);
+        for (String key : propNameList) {
             if (nonTranslatedList != null && nonTranslatedList.contains(key))
                 continue;
             
             String value = english.getProperty(key);
             String langValue = translated.getProperty(key);
+
             
             if (langValue == null) {
                 toTranslate.add(key + " = " + value);
