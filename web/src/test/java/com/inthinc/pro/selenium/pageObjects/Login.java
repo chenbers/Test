@@ -69,7 +69,7 @@ public class Login extends AbstractPage {
 
     public Login button_logIn_click() {
         selenium.click(LoginEnum.LOGIN_BUTTON);
-        selenium.waitForPageToLoad(LoginEnum.LOGIN_BUTTON);
+        selenium.waitForPageToLoad();
         return this;
     }
 
@@ -123,7 +123,7 @@ public class Login extends AbstractPage {
     }
 
     public Login page_login_open() {
-    	page_directURL_load();
+        page_directURL_load();
         page_logIn_validate();
         return this;
     }
@@ -153,30 +153,30 @@ public class Login extends AbstractPage {
         title_forgotPasswordMessageSent_compareText(LoginEnum.MESSAGE_SENT_TITLE.getText());
         header_forgotPasswordMessageSent_compareText(LoginEnum.MESSAGE_SENT_HEADER.getText());
         text_forgotPasswordMessageSent_compareText(LoginEnum.MESSAGE_SENT_FIRST_PARAGRAPH.getText());
-        
+
         bulletPoint_forgotPasswordMessageSentBullet1_compareText(LoginEnum.MESSAGE_SENT_BULLET_1.getText());
         bulletPoint_forgotPasswordMessageSentBullet2_compareText(LoginEnum.MESSAGE_SENT_BULLET_2.getText());
         bulletPoint_forgotPasswordMessageSentBullet3_compareText(LoginEnum.MESSAGE_SENT_BULLET_3.getText());
         return this;
     }
-    
-    public Login bulletPoint_forgotPasswordMessageSentBullet1_compareText(String expected){
+
+    public Login bulletPoint_forgotPasswordMessageSentBullet1_compareText(String expected) {
         String actual = selenium.getText(LoginEnum.MESSAGE_SENT_BULLET_1);
         if (!expected.equals(actual)) {
             addError("Message Sent Bullet 1", "Expected = " + expected + "\nActual = " + actual);
         }
         return this;
     }
-    
-    public Login bulletPoint_forgotPasswordMessageSentBullet2_compareText(String expected){
+
+    public Login bulletPoint_forgotPasswordMessageSentBullet2_compareText(String expected) {
         String actual = selenium.getText(LoginEnum.MESSAGE_SENT_BULLET_2);
         if (!expected.equals(actual)) {
             addError("Message Sent Bullet 2", "Expected = " + expected + "\nActual = " + actual);
         }
         return this;
     }
-    
-    public Login bulletPoint_forgotPasswordMessageSentBullet3_compareText(String expected){
+
+    public Login bulletPoint_forgotPasswordMessageSentBullet3_compareText(String expected) {
         String actual = selenium.getText(LoginEnum.MESSAGE_SENT_BULLET_3);
         if (!expected.equals(actual)) {
             addError("Message Sent Bullet 3", "Expected = " + expected + "\nActual = " + actual);
@@ -218,8 +218,8 @@ public class Login extends AbstractPage {
         selenium.getText(LoginEnum.ERROR_CLOSE);
         return this;
     }
-    
-    public Login header_badCredentials_assertEquals(String expected){
+
+    public Login header_badCredentials_assertEquals(String expected) {
         String actual = selenium.getText(LoginEnum.ERROR_HEADER);
         assertEquals(expected, actual);
         return this;
@@ -287,28 +287,28 @@ public class Login extends AbstractPage {
 
     @Override
     public boolean validate() {
-		try {
-			selenium.getText(LoginEnum.FORGOT_TEXT);
-	        selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
-	
-	        selenium.getText(LoginEnum.LOGIN_TEXT);
-	        selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
-	
-	        selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
-	
-	        selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
-	        selenium.getText(LoginEnum.USERNAME_LABEL);
-	
-	        selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
-	        selenium.getText(LoginEnum.PASSWORD_LABEL);
-		} catch (Exception e) {
-			return false;
-		}
-		return true;
-	}
+        try {
+            selenium.getText(LoginEnum.FORGOT_TEXT);
+            selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
 
-	@Override
-	public String getExpectedPath() {
-		return LoginEnum.LOGIN_URL.getURL();
-	}
+            selenium.getText(LoginEnum.LOGIN_TEXT);
+            selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
+
+            selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
+
+            selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
+            selenium.getText(LoginEnum.USERNAME_LABEL);
+
+            selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
+            selenium.getText(LoginEnum.PASSWORD_LABEL);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String getExpectedPath() {
+        return LoginEnum.LOGIN_URL.getURL();
+    }
 }

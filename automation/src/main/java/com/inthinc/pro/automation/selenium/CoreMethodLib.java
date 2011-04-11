@@ -7,7 +7,6 @@ import com.google.common.base.Supplier;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 
-
 /****************************************************************************************
  * Extend the functionality of DefaultSelenium, but add some error handling around it
  * 
@@ -23,249 +22,27 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     private ErrorCatcher errors;
 
-    public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
-        super(baseDriver, baseUrl);
-        errors = new ErrorCatcher();
-    }
-
     public CoreMethodLib(Supplier<WebDriver> maker, String baseUrl) {
         super(maker, baseUrl);
         errors = new ErrorCatcher();
     }
 
-
-    public String getLocator(SeleniumEnums checkIt) {
-        if (checkIt.getID() != null)
-            return checkIt.getID();
-        else if (checkIt.getXpath() != null)
-            return checkIt.getXpath();
-        else if (checkIt.getXpath_alt() != null)
-            return checkIt.getXpath_alt();
-        return null;
+    public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
+        super(baseDriver, baseUrl);
+        errors = new ErrorCatcher();
     }
 
-    public void open(String locator, String error_name) {
+    public void addtoPanel(SeleniumEnums checkIt, String itemtomove) {
+        addSelection(getLocator(checkIt) + "-from", itemtomove);
+        click(getLocator(checkIt) + "-move_right");
+        Pause(2);
+    }
+
+    public void click(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "click: " + element;
         try {
-            open(locator);
-            AbstractPage.setCurrentPage();
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-    }
-
-    public void click(String locator, String error_name) {
-        try {
-            click(locator);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-    }
-
-    public Boolean isChecked(String element, String condition, String error_name) {
-        try {
-            return isChecked(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public Boolean isnotChecked(String element, String error_name) {
-        try {
-            return !isChecked(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        
-        return null;
-    }
-
-    public Boolean isElementPresent(String element, String error_name) {
-        try {
-            return isElementPresent(element);
-        } catch (AssertionError e) {
-            errors.addError(error_name, "Failed");
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public Boolean isElementNotPresent(String element, String error_name) {
-        try {
-            return !isElementPresent(element);
-        } catch (AssertionError e) {
-            errors.addError(error_name, "Failed");
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public Boolean verifyLocation(SeleniumEnums checkIt) {
-        return verifyLocation(getLocator(checkIt), "getLocation: " + checkIt.toString());
-    }
-
-    public Boolean verifyLocation(String expected, String error_name) {
-        String location = "Could not get location";
-        try {
-            location = getLocation();
-            return location.contains(expected);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public String getText(String locator, String error_name) {
-        String text = "";
-        try {
-            text = getText(locator);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return text;
-    }
-
-    public String getTable(String locator, int row, int col, String error_name) {
-        String text = "";
-        try {
-            text = getTable(locator + "." + row + "." + col);
-        } catch (AssertionError e) {
-            errors.addError(error_name, getTable(locator));
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return text;
-    }
-
-    public String getTable(String locator, String error_name) {
-        String text = "";
-        try {
-            text = getTable(locator);
-        } catch (AssertionError e) {
-            errors.addError(error_name, getTable(locator));
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return text;
-    }
-
-    public void type(String locator, String text, String error_name) {
-        try {
-            type(locator, text);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-    }
-
-    public Boolean isTextPresent(String text, String error_name) {
-        try {
-            return isTextPresent(text);
-        } catch (AssertionError e) {
-            errors.addError(error_name, e);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public Boolean isTextNotPresent(String text, String error_name) {
-        try {
-            return !isTextPresent(text);
-        } catch (AssertionError e) {
-            errors.addError(error_name, e);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public Boolean isVisible(String element, String error_name) {
-        try {
-            return isVisible(element);
-        } catch (AssertionError e) {
-            errors.addError(error_name, e);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public Boolean isNotVisible(String element, String error_name) {
-        try {
-            return !isVisible(element);
-        } catch (AssertionError e) {
-            errors.addError(error_name, e);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public void waitForPageToLoad(String timeout, String error_name) {
-        try {
-            waitForPageToLoad(timeout);
+            click(element);
         } catch (SeleniumException e) {
             errors.addError(error_name, e);
         } catch (RuntimeException e) {
@@ -279,6 +56,238 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return errors;
     }
 
+    public String getLocator(SeleniumEnums checkIt) {
+        if (checkIt.getID() != null)
+            return checkIt.getID();
+        else if (checkIt.getXpath() != null)
+            return checkIt.getXpath();
+        else if (checkIt.getXpath_alt() != null)
+            return checkIt.getXpath_alt();
+        return null;
+    }
+
+    public String getSelectedLabel(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "select: " + element;
+        try {
+            return getSelectedLabel(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    public String getTable(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "getTable: " + element;
+        String text = "";
+        try {
+            text = getTable(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return text;
+    }
+
+    public String getTable(SeleniumEnums checkIt, int row, int col) {
+        String element = getLocator(checkIt);
+        String error_name = "Click: " + element;
+        String text = "";
+        try {
+            text = getTable(element + "." + row + "." + col);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return text;
+    }
+
+    public String getText(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "getText: " + element;
+        String text = "";
+        try {
+            text = getText(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return text;
+    }
+
+    public Boolean inSession() {
+        try {
+            getAllWindowNames();
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public Boolean isChecked(SeleniumEnums checkIt, String condition) {
+        String element = getLocator(checkIt);
+        String error_name = "isChecked: " + element;
+        try {
+            return isChecked(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    public Boolean isElementNotPresent(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "isElementNotPresent: " + element;
+        try {
+            return !isElementPresent(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    public Boolean isElementPresent(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "isElementPresent: " + element;
+        try {
+            return isElementPresent(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    public Boolean isNotChecked(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "isNotChecked: " + element;
+        try {
+            return !isChecked(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+
+        return null;
+    }
+
+    public Boolean isNotVisible(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "isNotVisible: " + element;
+        try {
+            return !isVisible(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    public Boolean isTextNotPresentOnPage(String text) {
+        String error_name = "isTextNotPresent: " + text;
+        try {
+            return !isTextPresentOnPage(text);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    /**
+     * Override to the DefaultSelenium method. This provides a way to handle errors
+     * 
+     * @param text
+     * @return Boolean
+     */
+    public Boolean isTextPresentOnPage(String text) {
+        String error_name = "isTextPresent: " + text;
+        try {
+            return isTextPresent(text);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    public Boolean isVisible(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "isVisible: " + element;
+        try {
+            return isVisible(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    public void moveallPanel(SeleniumEnums checkIt, String moveoption) {
+        String element = getLocator(checkIt);
+        if (moveoption.contentEquals("Right")) {
+            click(element + "-move_all_right");
+        } else if (moveoption.contentEquals("Left")) {
+            click(element + "-move_all_left");
+        }
+        Pause(2);
+    }
+
+    public void open(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "open: " + element;
+        try {
+            open(element);
+            AbstractPage.setCurrentPage();
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+    }
+    
     public void Pause(Integer timeout_in_secs) {
         try {
             Thread.currentThread();
@@ -290,9 +299,17 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
     }
 
-    public void select(String locator, String label, String error_name) {
+    public void removefromPanel(SeleniumEnums checkIt, String itemtomove) {
+        addSelection(getLocator(checkIt) + "-picked", itemtomove);
+        click(getLocator(checkIt) + "-move_left");
+        Pause(2);
+    }
+
+    public void select(SeleniumEnums checkIt, String label) {
+        String element = getLocator(checkIt);
+        String error_name = "select: " + element;
         try {
-            select(locator, label);
+            select(element, label);
             Pause(5);
         } catch (SeleniumException e) {
             errors.addError(error_name, e);
@@ -303,33 +320,50 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
     }
 
-    public void selectDhxCombo(String entry_name, String error_name) {
-        entry_name = "//div[text()=\"" + entry_name + "\"]";
-        click(entry_name, error_name);
+    public void selectDhxCombo(String entry_name) {
+        String element = entry_name = "//div[text()=\"" + entry_name + "\"]";
+        click(element);
         Pause(5);
     }
 
-    public void addtoPanel(String locator, String itemtomove, String error_name) {
-        addSelection(locator + "-from", itemtomove);
-        click(locator + "-move_right");
-        Pause(2);
+    @Override
+    public void start() {
+        errors = new ErrorCatcher();
+        super.start();
     }
 
-    public void removefromPanel(String locator, String itemtomove, String error_name) {
-        addSelection(locator + "-picked", itemtomove);
-        click(locator + "-move_left");
-        Pause(2);
-    }
-
-    public void moveallPanel(String locator, String moveoption, String error_name) {
-        if (moveoption.contentEquals("Right")) {
-            click(locator + "-move_all_right", error_name);
-        } else if (moveoption.contentEquals("Left")) {
-            click(locator + "-move_all_left", error_name);
-        } else {
-            System.out.printf("ERROR - invald data in moveallPanel.");
+    public void type(SeleniumEnums checkIt, String text) {
+        String element = getLocator(checkIt);
+        String error_name = "type: " + element;
+        try {
+            type(element, text);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
         }
-        Pause(2);
+    }
+
+    public Boolean verifyLocation(SeleniumEnums checkIt) {
+        return verifyLocation(getLocator(checkIt));
+    }
+
+    public Boolean verifyLocation(String expected) {
+        String error_name = "verifyLocation: " + expected;
+        String location = "Could not get location";
+        try {
+            location = getLocation();
+            return location.contains(expected);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
     }
 
     public void waitForElementPresent(String watch_for) {
@@ -349,7 +383,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
                 if (type.equals("link")) {
                     found = isElementPresent("link=" + watch_for);
                 } else if (type.compareToIgnoreCase("text") == 0) {
-                    found = isTextPresent(watch_for);
+                    found = isTextPresentOnPage(watch_for);
                 } else if (type.compareToIgnoreCase("element") == 0) {
                     found = isElementPresent(watch_for);
                 } else {
@@ -365,61 +399,21 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
     }
 
-    @Override
-    public void start() {
-        errors = new ErrorCatcher();
-        super.start();
+    public void waitForPageToLoad() {
+        waitForPageToLoad(PAGE_TIMEOUT);
     }
 
-    public Boolean inSession() {
+    public void waitForPageToLoad(Integer timeout) {
+        String error_name = "waitForPageToLoad: Timeout = " + timeout;
         try {
-            getAllWindowNames();
-        } catch (NullPointerException e) {
-            return false;
+            waitForPageToLoad(timeout.toString());
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
         }
-        return true;
     }
 
-    public void click(SeleniumEnums checkIt) {
-        click(getLocator(checkIt), "click: " + checkIt.toString());
-        Pause(2);
-    }
-
-    public void waitForPageToLoad(SeleniumEnums pageURL) {
-        waitForPageToLoad(pageURL, PAGE_TIMEOUT);
-    }
-
-    public void waitForPageToLoad(SeleniumEnums pageURL, Integer wait) {
-        waitForPageToLoad(wait.toString(), "waitForPageToLoad: " + pageURL.toString());
-    }
-
-    public Boolean isNotVisible(SeleniumEnums checkIt) {
-        return isNotVisible(getLocator(checkIt), "isNotVisible: " + checkIt.toString());
-    }
-
-    public Boolean isVisible(SeleniumEnums checkIt) {
-        return isVisible(getLocator(checkIt), "isVisible: " + checkIt.toString());
-    }
-
-    public String getText(SeleniumEnums checkIt) {
-        isVisible(checkIt);
-        return getText(checkIt.getText(), "getText: " + checkIt.toString());
-    }
-
-    public void type(SeleniumEnums checkIt, String expected) {
-        type(getLocator(checkIt), expected, "type: " + checkIt.toString());
-    }
-
-    public Boolean isElementPresent(SeleniumEnums checkIt) {
-        return isElementPresent(getLocator(checkIt), "isElementPresent: " + checkIt.toString());
-    }
-
-    public Boolean isElementNotPresent(SeleniumEnums checkIt) {
-        return isElementNotPresent(getLocator(checkIt), "isElementNotPresent: " + checkIt.toString());
-    }
-
-    public void open(SeleniumEnums url) {
-        this.open(url.getURL());
-        AbstractPage.setCurrentPage();
-    }
 }

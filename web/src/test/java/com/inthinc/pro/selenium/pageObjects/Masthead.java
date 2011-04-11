@@ -34,19 +34,19 @@ public class Masthead {
 
     public void link_myAccount_click() {
         selenium.click(MastheadEnum.MY_ACCOUNT);
-        selenium.waitForPageToLoad(MastheadEnum.MY_ACCOUNT);
+        selenium.waitForPageToLoad();
     }
 
     public void link_myMessages_click() {
         selenium.click(MastheadEnum.MY_MESSAGES);
-        selenium.waitForPageToLoad(MastheadEnum.MY_MESSAGES);
-        selenium.verifyLocation("messages/", "My Messages click");// TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code
+        selenium.waitForPageToLoad();
+        selenium.verifyLocation("messages/");// TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code
     }
 
     public void link_logout_click() {
         selenium.click(MastheadEnum.LOGOUT);
-        selenium.waitForPageToLoad(MastheadEnum.LOGOUT);
-        selenium.verifyLocation("tiwipro/login", "Logout click");// TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code
+        selenium.waitForPageToLoad();
+        selenium.verifyLocation("tiwipro/login");// TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code
     }
 
     public void link_support_click() {
@@ -77,7 +77,7 @@ public class Masthead {
             help_page += ".htm";
         }// TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code... I'm not sure this line is doing anything (effective) anyway?
         selenium.click(MastheadEnum.HELP);
-        selenium.waitForPageToLoad(MastheadEnum.HELP);
+        selenium.waitForPageToLoad();
     }
 
     public void section_header_validate() {

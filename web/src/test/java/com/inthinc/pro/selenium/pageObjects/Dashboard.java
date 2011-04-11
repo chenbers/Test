@@ -15,27 +15,27 @@ public class Dashboard extends AbstractPage{
     } 
     
     public void link_dashboardHelp_click(String error) {
-        selenium.click("css=a.actionButton[href=" + DashboardEnum.DASHBOARD_HELP.getXpath() + "]", error);
+        selenium.click("css=a.actionButton[href=" + DashboardEnum.DASHBOARD_HELP.getXpath() + "]");
     }
     
     public void link_overallDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.OVERALL_DURATION.getID() + durationQualifier, error);
+        selenium.click(DashboardEnum.OVERALL_DURATION.getID() + durationQualifier);
     }
 
     public void link_trendDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.TREND_DURATION.getID() + durationQualifier, error );        
+        selenium.click(DashboardEnum.TREND_DURATION.getID() + durationQualifier );        
     }
 
     public void link_fuelEfficiencyDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.FUEL_EFFICIENCY_DURATION.getID() + durationQualifier, error );        
+        selenium.click(DashboardEnum.FUEL_EFFICIENCY_DURATION.getID() + durationQualifier );        
     }
 
     public void link_speedingDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.SPEEDING_DURATION.getID() + durationQualifier, error );        
+        selenium.click(DashboardEnum.SPEEDING_DURATION.getID() + durationQualifier );        
     }
 
     public void link_idlingDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.IDLING_DURATION.getID() + durationQualifier, error );        
+        selenium.click(DashboardEnum.IDLING_DURATION.getID() + durationQualifier );        
     }
     
     public void link_overallExpand_click() {
