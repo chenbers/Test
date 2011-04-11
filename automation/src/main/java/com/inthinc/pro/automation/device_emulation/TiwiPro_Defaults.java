@@ -1,9 +1,8 @@
-package com.inthinc.pro.automation.device_emulation.tiwiPro;
+package com.inthinc.pro.automation.device_emulation;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiProps;
 
 public class TiwiPro_Defaults{
     

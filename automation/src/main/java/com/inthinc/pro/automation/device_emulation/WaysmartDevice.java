@@ -1,12 +1,10 @@
-package com.inthinc.pro.automation.device_emulation.waysmart;
+package com.inthinc.pro.automation.device_emulation;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.device_emulation.deviceBase.Base;
-import com.inthinc.pro.automation.device_emulation.waysmart.enums.Ways_SETTINGS;
 import com.inthinc.pro.automation.utils.CreateHessian;
 
 

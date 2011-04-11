@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation.deviceBase;
+package com.inthinc.pro.automation.device_emulation;
 
 import org.apache.log4j.Logger;
 

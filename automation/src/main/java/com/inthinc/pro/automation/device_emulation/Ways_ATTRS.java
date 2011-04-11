@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation.waysmart.enums;
+package com.inthinc.pro.automation.device_emulation;
 
 import java.util.EnumSet;
 import java.util.HashMap;

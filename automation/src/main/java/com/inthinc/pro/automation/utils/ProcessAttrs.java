@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiAttrs;
-import com.inthinc.pro.automation.device_emulation.waysmart.enums.Ways_ATTRS;
+import com.inthinc.pro.automation.device_emulation.TiwiAttrs;
+import com.inthinc.pro.automation.device_emulation.Ways_ATTRS;
 
 
 public class ProcessAttrs {

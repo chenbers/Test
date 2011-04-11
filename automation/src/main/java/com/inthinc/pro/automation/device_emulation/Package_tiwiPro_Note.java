@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation.tiwiPro;
+package com.inthinc.pro.automation.device_emulation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,9 +8,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiAttrs;
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiNoteTypes;
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiGenerals.FwdCmdStatus;
+import com.inthinc.pro.automation.device_emulation.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.utils.StackToString;
 
 

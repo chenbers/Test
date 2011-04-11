@@ -1,8 +1,7 @@
-package com.inthinc.pro.automation.device_emulation.waysmart;
+package com.inthinc.pro.automation.device_emulation;
 
 import java.util.HashMap;
 
-import com.inthinc.pro.automation.device_emulation.waysmart.enums.Ways_SETTINGS;
 
 public class Waysmart_Defaults {
 	public static HashMap<Integer, String> get_defaults(){

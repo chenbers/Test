@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation.deviceBase;
+package com.inthinc.pro.automation.device_emulation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +17,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 
-import com.inthinc.pro.automation.device_emulation.deviceBase.MCMProxy;
+import com.inthinc.pro.automation.device_emulation.MCMProxy;
 import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.inthinc.pro.automation.utils.StackToString;
 

@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation.tiwiPro;
+package com.inthinc.pro.automation.device_emulation;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -6,13 +6,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.device_emulation.deviceBase.Base;
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiAttrs;
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiFwdCmds;
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiNoteTypes;
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiProps;
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiGenerals.FwdCmdStatus;
-import com.inthinc.pro.automation.device_emulation.tiwiPro.enums.TiwiGenerals.ViolationFlags;
+import com.inthinc.pro.automation.device_emulation.TiwiGenerals.FwdCmdStatus;
+import com.inthinc.pro.automation.device_emulation.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.utils.CreateHessian;
 import com.inthinc.pro.automation.utils.StackToString;
 
