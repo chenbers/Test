@@ -27,6 +27,35 @@ import org.springframework.core.io.Resource;
 
 public class DriveDevice {
     private static MCMSim mcmSim;
+    private String [] routeInfo = {
+        "19,15, 0, 0, 57,33.0104,-117.1110, 0, 0,45, 0,  0,0,0",    
+         "6,15, 0, 0,103,33.0104,-117.1110, 0, 0,45, 0,  0,0,0",    
+         "2,15,25, 5,103,33.0100,-117.1130, 0, 0,45, 0,108,5,5",    
+         "6,15,45,12,105,33.0097,-117.1153, 0, 0,45, 0,  0,0,0",   
+       "117,15, 2,44,  9,33.0150,-117.1160, 0, 0,30, 0,  0,0,0",    
+         "6,15,32,13, 25,33.0163,-117.1159, 0, 0,30, 0,  0,0,0",   
+         "6,15, 0, 5, 25,33.0180,-117.1153, 0, 0,55, 0,  0,0,0",   
+         "6,15,37, 5,105,33.0188,-117.1180, 0, 0,55, 0,  0,0,0",   
+         "6,15,31,21,120,33.0192,-117.1199, 0, 0,40, 0,  0,0,0",   
+         "6,15,46, 7, 25,33.0210,-117.1190, 0, 0,40, 0,  0,0,0",    
+         "6,15,40,33, 57,33.0220,-117.1140, 0, 0,40, 0,  0,0,0",   
+         "6,15,30,13, 57,33.0205,-117.1110, 0, 0,40, 0,  0,0,0",   
+         "6,15,48,14, 41,33.0200,-117.1090, 0, 0,50, 0,  0,0,0",   
+         "6,15,56, 7, 25,33.0200,-117.1080, 0, 0,50, 0,  0,0,0",    
+         "6,15,59,24, 41,33.0220,-117.1040, 0, 0,50, 0,  0,0,0",   
+         "6,15,55, 9, 57,33.0217,-117.1030,60,58,50,34,  0,0,0",    
+         "6,15,30,11, 73,33.0213,-117.1015, 0, 0,45, 0,  0,0,0",   
+         "6,15,39,17, 73,33.0185,-117.1019, 0, 0,45, 0,  0,0,0",   
+         "6,15,31, 9, 89,33.0170,-117.1020, 0, 0,45, 0,  0,0,0",   
+         "6,15,41,15, 89,33.0150,-117.1032, 0, 0,45, 0,  0,0,0",   
+         "6,15,41,17, 89,33.0130,-117.1050, 0, 0,45, 0,  0,0,0",   
+         "6,15,42,18, 89,33.0110,-117.1060, 0, 0,45, 0,  0,0,0",   
+         "6,15,36,18, 89,33.0108,-117.1080, 0, 0,45, 0,  0,0,0",   
+       "118,15,10, 5, 89,33.0108,-117.1090, 0, 0,45, 0,  0,0,0",    
+         "6,15,10, 5, 89,33.0106,-117.1100, 0, 0,45, 0,  0,0,0",   
+        "51,15, 0, 6, 57,33.0104,-117.1110, 0, 0,45, 0,  0,0,0",    
+        "66,15, 0, 0, 57,33.0104,-117.1110, 0, 0,45, 0,  0,0,0",    
+        "20,15, 0, 0, 57,33.0104,-117.1110, 0, 0,45, 0,  0,0,0"};    
 
     public static void main(String[] args) {
     
@@ -40,16 +69,11 @@ public class DriveDevice {
     private List<Data> readRoute() {
         List<Data> tmp = new ArrayList<Data>();
         
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath*:spring/applicationContext-*.xml");
-        Resource resourceScript = applicationContext.getResource("classpath:script.txt");   // route info
-        
         try {
-            InputStream is = resourceScript.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
+            
             // grab a line and parse
-            String line;
-            while ((line = br.readLine()) != null) {
+            for ( int i = 0; i < routeInfo.length; i++ ) {
+                String line = routeInfo[i];
                 StringTokenizer st = new StringTokenizer(line,",");
                 
                 Data d = new Data();
@@ -71,16 +95,11 @@ public class DriveDevice {
                 
                 tmp.add(d);
             }
-
-            br.close();
-            is.close();
             
-        } catch (FileNotFoundException fnf) {
-           fnf.printStackTrace();
+        } catch (Exception e) {
+           e.printStackTrace();
+           System.exit(0);
            
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            
         } 
         
         return tmp;
