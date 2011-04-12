@@ -139,6 +139,13 @@
   			<scope>test</scope>
     	</dependency>
 		<dependency>
+			<!-- JMockit MUST appear before JUnit -->
+			<groupId>mockit</groupId>
+			<artifactId>jmockit</artifactId>
+			<version>0.999.4</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.5</version>
