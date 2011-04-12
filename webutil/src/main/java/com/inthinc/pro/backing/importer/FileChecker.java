@@ -8,6 +8,8 @@ import com.inthinc.pro.backing.importer.row.RowValidator;
 
 public class FileChecker {
     
+    public static final String ROW_MARKER = "<b>Row:";
+    public static final String WARNING_MARKER = "WARNING";
     
     public List<String> checkFile(ImportType importType, InputStream is, boolean includeWarnings) {
         
@@ -25,10 +27,9 @@ public class FileChecker {
         
         RowValidator rowValidator = importType.getRowValidator();
         for (DataRow row : dataList) {
-System.out.println("row: " + row.getLabel());            
             List<String> errorList = rowValidator.validateRow(row.getData(), includeWarnings);
             if (!errorList.isEmpty()) {
-                msgList.add("<b>Row: " + row.getLabel()+"</b>");
+                msgList.add(ROW_MARKER+ row.getLabel()+"</b>");
                 msgList.addAll(errorList);
             }
         }

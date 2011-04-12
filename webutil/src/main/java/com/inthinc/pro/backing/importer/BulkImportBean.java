@@ -91,8 +91,10 @@ public class BulkImportBean extends BaseBean {
     
     private boolean warningsOnly(List<String> msgList) {
         for (String msg : msgList) {
-            if (!msg.startsWith("WARNING"))
-                return false;
+            if (msg.isEmpty() || msg.startsWith(FileChecker.WARNING_MARKER) || msg.startsWith(FileChecker.ROW_MARKER))
+                continue;
+            System.out.println("NOT warnings only due to msg: " + msg);
+            return false;
         }
         return true;
     }
