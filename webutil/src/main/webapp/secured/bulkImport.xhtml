@@ -69,30 +69,35 @@
                 				autoclear="true"
                 				listHeight="0px"
                 				listWidth="100px"
+                				ontyperejected="alert('Invalid file type  Please select an .XLS (excel) file.')"
                 				acceptedTypes="xls,xslx" allowFlash="false">
                 				<a4j:support event="onuploadcomplete" reRender="info" />
             				</rich:fileUpload>                        
-                        </td>                              	                           	
-					</tr>
-				</table>
-				<h:panelGroup id="info">
-				<h:panelGroup rendered="#{bulkImportBean.uploadFile != null}">
-				<table>	
-					<tr>
-						<td><h:outputText value="Selected File:" style="font: 12px Verdana, Arial, Helvetica, bold, sans-serif"/>  </td>
-						<td><h:outputText value="#{bulkImportBean.uploadFile.name}"  style="font: 12px Verdana, Arial, Helvetica, bold, sans-serif"/> </td>
-					</tr>
-					<tr>
-						<td></td>
-						<td>
-			                <a4j:commandButton id="check" value="Check" action="#{bulkImportBean.checkAction}" reRender="feedbackPanel"/>
-			                <a4j:commandButton id="import" value="Import" action="#{bulkImportBean.importAction}" reRender="feedbackPanel"/>
-							<a4j:commandButton id="clear" value="Reset" action="#{bulkImportBean.resetAction}" reRender="optionsForm, feedbackPanel"/>
-						</td>
-					</tr>
+                        </td>
+                        <td></td>
+                        <td>                              	                           	
+							<h:panelGroup id="info">
+							<h:panelGroup rendered="#{bulkImportBean.uploadFile != null}">
+							<table>	
+								<tr>	
+									<td><h:outputText value="#{bulkImportBean.uploadFile.name}"  style="font: 12px Verdana, Arial, Helvetica, bold, sans-serif"/> </td>
+								</tr>
+								<tr>
+									<td></td>
+								</tr>
+								<tr>
+									<td>
+						                <a4j:commandButton id="check" value="Check" action="#{bulkImportBean.checkAction}" reRender="feedbackPanel"/>
+						                <a4j:commandButton id="import" value="Import" action="#{bulkImportBean.importAction}" reRender="feedbackPanel"/>
+										<a4j:commandButton id="clear" value="Reset" action="#{bulkImportBean.resetAction}" reRender="optionsForm, feedbackPanel"/>
+									</td>
+								</tr>
+			                </table>
+			                </h:panelGroup>
+			                </h:panelGroup>
+                		</td>
+                	</tr>
                 </table>
-                </h:panelGroup>
-                </h:panelGroup>
 			</rich:panel>
            </h:form>
 		</a4j:region>
