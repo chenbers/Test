@@ -274,11 +274,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
 
     public void open(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
+        String element = checkIt.getURL();
         String error_name = "open: " + element;
         try {
             open(element);
-            AbstractPage.setCurrentPage();
         } catch (SeleniumException e) {
             errors.addError(error_name, e);
         } catch (RuntimeException e) {
@@ -346,16 +345,19 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
     }
 
-    public Boolean verifyLocation(SeleniumEnums checkIt) {
-        return verifyLocation(getLocator(checkIt));
+    public Boolean verifyLocation(SeleniumEnums checkIt){
+        return checkIt.getURL().equals(getLocation());
+    }
+    
+    public Boolean verifyLocation(String expected){
+        return expected.equals(getLocation());
     }
 
-    public Boolean verifyLocation(String expected) {
+    public String getLocation(String expected) {
         String error_name = "verifyLocation: " + expected;
         String location = "Could not get location";
         try {
             location = getLocation();
-            return location.contains(expected);
         } catch (SeleniumException e) {
             errors.addError(error_name, e);
         } catch (RuntimeException e) {
@@ -363,7 +365,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
-        return null;
+        return location;
     }
 
     public void waitForElementPresent(String watch_for) {
