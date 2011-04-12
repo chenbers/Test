@@ -16,18 +16,12 @@
     <property name="basename" value="com.inthinc.pro.resources.Messages" />
   </bean>
 
-  <!--  -->
-  <!-- This is where the selenium script files need to be referenced (script.txt and macro.txt below) -->
-  <!--  -->
   <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="ignoreResourceNotFound" value="true" />
     <property name="locations">
       <list>
         <value>classpath:tiwipro.properties</value>
         <value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
-        <value>classpath:script.txt</value>
-        <value>classpath:macro.txt</value>
-        <value>classpath:login.txt</value>
       </list>
     </property>
   </bean>
