@@ -44,6 +44,7 @@ public class TeamStatisticsBeanTest extends BaseBeanTest  {
    
         // Timeframe initialized correctly?
         TeamCommonBean tcb = bean.getTeamCommonBean();
+        tcb.setTimeFrame(TimeFrame.ONE_DAY_AGO);
         assertEquals(tcb.getTimeFrame().name(),"ONE_DAY_AGO");
 
         // Load "ONE_DAY_AGO" data?
