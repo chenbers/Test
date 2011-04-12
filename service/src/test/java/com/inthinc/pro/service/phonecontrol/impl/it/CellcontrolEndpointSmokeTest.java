@@ -1,10 +1,13 @@
 package com.inthinc.pro.service.phonecontrol.impl.it;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;

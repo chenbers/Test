@@ -102,9 +102,9 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
                     logger.debug("Sending request to " + cellblock.getProvider() + " client endpoint proxy to disable PH#-" + cellblock.getCellPhone());
                     phoneControlAdapter.disablePhone(cellblock.getCellPhone());
 
-                    if (statusUpdateStrategyMap.get(cellblock.getProvider()) == UpdateStrategy.SYNCHRONOUS) {
+//                    if (statusUpdateStrategyMap.get(cellblock.getProvider()) == UpdateStrategy.SYNCHRONOUS) {
                         phoneStatusController.setPhoneStatusDisabled(cellblock);
-                    }
+//                    }
                 } else {
                     logger.warn("Driver DID-" + cellblock.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");
                 }
@@ -128,9 +128,9 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
                     phoneControlAdapter.enablePhone(cellblock.getCellPhone());
 
-                    if (statusUpdateStrategyMap.get(cellblock.getProvider()) == UpdateStrategy.SYNCHRONOUS) {
+//                    if (statusUpdateStrategyMap.get(cellblock.getProvider()) == UpdateStrategy.SYNCHRONOUS) {
                         phoneStatusController.setPhoneStatusEnabled(cellblock);
-                    }
+//                    }
                 } else {
                     logger.warn("Driver DID-" + cellblock.getDriverID() + " is missing the credentials for the remote phone control service endpoint. No updates have been performed.");
                 }

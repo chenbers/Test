@@ -1,7 +1,9 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -20,7 +22,7 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
 
     private static final Logger logger = Logger.getLogger(ZoomsaferAdapter.class);
 
-    public static final String ZOOM_SAFER_TIMESTAMP_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS Z";
+    public static final String ZOOM_SAFER_TIMESTAMP_FORMAT = "yyyy.MM.dd HH:mm:ss.SSS";
 
     private ZoomsaferEndPoint zoomsaferEndpoint;
     private Clock clock;
@@ -45,8 +47,7 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
      */
     @Override
     public void disablePhone(String cellPhoneNumber) {
-        Date now = clock.getNow();
-        Response response = zoomsaferEndpoint.disablePhone(ZoomsaferEndPoint.DISABLE_PHONE_EVENT_TYPE, cellPhoneNumber, this.dateFormatter.format(now));
+        Response response = zoomsaferEndpoint.disablePhone(ZoomsaferEndPoint.DISABLE_PHONE_EVENT_TYPE, cellPhoneNumber, getFormattedTime());
         logger.debug("A request was sent to Zoomsafer endpoint to disable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
 
         if (response.getStatus() != Status.OK.getStatusCode()) {
@@ -59,12 +60,17 @@ public class ZoomsaferAdapter implements PhoneControlAdapter {
      */
     @Override
     public void enablePhone(String cellPhoneNumber) {
-        Date now = clock.getNow();
-        Response response = zoomsaferEndpoint.enablePhone(ZoomsaferEndPoint.ENABLE_PHONE_EVENT_TYPE, cellPhoneNumber, this.dateFormatter.format(now));
+         Response response = zoomsaferEndpoint.enablePhone(ZoomsaferEndPoint.ENABLE_PHONE_EVENT_TYPE, cellPhoneNumber, getFormattedTime());
         logger.debug("A request was sent to Zoomsafer endpoint to enable PH#-" + cellPhoneNumber + ". Response status = " + response.getStatus() + ".");
 
         if (response.getStatus() != Status.OK.getStatusCode()) {
             throw new RemoteErrorException("Request to Zoomsafer endpoint returned an unexpected status code: " + response.getStatus());
         }
+    }
+    private String getFormattedTime(){
+        Date now = clock.getNow();
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return dateFormatter.format(now);
+ 
     }
 }
