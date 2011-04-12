@@ -23,17 +23,6 @@
 					<a4j:support event="onchange" action="submit()" reRender="optionsForm, downloadForm, feedbackPanel" />
 				</h:selectOneMenu>
 			</td>
-<!-- 			
-			<td>
-		    	<a4j:status for="optionsRegion">
-					<f:facet name="start">
-        		   		<h:outputText>
-            	    		<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
-						</h:outputText>
-            		</f:facet>
-    			</a4j:status>
-			</td>
- -->			
 			</tr>
 			</table>
 		</a4j:form>
@@ -51,6 +40,16 @@
 			</a4j:form>
 		</a4j:region>
 		</td>
+			<td>
+		    	<a4j:status for="optionsRegion">
+					<f:facet name="start">
+        		   		<h:outputText>
+            	    		<img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;
+						</h:outputText>
+            		</f:facet>
+    			</a4j:status>
+			</td>
+ 			
 		</tr>
 		</table>
 		<a4j:region id="optionsRegion">

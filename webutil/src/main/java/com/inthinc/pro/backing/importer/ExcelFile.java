@@ -38,7 +38,7 @@ public class ExcelFile {
             }
             
             List<String> rowData = new ArrayList<String>();
-            for (int cellNum = row.getFirstCellNum(); cellNum < row.getLastCellNum(); cellNum++) {
+            for (int cellNum = 0; cellNum < row.getLastCellNum(); cellNum++) {
                 Cell cell = row.getCell(cellNum, Row.RETURN_BLANK_AS_NULL);
                 if (cell == null) {
                     rowData.add("");
@@ -49,7 +49,10 @@ public class ExcelFile {
                     rowData.add(cell.getRichStringCellValue().getString());
                     break;
                   case Cell.CELL_TYPE_NUMERIC:
-                    rowData.add(Double.valueOf(cell.getNumericCellValue()).toString());
+                    Double cellValue = Double.valueOf(cell.getNumericCellValue());
+                    if (cellValue != null)
+                        rowData.add(String.valueOf(cellValue.longValue()));
+                    else rowData.add("");
                     break;
                   default:
                     rowData.add("");

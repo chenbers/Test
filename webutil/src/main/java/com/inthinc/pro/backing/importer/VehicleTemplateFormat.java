@@ -14,8 +14,7 @@ public class VehicleTemplateFormat extends TemplateFormat {
     public static final int STATE_IDX = 7;
     public static final int LICENSE_IDX = 8;
     public static final int DEVICE_SERIAL_NUMBER_IDX = 9;
-    public static final int ECALL_NUMBER_IDX = 10;
-    public static final int DRIVER_EMPLOYEE_ID_IDX = 11;
+    public static final int DRIVER_EMPLOYEE_ID_IDX = 10;
 
     
     ColumnFormat columns[] = {
@@ -28,8 +27,7 @@ public class VehicleTemplateFormat extends TemplateFormat {
             new ColumnFormat("VIN", true, 17),
             new ColumnFormat("State", false, new StateValidator()),
             new ColumnFormat("License", false, 10),
-            new ColumnFormat("Device Serial Number", false, 10),
-            new ColumnFormat("E-call number", false, 22),
+            new ColumnFormat("Device Serial Number or IMEI", false, 26),
             new ColumnFormat("Employee ID", false, 30),
     };
 

@@ -1,5 +1,6 @@
 package it.com.inthinc.pro.backing.importer;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import it.com.inthinc.pro.BaseSpringTest;
 import it.config.IntegrationConfig;
@@ -18,15 +19,19 @@ import com.inthinc.pro.backing.importer.FileChecker;
 import com.inthinc.pro.backing.importer.FileImporter;
 import com.inthinc.pro.backing.importer.ImportType;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
+import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
 import com.inthinc.pro.dao.hessian.PersonHessianDAO;
 import com.inthinc.pro.dao.hessian.RoleHessianDAO;
 import com.inthinc.pro.dao.hessian.UserHessianDAO;
+import com.inthinc.pro.dao.hessian.VehicleHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateEmailException;
 import com.inthinc.pro.dao.hessian.exceptions.DuplicateUsernameException;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.Gender;
 import com.inthinc.pro.model.Group;
@@ -36,15 +41,18 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.security.Role;
 
 
 public class FileImporterTest extends BaseSpringTest {
     
     // this must match the account name in importTest/DriverTemplateNoErrors.xls
-    private static final String TEST_ACCOUNT_NAME = "BulkImportTest_5";
+    private static final String TEST_ACCOUNT_NAME = "BulkImportTest_6";
+    private static final String OTHER_TEST_ACCOUNT_NAME = "BulkImportTest6A";
     private static SiloServiceCreator siloServiceCreator;
-    private static Account testAccount;
     private static final String PASSWORD = "nuN5q/jdjEpJKKA4A6jLTZufWZfIXtxqzjVjifqFjbGg6tfmQFGXbTtcXtEIg4Z7"; // password
 
     @BeforeClass
@@ -55,33 +63,34 @@ public class FileImporterTest extends BaseSpringTest {
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
         siloServiceCreator = new SiloServiceCreator(host, port);
         
-        setupAccount();
+        setupAccount(TEST_ACCOUNT_NAME);
+        setupAccount(OTHER_TEST_ACCOUNT_NAME);
         
     }
     
-    private static void setupAccount() {
+    private static void setupAccount(String accountName) {
 
+        
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloServiceCreator.getService());
         
         List<Account> accountList = accountDAO.getAllAcctIDs();
         for (Account account : accountList) {
-            if (account.getAcctName().equalsIgnoreCase(TEST_ACCOUNT_NAME)) {
-                testAccount = account;
+            if (account.getAcctName().equalsIgnoreCase(accountName)) {
+                System.out.println("account: " + accountName + " id: " + account.getAccountID());
                 return;
             }
         }
 
         // create the account 
-        Account account = new Account(null, TEST_ACCOUNT_NAME, Status.ACTIVE);
+        Account account = new Account(null, accountName, Status.ACTIVE);
         // create an account
         Integer acctID = accountDAO.create(account);
         account.setAcctID(acctID);
-        testAccount = account;
         
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         groupDAO.setSiloService(siloServiceCreator.getService());
-        
+
         // create the account's top level group
         Group topGroup = new Group(0, acctID, "fleet", 0, GroupType.FLEET, null, "Initial top level group", 5, new LatLng(0.0, 0.0));
         Integer groupID = groupDAO.create(acctID, topGroup);
@@ -89,17 +98,21 @@ public class FileImporterTest extends BaseSpringTest {
         
         Group divGroup = new Group(0, acctID, "division", topGroup.getGroupID(), GroupType.DIVISION, null, "Initial division level group", 5, new LatLng(0.0, 0.0));
         groupID = groupDAO.create(acctID, divGroup);
-        
-        
+        divGroup.setGroupID(groupID);
+
+        Group teamGroup = new Group(0, acctID, "vteam", divGroup.getGroupID(), GroupType.TEAM, null, "Initial team level group", 5, new LatLng(0.0, 0.0));
+        groupID = groupDAO.create(acctID, teamGroup);
+        teamGroup.setGroupID(groupID);
+  
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloServiceCreator.getService());
         // create the person record for the main user
-        String email = TEST_ACCOUNT_NAME+"@email.com";
-        String empID = TEST_ACCOUNT_NAME;
+        String email = accountName+"@email.com";
+        String empID = accountName;
         Person person = new Person(new Integer(0), acctID, TimeZone.getDefault(), null, email, null, "5555555555", "5555555555",
                 null, null, null, null, null, empID, null,
-                "title", "dept", TEST_ACCOUNT_NAME, "m", TEST_ACCOUNT_NAME, "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE, MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale
-                        .getDefault());
+                "title", "dept", accountName, "m", accountName, "jr", Gender.FEMALE, 65, 180, new Date(), Status.ACTIVE, 
+                MeasurementType.ENGLISH, FuelEfficiencyType.MPG_US, Locale.getDefault());
         person.setAddress(new Address(null, "", null, "", null, "", acctID));
         Integer personID = null;
         try {
@@ -107,8 +120,6 @@ public class FileImporterTest extends BaseSpringTest {
             person.setPersonID(personID);
         }
         catch (DuplicateEmailException ex) {
-            groupDAO.deleteByID(groupID);
-            accountDAO.deleteByID(acctID);
             System.out.println("Duplicate email: [" + email + "]");
             return;
         }
@@ -123,7 +134,7 @@ public class FileImporterTest extends BaseSpringTest {
 
         UserHessianDAO userDAO = new UserHessianDAO();
         userDAO.setSiloService(siloServiceCreator.getService());
-        String username = TEST_ACCOUNT_NAME;
+        String username = accountName;
         User user = new User(0, person.getPersonID(), roleIDs, Status.ACTIVE, username, PASSWORD, topGroup.getGroupID());
         Integer userID = null;
         try {
@@ -131,20 +142,34 @@ public class FileImporterTest extends BaseSpringTest {
             user.setUserID(userID);
         }
         catch (DuplicateUsernameException ex) {
-            // personDAO.deleteByID(personID);
-            groupDAO.deleteByID(groupID);
-            accountDAO.deleteByID(acctID);
             System.out.println("Duplicate username: [" + username + "]");
             return;
         }
         
+    
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloServiceCreator.getService());
+        String vin = accountName;
+        Vehicle vehicle = new Vehicle(0, teamGroup.getGroupID(), Status.ACTIVE, accountName, "MAKE", "MODEL", 2011, "RED", VehicleType.LIGHT, vin, 2000, "ut1111", null);
+        vehicleDAO.create(acctID, vehicle);
+
+        
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloServiceCreator.getService());
+        Device device = new Device(0, acctID, DeviceStatus.ACTIVE, accountName, 
+                accountName.substring(2), accountName+"XX", accountName.substring(7), 
+                accountName.substring(7));
+        device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
+        device.setProductVersion(ProductType.TIWIPRO_R74);
+        Integer deviceID = deviceDAO.create(acctID, device);
+        device.setDeviceID(deviceID);
+
     }
 
     
     @Test
     public void driversImport()
     {
-        System.out.println("rowProcessorFactory " + this.applicationContext.containsBean("rowProcessorFactory"));
         
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateGood.xls");
         List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream);
@@ -159,39 +184,31 @@ public class FileImporterTest extends BaseSpringTest {
     @Test
     public void driversCheckErrors()
     {
-        System.out.println("RowImporterFactory " + this.applicationContext.containsBean("rowImporterFactory"));
         
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateBad.xls");
         List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream);
         
-        dumpErrors(msgList);
-        System.out.println("size " + msgList.size()) ;
-
-        assertTrue(msgList.size() == 26);
+        if (msgList.size() != 26)
+            dumpErrors(msgList);
+        assertEquals("expected msg List size" , 26, msgList.size());
         
-        // row 2 (missing fields) 
         List<String> rowList = getRowList(msgList, "2");
-        assertTrue(rowList.size() == 10);  // 10 mandatory fields
+        assertEquals("row 2 (missing fields- 10 mandatory fields)", 10, rowList.size());  
         
-        // row 3 (invalid account name)
         rowList = getRowList(msgList, "3");
-        assertTrue(rowList.size() == 1);
+        assertEquals("row 3 (invalid account name)", 1, rowList.size());
         
-        // row 4 (invalid fleet level group name)
         rowList = getRowList(msgList, "4");
-        assertTrue(rowList.size() == 1);
+        assertEquals("row 4 (invalid fleet level group name)", 1, rowList.size());
         
-        // row 5 (employeeID and username have different person records)
         rowList = getRowList(msgList, "5");
-        assertTrue(rowList.size() == 1);
+        assertEquals("row 5 (employeeID and username have different person records)", 1, rowList.size());
 
-        // row 6 (employeeID and email have different person records)
         rowList = getRowList(msgList, "6");
-        assertTrue(rowList.size() == 1);
+        assertEquals("row 6 (employeeID and email have different person records)", 1, rowList.size());
 
-        // row 7 (invalid data in several columns)
         rowList = getRowList(msgList, "7");
-        assertTrue(rowList.size() == 6);
+        assertEquals("row 7 (invalid data in several columns)", 6, rowList.size());
         
         
     }
@@ -231,6 +248,54 @@ public class FileImporterTest extends BaseSpringTest {
         assertTrue(warningCnt == 3);
     }
 
+    @Test
+    public void vehiclesCheckErrors()
+    {
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/VehicleTemplateBad.xls");
+        List<String> msgList = new FileImporter().importFile(ImportType.VEHICLES, stream);
+        
+        if (msgList.size() != 19)
+            dumpErrors(msgList);
+
+        assertEquals("Unexpected message count returned", 19, msgList.size());
+        
+        List<String> rowList = getRowList(msgList, "2");
+        assertEquals("row 2 (missing fields - 4 mandatory fields)", 4, rowList.size());  
+        
+        rowList = getRowList(msgList, "3");
+        assertEquals("row 3 (invalid account name)", 1, rowList.size());
+        
+        rowList = getRowList(msgList, "4");
+        assertEquals("row 4 (invalid fleet level group name)", 1, rowList.size());
+        
+        rowList = getRowList(msgList, "5");
+        assertEquals("row 5 (state code is invalid)", 1, rowList.size());
+
+        rowList = getRowList(msgList, "6");
+        assertEquals("row 6 (vin in use by different account)", 1, rowList.size());
+    
+        rowList = getRowList(msgList, "7");
+        assertEquals("row 7 (device not found in this account)", 1, rowList.size());
+        
+        rowList = getRowList(msgList, "8");
+        assertEquals("row 8 (device not found in this account)", 1, rowList.size());
+
+        rowList = getRowList(msgList, "9");
+        assertEquals("row 9 (employeeID not found)", 1, rowList.size());
+    }
+    @Test
+    public void vehiclesImport()
+    {
+        
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/VehicleTemplateGood.xls");
+        List<String> msgList = new FileImporter().importFile(ImportType.VEHICLES, stream);
+        
+        dumpErrors(msgList);
+        
+        
+        assertTrue(msgList.size() == 0);
+        
+    }
     
     private void dumpErrors(List<String> msgList) {
         for (String msg : msgList)

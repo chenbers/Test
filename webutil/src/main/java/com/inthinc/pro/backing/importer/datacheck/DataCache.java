@@ -5,17 +5,21 @@ import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.dao.AccountDAO;
+import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Account;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Vehicle;
 
 public class DataCache {
     
@@ -27,6 +31,8 @@ public class DataCache {
     private static PersonDAO personDAO;
     private static UserDAO userDAO;
     private static DriverDAO driverDAO;
+    private static VehicleDAO vehicleDAO;
+    private static DeviceDAO deviceDAO;
     
     public void init()
     {
@@ -97,6 +103,15 @@ public class DataCache {
         return null;
 
     }
+    
+    public static Account getAccountForGroupID(Integer groupID) {
+        Group group = groupDAO.findByID(groupID);
+        if (group != null) {
+            return getAccountForAccountID(group.getAccountID());
+        }
+        return null;
+    }
+
     public static User getUserForUsername(String username) {
         return userDAO.findByUserName(username);
     }
@@ -117,7 +132,19 @@ public class DataCache {
         return driverDAO.findByID(driverID);
     }
 
+    public static Vehicle getVehicleForVIN(String vin) {
+        return vehicleDAO.findByVIN(vin);
+    }
+    
+    public static Device getDeviceForSerialNumber(String serialNumber) {
+        
+        return deviceDAO.findBySerialNum(serialNumber);
+    }
 
+    public static Device getDeviceForIMEI(String imei) {
+        
+        return deviceDAO.findByIMEI(imei);
+    }
     public PersonDAO getPersonDAO() {
         return personDAO;
     }
@@ -153,6 +180,24 @@ public class DataCache {
     public void setGroupDAO(GroupDAO groupDAO) {
         DataCache.groupDAO = groupDAO;
     }
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        DataCache.vehicleDAO = vehicleDAO;
+    }
+    public DeviceDAO getDeviceDAO() {
+        return deviceDAO;
+    }
+
+    public void setDeviceDAO(DeviceDAO deviceDAO) {
+        DataCache.deviceDAO = deviceDAO;
+    }
+
+
+    
+
 
 
 

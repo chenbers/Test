@@ -13,7 +13,7 @@ public class GroupPathChecker extends DataChecker {
         String accountName = data[0];
         String groupPath = data[1];
         if (accountName == null || groupPath == null)
-            return "ERROR: No account name or group path specified.";
+            return null;
 
         Account account = DataCache.getAccountMap().get(accountName);
         if (account == null)

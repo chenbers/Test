@@ -3,25 +3,27 @@ package com.inthinc.pro.backing.importer.datacheck;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Person;
 
-public class DuplicateEmployeeIDChecker extends DataChecker {
+public class EmployeeIDExistsChecker extends DataChecker {
+
     @Override
-    public String checkForWarnings(String... data)
-    {
+    public String checkForErrors(String... data) {
+        
         String accountName = data[0];
         String employeeID = data[1];
         if (accountName == null || employeeID == null)
-            return "ERROR: No account name or employeeID specified.";
+            return null;
 
         Account account = DataCache.getAccountMap().get(accountName);
         if (account == null)
             return null;
-
         
         Person person = DataCache.getPersonForEmployeeID(account.getAccountID(), employeeID);
-        if (person != null)
-            return "WARNING: A Person ( " + person.getFullName() + ") already exists with employeeID " + employeeID + ".  On import the person will be updated.";
         
+        if (person == null) {
+            return "ERROR: A person does not exist with employeeID: " + employeeID;
+        }
+        if (person.getDriver() == null)
+            return "ERROR: A driver does not exist with employeeID: " + employeeID;
         return null;
     }
-
 }

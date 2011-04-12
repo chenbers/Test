@@ -18,12 +18,18 @@ public abstract class RowValidator {
     {
         List<String> errorList = new ArrayList<String>();
         
+        if (rowData.size() > format.getNumColumns()) {
+            errorList.add("ERROR: The document format does not match the template.  Please make sure you are trying to check/import the correct type of document.");
+            
+            return errorList;
+        }
+        
         int columnIndex = 0;
         for (String colData : rowData) {
-            if (format.isColumnManditory(columnIndex) && colData.isEmpty()) {
+            if (format.isColumnManditory(columnIndex) && (colData == null || colData.trim().isEmpty())) {
                 errorList.add("Col " + colLabel[columnIndex] + " (" + format.getColumnLabel(columnIndex) + ") - " + " - Mandatory cell is blank");
             }
-            else if (!format.isColumnValid(columnIndex, colData)) {
+            else if (colData != null && !colData.trim().isEmpty() && !format.isColumnValid(columnIndex, colData)) {
                 errorList.add("Col " + colLabel[columnIndex] + " (" + format.getColumnLabel(columnIndex) + ") - " + format.getInvalidMessage(columnIndex, colData));
             }
             columnIndex++;

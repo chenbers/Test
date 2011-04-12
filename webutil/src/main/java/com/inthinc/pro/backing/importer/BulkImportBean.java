@@ -78,7 +78,9 @@ public class BulkImportBean extends BaseBean {
             if (msgList.size() == 0)
                 setFeedback("The file check was SUCCESSFUL.  No issues were found.");
             else {
-                setFeedback("The file check was NOT SUCCESSFUL.  Please correct the following errors and try again:");
+                if (warningsOnly(msgList))
+                    setFeedback("The file check was SUCCESSFUL but please note the following warnings:");
+                else setFeedback("The file check was NOT SUCCESSFUL.  Please correct the following errors and try again:");
                 setErrorList(msgList);
             }
         } catch (FileNotFoundException e) {
@@ -87,6 +89,14 @@ public class BulkImportBean extends BaseBean {
         
     }
     
+    private boolean warningsOnly(List<String> msgList) {
+        for (String msg : msgList) {
+            if (!msg.startsWith("WARNING"))
+                return false;
+        }
+        return true;
+    }
+
     public void importAction() {
         try {
             setFeedback(null);
