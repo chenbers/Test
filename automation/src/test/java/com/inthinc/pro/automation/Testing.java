@@ -1,4 +1,4 @@
-package com.inthinc.pro.selenium.testSuites;
+package com.inthinc.pro.automation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
