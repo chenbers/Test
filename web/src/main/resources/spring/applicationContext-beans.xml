@@ -678,6 +678,10 @@
     <property name="domain" value="${chartbeat_domain}" />
     <property name="uid" value="${chartbeat_uid}" />
  </bean>
+ <bean id="googleAnalyticsBean" class="com.inthinc.pro.backing.GoogleAnalyticsBean">
+ 	<property name="track" value="${google_analytics_track}"/>
+ 	<property name="account" value="${google_analytics_account}"/>
+ </bean>
 
   <bean id="hosBean" class="com.inthinc.pro.backing.HosBean" scope="session" init-method="init">
   </bean>
