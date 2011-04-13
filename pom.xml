@@ -117,6 +117,7 @@
 					<skip>${skipUT}</skip>
 					<excludes>
 						<exclude>**/it/*Test.java</exclude>
+						<exclude>**/selenium/*Test.java</exclude>
 					</excludes>
 					<systemProperties>
 						<property>
@@ -139,6 +140,28 @@
 							</excludes>
 							<includes>
 								<include>**/it/*Test.java</include>
+							</includes>
+							<systemProperties>
+								<property>
+									<name>log4j.configuration</name>
+									<value>file:${basedir}/src/test/resources/log4j.properties</value>
+								</property>
+							</systemProperties>
+						</configuration>
+					</execution>
+					<execution>
+						<id>automation-tests</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<skip>${skipAT}</skip>
+							<excludes>
+								<exclude>none</exclude>
+							</excludes>
+							<includes>
+								<include>**/selenium/*Test.java</include>
 							</includes>
 							<systemProperties>
 								<property>
