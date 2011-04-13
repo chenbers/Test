@@ -1,5 +1,7 @@
 package com.inthinc.pro.automation.selenium;
 
+import java.io.StringWriter;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
@@ -54,6 +56,32 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     public ErrorCatcher getErrors() {
         return errors;
+    }
+    
+    @Deprecated
+    public String[] getAllWindowIds(){
+        return null;
+    }
+    
+    @Deprecated
+    public String[] getAllWindowNames(){
+        return null;
+    }
+
+
+    public String getLocation(String expected) {
+        String error_name = "verifyLocation: " + expected;
+        String location = "Could not get location";
+        try {
+            location = getLocation();
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return location;
     }
 
     public String getLocator(SeleniumEnums checkIt) {
@@ -272,7 +300,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
         Pause(2);
     }
-
+    
     public void open(SeleniumEnums checkIt) {
         String element = checkIt.getURL();
         String error_name = "open: " + element;
@@ -286,7 +314,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             errors.addError(error_name, e);
         }
     }
-    
+
     public void Pause(Integer timeout_in_secs) {
         try {
             Thread.currentThread();
@@ -303,7 +331,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         click(getLocator(checkIt) + "-move_left");
         Pause(2);
     }
-
+    
     public void select(SeleniumEnums checkIt, String label) {
         String element = getLocator(checkIt);
         String error_name = "select: " + element;
@@ -318,14 +346,72 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             errors.addError(error_name, e);
         }
     }
-
-    public void selectDhxCombo(String entry_name) {
-        String element = entry_name = "//div[text()=\"" + entry_name + "\"]";
+    
+    public void selectDhxCombo(Integer divPosition, String entry_name){
+        String element = "//div["+divPosition+"]/div[text()=\"" + entry_name + "\"]";
         click(element);
-        Pause(5);
+    }
+    
+    public void selectDhxCombo(String entry_name) {
+        String element = "//div[text()=\"" + entry_name + "\"]";
+        click(element);
+    }
+
+    public void selectDhxCombo(String[] entry_name){
+        StringWriter aStringAString = new StringWriter();
+        for (int i=0;i<entry_name.length;i++){
+            aStringAString.write(entry_name[i]);
+            if (i!=(entry_name.length-1)){
+                aStringAString.write(" - ");    
+            }
+        }
+        selectDhxCombo(aStringAString.toString());
+    }
+    
+    public void selectWindowByID(String ID){
+        if (ID.equals("")){
+            ID = "null";
+        }
+        String error_name = "selectWindowByID: " + ID;
+        try {
+            selectWindow(ID);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+    }
+    
+    public void selectWindowByName(String name){
+        String error_name = "selectWindowByTitle: " + name;
+        try {
+            selectWindow("name="+name);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+    }
+
+    public void selectWindowByTitle(String title){
+        String error_name = "selectWindowByTitle: " + title;
+        try {
+            selectWindow("title="+title);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
     }
 
     @Override
+    @Deprecated
     public void start() {
         errors = new ErrorCatcher();
         super.start();
@@ -344,28 +430,13 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             errors.addError(error_name, e);
         }
     }
-
-    public Boolean verifyLocation(SeleniumEnums checkIt){
-        return checkIt.getURL().equals(getLocation());
-    }
     
-    public Boolean verifyLocation(String expected){
-        return expected.equals(getLocation());
+    public Boolean verifyLocation(SeleniumEnums checkIt){
+        return checkIt.getURL().equals(verifyLocation(checkIt));
     }
 
-    public String getLocation(String expected) {
-        String error_name = "verifyLocation: " + expected;
-        String location = "Could not get location";
-        try {
-            location = getLocation();
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return location;
+    public Boolean verifyLocation(String expected){
+        return expected.equals(getLocation(expected));
     }
 
     public void waitForElementPresent(String watch_for) {
