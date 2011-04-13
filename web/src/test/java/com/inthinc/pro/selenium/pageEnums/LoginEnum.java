@@ -38,7 +38,7 @@ public enum LoginEnum implements SeleniumEnums {
 	
 	
 	/* Error pop-up for the Forgot Username/Password pop-up */
-	ERROR_BUTTON("OK","loginErrorForm:loginOk", "//form[@id='loginErrorForm']/div/button", "//form[@id='loginErrorForm']/div/button/span"),
+	ERROR_BUTTON_OK("OK","loginErrorForm:loginOk", "//form[@id='loginErrorForm']/div/button", "//form[@id='loginErrorForm']/div/button/span"),
 	ERROR_CLOSE(null,"Richfaces.hideModalPanel('errorPanel')","//div[@id='errorPanelContentDiv']/div","//div[@id='errorPanelContentDiv']/div/img"),
 	ERROR_HEADER("Log In Error", "errorPanelHeader", "//table[@id='errorPanelContentTable']/tbody/tr[1]/td/div",null),
 	ERROR_MESSAGE(StringEscapeUtils.unescapeHtml("Incorrect user name or password<br/><br/>Please try again."), "//p",null,null),
