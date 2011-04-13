@@ -11,8 +11,7 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
  */
 
 public class Login extends AbstractPage {
-
-    public Login assert_badCredentials_isClosed() {
+    public Login assert_badCredentials_isClosed() {//TODO: jwimmer: discuss: I don't think we want/need ANY pageObject.methods that do not conform to elementType_elementName_action(...)
         if (popUp_logInError_isVisible() || header_logInError_isVisible()) {
             addError("Bad Credentials Popup", "Popup didn't close");
         }
@@ -73,8 +72,8 @@ public class Login extends AbstractPage {
         return this;
     }
 
-    public Login button_logInError_click() {
-        selenium.click(LoginEnum.ERROR_BUTTON);
+    public Login button_modalLogInErrorOK_click() {
+        selenium.click(LoginEnum.ERROR_BUTTON_OK);
         assert_badCredentials_isClosed();
         return this;
     }
@@ -101,7 +100,10 @@ public class Login extends AbstractPage {
     }
 
     @Override
-    public AbstractPage load() {
+    public Login load() {
+        System.out.println("selenium: "+selenium);
+        System.out.println("LoginEnum.class: "+LoginEnum.class);
+        System.out.println("LoginEnum.LOGIN_URL: "+LoginEnum.LOGIN_URL);
         selenium.open(LoginEnum.LOGIN_URL);
         setCurrentPage();
         return this;
@@ -214,7 +216,7 @@ public class Login extends AbstractPage {
     public Login popup_badCred_validate() {
         selenium.getText(LoginEnum.ERROR_HEADER);
         selenium.getText(LoginEnum.ERROR_MESSAGE);
-        selenium.getText(LoginEnum.ERROR_BUTTON);
+        selenium.getText(LoginEnum.ERROR_BUTTON_OK);
         selenium.getText(LoginEnum.ERROR_CLOSE);
         return this;
     }
@@ -229,12 +231,12 @@ public class Login extends AbstractPage {
         // verify error message is displayed as expected
 
         selenium.isElementPresent(LoginEnum.ERROR_CLOSE);
-        selenium.isElementPresent(LoginEnum.ERROR_BUTTON);
+        selenium.isElementPresent(LoginEnum.ERROR_BUTTON_OK);
         selenium.isElementPresent(LoginEnum.ERROR_HEADER);
 
         selenium.getText(LoginEnum.ERROR_HEADER);
         selenium.getText(LoginEnum.ERROR_MESSAGE);
-        selenium.getText(LoginEnum.ERROR_BUTTON.getXpath());
+        selenium.getText(LoginEnum.ERROR_BUTTON_OK.getXpath());
         return this;
     }
 
