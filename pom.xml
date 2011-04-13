@@ -117,7 +117,7 @@
 					<skip>${skipUT}</skip>
 					<excludes>
 						<exclude>**/it/*Test.java</exclude>
-						<exclude>**/selenium/*Test.java</exclude>
+						<exclude>**/selenium/**</exclude>
 					</excludes>
 					<systemProperties>
 						<property>
