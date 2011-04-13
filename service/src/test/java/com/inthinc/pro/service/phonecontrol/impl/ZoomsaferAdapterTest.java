@@ -2,8 +2,10 @@ package com.inthinc.pro.service.phonecontrol.impl;
 
 import static junit.framework.Assert.fail;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.ws.rs.core.Response;
 
@@ -23,8 +25,12 @@ public class ZoomsaferAdapterTest {
     public void testDisablePhone(final ZoomsaferEndPoint zoomsaferEndpointMock, final Clock clockMock) throws InterruptedException {
 
         final String cellPhoneNumber = "15145555555";
+        DateFormat dateFormatter = new SimpleDateFormat(ZoomsaferAdapter.ZOOM_SAFER_TIMESTAMP_FORMAT);
+
         final Date now = new Date();
-        final String expectedTimestamp = new SimpleDateFormat(ZoomsaferAdapter.ZOOM_SAFER_TIMESTAMP_FORMAT).format(now);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        final String expectedTimestamp = dateFormatter.format(now);
 
         PhoneControlAdapter zoomsaferAdapter = new ZoomsaferAdapter(zoomsaferEndpointMock, clockMock);
 
@@ -55,8 +61,12 @@ public class ZoomsaferAdapterTest {
     public void testEnablePhone(final ZoomsaferEndPoint zoomsaferEndpointMock, final Clock clockMock) {
 
         final String cellPhoneNumber = "15145555555";
+        DateFormat dateFormatter = new SimpleDateFormat(ZoomsaferAdapter.ZOOM_SAFER_TIMESTAMP_FORMAT);
+
         final Date now = new Date();
-        final String expectedTimestamp = new SimpleDateFormat(ZoomsaferAdapter.ZOOM_SAFER_TIMESTAMP_FORMAT).format(now);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        final String expectedTimestamp = dateFormatter.format(now);
 
         PhoneControlAdapter zoomsaferAdapter = new ZoomsaferAdapter(zoomsaferEndpointMock, clockMock);
 
@@ -87,8 +97,13 @@ public class ZoomsaferAdapterTest {
     public void testThrowsRemoteServerErrorOnNonOkResponse(final ZoomsaferEndPoint zoomsaferEndpointMock, final Clock clockMock) {
 
         final String cellPhoneNumber = "15145555555";
+        
+        DateFormat dateFormatter = new SimpleDateFormat(ZoomsaferAdapter.ZOOM_SAFER_TIMESTAMP_FORMAT);
+
         final Date now = new Date();
-        final String expectedTimestamp = new SimpleDateFormat(ZoomsaferAdapter.ZOOM_SAFER_TIMESTAMP_FORMAT).format(now);
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        final String expectedTimestamp = dateFormatter.format(now);
         PhoneControlAdapter zoomsaferAdapter = new ZoomsaferAdapter(zoomsaferEndpointMock, clockMock);
 
         // Expectations & stubbing
