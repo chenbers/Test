@@ -68,6 +68,7 @@ public class Login extends Masthead {
     public Login button_logIn_click() {
         selenium.click(LoginEnum.LOGIN_BUTTON);
         selenium.waitForPageToLoad();
+
         return this;
     }
 

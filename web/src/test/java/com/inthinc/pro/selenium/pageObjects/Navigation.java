@@ -35,7 +35,7 @@ public class Navigation extends AbstractPage {
     }
     
     public void link_waySmartSubMenu_click() {
-        selenium.click(NavigationEnum.NAVIGATE_TO_WAYSMART_REPORT);        
+        selenium.click(NavigationEnum.NAVIGATE_TO_WAYSMART_REPORT); 
     }    
     public void dropdown_search_select(String typeOfSearch) {
         selenium.select(NavigationEnum.SEARCH_DROPDOWN.getID(), "label=" + typeOfSearch );

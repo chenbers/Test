@@ -55,6 +55,9 @@ public class IdlingReport extends AbstractPage {
             rowQualifier = insertRow(rowQualifier,row);
         }
         selenium.click(rowQualifier);
+        
+        // makes sure the next "thing" is there
+        selenium.Pause(10);
     }
     
     private String insertRow(String rowQualifier,Integer row) {

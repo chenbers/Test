@@ -1,10 +1,5 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +15,6 @@ import com.inthinc.pro.model.event.IgnitionOffEvent;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.Resource;
 
 import com.inthinc.pro.automation.device_emulation.MCMProxy;
 

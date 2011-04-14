@@ -2,6 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.StringTokenizer;
 
+import com.inthinc.pro.automation.SeleniumEnum;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
@@ -9,6 +10,7 @@ import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.selenium.pageEnums.DashboardEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
+import com.inthinc.pro.selenium.pageEnums.UtilEnum;
 
 public class DriverReport extends AbstractPage {
     
@@ -54,6 +56,26 @@ public class DriverReport extends AbstractPage {
         selenium.type(DriverReportEnum.VEHICLE_SEARCH, vehicle);        
     }
     
+    public void dropdown_overallScore_select(UtilEnum selection) {
+        selenium.click(DriverReportEnum.OVERALL_SCORE_FILTER.getXpath());
+        selenium.click("//div[4]/div[" + selection.getID() + "]");  
+    }
+    
+    public void dropdown_speedScore_select(UtilEnum selection) {
+        selenium.click(DriverReportEnum.SPEED_SCORE_FILTER.getXpath());
+        selenium.click("//div[3]/div[" + selection.getID() + "]");  
+    }
+    
+    public void dropdown_styleScore_select(UtilEnum selection) {
+        selenium.click(DriverReportEnum.STYLE_SCORE_FILTER.getXpath());
+        selenium.click("//div[2]/div[" + selection.getID() + "]");  
+    }
+    
+    public void dropdown_seatbeltScore_select(UtilEnum selection) {
+        selenium.click(DriverReportEnum.SEATBELT_SCORE_FILTER.getXpath());
+        selenium.click("//div[" + selection.getID() + "]");  
+    }
+    
     public void form_driverSearch_submit() {
         selenium.submit(DriverReportEnum.DRIVER_FORM.getID());
     }
@@ -63,6 +85,9 @@ public class DriverReport extends AbstractPage {
             rowQualifier = insertRow(rowQualifier,row);
         }
         selenium.click(rowQualifier);
+        
+        // makes sure the next "thing" is there
+        selenium.Pause(10);        
     }
     
     private String insertRow(String rowQualifier,Integer row) {
