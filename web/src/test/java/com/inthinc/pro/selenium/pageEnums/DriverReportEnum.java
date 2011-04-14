@@ -6,6 +6,7 @@ public enum DriverReportEnum implements SeleniumEnums {
     TEAM_SEARCH(null,"drivers-form:drivers:groupfsp",null,null,null),
     DRIVER_SEARCH(null,"drivers-form:drivers:fullNamefsp",null,null,null),
     VEHICLE_SEARCH(null,"drivers-form:drivers:vehiclenamefsp",null,null,null),
+    EMPLOYEE_SEARCH(null,"drivers-form:drivers:empidfsp",null,null,null),
     OVERALL_SCORE_FILTER(null,null,"//div[@id='drivers-form:drivers:overallScoreheader:sortDiv']/span/span/span/div/img",null,null),
     SPEED_SCORE_FILTER(null,null,"//div[@id='drivers-form:drivers:speedScoreheader:sortDiv']/span/span/span/div/img",null,null),
     STYLE_SCORE_FILTER(null,null,"//div[@id='drivers-form:drivers:styleScoreheader:sortDiv']/span/span/span/div/img",null,null),

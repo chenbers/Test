@@ -53,6 +53,10 @@ public class DriverReport extends AbstractPage {
         selenium.type(DriverReportEnum.VEHICLE_SEARCH, vehicle);        
     }
     
+    public void textField_employeeSearch_type(String vehicle) {
+        selenium.type(DriverReportEnum.EMPLOYEE_SEARCH, vehicle);        
+    }
+    
     public void dropdown_overallScore_select(UtilEnum selection) {
         selenium.click(DriverReportEnum.OVERALL_SCORE_FILTER.getXpath());
         selenium.click("//div[4]/div[" + selection.getID() + "]");  

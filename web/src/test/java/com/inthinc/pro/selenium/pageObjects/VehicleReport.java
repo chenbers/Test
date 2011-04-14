@@ -6,6 +6,8 @@ import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
 import com.inthinc.pro.automation.selenium.Page;
+import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
+import com.inthinc.pro.selenium.pageEnums.UtilEnum;
 import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
 
 public class VehicleReport  extends AbstractPage {
@@ -52,8 +54,23 @@ public class VehicleReport  extends AbstractPage {
         selenium.type(VehicleReportEnum.VEHICLE_SEARCH, driver);        
     }
     
-    public void form_driverSearch_submit() {
-        selenium.submit(VehicleReportEnum.DRIVER_FORM.getID());
+    public void textField_yearMakeModelSearch_type(String driver) {
+        selenium.type(VehicleReportEnum.YEAR_MAKE_MODEL_SEARCH, driver);        
+    }
+    
+    public void dropdown_overallScore_select(UtilEnum selection) {
+        selenium.click(VehicleReportEnum.OVERALL_SCORE_FILTER.getXpath());
+        selenium.click("//div[3]/div[" + selection.getID() + "]");  
+    }
+    
+    public void dropdown_speedScore_select(UtilEnum selection) {
+        selenium.click(VehicleReportEnum.SPEED_SCORE_FILTER.getXpath());
+        selenium.click("//div[2]/div[" + selection.getID() + "]");  
+    }
+    
+    public void dropdown_styleScore_select(UtilEnum selection) {
+        selenium.click(VehicleReportEnum.STYLE_SCORE_FILTER.getXpath());
+        selenium.click("//div[" + selection.getID() + "]");  
     }
     
     private void clickIt(String rowQualifier, Integer row) {

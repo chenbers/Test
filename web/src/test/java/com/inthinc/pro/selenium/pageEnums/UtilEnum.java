@@ -7,6 +7,7 @@ public enum UtilEnum implements SeleniumEnums {
     DURATION_3MONTHS("durationPanelHeaderThreeMonths",null,null,null,null),
     DURATION_6MONTHS("durationPanelHeaderSixMonths",null,null,null,null),
     DURATION_12MONTHS("durationPanelHeaderTwelveMonths",null,null,null,null),
+    FILTER_REMOVE("","1",null,null,null),
     FILTER_0_TO_1("0.0 - 1.0","2",null,null,null),
     FILTER_1_TO_2("1.1 - 2.0","3",null,null,null),
     FILTER_2_TO_3("2.1 - 3.0","4",null,null,null),
