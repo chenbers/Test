@@ -322,7 +322,7 @@
                            <h:outputText value="#{messages.editPerson_cellProviderSection}" />
                        </div>
                        <rich:panel id="editPerson-cellProviderData">
-                       <rich:panel rendered="#{personBean.item.providerInfoSelected}">
+                       <rich:panel rendered="#{personBean.item.providerInfoSelected and personBean.item.cellblock.cellStatus eq 'ENABLED'}">
                        <table id="cellProviderTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
 	                       <tr>
 	                         <td width="110" valign="top">
@@ -342,29 +342,6 @@
 	                           </h:selectOneMenu>
 	                         </td>
 	                       </tr>
-<!--	                       <tr>-->
-<!--	                         <td width="110" valign="top">-->
-<!--	                           <ui:include src="../../includes/admin/inputLabel.xhtml">-->
-<!--		                           <ui:param name="required" value="TRUE"/>-->
-<!--		                           <ui:param name="for" value="editPerson_driver_cellStatus"/>-->
-<!--		                           <ui:param name="fieldName" value="cellblock.cellStatus"/>-->
-<!--		                           <ui:param name="editBean" value="#{personBean}"/>-->
-<!--		                           <ui:param name="label" value="#{messages.editPerson_driver_providerCellStatus}:"/>-->
-<!--		                           <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />-->
-<!--                               </ui:include>-->
-<!--	                         </td>-->
-<!--	                         <td>-->
-<!--                            <rich:message for="editPerson-driver_status" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />-->
-<!--                            <h:selectOneMenu value="#{personBean.item.cellblock.cellStatus}" -->
-<!--                              	id="editPerson-driver_cellStatus" -->
-<!--                                required="#{personBean.item.providerInfoSelected and (not personBean.batchEdit)}" -->
-<!--                                requiredMessage="#{messages.required}"-->
-<!--                                onchange="checkMultiple(this)"-->
-<!--                                converter="SimpleBeanConverter">-->
-<!--                              <f:selectItems value="#{personBean.cellStatuses}"/>-->
-<!--                            </h:selectOneMenu>-->
-<!--	                         </td>-->
-<!--	                       </tr>-->
                            <tr>
                                <td width="110" valign="top">
                                    
@@ -409,42 +386,6 @@
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerCellStatus}:" /></td>
                             <td><h:outputText value="#{messages[personBean.item.cellblock.cellStatus]}" /></td>
                           </tr>
-                           
-<!--                           <tr>-->
-<!--                               <td width="110" valign="top">-->
-<!--                                   -->
-<!--                                   <ui:include src="../../includes/admin/inputLabel.xhtml">-->
-<!--                                       <ui:param name="required" value="#{not personBean.item.providerInfoExists}"/>-->
-<!--                                       <ui:param name="for" value="editPerson_driver_providerPassword"/>-->
-<!--                                       <ui:param name="fieldName" value="cellblock.providerPassword"/>-->
-<!--                                       <ui:param name="editBean" value="#{personBean}"/>-->
-<!--                                       <ui:param name="label" value="#{messages.editPerson_driver_providerPassword}:"/>-->
-<!--                                       <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />-->
-<!--                                   </ui:include>  -->
-<!--                               </td>  -->
-<!--                               <td><rich:message for="editPerson_driver_providerPassword" errorClass="field-error"-->
-<!--                                   fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret-->
-<!--                                   value="#{personBean.item.cellblock.providerPassword}" id="editPerson_driver_providerPassword"-->
-<!--                                   onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" required="#{not personBean.batchEdit and not personBean.item.providerInfoExists}" requiredMessage="#{messages.required}"/></td>-->
-<!--                           </tr>-->
-<!--						   <tr>-->
-<!--							 <td width="110" valign="top"><h:outputText value="#{messages.editPerson_confirmPassword}" /> <h:outputText-->
-<!--								 rendered="#{empty personBean.item.cellblock.providerPassword and not personBean.batchEdit}" styleClass="required" value="*" /></td>-->
-<!--							<td>      -->
-<!--								   <ui:include src="../../includes/admin/inputLabel.xhtml">-->
-<!--                                       <ui:param name="required" value="#{not personBean.item.providerInfoExists}"/>-->
-<!--                                       <ui:param name="for" value="editPerson_driver_confirmProviderPassword"/>-->
-<!--                                       <ui:param name="fieldName" value="cellblock.providerPassword"/>-->
-<!--                                       <ui:param name="editBean" value="#{personBean}"/>-->
-<!--                                       <ui:param name="label" value="#{messages.editPerson_confirmPassword}"/>-->
-<!--                                       <ui:param name="context" value="editPersonDriverPhoneProviderGroup" />-->
-<!--                                   </ui:include>  -->
-<!--							</td>-->
-<!--							 <td><rich:message for="editPerson_driver_confirmProviderPassword" errorClass="field-error"-->
-<!--								 fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> <h:inputSecret-->
-<!--								 value="#{personBean.item.confirmProviderPassword}" id="editPerson_driver_confirmProviderPassword"-->
-<!--								 onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="50" required="#{not personBean.batchEdit and not personBean.item.providerInfoExists}" requiredMessage="#{messages.required}"/></td>-->
-<!--						   </tr>-->
 						   <ui:fragment rendered="#{not personBean.batchEdit}">
                            <tr>
                                <td>
@@ -464,6 +405,32 @@
                            </tr>
                            </ui:fragment>
                        </table>
+                       </rich:panel>
+                       <rich:panel rendered="#{personBean.item.providerInfoSelected and personBean.item.cellblock.cellStatus eq 'DISABLED'}">
+                                               <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                           <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_providerType}:" /></td>
+                            <td><h:outputText value="#{personBean.item.cellblock.provider.name}" /></td>
+                          </tr>
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_providerUsername}:" /></td>
+                            <td>
+                              <h:outputText value="#{personBean.item.cellblock.providerUser}">
+                              </h:outputText>
+                            </td>
+                          </tr>                          
+                          <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_providerCellPhone}:" /></td>
+                            <td>
+                              <h:outputText value="#{personBean.item.cellblock.cellPhone}">
+                              </h:outputText>
+                            </td>
+                          </tr>
+                           <tr>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_providerCellStatus}:" /></td>
+                            <td><h:outputText value="#{messages[personBean.item.cellblock.cellStatus]}" /></td>
+                          </tr>
+                        </table>
                        </rich:panel>
                        </rich:panel>
                        </rich:panel>

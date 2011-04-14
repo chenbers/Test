@@ -12,7 +12,6 @@ import org.junit.Test;
 import com.inthinc.pro.dao.mock.data.MockData;
 import com.inthinc.pro.dao.mock.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.Cellblock;
-import com.inthinc.pro.model.Silo;
 
 public class PhoneControlHessianDAOTest {
     PhoneControlHessianDAO phoneControlHessianDAO;

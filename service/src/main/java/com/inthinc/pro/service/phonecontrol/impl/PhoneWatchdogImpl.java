@@ -54,11 +54,12 @@ public class PhoneWatchdogImpl implements PhoneWatchdog {
 
             LastLocation location = driverDAO.getLastLocation(driverID);
             logger.debug("Backend returned " + location + " as last location for driver " + driverID + ".");
-
-            DateTime now = new DateTime(systemClock);
-            DateTime lastEvent = new DateTime(location.getTime());
-            Seconds secondsSinceLastEvent = Seconds.secondsBetween(lastEvent, now);
-
+            Seconds secondsSinceLastEvent = Seconds.MAX_VALUE;
+            if (location != null){
+                DateTime now = new DateTime(systemClock.getNow());
+                DateTime lastEvent = new DateTime(location.getTime());
+                secondsSinceLastEvent = Seconds.secondsBetween(lastEvent, now);
+            }
             if (secondsSinceLastEvent.get(secondsSinceLastEvent.getFieldType()) > secondsAgoEvents) {
                 logger.debug("A communication loss is suspected for driver " + driverID + ". Sending a request to enable the phone.");
                 phoneControl.handleDriverStoppedMoving(driverID);
@@ -100,5 +101,4 @@ public class PhoneWatchdogImpl implements PhoneWatchdog {
     public void setPhoneControl(PhoneControlMovementEventHandler phoneControl) {
         this.phoneControl = phoneControl;
     }
-
 }

@@ -190,14 +190,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 		this.cacheBean = cacheBean;
 	}
 
-//	public AccountOptionsBean getAccountOptionsBean() {
-//		return accountOptionsBean;
-//	}
-//
-//	public void setAccountOptionsBean(AccountOptionsBean accountOptionsBean) {
-//		this.accountOptionsBean = accountOptionsBean;
-//	}
-
 	public FuelEfficiencyBean getFuelEfficiencyBean() {
 		return fuelEfficiencyBean;
 	}
@@ -1004,16 +996,18 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                     personDAO.update(person);
                 if (person.isDriverSelected()){
                     driverDAO.update(person.getDriver());
-                    if(person.isProviderInfoExists()){
-                        if (person.getCellblock().getProviderPassword().isEmpty()){
-                            person.getCellblock().setProviderPassword(null);
+                    if(person.isProviderInfoSelected()){
+                        if(person.isProviderInfoExists()){
+                            if (person.getCellblock().getProviderPassword().isEmpty()){
+                                person.getCellblock().setProviderPassword(null);
+                            }
+                            phoneControlDAO.update(person.getCellblock());
                         }
-                        phoneControlDAO.update(person.getCellblock());
-                    }
-                    else{
-                        person.getCellblock().setDriverID(person.getDriverID());
-                        person.getCellblock().setAcctID(person.getAcctID());
-                        phoneControlDAO.create(person.getDriverID(),person.getCellblock());
+                        else{
+                            person.getCellblock().setDriverID(person.getDriverID());
+                            person.getCellblock().setAcctID(person.getAcctID());
+                            phoneControlDAO.create(person.getDriverID(),person.getCellblock());
+                        }
                     }
                 }
                 // if updating the currently-logged-in person, update the proUser

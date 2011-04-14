@@ -1,13 +1,6 @@
 package com.inthinc.pro.service.phonecontrol.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import mockit.Deencapsulation;
-import mockit.Expectations;
 import mockit.Mocked;
 import mockit.Mockit;
 
@@ -15,9 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.dao.EventDAO;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.event.NoteType;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.service.phonecontrol.dao.DriverPhoneDAO;
 
 /**
@@ -32,7 +23,7 @@ public class PhoneWatchdogImplTest {
     private static final Integer SECONDS_AGO = 100;
 
     @Mocked
-    private EventDAO eventDAO;
+    private DriverDAO driverDAO;
 
     @Mocked
     private DriverPhoneDAO driverPhoneDAO;

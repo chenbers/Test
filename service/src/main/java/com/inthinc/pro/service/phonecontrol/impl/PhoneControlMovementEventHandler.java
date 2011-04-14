@@ -26,6 +26,7 @@ import com.inthinc.pro.service.phonecontrol.PhoneStatusController;
 @Component
 public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
+
     private static final Logger logger = Logger.getLogger(PhoneControlMovementEventHandler.class);
 
 //    private DriverDAO driverDao;
@@ -35,6 +36,10 @@ public class PhoneControlMovementEventHandler implements MovementEventHandler {
 
     private Map<CellProviderType, UpdateStrategy> statusUpdateStrategyMap = new HashMap<CellProviderType, UpdateStrategy>();
 
+    public PhoneControlMovementEventHandler() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
     /**
      * Creates an instance of {@link PhoneControlMovementEventHandler}.
      * 
