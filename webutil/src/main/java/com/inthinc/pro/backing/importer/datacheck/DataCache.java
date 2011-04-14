@@ -41,11 +41,24 @@ public class DataCache {
         initPersonMap();
     }
 
-    public static Map<String, Account> getAccountMap() {
-        return accountMap;
-    }
     public Map<Integer, List<Group>> getGroupMap() {
         return groupMap;
+    }
+    
+    // TODO: Ask David Story for a getAcctByName method
+    public static Account getAccount(String accountName) {
+        Account account = accountMap.get(accountName);
+        if (account == null) {
+            List<Account> accountList = accountDAO.getAllAcctIDs();
+            for (Account acc : accountList) {
+                if (acc.getAcctName().equals(accountName)) {
+                    accountMap.put(acc.getAcctName(), acc);
+                    return acc;
+                }
+            }
+        }
+        
+        return account;
     }
 
     private void initAccountMap() {

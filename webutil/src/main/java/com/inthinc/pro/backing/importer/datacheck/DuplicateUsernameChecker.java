@@ -15,7 +15,7 @@ public class DuplicateUsernameChecker extends DataChecker {
         if (accountName == null || employeeID == null || username == null)
             return "ERROR: No account name or username or employeeID specified.";
 
-        Account account = DataCache.getAccountMap().get(accountName);
+        Account account = DataCache.getAccount(accountName);
         if (account == null)
             return null;
 

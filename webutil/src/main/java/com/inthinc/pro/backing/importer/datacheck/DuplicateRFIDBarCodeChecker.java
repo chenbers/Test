@@ -14,7 +14,7 @@ public class DuplicateRFIDBarCodeChecker extends DataChecker {
         if (accountName == null || barCode == null)
             return "ERROR: No account name or barCode specified.";
 
-        Account account = DataCache.getAccountMap().get(accountName);
+        Account account = DataCache.getAccount(accountName);
         if (account == null)
             return null;
 
@@ -33,7 +33,7 @@ public class DuplicateRFIDBarCodeChecker extends DataChecker {
         if (accountName == null || barCode == null)
             return "ERROR: No account name or barCode specified.";
 
-        Account account = DataCache.getAccountMap().get(accountName);
+        Account account = DataCache.getAccount(accountName);
         if (account == null)
             return null;
         

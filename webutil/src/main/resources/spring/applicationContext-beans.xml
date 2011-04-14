@@ -88,7 +88,6 @@
 	<bean id="driverTemplateFormat" class="com.inthinc.pro.backing.importer.DriverTemplateFormat" parent="templateFormat"/>
 	<bean id="vehicleTemplateFormat" class="com.inthinc.pro.backing.importer.VehicleTemplateFormat" parent="templateFormat"/>
 
-	<!--  bulk importer data checker (application scope TODO: CHECK THE SCOPE) -->
 	<bean id="dataCache" class="com.inthinc.pro.backing.importer.datacheck.DataCache" init-method="init"/>
 	
 	

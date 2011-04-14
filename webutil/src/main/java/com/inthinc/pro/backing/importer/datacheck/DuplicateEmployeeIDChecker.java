@@ -12,7 +12,7 @@ public class DuplicateEmployeeIDChecker extends DataChecker {
         if (accountName == null || employeeID == null)
             return "ERROR: No account name or employeeID specified.";
 
-        Account account = DataCache.getAccountMap().get(accountName);
+        Account account = DataCache.getAccount(accountName);
         if (account == null)
             return null;
 

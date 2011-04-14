@@ -15,7 +15,7 @@ public class DuplicateVINChecker extends DataChecker {
         if (accountName == null || VIN == null)
             return null;
 
-        Account account = DataCache.getAccountMap().get(accountName);
+        Account account = DataCache.getAccount(accountName);
         if (account == null)
             return null;
         
@@ -34,7 +34,7 @@ public class DuplicateVINChecker extends DataChecker {
         if (accountName == null || VIN == null)
             return null;
 
-        Account account = DataCache.getAccountMap().get(accountName);
+        Account account = DataCache.getAccount(accountName);
         if (account == null)
             return null;
         

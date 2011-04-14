@@ -13,7 +13,7 @@ public class EmployeeIDExistsChecker extends DataChecker {
         if (accountName == null || employeeID == null)
             return null;
 
-        Account account = DataCache.getAccountMap().get(accountName);
+        Account account = DataCache.getAccount(accountName);
         if (account == null)
             return null;
         

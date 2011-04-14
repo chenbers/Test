@@ -13,7 +13,7 @@ public class DuplicateEmailChecker extends DataChecker {
         if (accountName == null || email == null)
             return "ERROR: No account name or email specified.";
 
-        Account account = DataCache.getAccountMap().get(accountName);
+        Account account = DataCache.getAccount(accountName);
         if (account == null)
             return null;
         
