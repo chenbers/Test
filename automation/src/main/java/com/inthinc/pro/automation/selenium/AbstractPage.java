@@ -48,6 +48,12 @@ public abstract class AbstractPage implements VerbosePage {
     public void assertNotEquals(Object expected, SeleniumEnums actual) {
         assertNotEquals(expected, actual.getText());
     }
+    
+    public void assertContains(String fullString, String partialString){
+        if(!fullString.contains(partialString)){
+            addError(partialString + " not in " + fullString);
+        }
+    }
 
 
     public String browser_location_getCurrent() {

@@ -34,6 +34,7 @@ public class TiwiProDevice extends Base {
 
     @Override
     public void add_location() {
+        timeSinceLastLoc=0;
         attrs = new HashMap<TiwiAttrs, Integer>();
         if (speeding) {
             attrs.put(TiwiAttrs.ATTR_TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SPEEDING.getCode());
