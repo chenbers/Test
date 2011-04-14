@@ -1,10 +1,8 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
-public class MyAccount extends AbstractPage {
+public class MyAccount extends Masthead {
 
     public static enum redFlagPreferences {
         EMAIL1("1", MyAccountEnum.EMAIL1_TEXTFIELD),
@@ -208,10 +206,6 @@ public class MyAccount extends AbstractPage {
         return selenium.getText(MyAccountEnum.WARNING_TITLE);
     }
 
-    public Page load() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     public MyAccount page_titlesAndLabels_validate(){
         /* Buttons on the main page */
@@ -407,6 +401,10 @@ public class MyAccount extends AbstractPage {
     public boolean validate() {
         page_titlesAndLabels_validate();
         return true;
+    }
+    
+    public Boolean popup_changePassword_isVisible(){
+        return selenium.isVisible(MyAccountEnum.CHANGE_PASSWORD_CHANGE);
     }
     
 }

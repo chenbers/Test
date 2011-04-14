@@ -19,7 +19,6 @@ import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 
 import com.inthinc.pro.automation.device_emulation.MCMProxy;
 import com.inthinc.pro.automation.utils.AutomationLogger;
-import com.inthinc.pro.automation.utils.StackToString;
 
 @SuppressWarnings("unchecked")
 public abstract class Base {
@@ -40,14 +39,14 @@ public abstract class Base {
     protected Double latitude;
 	protected Double longitude;
 	protected Double last_lat, last_lng;
-    protected Double speed_limit;
+    protected Double speed_limit=75.0;
     
     protected Distance_Calc calculator = new Distance_Calc();
     
     protected Map<Integer, String> Settings;
 
     protected int heading=0;
-    protected int speed;
+    protected int speed=0;
     protected int WMP=17013, MSP = 50;
 	protected int sats;
     protected int odometer;
@@ -229,7 +228,7 @@ public abstract class Base {
 		return deviceDriverID;
 	}
 	
-	private void heading(){
+	private void set_heading(){
 		Integer direction = calculator.get_heading(last_lat, last_lng, latitude, longitude);
 //		if (productVersion==5){
 			Integer[] headers = {0,45,90,135,180,225,270,315,360};
@@ -311,7 +310,7 @@ public abstract class Base {
     }
 
 	
-    public abstract Integer processCommand(Map<String, Object> reply);
+    protected abstract Integer processCommand(Map<String, Object> reply);
     
 	protected void send_note() {
 		assert(note_queue instanceof ArrayList<?>);
@@ -347,7 +346,7 @@ public abstract class Base {
     }
 
 
-    public abstract void set_ignition( Integer time_delta);
+    public abstract void set_ignition( Integer time_delta);//
 	
     
     public void set_location(double lat, double lng, Integer time_delta) {
@@ -365,7 +364,7 @@ public abstract class Base {
 		latitude = lat;
 		longitude = lng;
 		
-		heading();
+		set_heading();
 		Integer new_time = (int)(time + time_delta);
 		set_time(new_time);
 		
@@ -473,12 +472,11 @@ public abstract class Base {
 				speed = 0;
 			}
 		}
-		try{
+//		try{
 			is_speeding();
-		}catch(Exception e){
-			logger.debug(StackToString.toString(e));
-			e.printStackTrace();
-		}
+//		}catch(Exception e){
+//			logger.debug(StackToString.toString(e));
+//		}
 	}
 	
 	public void set_version(Integer version){

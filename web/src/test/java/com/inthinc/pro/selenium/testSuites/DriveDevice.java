@@ -25,8 +25,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 
+import com.inthinc.pro.automation.device_emulation.MCMProxy;
+
 public class DriveDevice {
-    private static MCMSim mcmSim;
+    private static MCMProxy mcmSim;
     private String [] routeInfo = {
         "19,15, 0, 0, 57,33.0104,-117.1110, 0, 0,45, 0,  0,0,0",    
          "6,15, 0, 0,103,33.0104,-117.1110, 0, 0,45, 0,  0,0,0",    
@@ -110,8 +112,8 @@ public class DriveDevice {
     
         HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
         try {
-            mcmSim = (MCMSim) factory.create(
-                MCMSim.class, 
+            mcmSim = (MCMProxy) factory.create(
+                    MCMProxy.class, 
                 "dev-pro.inthinc.com", 
 //                "localhost",
                 8090);

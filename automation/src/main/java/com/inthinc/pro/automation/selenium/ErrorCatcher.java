@@ -32,6 +32,7 @@ public class ErrorCatcher {
         errors.get(name).put(type, error);
         assert(type.equals("Warning"));
         if (!type.equals("Warning")){
+            System.out.println(name);
             throw new SeleniumException(name + "  " + error);
         }
     }

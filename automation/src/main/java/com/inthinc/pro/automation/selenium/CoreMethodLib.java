@@ -1,6 +1,9 @@
 package com.inthinc.pro.automation.selenium;
 
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
@@ -66,6 +69,29 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     @Deprecated
     public String[] getAllWindowNames(){
         return null;
+    }
+    
+    public static String[] getTimeFrameOptions() {
+        String[] timeFrame = new String[11];
+        Calendar today = GregorianCalendar.getInstance();
+        today.add(Calendar.DATE, -2);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+        
+        timeFrame[0] = "Today";
+        timeFrame[1] = "Yesterday";
+
+        for (int i = 2; i < 7; i++) {
+            timeFrame[i] = sdf.format(today.getTime());
+            today.add(Calendar.DATE, -1);
+        }
+        sdf = new SimpleDateFormat("MMMMM");
+        
+        timeFrame[7] = "Past Week";
+        timeFrame[8] = sdf.format(today.getTime());
+        timeFrame[9] = "Past 30 Days";
+        timeFrame[10] = "Past Year";
+
+        return timeFrame;
     }
 
 
@@ -348,12 +374,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
     
     public void selectDhxCombo(Integer divPosition, String entry_name){
-        String element = "//div["+divPosition+"]/div[text()=\"" + entry_name + "\"]";
+        String element = "//div["+divPosition+"]/div[text()='" + entry_name + "']";
         click(element);
     }
     
     public void selectDhxCombo(String entry_name) {
-        String element = "//div[text()=\"" + entry_name + "\"]";
+        String element = "//div[text()='" + entry_name + "']";
         click(element);
     }
 

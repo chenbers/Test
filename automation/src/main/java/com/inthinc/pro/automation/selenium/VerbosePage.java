@@ -24,10 +24,10 @@ public interface VerbosePage extends Page {
     
     /**
      * Verbose version of getActualPath().
-     * @see com.inthinc.pro.web.selenium.Page#getActualPath()
+     * @see com.inthinc.pro.web.selenium.Page#getCurrentLocation()
      * @return a String representation of the actual browser location path.
      */
-    public String browser_path_getActual();
+    public String browser_location_getCurrent();
     
     /**
      * Verbose version of validate().

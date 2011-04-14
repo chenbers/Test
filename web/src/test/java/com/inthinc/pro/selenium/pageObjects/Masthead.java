@@ -8,26 +8,19 @@
 
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.selenium.ErrorCatcher;
-import com.inthinc.pro.automation.selenium.GlobalSelenium;
+
+import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
-public class Masthead {
+public abstract class Masthead extends AbstractPage{
 
 
-    protected static CoreMethodLib selenium;
-
-    public Masthead() {
-        selenium = GlobalSelenium.getSelenium();
-    }
-
-    public String text_version_get() {
+    public String textField_version_get() {
         String version_text = selenium.getText(MastheadEnum.VERSION);
         return version_text;
     }
 
-    public String text_copyRight_get() {
+    public String textField_copyRight_get() {
         String copyright_text_actual = selenium.getText(MastheadEnum.COPYRIGHT);
         return copyright_text_actual;
     }
@@ -40,44 +33,33 @@ public class Masthead {
     public void link_myMessages_click() {
         selenium.click(MastheadEnum.MY_MESSAGES);
         selenium.waitForPageToLoad();
-        selenium.verifyLocation("messages/");// TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code
     }
 
     public void link_logout_click() {
         selenium.click(MastheadEnum.LOGOUT);
         selenium.waitForPageToLoad();
-        selenium.verifyLocation("tiwipro/login");// TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code
     }
 
     public void link_support_click() {
-        selenium.click(MastheadEnum.SUPPORT);
-        selenium.selectWindow(null);
+        clickNewWindowLink(MastheadEnum.SUPPORT, MastheadEnum.CUSTOMER_SUPPORT_DEFAULT);
     }
 
-    public void link_legalNotice_link() {
-        selenium.click(MastheadEnum.LEGAL);
-        selenium.waitForPopUp("popup", CoreMethodLib.PAGE_TIMEOUT.toString());
-        selenium.selectPopUp("");
-        selenium.getText(MastheadEnum.LEGAL_NOTICE);
-        selenium.close();
-        selenium.selectWindow(null);
+    public void link_legalNotice_click() {
+        clickNewWindowLink(MastheadEnum.LEGAL, MastheadEnum.LEGAL_NOTICE);
     }
+    
 
     public void link_privacyPolicy_click() {
-        selenium.click(MastheadEnum.PRIVACY);
-        selenium.waitForPopUp("popup", CoreMethodLib.PAGE_TIMEOUT.toString());
-        selenium.selectPopUp("");
-        selenium.getText(MastheadEnum.PRIVACY_POLICY);
-        selenium.close();
-        selenium.selectWindow(null);
+        clickNewWindowLink(MastheadEnum.PRIVACY, MastheadEnum.PRIVACY_POLICY);
     }
 
     public void click_help(String help_page) {
-        if (help_page.indexOf(".htm") == -1) {
-            help_page += ".htm";
-        }// TODO: jwimmer: DTanner: no hard coded Strings in the FRAMEWORK code... I'm not sure this line is doing anything (effective) anyway?
-        selenium.click(MastheadEnum.HELP);
-        selenium.waitForPageToLoad();
+//        //TODO: This method needs to be updated and fleshed out once the Help Page has been nailed down.
+//        if (help_page.indexOf(".htm") == -1) {
+//            help_page += ".htm";
+//        }
+//        selenium.click(MastheadEnum.HELP);
+//        selenium.waitForPageToLoad();
     }
 
     public void section_header_validate() {
@@ -87,10 +69,10 @@ public class Masthead {
         selenium.isElementPresent(MastheadEnum.MY_ACCOUNT);
         selenium.isElementPresent(MastheadEnum.LOGOUT);
 
-        selenium.getText(MastheadEnum.HELP);
-        selenium.getText(MastheadEnum.MY_MESSAGES);
-        selenium.getText(MastheadEnum.MY_ACCOUNT);
-        selenium.getText(MastheadEnum.LOGOUT);
+        assertEquals(MastheadEnum.HELP);
+        assertEquals(MastheadEnum.MY_MESSAGES);
+        assertEquals(MastheadEnum.MY_ACCOUNT);
+        assertEquals(MastheadEnum.LOGOUT);
     }
 
     public void section_footer_validate() {
@@ -100,22 +82,9 @@ public class Masthead {
         selenium.isElementPresent(MastheadEnum.SUPPORT);
         selenium.isElementPresent(MastheadEnum.VERSION);
 
-        selenium.getText(MastheadEnum.COPYRIGHT);
-        selenium.getText(MastheadEnum.PRIVACY);
-        selenium.getText(MastheadEnum.LEGAL);
-        selenium.getText(MastheadEnum.SUPPORT);
-    }
-
-    public void page_validate() {
-        this.section_footer_validate();
-        this.section_header_validate();
-    }
-
-    public ErrorCatcher get_errors() {
-        return selenium.getErrors();
-    }
-
-    public CoreMethodLib get_selenium() {
-        return selenium;
+        assertEquals(MastheadEnum.COPYRIGHT);
+        assertEquals(MastheadEnum.PRIVACY);
+        assertEquals(MastheadEnum.LEGAL);
+        assertEquals(MastheadEnum.SUPPORT);
     }
 }

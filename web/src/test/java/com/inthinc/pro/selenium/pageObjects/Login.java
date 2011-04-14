@@ -1,7 +1,5 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 /****************************************************************************************
@@ -10,7 +8,8 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
  * @author larringt , dtanner Last Update: 11/18/Added comments and made changes to adhere to Java Coding Standards
  */
 
-public class Login extends AbstractPage {
+public class Login extends Masthead {
+
     public Login assert_badCredentials_isClosed() {//TODO: jwimmer: discuss: I don't think we want/need ANY pageObject.methods that do not conform to elementType_elementName_action(...)
         if (popUp_logInError_isVisible() || header_logInError_isVisible()) {
             addError("Bad Credentials Popup", "Popup didn't close");
@@ -72,7 +71,7 @@ public class Login extends AbstractPage {
         return this;
     }
 
-    public Login button_modalLogInErrorOK_click() {
+    public Login button_logInErrorOK_click() {
         selenium.click(LoginEnum.ERROR_BUTTON_OK);
         assert_badCredentials_isClosed();
         return this;
@@ -84,9 +83,7 @@ public class Login extends AbstractPage {
         return this;
     }
 
-    public ErrorCatcher get_errors() {
-        return selenium.getErrors();
-    }
+    
 
     private Boolean header_logInError_isVisible() {
         return selenium.isVisible(LoginEnum.ERROR_HEADER);
@@ -105,7 +102,6 @@ public class Login extends AbstractPage {
         System.out.println("LoginEnum.class: "+LoginEnum.class);
         System.out.println("LoginEnum.LOGIN_URL: "+LoginEnum.LOGIN_URL);
         selenium.open(LoginEnum.LOGIN_URL);
-        setCurrentPage();
         return this;
     }
 

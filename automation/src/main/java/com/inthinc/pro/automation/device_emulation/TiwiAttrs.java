@@ -58,6 +58,16 @@ public enum TiwiAttrs {
     ATTR_TYPE_STATS(51),
     ATTR_TYPE_AGPS_ERROR_CODE(52),
     ATTR_TYPE_UNPLUGGED_WHILE_ASLEEP(53),
+    ATTR_LOGOUT_TYPE(54),
+    ATTR_SAT_EPH_CNT(55),
+    ATTR_WITNESS_EVENT_TYPE(56),
+    ATTR_GPINPUT_STATE(57),
+    ATTR_SEATBELT_SRC(58),
+    ATTR_VBCPU_BOOTMODE(59),
+    ATTR_DWNLD_TYPE(60),
+    ATTR_NUM_CONFIG_DUMPS(61),
+    ATTR_NUM_REQSET(62),
+    ATTR_BASE_VER(63),
     ATTR_TYPE_DISTANCE(129),
     ATTR_TYPE_MAX_RPM(130),
     ATTR_TYPE_DELTA_VX(131),
@@ -114,29 +124,37 @@ public enum TiwiAttrs {
     ATTR_TYPE_RFID1(223),
     ATTR_TYPE_MPG_DISTANCE(224),
     ATTR_TYPE_TRIP_DURATION(225),
-    ATTR_TYPE_STRING(255);
+    ATTR_TYPE_STRING(255),
+    ATTR_BAD_ERROR(226), // Errors that we want the portal to track
 
-	
-	
+    ATTR_DRIVER_ID(227),
+    ATTR_TOTAL_AGPS_BYTES(228),
+    ATTR_MAP_HASH(229),
+    ATTR_TOTAL_BYTES_DUMPSET(230),
+    ATTR_SBS_LINK_ID(231),
+    ATTR_CLOSEST_SBS_LINK_ID(232),
+
+    ;
+
     private int code;
 
     private TiwiAttrs(int c) {
-    	code = c;
+        code = c;
     }
+
     public int getCode() {
-    	return code;
-    } 
-    
+        return code;
+    }
+
     private static HashMap<Integer, TiwiAttrs> lookupByCode = new HashMap<Integer, TiwiAttrs>();
-    
+
     static {
-        for (TiwiAttrs p : EnumSet.allOf(TiwiAttrs.class))
-        {
+        for (TiwiAttrs p : EnumSet.allOf(TiwiAttrs.class)) {
             lookupByCode.put(p.getCode(), p);
         }
     }
-    
-    public static TiwiAttrs valueOf(Integer code){
-    	return lookupByCode.get(code);
+
+    public static TiwiAttrs valueOf(Integer code) {
+        return lookupByCode.get(code);
     }
 }

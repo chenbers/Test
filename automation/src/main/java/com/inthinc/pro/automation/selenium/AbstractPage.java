@@ -1,22 +1,15 @@
 package com.inthinc.pro.automation.selenium;
 
-import java.util.HashMap;
+import org.openqa.selenium.WebDriver;
+
 
 public abstract class AbstractPage implements VerbosePage {
     protected static CoreMethodLib selenium;
-    private volatile static HashMap<Long, String> currentLocation = new HashMap<Long, String>();
+    protected static WebDriver webDriver;
 
     public AbstractPage() {
         selenium = GlobalSelenium.getSelenium();
-    }
-
-    protected CoreMethodLib getSelenium() {
-        return selenium;
-    }
-
-    public void addErrorWithExpected(String errorName, String error, String expected) {
-        selenium.getErrors().addError(errorName, error);
-        selenium.getErrors().addExpected(errorName, expected);
+        webDriver = selenium.getWrappedDriver();
     }
 
     public void addError(String errorName) {
@@ -25,6 +18,94 @@ public abstract class AbstractPage implements VerbosePage {
 
     public void addError(String errorName, String error) {
         selenium.getErrors().addError(errorName, error);
+    }
+
+    public void addErrorWithExpected(String errorName, String error, String expected) {
+        selenium.getErrors().addError(errorName, error);
+        selenium.getErrors().addExpected(errorName, expected);
+    }
+
+    public void assertEquals(Object actual, Object expected) {
+        if (!actual.equals(expected)) {
+            addError(actual + " != " + expected);
+        }
+    }
+
+    public void assertEquals(Object expected, SeleniumEnums actual) {
+        assertEquals(expected, actual.getText());
+    }
+
+    public void assertEquals(SeleniumEnums actual) {
+        assertEquals(selenium.getText(actual), actual.getText());
+    }
+
+    public void assertNotEquals(Object actual, Object expected) {
+        if (actual.equals(expected)) {
+            addError(actual + " == " + expected);
+        }
+    }
+
+    public void assertNotEquals(Object expected, SeleniumEnums actual) {
+        assertNotEquals(expected, actual.getText());
+    }
+
+
+    public String browser_location_getCurrent() {
+        String[] url = selenium.getLocation().split("/");
+        return url[url.length-1];
+    }
+
+
+    protected void clickNewWindowLink(SeleniumEnums link, SeleniumEnums text){
+        selenium.click(link);
+        String[] handles = webDriver.getWindowHandles().toArray(new String[2]);
+        webDriver.switchTo().window(handles[handles.length-1]);
+        selenium.getText(text);
+        selenium.close();
+        webDriver.switchTo().window(handles[0]);
+    }
+
+    public ErrorCatcher get_errors() {
+        return selenium.getErrors();
+    }
+    
+
+    
+    @Override
+    public String getCurrentLocation() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    @Override
+    public String getExpectedPath() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public CoreMethodLib getSelenium() {
+        return selenium;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.inthinc.pro.web.selenium.Page#isLoaded()
+     */
+    public boolean isLoaded() {
+        boolean results = getCurrentLocation().contains(getExpectedPath());
+        // System.out.println("about to return: "+results);
+        return results;
+    }
+    
+    @Override
+    public Page load() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public boolean page_bareMinimum_validate() {
+        return validate();
     }
 
     /*
@@ -39,26 +120,6 @@ public abstract class AbstractPage implements VerbosePage {
     /*
      * (non-Javadoc)
      * 
-     * @see com.inthinc.pro.web.selenium.ScripterPage#page_isLoaded()
-     */
-    public boolean page_URL_validate() {
-        return isLoaded();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.inthinc.pro.web.selenium.Page#isLoaded()
-     */
-    public boolean isLoaded() {
-        boolean results = getActualPath().contains(getExpectedPath());
-        // System.out.println("about to return: "+results);
-        return results;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see com.inthinc.pro.web.selenium.ScripterPage#page_getExpectedPath()
      */
     public String page_path_getExpected() {
@@ -68,58 +129,15 @@ public abstract class AbstractPage implements VerbosePage {
     /*
      * (non-Javadoc)
      * 
-     * @see com.inthinc.pro.web.selenium.ScripterPage#page_getActualPath()
+     * @see com.inthinc.pro.web.selenium.ScripterPage#page_isLoaded()
      */
-    public String browser_path_getActual() {
-        return getActualPath();
+    public boolean page_URL_validate() {
+        return isLoaded();
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.inthinc.pro.web.selenium.Page#getActualPath()
-     */
-    public String getActualPath() {
-        return selenium.getLocation();
-    }
-
-    // TODO: jwimmer: question for dTanner: when you get a minute, explain to me the difference between getPath() and getCurrentPage???
-    protected static void setCurrentPage() {
-        Long currentThread = Thread.currentThread().getId();
-        currentLocation.put(currentThread, GlobalSelenium.getSelenium().getLocation());
-    }
-
-    protected static String getCurrentPage() {
-        Long currentThread = Thread.currentThread().getId();
-        return currentLocation.get(currentThread);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.inthinc.pro.web.selenium.ScripterPage#page_validate()
-     */
-    public boolean page_bareMinimum_validate() {
-        return validate();
-    }
-
-    public void assertEquals(String actual, String expected) {
-        if (!actual.equals(expected)) {
-            addError(actual + " != " + expected);
-        }
-    }
-
-    public void assertEquals(String expected, SeleniumEnums actual) {
-        assertEquals(expected, actual.getText());
-    }
-
-    public void assertNotEquals(String actual, String expected) {
-        if (actual.equals(expected)) {
-            addError(actual + " == " + expected);
-        }
-    }
-
-    public void assertNotEquals(String expected, SeleniumEnums actual) {
-        assertNotEquals(expected, actual.getText());
+    
+    @Override
+    public boolean validate() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

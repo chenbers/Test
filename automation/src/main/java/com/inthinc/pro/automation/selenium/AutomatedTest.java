@@ -1,12 +1,14 @@
 package com.inthinc.pro.automation.selenium;
 
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 public abstract class AutomatedTest {
 
     protected Long startTime;
     protected static HashMap<String, HashMap<String, String>> errors;
-    protected String testVerdict = "Fail";//TODO: jwimmer: right now there is no way to FAIL a test?  just "Pass" or "Errors"
+    protected String testVerdict = "Fail";// TODO: jwimmer: right now there is no way to FAIL a test? just "Pass" or "Errors"
 
     public void setTestVerdict(String testVerdict) {
         this.testVerdict = testVerdict;
@@ -50,5 +52,14 @@ public abstract class AutomatedTest {
     public static void afterClass() {
         GlobalSelenium.dieSeleniumDie();
     }// tear down
+
+    public static void print(String printToScreen) {
+        StackTraceElement element = Thread.currentThread().getStackTrace()[2];
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String className = element.getFileName().replace(".java", "");
+        System.out.printf("%s, %s.%s:%3d - %s\n",
+                sdf.format(GregorianCalendar.getInstance().getTime()), 
+                className, element.getMethodName(), element.getLineNumber(), printToScreen);
+    }
 
 }

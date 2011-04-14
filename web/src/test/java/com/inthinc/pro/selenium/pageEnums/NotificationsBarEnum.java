@@ -4,6 +4,16 @@ import com.inthinc.pro.automation.selenium.SeleniumEnums;
 
 public enum NotificationsBarEnum implements SeleniumEnums {
 
+    DEFAULT_URL("notifications/"),
+    DEFAULT_CURRENT(""),
+    RED_FLAGS_URL("redFlags"),
+    SAFETY_URL("safety"),
+    DIAGNOSTICS_URL("diagnostics"),
+    ZONES_URL("zoneEvents", "zones"),
+    HOS_EXCEPTIONS_URL("hosEvents"),
+    EMERGENCY_URL("emergency"),
+    CRASH_HISTORY_URL("crashHistory"),
+
     /* Navigation Bar for Notifications */
     RED_FLAGS("Red Flags", "**-redFlags", "//div[@class='sub_nav-bg']/ul/li[1]/a", "//li[@id='redflagtab']/a"),
     SAFETY("Safety", "**-safety", "//div[@class='sub_nav-bg']/ul/li[2]/a", "//li[@id='safetytab']/a"),
@@ -12,13 +22,6 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     HOS_EXCEPTIONS("HOS Exceptions", "**-hosEvents", "//div[@class='sub_nav-bg']/ul/li[5]/a", "//li[@id='hosEventstab']"),
     EMERGENCY("Emergency", "**-emergency", "//div[@class='sub_nav-bg']/ul/li[6]/a", "//li[@id='emergencytab']"),
     CRASH_HISTORY("Crash History", "**-crashHistory", "//div[@class='sub_nav-bg']/ul/li[7]/a", "//li[@id='crashhistorytab']"),
-
-    /* Masthead of Notifications */
-
-    TOOLS(null, null, "//img[@title='Tools Menu']", "//span[@class='rich-cm-attached'/img"),
-    EDIT_COLUMNS("Edit Columns", "**_search:**_editColumns", "//a[@class='ls_tab_edit_columns']", "//a[@title='Edit Columns'"),
-    REFRESH("Refresh", "**_search:**_refresh", "//li[@class='l select']/button[@class='left']", "//li[@class='l select']/button[@type='button']"),
-    TITLE(null, null, "//div[@class='panel_title']/span[1]", null),
 
     ;
 
@@ -29,18 +32,25 @@ public enum NotificationsBarEnum implements SeleniumEnums {
         this.ID = ID;
         this.xpath = xpath;
         this.xpath_alt = xpath_alt;
+        this.url = null;
     }
 
     private NotificationsBarEnum(String url) {
         this.url = url;
+        this.current = url;
         this.text = null;
         this.ID = null;
         this.xpath = null;
         this.xpath_alt = null;
     }
 
-    public void setCurrent(String current) {
+    private NotificationsBarEnum(String url, String current) {
+        this.url = url;
         this.current = current;
+        this.text = null;
+        this.ID = null;
+        this.xpath = null;
+        this.xpath_alt = null;
     }
 
     public String getText() {
@@ -55,6 +65,10 @@ public enum NotificationsBarEnum implements SeleniumEnums {
         return ID.replace("**", current);
     }
 
+    public String getID(String current) {
+        return ID.replace("**", current);
+    }
+
     public String getXpath() {
         return xpath;
     }
@@ -65,6 +79,14 @@ public enum NotificationsBarEnum implements SeleniumEnums {
 
     public String getURL() {
         return url;
+    }
+    
+    public String getLink(){
+        return current;
+    }
+    
+    public void setCurrent(String current){
+        this.current = current;
     }
 
 }
