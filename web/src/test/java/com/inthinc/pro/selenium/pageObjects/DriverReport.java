@@ -2,14 +2,11 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.StringTokenizer;
 
-import com.inthinc.pro.automation.SeleniumEnum;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
 import com.inthinc.pro.automation.selenium.Page;
-import com.inthinc.pro.selenium.pageEnums.DashboardEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
-import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.UtilEnum;
 
 public class DriverReport extends AbstractPage {
