@@ -2,21 +2,13 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.selenium.SeleniumEnums;
 
-public enum UtilEnum implements SeleniumEnums {
-    DURATION_30DAYS("durationPanelHeaderDays",null,null,null,null),
-    DURATION_3MONTHS("durationPanelHeaderThreeMonths",null,null,null,null),
-    DURATION_6MONTHS("durationPanelHeaderSixMonths",null,null,null,null),
-    DURATION_12MONTHS("durationPanelHeaderTwelveMonths",null,null,null,null),
-    FILTER_0_TO_1("0.0 - 1.0","2",null,null,null),
-    FILTER_1_TO_2("1.1 - 2.0","3",null,null,null),
-    FILTER_2_TO_3("2.1 - 3.0","4",null,null,null),
-    FILTER_3_TO_4("3.1 - 4.0","5",null,null,null),
-    FILTER_4_TO_5("4.1 - 5.0","6",null,null,null)
-    ;
-    
+public enum TeamPageEnum implements SeleniumEnums {
+    DRIVER_STATISTICS_SELECT_DRIVER(null,null,"link=Vinh Vo",null,null)
+    ; 
+                                                             
     private String text, ID, xpath, xpath_alt, url;
     
-    private UtilEnum( String text, String ID, String xpath, String xpath_alt, String url) {
+    private TeamPageEnum( String text, String ID, String xpath, String xpath_alt, String url) {
         this.text=text;
         this.ID=ID;
         this.xpath=xpath;
@@ -51,12 +43,13 @@ public enum UtilEnum implements SeleniumEnums {
     @Override
     public void setText(String text) {
         // TODO Auto-generated method stub
-        this.text=text;
+        
     }
 
     @Override
     public String getURL() {
         // TODO Auto-generated method stub
-        return this.url;
+        return null;
     }
+
 }
