@@ -1,10 +1,10 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.pro.automation.SeleniumEnum;
+import com.inthinc.pro.automation.selenium.SeleniumEnums;
 
 // Enums have format NAME( Text, ID, X-Path, X-Path-Alternate )
 
-public enum LiveFleetEnum implements SeleniumEnum {
+public enum LiveFleetEnum implements SeleniumEnums {
 	
     DEFAULT_URL("liveFleet"),
     
