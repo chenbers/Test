@@ -36,11 +36,11 @@ public class MyAccountTest extends WebRallyTest {
 	
 	/*Red Flags Section*/
 		String info = my.textField_informationRedFlag_getText();
-		my.assertEquals("email 1", info);
+		my.assertEquals("E-mail 1", info);
 		String warn = my.textField_warningRedFlag_getText();
-		my.assertEquals("email 1", warn);
+		my.assertEquals("E-mail 1", warn);
 		String critical = my.textField_criticalRedFlag_getText();
-		my.assertEquals("email 1", critical);
+		my.assertEquals("E-mail 1", critical);
 		
 		
 				
