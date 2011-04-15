@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 
-public class LiveFleet extends AbstractPage {
+public class PageLiveFleet extends AbstractPage {
 
   
 
