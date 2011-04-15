@@ -460,7 +460,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
     
     public Boolean verifyLocation(SeleniumEnums checkIt){
-        return checkIt.getURL().equals(verifyLocation(checkIt));
+        return checkIt.getURL().equals(getLocator(checkIt));
     }
 
     public Boolean verifyLocation(String expected){

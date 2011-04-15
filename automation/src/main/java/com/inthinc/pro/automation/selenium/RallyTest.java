@@ -35,6 +35,7 @@ public abstract class RallyTest extends AutomatedTest {
 
 	@Override
 	public void before() {
+		startTime = System.currentTimeMillis();
 		super.before();
 		try {
 			rally.new_results();
@@ -55,7 +56,7 @@ public abstract class RallyTest extends AutomatedTest {
 
 				rally.setVerdict(testVerdict);
                 rally.setNotes(errors);
-                rally.setDuration(System.currentTimeMillis() / 1000 - startTime);
+//                rally.setDuration(System.currentTimeMillis() / 1000 - startTime);
 				rally.send_test_case_results();
 			} catch (Exception e) {
 				e.printStackTrace();

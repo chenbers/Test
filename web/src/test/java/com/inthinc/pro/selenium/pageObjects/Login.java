@@ -123,9 +123,9 @@ public class Login extends Masthead {
     }
 
     public Login page_login_process(String username, String password) {
-        if (selenium.verifyLocation(LoginEnum.LOGIN_URL)) {
+//        if (selenium.verifyLocation(LoginEnum.LOGIN_URL)) {
             page_logout_open();
-        }
+//        }
         textField_username_type(username);
         textField_password_type(password);
         button_logIn_click();

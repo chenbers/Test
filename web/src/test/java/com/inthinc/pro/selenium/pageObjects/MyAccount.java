@@ -285,7 +285,7 @@ public class MyAccount extends Masthead {
     }
 
     public String textField_fuelEfficiency_getText() {
-        return selenium.getText(MyAccountEnum.USER_NAME_TEXT);
+        return selenium.getText(MyAccountEnum.FUEL_EFFICIENCY_RATIO_TEXT);
     }
 
     public String textField_group_getText() {
@@ -297,11 +297,11 @@ public class MyAccount extends Masthead {
     }
 
     public String textField_locale_getText() {
-        return selenium.getText(MyAccountEnum.USER_NAME_TEXT);
+        return selenium.getText(MyAccountEnum.LOCALE_TEXT);
     }
 
     public String textField_measurement_getText() {
-        return selenium.getText(MyAccountEnum.USER_NAME_TEXT);
+        return selenium.getText(MyAccountEnum.MEASUREMENT_TEXT);
     }
 
     public String textField_name_getText() {

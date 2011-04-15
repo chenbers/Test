@@ -12,7 +12,7 @@ import com.inthinc.automation.AutomationPropertiesBean;
 
 public class AutomatedTest {
 
-    protected Long startTime;
+    protected Long startTime = System.currentTimeMillis();
     protected static HashMap<String, HashMap<String, String>> errors;
     protected String testVerdict = "Fail";// TODO: jwimmer: right now there is no way to FAIL a test? just "Pass" or "Errors"
     AutomationPropertiesBean automationPropertiesBean;
