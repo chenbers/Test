@@ -1,11 +1,11 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 
-public enum TiwiWmpMsp {
+public enum TiwiWmpMsp implements DeviceTypesUnique {
 
-	/* WMP MSP Attributes */
+    /* WMP MSP Attributes */
 
     WMPMSP_ATTR_GPIO_NUM(0),
     WMPMSP_ATTR_GPIO_LEVEL(1),
@@ -130,28 +130,25 @@ public enum TiwiWmpMsp {
     WMPMSP_ATTR_YSQUARE(16389),
     WMPMSP_ATTR_ZSQUARE(16390);
 
-
-	
-
     private int code;
 
     private TiwiWmpMsp(int c) {
-    	code = c;
+        code = c;
     }
-    public int getCode() {
-    	return code;
-    } 
-    
+
+    public Integer getValue() {
+        return code;
+    }
+
     private static HashMap<Integer, TiwiWmpMsp> lookupByCode = new HashMap<Integer, TiwiWmpMsp>();
-    
+
     static {
-        for (TiwiWmpMsp p : EnumSet.allOf(TiwiWmpMsp.class))
-        {
-            lookupByCode.put(p.getCode(), p);
+        for (TiwiWmpMsp p : EnumSet.allOf(TiwiWmpMsp.class)) {
+            lookupByCode.put(p.getValue(), p);
         }
     }
-    
-    public static TiwiWmpMsp valueOf(Integer code){
-    	return lookupByCode.get(code);
+
+    public TiwiWmpMsp valueOf(Integer code) {
+        return lookupByCode.get(code);
     }
 }

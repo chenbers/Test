@@ -2,12 +2,17 @@ package com.inthinc.pro.automation.device_emulation;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.device_emulation.TiwiGenerals.FwdCmdStatus;
-import com.inthinc.pro.automation.device_emulation.TiwiGenerals.ViolationFlags;
+import com.inthinc.pro.automation.enums.DeviceProperties;
+import com.inthinc.pro.automation.enums.TiwiAttrs;
+import com.inthinc.pro.automation.enums.TiwiFwdCmds;
+import com.inthinc.pro.automation.enums.TiwiNoteTypes;
+import com.inthinc.pro.automation.enums.TiwiGenerals.FwdCmdStatus;
+import com.inthinc.pro.automation.enums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.utils.CreateHessian;
 import com.inthinc.pro.automation.utils.StackToString;
 
@@ -25,51 +30,56 @@ public class TiwiProDevice extends Base {
     }
 
     public TiwiProDevice(String IMEI, String server) {
-        this(IMEI, server, TiwiPro_Defaults.get_defaults());
+        this(IMEI, server, TiwiProps.STATIC.getDefaultProps());
     }
 
-    public TiwiProDevice(String IMEI, String server, Map<Integer, String> map) {
+    public TiwiProDevice(String IMEI, String server, Map<TiwiProps, String> map) {
         super(IMEI, server, map, productVersion);
     }
 
     @Override
-    public void add_location() {
+    public Base add_location() {
         timeSinceLastLoc=0;
         attrs = new HashMap<TiwiAttrs, Integer>();
         if (speeding) {
-            attrs.put(TiwiAttrs.ATTR_TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SPEEDING.getCode());
+            attrs.put(TiwiAttrs.ATTR_TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SPEEDING.getValue());
         }
 
         else if (rpm_violation) {
-            attrs.put(TiwiAttrs.ATTR_TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_RPM.getCode());
+            attrs.put(TiwiAttrs.ATTR_TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_RPM.getValue());
         }
 
         else if (seatbelt_violation) {
-            attrs.put(TiwiAttrs.ATTR_TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SEATBELT.getCode());
+            attrs.put(TiwiAttrs.ATTR_TYPE_VIOLATION_FLAGS, ViolationFlags.VIOLATION_MASK_SEATBELT.getValue());
         }
 
         construct_note(TiwiNoteTypes.NOTE_TYPE_LOCATION, attrs);
+        return this;
+    }
+    
+    @Override
+    public Base add_note() {
+        return this;
     }
 
-    @Override
-    public void add_note() {}
-
-    public void add_note(Package_tiwiPro_Note note) {
+    public Base add_note(Package_tiwiPro_Note note) {
 
         byte[] packaged = note.Package();
         note_queue.add(packaged);
         check_queue();
+        return this;
     }
 
-    public void add_note_event(Integer deltaX, Integer deltaY, Integer deltaZ) {
+    public Base add_note_event(Integer deltaX, Integer deltaY, Integer deltaZ) {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_TYPE_DELTA_VX, deltaX);
         attrs.put(TiwiAttrs.ATTR_TYPE_DELTA_VY, deltaY);
         attrs.put(TiwiAttrs.ATTR_TYPE_DELTA_VZ, deltaZ);
         construct_note(TiwiNoteTypes.NOTE_TYPE_NOTE_EVENT, attrs);
+        return this;
     }
 
-    public void add_stats() {
+    public Base add_stats() {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_BASE_VER, 0);
         attrs.put(TiwiAttrs.ATTR_TYPE_EMU_HASH_1, -1517168504);
@@ -78,19 +88,23 @@ public class TiwiProDevice extends Base {
         attrs.put(TiwiAttrs.ATTR_TYPE_EMU_HASH_4, 1627500918);
         attrs.put(TiwiAttrs.ATTR_TOTAL_AGPS_BYTES , 60000);
         construct_note(TiwiNoteTypes.NOTE_TYPE_STATS, attrs);
+        return this;
     }
 
     @Override
-    public void construct_note() {}
+    public Base construct_note() {
+        return this;
+        }
 
-    public void construct_note(TiwiNoteTypes type) {
+    public Base construct_note(TiwiNoteTypes type) {
         if (productVersion == 5) {
             attrs = new HashMap<TiwiAttrs, Integer>();
             construct_note(type, attrs);
         }
+        return this;
     }
 
-    public void construct_note(TiwiNoteTypes type, HashMap<TiwiAttrs, Integer> attrs) {
+    public Base construct_note(TiwiNoteTypes type, HashMap<TiwiAttrs, Integer> attrs) {
         try {
             attrs.put(TiwiAttrs.ATTR_TYPE_SPEED_LIMIT, speed_limit.intValue());
         } catch (Exception e) {
@@ -101,54 +115,46 @@ public class TiwiProDevice extends Base {
 
         clear_internal_settings();
         add_note(note);
+        return this;
     }
 
     @Override
-    public void createAckNote(Map<String, Object> reply) {
+    public Base createAckNote(Map<String, Object> reply) {
         Package_tiwiPro_Note ackNote = new Package_tiwiPro_Note(TiwiNoteTypes.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
         ackNote.AddAttrs(TiwiAttrs.ATTR_TYPE_FWDCMD_ID, (Integer) reply.get("fwdID"));
         ackNote.AddAttrs(TiwiAttrs.ATTR_TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_RECEIVED);
         byte[] packaged = ackNote.Package();
         note_queue.add(packaged);
         processCommand(reply);
+        return this;
     }
 
-    public void enter_zone(Integer zoneID) {
+    public Base enter_zone(Integer zoneID) {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_TYPE_ZONE_ID, zoneID);
         construct_note(TiwiNoteTypes.NOTE_TYPE_WSZONES_ARRIVAL_EX, attrs);
+        return this;
     }
 
     @Override
     protected Integer get_note_count() {
-        return get_setting_int(TiwiProps.PROPERTY_SET_MSGS_PER_NOTIFICATION);
+        return Integer.parseInt(Settings.get(TiwiProps.PROPERTY_SET_MSGS_PER_NOTIFICATION));
     }
 
-    @Override
-    public String get_setting() {
-        return null;
-    }
 
     public String get_setting(TiwiProps settingID) {
-        return Settings.get(settingID.getCode());
+        return Settings.get(settingID.getValue());
     }
 
-    @Override
-    public Integer get_setting_int() {
-        return null;
-    }
 
-    public Integer get_setting_int(TiwiProps settingID) {
-        return Integer.parseInt(get_setting(settingID));
-    }
-
-    public void leave_zone(Integer zoneID) {
+    public Base leave_zone(Integer zoneID) {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_TYPE_ZONE_ID, zoneID);
         construct_note(TiwiNoteTypes.NOTE_TYPE_WSZONES_DEPARTURE_EX, attrs);
+        return this;
     }
 
-    public void logout_driver(Integer RFID, Integer tripQuality, Integer MPG, Integer MPGOdometer) {
+    public Base logout_driver(Integer RFID, Integer tripQuality, Integer MPG, Integer MPGOdometer) {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_LOGOUT_TYPE, 4);
         attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, tripQuality);
@@ -157,6 +163,7 @@ public class TiwiProDevice extends Base {
         attrs.put(TiwiAttrs.ATTR_TYPE_RFID0, -536362939);
         attrs.put(TiwiAttrs.ATTR_TYPE_RFID1, 1415806888);
         construct_note(TiwiNoteTypes.NOTE_TYPE_STATS, attrs);
+        return this;
     }
 
     @Override
@@ -165,7 +172,7 @@ public class TiwiProDevice extends Base {
         if (reply.get("fwdCmd") == null)
             return 1;
         TiwiFwdCmds fwdCmd = TiwiFwdCmds.valueOf(reply.get("fwdCmd"));
-        HashMap<Integer, String> changes = new HashMap<Integer, String>();
+        HashMap<TiwiProps, String> changes = new HashMap<TiwiProps, String>();
         Package_tiwiPro_Note ackNote = new Package_tiwiPro_Note(TiwiNoteTypes.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
 
         if (fwdCmd == TiwiFwdCmds.FWD_CMD_ASSIGN_DRIVER) {
@@ -180,7 +187,7 @@ public class TiwiProDevice extends Base {
         else if (fwdCmd == TiwiFwdCmds.FWD_CMD_DOWNLOAD_NEW_FIRMWARE)
             set_WMP(reply.get("fwdData"));
         else if (fwdCmd == TiwiFwdCmds.FWD_CMD_SET_SPEED_BUFFER_VALUES) {
-            changes.put(TiwiProps.PROPERTY_VARIABLE_SPEED_LIMITS.getCode(), (String) reply.get("fwdData"));
+            changes.put(TiwiProps.PROPERTY_VARIABLE_SPEED_LIMITS, reply.get("fwdData").toString());
         }
 
         ackNote.AddAttrs(TiwiAttrs.ATTR_TYPE_FWDCMD_ID, reply.get("fwdId"));
@@ -193,7 +200,7 @@ public class TiwiProDevice extends Base {
         return 1;
     }
 
-    public void set_ignition(Integer time_delta) {
+    public Base set_ignition(Integer time_delta) {
         ignition_state = !ignition_state;
         Integer newTime = (int) (time + time_delta);
         set_time(newTime);
@@ -208,10 +215,11 @@ public class TiwiProDevice extends Base {
             attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 980);
             construct_note(TiwiNoteTypes.NOTE_TYPE_IGNITION_OFF, attrs);
         }
+        return this;
     }
 
     @Override
-    protected void set_power() {
+    protected Base set_power() {
 
         attrs = new HashMap<TiwiAttrs, Integer>();
 
@@ -224,33 +232,48 @@ public class TiwiProDevice extends Base {
             check_queue();
 
         } else if (!power_state) {
-            attrs.put(TiwiAttrs.ATTR_TYPE_LOW_POWER_MODE_TIMEOUT, Integer.parseInt(Settings.get(TiwiProps.PROPERTY_LOW_POWER_MODE_SECONDS.getCode())));
+            attrs.put(TiwiAttrs.ATTR_TYPE_LOW_POWER_MODE_TIMEOUT, Integer.parseInt(Settings.get(TiwiProps.PROPERTY_LOW_POWER_MODE_SECONDS.getValue())));
             construct_note(TiwiNoteTypes.NOTE_TYPE_LOW_POWER_MODE, attrs);
             check_queue();
             if (!note_queue.isEmpty())
                 send_note();
         }
+        return this;
     }
 
     @Override
-    protected void set_server(String server) {
+    protected Base set_server(String server) {
         getHessian = new CreateHessian();
         logger.info("MCM Server is " + server);
         mcmProxy = getHessian.getMcmProxy(server);
-        Settings.put(TiwiProps.PROPERTY_SERVER_PORT.getCode(), getHessian.getPort(false).toString());
-        Settings.put(TiwiProps.PROPERTY_SERVER_URL.getCode(), getHessian.getUrl(false));
+        Settings.put(TiwiProps.PROPERTY_SERVER_PORT, getHessian.getPort(false).toString());
+        Settings.put(TiwiProps.PROPERTY_SERVER_URL, getHessian.getUrl(false));
+        return this;
     }
 
-    public void set_settings(TiwiProps key, String value) {
-        set_settings(key.getCode(), value);
+    public Base set_settings(TiwiProps key, String value) {
+        set_settings(key, value);
+        return this;
     }
 
     @Override
-    public void set_speed_limit(Integer limit) {
-        Settings.put(get_setting_int(TiwiProps.PROPERTY_SPEED_LIMIT), limit.toString());
+    public Base set_speed_limit(Integer limit) {
+        Settings.put(TiwiProps.PROPERTY_SPEED_LIMIT, limit.toString());
+        return this;
     }
 
-    protected void was_speeding() {
+    protected HashMap<DeviceProperties, String> theirsToOurs(HashMap<?, ?> reply){
+        HashMap<TiwiProps, String> map = new HashMap<TiwiProps, String>();
+        Iterator<?> itr = reply.keySet().iterator();
+        while (itr.hasNext()){
+            Integer next = (Integer) itr.next();
+            String value = reply.get(next).toString();
+            map.put(TiwiProps.STATIC.valueOf(next), (String) value);
+        }
+        return null;
+    }
+
+    protected Base was_speeding() {
         Integer topSpeed = Collections.max(speed_points);
         Integer avgSpeed = 0;
         Double speeding_distance = 0.0;
@@ -271,6 +294,7 @@ public class TiwiProDevice extends Base {
         attrs.put(TiwiAttrs.ATTR_TYPE_VIOLATION_FLAGS, 1);
 
         construct_note(TiwiNoteTypes.NOTE_TYPE_SPEEDING_EX3, attrs);
+        return this;
     }
 
 }

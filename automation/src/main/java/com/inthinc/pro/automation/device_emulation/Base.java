@@ -18,6 +18,7 @@ import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 
 import com.inthinc.pro.automation.device_emulation.MCMProxy;
+import com.inthinc.pro.automation.enums.DeviceProperties;
 import com.inthinc.pro.automation.utils.AutomationLogger;
 
 @SuppressWarnings("unchecked")
@@ -43,7 +44,7 @@ public abstract class Base {
 
     protected Distance_Calc calculator = new Distance_Calc();
 
-    protected Map<Integer, String> Settings;
+    protected Map<DeviceProperties, String> Settings;
 
     protected int heading = 0;
     protected int speed = 0;
@@ -67,12 +68,12 @@ public abstract class Base {
 
     protected String imei;
 
-    public Base(String IMEI, String server, Map<Integer, String> map, Integer version) {
-        Settings = new HashMap<Integer, String>();
+    public Base(String IMEI, String server, Map<?, String> map, Integer version) {
+        Settings = new HashMap<DeviceProperties, String>();
         set_IMEI(IMEI, server, map, version);
     }
 
-    private void ackFwdCmds(List<HashMap<String, Object>> reply) {
+    private Base ackFwdCmds(List<HashMap<String, Object>> reply) {
         try {
             assert (reply.size() <= 5);
         } catch (AssertionError e) {
@@ -90,11 +91,12 @@ public abstract class Base {
                 createAckNote(fwd);
             }
         }
+        return this;
     }
 
-    protected abstract void add_location();
+    protected abstract Base add_location();
 
-    protected abstract void add_note();
+    protected abstract Base add_note();
 
     private Boolean check_error(Object reply) {
         if (reply == null)
@@ -111,14 +113,15 @@ public abstract class Base {
         return false;
     }
 
-    protected void check_queue() {
+    protected Base check_queue() {
         note_count = get_note_count();
         if (note_queue.size() >= note_count) {
             send_note();
         }
+        return this;
     }
 
-    protected void clear_internal_settings() {
+    protected Base clear_internal_settings() {
 
         odometer = 0;
         speed = 0;
@@ -130,18 +133,20 @@ public abstract class Base {
             last_lat = 0.0;
             last_lng = 0.0;
         }
+        return this;
     }
 
-    private void configurate_device() {
+    private Base configurate_device() {
         dump_settings();
         get_changes();
+        return this;
     }
 
-    protected abstract void construct_note();
+    protected abstract Base construct_note();
 
-    protected abstract void createAckNote(Map<String, Object> reply);
+    protected abstract Base createAckNote(Map<String, Object> reply);
 
-    public void dump_settings() {
+    public Base dump_settings() {
         assert (imei.getClass() == "".getClass());
 
         if (WMP >= 17013) {
@@ -149,7 +154,7 @@ public abstract class Base {
             while (check_error(reply)) {
                 try {
                     System.out.println("dumping settings");
-                    reply = mcmProxy.dumpSet(imei, productVersion, Settings);
+                    reply = mcmProxy.dumpSet(imei, productVersion, oursToThiers());
                     System.out.println(reply);
                 } catch (GenericHessianException e) {
                     reply = 0;
@@ -161,9 +166,21 @@ public abstract class Base {
                 logger.debug("Reply from dumpSet: " + reply);
             }
         }
+        return this;
+    }
+    
+    private Map<Integer, String> oursToThiers(){
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        Iterator<?> itr = Settings.keySet().iterator();
+        while (itr.hasNext()){
+            DeviceProperties next = (DeviceProperties) itr.next();
+            map.put(next.getValue(), Settings.get(next));
+        }
+        
+        return map;
     }
 
-    protected void get_changes() {
+    protected Base get_changes() {
         if (WMP >= 17013) {
             reply = dbErrors[0];
             while (check_error(reply)) {
@@ -176,34 +193,38 @@ public abstract class Base {
             if (reply instanceof Integer && (Integer) reply != 304) {
                 System.out.println(reply + " We failed to get any changes");
             } else if (reply instanceof HashMap<?, ?>) {
-                set_settings((HashMap<Integer, String>) reply);
+                set_settings( theirsToOurs((HashMap<?, ?>) reply));
             }
         }
+        return this;
     }
+    
+    protected abstract HashMap<DeviceProperties, String> theirsToOurs(HashMap<?, ?> reply);
 
     protected abstract Integer get_note_count();
 
-    public abstract String get_setting();
+    public String get_setting(DeviceProperties propertyID){
+        return Settings.get(propertyID);
+    }
 
-    public abstract Integer get_setting_int();
-
-    protected void get_time() {
+    protected Base get_time() {
 
         time = System.currentTimeMillis() / 1000;
         time_last = time;
+        return this;
     }
 
     public int getDeviceDriverID() {
         return deviceDriverID;
     }
 
-    public void increment_time(Integer increment) {
-
+    public Base increment_time(Integer increment) {
         time_last = time;
         time += increment;
+        return this;
     }
 
-    private void initiate_device(String server) {
+    private Base initiate_device(String server) {
         ignition_state = false;
 
         note_queue = new ArrayList<byte[]>();
@@ -226,9 +247,10 @@ public abstract class Base {
         rpm_violation = false;
         seatbelt_violation = false;
         speeding = false;
+        return this;
     }
 
-    private void is_speeding() {
+    private Base is_speeding() {
         Double[] point = { latitude, longitude };
         if (speed > speed_limit && !speeding) {
             speeding = true;
@@ -243,22 +265,25 @@ public abstract class Base {
             speed_points.add(speed);
             was_speeding();
         }
+        return this;
     }
 
-    public void power_off_device(Integer time_delta) {
+    public Base power_off_device(Integer time_delta) {
         if (power_state) {
             increment_time(time_delta);
             set_power();
         } else {
             logger.info("The device is already off.");
         }
+        return this;
     }
 
-    public void power_on_device() {
+    public Base power_on_device() {
         power_on_device((int) (System.currentTimeMillis() / 1000));
+        return this;
     }
 
-    public void power_on_device(Integer time_now) {
+    public Base power_on_device(Integer time_now) {
         assert (latitude != 0.0 && longitude != 0.0);
         if (!power_state) {
             set_time(time_now);
@@ -269,15 +294,17 @@ public abstract class Base {
         } else {
             logger.info("The device is already on.");
         }
+        return this;
     }
 
-    public void power_on_device(Long time_now) {
+    public Base power_on_device(Long time_now) {
         power_on_device((int) (time_now / 1000));
+        return this;
     }
 
     protected abstract Integer processCommand(Map<String, Object> reply);
 
-    protected void send_note() {
+    protected Base send_note() {
         assert (note_queue instanceof ArrayList<?>);
         assert (imei instanceof String);
         while (!note_queue.isEmpty()) {
@@ -296,9 +323,10 @@ public abstract class Base {
                 ackFwdCmds((List<HashMap<String, Object>>) reply);
             }
         }
+        return this;
     }
 
-    private void set_heading() {
+    private Base set_heading() {
         Integer direction = calculator.get_heading(last_lat, last_lng, latitude, longitude);
         // if (productVersion==5){
         Integer[] headers = { 0, 45, 90, 135, 180, 225, 270, 315, 360 };
@@ -324,77 +352,88 @@ public abstract class Base {
         if (direction == 9)
             direction = 0;
         this.heading = direction;
+        return this;
     }
 
-    protected abstract void set_ignition(Integer time_delta);//
+    protected abstract Base set_ignition(Integer time_delta);//
 
-    protected void set_IMEI(String imei, String server, Map<Integer, String> map, Integer version) {
+    protected Base set_IMEI(String imei, String server, Map<?, String> map, Integer version) {
 
         this.imei = imei;
-        this.Settings = map;
+        this.Settings = (Map<DeviceProperties, String>) map;
         set_version(version);
         initiate_device(server);
+        return this;
     }
 
-    public void set_location(double lat, double lng) {
+    public Base set_location(double lat, double lng) {
         update_location(lat, lng, 0);
+        return this;
     }
 
-    public void set_MSP(Integer version) {
+    public Base set_MSP(Integer version) {
         MSP = version;
+        return this;
     }
 
-    public void set_MSP(Object version) {
+    public Base set_MSP(Object version) {
         MSP = (Integer) version;
+        return this;
     }
 
-    private void set_odometer() {
+    private Base set_odometer() {
         Double miles = calculator.calc_distance(last_lat, last_lng, latitude, longitude);
         int tenths_of_mile = (int) (miles * 100);
         odometer = tenths_of_mile;
+        return this;
     }
 
-    protected abstract void set_power();
+    protected abstract Base set_power();
 
-    public void set_satelites(Integer satelites) {
+    public Base set_satelites(Integer satelites) {
         sats = satelites;
+        return this;
     }
 
-    protected abstract void set_server(String server);
+    protected abstract Base set_server(String server);
 
-    public void set_settings(HashMap<Integer, String> changes) {
+    public Base set_settings(HashMap<?, String> changes) {
 
-        Iterator<Integer> itr = changes.keySet().iterator();
+        Iterator<?> itr = changes.keySet().iterator();
         while (itr.hasNext()) {
-            Integer next = itr.next();
+            DeviceProperties next = (DeviceProperties) itr.next();
             Settings.put(next, changes.get(next));
         }
         dump_settings();
+        return this;
     }
 
-    public void set_settings(Integer key, String value) {
-        HashMap<Integer, String> change = new HashMap<Integer, String>();
+    public Base set_settings(DeviceProperties key, String value) {
+        HashMap<DeviceProperties, String> change = new HashMap<DeviceProperties, String>();
         change.put(key, value);
         set_settings(change);
+        return this;
     }
 
-    public abstract void set_speed_limit(Integer limit);
+    public abstract Base set_speed_limit(Integer limit);
 
-    public void set_time(Date time_now) {
+    public Base set_time(Date time_now) {
 
         Calendar cal = new GregorianCalendar();
         cal.setTime(time_now);
 
         set_time((int) (cal.getTimeInMillis() / 1000));
+        return this;
     }
 
-    public void set_time(Integer time_now) {
+    public Base set_time(Integer time_now) {
 
         time = time_now;
         time_last = time;
+        return this;
     }
 
-    public void set_time(String time_now) {
+    public Base set_time(String time_now) {
 
         Date date = new Date();
         SimpleDateFormat df = (SimpleDateFormat) SimpleDateFormat.getInstance();
@@ -410,9 +449,10 @@ public abstract class Base {
         cal.setTime(date);
 
         set_time((int) (cal.getTimeInMillis() / 1000));
+        return this;
     }
 
-    private void set_vehicle_speed() {
+    private Base set_vehicle_speed() {
         if (speeding) {
             Integer timeDelta = (int) (time - time_last);
             Double distance = calculator.calc_distance(last_lat, last_lng, latitude, longitude);
@@ -423,42 +463,49 @@ public abstract class Base {
             }
         }
         is_speeding();
+        return this;
     }
 
-    public void set_version(Integer version) {
+    public Base set_version(Integer version) {
         assert (version == 1 || version == 2 || version == 3 || version == 5);
         productVersion = version;
+        return this;
     }
 
-    public void set_WMP(Integer version) {
+    public Base set_WMP(Integer version) {
         WMP = version;
+        return this;
     }
 
-    public void set_WMP(Object version) {
+    public Base set_WMP(Object version) {
         WMP = (Integer) version;
+        return this;
     }
 
-    public void setDeviceDriverID(int deviceDriverID) {
+    public Base setDeviceDriverID(int deviceDriverID) {
         this.deviceDriverID = deviceDriverID;
+        return this;
     }
 
-    public void turn_key_off(Integer time_delta) {
+    public Base turn_key_off(Integer time_delta) {
         if (ignition_state) {
             set_ignition(time_delta);
         } else {
             logger.info("Vehicle was already turned off");
         }
+        return this;
     }
 
-    public void turn_key_on(Integer time_delta) {
+    public Base turn_key_on(Integer time_delta) {
         if (!ignition_state) {
             set_ignition(time_delta);
         } else {
             logger.info("Vehicle was already turned on");
         }
+        return this;
     }
 
-    public void update_location(double lat, double lng, Integer time_delta) {
+    public Base update_location(double lat, double lng, Integer time_delta) {
         timeSinceLastLoc += time_delta;
         try {
             if (last_lat != latitude)
@@ -490,8 +537,9 @@ public abstract class Base {
         if (timeSinceLastLoc >= timeBetweenNotes) {
             add_location();
         }
+        return this;
     }
 
-    protected abstract void was_speeding();
+    protected abstract Base was_speeding();
 
 }

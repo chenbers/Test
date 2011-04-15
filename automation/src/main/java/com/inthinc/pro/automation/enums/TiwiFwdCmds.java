@@ -1,9 +1,9 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 
-public enum TiwiFwdCmds {
+public enum TiwiFwdCmds implements DeviceTypesUnique{
 
 	 /* Forward Commands */
 
@@ -272,7 +272,7 @@ public enum TiwiFwdCmds {
     private TiwiFwdCmds(int c) {
     	code = c;
     }
-    public int getCode() {
+    public Integer getValue() {
     	return code;
     } 
     
@@ -281,11 +281,11 @@ public enum TiwiFwdCmds {
     static {
         for (TiwiFwdCmds p : EnumSet.allOf(TiwiFwdCmds.class))
         {
-            lookupByCode.put(p.getCode(), p);
+            lookupByCode.put(p.getValue(), p);
         }
     }
     
-    public static TiwiFwdCmds valueOf(Integer code){
+    public TiwiFwdCmds valueOf(Integer code){
     	return lookupByCode.get(code);
     }
     

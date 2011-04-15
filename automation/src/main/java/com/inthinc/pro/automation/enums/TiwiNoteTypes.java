@@ -1,9 +1,9 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 
-public enum TiwiNoteTypes {
+public enum TiwiNoteTypes implements DeviceTypesUnique{
 	/* Note Types */
 
     NOTE_TYPE_FULLEVENT(1),
@@ -66,7 +66,7 @@ public enum TiwiNoteTypes {
     private TiwiNoteTypes(int c) {
     	code = c;
     }
-    public int getCode() {
+    public Integer getValue() {
     	return code;
     } 
     
@@ -75,11 +75,11 @@ public enum TiwiNoteTypes {
     static {
         for (TiwiNoteTypes p : EnumSet.allOf(TiwiNoteTypes.class))
         {
-            lookupByCode.put(p.getCode(), p);
+            lookupByCode.put(p.getValue(), p);
         }
     }
     
-    public static TiwiNoteTypes valueOf(Integer code){
+    public TiwiNoteTypes valueOf(Integer code){
     	return lookupByCode.get(code);
     }
 

@@ -8,7 +8,9 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.device_emulation.TiwiGenerals.FwdCmdStatus;
+import com.inthinc.pro.automation.enums.TiwiAttrs;
+import com.inthinc.pro.automation.enums.TiwiNoteTypes;
+import com.inthinc.pro.automation.enums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.utils.StackToString;
 
 
@@ -21,7 +23,7 @@ public class Package_tiwiPro_Note {
     
     
     public Package_tiwiPro_Note(TiwiNoteTypes type, String time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<TiwiAttrs, Integer> Attrs){
-        nType = type.getCode();
+        nType = type.getValue();
         nTime = (int)DateToLong(time);
         sats = Sats;
         heading = Heading;
@@ -35,7 +37,7 @@ public class Package_tiwiPro_Note {
     
     
     public Package_tiwiPro_Note(TiwiNoteTypes type, long time, int Sats, int Heading, int Maprev, Double Lat, Double Lng, int speed, int Odometer, HashMap<TiwiAttrs, Integer> Attrs){
-        nType = type.getCode();
+        nType = type.getValue();
         if ( time > (System.currentTimeMillis()/100 )) nTime = (int)( time/1000 );
         else{ nTime = (int)time; }
         sats = Sats;
@@ -49,7 +51,7 @@ public class Package_tiwiPro_Note {
     }
     
     public Package_tiwiPro_Note( TiwiNoteTypes type, HashMap<TiwiAttrs, Integer> Attrs ){
-        nType = type.getCode();
+        nType = type.getValue();
         nTime = (int)(System.currentTimeMillis()/1000);
         sats = 0;
         heading = 0;
@@ -62,7 +64,7 @@ public class Package_tiwiPro_Note {
     }
     
     public Package_tiwiPro_Note( TiwiNoteTypes type ){
-        nType = type.getCode();
+        nType = type.getValue();
         nTime = (int)(System.currentTimeMillis()/1000);
         sats = 0;
         heading = 0;
@@ -75,7 +77,7 @@ public class Package_tiwiPro_Note {
     }
     
     public Package_tiwiPro_Note(){
-        nType = TiwiNoteTypes.NOTE_TYPE_LOCATION.getCode();
+        nType = TiwiNoteTypes.NOTE_TYPE_LOCATION.getValue();
         nTime = (int)(System.currentTimeMillis()/1000);
         sats = 0;
         heading = 0;
@@ -93,21 +95,21 @@ public class Package_tiwiPro_Note {
     	processAttrs(Attrs);
     }
     public void AddAttrs(FwdCmdStatus cmd, Integer reply){
-    	attrs.put(cmd.getCode(), reply);
+    	attrs.put(cmd.getValue(), reply);
     }
     public void AddAttrs(TiwiAttrs cmd, Integer reply){
-    	attrs.put(cmd.getCode(), reply);
+    	attrs.put(cmd.getValue(), reply);
     }
     public void AddAttrs(TiwiAttrs cmd, Object reply){
-    	attrs.put(cmd.getCode(), (Integer)reply);
+    	attrs.put(cmd.getValue(), (Integer)reply);
     }
     public void AddAttrs(TiwiAttrs cmd, FwdCmdStatus reply) {
-    	attrs.put(cmd.getCode(), reply.getCode());
+    	attrs.put(cmd.getValue(), reply.getValue());
     }
     
     public void AddAttrs(TiwiAttrs cmd, TiwiAttrs reply){
     	HashMap<TiwiAttrs, Integer> Attrs = new HashMap<TiwiAttrs, Integer>();
-    	Attrs.put(cmd, reply.getCode());
+    	Attrs.put(cmd, reply.getValue());
     	processAttrs(Attrs);
     }
         
@@ -147,7 +149,7 @@ public class Package_tiwiPro_Note {
     	Iterator<TiwiAttrs> itr = Attrs.keySet().iterator();
     	while (itr.hasNext()){
     		attrID = itr.next();
-    		attrs.put(attrID.getCode(), Attrs.get(attrID));
+    		attrs.put(attrID.getValue(), Attrs.get(attrID));
     	}
     }
    

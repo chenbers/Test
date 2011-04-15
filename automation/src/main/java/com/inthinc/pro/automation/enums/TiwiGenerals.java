@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class TiwiGenerals {
 
 	
-	public static enum FwdCmdStatus {
+	public static enum FwdCmdStatus implements DeviceTypesUnique {
 		FWDCMD_PROCESSED(0),
 	    FWDCMD_BADDATA(1),
 	    FWDCMD_UNKNOWN(2),
@@ -23,7 +23,7 @@ public class TiwiGenerals {
 	    private FwdCmdStatus(int c) {
 	    	code = c;
 	    }
-	    public int getCode() {
+	    public Integer getValue() {
 	    	return code;
 	    } 
 	    
@@ -32,15 +32,15 @@ public class TiwiGenerals {
 	    static {
 	        for (FwdCmdStatus p : EnumSet.allOf(FwdCmdStatus.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getValue(), p);
 	        }
 	    }
-	    public static FwdCmdStatus valueOf(Integer code){
+	    public FwdCmdStatus valueOf(Integer code){
 	    	return lookupByCode.get(code);
 	    }
 	}
 	
-	public static enum MSPPower{
+	public static enum MSPPower implements DeviceTypesUnique{
 	    /* MSP Power State */
 		MSP_PWRSTATE_OFF(0),
 		MSP_PWRSTATE_ON(1),        //Ignition on), WMP on
@@ -55,7 +55,7 @@ public class TiwiGenerals {
 	    private MSPPower(int c) {
 	    	code = c;
 	    }
-	    public int getCode() {
+	    public Integer getValue() {
 	    	return code;
 	    } 
 	    
@@ -64,15 +64,15 @@ public class TiwiGenerals {
 	    static {
 	        for (MSPPower p : EnumSet.allOf(MSPPower.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getValue(), p);
 	        }
 	    }
-	    public static MSPPower valueOf(Integer code){
+	    public MSPPower valueOf(Integer code){
 	    	return lookupByCode.get(code);
 	    }
 	}
 	
-	public static enum IgnitionState{
+	public static enum IgnitionState implements DeviceTypesUnique{
 		
 		IGNITION_ON_EMU(0),
 	    IGNITION_ON_DMM_EMU_AVAIL(1),
@@ -91,7 +91,7 @@ public class TiwiGenerals {
 	    private IgnitionState(int c) {
 	    	code = c;
 	    }
-	    public int getCode() {
+	    public Integer getValue() {
 	    	return code;
 	    } 
 	    
@@ -100,15 +100,15 @@ public class TiwiGenerals {
 	    static {
 	        for (IgnitionState p : EnumSet.allOf(IgnitionState.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getValue(), p);
 	        }
 	    }
-	    public static IgnitionState valueOf(Integer code){
+	    public IgnitionState valueOf(Integer code){
 	    	return lookupByCode.get(code);
 	    }
 	}
 	
-	public static enum WarningTypes{
+	public static enum WarningTypes implements DeviceTypesUnique{
 	    /* Warning Types */
 		
 	    WARNING_SPEEDING(1),
@@ -142,7 +142,7 @@ public class TiwiGenerals {
 	    private WarningTypes(int c) {
 	    	code = c;
 	    }
-	    public int getCode() {
+	    public Integer getValue() {
 	    	return code;
 	    } 
 	    
@@ -151,15 +151,15 @@ public class TiwiGenerals {
 	    static {
 	        for (WarningTypes p : EnumSet.allOf(WarningTypes.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getValue(), p);
 	        }
 	    }
-	    public static WarningTypes valueOf(Integer code){
+	    public WarningTypes valueOf(Integer code){
 	    	return lookupByCode.get(code);
 	    }
 	}
 	
-	public static enum Heading{
+	public static enum Heading implements DeviceTypesUnique{
 		/* Heading numbers */
 
 	    HEADING_NORTH(0),
@@ -176,7 +176,7 @@ public class TiwiGenerals {
 	    private Heading(int c) {
 	    	code = c;
 	    }
-	    public int getCode() {
+	    public Integer getValue() {
 	    	return code;
 	    } 
 	    
@@ -185,16 +185,16 @@ public class TiwiGenerals {
 	    static {
 	        for (Heading p : EnumSet.allOf(Heading.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getValue(), p);
 	        }
 	    }
-	    public static Heading valueOf(Integer code){
+	    public Heading valueOf(Integer code){
 	    	return lookupByCode.get(code);
 	    }
 	    
 	}
 	
-	public static enum ViolationFlags{
+	public static enum ViolationFlags implements DeviceTypesUnique{
 		 /* Violation Flags */
 
 	    VIOLATION_MASK_SPEEDING(1),
@@ -206,7 +206,7 @@ public class TiwiGenerals {
 	    private ViolationFlags(int c) {
 	    	code = c;
 	    }
-	    public int getCode() {
+	    public Integer getValue() {
 	    	return code;
 	    } 
 	    
@@ -215,10 +215,10 @@ public class TiwiGenerals {
 	    static {
 	        for (ViolationFlags p : EnumSet.allOf(ViolationFlags.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getValue(), p);
 	        }
 	    }
-	    public static ViolationFlags valueOf(Integer code){
+	    public ViolationFlags valueOf(Integer code){
 	    	return lookupByCode.get(code);
 	    }
 	}

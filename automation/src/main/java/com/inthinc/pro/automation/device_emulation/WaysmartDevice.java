@@ -1,10 +1,13 @@
 package com.inthinc.pro.automation.device_emulation;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.DeviceProperties;
+import com.inthinc.pro.automation.enums.WaysmartProps;
 import com.inthinc.pro.automation.utils.CreateHessian;
 
 
@@ -16,12 +19,12 @@ public class WaysmartDevice extends Base {
 	protected final static Integer productVersion = 2;
 	private CreateHessian hessian;
 
-	public WaysmartDevice(String IMEI, String server, HashMap<Integer, String> settings) {
+	public WaysmartDevice(String IMEI, String server, HashMap<WaysmartProps, String> settings) {
 		super(IMEI, server, settings, productVersion);
 	}
 	
 	public WaysmartDevice(String IMEI, String server){
-		this(IMEI, server, Waysmart_Defaults.get_defaults());
+		this(IMEI, server, WaysmartProps.STATIC.getDefaultProps());
 	}
 	
 	public WaysmartDevice(String IMEI){
@@ -29,26 +32,30 @@ public class WaysmartDevice extends Base {
 	}
 
 	@Override
-	public void add_location() {
+	public Base add_location() {
 		// TODO Auto-generated method stub
+        return this;
 		
 	}
 
 	@Override
-	public void add_note() {
+	public Base add_note() {
 		// TODO Auto-generated method stub
+        return this;
 		
 	}
 
 	@Override
-	protected void construct_note() {
+	protected Base construct_note() {
 		// TODO Auto-generated method stub
+        return this;
 		
 	}
 
 	@Override
-	protected void createAckNote(Map<String, Object> reply) {
+	protected Base createAckNote(Map<String, Object> reply) {
 		// TODO Auto-generated method stub
+        return this;
 		
 	}
 	
@@ -61,70 +68,68 @@ public class WaysmartDevice extends Base {
 	}
 
 	@Override
-	public String get_setting() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	public String get_setting(Ways_SETTINGS setting) {
-		return Settings.get(setting.getCode());
-	}
-
-	@Override
-	public Integer get_setting_int() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	private Integer get_setting_int(Ways_SETTINGS setting) {
-		return setting.getCode();
-	}
-
-	@Override
 	public Integer processCommand(Map<String, Object> reply) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void set_ignition(Integer timeDelta) {
+	public Base set_ignition(Integer timeDelta) {
 		// TODO Auto-generated method stub
+        return this;
 		
 	}
 	
-	protected void set_IMEI( String imei, String server, HashMap<Integer, String> settings ){
+	protected Base set_IMEI( String imei, String server, HashMap<Integer, String> settings ){
 		logger.debug("IMEI: "+imei+", Server: " + server);
 		hessian = new CreateHessian();
         super.set_IMEI(imei, server, settings, productVersion);
-        Settings.put(Ways_SETTINGS.MCM_ID.getCode(), imei);
+        Settings.put(WaysmartProps.MCM_ID, imei);
         imei = imei.replaceAll("MCM", "WW");
-        Settings.put(Ways_SETTINGS.WITNESS_ID.getCode(), imei);
+        Settings.put(WaysmartProps.WITNESS_ID, imei);
+        return this;
     }
 
 	@Override
-	protected void set_power() {
+	protected Base set_power() {
 		// TODO Auto-generated method stub
+        return this;
 		
 	}
 
 	@Override
-	protected void set_server(String server) {
+	protected Base set_server(String server) {
 		mcmProxy = hessian.getMcmProxy(server);
 		String url, port;
 		url = hessian.getUrl(false);
 		port = hessian.getPort(false).toString();
-		Settings.put(get_setting_int(Ways_SETTINGS.SERVER_IP), url+":"+port);
+		Settings.put(WaysmartProps.SERVER_IP, url+":"+port);
+        return this;
 	}
 
 	@Override
-	public void set_speed_limit(Integer limit) {
+	public Base set_speed_limit(Integer limit) {
 		// TODO Auto-generated method stub
+        return this;
 		
 	}
 
 
 	@Override
-	protected void was_speeding() {
+	protected Base was_speeding() {
 		// TODO Auto-generated method stub
+        return this;
 		
 	}
+
+	 protected HashMap<DeviceProperties, String> theirsToOurs(HashMap<?, ?> reply){
+        HashMap<WaysmartProps, String> map = new HashMap<WaysmartProps, String>();
+        Iterator<?> itr = reply.keySet().iterator();
+        while (itr.hasNext()){
+            Integer next = (Integer) itr.next();
+            String value = reply.get(next).toString();
+            map.put(WaysmartProps.STATIC.valueOf(next), (String) value);
+        }
+        return null;
+    }
 }

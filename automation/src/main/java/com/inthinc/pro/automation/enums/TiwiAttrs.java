@@ -1,9 +1,9 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 
-public enum TiwiAttrs {
+public enum TiwiAttrs implements DeviceTypesUnique {
 
     ATTR_TYPE_TOP_SPEED(1),
     ATTR_TYPE_AVG_SPEED(2),
@@ -133,16 +133,19 @@ public enum TiwiAttrs {
     ATTR_TOTAL_BYTES_DUMPSET(230),
     ATTR_SBS_LINK_ID(231),
     ATTR_CLOSEST_SBS_LINK_ID(232),
+    STATIC,
 
     ;
 
     private int code;
 
+    private TiwiAttrs() {}
+
     private TiwiAttrs(int c) {
         code = c;
     }
 
-    public int getCode() {
+    public Integer getValue() {
         return code;
     }
 
@@ -150,11 +153,12 @@ public enum TiwiAttrs {
 
     static {
         for (TiwiAttrs p : EnumSet.allOf(TiwiAttrs.class)) {
-            lookupByCode.put(p.getCode(), p);
+            lookupByCode.put(p.getValue(), p);
         }
     }
 
-    public static TiwiAttrs valueOf(Integer code) {
+    public TiwiAttrs valueOf(Integer code) {
         return lookupByCode.get(code);
     }
+
 }

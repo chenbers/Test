@@ -1,10 +1,10 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 
 
-public enum Ways_ATTRS {
+public enum Ways_ATTRS implements DeviceTypesUnique{
 	//Attributes
 	 
 	 ATTR_TOPSPEED(1),
@@ -264,16 +264,19 @@ public enum Ways_ATTRS {
 	 ATTR_WITNESSIIARCHIVE(49165),
 	 ATTR_WITNESSIIARCHIVEHEADER(49166),
 	 ATTR_ACKDATA(49167),
-	 ATTR_CRASHTRACE(49168);
+	 ATTR_CRASHTRACE(49168),
+	 STATIC,
 
+	 ;
 	 
 	 private int code;
 
+	 private Ways_ATTRS(){}
 	 private Ways_ATTRS(int c) {
 	   code = c;
 	 }
 
-	 public int getCode() {
+	 public Integer getValue() {
 	   return code;
 	 }
 	 
@@ -282,11 +285,11 @@ public enum Ways_ATTRS {
 	    static {
 	        for (Ways_ATTRS p : EnumSet.allOf(Ways_ATTRS.class))
 	        {
-	            lookupByCode.put(p.getCode(), p);
+	            lookupByCode.put(p.getValue(), p);
 	        }
 	    }
 	    
-	    public static Ways_ATTRS valueOf(Integer code){
+	    public Ways_ATTRS valueOf(Integer code){
 	    	return lookupByCode.get(code);
 	    }
 }
