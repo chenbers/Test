@@ -175,23 +175,5 @@ public class Dashboard extends AbstractPage{
         
         return sb.toString();
     }    
-
-    @Override
-    public Page load() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean validate() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public String getExpectedPath() {
-        // TODO Auto-generated method stub
-        return null;
-    }
   
 }

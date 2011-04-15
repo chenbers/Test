@@ -52,7 +52,7 @@ public class DriverReport extends AbstractPage {
     public void textField_vehicleSearch_type(String vehicle) {
         selenium.type(DriverReportEnum.VEHICLE_SEARCH, vehicle);        
     }
-    
+
     public void textField_employeeSearch_type(String vehicle) {
         selenium.type(DriverReportEnum.EMPLOYEE_SEARCH, vehicle);        
     }
@@ -78,6 +78,7 @@ public class DriverReport extends AbstractPage {
     }
     
     public void form_driverSearch_submit() {
+      //TODO: jwimmer: for team: do we want to expose a "form"? or do we stick to visible page elements as a User would see them?  (i.e. I assume there is a submit button on the page that the user would click)
         selenium.submit(DriverReportEnum.DRIVER_FORM.getID());
     }
     
@@ -111,12 +112,6 @@ public class DriverReport extends AbstractPage {
     public Page load() {
         // TODO Auto-generated method stub
         return null;
-    }
-
-    @Override
-    public boolean validate() {
-        // TODO Auto-generated method stub
-        return false;
     }
 
     @Override

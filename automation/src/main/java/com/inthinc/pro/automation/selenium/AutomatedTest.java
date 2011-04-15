@@ -4,12 +4,25 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
-public abstract class AutomatedTest {
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+
+import com.inthinc.automation.AutomationPropertiesBean;
+
+public class AutomatedTest {
 
     protected Long startTime;
     protected static HashMap<String, HashMap<String, String>> errors;
     protected String testVerdict = "Fail";// TODO: jwimmer: right now there is no way to FAIL a test? just "Pass" or "Errors"
+    AutomationPropertiesBean automationPropertiesBean;
 
+    public AutomationPropertiesBean getAutomationPropertiesBean() {
+        return automationPropertiesBean;
+    }
+    public void setAutomationPropertiesBean(AutomationPropertiesBean automationProps) {
+        this.automationPropertiesBean = automationProps;
+    }
     public void setTestVerdict(String testVerdict) {
         this.testVerdict = testVerdict;
     }
@@ -20,16 +33,20 @@ public abstract class AutomatedTest {
 
     public void before() {
         try {
-            selenium = GlobalSelenium.getYourOwn();
+            String[] configFiles = new String[] { "classpath:spring/applicationContext-automation.xml" };
+            BeanFactory factory = new ClassPathXmlApplicationContext (configFiles);
+            AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
+            
+            selenium = GlobalSelenium.getYourOwn(apb.getDefaultWebDriver(), apb.getBaseURL());
             startTime = System.currentTimeMillis() / 1000;
         } catch (Exception e) {
             e.printStackTrace();
-            skip = true;
-            throw new NullPointerException();
+            skip = true; 
+            throw new NullPointerException();  //TODO: jwimmer: dTanner: why throw a NullPointerException here?
         }
-
     }
-
+    
+    //public abstract void failTest();
     public void after() {
         if (!skip) {
             try {

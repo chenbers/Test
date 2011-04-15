@@ -30,5 +30,4 @@ public class WebRallyTest extends RallyTest{
     public static void afterClass(){
         RallyTest.afterClass();
     }
-    
 }

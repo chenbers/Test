@@ -84,8 +84,6 @@ public class Login extends Masthead {
         return this;
     }
 
-    
-
     private Boolean header_logInError_isVisible() {
         return selenium.isVisible(LoginEnum.ERROR_HEADER);
     }
@@ -99,9 +97,6 @@ public class Login extends Masthead {
 
     @Override
     public Login load() {
-        System.out.println("selenium: "+selenium);
-        System.out.println("LoginEnum.class: "+LoginEnum.class);
-        System.out.println("LoginEnum.LOGIN_URL: "+LoginEnum.LOGIN_URL);
         selenium.open(LoginEnum.LOGIN_URL);
         return this;
     }
@@ -285,25 +280,22 @@ public class Login extends Masthead {
     }
 
     @Override
-    public boolean validate() {
-        try {
-            selenium.getText(LoginEnum.FORGOT_TEXT);
-            selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
+    public Login validate() {
+        selenium.getText(LoginEnum.FORGOT_TEXT);
+        selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
 
-            selenium.getText(LoginEnum.LOGIN_TEXT);
-            selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
+        selenium.getText(LoginEnum.LOGIN_TEXT);
+        selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
 
-            selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
+        selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
 
-            selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
-            selenium.getText(LoginEnum.USERNAME_LABEL);
+        selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
+        selenium.getText(LoginEnum.USERNAME_LABEL);
 
-            selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
-            selenium.getText(LoginEnum.PASSWORD_LABEL);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
+        selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
+        selenium.getText(LoginEnum.PASSWORD_LABEL);
+
+        return this;
     }
 
     @Override

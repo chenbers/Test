@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+	default-autowire="byName">
+	<bean id="propertyPlaceholderConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:spring/automation.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!--  bean id="globalSelenium" class="com.inthinc.pro.automation.selenium.GlobalSelenium"
+		scope="singleton">
+		<property name="automationProps" value="automationProps" />
+	</bean!-->
+	
+	<!-- bean id="states" class="com.inthinc.pro.model.app.States" init-method="init">
+    	<property name="stateDAO" ref="stateDAO"></property>
+ 	</bean!-->
+	<bean id="automatedTest" class="com.inthinc.pro.automation.selenium.AutomatedTest"
+		scope="singleton">
+		<property name="automationPropertiesBean" ref="automationPropertiesBean"  />
+	</bean>
+	<bean id="automationPropertiesBean" class="com.inthinc.automation.AutomationPropertiesBean"
+		scope="singleton">
+		<property name="serverName" value="${server.name}" />
+		<property name="serverPort" value="${server.port}" />
+		<property name="appPath" value="${server.appPath}" />
+		<property name="defaultWebDriverName" value="${browser.default}" />
+
+		<property name="hasIE" value="${browser.ie}" />
+		<property name="hasFirefox" value="${browser.firefox}" />
+		<property name="hasChrome" value="${browser.chrome}" />
+	</bean>
+</beans>

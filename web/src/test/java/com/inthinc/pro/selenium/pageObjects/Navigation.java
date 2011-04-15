@@ -48,22 +48,4 @@ public class Navigation extends AbstractPage {
     public void button_search_click() {
         selenium.click(NavigationEnum.SEARCH_BUTTON);
     }
-
-    @Override
-    public Page load() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean validate() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public String getExpectedPath() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

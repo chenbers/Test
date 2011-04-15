@@ -161,7 +161,7 @@
 								<exclude>none</exclude>
 							</excludes>
 							<includes>
-								<include>**/selenium/*Test.java</include>
+								<include>**/selenium/**/*Test.java</include>
 							</includes>
 							<systemProperties>
 								<property>

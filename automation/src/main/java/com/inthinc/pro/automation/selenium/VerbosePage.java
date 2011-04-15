@@ -1,5 +1,10 @@
 package com.inthinc.pro.automation.selenium;
 
+/**
+ * VerbosePage interface ensures that all pageObjects must implement a "minimum" functionality similar to com.inthinc.pro.web.selenium.Page,
+ * but these methods are named to be familiar to the non-Programmers (TestCase writers) who will interact with the automation classes.
+ *
+ */
 public interface VerbosePage extends Page {
     /**
      * Verbose version of load().
@@ -9,11 +14,11 @@ public interface VerbosePage extends Page {
     public VerbosePage page_directURL_load();
     
     /**
-     * Verbose version of isLoaded().
-     * @see com.inthinc.pro.web.selenium.Page#isLoaded()
+     * Verbose version of validateURL().
+     * @see com.inthinc.pro.web.selenium.Page#validateURL()
      * @return true if Page object is loaded, otherwise false.
      */
-    public boolean page_URL_validate();
+    public VerbosePage page_URL_validate();
     
     /**
      * Verbose version of getExpectedPath().
@@ -31,8 +36,10 @@ public interface VerbosePage extends Page {
     
     /**
      * Verbose version of validate().
-     * @see com.inthinc.pro.web.selenium.Page#isLoaded()
+     * @see com.inthinc.pro.web.selenium.Page#validateURL()
      * @return true if all validation checks pass, otherwise false
      */
-    public boolean page_bareMinimum_validate();
+    public VerbosePage page_bareMinimum_validate();
+    
+    //public VerbosePage page_directURL_loginThenLoad();
 }

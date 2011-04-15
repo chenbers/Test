@@ -17,24 +17,24 @@ public class GlobalSelenium {
 		return multiplicative.get(currentThread);
 	}
 
-	public static CoreMethodLib getYourOwn(WebDriver driver) {
+	public static CoreMethodLib getYourOwn(WebDriver driver, String appURL) {
+	    System.out.println("getYourOwn("+driver+", "+appURL+")");
 		CoreMethodLib selenium;
 		Long currentThread = Thread.currentThread().getId();
 
-		String url = "https://qa.tiwipro.com:8423/tiwipro/";
-		selenium = new CoreMethodLib(driver, url);
+		selenium = new CoreMethodLib(driver, appURL);
 		multiplicative.put(currentThread, selenium);
 		
 		return multiplicative.get(currentThread);
 	}
 
 	public static CoreMethodLib getYourOwn() {
-		return getYourOwn(new FirefoxDriver());
+		return getYourOwn(new FirefoxDriver() ," http://localhost:8080/web/");
 	}
 
 	public static void dieSeleniumDie() {
 		Long currentThread = Thread.currentThread().getId();
-		((CoreMethodLib) multiplicative.get(currentThread)).getWrappedDriver();
+		//((CoreMethodLib) multiplicative.get(currentThread)).getWrappedDriver();
 		multiplicative.remove(currentThread);
 	}
 }

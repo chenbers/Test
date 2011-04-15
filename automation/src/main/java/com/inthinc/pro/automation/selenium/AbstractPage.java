@@ -35,10 +35,37 @@ public abstract class AbstractPage implements VerbosePage {
         assertEquals(expected, actual.getText());
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.inthinc.pro.web.selenium.Page#load()
+     */
+    public AbstractPage page_directURL_load() {
+        return (AbstractPage) load();
+    }
+    
     public void assertEquals(SeleniumEnums actual) {
         assertEquals(selenium.getText(actual), actual.getText());
     }
+    
+//    /*
+//     * (non-Javadoc)
+//     * 
+//     * @see com.inthinc.pro.web.selenium.Page#page_loginLoad()
+//     */
+//    public AbstractPage page_directURL_loginThenLoad() {
+//        return (AbstractPage) loginLoad()
+//    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.inthinc.pro.web.selenium.Page#validateURL()
+     */
+    public AbstractPage page_URL_validate() {
+        return validateURL();
+    }
+    
     public void assertNotEquals(Object actual, Object expected) {
         if (actual.equals(expected)) {
             addError(actual + " == " + expected);
@@ -75,8 +102,6 @@ public abstract class AbstractPage implements VerbosePage {
         return selenium.getErrors();
     }
     
-
-    
     @Override
     public String getCurrentLocation() {
         // TODO Auto-generated method stub
@@ -96,12 +121,12 @@ public abstract class AbstractPage implements VerbosePage {
     /*
      * (non-Javadoc)
      * 
-     * @see com.inthinc.pro.web.selenium.Page#isLoaded()
+     * @see com.inthinc.pro.web.selenium.Page#validateURL()
      */
-    public boolean isLoaded() {
+    public AbstractPage validateURL() {
         boolean results = getCurrentLocation().contains(getExpectedPath());
         // System.out.println("about to return: "+results);
-        return results;
+        return this;
     }
     
     @Override
@@ -110,40 +135,22 @@ public abstract class AbstractPage implements VerbosePage {
         return null;
     }
 
-    public boolean page_bareMinimum_validate() {
-        return validate();
-    }
-
     /*
      * (non-Javadoc)
      * 
-     * @see com.inthinc.pro.web.selenium.ScripterPage#page_load()
-     */
-    public AbstractPage page_directURL_load() {
-        return (AbstractPage) load();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.inthinc.pro.web.selenium.ScripterPage#page_getExpectedPath()
+     * @see com.inthinc.pro.web.selenium.Page#page_getExpectedPath()
      */
     public String page_path_getExpected() {
         return getExpectedPath();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.inthinc.pro.web.selenium.ScripterPage#page_isLoaded()
-     */
-    public boolean page_URL_validate() {
-        return isLoaded();
+    public AbstractPage page_bareMinimum_validate() {
+        return validate();
     }
-    
+
     @Override
-    public boolean validate() {
+    public AbstractPage validate() {
         // TODO Auto-generated method stub
-        return false;
+        return this;
     }
 }

@@ -2,6 +2,9 @@ package com.inthinc.pro.automation.selenium;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
+import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.thoughtworks.selenium.SeleniumException;
 
 /****************************************************************************************
@@ -14,7 +17,7 @@ import com.thoughtworks.selenium.SeleniumException;
  * @see HashMap
  */
 public class ErrorCatcher {
-
+    private final static Logger logger = Logger.getLogger(ErrorCatcher.class);
     private HashMap<String, HashMap<String, String>> errors = new HashMap<String, HashMap<String, String>>();
     private HashMap<String, String> errorList;
 
@@ -26,6 +29,7 @@ public class ErrorCatcher {
      * @param error text
      */
     private void addError(String name, String type, String error) {
+        logger.error(name+" : "+type+" : "+error);
         if (!errors.containsKey(name)) {
             add_error(name);
         }

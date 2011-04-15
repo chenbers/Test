@@ -23,6 +23,5 @@ public class WebTest extends AutomatedTest{
     @AfterClass
     public static void afterClass(){
         AutomatedTest.afterClass();
-    }
-    
+    }    
 }

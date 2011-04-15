@@ -21,23 +21,4 @@ public class TeamPage extends AbstractPage{
         // makes sure the next "thing" is there
         selenium.Pause(10);
     }
-    
-    @Override
-    public String getExpectedPath() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Page load() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean validate() {
-        // TODO Auto-generated method stub
-        return false;
-    } 
-
 }

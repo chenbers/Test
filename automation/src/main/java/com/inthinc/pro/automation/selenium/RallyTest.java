@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.selenium;
 
-import java.util.HashMap;
-
 import org.apache.commons.httpclient.NameValuePair;
 
 import com.inthinc.pro.rally.RallyWebServices;
@@ -50,10 +48,10 @@ public abstract class RallyTest extends AutomatedTest {
 
 	@Override
 	public void after() {
-		super.after();
 		if (!skip) {
 			try {
 				rally.setBuildNumber(selenium.getText("footerForm:version"));
+				super.after();
 
 				rally.setVerdict(testVerdict);
                 rally.setNotes(errors);

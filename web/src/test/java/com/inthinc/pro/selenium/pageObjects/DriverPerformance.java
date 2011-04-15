@@ -17,22 +17,4 @@ public class DriverPerformance extends AbstractPage {
     public void link_viewTrips_click() {
         selenium.click(DriverPerformanceEnum.VIEW_ALL_TRIPS);        
     }
-
-    @Override
-    public Page load() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean validate() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public String getExpectedPath() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

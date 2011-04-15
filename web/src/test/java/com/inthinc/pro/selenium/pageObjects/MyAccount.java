@@ -398,9 +398,9 @@ public class MyAccount extends Masthead {
         return selenium.getText(MyAccountEnum.TEXT_TITLE);
     }
     
-    public boolean validate() {
+    public MyAccount validate() {
         page_titlesAndLabels_validate();
-        return true;
+        return this;
     }
     
     public Boolean popup_changePassword_isVisible(){

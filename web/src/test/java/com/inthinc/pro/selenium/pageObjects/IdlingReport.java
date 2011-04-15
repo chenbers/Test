@@ -74,22 +74,5 @@ public class IdlingReport extends AbstractPage {
         sb.append(st.nextToken());
         
         return sb.toString();
-    }    
-    @Override
-    public Page load() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean validate() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public String getExpectedPath() {
-        // TODO Auto-generated method stub
-        return null;
-    }    
+    }       
 }

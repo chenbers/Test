@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
@@ -23,6 +24,7 @@ import com.thoughtworks.selenium.SeleniumException;
  * 
  */
 public class CoreMethodLib extends WebDriverBackedSelenium {
+    private final static Logger logger = Logger.getLogger(CoreMethodLib.class);
     public static Integer PAGE_TIMEOUT = 30000;
 
     private ErrorCatcher errors;
