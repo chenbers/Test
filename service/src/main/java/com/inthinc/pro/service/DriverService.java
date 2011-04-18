@@ -15,10 +15,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.service.jaxb.Pretty;
 
 @Path("/")
-@Pretty
 //@Produces({"application/xml","application/json", "application/fastinfoset"})
 public interface DriverService {
 
