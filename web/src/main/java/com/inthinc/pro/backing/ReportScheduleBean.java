@@ -285,7 +285,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     
     public void reportGroupChangeAction() {
         allGroupUsers = null;
-        getItem().setIdList(null);
+        getItem().setGroupIDList(null);
         getItem().setGroupID(null);
         getItem().setDriverID(null);
         getItem().setVehicleID(null);
@@ -428,13 +428,14 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     }
     
     private String[] getListDisplay(ReportScheduleView reportSchedule) {
-        if (reportSchedule.getIdList() != null && !reportSchedule.getIdList().isEmpty()) {
+        if ((reportSchedule.getGroupIDList() != null && !reportSchedule.getGroupIDList().isEmpty()) ||
+                (reportSchedule.getDriverIDList() != null && !reportSchedule.getDriverIDList().isEmpty())) {
 
             
             StringBuffer buffer = new StringBuffer();
             if (reportSchedule.getReport().getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER) {
                 List<Driver> driverList = getDriverList();
-                for (Integer driverID : reportSchedule.getIdList()) {
+                for (Integer driverID : reportSchedule.getDriverIDList()) {
                     for (Driver driver : driverList) {
                         if (driver.getDriverID().equals(driverID)) {
                             if (buffer.length() > 0)
@@ -446,7 +447,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                 }
             }
             else {
-                for (Integer grpID : reportSchedule.getIdList()) {
+                for (Integer grpID : reportSchedule.getGroupIDList()) {
                     Group group = this.getGroupHierarchy().getGroup(grpID);
                     if (group != null) {
                         if (buffer.length() > 0)
@@ -789,7 +790,8 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         private ReportGroup report;
         @Column(updateable = true)
         private Integer dayOfMonth;
-        private List<String> idSelectList;
+        private List<String> groupIDSelectList;
+        private List<String> driverIDSelectList;
         @Column(updateable = false)
         private String[] listDisplay;
         
@@ -812,28 +814,28 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             super.setReportID(reportID);
         }
 
-        public List<String> getIdSelectList() {
-            if (getIdList() != null) {
-                idSelectList = new ArrayList<String>();
-                for (Integer id : getIdList()) {
-                    idSelectList.add(id.toString());
+        public List<String> getGroupIDSelectList() {
+            if (getGroupIDList() != null) {
+                groupIDSelectList = new ArrayList<String>();
+                for (Integer id : getGroupIDList()) {
+                    groupIDSelectList.add(id.toString());
                 }
             }
             else {
-                idSelectList = null;
+                groupIDSelectList = null;
             }
             
-            return idSelectList;
+            return groupIDSelectList;
         }
 
-        public void setIdSelectList(List<String> idSelectList) {
-            if (idSelectList == null) {
-                setIdList(null);
+        public void setGroupIDSelectList(List<String> groupIDSelectList) {
+            if (groupIDSelectList == null) {
+                setGroupIDList(null);
                 return;
             }
             
             List<Integer> idList = new ArrayList<Integer>();
-            for (String groupIDStr : idSelectList) {
+            for (String groupIDStr : groupIDSelectList) {
                 try {
                     idList.add(Integer.valueOf(groupIDStr));
                 }
@@ -842,8 +844,43 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                     
                 }
             }
-            setIdList(idList);
+            setGroupIDList(idList);
         }
+        
+        public void setDriverIDSelectList(List<String> driverIDSelectList) {
+            if (driverIDSelectList == null) {
+                setDriverIDList(null);
+                return;
+            }
+            
+            List<Integer> idList = new ArrayList<Integer>();
+            for (String driverIDStr : driverIDSelectList) {
+                try {
+                    idList.add(Integer.valueOf(driverIDStr));
+                }
+                catch (NumberFormatException ex) {
+                    logger.error(ex);
+                    
+                }
+            }
+            setDriverIDList(idList);
+        }
+        
+        public List<String> getDriverIDSelectList() {
+            if (getDriverIDList() != null) {
+                driverIDSelectList = new ArrayList<String>();
+                for (Integer id : getDriverIDList()) {
+                    driverIDSelectList.add(id.toString());
+                }
+            }
+            else {
+                driverIDSelectList = null;
+            }
+            
+            return driverIDSelectList;
+        }
+
+        
         @Override
         public boolean isSelected() {
             return selected;

@@ -43,9 +43,9 @@ public class ReportSchedule
     private String 				fullName;
     
 	private Occurrence occurrence;
-    @Column(name = "groupIDList")
-	private List<Integer> idList;
-	private ReportParamType paramType;
+	private List<Integer> groupIDList;
+    private List<Integer> driverIDList;
+    private ReportParamType paramType;
 	private Boolean iftaOnly;
 	
     
@@ -300,12 +300,20 @@ public class ReportSchedule
 		this.fullName = fullName;
 	}
 
-    public List<Integer> getIdList() {
-        return idList;
+    public List<Integer> getGroupIDList() {
+        return groupIDList;
     }
 
-    public void setIdList(List<Integer> idList) {
-        this.idList = idList;
+    public void setGroupIDList(List<Integer> groupIDList) {
+        this.groupIDList = groupIDList;
+    }
+
+    public List<Integer> getDriverIDList() {
+        return driverIDList;
+    }
+
+    public void setDriverIDList(List<Integer> driverIDList) {
+        this.driverIDList = driverIDList;
     }
 
     public ReportParamType getParamType() {
