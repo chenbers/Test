@@ -122,7 +122,6 @@ public enum MyAccountEnum implements SeleniumEnums {
     CHANGE_PASSWORD_CONFIRM_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
 
     
-    
     ;
 
     private String ID, text, url, xpath, xpathAlt;

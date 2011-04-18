@@ -67,9 +67,9 @@ public class MyAccount extends Masthead {
     }
 
     public MyAccount dropDown_critical_selectValue(RedFlagPrefs selection) {
-        selenium.select(MyAccountEnum.CRITICAL_SELECT, selection.getValue());
+        selenium.select(MyAccountEnum.CRITICAL_SELECT, "index="+selection.getValue());
         String selected = selenium.getSelectedLabel(MyAccountEnum.CRITICAL_SELECT);
-        assertEquals(getSelectedValue(selection), selected);
+//        assertEquals(getTextValue(selection), selected);
         return this;
     }
 
@@ -88,9 +88,9 @@ public class MyAccount extends Masthead {
     }
 
     public MyAccount dropDown_information_selectValue(RedFlagPrefs selection) {
-        selenium.select(MyAccountEnum.INFORMATION_SELECT, selection.getValue());
+        selenium.select(MyAccountEnum.INFORMATION_SELECT, "index="+selection.getValue());
         String selected = selenium.getSelectedLabel(MyAccountEnum.INFORMATION_SELECT);
-        assertEquals(getSelectedValue(selection), selected);
+//        assertEquals(getTextValue(selection), selected);
         return this;
     }
 
@@ -116,9 +116,9 @@ public class MyAccount extends Masthead {
     }
 
     public MyAccount dropDown_warning_selectValue(RedFlagPrefs selection) {
-        selenium.select(MyAccountEnum.WARNING_SELECT, selection.getValue());
+        selenium.select(MyAccountEnum.WARNING_SELECT, "index="+selection.getValue());
         String selected = selenium.getSelectedLabel(MyAccountEnum.WARNING_SELECT);
-        assertEquals(getSelectedValue(selection), selected);
+//        assertEquals(getTextValue(selection), selected);
         return this;
     }
 
@@ -126,8 +126,8 @@ public class MyAccount extends Masthead {
         return MyAccountEnum.MY_ACCOUNT_URL.getURL();
     }
 
-    private String getSelectedValue(RedFlagPrefs selection) {
-        return selenium.getSelectedLabel(selection.getID());
+    private String getTextValue(RedFlagPrefs selection) {
+    	return selenium.getText(selection.getID());
     }
 
     public String label_confirmPassword_getText(){
