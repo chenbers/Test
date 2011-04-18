@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.thoughtworks.selenium.SeleniumException;
 
 /****************************************************************************************
@@ -29,14 +28,13 @@ public class ErrorCatcher {
      * @param error text
      */
     private void addError(String name, String type, String error) {
-        logger.error(name+" : "+type+" : "+error);
+        logger.error(name+" : "+type+" : "+error.replace("&nbsp;", " ").replace("<br />", "\n"));
         if (!errors.containsKey(name)) {
             add_error(name);
         }
         errors.get(name).put(type, error);
         assert(type.equals("Warning"));
         if (!type.equals("Warning")){
-            System.out.println(name);
             throw new SeleniumException(name + "  " + error);
         }
     }
