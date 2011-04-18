@@ -1,8 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.selenium.AbstractPage;
 
-public class PageLiveFleet extends AbstractPage {
+public class PageLiveFleet extends NavigationBar {
 
   
 

@@ -1,9 +1,8 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 
-public abstract class NotificationsBar extends AbstractPage {
+public abstract class NotificationsBar extends NavigationBar {
 
     protected String current = "redFlags";
 

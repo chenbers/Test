@@ -2,21 +2,10 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.StringTokenizer;
 
-import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.selenium.GlobalSelenium;
-import com.inthinc.pro.automation.selenium.Page;
-import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
 import com.inthinc.pro.selenium.pageEnums.IdlingReportEnum;
-import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
-public class IdlingReport extends AbstractPage {
+public class IdlingReport extends NavigationBar {
     
-    protected static CoreMethodLib selenium;
-
-    public IdlingReport(){
-        selenium = GlobalSelenium.getSelenium();
-    }
     
     public void textField_startDate_type(String date) {
         selenium.type(IdlingReportEnum.START_DATE, date);

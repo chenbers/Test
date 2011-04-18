@@ -10,28 +10,28 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 public class Login extends Masthead {
 
-    public Login assert_badCredentials_isClosed() {//TODO: jwimmer: discuss: I don't think we want/need ANY pageObject.methods that do not conform to elementType_elementName_action(...)
+    public Login popup_badCredentials_assertIsClosed() {
         if (popUp_logInError_isVisible() || header_logInError_isVisible()) {
             addError("Bad Credentials Popup", "Popup didn't close");
         }
         return this;
     }
 
-    public Login assert_badCredentials_isOpen() {
+    public Login popup_badCredentials_assertIsOpen() {
         if (!popUp_logInError_isVisible() || !header_logInError_isVisible()) {
             addError("Bad Credentials Popup", "Popup didn't open");
         }
         return this;
     }
 
-    public Login assert_forgotPassword_isClosed() {
+    public Login popup_forgotPassword_assertIsClosed() {
         if (popUp_forgotPassword_isVisible()) {
             addError("Forgot Password Popup", "Popup didn't close");
         }
         return this;
     }
 
-    public Login assert_forgotPassword_isOpen() {
+    public Login popup_forgotPassword_assertIsOpen() {
         if (!popUp_forgotPassword_isVisible()) {
             addError("Forgot Password Popup", "Popup didn't open");
         }
@@ -45,13 +45,13 @@ public class Login extends Masthead {
 
     public Login button_forgotPasswordCancel_click() {
         selenium.click(LoginEnum.FORGOT_CANCEL_BUTTON);
-        assert_forgotPassword_isClosed();
+        popup_forgotPassword_assertIsClosed();
         return this;
     }
 
     public Login button_forgotPasswordClose_click() {
         selenium.click(LoginEnum.FORGOT_CLOSE);
-        assert_forgotPassword_isClosed();
+        popup_forgotPassword_assertIsClosed();
         return this;
     }
 
@@ -74,13 +74,13 @@ public class Login extends Masthead {
 
     public Login button_logInErrorOK_click() {
         selenium.click(LoginEnum.ERROR_BUTTON_OK);
-        assert_badCredentials_isClosed();
+        popup_badCredentials_assertIsClosed();
         return this;
     }
 
     public Login button_logInErrorX_click() {
         selenium.click(LoginEnum.ERROR_CLOSE);
-        assert_badCredentials_isClosed();
+        popup_badCredentials_assertIsClosed();
         return this;
     }
 
@@ -90,7 +90,7 @@ public class Login extends Masthead {
 
     public Login link_forgotPassword_click() {
         selenium.click(LoginEnum.FORGOT_TEXT);
-        assert_forgotPassword_isOpen();
+        popup_forgotPassword_assertIsOpen();
         popup_forgotPassword_validate();
         return this;
     }
@@ -101,19 +101,16 @@ public class Login extends Masthead {
         return this;
     }
 
-    public Login message_forgotPasswordEmailInvalid_validate() {
-        selenium.getText(LoginEnum.FORGOT_ERROR_EMAIL_FORMAT);
-        return this;
+    public String message_forgotPasswordEmailInvalid_getText() {
+        return selenium.getText(LoginEnum.FORGOT_ERROR_EMAIL_FORMAT);
     }
 
-    public Login message_forgotPasswordEmailRequired_validate() {
-        selenium.getText(LoginEnum.FORGOT_ERROR_EMAIL_UNKNOWN);
-        return this;
+    public String message_forgotPasswordEmailRequired_getText() {
+        return selenium.getText(LoginEnum.FORGOT_ERROR_EMAIL_UNKNOWN);
     }
 
-    public Login message_forgotPasswordEmailUnknown_validate() {
-        selenium.getText(LoginEnum.FORGOT_ERROR_EMAIL_UNKNOWN);
-        return this;
+    public String message_forgotPasswordEmailUnknown_getText() {
+        return selenium.getText(LoginEnum.FORGOT_ERROR_EMAIL_UNKNOWN);
     }
 
     public Login page_login_open() {
@@ -126,8 +123,8 @@ public class Login extends Masthead {
 //        if (selenium.verifyLocation(LoginEnum.LOGIN_URL)) {
             page_logout_open();
 //        }
-        textField_username_type(username);
-        textField_password_type(password);
+        text_username_type(username);
+        text_password_type(password);
         button_logIn_click();
         return this;
     }
@@ -206,10 +203,10 @@ public class Login extends Masthead {
     }
 
     public Login popup_badCred_validate() {
-        selenium.getText(LoginEnum.ERROR_HEADER);
-        selenium.getText(LoginEnum.ERROR_MESSAGE);
-        selenium.getText(LoginEnum.ERROR_BUTTON_OK);
-        selenium.getText(LoginEnum.ERROR_CLOSE);
+        assertEquals(LoginEnum.ERROR_HEADER);
+        assertEquals(LoginEnum.ERROR_MESSAGE);
+        assertEquals(LoginEnum.ERROR_BUTTON_OK);
+        assertEquals(LoginEnum.ERROR_CLOSE);
         return this;
     }
 
@@ -242,11 +239,11 @@ public class Login extends Masthead {
         selenium.isElementPresent(LoginEnum.FORGOT_EMAIL_FIELD);
         selenium.isElementPresent(LoginEnum.FORGOT_CLOSE);
 
-        selenium.getText(LoginEnum.FORGOT_TITLE);
-        selenium.getText(LoginEnum.FORGOT_MESSAGE);
-        selenium.getText(LoginEnum.FORGOT_SEND);
-        selenium.getText(LoginEnum.FORGOT_CANCEL_BUTTON);
-        selenium.getText(LoginEnum.FORGOT_EMAIL_LABEL);
+        assertEquals(LoginEnum.FORGOT_TITLE);
+        assertEquals(LoginEnum.FORGOT_MESSAGE);
+        assertEquals(LoginEnum.FORGOT_SEND);
+        assertEquals(LoginEnum.FORGOT_CANCEL_BUTTON);
+        assertEquals(LoginEnum.FORGOT_EMAIL_LABEL);
         return this;
     }
 
@@ -254,46 +251,42 @@ public class Login extends Masthead {
         return selenium.isVisible(LoginEnum.ERROR_HEADER);
     }
 
-    public Login textField_confirmPassword_type(String password) {
+    public Login text_confirmPassword_type(String password) {
         selenium.type(LoginEnum.CONFIRM_PASSWORD, password);
         return this;
     }
 
-    public Login textField_forgotPasswordEmail_type(String email) {
+    public Login text_forgotPasswordEmail_type(String email) {
         selenium.type(LoginEnum.FORGOT_EMAIL_FIELD, email);
         return this;
     }
 
-    public Login textField_newPassword_type(String password) {
+    public Login text_newPassword_type(String password) {
         selenium.type(LoginEnum.NEW_PASSWORD, password);
         return this;
     }
 
-    public Login textField_password_type(String password) {
+    public Login text_password_type(String password) {
         selenium.type(LoginEnum.PASSWORD_FIELD, password);
         return this;
     }
 
-    public Login textField_username_type(String username) {
+    public Login text_username_type(String username) {
         selenium.type(LoginEnum.USERNAME_FIELD, username);
         return this;
     }
 
     @Override
     public Login validate() {
-        selenium.getText(LoginEnum.FORGOT_TEXT);
-        selenium.isElementPresent(LoginEnum.FORGOT_TEXT);
+        assertEquals(LoginEnum.FORGOT_TEXT);
 
-        selenium.getText(LoginEnum.LOGIN_TEXT);
-        selenium.isElementPresent(LoginEnum.LOGIN_TEXT);
+        assertEquals(LoginEnum.LOGIN_TEXT);
 
         selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
 
-        selenium.isElementPresent(LoginEnum.USERNAME_LABEL);
-        selenium.getText(LoginEnum.USERNAME_LABEL);
+        assertEquals(LoginEnum.USERNAME_LABEL);
 
-        selenium.isElementPresent(LoginEnum.PASSWORD_LABEL);
-        selenium.getText(LoginEnum.PASSWORD_LABEL);
+        assertEquals(LoginEnum.PASSWORD_LABEL);
 
         return this;
     }

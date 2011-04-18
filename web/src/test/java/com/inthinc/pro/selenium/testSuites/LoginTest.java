@@ -33,8 +33,8 @@ public class LoginTest extends WebRallyTest {
         
         /* Input */
         login.page_login_open();//Navigate to page
-        login.textField_username_type("validLogin");//Type valid username
-        login.textField_password_type("validPassword");//Type valid password
+        login.text_username_type("validLogin");//Type valid username
+        login.text_password_type("validPassword");//Type valid password
         login.button_logIn_click();//Click Log In
         
         /* Expected Result */

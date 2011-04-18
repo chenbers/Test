@@ -2,20 +2,11 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.StringTokenizer;
 
-import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.selenium.GlobalSelenium;
-import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
 import com.inthinc.pro.selenium.pageEnums.UtilEnum;
 
-public class DriverReport extends AbstractPage {
+public class DriverReport extends NavigationBar {
     
-    protected static CoreMethodLib selenium;
-
-    public DriverReport(){
-        selenium = GlobalSelenium.getSelenium();
-    }
     
     public void link_team_click(Integer row) {
         clickIt(DriverReportEnum.TEAM.getID(), row);   
@@ -108,15 +99,4 @@ public class DriverReport extends AbstractPage {
         return sb.toString();
     }
 
-    @Override
-    public Page load() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getExpectedPath() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

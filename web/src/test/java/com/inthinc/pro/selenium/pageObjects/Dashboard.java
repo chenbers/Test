@@ -2,13 +2,11 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.StringTokenizer;
 
-import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
-import com.inthinc.pro.automation.selenium.Page;
 import com.inthinc.pro.selenium.pageEnums.DashboardEnum;
 
-public class Dashboard extends AbstractPage{
+public class Dashboard extends NavigationBar{
     
     protected static CoreMethodLib selenium;
 

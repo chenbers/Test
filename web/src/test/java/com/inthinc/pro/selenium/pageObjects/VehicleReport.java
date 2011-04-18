@@ -2,21 +2,11 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.StringTokenizer;
 
-import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.selenium.GlobalSelenium;
-import com.inthinc.pro.automation.selenium.Page;
-import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
 import com.inthinc.pro.selenium.pageEnums.UtilEnum;
 import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
 
-public class VehicleReport  extends AbstractPage {
+public class VehicleReport  extends NavigationBar {
     
-    protected static CoreMethodLib selenium;
-
-    public VehicleReport(){
-        selenium = GlobalSelenium.getSelenium();
-    }
     
     public void link_team_click(Integer row) {
         clickIt(VehicleReportEnum.TEAM.getID(), row);   
