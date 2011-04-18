@@ -64,7 +64,7 @@ public class UnsubscribeBean {
                     logger.debug("Cannot find driverID for person with emailAddress = " + decryptedEmailAddress);
                     return;
                 }
-                List<Integer> idList = reportSchedule.getGroupIDList();
+                List<Integer> idList = reportSchedule.getDriverIDList();
                 if (idList == null) {
                     logger.debug("Cannot find driverIDList for reportID = " + reportScheduleID);
                     return;
@@ -76,7 +76,7 @@ public class UnsubscribeBean {
                     
                     modIdList.add(id);
                 }
-                reportSchedule.setGroupIDList(modIdList);
+                reportSchedule.setDriverIDList(modIdList);
                 setShowLoginLink(Boolean.FALSE);
             }
             else {

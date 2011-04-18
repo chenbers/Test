@@ -856,7 +856,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
             List<Integer> idList = new ArrayList<Integer>();
             for (String driverIDStr : driverIDSelectList) {
                 try {
-                    idList.add(Integer.valueOf(driverIDStr));
+                    Integer id = Integer.valueOf(driverIDStr);
+                    if (!id.equals(ALL_DRIVERS_ID))
+                        idList.add(id);
                 }
                 catch (NumberFormatException ex) {
                     logger.error(ex);
