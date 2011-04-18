@@ -84,13 +84,13 @@ public enum MyAccountEnum implements SeleniumEnums {
     CANCEL_BUTTON("Cancel", "editAccountCancel", "//li/button[@type='button']", "//li/button[@class='left'][2]"),
 
     /* Edit Page Selects */
-    INFORMATION_SELECT(null, "my_form:editAccountLocale", "//select[@name='my_form:editAccountLocale']", null),
-    WARNING_SELECT(null, "my_form:editAccountMeasuremnt", "//selct[@name='my_form:editAccountMeasuremnt']", null),
-    CRITICAL_SELECT(null, "my_form:editAccountFuelEfficiency", "//select[@name='my_form:editAccountFuelEfficiency']", null),
+    LOCALE_SELECT(null, "my_form:editAccountLocale", "//select[@name='my_form:editAccountLocale']", null),
+    MEASUREMENT_SELECT(null, "my_form:editAccountMeasurement", "//selct[@name='my_form:editAccountMeasuremnt']", null),
+    FUEL_EFFICIENCY_SELECT(null, "my_form:editAccountFuelEfficiency", "//select[@name='my_form:editAccountFuelEfficiency']", null),
 
-    LOCALE_SELECT(null, "my_form:editAccount-info", "//select[@name='my_form:editAccount-info'", null),
-    MEASUREMENT_SELECT(null, "my_form:editAccount-warn", "//select[@name='my_form:editAccount-warn'", null),
-    FUEL_EFFICIENCY_SELECT(null, "my_form:editAccount-crit", "//select[@name='my_form:editAccount-crit'", null),
+    INFORMATION_SELECT(null, "my_form:editAccount-info", "//select[@name='my_form:editAccount-info'", null),
+    WARNING_SELECT(null, "my_form:editAccount-warn", "//select[@name='my_form:editAccount-warn'", null),
+    CRITICAL_SELECT(null, "my_form:editAccount-crit", "//select[@name='my_form:editAccount-crit'", null),
 
     /* Edit Page text fields */
     EMAIL1_TEXTFIELD(null, "my_form:editAccount-priEmail", "//input[@name='my_form:editAccount-priEmail", null),
