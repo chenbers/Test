@@ -4,7 +4,7 @@ import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
 public class MyAccount extends Masthead {
 
-    public static enum redFlagPreferences {
+    public static enum RedFlagPrefs {
         EMAIL1("1", MyAccountEnum.EMAIL1_TEXTFIELD),
         EMAIL2("2", MyAccountEnum.EMAIL2_TEXTFIELD),
         PHONE1("3", MyAccountEnum.PHONE1_TEXTFIELD),
@@ -15,7 +15,7 @@ public class MyAccount extends Masthead {
         private String value;
         private MyAccountEnum ID;
 
-        private redFlagPreferences(String value, MyAccountEnum ID) {
+        private RedFlagPrefs(String value, MyAccountEnum ID) {
             this.value = value;
             this.ID = ID;
         }
@@ -66,7 +66,7 @@ public class MyAccount extends Masthead {
         return this;
     }
 
-    public MyAccount dropDown_critical_selectValue(redFlagPreferences selection) {
+    public MyAccount dropDown_critical_selectValue(RedFlagPrefs selection) {
         selenium.select(MyAccountEnum.CRITICAL_SELECT, selection.getValue());
         String selected = selenium.getSelectedLabel(MyAccountEnum.CRITICAL_SELECT);
         assertEquals(getSelectedValue(selection), selected);
@@ -87,7 +87,7 @@ public class MyAccount extends Masthead {
         return this;
     }
 
-    public MyAccount dropDown_information_selectValue(redFlagPreferences selection) {
+    public MyAccount dropDown_information_selectValue(RedFlagPrefs selection) {
         selenium.select(MyAccountEnum.INFORMATION_SELECT, selection.getValue());
         String selected = selenium.getSelectedLabel(MyAccountEnum.INFORMATION_SELECT);
         assertEquals(getSelectedValue(selection), selected);
@@ -115,7 +115,7 @@ public class MyAccount extends Masthead {
         return this;
     }
 
-    public MyAccount dropDown_warning_selectValue(redFlagPreferences selection) {
+    public MyAccount dropDown_warning_selectValue(RedFlagPrefs selection) {
         selenium.select(MyAccountEnum.WARNING_SELECT, selection.getValue());
         String selected = selenium.getSelectedLabel(MyAccountEnum.WARNING_SELECT);
         assertEquals(getSelectedValue(selection), selected);
@@ -126,7 +126,7 @@ public class MyAccount extends Masthead {
         return MyAccountEnum.MY_ACCOUNT_URL.getURL();
     }
 
-    private String getSelectedValue(redFlagPreferences selection) {
+    private String getSelectedValue(RedFlagPrefs selection) {
         return selenium.getSelectedLabel(selection.getID());
     }
 
