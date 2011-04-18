@@ -146,8 +146,8 @@ public class PhoneControlDaoStubBehaviourAdvice {
      * <p/>
      * This pointcut will match any joinpoints (methods) within the {@link DriverHessianDAO}.
      */
-    @Pointcut("target(com.inthinc.pro.dao.hessian.DriverHessianDAO)")
-    public void inDriverHessianDAO() {}
+    @Pointcut("target(com.inthinc.pro.dao.hessian.PhoneControlHessianDAO)")
+    public void inPhoneControlHessianDAO() {}
 
     /**
      * Pointcut definition.
@@ -181,7 +181,7 @@ public class PhoneControlDaoStubBehaviourAdvice {
      * @throws Throwable
      *             If unable to proceed with the join point.
      */
-    @Around(value = "inDriverHessianDAO() && findByIdPointcut()")
+    @Around(value = "inPhoneControlHessianDAO() && findByIdPointcut()")
     public Object mockFindById(ProceedingJoinPoint pjp) throws Throwable {
         Integer driverId = (Integer) pjp.getArgs()[0];
 
@@ -206,7 +206,7 @@ public class PhoneControlDaoStubBehaviourAdvice {
      * @throws Throwable
      *             If unable to proceed with the join point.
      */
-    @Around(value = "inDriverHessianDAO() && findByPhoneNumber()")
+    @Around(value = "inPhoneControlHessianDAO() && findByPhoneNumber()")
     public Object mockFindByPhoneNumber(ProceedingJoinPoint pjp) throws Throwable {
         String phoneNumber = (String) pjp.getArgs()[0];
 
@@ -229,7 +229,7 @@ public class PhoneControlDaoStubBehaviourAdvice {
      * @throws Throwable
      *             If unable to proceed with the join point.
      */
-    @Around(value = "inDriverHessianDAO() && updatePointcut()")
+    @Around(value = "inPhoneControlHessianDAO() && updatePointcut()")
     public Object mockUpdate(ProceedingJoinPoint pjp) throws Throwable {
         Integer driverId = ((Driver) pjp.getArgs()[0]).getDriverID();
 

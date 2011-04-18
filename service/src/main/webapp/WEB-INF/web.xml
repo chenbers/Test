@@ -17,6 +17,12 @@
     <param-name>resteasy.servlet.mapping.prefix</param-name>
     <param-value>/api</param-value>
   </context-param>
+  <!-- media types -->
+	<context-param>
+        <param-name>resteasy.media.type.mappings</param-name>
+        <param-value>fastinfoset : application/fastinfoset, json : application/json, xml : application/xml</param-value>
+    </context-param>
+
 
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>

@@ -1,4 +1,4 @@
-package com.inthinc.pro.service.providers;
+package com.inthinc.pro.service.exceptionMappers;
 
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class NotFoundExceptionMapper extends BaseExceptionMapper<NotFoundException> implements ExceptionMapper<NotFoundException> {
 
     /**
-     * @see com.inthinc.pro.service.providers.BaseExceptionMapper#getStatus()
+     * @see com.inthinc.pro.service.exceptionMappers.BaseExceptionMapper#getStatus()
      */
     @Override
     public Status getStatus() {

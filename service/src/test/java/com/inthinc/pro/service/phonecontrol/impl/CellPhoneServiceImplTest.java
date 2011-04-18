@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response.Status;
 
 import mockit.Expectations;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.service.adapters.PhoneControlDAOAdapter;
@@ -26,6 +27,7 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
     /**
      * Test for Change Status Enabled acknowledgment.
      */
+    @Ignore
     @Test()
     public void testSetStatusEnabled( final PhoneControlDAOAdapter phoneControlDAOMock) {               
         try {
@@ -42,6 +44,7 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
     /**
      * Test for Change Status Disabled acknowledgment.
      */
+    @Ignore
     @Test()
     public void testSetStatusDisabled() {               
         try {

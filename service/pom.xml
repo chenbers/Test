@@ -10,6 +10,9 @@
 	<packaging>war</packaging>
 	<name>Pro Portal - Services</name>
 	<version>2.0.2-SNAPSHOT</version>
+	<properties>
+		<resteasy.version>2.1.0.GA</resteasy.version>
+	</properties>
 	<build>
 		<finalName>service</finalName>
 		<plugins>
@@ -192,7 +195,7 @@
 			<!-- Core Library -->
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
-			<version>2.0.1.GA</version>
+			<version>${resteasy.version}</version>
 			<scope>compile</scope>
 			<exclusions>
 				<exclusion>
@@ -205,7 +208,7 @@
 			<!-- JAX-RS API -->
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>jaxrs-api</artifactId>
-			<version>2.0.1.GA</version>
+			<version>${resteasy.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -215,35 +218,47 @@
 			<!-- JAXB support -->
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxb-provider</artifactId>
-			<version>2.0.1.GA</version>
+			<version>${resteasy.version}</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<!-- JAXB support -->
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-fastinfoset-provider</artifactId>
+			<version>${resteasy.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+		  <groupId>org.jboss.resteasy</groupId>
+		  <artifactId>resteasy-yaml-provider</artifactId>
+		  <version>${resteasy.version}</version>
 		</dependency>
 		<dependency>
 			<!-- Spring integration -->
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-spring</artifactId>
-			<version>2.0.1.GA</version>
+			<version>${resteasy.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<!-- RestEasy Server Cache -->
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-cache-core</artifactId>
-			<version>2.0.1.GA</version>
+			<version>${resteasy.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>tjws</artifactId>
-			<version>2.0.1.GA</version>
+			<version>${resteasy.version}</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-links</artifactId>
-			<version>2.0.1.GA</version>
+			<version>${resteasy.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>

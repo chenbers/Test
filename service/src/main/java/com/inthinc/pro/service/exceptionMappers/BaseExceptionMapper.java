@@ -1,4 +1,4 @@
-package com.inthinc.pro.service.providers;
+package com.inthinc.pro.service.exceptionMappers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -16,7 +16,7 @@ import javax.ws.rs.ext.ExceptionMapper;
  * to how reflection works with generics. That means a child class should look like this:
  * 
  * <pre>
- * package com.inthinc.pro.service.providers;
+ * package com.inthinc.pro.service.exceptionMappers;
  * 
  * import javax.ws.rs.core.Response.Status;
  * import javax.ws.rs.ext.ExceptionMapper;

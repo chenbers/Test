@@ -1,4 +1,4 @@
-package com.inthinc.pro.service.providers;
+package com.inthinc.pro.service.exceptionMappers;
 
 /**
  * TODO This is a sample exception for exception mapping proof of context. Remove when exception mapping framework is in place.
