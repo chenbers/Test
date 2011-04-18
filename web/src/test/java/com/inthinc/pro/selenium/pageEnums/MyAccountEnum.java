@@ -127,7 +127,7 @@ public enum MyAccountEnum implements SeleniumEnums {
 
     private String ID, text, url, xpath, xpathAlt;
 
-    private MyAccountEnum(String ID, String text, String xpath, String xpathAlt) {
+    private MyAccountEnum(String text, String ID, String xpath, String xpathAlt) {
         this.ID = ID;
         this.text = text;
         this.xpath = xpath;
