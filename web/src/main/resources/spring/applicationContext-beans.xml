@@ -19,7 +19,7 @@
   <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="ignoreResourceNotFound" value="true" />
     <property name="locations">
-      <list>
+      <list><!-- //TODO: if you add/delete/change values in this list please carry your changes to applicationContext-automation.xml; I was having problems with propertyPlaceholderConfigurer's writing over each other.  The bestcase solution seems to be making sure that automation/applicationContext-automation.xml is aware of the same placeholder locations as web/applicationContext-beans.xml -->
         <value>classpath:tiwipro.properties</value>
         <value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
       </list>
@@ -695,5 +695,4 @@
     <property name="reportCriteriaService" ref="reportCriteriaService" />
     <property name="reportRenderer" ref="reportRenderer" />
   </bean>
-
 </beans>

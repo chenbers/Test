@@ -6,15 +6,14 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
 
-import com.inthinc.automation.AutomationPropertiesBean;
+import com.inthinc.pro.automation.AutomationPropertiesBean;
 
 public class AutomatedTest {
 
     protected Long startTime = System.currentTimeMillis();
     protected static HashMap<String, HashMap<String, String>> errors;
-    protected String testVerdict = "Fail";// TODO: jwimmer: right now there is no way to FAIL a test? just "Pass" or "Errors"
+    protected String testVerdict = "Fail";
     AutomationPropertiesBean automationPropertiesBean;
 
     public AutomationPropertiesBean getAutomationPropertiesBean() {
@@ -42,7 +41,7 @@ public class AutomatedTest {
         } catch (Exception e) {
             e.printStackTrace();
             skip = true; 
-            throw new NullPointerException();  //TODO: jwimmer: dTanner: why throw a NullPointerException here?
+            throw new NullPointerException();
         }
     }
     

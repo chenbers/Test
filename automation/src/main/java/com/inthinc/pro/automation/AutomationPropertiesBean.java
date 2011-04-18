@@ -1,4 +1,4 @@
-package com.inthinc.automation;
+package com.inthinc.pro.automation;
 
 import java.util.ArrayList;
 
