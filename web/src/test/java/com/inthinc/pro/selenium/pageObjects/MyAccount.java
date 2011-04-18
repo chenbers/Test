@@ -5,19 +5,20 @@ import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 public class MyAccount extends Masthead {
 
     public static enum RedFlagPrefs {
-        EMAIL1("1", MyAccountEnum.EMAIL1_TEXTFIELD),
-        EMAIL2("2", MyAccountEnum.EMAIL2_TEXTFIELD),
-        PHONE1("3", MyAccountEnum.PHONE1_TEXTFIELD),
-        PHONE2("4", MyAccountEnum.PHONE2_TEXTFIELD),
-        TEXT1("5", MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD),
-        TEXT2("6", MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
+        EMAIL1("1", MyAccountEnum.EMAIL1_TEXTFIELD, MyAccountEnum.EMAIL1_TITLE),
+        EMAIL2("2", MyAccountEnum.EMAIL2_TEXTFIELD, MyAccountEnum.EMAIL2_TITLE),
+        PHONE1("3", MyAccountEnum.PHONE1_TEXTFIELD, MyAccountEnum.PHONE1_TITLE),
+        PHONE2("4", MyAccountEnum.PHONE2_TEXTFIELD, MyAccountEnum.PHONE2_TITLE),
+        TEXT1("5", MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES1_TITLE),
+        TEXT2("6", MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES2_TITLE);
 
         private String value;
-        private MyAccountEnum ID;
+        private MyAccountEnum ID, prefix;
 
-        private RedFlagPrefs(String value, MyAccountEnum ID) {
+        private RedFlagPrefs(String value, MyAccountEnum ID, MyAccountEnum prefix) {
             this.value = value;
             this.ID = ID;
+            this.prefix = prefix;
         }
 
         public MyAccountEnum getID() {
@@ -26,6 +27,10 @@ public class MyAccount extends Masthead {
 
         public String getValue() {
             return value;
+        }
+        
+        public MyAccountEnum getPrefix(){
+            return prefix;
         }
     };
 
@@ -69,7 +74,7 @@ public class MyAccount extends Masthead {
     public MyAccount dropDown_critical_selectValue(RedFlagPrefs selection) {
         selenium.select(MyAccountEnum.CRITICAL_SELECT, "index="+selection.getValue());
         String selected = selenium.getSelectedLabel(MyAccountEnum.CRITICAL_SELECT);
-//        assertEquals(getTextValue(selection), selected);
+        assertEquals(getTextValue(selection), selected);
         return this;
     }
 
@@ -90,7 +95,7 @@ public class MyAccount extends Masthead {
     public MyAccount dropDown_information_selectValue(RedFlagPrefs selection) {
         selenium.select(MyAccountEnum.INFORMATION_SELECT, "index="+selection.getValue());
         String selected = selenium.getSelectedLabel(MyAccountEnum.INFORMATION_SELECT);
-//        assertEquals(getTextValue(selection), selected);
+        assertEquals(getTextValue(selection), selected);
         return this;
     }
 
@@ -118,7 +123,7 @@ public class MyAccount extends Masthead {
     public MyAccount dropDown_warning_selectValue(RedFlagPrefs selection) {
         selenium.select(MyAccountEnum.WARNING_SELECT, "index="+selection.getValue());
         String selected = selenium.getSelectedLabel(MyAccountEnum.WARNING_SELECT);
-//        assertEquals(getTextValue(selection), selected);
+        assertEquals(getTextValue(selection), selected);
         return this;
     }
 
@@ -127,7 +132,7 @@ public class MyAccount extends Masthead {
     }
 
     private String getTextValue(RedFlagPrefs selection) {
-    	return selenium.getText(selection.getID());
+    	return selection.getPrefix() + selenium.getText(selection.getID());
     }
 
     public String label_confirmPassword_getText(){
