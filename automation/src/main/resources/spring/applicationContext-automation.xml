@@ -14,7 +14,7 @@
 		<property name="ignoreResourceNotFound" value="true" />
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
 		<property name="locations">
-			<list><!-- this list must contain any entries from web/applicationContext-beanx.xml -->
+			<list><!-- this list must contain any entries from web/applicationContext-bean.xml -->
 				<value>classpath:spring/automation.properties</value>
 				<value>classpath:tiwipro.properties</value>
         		<value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
@@ -25,7 +25,7 @@
 		scope="singleton">
 		<property name="automationPropertiesBean" ref="automationPropertiesBean"  />
 	</bean>
-	<bean id="automationPropertiesBean" class="com.inthinc.automation.AutomationPropertiesBean"
+	<bean id="automationPropertiesBean" class="com.inthinc.pro.automation.AutomationPropertiesBean"
 		scope="singleton">
 		<property name="serverName" value="${automation.testserver.name}" />
 		<property name="serverPort" value="${automation.testserver.port}" />
