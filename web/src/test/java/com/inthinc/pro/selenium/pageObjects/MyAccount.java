@@ -132,7 +132,12 @@ public class MyAccount extends NavigationBar {
     }
 
     private String getTextValue(RedFlagPrefs selection) {
-        return selection.getPrefix().getText() + selenium.getText(selection.getID());
+        String textValue = selenium.getText(selection.getID());
+        if (textValue.isEmpty()){
+            return selection.getPrefix().getText().replace(":", "");
+        }else{
+            return selection.getPrefix().getText() + selenium.getText(selection.getID());
+        }
     }
 
     public String label_confirmPassword_getText() {
