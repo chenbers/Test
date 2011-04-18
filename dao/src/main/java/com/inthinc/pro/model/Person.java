@@ -479,20 +479,27 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
     public void setLocale(Locale locale) {
         this.locale = locale;
     }
-
     @Override
     public int compareTo(Person o) {
         // for now, use the name fields to determine the natural order of person objects
-        int result = (this.last.toUpperCase()).compareTo(o.getLast().toUpperCase());
+        int result = compareName(last, o.getLast());
         if (result == 0)
-            result = (this.first.toUpperCase()).compareTo(o.getFirst().toUpperCase());
+            result = compareName(first, o.getFirst());
         if (result == 0){
-        	if (this.middle == null && o.getMiddle()==null) return 0;
-        	if (this.middle == null) return -1;
-        	if (o.getMiddle() == null) return 1;
-            return this.middle.toUpperCase().compareTo(o.getMiddle().toUpperCase());
+            return compareName(middle, o.getMiddle());
         }
         return result;
+    }
+    private int compareName(String n1, String n2) {
+        if (n1 == null && n2==null) return 0;
+        
+        if (n1 == null)
+            return -1;
+        if (n2 == null)
+            return 1;
+        
+        return n1.toUpperCase().compareTo(n2.toUpperCase());
+        
     }
 
     @Override
