@@ -66,17 +66,17 @@ public enum MyAccountEnum implements SeleniumEnums {
     EMAIL2_TITLE("E-mail 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[1]", null),
     EMAIL2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[2]", null),
 
-    PHONE1_TITLE("Phone 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[3]/td[1]", null),
-    PHONE1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[3]/td[2]", null),
+    PHONE1_TITLE("Phone 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[1]", null),
+    PHONE1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[2]", null),
 
-    PHONE2_TITLE("Phone 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[4]/td[1]", null),
-    PHONE2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[4]/td[2]", null),
+    PHONE2_TITLE("Phone 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[1]", null),
+    PHONE2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[2]", null),
 
-    TEXT_MESSAGES1_TITLE("Text Message 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[5]/td[1]", null),
-    TEXT_MESSAGES1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[5]/td[2]", null),
+    TEXT_MESSAGES1_TITLE("Text Message 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[1]/td[1]", null),
+    TEXT_MESSAGES1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[1]/td[2]", null),
 
-    TEXT_MESSAGES2_TITLE("Text Message 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[6]/td[1]", null),
-    TEXT_MESSAGES2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[6]/td[2]", null),
+    TEXT_MESSAGES2_TITLE("Text Message 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[2]/td[1]", null),
+    TEXT_MESSAGES2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[2]/td[2]", null),
 
     /* Edit Page Buttons */
 
