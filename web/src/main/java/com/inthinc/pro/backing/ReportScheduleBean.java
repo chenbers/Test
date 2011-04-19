@@ -428,12 +428,14 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     }
     
     private String[] getListDisplay(ReportScheduleView reportSchedule) {
-        if ((reportSchedule.getGroupIDList() != null && !reportSchedule.getGroupIDList().isEmpty()) ||
-                (reportSchedule.getDriverIDList() != null && !reportSchedule.getDriverIDList().isEmpty())) {
+            if (reportSchedule.getReport() == null || reportSchedule.getReport().getEntityType() == null)
+                return null;
 
             
             StringBuffer buffer = new StringBuffer();
-            if (reportSchedule.getReport().getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER) {
+            if (reportSchedule.getReport().getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER && 
+                reportSchedule.getDriverIDList() != null && 
+                !reportSchedule.getDriverIDList().isEmpty()) {
                 List<Driver> driverList = getDriverList();
                 for (Integer driverID : reportSchedule.getDriverIDList()) {
                     for (Driver driver : driverList) {
@@ -446,7 +448,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                     }
                 }
             }
-            else {
+            else if (reportSchedule.getGroupIDList() != null && !reportSchedule.getGroupIDList().isEmpty()) {
                 for (Integer grpID : reportSchedule.getGroupIDList()) {
                     Group group = this.getGroupHierarchy().getGroup(grpID);
                     if (group != null) {
@@ -456,10 +458,9 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
                     }
                 }
             }
+            else return null;
             
             return buffer.toString().split("~");
-        }
-        return null;
             
     }
     
