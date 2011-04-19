@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
+import javax.faces.model.SelectItem;
+
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -21,9 +23,16 @@ import com.inthinc.pro.dao.CrashReportDAO;
 import com.inthinc.pro.model.CrashReport;
 import com.inthinc.pro.model.CrashReportStatus;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.ForgivenType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TableType;
+import com.inthinc.pro.model.TimeFrame;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.pagination.SortOrder;
+import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
+import com.inthinc.pro.table.BasePaginationTable;
+import com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider;
 import com.inthinc.pro.util.MessageUtil;
 
 public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportItem> implements TablePrefOptions<CrashHistoryReportItem> {
@@ -39,6 +48,14 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
     private CrashHistoryReportItem clearItem;
     private TablePref<CrashHistoryReportItem> tablePref;
     private String selectedCrash;
+    private TimeFrameBean timeFrameBean;
+    public TimeFrameBean getTimeFrameBean() {
+        return timeFrameBean;
+    }
+
+    public void setTimeFrameBean(TimeFrameBean timeFrameBean) {
+        this.timeFrameBean = timeFrameBean;
+    }
     static final List<String> AVAILABLE_COLUMNS;
     static {
         // available columns
@@ -63,6 +80,8 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
         super.initBean();
 //        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateTimeFormat"), LocaleBean.getCurrentLocale());
         tablePref = new TablePref<CrashHistoryReportItem>(this);
+        timeFrameBean.setYearSelection(true);
+        timeFrameBean.getSelectItems().add(new SelectItem("", MessageUtil.getMessageString("timeFrame_ANY")));
     }
 
     @Override
@@ -123,7 +142,12 @@ logger.info("initTableData() - end");
         List<CrashReport> crashList = new ArrayList<CrashReport>();
         if (getSearchCoordinationBean().isGoodGroupId())
         {
-        	crashList = crashReportDAO.findByGroupID(getSearchCoordinationBean().getGroup().getGroupID());
+            System.out.println("timeFrameBean: "+timeFrameBean);//TODO: jwimmer: remove before checkin
+            System.out.println("timeFrameBean.getTimeFrame(): "+timeFrameBean.getTimeFrame());//TODO: jwimmer: remove before checkin
+        	if(timeFrameBean.getTimeFrame() == null)
+        	    crashList = crashReportDAO.findByGroupID(getSearchCoordinationBean().getGroup().getGroupID());
+        	else
+        	    crashList = crashReportDAO.findByGroupID(getSearchCoordinationBean().getGroup().getGroupID(), timeFrameBean.getTimeFrame().getInterval().getStart().toDate(), timeFrameBean.getTimeFrame().getInterval().getEnd().toDate(), ForgivenType.INCLUDE);
         }
 
         List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();

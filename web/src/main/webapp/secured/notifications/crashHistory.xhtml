@@ -188,13 +188,29 @@
 							</tr>
 						</table>
 	  				  </li>
+	  				  <li class="l select">
+		                <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_timeframe_box">
+		                  <tr>
+						  	<td>#{messages.timeFrame} </td>
+					  	 	<td>
+					  	 	<h:selectOneMenu value="#{crashHistoryBean.timeFrameBean.timeFrameKey}" id="#{context}_timeframe" style="width: 75px;">
+								<f:selectItems value="#{crashHistoryBean.timeFrameBean.selectItems}" />
+							</h:selectOneMenu>
+							
+							<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+		   			 			<ui:param name="selectBoxID" value="#{context}Search:#{context}_timeframe" />
+							</ui:include>
+							</td>
+						  </tr>
+						</table>
+					  </li>
 					  <li class="l">
 						<a4j:commandButton id="crashHistoryRefresh" styleClass="left"
 									reRender="header,crashHistory-form:crashHistory,crashHistory-form:crashHistory-bottomScroller" 
 									action="#{crashHistoryBean.refreshAction}">
-		            				<span class="refresh">
-		            					<h:outputText value="#{messages.refresh}" />
-		            				</span>
+	           				<span class="refresh">
+	           					<h:outputText value="#{messages.refresh}" />
+	           				</span>
 						</a4j:commandButton>
 					  </li>  
 		              <li class="l">
@@ -202,7 +218,7 @@
 		                  <tr>
 		                    <td>#{messages.notes_crashhistory_search}</td>
 		                    <td>
-		                      <h:inputText id="searchText" value="#{eventsSearchCoordinationBean.searchFor}" styleClass="text" size="25" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('crashHistorySearch:crashHistorySearch').onclick(); return false; } return true;" />
+		                      <h:inputText id="searchText" value="#{eventsSearchCoordinationBean.searchFor}" styleClass="text" size="5" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('crashHistorySearch:crashHistorySearch').onclick(); return false; } return true;" />
 		                    </td>
 		                  </tr>
 		                </table>
