@@ -987,7 +987,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             	person.getDriver().setRfid2(0l);
             }
            
-            person.getUser().setLastLogin(null);
+            // set the last login only if a user
+            if ( person.getUser() != null ) {
+                person.getUser().setLastLogin(null);
+            }
+            
             // insert or update
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
