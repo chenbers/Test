@@ -51,11 +51,11 @@ public abstract class NavigationBar extends Masthead {
         return this;
     }
 
-    public NavigationBar link_groupDashboard_clickFirstGroup(String groupName) {
+    public NavigationBar link_groupDashboard_clickFirstGroup(String groupName) {//TODO: jwimmer: question for DTanner: let's talk through these method names
         return link_groupDashboard_clickDesiredGroup(groupName, 0);
     }
 
-    public NavigationBar link_groupDashboard_clickDesiredGroup(String groupName, Integer position) {
+    public NavigationBar link_groupDashboard_clickDesiredGroup(String groupName, Integer position) {//TODO: jwimmer: question for DTanner: let's talk through these method names
         position--;
         String xpath = "//a[text()='" + groupName + "']";
         List<WebElement> elements = webDriver.findElements(By.xpath(xpath));

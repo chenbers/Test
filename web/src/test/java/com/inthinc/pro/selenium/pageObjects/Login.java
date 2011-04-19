@@ -11,28 +11,28 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 public class Login extends Masthead {
 
     public Login popup_badCredentials_assertIsClosed() {
-        if (popUp_logInError_isVisible() || header_logInError_isVisible()) {
+        if (popup_logInError_isVisible() || header_logInError_isVisible()) {
             addError("Bad Credentials Popup", "Popup didn't close");
         }
         return this;
     }
 
     public Login popup_badCredentials_assertIsOpen() {
-        if (!popUp_logInError_isVisible() || !header_logInError_isVisible()) {
+        if (!popup_logInError_isVisible() || !header_logInError_isVisible()) {
             addError("Bad Credentials Popup", "Popup didn't open");
         }
         return this;
     }
 
     public Login popup_forgotPassword_assertIsClosed() {
-        if (popUp_forgotPassword_isVisible()) {
+        if (popup_forgotPassword_isVisible()) {
             addError("Forgot Password Popup", "Popup didn't close");
         }
         return this;
     }
 
     public Login popup_forgotPassword_assertIsOpen() {
-        if (!popUp_forgotPassword_isVisible()) {
+        if (!popup_forgotPassword_isVisible()) {
             addError("Forgot Password Popup", "Popup didn't open");
         }
         return this;
@@ -229,7 +229,7 @@ public class Login extends Masthead {
         return this;
     }
 
-    private Boolean popUp_forgotPassword_isVisible() {
+    private Boolean popup_forgotPassword_isVisible() {
         return selenium.isVisible(LoginEnum.FORGOT_TITLE);
     }
 
@@ -247,7 +247,7 @@ public class Login extends Masthead {
         return this;
     }
 
-    private Boolean popUp_logInError_isVisible() {
+    private Boolean popup_logInError_isVisible() {
         return selenium.isVisible(LoginEnum.ERROR_HEADER);
     }
 

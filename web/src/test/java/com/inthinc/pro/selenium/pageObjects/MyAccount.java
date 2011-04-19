@@ -274,7 +274,7 @@ public class MyAccount extends NavigationBar {
         return selenium.getText(MyAccountEnum.CRITICAL_TEXT);
     }
 
-    public MyAccount textField_currentPassword_click(String textToSend) {
+    public MyAccount textField_currentPassword_type(String textToSend) {
         selenium.type(MyAccountEnum.CHANGE_PASSWORD_TITLE, textToSend);
         return this;
     }
@@ -321,7 +321,7 @@ public class MyAccount extends NavigationBar {
         return selenium.getText(MyAccountEnum.NAME_TEXT);
     }
 
-    public MyAccount textField_newPassword_click(String textToSend) {
+    public MyAccount textField_newPassword_type(String textToSend) {
         selenium.type(MyAccountEnum.CHANGE_PASSWORD_NEW_TEXTFIELD, textToSend);
         return this;
     }
