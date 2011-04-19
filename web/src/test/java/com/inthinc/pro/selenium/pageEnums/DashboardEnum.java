@@ -7,26 +7,31 @@ public enum DashboardEnum implements SeleniumEnums {
     OVERALL_TOOLS_EMAIL(null,null,"executive-overallScore_detail_form:executive-overallScore_email:anchor",null,null),
     OVERALL_TOOLS_PDF(null,null,"executive-overallScore_detail_form:executive-overallScore-export:anchor",null,null),
     OVERALL_TOOLS_EMAIL_CANCEL(null,null,"//button[@id='emailReportPopUpSubmit' and @type='submit' and @onclick=\"Richfaces.hideModalPanel('executive-overallScore_singleEmail'); return false;\"]",null,null),
+    OVERALL_TOOLS_EMAIL_EMAIL(null,null,"executive-overallScore_singleEmail_form:emailReportPopupEmail2",null,null),
     
     TREND_TOOLS(null,null,"//span[@id='executive-trend_toolImage']/img",null,null),
     TREND_TOOLS_EMAIL(null,null,"executive-trend_detail_form:executive-trend_email:anchor",null,null),
     TREND_TOOLS_PDF(null,null,"executive-trend_detail_form:executive-trend-export:anchor",null,null),
     TREND_TOOLS_EMAIL_CANCEL(null,null,"//button[@id='emailReportPopUpSubmit' and @type='submit' and @onclick=\"Richfaces.hideModalPanel('executive-trend_singleEmail'); return false;\"]",null,null),
+    TREND_TOOLS_EMAIL_EMAIL(null,null,"executive-trend_singleEmail_form:emailReportPopupEmail2",null,null),
     
     SPEED_PERCENTAGE_TOOLS(null,null,"//span[@id='executive-speedPercentagePanel_toolImage']/img",null,null),
     SPEED_PERCENTAGE_TOOLS_EMAIL(null,null,"executive-speedPercentagePanel_detail_form:executive-speedPercentagePanel_email:anchor",null,null),
     SPEED_PERCENTAGE_TOOLS_PDF(null,null,"executive-speedPercentagePanel_detail_form:executive-speedPercentagePanel-export:anchor",null,null),
     SPEED_PERCENTAGE_TOOLS_EMAIL_CANCEL(null,null,"//button[@id='emailReportPopUpSubmit' and @type='submit' and @onclick=\"Richfaces.hideModalPanel('executive-speedPercentagePanel_singleEmail'); return false;\"]",null,null),
-
+    SPEED_PERCENTAGE_TOOLS_EMAIL_EMAIL(null,null,"executive-speedPercentagePanel_singleEmail_form:emailReportPopupEmail2",null,null),
+    
     IDLING_PERCENTAGE_TOOLS(null,null,"//span[@id='executive-idlingPercentagePanel_toolImage']/img",null,null),
     IDLING_PERCENTAGE_TOOLS_EMAIL(null,null,"executive-idlingPercentagePanel_detail_form:executive-idlingPercentagePanel_email:anchor",null,null),
     IDLING_PERCENTAGE_TOOLS_PDF(null,null,"executive-idlingPercentagePanel_detail_form:executive-idlingPercentagePanel-export:anchor",null,null),
     IDLING_PERCENTAGE_TOOLS_EMAIL_CANCEL(null,null,"//button[@id='emailReportPopUpSubmit' and @type='submit' and @onclick=\"Richfaces.hideModalPanel('executive-idlingPercentagePanel_singleEmail'); return false;\"]",null,null),
+    IDLING_PERCENTAGE_TOOLS_EMAIL_EMAIL(null,null,"executive-idlingPercentagePanel_singleEmail_form:emailReportPopupEmail2",null,null),
     
     MPG_CHART_TOOLS(null,null,"//span[@id='executive-mpgChart_toolImage']/img",null,null),
     MPG_CHART_TOOLS_EMAIL(null,null,"executive-mpgChart_detail_form:executive-mpgChart_email:anchor",null,null),
     MPG_CHART_TOOLS_PDF(null,null,"executive-mpgChart_detail_form:executive-mpgChart-export:anchor",null,null),
     MPG_CHART_TOOLS_EMAIL_CANCEL(null,null,"//button[@id='emailReportPopUpSubmit' and @type='submit' and @onclick=\"Richfaces.hideModalPanel('executive-mpgChart_singleEmail'); return false;\"]",null,null),
+    MPG_CHART_TOOLS_EMAIL_EMAIL(null,null,"executive-mpgChart_singleEmail_form:emailReportPopupEmail2",null,null),
     
     HELP_INVOKE(null,null,"//img[@title='Help ']",null,null),
     HELP_OPEN(null,null,"__webCshStub",null,null),

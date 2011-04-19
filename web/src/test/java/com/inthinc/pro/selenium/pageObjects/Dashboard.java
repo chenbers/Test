@@ -14,60 +14,95 @@ public class Dashboard extends NavigationBar{
         selenium = GlobalSelenium.getSelenium();
     } 
     
-    public void menu_overallEmail_click() {
+    public void menu_overallToolsEmail_click() {
         selenium.click(DashboardEnum.OVERALL_TOOLS);
         selenium.click(DashboardEnum.OVERALL_TOOLS_EMAIL);
-        selenium.click(DashboardEnum.OVERALL_TOOLS_EMAIL_CANCEL);
     }
     
-    public void menu_overallPDF_click() {
-        selenium.click(DashboardEnum.OVERALL_TOOLS);
-        selenium.click(DashboardEnum.OVERALL_TOOLS_PDF);
+    public void menu_overallToolsEmailCancel_click() {
+        selenium.click(DashboardEnum.OVERALL_TOOLS_EMAIL_CANCEL);       
     }
     
-    public void menu_mpgChartEmail_click() {
+    public void menu_overallToolsEmailEmail_click() {
+        selenium.click(DashboardEnum.OVERALL_TOOLS_EMAIL_EMAIL);       
+    }
+    
+//    public void menu_overallPDF_click() {
+//        selenium.click(DashboardEnum.OVERALL_TOOLS);
+//        selenium.click(DashboardEnum.OVERALL_TOOLS_PDF);
+//    }
+    
+    public void menu_mpgChartToolsEmail_click() {
         selenium.click(DashboardEnum.MPG_CHART_TOOLS);
         selenium.click(DashboardEnum.MPG_CHART_TOOLS_EMAIL);
-        selenium.click(DashboardEnum.MPG_CHART_TOOLS_EMAIL_CANCEL);        
     }
     
-    public void menu_mpgPDF_click() {
-        selenium.click(DashboardEnum.OVERALL_TOOLS);
-        selenium.click(DashboardEnum.OVERALL_TOOLS_PDF);
+    public void menu_mpgChartToolsEmailCancel_click() {
+        selenium.click(DashboardEnum.MPG_CHART_TOOLS_EMAIL_CANCEL);                
     }
     
-    public void menu_speedPercentageEmail_click() {
+    public void menu_mpgChartToolsEmailEmail_click() {
+        selenium.click(DashboardEnum.MPG_CHART_TOOLS_EMAIL_EMAIL);                
+    }    
+    
+//    public void menu_mpgPDF_click() {
+//        selenium.click(DashboardEnum.OVERALL_TOOLS);
+//        selenium.click(DashboardEnum.OVERALL_TOOLS_PDF);
+//    }
+    
+    public void menu_speedPercentageToolsEmail_click() {
         selenium.click(DashboardEnum.SPEED_PERCENTAGE_TOOLS);
         selenium.click(DashboardEnum.SPEED_PERCENTAGE_TOOLS_EMAIL);
-        selenium.click(DashboardEnum.SPEED_PERCENTAGE_TOOLS_EMAIL_CANCEL);        
     }
     
-    public void menu_speedPercentagePDF_click() {
-        selenium.click(DashboardEnum.OVERALL_TOOLS);
-        selenium.click(DashboardEnum.OVERALL_TOOLS_PDF);
+    public void menu_speedPercentageToolsEmailCancel_click() {
+        selenium.click(DashboardEnum.SPEED_PERCENTAGE_TOOLS_EMAIL_CANCEL);               
     }
     
-    public void menu_trendEmail_click() {
+    public void menu_speedPercentageToolsEmailEmail_click() {
+        selenium.click(DashboardEnum.SPEED_PERCENTAGE_TOOLS_EMAIL_EMAIL);               
+    }
+    
+//    public void menu_speedPercentagePDF_click() {
+//        selenium.click(DashboardEnum.OVERALL_TOOLS);
+//        selenium.click(DashboardEnum.OVERALL_TOOLS_PDF);
+//    }
+    
+    public void menu_trendToolsEmail_click() {
         selenium.click(DashboardEnum.TREND_TOOLS);
         selenium.click(DashboardEnum.TREND_TOOLS_EMAIL);
-        selenium.click(DashboardEnum.TREND_TOOLS_EMAIL_CANCEL);        
     }
     
-    public void menu_trendPDF_click() {
-        selenium.click(DashboardEnum.TREND_TOOLS);
-        selenium.click(DashboardEnum.TREND_TOOLS_PDF);
+    public void menu_trendToolsEmailCancel_click() {
+        selenium.click(DashboardEnum.TREND_TOOLS_EMAIL_CANCEL);                
     }
     
-    public void menu_idlingPercentageEmail_click() {
+    public void menu_trendToolsEmailEmail_click() {
+        selenium.click(DashboardEnum.TREND_TOOLS_EMAIL_EMAIL);                
+    }
+    
+//    public void menu_trendPDF_click() {
+//        selenium.click(DashboardEnum.TREND_TOOLS);
+//        selenium.click(DashboardEnum.TREND_TOOLS_PDF);
+//    }
+    
+    public void menu_idlingPercentageToolsEmail_click() {
         selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS);
         selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS_EMAIL);
-        selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS_EMAIL_CANCEL);        
     }
     
-    public void menu_idlingPercentagePDF_click() {
-        selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS);
-        selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS_PDF);        
+    public void menu_idlingPercentageToolsEmailCancel_click() {
+        selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS_EMAIL_CANCEL);               
     }
+    
+    public void menu_idlingPercentageToolsEmailEmail_click() {
+        selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS_EMAIL_EMAIL);               
+    }
+    
+//    public void menu_idlingPercentagePDF_click() {
+//        selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS);
+//        selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS_PDF);        
+//    }
     
     public void link_dashboardHelp_click() {
         selenium.click(DashboardEnum.HELP_INVOKE);
