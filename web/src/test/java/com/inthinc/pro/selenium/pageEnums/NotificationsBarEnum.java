@@ -15,13 +15,13 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     CRASH_HISTORY_URL("crashHistory"),
 
     /* Navigation Bar for Notifications */
-    RED_FLAGS("Red Flags", "**-redFlags", "//div[@class='sub_nav-bg']/ul/li[1]/a", "//li[@id='redflagtab']/a"),
-    SAFETY("Safety", "**-safety", "//div[@class='sub_nav-bg']/ul/li[2]/a", "//li[@id='safetytab']/a"),
-    DIAGNOSTICS("Diagnostics", "**-diagnostics", "//div[@class='sub_nav-bg']/ul/li[3]/a", "//li[@id='diagnosticstab']/a"),
-    ZONES("Zones", "**-zoneEvents", "//div[@class='sub_nav-bg']/ul/li[4]/a", "//li[@id='zoneEventstab']"),
-    HOS_EXCEPTIONS("HOS Exceptions", "**-hosEvents", "//div[@class='sub_nav-bg']/ul/li[5]/a", "//li[@id='hosEventstab']"),
-    EMERGENCY("Emergency", "**-emergency", "//div[@class='sub_nav-bg']/ul/li[6]/a", "//li[@id='emergencytab']"),
-    CRASH_HISTORY("Crash History", "**-crashHistory", "//div[@class='sub_nav-bg']/ul/li[7]/a", "//li[@id='crashhistorytab']"),
+    RED_FLAGS("Red Flags", "link=Red Flags", "***-redFlags", "//li[@id='redflagtab']/a"),
+    SAFETY("Safety", "link=Zones", "***-safety", "//li[@id='safetytab']/a"),
+    DIAGNOSTICS("Diagnostics", "link=Diagnostics", "***-diagnostics", "//li[@id='diagnosticstab']/a"),
+    ZONES("Zones", "link=Zones", "***-zoneEvents", "//li[@id='zoneEventstab']/a"),
+    HOS_EXCEPTIONS("HOS Exceptions", "link=HOS Exceptions", "***-hosEvents", "//li[@id='hosEventstab']/a"),
+    EMERGENCY("Emergency", "link=Emergency", "***-emergency", "//li[@id='emergencytab']/a"),
+    CRASH_HISTORY("Crash History", "link=Crash History", "***-crashHistory", "//li[@id='crashhistorytab']/a"),
 
     ;
 
@@ -62,15 +62,15 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     }
 
     public String getID() {
-        return ID.replace("**", current);
+        return ID;
     }
 
-    public String getID(String current) {
-        return ID.replace("**", current);
+    public String getXpath(String current) {
+        return xpath.replace("***", current);
     }
 
     public String getXpath() {
-        return xpath;
+        return xpath.replace("***", current);
     }
 
     public String getXpath_alt() {

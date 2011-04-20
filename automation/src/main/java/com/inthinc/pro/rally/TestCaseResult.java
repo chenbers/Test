@@ -13,16 +13,15 @@ import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.inthinc.pro.automation.selenium.ErrorCatcher;
+import com.inthinc.pro.automation.selenium.RallyStrings;
 import com.inthinc.pro.automation.utils.StackToString;
 
 /**
  * 
  * This class provides a way to send test case results to Rally.
  * <p>
- * URI =
- * https://rally1.rallydev.com/slm/webservice/1.21/testcaseresult/create.js
- * ?workspace
- * =https://rally1.rallydev.com/slm/webservice/1.21/workspace/558474157<br />
+ * URI = https://rally1.rallydev.com/slm/webservice/1.21/testcaseresult/create.js ?workspace =https://rally1.rallydev.com/slm/webservice/1.21/workspace/558474157<br />
  * <br />
  * {<br />
  * TestCaseResult:<br />
@@ -44,216 +43,174 @@ import com.inthinc.pro.automation.utils.StackToString;
  */
 public class TestCaseResult {
 
-	private final static Logger logger = Logger
-			.getLogger(RallyWebServices.class);
+    public static enum Verdicts {
+        BLOCKED("Blocked"),
+        ERROR("Error"),
+        FAIL("Fail"),
+        INCONCLUSIVE("Inconclusive"),
+        PASS("Pass"), ;
 
-	private final String[] verdicts = { "Blocked", "Error", "Fail",
-			"Inconclusive", "Pass" };
-	private HTTPCommands http;
-	private JSONObject testCaseResults;
+        private String string;
 
-	public TestCaseResult(String username, String password,
-			RallyWebServices space) {
-		http = new HTTPCommands(username, password);
-		http.setWorkspace(space);
-	}
+        private Verdicts(String string) {
+            this.string = string;
+        }
 
-	/**
-	 * Method Create Test Case Results<br />
-	 * Send the created testCaseResults to Rally
-	 */
-	public void send_test_case_results() {
-		http.postObjects(RallyWebServices.TEST_CASE_RESULTS, testCaseResults,
-				true);
-	}
+        public String toString() {
+            return string;
+        }
+    }
 
-	public void new_results() {
-		testCaseResults = new JSONObject();
-		try {
-			testCaseResults.put("WorkSpace", http.getWorkspace());
-			setDate();
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-		}
-	}
+    private final static Logger logger = Logger.getLogger(TestCaseResult.class);
 
-	public void setNotes(HashMap<String, HashMap<String, String>> notes) {
-		setNotes(formatString(notes));
-	}
+    private HTTPCommands http;
+    private JSONObject testCaseResults;
 
-	public void setNotes(String notes) {
-		try {
-			testCaseResults.put("Notes", notes);
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-		}
-	}
+    public TestCaseResult(String username, String password, RallyWebServices space) {
+        http = new HTTPCommands(username, password);
+        http.setWorkspace(space);
+    }
 
-	public void setBuildNumber(String build) {
-		try {
-			testCaseResults.put("Build", build);
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-		}
-	}
+    public String getBuildNumber() {
+        try {
+            return testCaseResults.getString("Build");
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+            return null;
+        }
+    }
 
-	public String getBuildNumber() {
-		try {
-			return testCaseResults.getString("Build");
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-			return null;
-		}
-	}
+    public String getDate() {
+        try {
+            return testCaseResults.getString("Date");
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+            return null;
+        }
+    }
 
-	public void setTestCase(NameValuePair searchParams) {
-		TestCase testcase = new TestCase(http);
-		try {
-			testCaseResults.put("TestCase", testcase.getTestCase(searchParams));
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-		}
-	}
+    public String getDuration() {
+        try {
+            return testCaseResults.getString("Duration");
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+            return null;
+        }
+    }
 
-	public JSONObject getTestCase() {
-		try {
-			return testCaseResults.getJSONObject("TestCase");
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-			return null;
-		}
-	}
+    public JSONObject getTestCase() {
+        try {
+            return testCaseResults.getJSONObject("TestCase");
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+            return null;
+        }
+    }
 
-	/**
-	 * Method setDate<br />
-	 * <br />
-	 * add the time we executed the test. This has to be an xml string, so we
-	 * will convert it from a <br />
-	 * date object<br />
-	 * 
-	 * @param date
-	 */
-	public void setDate() {
-		GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
-		XsdDatetimeFormat xdf = new XsdDatetimeFormat();
-		xdf.setTimeZone("MST");
-		setDate(xdf.format(date.getTime()));
-	}
+    public String getVerdict() {
+        try {
+            return testCaseResults.getString("Verdict");
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+            return null;
+        }
+    }
 
-	public void setDate(String date) {
-		try {
-			testCaseResults.put("Date", date);
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-		}
-	}
+    public void new_results() {
+        testCaseResults = new JSONObject();
+        try {
+            testCaseResults.put("WorkSpace", http.getWorkspace());
+            setDate();
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+        }
+    }
 
-	public String getDate() {
-		try {
-			return testCaseResults.getString("Date");
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-			return null;
-		}
-	}
+    /**
+     * Method Create Test Case Results<br />
+     * Send the created testCaseResults to Rally
+     */
+    public void send_test_case_results() {
+        http.postObjects(RallyWebServices.TEST_CASE_RESULTS, testCaseResults, true);
+    }
 
-	/**
-	 * Method setVerdict<br />
-	 * <br />
-	 * add the verdict to our TestCaseResult JSON Object<br />
-	 * also validate it is one of the valid options<br />
-	 * 
-	 * @param verdict
-	 */
-	public void setVerdict(String verdict) {
-		Boolean valid = false;
-		for (int entry = 0; entry < verdicts.length; entry++) {
-			if (verdicts[entry].compareTo(verdict) == 0) {
-				valid = true;
-				break;
-			}
-		}
-		if (!valid) {
-			verdict = verdicts[3];
-		}
-		try {
-			testCaseResults.put("Verdict", verdict);
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-		}
-	}
+    public void setBuildNumber(String build) {
+        try {
+            testCaseResults.put("Build", build);
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+        }
+    }
 
-	public String getVerdict() {
-		try {
-			return testCaseResults.getString("Verdict");
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-			return null;
-		}
-	}
+    /**
+     * Method setDate<br />
+     * <br />
+     * add the time we executed the test. This has to be an xml string, so we will convert it from a <br />
+     * date object<br />
+     * 
+     * @param date
+     */
+    public void setDate() {
+        GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
+        XsdDatetimeFormat xdf = new XsdDatetimeFormat();
+        xdf.setTimeZone("MST");
+        setDate(xdf.format(date.getTime()));
+    }
 
-	public void setDuration(Long time) {
-		try {
-			testCaseResults.put("Duration", time);
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-		}
-	}
+    public void setDate(String date) {
+        try {
+            testCaseResults.put("Date", date);
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+        }
+    }
 
-	public String getDuration() {
-		try {
-			return testCaseResults.getString("Duration");
-		} catch (JSONException e) {
-			logger.fatal(StackToString.toString(e));
-			return null;
-		}
-	}
+    public void setDuration(Long time) {
+        try {
+            testCaseResults.put("Duration", time);
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+        }
+    }
 
-	/**
-	 * Format a HashMap so it looks nice in Rally:<br />
-	 * <br />
-	 * ErrorName<br />
-	 * ----Error 1<br />
-	 * --------Error Message Stack Trace<br />
-	 * ----Error 2<br />
-	 * --------Error Message Stack Trace<br />
-	 * 
-	 * 
-	 * @param whatHappened
-	 * @return
-	 */
-	private String formatString(
-			HashMap<String, HashMap<String, String>> whatHappened) {
-		StringWriter aStringAString = new StringWriter();
-		Iterator<String> pitcher = whatHappened.keySet().iterator();
+    public void setNotes(ErrorCatcher notes) {
+        setNotes(RallyStrings.toString(notes.toString()));
+    }
 
-		String tab = StringUtils.repeat("&nbsp;", 5);
+    public void setNotes(String notes) {
+        try {
+            testCaseResults.put("Notes", notes);
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+        }
+    }
 
-		while (pitcher.hasNext()) {
-			String outsideBall = pitcher.next();
-			aStringAString.write(outsideBall + "<br />");
-			Set<String> innerKeys = whatHappened.get(outsideBall).keySet();
-			Iterator<String> innerItr = innerKeys.iterator();
-			while (innerItr.hasNext()) {
-				String insideBall = innerItr.next();
-				String callIt = whatHappened.get(outsideBall).get(insideBall);
+    public void setTestCase(NameValuePair searchParams) {
+        TestCase testcase = new TestCase(http);
+        try {
+            testCaseResults.put("TestCase", testcase.getTestCase(searchParams));
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+        }
+    }
 
-				aStringAString.write(tab);
-				aStringAString.write(insideBall);
-				aStringAString.write("<br />");
-				if (!callIt.startsWith(StringUtils.repeat(tab, 2))){
-				    aStringAString.write(StringUtils.repeat(tab, 2));    
-				}
-				aStringAString.write(callIt);
-				aStringAString.write(StringUtils.repeat("<br />", 2));
-			}
-		}
-		String sendMeOut = aStringAString.toString();
-		try {
-			aStringAString.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return sendMeOut;
-	}
+    /**
+     * Method setVerdict<br />
+     * <br />
+     * add the verdict to our TestCaseResult JSON Object<br />
+     * also validate it is one of the valid options<br />
+     * 
+     * @param verdict
+     */
+    public void setVerdict(Verdicts verdict) {
+        try {
+            testCaseResults.put("Verdict", verdict.toString());
+        } catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+        }
+    }
+
+    public String toString() {
+        return PrettyJSON.toString(testCaseResults);
+    }
 }

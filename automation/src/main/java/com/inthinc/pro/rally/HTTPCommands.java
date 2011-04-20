@@ -30,7 +30,7 @@ import com.inthinc.pro.automation.utils.StackToString;
 public class HTTPCommands {
 
 	private final static Logger logger = Logger
-			.getLogger(RallyWebServices.class);
+			.getLogger(HTTPCommands.class);
 
 	private HttpClient httpClient;
 	private JSONObject queryResults, workspace;

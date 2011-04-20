@@ -29,7 +29,7 @@ public class GlobalSelenium {
 	}
 
 	public static CoreMethodLib getYourOwn() {
-		return getYourOwn(new FirefoxDriver() ," http://localhost:8080/web/");
+		return getYourOwn(new FirefoxDriver() ," https://qa.tiwipro.com:8423/tiwipro/");
 	}
 
 	public static void dieSeleniumDie() {

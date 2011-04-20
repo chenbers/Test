@@ -1,5 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import org.openqa.selenium.By;
+
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
 public class MyAccount extends NavigationBar {
@@ -65,66 +67,111 @@ public class MyAccount extends NavigationBar {
     }
 
     public MyAccount dropDown_critical_selectText(String selection) {
-        selenium.select(MyAccountEnum.CRITICAL_SELECT, selection);
-        String selected = selenium.getSelectedLabel(MyAccountEnum.CRITICAL_SELECT);
-        assertEquals(selection, selected);
+        selectOption(selection, MyAccountEnum.CRITICAL_SELECT);
         return this;
     }
 
     public MyAccount dropDown_critical_selectValue(RedFlagPrefs selection) {
-        selenium.select(MyAccountEnum.CRITICAL_SELECT, "index=" + selection.getValue());
-        String selected = selenium.getSelectedLabel(MyAccountEnum.CRITICAL_SELECT);
-        assertEquals(getTextValue(selection), selected);
-        return this;
+        return selectValue(selection, MyAccountEnum.CRITICAL_SELECT);
     }
 
     public MyAccount dropDown_fuelEfficiency_selectText(String selection) {
-        selenium.select(MyAccountEnum.FUEL_EFFICIENCY_SELECT, selection);
-        String selected = selenium.getSelectedLabel(MyAccountEnum.FUEL_EFFICIENCY_SELECT);
-        assertEquals(selection, selected);
+        selectOption(selection, MyAccountEnum.FUEL_EFFICIENCY_SELECT);
         return this;
     }
 
     public MyAccount dropDown_information_selectText(String selection) {
-        selenium.select(MyAccountEnum.INFORMATION_SELECT, selection);
-        String selected = selenium.getSelectedLabel(MyAccountEnum.INFORMATION_SELECT);
-        assertEquals(selection, selected);
+        selectOption(selection, MyAccountEnum.INFORMATION_SELECT);
         return this;
     }
 
     public MyAccount dropDown_information_selectValue(RedFlagPrefs selection) {
-        selenium.select(MyAccountEnum.INFORMATION_SELECT, "index=" + selection.getValue());
-        String selected = selenium.getSelectedLabel(MyAccountEnum.INFORMATION_SELECT);
+        return selectValue(selection, MyAccountEnum.INFORMATION_SELECT);
+    }
+    
+    public MyAccount dropDown_information_selectPartialMatch(String partial){
+        return selectPartialMatch(partial, MyAccountEnum.INFORMATION_SELECT);
+    }
+    
+    private MyAccount selectPartialMatch(String partial, MyAccountEnum selector){
+        String xpath="";
+        if (selector.getID()!=null){
+            String id = selector.getID();
+            xpath = "//select[@id='"+id+"']/option[contains(text(),'"+partial+"')]";
+        }else {
+            xpath = selector.getXpath() + "/option[contains(text(),'"+partial+"')]";
+        }
+        webDriver.findElement(By.xpath(xpath)).setSelected();
+        return this;
+    }
+    
+    private MyAccount selectOption(String selection, MyAccountEnum selector){
+        selenium.select(selector, selection);
+        String selected = selenium.getSelectedLabel(selector);
+        assertEquals(selection, selected);
+        return this;
+    }
+    
+    private MyAccount selectValue(RedFlagPrefs selection, MyAccountEnum selector){
+        selenium.select(selector, "index=" + selection.getValue());
+        String selected = selenium.getSelectedLabel(selector);
         assertEquals(getTextValue(selection), selected);
         return this;
     }
 
     public MyAccount dropDown_locale_selectText(String selection) {
-        selenium.select(MyAccountEnum.LOCALE_SELECT, selection);
-        String selected = selenium.getSelectedLabel(MyAccountEnum.LOCALE_SELECT);
-        assertEquals(selection, selected);
+        selectOption(selection, MyAccountEnum.LOCALE_SELECT);
         return this;
     }
 
     public MyAccount dropDown_measurement_selectText(String selection) {
-        selenium.select(MyAccountEnum.MEASUREMENT_SELECT, selection);
-        String selected = selenium.getSelectedLabel(MyAccountEnum.MEASUREMENT_SELECT);
-        assertEquals(selection, selected);
+        selectOption(selection, MyAccountEnum.MEASUREMENT_SELECT);
         return this;
     }
 
     public MyAccount dropDown_warning_selectText(String selection) {
-        selenium.select(MyAccountEnum.WARNING_SELECT, selection);
-        String selected = selenium.getSelectedLabel(MyAccountEnum.WARNING_SELECT);
-        assertEquals(selection, selected);
+        selectOption(selection, MyAccountEnum.WARNING_SELECT);
         return this;
     }
 
     public MyAccount dropDown_warning_selectValue(RedFlagPrefs selection) {
-        selenium.select(MyAccountEnum.WARNING_SELECT, "index=" + selection.getValue());
-        String selected = selenium.getSelectedLabel(MyAccountEnum.WARNING_SELECT);
-        assertEquals(getTextValue(selection), selected);
-        return this;
+        return selectValue(selection, MyAccountEnum.WARNING_SELECT);
+    }
+
+    public String errorMsg_confirmPassword_getText() {
+        return selenium.getText(MyAccountEnum.CONFIRM_PASSWORD_ERROR);
+    }
+
+    public String errorMsg_currentPassword_getText() {
+        return selenium.getText(MyAccountEnum.CURRENT_PASSWORD_ERROR);
+    }
+
+    public String errorMsg_email1_getText() {
+        return selenium.getText(MyAccountEnum.EMAIL1_ERROR);
+    }
+
+    public String errorMsg_email2_getText() {
+        return selenium.getText(MyAccountEnum.EMAIL2_ERROR);
+    }
+
+    public String errorMsg_newPassword_getText() {
+        return selenium.getText(MyAccountEnum.NEW_PASSWORD_ERROR);
+    }
+
+    public String errorMsg_phone1_getText() {
+        return selenium.getText(MyAccountEnum.PHONE1_ERROR);
+    }
+
+    public String errorMsg_phone2_getText() {
+        return selenium.getText(MyAccountEnum.PHONE2_ERROR);
+    }
+
+    public String errorMsg_text1_getText() {
+        return selenium.getText(MyAccountEnum.TEXT1_ERROR);
+    }
+
+    public String errorMsg_text2_getText() {
+        return selenium.getText(MyAccountEnum.TEXT2_ERROR);
     }
 
     public String getExpectedPath() {
@@ -133,15 +180,15 @@ public class MyAccount extends NavigationBar {
 
     private String getTextValue(RedFlagPrefs selection) {
         String textValue = selenium.getText(selection.getID());
-        if (textValue.isEmpty()){
+        if (textValue.isEmpty()) {
             return selection.getPrefix().getText().replace(":", "");
-        }else{
+        } else {
             return selection.getPrefix().getText() + selenium.getText(selection.getID());
         }
     }
 
     public String label_confirmPassword_getText() {
-        return selenium.getText(MyAccountEnum.CHANGE_PASSWORD_CONFIRM_TITLE);
+        return selenium.getText(MyAccountEnum.CONFIRM_PASSWORD_LABEL);
     }
 
     public String label_criticalRedFlag_getText() {
@@ -149,7 +196,7 @@ public class MyAccount extends NavigationBar {
     }
 
     public String label_currentPassword_getText() {
-        return selenium.getText(MyAccountEnum.CHANGE_PASSWORD_CURRENT_TITLE);
+        return selenium.getText(MyAccountEnum.CURRENT_PASSWORD_TITLE);
     }
 
     public String label_emailAddress1_getText() {
@@ -185,7 +232,7 @@ public class MyAccount extends NavigationBar {
     }
 
     public String label_newPassword_getText() {
-        return selenium.getText(MyAccountEnum.CHANGE_PASSWORD_NEW_TITLE);
+        return selenium.getText(MyAccountEnum.NEW_PASSWORD_TITLE);
     }
 
     public String label_phoneNumber1_getText() {
@@ -262,11 +309,11 @@ public class MyAccount extends NavigationBar {
     }
 
     public Boolean popup_changePassword_isVisible() {
-        return selenium.isVisible(MyAccountEnum.CHANGE_PASSWORD_CHANGE);
+        return selenium.isVisible(MyAccountEnum.CHANGE_PASSWORD_CHANGE_BUTTON);
     }
 
     public MyAccount textField_confirmPassword_type(String textToSend) {
-        selenium.type(MyAccountEnum.CHANGE_PASSWORD_CONFIRM_TEXTFIELD, textToSend);
+        selenium.type(MyAccountEnum.CONFIRM_PASSWORD_TEXTFIELD, textToSend);
         return this;
     }
 
@@ -322,12 +369,12 @@ public class MyAccount extends NavigationBar {
     }
 
     public MyAccount textField_newPassword_type(String textToSend) {
-        selenium.type(MyAccountEnum.CHANGE_PASSWORD_NEW_TEXTFIELD, textToSend);
+        selenium.type(MyAccountEnum.NEW_PASSWORD_TEXTFIELD, textToSend);
         return this;
     }
 
     public String textField_passwordStrength_getText() {
-        return selenium.getText(MyAccountEnum.CHANGE_PASSWORD_STRENGTH_MSG);
+        return selenium.getText(MyAccountEnum.PASSWORD_STRENGTH_MSG);
     }
 
     public String textField_phoneNumber1_getText() {

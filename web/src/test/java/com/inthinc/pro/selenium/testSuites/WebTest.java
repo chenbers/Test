@@ -6,22 +6,23 @@ import org.junit.Before;
 
 import com.inthinc.pro.automation.selenium.AutomatedTest;
 
-public class WebTest extends AutomatedTest{
-        
+public class WebTest extends AutomatedTest {
+
     @Before
     @Override
-    public void before(){
+    public void before() {
         super.before();
     }
-    
+
     @After
     @Override
-    public void after(){
+    public void after() {
         super.after();
+        didTestFail();
     }
-    
+
     @AfterClass
-    public static void afterClass(){
+    public static void afterClass() {
         AutomatedTest.afterClass();
-    }    
+    }
 }

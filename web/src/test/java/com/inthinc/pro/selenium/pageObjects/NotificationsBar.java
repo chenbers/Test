@@ -4,18 +4,11 @@ import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 
 public abstract class NotificationsBar extends NavigationBar {
 
-    protected String current = "redFlags";
-
-    protected NotificationsBar setCurrentLocation() {
-        current = browser_location_getCurrent();
-        if (current.equals("")) {
-            current = "redFlags";
-        }
-        return this;
-    }
-
     protected NotificationsBar click_link(NotificationsBarEnum clickMe) {
-        clickMe.setCurrent(current);
+        if(currentPage==null){
+            currentPage = "redFlags";
+        }
+        clickMe.setCurrent(currentPage);
         selenium.click(clickMe);
         selenium.waitForPageToLoad();
         setCurrentLocation();

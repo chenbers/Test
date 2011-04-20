@@ -19,7 +19,7 @@ import com.inthinc.pro.automation.utils.StackToString;
 public class TestCase {
 
 	private final static Logger logger = Logger
-			.getLogger(RallyWebServices.class);
+			.getLogger(TestCase.class);
 
 	private Map<String, Boolean> customFields = new HashMap<String, Boolean>();
 	private HTTPCommands http;

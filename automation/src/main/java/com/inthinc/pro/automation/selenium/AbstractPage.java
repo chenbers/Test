@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 public abstract class AbstractPage implements VerbosePage {
     protected static CoreMethodLib selenium;
     protected static WebDriver webDriver;
+    protected String currentPage;
 
     public AbstractPage() {
         selenium = GlobalSelenium.getSelenium();
@@ -84,7 +85,7 @@ public abstract class AbstractPage implements VerbosePage {
 
 
     public String browser_location_getCurrent() {
-        String[] url = selenium.getLocation().split("/");
+        String[] url = webDriver.getCurrentUrl().split("/");
         return url[url.length-1];
     }
 
@@ -116,6 +117,12 @@ public abstract class AbstractPage implements VerbosePage {
 
     public CoreMethodLib getSelenium() {
         return selenium;
+    }
+    
+    protected String setCurrentLocation(){
+        String[] address = getCurrentLocation().split("/");
+        currentPage = address[address.length-1];
+        return currentPage;
     }
 
     /*

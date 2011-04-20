@@ -92,6 +92,15 @@ public enum MyAccountEnum implements SeleniumEnums {
     WARNING_SELECT(null, "my_form:editAccount-warn", "//select[@name='my_form:editAccount-warn'", null),
     CRITICAL_SELECT(null, "my_form:editAccount-crit", "//select[@name='my_form:editAccount-crit'", null),
 
+    /* Edit Page Error Messages */
+
+    EMAIL1_ERROR(null, null, "//table[1]/tbody/tr[1]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
+    EMAIL2_ERROR(null, null, "//table[1]/tbody/tr[2]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
+    PHONE1_ERROR(null, null, "//table[2]/tbody/tr[1]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
+    PHONE2_ERROR(null, null, "//table[2]/tbody/tr[2]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
+    TEXT1_ERROR(null, null, "//table[3]/tbody/tr[1]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
+    TEXT2_ERROR(null, null, "//table[3]/tbody/tr[2]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
+
     /* Edit Page text fields */
     EMAIL1_TEXTFIELD(null, "my_form:editAccount-priEmail", "//input[@name='my_form:editAccount-priEmail", null),
     EMAIL2_TEXTFIELD(null, "my_form:editAccount-secEmail", "//input[@name='my_form:editAccount-secEmail", null),
@@ -105,23 +114,27 @@ public enum MyAccountEnum implements SeleniumEnums {
     /* Change Password items */
     CHANGE_PASSWORD_TITLE("Change Password", null, "//div[@id='changePasswordPanelHeader']/span", "//td[@class='rich-mpnl-header-cell']/div[@class='rich-mpnl-text rich-mpnl-header popupHeader']/span"),
     CHANGE_PASSWORD_X(null, null, "//div[@id='changePasswordPanelCDiv']/div[@id='changePasswordPanelContentDiv']/div/img[contains(@src,'modal_close')]", null),
-    CHANGE_PASSWORD_CANCEL("Cancel", "changePasswordForm:changePasswordCancel", "//button[@name='changePasswordForm:changePasswordCancel']", "//div/button[@class='left'][@type='button']"),
-    CHANGE_PASSWORD_CHANGE("Change", "changePasswordForm:changePasswordSubmit", "//button[@name='changePasswordForm:changePasswordSubmit']", "//div/button[@class='left'][@type='submit']"),
+    CHANGE_PASSWORD_CANCEL_BUTTON("Cancel", "changePasswordForm:changePasswordCancel", "//button[@name='changePasswordForm:changePasswordCancel']", "//div/button[@class='left'][@type='button']"),
+    CHANGE_PASSWORD_CHANGE_BUTTON("Change", "changePasswordForm:changePasswordSubmit", "//button[@name='changePasswordForm:changePasswordSubmit']", "//div/button[@class='left'][@type='submit']"),
 
-    CHANGE_PASSWORD_CURRENT_TITLE("Current Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[1]/td[1]", null),
-    CHANGE_PASSWORD_CURRENT_TEXTFIELD(null, "changePasswordForm:oldPassword", "//inpute[@name='changePasswordForm:oldPassword", "//input[@type='password'][1]"),
+    CURRENT_PASSWORD_TITLE("Current Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[1]/td[1]", null),
+    CURRENT_PASSWORD_TEXTFIELD(null, "changePasswordForm:oldPassword", "//inpute[@name='changePasswordForm:oldPassword", "//input[@type='password'][1]"),
 
-    CHANGE_PASSWORD_STRENGTH_MSG("Begin Typing", null, "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]", null),
-    CHANGE_PASSWORD_STRENGTH_METER_EMPTY(null, "changePasswordForm_meterEmpty", "//div[@id='pwdTest']/span", null),
-    CHANGE_PASSWORD_STRENGTH_METER_FULL(null, "changePasswordForm_meterFull", "//div[@id='pwdTest']/span/span", null),
+    PASSWORD_STRENGTH_MSG("Begin Typing", null, "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]", null),
+    PASSWORD_STRENGTH_METER_EMPTY(null, "changePasswordForm_meterEmpty", "//div[@id='pwdTest']/span", null),
+    PASSWORD_STRENGTH_METER_FULL(null, "changePasswordForm_meterFull", "//div[@id='pwdTest']/span/span", null),
 
-    CHANGE_PASSWORD_NEW_TITLE("Current Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[2]/td[1]", null),
-    CHANGE_PASSWORD_NEW_TEXTFIELD(null, "changePasswordForm:newPassword", "//inpute[@name='changePasswordForm:newPassword", "//input[@type='password'][2]"),
+    NEW_PASSWORD_TITLE("New Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[2]/td[1]", null),
+    NEW_PASSWORD_TEXTFIELD(null, "changePasswordForm:newPassword", "//inpute[@name='changePasswordForm:newPassword", "//input[@type='password'][2]"),
 
-    CHANGE_PASSWORD_CONFIRM_TITLE("Current Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]", null),
-    CHANGE_PASSWORD_CONFIRM_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
+    CONFIRM_PASSWORD_LABEL("Confirm New Password:", null, "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]", null),
+    CONFIRM_PASSWORD_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
 
-    
+    /* Change Password Errors */
+    CURRENT_PASSWORD_ERROR(null, null, "//tr[1]/td[2]/span/span[@class='rich-message-label']", null),
+    NEW_PASSWORD_ERROR(null, null, "//tr[2]/td[2]/span/span[@class='rich-message-label']", null),
+    CONFIRM_PASSWORD_ERROR(null, null, "//tr[3]/td[2]/span/span[@class='rich-message-label']", null),
+
     ;
 
     private String ID, text, url, xpath, xpathAlt;

@@ -51,6 +51,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "click: " + element;
         try {
             click(element);
+            Pause(2);
         } catch (SeleniumException e) {
             errors.addError(error_name, e);
         } catch (RuntimeException e) {

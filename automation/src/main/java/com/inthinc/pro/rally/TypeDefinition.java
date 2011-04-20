@@ -9,7 +9,7 @@ import com.inthinc.pro.automation.utils.StackToString;
 
 public class TypeDefinition {
 	
-	private final static Logger logger = Logger.getLogger(RallyWebServices.class);
+	private final static Logger logger = Logger.getLogger(TypeDefinition.class);
 
 		
 		private HTTPCommands http;

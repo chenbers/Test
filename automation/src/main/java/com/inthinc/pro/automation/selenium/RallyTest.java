@@ -35,7 +35,9 @@ public abstract class RallyTest extends AutomatedTest {
 
 	@Override
 	public void before() {
-		startTime = System.currentTimeMillis();
+	    if (startTime == null){
+	        startTime = currentTime();
+	    }
 		super.before();
 		try {
 			rally.new_results();
@@ -49,20 +51,18 @@ public abstract class RallyTest extends AutomatedTest {
 
 	@Override
 	public void after() {
+	    super.after();
 		if (!skip) {
 			try {
-				rally.setBuildNumber(selenium.getText("footerForm:version"));
-				super.after();
-
-				rally.setVerdict(testVerdict);
+				rally.setBuildNumber(getBuildNumber());
+				rally.setVerdict(getTestVerdict());
                 rally.setNotes(errors);
-//                rally.setDuration(System.currentTimeMillis() / 1000 - startTime);
+                rally.setDuration(stopTime - startTime);
 				rally.send_test_case_results();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		startTime = null;
 	}
 
 	public void set_test_case(String formattedID) {

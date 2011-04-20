@@ -10,7 +10,7 @@ import com.inthinc.pro.automation.utils.StackToString;
 
 public class Project {
 	
-private final static Logger logger = Logger.getLogger(RallyWebServices.class);
+private final static Logger logger = Logger.getLogger(Project.class);
 
 	
 	private HTTPCommands http;

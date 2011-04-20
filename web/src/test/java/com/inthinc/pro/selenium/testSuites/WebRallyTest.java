@@ -24,6 +24,7 @@ public class WebRallyTest extends RallyTest{
     @Override
     public void after(){
         super.after();
+        didTestFail();
     }
     
     @AfterClass

@@ -8,7 +8,7 @@ import com.inthinc.pro.selenium.pageObjects.Dashboard;
 import com.inthinc.pro.selenium.pageObjects.Login;
 import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
-@Ignore
+//@Ignore
 public class LoginTest extends WebRallyTest {
     Login login;
     // TODO: jwimmer: question for DTanner: I can see a benefit from having SOME of these types of things defined in a non-page-specific enum? email is a good example (actually not
@@ -33,8 +33,8 @@ public class LoginTest extends WebRallyTest {
         
         /* Input */
         login.page_login_open();//Navigate to page
-        login.text_username_type("validLogin");//Type valid username
-        login.text_password_type("validPassword");//Type valid password
+        login.text_username_type("darth");//Type valid username
+        login.text_password_type("wrongPassword");//Type valid password
         login.button_logIn_click();//Click Log In
         
         /* Expected Result */

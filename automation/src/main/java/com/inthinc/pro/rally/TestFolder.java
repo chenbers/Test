@@ -15,7 +15,7 @@ import com.inthinc.pro.automation.utils.StackToString;
 
 public class TestFolder {
 	
-	private final static Logger logger = Logger.getLogger(RallyWebServices.class);
+	private final static Logger logger = Logger.getLogger(TestFolder.class);
 
 	
 	private HTTPCommands http;
