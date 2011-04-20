@@ -249,7 +249,7 @@ public class HosDailyDriverLogReportCriteria {
                 dayData.setOriginalGraph(createGraph(originalLogListForDay, originalAdjustedList.getAdjustedDayTotals(originalLogListForDay)));
  
             }
-            dayData.setRecap(initRecap(ruleSetType, day, hosRecapList, dayTotals));
+            dayData.setRecap(initRecap(ruleSetType, day, hosRecapList, dayTotals, dateTimeZone));
             dayData.setRecapType(getRecapType(dayData.getRecap()));
 
             List<HosDailyDriverLog> dataList = new ArrayList<HosDailyDriverLog>();
@@ -347,7 +347,8 @@ public class HosDailyDriverLogReportCriteria {
         
         
     }
-    private List<Recap> initRecap(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, DayTotals dayTotals) {
+    private List<Recap> initRecap(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, DayTotals dayTotals, DateTimeZone dateTimeZone) {
+        
         List<Recap> recapList = new ArrayList<Recap>();
         if (ruleSetType == null ||
                 ruleSetType == RuleSetType.NON_DOT ||
@@ -360,16 +361,16 @@ public class HosDailyDriverLogReportCriteria {
         if (ruleSetType == RuleSetType.CANADA ||
                 ruleSetType == RuleSetType.CANADA_60_DEGREES ||
                 ruleSetType == RuleSetType.CANADA_HOME_OFFICE) {
-            recap = new RecapCanada(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()) * 15);
+            recap = new RecapCanada(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()) * 15, dateTimeZone);
         }
         else if (ruleSetType == RuleSetType.CANADA_2007_CYCLE_1 ||
                     ruleSetType == RuleSetType.CANADA_2007_CYCLE_2 ||
                     ruleSetType == RuleSetType.CANADA_2007_60_DEGREES_CYCLE_1 ||
                     ruleSetType == RuleSetType.CANADA_2007_60_DEGREES_CYCLE_2) {
-            recap = new RecapCanada2007(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()) * 15);
+            recap = new RecapCanada2007(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()) * 15, dateTimeZone);
         }
         else {
-            recap = new RecapUS(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()) * 15);
+            recap = new RecapUS(ruleSetType, day, hosRecList, (dayTotals.getDriving()+dayTotals.getOnDuty()) * 15, dateTimeZone);
         }
     
         recapList.add(recap);

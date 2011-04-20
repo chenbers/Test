@@ -3,6 +3,7 @@ package com.inthinc.pro.reports.hos.model;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.hos.model.CummulativeData;
 import com.inthinc.hos.model.HOSRec;
@@ -17,8 +18,8 @@ public class RecapCanada extends Recap {
     private CummulativeData cummulativeData8day;
     private CummulativeData cummulativeData14day;
 
-    public RecapCanada(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, int minutesWorkedToday) {
-        super(ruleSetType, day, hosRecList, RecapType.CANADA, minutesWorkedToday);
+    public RecapCanada(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, int minutesWorkedToday, DateTimeZone dateTimeZone) {
+        super(ruleSetType, day, hosRecList, RecapType.CANADA, minutesWorkedToday, dateTimeZone);
 
         cummulativeData7day = cummulativeDataMap.get(RuleViolationTypes.CUMMULATIVE_HOURS_7_DAYS);
         cummulativeData8day = cummulativeDataMap.get(RuleViolationTypes.CUMMULATIVE_HOURS_8_DAYS);
@@ -27,7 +28,6 @@ public class RecapCanada extends Recap {
         cummulativeDataBestToday = getCummulativeDataWithMostMinutesAvailToday();
         cummulativeDataBestTomorrow = getCummulativeDataWithMostMinutesAvailTomorrow();
         
-        setDay(getRecapDay(day));
     }
     
     @Override
@@ -75,12 +75,6 @@ public class RecapCanada extends Recap {
         return cummulativeData7day;
     }
 
-    public int getRecapDay(DateTime day)
-    {
-        DateTime resetDay = new DateTime(cummulativeDataBestToday.getStartTime());
-        int daysDiff = day.getDayOfYear() - resetDay.getDayOfYear();
-        return daysDiff + 1;
-    }
     @Override
     public String getHoursAvailTomorrow() {
         return formatMinutes(cummulativeDataBestTomorrow.getMinAvailTomorrow());

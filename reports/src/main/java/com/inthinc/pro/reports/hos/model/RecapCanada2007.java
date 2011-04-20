@@ -3,6 +3,7 @@ package com.inthinc.pro.reports.hos.model;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.inthinc.hos.model.CummulativeData;
 import com.inthinc.hos.model.HOSRec;
@@ -14,8 +15,8 @@ public class RecapCanada2007 extends Recap {
     private CummulativeData cummulativeData;
     private int cycle;
 
-    public RecapCanada2007(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, int minutesWorkedToday) {
-        super(ruleSetType, day, hosRecList, RecapType.CANADA_2007, minutesWorkedToday);
+    public RecapCanada2007(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, int minutesWorkedToday, DateTimeZone dateTimeZone) {
+        super(ruleSetType, day, hosRecList, RecapType.CANADA_2007, minutesWorkedToday, dateTimeZone);
         
 
         CummulativeData cycle1Data = cummulativeDataMap.get(RuleViolationTypes.CUMMULATIVE_HOURS_7_DAYS);
@@ -50,8 +51,11 @@ public class RecapCanada2007 extends Recap {
 
     private int getCycleRecapDay()
     {
-        DateTime resetDay = new DateTime(cummulativeData.getStartTime());
-        DateTime currentDay = new DateTime(cummulativeData.getCurrentTime());
+        DateTime resetDay = new DateTime(cummulativeData.getStartTime(), dateTimeZone);
+        DateTime currentDay = new DateTime(cummulativeData.getCurrentTime(), dateTimeZone);
+//System.out.println("resetDay: " + dateTimeFormatter.print(resetDay) + " report day: " + dateTimeFormatter.print(currentDay));        
+//System.out.println("resetDay: " + resetDay.getDayOfYear() + " report day: " + currentDay.getDayOfYear());     
+        
         int daysDiff = currentDay.getDayOfYear() - resetDay.getDayOfYear();
         return daysDiff + 1;
     }

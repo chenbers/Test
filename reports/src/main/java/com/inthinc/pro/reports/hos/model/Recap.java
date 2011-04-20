@@ -8,6 +8,8 @@ import java.util.TimeZone;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.inthinc.hos.model.CummulativeData;
 import com.inthinc.hos.model.HOSRec;
@@ -24,12 +26,20 @@ public abstract class Recap {
     private int minutesWorkedToday;
     protected Map<RuleViolationTypes, CummulativeData> cummulativeDataMap;
     public static final DecimalFormat hoursFormat = new DecimalFormat("00.00");
+    protected DateTimeZone dateTimeZone;
+    
+    
+    protected DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss z");
+    
     
 
-    public Recap(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, RecapType recapType, int minutesWorkedToday) {
+
+
+    public Recap(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, RecapType recapType, int minutesWorkedToday, DateTimeZone dateTimeZone) {
         this.ruleSetType = ruleSetType;
         this.recapType = recapType;
         this.minutesWorkedToday = minutesWorkedToday;
+        this.dateTimeZone = dateTimeZone;
         
         TimeZone timeZone = TimeZone.getTimeZone("UTC");
         if (hosRecList != null && hosRecList.size() > 0)
@@ -81,4 +91,5 @@ public abstract class Recap {
     public void setDay(Integer day) {
         this.day = day;
     }
+
 }
