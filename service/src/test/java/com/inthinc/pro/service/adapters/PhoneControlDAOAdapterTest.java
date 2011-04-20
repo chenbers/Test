@@ -43,14 +43,14 @@ public class PhoneControlDAOAdapterTest {
     }       
 
     @Test
-    public void testGetCellblocksForAcctID(){
+    public void testGetCellblocksByAcctID(){
         final List<Cellblock> cellblockList = new ArrayList<Cellblock>();
         cellblockList.add(cellblock);
         
         new Expectations(){{
-            phoneControlDAOMock.getCellblocksForAcctID(ACCOUNT_ID); returns(cellblockList);
+            phoneControlDAOMock.getCellblocksByAcctID(ACCOUNT_ID); returns(cellblockList);
         }};
-        assertEquals(adapterSUT.getCellblocksForAcctID(ACCOUNT_ID), cellblockList);
+        assertEquals(adapterSUT.getCellblocksByAcctID(ACCOUNT_ID), cellblockList);
     }   
     @Test
     public void testGetDriversWithDisabledPhones(){

@@ -314,7 +314,7 @@
                        </div>
                        </ui:fragment>
  
-                       <rich:panel id="cellProviderSection" rendered="#{personBean.item.driverSelected}">
+                       <rich:panel id="cellProviderSection" rendered="#{personBean.item.driverSelected and personBean.accountPhoneControlEnabled}">
                        <div class="add_section_title">
                            <h:selectBooleanCheckbox rendered="#{not personBean.batchEdit}" id="editPerson-isProviderSelected" value="#{personBean.item.providerInfoSelected}">
                          <a4j:support event="onclick" ajaxSingle="true" reRender="editPerson-isProviderSelected,editPerson-cellProviderData" limitToList="true" />

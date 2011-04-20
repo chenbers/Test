@@ -43,8 +43,8 @@ public class PhoneControlDAOAdapter extends BaseDAOAdapter<Cellblock>{
         this.phoneControlDAO = phoneControlDAO;
     }
 
-    public List<Cellblock> getCellblocksForAcctID(Integer acctID) {
-        return phoneControlDAO.getCellblocksForAcctID(acctID);
+    public List<Cellblock> getCellblocksByAcctID(Integer acctID) {
+        return phoneControlDAO.getCellblocksByAcctID(acctID);
     }
 
     public List<Cellblock> getDriversWithDisabledPhones() {

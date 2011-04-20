@@ -1473,7 +1473,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
     }
 
     @Override
-    public List<Map<String, Object>> getCellblocksForAcctID(Integer acctID) {
+    public List<Map<String, Object>> getCellblocksByAcctID(Integer acctID) {
         final SearchCriteria criteria = new SearchCriteria();
         criteria.addKeyValue("acctID", acctID);
         return MockData.getInstance().lookupList(Cellblock.class, criteria);

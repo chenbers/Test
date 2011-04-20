@@ -123,7 +123,7 @@ public interface SiloService extends HessianService
     
     List<Map<String, Object>> getDriversWithDisabledPhones(Integer siloID);
 
-    List<Map<String, Object>> getCellblocksForAcctID(Integer acctID);
+    List<Map<String, Object>> getCellblocksByAcctID(Integer acctID);
     
     // ------- User  ----------
     Map<String, Object> createUser(Integer personID, Map<String, Object> userMap) throws ProDAOException;

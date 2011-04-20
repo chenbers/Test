@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
-@Ignore
+//@Ignore
 public class DriverServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(DriverServiceITCaseTest.class);
     private static int DRIVER_ID = 3;
@@ -52,6 +52,16 @@ public class DriverServiceITCaseTest extends BaseEmbeddedServerITCase {
         logger.info("Driver last trip retrieved successfully");
     }
 
+    @Test
+    public void getLastTripJSONTest() throws Exception {
+
+        // Getting driver last trip
+        ClientResponse<Trip> trip = client.getLastTrip(DRIVER_ID);
+
+        //assertEquals(Response.Status.OK, trip.getResponseStatus());
+        //assertNotNull(trip.getEntity());
+        logger.info("Driver last trip retrieved successfully");
+    }
     @Test
     public void getLastTripWithNoDataTest() throws Exception {
 

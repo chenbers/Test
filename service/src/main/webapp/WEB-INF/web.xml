@@ -20,9 +20,12 @@
   <!-- media types -->
 	<context-param>
         <param-name>resteasy.media.type.mappings</param-name>
-        <param-value>fastinfoset : application/fastinfoset, json : application/json, xml : application/xml</param-value>
+        <param-value>csv : text/csv, fastinfoset : application/fastinfoset, json : application/json, xml : application/xml</param-value>
     </context-param>
-
+    <context-param>
+		<param-name>resteasy.providers</param-name>
+		<param-value>com.inthinc.pro.service.providers.CSVProvider</param-value>
+	</context-param>
 
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>

@@ -36,7 +36,7 @@ public class PhoneControlHessianDAOTest {
     @Test
     public void cellblocks() throws Exception
     {
-        List<Cellblock> cellblockList = phoneControlHessianDAO.getCellblocksForAcctID(MockData.NUM_ACCOUNTS);
+        List<Cellblock> cellblockList = phoneControlHessianDAO.getCellblocksByAcctID(MockData.NUM_ACCOUNTS);
         assertTrue("No cellblock records were found", cellblockList.size() > 0);
         
 //        Cellblock phoneNumberCellblock = phoneControlHessianDAO.findByPhoneNumber("8017127234");

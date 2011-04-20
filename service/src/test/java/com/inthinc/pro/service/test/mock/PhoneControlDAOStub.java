@@ -50,7 +50,7 @@ public class PhoneControlDAOStub implements PhoneControlDAO{
     }
 
     @Override
-    public List<Cellblock> getCellblocksForAcctID(Integer acctID) {
+    public List<Cellblock> getCellblocksByAcctID(Integer acctID) {
         return new ArrayList<Cellblock>();
     }
 }

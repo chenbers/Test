@@ -13,5 +13,5 @@ public interface PhoneControlDAO extends GenericDAO<Cellblock, Integer> {
 
     public List<Cellblock> getDriversWithDisabledPhones();
 
-    public List<Cellblock> getCellblocksForAcctID(Integer acctID);
+    public List<Cellblock> getCellblocksByAcctID(Integer acctID);
 }

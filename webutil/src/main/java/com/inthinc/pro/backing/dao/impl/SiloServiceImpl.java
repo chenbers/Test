@@ -1124,7 +1124,7 @@ public class SiloServiceImpl implements SiloService {
     @Override
     @MethodDescription(description = "Fetches the list of all the phone control records for an account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Cellblock.class,
             mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilCellblockMapper.class)
-    public List<Map<String, Object>> getCellblocksForAcctID(Integer acctID) {
+    public List<Map<String, Object>> getCellblocksByAcctID(Integer acctID) {
         // TODO Auto-generated method stub
         return null;
     }

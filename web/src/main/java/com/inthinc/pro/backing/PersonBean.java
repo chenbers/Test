@@ -181,7 +181,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private CacheBean cacheBean;
     private ListPicker         rolePicker;
     private Account account;
-
+    private Map<Integer, Cellblock> cellblockMap;
     public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -324,6 +324,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 i.remove();
             }   
         }
+        //get all the cellblocks for the account in one go so we don't have to get them individually
+        createCellblockMap();
         // convert the people to PersonViews
         final List<PersonView> items = new ArrayList<PersonView>();
         for (final Person person : plainPeople) {
@@ -333,7 +335,15 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         }
         return items;
     }
-
+    private void createCellblockMap(){
+        final List<Cellblock> cellblocks = phoneControlDAO.getCellblocksByAcctID(getUser().getPerson().getAccountID());
+        cellblockMap = new HashMap<Integer,Cellblock>();
+        if(cellblocks != null){
+            for(Cellblock cellblock :cellblocks){
+                cellblockMap.put(cellblock.getDriverID(), cellblock);
+            }
+        }
+    }
     /**
      * Creates a PersonView object from the given Person object and score.
      * 
@@ -353,7 +363,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         personView.setDriverSelected(person.getDriver() != null);
         
         if (person.getDriver() != null) {
-            Cellblock cellblock = phoneControlDAO.findByID(person.getDriverID());
+//            Cellblock cellblock = phoneControlDAO.findByID(person.getDriverID());
+            Cellblock cellblock = cellblockMap.get(person.getDriverID());
             if(cellblock != null) cellblock.setProviderPassword("");
             personView.setProviderInfoSelected(cellblock != null);
             personView.setProviderInfoExists(cellblock != null);
@@ -512,7 +523,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public TableType getTableType() {
         return TableType.ADMIN_PEOPLE;
     }
-
+	
     @Override
     protected PersonView createAddItem() {
         final PersonView person = new PersonView();
@@ -534,7 +545,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         person.setCellblock(new Cellblock());
         person.setUserSelected(true);
         person.setDriverSelected(true);
-        person.setProviderInfoSelected(true);
+        person.setProviderInfoSelected(false);
         person.setProviderInfoExists(false);
         person.setAcctID(getAccountID());
         return person;
@@ -1102,11 +1113,11 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
 
     public List<SelectItem> getProviderTypes() {
-//        List<CellProviderType> providers = this.getProUser().getAccountAttributes().getCellPhoneControlProviders();
-        List<CellProviderType> providers = new ArrayList<CellProviderType>();
-        providers.add(CellProviderType.UNDEFINED_PROVIDER);
-        providers.add(CellProviderType.CELL_CONTROL);
-        providers.add(CellProviderType.ZOOM_SAFER);
+        List<CellProviderType> providers = this.getProUser().getAccountAttributes().getPhoneControlProviders();
+//        List<CellProviderType> providers = new ArrayList<CellProviderType>();
+//        providers.add(CellProviderType.UNDEFINED_PROVIDER);
+//        providers.add(CellProviderType.CELL_CONTROL);
+//        providers.add(CellProviderType.ZOOM_SAFER);
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         for (CellProviderType e : providers)
         {
@@ -1115,7 +1126,12 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         
         return selectItemList;
     }
-
+    public boolean isAccountPhoneControlEnabled(){
+        return !getProviderTypes().isEmpty();
+    }
+    public void setAccountPhoneControlEnabled(boolean enable){
+        // Nothing to do
+    }
     public Map<String, State> getStates() {
         return STATES;
     }

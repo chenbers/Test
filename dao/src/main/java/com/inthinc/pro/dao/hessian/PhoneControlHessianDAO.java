@@ -45,11 +45,11 @@ public class PhoneControlHessianDAO extends GenericHessianDAO<Cellblock, Integer
         }
     }
     @Override
-    public List<Cellblock> getCellblocksForAcctID(Integer acctID) {
-        logger.debug("getCellblocksForAcctID acctID = " + acctID);
+    public List<Cellblock> getCellblocksByAcctID(Integer acctID) {
+        logger.debug("getCellblocksByAcctID acctID = " + acctID);
         try
         {
-            List<Cellblock> cellblockList = getMapper().convertToModelObject(this.getSiloService().getCellblocksForAcctID(acctID), Cellblock.class);
+            List<Cellblock> cellblockList = getMapper().convertToModelObject(this.getSiloService().getCellblocksByAcctID(acctID), Cellblock.class);
             return cellblockList;
         }
         catch (EmptyResultSetException e)
