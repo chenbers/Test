@@ -535,7 +535,7 @@
 								<div class="panel_content"><!-- Start Event table --> <rich:panel id="selectedEvents">
 										<a4j:form id="selectedEventsForm">
 												<rich:dataTable value="#{vehicleTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven" cellspacing="1" rows="5" width="100%"
-														onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,#{item.noteID});">
+														onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,'#{item.noteID}');">
 
 														<!-- Data -->
 														<rich:column sortBy="#{item.addressStr}" style="cursor: pointer;">

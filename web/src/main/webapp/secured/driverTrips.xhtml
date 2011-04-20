@@ -562,7 +562,7 @@
                 <rich:panel id="selectedEvents">
                     <a4j:form id="selectedEventsForm">
                         <rich:dataTable value="#{driverTripsBean.allEvents}" id="selectedTripTable" var="item" styleClass="datagrid" rowClasses="tableOdd,tableEven"
-                            rows="5" width="100%" onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,#{item.noteID});">
+                            rows="5" width="100%" onRowClick="lkFrZnEvtTbl(#{item.latitude},#{item.longitude},0,'#{item.noteID}');">
 
                             <!-- Data -->
                             <rich:column  style="cursor: pointer;">
