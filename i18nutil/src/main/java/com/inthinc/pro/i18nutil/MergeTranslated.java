@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,15 @@ public class MergeTranslated extends BaseTranslationUtil {
             System.out.println("File: " + destFile.getAbsolutePath());
             Properties transProps = findTranslationProperties(translationMap, destFile.getAbsolutePath());
             if (transProps == null) {
-                System.out.println("Error Merging: Cannot find translations for " + destFile.getAbsolutePath());
+                System.out.println("Error Merging: Cannot find translations for " + destFile.getAbsolutePath() + " resorting file...");
+                Properties toProp;
+                try {
+                    toProp = readPropertiesFile(destFile);
+                    savePropertiesFileSorted(destFile, toProp);
+                } catch (IOException e) {
+                    System.out.println("Error Sorting: " + destFile.getAbsolutePath());
+                    e.printStackTrace();
+                }
             }
             else {
                 try {
@@ -126,18 +136,53 @@ public class MergeTranslated extends BaseTranslationUtil {
             toProp.put(key, value);
         }
         
-        savePropertiesFile(to, toProp);
+        
+        
+        
+        savePropertiesFileSorted(to, toProp);
     }
 
-    private void savePropertiesFile(File to, Properties toProp) throws IOException {
-        OutputStream out = new FileOutputStream(to);
-        toProp.store(out, "");
+    
+    private void savePropertiesFileSorted(File to, Properties toProp) throws IOException {
         
+        
+        
+        PrintWriter propWriter = null;
+        propWriter = new PrintWriter(to);
+        
+        List<String> sortedPropList = getSortedPropertyList(toProp);
+        
+        for (String prop : sortedPropList) {
+            propWriter.println(prop);
+        }
+        
+        propWriter.close();
+        
+
+    }
+
+    private List<String> getSortedPropertyList(Properties prop) {
+        List<String> sortedPropList = new ArrayList<String>();
+
+        List<String> propNameList = new ArrayList<String>();
+        Enumeration<?> propNames = prop.propertyNames();
+        while (propNames.hasMoreElements()) {
+            propNameList.add(propNames.nextElement().toString());
+        }
+        Collections.sort(propNameList);
+        for (String key : propNameList) {
+            String value = prop.getProperty(key);
+//            if (value != null)
+//                value = value.replaceAll("\\r", " ").replaceAll("\\n", " ");
+            sortedPropList.add(key + " = " + value);
+        }
+        return sortedPropList;
     }
     
     public static void main(String[] args)
     {
-        String usageErrorMsg = "Usage: MergeTranslationsUtil <translations file path> <root dir of files to translate> <language code>";
+        
+        String usageErrorMsg = "Usage: MergeTranslated <translations file path> <root dir of files to translate> <language code>";
         
         if (args.length < 3)
         {

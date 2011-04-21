@@ -535,6 +535,7 @@ public class NonTranslated {
         nonTranslatedList.add("notes_hos_clear");
         nonTranslatedList.add("redFlagDetailsPopupEscalationEmail");
         nonTranslatedList.add("redflags_catHOS");
+        nonTranslatedList.add("report_waysmart");
         nonTranslatedList.add("reports_emailLink");
         nonTranslatedList.add("reports_exportExcel");
         nonTranslatedList.add("reports_exportExcelLink");
@@ -548,6 +549,7 @@ public class NonTranslated {
         nonTranslatedList.add("vehiclesHeader_IFTA");
         nonTranslatedList.add("waySmartAccess");
         nonTranslatedList.add("waysmartOnly");
+        nonTranslatedList.add("ZOOM_SAFER");
         nonTranslatedList.add("zoneOption");
         nonTranslatedList.add("zones_download");
         nonTranslatedList.add("zones_reset");

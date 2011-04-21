@@ -55,6 +55,10 @@ public class TestTranslations {
                 }
                 else if (langValue.isEmpty() && value.isEmpty())
                     continue;
+                else if (langValue.isEmpty()) {
+                    System.out.println(key + " MISSING");
+                    errorCount++;
+                }
                 else if (nonTranslatedList != null && nonTranslatedList.contains(key))
                     continue;
                 else if (langValue.trim().equalsIgnoreCase(value.trim()) || langValue.contains("(" + lang+ ")")) { 
