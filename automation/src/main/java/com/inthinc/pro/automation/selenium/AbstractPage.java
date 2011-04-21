@@ -1,6 +1,9 @@
 package com.inthinc.pro.automation.selenium;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+
+import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 
 
 public abstract class AbstractPage implements VerbosePage {
@@ -105,8 +108,7 @@ public abstract class AbstractPage implements VerbosePage {
     
     @Override
     public String getCurrentLocation() {
-        // TODO Auto-generated method stub
-        return null;
+        return selenium.getLocation();
     }
     
     @Override
@@ -159,5 +161,38 @@ public abstract class AbstractPage implements VerbosePage {
     public AbstractPage validate() {
         // TODO Auto-generated method stub
         return this;
+    }
+    
+    protected void selectPartialMatch(String partial, SeleniumEnums selector){
+        String xpath="";
+        if (selector.getID()!=null){
+            String id = selector.getID();
+            xpath = "//select[@id='"+id+"']/option[contains(text(),'"+partial+"')]";
+        }else {
+            xpath = selector.getXpath() + "/option[contains(text(),'"+partial+"')]";
+        }
+        webDriver.findElement(By.xpath(xpath)).setSelected();
+    }
+    
+    protected void selectOption(String selection, SeleniumEnums selector){
+        selenium.select(selector, selection);
+        String selected = selenium.getSelectedLabel(selector);
+        assertEquals(selection, selected);
+    }
+    
+    protected void selectValue(SeleniumValueEnums selection, SeleniumEnums selector){
+        selenium.select(selector, "index=" + selection.getValue());
+        String selected = selenium.getSelectedLabel(selector);
+        assertEquals(getTextValue(selection), selected);
+    }
+    
+
+    protected String getTextValue(SeleniumValueEnums selection) {
+        String textValue = selenium.getText(selection.getID());
+        if (textValue.isEmpty()) {
+            return selection.getPrefix().getText().replace(":", "");
+        } else {
+            return selection.getPrefix().getText() + selenium.getText(selection.getID());
+        }
     }
 }

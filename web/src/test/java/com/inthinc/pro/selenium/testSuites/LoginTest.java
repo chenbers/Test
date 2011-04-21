@@ -34,8 +34,9 @@ public class LoginTest extends WebRallyTest {
         /* Input */
         login.page_login_open();//Navigate to page
         login.text_username_type("darth");//Type valid username
-        login.text_password_type("wrongPassword");//Type valid password
+        login.text_password_type("password");//Type valid password
         login.button_logIn_click();//Click Log In
+        login.getSelenium().Pause(10);
         
         /* Expected Result */
         login.assertContains(login.getCurrentLocation(), "dashboard");//You are logged into the inthinc portal
