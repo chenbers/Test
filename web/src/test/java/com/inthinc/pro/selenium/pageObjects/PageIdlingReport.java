@@ -4,7 +4,7 @@ import java.util.StringTokenizer;
 
 import com.inthinc.pro.selenium.pageEnums.IdlingReportEnum;
 
-public class IdlingReport extends NavigationBar {
+public class PageIdlingReport extends NavigationBar {
     
     
     public void textField_startDate_type(String date) {

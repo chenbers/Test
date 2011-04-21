@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
 import com.inthinc.pro.selenium.pageEnums.UtilEnum;
 
-public class DriverReport extends NavigationBar {
+public class PageDriverReport extends NavigationBar {
     
     
     public void link_team_click(Integer row) {
@@ -48,27 +48,27 @@ public class DriverReport extends NavigationBar {
         selenium.type(DriverReportEnum.EMPLOYEE_SEARCH, vehicle);        
     }
     
-    public void dropdown_overallScore_select(UtilEnum selection) {
+    public void dropdown_overallScore_selectValue(UtilEnum selection) {
         selenium.click(DriverReportEnum.OVERALL_SCORE_FILTER.getXpath());
         selenium.click("//div[4]/div[" + selection.getID() + "]");  
     }
     
-    public void dropdown_speedScore_select(UtilEnum selection) {
+    public void dropdown_speedScore_selectValue(UtilEnum selection) {
         selenium.click(DriverReportEnum.SPEED_SCORE_FILTER.getXpath());
         selenium.click("//div[3]/div[" + selection.getID() + "]");  
     }
     
-    public void dropdown_styleScore_select(UtilEnum selection) {
+    public void dropdown_styleScore_selectValue(UtilEnum selection) {
         selenium.click(DriverReportEnum.STYLE_SCORE_FILTER.getXpath());
         selenium.click("//div[2]/div[" + selection.getID() + "]");  
     }
     
-    public void dropdown_seatbeltScore_select(UtilEnum selection) {
+    public void dropdown_seatbeltScore_selectValue(UtilEnum selection) {
         selenium.click(DriverReportEnum.SEATBELT_SCORE_FILTER.getXpath());
         selenium.click("//div[" + selection.getID() + "]");  
     }
     
-    public void form_driverSearch_submit() {
+    private void form_driverSearch_submit() {
       //TODO: jwimmer: for team: do we want to expose a "form"? or do we stick to visible page elements as a User would see them?  (i.e. I assume there is a submit button on the page that the user would click)
         selenium.submit(DriverReportEnum.DRIVER_FORM.getID());
     }

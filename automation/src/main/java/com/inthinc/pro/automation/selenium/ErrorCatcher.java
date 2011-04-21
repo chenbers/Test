@@ -79,9 +79,9 @@ public class ErrorCatcher {
             add_error(name);
         }
         errors.get(name).put(type, error);
-        if (!type.equals("Tester Thrown Error")){
-            throw new AssertionError(error);
-        }
+//        if (!type.equals("Tester Thrown Error")){
+//            throw new AssertionError(error);
+//        }
     }
 
     /**

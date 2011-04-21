@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 import com.inthinc.pro.selenium.pageEnums.UtilEnum;
 import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
 
-public class VehicleReport  extends NavigationBar {
+public class PageVehicleReport  extends NavigationBar {
     
     
     public void link_team_click(Integer row) {
@@ -48,17 +48,17 @@ public class VehicleReport  extends NavigationBar {
         selenium.type(VehicleReportEnum.YEAR_MAKE_MODEL_SEARCH, driver);        
     }
     
-    public void dropdown_overallScore_select(UtilEnum selection) {
+    public void dropDown_overallScore_select(UtilEnum selection) {
         selenium.click(VehicleReportEnum.OVERALL_SCORE_FILTER.getXpath());
         selenium.click("//div[3]/div[" + selection.getID() + "]");  
     }
     
-    public void dropdown_speedScore_select(UtilEnum selection) {
+    public void dropDown_speedScore_select(UtilEnum selection) {
         selenium.click(VehicleReportEnum.SPEED_SCORE_FILTER.getXpath());
         selenium.click("//div[2]/div[" + selection.getID() + "]");  
     }
     
-    public void dropdown_styleScore_select(UtilEnum selection) {
+    public void dropDown_styleScore_select(UtilEnum selection) {
         selenium.click(VehicleReportEnum.STYLE_SCORE_FILTER.getXpath());
         selenium.click("//div[" + selection.getID() + "]");  
     }

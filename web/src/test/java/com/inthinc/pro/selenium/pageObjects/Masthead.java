@@ -15,14 +15,12 @@ import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 public abstract class Masthead extends AbstractPage{
 
 
-    public String textField_version_get() {
-        String version_text = selenium.getText(MastheadEnum.VERSION);
-        return version_text;
+    public String textField_version_getText() {
+        return selenium.getText(MastheadEnum.VERSION);
     }
 
-    public String textField_copyRight_get() {
-        String copyright_text_actual = selenium.getText(MastheadEnum.COPYRIGHT);
-        return copyright_text_actual;
+    public String textField_copyRight_getText() {
+        return selenium.getText(MastheadEnum.COPYRIGHT);
     }
 
     public void link_myAccount_click() {
@@ -53,7 +51,7 @@ public abstract class Masthead extends AbstractPage{
         clickNewWindowLink(MastheadEnum.PRIVACY, MastheadEnum.PRIVACY_POLICY);
     }
 
-    public void click_help(String help_page) {
+    public void link_help_click(String help_page) {
 //        //TODO: This method needs to be updated and fleshed out once the Help Page has been nailed down.
 //        if (help_page.indexOf(".htm") == -1) {
 //            help_page += ".htm";

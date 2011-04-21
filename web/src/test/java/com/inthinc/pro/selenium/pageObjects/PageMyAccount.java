@@ -1,12 +1,11 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import org.openqa.selenium.By;
-
+import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
-public class MyAccount extends NavigationBar {
+public class PageMyAccount extends NavigationBar {
 
-    public static enum RedFlagPrefs {
+    public static enum RedFlagPrefs implements SeleniumValueEnums {
         EMAIL1("1", MyAccountEnum.EMAIL1_TEXTFIELD, MyAccountEnum.EMAIL1_TITLE),
         EMAIL2("2", MyAccountEnum.EMAIL2_TEXTFIELD, MyAccountEnum.EMAIL2_TITLE),
         PHONE1("3", MyAccountEnum.PHONE1_TEXTFIELD, MyAccountEnum.PHONE1_TITLE),
@@ -36,106 +35,94 @@ public class MyAccount extends NavigationBar {
         }
     };
 
-    public MyAccount button_cancel_click() {
+    public PageMyAccount button_cancel_click() {
         selenium.click(MyAccountEnum.CANCEL_BUTTON);
         return this;
     }
 
-    public MyAccount button_change_click() {
+    public PageMyAccount button_change_click() {
         selenium.click(MyAccountEnum.CANCEL_BUTTON);
         return this;
     }
 
-    public MyAccount button_changePassword_click() {
+    public PageMyAccount button_changePassword_click() {
         selenium.click(MyAccountEnum.CHANGE_PASSWORD_BUTTON);
         return this;
     }
 
-    public MyAccount button_changePasswordX_click() {
+    public PageMyAccount button_changePasswordX_click() {
         selenium.click(MyAccountEnum.CHANGE_PASSWORD_X);
         return this;
     }
 
-    public MyAccount button_edit_click() {
+    public PageMyAccount button_edit_click() {
         selenium.click(MyAccountEnum.EDIT_BUTTON);
         return this;
     }
 
-    public MyAccount button_save_click() {
+    public PageMyAccount button_save_click() {
         selenium.click(MyAccountEnum.SAVE_BUTTON);
         return this;
     }
 
-    public MyAccount dropDown_critical_selectText(String selection) {
-        selectOption(selection, MyAccountEnum.CRITICAL_SELECT);
+    public PageMyAccount dropDown_critical_selectPartialMatch(String partial){
+        selectPartialMatch(partial, MyAccountEnum.CRITICAL_SELECT);
         return this;
     }
 
-    public MyAccount dropDown_critical_selectValue(RedFlagPrefs selection) {
-        return selectValue(selection, MyAccountEnum.CRITICAL_SELECT);
+    public PageMyAccount dropDown_critical_selectText(String selection) {
+        selectOption(selection, MyAccountEnum.CRITICAL_SELECT);
+        return this;
+    }
+    
+    public PageMyAccount dropDown_critical_selectValue(RedFlagPrefs selection) {
+        selectValue(selection, MyAccountEnum.CRITICAL_SELECT);
+        return this;
     }
 
-    public MyAccount dropDown_fuelEfficiency_selectText(String selection) {
+    public PageMyAccount dropDown_fuelEfficiency_selectText(String selection) {
         selectOption(selection, MyAccountEnum.FUEL_EFFICIENCY_SELECT);
         return this;
     }
 
-    public MyAccount dropDown_information_selectText(String selection) {
+    public PageMyAccount dropDown_information_selectPartialMatch(String partial) {
+        selectPartialMatch(partial, MyAccountEnum.INFORMATION_SELECT);
+        return this;
+    }
+
+    public PageMyAccount dropDown_information_selectText(String selection) {
         selectOption(selection, MyAccountEnum.INFORMATION_SELECT);
         return this;
     }
 
-    public MyAccount dropDown_information_selectValue(RedFlagPrefs selection) {
-        return selectValue(selection, MyAccountEnum.INFORMATION_SELECT);
-    }
-    
-    public MyAccount dropDown_information_selectPartialMatch(String partial){
-        return selectPartialMatch(partial, MyAccountEnum.INFORMATION_SELECT);
-    }
-    
-    private MyAccount selectPartialMatch(String partial, MyAccountEnum selector){
-        String xpath="";
-        if (selector.getID()!=null){
-            String id = selector.getID();
-            xpath = "//select[@id='"+id+"']/option[contains(text(),'"+partial+"')]";
-        }else {
-            xpath = selector.getXpath() + "/option[contains(text(),'"+partial+"')]";
-        }
-        webDriver.findElement(By.xpath(xpath)).setSelected();
-        return this;
-    }
-    
-    private MyAccount selectOption(String selection, MyAccountEnum selector){
-        selenium.select(selector, selection);
-        String selected = selenium.getSelectedLabel(selector);
-        assertEquals(selection, selected);
-        return this;
-    }
-    
-    private MyAccount selectValue(RedFlagPrefs selection, MyAccountEnum selector){
-        selenium.select(selector, "index=" + selection.getValue());
-        String selected = selenium.getSelectedLabel(selector);
-        assertEquals(getTextValue(selection), selected);
+    public PageMyAccount dropDown_information_selectValue(RedFlagPrefs selection) {
+        selectValue(selection, MyAccountEnum.INFORMATION_SELECT);
         return this;
     }
 
-    public MyAccount dropDown_locale_selectText(String selection) {
+    public PageMyAccount dropDown_locale_selectText(String selection) {
         selectOption(selection, MyAccountEnum.LOCALE_SELECT);
         return this;
     }
 
-    public MyAccount dropDown_measurement_selectText(String selection) {
+    public PageMyAccount dropDown_measurement_selectText(String selection) {
         selectOption(selection, MyAccountEnum.MEASUREMENT_SELECT);
         return this;
     }
 
-    public MyAccount dropDown_warning_selectText(String selection) {
-        selectOption(selection, MyAccountEnum.WARNING_SELECT);
+    public PageMyAccount dropDown_warning_selectPartialMatch(String partial){
+        selectPartialMatch(partial, MyAccountEnum.WARNING_SELECT);
         return this;
     }
 
-    public MyAccount dropDown_warning_selectValue(RedFlagPrefs selection) {
-        return selectValue(selection, MyAccountEnum.WARNING_SELECT);
+    public PageMyAccount dropDown_warning_selectText(String selection) {
+        selectOption(selection, MyAccountEnum.WARNING_SELECT);
+        return this;
+    }
+    
+    public PageMyAccount dropDown_warning_selectValue(RedFlagPrefs selection) {
+        selectValue(selection, MyAccountEnum.WARNING_SELECT);
+        return this;
     }
 
     public String errorMsg_confirmPassword_getText() {
@@ -176,15 +163,6 @@ public class MyAccount extends NavigationBar {
 
     public String getExpectedPath() {
         return MyAccountEnum.MY_ACCOUNT_URL.getURL();
-    }
-
-    private String getTextValue(RedFlagPrefs selection) {
-        String textValue = selenium.getText(selection.getID());
-        if (textValue.isEmpty()) {
-            return selection.getPrefix().getText().replace(":", "");
-        } else {
-            return selection.getPrefix().getText() + selenium.getText(selection.getID());
-        }
     }
 
     public String label_confirmPassword_getText() {
@@ -263,7 +241,7 @@ public class MyAccount extends NavigationBar {
         return selenium.getText(MyAccountEnum.WARNING_TITLE);
     }
 
-    public MyAccount page_titlesAndLabels_validate() {
+    public PageMyAccount page_titlesAndLabels_validate() {
         /* Buttons on the main page */
         assertEquals(selenium.getText(MyAccountEnum.CHANGE_PASSWORD_BUTTON), MyAccountEnum.CHANGE_PASSWORD_BUTTON);
         assertEquals(selenium.getText(MyAccountEnum.EDIT_BUTTON), MyAccountEnum.EDIT_BUTTON);
@@ -312,117 +290,117 @@ public class MyAccount extends NavigationBar {
         return selenium.isVisible(MyAccountEnum.CHANGE_PASSWORD_CHANGE_BUTTON);
     }
 
-    public MyAccount textField_confirmPassword_type(String textToSend) {
+    public String text_criticalRedFlag_getText() {
+        return selenium.getText(MyAccountEnum.CRITICAL_TEXT);
+    }
+
+    public String text_emailAddress1_getText() {
+        return selenium.getText(MyAccountEnum.EMAIL1_TEXT);
+    }
+
+    public String text_emailAddress2_getText() {
+        return selenium.getText(MyAccountEnum.EMAIL2_TEXT);
+    }
+
+    public String text_fuelEfficiency_getText() {
+        return selenium.getText(MyAccountEnum.FUEL_EFFICIENCY_RATIO_TEXT);
+    }
+
+    public String text_group_getText() {
+        return selenium.getText(MyAccountEnum.GROUP_TEXT);
+    }
+
+    public String text_informationRedFlag_getText() {
+        return selenium.getText(MyAccountEnum.INFORMATION_TEXT);
+    }
+
+    public String text_locale_getText() {
+        return selenium.getText(MyAccountEnum.LOCALE_TEXT);
+    }
+
+    public String text_measurement_getText() {
+        return selenium.getText(MyAccountEnum.MEASUREMENT_TEXT);
+    }
+
+    public String text_name_getText() {
+        return selenium.getText(MyAccountEnum.NAME_TEXT);
+    }
+
+    public String text_passwordStrength_getText() {
+        return selenium.getText(MyAccountEnum.PASSWORD_STRENGTH_MSG);
+    }
+
+    public String text_phoneNumber1_getText() {
+        return selenium.getText(MyAccountEnum.PHONE1_TEXT);
+    }
+
+    public String text_phoneNumber2_getText() {
+        return selenium.getText(MyAccountEnum.PHONE2_TEXT);
+    }
+
+    public String text_team_getText() {
+        return selenium.getText(MyAccountEnum.TEAM_TEXT);
+    }
+
+    public String text_textMessage1_getText() {
+        return selenium.getText(MyAccountEnum.TEXT_MESSAGES1_TEXT);
+    }
+
+    public String text_textMessage2_getText() {
+        return selenium.getText(MyAccountEnum.TEXT_MESSAGES2_TEXT);
+    }
+
+    public String text_userName_getText() {
+        return selenium.getText(MyAccountEnum.USER_NAME_TEXT);
+    }
+
+    public String text_warningRedFlag_getText() {
+        return selenium.getText(MyAccountEnum.WARNING_TEXT);
+    }
+
+    public PageMyAccount textField_confirmPassword_type(String textToSend) {
         selenium.type(MyAccountEnum.CONFIRM_PASSWORD_TEXTFIELD, textToSend);
         return this;
     }
 
-    public String textField_criticalRedFlag_getText() {
-        return selenium.getText(MyAccountEnum.CRITICAL_TEXT);
-    }
-
-    public MyAccount textField_currentPassword_type(String textToSend) {
+    public PageMyAccount textField_currentPassword_type(String textToSend) {
         selenium.type(MyAccountEnum.CHANGE_PASSWORD_TITLE, textToSend);
         return this;
     }
 
-    public String textField_emailAddress1_getText() {
-        return selenium.getText(MyAccountEnum.EMAIL1_TEXT);
-    }
-
-    public MyAccount textField_emailAddress1_type(String textToType) {
+    public PageMyAccount textField_emailAddress1_type(String textToType) {
         selenium.type(MyAccountEnum.EMAIL1_TEXTFIELD, textToType);
         return this;
     }
 
-    public String textField_emailAddress2_getText() {
-        return selenium.getText(MyAccountEnum.EMAIL2_TEXT);
-    }
-
-    public MyAccount textField_emailAddress2_type(String textToType) {
+    public PageMyAccount textField_emailAddress2_type(String textToType) {
         selenium.type(MyAccountEnum.EMAIL2_TEXTFIELD, textToType);
         return this;
     }
 
-    public String textField_fuelEfficiency_getText() {
-        return selenium.getText(MyAccountEnum.FUEL_EFFICIENCY_RATIO_TEXT);
-    }
-
-    public String textField_group_getText() {
-        return selenium.getText(MyAccountEnum.GROUP_TEXT);
-    }
-
-    public String textField_informationRedFlag_getText() {
-        return selenium.getText(MyAccountEnum.INFORMATION_TEXT);
-    }
-
-    public String textField_locale_getText() {
-        return selenium.getText(MyAccountEnum.LOCALE_TEXT);
-    }
-
-    public String textField_measurement_getText() {
-        return selenium.getText(MyAccountEnum.MEASUREMENT_TEXT);
-    }
-
-    public String textField_name_getText() {
-        return selenium.getText(MyAccountEnum.NAME_TEXT);
-    }
-
-    public MyAccount textField_newPassword_type(String textToSend) {
+    public PageMyAccount textField_newPassword_type(String textToSend) {
         selenium.type(MyAccountEnum.NEW_PASSWORD_TEXTFIELD, textToSend);
         return this;
     }
 
-    public String textField_passwordStrength_getText() {
-        return selenium.getText(MyAccountEnum.PASSWORD_STRENGTH_MSG);
-    }
-
-    public String textField_phoneNumber1_getText() {
-        return selenium.getText(MyAccountEnum.PHONE1_TEXT);
-    }
-
-    public MyAccount textField_phoneNumber1_type(String textToType) {
+    public PageMyAccount textField_phoneNumber1_type(String textToType) {
         selenium.type(MyAccountEnum.PHONE1_TEXTFIELD, textToType);
         return this;
     }
 
-    public String textField_phoneNumber2_getText() {
-        return selenium.getText(MyAccountEnum.PHONE2_TEXT);
-    }
-
-    public MyAccount textField_phoneNumber2_type(String textToType) {
+    public PageMyAccount textField_phoneNumber2_type(String textToType) {
         selenium.type(MyAccountEnum.PHONE2_TEXTFIELD, textToType);
         return this;
     }
 
-    public String textField_team_getText() {
-        return selenium.getText(MyAccountEnum.TEAM_TEXT);
-    }
-
-    public String textField_textMessage1_getText() {
-        return selenium.getText(MyAccountEnum.TEXT_MESSAGES1_TEXT);
-    }
-
-    public MyAccount textField_textMessage1_type(String textToType) {
+    public PageMyAccount textField_textMessage1_type(String textToType) {
         selenium.type(MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD, textToType);
         return this;
     }
 
-    public String textField_textMessage2_getText() {
-        return selenium.getText(MyAccountEnum.TEXT_MESSAGES2_TEXT);
-    }
-
-    public MyAccount textField_textMessage2_type(String textToType) {
+    public PageMyAccount textField_textMessage2_type(String textToType) {
         selenium.type(MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD, textToType);
         return this;
-    }
-
-    public String textField_userName_getText() {
-        return selenium.getText(MyAccountEnum.USER_NAME_TEXT);
-    }
-
-    public String textField_warningRedFlag_getText() {
-        return selenium.getText(MyAccountEnum.WARNING_TEXT);
     }
 
     public String title_accountInformation_getText() {
@@ -457,7 +435,7 @@ public class MyAccount extends NavigationBar {
         return selenium.getText(MyAccountEnum.TEXT_TITLE);
     }
 
-    public MyAccount validate() {
+    public PageMyAccount validate() {
         page_titlesAndLabels_validate();
         return this;
     }

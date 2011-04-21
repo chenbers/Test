@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -89,16 +90,21 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             timeFrame[i] = sdf.format(today.getTime());
             today.add(Calendar.DATE, -1);
         }
-        sdf = new SimpleDateFormat("MMMMM");
         
         timeFrame[7] = "Past Week";
-        timeFrame[8] = sdf.format(today.getTime());
+        timeFrame[8] = getCurrentMonth();
         timeFrame[9] = "Past 30 Days";
         timeFrame[10] = "Past Year";
 
         return timeFrame;
     }
-
+    
+    public static String getCurrentMonth(){
+        Calendar today = GregorianCalendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMMM");
+        String month = sdf.format(today.getTime());
+        return month;
+    }
 
     public String getLocation(String expected) {
         String error_name = "verifyLocation: " + expected;

@@ -15,7 +15,7 @@ public class Template extends WebTest {
     @Ignore
     public void UI() {
         // Set up the (main)page you intend to test...
-        Login loginPage = new Login();
+        PageLogin loginPage = new PageLogin();
         
         // if this test corresponds to a TestCase in Rally then uncomment the following and insert appropriate TC####
         //set_test_case("TC4632");

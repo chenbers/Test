@@ -2,17 +2,28 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.StringTokenizer;
 
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.selenium.GlobalSelenium;
 import com.inthinc.pro.selenium.pageEnums.DashboardEnum;
 
-public class Dashboard extends NavigationBar{
+public class PageDashboard extends NavigationBar{
     
-    protected static CoreMethodLib selenium;
-
-    public Dashboard(){
-        selenium = GlobalSelenium.getSelenium();
-    } 
+    public static enum Duration{
+        DAYS_30("durationPanelHeaderDays"),
+        MONTHS_3("durationPanelHeaderThreeMonths"),
+        MONTHS_6("durationPanelHeaderSixMonths"),
+        MONTHS_12("durationPanelHeaderTwelveMonths"),
+        ;
+        
+        private String duration;
+        
+        private Duration(String duration){
+            this.duration = duration;
+        }
+        
+        public String getDuration(){
+            return duration;
+        }
+    }
+    
     
     public void menu_overallToolsEmail_click() {
         selenium.click(DashboardEnum.OVERALL_TOOLS);
@@ -108,39 +119,29 @@ public class Dashboard extends NavigationBar{
         selenium.click(DashboardEnum.HELP_INVOKE);
     }
     
-    public void link_overallDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.OVERALL_DURATION.getID() + durationQualifier);
-        
-        // makes sure the next "thing" is there
+    public void link_overallDuration_click(Duration durationQualifier) {
+        clickDuration(DashboardEnum.OVERALL_DURATION,  durationQualifier);
+    }
+    
+    private void clickDuration(DashboardEnum locator, Duration duration){
+        selenium.click(locator.getID() + duration.getDuration() );
         selenium.Pause(10);
     }
 
-    public void link_trendDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.TREND_DURATION.getID() + durationQualifier ); 
-        
-        // makes sure the next "thing" is there
-        selenium.Pause(10);
+    public void link_trendDuration_click(Duration durationQualifier) {
+        clickDuration(DashboardEnum.TREND_DURATION,  durationQualifier);
     }
 
-    public void link_fuelEfficiencyDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.FUEL_EFFICIENCY_DURATION.getID() + durationQualifier ); 
-        
-        // makes sure the next "thing" is there
-        selenium.Pause(10);
+    public void link_fuelEfficiencyDuration_click(Duration durationQualifier) {
+        clickDuration(DashboardEnum.FUEL_EFFICIENCY_DURATION,  durationQualifier);
     }
 
-    public void link_speedingDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.SPEEDING_DURATION.getID() + durationQualifier );  
-        
-        // makes sure the next "thing" is there
-        selenium.Pause(10);
+    public void link_speedingDuration_click(Duration durationQualifier) {
+        clickDuration(DashboardEnum.SPEEDING_DURATION,  durationQualifier);
     }
 
-    public void link_idlingDuration_click(String durationQualifier, String error) {
-        selenium.click(DashboardEnum.IDLING_DURATION.getID() + durationQualifier );  
-        
-        // makes sure the next "thing" is there
-        selenium.Pause(10);     
+    public void link_idlingDuration_click(Duration durationQualifier) {
+        clickDuration(DashboardEnum.IDLING_DURATION,  durationQualifier);
     }
     
     public void link_overallExpand_click() {

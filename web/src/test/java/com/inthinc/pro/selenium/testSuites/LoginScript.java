@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.Resource;
 
-import com.inthinc.pro.selenium.pageObjects.Login;
+import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
 import java.io.BufferedReader;
@@ -28,7 +28,7 @@ public class LoginScript extends WebRallyTest {
     public void UI() {
 
         // create instance of library objects, in particular, selenium
-        Login l = new Login();
+        PageLogin l = new PageLogin();
         
         // set up test data
         set_test_case("TC4632");
@@ -119,7 +119,7 @@ public class LoginScript extends WebRallyTest {
         return tmp;
     }
     
-    private void runSeleniumCommand(Login l,String [] cmd) 
+    private void runSeleniumCommand(PageLogin l,String [] cmd) 
         throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         
 //        Class<?> c = l.getSelenium().getClass();
@@ -133,7 +133,7 @@ public class LoginScript extends WebRallyTest {
 //        }
     }
     
-    private void runSeleniumScript(Login l,String scriptLine,ApplicationContext applicationContext) 
+    private void runSeleniumScript(PageLogin l,String scriptLine,ApplicationContext applicationContext) 
         throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, FileNotFoundException, IOException {
         
         // get the script file name.  

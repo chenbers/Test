@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
 
-public class VehiclePerformance extends NavigationBar {
+public class PageVehiclePerformance extends NavigationBar {
     
     
     public void link_viewTrips_click() {

@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 
-public class NotificationsRedFlags extends NotificationsBar {
+public class PageNotificationsRedFlags extends NotificationsBar {
 
         
     
