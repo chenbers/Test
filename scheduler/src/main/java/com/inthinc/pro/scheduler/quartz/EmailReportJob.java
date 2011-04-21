@@ -43,6 +43,7 @@ import com.inthinc.pro.reports.Report;
 import com.inthinc.pro.reports.ReportCreator;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
+import com.inthinc.pro.reports.ReportType;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
@@ -159,10 +160,12 @@ public class EmailReportJob extends QuartzJobBean {
             
             switch (reportGroup.getReports()[i]) {
                 case DRIVER_PERFORMANCE_INDIVIDUAL:
+                case DRIVER_PERFORMANCE_RYG_INDIVIDUAL:
+                    Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
                     List<ReportCriteria> rcList = getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(
                             getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupID(), driverIDList,
-                            timeFrame.getInterval(), person.getLocale());
+                            timeFrame.getInterval(), person.getLocale(), ryg);
                     
                     int cnt = 0;
                     for (Integer driverID : driverIDList) {
@@ -378,9 +381,11 @@ public class EmailReportJob extends QuartzJobBean {
                     break;
                 
                 case DRIVER_PERFORMANCE_TEAM:
+                case DRIVER_PERFORMANCE_RYG_TEAM:
+                    Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
                     reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupID(), timeFrame.getInterval(),  
-                            person.getLocale()));
+                            person.getLocale(), ryg));
                     break;
 
                 default:

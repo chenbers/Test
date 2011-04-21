@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="282"/>
-	<property name="ireport.y" value="44"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -21,6 +21,7 @@
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="RYG" class="java.lang.Boolean" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -803,7 +804,9 @@
 				<reportElement x="29" y="26" width="50" height="17" backcolor="#6B9D1B"/>
 			</rectangle>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-64" isPrintRepeatedValues="false" mode="Opaque" x="88" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-64" isPrintRepeatedValues="false" mode="Opaque" x="88" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{RYG}.booleanValue())]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -816,10 +819,14 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{G}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="181" y="26" width="50" height="17" backcolor="#1E88C8"/>
+				<reportElement x="181" y="26" width="50" height="17" backcolor="#1E88C8">
+					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{RYG}.booleanValue())]]></printWhenExpression>
+				</reportElement>
 			</rectangle>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-63" isPrintRepeatedValues="false" mode="Opaque" x="240" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-63" isPrintRepeatedValues="false" mode="Opaque" x="240" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{RYG}.booleanValue())]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -848,10 +855,14 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{Y}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="486" y="26" width="50" height="17" backcolor="#FF6600"/>
+				<reportElement x="486" y="26" width="50" height="17" backcolor="#FF6600">
+					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{RYG}.booleanValue())]]></printWhenExpression>
+				</reportElement>
 			</rectangle>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-61" isPrintRepeatedValues="false" mode="Opaque" x="545" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-61" isPrintRepeatedValues="false" mode="Opaque" x="545" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{RYG}.booleanValue())]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -867,7 +878,9 @@
 				<reportElement x="634" y="26" width="50" height="17" backcolor="#FF0000"/>
 			</rectangle>
 			<textField pattern="" isBlankWhenNull="false">
-				<reportElement key="textField-60" isPrintRepeatedValues="false" mode="Opaque" x="693" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField-60" isPrintRepeatedValues="false" mode="Opaque" x="693" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[Boolean.valueOf(!$P{RYG}.booleanValue())]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -878,6 +891,51 @@
 					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{R}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-64" isPrintRepeatedValues="false" mode="Opaque" x="88" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[Boolean.valueOf($P{RYG}.booleanValue())]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{G_RYG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-62" isPrintRepeatedValues="false" mode="Opaque" x="392" y="26" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[Boolean.valueOf($P{RYG}.booleanValue())]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{Y_RYG}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement key="textField-60" isPrintRepeatedValues="false" mode="Opaque" x="693" y="27" width="80" height="17" forecolor="#000000" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[Boolean.valueOf($P{RYG}.booleanValue())]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{R_RYG}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>

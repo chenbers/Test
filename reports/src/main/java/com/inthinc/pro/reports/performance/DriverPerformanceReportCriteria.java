@@ -34,7 +34,7 @@ public class DriverPerformanceReportCriteria extends GroupListReportCriteria {
 
     }
 
-    public void init(GroupHierarchy accountGroupHierarchy, Integer groupID, List<Integer> driverIDList, Interval interval) {
+    public void init(GroupHierarchy accountGroupHierarchy, Integer groupID, List<Integer> driverIDList, Interval interval, Boolean ryg) {
         
         String groupName = accountGroupHierarchy.getShortGroupName(groupID, "->");
         List<DriverPerformance> dataList = driverPerformanceDAO.getDriverPerformance(groupID, groupName, driverIDList, interval);
@@ -43,17 +43,19 @@ public class DriverPerformanceReportCriteria extends GroupListReportCriteria {
         for (DriverPerformance dp : dataList) {
             ReportCriteria reportCriteria = new DriverPerformanceReportCriteria(this.getReport(), this.getLocale());
             List<DriverPerformance> driverDataList = new ArrayList<DriverPerformance>();
+            dp.setRyg(ryg);
             driverDataList.add(dp);
             reportCriteria.setMainDataset(driverDataList);
         
             reportCriteria.addParameter(REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
             reportCriteria.addParameter(REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
+            reportCriteria.addParameter("RYG", ryg);
             
             criteriaList.add(reportCriteria);
         }
     }
 
-    public void init(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval) {
+    public void init(GroupHierarchy accountGroupHierarchy, Integer groupID, Interval interval, Boolean ryg) {
         List<DriverPerformance> dataList = new ArrayList<DriverPerformance>();
 
         List<Integer> groupIDList = new ArrayList<Integer>();
@@ -64,6 +66,8 @@ public class DriverPerformanceReportCriteria extends GroupListReportCriteria {
             if (group.getGroupID() != null && group.getType() == GroupType.TEAM) {
                 String groupName = accountGroupHierarchy .getFullGroupName(group.getGroupID(), "->");
                 List<DriverPerformance> groupList = driverPerformanceDAO.getDriverPerformanceListForGroup(group.getGroupID(), groupName, interval);
+                for (DriverPerformance dp : groupList)
+                    dp.setRyg(ryg);
                 Collections.sort(groupList);
                 dataList.addAll(groupList);
             }
@@ -74,6 +78,7 @@ public class DriverPerformanceReportCriteria extends GroupListReportCriteria {
         
         addParameter(REPORT_START_DATE, dateTimeFormatter.print(interval.getStart()));
         addParameter(REPORT_END_DATE, dateTimeFormatter.print(interval.getEnd()));
+        addParameter("RYG", ryg);
         
     }
 

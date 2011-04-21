@@ -16,6 +16,7 @@ public class DriverPerformance implements Comparable<DriverPerformance> {
     private Integer speedCount0to7Over;
     private Integer speedCount8to14Over;
     private Integer speedCount15Over;
+    private Boolean ryg;
     
     public DriverPerformance()
     {
@@ -123,25 +124,49 @@ public class DriverPerformance implements Comparable<DriverPerformance> {
     public void setSpeedCount15Over(Integer speedCount15Over) {
         this.speedCount15Over = speedCount15Over;
     }
+    public Boolean getRyg() {
+        if (ryg == null)
+            return false;
+        return ryg;
+    }
+    public void setRyg(Boolean ryg) {
+        this.ryg = ryg;
+    }
 /*
- * G - Green 4.1 - 5.0
+ *  
+    G - Green 4.1 - 5.0
     B - Blue 3.1 - 4.0
     Y - Yellow 2.1 - 3.0
     O - Orange 1.1 - 3.0
     R - Red 0.0 - 1.0
+    
+    if RYG
+    G - Green 4.1 - 5.0
+    Y - Yellow 2.1 - 4.0
+    R - Red 0.0 - 2.0
+    
  */
     public String getColor() {
         if (score == null || score < 0)
             return " ";
-        if (score < 11)
-            return "R";
-        if (score < 21)
-            return "O";
-        if (score < 31)
-            return "Y";
-        if (score < 41)
-            return "B";
+        if (getRyg()) {
+            if (score < 21)
+                return "R";
+            if (score < 41)
+                return "Y";
+        }
+        else {
+            if (score < 11)
+                return "R";
+            if (score < 21)
+                return "O";
+            if (score < 31)
+                return "Y";
+            if (score < 41)
+                return "B";
+        }
         return "G";
+        
     }
     @Override
     public int compareTo(DriverPerformance o) {

@@ -168,7 +168,17 @@ public enum ReportGroup
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 
             new GroupType[]{GroupType.TEAM}, ReportCategory.Performance,
             EnumSet.of(ReportAccountType.WAYSMART),
-            ReportType.DRIVER_PERFORMANCE_INDIVIDUAL);
+            ReportType.DRIVER_PERFORMANCE_INDIVIDUAL),
+     DRIVER_PERFORMANCE_RYG_TEAM("Driver Performance RYG (Team)", 36, EntityType.ENTITY_GROUP,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
+            EnumSet.of(ReportAccountType.WAYSMART),
+            ReportType.DRIVER_PERFORMANCE_RYG_TEAM),
+      DRIVER_PERFORMANCE_RYG_INDIVIDUAL("Driver Performance RYG (Individual)", 37, EntityType.ENTITY_INDIVIDUAL_DRIVER,
+            new CriteriaType[]{CriteriaType.TIMEFRAME}, 
+            new GroupType[]{GroupType.TEAM}, ReportCategory.Performance,
+            EnumSet.of(ReportAccountType.WAYSMART),
+            ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
 
     /* VEHICLE_USAGE("Vehicle usage", 19, EntityType.ENTITY_GROUP_OR_DRIVER,
             new CriteriaType[]{CriteriaType.TIMEFRAME}, 

@@ -16,6 +16,34 @@ import com.inthinc.pro.reports.ReportType;
 public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnitTest {
     
     @Test
+    public void individualDriverTestrgy() {
+        
+        DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria(ReportType.DRIVER_PERFORMANCE_INDIVIDUAL, Locale.US);
+        Interval interval = initInterval();
+
+        criteria.setDriverPerformanceDAO(new MockDriverPerformanceDAO(interval));
+        List<Integer> idList = new ArrayList<Integer>();
+        idList.add(Integer.valueOf(4));
+        criteria.init(getMockGroupHierarchy(), GROUP_ID, idList, initInterval(),true);
+        
+        dump("IndividualDriverPerformance_ryg", 1, criteria.getCriteriaList().get(0), FormatType.PDF);
+        dump("IndividualDriverPerformance_ryg", 1, criteria.getCriteriaList().get(0), FormatType.HTML);
+
+    }
+    @Test
+    public void teamDriverTestryg() {
+        
+        DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria(ReportType.DRIVER_PERFORMANCE_TEAM, Locale.US);
+        Interval interval = initInterval();
+
+        criteria.setDriverPerformanceDAO(new MockDriverPerformanceDAO(interval));
+        criteria.init(getMockGroupHierarchy(), GROUP_ID, initInterval(), true);
+        
+        dump("TeamDriverPerformance_ryg", 1, criteria, FormatType.PDF);
+        dump("TeamDriverPerformance_ryg", 1, criteria, FormatType.HTML);
+
+    }
+    @Test
     public void individualDriverTest() {
         
         DriverPerformanceReportCriteria criteria = new DriverPerformanceReportCriteria(ReportType.DRIVER_PERFORMANCE_INDIVIDUAL, Locale.US);
@@ -24,7 +52,7 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         criteria.setDriverPerformanceDAO(new MockDriverPerformanceDAO(interval));
         List<Integer> idList = new ArrayList<Integer>();
         idList.add(Integer.valueOf(4));
-        criteria.init(getMockGroupHierarchy(), GROUP_ID, idList, initInterval());
+        criteria.init(getMockGroupHierarchy(), GROUP_ID, idList, initInterval(),false);
         
         dump("IndividualDriverPerformance", 1, criteria.getCriteriaList().get(0), FormatType.PDF);
         dump("IndividualDriverPerformance", 1, criteria.getCriteriaList().get(0), FormatType.HTML);
@@ -37,7 +65,7 @@ public class DriverPerformanceReportCriteriaDataTest extends BasePerformanceUnit
         Interval interval = initInterval();
 
         criteria.setDriverPerformanceDAO(new MockDriverPerformanceDAO(interval));
-        criteria.init(getMockGroupHierarchy(), GROUP_ID, initInterval());
+        criteria.init(getMockGroupHierarchy(), GROUP_ID, initInterval(), false);
         
         dump("TeamDriverPerformance", 1, criteria, FormatType.PDF);
         dump("TeamDriverPerformance", 1, criteria, FormatType.HTML);

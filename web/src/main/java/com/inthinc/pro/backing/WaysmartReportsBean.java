@@ -53,7 +53,7 @@ public class WaysmartReportsBean extends ReportsBean {
         itemGroups.add(getBlankGroup());
         
         itemGroups.add(new SelectItemGroup(ReportCategory.Performance.getLabel(), 
-        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance, ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL)));
+        		ReportCategory.Performance.getLabel(), false, getItemsByCategory(ReportCategory.Performance, ReportGroup.DRIVER_PERFORMANCE_INDIVIDUAL, ReportGroup.DRIVER_PERFORMANCE_RYG_INDIVIDUAL)));
         
         itemGroups.add(new SelectItemGroup(ReportCategory.IFTA.getLabel(), 
         		ReportCategory.IFTA.getDescription(), false, getItemsByCategory(ReportCategory.IFTA)));
