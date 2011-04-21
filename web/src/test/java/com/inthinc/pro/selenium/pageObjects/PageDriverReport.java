@@ -68,11 +68,6 @@ public class PageDriverReport extends NavigationBar {
         selenium.click("//div[" + selection.getID() + "]");  
     }
     
-    private void form_driverSearch_submit() {
-      //TODO: jwimmer: for team: do we want to expose a "form"? or do we stick to visible page elements as a User would see them?  (i.e. I assume there is a submit button on the page that the user would click)
-        selenium.submit(DriverReportEnum.DRIVER_FORM.getID());
-    }
-    
     private void clickIt(String rowQualifier, Integer row) {
         if ( row != null ) {
             rowQualifier = insertRow(rowQualifier,row);

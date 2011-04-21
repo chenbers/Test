@@ -10,39 +10,39 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 public class PageLogin extends Masthead {
 
-    public PageLogin bulletPoint_forgotPasswordMessageSentBullet1_compareText(String expected) {
-        String actual = bulletPoint_forgotPasswordMessegeSentBullet1_getText();
+    public PageLogin bulletText_forgotPasswordMessageSentBullet1_compareText(String expected) {
+        String actual = bulletText_forgotPasswordMessegeSentBullet1_getText();
         if (!expected.equals(actual)) {
             addError("Message Sent Bullet 1", "Expected = " + expected + "\nActual = " + actual);
         }
         return this;
     }
 
-    public PageLogin bulletPoint_forgotPasswordMessageSentBullet2_compareText(String expected) {
-        String actual = bulletPoint_forgotPasswordMessegeSentBullet2_getText();
+    public PageLogin bulletText_forgotPasswordMessageSentBullet2_compareText(String expected) {
+        String actual = bulletText_forgotPasswordMessegeSentBullet2_getText();
         if (!expected.equals(actual)) {
             addError("Message Sent Bullet 2", "Expected = " + expected + "\nActual = " + actual);
         }
         return this;
     }
 
-    public PageLogin bulletPoint_forgotPasswordMessageSentBullet3_compareText(String expected) {
-        String actual = bulletPoint_forgotPasswordMessegeSentBullet3_getText();
+    public PageLogin bulletText_forgotPasswordMessageSentBullet3_compareText(String expected) {
+        String actual = bulletText_forgotPasswordMessegeSentBullet3_getText();
         if (!expected.equals(actual)) {
             addError("Message Sent Bullet 3", "Expected = " + expected + "\nActual = " + actual);
         }
         return this;
     }
 
-    public String bulletPoint_forgotPasswordMessegeSentBullet1_getText(){
+    public String bulletText_forgotPasswordMessegeSentBullet1_getText(){
         return selenium.getText(LoginEnum.MESSAGE_SENT_BULLET_1);
     }
 
-    public String bulletPoint_forgotPasswordMessegeSentBullet2_getText(){
+    public String bulletText_forgotPasswordMessegeSentBullet2_getText(){
         return selenium.getText(LoginEnum.MESSAGE_SENT_BULLET_2);
     }
 
-    public String bulletPoint_forgotPasswordMessegeSentBullet3_getText(){
+    public String bulletText_forgotPasswordMessegeSentBullet3_getText(){
         return selenium.getText(LoginEnum.MESSAGE_SENT_BULLET_3);
     }
 
@@ -175,9 +175,9 @@ public class PageLogin extends Masthead {
         header_forgotPasswordMessageSent_compareText(LoginEnum.MESSAGE_SENT_HEADER.getText());
         text_forgotPasswordMessageSent_compareText(LoginEnum.MESSAGE_SENT_FIRST_PARAGRAPH.getText());
 
-        bulletPoint_forgotPasswordMessageSentBullet1_compareText(LoginEnum.MESSAGE_SENT_BULLET_1.getText());
-        bulletPoint_forgotPasswordMessageSentBullet2_compareText(LoginEnum.MESSAGE_SENT_BULLET_2.getText());
-        bulletPoint_forgotPasswordMessageSentBullet3_compareText(LoginEnum.MESSAGE_SENT_BULLET_3.getText());
+        bulletText_forgotPasswordMessageSentBullet1_compareText(LoginEnum.MESSAGE_SENT_BULLET_1.getText());
+        bulletText_forgotPasswordMessageSentBullet2_compareText(LoginEnum.MESSAGE_SENT_BULLET_2.getText());
+        bulletText_forgotPasswordMessageSentBullet3_compareText(LoginEnum.MESSAGE_SENT_BULLET_3.getText());
         return this;
     }
 
