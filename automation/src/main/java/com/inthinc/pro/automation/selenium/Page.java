@@ -48,9 +48,6 @@ public interface Page {
      * @return true if all validation checks pass, otherwise false
      */
     public Page validate();
- 
-    //TODO: jwimmer: IF there is a way to do this ... possibly by returning the Class instead? it could be helpful... then getExpectedPath could be implemented in AbstractPage
-    //public SeleniumEnum getPageEnum();
     
     //public Page loginLoad();
 }
