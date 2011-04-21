@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.selenium;
+package com.inthinc.pro.automation.enums;
 
 public interface SeleniumEnums {
 	

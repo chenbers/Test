@@ -35,9 +35,6 @@ public abstract class RallyTest extends AutomatedTest {
 
 	@Override
 	public void before() {
-	    if (startTime == null){
-	        startTime = currentTime();
-	    }
 		super.before();
 		try {
 			rally.new_results();

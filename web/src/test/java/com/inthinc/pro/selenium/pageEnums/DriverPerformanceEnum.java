@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.pro.automation.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum DriverPerformanceEnum implements SeleniumEnums {
     VIEW_ALL_TRIPS(null,"driverPerformanceDriverTrips",null,null,null)

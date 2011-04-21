@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.pro.automation.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum UtilEnum implements SeleniumEnums {
     DURATION_30DAYS("durationPanelHeaderDays",null,null,null,null),

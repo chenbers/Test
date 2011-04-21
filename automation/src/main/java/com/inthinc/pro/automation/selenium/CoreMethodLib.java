@@ -4,13 +4,12 @@ import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
 import com.google.common.base.Supplier;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
 
@@ -25,7 +24,6 @@ import com.thoughtworks.selenium.SeleniumException;
  * 
  */
 public class CoreMethodLib extends WebDriverBackedSelenium {
-    private final static Logger logger = Logger.getLogger(CoreMethodLib.class);
     public static Integer PAGE_TIMEOUT = 30000;
 
     private ErrorCatcher errors;
@@ -66,31 +64,28 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     public ErrorCatcher getErrors() {
         return errors;
     }
-    
+
     @Deprecated
-    public String[] getAllWindowIds(){
+    public String[] getAllWindowIds() {
         return null;
     }
-    
+
     @Deprecated
-    public String[] getAllWindowNames(){
+    public String[] getAllWindowNames() {
         return null;
     }
-    
+
     public static String[] getTimeFrameOptions() {
         String[] timeFrame = new String[11];
-        Calendar today = GregorianCalendar.getInstance();
-        today.add(Calendar.DATE, -2);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-        
+        String[] fiveDays = getFiveDayPeriodLong();
+
         timeFrame[0] = "Today";
         timeFrame[1] = "Yesterday";
 
         for (int i = 2; i < 7; i++) {
-            timeFrame[i] = sdf.format(today.getTime());
-            today.add(Calendar.DATE, -1);
+            timeFrame[i] = fiveDays[i-2];
         }
-        
+
         timeFrame[7] = "Past Week";
         timeFrame[8] = getCurrentMonth();
         timeFrame[9] = "Past 30 Days";
@@ -98,8 +93,36 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
         return timeFrame;
     }
+
+    public static String[] getFiveDayPeriodLong() {
+        String[] timeFrame = new String[5];
+        Calendar today = GregorianCalendar.getInstance();
+        today.add(Calendar.DATE, -2);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
+
+        for (int i = 0; i < 5; i++) {
+            timeFrame[i] = sdf.format(today.getTime());
+            today.add(Calendar.DATE, -1);
+        }
+        
+        return timeFrame;
+    }
     
-    public static String getCurrentMonth(){
+    public static String[] getFiveDayPeriodShort() {
+        String[] timeFrame = new String[5];
+        Calendar today = GregorianCalendar.getInstance();
+        today.add(Calendar.DATE, -2);
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE");
+
+        for (int i = 0; i < 5; i++) {
+            timeFrame[i] = sdf.format(today.getTime());
+            today.add(Calendar.DATE, -1);
+        }
+        
+        return timeFrame;
+    }
+    
+    public static String getCurrentMonth() {
         Calendar today = GregorianCalendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("MMMMM");
         String month = sdf.format(today.getTime());
@@ -338,7 +361,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         Pause(2);
         return this;
     }
-    
+
     public CoreMethodLib open(SeleniumEnums checkIt) {
         String element = checkIt.getURL();
         String error_name = "open: " + element;
@@ -372,11 +395,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         Pause(2);
         return this;
     }
-    
+
     public CoreMethodLib select(SeleniumEnums checkIt, String label) {
         String element = getLocator(checkIt);
         String error_name = "select: " + element + " : Label = " + label;
-        
+
         try {
             select(element, label);
             Pause(5);
@@ -389,33 +412,33 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
         return this;
     }
-    
-    public CoreMethodLib selectDhxCombo(Integer divPosition, String entry_name){
-        String element = "//div["+divPosition+"]/div[text()='" + entry_name + "']";
+
+    public CoreMethodLib selectDhxCombo(Integer divPosition, String entry_name) {
+        String element = "//div[" + divPosition + "]/div[text()='" + entry_name + "']";
         click(element);
         return this;
     }
-    
+
     public CoreMethodLib selectDhxCombo(String entry_name) {
         String element = "//div[text()='" + entry_name + "']";
         click(element);
         return this;
     }
 
-    public CoreMethodLib selectDhxCombo(String[] entry_name){
+    public CoreMethodLib selectDhxCombo(String[] entry_name) {
         StringWriter aStringAString = new StringWriter();
-        for (int i=0;i<entry_name.length;i++){
+        for (int i = 0; i < entry_name.length; i++) {
             aStringAString.write(entry_name[i]);
-            if (i!=(entry_name.length-1)){
-                aStringAString.write(" - ");    
+            if (i != (entry_name.length - 1)) {
+                aStringAString.write(" - ");
             }
         }
         selectDhxCombo(aStringAString.toString());
         return this;
     }
-    
-    public CoreMethodLib selectWindowByID(String ID){
-        if (ID.equals("")){
+
+    public CoreMethodLib selectWindowByID(String ID) {
+        if (ID.equals("")) {
             ID = "null";
         }
         String error_name = "selectWindowByID: " + ID;
@@ -430,11 +453,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
         return this;
     }
-    
-    public CoreMethodLib selectWindowByName(String name){
+
+    public CoreMethodLib selectWindowByName(String name) {
         String error_name = "selectWindowByTitle: " + name;
         try {
-            selectWindow("name="+name);
+            selectWindow("name=" + name);
         } catch (SeleniumException e) {
             errors.addError(error_name, e);
         } catch (RuntimeException e) {
@@ -445,10 +468,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
 
-    public CoreMethodLib selectWindowByTitle(String title){
+    public CoreMethodLib selectWindowByTitle(String title) {
         String error_name = "selectWindowByTitle: " + title;
         try {
-            selectWindow("title="+title);
+            selectWindow("title=" + title);
         } catch (SeleniumException e) {
             errors.addError(error_name, e);
         } catch (RuntimeException e) {
@@ -480,12 +503,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
         return this;
     }
-    
-    public Boolean verifyLocation(SeleniumEnums checkIt){
+
+    public Boolean verifyLocation(SeleniumEnums checkIt) {
         return checkIt.getURL().equals(getLocator(checkIt));
     }
 
-    public Boolean verifyLocation(String expected){
+    public Boolean verifyLocation(String expected) {
         return expected.equals(getLocation(expected));
     }
 
@@ -545,7 +568,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
 
     public void mouseOver(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt); 
+        String element = getLocator(checkIt);
         String error_name = "mouseOver: " + element;
         try {
             mouseOver(element);

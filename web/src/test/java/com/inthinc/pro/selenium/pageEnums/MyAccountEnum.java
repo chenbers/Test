@@ -1,105 +1,135 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.pro.automation.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.utils.Xpath;
+import com.inthinc.pro.automation.utils.Id;
 
 public enum MyAccountEnum implements SeleniumEnums {
 
     MY_ACCOUNT_URL("account"),
 
     /* Buttons and Title */
-    CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword", "//ul[@id='grid_nav']/li/button[1]", "//button[@type='submit']"),
-    EDIT_BUTTON("Edit", "myAccountEdit", "//ul[@id='grid_nav']/li/button[2]", "//button[@type='submit']"),
+    CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword", Xpath.start().ul(Id.id("grid_nav")).li().button("1"), Xpath.start().button(Id.type("submit"))),
 
-    MAIN_TITLE("My Account", null, "//div[@class='account']", "//div[@class='panel_title']"),
+    EDIT_BUTTON("Edit", "myAccountEdit", Xpath.start().ul(Id.id("grid_nav")).li().button("2"), Xpath.start().button(Id.type("submit"))),
+
+    MAIN_TITLE("My Account", null, Xpath.start().div(Id.clazz("account")), Xpath.start().div(Id.clazz("panel_title"))),
 
     /* Account Information */
     ACCOUNT_TITLE("Account Information", null, "//td[1]/div[@class='add_section_title']", null),
 
     NAME_TITLE("Name:", null, "//td[@style='vertical-align: top;'][1]/table/tbody/tr[1]/td[1]", null),
+
     NAME_TEXT(null, null, "//td[@style='vertical-align: top;'][1]/table/tbody/tr[1]/td[2]", null),
 
     GROUP_TITLE("Group:", null, "//td[@style='vertical-align: top;'][1]/table/tbody/tr[2]/td[1]", null),
+
     GROUP_TEXT(null, null, "//td[@style='vertical-align: top;'][1]/table/tbody/tr[2]/td[2]", null),
 
     TEAM_TITLE("Team:", null, "//td[@style='vertical-align: top;'][1]/table/tbody/tr[3]/td[1]", null),
+
     TEAM_TEXT(null, null, "//td[@style='vertical-align: top;'][1]/table/tbody/tr[3]/td[2]", null),
 
     /* Login Information */
     LOGIN_TITLE("Login Information", null, "//td[1]/div[@class='add_section_title']", null),
 
     USER_NAME_TITLE("User Name:", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[1]/td[1]", null),
+
     USER_NAME_TEXT(null, null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[1]/td[2]", null),
 
     LOCALE_TITLE("Locale:", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[2]/td[1]", null),
+
     LOCALE_TEXT(null, null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[2]/td[2]", null),
 
     MEASUREMENT_TITLE("Measurement", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[3]/td[1]", null),
+
     MEASUREMENT_TEXT(null, null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[3]/td[2]", null),
 
     FUEL_EFFICIENCY_RATIO_TITLE("Fuel Efficiency Ratio:", null, "//td[@style='vertical-align: top;']/table/tbody/tr[4]/td[1]", null),
+
     FUEL_EFFICIENCY_RATIO_TEXT(null, null, "//td[@style='vertical-align: top;']/table/tbody/tr[4]/td[2]", null),
 
     /* Red Flag Preferences */
     RED_FLAGS_TITLE("Red Flag Preferences", null, "//span[@class='notify']", null),
 
     INFORMATION_ICON(null, null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[1]/td[1]", null),
+
     INFORMATION_TITLE("Information:", null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[1]/td[2]", null),
+
     INFORMATION_TEXT(null, null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[1]/td[3]", null),
 
     WARNING_ICON(null, null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[2]/td[1]", null),
+
     WARNING_TITLE("Warning:", null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[2]/td[2]", null),
+
     WARNING_TEXT(null, null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[2]/td[3]", null),
 
     CRITICAL_ICON(null, null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[3]/td[1]", null),
+
     CRITICAL_TITLE("Critical:", null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[3]/td[2]", null),
+
     CRITICAL_TEXT(null, null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[3]/td[3]", null),
 
     /* Contact Information */
     CONTACT_TITLE("Contact Information", null, "//span[@class='contact']", "//td[3]/div/div[@class='panel_nw']/div[@class='panel_title']/span"),
+
     EMAIL_TITLE("E-mail Addresses", null, "//div[@class='panel_content']/div[1]", null),
+
     PHONE_TITLE("Phone Numbers", null, "//div[@class='panel_content']/div[2]", null),
+
     TEXT_TITLE("Text Messages", null, "//div[@class='panel_content']/div[3]", null),
 
     EMAIL1_TITLE("E-mail 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[1]", null),
+
     EMAIL1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[2]", null),
 
     EMAIL2_TITLE("E-mail 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[1]", null),
+
     EMAIL2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[2]", null),
 
     PHONE1_TITLE("Phone 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[1]", null),
+
     PHONE1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[2]", null),
 
     PHONE2_TITLE("Phone 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[1]", null),
+
     PHONE2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[2]", null),
 
     TEXT_MESSAGES1_TITLE("Text Message 1:", null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[1]/td[1]", null),
+
     TEXT_MESSAGES1_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[1]/td[2]", null),
 
     TEXT_MESSAGES2_TITLE("Text Message 2:", null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[2]/td[1]", null),
+
     TEXT_MESSAGES2_TEXT(null, null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[2]/td[2]", null),
 
     /* Edit Page Buttons */
 
     SAVE_BUTTON("Save", "my_form:editAccountSave", "//li/button[@type='submit']", "//li/button[@class='left'][1]"),
+
     CANCEL_BUTTON("Cancel", "editAccountCancel", "//li/button[@type='button']", "//li/button[@class='left'][2]"),
 
     /* Edit Page Selects */
     LOCALE_SELECT(null, "my_form:editAccountLocale", "//select[@name='my_form:editAccountLocale']", null),
+
     MEASUREMENT_SELECT(null, "my_form:editAccountMeasurement", "//selct[@name='my_form:editAccountMeasuremnt']", null),
+
     FUEL_EFFICIENCY_SELECT(null, "my_form:editAccountFuelEfficiency", "//select[@name='my_form:editAccountFuelEfficiency']", null),
 
     INFORMATION_SELECT(null, "my_form:editAccount-info", "//select[@name='my_form:editAccount-info'", null),
+
     WARNING_SELECT(null, "my_form:editAccount-warn", "//select[@name='my_form:editAccount-warn'", null),
-    CRITICAL_SELECT(null, "my_form:editAccount-crit", "//select[@name='my_form:editAccount-crit'", null),
+
+    CRITICAL_SELECT(null, "my_form:editAccount-crit", Xpath.start().select(Id.name("my_form:editAccount-crit")), null),
 
     /* Edit Page Error Messages */
 
-    EMAIL1_ERROR(null, null, "//table[1]/tbody/tr[1]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
-    EMAIL2_ERROR(null, null, "//table[1]/tbody/tr[2]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
-    PHONE1_ERROR(null, null, "//table[2]/tbody/tr[1]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
-    PHONE2_ERROR(null, null, "//table[2]/tbody/tr[2]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
-    TEXT1_ERROR(null, null, "//table[3]/tbody/tr[1]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
-    TEXT2_ERROR(null, null, "//table[3]/tbody/tr[2]/td/span[contains(@id,'my_form:')][@class='rich-message field-error field-msg']/span[1]", null),
+    EMAIL1_ERROR(null, null, Xpath.start().table("1").tbody().tr("1").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
+    EMAIL2_ERROR(null, null, Xpath.start().table("1").tbody().tr("2").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
+    PHONE1_ERROR(null, null, Xpath.start().table("2").tbody().tr("1").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
+    PHONE2_ERROR(null, null, Xpath.start().table("2").tbody().tr("2").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
+    TEXT1_ERROR(null, null, Xpath.start().table("3").tbody().tr("1").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
+    TEXT2_ERROR(null, null, Xpath.start().table("3").tbody().tr("2").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
 
     /* Edit Page text fields */
     EMAIL1_TEXTFIELD(null, "my_form:editAccount-priEmail", "//input[@name='my_form:editAccount-priEmail", null),
@@ -144,6 +174,14 @@ public enum MyAccountEnum implements SeleniumEnums {
         this.text = text;
         this.xpath = xpath;
         this.xpathAlt = xpathAlt;
+        this.url = null;
+    }
+
+    private MyAccountEnum(String text, String ID, Xpath xpath, Xpath xpathAlt) {
+        this.ID = ID;
+        this.text = text;
+        this.xpath = xpath.toString();
+        this.xpathAlt = xpathAlt.toString();
         this.url = null;
     }
 

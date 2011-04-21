@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageEnums;
 
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.selenium.SeleniumEnums;
 
 public enum TeamBarEnum implements SeleniumEnums {
     TEAM_TITLE(null, null, "//li[@class='l grid_title max-width']", null),
@@ -17,18 +17,6 @@ public enum TeamBarEnum implements SeleniumEnums {
     MILES_SINCE_TEXT("Miles since last crash", null, "//li[7][@class='l crash-item']/text()", null),
     
     SUB_TITLE("What Happened...", null, "//div[@class='panel_title']/text()[1]", null),
-    
-    DAYS_AGO_TODAY(CoreMethodLib.getTimeFrameOptions()[0], "timeFrameForm:timeFrameToday", null, null),
-    DAYS_AGO_YESTERDAY(CoreMethodLib.getTimeFrameOptions()[1], "timeFrameForm:timeFrameYesterday", null, null),
-    DAYS_AGO_2(CoreMethodLib.getTimeFrameOptions()[2], "timeFrameForm:timeFrameTwoDay", null, null),
-    DAYS_AGO_3(CoreMethodLib.getTimeFrameOptions()[3], "timeFrameForm:timeFrameThreeDay", null, null),
-    DAYS_AGO_4(CoreMethodLib.getTimeFrameOptions()[4], "timeFrameForm:timeFrameFourDay", null, null),
-    DAYS_AGO_5(CoreMethodLib.getTimeFrameOptions()[5], "timeFrameForm:timeFrameFiveDay", null, null),
-    DAYS_AGO_6(CoreMethodLib.getTimeFrameOptions()[6], "timeFrameForm:timeFrameSixDay", null, null),
-    
-    THIS_WEEK("7 Days", "timeFrameForm:timeFrameWeek", null, null),
-    THIS_MONTH(CoreMethodLib.getCurrentMonth(), "timeFrameForm:timeFrameMonth", null, null ),
-    THIS_YEAR("365 Days", "timeFrameForm:timeFrameYear", null, null),
     
     DRIVER_STATISTICS("Driver Statistics", "teamStatistics_lbl", null, null),
     TRIPS("Trips", "teamTrips_lbl", null, null),

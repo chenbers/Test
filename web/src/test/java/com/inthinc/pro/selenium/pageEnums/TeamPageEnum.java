@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.pro.automation.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum TeamPageEnum implements SeleniumEnums {
     DRIVER_STATISTICS_SELECT_DRIVER(null,null,"link=Vinh Vo",null,null)

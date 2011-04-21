@@ -51,15 +51,15 @@ public abstract class NavigationBar extends Masthead {
         return this;
     }
 
-    public NavigationBar link_groupDashboard_clickFirstGroup(String groupName) {//TODO: jwimmer: question for DTanner: let's talk through these method names
-        return link_groupDashboard_clickDesiredGroup(groupName, 0);
+    public NavigationBar link_navTreeFirstMatch_click(String groupNameToMatch) {//TODO: jwimmer: question for DTanner: let's talk through these method names
+        return link_navTreeMatchPosition_click(groupNameToMatch, 1);
     }
 
-    public NavigationBar link_groupDashboard_clickDesiredGroup(String groupName, Integer position) {//TODO: jwimmer: question for DTanner: let's talk through these method names
-        position--;
-        String xpath = "//a[text()='" + groupName + "']";
+    public NavigationBar link_navTreeMatchPosition_click(String groupNameToMatch, Integer matchNumber) {//TODO: jwimmer: question for DTanner: let's talk through these method names
+        matchNumber--;
+        String xpath = "//a[text()='" + groupNameToMatch + "']";
         List<WebElement> elements = webDriver.findElements(By.xpath(xpath));
-        String href = elements.get(position).getAttribute("href");
+        String href = elements.get(matchNumber).getAttribute("href");
         selenium.open(href);
         return this;
     }

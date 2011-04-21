@@ -15,8 +15,7 @@ public class WebRallyTest extends RallyTest{
     }
     
     @Before
-    @Override
-    public void before(){
+    public void a_before(){
         super.before();
     }
     

@@ -9,8 +9,7 @@ import com.inthinc.pro.automation.selenium.AutomatedTest;
 public class WebTest extends AutomatedTest {
 
     @Before
-    @Override
-    public void before() {
+    public void a_before() {
         super.before();
     }
 

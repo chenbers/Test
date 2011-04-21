@@ -9,15 +9,16 @@ import com.inthinc.pro.selenium.pageObjects.PageMyAccount.RedFlagPrefs;
 
 public class EditMyAccount extends WebRallyTest {
 	
-	PageMyAccount my;
-	PageLogin login;
+	private PageMyAccount my;
+	private PageLogin login;
 	
 	
 	@Before
-	public void before(){
+	public void setupPage(){
 		my = new PageMyAccount();
 		login = new PageLogin();
 	}
+	
 	@Test
 	public void CancelButton_Changes(){
 		set_test_case("TC1271");

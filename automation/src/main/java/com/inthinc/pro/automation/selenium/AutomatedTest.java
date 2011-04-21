@@ -64,7 +64,6 @@ public class AutomatedTest {
 
     public void before() {
         startTime = currentTime();
-
         try {
             try {
                 String[] configFiles = new String[] { "classpath:spring/applicationContext-automation.xml" };
@@ -72,13 +71,12 @@ public class AutomatedTest {
                 AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
                 selenium = GlobalSelenium.getYourOwn(apb.getDefaultWebDriver(), apb.getBaseURL());
             } catch (NoSuchBeanDefinitionException e) {
-                logger.debug(StackToString.toString(e));
+                logger.error(StackToString.toString(e));
                 selenium = GlobalSelenium.getYourOwn();
             } catch (BeanCreationException e) {
-                logger.debug(StackToString.toString(e));
+                logger.error(StackToString.toString(e));
                 selenium = GlobalSelenium.getYourOwn();
             }
-
         } catch (Exception e) {
             logger.fatal(StackToString.toString(e));
             skip = true;
@@ -118,6 +116,10 @@ public class AutomatedTest {
         if (getTestVerdict() != Verdicts.PASS) {
             throw new AssertionError(errors.toString());
         }
+    }
+    
+    public void pause(Integer timeToPauseInSeconds){
+        selenium.Pause(timeToPauseInSeconds);
     }
 
 }

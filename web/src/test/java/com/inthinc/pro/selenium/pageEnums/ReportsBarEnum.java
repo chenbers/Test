@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.pro.automation.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum ReportsBarEnum implements SeleniumEnums {
     DRIVERS("Drivers", null, "//div[@class='sub_nav-bg']/ul/li[1]/a", null),

@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.inthinc.pro.automation.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 // Enums have format NAME( Text, ID, X-Path, X-Path-Alternate )
 

@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.pro.automation.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum DashboardEnum implements SeleniumEnums {
     OVERALL_TOOLS(null,null,"//img[@title='Tool Menu']",null,null),

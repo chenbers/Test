@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.inthinc.pro.automation.selenium.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum MastheadEnum implements SeleniumEnums {
 
