@@ -288,7 +288,7 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
             sb.append(score.toString()).substring(0, 3);
             sb.append("\'");
             if (sss.getScore() == null || sss.getScore() < 0) {
-                sb.append("alpha=\'0\' ");
+                sb.append(" alpha=\'0\' ");
             }
             sb.append(" anchorBgColor=\'" + se.getColorKey() + "\' anchorBgAlpha=\'100\'/>");
         }
