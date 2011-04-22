@@ -363,7 +363,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         personView.setDriverSelected(person.getDriver() != null);
         
         if (person.getDriver() != null) {
-//            Cellblock cellblock = phoneControlDAO.findByID(person.getDriverID());
             Cellblock cellblock = cellblockMap.get(person.getDriverID());
             if(cellblock != null) cellblock.setProviderPassword("");
             personView.setProviderInfoSelected(cellblock != null);
@@ -969,6 +968,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             }
             else {
                 if (!person.isProviderInfoSelected() && person.getCellblock() != null) {
+                    phoneControlDAO.deleteByID(person.getDriverID());
                     person.setCellblock(null);
                 }
             }
@@ -1114,10 +1114,6 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
 
     public List<SelectItem> getProviderTypes() {
         List<CellProviderType> providers = this.getProUser().getAccountAttributes().getPhoneControlProviders();
-//        List<CellProviderType> providers = new ArrayList<CellProviderType>();
-//        providers.add(CellProviderType.UNDEFINED_PROVIDER);
-//        providers.add(CellProviderType.CELL_CONTROL);
-//        providers.add(CellProviderType.ZOOM_SAFER);
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         for (CellProviderType e : providers)
         {

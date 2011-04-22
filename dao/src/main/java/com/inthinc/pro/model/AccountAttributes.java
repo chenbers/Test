@@ -203,17 +203,23 @@ public class AccountAttributes extends BaseEntity {
         return phoneControlProviders;
     }
     public void setPhoneControlProviders(List<CellProviderType> phoneControlProviders) {
+        this.phoneControlProviders = phoneControlProviders;
+        clearPhoneControlProviders();
         if (!phoneControlProviders.isEmpty()){
             if(phoneControlProviders.size()>=1){
                 phoneControlProvider1 = phoneControlProviders.get(0).getCode().toString();
             }
             if(phoneControlProviders.size()>=2){
-                phoneControlProvider1 = phoneControlProviders.get(1).getCode().toString();
+                phoneControlProvider2 = phoneControlProviders.get(1).getCode().toString();
             }
             if(phoneControlProviders.size()>=3){
-                phoneControlProvider1 = phoneControlProviders.get(2).getCode().toString();
+                phoneControlProvider3 = phoneControlProviders.get(2).getCode().toString();
             }
         }
-        this.phoneControlProviders = phoneControlProviders;
+    }
+    private void clearPhoneControlProviders(){
+        phoneControlProvider1=null;
+        phoneControlProvider2=null;
+        phoneControlProvider3=null;
     }
 }

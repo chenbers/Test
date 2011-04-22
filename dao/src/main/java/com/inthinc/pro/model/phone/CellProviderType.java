@@ -1,7 +1,9 @@
 package com.inthinc.pro.model.phone;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.model.BaseEnum;
@@ -44,8 +46,13 @@ public enum CellProviderType implements BaseEnum{
         return lookup.get(code);
     }
 
+    public static List<CellProviderType> getAll(){
+        return new ArrayList<CellProviderType>(EnumSet.of(CellProviderType.CELL_CONTROL,CellProviderType.ZOOM_SAFER));
+    }
     @Override
     public Integer getCode() {
         return code;
     }
+    
+    
 }

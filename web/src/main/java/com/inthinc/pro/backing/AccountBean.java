@@ -29,6 +29,7 @@ import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
+import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.SelectItemUtil;
 import com.inthinc.pro.validators.EmailValidator;
@@ -169,7 +170,10 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
     public Map<String, State> getStates() {
         return STATES;
     }
-    
+//    public List<CellProviderType> getCellProviderTypes(){
+//        
+//        return CellProviderType.getAll();
+//    }
     @Override
     protected List<AccountView> loadItems() {       
         final List<AccountView> items = new ArrayList<AccountView>();
@@ -281,6 +285,16 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
     public List<SelectItem> getHOSTypes() {
         return SelectItemUtil.toList(AccountHOSType.class, false, AccountHOSType.EUROPEAN_HOS_SUPPORT);
+    }
+    public List<SelectItem> getCellProviderSelectItems() {
+        List<CellProviderType> providers = CellProviderType.getAll();
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        for (CellProviderType e : providers)
+        {
+            selectItemList.add(new SelectItem(e,MessageUtil.getMessageString(e.toString())));
+        }
+        
+        return selectItemList;
     }
 
     

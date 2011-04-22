@@ -322,7 +322,7 @@
                            <h:outputText value="#{messages.editPerson_cellProviderSection}" />
                        </div>
                        <rich:panel id="editPerson-cellProviderData">
-                       <rich:panel rendered="#{personBean.item.providerInfoSelected and personBean.item.cellblock.cellStatus eq 'ENABLED'}">
+                       <rich:panel rendered="#{personBean.item.providerInfoSelected}">
                        <table id="cellProviderTable" width="380" border="0" cellspacing="2" cellpadding="4" align="center">
 	                       <tr>
 	                         <td width="110" valign="top">

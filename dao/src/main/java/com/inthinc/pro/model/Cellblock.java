@@ -21,6 +21,7 @@ public class Cellblock {
         public Cellblock() {
             super();
             provider = CellProviderType.UNDEFINED_PROVIDER;
+            cellStatus = CellStatusType.ENABLED;
         }
         public String getProviderPassword() {
             return providerPassword;

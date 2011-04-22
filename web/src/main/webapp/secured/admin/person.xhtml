@@ -152,7 +152,7 @@
                           </tr>
                         </table>
                         
-                        <a4j:outputPanel rendered="personBean.accountPhoneControlEnabled">
+                        <a4j:outputPanel rendered="#{personBean.item.cellblock.provider.code ne 0}">
                         <div class="add_section_title"><h:outputText value="#{messages.editPerson_cellProviderSection}"/></div>
                   
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
