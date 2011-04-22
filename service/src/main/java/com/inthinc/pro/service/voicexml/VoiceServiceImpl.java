@@ -27,8 +27,9 @@ public class VoiceServiceImpl implements VoiceService {
 
         String response;
         //TODO log callback for msgID?
-        if (ack!=null && ack!=0)
-        {
+// All messages need to be acknowledged just in different ways which are handled by the jdbc code
+//        if (ack!=null && ack.intValue()!=0)
+//        {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             StringBuffer sb = context.getRequestURL();
             sb.setLength(sb.length()-context.getPathInfo().length());
@@ -38,14 +39,15 @@ public class VoiceServiceImpl implements VoiceService {
 
             InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(VXML_ACK_FILE);
             response = String.format(StringUtil.convertInputStreamToString(stream), getVoxeoAudioURL(), sb.toString(), msg);
-        }
-        else
-        {
-            if(msg == null) msg = "hello";
-            InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(VXML_NOACK_FILE);
-            response = String.format(StringUtil.convertInputStreamToString(stream), getVoxeoAudioURL(), msg);
-            getAlertMessageDAO().acknowledgeMessage(msgID);
-        }
+//        }
+//        else
+//        {
+//            if(msg == null) msg = "hello";
+//
+//            InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(VXML_NOACK_FILE);
+//            response = String.format(StringUtil.convertInputStreamToString(stream), getVoxeoAudioURL(), msg);
+//            getAlertMessageDAO().acknowledgeMessage(msgID);
+//        }
         return Response.ok(response).build();
     }
 
