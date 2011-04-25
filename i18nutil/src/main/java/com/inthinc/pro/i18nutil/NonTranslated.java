@@ -543,7 +543,7 @@ public class NonTranslated {
         nonTranslatedList.add("reports_exportPDFLink");
         nonTranslatedList.add("reports_renderHTMLLink");
         nonTranslatedList.add("subNavigation_waysmart");
-        nonTranslatedList.add("txtMsg_inbox");
+//        nonTranslatedList.add("txtMsg_inbox");
         nonTranslatedList.add("txtMsg_startDate");
         nonTranslatedList.add("vehiclesHeader_DOT");
         nonTranslatedList.add("vehiclesHeader_IFTA");
@@ -556,11 +556,259 @@ public class NonTranslated {
         nonTranslated_ro.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
     }    
 
+    static Map<String, List<String>> nonTranslated_es = new HashMap<String, List<String>>();
+    static {
+        List<String> nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("button_ok");
+        nonTranslatedList.add("error_title");
+        nonTranslated_es.put("/hoskiosk/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("HOS");
+        nonTranslatedList.add("NONE");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_21_30");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_21_30.metric");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_31_40");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_31_40.metric");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_41_54");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_41_54.metric");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_55_64");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_55_64.metric");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_65_80");
+        nonTranslatedList.add("ScoreType.SCORE_SPEEDING_65_80.metric");
+        nonTranslatedList.add("justDay");
+        nonTranslatedList.add("longTimeFormat");
+        nonTranslatedList.add("monthDay");
+        nonTranslatedList.add("no");
+        nonTranslatedList.add("redflags_catHOS");
+        nonTranslatedList.add("report.device.imei");
+        nonTranslatedList.add("report.dvspeed.21.30");
+        nonTranslatedList.add("report.dvspeed.21.30.metric");
+        nonTranslatedList.add("report.dvspeed.31.40");
+        nonTranslatedList.add("report.dvspeed.31.40.metric");
+        nonTranslatedList.add("report.dvspeed.41.54");
+        nonTranslatedList.add("report.dvspeed.41.54.metric");
+        nonTranslatedList.add("report.dvspeed.55.64");
+        nonTranslatedList.add("report.dvspeed.55.64.metric");
+        nonTranslatedList.add("report.dvspeed.65");
+        nonTranslatedList.add("report.dvspeed.65.metric");
+        nonTranslatedList.add("report.header.system.name");
+        nonTranslatedList.add("report.idling.percent");
+        nonTranslatedList.add("report.kph");
+        nonTranslatedList.add("report.mi");
+        nonTranslatedList.add("report.mi.metric");
+        nonTranslatedList.add("report.mph");
+        nonTranslatedList.add("report.mph.metric");
+        nonTranslatedList.add("shortDateFormat");
+        nonTranslatedList.add("timeFormat");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/ReportMessages", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("column.6.raw");
+        nonTranslatedList.add("column.8.raw");
+        nonTranslatedList.add("dot.7");
+        nonTranslatedList.add("dot.8");
+        nonTranslatedList.add("dot.9");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/hos/i18n/dotHoursRemaining", nonTranslatedList);
+        
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("report.ddl.graph.legend.original");
+        nonTranslatedList.add("report.ddl.header.vehicle");
+        nonTranslatedList.add("report.ddl.recap");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/hos/i18n/HOSDriverDailyLog", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("column.10.tabular");
+        nonTranslatedList.add("column.11.tabular");
+        nonTranslatedList.add("column.12.tabular");
+        nonTranslatedList.add("column.13.tabular");
+        nonTranslatedList.add("column.14to16.tabularHeader");
+        nonTranslatedList.add("column.2.tabular");
+        nonTranslatedList.add("column.3.tabular");
+        nonTranslatedList.add("column.4.tabular");
+        nonTranslatedList.add("column.5.tabular");
+        nonTranslatedList.add("column.6.tabular");
+        nonTranslatedList.add("column.7.tabular");
+        nonTranslatedList.add("column.8.tabular");
+        nonTranslatedList.add("column.9.tabular");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/hos/i18n/hosViolations", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("TEXAS");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/hos/i18n/violationsDetail", nonTranslatedList);
+        
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("column.total");
+        nonTranslatedList.add("column.total.raw");
+        nonTranslatedList.add("total");
+        nonTranslatedList.add("total.group");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/ifta/i18n/stateMileage", nonTranslatedList);
+        
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("total.date");
+        nonTranslatedList.add("total.driver");
+        nonTranslatedList.add("total.group");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/driverHours", nonTranslatedList);
+        
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("column.8.tabular");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/payrollDetail", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("column.imei");
+        nonTranslatedList.add("warrantyReport.expired.no");
+        nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/asset/i18n/warrantyList", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("title");
+        nonTranslated_es.put("/webutil/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
+
+        nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("AlertMessageType.ALERT_TYPE_HOS");
+        nonTranslatedList.add("FuelEfficiencyType.KMPL_MPG");
+        nonTranslatedList.add("FuelEfficiencyType.KMPL_mpg");
+        nonTranslatedList.add("FuelEfficiencyType.LP100KM_MPG");
+        nonTranslatedList.add("FuelEfficiencyType.LP100KM_mpg");
+        nonTranslatedList.add("FuelEfficiencyType.MPG_UK_MPG");
+        nonTranslatedList.add("FuelEfficiencyType.MPG_UK_mpg");
+        nonTranslatedList.add("FuelEfficiencyType.MPG_US_MPG");
+        nonTranslatedList.add("FuelEfficiencyType.MPG_US_mpg");
+        nonTranslatedList.add("MeasurementType.ENGLISH_MPH");
+        nonTranslatedList.add("MeasurementType.ENGLISH_SCORE_SPEEDING_21_30");
+        nonTranslatedList.add("MeasurementType.ENGLISH_SCORE_SPEEDING_31_40");
+        nonTranslatedList.add("MeasurementType.ENGLISH_SCORE_SPEEDING_41_54");
+        nonTranslatedList.add("MeasurementType.ENGLISH_SCORE_SPEEDING_55_64");
+        nonTranslatedList.add("MeasurementType.ENGLISH_SCORE_SPEEDING_65_80");
+        nonTranslatedList.add("MeasurementType.ENGLISH_editRedFlag_mph");
+        nonTranslatedList.add("MeasurementType.ENGLISH_lbs");
+        nonTranslatedList.add("MeasurementType.ENGLISH_mi");
+        nonTranslatedList.add("MeasurementType.ENGLISH_mph");
+        nonTranslatedList.add("MeasurementType.ENGLISH_sbs_mph");
+        nonTranslatedList.add("MeasurementType.METRIC_MPH");
+        nonTranslatedList.add("MeasurementType.METRIC_SCORE_SPEEDING_21_30");
+        nonTranslatedList.add("MeasurementType.METRIC_SCORE_SPEEDING_31_40");
+        nonTranslatedList.add("MeasurementType.METRIC_SCORE_SPEEDING_41_54");
+        nonTranslatedList.add("MeasurementType.METRIC_SCORE_SPEEDING_55_64");
+        nonTranslatedList.add("MeasurementType.METRIC_SCORE_SPEEDING_65_80");
+        nonTranslatedList.add("MeasurementType.METRIC_editRedFlag_mph");
+        nonTranslatedList.add("MeasurementType.METRIC_lbs");
+        nonTranslatedList.add("MeasurementType.METRIC_mi");
+        nonTranslatedList.add("MeasurementType.METRIC_mph");
+        nonTranslatedList.add("MeasurementType.METRIC_sbs_mph");
+        nonTranslatedList.add("TEXAS");
+        nonTranslatedList.add("ZOOM_SAFER");
+        nonTranslatedList.add("button_no");
+        nonTranslatedList.add("button_ok");
+        nonTranslatedList.add("crashReport_gps");
+        nonTranslatedList.add("crashReport_obd");
+        nonTranslatedList.add("crashReport_rpm");
+        nonTranslatedList.add("customer_support_email_address");
+        nonTranslatedList.add("customer_support_number");
+        nonTranslatedList.add("deviceReports_device_imei");
+        nonTranslatedList.add("devicesHeader_imei");
+        nonTranslatedList.add("devicesHeader_mcmid");
+        nonTranslatedList.add("drivertrip_quality");
+        nonTranslatedList.add("editAccount_hos");
+        nonTranslatedList.add("editAccount_no");
+        nonTranslatedList.add("editAccount_url");
+        nonTranslatedList.add("editDevice_dot");
+        nonTranslatedList.add("editDevice_ifta");
+        nonTranslatedList.add("editDevice_imei");
+        nonTranslatedList.add("editPerson_driver_dot");
+        nonTranslatedList.add("editPerson_driver_rfid1");
+        nonTranslatedList.add("editPerson_driver_rfid2");
+        nonTranslatedList.add("editPerson_suffixIII");
+        nonTranslatedList.add("editPerson_suffixJr");
+        nonTranslatedList.add("editPerson_suffixSr");
+        nonTranslatedList.add("editPerson_user_role");
+        nonTranslatedList.add("editRedFlag_ALERT_TYPE_HOS");
+        nonTranslatedList.add("editRedFlag_notype");
+        nonTranslatedList.add("editVehicle_DOT");
+        nonTranslatedList.add("editVehicle_IFTA");
+        nonTranslatedList.add("editVehicle_VIN");
+        nonTranslatedList.add("editVehicle_color");
+        nonTranslatedList.add("error_title");
+        nonTranslatedList.add("false");
+        nonTranslatedList.add("footer_copyright");
+        nonTranslatedList.add("forwardCommandReceivedError");
+        nonTranslatedList.add("group_geofence");
+        nonTranslatedList.add("group_supervisor");
+        nonTranslatedList.add("header_css_conditional");
+        nonTranslatedList.add("hosLog_dot");
+        nonTranslatedList.add("hr");
+        nonTranslatedList.add("hrs");
+        nonTranslatedList.add("idling_percentage_time_label");
+        nonTranslatedList.add("justDay");
+        nonTranslatedList.add("km_label");
+        nonTranslatedList.add("kmh_label");
+        nonTranslatedList.add("label_two_parameters");
+        nonTranslatedList.add("longTimeFormat");
+        nonTranslatedList.add("measurement_speed");
+        nonTranslatedList.add("mi_label");
+        nonTranslatedList.add("monthDay");
+        nonTranslatedList.add("mph_label");
+        nonTranslatedList.add("myAccount_alertTextSeparator");
+        nonTranslatedList.add("navigation_admin");
+        nonTranslatedList.add("navigation_hos");
+        nonTranslatedList.add("navigation_searchWaysmart");
+        nonTranslatedList.add("no");
+        nonTranslatedList.add("personHeader_driver_dot");
+        nonTranslatedList.add("personHeader_rfid1");
+        nonTranslatedList.add("personHeader_rfid2");
+        nonTranslatedList.add("personHeader_user_role");
+        nonTranslatedList.add("phoneFormat");
+        nonTranslatedList.add("redflags_catHOS");
+        nonTranslatedList.add("redflags_catNONE");
+        nonTranslatedList.add("reportSchedule_drivers");
+        nonTranslatedList.add("report_waysmart");
+        nonTranslatedList.add("reports_distanceDrivenInUnits");
+        nonTranslatedList.add("reports_employeeID");
+        nonTranslatedList.add("reports_exportExcelLink");
+        nonTranslatedList.add("reports_exportPDFLink");
+        nonTranslatedList.add("reports_imei");
+        nonTranslatedList.add("reports_percent");
+        nonTranslatedList.add("reports_renderHTMLLink");
+        nonTranslatedList.add("reports_time");
+        nonTranslatedList.add("sbs_kph");
+        nonTranslatedList.add("sbs_mph");
+        nonTranslatedList.add("shortDateFormat");
+        nonTranslatedList.add("smsTextRegex");
+        nonTranslatedList.add("subNavigation_waysmart");
+        nonTranslatedList.add("teamLabels");
+        nonTranslatedList.add("teamTop_position");
+        nonTranslatedList.add("teamTotal");
+        nonTranslatedList.add("team_total");
+        nonTranslatedList.add("timeFormat");
+        nonTranslatedList.add("time_period_am");
+        nonTranslatedList.add("time_period_pm");
+        nonTranslatedList.add("title");
+        nonTranslatedList.add("vehicleBubble_distance");
+        nonTranslatedList.add("vehiclesHeader_DOT");
+        nonTranslatedList.add("vehiclesHeader_IFTA");
+        nonTranslatedList.add("vehiclesHeader_VIN");
+        nonTranslatedList.add("vehiclesHeader_color");
+        nonTranslatedList.add("vehicletrip_quality");
+        nonTranslatedList.add("waySmartAccess");
+
+//temp
+//        nonTranslatedList.add("personHeader_driver_provider");
+//        nonTranslatedList.add("personHeader_driver_providerCellPhone");
+//        nonTranslatedList.add("ReportGroup.DRIVER_PERFORMANCE_RYG_INDIVIDUAL");
+//        nonTranslatedList.add("ReportGroup.DRIVER_PERFORMANCE_RYG_TEAM");
+//        
+//temp - END
+
+        
+        nonTranslated_es.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
+        
+    }    
     
     static public List<String> getList(String lang, String key) {
         if (lang.equals("ro")) 
             return nonTranslated_ro.get(key);
         
+        if (lang.equals("es")) 
+            return nonTranslated_es.get(key);
         return null;        
     }
 }

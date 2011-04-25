@@ -24,9 +24,10 @@ public class MergeTranslated extends BaseTranslationUtil {
         
     }
     public void mergeProperties(String translations, String destDir, String lang) {
+        File baseDir = new File(destDir);
         Map<String, Properties> translationMap;
         try {
-            translationMap = initTranslations(translations);
+            translationMap = initTranslations(translations, baseDir, lang);
         } catch (IOException e1) {
             System.out.println("Error initialize translations" + translations );
             e1.printStackTrace();
@@ -35,7 +36,6 @@ public class MergeTranslated extends BaseTranslationUtil {
 
 //        System.out.println("retrieving File list...");
         List<File> propFileList = new ArrayList<File>();
-        File baseDir = new File(destDir);
         propFileList.addAll(getFiles(baseDir, new PropertiesFileFilter(lang)));
         
         for (File destFile : propFileList) {
@@ -82,7 +82,7 @@ public class MergeTranslated extends BaseTranslationUtil {
         
     }
     
-    private Map<String, Properties> initTranslations(String translationsFile) throws IOException {
+    private Map<String, Properties> initTranslations(String translationsFile, File baseDir, String lang) throws IOException {
         
         Map<String, Properties> translationMap = new HashMap<String, Properties>();
         
@@ -105,6 +105,8 @@ public class MergeTranslated extends BaseTranslationUtil {
                 }
                 
                 propPath = line.substring(4, line.length()-4 );
+System.out.println("propPath: " + propPath);    
+                creatFileIfNotExists(propPath+"_"+lang+".properties", baseDir);
                 out = new ByteArrayOutputStream();
                 
                 propWriter = new PrintWriter(out);
@@ -128,6 +130,18 @@ public class MergeTranslated extends BaseTranslationUtil {
     
 
 
+    private void creatFileIfNotExists(String propPath, File baseDir) {
+        // TODO Auto-generated method stub
+        File langFile = new File(baseDir, propPath);
+        if (!langFile.exists())
+            try {
+                langFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error creating file: " + langFile.getAbsolutePath());
+            }
+        
+    }
     public void mergeOneProperties(Properties fromProp , File to) throws IOException {
         Properties toProp = readPropertiesFile(to);
         

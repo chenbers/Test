@@ -134,7 +134,7 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
             if (langValue == null) {
                 toTranslate.add(key + " = " + value);
             }
-            else if (langValue.isEmpty() && value.isEmpty())
+            else if (langValue.trim().isEmpty() && value.trim().isEmpty())
                 continue;
             else if (langValue.trim().isEmpty()) {
                 toTranslate.add(key + " = " + value);
