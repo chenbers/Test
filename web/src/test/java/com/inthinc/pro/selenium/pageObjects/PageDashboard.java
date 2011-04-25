@@ -6,7 +6,7 @@ import com.inthinc.pro.selenium.pageEnums.DashboardEnum;
 
 public class PageDashboard extends NavigationBar{
     
-    public static enum Duration{
+    public static enum Duration{ //TODO: jwimmer: question for dtanner: these enum values seem a little out of place.  I'd rather see them someplace like the UtilEnum.java that pwehan put together (i.e. an enum for items that are not specific to a SINGLE page, but aren't necessarily part of an abstract pageObject like masthead)
         DAYS_30("durationPanelHeaderDays"),
         MONTHS_3("durationPanelHeaderThreeMonths"),
         MONTHS_6("durationPanelHeaderSixMonths"),
@@ -25,16 +25,16 @@ public class PageDashboard extends NavigationBar{
     }
     
     
-    public void menu_overallToolsEmail_click() {
+    public void link_overallToolsEmail_click() {
         selenium.click(DashboardEnum.OVERALL_TOOLS);
         selenium.click(DashboardEnum.OVERALL_TOOLS_EMAIL);
     }
     
-    public void menu_overallToolsEmailCancel_click() {
+    public void link_overallToolsEmailCancel_click() {
         selenium.click(DashboardEnum.OVERALL_TOOLS_EMAIL_CANCEL);       
     }
     
-    public void menu_overallToolsEmailEmail_click() {
+    public void link_overallToolsEmailEmail_click() {
         selenium.click(DashboardEnum.OVERALL_TOOLS_EMAIL_EMAIL);       
     }
     
@@ -43,34 +43,34 @@ public class PageDashboard extends NavigationBar{
 //        selenium.click(DashboardEnum.OVERALL_TOOLS_PDF);
 //    }
     
-    public void menu_mpgChartToolsEmail_click() {
+    public void link_mpgChartToolsEmail_click() {
         selenium.click(DashboardEnum.MPG_CHART_TOOLS);
         selenium.click(DashboardEnum.MPG_CHART_TOOLS_EMAIL);
     }
     
-    public void menu_mpgChartToolsEmailCancel_click() {
+    public void link_mpgChartToolsEmailCancel_click() {
         selenium.click(DashboardEnum.MPG_CHART_TOOLS_EMAIL_CANCEL);                
     }
     
-    public void menu_mpgChartToolsEmailEmail_click() {
+    public void link_mpgChartToolsEmailEmail_click() {
         selenium.click(DashboardEnum.MPG_CHART_TOOLS_EMAIL_EMAIL);                
     }    
     
-//    public void menu_mpgPDF_click() {
+//    public void link_mpgPDF_click() {
 //        selenium.click(DashboardEnum.OVERALL_TOOLS);
 //        selenium.click(DashboardEnum.OVERALL_TOOLS_PDF);
 //    }
     
-    public void menu_speedPercentageToolsEmail_click() {
+    public void link_speedPercentageToolsEmail_click() {
         selenium.click(DashboardEnum.SPEED_PERCENTAGE_TOOLS);
         selenium.click(DashboardEnum.SPEED_PERCENTAGE_TOOLS_EMAIL);
     }
     
-    public void menu_speedPercentageToolsEmailCancel_click() {
+    public void link_speedPercentageToolsEmailCancel_click() {
         selenium.click(DashboardEnum.SPEED_PERCENTAGE_TOOLS_EMAIL_CANCEL);               
     }
     
-    public void menu_speedPercentageToolsEmailEmail_click() {
+    public void link_speedPercentageToolsEmailEmail_click() {
         selenium.click(DashboardEnum.SPEED_PERCENTAGE_TOOLS_EMAIL_EMAIL);               
     }
     
@@ -79,16 +79,16 @@ public class PageDashboard extends NavigationBar{
 //        selenium.click(DashboardEnum.OVERALL_TOOLS_PDF);
 //    }
     
-    public void menu_trendToolsEmail_click() {
+    public void link_trendToolsEmail_click() {
         selenium.click(DashboardEnum.TREND_TOOLS);
         selenium.click(DashboardEnum.TREND_TOOLS_EMAIL);
     }
     
-    public void menu_trendToolsEmailCancel_click() {
+    public void link_trendToolsEmailCancel_click() {
         selenium.click(DashboardEnum.TREND_TOOLS_EMAIL_CANCEL);                
     }
     
-    public void menu_trendToolsEmailEmail_click() {
+    public void link_trendToolsEmailEmail_click() {
         selenium.click(DashboardEnum.TREND_TOOLS_EMAIL_EMAIL);                
     }
     
@@ -97,16 +97,16 @@ public class PageDashboard extends NavigationBar{
 //        selenium.click(DashboardEnum.TREND_TOOLS_PDF);
 //    }
     
-    public void menu_idlingPercentageToolsEmail_click() {
+    public void link_idlingPercentageToolsEmail_click() {
         selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS);
         selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS_EMAIL);
     }
     
-    public void menu_idlingPercentageToolsEmailCancel_click() {
+    public void link_idlingPercentageToolsEmailCancel_click() {
         selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS_EMAIL_CANCEL);               
     }
     
-    public void menu_idlingPercentageToolsEmailEmail_click() {
+    public void link_idlingPercentageToolsEmailEmail_click() {
         selenium.click(DashboardEnum.IDLING_PERCENTAGE_TOOLS_EMAIL_EMAIL);               
     }
     
