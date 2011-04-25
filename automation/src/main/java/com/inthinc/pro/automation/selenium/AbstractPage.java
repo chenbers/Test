@@ -17,26 +17,26 @@ public abstract class AbstractPage implements VerbosePage {
         webDriver = selenium.getWrappedDriver();
     }
 
-    public void addError(String errorName) {
+    public static void addError(String errorName) {
         selenium.getErrors().addError(errorName, Thread.currentThread().getStackTrace());
     }
 
-    public void addError(String errorName, String error) {
+    public static void addError(String errorName, String error) {
         selenium.getErrors().addError(errorName, error);
     }
 
-    public void addErrorWithExpected(String errorName, String error, String expected) {
+    public static void addErrorWithExpected(String errorName, String error, String expected) {
         selenium.getErrors().addError(errorName, error);
         selenium.getErrors().addExpected(errorName, expected);
     }
 
-    public void assertEquals(Object actual, Object expected) {
+    public static void assertEquals(Object actual, Object expected) {
         if (!actual.equals(expected)) {
             addError(actual + " != " + expected);
         }
     }
 
-    public void assertEquals(Object expected, SeleniumEnums actual) {
+    public static void assertEquals(Object expected, SeleniumEnums actual) {
         assertEquals(expected, actual.getText());
     }
 
@@ -49,8 +49,8 @@ public abstract class AbstractPage implements VerbosePage {
         return (AbstractPage) load();
     }
     
-    public void assertEquals(SeleniumEnums actual) {
-        assertEquals(selenium.getText(actual), actual.getText());
+    public static void assertEquals(SeleniumEnums anEnum) {
+        assertEquals(selenium.getText(anEnum), anEnum.getText());
     }
     
 //    /*
@@ -71,17 +71,17 @@ public abstract class AbstractPage implements VerbosePage {
         return validateURL();
     }
     
-    public void assertNotEquals(Object actual, Object expected) {
+    public static void assertNotEquals(Object actual, Object expected) {
         if (actual.equals(expected)) {
             addError(actual + " == " + expected);
         }
     }
 
-    public void assertNotEquals(Object expected, SeleniumEnums actual) {
+    public static void assertNotEquals(Object expected, SeleniumEnums actual) {
         assertNotEquals(expected, actual.getText());
     }
     
-    public void assertContains(String fullString, String partialString){
+    public static void assertContains(String fullString, String partialString){
         if(!fullString.contains(partialString)){
             addError(partialString + " not in " + fullString);
         }
@@ -89,7 +89,7 @@ public abstract class AbstractPage implements VerbosePage {
 
 
     public String browser_location_getCurrent() {
-        String[] url = webDriver.getCurrentUrl().split("/");
+        String[] url = webDriver.getCurrentUrl().split("/");//TODO: jwimmer: seems like this doesn't capture ALL of the pertinent location info for some pages? i.e. https://my.inthinc.com/tiwipro/app/driver/214
         return url[url.length-1];
     }
 
@@ -123,7 +123,7 @@ public abstract class AbstractPage implements VerbosePage {
     }
     
     protected String setCurrentLocation(){
-        String[] address = getCurrentLocation().split("/");
+        String[] address = getCurrentLocation().split("/"); //TODO: jwimmer: doesn't seem very robust on pages where MORE than the last portion of the URL is significant?  
         currentPage = address[address.length-1];
         return currentPage;
     }
@@ -141,7 +141,7 @@ public abstract class AbstractPage implements VerbosePage {
     
     @Override
     public Page load() {
-        // TODO Auto-generated method stub
+        selenium.open(this.getExpectedPath());
         return null;
     }
 
