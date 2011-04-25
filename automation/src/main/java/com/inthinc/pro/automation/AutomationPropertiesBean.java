@@ -9,6 +9,7 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 
 
 public class AutomationPropertiesBean {
+    private String serverProtocol;
     private String serverName;
     private String serverPort;
     private String appPath;
@@ -41,7 +42,7 @@ public class AutomationPropertiesBean {
        return results;
     }
     public String getBaseURL() {
-        return "https://"+serverName+":"+serverPort+"/"+appPath+"/";
+        return serverProtocol+"://"+serverName+":"+serverPort+"/"+appPath+"/";
     }
     public String getServerName() {
         return serverName;
@@ -84,5 +85,11 @@ public class AutomationPropertiesBean {
     }
     public void setHasChrome(String hasChrome) {
         this.hasChrome = hasChrome;
+    }
+    public String getServerProtocol() {
+        return serverProtocol;
+    }
+    public void setServerProtocol(String serverProtocol) {
+        this.serverProtocol = serverProtocol;
     }
 }

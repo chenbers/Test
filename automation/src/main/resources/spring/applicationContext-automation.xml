@@ -27,6 +27,7 @@
 	</bean>
 	<bean id="automationPropertiesBean" class="com.inthinc.pro.automation.AutomationPropertiesBean"
 		scope="singleton">
+		<property name="serverProtocol" value="${automation.testserver.protocol}" />
 		<property name="serverName" value="${automation.testserver.name}" />
 		<property name="serverPort" value="${automation.testserver.port}" />
 		<property name="appPath" value="${automation.testserver.appPath}" />
