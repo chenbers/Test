@@ -4,11 +4,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.selenium.pageObjects.PageDashboard;
+//import com.inthinc.pro.selenium.pageObjects.PageDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
-//@Ignore
+@Ignore
 public class LoginTest extends WebRallyTest {
     PageLogin login;
     // TODO: jwimmer: question for DTanner: I can see a benefit from having SOME of these types of things defined in a non-page-specific enum? email is a good example (actually not
@@ -29,7 +29,7 @@ public class LoginTest extends WebRallyTest {
         set_test_case("TC1247");
         
         // Instantiate additional pages that this test needs
-        PageDashboard dash = new PageDashboard();
+//        PageDashboard dash = new PageDashboard();
         
         /* Input */
         login.page_login_open();//Navigate to page
