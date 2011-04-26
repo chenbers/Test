@@ -252,6 +252,6 @@ public class TripDisplay implements Comparable<TripDisplay>
 		return route.get(route.size()-1).getLng();
 	}
 	public boolean isGoodRoute(){
-		return route !=null && route.size()>1;
+		return route !=null && route.size()>0;
 	}
 }
