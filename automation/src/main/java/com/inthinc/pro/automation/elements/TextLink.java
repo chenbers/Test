@@ -27,7 +27,7 @@ public class TextLink extends Link implements TextBased {
 
     @Override
     public String getText() {
-        return selenium.getText(element);
+        return selenium.getText(myEnum);
     }
 
 

@@ -31,14 +31,7 @@ public class TextField extends ElementBase implements Typeable {
     
     public TextField type(String inputText) {
         //selenium.type(myEnum, inputText);
-        String error_name = "type: " + element;
-        try {
-            selenium.type(element, inputText);
-        } catch (Exception e) {
-            if(e instanceof RuntimeException)
-                throw new RuntimeException(e);
-            selenium.getErrors().addError(error_name, e);
-        }
+        selenium.type(myEnum, inputText);
         return this;
     }
 
@@ -59,7 +52,7 @@ public class TextField extends ElementBase implements Typeable {
 
     @Override
     public String getText() {
-        return selenium.getText(element);
+        return selenium.getText(myEnum);
     }
 
 }

@@ -1,6 +1,9 @@
 package com.inthinc.pro.automation.elements;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
@@ -30,9 +33,9 @@ public class SelectBox extends Text implements Selectable {
         String xpath;
         if (myEnum.getID()!=null){
             String id = myEnum.getID();
-            xpath = "//select[@id='"+id+"']/option[text(),'"+fullMatch+"']";
+            xpath = "//select[@id='"+id+"']/option[text()='"+fullMatch+"']";
         }else {
-            xpath = myEnum.getXpath() + "/option[text(),'"+fullMatch+"']";
+            xpath = myEnum.getXpath() + "/option[text()='"+fullMatch+"']";
         }
         webDriver.findElements(By.xpath(xpath)).get(matchNumber).setSelected();
         return this;
@@ -54,6 +57,6 @@ public class SelectBox extends Text implements Selectable {
 
     @Override
     public ElementInterface selectPartMatch(String partialMatch) {
-        return selectPartMatch(partialMatch, 0);
+        return selectPartMatch(partialMatch, 1);
     }
 }

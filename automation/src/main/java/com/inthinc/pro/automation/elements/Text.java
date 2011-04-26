@@ -24,6 +24,6 @@ public class Text extends ElementBase implements TextBased {
     }
 
     public String getText(){
-        return selenium.getText(element);
+        return selenium.getText(myEnum);
     }
 }

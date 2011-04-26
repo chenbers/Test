@@ -10,8 +10,6 @@ public class ElementBase implements ElementInterface {
     protected CoreMethodLib selenium;
     protected WebDriver webDriver;
 
-    protected String element;
-
     protected SeleniumEnums myEnum;
     protected String text;
 
@@ -28,11 +26,10 @@ public class ElementBase implements ElementInterface {
     }
 
     public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        selenium = GlobalSelenium.getSelenium();
-        webDriver = selenium.getWrappedDriver();
-        element = getLocator(replaceWord, replaceNumber);
         this.text = anEnum.getText();
         this.myEnum = anEnum;
+        selenium = GlobalSelenium.getSelenium();
+        webDriver = selenium.getWrappedDriver();
     }
 
 
@@ -47,62 +44,10 @@ public class ElementBase implements ElementInterface {
         return this;
     }
 
-    public String getLocator() {
-        return getLocator(null, null);
-    }
-    
-    public String getLocator(String replaceWord) {
-        return getLocator(replaceWord, null);
-    }
-    
-    public String getLocator(Integer replaceNumber) {
-        return getLocator(null, replaceNumber);
-    }
-
-    public String getLocator(String replaceName, Integer replaceNumber) {
-        String id = null;
-        boolean ID=true,xpath=true,xpathAlt=true;
-        while (id == null) {
-            if (myEnum.getID() != null && ID){
-                id = myEnum.getID().replace("***", replaceName).replace("###", replaceNumber.toString());
-                if (!selenium.isElementPresent(id)) {
-                    id = null;
-                    ID=false;
-                }
-            } else if (myEnum.getXpath() != null && xpath) {
-                id = myEnum.getXpath().replace("***", replaceName).replace("###", replaceNumber.toString());
-                if (!selenium.isElementPresent(id)) {
-                    id = null;
-                    xpath=false;
-                }
-            } else if (myEnum.getXpath_alt() != null && xpathAlt) {
-                id = myEnum.getXpath_alt().replace("***", replaceName).replace("###", replaceNumber.toString());
-                if (!selenium.isElementPresent(id)) {
-                    id = null;
-                    xpathAlt=false;
-                }
-            }
-            if (!ID && !xpath && !xpathAlt){
-                break;
-            }
-        }
-        return id;
-    }
 
     @Override
     public ElementInterface focus() {
-        // selenium.focus(locator);
-        String error_name = "focus: " + element;
-
-        try {
-            selenium.focus(element);
-            error_name = "focus: " + element;
-        }catch (Exception e) {
-            if (e instanceof RuntimeException)
-                throw new RuntimeException(e);
-            else
-                selenium.getErrors().addError(error_name, e);
-        }
+        selenium.focus(myEnum);
         return this;
     }
 

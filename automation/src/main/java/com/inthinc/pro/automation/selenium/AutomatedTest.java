@@ -4,10 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.BeanCreationException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.utils.StackToString;
@@ -46,18 +42,17 @@ public class AutomatedTest {
         if (!skip) {
             try {
                 errors = selenium.getErrors();
-                setBuildNumber(selenium.getText("footerForm:version"));
-                selenium.stop();
-
                 // check error var for entries
-                if (errors.isEmpty()) {
+                if (errors.isEmpty() || errors==null) {
                     setTestVerdict(Verdicts.PASS); // no errors = pass
                 } else if (!errors.isEmpty()) {
                     setTestVerdict(Verdicts.FAIL); // errors = fail
                 }
-
+                setBuildNumber(selenium.getText("footerForm:version"));
             } catch (Exception e) {
-                logger.debug(StackToString.toString(e));
+                logger.fatal(StackToString.toString(e));
+            }finally{
+                GlobalSelenium.dieSeleniumDie();   
             }
         }
     }
@@ -65,18 +60,7 @@ public class AutomatedTest {
     public void before() {
         startTime = currentTime();
         try {
-            try {
-                String[] configFiles = new String[] { "classpath:spring/applicationContext-automation.xml" };
-                BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
-                AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
-                selenium = GlobalSelenium.getYourOwn(apb.getDefaultWebDriver(), apb.getBaseURL());
-            } catch (NoSuchBeanDefinitionException e) {
-                logger.error(StackToString.toString(e));
-                selenium = GlobalSelenium.getYourOwn();
-            } catch (BeanCreationException e) {
-                logger.error(StackToString.toString(e));
-                selenium = GlobalSelenium.getYourOwn();
-            }
+            selenium = GlobalSelenium.getYourOwn();
         } catch (Exception e) {
             logger.fatal(StackToString.toString(e));
             skip = true;

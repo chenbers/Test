@@ -11,7 +11,7 @@ public class Link extends ElementBase implements Clickable {
 
     @Override
     public ElementInterface click() {
-        selenium.click(element);
+        selenium.click(myEnum);
         return this;
     }
 

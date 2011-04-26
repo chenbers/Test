@@ -46,19 +46,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
 
     public CoreMethodLib click(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
-        String error_name = "click: " + element;
-        try {
-            click(element);
-            Pause(2);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return this;
+        return click(checkIt, null);
     }
     
     public CoreMethodLib click(SeleniumEnums checkIt, String replacement) {
@@ -67,8 +55,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         try {
             click(element);
             Pause(2);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -150,8 +136,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String location = "Could not get location";
         try {
             location = getLocation();
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -160,24 +144,53 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return location;
     }
 
-    public String getLocator(SeleniumEnums checkIt) {
-        if (checkIt.getID() != null)
-            return checkIt.getID();
-        else if (checkIt.getXpath() != null)
-            return checkIt.getXpath();
-        else if (checkIt.getXpath_alt() != null)
-            return checkIt.getXpath_alt();
-        return null;
+    public String getLocator(SeleniumEnums myEnum) {
+        return getLocator(myEnum, null, null);
     }
     
-    public String getLocator(SeleniumEnums checkIt, String replaceme){
-        if (checkIt.getID() != null)
-            return checkIt.getID().replace("***", replaceme);
-        else if (checkIt.getXpath() != null)
-            return checkIt.getXpath().replace("***", replaceme);
-        else if (checkIt.getXpath_alt() != null)
-            return checkIt.getXpath_alt().replace("***", replaceme);
-        return null;
+    public String getLocator(SeleniumEnums myEnum, String replaceWord) {
+        return getLocator(myEnum, replaceWord, null);
+    }
+    
+    public String getLocator(SeleniumEnums myEnum, Integer replaceNumber) {
+        return getLocator(myEnum, null, replaceNumber);
+    }
+    
+    public String getLocator(SeleniumEnums myEnum, String replaceName, Integer replaceNumber) {
+        String id = null;
+        String number="";
+        if (replaceName==null){
+            replaceName = "";
+        }
+        if (replaceNumber!=null){
+            number = replaceNumber.toString();
+        }
+        boolean ID=true,xpath=true,xpathAlt=true;
+        while (id == null) {
+            if ((myEnum.getID() != null) && ID){
+                id = myEnum.getID().replace("***", replaceName).replace("###", number);
+                if (!isElementPresent(id)) {
+                    id = null;
+                    ID=false;
+                }
+            } else if ((myEnum.getXpath() != null) && xpath) {
+                id = myEnum.getXpath().replace("***", replaceName).replace("###", number);
+                if (!isElementPresent(id)) {
+                    id = null;
+                    xpath=false;
+                }
+            } else if ((myEnum.getXpath_alt() != null) && xpathAlt) {
+                id = myEnum.getXpath_alt().replace("***", replaceName).replace("###", number);
+                if (!isElementPresent(id)) {
+                    id = null;
+                    xpathAlt=false;
+                }
+            }
+            if (!ID && !xpath && !xpathAlt){
+                break;
+            }
+        }
+        return id;
     }
 
     public String getSelectedLabel(SeleniumEnums checkIt) {
@@ -185,14 +198,25 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "select: " + element;
         try {
             return getSelectedLabel(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return null;
+    }
+    
+    public CoreMethodLib focus(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "focus: " + element;
+        try {
+            focus(element);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return this;
     }
 
     public String getTable(SeleniumEnums checkIt) {
@@ -201,8 +225,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String text = "";
         try {
             text = getTable(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -217,8 +239,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String text = "";
         try {
             text = getTable(element + "." + row + "." + col);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -228,19 +248,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
 
     public String getText(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
-        String error_name = "getText: " + element;
-        String text = "";
-        try {
-            text = getText(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return text;
+        return getText(checkIt, null);
     }
     
     public String getText(SeleniumEnums checkIt, String replacement) {
@@ -249,8 +257,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String text = "";
         try {
             text = getText(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -273,8 +279,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "isChecked: " + element;
         try {
             return isChecked(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -288,8 +292,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "isElementNotPresent: " + element;
         try {
             return !isElementPresent(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -303,8 +305,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "isElementPresent: " + element;
         try {
             return isElementPresent(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -318,8 +318,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "isNotChecked: " + element;
         try {
             return !isChecked(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -334,8 +332,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "isNotVisible: " + element;
         try {
             return !isVisible(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -348,8 +344,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "isTextNotPresent: " + text;
         try {
             return !isTextPresentOnPage(text);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -368,8 +362,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "isTextPresent: " + text;
         try {
             return isTextPresent(text);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -383,8 +375,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "isVisible: " + element;
         try {
             return isVisible(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -409,8 +399,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "open: " + element;
         try {
             open(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -445,8 +433,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         try {
             select(element, label);
             Pause(5);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -486,8 +472,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "selectWindowByID: " + ID;
         try {
             selectWindow(ID);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -500,8 +484,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "selectWindowByTitle: " + name;
         try {
             selectWindow("name=" + name);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -514,8 +496,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "selectWindowByTitle: " + title;
         try {
             selectWindow("title=" + title);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -536,8 +516,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "type: " + element;
         try {
             type(element, text);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -599,8 +577,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "waitForPageToLoad: Timeout = " + timeout;
         try {
             waitForPageToLoad(timeout.toString());
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
@@ -614,8 +590,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "mouseOver: " + element;
         try {
             mouseOver(element);
-        } catch (SeleniumException e) {
-            errors.addError(error_name, e);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         } catch (Exception e) {
