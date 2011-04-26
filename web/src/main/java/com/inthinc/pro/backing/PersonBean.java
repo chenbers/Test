@@ -967,7 +967,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                 }
             }
             else {
-                if (!person.isProviderInfoSelected() && person.getCellblock() != null) {
+                if (!create && !person.isProviderInfoSelected() && person.isProviderInfoExists() ) {
                     phoneControlDAO.deleteByID(person.getDriverID());
                     person.setCellblock(null);
                 }
