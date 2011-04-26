@@ -8,11 +8,11 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 
 public class PageLiveFleet extends NavigationBar {
-    public LiveFleetTextFields _textField = new LiveFleetTextFields();
-    public LiveFleetTexts _text = new LiveFleetTexts();
-    public LiveFleetLinks _link = new LiveFleetLinks();
-    public LiveFleetButtons _button = new LiveFleetButtons();
-    public LiveFleetSelects _select = new LiveFleetSelects();
+    public LiveFleetTextFields _textField(){ return new LiveFleetTextFields();}
+    public LiveFleetTexts _text(){return new LiveFleetTexts();}
+    public LiveFleetLinks _link(){return new LiveFleetLinks();}
+    public LiveFleetButtons _button() {return  new LiveFleetButtons();}
+    public LiveFleetSelects _select() {return new LiveFleetSelects();}
    
    
     public class LiveFleetLinks{

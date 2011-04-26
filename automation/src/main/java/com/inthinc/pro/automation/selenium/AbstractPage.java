@@ -8,7 +8,7 @@ import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 
 
 public abstract class AbstractPage implements VerbosePage {
-    protected static CoreMethodLib selenium;
+    protected CoreMethodLib selenium;
     protected static WebDriver webDriver;
     protected String currentPage;
 
@@ -17,26 +17,44 @@ public abstract class AbstractPage implements VerbosePage {
         webDriver = selenium.getWrappedDriver();
     }
 
-    public static void addError(String errorName) {
+    /**
+     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#addError(String)}
+     */
+    @Deprecated
+    public void addError(String errorName) {
         selenium.getErrors().addError(errorName, Thread.currentThread().getStackTrace());
     }
-
-    public static void addError(String errorName, String error) {
+    /**
+     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#addError(String, String)}
+     */
+    @Deprecated
+    public void addError(String errorName, String error) {
         selenium.getErrors().addError(errorName, error);
     }
 
-    public static void addErrorWithExpected(String errorName, String error, String expected) {
+    /**
+     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#addErrorWithExpected(String, String, String)}
+     */
+    @Deprecated
+    public void addErrorWithExpected(String errorName, String error, String expected) {
         selenium.getErrors().addError(errorName, error);
         selenium.getErrors().addExpected(errorName, expected);
     }
 
-    public static void assertEquals(Object actual, Object expected) {
+    /**
+     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertEquals(Object, Object)}
+     */
+    @Deprecated
+    public void assertEquals(Object actual, Object expected) {
         if (!actual.equals(expected)) {
             addError(actual + " != " + expected);
         }
     }
-
-    public static void assertEquals(Object expected, SeleniumEnums actual) {
+    /**
+     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertEquals(Object, SeleniumEnums)}
+     */
+    @Deprecated
+    public void assertEquals(Object expected, SeleniumEnums actual) {
         assertEquals(expected, actual.getText());
     }
 
@@ -49,7 +67,7 @@ public abstract class AbstractPage implements VerbosePage {
         return (AbstractPage) load();
     }
     
-    public static void assertEquals(SeleniumEnums anEnum) {
+    public void assertEquals(SeleniumEnums anEnum) {
         assertEquals(selenium.getText(anEnum), anEnum.getText());
     }
     
@@ -71,17 +89,29 @@ public abstract class AbstractPage implements VerbosePage {
         return validateURL();
     }
     
-    public static void assertNotEquals(Object actual, Object expected) {
+    /**
+     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertNotEquals(Object, Object)}
+     */
+    @Deprecated
+    public void assertNotEquals(Object actual, Object expected) {
         if (actual.equals(expected)) {
             addError(actual + " == " + expected);
         }
     }
 
-    public static void assertNotEquals(Object expected, SeleniumEnums actual) {
+    /**
+     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertNotEquals(Object, SeleniumEnums)}
+     */
+    @Deprecated
+    public  void assertNotEquals(Object expected, SeleniumEnums actual) {
         assertNotEquals(expected, actual.getText());
     }
     
-    public static void assertContains(String fullString, String partialString){
+    /**
+     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertContains(String, String)}
+     */
+    @Deprecated
+    public void assertContains(String fullString, String partialString){
         if(!fullString.contains(partialString)){
             addError(partialString + " not in " + fullString);
         }

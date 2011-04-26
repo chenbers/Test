@@ -14,7 +14,6 @@ public class Link extends ElementBase implements Clickable {
 
     @Override
     public ElementInterface click() {
-        System.out.println("Clickable.click(...)");//TODO: jwimmer: remove before checkin
         mySelenium.click(myEnum);//TODO: jwimmer: WARNING: no failover!!!
         return null;
     }

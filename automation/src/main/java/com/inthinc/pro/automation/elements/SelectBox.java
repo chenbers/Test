@@ -16,14 +16,12 @@ public class SelectBox extends Text implements Selectable {
 
     @Override
     public ElementInterface select(String fullMatch) {
-        System.out.println("Selectable.select(...)");//TODO: jwimmer: remove before checkin
         mySelenium.select(myEnum, fullMatch);
         return this;
     }
 
     @Override
     public ElementInterface select(Integer optionNumber) {
-        System.out.println("Selectable.select(...)");//TODO: jwimmer: remove before checkin
         optionNumber--;
         mySelenium.select(myEnum, "index="+optionNumber);
         return this;
@@ -31,7 +29,6 @@ public class SelectBox extends Text implements Selectable {
 
     @Override
     public ElementInterface selectFullMatch(String fullMatch, Integer matchNumber) {
-        System.out.println("Selectable.selectFullMatch(...)");//TODO: jwimmer: remove before checkin
         matchNumber--;
         if (myEnum.getID()!=null){
             String id = myEnum.getID();
@@ -45,7 +42,6 @@ public class SelectBox extends Text implements Selectable {
 
     @Override
     public ElementInterface selectPartMatch(String partialMatch, Integer matchNumber) {
-        System.out.println("Selectable.selectPartMatch(...)");//TODO: jwimmer: remove before checkin
         matchNumber--;
            
         if (myEnum.getID()!=null){
@@ -60,7 +56,6 @@ public class SelectBox extends Text implements Selectable {
 
     @Override
     public ElementInterface selectPartMatch(String partialMatch) {
-        System.out.println("Selectable.selectPartMatch(...)");//TODO: jwimmer: remove before checkin
         return selectPartMatch(partialMatch, 0);
     }
 }

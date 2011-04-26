@@ -62,7 +62,6 @@ public class TextField extends ElementBase implements Typeable {
     //TODO: jwimmer: push the next two methods up into Text (the abstract? implementation of TextBased interface?)
     @Override
     public ElementInterface compareText(String expected) {
-        System.out.println("TextBased.compareText(...)");//TODO: jwimmer: remove before checkin
         String actual = getText();
         if (!expected.equals(actual)) {
             addError(this.myEnum.toString(), "Expected = " + expected + "\nActual = " + actual);

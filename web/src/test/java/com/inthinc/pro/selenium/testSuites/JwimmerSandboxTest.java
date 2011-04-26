@@ -46,27 +46,28 @@ public class JwimmerSandboxTest extends WebTest {
         //liveFleet.text_findAddress().clear();
         
         //liveFleet.text_findAddress().focus();
-//        liveFleet._textField.findAddress().type("put");                     //pause(waitTime);
-//        liveFleet._textField.findAddress().type(" some ");                  //pause(waitTime);
-//        liveFleet._textField.findAddress().type(" test text ");             //pause(waitTime);
-//        liveFleet._textField.findAddress().type(" in the");                 //pause(waitTime);
-//        liveFleet._textField.findAddress().type(" findAddress box ");       //pause(waitTime);
-//        liveFleet._button.locate().click();                                 //pause(waitTime);
-//        
-//        liveFleet._link.sortDispatchByDriver().click();                     //pause(waitTime);
-//        liveFleet._link.sortDispatchByGroup().click();                      //pause(waitTime);
-//        liveFleet._link.sortDispatchByNumber().click();                     //pause(waitTime);
-//        liveFleet._link.sortDispatchByVehicle().click();                    //pause(waitTime);
+        liveFleet._textField().findAddress().type("put");                     //pause(waitTime);
+        liveFleet._textField().findAddress().type(" some ");                  //pause(waitTime);
+        liveFleet._textField().findAddress().type(" test text ");             //pause(waitTime);
+        liveFleet._textField().findAddress().type(" in the");                 //pause(waitTime);
+        liveFleet._textField().findAddress().type(" findAddress box ");       //pause(waitTime);
+        liveFleet._button().locate().click();                                 //pause(waitTime);
+        
+        liveFleet._link().sortDispatchByDriver().click();                     //pause(waitTime);
+        liveFleet._link().sortDispatchByGroup().click();                      //pause(waitTime);
+        liveFleet._link().sortDispatchByNumber().click();                     //pause(waitTime);
+        liveFleet._link().sortDispatchByVehicle().click();                    //pause(waitTime);
         
         
-        liveFleet._select.numNearestVehicles().select(1);   liveFleet._textField.findAddress().type("index(1); five?");
-        liveFleet._select.numNearestVehicles().select(2);   liveFleet._textField.findAddress().type("index(2); ten?");
-        liveFleet._select.numNearestVehicles().select(3);   liveFleet._textField.findAddress().type("index(3); twentyfive?");
-        liveFleet._select.numNearestVehicles().select(4);   liveFleet._textField.findAddress().type("index(4): fifty?");
-        liveFleet._select.numNearestVehicles().select(5);   liveFleet._textField.findAddress().type("index(5): one hundred?");
+        liveFleet._select().numNearestVehicles().select(1);   liveFleet._textField().findAddress().type("index(1); five?");
+        liveFleet._select().numNearestVehicles().select(2);   liveFleet._textField().findAddress().type("index(2); ten?");
+        liveFleet._select().numNearestVehicles().select(3);   liveFleet._textField().findAddress().type("index(3); twentyfive?");
+        liveFleet._select().numNearestVehicles().select(4);   liveFleet._textField().findAddress().type("index(4): fifty?");
+        liveFleet._select().numNearestVehicles().select(5);   liveFleet._textField().findAddress().type("index(5): one hundred?");
+        liveFleet._link().sortDispatchByDriver().compareText();
         
         //liveFleet._select.numNearestVehicles().select(1);                           liveFleet._textField.findAddress().type("five?"); pause(waitTime);
-        liveFleet._select.numNearestVehicles().select("10");                        liveFleet._textField.findAddress().type("fullMatch; ten?"); pause(waitTime);
+        liveFleet._select().numNearestVehicles().select("10");                        liveFleet._textField().findAddress().type("fullMatch; ten?"); pause(waitTime);
         //liveFleet._select.numNearestVehicles().selectFullMatch("25", 1);            liveFleet._textField.findAddress().type("twentyfive? "); pause(waitTime);
         //liveFleet._select.numNearestVehicles().selectPartMatch("5");                liveFleet._textField.findAddress().type("fifty?"); pause(waitTime);
         //liveFleet._select.numNearestVehicles().selectPartMatch("0", 3);             liveFleet._textField.findAddress().type("one hundered"); pause(waitTime);

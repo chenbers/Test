@@ -25,25 +25,23 @@ public class ElementBase implements ElementInterface {
         this.URL = anEnum.getURL();
         this.xpath = anEnum.getXpath();
         this.xpath_alt = anEnum.getXpath_alt();
+        myEnum = anEnum;
         mySelenium = pageSelenium;
     }
     
     @Override
     public String getXPath() {
-        System.out.println("abstractElement.getXPath() returns "+myEnum.getXpath());//TODO: jwimmer: remove before checkin
         return myEnum.getXpath();
     }
 
     @Override
     public boolean isVisible() {
-        System.out.println("abstractElement.isVisible()");//TODO: jwimmer: remove before checkin
         return mySelenium.isVisible(myEnum);
     }
 
     @Override
     public ElementInterface validate() {
-        System.out.println("abstractElement.validate()");//TODO: jwimmer: remove before checkin
-        AbstractPage.assertEquals(myEnum);
+        assertEquals(myEnum);
         return this;
     }
     public String getLocator(SeleniumEnums checkIt) {//TODO: jwimmer: maybe THIS is the best place for failover...  
@@ -57,7 +55,6 @@ public class ElementBase implements ElementInterface {
     }
     @Override
     public ElementInterface focus() {
-        System.out.println("abstractElement.focus()");//TODO: jwimmer: remove before checkin
         //mySelenium.focus(locator);
         String element = getLocator(myEnum);
         String error_name = "focus: "+element;
@@ -89,6 +86,38 @@ public class ElementBase implements ElementInterface {
     public ElementBase addError(String errorName, String error) {
         mySelenium.getErrors().addError(errorName, error);
         return this;
+    }
+    public void addErrorWithExpected(String errorName, String error, String expected) {
+        mySelenium.getErrors().addError(errorName, error);
+        mySelenium.getErrors().addExpected(errorName, expected);
+    }
+    
+    public void assertNotEquals(Object actual, Object expected) {
+        if (actual.equals(expected)) {
+            addError(actual + " == " + expected);
+        }
+    }
+
+    public void assertNotEquals(Object expected, SeleniumEnums actual) {
+        assertNotEquals(expected, actual.getText());
+    }
+    
+    public void assertContains(String fullString, String partialString){
+        if(!fullString.contains(partialString)){
+            addError(partialString + " not in " + fullString);
+        }
+    }
+    public void assertEquals(Object actual, Object expected) {
+        if (!actual.equals(expected)) {
+            addError(actual + " != " + expected);
+        }
+    }
+
+    public void assertEquals(Object expected, SeleniumEnums actual) {
+        assertEquals(expected, actual.getText());
+    }
+    public void assertEquals(SeleniumEnums anEnum) {
+        assertEquals(mySelenium.getText(anEnum), anEnum.getText());
     }
     
     
