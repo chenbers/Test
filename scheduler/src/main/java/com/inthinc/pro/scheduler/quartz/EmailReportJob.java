@@ -24,6 +24,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.ReportScheduleDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.model.aggregation.DriverPerformance;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
@@ -44,6 +45,7 @@ import com.inthinc.pro.reports.ReportCreator;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportGroup;
 import com.inthinc.pro.reports.ReportType;
+import com.inthinc.pro.reports.performance.DriverPerformanceReportCriteria;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.scheduler.i18n.LocalizedMessage;
 
@@ -158,6 +160,13 @@ public class EmailReportJob extends QuartzJobBean {
                 timeFrame = TimeFrame.TODAY;
             }
             
+            Person owner = null;
+            if (reportSchedule.getUserID() != null) {
+                User user = userDAO.findByID(reportSchedule.getUserID());
+                if (user != null)
+                    owner = user.getPerson();
+                
+            }
             switch (reportGroup.getReports()[i]) {
                 case DRIVER_PERFORMANCE_INDIVIDUAL:
                 case DRIVER_PERFORMANCE_RYG_INDIVIDUAL:
@@ -167,22 +176,28 @@ public class EmailReportJob extends QuartzJobBean {
                             reportSchedule.getGroupID(), driverIDList,
                             timeFrame.getInterval(), person.getLocale(), ryg);
                     
-                    int cnt = 0;
                     for (Integer driverID : driverIDList) {
                         Driver driver = findDriver(driverList, driverID);
                         if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
                             logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
                         else {
                             List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
-                            driverReportCriteriaList.add(rcList.get(cnt));
+                            for (ReportCriteria rc : rcList) {
+                                if (rc.getMainDataset() == null || rc.getMainDataset().isEmpty())
+                                    continue;
+                                DriverPerformance dp = (DriverPerformance)rc.getMainDataset().get(0);
+                                if (dp.getDriverID().equals(driverID)) {
+                                    driverReportCriteriaList.add(rc);
+                                    break;
+                                }
+                            }
 
                             List<String> emailToList = new ArrayList<String>();
                             emailToList.add(driver.getPerson().getPriEmail());
                             reportSchedule.setDriverID(driver.getDriverID());
                             reportSchedule.setEmailTo(emailToList);
-                            emailReport(reportSchedule, driver.getPerson(), driverReportCriteriaList);
+                            emailReport(reportSchedule, driver.getPerson(), driverReportCriteriaList, owner);
                         }
-                        cnt++;
                     }
                     break;
             }
@@ -393,11 +408,11 @@ public class EmailReportJob extends QuartzJobBean {
 
             }
         }
-        emailReport(reportSchedule, person, reportCriteriaList);
+        emailReport(reportSchedule, person, reportCriteriaList, null);
 
     }
 
-    private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList) {
+    private void emailReport(ReportSchedule reportSchedule, Person person, List<ReportCriteria> reportCriteriaList, Person owner) {
         // Set the current date of the reports
         for (ReportCriteria reportCriteria : reportCriteriaList) {
             reportCriteria.setReportDate(new Date(), person.getTimeZone());
@@ -411,7 +426,9 @@ public class EmailReportJob extends QuartzJobBean {
         for (String address : reportSchedule.getEmailTo()) {
             String subject = LocalizedMessage.getString("reportSchedule.emailSubject", person.getLocale()) + reportSchedule.getName();
             String unsubscribeURL = buildUnsubscribeURL(address, reportSchedule.getReportScheduleID());
-            String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", person.getLocale(), person.getFullName(), person.getPriEmail(),
+            String message = LocalizedMessage.getStringWithValues("reportSchedule.emailMessage", person.getLocale(), 
+                    (owner == null) ? person.getFullName() : owner.getFullName(), 
+                    (owner == null) ? person.getPriEmail() : owner.getPriEmail(),
                     unsubscribeURL);
             
             // Change noreplyemail address based on account
