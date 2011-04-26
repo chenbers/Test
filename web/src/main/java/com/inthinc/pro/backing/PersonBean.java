@@ -121,11 +121,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         AVAILABLE_COLUMNS.add("rfid1");
         AVAILABLE_COLUMNS.add("rfid2");
         AVAILABLE_COLUMNS.add("driver_groupID");
-        AVAILABLE_COLUMNS.add("driver_provider");
-        AVAILABLE_COLUMNS.add("driver_providerUsername");
-//        AVAILABLE_COLUMNS.add("driver_providerPassword");
-//        AVAILABLE_COLUMNS.add("driver_confirmProviderPassword");
-        AVAILABLE_COLUMNS.add("driver_providerCellPhone");
+//        AVAILABLE_COLUMNS.add("driver_provider");
+//        AVAILABLE_COLUMNS.add("driver_providerUsername");
+//        AVAILABLE_COLUMNS.add("driver_providerCellPhone");
         // heights
         HEIGHTS = new LinkedHashMap<String, Integer>();
         for (int i = MIN_HEIGHT; i < MAX_HEIGHT; i++)
