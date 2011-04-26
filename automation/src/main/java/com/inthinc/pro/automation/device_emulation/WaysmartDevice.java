@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DeviceProperties;
 import com.inthinc.pro.automation.enums.WaysmartProps;
 import com.inthinc.pro.automation.utils.CreateHessian;
@@ -19,16 +20,16 @@ public class WaysmartDevice extends Base {
 	protected final static Integer productVersion = 2;
 	private CreateHessian hessian;
 
-	public WaysmartDevice(String IMEI, String server, HashMap<WaysmartProps, String> settings) {
+	public WaysmartDevice(String IMEI, Addresses server, HashMap<WaysmartProps, String> settings) {
 		super(IMEI, server, settings, productVersion);
 	}
 	
-	public WaysmartDevice(String IMEI, String server){
+	public WaysmartDevice(String IMEI, Addresses server){
 		this(IMEI, server, WaysmartProps.STATIC.getDefaultProps());
 	}
 	
 	public WaysmartDevice(String IMEI){
-		this(IMEI, "QA");
+		this(IMEI, Addresses.QA);
 	}
 
 	@Override
@@ -38,12 +39,6 @@ public class WaysmartDevice extends Base {
 		
 	}
 
-	@Override
-	public Base add_note() {
-		// TODO Auto-generated method stub
-        return this;
-		
-	}
 
 	@Override
 	protected Base construct_note() {
@@ -80,7 +75,7 @@ public class WaysmartDevice extends Base {
 		
 	}
 	
-	protected Base set_IMEI( String imei, String server, HashMap<Integer, String> settings ){
+	protected Base set_IMEI( String imei, Addresses server, HashMap<Integer, String> settings ){
 		logger.debug("IMEI: "+imei+", Server: " + server);
 		hessian = new CreateHessian();
         super.set_IMEI(imei, server, settings, productVersion);
@@ -98,7 +93,7 @@ public class WaysmartDevice extends Base {
 	}
 
 	@Override
-	protected Base set_server(String server) {
+	protected Base set_server(Addresses server) {
 		mcmProxy = hessian.getMcmProxy(server);
 		String url, port;
 		url = hessian.getUrl(false);
@@ -130,6 +125,12 @@ public class WaysmartDevice extends Base {
             String value = reply.get(next).toString();
             map.put(WaysmartProps.STATIC.valueOf(next), (String) value);
         }
+        return null;
+    }
+
+    @Override
+    public Base add_note(Package_tiwiPro_Note note) {
+        // TODO Auto-generated method stub
         return null;
     }
 }

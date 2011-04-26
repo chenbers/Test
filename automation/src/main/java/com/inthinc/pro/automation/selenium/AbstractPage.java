@@ -9,7 +9,7 @@ import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 
 public abstract class AbstractPage implements VerbosePage {
     protected CoreMethodLib selenium;
-    protected static WebDriver webDriver;
+    protected WebDriver webDriver;
     protected String currentPage;
 
     public AbstractPage() {
@@ -17,43 +17,25 @@ public abstract class AbstractPage implements VerbosePage {
         webDriver = selenium.getWrappedDriver();
     }
 
-    /**
-     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#addError(String)}
-     */
-    @Deprecated
     public void addError(String errorName) {
         selenium.getErrors().addError(errorName, Thread.currentThread().getStackTrace());
     }
-    /**
-     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#addError(String, String)}
-     */
-    @Deprecated
+
     public void addError(String errorName, String error) {
         selenium.getErrors().addError(errorName, error);
     }
 
-    /**
-     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#addErrorWithExpected(String, String, String)}
-     */
-    @Deprecated
     public void addErrorWithExpected(String errorName, String error, String expected) {
         selenium.getErrors().addError(errorName, error);
         selenium.getErrors().addExpected(errorName, expected);
     }
 
-    /**
-     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertEquals(Object, Object)}
-     */
-    @Deprecated
     public void assertEquals(Object actual, Object expected) {
         if (!actual.equals(expected)) {
             addError(actual + " != " + expected);
         }
     }
-    /**
-     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertEquals(Object, SeleniumEnums)}
-     */
-    @Deprecated
+
     public void assertEquals(Object expected, SeleniumEnums actual) {
         assertEquals(expected, actual.getText());
     }
@@ -89,28 +71,16 @@ public abstract class AbstractPage implements VerbosePage {
         return validateURL();
     }
     
-    /**
-     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertNotEquals(Object, Object)}
-     */
-    @Deprecated
     public void assertNotEquals(Object actual, Object expected) {
         if (actual.equals(expected)) {
             addError(actual + " == " + expected);
         }
     }
 
-    /**
-     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertNotEquals(Object, SeleniumEnums)}
-     */
-    @Deprecated
-    public  void assertNotEquals(Object expected, SeleniumEnums actual) {
+    public void assertNotEquals(Object expected, SeleniumEnums actual) {
         assertNotEquals(expected, actual.getText());
     }
     
-    /**
-     * @deprecated replaced by {@link com.inthinc.pro.automation.elements.ElementBase#assertContains(String, String)}
-     */
-    @Deprecated
     public void assertContains(String fullString, String partialString){
         if(!fullString.contains(partialString)){
             addError(partialString + " not in " + fullString);

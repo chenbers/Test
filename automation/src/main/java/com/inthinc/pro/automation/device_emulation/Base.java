@@ -13,18 +13,16 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.DeviceProperties;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 
-import com.inthinc.pro.automation.device_emulation.MCMProxy;
-import com.inthinc.pro.automation.enums.DeviceProperties;
-import com.inthinc.pro.automation.utils.AutomationLogger;
-
 @SuppressWarnings("unchecked")
 public abstract class Base {
 
-    private final static Logger logger = Logger.getLogger(AutomationLogger.class);
+    private final static Logger logger = Logger.getLogger(Base.class);
 
     private ArrayList<byte[]> sendingQueue = new ArrayList<byte[]>();
     protected ArrayList<byte[]> note_queue = new ArrayList<byte[]>();
@@ -68,11 +66,11 @@ public abstract class Base {
 
     protected String imei;
 
-    public Base(String IMEI, String server, Map<?, String> map, Integer version) {
+    public Base(String IMEI, Addresses server, Map<?, String> map, Integer version) {
         Settings = new HashMap<DeviceProperties, String>();
         set_IMEI(IMEI, server, map, version);
     }
-
+    
     private Base ackFwdCmds(List<HashMap<String, Object>> reply) {
         try {
             assert (reply.size() <= 5);
@@ -96,7 +94,7 @@ public abstract class Base {
 
     protected abstract Base add_location();
 
-    protected abstract Base add_note();
+    protected abstract Base add_note(Package_tiwiPro_Note note);
 
     private Boolean check_error(Object reply) {
         if (reply == null)
@@ -224,7 +222,7 @@ public abstract class Base {
         return this;
     }
 
-    private Base initiate_device(String server) {
+    private Base initiate_device(Addresses server) {
         ignition_state = false;
 
         note_queue = new ArrayList<byte[]>();
@@ -279,11 +277,11 @@ public abstract class Base {
     }
 
     public Base power_on_device() {
-        power_on_device((int) (System.currentTimeMillis() / 1000));
+        power_on_device(time);
         return this;
     }
 
-    public Base power_on_device(Integer time_now) {
+    public Base power_on_device(Long time_now) {
         assert (latitude != 0.0 && longitude != 0.0);
         if (!power_state) {
             set_time(time_now);
@@ -297,10 +295,6 @@ public abstract class Base {
         return this;
     }
 
-    public Base power_on_device(Long time_now) {
-        power_on_device((int) (time_now / 1000));
-        return this;
-    }
 
     protected abstract Integer processCommand(Map<String, Object> reply);
 
@@ -317,7 +311,10 @@ public abstract class Base {
             reply = dbErrors[0];
             while (check_error(reply)) {
                 reply = mcmProxy.note(imei, sendingQueue);
-                System.out.println(reply);
+                if (check_error(reply)){
+                    logger.info("Invalid Reply from server: "+reply);
+                }
+                logger.info("Reply from Server: "+reply);
             }
             if (reply instanceof ArrayList<?>) {
                 ackFwdCmds((List<HashMap<String, Object>>) reply);
@@ -357,7 +354,7 @@ public abstract class Base {
 
     protected abstract Base set_ignition(Integer time_delta);//
 
-    protected Base set_IMEI(String imei, String server, Map<?, String> map, Integer version) {
+    protected Base set_IMEI(String imei, Addresses server, Map<?, String> map, Integer version) {
 
         this.imei = imei;
         this.Settings = (Map<DeviceProperties, String>) map;
@@ -395,7 +392,7 @@ public abstract class Base {
         return this;
     }
 
-    protected abstract Base set_server(String server);
+    protected abstract Base set_server(Addresses server);
 
     public Base set_settings(HashMap<?, String> changes) {
 
@@ -422,15 +419,20 @@ public abstract class Base {
         Calendar cal = new GregorianCalendar();
         cal.setTime(time_now);
 
-        set_time((int) (cal.getTimeInMillis() / 1000));
+        set_time((Long) (cal.getTimeInMillis() / 1000));
         return this;
     }
 
-    public Base set_time(Integer time_now) {
+    public Base set_time(Long time_now) {
 
         time = time_now;
         time_last = time;
+        logger.debug("Time = "+time);
         return this;
+    }
+    
+    public Base set_time(Integer time_now){
+        return set_time(time_now.longValue());
     }
 
     public Base set_time(String time_now) {
@@ -448,7 +450,7 @@ public abstract class Base {
         Calendar cal = new GregorianCalendar();
         cal.setTime(date);
 
-        set_time((int) (cal.getTimeInMillis() / 1000));
+        set_time((Long) (cal.getTimeInMillis() / 1000));
         return this;
     }
 
@@ -527,7 +529,7 @@ public abstract class Base {
         longitude = lng;
 
         set_heading();
-        Integer new_time = (int) (time + time_delta);
+        Long new_time = time + time_delta;
         set_time(new_time);
 
         if (latitude != last_lat || longitude != last_lng) {
@@ -541,5 +543,6 @@ public abstract class Base {
     }
 
     protected abstract Base was_speeding();
+
 
 }

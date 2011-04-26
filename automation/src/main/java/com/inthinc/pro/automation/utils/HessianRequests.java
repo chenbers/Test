@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.DeviceMapper;
@@ -31,7 +32,7 @@ public class HessianRequests {
 		this.portalProxy = portalProxy;
 	}
 	
-	public HessianRequests(String getItYourself) {
+	public HessianRequests(Addresses getItYourself) {
 		hessian = new CreateHessian();
 		this.portalProxy = hessian.getPortalProxy(getItYourself);
 	}

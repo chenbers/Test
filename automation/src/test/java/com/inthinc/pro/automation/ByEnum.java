@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.internal.FindsByName;
 import org.openqa.selenium.internal.FindsByXPath;
 
-import com.inthinc.pro.automation.SeleniumEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public class ByEnum extends By {
 
@@ -18,13 +18,13 @@ public class ByEnum extends By {
     private By nameFinder;
     private By xpathFinder;
     private By xpathAltFinder;
-    private SeleniumEnum theEnum;
+    private SeleniumEnums theEnum;
 
     public ByEnum() {
         super();
     }
 
-    public ByEnum(SeleniumEnum theEnum) {
+    public ByEnum(SeleniumEnums theEnum) {
         this.theEnum = theEnum;
         this.idFinder = By.id(theEnum.getID());
         this.nameFinder = By.name(theEnum.getID()); // TODO: jwimmer: ask DT if we anticipate needing/wanting to find by name???
@@ -37,7 +37,7 @@ public class ByEnum extends By {
      *            The value of the "name" attribute to search for
      * @return a By which locates elements by the value of the "name" attribute.
      */
-    public static By seleniumEnum(final SeleniumEnum enumVal) {
+    public static By seleniumEnum(final SeleniumEnums enumVal) {
         if (enumVal == null)
             throw new IllegalArgumentException("Cannot find elements when enumVal is null.");
 

@@ -4,7 +4,6 @@ import com.inthinc.pro.model.File;
 
 
 public interface ElementInterface {
-    public String getXPath();
     public boolean isVisible();
     public ElementInterface focus();
     public ElementInterface validate();//TODO: jwimmer: wouldn't it be better if this could return <T implements ElementInterface>
@@ -32,7 +31,7 @@ public interface ElementInterface {
     public interface URLBased extends ElementInterface {
         public String getURL();
         public File getBinaryFile();//? not sure about the best java object to use here
-        //what do we want to do with binary files?
+        // what do we want to do with binary files?
         // compare with existing binary files?
         // extract data? for comparison to input values?
         

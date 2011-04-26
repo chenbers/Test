@@ -200,7 +200,9 @@ public enum TiwiProps implements DeviceProperties {
 
     static {
         for (TiwiProps p : EnumSet.allOf(TiwiProps.class)) {
-            propertiesFile.put(p, p.getDefaultSetting());
+            if (p.getDefaultSetting()!=null){
+                propertiesFile.put(p, p.getDefaultSetting());
+            }
         }
     }
 
@@ -209,7 +211,6 @@ public enum TiwiProps implements DeviceProperties {
     }
     private TiwiProps(int c) {
         code = c;
-        setting = "NO SETTING FOR THIS PROPERTY";
     }
 
     private TiwiProps(Integer c, String setting) {

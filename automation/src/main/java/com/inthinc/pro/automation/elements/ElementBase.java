@@ -1,42 +1,44 @@
 package com.inthinc.pro.automation.elements;
 
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.thoughtworks.selenium.SeleniumException;
-import com.thoughtworks.selenium.DefaultSelenium;
-
+import com.inthinc.pro.automation.selenium.GlobalSelenium;
 
 public class ElementBase implements ElementInterface {
-    
-    protected String text;
-    protected String ID;
-    protected String URL;
-    protected String xpath;
-    protected String xpath_alt;
+    protected CoreMethodLib selenium;
+    protected WebDriver webDriver;
+
+    protected String element;
+
     protected SeleniumEnums myEnum;
-    protected CoreMethodLib mySelenium;
+    protected String text;
+
+    public ElementBase(SeleniumEnums anEnum) {
+        this(anEnum, null, null);
+    }
+
+    public ElementBase(SeleniumEnums anEnum, String replaceWord) {
+        this(anEnum, replaceWord, null);
+    }
     
-    public ElementBase(CoreMethodLib pageSelenium, SeleniumEnums anEnum) {
+    public ElementBase(SeleniumEnums anEnum, Integer replaceNumber) {
+        this(anEnum, null, replaceNumber);
+    }
+
+    public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+        selenium = GlobalSelenium.getSelenium();
+        webDriver = selenium.getWrappedDriver();
+        element = getLocator(replaceWord, replaceNumber);
         this.text = anEnum.getText();
-        this.ID = anEnum.getID();
-        this.URL = anEnum.getURL();
-        this.xpath = anEnum.getXpath();
-        this.xpath_alt = anEnum.getXpath_alt();
-        myEnum = anEnum;
-        mySelenium = pageSelenium;
+        this.myEnum = anEnum;
     }
-    
-    @Override
-    public String getXPath() {
-        return myEnum.getXpath();
-    }
+
 
     @Override
     public boolean isVisible() {
-        return mySelenium.isVisible(myEnum);
+        return selenium.isVisible(myEnum);
     }
 
     @Override
@@ -44,54 +46,81 @@ public class ElementBase implements ElementInterface {
         assertEquals(myEnum);
         return this;
     }
-    public String getLocator(SeleniumEnums checkIt) {//TODO: jwimmer: maybe THIS is the best place for failover...  
-        if (checkIt.getID() != null)
-            return checkIt.getID();
-        else if (checkIt.getXpath() != null)
-            return checkIt.getXpath();
-        else if (checkIt.getXpath_alt() != null)
-            return checkIt.getXpath_alt();
-        return null;
+
+    public String getLocator() {
+        return getLocator(null, null);
     }
+    
+    public String getLocator(String replaceWord) {
+        return getLocator(replaceWord, null);
+    }
+    
+    public String getLocator(Integer replaceNumber) {
+        return getLocator(null, replaceNumber);
+    }
+
+    public String getLocator(String replaceName, Integer replaceNumber) {
+        String id = null;
+        boolean ID=true,xpath=true,xpathAlt=true;
+        while (id == null) {
+            if (myEnum.getID() != null && ID){
+                id = myEnum.getID().replace("***", replaceName).replace("###", replaceNumber.toString());
+                if (!selenium.isElementPresent(id)) {
+                    id = null;
+                    ID=false;
+                }
+            } else if (myEnum.getXpath() != null && xpath) {
+                id = myEnum.getXpath().replace("***", replaceName).replace("###", replaceNumber.toString());
+                if (!selenium.isElementPresent(id)) {
+                    id = null;
+                    xpath=false;
+                }
+            } else if (myEnum.getXpath_alt() != null && xpathAlt) {
+                id = myEnum.getXpath_alt().replace("***", replaceName).replace("###", replaceNumber.toString());
+                if (!selenium.isElementPresent(id)) {
+                    id = null;
+                    xpathAlt=false;
+                }
+            }
+            if (!ID && !xpath && !xpathAlt){
+                break;
+            }
+        }
+        return id;
+    }
+
     @Override
     public ElementInterface focus() {
-        //mySelenium.focus(locator);
-        String element = getLocator(myEnum);
-        String error_name = "focus: "+element;
-        
+        // selenium.focus(locator);
+        String error_name = "focus: " + element;
+
         try {
-            mySelenium.focus(myEnum.getID());
-            error_name = "focus: "+myEnum.getID();
-        } catch (NoSuchElementException e1) {
-            try {
-                mySelenium.focus(myEnum.getXpath());
-                error_name = "focus: "+myEnum.getXpath();
-            } catch (NoSuchElementException e2) {
-                mySelenium.focus(myEnum.getXpath_alt());
-                error_name = "focus: "+myEnum.getXpath_alt();
-            }
-        } catch(Exception e) {
-            if(e instanceof RuntimeException)
+            selenium.focus(element);
+            error_name = "focus: " + element;
+        }catch (Exception e) {
+            if (e instanceof RuntimeException)
                 throw new RuntimeException(e);
             else
-                mySelenium.getErrors().addError(error_name, e);
+                selenium.getErrors().addError(error_name, e);
         }
         return this;
     }
-    
+
     public ElementBase addError(String errorName) {
-        mySelenium.getErrors().addError(errorName, Thread.currentThread().getStackTrace());
+        selenium.getErrors().addError(errorName, Thread.currentThread().getStackTrace());
         return this;
     }
+
     public ElementBase addError(String errorName, String error) {
-        mySelenium.getErrors().addError(errorName, error);
+        selenium.getErrors().addError(errorName, error);
         return this;
     }
+
     public void addErrorWithExpected(String errorName, String error, String expected) {
-        mySelenium.getErrors().addError(errorName, error);
-        mySelenium.getErrors().addExpected(errorName, expected);
+        selenium.getErrors().addError(errorName, error);
+        selenium.getErrors().addExpected(errorName, expected);
     }
-    
+
     public void assertNotEquals(Object actual, Object expected) {
         if (actual.equals(expected)) {
             addError(actual + " == " + expected);
@@ -101,12 +130,13 @@ public class ElementBase implements ElementInterface {
     public void assertNotEquals(Object expected, SeleniumEnums actual) {
         assertNotEquals(expected, actual.getText());
     }
-    
-    public void assertContains(String fullString, String partialString){
-        if(!fullString.contains(partialString)){
+
+    public void assertContains(String fullString, String partialString) {
+        if (!fullString.contains(partialString)) {
             addError(partialString + " not in " + fullString);
         }
     }
+
     public void assertEquals(Object actual, Object expected) {
         if (!actual.equals(expected)) {
             addError(actual + " != " + expected);
@@ -116,49 +146,9 @@ public class ElementBase implements ElementInterface {
     public void assertEquals(Object expected, SeleniumEnums actual) {
         assertEquals(expected, actual.getText());
     }
+
     public void assertEquals(SeleniumEnums anEnum) {
-        assertEquals(mySelenium.getText(anEnum), anEnum.getText());
-    }
-    
-    
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String iD) {
-        ID = iD;
-    }
-
-    public String getURL() {
-        return URL;
-    }
-
-    public void setURL(String uRL) {
-        URL = uRL;
-    }
-
-    public String getXpath() {
-        return xpath;
-    }
-
-    public void setXpath(String xpath) {
-        this.xpath = xpath;
-    }
-
-    public String getXpath_alt() {
-        return xpath_alt;
-    }
-
-    public void setXpath_alt(String xpathAlt) {
-        xpath_alt = xpathAlt;
+        assertEquals(selenium.getText(anEnum), anEnum.getText());
     }
 
     public SeleniumEnums getMyEnum() {
@@ -169,11 +159,7 @@ public class ElementBase implements ElementInterface {
         this.myEnum = myEnum;
     }
 
-    public CoreMethodLib getMySelenium() {
-        return mySelenium;
-    }
-
-    public void setMySelenium(CoreMethodLib mySelenium) {
-        this.mySelenium = mySelenium;
+    public CoreMethodLib getselenium() {
+        return selenium;
     }
 }

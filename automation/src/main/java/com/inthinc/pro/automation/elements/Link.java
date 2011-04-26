@@ -2,20 +2,17 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
 
 public class Link extends ElementBase implements Clickable {
     
-    public Link(CoreMethodLib pageSelenium, SeleniumEnums anEnum) {
-        super(pageSelenium, anEnum);
-        myEnum = anEnum;
-        mySelenium = pageSelenium;
+    public Link(SeleniumEnums anEnum) {
+        super(anEnum);
     }
 
     @Override
     public ElementInterface click() {
-        mySelenium.click(myEnum);//TODO: jwimmer: WARNING: no failover!!!
-        return null;
+        selenium.click(element);
+        return this;
     }
 
 }

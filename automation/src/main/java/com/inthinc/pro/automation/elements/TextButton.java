@@ -2,14 +2,11 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
 
 public class TextButton extends Button implements TextBased {
     
-    public TextButton(CoreMethodLib pageSelenium, SeleniumEnums anEnum) {
-        super(pageSelenium, anEnum);
-        myEnum = anEnum;
-        mySelenium = pageSelenium;
+    public TextButton(SeleniumEnums anEnum) {
+        super(anEnum);
     }
 
     //TODO: jwimmer: seems like there should be a way to get these to USE the Text.compareText(...) implementations
@@ -25,5 +22,10 @@ public class TextButton extends Button implements TextBased {
     @Override
     public ElementInterface compareText() {
         return compareText(myEnum.getText());
+    }
+
+    @Override
+    public String getText() {
+        return selenium.getText(element);
     }
 }

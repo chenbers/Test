@@ -3,6 +3,17 @@ package com.inthinc.pro.automation.enums;
 
 public enum Addresses {
     
+    QA,
+    QA2,
+    DEV,
+    EC2,
+    PROD,
+    TEEN_PROD,
+    TEEN_QA,
+    CHEVRON,
+    SCHLUMBERGER,
+    
+    
     DEV_PORTAL("dev-pro.inthinc.com"),
     DEV_PORT("8099"),
     DEV_MCM("dev-pro.inthinc.com"),
@@ -43,7 +54,7 @@ public enum Addresses {
     SLB_MCM_PORT("8090"),
     SLB_PORTAL("schlumberger.inthinc.com"),
     SLB_PORT("8099");
-
+    
     
 //    PROD_MCM_EC2("my.inthinc.com"),
 //    PROD_MCM_PORT_EC2("8090"),
@@ -52,6 +63,8 @@ public enum Addresses {
 
     
     private String code;
+    
+    private Addresses() {}
 
     private Addresses(String c) {
       code = c;

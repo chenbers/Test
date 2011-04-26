@@ -14,7 +14,7 @@ import com.inthinc.pro.automation.enums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.utils.StackToString;
 
 
-public class Package_tiwiPro_Note {
+public class Package_tiwiPro_Note implements NoteBuilder{
 	private final static Logger logger = Logger.getLogger(Package_tiwiPro_Note.class);
     
     private Integer nType, sats, heading, maprev, Speed, odometer, nTime;

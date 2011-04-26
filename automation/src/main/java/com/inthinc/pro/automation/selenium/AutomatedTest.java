@@ -16,7 +16,7 @@ import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 public class AutomatedTest {
 
     protected Long startTime;
-    protected static ErrorCatcher errors;
+    protected ErrorCatcher errors;
     private AutomationPropertiesBean automationPropertiesBean;
 
     private final static Logger logger = Logger.getLogger(AutomatedTest.class);
@@ -26,7 +26,7 @@ public class AutomatedTest {
 
     private String buildNumber;
     protected Long stopTime;
-    protected static CoreMethodLib selenium;
+    protected CoreMethodLib selenium;
 
     public static void afterClass() {
         GlobalSelenium.dieSeleniumDie();

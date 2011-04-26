@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DeviceProperties;
 import com.inthinc.pro.automation.enums.TiwiAttrs;
 import com.inthinc.pro.automation.enums.TiwiFwdCmds;
@@ -22,23 +24,23 @@ public class TiwiProDevice extends Base {
 
     private final static Integer productVersion = 5;
     private HashMap<TiwiAttrs, Integer> attrs;
-    private int trip_start, trip_stop;
+    private Long trip_start, trip_stop;
     private CreateHessian getHessian;
 
     public TiwiProDevice(String IMEI) {
-        this(IMEI, "QA");
+        this(IMEI, Addresses.QA);
     }
 
-    public TiwiProDevice(String IMEI, String server) {
+    public TiwiProDevice(String IMEI, Addresses server) {
         this(IMEI, server, TiwiProps.STATIC.getDefaultProps());
     }
 
-    public TiwiProDevice(String IMEI, String server, Map<TiwiProps, String> map) {
+    public TiwiProDevice(String IMEI, Addresses server, Map<TiwiProps, String> map) {
         super(IMEI, server, map, productVersion);
     }
 
     @Override
-    public Base add_location() {
+    public TiwiProDevice add_location() {
         timeSinceLastLoc=0;
         attrs = new HashMap<TiwiAttrs, Integer>();
         if (speeding) {
@@ -57,20 +59,14 @@ public class TiwiProDevice extends Base {
         return this;
     }
     
-    @Override
-    public Base add_note() {
-        return this;
-    }
-
-    public Base add_note(Package_tiwiPro_Note note) {
-
+    public TiwiProDevice add_note(Package_tiwiPro_Note note) {
         byte[] packaged = note.Package();
         note_queue.add(packaged);
         check_queue();
         return this;
     }
 
-    public Base add_note_event(Integer deltaX, Integer deltaY, Integer deltaZ) {
+    public TiwiProDevice add_note_event(Integer deltaX, Integer deltaY, Integer deltaZ) {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_TYPE_DELTA_VX, deltaX);
         attrs.put(TiwiAttrs.ATTR_TYPE_DELTA_VY, deltaY);
@@ -79,7 +75,7 @@ public class TiwiProDevice extends Base {
         return this;
     }
 
-    public Base add_stats() {
+    public TiwiProDevice add_stats() {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_BASE_VER, 0);
         attrs.put(TiwiAttrs.ATTR_TYPE_EMU_HASH_1, -1517168504);
@@ -92,11 +88,11 @@ public class TiwiProDevice extends Base {
     }
 
     @Override
-    public Base construct_note() {
+    public TiwiProDevice construct_note() {
         return this;
-        }
+    }
 
-    public Base construct_note(TiwiNoteTypes type) {
+    public TiwiProDevice construct_note(TiwiNoteTypes type) {
         if (productVersion == 5) {
             attrs = new HashMap<TiwiAttrs, Integer>();
             construct_note(type, attrs);
@@ -104,7 +100,7 @@ public class TiwiProDevice extends Base {
         return this;
     }
 
-    public Base construct_note(TiwiNoteTypes type, HashMap<TiwiAttrs, Integer> attrs) {
+    public TiwiProDevice construct_note(TiwiNoteTypes type, HashMap<TiwiAttrs, Integer> attrs) {
         try {
             attrs.put(TiwiAttrs.ATTR_TYPE_SPEED_LIMIT, speed_limit.intValue());
         } catch (Exception e) {
@@ -112,14 +108,14 @@ public class TiwiProDevice extends Base {
             e.printStackTrace();
         }
         Package_tiwiPro_Note note = new Package_tiwiPro_Note(type, time, sats, heading, 1, latitude, longitude, speed, odometer, attrs);
-
+        logger.debug(note.toString());
         clear_internal_settings();
         add_note(note);
         return this;
     }
 
     @Override
-    public Base createAckNote(Map<String, Object> reply) {
+    public TiwiProDevice createAckNote(Map<String, Object> reply) {
         Package_tiwiPro_Note ackNote = new Package_tiwiPro_Note(TiwiNoteTypes.NOTE_TYPE_STRIPPED_ACKNOWLEDGE_ID_WITH_DATA);
         ackNote.AddAttrs(TiwiAttrs.ATTR_TYPE_FWDCMD_ID, (Integer) reply.get("fwdID"));
         ackNote.AddAttrs(TiwiAttrs.ATTR_TYPE_FWDCMD_STATUS, FwdCmdStatus.FWDCMD_RECEIVED);
@@ -129,7 +125,7 @@ public class TiwiProDevice extends Base {
         return this;
     }
 
-    public Base enter_zone(Integer zoneID) {
+    public TiwiProDevice enter_zone(Integer zoneID) {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_TYPE_ZONE_ID, zoneID);
         construct_note(TiwiNoteTypes.NOTE_TYPE_WSZONES_ARRIVAL_EX, attrs);
@@ -145,16 +141,22 @@ public class TiwiProDevice extends Base {
     public String get_setting(TiwiProps settingID) {
         return Settings.get(settingID.getValue());
     }
+    
+    public Integer get_setting_int(TiwiProps settingID){
+        Double valueD = Double.parseDouble(Settings.get(settingID));
+        Integer valueI = valueD.intValue();
+        return valueI;
+    }
 
 
-    public Base leave_zone(Integer zoneID) {
+    public TiwiProDevice leave_zone(Integer zoneID) {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_TYPE_ZONE_ID, zoneID);
         construct_note(TiwiNoteTypes.NOTE_TYPE_WSZONES_DEPARTURE_EX, attrs);
         return this;
     }
 
-    public Base logout_driver(Integer RFID, Integer tripQuality, Integer MPG, Integer MPGOdometer) {
+    public TiwiProDevice logout_driver(Integer RFID, Integer tripQuality, Integer MPG, Integer MPGOdometer) {
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_LOGOUT_TYPE, 4);
         attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, tripQuality);
@@ -200,18 +202,18 @@ public class TiwiProDevice extends Base {
         return 1;
     }
 
-    public Base set_ignition(Integer time_delta) {
+    public TiwiProDevice set_ignition(Integer time_delta) {
         ignition_state = !ignition_state;
-        Integer newTime = (int) (time + time_delta);
+        Long newTime = (Long) (time + time_delta);
         set_time(newTime);
         if (ignition_state) {
             construct_note(TiwiNoteTypes.NOTE_TYPE_IGNITION_ON);
             trip_start = newTime;
         } else if (!ignition_state) {
             trip_stop = newTime;
-            Integer tripTime = trip_stop - trip_start;
+            Long tripTime = trip_stop - trip_start;
             attrs = new HashMap<TiwiAttrs, Integer>();
-            attrs.put(TiwiAttrs.ATTR_TYPE_TRIP_DURATION, tripTime);
+            attrs.put(TiwiAttrs.ATTR_TYPE_TRIP_DURATION, tripTime.intValue());
             attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 980);
             construct_note(TiwiNoteTypes.NOTE_TYPE_IGNITION_OFF, attrs);
         }
@@ -219,7 +221,7 @@ public class TiwiProDevice extends Base {
     }
 
     @Override
-    protected Base set_power() {
+    protected TiwiProDevice set_power() {
 
         attrs = new HashMap<TiwiAttrs, Integer>();
 
@@ -232,7 +234,7 @@ public class TiwiProDevice extends Base {
             check_queue();
 
         } else if (!power_state) {
-            attrs.put(TiwiAttrs.ATTR_TYPE_LOW_POWER_MODE_TIMEOUT, Integer.parseInt(Settings.get(TiwiProps.PROPERTY_LOW_POWER_MODE_SECONDS.getValue())));
+            attrs.put(TiwiAttrs.ATTR_TYPE_LOW_POWER_MODE_TIMEOUT, get_setting_int(TiwiProps.PROPERTY_LOW_POWER_MODE_SECONDS));
             construct_note(TiwiNoteTypes.NOTE_TYPE_LOW_POWER_MODE, attrs);
             check_queue();
             if (!note_queue.isEmpty())
@@ -242,7 +244,7 @@ public class TiwiProDevice extends Base {
     }
 
     @Override
-    protected Base set_server(String server) {
+    protected TiwiProDevice set_server(Addresses server) {
         getHessian = new CreateHessian();
         logger.info("MCM Server is " + server);
         mcmProxy = getHessian.getMcmProxy(server);
@@ -251,13 +253,13 @@ public class TiwiProDevice extends Base {
         return this;
     }
 
-    public Base set_settings(TiwiProps key, String value) {
+    public TiwiProDevice set_settings(TiwiProps key, String value) {
         set_settings(key, value);
         return this;
     }
 
     @Override
-    public Base set_speed_limit(Integer limit) {
+    public TiwiProDevice set_speed_limit(Integer limit) {
         Settings.put(TiwiProps.PROPERTY_SPEED_LIMIT, limit.toString());
         return this;
     }
@@ -273,7 +275,7 @@ public class TiwiProDevice extends Base {
         return null;
     }
 
-    protected Base was_speeding() {
+    protected TiwiProDevice was_speeding() {
         Integer topSpeed = Collections.max(speed_points);
         Integer avgSpeed = 0;
         Double speeding_distance = 0.0;
@@ -295,6 +297,25 @@ public class TiwiProDevice extends Base {
 
         construct_note(TiwiNoteTypes.NOTE_TYPE_SPEEDING_EX3, attrs);
         return this;
+    }
+
+    public TiwiProDevice tampering(Integer timeDelta) {
+        power_state=false;
+        ignition_state=false;
+        increment_time(timeDelta);
+        attrs = new HashMap<TiwiAttrs, Integer>();
+        attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 850);
+        attrs.put(TiwiAttrs.ATTR_TYPE_BACKUP_BATTERY, 6748);
+        
+        construct_note(TiwiNoteTypes.NOTE_TYPE_UNPLUGGED, attrs);
+        
+        power_on_device(time);
+        turn_key_on(10);
+        return this;
+    }
+    
+    public void setLogLevel(Level level){
+        logger.setLevel(level);
     }
 
 }

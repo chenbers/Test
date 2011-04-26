@@ -24,7 +24,7 @@ public class CreateHessian {
 		process = new ProcessServer();
 	}
 	
-	public void setUrls(String server, Boolean portal){
+	public void setUrls(Addresses server, Boolean portal){
 		Addresses[] address = process.getUrl(server);
 		
 		pUrl = address[0].getCode();
@@ -76,7 +76,7 @@ public class CreateHessian {
 		if (mcmProxy==null)createMcmProxy();
 		return mcmProxy;
 	}
-	public MCMProxy getMcmProxy(String server){
+	public MCMProxy getMcmProxy(Addresses server){
 		setUrls(server, false);
 		return mcmProxy;
 	}
@@ -85,7 +85,7 @@ public class CreateHessian {
 		if (portalProxy==null)getPortalProxy();
 		return portalProxy;
 	}
-	public SiloService getPortalProxy(String server){
+	public SiloService getPortalProxy(Addresses server){
 		setUrls(server, true);
 		return portalProxy;
 	}

@@ -60,6 +60,22 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
         return this;
     }
+    
+    public CoreMethodLib click(SeleniumEnums checkIt, String replacement) {
+        String element = getLocator(checkIt, replacement);
+        String error_name = "click: " + element;
+        try {
+            click(element);
+            Pause(2);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return this;
+    }
 
     public ErrorCatcher getErrors() {
         return errors;
@@ -153,6 +169,16 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             return checkIt.getXpath_alt();
         return null;
     }
+    
+    public String getLocator(SeleniumEnums checkIt, String replaceme){
+        if (checkIt.getID() != null)
+            return checkIt.getID().replace("***", replaceme);
+        else if (checkIt.getXpath() != null)
+            return checkIt.getXpath().replace("***", replaceme);
+        else if (checkIt.getXpath_alt() != null)
+            return checkIt.getXpath_alt().replace("***", replaceme);
+        return null;
+    }
 
     public String getSelectedLabel(SeleniumEnums checkIt) {
         String element = getLocator(checkIt);
@@ -203,6 +229,22 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     public String getText(SeleniumEnums checkIt) {
         String element = getLocator(checkIt);
+        String error_name = "getText: " + element;
+        String text = "";
+        try {
+            text = getText(element);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return text;
+    }
+    
+    public String getText(SeleniumEnums checkIt, String replacement) {
+        String element = getLocator(checkIt, replacement);
         String error_name = "getText: " + element;
         String text = "";
         try {

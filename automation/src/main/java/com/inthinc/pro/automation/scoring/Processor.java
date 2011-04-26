@@ -6,6 +6,7 @@ import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.inthinc.pro.automation.utils.HessianRequests;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
@@ -46,7 +47,7 @@ public class Processor {
 	}
 	
 	public Processor(String server){
-		hessian = new HessianRequests("QA");
+		hessian = new HessianRequests(Addresses.QA);
 		scores = new TreeMap<String, Double>();
 	}
 	
@@ -62,7 +63,7 @@ public class Processor {
 		return scores;
 	}
 	
-	public void changeServers(String server){
+	public void changeServers(Addresses server){
 		hessian = new HessianRequests(server);
 	}
 	
