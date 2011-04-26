@@ -959,9 +959,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                             phoneControlDAO.deleteByID(person.getDriverID());
                             person.setCellblock(null);
                         }
+                        driverDAO.deleteByID(person.getDriver().getDriverID());
+                        person.setDriver(null);
                     }
-                    driverDAO.deleteByID(person.getDriver().getDriverID());
-                    person.setDriver(null);
                 }
             }
             else {
@@ -1005,6 +1005,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
             else {
+                if(isBatchEdit() && person.getDriver().getDriverID() == null) {
+                    person.setDriver(null);
+                }
                 if (person.isUserEditable())
                     personDAO.update(person);
                 if (person.isDriverSelected()){
