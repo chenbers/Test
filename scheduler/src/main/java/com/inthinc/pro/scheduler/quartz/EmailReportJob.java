@@ -397,7 +397,7 @@ public class EmailReportJob extends QuartzJobBean {
                 
                 case DRIVER_PERFORMANCE_TEAM:
                 case DRIVER_PERFORMANCE_RYG_TEAM:
-                    Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
+                    Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_TEAM);
                     reportCriteriaList.add(getReportCriteriaService().getDriverPerformanceReportCriteria(getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupID(), timeFrame.getInterval(),  
                             person.getLocale(), ryg));
