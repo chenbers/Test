@@ -26,13 +26,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.ForgivenType;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TableType;
-import com.inthinc.pro.model.TimeFrame;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.pagination.SortOrder;
-import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
-import com.inthinc.pro.table.BasePaginationTable;
-import com.inthinc.pro.table.model.provider.EventPaginationTableDataProvider;
 import com.inthinc.pro.util.MessageUtil;
 
 public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportItem> implements TablePrefOptions<CrashHistoryReportItem> {
@@ -49,13 +43,6 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
     private TablePref<CrashHistoryReportItem> tablePref;
     private String selectedCrash;
     private TimeFrameBean timeFrameBean;
-    public TimeFrameBean getTimeFrameBean() {
-        return timeFrameBean;
-    }
-
-    public void setTimeFrameBean(TimeFrameBean timeFrameBean) {
-        this.timeFrameBean = timeFrameBean;
-    }
     static final List<String> AVAILABLE_COLUMNS;
     static {
         // available columns
@@ -109,7 +96,7 @@ public class CrashHistoryBean extends BaseNotificationsBean<CrashHistoryReportIt
     @Override
     protected void filterTableData() {
         if (tableData == null) {
-logger.info("initTableData() - start");            
+logger.info("initTableData() - start");
             initTableData();
 logger.info("initTableData() - end");
         }
@@ -142,8 +129,6 @@ logger.info("initTableData() - end");
         List<CrashReport> crashList = new ArrayList<CrashReport>();
         if (getSearchCoordinationBean().isGoodGroupId())
         {
-            System.out.println("timeFrameBean: "+timeFrameBean);//TODO: jwimmer: remove before checkin
-            System.out.println("timeFrameBean.getTimeFrame(): "+timeFrameBean.getTimeFrame());//TODO: jwimmer: remove before checkin
         	if(timeFrameBean.getTimeFrame() == null)
         	    crashList = crashReportDAO.findByGroupID(getSearchCoordinationBean().getGroup().getGroupID());
         	else
@@ -337,7 +322,13 @@ logger.info("initTableData() - end");
     public void setSelectedCrash(String selectedCrash) {
         this.selectedCrash = selectedCrash;
     }
+    public TimeFrameBean getTimeFrameBean() {
+        return timeFrameBean;
+    }
 
+    public void setTimeFrameBean(TimeFrameBean timeFrameBean) {
+        this.timeFrameBean = timeFrameBean;
+    }
     @Override
     public TableType getTableType() {
         return TableType.CRASH_HISTORY;

@@ -465,6 +465,7 @@
   </bean>
   <bean id="crashHistoryBean" class="com.inthinc.pro.backing.CrashHistoryBean" scope="request" parent="baseRedFlagsBean" init-method="initBean">
     <property name="crashReportDAO" ref="crashReportDAO"></property>
+    <property name="timeFrameBean" ref="timeFrameBean" />
   </bean>
 
   <bean id="tableStatsBean" class="com.inthinc.pro.backing.TableStatsBean" scope="request" />

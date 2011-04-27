@@ -145,7 +145,8 @@
     </ui:define>    
 
 	<ui:define name="content">
-		<t:saveState value="#{crashHistoryBean}"/>
+		
+		<a4j:keepAlive beanName="crashHistoryBean" />
 		<table width="940" border="0" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;">
 		  <tr>
 		    <td valign="top">
@@ -193,7 +194,7 @@
 		                  <tr>
 						  	<td>#{messages.timeFrame} </td>
 					  	 	<td>
-					  	 	<h:selectOneMenu value="#{crashHistoryBean.timeFrameBean.timeFrameKey}" id="#{context}_timeframe" style="width: 75px;">
+					  	 	<h:selectOneMenu value="#{crashHistoryBean.timeFrameBean.timeFrameKey}" id="crashHistory_timeframe" style="width: 75px;">
 								<f:selectItems value="#{crashHistoryBean.timeFrameBean.selectItems}" />
 							</h:selectOneMenu>
 							
