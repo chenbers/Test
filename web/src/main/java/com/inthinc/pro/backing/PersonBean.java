@@ -1005,9 +1005,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
             else {
-                if(isBatchEdit() && person.getDriver().getDriverID() == null) {
-                    person.setDriver(null);
-                }
+//                if(isBatchEdit() && person.getDriver().getDriverID() == null) {
+//                    person.setDriver(null);
+//                }
                 if (person.isUserEditable())
                     personDAO.update(person);
                 if (person.isDriverSelected()){
