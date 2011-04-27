@@ -29,6 +29,7 @@ public class User extends BaseEntity {
     private String password;
     private Integer groupID;
     private Date lastLogin;
+    private Date passwordDT;
 
     public User(Integer userID, Integer personID, List<Integer> roles, Status status, String username, String password, Integer groupID) {
         super();
@@ -134,5 +135,13 @@ public class User extends BaseEntity {
 
     public Date getLastLogin() {
         return lastLogin;
+    }
+
+    public void setPasswordDT(Date passwordDT) {
+        this.passwordDT = passwordDT;
+    }
+
+    public Date getPasswordDT() {
+        return passwordDT;
     }
 }

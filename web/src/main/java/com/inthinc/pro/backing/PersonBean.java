@@ -308,7 +308,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             Log.error("NumberFormatException for account.props.passwordExpire:"+account.getProps().getPasswordExpire());
             return EXPIRES_OUTSIDE_VIEWABLE_RANGE;
         }
-        Integer daysSinceModified = (user.getModified()!=null)?DateUtil.differenceInDays(user.getModified(), new Date()):0;
+        Integer daysSinceModified = (user.getPasswordDT()!=null)?DateUtil.differenceInDays(user.getPasswordDT(), new Date()):0;
         return (passwordExpire!=0)?passwordExpire - daysSinceModified:EXPIRES_OUTSIDE_VIEWABLE_RANGE;
     }
     @Override

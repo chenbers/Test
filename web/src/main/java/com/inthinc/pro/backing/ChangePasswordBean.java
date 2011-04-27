@@ -1,5 +1,7 @@
 package com.inthinc.pro.backing;
 
+import java.util.Date;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -61,6 +63,7 @@ public class ChangePasswordBean extends BaseBean
         final String newPasswordEncrypt = passwordEncryptor.encryptPassword(newPassword);
         final User user = getUser();
         user.setPassword(newPasswordEncrypt);
+        user.setPasswordDT(new Date());
         userDAO.update(user);
 
         FacesMessage message = new FacesMessage();

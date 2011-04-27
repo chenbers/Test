@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
@@ -196,6 +197,7 @@ public class UpdateCredentialsBean extends BaseBean
         String newPassword = new StrongPasswordEncryptor().encryptPassword((String) newPasswordInput.getValue());
         User user = userDAO.findByUserName(username);
         user.setPassword(newPassword);
+        user.setPasswordDT(new Date());
         userDAO.update(user);
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
