@@ -960,8 +960,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
                             person.setCellblock(null);
                         }
                         driverDAO.deleteByID(person.getDriver().getDriverID());
-                        person.setDriver(null);
                     }
+                    person.setDriver(null);
                 }
             }
             else {
