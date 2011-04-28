@@ -8,9 +8,11 @@ import com.inthinc.pro.model.BaseEnum;
 
 public enum VersionState  implements BaseEnum {
     UNKNOWN(0),
-    CURRENT(1),
-    UPDATED(2),
-    SERVER_OLDER(3);
+    UPDATED(1),
+    CURRENT(2),
+    SERVER_OLDER(3),
+    NOT_UPDATED(4);
+    
     
     private Integer code;
     
