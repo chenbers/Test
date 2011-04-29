@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.device_emulation;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,6 +12,7 @@ import com.inthinc.pro.automation.enums.DeviceProperties;
 import com.inthinc.pro.automation.enums.TiwiAttrs;
 import com.inthinc.pro.automation.enums.TiwiFwdCmds;
 import com.inthinc.pro.automation.enums.TiwiNoteTypes;
+import com.inthinc.pro.automation.enums.TiwiProps;
 import com.inthinc.pro.automation.enums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.enums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.utils.CreateHessian;
@@ -65,6 +65,11 @@ public class TiwiProDevice extends Base {
         check_queue();
         return this;
     }
+    
+    public TiwiProDevice add_noDriver(){
+        construct_note(TiwiNoteTypes.NOTE_TYPE_NO_DRIVER);
+        return this;
+    }
 
     public TiwiProDevice add_note_event(Integer deltaX, Integer deltaY, Integer deltaZ) {
         attrs = new HashMap<TiwiAttrs, Integer>();
@@ -72,6 +77,26 @@ public class TiwiProDevice extends Base {
         attrs.put(TiwiAttrs.ATTR_TYPE_DELTA_VY, deltaY);
         attrs.put(TiwiAttrs.ATTR_TYPE_DELTA_VZ, deltaZ);
         construct_note(TiwiNoteTypes.NOTE_TYPE_NOTE_EVENT, attrs);
+        return this;
+    }
+    
+    public TiwiProDevice add_seatBelt(Integer topSpeed, Integer avgSpeed, Integer distance){
+        attrs = new HashMap<TiwiAttrs, Integer>();
+        attrs.put(TiwiAttrs.ATTR_TYPE_AVG_RPM, 500);
+        attrs.put(TiwiAttrs.ATTR_TYPE_VIOLATION_FLAGS, 2);
+        attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_TIME_SPEED_FROM_GPS_USED, 50);
+        attrs.put(TiwiAttrs.ATTR_TYPE_TOP_SPEED, topSpeed);
+        attrs.put(TiwiAttrs.ATTR_TYPE_AVG_SPEED, avgSpeed);
+        attrs.put(TiwiAttrs.ATTR_TYPE_DISTANCE, distance);
+        construct_note(TiwiNoteTypes.NOTE_TYPE_SEATBELT, attrs);
+        
+        return this;
+    }
+    
+    public TiwiProDevice add_lowBattery(){
+        attrs = new HashMap<TiwiAttrs, Integer>();
+        attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 0);
+        construct_note(TiwiNoteTypes.NOTE_TYPE_LOW_BATTERY, attrs);
         return this;
     }
 
@@ -276,12 +301,20 @@ public class TiwiProDevice extends Base {
     }
 
     protected TiwiProDevice was_speeding() {
-        Integer topSpeed = Collections.max(speed_points);
+        Integer topSpeed = 0;
         Integer avgSpeed = 0;
+        Double avg = 0.0;
         Double speeding_distance = 0.0;
         for (int i = 0; i < speed_points.size(); i++) {
-            avgSpeed += speed_points.get(i);
+            int speed = speed_points.get(i);
+            avg += speed;
+            if (topSpeed < speed){
+                topSpeed = speed;
+            }
         }
+        
+        avg = avg/(speed_points.size());
+        avgSpeed = avg.intValue();
         for (int i = 1; i < speed_loc.size(); i++) {
             Double[] last = speed_loc.get(i - 1);
             Double[] loc = speed_loc.get(i);

@@ -47,8 +47,8 @@ public abstract class Base {
     protected int heading = 0;
     protected int speed = 0;
     protected int WMP = 17013, MSP = 50;
-    protected int sats;
-    protected int odometer;
+    protected int sats = 9;
+    protected int odometer = 0;
     protected int note_count = 4;
     protected int productVersion = 5;
     protected int deviceDriverID;
@@ -84,7 +84,7 @@ public abstract class Base {
             Iterator<HashMap<String, Object>> itr = reply.iterator();
             while (itr.hasNext()) {
                 fwd = itr.next();
-                if (fwd.get("fwdID").equals(100))
+                if (fwd.get("fwdID").equals(100)||fwd.get("fwdID").equals(1))
                     continue;
                 createAckNote(fwd);
             }
@@ -122,7 +122,6 @@ public abstract class Base {
     protected Base clear_internal_settings() {
 
         odometer = 0;
-        speed = 0;
         try {
             last_lat = latitude;
             last_lng = longitude;
@@ -365,6 +364,8 @@ public abstract class Base {
 
     public Base set_location(double lat, double lng) {
         update_location(lat, lng, 0);
+//        speed=0;
+//        odometer=0;
         return this;
     }
 
@@ -455,15 +456,9 @@ public abstract class Base {
     }
 
     private Base set_vehicle_speed() {
-        if (speeding) {
-            Integer timeDelta = (int) (time - time_last);
-            Double distance = calculator.calc_distance(last_lat, last_lng, latitude, longitude);
-            try {
-                speed = (int) ((distance / timeDelta) * 3600);
-            } catch (Exception e) {
-                speed = 0;
-            }
-        }
+        Long timeDelta = (time - time_last);
+        Double speed =((odometer / timeDelta.doubleValue()) * 36.0);
+        this.speed=speed.intValue();
         is_speeding();
         return this;
     }
@@ -527,18 +522,25 @@ public abstract class Base {
         }
         latitude = lat;
         longitude = lng;
+        increment_time(time_delta);
 
         set_heading();
-        Long new_time = time + time_delta;
-        set_time(new_time);
 
-        if (latitude != last_lat || longitude != last_lng) {
+        if ((latitude != last_lat || longitude != last_lng) && (last_lat != 0.0 && last_lng != 0.0)) {
             set_odometer();
+        }
+        if (time_delta!=0){
             set_vehicle_speed();
         }
         if (timeSinceLastLoc >= timeBetweenNotes) {
             add_location();
         }
+        return this;
+    }
+    
+    public Base last_location(double lat, double lng, Integer time_delta){
+        update_location(lat, lng, time_delta);
+        speed = 0;
         return this;
     }
 

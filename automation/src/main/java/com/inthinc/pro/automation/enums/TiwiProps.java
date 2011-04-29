@@ -1,10 +1,9 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.enums;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.inthinc.pro.automation.enums.DeviceProperties;
 
 public enum TiwiProps implements DeviceProperties {
 
