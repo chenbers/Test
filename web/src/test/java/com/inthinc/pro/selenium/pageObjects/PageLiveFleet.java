@@ -42,6 +42,8 @@ public class PageLiveFleet extends NavigationBar {
         public Text valueVehicleLocation = new Text( LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_LOCATION);
         public Text valueVehicleDistToAddress = new Text( LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DISTANCE_TO_ADDRESS);
         
+        
+        
       //TODO: jwimmer: discuss with team: additional instances of Text objects on this page would go here
     }
     public class LiveFleetTextFields{

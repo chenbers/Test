@@ -32,46 +32,47 @@ public class JwimmerSandboxTest extends WebTest {
     
     @Test
     public void liveFleet_testName_expected() {
-
+        String result = "this is a string ### done".replace("###", null);
+        System.out.println(result);
     }
     
     @Test
-    public void liveFleet_dynamicEnum_expected() {
+    public void liveFleet_sandbox_taeThrownError() {
         int waitTime = 6;
-        System.out.println("liveFleet_dynamicEnum_expected: ");
+        System.out.println("liveFleet_sandbox_taeThrownError: ");
         l.page_login_process("jwimmer", "password");
         liveFleet.page_directURL_load();
-        liveFleet._textField.findAddress.type("put some test text in findAddress box.");
+//        liveFleet._textField.findAddress.type("put some test text in findAddress box.");
+//        
+//        liveFleet._textField.findAddress.clear();
+//        
+//        liveFleet._textField.findAddress.focus();
+//        liveFleet._textField.findAddress.type("put");                     pause(waitTime);
+//        liveFleet._textField.findAddress.type(" some ");                  pause(waitTime);
+//        liveFleet._textField.findAddress.type(" test text ");             pause(waitTime);
+//        liveFleet._textField.findAddress.type(" in the");                 pause(waitTime);
+//        liveFleet._textField.findAddress.type(" findAddress box ");       pause(waitTime);
+//        liveFleet._button.locate.click();                                 pause(waitTime);
+//        
+//        liveFleet._link.sortDispatchByDriver.click();                     pause(waitTime);
+//        liveFleet._link.sortDispatchByGroup.click();                      pause(waitTime);
+//        liveFleet._link.sortDispatchByNumber.click();                     pause(waitTime);
+//        liveFleet._link.sortDispatchByVehicle.click();                    pause(waitTime);
         
-        liveFleet._textField.findAddress.clear();
         
-        liveFleet._textField.findAddress.focus();
-        liveFleet._textField.findAddress.type("put");                     pause(waitTime);
-        liveFleet._textField.findAddress.type(" some ");                  pause(waitTime);
-        liveFleet._textField.findAddress.type(" test text ");             pause(waitTime);
-        liveFleet._textField.findAddress.type(" in the");                 pause(waitTime);
-        liveFleet._textField.findAddress.type(" findAddress box ");       pause(waitTime);
-        liveFleet._button.locate.click();                                 pause(waitTime);
-        
-        liveFleet._link.sortDispatchByDriver.click();                     pause(waitTime);
-        liveFleet._link.sortDispatchByGroup.click();                      pause(waitTime);
-        liveFleet._link.sortDispatchByNumber.click();                     pause(waitTime);
-        liveFleet._link.sortDispatchByVehicle.click();                    pause(waitTime);
-        
-        
-        liveFleet._select.numNearestVehicles.select(1);   liveFleet._textField.findAddress.type("index(1); five?");
-        liveFleet._select.numNearestVehicles.select(2);   liveFleet._textField.findAddress.type("index(2); ten?");
-        liveFleet._select.numNearestVehicles.select(3);   liveFleet._textField.findAddress.type("index(3); twentyfive?");
-        liveFleet._select.numNearestVehicles.select(4);   liveFleet._textField.findAddress.type("index(4): fifty?");
-        liveFleet._select.numNearestVehicles.select(5);   liveFleet._textField.findAddress.type("index(5): one hundred?");
-        
-        liveFleet._select.numNearestVehicles.select(1);                           liveFleet._textField.findAddress.type("five?"); pause(waitTime);
-        liveFleet._select.numNearestVehicles.select("10");                        liveFleet._textField.findAddress.type("fullMatch; ten?"); pause(waitTime);
-        liveFleet._select.numNearestVehicles.selectFullMatch("25", 1);            liveFleet._textField.findAddress.type("twentyfive? "); pause(waitTime);
-        liveFleet._select.numNearestVehicles.selectPartMatch("5");                liveFleet._textField.findAddress.type("fifty?"); pause(waitTime);
-        liveFleet._select.numNearestVehicles.selectPartMatch("0", 3);             liveFleet._textField.findAddress.type("one hundered"); pause(waitTime);
+//        liveFleet._select.numNearestVehicles.select(1);   liveFleet._textField.findAddress.type("index(1); five?");         pause(waitTime);
+//        liveFleet._select.numNearestVehicles.select(2);   liveFleet._textField.findAddress.type("index(2); ten?");          pause(waitTime);
+//        liveFleet._select.numNearestVehicles.select(3);   liveFleet._textField.findAddress.type("index(3); twentyfive?");   pause(waitTime);
+//        liveFleet._select.numNearestVehicles.select(4);   liveFleet._textField.findAddress.type("index(4): fifty?");        pause(waitTime);
+//        liveFleet._select.numNearestVehicles.select(5);   liveFleet._textField.findAddress.type("index(5): one hundred?");  pause(waitTime);
+//        
+//        liveFleet._select.numNearestVehicles.select(1);                           liveFleet._textField.findAddress.type("index(1): five?"); pause(waitTime);
+//        liveFleet._select.numNearestVehicles.select("10");                        liveFleet._textField.findAddress.type("select(10) fullMatch; ten?"); pause(waitTime);
+//        liveFleet._select.numNearestVehicles.selectFullMatch("25", 1);            liveFleet._textField.findAddress.type("full(25, 1) first fullMatch ; twentyfive? "); pause(waitTime);
+        liveFleet._select.numNearestVehicles.selectPartMatch("5");                liveFleet._textField.findAddress.type("part(5);fifty?"); pause(waitTime);
+        liveFleet._select.numNearestVehicles.selectPartMatch("0", 3);             liveFleet._textField.findAddress.type("part(0,3); one hundered?"); pause(waitTime);
         liveFleet.addError("just a test error... nothing actually went wrong");
-        
+
         
         pause(10);
     }

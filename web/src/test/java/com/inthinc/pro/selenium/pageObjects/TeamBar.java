@@ -1,7 +1,9 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.EnumSet;
+import java.util.List;
 
+import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.selenium.pageEnums.TeamBarEnum;
@@ -51,6 +53,10 @@ public abstract class TeamBar extends NavigationBar {
         @Override
         public void setText(String text) {
             this.text = text;
+        }
+        @Override
+        public List<String> getLocators() {        
+            return SeleniumEnumUtil.getLocators(this);
         }
     }
 

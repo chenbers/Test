@@ -1,5 +1,8 @@
 package com.inthinc.pro.selenium.pageEnums;
 
+import java.util.List;
+
+import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
@@ -121,5 +124,9 @@ public enum AdminBarEnum implements SeleniumEnums {
 
     public String getURL() {
         return url;
+    }
+    @Override
+    public List<String> getLocators() {        
+        return SeleniumEnumUtil.getLocators(this);
     }
 }

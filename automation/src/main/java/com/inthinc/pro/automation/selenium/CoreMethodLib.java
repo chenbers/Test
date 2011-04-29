@@ -11,7 +11,6 @@ import org.openqa.selenium.WebDriverBackedSelenium;
 import com.google.common.base.Supplier;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.thoughtworks.selenium.DefaultSelenium;
-import com.thoughtworks.selenium.SeleniumException;
 
 /****************************************************************************************
  * Extend the functionality of DefaultSelenium, but add some error handling around it
@@ -41,7 +40,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     public CoreMethodLib addtoPanel(SeleniumEnums checkIt, String itemtomove) {
         addSelection(getLocator(checkIt) + "-from", itemtomove);
         click(getLocator(checkIt) + "-move_right");
-        Pause(2);
+        pause(2);
         return this;
     }
 
@@ -49,14 +48,20 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return click(checkIt, null);
     }
     
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#click(String)}
+     * @param checkIt
+     * @param replacement
+     * @return
+     */
     public CoreMethodLib click(SeleniumEnums checkIt, String replacement) {
         String element = getLocator(checkIt, replacement);
         String error_name = "click: " + element;
         try {
             click(element);
-            Pause(2);
+            pause(2);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
@@ -131,31 +136,61 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return month;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#getLocation()}
+     * @param expected
+     * @return
+     */
     public String getLocation(String expected) {
         String error_name = "verifyLocation: " + expected;
         String location = "Could not get location";
         try {
             location = getLocation();
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return location;
     }
 
+    /**
+     * Returns the best locator string to use for this element.
+     * @param myEnum
+     * @return
+     */
     public String getLocator(SeleniumEnums myEnum) {
         return getLocator(myEnum, null, null);
     }
     
+    /**
+     * Returns the best locator string to use for this element.
+     * 
+     * @param myEnum
+     * @param replaceWord
+     * @return
+     */
     public String getLocator(SeleniumEnums myEnum, String replaceWord) {
         return getLocator(myEnum, replaceWord, null);
     }
     
+    /**
+     * Returns the best locator string to use for this element.
+     * @param myEnum
+     * @param replaceNumber
+     * @return
+     */
     public String getLocator(SeleniumEnums myEnum, Integer replaceNumber) {
         return getLocator(myEnum, null, replaceNumber);
     }
     
+    /**
+     * Returns the best locator string to use for this element.
+     * @param myEnum
+     * @param replaceName
+     * @param replaceNumber
+     * @return the best locator string to use for this element, null if none are found in page
+     */
     public String getLocator(SeleniumEnums myEnum, String replaceName, Integer replaceNumber) {
         String id = null;
         String number="";
@@ -164,93 +199,99 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
         if (replaceNumber!=null){
             number = replaceNumber.toString();
+        } 
+
+        for(String s: myEnum.getLocators()){
+            id = s.replace("***", replaceName).replace("###", number);
+            if(isElementPresent(id))
+                return id;
         }
-        boolean ID=true,xpath=true,xpathAlt=true;
-        while (id == null) {
-            if ((myEnum.getID() != null) && ID){
-                id = myEnum.getID().replace("***", replaceName).replace("###", number);
-                if (!isElementPresent(id)) {
-                    id = null;
-                    ID=false;
-                }
-            } else if ((myEnum.getXpath() != null) && xpath) {
-                id = myEnum.getXpath().replace("***", replaceName).replace("###", number);
-                if (!isElementPresent(id)) {
-                    id = null;
-                    xpath=false;
-                }
-            } else if ((myEnum.getXpath_alt() != null) && xpathAlt) {
-                id = myEnum.getXpath_alt().replace("***", replaceName).replace("###", number);
-                if (!isElementPresent(id)) {
-                    id = null;
-                    xpathAlt=false;
-                }
-            }
-            if (!ID && !xpath && !xpathAlt){
-                break;
-            }
-        }
-        return id;
+        return null;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#getSelectedLabel(String)}
+     * @param checkIt
+     * @return
+     */
     public String getSelectedLabel(SeleniumEnums checkIt) {
         String element = getLocator(checkIt);
         String error_name = "select: " + element;
         try {
             return getSelectedLabel(element);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return null;
     }
     
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#focus(String)}
+     * @param checkIt
+     * @return
+     */
     public CoreMethodLib focus(SeleniumEnums checkIt) {
         String element = getLocator(checkIt);
         String error_name = "focus: " + element;
         try {
             focus(element);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return this;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#getTable(String)}
+     * @param checkIt
+     * @return
+     */
     public String getTable(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
-        String error_name = "getTable: " + element;
-        String text = "";
-        try {
-            text = getTable(element);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return text;
+        return getTable(checkIt, null, null);
     }
 
-    public String getTable(SeleniumEnums checkIt, int row, int col) {
-        String element = getLocator(checkIt);
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#getTable(String)}
+     * @param checkIt
+     * @param row
+     * @param col
+     * @return
+     */
+    public String getTable(SeleniumEnums checkIt, Integer row, Integer col) {
+        StringBuffer element = new StringBuffer(getLocator(checkIt));
         String error_name = "Click: " + element;
         String text = "";
         try {
-            text = getTable(element + "." + row + "." + col);
+            if(row != null && col != null)
+                element.append("."+row+"."+col);
+            text = getTable(element.toString());
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return text;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#getText(String)}
+     * @param checkIt
+     * @return
+     */
     public String getText(SeleniumEnums checkIt) {
         return getText(checkIt, null);
     }
     
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#getText(String)}
+     * @param checkIt
+     * @param replacement
+     * @return
+     */
     public String getText(SeleniumEnums checkIt, String replacement) {
         String element = getLocator(checkIt, replacement);
         String error_name = "getText: " + element;
@@ -258,14 +299,14 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         try {
             text = getText(element);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return text;
     }
 
-    public Boolean inSession() {
+    public Boolean inSession() {//TODO: jwimmer: question for dTanner: if you deprecated getAllWindowNames() why are we then using it here?
         try {
             getAllWindowNames();
         } catch (NullPointerException e) {
@@ -274,52 +315,33 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return true;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#isChecked(String)}
+     * @param checkIt
+     * @param condition
+     * @return
+     */
     public Boolean isChecked(SeleniumEnums checkIt, String condition) {
         String element = getLocator(checkIt);
         String error_name = "isChecked: " + element;
         try {
             return isChecked(element);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return null;
     }
-
-    public Boolean isElementNotPresent(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
-        String error_name = "isElementNotPresent: " + element;
-        try {
-            return !isElementPresent(element);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public Boolean isElementPresent(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
-        String error_name = "isElementPresent: " + element;
-        try {
-            return isElementPresent(element);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
+    //TODO: jwimmer: determine why we need/want this if we already have isChecked
+    //error_name will be isNotChecked (vs isChecked)
     public Boolean isNotChecked(SeleniumEnums checkIt) {
         String element = getLocator(checkIt);
         String error_name = "isNotChecked: " + element;
         try {
             return !isChecked(element);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
@@ -327,25 +349,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return null;
     }
 
-    public Boolean isNotVisible(SeleniumEnums checkIt) {
+    //TODO: jwimmer: determine why we need/want this if we already have isElementPresent
+  //error_name will be isElementNotPresent (vs isElementPresent)
+    public Boolean isElementNotPresent(SeleniumEnums checkIt) {
         String element = getLocator(checkIt);
-        String error_name = "isNotVisible: " + element;
+        String error_name = "isElementNotPresent: " + element;
         try {
-            return !isVisible(element);
+            return !isElementPresent(element);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    public Boolean isTextNotPresentOnPage(String text) {
-        String error_name = "isTextNotPresent: " + text;
-        try {
-            return !isTextPresentOnPage(text);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
@@ -353,7 +365,26 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
 
     /**
-     * Override to the DefaultSelenium method. This provides a way to handle errors
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#isElementPresent(String)}
+     * @param checkIt
+     * @return
+     */
+    public Boolean isElementPresent(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "isElementPresent: " + element;
+        try {
+            return isElementPresent(element);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    /**
+     * Override to the DefaultSelenium method. This provides a way to handle errors.
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#isTextPresent(String)}
      * 
      * @param text
      * @return Boolean
@@ -363,20 +394,53 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         try {
             return isTextPresent(text);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return null;
     }
 
+    //TODO: jwimmer: determine why we need/want this if we already have isTextPresentOnPage
+    //error_name will be isTextNotPresentOnPage (vs isTextPresentOnPage)
+    public Boolean isTextNotPresentOnPage(String text) {
+        String error_name = "isTextNotPresent: " + text;
+        try {
+            return !isTextPresentOnPage(text);  
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#isVisible(String)}
+     * @param checkIt
+     * @return
+     */
     public Boolean isVisible(SeleniumEnums checkIt) {
         String element = getLocator(checkIt);
         String error_name = "isVisible: " + element;
         try {
             return isVisible(element);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return null;
+    }
+    //TODO: jwimmer: determine why we need/want this if we already have isVisible
+    //error_name will be isNotVisisble (vs isVisible)
+    public Boolean isNotVisible(SeleniumEnums checkIt) {
+        String element = getLocator(checkIt);
+        String error_name = "isNotVisible: " + element;
+        try {
+            return !isVisible(element);
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
@@ -390,31 +454,36 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         } else if (moveoption.contentEquals("Left")) {
             click(element + "-move_all_left");
         }
-        Pause(2);
+        pause(2);
         return this;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#open(String)}
+     * @param checkIt
+     * @return
+     */
     public CoreMethodLib open(SeleniumEnums checkIt) {
         String element = checkIt.getURL();
         String error_name = "open: " + element;
         try {
             open(element);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return this;
     }
 
-    public CoreMethodLib Pause(Integer timeout_in_secs) {
+    public CoreMethodLib pause(Integer timeout_in_secs) {
         try {
             Thread.currentThread();
             Thread.sleep((long) (timeout_in_secs * 1000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         }
         return this;
     }
@@ -422,19 +491,25 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     public CoreMethodLib removefromPanel(SeleniumEnums checkIt, String itemtomove) {
         addSelection(getLocator(checkIt) + "-picked", itemtomove);
         click(getLocator(checkIt) + "-move_left");
-        Pause(2);
+        pause(2);
         return this;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#select(String, String)}
+     * @param checkIt
+     * @param label
+     * @return
+     */
     public CoreMethodLib select(SeleniumEnums checkIt, String label) {
         String element = getLocator(checkIt);
         String error_name = "select: " + element + " : Label = " + label;
 
         try {
             select(element, label);
-            Pause(5);
+            pause(5);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
@@ -465,6 +540,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#selectWindow(String)}
+     * @param ID
+     * @return
+     */
     public CoreMethodLib selectWindowByID(String ID) {
         if (ID.equals("")) {
             ID = "null";
@@ -473,31 +553,41 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         try {
             selectWindow(ID);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return this;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#selectWindow(String)}
+     * @param name
+     * @return
+     */
     public CoreMethodLib selectWindowByName(String name) {
         String error_name = "selectWindowByTitle: " + name;
         try {
             selectWindow("name=" + name);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return this;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#selectWindow(String)}
+     * @param title
+     * @return
+     */
     public CoreMethodLib selectWindowByTitle(String title) {
         String error_name = "selectWindowByTitle: " + title;
         try {
             selectWindow("title=" + title);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
@@ -511,13 +601,19 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         super.start();
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#type(String, String)}
+     * @param checkIt
+     * @param text
+     * @return
+     */
     public CoreMethodLib type(SeleniumEnums checkIt, String text) {
         String element = getLocator(checkIt);
         String error_name = "type: " + element;
         try {
             type(element, text);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
@@ -532,6 +628,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return expected.equals(getLocation(expected));
     }
 
+    //TODO: jwimmer: question for dTanner: it looks like we are NOT using waitForElementPresent(...) if we are NOT going to use this, lets axe it.  if we are going to use it, it needs to work in conjunction with the new getLocator
     public CoreMethodLib waitForElementPresent(String watch_for) {
         waitForElementPresent(watch_for, "link");
         return this;
@@ -560,7 +657,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             } catch (Exception e) {
                 continue;
             } finally {
-                Pause(1); // second
+                pause(1); // second
                 x++;
                 doneWaiting = x > secondsToWait;
             }
@@ -568,30 +665,43 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#waitForPageToLoad(String)}
+     * @return
+     */
     public CoreMethodLib waitForPageToLoad() {
         waitForPageToLoad(PAGE_TIMEOUT);
         return this;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#waitForPageToLoad(String)}
+     * @param timeout
+     * @return
+     */
     public CoreMethodLib waitForPageToLoad(Integer timeout) {
         String error_name = "waitForPageToLoad: Timeout = " + timeout;
         try {
             waitForPageToLoad(timeout.toString());
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
         return this;
     }
 
+    /**
+     * @see {@link com.thoughtworks.selenium.DefaultSelenium#mouseDown(String)}
+     * @param checkIt
+     */
     public void mouseOver(SeleniumEnums checkIt) {
         String element = getLocator(checkIt);
         String error_name = "mouseOver: " + element;
         try {
             mouseOver(element);
         } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            throw e;
         } catch (Exception e) {
             errors.addError(error_name, e);
         }

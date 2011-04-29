@@ -1,5 +1,8 @@
 package com.inthinc.pro.selenium.pageEnums;
 
+import java.util.List;
+
+import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum NotificationsBarEnum implements SeleniumEnums {
@@ -88,5 +91,8 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     public void setCurrent(String current){
         this.current = current;
     }
-
+    @Override
+    public List<String> getLocators() {        
+        return SeleniumEnumUtil.getLocators(this);
+    }
 }

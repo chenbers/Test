@@ -1,7 +1,10 @@
 package com.inthinc.pro.selenium.pageEnums;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringEscapeUtils;
 
+import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 // Enums have format NAME( Text, ID, X-Path, X-Path-Alternate )
@@ -33,13 +36,13 @@ public enum LoginEnum implements SeleniumEnums {
 	FORGOT_SEND("Send", "changePasswordForm:PasswordSubmitButton", "//div[@class='popupactions']/buton[@type='submit']/span", "//span[@class='retrieve_password']"),
 	FORGOT_CLOSE("Cancel",null, "//div[@id='forgotPasswordPanelContentDiv']/div/img", "//img[@onclick=\"Richfaces.hideModalPanel('forgotPasswordPanel')\"]"),
 	
-	FORGOT_MESSAGE("Enter the e-mail address from your tiwiPRO account. Information pertaining to your user name and password will be sent to this e-mail account.", 
+	FORGOT_MESSAGE("Enter the e-mail address from your tiwiPro account. Information pertaining to your user name and password will be sent to this e-mail account.", 
 			null, "//table[@id='forgotPasswordPanelContentTable']/tbody/tr[2]/td/div", null),	
 	
 	
 	/* Error pop-up for the Forgot Username/Password pop-up */
 	ERROR_BUTTON_OK("OK","loginErrorForm:loginOk", "//form[@id='loginErrorForm']/div/button", "//form[@id='loginErrorForm']/div/button/span"),
-	ERROR_CLOSE(null,"Richfaces.hideModalPanel('errorPanel')","//div[@id='errorPanelContentDiv']/div","//div[@id='errorPanelContentDiv']/div/img"),
+	ERROR_CLOSE("","Richfaces.hideModalPanel('errorPanel')","//div[@id='errorPanelContentDiv']/div","//div[@id='errorPanelContentDiv']/div/img"),//"" rather than null? on image???
 	ERROR_HEADER("Log In Error", "errorPanelHeader", "//table[@id='errorPanelContentTable']/tbody/tr[1]/td/div",null),
 	ERROR_MESSAGE(StringEscapeUtils.unescapeHtml("Incorrect user name or password<br/><br/>Please try again."), "//p",null,null),
 	
@@ -123,4 +126,8 @@ public enum LoginEnum implements SeleniumEnums {
 	public String getError() {
 	    return this.name();
 	}
+    @Override
+    public List<String> getLocators() {        
+        return SeleniumEnumUtil.getLocators(this);
+    }
 }

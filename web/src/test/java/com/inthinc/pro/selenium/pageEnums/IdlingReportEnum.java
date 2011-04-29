@@ -1,5 +1,8 @@
 package com.inthinc.pro.selenium.pageEnums;
 
+import java.util.List;
+
+import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum IdlingReportEnum implements SeleniumEnums {
@@ -58,5 +61,9 @@ public enum IdlingReportEnum implements SeleniumEnums {
     public String getURL() {
         // TODO Auto-generated method stub
         return this.url;
+    }
+    @Override
+    public List<String> getLocators() {        
+        return SeleniumEnumUtil.getLocators(this);
     }
 }

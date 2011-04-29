@@ -1,7 +1,9 @@
 package com.inthinc.pro.automation.enums;
 
+import java.util.List;
+
 public interface SeleniumEnums {
-    
+    //TODO: jwimmer: question for dTanner: not sure what these Strings are?  let's leverage enums for situations when we need more than just key/value pairs.  These look like things that should be in .properties files? or possibly even pulled from messages.properties
     public static String email = "E-mail";
     public static String emailReport = email + " This Report";
     public static String exportPDF = "Export To PDF";
@@ -11,8 +13,9 @@ public interface SeleniumEnums {
     public static String delete = "Delete";
     public static String batchEdit = "Batch Edit";
     public static String search = "Search";
-    public static String appUrl = "/app";
     public static String editColumns = "Edit Columns";
+    
+    public static String appUrl = "/app"; //TODO: jwimmer: question for dTanner: this is captured in automation.properties
 	
 	public String getText();
 	
@@ -26,5 +29,6 @@ public interface SeleniumEnums {
 
 	public String getXpath_alt();
 	
+	public List<String> getLocators();
 	
 }

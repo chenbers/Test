@@ -1,5 +1,8 @@
 package com.inthinc.pro.selenium.pageEnums;
 
+import java.util.List;
+
+import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum ReportsBarEnum implements SeleniumEnums {
@@ -44,5 +47,9 @@ public enum ReportsBarEnum implements SeleniumEnums {
 
     public String getURL() {
         return null;
+    }
+    @Override
+    public List<String> getLocators() {        
+        return SeleniumEnumUtil.getLocators(this);
     }
 }

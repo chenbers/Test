@@ -46,7 +46,7 @@ public class PageIdlingReport extends NavigationBar {
         selenium.click(rowQualifier);
         
         // makes sure the next "thing" is there
-        selenium.Pause(10);
+        selenium.pause(10);
     }
     
     private String insertRow(String rowQualifier,Integer row) {

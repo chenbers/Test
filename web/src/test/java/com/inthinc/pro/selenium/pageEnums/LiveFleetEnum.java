@@ -1,5 +1,9 @@
 package com.inthinc.pro.selenium.pageEnums;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 // Enums have format NAME( Text, ID, X-Path, X-Path-Alternate )
@@ -14,9 +18,9 @@ public enum LiveFleetEnum  implements SeleniumEnums {
 	LINK_SORT_DISPATCH_BY_DRIVER("Driver", null, "//div[@id='dispatchForm:driversDataTable:driverheader:sortDiv']/span",  null),
 	LINK_SORT_DISPATCH_BY_VEHICLE("Vehicle", null, "//div[@id='dispatchForm:driversDataTable:vehicleheader:sortDiv']/span", null),
 	LINK_SORT_DISPATCH_BY_GROUP(null, null, "//div[@id='dispatchForm:driversDataTable:groupheader:sortDiv']/span/img", null),
-	LINK_DISPATCH_DRIVER_NEED_INDEX("_VAR_DRIVER_NAME_", null, "dispatchForm:driversDataTable:_INDEX_:liveFleet-driverPerformance", null),
-	LINK_DISPATCH_VEHICLE_NEED_INDEX("_VAR_VEHICLE_NAME_", null, "dispatchForm:driversDataTable:_INDEX_:liveFleetsVehiclePerformance", null),
-	LINK_DISPATCH_ICON_NEED_INDEX("_VAR_GROUP_ICON_", null, "//tr[_INDEX_]/td[4]/a/img", null), //TODO: jwimmer: find the best way to pull/insert indexes/variables into xpaths
+	LINK_DISPATCH_DRIVER_NEED_INDEX("_VAR_DRIVER_NAME_", null, "dispatchForm:driversDataTable:###:liveFleet-driverPerformance", null),
+	LINK_DISPATCH_VEHICLE_NEED_INDEX("_VAR_VEHICLE_NAME_", null, "dispatchForm:driversDataTable:###:liveFleetsVehiclePerformance", null),
+	LINK_DISPATCH_ICON_NEED_INDEX("_VAR_GROUP_ICON_", null, "//tr[###]/td[4]/a/img", null), 
 	
 	
 	HEADER_BOX_LIVE_FLEET("Live Fleet", null, "//div[@id='defaultMessage']/h2", null),
@@ -42,10 +46,14 @@ public enum LiveFleetEnum  implements SeleniumEnums {
     VALUE_MAP_BUBBLE_VEHICLE_UPDATED("Updated:", null, "//div[10]/div/div[1]/div/div/table/tbody/tr[5]/td[2]", null),
     VALUE_MAP_BUBBLE_VEHICLE_LOCATION("Location", null, "//div[10]/div/div[1]/div/div/table/tbody/tr[6]/td[2]", null),
     VALUE_MAP_BUBBLE_VEHICLE_DISTANCE_TO_ADDRESS("Distance to address:", null, "//div[10]/div/div[1]/div/div/table/tbody/tr[7]/td[2]", null),
-	IMG_LINK_MAP_ICONS_NEED_INDEX(null, null, "mtgt_unnamed__INDEX_", null),
+	IMG_LINK_MAP_ICONS_NEED_INDEX(null, null, "mtgt_unnamed_###", null),
     
     HEADER_BOX_FLEET_LEGEND("Fleet Legend", null, "//div[@id='wrapper']/table/tbody/tr/td[3]/div[3]/div[1]/div/span[1]", null),
-    LINK_BOX_FLEET_LEGEND_GROUP_NEED_INDEX(null, "liveFleetLegend:_INDEX_:liveFleetsDashboard2", null, null)
+    LINK_BOX_FLEET_LEGEND_GROUP_NEED_INDEX(null, "liveFleetLegend:_INDEX_:liveFleetsDashboard2", null, null),
+    
+    
+    
+    
 	
 	;
 	
@@ -95,4 +103,9 @@ public enum LiveFleetEnum  implements SeleniumEnums {
 	public String getError() {
 	    return this.name();
 	}
+
+    @Override
+    public List<String> getLocators() {        
+        return SeleniumEnumUtil.getLocators(this);
+    }
 }

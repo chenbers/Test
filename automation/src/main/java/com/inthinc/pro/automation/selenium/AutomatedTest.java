@@ -103,7 +103,7 @@ public class AutomatedTest {
     }
     
     public void pause(Integer timeToPauseInSeconds){
-        selenium.Pause(timeToPauseInSeconds);
+        selenium.pause(timeToPauseInSeconds);
     }
 
 }
