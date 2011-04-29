@@ -2,14 +2,14 @@
 	<parent>
 		<artifactId>root</artifactId>
 		<groupId>com.inthinc.pro</groupId>
-		<version>2.0.2-SNAPSHOT</version>
+		<version>2.0.2</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.inthinc.pro.service</groupId>
 	<artifactId>service</artifactId>
 	<packaging>war</packaging>
 	<name>Pro Portal - Services</name>
-	<version>2.0.2-SNAPSHOT</version>
+	<version>2.0.2</version>
 	<properties>
 		<resteasy.version>2.1.0.GA</resteasy.version>
 	</properties>
