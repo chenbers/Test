@@ -10,7 +10,6 @@ public class TextLink extends Link implements TextBased {
     }
 
     //TODO: jwimmer: seems like there should be a way to get these to USE the Text.compareText(...) implementations
-    //TODO: dtanner: What is a TextLink vs a Link???
     @Override
     public ElementInterface compareText(String expected) {
         String actual = getText();
@@ -29,6 +28,4 @@ public class TextLink extends Link implements TextBased {
     public String getText() {
         return selenium.getText(myEnum);
     }
-
-
 }
