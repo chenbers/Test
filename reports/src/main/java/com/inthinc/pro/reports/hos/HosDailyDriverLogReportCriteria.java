@@ -487,21 +487,49 @@ public class HosDailyDriverLogReportCriteria {
         if (hosRecord.getStatus() != null)
             statusString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status."+hosRecord.getStatus().getCode()); 
 
-        if (hosRecord.getStatus() == HOSStatus.FUEL_STOP) {
+        if (hosRecord.getStatus() == HOSStatus.OFF_DUTY) {
+            if (inspectionRequired(hosRecord)) {
+                if (inspectionPerformed(hosRecord)) {
+                    statusString += " - " + ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status." + HOSStatus.HOS_POSTTRIP_INSPECTION.getCode());
+                }
+                else {
+                    statusString += " - " + ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status." + HOSStatus.HOS_POSTTRIP_INSPECTION_NOT_NEEDED.getCode());
+                }
+            }
+        }
+        else if (hosRecord.getStatus() == HOSStatus.ON_DUTY) {
+            if (inspectionRequired(hosRecord)) {
+                if (inspectionPerformed(hosRecord)) {
+                    statusString += " - " + ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status." + HOSStatus.HOS_PRETRIP_INSPECTION.getCode());
+                }
+                else {
+                    statusString += " - " + ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status." + HOSStatus.HOS_PRETRIP_INSPECTION_NOT_NEEDED.getCode());
+                }
+            }
+        }
+        else if (hosRecord.getStatus() == HOSStatus.FUEL_STOP) {
             if (defaultUseMetric) {
                 String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.fuelStopDescription.METRIC");
-                return statusString + " " + MessageFormat.format(formatString, new Object[] {
+                statusString += " " + MessageFormat.format(formatString, new Object[] {
                         MeasurementConversionUtil.fromGallonsToLiters(hosRecord.getTruckGallons()),
                         MeasurementConversionUtil.fromGallonsToLiters(hosRecord.getTrailerGallons())});
             }
             else {
                 String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.fuelStopDescription");
-                return statusString + " " + MessageFormat.format(formatString, new Object[] {hosRecord.getTruckGallons(),hosRecord.getTrailerGallons()});
+                statusString += " " + MessageFormat.format(formatString, new Object[] {hosRecord.getTruckGallons(),hosRecord.getTrailerGallons()});
             }
         }
         
         return statusString;
 
+    }
+
+    private boolean inspectionPerformed(HOSRecord hosRecord) {
+        return  (hosRecord.getTripInspectionFlag() != null && hosRecord.getTripInspectionFlag().booleanValue());
+    }
+
+    private boolean inspectionRequired(HOSRecord hosRecord) {
+        return  (hosRecord.getTripReportFlag() != null && hosRecord.getTripReportFlag().booleanValue());
     }
 
     private List<HOSOccupantLog> getOccupantLogsForDay(List<HOSRecAdjusted> logListForDay, List<HOSOccupantLog> hosOccupantLogList) {

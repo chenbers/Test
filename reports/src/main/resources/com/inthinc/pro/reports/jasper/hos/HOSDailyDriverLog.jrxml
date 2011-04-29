@@ -173,7 +173,7 @@
 				<dataSourceExpression><![CDATA[new  net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{recap})]]></dataSourceExpression>
 				<subreportExpression class="java.net.URL"><![CDATA[new URL($P{SUBREPORT_URL}, "HOSDailyDriverLog_recap"+$F{recapType}.toString()+".jasper")]]></subreportExpression>
 			</subreport>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" x="0" y="95" width="185" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -207,7 +207,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.hos.driverDistance",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" x="0" y="131" width="350" height="18"/>
 				<textElement textAlignment="Center">
 					<font size="14" isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -241,7 +241,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.codriver}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement positionType="Float" x="0" y="165" width="274" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
@@ -258,7 +258,7 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.header.mainAddress}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement positionType="Float" x="278" y="165" width="220" height="12"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
@@ -396,31 +396,31 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="26" splitType="Stretch">
+		<band height="22" splitType="Prevent">
 			<componentElement>
-				<reportElement x="2" y="0" width="555" height="26"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+				<reportElement positionType="Float" x="2" y="0" width="555" height="22" isRemoveLineWhenBlank="true"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Horizontal">
 					<datasetRun subDataset="remarksDataset">
 						<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{remarksList})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="26" width="555">
+					<jr:listContents height="22" width="555">
 						<textField isStretchWithOverflow="true">
-							<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="90" height="13">
+							<reportElement x="0" y="0" width="90" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement stretchType="RelativeToTallestObject" x="90" y="0" width="180" height="13">
+							<reportElement isPrintRepeatedValues="false" x="90" y="0" width="150" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
 						</textField>
-						<textField isStretchWithOverflow="true">
-							<reportElement x="90" y="13" width="179" height="10" isRemoveLineWhenBlank="true">
+						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+							<reportElement isPrintRepeatedValues="false" x="90" y="12" width="150" height="10" isRemoveLineWhenBlank="true">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
@@ -429,42 +429,42 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement stretchType="RelativeToBandHeight" x="270" y="0" width="193" height="13">
+							<reportElement x="240" y="0" width="224" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{statusDescription}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true">
-							<reportElement stretchType="RelativeToTallestObject" x="464" y="0" width="41" height="13">
+							<reportElement x="464" y="0" width="41" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue() && $F{startOdometer} != null && $F{startOdometer}.longValue() != 0l)]]></printWhenExpression>
 							</reportElement>
 							<textElement textAlignment="Right"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, Boolean.valueOf(false), $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true">
-							<reportElement stretchType="RelativeToTallestObject" x="505" y="0" width="50" height="13">
+							<reportElement x="505" y="0" width="50" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue() && $F{deleted}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.deleted}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true">
-							<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="0" y="0" width="89" height="13" backcolor="#999999">
+							<reportElement mode="Opaque" x="0" y="0" width="89" height="12" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="90" y="0" width="179" height="13" backcolor="#999999">
+							<reportElement isPrintRepeatedValues="false" mode="Opaque" x="90" y="0" width="150" height="12" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement mode="Opaque" x="90" y="14" width="179" height="10" isRemoveLineWhenBlank="true" backcolor="#999999">
+							<reportElement isPrintRepeatedValues="false" mode="Opaque" x="90" y="12" width="150" height="10" isRemoveLineWhenBlank="true" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
@@ -473,21 +473,21 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement stretchType="RelativeToBandHeight" mode="Opaque" x="270" y="0" width="193" height="13" backcolor="#999999">
+							<reportElement mode="Opaque" x="240" y="0" width="224" height="12" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{statusDescription}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true">
-							<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="464" y="0" width="40" height="13" backcolor="#999999">
+							<reportElement mode="Opaque" x="464" y="0" width="40" height="12" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue() && $F{startOdometer} != null && $F{startOdometer}.longValue() != 0l)]]></printWhenExpression>
 							</reportElement>
 							<textElement textAlignment="Right"/>
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, Boolean.valueOf(false), $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true">
-							<reportElement stretchType="RelativeToTallestObject" mode="Opaque" x="505" y="0" width="49" height="13" backcolor="#999999">
+							<reportElement mode="Opaque" x="505" y="0" width="49" height="12" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue() && $F{deleted}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
