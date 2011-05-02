@@ -70,7 +70,7 @@ public class HanSoloTrip {
         String imei;
 //        imei = "444444444444444";  address=Addresses.QA; initialTime = 1304010578;// vehicleID=7293 in QA
 //        imei = "999456789012345";  address=Addresses.SCHLUMBERGER; initialTime = 1304010578;// vehicleID=150994955 in QA
-        imei = "thisisajavadevice"; address=Addresses.CHEVRON; initialTime=1304111950;// vehicleID=117441441   deviceID=117441936 in QA
+        imei = "thisisajavadevice"; address=Addresses.CHEVRON; initialTime=1304113419;// vehicleID=117441441   deviceID=117441936 in QA
         
         
         trip.hanSolosFirstTrip( imei, address, initialTime);
