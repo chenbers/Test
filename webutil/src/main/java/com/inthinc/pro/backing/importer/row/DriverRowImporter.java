@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing.importer.row;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -171,6 +172,7 @@ public class DriverRowImporter extends RowImporter {
         user.setGroupID(groupID);
         user.setUsername(username);
         user.setPassword(encryptPassword(password));
+        user.setPasswordDT(new Date());
         user.setStatus(Status.ACTIVE);
 
         if (isCreate) {

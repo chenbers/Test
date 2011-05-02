@@ -359,6 +359,7 @@ public class MockData {
         user.setGroupID(groupID);
         user.setUsername(username);
         user.setPassword(password);
+        user.setPasswordDT(new Date());
         user.setRoles(roles);
         user.setStatus(Status.ACTIVE);
         user.setPerson(new Person());

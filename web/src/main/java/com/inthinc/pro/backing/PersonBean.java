@@ -941,8 +941,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     protected void doSave(List<PersonView> saveItems, boolean create) {
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final PersonView person : saveItems) {
-            if ((person.getPassword() != null) && (person.getPassword().length() > 0))
+            if ((person.getPassword() != null) && (person.getPassword().length() > 0)) {
                 person.getUser().setPassword(passwordEncryptor.encryptPassword(person.getPassword()));
+                person.getUser().setPasswordDT(new Date());
+            }
             // null out the user/driver before saving
             if (!person.isUserSelected() && (person.getUser() != null)) {
                 if (person.getUser().getUserID() != null)
@@ -1000,7 +1002,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if ( person.getUser() != null ) {
                 person.getUser().setLastLogin(null);
             }
-            
+
             // insert or update
             if (create)
                 person.setPersonID(personDAO.create(getAccountID(), person));
