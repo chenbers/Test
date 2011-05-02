@@ -5,7 +5,7 @@ import java.util.List;
 import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
-public enum UtilEnum implements SeleniumEnums {
+public enum WebUtilEnum implements SeleniumEnums {
     DURATION_30DAYS("durationPanelHeaderDays",null,null,null,null),
     DURATION_3MONTHS("durationPanelHeaderThreeMonths",null,null,null,null),
     DURATION_6MONTHS("durationPanelHeaderSixMonths",null,null,null,null),
@@ -20,7 +20,7 @@ public enum UtilEnum implements SeleniumEnums {
     
     private String text, ID, xpath, xpath_alt, url;
     
-    private UtilEnum( String text, String ID, String xpath, String xpath_alt, String url) {
+    private WebUtilEnum( String text, String ID, String xpath, String xpath_alt, String url) {
         this.text=text;
         this.ID=ID;
         this.xpath=xpath;

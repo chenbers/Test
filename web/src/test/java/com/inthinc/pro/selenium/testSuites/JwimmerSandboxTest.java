@@ -71,10 +71,24 @@ public class JwimmerSandboxTest extends WebTest {
 //        liveFleet._select.numNearestVehicles.selectFullMatch("25", 1);            liveFleet._textField.findAddress.type("full(25, 1) first fullMatch ; twentyfive? "); pause(waitTime);
         liveFleet._select.numNearestVehicles.selectPartMatch("5");                liveFleet._textField.findAddress.type("part(5);fifty?"); pause(waitTime);
         liveFleet._select.numNearestVehicles.selectPartMatch("0", 3);             liveFleet._textField.findAddress.type("part(0,3); one hundered?"); pause(waitTime);
-        liveFleet.addError("just a test error... nothing actually went wrong");
+        
+        for(String s: liveFleet._link.driverByName("Orson  Bugg").getMyEnum().getLocators()) {
+            System.out.println("s: "+s);
+        }
+        
+        System.out.println("!!!driver by list posistion0 text: "   +liveFleet._link.driverByListPosition(0).getText());
+        System.out.println("!!!driver by list posistion0 visible: "+liveFleet._link.driverByListPosition(0).isVisible());
+        System.out.println("!!!driver by list posistion0 click: "  +liveFleet._link.driverByListPosition(0).click());
+        
+        System.out.println("!!!Orson  Bugg link text: "        +liveFleet._link.driverByName("Orson  Bugg").getText());
+        System.out.println("!!!Orson Buggy link isVisible? "   +liveFleet._link.driverByName("Orson  Buggy").isVisible());
+        System.out.println("!!!Orson Buggy link focus? "       +liveFleet._link.driverByName("Orson  Buggy").focus());
+        System.out.println("!!!Orson Buggy link click? "       +liveFleet._link.driverByName("Orson  Buggy").click());
+        liveFleet._link.driverByName("Orson  Buggy").click();//TODO: jwimmer: isElementPresent is returning TRUE... but .click() doesn't seem to be working???
+        //liveFleet.addError("just a test error... nothing actually went wrong");
 
         
-        pause(10);
+        pause(60);
     }
     
     @Test

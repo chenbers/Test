@@ -1,6 +1,5 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumUtil;

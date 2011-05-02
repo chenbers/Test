@@ -8,6 +8,9 @@ public class TextLink extends Link implements TextBased {
     public TextLink(SeleniumEnums anEnum) {
         super(anEnum);
     }
+    public TextLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+        super(anEnum, replaceWord, replaceNumber);
+    }
 
     //TODO: jwimmer: seems like there should be a way to get these to USE the Text.compareText(...) implementations
     @Override
@@ -26,6 +29,6 @@ public class TextLink extends Link implements TextBased {
 
     @Override
     public String getText() {
-        return selenium.getText(myEnum);
+        return selenium.getText(myEnum, replaceWord, replaceNumber);
     }
 }

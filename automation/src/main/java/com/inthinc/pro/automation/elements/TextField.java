@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.elements;
 
-import java.lang.reflect.Method;
-
 import com.inthinc.pro.automation.elements.ElementInterface.Typeable;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
@@ -11,19 +9,6 @@ public class TextField extends ElementBase implements Typeable {
         super(anEnum);
     }
     
-    //TODO: jwimmer: work in process... trying to build a more elegant way to have failover contained in one place... not ready for public consumption yet... recursion would be better if there were a good/easy way to increment/decrement/walkthrough the id,xpath,xpath_alt options...
-    private void process(Method method, String... params ) {
-        String locator = params[0];
-        String error_name = params[1];
-        try {
-            method.invoke(this, locator, error_name);
-        } catch (Exception e) {
-            if(e instanceof RuntimeException)
-                throw new RuntimeException(e);
-            selenium.getErrors().addError(error_name, e);
-        }
-    }
-
     public TextField clear() {
         type(null);
         return this;

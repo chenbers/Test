@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.elements;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
@@ -7,11 +8,14 @@ import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
 
 public class ElementBase implements ElementInterface {
+    private final static Logger logger = Logger.getLogger(ElementBase.class);
     protected CoreMethodLib selenium;
     protected WebDriver webDriver;
 
     protected SeleniumEnums myEnum;
     protected String text;
+    protected String replaceWord;
+    protected Integer replaceNumber;
 
     public ElementBase(SeleniumEnums anEnum) {
         this(anEnum, null, null);
@@ -28,14 +32,15 @@ public class ElementBase implements ElementInterface {
     public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         this.text = anEnum.getText();
         this.myEnum = anEnum;
+        this.replaceWord = replaceWord;
+        this.replaceNumber = replaceNumber;
         selenium = GlobalSelenium.getSelenium();
         webDriver = selenium.getWrappedDriver();
     }
 
-
     @Override
     public boolean isVisible() {
-        return selenium.isVisible(myEnum);
+        return selenium.isVisible(myEnum, replaceWord, replaceNumber);
     }
 
     @Override
@@ -44,10 +49,9 @@ public class ElementBase implements ElementInterface {
         return this;
     }
 
-
     @Override
     public ElementInterface focus() {
-        selenium.focus(myEnum);
+        selenium.focus(myEnum, replaceWord, replaceNumber);
         return this;
     }
 

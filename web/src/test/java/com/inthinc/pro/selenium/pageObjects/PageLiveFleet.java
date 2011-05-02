@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.enums.SeleniumEnumUtil.UtilEnum;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 
 public class PageLiveFleet extends NavigationBar {
@@ -21,6 +22,19 @@ public class PageLiveFleet extends NavigationBar {
         public TextLink sortDispatchByVehicle = new TextLink( LiveFleetEnum.LINK_SORT_DISPATCH_BY_VEHICLE);
         public TextLink sortDispatchByGroup = new TextLink( LiveFleetEnum.LINK_SORT_DISPATCH_BY_GROUP);
       //TODO: jwimmer: discuss with team: additional instances of Link objects on this page would go here
+        
+        public TextLink driverByName(String driverName) {
+            return new TextLink(UtilEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, driverName, null);
+        }
+        public TextLink driverByListPosition(Integer position) {
+            return new TextLink(LiveFleetEnum.LINK_DISPATCH_DRIVER_NEED_INDEX, null, position);
+        }
+        public TextLink vehicleByName(String vehicleName) {
+            return new TextLink(UtilEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, vehicleName, null);
+        }
+        public TextLink vehicleByListPosition(Integer position) {
+            return new TextLink(LiveFleetEnum.LINK_DISPATCH_VEHICLE_NEED_INDEX, null, position);
+        }
     }
     public class LiveFleetTexts{
         public Text mapBubbleDefaultChangeView = new Text( LiveFleetEnum.TEXTFIELD_LIVE_FLEET_FIND_ADDRESS);

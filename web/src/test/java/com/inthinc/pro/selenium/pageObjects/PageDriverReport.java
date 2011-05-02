@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import java.util.StringTokenizer;
 
 import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
-import com.inthinc.pro.selenium.pageEnums.UtilEnum;
+import com.inthinc.pro.selenium.pageEnums.WebUtilEnum;
 
 public class PageDriverReport extends NavigationBar {
     
@@ -48,22 +48,22 @@ public class PageDriverReport extends NavigationBar {
         selenium.type(DriverReportEnum.EMPLOYEE_SEARCH, vehicle);        
     }
     
-    public void dropdown_overallScore_selectValue(UtilEnum selection) {
+    public void dropdown_overallScore_selectValue(WebUtilEnum selection) {
         selenium.click(DriverReportEnum.OVERALL_SCORE_FILTER.getXpath());
         selenium.click("//div[4]/div[" + selection.getID() + "]");  
     }
     
-    public void dropdown_speedScore_selectValue(UtilEnum selection) {
+    public void dropdown_speedScore_selectValue(WebUtilEnum selection) {
         selenium.click(DriverReportEnum.SPEED_SCORE_FILTER.getXpath());
         selenium.click("//div[3]/div[" + selection.getID() + "]");  
     }
     
-    public void dropdown_styleScore_selectValue(UtilEnum selection) {
+    public void dropdown_styleScore_selectValue(WebUtilEnum selection) {
         selenium.click(DriverReportEnum.STYLE_SCORE_FILTER.getXpath());
         selenium.click("//div[2]/div[" + selection.getID() + "]");  
     }
     
-    public void dropdown_seatbeltScore_selectValue(UtilEnum selection) {
+    public void dropdown_seatbeltScore_selectValue(WebUtilEnum selection) {
         selenium.click(DriverReportEnum.SEATBELT_SCORE_FILTER.getXpath());
         selenium.click("//div[" + selection.getID() + "]");  
     }

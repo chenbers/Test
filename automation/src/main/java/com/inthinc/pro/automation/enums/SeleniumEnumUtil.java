@@ -19,4 +19,65 @@ public class SeleniumEnumUtil {
             locators.add(anEnum.getXpath_alt());
         return locators;
     }
+    
+    
+    
+    
+    
+    
+    
+    public enum UtilEnum implements SeleniumEnums {
+        FIND_ANCHOR_BY_CONTAINS_TEXT(null, null, "//a[contains(text(), \"***\")]", "",null)
+        ;
+        
+        private String text, ID, xpath, xpath_alt, url;
+        
+        private UtilEnum( String text, String ID, String xpath, String xpath_alt, String url) {
+            this.text=text;
+            this.ID=ID;
+            this.xpath=xpath;
+            this.xpath_alt=xpath_alt;
+            this.url=url;
+        }
+
+        @Override
+        public String getID() {
+            // TODO Auto-generated method stub
+            return this.ID;
+        }
+
+        @Override
+        public String getText() {
+            // TODO Auto-generated method stub
+            return this.text;
+        }
+
+        @Override
+        public String getXpath() {
+            // TODO Auto-generated method stub
+            return this.xpath;
+        }
+
+        @Override
+        public String getXpath_alt() {
+            // TODO Auto-generated method stub
+            return this.xpath_alt;
+        }
+
+        @Override
+        public void setText(String text) {
+            // TODO Auto-generated method stub
+            this.text=text;
+        }
+
+        @Override
+        public String getURL() {
+            // TODO Auto-generated method stub
+            return this.url;
+        }
+        @Override
+        public List<String> getLocators() {        
+            return SeleniumEnumUtil.getLocators(this);
+        }
+    }
 }
