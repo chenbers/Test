@@ -9,57 +9,30 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 
+import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
 public abstract class Masthead extends AbstractPage{
-
-
-    public String textField_version_getText() {
-        return selenium.getText(MastheadEnum.VERSION);
-    }
-
-    public String textField_copyRight_getText() {
-        return selenium.getText(MastheadEnum.COPYRIGHT);
-    }
-
-    public void link_myAccount_click() {
-        selenium.click(MastheadEnum.MY_ACCOUNT);
-        selenium.waitForPageToLoad();
-    }
-
-    public void link_myMessages_click() {
-        selenium.click(MastheadEnum.MY_MESSAGES);
-        selenium.waitForPageToLoad();
-    }
-
-    public void link_logout_click() {
-        selenium.click(MastheadEnum.LOGOUT);
-        selenium.waitForPageToLoad();
-    }
-
-    public void link_support_click() {
-        clickNewWindowLink(MastheadEnum.SUPPORT, MastheadEnum.CUSTOMER_SUPPORT_DEFAULT);
-    }
-
-    public void link_legalNotice_click() {
-        clickNewWindowLink(MastheadEnum.LEGAL, MastheadEnum.LEGAL_NOTICE);
-    }
     
-
-    public void link_privacyPolicy_click() {
-        clickNewWindowLink(MastheadEnum.PRIVACY, MastheadEnum.PRIVACY_POLICY);
+    public class MastheadTexts {
+        public Text version() {return new Text(MastheadEnum.VERSION);}
+        public Text copyright() {return new Text(MastheadEnum.COPYRIGHT);}
     }
-
-    public void link_help_click(String help_page) {
-//        //TODO: This method needs to be updated and fleshed out once the Help Page has been nailed down.
-//        if (help_page.indexOf(".htm") == -1) {
-//            help_page += ".htm";
-//        }
-//        selenium.click(MastheadEnum.HELP);
-//        selenium.waitForPageToLoad();
+    public class MastheadTextFields {}
+    public class MastheadLinks {
+        public TextLink myAccount() {return new TextLink(MastheadEnum.MY_ACCOUNT);}
+        public TextLink myMessages() {return new TextLink(MastheadEnum.MY_MESSAGES);}
+        public TextLink logout() {return new TextLink(MastheadEnum.LOGOUT);}
+        public TextLink support() {return new TextLink(MastheadEnum.SUPPORT);}
+        public TextLink legalNotice() {return new TextLink(MastheadEnum.LEGAL_NOTICE);}
+        public TextLink privacyPolicy() {return new TextLink(MastheadEnum.PRIVACY_POLICY);}
+        public TextLink help() {return new TextLink(MastheadEnum.HELP);}
     }
-
+    public class MastheadButtons {}
+    public class MastheadSelects {}
+   
     public void section_header_validate() {
         selenium.isElementPresent(MastheadEnum.LOGO);
         selenium.isElementPresent(MastheadEnum.HELP);

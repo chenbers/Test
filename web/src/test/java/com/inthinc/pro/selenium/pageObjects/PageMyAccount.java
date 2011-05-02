@@ -1,10 +1,37 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.SelectBox;
+import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextButton;
+import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.SeleniumValueEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnumUtil.UtilEnum;
+import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
+import com.inthinc.pro.selenium.pageObjects.NavigationBar.NavigationBarButtons;
+import com.inthinc.pro.selenium.pageObjects.NavigationBar.NavigationBarLinks;
+import com.inthinc.pro.selenium.pageObjects.NavigationBar.NavigationBarSelects;
+import com.inthinc.pro.selenium.pageObjects.NavigationBar.NavigationBarTextFields;
+import com.inthinc.pro.selenium.pageObjects.NavigationBar.NavigationBarTexts;
+import com.inthinc.pro.selenium.pageObjects.PageLiveFleet.LiveFleetButtons;
+import com.inthinc.pro.selenium.pageObjects.PageLiveFleet.LiveFleetLinks;
+import com.inthinc.pro.selenium.pageObjects.PageLiveFleet.LiveFleetSelects;
+import com.inthinc.pro.selenium.pageObjects.PageLiveFleet.LiveFleetTextFields;
+import com.inthinc.pro.selenium.pageObjects.PageLiveFleet.LiveFleetTexts;
 
 public class PageMyAccount extends NavigationBar {
-
+    public MyAccountTextFields _textField() { return new MyAccountTextFields();}
+    public MyAccountTexts _text() {return new MyAccountTexts();}
+    public MyAccountLinks _link() {return new MyAccountLinks();}
+    public MyAccountButtons _button() {return new MyAccountButtons();}
+    public MyAccountSelects _select() {return new MyAccountSelects();}
+    
+    public class MyAccountLinks extends NavigationBarLinks{ }
+    public class MyAccountTexts extends NavigationBarTexts{ }
+    public class MyAccountTextFields extends NavigationBarTextFields{ }
+    public class MyAccountButtons  extends NavigationBarButtons{}
+    public class MyAccountSelects extends NavigationBarSelects{} 
     public static enum RedFlagPrefs implements SeleniumValueEnums {
         EMAIL1("1", MyAccountEnum.EMAIL1_TEXTFIELD, MyAccountEnum.EMAIL1_TITLE),
         EMAIL2("2", MyAccountEnum.EMAIL2_TEXTFIELD, MyAccountEnum.EMAIL2_TITLE),

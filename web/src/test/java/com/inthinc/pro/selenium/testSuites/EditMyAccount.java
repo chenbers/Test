@@ -23,7 +23,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void CancelButton_Changes(){
 		set_test_case("TC1271");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 	
 	/*Edit button*/
 		my.button_edit_click();
@@ -98,7 +99,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void SaveButton_Changes(){
 		set_test_case("TC1280");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 	
 	/*Edit button*/
 		my.button_edit_click();
@@ -172,7 +174,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void EmailFormatError(){
 		set_test_case("TC1271");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 		my.button_edit_click();
 		my.textField_emailAddress1_type("tina1965test.com");
 		my.button_save_click();
@@ -201,7 +204,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void MeasurementValidation(){
 		set_test_case("TC1275");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 	
 		my.button_edit_click();
 		my.dropDown_measurement_selectText("Metric");
@@ -224,7 +228,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void FuelRatioValidation(){
 		set_test_case("TC1273");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 		
 		my.button_edit_click();
 		my.dropDown_measurement_selectText("Metric");
@@ -244,7 +249,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void ClearFieldsValidation(){
 		set_test_case("TC1276");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 	
 		my.button_edit_click();
 		
@@ -268,7 +274,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void PhoneMaxCharError(){
 		set_test_case("TC1277");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 		my.button_edit_click();
 		my.textField_phoneNumber1_type("801-777-7777-44444421");
 		my.button_save_click();
@@ -294,7 +301,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void PhoneMissingCharError(){
 		set_test_case("TC1278");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 	
 		my.button_edit_click();
 		my.textField_phoneNumber1_type("801-777-777");
@@ -322,7 +330,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void PhoneSpecialCharError(){
 		set_test_case("TC1279");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 		my.button_edit_click();
 		my.textField_phoneNumber1_type("801-@$%-777&");
 		my.button_save_click();
@@ -348,7 +357,8 @@ public class EditMyAccount extends WebRallyTest {
 	public void TextMsgFormatError(){
 		set_test_case("TC1282");
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 	
 		my.button_edit_click();
 		my.textField_textMessage1_type("801-777-9999tmomail.net");

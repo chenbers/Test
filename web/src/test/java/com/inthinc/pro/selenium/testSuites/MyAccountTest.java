@@ -14,7 +14,8 @@ public class MyAccountTest extends WebRallyTest {
 		PageMyAccount my = new PageMyAccount();
 		PageLogin login = new PageLogin();
 		login.page_login_process("tnilson", "password");
-		my.link_myAccount_click();
+		my._link().myAccount().click();
+		//my.link_myAccount_click();
 		
 	/*Login Info*/
 		String username = my.text_userName_getText();
