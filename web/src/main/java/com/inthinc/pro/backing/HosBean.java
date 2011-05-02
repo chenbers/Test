@@ -34,7 +34,7 @@ import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
-import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO;
+import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
@@ -59,7 +59,7 @@ public class HosBean extends BaseBean {
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private DeviceDAO deviceDAO;
-    private FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO;
+    private FwdCmdSpoolWS fwdCmdSpoolWS;
     private PageData pageData;
     private int page;
     private List<SelectItem> drivers;
@@ -724,6 +724,27 @@ logger.info("in loadItems()");
         this.sendLogsMsg = sendLogsMsg;
     }
 
+    public Boolean getCanSendLogs() {
+        if (this.getDriverID() == null) {
+            return false;
+        }
+        
+        Vehicle vehicle = vehicleDAO.findByDriverID(getDriverID());
+        if (vehicle == null) {
+            return false;
+        }
+
+        if (vehicle.getDeviceID() == null) {
+            return false;
+            
+        }
+        Device device = deviceDAO.findByID(vehicle.getDeviceID());
+        if (device == null) {
+            return false;
+        }
+        return device.isWaySmart() && !device.isGPRSOnly(); 
+        
+    }
     public void sendLogs() {
         setSendLogsMsg(null);
 
@@ -755,7 +776,7 @@ logger.info("in loadItems()");
             List<ByteArrayOutputStream > logShipList = HOSUtil.packageLogsToShip(recordList, driver);
             
             for (ByteArrayOutputStream output :  logShipList ) {    
-              queueForwardCommand(device.getImei(), output.toByteArray(), ForwardCommandID.HOSLOG_SUMMARY);
+              queueForwardCommand(device, device.getImei(), output.toByteArray(), ForwardCommandID.HOSLOG_SUMMARY);
             }
             setSendLogsMsg("hosSendLogsToDevice.success");
         }
@@ -774,24 +795,22 @@ logger.info("in loadItems()");
         return hosDAO.getHOSRecords(driver.getDriverID(), interval, true);
     }
     
-    private void queueForwardCommand(String address, byte[] data, int command) 
+    private void queueForwardCommand(Device device, String address, byte[] data, int command) 
     {
         logger.debug("queueForwardCommand Begin");
         ForwardCommandSpool fcs = new ForwardCommandSpool(data, command, address);
-        if (fcsIridiumDAO.add(fcs) == -1)
+        if (fwdCmdSpoolWS.add(device, fcs) == -1)
             throw new ProDAOException("Iridium Forward command spool failed.");
                 
     }
 
-
-    public FwdCmdSpoolWSIridiumJDBCDAO getFcsIridiumDAO() {
-        return fcsIridiumDAO;
+    public FwdCmdSpoolWS getFwdCmdSpoolWS() {
+        return fwdCmdSpoolWS;
     }
 
-    public void setFcsIridiumDAO(FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
-        this.fcsIridiumDAO = fcsIridiumDAO;
+    public void setFwdCmdSpoolWS(FwdCmdSpoolWS fwdCmdSpoolWS) {
+        this.fwdCmdSpoolWS = fwdCmdSpoolWS;
     }
-
 
 }
 

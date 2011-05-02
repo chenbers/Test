@@ -21,7 +21,7 @@
 			  	 	<td>
 						<h:selectOneMenu value="#{hosBean.driverID}" id="#{context}_driverSelect" style="width:130px;size:auto;" >
 							<f:selectItems value="#{hosBean.drivers}" />
-							<a4j:support reRender="#{context}-hosSendLogsStatus,hos-table-form:header, hos-table-form:#{context}, hos-table-form:#{context}-dataTableScroller" event="onchange"/>  
+							<a4j:support reRender="#{context}-hosSendLogsStatus,hos-table-form" event="onchange"/>  
 						</h:selectOneMenu>
 					</td>
 					</tr>
@@ -56,7 +56,7 @@
 				<span title="#{messages.hosSendLogsToDevice}">
 				<a4j:commandLink id="#{context}-hosSendLogs"  
 					title="#{messages.hosSendLogsToDevice}"  
-					reRender="#{context}-hosSendLogsStatus" action="#{hosBean.sendLogs}"> 
+					reRender="#{context}-hosSendLogsStatus" action="#{hosBean.sendLogs}" rendered="#{hosBean.canSendLogs}"> 
 	     					<h:graphicImage value="/images/ico_email.png"/>
 				</a4j:commandLink>
 				</span>	

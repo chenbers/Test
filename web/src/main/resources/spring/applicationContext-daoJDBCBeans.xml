@@ -22,6 +22,8 @@ default-autowire="byName">
   <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>
   <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
 
-  <bean id="fcsIridiumDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="fwdCmdSpoolWSIridiumJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="fwdCmdSpoolWSHttpJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO" parent="genericJDBCDAO"/>
+  <bean id="fwdCmdSpoolWS" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS"/>
 	
 </beans>

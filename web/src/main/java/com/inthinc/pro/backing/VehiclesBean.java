@@ -32,7 +32,7 @@ import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
-import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO;
+import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
 import com.inthinc.pro.model.AutoLogoff;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
@@ -122,7 +122,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     private CacheBean cacheBean;
     
-    private FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO;
+    private FwdCmdSpoolWS fwdCmdSpoolWS;
 
     
     @Override
@@ -724,15 +724,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     public ProductType getBatchEditProductChoice() {
         return batchEditProductChoice;
     }
+    public FwdCmdSpoolWS getFwdCmdSpoolWS() {
+        return fwdCmdSpoolWS;
+    }
+    public void setFwdCmdSpoolWS(FwdCmdSpoolWS fwdCmdSpoolWS) {
+        this.fwdCmdSpoolWS = fwdCmdSpoolWS;
+    }
     
 
-    public FwdCmdSpoolWSIridiumJDBCDAO getFcsIridiumDAO() {
-        return fcsIridiumDAO;
-    }
-
-    public void setFcsIridiumDAO(FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
-        this.fcsIridiumDAO = fcsIridiumDAO;
-    }
 
     public static class VehicleView extends Vehicle implements EditItem
     {
@@ -774,8 +773,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
         
         public void initForwardCommandDefs() {
-            wirelineDoorAlarm = new WirelineDoorAlarmCommand(getDeviceID(), getFwdCmdAddress(), bean.getFcsIridiumDAO());
-            wirelineKillMotor = new WirelineKillMotorCommand(getDeviceID(), getFwdCmdAddress(), bean.getFcsIridiumDAO());
+            wirelineDoorAlarm = new WirelineDoorAlarmCommand(getDevice(), getFwdCmdAddress(), bean.getFwdCmdSpoolWS());
+            wirelineKillMotor = new WirelineKillMotorCommand(getDevice(), getFwdCmdAddress(), bean.getFwdCmdSpoolWS());
         }
         public void setEditableVehicleSettings(EditableVehicleSettings editableVehicleSettings) {
             this.editableVehicleSettings = editableVehicleSettings;

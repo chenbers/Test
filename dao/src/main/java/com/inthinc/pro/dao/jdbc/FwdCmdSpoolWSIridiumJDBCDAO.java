@@ -47,10 +47,7 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            return -1;
-            //throw e;
-
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection
@@ -91,9 +88,7 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
-            //throw e;
-            return null;
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
 
         }   // end catch
         finally
@@ -114,7 +109,7 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
 
         String queryString = FETCH_FOR_DEVICE_CMD + getCommaSepList(cmdIDList) + ")"; 
 
-        ArrayList<ForwardCommandSpool> recordList = new ArrayList<ForwardCommandSpool>();
+        List<ForwardCommandSpool> recordList = new ArrayList<ForwardCommandSpool>();
         
         try
         {
@@ -193,7 +188,7 @@ public class FwdCmdSpoolWSIridiumJDBCDAO  extends GenericJDBCDAO {
         }   // end try
         catch (SQLException e)
         { // handle database hosLogs in the usual manner
-            logger.error("sql hosLog", e);
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
         }   // end catch
         finally
         { // clean up and release the connection

@@ -12,7 +12,8 @@ import org.joda.time.format.DateTimeFormatter;
 import org.springframework.security.context.SecurityContextHolder;
 
 import com.inthinc.pro.ProDAOException;
-import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO;
+import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommandSpool;
 import com.inthinc.pro.model.ForwardCommandStatus;
 import com.inthinc.pro.model.ForwardCommandType;
@@ -25,17 +26,17 @@ public abstract class WaysmartForwardCommand {
     protected String sentDescription;
     protected String receivedDescription;
     protected String address;
-    protected Integer deviceID;
-    private FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO;
+    protected Device device;
+    private FwdCmdSpoolWS fwdCmdSpoolWS;
     private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss (a) z");
 
     public WaysmartForwardCommand()
     {
     }
-    public WaysmartForwardCommand(Integer deviceID, String address, FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
-        this.deviceID = deviceID;
+    public WaysmartForwardCommand(Device device, String address, FwdCmdSpoolWS fwdCmdSpoolWS) {
+        this.device = device;
         this.address = address;
-        this.fcsIridiumDAO = fcsIridiumDAO;
+        this.fwdCmdSpoolWS = fwdCmdSpoolWS;
     }
 
     public abstract List<SelectItem> getSelectItems();
@@ -71,7 +72,7 @@ public abstract class WaysmartForwardCommand {
     private void initDescriptions() {
         ForwardCommandSpool latest = null;
         if (getForwardCommandIDs() != null) {
-            List<ForwardCommandSpool> spoolList = fcsIridiumDAO.getForDevice(getDeviceID(), getForwardCommandIDs());
+            List<ForwardCommandSpool> spoolList = fwdCmdSpoolWS.getForDevice(getDevice().getDeviceID(), getForwardCommandIDs());
             for (ForwardCommandSpool spoolItem : spoolList) {
                  System.out.println(spoolItem.getCommand() + " " + spoolItem.getProcessed() + " " + spoolItem.getCreated() + " " + spoolItem.getModified());
                  if (latest == null || latest.getCreated().before(spoolItem.getCreated())) 
@@ -129,7 +130,7 @@ public abstract class WaysmartForwardCommand {
     private void queueForwardCommand(String address, byte[] data, int command) 
     {
         ForwardCommandSpool fcs = new ForwardCommandSpool(data, command, address);
-        if (fcsIridiumDAO.add(fcs) == -1)
+        if (fwdCmdSpoolWS.add(device, fcs) == -1)
             throw new ProDAOException("Iridium Forward command spool failed.");
     }
 
@@ -142,12 +143,12 @@ public abstract class WaysmartForwardCommand {
     }
 
 
-    public Integer getDeviceID() {
-        return deviceID;
+    public Device getDevice() {
+        return device;
     }
 
-    public void setDeviceID(Integer deviceID) {
-        this.deviceID = deviceID;
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
 }

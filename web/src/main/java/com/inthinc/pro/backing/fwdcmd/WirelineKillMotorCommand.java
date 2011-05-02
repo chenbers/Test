@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
-import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO;
+import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
+import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommandType;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -14,8 +15,8 @@ public class WirelineKillMotorCommand extends WaysmartForwardCommand {
     {
         super();
     }
-    public WirelineKillMotorCommand(Integer deviceID, String address, FwdCmdSpoolWSIridiumJDBCDAO fcsIridiumDAO) {
-        super(deviceID, address, fcsIridiumDAO);
+    public WirelineKillMotorCommand(Device device, String address, FwdCmdSpoolWS fwdCmdSpoolWS) {
+        super(device, address, fwdCmdSpoolWS);
     }
 
     @Override

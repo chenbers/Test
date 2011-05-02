@@ -244,4 +244,7 @@ public class Device extends BaseEntity implements HasAccountId
     public String toString() {
         return "Device: [name="+name+", deviceID="+deviceID+", imei="+this.imei+", altimei="+this.altimei+" ]";
     }
+    public boolean isGPRSOnly() {
+        return getImei() != null && getMcmid() != null && getImei().equalsIgnoreCase(getMcmid());
+    }
 }
