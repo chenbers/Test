@@ -1,82 +1,74 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 
 public abstract class AdminBar extends NavigationBar {
+    
+    public class AdminBarLinks {
 
-    public void link_adminAccount_click() {
-        selenium.click(AdminBarEnum.ACCOUNT).waitForPageToLoad();
-        setCurrentLocation();
+        public TextLink adminAccount() {
+            return new TextLink(AdminBarEnum.ACCOUNT);
+        }
+
+        public TextLink adminAddCustomRole() {
+            return new TextLink(AdminBarEnum.ADD_CUSTOM_ROLE);
+        }
+
+        public TextLink adminAddRedFlag() {
+            return new TextLink(AdminBarEnum.ADD_RED_FLAG);
+        }
+
+        public TextLink adminAddReport() {
+            return new TextLink(AdminBarEnum.ADD_REPORT);
+        }
+
+        public TextLink adminAddUser() {
+            return new TextLink(AdminBarEnum.ADD_USER);
+        }
+
+        public TextLink adminAddVehicle() {
+            return new TextLink(AdminBarEnum.ADD_VEHICLE);
+        }
+
+        public TextLink adminCustomRoles() {
+            return new TextLink(AdminBarEnum.CUSTOM_ROLES);
+        }
+
+        public TextLink adminDevices() {
+            return new TextLink(AdminBarEnum.DEVICES);
+        }
+
+        public TextLink adminOrganization() {
+            return new TextLink(AdminBarEnum.ORGANIZATION);
+        }
+
+        public TextLink adminRedFlags() {
+            return new TextLink(AdminBarEnum.RED_FLAGS);
+        }
+
+        public TextLink adminReports() {
+            return new TextLink(AdminBarEnum.REPORTS);
+        }
+
+        public TextLink adminSpeedByStreet() {
+            return new TextLink(AdminBarEnum.SPEED_BY_STREET);
+        }
+
+        public TextLink adminUsers() {
+            return new TextLink(AdminBarEnum.USERS);
+        }
+
+        public TextLink adminVehicles() {
+            return new TextLink(AdminBarEnum.VEHICLES);
+        }
+
+        public TextLink adminZones_click() {
+            return new TextLink(AdminBarEnum.ZONES);
+        }
     }
 
-    public void link_adminAddCustomRole_click() {
-        selenium.click(AdminBarEnum.ADD_CUSTOM_ROLE).waitForPageToLoad();
-        setCurrentLocation();
+    public AdminBarLinks _link() {
+        return new AdminBarLinks();
     }
-
-    public void link_adminAddRedFlag_click() {
-        selenium.click(AdminBarEnum.ADD_RED_FLAG).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminAddReport_click() {
-        selenium.click(AdminBarEnum.ADD_REPORT).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminAddUser_click() {
-        selenium.click(AdminBarEnum.ADD_USER).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminAddVehicle_click() {
-        selenium.click(AdminBarEnum.ADD_VEHICLE).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminCustomRoles_click() {
-        selenium.click(AdminBarEnum.CUSTOM_ROLES).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminDevices_click() {
-        selenium.click(AdminBarEnum.DEVICES).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminOrganization_click() {
-        selenium.click(AdminBarEnum.ORGANIZATION).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminRedFlags_click() {
-        selenium.click(AdminBarEnum.RED_FLAGS).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminReports_click() {
-        selenium.click(AdminBarEnum.REPORTS).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminSpeedByStreet_click() {
-        selenium.click(AdminBarEnum.SPEED_BY_STREET).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminUsers_click() {
-        selenium.click(AdminBarEnum.USERS).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminVehicles_click() {
-        selenium.click(AdminBarEnum.VEHICLES).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
-    public void link_adminZones_click() {
-        selenium.click(AdminBarEnum.ZONES).waitForPageToLoad();
-        setCurrentLocation();
-    }
-
 }
