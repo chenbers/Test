@@ -1,5 +1,7 @@
 package com.inthinc.pro.automation.elements;
 
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
@@ -110,5 +112,29 @@ public class ElementBase implements ElementInterface {
 
     public CoreMethodLib getselenium() {
         return selenium;
+    }
+    
+    protected void setCurrentLocation(){
+        String[] address = getCurrentLocation().split("/"); //TODO: jwimmer: doesn't seem very robust on pages where MORE than the last portion of the URL is significant?
+        String[] longUrl = {"protocol", "", "urlandport", "appPath", "label", "section", "page"};
+        String[] shortUrl = {"protocol", "", "urlandport", "appPath", "page"};
+        HashMap<String, String> current = new HashMap<String, String>();
+        current.put("protocol", address[0]);
+        String[] url = address[2].split(":");
+        current.put("url", url[0]);
+        current.put("port", url[1]);
+        current.put("appPath", address[3]);
+        
+        if (address.length == longUrl.length){
+            current.put("label", address[4]);
+            current.put("section", address[5]);
+            current.put("page", address[6]);    
+        }else if (address.length == shortUrl.length){
+            current.put("page", address[4]);
+        }
+    }
+    
+    public String getCurrentLocation() {
+        return selenium.getLocation();
     }
 }

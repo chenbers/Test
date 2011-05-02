@@ -10,6 +10,15 @@ public class SelectBox extends Text implements Selectable {
     public SelectBox(SeleniumEnums anEnum) {
         super(anEnum);
     }
+    public SelectBox(SeleniumEnums anEnum, Integer replaceNumber) {
+        super(anEnum, replaceNumber);
+    }
+    public SelectBox(SeleniumEnums anEnum, String replaceWord) {
+        super(anEnum, replaceWord);
+    }
+    public SelectBox(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+        super(anEnum, replaceWord, replaceNumber);
+    }
 
     @Override
     public ElementInterface select(String fullMatch) {

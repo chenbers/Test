@@ -1,0 +1,38 @@
+package com.inthinc.pro.automation.elements;
+
+import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
+
+public abstract class TextObject extends ElementBase implements TextBased {
+
+    public TextObject(SeleniumEnums anEnum) {
+        super(anEnum);
+    }
+    public TextObject(SeleniumEnums anEnum, Integer replaceNumber) {
+        super(anEnum, replaceNumber);
+    }
+    public TextObject(SeleniumEnums anEnum, String replaceWord) {
+        super(anEnum, replaceWord);
+    }
+    public TextObject(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+        super(anEnum, replaceWord, replaceNumber);
+    }
+
+    @Override
+    public ElementInterface compareText(String expected) {
+        String actual = getText();
+        if (!expected.equals(actual)) {
+            addError(this.myEnum.toString(), "Expected = " + expected + "\nActual = " + actual);
+        }
+        return this;
+    }
+
+    @Override
+    public ElementInterface compareText() {
+        return compareText(myEnum.getText());
+    }
+
+    public String getText(){
+        return selenium.getText(myEnum);
+    }
+}

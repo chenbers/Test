@@ -1,31 +1,21 @@
 package com.inthinc.pro.automation.elements;
 
+import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
-public class TextButton extends Button implements TextBased {
+public class TextButton extends ClickableText implements TextBased, Clickable {
     
     public TextButton(SeleniumEnums anEnum) {
         super(anEnum);
     }
-
-    //TODO: jwimmer: seems like there should be a way to get these to USE the Text.compareText(...) implementations
-    @Override
-    public ElementInterface compareText(String expected) {
-        String actual = getText();
-        if (!expected.equals(actual)) {
-            addError(this.myEnum.toString(), "Expected = " + expected + "\nActual = " + actual);
-        }
-        return this;
+    public TextButton(SeleniumEnums anEnum, Integer replaceNumber) {
+        super(anEnum, replaceNumber);
     }
-
-    @Override
-    public ElementInterface compareText() {
-        return compareText(myEnum.getText());
+    public TextButton(SeleniumEnums anEnum, String replaceWord) {
+        super(anEnum, replaceWord);
     }
-
-    @Override
-    public String getText() {
-        return selenium.getText(myEnum);
+    public TextButton(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+        super(anEnum, replaceWord, replaceNumber);
     }
 }
