@@ -2,8 +2,8 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 
 public enum WebUtilEnum implements SeleniumEnums {
     DURATION_30DAYS("durationPanelHeaderDays",null,null,null,null),
@@ -65,6 +65,22 @@ public enum WebUtilEnum implements SeleniumEnums {
     }
     @Override
     public List<String> getLocators() {        
-        return SeleniumEnumUtil.getLocators(this);
+        return SeleniumEnum.locators(this);
+    }
+    
+    @Override
+    public  WebUtilEnum replaceNumber(String number) {
+        ID = ID.replace("###", number);
+        xpath = xpath.replace("###", number);
+        xpath_alt = xpath_alt.replace("###", number);
+        return this;
+    }
+
+    @Override
+    public  WebUtilEnum replaceWord(String word) {
+        ID = ID.replace("***", word);
+        xpath = xpath.replace("***", word);
+        xpath_alt = xpath_alt.replace("***", word);
+        return this;
     }
 }

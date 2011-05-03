@@ -2,8 +2,8 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
@@ -125,8 +125,26 @@ public enum AdminBarEnum implements SeleniumEnums {
     public String getURL() {
         return url;
     }
+    
     @Override
     public List<String> getLocators() {        
-        return SeleniumEnumUtil.getLocators(this);
+        return SeleniumEnum.locators(this);
+    }
+    
+    @Override
+    public AdminBarEnum replaceNumber(String number) {
+        //TODO: automation team: can we pull this out???
+        ID = ID.replace("###", number);
+        xpath = xpath.replace("###", number);
+        xpath_alt = xpath_alt.replace("###", number);
+        return this;
+    }
+
+    @Override
+    public AdminBarEnum replaceWord(String word) {
+        ID = ID.replace("***", word);
+        xpath = xpath.replace("***", word);
+        xpath_alt = xpath_alt.replace("***", word);
+        return this;
     }
 }

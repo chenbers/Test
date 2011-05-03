@@ -2,8 +2,8 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Xpath;
 import com.inthinc.pro.automation.utils.Id;
 
@@ -170,21 +170,21 @@ public enum MyAccountEnum implements SeleniumEnums {
 
     ;
 
-    private String ID, text, url, xpath, xpathAlt;
+    private String ID, text, url, xpath, xpath_alt;
 
-    private MyAccountEnum(String text, String ID, String xpath, String xpathAlt) {
+    private MyAccountEnum(String text, String ID, String xpath, String xpath_alt) {
         this.ID = ID;
         this.text = text;
         this.xpath = xpath;
-        this.xpathAlt = xpathAlt;
+        this.xpath_alt = xpath_alt;
         this.url = null;
     }
 
-    private MyAccountEnum(String text, String ID, Xpath xpath, Xpath xpathAlt) {
+    private MyAccountEnum(String text, String ID, Xpath xpath, Xpath xpath_alt) {
         this.ID = ID;
         this.text = text;
         this.xpath = xpath.toString();
-        this.xpathAlt = xpathAlt.toString();
+        this.xpath_alt = xpath_alt.toString();
         this.url = null;
     }
 
@@ -193,7 +193,7 @@ public enum MyAccountEnum implements SeleniumEnums {
         this.ID = null;
         this.text = null;
         this.xpath = null;
-        this.xpathAlt = null;
+        this.xpath_alt = null;
     }
 
     public String getID() {
@@ -213,14 +213,31 @@ public enum MyAccountEnum implements SeleniumEnums {
     }
 
     public String getXpath_alt() {
-        return xpathAlt;
+        return xpath_alt;
     }
 
     public void setText(String text) {
         this.text = text;
     }
+
     @Override
     public List<String> getLocators() {        
-        return SeleniumEnumUtil.getLocators(this);
+        return SeleniumEnum.locators(this);
+    }
+    
+    @Override
+    public  MyAccountEnum replaceNumber(String number) {
+        ID = ID.replace("###", number);
+        xpath = xpath.replace("###", number);
+        xpath_alt = xpath_alt.replace("###", number);
+        return this;
+    }
+
+    @Override
+    public  MyAccountEnum replaceWord(String word) {
+        ID = ID.replace("***", word);
+        xpath = xpath.replace("***", word);
+        xpath_alt = xpath_alt.replace("***", word);
+        return this;
     }
 }

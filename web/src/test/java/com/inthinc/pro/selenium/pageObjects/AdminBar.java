@@ -1,70 +1,70 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextLinkContextSense;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 
 public abstract class AdminBar extends NavigationBar {
     
     public class AdminBarLinks {
 
-        public TextLink adminAccount() {
-            return new TextLink(AdminBarEnum.ACCOUNT);
+        public TextLinkContextSense adminAccount() {
+            return new TextLinkContextSense(AdminBarEnum.ACCOUNT);
         }
 
-        public TextLink adminAddCustomRole() {
-            return new TextLink(AdminBarEnum.ADD_CUSTOM_ROLE);
+        public TextLinkContextSense adminAddCustomRole() {
+            return new TextLinkContextSense(AdminBarEnum.ADD_CUSTOM_ROLE);
         }
 
-        public TextLink adminAddRedFlag() {
-            return new TextLink(AdminBarEnum.ADD_RED_FLAG);
+        public TextLinkContextSense adminAddRedFlag() {
+            return new TextLinkContextSense(AdminBarEnum.ADD_RED_FLAG);
         }
 
-        public TextLink adminAddReport() {
-            return new TextLink(AdminBarEnum.ADD_REPORT);
+        public TextLinkContextSense adminAddReport() {
+            return new TextLinkContextSense(AdminBarEnum.ADD_REPORT);
         }
 
-        public TextLink adminAddUser() {
-            return new TextLink(AdminBarEnum.ADD_USER);
+        public TextLinkContextSense adminAddUser() {
+            return new TextLinkContextSense(AdminBarEnum.ADD_USER);
         }
 
-        public TextLink adminAddVehicle() {
-            return new TextLink(AdminBarEnum.ADD_VEHICLE);
+        public TextLinkContextSense adminAddVehicle() {
+            return new TextLinkContextSense(AdminBarEnum.ADD_VEHICLE);
         }
 
-        public TextLink adminCustomRoles() {
-            return new TextLink(AdminBarEnum.CUSTOM_ROLES);
+        public TextLinkContextSense adminCustomRoles() {
+            return new TextLinkContextSense(AdminBarEnum.CUSTOM_ROLES);
         }
 
-        public TextLink adminDevices() {
-            return new TextLink(AdminBarEnum.DEVICES);
+        public TextLinkContextSense adminDevices() {
+            return new TextLinkContextSense(AdminBarEnum.DEVICES);
         }
 
-        public TextLink adminOrganization() {
-            return new TextLink(AdminBarEnum.ORGANIZATION);
+        public TextLinkContextSense adminOrganization() {
+            return new TextLinkContextSense(AdminBarEnum.ORGANIZATION);
         }
 
-        public TextLink adminRedFlags() {
-            return new TextLink(AdminBarEnum.RED_FLAGS);
+        public TextLinkContextSense adminRedFlags() {
+            return new TextLinkContextSense(AdminBarEnum.RED_FLAGS);
         }
 
-        public TextLink adminReports() {
-            return new TextLink(AdminBarEnum.REPORTS);
+        public TextLinkContextSense adminReports() {
+            return new TextLinkContextSense(AdminBarEnum.REPORTS);
         }
 
-        public TextLink adminSpeedByStreet() {
-            return new TextLink(AdminBarEnum.SPEED_BY_STREET);
+        public TextLinkContextSense adminSpeedByStreet() {
+            return new TextLinkContextSense(AdminBarEnum.SPEED_BY_STREET);
         }
 
-        public TextLink adminUsers() {
-            return new TextLink(AdminBarEnum.USERS);
+        public TextLinkContextSense adminUsers() {
+            return new TextLinkContextSense(AdminBarEnum.USERS);
         }
 
-        public TextLink adminVehicles() {
-            return new TextLink(AdminBarEnum.VEHICLES);
+        public TextLinkContextSense adminVehicles() {
+            return new TextLinkContextSense(AdminBarEnum.VEHICLES);
         }
 
-        public TextLink adminZones_click() {
-            return new TextLink(AdminBarEnum.ZONES);
+        public TextLinkContextSense adminZones_click() {
+            return new TextLinkContextSense(AdminBarEnum.ZONES);
         }
     }
 

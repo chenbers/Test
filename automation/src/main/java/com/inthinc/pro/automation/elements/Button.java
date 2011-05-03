@@ -1,8 +1,10 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 
-public class Button extends Link {
+
+public class Button extends Link implements Clickable{
     public Button(SeleniumEnums anEnum) {
         super(anEnum);
     }

@@ -6,7 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
 
 public class FindBy extends By {
 

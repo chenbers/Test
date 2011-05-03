@@ -2,8 +2,8 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
@@ -104,21 +104,20 @@ public enum DivisionEnum implements SeleniumEnums {
     
     TREND_SUPER_TITLE(Xpath.start().tbody(Id.id("trendTable:summaryitems:tb")).td("2")),
     
-    TREND_GROUP_SORT("Division/Team", "trendTable:executive:***header", Xpath.start().th("2").div()),
+    TREND_GROUP_SORT("Division/Team"/*, "trendTable:executive:***header:sortDiv"*/, Xpath.start().th("2").div()),
     
-    TREND_SCORE_SORT("Score", "trendTable:executive:***header", Xpath.start().th("3").div()),
+    TREND_SCORE_SORT("Score"/*, "trendTable:executive:***header:sortDiv"*/, Xpath.start().th("3").div()),
     
-    TREND_CRASH_SORT("Crash/Mil", "trendTable:executive:crashesheader", Xpath.start().th("4").div()),
+    TREND_CRASH_SORT("Crash/Mil", "trendTable:executive:crashesheader:sortDiv", Xpath.start().th("4").div()),
     
     
-    TREND_GROUP_LINK(null, "trendTable:executive:***:executive-trendGroup", 
-            Xpath.start().tbody(Id.id("trendTable:executive:tb")).tr("***").td("2")),
+    TREND_GROUP_LINK(null, "trendTable:executive:###:executive-trendGroup", 
+            Xpath.start().tbody(Id.id("trendTable:executive:tb")).tr("###").td("2")),
             
-    TREND_GROUP_SCORE(null, "trendTable:executive:***:executive-trendGroup", 
-            Xpath.start().tbody(Id.id("trendTable:executive:tb")).tr("***").td("3")),
+    TREND_GROUP_SCORE(null, "trendTable:executive:###:executive-trendGroup", 
+            Xpath.start().tbody(Id.id("trendTable:executive:tb")).tr("###").td("3")),
        
-    TREND_GROUP_CRASH_NUMBER(null, "trendTable:executive:***:executive-trendGroup", 
-            Xpath.start().tbody(Id.id("trendTable:executive:tb")).tr("***").td("4")),
+    TREND_GROUP_CRASH_NUMBER(Xpath.start().td(Id.id("trendTable:executive:###:crashes")).span("2")),
     
     
     IDLING_TITLE("Speeding % (mi) ", Xpath.start().div(Id.id("idlePercentageOutputPanel_body")).div().div().span(Id.clazz("line"))),
@@ -135,7 +134,7 @@ public enum DivisionEnum implements SeleniumEnums {
     
     FLEET_LEGEND_TITLE("Fleet Legend", Xpath.start().span(Id.clazz("legend"))),
     
-    FLEET_LEGEND_GROUP(null, "icos2:***", Xpath.start().tr(Id.clazz("rich-table-row carlegend"), "***").td("***")),
+    FLEET_LEGEND_GROUP(null, "icos2:###", Xpath.start().tr(Id.clazz("rich-table-row carlegend"), "###").td("###")),
     
     ; 
   
@@ -206,6 +205,22 @@ public enum DivisionEnum implements SeleniumEnums {
     }
     @Override
     public List<String> getLocators() {        
-        return SeleniumEnumUtil.getLocators(this);
+        return SeleniumEnum.locators(this);
+    }
+    
+    @Override
+    public DivisionEnum replaceNumber(String number) {
+        ID = ID.replace("###", number);
+        xpath = xpath.replace("###", number);
+        xpath_alt = xpath_alt.replace("###", number);
+        return this;
+    }
+
+    @Override
+    public DivisionEnum replaceWord(String word) {
+        ID = ID.replace("***", word);
+        xpath = xpath.replace("***", word);
+        xpath_alt = xpath_alt.replace("***", word);
+        return this;
     }
 }

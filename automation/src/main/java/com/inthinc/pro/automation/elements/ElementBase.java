@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
 
@@ -16,8 +16,8 @@ public class ElementBase implements ElementInterface {
 
     protected SeleniumEnums myEnum;
     protected String text;
-    protected String replaceWord;
-    protected Integer replaceNumber;
+    
+    protected HashMap<String, String> current;
 
     public ElementBase(SeleniumEnums anEnum) {
         this(anEnum, null, null);
@@ -34,15 +34,19 @@ public class ElementBase implements ElementInterface {
     public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         this.text = anEnum.getText();
         this.myEnum = anEnum;
-        this.replaceWord = replaceWord;
-        this.replaceNumber = replaceNumber;
+        if (replaceWord!=null){
+            anEnum.replaceNumber(replaceNumber.toString());
+        }
+        if (replaceWord!=null){
+            anEnum.replaceWord(replaceWord);
+        }
         selenium = GlobalSelenium.getSelenium();
         webDriver = selenium.getWrappedDriver();
     }
 
     @Override
     public boolean isVisible() {
-        return selenium.isVisible(myEnum, replaceWord, replaceNumber);
+        return selenium.isVisible(myEnum);
     }
 
     @Override
@@ -53,7 +57,7 @@ public class ElementBase implements ElementInterface {
 
     @Override
     public ElementInterface focus() {
-        selenium.focus(myEnum, replaceWord, replaceNumber);
+        selenium.focus(myEnum);
         return this;
     }
 
@@ -116,21 +120,17 @@ public class ElementBase implements ElementInterface {
     
     protected void setCurrentLocation(){
         String[] address = getCurrentLocation().split("/"); //TODO: jwimmer: doesn't seem very robust on pages where MORE than the last portion of the URL is significant?
-        String[] longUrl = {"protocol", "", "urlandport", "appPath", "label", "section", "page"};
-        String[] shortUrl = {"protocol", "", "urlandport", "appPath", "page"};
-        HashMap<String, String> current = new HashMap<String, String>();
+        current = new HashMap<String, String>();
         current.put("protocol", address[0]);
         String[] url = address[2].split(":");
         current.put("url", url[0]);
         current.put("port", url[1]);
         current.put("appPath", address[3]);
+        current.put("page", address[address.length-1]);
         
-        if (address.length == longUrl.length){
+        if (address.length == 7){
             current.put("label", address[4]);
             current.put("section", address[5]);
-            current.put("page", address[6]);    
-        }else if (address.length == shortUrl.length){
-            current.put("page", address[4]);
         }
     }
     

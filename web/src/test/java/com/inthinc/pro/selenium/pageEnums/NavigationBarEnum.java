@@ -2,8 +2,9 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
 
 public enum NavigationBarEnum implements SeleniumEnums {
 
@@ -17,17 +18,17 @@ public enum NavigationBarEnum implements SeleniumEnums {
     SEARCH_BOX(null, "navigation:layout-redirectSearch", "//input[@class='text']", null),
     SEARCH_DROP_DOWN("  Drivers\n    Vehicles\n    Idling\n    Devices", "navigation:layout-navigationRedirectTo", "//select[@class='text']", null),
     SEARCH_BUTTON(null, "navigation:layout-navigation_search_button", "//input[@title='Search']", null),
-
+    
     ;
 
     
-    private String text, ID, xpath, xpathAlt, url=null;
+    private String text, ID, xpath, xpath_alt, url=null;
     
-    private NavigationBarEnum(String text, String ID, String xpath, String xpathAlt) {
+    private NavigationBarEnum(String text, String ID, String xpath, String xpath_alt) {
         this.text = text;
         this.ID = ID;
         this.xpath = xpath;
-        this.xpathAlt = xpathAlt;
+        this.xpath_alt = xpath_alt;
     }
     
     public String getID() {
@@ -47,7 +48,7 @@ public enum NavigationBarEnum implements SeleniumEnums {
     }
 
     public String getXpath_alt() {
-        return xpathAlt;
+        return xpath_alt;
     }
 
     public void setText(String text) {
@@ -55,6 +56,22 @@ public enum NavigationBarEnum implements SeleniumEnums {
     }
     @Override
     public List<String> getLocators() {        
-        return SeleniumEnumUtil.getLocators(this);
+        return SeleniumEnum.locators(this);
+    }
+    
+    @Override
+    public  NavigationBarEnum replaceNumber(String number) {
+        ID = ID.replace("###", number);
+        xpath = xpath.replace("###", number);
+        xpath_alt = xpath_alt.replace("###", number);
+        return this;
+    }
+
+    @Override
+    public  NavigationBarEnum replaceWord(String word) {
+        ID = ID.replace("***", word);
+        xpath = xpath.replace("***", word);
+        xpath_alt = xpath_alt.replace("***", word);
+        return this;
     }
 }

@@ -3,6 +3,8 @@ package com.inthinc.pro.automation.enums;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
 public class SeleniumEnumUtil {
     /**
      * Returns a List of Strings representing the non-null locators for anEnum
@@ -78,6 +80,20 @@ public class SeleniumEnumUtil {
         @Override
         public List<String> getLocators() {        
             return SeleniumEnumUtil.getLocators(this);
+        }
+
+        @Override
+        public UtilEnum replaceNumber(String number) {
+            return null;
+            // TODO: dtanner Auto-generated method stub
+            
+        }
+
+        @Override
+        public UtilEnum replaceWord(String word) {
+            return null;
+            // TODO: dtanner Auto-generated method stub
+            
         }
     }
 }

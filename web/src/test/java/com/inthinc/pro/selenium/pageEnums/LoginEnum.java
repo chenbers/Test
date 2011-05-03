@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
 
 // Enums have format NAME( Text, ID, X-Path, X-Path-Alternate )
 
@@ -126,8 +127,24 @@ public enum LoginEnum implements SeleniumEnums {
 	public String getError() {
 	    return this.name();
 	}
+
     @Override
     public List<String> getLocators() {        
-        return SeleniumEnumUtil.getLocators(this);
+        return SeleniumEnum.locators(this);
+    }
+    @Override
+    public  LoginEnum replaceNumber(String number) {
+        ID = ID.replace("###", number);
+        xpath = xpath.replace("###", number);
+        xpath_alt = xpath_alt.replace("###", number);
+        return this;
+    }
+
+    @Override
+    public  LoginEnum replaceWord(String word) {
+        ID = ID.replace("***", word);
+        xpath = xpath.replace("***", word);
+        xpath_alt = xpath_alt.replace("***", word);
+        return this;
     }
 }

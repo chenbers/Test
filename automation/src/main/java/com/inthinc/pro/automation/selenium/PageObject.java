@@ -2,7 +2,7 @@ package com.inthinc.pro.automation.selenium;
 
 import java.util.HashMap;
 
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 
 public class PageObject {

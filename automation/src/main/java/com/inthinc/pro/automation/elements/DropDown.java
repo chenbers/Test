@@ -3,26 +3,29 @@ package com.inthinc.pro.automation.elements;
 import org.openqa.selenium.By;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 
-public class SelectBox extends Text implements Selectable {
+public class DropDown extends Text implements Selectable {
     
-    public SelectBox(SeleniumEnums anEnum) {
+    public DropDown(SeleniumEnums anEnum) {
         super(anEnum);
     }
-    public SelectBox(SeleniumEnums anEnum, Integer replaceNumber) {
+    public DropDown(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
     }
-    public SelectBox(SeleniumEnums anEnum, String replaceWord) {
+    public DropDown(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
     }
-    public SelectBox(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+    public DropDown(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
     }
+    
 
     @Override
     public ElementInterface select(String fullMatch) {
         selenium.select(myEnum, fullMatch);
+        String selected = selenium.getSelectedLabel(myEnum);
+        assertEquals(selected, fullMatch);
         return this;
     }
 
@@ -30,6 +33,8 @@ public class SelectBox extends Text implements Selectable {
     public ElementInterface select(Integer optionNumber) {
         optionNumber--;
         selenium.select(myEnum, "index="+optionNumber);
+        String selected = selenium.getSelectedIndex(myEnum);
+        assertEquals(selected, optionNumber.toString());
         return this;
     }
 

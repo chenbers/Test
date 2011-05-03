@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
 import com.google.common.base.Supplier;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 import com.thoughtworks.selenium.DefaultSelenium;
 
 /****************************************************************************************
@@ -37,30 +37,30 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         errors = new ErrorCatcher();
     }
 
-    public CoreMethodLib addtoPanel(SeleniumEnums checkIt, String itemtomove) {
-        addSelection(getLocator(checkIt) + "-from", itemtomove);
-        click(getLocator(checkIt) + "-move_right");
+    public CoreMethodLib addtoPanel(SeleniumEnums myEnum, String itemtomove) {
+        addSelection(getLocator(myEnum) + "-from", itemtomove);
+        click(getLocator(myEnum) + "-move_right");
         pause(2);
         return this;
     }
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#click(String)}
-     * @param checkIt
+     * @param myEnum
      * @param replacement
      * @return
      */
-    public CoreMethodLib click(SeleniumEnums checkIt) {
-        return click(checkIt, null, null);
+    public CoreMethodLib click(SeleniumEnums myEnum) {
+        return click(myEnum, null, null);
     }
     
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#click(String)}
-     * @param checkIt
+     * @param myEnum
      * @param replacement
      * @return
      */
-    public CoreMethodLib click(SeleniumEnums checkIt, String replaceString, Integer replaceNumber) {
-        String element = getLocator(checkIt, replaceString, replaceNumber);
+    public CoreMethodLib click(SeleniumEnums myEnum, String replaceString, Integer replaceNumber) {
+        String element = getLocator(myEnum, replaceString, replaceNumber);
         String error_name = "click: " + element;
         try {
             click(element);
@@ -104,6 +104,18 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         timeFrame[10] = "Past Year";
 
         return timeFrame;
+    }
+    
+    public String getSelectedIndex(SeleniumEnums myEnum){
+        String element = getLocator(myEnum);
+        String error_name = "select: " + element;
+        try {
+            return getSelectedIndex(element);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }return null;
     }
 
     public static String[] getFiveDayPeriodLong() {
@@ -217,11 +229,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#getSelectedLabel(String)}
-     * @param checkIt
+     * @param myEnum
      * @return
      */
-    public String getSelectedLabel(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
+    public String getSelectedLabel(SeleniumEnums myEnum) {
+        String element = getLocator(myEnum);
         String error_name = "select: " + element;
         try {
             return getSelectedLabel(element);
@@ -235,21 +247,21 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#focus(String)}
-     * @param checkIt
+     * @param myEnum
      * @return
      */
-    public CoreMethodLib focus(SeleniumEnums checkIt) {
-        return focus(checkIt, null, null);
+    public CoreMethodLib focus(SeleniumEnums myEnum) {
+        return focus(myEnum, null, null);
     }
     
     /**
-     * @param checkIt
+     * @param myEnum
      * @param replaceWord
      * @param replaceNumber
      * @return
      */
-    public CoreMethodLib focus(SeleniumEnums checkIt, String replaceWord, Integer replaceNumber) {
-        String element = getLocator(checkIt, replaceWord, replaceNumber);
+    public CoreMethodLib focus(SeleniumEnums myEnum, String replaceWord, Integer replaceNumber) {
+        String element = getLocator(myEnum, replaceWord, replaceNumber);
         String error_name = "focus: " + element;
         try {
             focus(element);
@@ -263,22 +275,22 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#getTable(String)}
-     * @param checkIt
+     * @param myEnum
      * @return
      */
-    public String getTable(SeleniumEnums checkIt) {
-        return getTable(checkIt, null, null);
+    public String getTable(SeleniumEnums myEnum) {
+        return getTable(myEnum, null, null);
     }
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#getTable(String)}
-     * @param checkIt
+     * @param myEnum
      * @param row
      * @param col
      * @return
      */
-    public String getTable(SeleniumEnums checkIt, Integer row, Integer col) {
-        StringBuffer element = new StringBuffer(getLocator(checkIt));
+    public String getTable(SeleniumEnums myEnum, Integer row, Integer col) {
+        StringBuffer element = new StringBuffer(getLocator(myEnum));
         String error_name = "Click: " + element;
         String text = "";
         try {
@@ -295,22 +307,22 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#getText(String)}
-     * @param checkIt
+     * @param myEnum
      * @return
      */
-    public String getText(SeleniumEnums checkIt) {
-        return getText(checkIt, null, null);
+    public String getText(SeleniumEnums myEnum) {
+        return getText(myEnum, null, null);
     }
     
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#getText(String)}
-     * @param checkIt
+     * @param myEnum
      * @param replacement
      * @param replacmentNumber
      * @return
      */
-    public String getText(SeleniumEnums checkIt, String replacement, Integer replaceNumber) {
-        String element = getLocator(checkIt, replacement, replaceNumber);
+    public String getText(SeleniumEnums myEnum, String replacement, Integer replaceNumber) {
+        String element = getLocator(myEnum, replacement, replaceNumber);
         String error_name = "getText: " + element;
         String text = "";
         try {
@@ -334,12 +346,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#isChecked(String)}
-     * @param checkIt
+     * @param myEnum
      * @param condition
      * @return
      */
-    public Boolean isChecked(SeleniumEnums checkIt, String condition) {
-        String element = getLocator(checkIt);
+    public Boolean isChecked(SeleniumEnums myEnum, String condition) {
+        String element = getLocator(myEnum);
         String error_name = "isChecked: " + element;
         try {
             return isChecked(element);
@@ -352,8 +364,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
     //TODO: jwimmer: dTanner: determine why we need/want this if we already have isChecked
     //error_name will be isNotChecked (vs isChecked)
-    public Boolean isNotChecked(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
+    public Boolean isNotChecked(SeleniumEnums myEnum) {
+        String element = getLocator(myEnum);
         String error_name = "isNotChecked: " + element;
         try {
             return !isChecked(element);
@@ -368,8 +380,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     //TODO: jwimmer: determine why we need/want this if we already have isElementPresent
   //error_name will be isElementNotPresent (vs isElementPresent)
-    public Boolean isElementNotPresent(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
+    public Boolean isElementNotPresent(SeleniumEnums myEnum) {
+        String element = getLocator(myEnum);
         String error_name = "isElementNotPresent: " + element;
         try {
             return !isElementPresent(element);
@@ -383,21 +395,21 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#isElementPresent(String)}
-     * @param checkIt
+     * @param myEnum
      * @return
      */
-    public Boolean isElementPresent(SeleniumEnums checkIt) {
-        return isElementPresent(checkIt, null, null);
+    public Boolean isElementPresent(SeleniumEnums myEnum) {
+        return isElementPresent(myEnum, null, null);
     }
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#isElementPresent(String)}
-     * @param checkIt
+     * @param myEnum
      * @param replacementWord
      * @param replacementNumber
      * @return
      */
-    public Boolean isElementPresent(SeleniumEnums checkIt, String replacementWord, Integer replacementNumber) {
-        String element = getLocator(checkIt, replacementWord, replacementNumber);
+    public Boolean isElementPresent(SeleniumEnums myEnum, String replacementWord, Integer replacementNumber) {
+        String element = getLocator(myEnum, replacementWord, replacementNumber);
         String error_name = "isElementPresent: " + element;
         try {
             return isElementPresent(element);
@@ -444,21 +456,21 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#isVisible(String)}
-     * @param checkIt
+     * @param myEnum
      * @return
      */
-    public Boolean isVisible(SeleniumEnums checkIt) {
-        return isVisible(checkIt, null, null);
+    public Boolean isVisible(SeleniumEnums myEnum) {
+        return isVisible(myEnum, null, null);
     }
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#isVisible(String)}
-     * @param checkIt
+     * @param myEnum
      * @param replacementWord
      * @param replacementNumber
      * @return
      */
-    public Boolean isVisible(SeleniumEnums checkIt, String replacementWord, Integer replacementNumber) {
-        String element = getLocator(checkIt, replacementWord, replacementNumber);
+    public Boolean isVisible(SeleniumEnums myEnum, String replacementWord, Integer replacementNumber) {
+        String element = getLocator(myEnum, replacementWord, replacementNumber);
         String error_name = "isVisible: " + element;
         try {
             return isVisible(element);
@@ -471,8 +483,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     }
     //TODO: jwimmer: determine why we need/want this if we already have isVisible
     //error_name will be isNotVisisble (vs isVisible)
-    public Boolean isNotVisible(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
+    public Boolean isNotVisible(SeleniumEnums myEnum) {
+        String element = getLocator(myEnum);
         String error_name = "isNotVisible: " + element;
         try {
             return !isVisible(element);
@@ -484,8 +496,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return null;
     }
 
-    public CoreMethodLib moveallPanel(SeleniumEnums checkIt, String moveoption) {
-        String element = getLocator(checkIt);
+    public CoreMethodLib moveallPanel(SeleniumEnums myEnum, String moveoption) {
+        String element = getLocator(myEnum);
         if (moveoption.contentEquals("Right")) {
             click(element + "-move_all_right");
         } else if (moveoption.contentEquals("Left")) {
@@ -497,11 +509,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#open(String)}
-     * @param checkIt
+     * @param myEnum
      * @return
      */
-    public CoreMethodLib open(SeleniumEnums checkIt) {
-        String element = checkIt.getURL();
+    public CoreMethodLib open(SeleniumEnums myEnum) {
+        String element = myEnum.getURL();
         String error_name = "open: " + element;
         try {
             open(element);
@@ -525,21 +537,21 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
 
-    public CoreMethodLib removefromPanel(SeleniumEnums checkIt, String itemtomove) {
-        addSelection(getLocator(checkIt) + "-picked", itemtomove);
-        click(getLocator(checkIt) + "-move_left");
+    public CoreMethodLib removefromPanel(SeleniumEnums myEnum, String itemtomove) {
+        addSelection(getLocator(myEnum) + "-picked", itemtomove);
+        click(getLocator(myEnum) + "-move_left");
         pause(2);
         return this;
     }
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#select(String, String)}
-     * @param checkIt
+     * @param myEnum
      * @param label
      * @return
      */
-    public CoreMethodLib select(SeleniumEnums checkIt, String label) {
-        String element = getLocator(checkIt);
+    public CoreMethodLib select(SeleniumEnums myEnum, String label) {
+        String element = getLocator(myEnum);
         String error_name = "select: " + element + " : Label = " + label;
 
         try {
@@ -640,12 +652,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#type(String, String)}
-     * @param checkIt
+     * @param myEnum
      * @param text
      * @return
      */
-    public CoreMethodLib type(SeleniumEnums checkIt, String text) {
-        String element = getLocator(checkIt);
+    public CoreMethodLib type(SeleniumEnums myEnum, String text) {
+        String element = getLocator(myEnum);
         String error_name = "type: " + element;
         try {
             type(element, text);
@@ -657,8 +669,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
 
-    public Boolean verifyLocation(SeleniumEnums checkIt) {
-        return checkIt.getURL().equals(getLocator(checkIt));
+    public Boolean verifyLocation(SeleniumEnums myEnum) {
+        return myEnum.getURL().equals(getLocator(myEnum));
     }
 
     public Boolean verifyLocation(String expected) {
@@ -730,10 +742,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#mouseDown(String)}
-     * @param checkIt
+     * @param myEnum
      */
-    public void mouseOver(SeleniumEnums checkIt) {
-        String element = getLocator(checkIt);
+    public void mouseOver(SeleniumEnums myEnum) {
+        String element = getLocator(myEnum);
         String error_name = "mouseOver: " + element;
         try {
             mouseOver(element);

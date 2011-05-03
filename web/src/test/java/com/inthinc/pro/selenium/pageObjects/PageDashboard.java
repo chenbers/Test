@@ -2,201 +2,174 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.StringTokenizer;
 
+import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.TableText;
+import com.inthinc.pro.automation.elements.TableTextLink;
+import com.inthinc.pro.automation.elements.TextButton;
+import com.inthinc.pro.automation.elements.TimeLink;
 import com.inthinc.pro.selenium.pageEnums.DivisionEnum;
 
-public class PageDashboard extends NavigationBar{
-    
-    public static enum Duration{ //TODO: jwimmer: question for dtanner: these enum values seem a little out of place.  I'd rather see them someplace like the UtilEnum.java that pwehan put together (i.e. an enum for items that are not specific to a SINGLE page, but aren't necessarily part of an abstract pageObject like masthead)
-        DAYS_30("durationPanelHeaderDays"),
-        MONTHS_3("durationPanelHeaderThreeMonths"),
-        MONTHS_6("durationPanelHeaderSixMonths"),
-        MONTHS_12("durationPanelHeaderTwelveMonths"),
-        ;
-        
-        private String duration;
-        
-        private Duration(String duration){
-            this.duration = duration;
+public class PageDashboard extends NavigationBar {
+
+    public class DashboardButtons extends NavigationBar.NavigationBarButtons {
+
+        public Button fuelEfficiencyExpand() {
+            return new Button(DivisionEnum.FUEL_EFFICIENCY_EXPAND);
+        }
+
+        public TextButton idlingToolsEmail() {
+            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, idling);
+        }
+
+        public TextButton idlingToolsEmailCancel() {
+            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, idling);
+        }
+
+        public TextButton idlingToolsEmailSend() {
+            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, idling);
+        }
+
+        public Button liveFleetExpand() {
+            return new Button(DivisionEnum.LIVE_FLEET_EXPAND);
+        }
+
+        public TextButton mpgToolsEmail() {
+            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, mpg);
+        }
+
+        public TextButton mpgToolsEmailCancel() {
+            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, mpg);
+        }
+
+        public TextButton mpgToolsEmailSend() {
+            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, mpg);
+        }
+
+        public Button overallExpand() {
+            return new Button(DivisionEnum.OVERALL_EXPAND);
+        }
+
+        public TextButton overallToolsEmail() {
+            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, overall);
+        }
+
+        public TextButton overallToolsEmailCancel() {
+            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, overall);
+        }
+
+        public TextButton overallToolsEmailSend() {
+            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, overall);
+        }
+
+        public TextButton overviewToolsEmail() {
+            return new TextButton(DivisionEnum.OVERVIEW_EMAIL_BUTTON);
+        }
+
+        public TextButton overviewToolsEmailCancel() {
+            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON);
+        }
+
+        public TextButton overviewToolsEmailSend() {
+            return new TextButton(DivisionEnum.OVERVIEW_SEND_BUTTON);
+        }
+
+        public TextButton speedToolsEmail() {
+            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, speed);
+        }
+
+        public TextButton speedToolsEmailCancel() {
+            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, overall);
+        }
+
+        public TextButton speedToolsEmailSend() {
+            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, overall);
+        }
+
+        public Button trendExpand() {
+            return new Button(DivisionEnum.TREND_EXPAND);
+        }
+
+        public TextButton trendToolsEmail() {
+            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, trend);
+        }
+
+        public TextButton trendToolsEmailCancel() {
+            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, overall);
+        }
+
+        public TextButton trendToolsEmailSend() {
+            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, overall);
+        }
+
+    }
+
+    public class DashboardLinks extends NavigationBar.NavigationBarLinks {
+
+        public TimeLink fuelEfficiencyDuration() {
+            return new TimeLink(DivisionEnum.FUEL_EFFICIENCY_DURATION);
+        }
+
+        public TimeLink idlingDuration() {
+            return new TimeLink(DivisionEnum.IDLING_DURATION);
+        }
+
+        public TimeLink overallDuration() {
+            return new TimeLink(DivisionEnum.OVERALL_DURATION);
+        }
+
+        public TimeLink speedingDuration() {
+            return new TimeLink(DivisionEnum.SPEEDING_DURATION);
+        }
+
+        public TimeLink trendDuration() {
+            return new TimeLink(DivisionEnum.TREND_DURATION);
         }
         
-        public String getDuration(){
-            return duration;
+        public TableTextLink groupName(){
+            return new TableTextLink(DivisionEnum.TREND_GROUP_LINK);
         }
     }
     
-    
-    public void link_overallToolsEmail_click() {
-//        selenium.click(DivisionEnum.OVERALL_TOOLS);
-//        selenium.click(DivisionEnum.OVERALL_TOOLS_EMAIL);
+    public DashboardText _text(){
+        return new DashboardText();
     }
     
-    public void link_overallToolsEmailCancel_click() {
-//        selenium.click(DivisionEnum.OVERALL_TOOLS_EMAIL_CANCEL);       
-    }
-    
-    public void link_overallToolsEmailEmail_click() {
-//        selenium.click(DivisionEnum.OVERALL_TOOLS_EMAIL_EMAIL);       
-    }
-    
-//    public void menu_overallPDF_click() {
-//        selenium.click(DivisionEnum.OVERALL_TOOLS);
-//        selenium.click(DivisionEnum.OVERALL_TOOLS_PDF);
-//    }
-    
-    public void link_mpgChartToolsEmail_click() {
-//        selenium.click(DivisionEnum.MPG_CHART_TOOLS);
-//        selenium.click(DivisionEnum.MPG_CHART_TOOLS_EMAIL);
-    }
-    
-    public void link_mpgChartToolsEmailCancel_click() {
-//        selenium.click(DivisionEnum.MPG_CHART_TOOLS_EMAIL_CANCEL);                
-    }
-    
-    public void link_mpgChartToolsEmailEmail_click() {
-//        selenium.click(DivisionEnum.MPG_CHART_TOOLS_EMAIL_EMAIL);                
-    }    
-    
-//    public void link_mpgPDF_click() {
-//        selenium.click(DivisionEnum.OVERALL_TOOLS);
-//        selenium.click(DivisionEnum.OVERALL_TOOLS_PDF);
-//    }
-    
-    public void link_speedPercentageToolsEmail_click() {
-//        selenium.click(DivisionEnum.SPEED_PERCENTAGE_TOOLS);
-//        selenium.click(DivisionEnum.SPEED_PERCENTAGE_TOOLS_EMAIL);
-    }
-    
-    public void link_speedPercentageToolsEmailCancel_click() {
-//        selenium.click(DivisionEnum.SPEED_PERCENTAGE_TOOLS_EMAIL_CANCEL);               
-    }
-    
-    public void link_speedPercentageToolsEmailEmail_click() {
-//        selenium.click(DivisionEnum.SPEED_PERCENTAGE_TOOLS_EMAIL_EMAIL);               
-    }
-    
-//    public void menu_speedPercentagePDF_click() {
-//        selenium.click(DivisionEnum.OVERALL_TOOLS);
-//        selenium.click(DivisionEnum.OVERALL_TOOLS_PDF);
-//    }
-    
-    public void link_trendToolsEmail_click() {
-//        selenium.click(DivisionEnum.TREND_TOOLS);
-//        selenium.click(DivisionEnum.TREND_TOOLS_EMAIL);
-    }
-    
-    public void link_trendToolsEmailCancel_click() {
-//        selenium.click(DivisionEnum.TREND_TOOLS_EMAIL_CANCEL);                
-    }
-    
-    public void link_trendToolsEmailEmail_click() {
-//        selenium.click(DivisionEnum.TREND_TOOLS_EMAIL_EMAIL);                
-    }
-    
-//    public void menu_trendPDF_click() {
-//        selenium.click(DivisionEnum.TREND_TOOLS);
-//        selenium.click(DivisionEnum.TREND_TOOLS_PDF);
-//    }
-    
-    public void link_idlingPercentageToolsEmail_click() {
-//        selenium.click(DivisionEnum.IDLING_PERCENTAGE_TOOLS);
-//        selenium.click(DivisionEnum.IDLING_PERCENTAGE_TOOLS_EMAIL);
-    }
-    
-    public void link_idlingPercentageToolsEmailCancel_click() {
-//        selenium.click(DivisionEnum.IDLING_PERCENTAGE_TOOLS_EMAIL_CANCEL);               
-    }
-    
-    public void link_idlingPercentageToolsEmailEmail_click() {
-//       selenium.click(DivisionEnum.IDLING_PERCENTAGE_TOOLS_EMAIL_EMAIL);               
-    }
-    
-//    public void menu_idlingPercentagePDF_click() {
-//        selenium.click(DivisionEnum.IDLING_PERCENTAGE_TOOLS);
-//        selenium.click(DivisionEnum.IDLING_PERCENTAGE_TOOLS_PDF);        
-//    }
-    
-    public void link_dashboardHelp_click() {
-//        selenium.click(DivisionEnum.HELP_INVOKE);
-    }
-    
-    public void link_overallDuration_click(Duration durationQualifier) {
-        clickDuration(DivisionEnum.OVERALL_DURATION,  durationQualifier);
-    }
-    
-    private void clickDuration(DivisionEnum locator, Duration duration){
-        selenium.click(locator.getID() + duration.getDuration() );
-        selenium.pause(10);
+    public class DashboardText extends NavigationBar.NavigationBarTexts{
+
+        public TableText groupScore(){
+            return new TableText(DivisionEnum.TREND_GROUP_LINK);
+        }
+        
+        public TableText groupCrash(){
+            return new TableText(DivisionEnum.TREND_GROUP_CRASH_NUMBER);
+        }
     }
 
-    public void link_trendDuration_click(Duration durationQualifier) {
-        clickDuration(DivisionEnum.TREND_DURATION,  durationQualifier);
+    private String overall = "overallScore", speed = "speedPercentagePanel", trend = "trend";
+
+    private String idling = "idlingPercentagePanel", mpg = "mpgChart";
+
+    public DashboardButtons _button() {
+        return new DashboardButtons();
     }
 
-    public void link_fuelEfficiencyDuration_click(Duration durationQualifier) {
-        clickDuration(DivisionEnum.FUEL_EFFICIENCY_DURATION,  durationQualifier);
+    public DashboardLinks _link() {
+        return new DashboardLinks();
     }
 
-    public void link_speedingDuration_click(Duration durationQualifier) {
-        clickDuration(DivisionEnum.SPEEDING_DURATION,  durationQualifier);
-    }
-
-    public void link_idlingDuration_click(Duration durationQualifier) {
-        clickDuration(DivisionEnum.IDLING_DURATION,  durationQualifier);
-    }
-    
-    public void link_overallExpand_click() {
-        selenium.click(DivisionEnum.OVERALL_EXPAND);
-    }
-    
-    public void link_trendExpand_click() {
-        selenium.click(DivisionEnum.TREND_EXPAND);
-    }
-    
-    public void link_fuelEfficiencyExpand_click() {
-        selenium.click(DivisionEnum.FUEL_EFFICIENCY_EXPAND);
-    }
-    
-    public void link_liveFleetExpand_click() {
-        selenium.click(DivisionEnum.LIVE_FLEET_EXPAND);
-    }    
-    
-    public void link_dashboardOverallRestore_click() {
-//        selenium.click(DivisionEnum.OVERALL_RESTORE);
-    }
-    
-    public void link_dashboardTrendRestore_click() {
-//        selenium.click(DivisionEnum.TREND_RESTORE);
-    }
-    
-    public void link_dashboardFuelEfficiencyRestore_click() {
-//        selenium.click(DivisionEnum.FUEL_EFFICIENCY_RESTORE);
-    }
-    
-    public void link_dashboardLiveFleetRestore_click() {
-//        selenium.click(DivisionEnum.LIVE_FLEET_RESTORE);
-    }  
-    
-    public void link_liveFleetRefresh_click() {
-        selenium.click(DivisionEnum.LIVE_FLEET_REFRESH);
-    }
-    
-    public void link_trendTable_click(Integer row) {
-//        clickIt(DivisionEnum.TREND_TABLE_LINE.getID(), row);        
-    }
-    
     private void clickIt(String rowQualifier, Integer row) {
-        if ( row != null ) {
-            rowQualifier = insertRow(rowQualifier,row);
+        if (row != null) {
+            rowQualifier = insertRow(rowQualifier, row);
         }
         selenium.click(rowQualifier);
-        
+
         // makes sure the next "thing" is there
         selenium.pause(10);
     }
-    
-    private String insertRow(String rowQualifier,Integer row) {
-        StringTokenizer st = new StringTokenizer(rowQualifier,":");
-        
+
+    private String insertRow(String rowQualifier, Integer row) {
+        StringTokenizer st = new StringTokenizer(rowQualifier, ":");
+
         StringBuffer sb = new StringBuffer();
         sb.append(st.nextToken());
         sb.append(":");
@@ -206,8 +179,7 @@ public class PageDashboard extends NavigationBar{
         sb.append(":");
         st.nextToken();
         sb.append(st.nextToken());
-        
+
         return sb.toString();
-    }    
-  
+    }
 }

@@ -1,5 +1,7 @@
 package com.inthinc.pro.automation.enums;
 
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
 
 public interface SeleniumValueEnums {
     

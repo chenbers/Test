@@ -2,7 +2,7 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 
 public class TextLink extends ClickableText implements TextBased, Clickable {
     
@@ -18,6 +18,4 @@ public class TextLink extends ClickableText implements TextBased, Clickable {
     public TextLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
     }
-
-    
 }

@@ -8,42 +8,55 @@
 
 package com.inthinc.pro.selenium.pageObjects;
 
-
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
-public abstract class Masthead extends AbstractPage{
-    
-    public class MastheadTexts {
-        public Text version() {return new Text(MastheadEnum.VERSION);}
-        public Text copyright() {return new Text(MastheadEnum.COPYRIGHT);}
-    }
-    public class MastheadTextFields {}
-    public class MastheadLinks {
-        public TextLink myAccount() {return new TextLink(MastheadEnum.MY_ACCOUNT);}
-        public TextLink myMessages() {return new TextLink(MastheadEnum.MY_MESSAGES);}
-        public TextLink logout() {return new TextLink(MastheadEnum.LOGOUT);}
-        public TextLink support() {return new TextLink(MastheadEnum.SUPPORT);}
-        public TextLink legalNotice() {return new TextLink(MastheadEnum.LEGAL_NOTICE);}
-        public TextLink privacyPolicy() {return new TextLink(MastheadEnum.PRIVACY_POLICY);}
-        public TextLink help() {return new TextLink(MastheadEnum.HELP);}
-    }
-    public class MastheadButtons {}
-    public class MastheadSelects {}
-   
-    public void section_header_validate() {
-        selenium.isElementPresent(MastheadEnum.LOGO);
-        selenium.isElementPresent(MastheadEnum.HELP);
-        selenium.isElementPresent(MastheadEnum.MY_MESSAGES);
-        selenium.isElementPresent(MastheadEnum.MY_ACCOUNT);
-        selenium.isElementPresent(MastheadEnum.LOGOUT);
+public abstract class Masthead extends AbstractPage {
 
-        assertEquals(MastheadEnum.HELP);
-        assertEquals(MastheadEnum.MY_MESSAGES);
-        assertEquals(MastheadEnum.MY_ACCOUNT);
-        assertEquals(MastheadEnum.LOGOUT);
+    protected class MastheadButtons {}
+    
+    protected class MastheadLinks {
+        public TextLink help() {
+            return new TextLink(MastheadEnum.HELP);
+        }
+
+        public TextLink legalNotice() {
+            return new TextLink(MastheadEnum.LEGAL_NOTICE);
+        }
+
+        public TextLink logout() {
+            return new TextLink(MastheadEnum.LOGOUT);
+        }
+
+        public TextLink myAccount() {
+            return new TextLink(MastheadEnum.MY_ACCOUNT);
+        }
+
+        public TextLink myMessages() {
+            return new TextLink(MastheadEnum.MY_MESSAGES);
+        }
+
+        public TextLink privacyPolicy() {
+            return new TextLink(MastheadEnum.PRIVACY_POLICY);
+        }
+
+        public TextLink support() {
+            return new TextLink(MastheadEnum.SUPPORT);
+        }
+    }
+    protected class MastheadTextFields {}
+    protected class MastheadDropDowns {}
+
+    protected class MastheadTexts {
+        public Text copyright() {
+            return new Text(MastheadEnum.COPYRIGHT);
+        }
+
+        public Text version() {
+            return new Text(MastheadEnum.VERSION);
+        }
     }
 
     public void section_footer_validate() {
@@ -57,5 +70,18 @@ public abstract class Masthead extends AbstractPage{
         assertEquals(MastheadEnum.PRIVACY);
         assertEquals(MastheadEnum.LEGAL);
         assertEquals(MastheadEnum.SUPPORT);
+    }
+
+    public void section_header_validate() {
+        selenium.isElementPresent(MastheadEnum.LOGO);
+        selenium.isElementPresent(MastheadEnum.HELP);
+        selenium.isElementPresent(MastheadEnum.MY_MESSAGES);
+        selenium.isElementPresent(MastheadEnum.MY_ACCOUNT);
+        selenium.isElementPresent(MastheadEnum.LOGOUT);
+
+        assertEquals(MastheadEnum.HELP);
+        assertEquals(MastheadEnum.MY_MESSAGES);
+        assertEquals(MastheadEnum.MY_ACCOUNT);
+        assertEquals(MastheadEnum.LOGOUT);
     }
 }

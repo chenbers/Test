@@ -2,8 +2,8 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnumUtil;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
 
 public enum DriverReportEnum implements SeleniumEnums {
     TEAM_SEARCH(null,"drivers-form:drivers:groupfsp",null,null,null),
@@ -15,12 +15,12 @@ public enum DriverReportEnum implements SeleniumEnums {
     STYLE_SCORE_FILTER(null,null,"//div[@id='drivers-form:drivers:styleScoreheader:sortDiv']/span/span/span/div/img",null,null),
     SEATBELT_SCORE_FILTER(null,null,"//div[@id='drivers-form:drivers:seatbeltScoreheader:sortDiv']/span/span/span/div/img",null,null),
     DRIVER_FORM(null,"drivers-form",null,null,null),
-    TEAM(null,"drivers-form:drivers:0:driversDashboard",null,null,null),
-    DRIVER(null,"drivers-form:drivers:0:driversDriverPerformance",null,null,null),
-    VEHICLE(null,"drivers-form:drivers:0:driversVehiclePerformance",null,null,null),
-    OVERALL(null,"drivers-form:drivers:0:overallScore",null,null,null),        // not correct search term
-    STYLE(null,"drivers-form:drivers:0:styleScore",null,null,null),            // not correct search term
-    SEATBELT(null,"drivers-form:drivers:0:seatbeltScore",null,null,null)       // not correct search term
+    TEAM(null,"drivers-form:drivers:###:driversDashboard",null,null,null),
+    DRIVER(null,"drivers-form:drivers:###:driversDriverPerformance",null,null,null),
+    VEHICLE(null,"drivers-form:drivers:###:driversVehiclePerformance",null,null,null),
+    OVERALL(null,"drivers-form:drivers:###:overallScore",null,null,null),        // not correct search term
+    STYLE(null,"drivers-form:drivers:###:styleScore",null,null,null),            // not correct search term
+    SEATBELT(null,"drivers-form:drivers:###:seatbeltScore",null,null,null)       // not correct search term
     ;
     
     private String text, ID, xpath, xpath_alt, url;
@@ -68,8 +68,26 @@ public enum DriverReportEnum implements SeleniumEnums {
         // TODO Auto-generated method stub
         return this.url;
     }
+
+
     @Override
     public List<String> getLocators() {        
-        return SeleniumEnumUtil.getLocators(this);
+        return SeleniumEnum.locators(this);
+    }
+    
+    @Override
+    public  DriverReportEnum replaceNumber(String number) {
+        ID = ID.replace("###", number);
+        xpath = xpath.replace("###", number);
+        xpath_alt = xpath_alt.replace("###", number);
+        return this;
+    }
+
+    @Override
+    public  DriverReportEnum replaceWord(String word) {
+        ID = ID.replace("***", word);
+        xpath = xpath.replace("***", word);
+        xpath_alt = xpath_alt.replace("***", word);
+        return this;
     }
 }
