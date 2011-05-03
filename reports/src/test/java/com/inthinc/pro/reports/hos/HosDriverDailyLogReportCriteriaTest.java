@@ -241,8 +241,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     public void gainTestCases() {
 
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-//int testCaseCnt = 10; {
-System.out.println("TestCase: " + testCaseCnt);            
+//int testCaseCnt = 13; {
+//System.out.println("TestCase: " + testCaseCnt);            
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,

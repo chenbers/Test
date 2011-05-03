@@ -27,6 +27,7 @@ import com.inthinc.pro.dao.RedFlagDAO;
 import com.inthinc.pro.dao.ReportDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.StateMileageDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
 import com.inthinc.pro.dao.util.DateUtil;
@@ -102,7 +103,8 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
     private StateMileageDAO stateMileageDAO;
     private DriveTimeDAO driveTimeDAO;
     private DriverPerformanceDAO driverPerformanceDAO;
-    
+    private UserDAO userDAO;
+
 
 
     private Locale locale;
@@ -565,6 +567,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         hosDailyDriverLogReportCriteria.setAccountDAO(accountDAO);
         hosDailyDriverLogReportCriteria.setHosDAO(hosDAO);
         hosDailyDriverLogReportCriteria.setAddressDAO(addressDAO);
+        hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, driverID, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -578,6 +581,7 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
         hosDailyDriverLogReportCriteria.setAccountDAO(accountDAO);
         hosDailyDriverLogReportCriteria.setHosDAO(hosDAO);
         hosDailyDriverLogReportCriteria.setAddressDAO(addressDAO);
+        hosDailyDriverLogReportCriteria.setUserDAO(userDAO);
         
         hosDailyDriverLogReportCriteria.init(accountGroupHierarchy, groupIDList, interval);
         return hosDailyDriverLogReportCriteria.getCriteriaList();
@@ -1151,6 +1155,15 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
 
     public void setDriverPerformanceDAO(DriverPerformanceDAO driverPerformanceDAO) {
         this.driverPerformanceDAO = driverPerformanceDAO;
+    }
+
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
 

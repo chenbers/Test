@@ -37,6 +37,7 @@ import com.inthinc.pro.dao.AddressDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.dao.UserDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Account;
@@ -44,6 +45,7 @@ import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
+import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
@@ -70,6 +72,7 @@ public class HosDailyDriverLogReportCriteria {
     private DriverDAO driverDAO;
     private GroupDAO groupDAO;
     private HOSDAO hosDAO;
+    private UserDAO userDAO;
     
     private static final String BASE_LOG_GRAPH_IMAGE_PATH = "hos/hosLog.jpg";
     
@@ -477,9 +480,21 @@ public class HosDailyDriverLogReportCriteria {
              !remarkLog.getLocation().equals(remarkLog.getOriginalLocation())))
              remarkLog.setLocationEdited(true);
         else remarkLog.setLocationEdited(false);
+        if (remarkLog.getEdited() && hosRecord.getEditUserID() != null)
+            remarkLog.setEditor(getEditUserFullName(hosRecord.getEditUserID()));
+        else remarkLog.setEditor("");
         return remarkLog;
     }
     
+
+    private String getEditUserFullName(Integer editUserID) {
+        
+        User user = userDAO.findByID(editUserID);
+        if (user == null || user.getPerson() == null)
+            return "";
+        return user.getPerson().getFullName();
+    }
+
     private String getStatusDescription(HOSRecord hosRecord) {
         
         
@@ -723,5 +738,12 @@ public class HosDailyDriverLogReportCriteria {
         this.addressDAO = addressDAO;
     }
 
+    public UserDAO getUserDAO() {
+        return userDAO;
+    }
+
+    public void setUserDAO(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
 }

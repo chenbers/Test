@@ -16,7 +16,14 @@ public class RemarkLog {
     private Number      startOdometer;
     private String      statusDescription;
     private Boolean     locationEdited;
+    private String      editor;
     
+    public String getEditor() {
+        return editor;
+    }
+    public void setEditor(String editor) {
+        this.editor = editor;
+    }
     public Boolean getLocationEdited() {
         return locationEdited;
     }
