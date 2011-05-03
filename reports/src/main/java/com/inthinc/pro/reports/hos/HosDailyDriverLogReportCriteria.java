@@ -8,8 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -38,6 +40,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.Account;
@@ -46,6 +49,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.model.hos.HOSVehicleDayData;
@@ -73,6 +77,7 @@ public class HosDailyDriverLogReportCriteria {
     private GroupDAO groupDAO;
     private HOSDAO hosDAO;
     private UserDAO userDAO;
+    private VehicleDAO vehicleDAO;
     
     private static final String BASE_LOG_GRAPH_IMAGE_PATH = "hos/hosLog.jpg";
     
@@ -85,6 +90,7 @@ public class HosDailyDriverLogReportCriteria {
     
     private static int MAX_RULESET_DAYSBACK = 24;
 
+    private Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
 
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) 
     {
@@ -282,7 +288,7 @@ public class HosDailyDriverLogReportCriteria {
                     for (HOSRecord hosRecord :hosRecordList)
                         if (hosRecord.getHosLogID().toString().equals(rec.getId())) {
                             vehicleInfo.setStartOdometer(hosRecord.getVehicleOdometer());
-                            vehicleInfo.setName(hosRecord.getVehicleName());
+                            vehicleInfo.setName(getVehicleNameStr(rec.getVehicleID()));
                             vehicleInfo.setVehicleID(rec.getVehicleID());
                             vehicleInfo.setMilesDriven(hosDAO.fetchMileageForDayDriverVehicle(day, driverID, rec.getVehicleID()));
                             vehicleInfoList.add(vehicleInfo);
@@ -292,6 +298,32 @@ public class HosDailyDriverLogReportCriteria {
             }
         }
         return vehicleInfoList;
+    }
+
+    private String getVehicleNameStr(Integer vehicleID)
+    {
+        Vehicle vehicle = vehicleMap.get(vehicleID);
+        if (vehicle == null) {
+            vehicle = vehicleDAO.findByID(vehicleID);
+            vehicleMap.put(vehicleID, vehicle);
+        }
+        if (vehicle == null) {
+            return "";
+        }
+        String returnStr = "";
+        if (vehicle.getName() != null) {
+            String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.header.vehicleName");
+            returnStr += MessageFormat.format(formatString, new Object[] {
+                vehicle.getName() });
+        }
+        if (vehicle.getLicense() != null && !vehicle.getLicense().isEmpty()) {
+            String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.header.vehicleLicense");
+            if (!returnStr.isEmpty())
+                returnStr += " - ";
+            returnStr += MessageFormat.format(formatString, new Object[] {
+                vehicle.getLicense()});
+        }
+        return returnStr;
     }
 
     private void adjustForOccupantTravelTime(List<HOSRecord> hosRecordList, HOSAdjustedList adjustedList, Date endDate) {
@@ -535,7 +567,7 @@ public class HosDailyDriverLogReportCriteria {
             }
         }
         
-        return statusString;
+        return statusString.trim();
 
     }
 
@@ -744,6 +776,14 @@ public class HosDailyDriverLogReportCriteria {
 
     public void setUserDAO(UserDAO userDAO) {
         this.userDAO = userDAO;
+    }
+
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
+    }
+
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
     }
 
 }
