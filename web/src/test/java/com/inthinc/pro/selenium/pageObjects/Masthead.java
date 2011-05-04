@@ -8,6 +8,7 @@
 
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.selenium.AbstractPage;
@@ -58,30 +59,22 @@ public abstract class Masthead extends AbstractPage {
             return new Text(MastheadEnum.VERSION);
         }
     }
-
-    public void section_footer_validate() {
-        selenium.isElementPresent(MastheadEnum.COPYRIGHT);
-        selenium.isElementPresent(MastheadEnum.PRIVACY);
-        selenium.isElementPresent(MastheadEnum.LEGAL);
-        selenium.isElementPresent(MastheadEnum.SUPPORT);
-        selenium.isElementPresent(MastheadEnum.VERSION);
-
-        assertEquals(MastheadEnum.COPYRIGHT);
-        assertEquals(MastheadEnum.PRIVACY);
-        assertEquals(MastheadEnum.LEGAL);
-        assertEquals(MastheadEnum.SUPPORT);
-    }
-
-    public void section_header_validate() {
-        selenium.isElementPresent(MastheadEnum.LOGO);
-        selenium.isElementPresent(MastheadEnum.HELP);
-        selenium.isElementPresent(MastheadEnum.MY_MESSAGES);
-        selenium.isElementPresent(MastheadEnum.MY_ACCOUNT);
-        selenium.isElementPresent(MastheadEnum.LOGOUT);
-
-        assertEquals(MastheadEnum.HELP);
-        assertEquals(MastheadEnum.MY_MESSAGES);
-        assertEquals(MastheadEnum.MY_ACCOUNT);
-        assertEquals(MastheadEnum.LOGOUT);
+    
+    public class MastheadValidation{
+        public void footer(){
+            ElementBase test =  new ElementBase();
+            test.validateElementsPresent(MastheadEnum.COPYRIGHT,MastheadEnum.PRIVACY,MastheadEnum.LEGAL,
+                    MastheadEnum.SUPPORT,MastheadEnum.VERSION);
+            test.validateTextMatches(MastheadEnum.COPYRIGHT,MastheadEnum.PRIVACY,MastheadEnum.LEGAL,
+                    MastheadEnum.SUPPORT,MastheadEnum.VERSION);
+        }
+        
+        public void header(){
+            ElementBase test =  new ElementBase();
+            test.validateElementsPresent(MastheadEnum.LOGO,MastheadEnum.HELP, MastheadEnum.MY_MESSAGES,
+                    MastheadEnum.MY_ACCOUNT, MastheadEnum.LOGOUT);
+            test.validateTextMatches(MastheadEnum.LOGO,MastheadEnum.HELP, MastheadEnum.MY_MESSAGES,
+                    MastheadEnum.MY_ACCOUNT, MastheadEnum.LOGOUT);
+        }
     }
 }

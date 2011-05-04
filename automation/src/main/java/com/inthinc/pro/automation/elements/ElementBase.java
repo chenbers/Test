@@ -5,7 +5,8 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
 
@@ -14,10 +15,14 @@ public class ElementBase implements ElementInterface {
     protected CoreMethodLib selenium;
     protected WebDriver webDriver;
 
-    protected SeleniumEnums myEnum;
+    protected AutomationEnum myEnum;
     protected String text;
     
     protected HashMap<String, String> current;
+    
+    public ElementBase(){
+        this(AutomationEnum.PLACE_HOLDER, null, null);
+    }
 
     public ElementBase(SeleniumEnums anEnum) {
         this(anEnum, null, null);
@@ -33,15 +38,19 @@ public class ElementBase implements ElementInterface {
 
     public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         this.text = anEnum.getText();
-        this.myEnum = anEnum;
+        setEnum(anEnum);
         if (replaceWord!=null){
-            anEnum.replaceNumber(replaceNumber.toString());
+            myEnum.replaceNumber(replaceNumber.toString());
         }
         if (replaceWord!=null){
-            anEnum.replaceWord(replaceWord);
+            myEnum.replaceWord(replaceWord);
         }
         selenium = GlobalSelenium.getSelenium();
         webDriver = selenium.getWrappedDriver();
+    }
+    
+    private void setEnum(SeleniumEnums anEnum){
+        this.myEnum = AutomationEnum.PLACE_HOLDER.setEnum(anEnum);
     }
 
     @Override
@@ -53,6 +62,10 @@ public class ElementBase implements ElementInterface {
     public ElementInterface validate() {
         assertEquals(myEnum);
         return this;
+    }
+    
+    protected Boolean isElementPresent(){
+        return selenium.isElementPresent(myEnum);
     }
 
     @Override
@@ -81,6 +94,12 @@ public class ElementBase implements ElementInterface {
             addError(actual + " == " + expected);
         }
     }
+    
+    public void assertTrue(Boolean test) {
+        if (!test) {
+            addError(myEnum.toString());
+        }
+    }
 
     public void assertNotEquals(Object expected, SeleniumEnums actual) {
         assertNotEquals(expected, actual.getText());
@@ -99,19 +118,23 @@ public class ElementBase implements ElementInterface {
     }
 
     public void assertEquals(Object expected, SeleniumEnums actual) {
-        assertEquals(expected, actual.getText());
+        assertEquals(expected, selenium.getText(AutomationEnum.PLACE_HOLDER.setEnum(actual)));
     }
 
     public void assertEquals(SeleniumEnums anEnum) {
-        assertEquals(selenium.getText(anEnum), anEnum.getText());
+        assertEquals(selenium.getText(AutomationEnum.PLACE_HOLDER.setEnum(anEnum)), anEnum.getText());
+    }
+    
+    public void assertEquals(){
+        assertEquals(myEnum);
     }
 
     public SeleniumEnums getMyEnum() {
         return myEnum;
     }
 
-    public void setMyEnum(SeleniumEnums myEnum) {
-        this.myEnum = myEnum;
+    public void setMyEnum(SeleniumEnums anEnum) {
+        this.myEnum = AutomationEnum.PLACE_HOLDER.setEnum(anEnum);
     }
 
     public CoreMethodLib getselenium() {
@@ -119,7 +142,9 @@ public class ElementBase implements ElementInterface {
     }
     
     protected void setCurrentLocation(){
-        String[] address = getCurrentLocation().split("/"); //TODO: jwimmer: doesn't seem very robust on pages where MORE than the last portion of the URL is significant?
+        String uri = getCurrentLocation();
+        logger.info(uri);
+        String[] address = uri.split("/"); //TODO: jwimmer: doesn't seem very robust on pages where MORE than the last portion of the URL is significant?
         current = new HashMap<String, String>();
         current.put("protocol", address[0]);
         String[] url = address[2].split(":");
@@ -137,4 +162,18 @@ public class ElementBase implements ElementInterface {
     public String getCurrentLocation() {
         return selenium.getLocation();
     }
+    
+    public void validateElementsPresent(SeleniumEnums ...enums){
+        for (SeleniumEnums enumerated: enums){
+            setEnum(enumerated);
+            assertTrue(isElementPresent());
+        }
+    }
+    
+    public void validateTextMatches(SeleniumEnums ...enums){
+        for (SeleniumEnums enumerated: enums){
+            assertEquals(enumerated);
+        }
+    }
+    
 }

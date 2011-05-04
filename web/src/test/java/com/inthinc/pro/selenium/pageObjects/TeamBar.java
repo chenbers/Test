@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.selenium.pageEnums.TeamBarEnum;
 import com.inthinc.pro.selenium.pageEnums.TeamTimeFrames;
 
@@ -61,8 +62,9 @@ public abstract class TeamBar extends NavigationBar {
     }
 
     public TeamBar section_timeSelectors_validate() {
+        ElementBase validate = new ElementBase();
         for (TeamTimeFrames selector : EnumSet.allOf(TeamTimeFrames.class)) {
-            assertEquals(selector);
+            validate.validateTextMatches(selector);
         }
         return this;
     }

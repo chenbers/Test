@@ -1,7 +1,7 @@
 package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public abstract class TextObject extends ElementBase implements TextBased {
 

@@ -2,7 +2,7 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public class TableTextLink extends TextLink implements Clickable, TextBased {
     private TableText table = new TableText(myEnum);

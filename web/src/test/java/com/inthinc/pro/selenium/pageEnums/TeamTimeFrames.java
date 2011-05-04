@@ -1,10 +1,10 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
+
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum TeamTimeFrames implements SeleniumEnums {
     DAYS_AGO_TODAY(CoreMethodLib.getTimeFrameOptions()[0], "timeFrameForm:timeFrameToday"),
@@ -49,23 +49,6 @@ public enum TeamTimeFrames implements SeleniumEnums {
     @Override
     public void setText(String text) {
         this.text = text;
-    }
-
-    @Override
-    public List<String> getLocators() {  
-        List<String> ids = new ArrayList<String>(1);
-        ids.add(ID);
-        return ids;
-    }
-    
-    @Override
-    public TeamTimeFrames replaceNumber(String number) {
-        return this;
-    }
-
-    @Override
-    public TeamTimeFrames replaceWord(String word) {
-        return this;
     }
 
 }

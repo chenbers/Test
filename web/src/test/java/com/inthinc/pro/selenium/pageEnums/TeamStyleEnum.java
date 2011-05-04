@@ -1,9 +1,9 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnum;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
+import com.inthinc.pro.automation.enums.SeleniumEnums;
+
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
@@ -78,25 +78,5 @@ public enum TeamStyleEnum implements SeleniumEnums {
 
     public String getURL() {
         return url;
-    }
-    @Override
-    public List<String> getLocators() {        
-        return SeleniumEnum.locators(this);
-    }
-    
-    @Override
-    public  TeamStyleEnum replaceNumber(String number) {
-        ID = ID.replace("###", number);
-        xpath = xpath.replace("###", number);
-        xpath_alt = xpath_alt.replace("###", number);
-        return this;
-    }
-
-    @Override
-    public  TeamStyleEnum replaceWord(String word) {
-        ID = ID.replace("***", word);
-        xpath = xpath.replace("***", word);
-        xpath_alt = xpath_alt.replace("***", word);
-        return this;
     }
 }

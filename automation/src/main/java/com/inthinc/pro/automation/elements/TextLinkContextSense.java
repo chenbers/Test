@@ -2,7 +2,7 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public class TextLinkContextSense extends TextLink implements TextBased, Clickable {
     public TextLinkContextSense(SeleniumEnums anEnum) {

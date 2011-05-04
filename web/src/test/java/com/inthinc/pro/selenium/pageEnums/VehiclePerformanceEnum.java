@@ -1,23 +1,18 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import java.util.List;
-
-import com.inthinc.pro.automation.enums.SeleniumEnum;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
-
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum VehiclePerformanceEnum implements SeleniumEnums {
-    VIEW_ALL_TRIPS(null,"vehiclePerformanceTrips",null,null,null)
-    ; 
-    
+    VIEW_ALL_TRIPS(null, "vehiclePerformanceTrips", null, null, null);
+
     private String text, ID, xpath, xpath_alt, url;
-    
-    private VehiclePerformanceEnum( String text, String ID, String xpath, String xpath_alt, String url) {
-        this.text=text;
-        this.ID=ID;
-        this.xpath=xpath;
-        this.xpath_alt=xpath_alt;
-        this.url=url;
+
+    private VehiclePerformanceEnum(String text, String ID, String xpath, String xpath_alt, String url) {
+        this.text = text;
+        this.ID = ID;
+        this.xpath = xpath;
+        this.xpath_alt = xpath_alt;
+        this.url = url;
     }
 
     @Override
@@ -46,34 +41,14 @@ public enum VehiclePerformanceEnum implements SeleniumEnums {
 
     @Override
     public void setText(String text) {
-        // TODO Auto-generated method stub
-        
+    // TODO Auto-generated method stub
+
     }
 
     @Override
     public String getURL() {
         // TODO Auto-generated method stub
-        return null;
-    }
-    
-    @Override
-    public List<String> getLocators() {        
-        return SeleniumEnum.locators(this);
-    }
-    
-    @Override
-    public  VehiclePerformanceEnum replaceNumber(String number) {
-        ID = ID.replace("###", number);
-        xpath = xpath.replace("###", number);
-        xpath_alt = xpath_alt.replace("###", number);
-        return this;
+        return url;
     }
 
-    @Override
-    public  VehiclePerformanceEnum replaceWord(String word) {
-        ID = ID.replace("***", word);
-        xpath = xpath.replace("***", word);
-        xpath_alt = xpath_alt.replace("***", word);
-        return this;
-    }
 }

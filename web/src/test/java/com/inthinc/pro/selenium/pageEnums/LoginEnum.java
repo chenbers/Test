@@ -1,11 +1,11 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import java.util.List;
+
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.inthinc.pro.automation.enums.SeleniumEnum;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
+
 
 
 // Enums have format NAME( Text, ID, X-Path, X-Path-Alternate )
@@ -32,7 +32,7 @@ public enum LoginEnum implements SeleniumEnums {
 	FORGOT_TITLE("Forgot User Name or Password?", null, "//div[@id='forgotPasswordPanelHeader']", null),
 	FORGOT_TEXT("Forgot your user name or password?", null, "//a[@title='Forgot your user name or password?']", null),
 	FORGOT_EMAIL_FIELD(null, "changePasswordForm:email", "//form[@id='changePasswordForm']/div[1]/input", "//input[@id='changePasswordForm:email']"),
-	FORGOT_EMAIL_LABEL("E-mail Address:", null, "//form[@id='changePasswordForm']/div[1]", null),
+	FORGOT_EMAIL_LABEL("E-mail Address:", null, "//form[@id='changePasswordForm']/div[1]/text()[3]", null),
 	FORGOT_CANCEL_BUTTON("Cancel", "changePasswordForm:PasswordCancelButton","//div[@class='popupactions']/buton[@type='button']/span", "//span[@class='cancel']" ),
 	FORGOT_SEND("Send", "changePasswordForm:PasswordSubmitButton", "//div[@class='popupactions']/buton[@type='submit']/span", "//span[@class='retrieve_password']"),
 	FORGOT_CLOSE("Cancel",null, "//div[@id='forgotPasswordPanelContentDiv']/div/img", "//img[@onclick=\"Richfaces.hideModalPanel('forgotPasswordPanel')\"]"),
@@ -128,23 +128,4 @@ public enum LoginEnum implements SeleniumEnums {
 	    return this.name();
 	}
 
-    @Override
-    public List<String> getLocators() {        
-        return SeleniumEnum.locators(this);
-    }
-    @Override
-    public  LoginEnum replaceNumber(String number) {
-        ID = ID.replace("###", number);
-        xpath = xpath.replace("###", number);
-        xpath_alt = xpath_alt.replace("###", number);
-        return this;
-    }
-
-    @Override
-    public  LoginEnum replaceWord(String word) {
-        ID = ID.replace("***", word);
-        xpath = xpath.replace("***", word);
-        xpath_alt = xpath_alt.replace("***", word);
-        return this;
-    }
 }

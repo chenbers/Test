@@ -19,7 +19,7 @@ public class PageDriverReport extends NavigationBar {
         return new DriverReportDropDowns();
     }
     
-    public DriverReportLinks _links(){
+    public DriverReportLinks _link(){
         return new DriverReportLinks();
     }
     
@@ -33,7 +33,7 @@ public class PageDriverReport extends NavigationBar {
     
     public class DriverReportTexts{}
     
-    public class DriverReportLinks{
+    public class DriverReportLinks extends NavigationBarLinks{
         
         public TableTextLink team() {
             return new TableTextLink(DriverReportEnum.TEAM);   
@@ -60,7 +60,7 @@ public class PageDriverReport extends NavigationBar {
         }
     }
     
-    public class DriverReportTextFields{
+    public class DriverReportTextFields extends NavigationBarTextFields{
         
         public TextField driverSearch() {
             return new TextField(DriverReportEnum.DRIVER_SEARCH);        
@@ -79,7 +79,7 @@ public class PageDriverReport extends NavigationBar {
         }
     }
     
-    public class DriverReportDropDowns{
+    public class DriverReportDropDowns extends NavigationBarDropDowns{
 
         public void dropdown_overallScore_selectValue(WebUtilEnum selection) {
             selenium.click(DriverReportEnum.OVERALL_SCORE_FILTER.getXpath());

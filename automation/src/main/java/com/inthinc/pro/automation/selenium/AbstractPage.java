@@ -3,7 +3,7 @@ package com.inthinc.pro.automation.selenium;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 
 

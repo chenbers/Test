@@ -2,7 +2,8 @@ package com.inthinc.pro.automation.selenium;
 
 import java.util.HashMap;
 
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 
 public class PageObject {
@@ -40,6 +41,6 @@ public class PageObject {
     }
     
     public void addError(SeleniumEnums errorName, String error){
-        selenium.getErrors().addError(selenium.getLocator(errorName), error);
+        selenium.getErrors().addError(selenium.getLocator(AutomationEnum.PLACE_HOLDER.setEnum(errorName)), error);
     }
 }

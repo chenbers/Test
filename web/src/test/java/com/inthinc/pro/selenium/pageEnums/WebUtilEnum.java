@@ -1,31 +1,27 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import java.util.List;
-
-import com.inthinc.pro.automation.enums.SeleniumEnum;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum WebUtilEnum implements SeleniumEnums {
-    DURATION_30DAYS("durationPanelHeaderDays",null,null,null,null),
-    DURATION_3MONTHS("durationPanelHeaderThreeMonths",null,null,null,null),
-    DURATION_6MONTHS("durationPanelHeaderSixMonths",null,null,null,null),
-    DURATION_12MONTHS("durationPanelHeaderTwelveMonths",null,null,null,null),
-    FILTER_REMOVE("","1",null,null,null),
-    FILTER_0_TO_1("0.0 - 1.0","2",null,null,null),
-    FILTER_1_TO_2("1.1 - 2.0","3",null,null,null),
-    FILTER_2_TO_3("2.1 - 3.0","4",null,null,null),
-    FILTER_3_TO_4("3.1 - 4.0","5",null,null,null),
-    FILTER_4_TO_5("4.1 - 5.0","6",null,null,null)
-    ;
-    
+    DURATION_30DAYS("durationPanelHeaderDays", null, null, null, null),
+    DURATION_3MONTHS("durationPanelHeaderThreeMonths", null, null, null, null),
+    DURATION_6MONTHS("durationPanelHeaderSixMonths", null, null, null, null),
+    DURATION_12MONTHS("durationPanelHeaderTwelveMonths", null, null, null, null),
+    FILTER_REMOVE("", "1", null, null, null),
+    FILTER_0_TO_1("0.0 - 1.0", "2", null, null, null),
+    FILTER_1_TO_2("1.1 - 2.0", "3", null, null, null),
+    FILTER_2_TO_3("2.1 - 3.0", "4", null, null, null),
+    FILTER_3_TO_4("3.1 - 4.0", "5", null, null, null),
+    FILTER_4_TO_5("4.1 - 5.0", "6", null, null, null);
+
     private String text, ID, xpath, xpath_alt, url;
-    
-    private WebUtilEnum( String text, String ID, String xpath, String xpath_alt, String url) {
-        this.text=text;
-        this.ID=ID;
-        this.xpath=xpath;
-        this.xpath_alt=xpath_alt;
-        this.url=url;
+
+    private WebUtilEnum(String text, String ID, String xpath, String xpath_alt, String url) {
+        this.text = text;
+        this.ID = ID;
+        this.xpath = xpath;
+        this.xpath_alt = xpath_alt;
+        this.url = url;
     }
 
     @Override
@@ -55,32 +51,12 @@ public enum WebUtilEnum implements SeleniumEnums {
     @Override
     public void setText(String text) {
         // TODO Auto-generated method stub
-        this.text=text;
+        this.text = text;
     }
 
     @Override
     public String getURL() {
         // TODO Auto-generated method stub
         return this.url;
-    }
-    @Override
-    public List<String> getLocators() {        
-        return SeleniumEnum.locators(this);
-    }
-    
-    @Override
-    public  WebUtilEnum replaceNumber(String number) {
-        ID = ID.replace("###", number);
-        xpath = xpath.replace("###", number);
-        xpath_alt = xpath_alt.replace("###", number);
-        return this;
-    }
-
-    @Override
-    public  WebUtilEnum replaceWord(String word) {
-        ID = ID.replace("***", word);
-        xpath = xpath.replace("***", word);
-        xpath_alt = xpath_alt.replace("***", word);
-        return this;
     }
 }

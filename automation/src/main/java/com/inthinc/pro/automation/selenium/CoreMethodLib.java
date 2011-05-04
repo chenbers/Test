@@ -9,7 +9,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
 import com.google.common.base.Supplier;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.thoughtworks.selenium.DefaultSelenium;
 
 /****************************************************************************************
@@ -209,6 +210,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @return the best locator string to use for this element, null if none are found in page
      */
     public String getLocator(SeleniumEnums myEnum, String replaceName, Integer replaceNumber) {
+        AutomationEnum blah = AutomationEnum.PLACE_HOLDER.setEnum(myEnum);
         String id = null;
         String number="";
         if (replaceName==null){
@@ -218,7 +220,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             number = replaceNumber.toString();
         } 
 
-        for(String s: myEnum.getLocators()){
+        for(String s: blah.getLocators()){
             id = s.replace("***", replaceName).replace("###", number);
             if(isElementPresent(id)){
                 return id;

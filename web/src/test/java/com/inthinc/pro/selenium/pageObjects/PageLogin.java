@@ -1,5 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+
+import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 /****************************************************************************************
@@ -9,6 +11,7 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
  */
 
 public class PageLogin extends Masthead {
+    private ElementBase validate = new ElementBase();;
 
     public PageLogin bulletText_forgotPasswordMessageSentBullet1_compareText(String expected) {
         String actual = bulletText_forgotPasswordMessegeSentBullet1_getText();
@@ -182,10 +185,7 @@ public class PageLogin extends Masthead {
     }
 
     public PageLogin popup_badCred_validate() {
-        assertEquals(LoginEnum.ERROR_HEADER);
-        assertEquals(LoginEnum.ERROR_MESSAGE);
-        assertEquals(LoginEnum.ERROR_BUTTON_OK);
-        assertEquals(LoginEnum.ERROR_CLOSE);
+        validate.validateTextMatches(LoginEnum.ERROR_HEADER, LoginEnum.ERROR_MESSAGE, LoginEnum.ERROR_BUTTON_OK, LoginEnum.ERROR_CLOSE);
         return this;
     }
     
@@ -237,14 +237,10 @@ public class PageLogin extends Masthead {
     private PageLogin popup_forgotPassword_validate() {
         // verify Forgot password window is displayed as expected
 
-        selenium.isElementPresent(LoginEnum.FORGOT_EMAIL_FIELD);
-        selenium.isElementPresent(LoginEnum.FORGOT_CLOSE);
+        validate.validateElementsPresent(LoginEnum.FORGOT_EMAIL_FIELD, LoginEnum.FORGOT_CLOSE);
 
-        assertEquals(LoginEnum.FORGOT_TITLE);
-        assertEquals(LoginEnum.FORGOT_MESSAGE);
-        assertEquals(LoginEnum.FORGOT_SEND);
-        assertEquals(LoginEnum.FORGOT_CANCEL_BUTTON);
-        assertEquals(LoginEnum.FORGOT_EMAIL_LABEL);
+        validate.validateTextMatches(LoginEnum.FORGOT_TITLE, LoginEnum.FORGOT_MESSAGE, LoginEnum.FORGOT_SEND, 
+                LoginEnum.FORGOT_CANCEL_BUTTON, LoginEnum.FORGOT_EMAIL_LABEL);
         return this;
     }
 
@@ -306,16 +302,8 @@ public class PageLogin extends Masthead {
 
     @Override
     public PageLogin validate() {
-        assertEquals(LoginEnum.FORGOT_TEXT);
-
-        assertEquals(LoginEnum.LOGIN_TEXT);
-
-        selenium.isElementPresent(LoginEnum.LOGIN_BUTTON);
-
-        assertEquals(LoginEnum.USERNAME_LABEL);
-
-        assertEquals(LoginEnum.PASSWORD_LABEL);
-
+        validate.validateTextMatches(LoginEnum.FORGOT_TEXT, LoginEnum.LOGIN_TEXT, LoginEnum.USERNAME_LABEL, 
+                LoginEnum.PASSWORD_LABEL, LoginEnum.LOGIN_BUTTON);
         return this;
     }
 }

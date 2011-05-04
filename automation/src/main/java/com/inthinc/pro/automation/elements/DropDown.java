@@ -3,7 +3,7 @@ package com.inthinc.pro.automation.elements;
 import org.openqa.selenium.By;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public class DropDown extends Text implements Selectable {
     

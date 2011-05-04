@@ -1,9 +1,9 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnum;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
+import com.inthinc.pro.automation.enums.SeleniumEnums;
+
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
@@ -146,25 +146,4 @@ public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
         return url;
     }
 
-
-    @Override
-    public List<String> getLocators() {        
-        return SeleniumEnum.locators(this);
-    }
-    
-    @Override
-    public DriverPerformanceSpeedEnum replaceNumber(String number) {
-        ID = ID.replace("###", number);
-        xpath = xpath.replace("###", number);
-        xpath_alt = xpath_alt.replace("###", number);
-        return this;
-    }
-
-    @Override
-    public DriverPerformanceSpeedEnum replaceWord(String word) {
-        ID = ID.replace("***", word);
-        xpath = xpath.replace("***", word);
-        xpath_alt = xpath_alt.replace("***", word);
-        return this;
-    }
 }

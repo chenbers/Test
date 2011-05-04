@@ -1,9 +1,9 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnum;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
+import com.inthinc.pro.automation.enums.SeleniumEnums;
+
 
 
 public enum NavigationBarEnum implements SeleniumEnums {
@@ -53,25 +53,5 @@ public enum NavigationBarEnum implements SeleniumEnums {
 
     public void setText(String text) {
         this.text = text;
-    }
-    @Override
-    public List<String> getLocators() {        
-        return SeleniumEnum.locators(this);
-    }
-    
-    @Override
-    public  NavigationBarEnum replaceNumber(String number) {
-        ID = ID.replace("###", number);
-        xpath = xpath.replace("###", number);
-        xpath_alt = xpath_alt.replace("###", number);
-        return this;
-    }
-
-    @Override
-    public  NavigationBarEnum replaceWord(String word) {
-        ID = ID.replace("***", word);
-        xpath = xpath.replace("***", word);
-        xpath_alt = xpath_alt.replace("***", word);
-        return this;
     }
 }

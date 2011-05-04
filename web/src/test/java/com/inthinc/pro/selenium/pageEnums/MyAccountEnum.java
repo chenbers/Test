@@ -1,9 +1,9 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import java.util.List;
 
-import com.inthinc.pro.automation.enums.SeleniumEnum;
-import com.inthinc.pro.automation.enums.SeleniumEnum.SeleniumEnums;
+
+import com.inthinc.pro.automation.enums.SeleniumEnums;
+
 import com.inthinc.pro.automation.utils.Xpath;
 import com.inthinc.pro.automation.utils.Id;
 
@@ -220,24 +220,4 @@ public enum MyAccountEnum implements SeleniumEnums {
         this.text = text;
     }
 
-    @Override
-    public List<String> getLocators() {        
-        return SeleniumEnum.locators(this);
-    }
-    
-    @Override
-    public  MyAccountEnum replaceNumber(String number) {
-        ID = ID.replace("###", number);
-        xpath = xpath.replace("###", number);
-        xpath_alt = xpath_alt.replace("###", number);
-        return this;
-    }
-
-    @Override
-    public  MyAccountEnum replaceWord(String word) {
-        ID = ID.replace("***", word);
-        xpath = xpath.replace("***", word);
-        xpath_alt = xpath_alt.replace("***", word);
-        return this;
-    }
 }
