@@ -113,7 +113,7 @@ public class ElementBase implements ElementInterface {
 
     public void assertEquals(Object actual, Object expected) {
         if (!actual.equals(expected)) {
-            addError(actual + " != " + expected);
+            addError(myEnum.toString() +": "+actual + " != " + expected);
         }
     }
 
