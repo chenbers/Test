@@ -3,9 +3,10 @@ package com.inthinc.pro.automation.selenium;
 /**
  * VerbosePage interface ensures that all pageObjects must implement a "minimum" functionality similar to com.inthinc.pro.web.selenium.Page,
  * but these methods are named to be familiar to the non-Programmers (TestCase writers) who will interact with the automation classes.
- *
+ * @deprecated no longer necessary now that we are 
  */
-public interface VerbosePage extends Page {
+@Deprecated
+public interface VerbosePage extends Page { //TODO: jwimmer: VerbosePage should/can go away now that we are using page.type.name.action()... syntax
     /**
      * Verbose version of load().
      * @see com.inthinc.pro.web.selenium.Page#load()

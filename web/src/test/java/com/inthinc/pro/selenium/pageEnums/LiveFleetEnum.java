@@ -20,7 +20,8 @@ public enum LiveFleetEnum  implements SeleniumEnums {
 	LINK_SORT_DISPATCH_BY_GROUP(null, null, "//div[@id='dispatchForm:driversDataTable:groupheader:sortDiv']/span/img", null),
 	LINK_DISPATCH_DRIVER_NEED_INDEX("_VAR_DRIVER_NAME_", null, "dispatchForm:driversDataTable:###:liveFleet-driverPerformance", null),
 	LINK_DISPATCH_VEHICLE_NEED_INDEX("_VAR_VEHICLE_NAME_", null, "dispatchForm:driversDataTable:###:liveFleetsVehiclePerformance", null),
-	LINK_DISPATCH_ICON_NEED_INDEX("_VAR_GROUP_ICON_", null, "//tr[###]/td[4]/a/img", null), 
+	LINK_DISPATCH_ICON_NEED_INDEX("_VAR_GROUP_ICON_", null, "//tr[###]/td[4]/a/img", null),
+	LINK_DISPATCH_DRIVER_NEED_NAME(null, null, "//", null),
 	
 	
 	HEADER_BOX_LIVE_FLEET("Live Fleet", null, "//div[@id='defaultMessage']/h2", null),
@@ -103,6 +104,7 @@ public enum LiveFleetEnum  implements SeleniumEnums {
 	public String getError() {
 	    return this.name();
 	}
+	
 
 
     @Override

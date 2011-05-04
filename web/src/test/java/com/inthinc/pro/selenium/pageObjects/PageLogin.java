@@ -144,7 +144,7 @@ public class PageLogin extends Masthead {
     }
     
     public PageLogin page_login_open() {
-        page_directURL_load();
+        load();
         page_logIn_validate();
         return this;
     }

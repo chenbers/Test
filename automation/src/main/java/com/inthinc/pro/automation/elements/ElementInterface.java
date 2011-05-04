@@ -6,7 +6,7 @@ import com.inthinc.pro.model.File;
 public interface ElementInterface {
     public boolean isVisible();
     public ElementInterface focus();
-    public ElementInterface validate();//TODO: jwimmer: wouldn't it be better if this could return <T implements ElementInterface>
+    public ElementInterface validate();
     public ElementInterface addError(String errorName);
     public ElementInterface addError(String errorName, String error);
     
