@@ -219,8 +219,13 @@
 					
 					<a4j:commandButton value="Get Trips" action="#{tripViewerBean.findTrips}" enabled="#{tripViewerBean.selectedDriver ne null and tripViewerBean.startDate ne null and tripViewerBean.endDate ne null}"
 						reRender="dataSelection:trps,dataSelection:trpsScroller,speedVsLimit:speedLineElement,mpgOverTime:mpgLineElement,dataSelection:error"/>
-					<a4j:commandButton value="Speed vs Limit" enabled="#{tripViewerBean.tripToShow ne null}" reRender="speedVsLimit"/>
-					<a4j:commandButton value="MPG All Trips" enabeld="#{tripViewerBean.trips ne null}" reRender="mpgOverTime"/>
+						
+					<a4j:commandButton value="Speed vs Limit" action="#{tripViewerBean.speedVisible}" 
+						enabled="#{tripViewerBean.tripToShow ne null}" reRender="speedVsLimit,mpgOverTime,selectedTripMap"/>
+						
+					<a4j:commandButton value="MPG All Trips" action="#{tripViewerBean.mpgVisible}" 
+						enabled="#{tripViewerBean.trips ne null}" reRender="mpgOverTime,speedVsLimit,selectedTripMap"/>
+						
 					<a4j:commandButton value="Show Notes" oncomplete="#{rich:component('tripNotes')}.show()" />	
 																
                 </h:panelGrid>
@@ -231,7 +236,8 @@
                 <rich:dataTable id="trps" var="t" value="#{tripViewerBean.trips}" 
                 	width="100%" cellpadding="0" rows="2" >
                 
-                    <a4j:support event="onRowClick" reRender="script,selectedTripMap,statusPanel" oncomplete="bodyLoad();">
+                    <a4j:support event="onRowClick" action="#{tripViewerBean.tripVisible}" 
+                    	reRender="script,selectedTripMap,statusPanel,mpgOverTime,speedVsLimit" oncomplete="bodyLoad();">
                         <f:setPropertyActionListener value="#{t}" target="#{tripViewerBean.tripToShow}" />
                     </a4j:support>
                                 
@@ -281,35 +287,41 @@
 		<tr>
 		<td valign="top">
 		<a4j:form id="selectedTripMap">
-                    <rich:panel style="border: 3px black solid;width: 620px; height: 820px;" >
+                    <rich:panel style="border: 3px black solid;width: 820px; height: 820px;"
+                    	rendered="#{tripViewerBean.trip eq true}" >
                         <h:outputText rendered="#{tripViewerBean.tripToShow ne null}">
                             <h:panelGroup styleClass="map-border" layout="block">
-                                <div id="map-canvas" style="width: 600px; height: 800px; border: 0">
+                                <div id="map-canvas" style="width: 800px; height: 800px; border: 0">
                                 </div>
                             </h:panelGroup>
                         </h:outputText>
 
                     </rich:panel>
         </a4j:form>
-        </td>
-
-        <td valign="top">
+ 
       	<a4j:form id="speedVsLimit">
+      	<rich:panel style="border: 3px black solid;width: 820px; height: 820px;"
+                    	rendered="#{tripViewerBean.speed eq true}" >
         	<h:inputHidden id="speedLineElement" value="#{tripViewerBean.speedLineDef}">
     		</h:inputHidden>
-         	<div id="speedLineDiv" align="center" style="border: 3px black solid;width:400px;height:400px;"></div>
+         	<div id="speedLineDiv" align="center" style="border: 3px black solid;width:800px;height:800px;">
+         	</div>
 			<script type="text/javascript">
-				renderLineChart("speedVsLimit:speedLineElement","speedLineDiv","400","400");
+				renderLineChart("speedVsLimit:speedLineElement","speedLineDiv","800","800");
 		 	</script>
+		 </rich:panel>	
 	    </a4j:form>
 
       	<a4j:form id="mpgOverTime" >
+      	<rich:panel style="border: 3px black solid;width: 820px; height: 820px;"
+                    	rendered="#{tripViewerBean.mpg eq true}" >
         	<h:inputHidden id="mpgLineElement" value="#{tripViewerBean.mpgLineDef}">
     		</h:inputHidden>
-         	<div id="mpgLineDiv" align="center" style="border: 3px black solid;width:400px;height:400px;"></div>
+         	<div id="mpgLineDiv" align="center" style="border: 3px black solid;width:800px;height:800px;"></div>
 			<script type="text/javascript">
-				renderLineChart("mpgOverTime:mpgLineElement","mpgLineDiv","400","400");
+				renderLineChart("mpgOverTime:mpgLineElement","mpgLineDiv","800","800");
 		 	</script>
+		 	</rich:panel>
 	    </a4j:form>	    
 	    </td>
 	    </tr>

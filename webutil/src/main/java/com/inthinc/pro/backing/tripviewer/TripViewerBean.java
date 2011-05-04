@@ -48,6 +48,10 @@ public class TripViewerBean extends BaseBean {
     
     private String error = "Page loaded successfully.";
     
+    private boolean trip;
+    private boolean speed;
+    private boolean mpg;
+    
 //    private LatLng tripStart;
 //    private LatLng tripEnd;
     
@@ -293,8 +297,10 @@ public class TripViewerBean extends BaseBean {
 
     public void setTripToShow(Trip tripToShow) {
         this.tripToShow = tripToShow;
-        this.speedLineDef = null;
-        
+        createTripAndSpeed();
+    }
+    
+    private void createTripAndSpeed() {
         // Events that make up the trip
         List<NoteType> eventTypeList = new ArrayList<NoteType>();
         eventTypeList.add(NoteType.IGNITION_ON);
@@ -352,7 +358,7 @@ public class TripViewerBean extends BaseBean {
         "</styles>" +
 
         // Close
-     "</chart>";
+     "</chart>";        
     }
 
     public String getSpeedLineDef() {
@@ -448,4 +454,45 @@ public class TripViewerBean extends BaseBean {
         return tripEvents;
     }    
 
+    public void tripVisible() {
+        this.trip = true;
+        this.speed = false;
+        this.mpg = false;
+    }
+
+    public void mpgVisible() {
+        this.trip = false;
+        this.speed = false;
+        this.mpg = true;
+    }
+
+    public void speedVisible() {
+        this.trip = false;
+        this.speed = true;
+        this.mpg = false;
+    }
+
+    public boolean isTrip() {
+        return trip;
+    }
+
+    public void setTrip(boolean trip) {
+        this.trip = trip;
+    }
+
+    public boolean isSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(boolean speed) {
+        this.speed = speed;
+    }
+
+    public boolean isMpg() {
+        return mpg;
+    }
+
+    public void setMpg(boolean mpg) {
+        this.mpg = mpg;
+    }
 }
