@@ -7,7 +7,7 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount.RedFlagPrefs;
 
-public class EditMyAccount extends WebRallyTest {
+public class EditMyAccountTest extends WebRallyTest {
 	
 	private PageMyAccount my;
 	private PageLogin login;
