@@ -51,7 +51,7 @@ public class JwimmerSandboxTest extends WebTest {
         int waitTime = 6;
         System.out.println("liveFleet_sandbox_taeThrownError: ");
         l.page_login_process("jwimmer", "password");
-        liveFleet.page_directURL_load();
+        liveFleet.load();
 //        liveFleet._textField.findAddress.type("put some test text in findAddress box.");
 //        
 //        liveFleet._textField.findAddress.clear();
@@ -105,6 +105,8 @@ public class JwimmerSandboxTest extends WebTest {
     public void liveFleet_changeDefaultViewAsNONAdmin_shouldNotSeeLink() {
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_bareMinimum_validate()
     	//liveFleet.page_loginFirst_open(NONADMIN_USERNAME, NONADMIN_PASSWORD);
+        l.load();
+        l.page_login_process(NONADMIN_USERNAME, NONADMIN_PASSWORD);
     	liveFleet.page_bareMinimum_validate();//only continue if the page meets bare minimum this step has more validity in LONGER tests... where we want to fail the test as early as possible
     	//assertTrue(!liveFleet.page_admin_validate()); //NON-ADMIN users should NOT see the change link
     }
@@ -113,6 +115,8 @@ public class JwimmerSandboxTest extends WebTest {
     public void liveFleet_changeDefaultViewAsAdmin_canChange() {
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_bareMinimum)_validate
     	//liveFleet.page_loginFirst_open(ADMIN_USERNAME, ADMIN_PASSWORD);
+        l.load();
+        l.page_login_process(ADMIN_USERNAME, ADMIN_PASSWORD);
     	liveFleet.page_bareMinimum_validate();//only continue if the page meets bare minimum
     	//assertTrue(liveFleet.page_admin_validate()); //NON-ADMIN users should NOT see the change link
     }
@@ -122,14 +126,14 @@ public class JwimmerSandboxTest extends WebTest {
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_directURL_load()
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_URL_validate()
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_bareMinimum_validate()
-    	liveFleet.page_directURL_load();
+    	liveFleet.load();
     	
     	//asertTrue(!liveFleet.page_URL_validate());	//test should fail on assertion if liveFleet page was loaded without requiring login first
     	//should only continue test if liveFleet was NOT loaded
     	PageLogin login = new PageLogin();
     	login.page_login_process("jwimmer","password");
     	
-    	liveFleet.page_URL_validate();		//test should fail on assertion of any page except liveFleet is loaded
+    	liveFleet.validate();		//test should fail on assertion of any page except liveFleet is loaded
     	liveFleet.page_bareMinimum_validate();	//test should fail if liveFleet is loaded but not (bareMinimum)valid
     	//no need for more specific validations on THIS test... but there could be more in more specific tests
     }
@@ -139,12 +143,12 @@ public class JwimmerSandboxTest extends WebTest {
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_directURL_load()
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_URL_validate()
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_bareMinimum_validate()
-    	l.page_directURL_load();
+    	l.load();
     	l.page_bareMinimum_validate();
     	l.page_login_process("jwimmer", "password");
     	//dashboard.page_validate();
-    	liveFleet.page_directURL_load();
-    	liveFleet.page_URL_validate();		//test should fail on assertion of any page except liveFleet is loaded
+    	liveFleet.load();
+    	liveFleet.validate();		//test should fail on assertion of any page except liveFleet is loaded
     	liveFleet.page_bareMinimum_validate();	//test should fail if liveFleet is loaded but not (bareMinimum)valid
     }
     
