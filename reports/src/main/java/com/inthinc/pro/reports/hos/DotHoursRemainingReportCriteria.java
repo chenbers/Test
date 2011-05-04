@@ -19,6 +19,7 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.hos.adjusted.HOSAdjustedList;
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSRecAdjusted;
+import com.inthinc.hos.model.HOSStats;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.MinutesRemainingData;
 import com.inthinc.hos.model.RuleSetType;
@@ -110,15 +111,18 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
        if (data == null) {
            return;
        }
-//       System.out.println("driver: " + driver.getDriverID());
-//       MinutesData minutesData = rules.getDOTMinutes();
+//       System.out.println("driver: " + driver.getPerson().getFullName());
+//       HOSStats minutesData = rules.getHOSStats(recListForHoursRemainingCalc, currentDate.toDate());
 //       System.out.println("OffDutyMinutes " + minutesData.getOffDutyMinutes());
 //       System.out.println("DrivingMinutes " + minutesData.getOnDutyDrivingMinutes());
 //       System.out.println("OnDutyNotDrivingMinutes " + minutesData.getOnDutyNotDrivingMinutes());
 //       System.out.println("OnDutyMinutes " + minutesData.getOnDutyMinutes());
+//       System.out.println("Cumulative remaining " + minutesData.getCumulativeDOTMinutesRemaining());
+//       System.out.println("Driving remaining " + minutesData.getDrivingDOTMinutesRemaining());
 
        
        long minutesRemaining = data.getAllDOTMinutesRemaining();
+       long cumulativeMinutesRemaining = data.getCumulativeDOTMinutesRemaining();
        
        for (DateTime day : dayList)
        {
@@ -138,11 +142,12 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
            }
            dataList.add(new DotHoursRemaining(groupName, 
                    driver.getDriverID(), driver.getPerson().getFullNameLastFirst(),  driver.getDot(),
-                   minutesRemaining, 
+                   minutesRemaining, cumulativeMinutesRemaining,
                    dayFormatter.print(day), day.toDate(), HOSStatus.DRIVING, drivingIncrements*15l));
            dataList.add(new DotHoursRemaining(groupName, 
                    driver.getDriverID(), driver.getPerson().getFullNameLastFirst(),  driver.getDot(),
-                   minutesRemaining,dayFormatter.print(day), day.toDate(), HOSStatus.ON_DUTY, onDutyIncrements*15l));
+                   minutesRemaining,cumulativeMinutesRemaining, 
+                   dayFormatter.print(day), day.toDate(), HOSStatus.ON_DUTY, onDutyIncrements*15l));
        }
     }
     
@@ -167,13 +172,13 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
         ResourceBundle resourceBundle = ReportType.DOT_HOURS_REMAINING.getResourceBundle(getLocale());
         
         List<String> columnHeaders = new ArrayList<String>();
-        for (int i = 1; i <= 4; i++)
+        for (int i = 1; i <= 5; i++)
             columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
         
         int recordsPerDriver = (DAYS_BACK+1)*2;
         for (int i = 0; i < recordsPerDriver; i+=2) {
-            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column.5.tabular"));
             columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column.6.tabular"));
+            columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column.7.tabular"));
             
         }
         return columnHeaders;
@@ -206,6 +211,7 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
                 String ruleSetTypeStr = MessageUtil.getBundleString(resourceBundle, "dot."+data.getDotType().getCode()); 
                 row.add(new Result(ruleSetTypeStr,ruleSetTypeStr));
                 row.add(new Result(Converter.convertMinutes(data.getMinutesRemaining()), data.getMinutesRemaining()));
+                row.add(new Result(Converter.convertMinutes(data.getCumulativeMinutesRemaining()), data.getCumulativeMinutesRemaining()));
             }
             
             row.add(new Result(Converter.convertMinutes(data.getTotalAdjustedMinutes()), data.getTotalAdjustedMinutes()));
@@ -219,7 +225,7 @@ public class DotHoursRemainingReportCriteria extends GroupListReportCriteria imp
     public List<ColumnHeader> getColumnSummaryHeaders() {
         
         List<ColumnHeader> columnHeaders = new ArrayList<ColumnHeader>();
-        columnHeaders.add(new ColumnHeader("", 4));
+        columnHeaders.add(new ColumnHeader("", 5));
         
         List<DotHoursRemaining> dataList = (List<DotHoursRemaining>)getMainDataset();
         int recordsPerDriver = (DAYS_BACK+1)*2;

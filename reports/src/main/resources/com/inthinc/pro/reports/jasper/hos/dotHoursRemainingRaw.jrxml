@@ -16,6 +16,7 @@
 	<field name="day" class="java.lang.String"/>
 	<field name="status" class="com.inthinc.hos.model.HOSStatus"/>
 	<field name="totalAdjustedMinutes" class="java.lang.Long"/>
+	<field name="cumulativeMinutesRemaining" class="java.lang.Long"/>
 	<columnHeader>
 		<band height="23">
 			<textField isBlankWhenNull="false">
@@ -44,24 +45,29 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.5.raw")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="90" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="60" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.6.raw")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="540" y="0" width="90" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="510" y="0" width="60" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("column.7.raw")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-77" mode="Opaque" x="630" y="0" width="90" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.8.raw")]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.9.raw")]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement key="textField-77" mode="Opaque" x="720" y="0" width="122" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("column.9.raw")]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.10.raw")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-77" mode="Opaque" x="570" y="0" width="60" height="20" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("column.8.raw")]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -93,12 +99,12 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[str("status."+$F{status}.getName())]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="90" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="60" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15Excel($F{totalAdjustedMinutes})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement key="textField-77" mode="Opaque" x="540" y="0" width="90" height="20" backcolor="#FFFFFF"/>
+				<reportElement key="textField-77" mode="Opaque" x="510" y="0" width="60" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15Excel($F{minutesRemaining})]]></textFieldExpression>
 			</textField>
@@ -111,6 +117,11 @@
 				<reportElement key="textField-77" mode="Opaque" x="720" y="0" width="122" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("dot."+$F{dotType}.getCode())]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-77" mode="Opaque" x="570" y="0" width="60" height="20" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertMinutesRound15Excel($F{cumulativeMinutesRemaining})]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

@@ -11,6 +11,7 @@ public class DotHoursRemaining implements Comparable<DotHoursRemaining> {
     private String driverName; 
     private RuleSetType dotType;
     private Long minutesRemaining;
+    private Long cumulativeMinutesRemaining;
     private String day;
     private Date dayDate;
     private HOSStatus status;
@@ -25,7 +26,7 @@ public class DotHoursRemaining implements Comparable<DotHoursRemaining> {
         this.dotType = dotType;
     }
     public DotHoursRemaining(String groupName, Integer driverId, String driverName, RuleSetType dotType,
-            Long minutesRemaining, String day, Date dayDate, HOSStatus status, Long totalAdjustedMinutes)
+            Long minutesRemaining, Long cumulativeMinutesRemaining, String day, Date dayDate, HOSStatus status, Long totalAdjustedMinutes)
     {
         super();
         this.groupName = groupName;
@@ -33,6 +34,7 @@ public class DotHoursRemaining implements Comparable<DotHoursRemaining> {
         this.driverName = driverName;
         this.dotType = dotType;
         this.minutesRemaining = minutesRemaining;
+        this.cumulativeMinutesRemaining = cumulativeMinutesRemaining;
         this.day = day;
         this.dayDate = dayDate;
         this.status = status;
@@ -105,6 +107,13 @@ public class DotHoursRemaining implements Comparable<DotHoursRemaining> {
         this.dayDate = dayDate;
     }
 
+    public Long getCumulativeMinutesRemaining() {
+        return cumulativeMinutesRemaining;
+    }
+    public void setCumulativeMinutesRemaining(Long cumulativeMinutesRemaining) {
+        this.cumulativeMinutesRemaining = cumulativeMinutesRemaining;
+    }
+
 
     @Override
     public int compareTo(DotHoursRemaining o) {
@@ -128,6 +137,7 @@ public class DotHoursRemaining implements Comparable<DotHoursRemaining> {
                 "\"" + driverName + "\"," +
                 "RuleSetType." + dotType.getName() + "," +
                 minutesRemaining + "l," +
+                cumulativeMinutesRemaining + "l," +
                 "\"" + day + "\"," +
                 "new Date(" + dayDate.getTime() + "l)," +
                 "HOSStatus." + status.getName() + "," +
