@@ -9,8 +9,8 @@ import com.inthinc.pro.automation.utils.Xpath;
 public enum AutomationEnum implements SeleniumEnums{
     
     PLACE_HOLDER,
-    FIND_ANCHOR_BY_CONTAINS_TEXT(Xpath.start().a(Id.contains(Id.text(), "***"))),
-    VERSION("footerForm:version")
+    FIND_ANCHOR_BY_CONTAINS_TEXT(null, null, Xpath.start().a(Id.contains(Id.text(), "***")).toString(), null),
+    VERSION(null, "footerForm:version", null, null)
     ;
     
     private String ID, xpath, xpath_alt, text, url;
@@ -19,12 +19,11 @@ public enum AutomationEnum implements SeleniumEnums{
         
     }
     
-    private AutomationEnum(String ID){
+    private AutomationEnum(String text, String ID, String xpath, String xpath_alt){
         this.ID=ID;
-    }
-    
-    private AutomationEnum(Xpath xpath){
-        this.xpath = xpath.toString();
+        this.text=text;
+        this.xpath=xpath;
+        this.xpath_alt=xpath_alt;
     }
     
     public AutomationEnum setEnum(SeleniumEnums myEnum){

@@ -1,14 +1,12 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.DropDown;
-import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
-import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
 public class PageLiveFleet extends NavigationBar {
     public LiveFleetTextFields _textField() {
@@ -32,10 +30,10 @@ public class PageLiveFleet extends NavigationBar {
     }
 
     public class LiveFleetLinks extends NavigationBarLinks {
-        public TextLink sortDispatchByNumber = new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_NUMBER);
-        public TextLink sortDispatchByDriver = new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_DRIVER);
-        public TextLink sortDispatchByVehicle = new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_VEHICLE);
-        public TextLink sortDispatchByGroup = new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_GROUP);
+        public TextLink sortDispatchByNumber() {return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_NUMBER);}
+        public TextLink sortDispatchByDriver() {return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_DRIVER);}
+        public TextLink sortDispatchByVehicle() {return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_VEHICLE);}
+        public TextLink sortDispatchByGroup() {return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_GROUP);}
 
 
         public TextLink driverByName(String driverName) {

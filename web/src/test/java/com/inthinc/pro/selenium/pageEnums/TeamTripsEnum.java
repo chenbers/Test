@@ -9,11 +9,11 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamTripsEnum implements SeleniumEnums {
     
-    DRIVER_HEADER("Driver Name", Xpath.start().table(Id.id("tripsTableForm:driversTrips")).thead().tr().th("2")),
+    DRIVER_HEADER("Driver Name", null, Xpath.start().table(Id.id("tripsTableForm:driversTrips")).thead().tr().th("2").toString(), null),
     
     CHECK_BOX_ENTRY(null, "tripsTableForm:driversTrips:###:checkDriver"),
     DRIVER_NAME(null, "tripsTableForm:driversTrips:###:teamTrips-driverPerformance"),
-    DRIVER_LETTER(Xpath.start().tr("###").td("3").div().div(Id.clazz("trips_label"))),
+    DRIVER_LETTER(null, null, Xpath.start().tr("###").td("3").div().div(Id.clazz("trips_label")).toString(), null),
     
     ;
     
@@ -36,26 +36,6 @@ public enum TeamTripsEnum implements SeleniumEnums {
     }
     private TeamTripsEnum( String text, String ID, String xpath) {
         this(text, ID, xpath, null);
-    }
-    
-    private TeamTripsEnum(String text, String ID, Xpath xpath, Xpath xpath_alt){
-        this(text, ID, xpath.toString(), xpath_alt.toString());
-    }
-    
-    private TeamTripsEnum(String text, String ID, Xpath xpath){
-        this(text, ID, xpath.toString(), null);
-    }
-    
-    private TeamTripsEnum(String text, Xpath xpath){
-        this(text, null, xpath.toString(), null);
-    }
-    
-    private TeamTripsEnum( Xpath xpath, Xpath xpath_alt) {
-        this(null, null, xpath.toString(), xpath_alt.toString());
-    }
-    
-    private TeamTripsEnum( Xpath xpath) {
-        this(null, null, xpath.toString(), null);
     }
 
     public String getText() {

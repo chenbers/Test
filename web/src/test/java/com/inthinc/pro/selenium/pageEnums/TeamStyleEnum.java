@@ -1,17 +1,14 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-
-
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamStyleEnum implements SeleniumEnums {
-    
-    STYLE_SCORE(Xpath.start().div(Id.clazz("middle")).table().tbody().tr()),
-    STYLE_SCORE_LABEL(Xpath.start().div(Id.clazz("middle")).text())
-    
+
+    STYLE_SCORE(null, null, Xpath.start().div(Id.clazz("middle")).table().tbody().tr().toString(), null),
+    STYLE_SCORE_LABEL(null, null, Xpath.start().div(Id.clazz("middle")).text().toString(), null)
 
     ;
 
@@ -34,26 +31,6 @@ public enum TeamStyleEnum implements SeleniumEnums {
 
     private TeamStyleEnum(String text, String ID, String xpath) {
         this(text, ID, xpath, null);
-    }
-
-    private TeamStyleEnum(String text, String ID, Xpath xpath, Xpath xpath_alt) {
-        this(text, ID, xpath.toString(), xpath_alt.toString());
-    }
-
-    private TeamStyleEnum(String text, String ID, Xpath xpath) {
-        this(text, ID, xpath.toString(), null);
-    }
-
-    private TeamStyleEnum(String text, Xpath xpath) {
-        this(text, null, xpath.toString(), null);
-    }
-
-    private TeamStyleEnum(Xpath xpath, Xpath xpath_alt) {
-        this(null, null, xpath.toString(), xpath_alt.toString());
-    }
-
-    private TeamStyleEnum(Xpath xpath) {
-        this(null, null, xpath.toString(), null);
     }
 
     public String getText() {

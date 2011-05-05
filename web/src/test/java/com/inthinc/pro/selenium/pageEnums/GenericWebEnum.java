@@ -1,7 +1,6 @@
 package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.utils.Xpath;
 
 public enum GenericWebEnum implements SeleniumEnums {
     
@@ -12,10 +11,7 @@ public enum GenericWebEnum implements SeleniumEnums {
     private GenericWebEnum(String ID){
         this.ID=ID;
     }
-    
-    private GenericWebEnum(Xpath xpath){
-        this.xpath = xpath.toString();
-    }
+
     @Override
     public String getText() {
         return text;

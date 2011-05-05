@@ -91,9 +91,9 @@ public class JwimmerSandboxTest extends WebTest {
         System.out.println("!!!Orson  Bugg link text: "        +liveFleet._link().driverByName("Orson  Bugg").getText());
         System.out.println("!!!Orson Buggy link isVisible? "   +liveFleet._link().driverByName("Orson  Buggy").isVisible());
         System.out.println("!!!Orson Buggy link focus? "       +liveFleet._link().driverByName("Orson  Buggy").focus());
-        System.out.println("about to click Orson Buggy link...");pause(15);
-        System.out.println("!!!Orson Buggy link click? "       +liveFleet._link().driverByName("Orson  Buggy").click()); //TODO: jwimmer: figure out why this is NOT visible? as it appears on the page?  figure out why it isnt' clickable (related to visible I assume)
-        pause(10);System.out.println("clicked Orson Buggy link without dying?");
+//        System.out.println("about to click Orson Buggy link...");pause(15);
+//        System.out.println("!!!Orson Buggy link click? "       +liveFleet._link().driverByName("Orson  Buggy").click()); //TODO: jwimmer: figure out why this is NOT visible? as it appears on the page?  figure out why it isnt' clickable (related to visible I assume)
+//        pause(10);System.out.println("clicked Orson Buggy link without dying?");
         liveFleet.load();
         liveFleet._link().driverByName("Orson  Buggy").click();
         liveFleet.load();

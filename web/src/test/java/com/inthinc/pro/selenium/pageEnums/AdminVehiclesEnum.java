@@ -1,39 +1,25 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-
-
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum AdminVehiclesEnum implements SeleniumEnums {
-    
-    TITLE("Admin - Vehicles", Xpath.start().span(Id.clazz("admin"))),                                   
-    
-    DELETE(delete, "admin-table-form:vehiclesTable-adminTableDelete" ),                             
-                   
-    BATCH_EDIT(batchEdit, "admin-table-form:vehiclesTable-adminTableEdit "),                            
-                           
-    SEARCH_TEXT(search, Xpath.start().table(Id.id("grid_nav_search_box")).tbody().tr().td("1")),      
-    
-    SEARCH_TEXT_FIELD(null, "admin-table-form:vehiclesTable-filterTable"),                         
-                             
-    SEARCH_BUTTON(search, "admin-table-form:vehiclesTable-adminTableSearch"),                       
-                           
-    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:vehiclesTable-adminTableEditColumns"),         
-                                    
-    TABLE_HEADERS(null, "admin-table-form:vehiclesTable:***header:sortDiv"),                        
-                         
-    TABLE_ENTRIES(null, "admin-table-form:vehiclesTable:0:***"),                                    
-    
-    SELECT_ALL(null, "admin-table-form:vehiclesTable:selectAll"),                                  
-    
-    SELECT_ROW(null, "admin-table-form:vehiclesTable:0:select"),                                    
 
-    EDIT_USER("edit", "admin-table-form:vehiclesTable:0:edit"),                                    
-    
-    
+    TITLE("Admin - Vehicles", null, Xpath.start().span(Id.clazz("admin")).toString(), null),
+    DELETE(delete, "admin-table-form:vehiclesTable-adminTableDelete", null, null),
+    BATCH_EDIT(batchEdit, "admin-table-form:vehiclesTable-adminTableEdit ", null, null),
+    SEARCH_TEXT(search, null, Xpath.start().table(Id.id("grid_nav_search_box")).tbody().tr().td("1").toString(), null),
+    SEARCH_TEXT_FIELD(null, "admin-table-form:vehiclesTable-filterTable", null, null),
+    SEARCH_BUTTON(search, "admin-table-form:vehiclesTable-adminTableSearch", null, null),
+    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:vehiclesTable-adminTableEditColumns", null, null),
+    TABLE_HEADERS(null, "admin-table-form:vehiclesTable:***header:sortDiv", null, null),
+    TABLE_ENTRIES(null, "admin-table-form:vehiclesTable:0:***", null, null),
+    SELECT_ALL(null, "admin-table-form:vehiclesTable:selectAll", null, null),
+    SELECT_ROW(null, "admin-table-form:vehiclesTable:0:select", null, null),
+    EDIT_USER("edit", "admin-table-form:vehiclesTable:0:edit", null, null),
+
     ;
 
     private String text, ID, xpath, xpath_alt, url;
@@ -47,34 +33,6 @@ public enum AdminVehiclesEnum implements SeleniumEnums {
 
     private AdminVehiclesEnum(String url) {
         this.url = url;
-    }
-
-    private AdminVehiclesEnum(String text, String ID) {
-        this(text, ID, "", null);
-    }
-
-    private AdminVehiclesEnum(String text, String ID, String xpath) {
-        this(text, ID, xpath, null);
-    }
-
-    private AdminVehiclesEnum(String text, String ID, Xpath xpath, Xpath xpath_alt) {
-        this(text, ID, xpath.toString(), xpath_alt.toString());
-    }
-
-    private AdminVehiclesEnum(String text, String ID, Xpath xpath) {
-        this(text, ID, xpath.toString(), null);
-    }
-
-    private AdminVehiclesEnum(String text, Xpath xpath) {
-        this(text, null, xpath.toString(), null);
-    }
-
-    private AdminVehiclesEnum(Xpath xpath, Xpath xpath_alt) {
-        this(null, null, xpath.toString(), xpath_alt.toString());
-    }
-
-    private AdminVehiclesEnum(Xpath xpath) {
-        this(null, null, xpath.toString(), null);
     }
 
     public String getText() {

@@ -49,37 +49,32 @@ public enum VehiclePerformanceEnum implements SeleniumEnums {
 
     @Override
     public String getID() {
-        // TODO Auto-generated method stub
         return this.ID;
     }
 
     @Override
     public String getText() {
-        // TODO Auto-generated method stub
         return this.text;
     }
 
     @Override
     public String getXpath() {
-        // TODO Auto-generated method stub
         return this.xpath;
     }
 
     @Override
     public String getXpath_alt() {
-        // TODO Auto-generated method stub
         return this.xpath_alt;
     }
 
     @Override
     public void setText(String text) {
-    // TODO Auto-generated method stub
+    // TODO Auto-generated method stub jwimmer: to dtanner: is there a reason this doesn't SET?
 
     }
 
     @Override
     public String getURL() {
-        // TODO Auto-generated method stub
         return url;
     }
 

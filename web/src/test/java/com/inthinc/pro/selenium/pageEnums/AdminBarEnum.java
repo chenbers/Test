@@ -47,15 +47,14 @@ public enum AdminBarEnum implements SeleniumEnums {
     ACCOUNT_IMAGE(null, null, "//tr[11]/td/dl/dd/table/tbody/tr/td[1]", null),
     ACCOUNT("Account", "link=Account", "//tr[11]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-account"),
 
-    
-    EDIT_COLUMNS_HEADER(editColumns, "editColumnsHeader"),
-    EDIT_COLUMNS_CANCEL(cancel, "editColumnsForm:***Table-editColumnsPopupCancel"),
-    EDIT_COLUMNS_SAVE(save, "editColumnsForm:***Table-editColumnsPopupSave"),
-    EDIT_COLUMNS_TITLE("The selected columns will be displayed.", Xpath.start().div(Id.clazz("popupsubtitle"))),
-    
-    EDIT_COLUMNS_CHECKBOX(null, "editColumnsForm:***Table-editColumnsGrid:###:***Table-col"),
-    EDIT_COLUMNS_LABEL(Xpath.start().td(Id.id("editColumnsForm:***Table-editColumnsGrid:###")).label().text())
-    
+    EDIT_COLUMNS_HEADER(editColumns, "editColumnsHeader", null, null),
+    EDIT_COLUMNS_CANCEL(cancel, "editColumnsForm:***Table-editColumnsPopupCancel", null, null),
+    EDIT_COLUMNS_SAVE(save, "editColumnsForm:***Table-editColumnsPopupSave", null, null),
+    EDIT_COLUMNS_TITLE("The selected columns will be displayed.", null, Xpath.start().div(Id.clazz("popupsubtitle")).toString(), null),
+
+    EDIT_COLUMNS_CHECKBOX(null, "editColumnsForm:***Table-editColumnsGrid:###:***Table-col", null, null),
+    EDIT_COLUMNS_LABEL(null, null, Xpath.start().td(Id.id("editColumnsForm:***Table-editColumnsGrid:###")).label().text().toString(), null)
+
     ;
 
     private String text, ID, xpath, xpath_alt, url;
@@ -69,34 +68,6 @@ public enum AdminBarEnum implements SeleniumEnums {
 
     private AdminBarEnum(String url) {
         this.url = url;
-    }
-
-    private AdminBarEnum(String text, String ID) {
-        this(text, ID, "", null);
-    }
-
-    private AdminBarEnum(String text, String ID, String xpath) {
-        this(text, ID, xpath, null);
-    }
-
-    private AdminBarEnum(String text, String ID, Xpath xpath, Xpath xpath_alt) {
-        this(text, ID, xpath.toString(), xpath_alt.toString());
-    }
-
-    private AdminBarEnum(String text, String ID, Xpath xpath) {
-        this(text, ID, xpath.toString(), null);
-    }
-
-    private AdminBarEnum(String text, Xpath xpath) {
-        this(text, null, xpath.toString(), null);
-    }
-
-    private AdminBarEnum(Xpath xpath, Xpath xpath_alt) {
-        this(null, null, xpath.toString(), xpath_alt.toString());
-    }
-
-    private AdminBarEnum(Xpath xpath) {
-        this(null, null, xpath.toString(), null);
     }
 
     public String getText() {
@@ -122,5 +93,5 @@ public enum AdminBarEnum implements SeleniumEnums {
     public String getURL() {
         return url;
     }
-    
+
 }

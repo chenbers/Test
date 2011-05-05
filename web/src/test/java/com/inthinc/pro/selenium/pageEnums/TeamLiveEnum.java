@@ -9,8 +9,8 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamLiveEnum implements SeleniumEnums {
     
-    LEGEND_TITLE("Team Legend", Xpath.start().span(Id.clazz("legend"))),
-    LEGEND_ENTRY(Xpath.start().td(Id.id("icos1:###")).div().span())
+    LEGEND_TITLE("Team Legend",null, Xpath.start().span(Id.clazz("legend")).toString(), null),
+    LEGEND_ENTRY(null, null,Xpath.start().td(Id.id("icos1:###")).div().span().toString(), null)
     
     ;
 
@@ -25,34 +25,6 @@ public enum TeamLiveEnum implements SeleniumEnums {
 
     private TeamLiveEnum(String url) {
         this.url = url;
-    }
-
-    private TeamLiveEnum(String text, String ID) {
-        this(text, ID, "", null);
-    }
-
-    private TeamLiveEnum(String text, String ID, String xpath) {
-        this(text, ID, xpath, null);
-    }
-
-    private TeamLiveEnum(String text, String ID, Xpath xpath, Xpath xpath_alt) {
-        this(text, ID, xpath.toString(), xpath_alt.toString());
-    }
-
-    private TeamLiveEnum(String text, String ID, Xpath xpath) {
-        this(text, ID, xpath.toString(), null);
-    }
-
-    private TeamLiveEnum(String text, Xpath xpath) {
-        this(text, null, xpath.toString(), null);
-    }
-
-    private TeamLiveEnum(Xpath xpath, Xpath xpath_alt) {
-        this(null, null, xpath.toString(), xpath_alt.toString());
-    }
-
-    private TeamLiveEnum(Xpath xpath) {
-        this(null, null, xpath.toString(), null);
     }
 
     public String getText() {

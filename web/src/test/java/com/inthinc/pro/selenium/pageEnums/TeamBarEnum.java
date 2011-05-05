@@ -8,27 +8,27 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamBarEnum implements SeleniumEnums {
-    TEAM_TITLE(Xpath.start().li(Id.clazz("l grid_title max-width"))),
-    TEAM_SCORE(Xpath.start().li(Id.clazz("l")).span().table().tbody().tr().td()),
+    TEAM_TITLE(null, null, Xpath.start().li(Id.clazz("l grid_title max-width")).toString(), null),
+    TEAM_SCORE(null, null, Xpath.start().li(Id.clazz("l")).span().table().tbody().tr().td().toString(), null),
     
-    CRASHES_PER_MILLION_NUMBER(Xpath.start().li("5", Id.clazz("l crash-item")).span("2")),
-    CRASHES_PER_MILLION_TEXT("Crashes per million miles", Xpath.start().li("5", Id.clazz("l crash-item")).text("2")),
+    CRASHES_PER_MILLION_NUMBER(null, null, Xpath.start().li("5", Id.clazz("l crash-item")).span("2").toString(), null),
+    CRASHES_PER_MILLION_TEXT("Crashes per million miles",null, Xpath.start().li("5", Id.clazz("l crash-item")).text("2").toString(), null),
     
-    DAYS_SINCE_NUMBER(Xpath.start().li("6", Id.clazz("l crash-item")).span()),
-    DAYS_SINCE_TEXT("Days since last crash", Xpath.start().li("6", Id.clazz("l crash-item")).text()),
+    DAYS_SINCE_NUMBER(null, null, Xpath.start().li("6", Id.clazz("l crash-item")).span().toString(), null),
+    DAYS_SINCE_TEXT("Days since last crash", null, Xpath.start().li("6", Id.clazz("l crash-item")).text().toString(), null),
     
-    MILES_SINCE_NUMBER(Xpath.start().li("7", Id.clazz("l crash-item")).span()),
-    MILES_SINCE_TEXT("Miles since last crash", Xpath.start().li("7", Id.clazz("l crash-item")).text()),
+    MILES_SINCE_NUMBER(null, null, Xpath.start().li("7", Id.clazz("l crash-item")).span().toString(), null),
+    MILES_SINCE_TEXT("Miles since last crash",null, Xpath.start().li("7", Id.clazz("l crash-item")).text().toString(), null),
     
-    SUB_TITLE("What Happened...", Xpath.start().div(Id.clazz("panel_title")).text("1")),
+    SUB_TITLE("What Happened...", null, Xpath.start().div(Id.clazz("panel_title")).text("1").toString(), null),
     
-    DRIVER_STATISTICS("Driver Statistics", "teamStatistics_lbl"),
-    TRIPS("Trips", "teamTrips_lbl"),
-    STOPS("Stops", "teamStops_lbl"),
-    LIVE_TEAM("Live Team", "teamLive_lbl"),
-    OVERALL_SCORE("Overall Score", "teamOverall_lbl"),
-    DRIVING_STYLE("Driving Style", "teamStyle_lbl"),
-    SPEED("Speed", "teamSpeeding_lbl"),  
+    DRIVER_STATISTICS("Driver Statistics", "teamStatistics_lbl", null, null),
+    TRIPS("Trips", "teamTrips_lbl", null, null),
+    STOPS("Stops", "teamStops_lbl", null, null),
+    LIVE_TEAM("Live Team", "teamLive_lbl", null, null),
+    OVERALL_SCORE("Overall Score", "teamOverall_lbl", null, null),
+    DRIVING_STYLE("Driving Style", "teamStyle_lbl", null, null),
+    SPEED("Speed", "teamSpeeding_lbl", null, null),  
     
     ;
 
@@ -43,33 +43,6 @@ public enum TeamBarEnum implements SeleniumEnums {
 
     private TeamBarEnum(String url) {
         this.url = url;
-    }
-    
-    private TeamBarEnum( String text, String ID) {
-        this(text, ID, "", null);
-    }
-    private TeamBarEnum( String text, String ID, String xpath) {
-        this(text, ID, xpath, null);
-    }
-    
-    private TeamBarEnum(String text, String ID, Xpath xpath, Xpath xpath_alt){
-        this(text, ID, xpath.toString(), xpath_alt.toString());
-    }
-    
-    private TeamBarEnum(String text, String ID, Xpath xpath){
-        this(text, ID, xpath.toString(), null);
-    }
-    
-    private TeamBarEnum(String text, Xpath xpath){
-        this(text, null, xpath.toString(), null);
-    }
-    
-    private TeamBarEnum( Xpath xpath, Xpath xpath_alt) {
-        this(null, null, xpath.toString(), xpath_alt.toString());
-    }
-    
-    private TeamBarEnum( Xpath xpath) {
-        this(null, null, xpath.toString(), null);
     }
 
     public String getText() {

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
@@ -25,7 +26,7 @@ import com.thoughtworks.selenium.DefaultSelenium;
  */
 public class CoreMethodLib extends WebDriverBackedSelenium {
     public static Integer PAGE_TIMEOUT = 30000;
-
+    private final static Logger logger = Logger.getLogger(CoreMethodLib.class);
     private ErrorCatcher errors;
 
     public CoreMethodLib(Supplier<WebDriver> maker, String baseUrl) {
@@ -324,6 +325,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @return
      */
     public String getText(SeleniumEnums myEnum, String replacement, Integer replaceNumber) {
+        logger.debug(" getText("+myEnum+", "+replacement+", "+replaceNumber+")");
         String element = getLocator(myEnum, replacement, replaceNumber);
         String error_name = "getText: " + element;
         String text = "";
