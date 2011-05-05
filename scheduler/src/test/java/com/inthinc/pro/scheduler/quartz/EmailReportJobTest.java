@@ -14,6 +14,7 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.UserDAO;
@@ -23,7 +24,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.ReportSchedule;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
-
+@Ignore
 public class EmailReportJobTest
 {
     @Test
