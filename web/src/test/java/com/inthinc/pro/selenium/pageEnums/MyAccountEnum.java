@@ -3,7 +3,6 @@ package com.inthinc.pro.selenium.pageEnums;
 
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 
 import com.inthinc.pro.automation.utils.Xpath;
 import com.inthinc.pro.automation.utils.Id;
@@ -158,36 +157,6 @@ public enum MyAccountEnum implements SeleniumEnums {
 
     public void setText(String text) {
         this.text = text;
-    }
-    
-    public static enum RedFlagPrefs implements SeleniumValueEnums {
-        EMAIL1("1", MyAccountEnum.EMAIL1_TEXTFIELD, MyAccountEnum.EMAIL1_TITLE),
-        EMAIL2("2", MyAccountEnum.EMAIL2_TEXTFIELD, MyAccountEnum.EMAIL2_TITLE),
-        PHONE1("3", MyAccountEnum.PHONE1_TEXTFIELD, MyAccountEnum.PHONE1_TITLE),
-        PHONE2("4", MyAccountEnum.PHONE2_TEXTFIELD, MyAccountEnum.PHONE2_TITLE),
-        TEXT1("5", MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES1_TITLE),
-        TEXT2("6", MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES2_TITLE);
-
-        private String value;
-        private MyAccountEnum ID, prefix;
-
-        private RedFlagPrefs(String value, MyAccountEnum ID, MyAccountEnum prefix) {
-            this.value = value;
-            this.ID = ID;
-            this.prefix = prefix;
-        }
-
-        public MyAccountEnum getID() {
-            return ID;
-        }
-
-        public MyAccountEnum getPrefix() {
-            return prefix;
-        }
-
-        public String getValue() {
-            return value;
-        }
     };
 
 }

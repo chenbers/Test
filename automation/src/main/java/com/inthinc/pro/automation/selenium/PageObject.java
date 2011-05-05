@@ -41,6 +41,6 @@ public class PageObject {
     }
     
     public void addError(SeleniumEnums errorName, String error){
-        selenium.getErrors().addError(selenium.getLocator(AutomationEnum.PLACE_HOLDER.setEnum(errorName)), error);
+        selenium.getErrors().addError(selenium.getLocator(errorName), error);
     }
 }

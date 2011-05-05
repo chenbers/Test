@@ -1,10 +1,9 @@
 package com.inthinc.pro.automation.selenium;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.SeleniumValueEnums;
+import com.inthinc.pro.automation.enums.TextEnum;
 
 
 public abstract class AbstractPage implements Page {
@@ -31,9 +30,17 @@ public abstract class AbstractPage implements Page {
     }
 
     public void assertEquals(Object actual, Object expected) {
-        if (!actual.equals(expected)) {
-            addError("'"+actual+"'" + " != '" + expected+"'");
-        }
+    	String string;
+    	if (actual instanceof TextEnum){
+    		string = ((TextEnum) actual).getText();
+    		if (!string.equals(expected)) {
+                addError("'"+string+"'" + " != '" + expected+"'");
+            }
+    	}else{
+	        if (!actual.equals(expected)) {
+	            addError("'"+actual+"'" + " != '" + expected+"'");
+	        }
+    	}
     }
 
     public void assertEquals(Object expected, SeleniumEnums actual) {
@@ -75,14 +82,7 @@ public abstract class AbstractPage implements Page {
     }
 
 
-    protected void clickNewWindowLink(SeleniumEnums link, SeleniumEnums text){ //TODO: jwimmer: dTanner: seems like this should be in link? or an class extending link ?newWindowLink? ???
-        selenium.click(link);
-        String[] handles = webDriver.getWindowHandles().toArray(new String[2]);
-        webDriver.switchTo().window(handles[handles.length-1]);
-        selenium.getText(text);
-        selenium.close();
-        webDriver.switchTo().window(handles[0]);
-    }
+    
 
     public ErrorCatcher get_errors() {
         return selenium.getErrors();
@@ -103,11 +103,6 @@ public abstract class AbstractPage implements Page {
         return selenium;
     }
     
-    protected String setCurrentLocation(){
-        String[] address = getCurrentLocation().split("/"); //TODO: jwimmer: doesn't seem very robust on pages where MORE than the last portion of the URL is significant?  
-        currentPage = address[address.length-1];
-        return currentPage;
-    }
 
     /*
      * (non-Javadoc)
@@ -137,36 +132,7 @@ public abstract class AbstractPage implements Page {
         return this;
     }
     
-    protected void selectPartialMatch(String partial, SeleniumEnums selector){  //TODO: jwimmer: dtanner: is there a reason for these to be here as opposed to SelectBox (dropDown) or some derivative?
-        String xpath="";
-        if (selector.getID()!=null){
-            String id = selector.getID();
-            xpath = "//select[@id='"+id+"']/option[contains(text(),'"+partial+"')]";
-        }else {
-            xpath = selector.getXpath() + "/option[contains(text(),'"+partial+"')]";
-        }
-        webDriver.findElement(By.xpath(xpath)).setSelected();
-    }
-    
-    protected void selectOption(String selection, SeleniumEnums selector){ //TODO: jwimmer: dtanner: same as last
-        selenium.select(selector, selection);
-        String selected = selenium.getSelectedLabel(selector);
-        assertEquals(selection, selected);
-    }
-    
-    protected void selectValue(SeleniumValueEnums selection, SeleniumEnums selector){ //TODO: jwimmer dtaner: same as last 
-        selenium.select(selector, "index=" + selection.getValue());
-        String selected = selenium.getSelectedLabel(selector);
-        assertEquals(getTextValue(selection), selected);
-    }
     
 
-    protected String getTextValue(SeleniumValueEnums selection) { //TODO: jwimmer: dtanner: ???
-        String textValue = selenium.getText(selection.getID());
-        if (textValue.isEmpty()) {
-            return selection.getPrefix().getText().replace(":", "");
-        } else {
-            return selection.getPrefix().getText() + selenium.getText(selection.getID());
-        }
-    }
+
 }

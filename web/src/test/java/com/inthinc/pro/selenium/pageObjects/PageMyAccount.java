@@ -51,7 +51,7 @@ public class PageMyAccount extends NavigationBar {
         public TextButton changePopupChange() {return new TextButton(MyAccountEnum.CHANGE_PASSWORD_CHANGE_BUTTON);}
         
         public TextButton change() {return new TextButton(MyAccountEnum.CHANGE_PASSWORD_BUTTON);}
-        public TextButton edit() {return new TextButton(MyAccountEnum.CHANGE_PASSWORD_BUTTON);}
+        public TextButton edit() {return new TextButton(MyAccountEnum.EDIT_BUTTON);}
         public TextButton save() {return new TextButton(MyAccountEnum.SAVE_BUTTON);}
         public TextButton cancel() {return new TextButton(MyAccountEnum.CANCEL_BUTTON);}
     }

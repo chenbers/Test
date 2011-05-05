@@ -17,7 +17,7 @@ import com.thoughtworks.selenium.DefaultSelenium;
 /****************************************************************************************
  * Extend the functionality of DefaultSelenium, but add some error handling around it
  * 
- * try{} catch(AssertionError e){ errors.Error(NameOfError, e)} catch(SeleniumException e){ errors.Error(NameOfError, e)} catch(Exception e){ errors.Error(NameOfError, e)}
+ * try{<br />}<br />catch(Exception e){<br />errors.Error(NameOfError, e)<br />}
  * 
  * @see DefaultSelenium
  * @see ErrorCatcher
@@ -45,15 +45,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         pause(2);
         return this;
     }
-    /**
-     * @see {@link com.thoughtworks.selenium.DefaultSelenium#click(String)}
-     * @param myEnum
-     * @param replacement
-     * @return
-     */
-    public CoreMethodLib click(SeleniumEnums myEnum) {
-        return click(myEnum, null, null);
-    }
     
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#click(String)}
@@ -61,8 +52,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replacement
      * @return
      */
-    public CoreMethodLib click(SeleniumEnums myEnum, String replaceString, Integer replaceNumber) {
-        String element = getLocator(myEnum, replaceString, replaceNumber);
+    public CoreMethodLib click(SeleniumEnums myEnum) {
+        String element = getLocator(myEnum);
         String error_name = "click: " + element;
         try {
             click(element);
@@ -173,35 +164,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return location;
     }
 
-    /**
-     * Returns the best locator string to use for this element.
-     * @param myEnum
-     * @return
-     */
-    public String getLocator(SeleniumEnums myEnum) {
-        return getLocator(myEnum, null, null);
-    }
-    
-    /**
-     * Returns the best locator string to use for this element.
-     * 
-     * @param myEnum
-     * @param replaceWord
-     * @return
-     */
-    public String getLocator(SeleniumEnums myEnum, String replaceWord) {
-        return getLocator(myEnum, replaceWord, null);
-    }
-    
-    /**
-     * Returns the best locator string to use for this element.
-     * @param myEnum
-     * @param replaceNumber
-     * @return
-     */
-    public String getLocator(SeleniumEnums myEnum, Integer replaceNumber) {
-        return getLocator(myEnum, null, replaceNumber);
-    }
     
     /**
      * Returns the best locator string to use for this element.
@@ -210,21 +172,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replaceNumber
      * @return the best locator string to use for this element, null if none are found in page
      */
-    public String getLocator(SeleniumEnums myEnum, String replaceName, Integer replaceNumber) {
+    public String getLocator(SeleniumEnums myEnum) {
         AutomationEnum blah = AutomationEnum.PLACE_HOLDER.setEnum(myEnum);
-        String id = null;
-        String number="";
-        if (replaceName==null){
-            replaceName = "";
-        }
-        if (replaceNumber!=null){
-            number = replaceNumber.toString();
-        } 
 
         for(String s: blah.getLocators()){
-            id = s.replace("***", replaceName).replace("###", number);
-            if(isElementPresent(id)){
-                return id;
+            if(isElementPresent(s)){
+                return s;
             }
         }
         return null;
@@ -248,14 +201,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return null;
     }
     
-    /**
-     * @see {@link com.thoughtworks.selenium.DefaultSelenium#focus(String)}
-     * @param myEnum
-     * @return
-     */
-    public CoreMethodLib focus(SeleniumEnums myEnum) {
-        return focus(myEnum, null, null);
-    }
     
     /**
      * @param myEnum
@@ -263,8 +208,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replaceNumber
      * @return
      */
-    public CoreMethodLib focus(SeleniumEnums myEnum, String replaceWord, Integer replaceNumber) {
-        String element = getLocator(myEnum, replaceWord, replaceNumber);
+    public CoreMethodLib focus(SeleniumEnums myEnum) {
+        String element = getLocator(myEnum);
         String error_name = "focus: " + element;
         try {
             focus(element);
@@ -308,14 +253,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return text;
     }
 
-    /**
-     * @see {@link com.thoughtworks.selenium.DefaultSelenium#getText(String)}
-     * @param myEnum
-     * @return
-     */
-    public String getText(SeleniumEnums myEnum) {
-        return getText(myEnum, null, null);
-    }
     
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#getText(String)}
@@ -324,9 +261,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replacmentNumber
      * @return
      */
-    public String getText(SeleniumEnums myEnum, String replacement, Integer replaceNumber) {
-        logger.debug(" getText("+myEnum+", "+replacement+", "+replaceNumber+")");
-        String element = getLocator(myEnum, replacement, replaceNumber);
+    public String getText(SeleniumEnums myEnum) {
+        logger.debug(" getText("+myEnum.getID()+")");
+        String element = getLocator(myEnum);
         String error_name = "getText: " + element;
         String text = "";
         try {
@@ -339,14 +276,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return text;
     }
 
-    public Boolean inSession() {//TODO: jwimmer: question for dTanner: if you deprecated getAllWindowNames() why are we then using it here?
-        try {
-            getAllWindowNames();
-        } catch (NullPointerException e) {
-            return false;
-        }
-        return true;
-    }
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#isChecked(String)}
@@ -366,45 +295,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
         return null;
     }
-    //TODO: jwimmer: dTanner: determine why we need/want this if we already have isChecked
-    //error_name will be isNotChecked (vs isChecked)
-    public Boolean isNotChecked(SeleniumEnums myEnum) {
-        String element = getLocator(myEnum);
-        String error_name = "isNotChecked: " + element;
-        try {
-            return !isChecked(element);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
 
-        return null;
-    }
 
-    //TODO: jwimmer: determine why we need/want this if we already have isElementPresent
-  //error_name will be isElementNotPresent (vs isElementPresent)
-    public Boolean isElementNotPresent(SeleniumEnums myEnum) {
-        String element = getLocator(myEnum);
-        String error_name = "isElementNotPresent: " + element;
-        try {
-            return !isElementPresent(element);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-
-    /**
-     * @see {@link com.thoughtworks.selenium.DefaultSelenium#isElementPresent(String)}
-     * @param myEnum
-     * @return
-     */
-    public Boolean isElementPresent(SeleniumEnums myEnum) {
-        return isElementPresent(myEnum, null, null);
-    }
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#isElementPresent(String)}
      * @param myEnum
@@ -412,8 +304,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replacementNumber
      * @return
      */
-    public Boolean isElementPresent(SeleniumEnums myEnum, String replacementWord, Integer replacementNumber) {
-        String element = getLocator(myEnum, replacementWord, replacementNumber);
+    public Boolean isElementPresent(SeleniumEnums myEnum) {
+        String element = getLocator(myEnum);
         String error_name = "isElementPresent: " + element;
         try {
             return isElementPresent(element);
@@ -444,28 +336,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return null;
     }
 
-    //TODO: jwimmer: determine why we need/want this if we already have isTextPresentOnPage
-    //error_name will be isTextNotPresentOnPage (vs isTextPresentOnPage)
-    public Boolean isTextNotPresentOnPage(String text) {
-        String error_name = "isTextNotPresent: " + text;
-        try {
-            return !isTextPresentOnPage(text);  
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
 
-    /**
-     * @see {@link com.thoughtworks.selenium.DefaultSelenium#isVisible(String)}
-     * @param myEnum
-     * @return
-     */
-    public Boolean isVisible(SeleniumEnums myEnum) {
-        return isVisible(myEnum, null, null);
-    }
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#isVisible(String)}
      * @param myEnum
@@ -473,25 +344,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replacementNumber
      * @return
      */
-    public Boolean isVisible(SeleniumEnums myEnum, String replacementWord, Integer replacementNumber) {
-        String element = getLocator(myEnum, replacementWord, replacementNumber);
+    public Boolean isVisible(SeleniumEnums myEnum) {
+        String element = getLocator(myEnum);
         String error_name = "isVisible: " + element;
         try {
             return isVisible(element);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
-    }
-    //TODO: jwimmer: determine why we need/want this if we already have isVisible
-    //error_name will be isNotVisisble (vs isVisible)
-    public Boolean isNotVisible(SeleniumEnums myEnum) {
-        String element = getLocator(myEnum);
-        String error_name = "isNotVisible: " + element;
-        try {
-            return !isVisible(element);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
@@ -681,39 +538,17 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return expected.equals(getLocation(expected));
     }
 
-    //TODO: jwimmer: question for dTanner: it looks like we are NOT using waitForElementPresent(...) if we are NOT going to use this, lets axe it.  if we are going to use it, it needs to work in conjunction with the new getLocator
-    public CoreMethodLib waitForElementPresent(String watch_for) {
-        waitForElementPresent(watch_for, "link");
-        return this;
-    }
-
-    public CoreMethodLib waitForElementPresent(String watch_for, String type) {
-        waitForElementPresent(watch_for, type, 180);
-        return this;
-    }
-
-    public CoreMethodLib waitForElementPresent(String watch_for, String type, Integer secondsToWait) {
+    public CoreMethodLib waitForElementPresent(SeleniumEnums myEnum, Integer secondsToWait) {
         Integer x = 0;
         boolean found = false;
         boolean doneWaiting = false;
         while (!found || !doneWaiting) {
-            try {
-                if (type.equals("link")) {
-                    found = isElementPresent("link=" + watch_for);
-                } else if (type.compareToIgnoreCase("text") == 0) {
-                    found = isTextPresentOnPage(watch_for);
-                } else if (type.compareToIgnoreCase("element") == 0) {
-                    found = isElementPresent(watch_for);
-                } else {
-                    doneWaiting = true; // no need to wait if the type is not recognized
-                }
-            } catch (Exception e) {
-                continue;
-            } finally {
-                pause(1); // second
-                x++;
-                doneWaiting = x > secondsToWait;
+            if (isElementPresent(myEnum)){
+            	break;
             }
+            pause(1); // second
+            x++;
+            doneWaiting = x > secondsToWait;
         }
         return this;
     }

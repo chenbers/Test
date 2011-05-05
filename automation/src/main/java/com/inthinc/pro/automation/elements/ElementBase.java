@@ -38,7 +38,7 @@ public class ElementBase implements ElementInterface {
 
     public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         this.text = anEnum.getText();
-        setEnum(anEnum);
+        setMyEnum(anEnum);
         if (replaceNumber!=null){
             myEnum.replaceNumber(replaceNumber.toString());
         }
@@ -49,9 +49,6 @@ public class ElementBase implements ElementInterface {
         webDriver = selenium.getWrappedDriver();
     }
     
-    private void setEnum(SeleniumEnums anEnum){
-        this.myEnum = AutomationEnum.PLACE_HOLDER.setEnum(anEnum);
-    }
 
     @Override
     public boolean isVisible() {
@@ -118,14 +115,10 @@ public class ElementBase implements ElementInterface {
     }
 
     public void assertEquals(Object expected, SeleniumEnums actual) {
-        assertEquals(expected, selenium.getText(AutomationEnum.PLACE_HOLDER.setEnum(actual)));
+        assertEquals(expected, selenium.getText(actual));
     }
 
     public void assertEquals(SeleniumEnums anEnum) {
-        //TODO: jwimmer: to dTanner: walk my through why you are using the PLACE_HOLDER here? comparing 1: and 2: leads me to believe it is unnecessary and obscures where things are coming from, hindering the debugging process?
-        System.out.print("1: ");
-        assertEquals(selenium.getText(AutomationEnum.PLACE_HOLDER.setEnum(anEnum)), anEnum.getText());
-        System.out.print("2: ");
         assertEquals(selenium.getText(anEnum), anEnum.getText());
     }
     
@@ -169,7 +162,7 @@ public class ElementBase implements ElementInterface {
     
     public void validateElementsPresent(SeleniumEnums ...enums){
         for (SeleniumEnums enumerated: enums){
-            setEnum(enumerated);
+            setMyEnum(enumerated);
             assertTrue(isElementPresent());
         }
     }

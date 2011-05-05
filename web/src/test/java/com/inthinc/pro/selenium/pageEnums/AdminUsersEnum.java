@@ -18,12 +18,12 @@ public enum AdminUsersEnum implements SeleniumEnums {
     EDIT_COLUMNS_LINK(editColumns, "admin-table-form:personTable-adminTableEditColumns", null, null),
 
     TABLE_HEADERS(null, "admin-table-form:personTable:***header:sortDiv", null, null),
-    TABLE_ENTRIES(null, "admin-table-form:personTable:0:***", null, null),
+    TABLE_ENTRIES(null, "admin-table-form:personTable:###:***", null, null),
 
     SELECT_ALL(null, "admin-table-form:personTable:selectAll", null, null),
-    SELECT_ROW(null, "admin-table-form:personTable:0:select", null, null),
+    SELECT_ROW(null, "admin-table-form:personTable:###:select", null, null),
 
-    EDIT_USER("edit", "admin-table-form:personTable:0:edit", null, null),
+    EDIT_USER("edit", "admin-table-form:personTable:###:edit", null, null),
 
     ;
 

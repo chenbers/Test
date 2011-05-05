@@ -3,84 +3,83 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.selenium.pageEnums.MyAccountEnum.RedFlagPrefs;
+import com.inthinc.pro.selenium.pageEnums.TAE;
+import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
+import com.inthinc.pro.selenium.pageEnums.TAE.RedFlagPrefs;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
 public class EditMyAccountTest extends WebRallyTest {
-	
+
 	private PageMyAccount my;
 	private PageLogin login;
-	
-	
+
 	@Before
-	public void setupPage(){
+	public void setupPage() {
 		my = new PageMyAccount();
 		login = new PageLogin();
 	}
-	
+
 	@Test
-	public void CancelButton_Changes(){
+	public void CancelButton_Changes() {
 		set_test_case("TC1271");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount_click();
-	
-	/*Edit button*/
+		my.getSelenium().pause(10);
+		/* Edit button */
 		my._button().edit().click();
-		
-	/*Login Info*/
-		my._select().locale().select("English");
+
+		/* Login Info */
+		my._select().locale().select(Locale.ENGLISH.getText());
 		my._select().measurement().select("Metric");
 		my._select().fuelEfficiency().select("Liters Per 100 Kilometers");
-		
-		
-	/*Contact Info*/
-		
-		my._textField().email1().type("tina1965@test.com");		
+
+		/* Contact Info */
+
+		my._textField().email1().type("tina1965@test.com");
 		my._textField().email2().type("tlc1965@test.com");
 		my._textField().phone1().type("801-777-7777");
 		my._textField().phone2().type("801-999-9999");
 		my._textField().textMessage1().type("801-777-9999@tmomail.net");
 		my._textField().textMessage2().type("801-999-7777@tmomail.net");
-		
-	/*Red Flags*/
+
+		/* Red Flags */
 		my._select().information().select(RedFlagPrefs.TEXT1.getValue());
 		my._select().warning().select(RedFlagPrefs.EMAIL1.getValue());
 		my._select().critical().select(RedFlagPrefs.PHONE1.getValue());
-			
-	/* Cancel Changes */
-		
+
+		/* Cancel Changes */
+
 		my._button().cancel().click();
-		
-/*Verify Changes did not take effect*/			
-	/*Login Info*/
+
+		/* Verify Changes did not take effect */
+		/* Login Info */
 		String username = my._text().userName().getText();
 		my.assertEquals("tnilson", username);
 		String locale = my._text().locale().getText();
-		my.assertEquals("English (United States)", locale); 
+		my.assertEquals(Locale.ENGLISH.getText(), locale);
 		String measurement = my._text().measurement().getText();
 		my.assertEquals("English", measurement);
 		String fuel = my._text().fuelEfficiency().getText();
-		my.assertEquals ("Miles Per Gallon (US)", fuel);
-		
-	/*Account Info*/
+		my.assertEquals("Miles Per Gallon (US)", fuel);
+
+		/* Account Info */
 		String name = my._text().name().getText();
 		my.assertEquals("Tina L Nilson", name);
 		String group = my._text().group().getText();
 		my.assertEquals("Top", group);
 		String team = my._text().team().getText();
-		my.assertEquals ("Skip's Team", team);
-	
-	/*Red Flags*/
+		my.assertEquals("Skip's Team", team);
+
+		/* Red Flags */
 		String info = my._text().redFlagInfo().getText();
 		my.assertEquals("E-mail 1", info);
 		String warn = my._text().redFlagWarn().getText();
 		my.assertEquals("E-mail 1", warn);
 		String critical = my._text().redFlagCritical().getText();
 		my.assertEquals("E-mail 1", critical);
-		
-	/*Contact Info*/
+
+		/* Contact Info */
 		String email1 = my._text().email1().getText();
 		my.assertEquals("tnilson@inthinc.com", email1);
 		String email2 = my._text().email2().getText();
@@ -92,70 +91,69 @@ public class EditMyAccountTest extends WebRallyTest {
 		String textmsg1 = my._text().textMessage1().getText();
 		my.assertEquals("", textmsg1);
 		String textmsg2 = my._text().textMessage2().getText();
-		my.assertEquals ("", textmsg2);	
+		my.assertEquals("", textmsg2);
 	}
 
 	@Test
-	public void SaveButton_Changes(){
+	public void SaveButton_Changes() {
 		set_test_case("TC1280");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount_click();
-	
-	/*Edit button*/
+
+		/* Edit button */
 		my._button().edit().click();
-		
-	/*Login Info*/
-			
-		my._select().locale().select("English (United States)");	
+
+		/* Login Info */
+
+		my._select().locale().select(Locale.ENGLISH.getText());
 		my._select().measurement().select("Metric");
 		my._select().fuelEfficiency().select("Liters Per 100 Kilometers");
-		
-	/*Contact Info*/
-		
-		my._textField().email1().type("tina1965@test.com");		
+
+		/* Contact Info */
+
+		my._textField().email1().type("tina1965@test.com");
 		my._textField().email2().type("tlc1965@test.com");
 		my._textField().phone1().type("801-777-7777");
 		my._textField().phone2().type("801-999-9999");
 		my._textField().textMessage1().type("801-777-9999@tmomail.net");
 		my._textField().textMessage2().type("801-999-7777@tmomail.net");
-		
-	/*Red Flags*/
+
+		/* Red Flags */
 		my._select().information().select(RedFlagPrefs.TEXT1.getValue());
 		my._select().warning().select(RedFlagPrefs.EMAIL1.getValue());
 		my._select().critical().select(RedFlagPrefs.PHONE1.getValue());
-			
-	/* Save Changes */
+
+		/* Save Changes */
 		my._button().save().click();
-		
-/*Verify Changes Display*/			
-	/*Login Info*/
+
+		/* Verify Changes Display */
+		/* Login Info */
 		String username = my._text().userName().getText();
 		my.assertEquals("tnilson", username);
 		String locale = my._text().locale().getText();
-		my.assertEquals("English (United States)", locale);
+		my.assertEquals(Locale.ENGLISH, locale);
 		String measurement = my._text().measurement().getText();
 		my.assertEquals("Metric", measurement);
 		String fuel = my._text().fuelEfficiency().getText();
-		my.assertEquals ("Liters Per 100 Kilometers", fuel);
-		
-	/*Account Info*/
+		my.assertEquals("Liters Per 100 Kilometers", fuel);
+
+		/* Account Info */
 		String name = my._text().name().getText();
 		my.assertEquals("Tina L Nilson", name);
 		String group = my._text().group().getText();
 		my.assertEquals("Top", group);
 		String team = my._text().team().getText();
-		my.assertEquals ("Skip's Team", team);
-	
-	/*Red Flags*/
+		my.assertEquals("Skip's Team", team);
+
+		/* Red Flags */
 		String info = my._text().redFlagInfo().getText();
 		my.assertEquals("Text Message 1", info);
 		String warn = my._text().redFlagWarn().getText();
 		my.assertEquals("E-mail 1", warn);
 		String critical = my._text().redFlagCritical().getText();
 		my.assertEquals("Phone 1", critical);
-		
-	/*Contact Info*/
+
+		/* Contact Info */
 		String email1 = my._text().email1().getText();
 		my.assertEquals("tina1965@test.com", email1);
 		String email2 = my._text().email2().getText();
@@ -167,226 +165,213 @@ public class EditMyAccountTest extends WebRallyTest {
 		String textmsg1 = my._text().textMessage1().getText();
 		my.assertEquals("801-777-9999@tmomail.net", textmsg1);
 		String textmsg2 = my._text().textMessage2().getText();
-		my.assertEquals ("801-999-7777@tmomail.net", textmsg2);	
+		my.assertEquals("801-999-7777@tmomail.net", textmsg2);
 	}
-	
+
 	@Test
-	public void EmailFormatError(){
+	public void EmailFormatError() {
 		set_test_case("TC1271");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount().click();
+
 		my._button().edit().click();
 		my._textField().email1().type("tina1965test.com");
 		my._button().save().click();
-		
-		
-		
-		//Clear?//
+
+		// Clear?//
 		my._textField().email1().type("tina1965@test.com");
 		my._button().save().click();
 		String email1 = my._text().email1().getText();
 		my.assertEquals("tnilson@inthinc.com", email1);
-		
+
 		my._button().edit().click();
 		my._textField().email2().type("tlc1965@test");
-		my._button().save().click();		
-		//Validate Error//
-		//Clear?//
+		my._button().save().click();
+		// Validate Error//
+		// Clear?//
 		my._textField().email2().type("tlc1965@test.com");
 		my._button().save().click();
 		String email2 = my._text().email2().getText();
 		my.assertEquals("", email2);
-				
+
 	}
 
 	@Test
-	public void MeasurementValidation(){
+	public void MeasurementValidation() {
 		set_test_case("TC1275");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount().click();
-	
+
 		my._button().edit().click();
 		my._select().measurement().select("Metric");
-		my._select().fuelEfficiency().select("Kilometers Per Liter");	
+		my._select().fuelEfficiency().select("Kilometers Per Liter");
 		my._button().save().click();
-		
-	//validate pages for Metric Units Goes Here//
-		
+
+		// validate pages for Metric Units Goes Here//
+
 		my._button().edit().click();
 		my._select().measurement().select("English");
-		my._select().fuelEfficiency().select("Miles Per Gallon (US)");	
+		my._select().fuelEfficiency().select("Miles Per Gallon (US)");
 		my._button().save().click();
-		
-	//validation for English Units Goes Here//
-		
-		
+
+		// validation for English Units Goes Here//
+
 	}
-	
+
 	@Test
-	public void FuelRatioValidation(){
+	public void FuelRatioValidation() {
 		set_test_case("TC1273");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount().click();
-		
+
 		my._button().edit().click();
 		my._select().measurement().select("Metric");
-		my._select().fuelEfficiency().select("Kilometers Per Liter");	
+		my._select().fuelEfficiency().select("Kilometers Per Liter");
 		my._button().save().click();
-		//Validate KM Per Liter Here//		
-		
+		// Validate KM Per Liter Here//
+
 		my._button().edit().click();
 		my._select().measurement().select("English");
-		my._select().fuelEfficiency().select("Miles Per Gallon (US)");	
+		my._select().fuelEfficiency().select("Miles Per Gallon (US)");
 		my._button().save().click();
-		//Validate MPG Here//
-		
+		// Validate MPG Here//
+
 	}
-	
+
 	@Test
-	public void ClearFieldsValidation(){
+	public void ClearFieldsValidation() {
 		set_test_case("TC1276");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount().click();
-	
+
 		my._button().edit().click();
-		
-		
-	/*Contact Info*/
-		
-		my._textField().email1().type("");		
+
+		/* Contact Info */
+
+		my._textField().email1().type("");
 		my._textField().email2().type("");
 		my._textField().phone1().type("");
 		my._textField().phone2().type("");
 		my._textField().textMessage1().type("");
 		my._textField().textMessage2().type("");
-			
-	/* Save Empty Fields */
-		
+
+		/* Save Empty Fields */
+
 		my._button().save().click();
-	
-		//Email Required// 
+
+		// Email Required//
 	}
+
 	@Test
-	public void PhoneMaxCharError(){
+	public void PhoneMaxCharError() {
 		set_test_case("TC1277");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount().click();
+		// my.link_myAccount().click();
 		my._button().edit().click();
 		my._textField().phone1().type("801-777-7777-44444421");
 		my._button().save().click();
-		//Validate Error//
-		//Clear fields?//
+		// Validate Error//
+		// Clear fields?//
 		my._textField().phone1().type("801-777-7777");
 		my._button().save().click();
 		String phone1 = my._text().phone1().getText();
 		my.assertEquals("801-777-7777", phone1);
-		
+
 		my._button().edit().click();
 		my._textField().phone2().type("8");
 		my._button().save().click();
-		//Validate Error//
-		//Clear fields?//
+		// Validate Error//
+		// Clear fields?//
 		my._textField().phone2().type("801-999-9999");
 		my._button().save().click();
 		String phone2 = my._text().phone2().getText();
 		my.assertEquals("801-999-9999", phone2);
 	}
-			
+
 	@Test
-	public void PhoneMissingCharError(){
+	public void PhoneMissingCharError() {
 		set_test_case("TC1278");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount().click();
-	
+		// my.link_myAccount().click();
+
 		my._button().edit().click();
 		my._textField().phone1().type("801-777-777");
 		my._button().save().click();
-		//Validate Error//
-		//Clear fields?//
+		// Validate Error//
+		// Clear fields?//
 		my._textField().phone1().type("801-777-7777");
 		my._button().save().click();
 		String phone1 = my._text().phone1().getText();
 		my.assertEquals("801-777-7777", phone1);
-		
+
 		my._button().edit().click();
 		my._textField().phone2().type("801-999-999");
 		my._button().save().click();
-		//Validate Error//
-		//Clear fields?//		
+		// Validate Error//
+		// Clear fields?//
 		my._textField().phone2().type("801-999-9999");
 		my._button().save().click();
 		String phone2 = my._text().phone2().getText();
 		my.assertEquals("801-999-9999", phone2);
-		
+
 	}
-	
+
 	@Test
-	public void PhoneSpecialCharError(){
+	public void PhoneSpecialCharError() {
 		set_test_case("TC1279");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount().click();
+		// my.link_myAccount().click();
 		my._button().edit().click();
 		my._textField().phone1().type("801-@$%-777&");
 		my._button().save().click();
-		//Validate Error//
-		//Clear fields?//
+		// Validate Error//
+		// Clear fields?//
 		my._textField().phone1().type("801-777-7777");
 		my._button().save().click();
 		String phone1 = my._text().phone1().getText();
 		my.assertEquals("801-777-7777", phone1);
-		
+
 		my._button().edit().click();
 		my._textField().phone2().type("801-ABC-$%+");
 		my._button().save().click();
-		//Validate Error//
-		//Clear fields?//
+		// Validate Error//
+		// Clear fields?//
 		my._textField().phone2().type("801-999-9999");
 		my._button().save().click();
 		String phone2 = my._text().phone2().getText();
 		my.assertEquals("801-999-9999", phone2);
 	}
-	
+
 	@Test
-	public void TextMsgFormatError(){
+	public void TextMsgFormatError() {
 		set_test_case("TC1282");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount().click();
-	
+
 		my._button().edit().click();
 		my._textField().textMessage1().type("801-777-9999tmomail.net");
 		my._button().save().click();
-		//Validate Error //
-		//Clear fields?//
+		// Validate Error //
+		// Clear fields?//
 		my._textField().textMessage1().type("801-777-9999@tmomail.net");
 		my._button().save().click();
 		String phone1 = my._text().phone1().getText();
 		my.assertEquals("801-777-9999@tmomail.net", phone1);
-		
+
 		my._button().edit().click();
 		my._textField().textMessage2().type("801-999-7777@tmomail");
 		my._button().save().click();
-		//Validate Error //
-		//Clear fields?//
+		// Validate Error //
+		// Clear fields?//
 		my._button().edit().click();
 		my._textField().textMessage2().type("801-999-7777@tmomail.net");
 		my._button().save().click();
 		String phone2 = my._text().phone2().getText();
 		my.assertEquals("801-999-7777@tmomail.net", phone2);
-		
-	}
-	
-	
-}
 
-	
-	
-		
-	
+	}
+
+}

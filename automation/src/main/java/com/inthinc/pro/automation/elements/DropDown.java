@@ -4,6 +4,7 @@ import org.openqa.selenium.By;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 
 public class DropDown extends Text implements Selectable {
     
@@ -69,5 +70,19 @@ public class DropDown extends Text implements Selectable {
     @Override
     public ElementInterface selectPartMatch(String partialMatch) {
         return selectPartMatch(partialMatch, 1);
+    }
+    
+    /**
+     * Used for the Red Flag selectors on Edit My Account, and Edit User
+     * @param selection
+     * @return
+     */
+    protected String getTextValue(SeleniumValueEnums selection) { 
+    	String textValue = selenium.getText(selection.getID());
+    	if (textValue.isEmpty()) {
+	      return selection.getPrefix().getText().replace(":", "");
+	  } else {
+	      return selection.getPrefix().getText() + selenium.getText(selection.getID());
+	  }
     }
 }

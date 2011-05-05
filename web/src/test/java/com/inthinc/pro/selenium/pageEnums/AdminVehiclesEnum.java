@@ -6,7 +6,7 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum AdminVehiclesEnum implements SeleniumEnums {
-
+    
     TITLE("Admin - Vehicles", null, Xpath.start().span(Id.clazz("admin")).toString(), null),
     DELETE(delete, "admin-table-form:vehiclesTable-adminTableDelete", null, null),
     BATCH_EDIT(batchEdit, "admin-table-form:vehiclesTable-adminTableEdit ", null, null),
@@ -15,10 +15,10 @@ public enum AdminVehiclesEnum implements SeleniumEnums {
     SEARCH_BUTTON(search, "admin-table-form:vehiclesTable-adminTableSearch", null, null),
     EDIT_COLUMNS_LINK(editColumns, "admin-table-form:vehiclesTable-adminTableEditColumns", null, null),
     TABLE_HEADERS(null, "admin-table-form:vehiclesTable:***header:sortDiv", null, null),
-    TABLE_ENTRIES(null, "admin-table-form:vehiclesTable:0:***", null, null),
+    TABLE_ENTRIES(null, "admin-table-form:vehiclesTable:###:***", null, null),
     SELECT_ALL(null, "admin-table-form:vehiclesTable:selectAll", null, null),
-    SELECT_ROW(null, "admin-table-form:vehiclesTable:0:select", null, null),
-    EDIT_USER("edit", "admin-table-form:vehiclesTable:0:edit", null, null),
+    SELECT_ROW(null, "admin-table-form:vehiclesTable:###:select", null, null),
+    EDIT_USER("edit", "admin-table-form:vehiclesTable:###:edit", null, null),
 
     ;
 
