@@ -1,8 +1,13 @@
 package com.inthinc.pro.backing.importer.row;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.inthinc.pro.backing.importer.DataRow;
 import com.inthinc.pro.backing.importer.DriverTemplateFormat;
+import com.inthinc.pro.backing.importer.VehicleTemplateFormat;
 import com.inthinc.pro.backing.importer.datacheck.AccountNameChecker;
 import com.inthinc.pro.backing.importer.datacheck.DuplicateEmailChecker;
 import com.inthinc.pro.backing.importer.datacheck.DuplicateEmployeeIDChecker;
@@ -56,6 +61,11 @@ public class DriverRowValidator extends RowValidator {
         return errorList;
     }
     
+    @Override
+    public Integer getColumnCount() {
+        return getDriverTemplateFormat().getNumColumns();
+    }
+
     public DriverTemplateFormat getDriverTemplateFormat() {
         return driverTemplateFormat;
     }
@@ -64,4 +74,30 @@ public class DriverRowValidator extends RowValidator {
         this.driverTemplateFormat = driverTemplateFormat;
     }
 
+    @Override
+    public List<String> validate(List<DataRow> allRows, boolean includeWarnings) {
+        if (!includeWarnings)
+            return null;
+
+        Map<String, Integer> empIDMap = new HashMap<String, Integer>();
+        Integer rowNumber = 2;
+        List<String> warningList = new ArrayList<String>();
+        for (DataRow row : allRows) {
+            List<String> rowData = row.getData();
+            String empID = rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX);
+            if (empIDMap.get(empID) != null) {
+                if (warningList.isEmpty()) {
+                    warningList.add("WARNING:  Duplicate EmployeeIDs found in import document.");
+                }
+                addToList("The employee ID on row: " + rowNumber + " is a duplicate of the employee ID on row: " + empIDMap.get(empID) + ".  On import the vehicle on row: " + empIDMap.get(empID) + " will be overwritten.", warningList);
+            }
+            else {
+                empIDMap.put(empID, rowNumber);
+            }
+            rowNumber++;
+        }
+        
+        return warningList;
+        
+    }
 }

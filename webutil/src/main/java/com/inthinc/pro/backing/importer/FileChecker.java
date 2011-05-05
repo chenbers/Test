@@ -13,8 +13,7 @@ public class FileChecker {
     
     public List<String> checkFile(ImportType importType, InputStream is, boolean includeWarnings) {
         
-        
-        List<DataRow> dataList = new ExcelFile().parseFile(is);
+        List<DataRow> dataList = new ExcelFile().parseFile(is, importType.getRowValidator().getColumnCount());
         return checkDataList(importType, dataList, includeWarnings);
     }
     
@@ -32,6 +31,11 @@ public class FileChecker {
                 msgList.add(ROW_MARKER+ row.getLabel()+"</b>");
                 msgList.addAll(errorList);
             }
+        }
+        
+        List<String> errorList = rowValidator.validate(dataList, includeWarnings);
+        if (errorList != null && !errorList.isEmpty()) {
+            msgList.addAll(errorList);
         }
         return msgList;
         

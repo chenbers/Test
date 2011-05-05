@@ -3,6 +3,7 @@ package com.inthinc.pro.backing.importer.row;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.inthinc.pro.backing.importer.DataRow;
 import com.inthinc.pro.backing.importer.TemplateFormat;
 
 public abstract class RowValidator {
@@ -12,7 +13,9 @@ public abstract class RowValidator {
         "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
     };
 
-    public abstract List<String> validateRow(List<String> rowData, boolean includeWarnings); 
+    public abstract List<String> validateRow(List<String> rowData, boolean includeWarnings);
+    public abstract Integer getColumnCount();
+    public abstract List<String> validate(List<DataRow> allRows, boolean includeWarnings);
 
     protected List<String> checkFormat(List<String> rowData, TemplateFormat format)
     {

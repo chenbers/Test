@@ -1,7 +1,11 @@
 package com.inthinc.pro.backing.importer.row;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.inthinc.pro.backing.importer.DataRow;
 import com.inthinc.pro.backing.importer.VehicleTemplateFormat;
 import com.inthinc.pro.backing.importer.datacheck.AccountNameChecker;
 import com.inthinc.pro.backing.importer.datacheck.DeviceSerialorIMEIChecker;
@@ -69,5 +73,37 @@ public class VehicleRowValidator extends RowValidator {
             }
         }
         return errorList;
+    }
+
+    @Override
+    public Integer getColumnCount() {
+        return getVehicleTemplateFormat().getNumColumns();
+    }
+
+    @Override
+    public List<String> validate(List<DataRow> allRows, boolean includeWarnings) {
+        if (!includeWarnings)
+            return null;
+
+        Map<String, Integer> vinMap = new HashMap<String, Integer>();
+        Integer rowNumber = 2;
+        List<String> warningList = new ArrayList<String>();
+        for (DataRow row : allRows) {
+            List<String> rowData = row.getData();
+            String vin = rowData.get(VehicleTemplateFormat.VIN_IDX);
+            if (vinMap.get(vin) != null) {
+                if (warningList.isEmpty()) {
+                    warningList.add("WARNING:  Duplicate VINs found in import document.");
+                }
+                addToList("The vin on row: " + rowNumber + " is a duplicate of the vin on row: " + vinMap.get(vin) + ".  On import the vehicle on row: " + vinMap.get(vin) + " will be overwritten.", warningList);
+            }
+            else {
+                vinMap.put(vin, rowNumber);
+            }
+            rowNumber++;
+        }
+        
+        return warningList;
+        
     }
 }

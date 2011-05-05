@@ -13,7 +13,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 public class ExcelFile {
     
-    public List<DataRow> parseFile(InputStream is) {
+    public List<DataRow> parseFile(InputStream is, Integer columnCount) {
 
         if (is == null) {
             System.out.println("ERROR: Input Stream is null.");
@@ -38,15 +38,18 @@ public class ExcelFile {
             }
             
             List<String> rowData = new ArrayList<String>();
-            for (int cellNum = 0; cellNum < row.getLastCellNum(); cellNum++) {
-                Cell cell = row.getCell(cellNum, Row.RETURN_BLANK_AS_NULL);
+            for (int cellNum = 0; cellNum < columnCount; cellNum++) {
+                Cell cell = null;
+                if (cellNum < row.getLastCellNum()) {
+                    cell = row.getCell(cellNum, Row.RETURN_BLANK_AS_NULL);
+                }
                 if (cell == null) {
                     rowData.add("");
                     continue;
                 }
                 switch(cell.getCellType()) {
                   case Cell.CELL_TYPE_STRING:
-                    rowData.add(cell.getRichStringCellValue().getString());
+                    rowData.add(cell.getRichStringCellValue().getString().trim());
                     break;
                   case Cell.CELL_TYPE_NUMERIC:
                     Double cellValue = Double.valueOf(cell.getNumericCellValue());

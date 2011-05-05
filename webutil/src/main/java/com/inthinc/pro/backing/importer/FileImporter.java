@@ -13,7 +13,8 @@ public class FileImporter {
 
     public List<String> importFile(ImportType importType, InputStream is) {
         
-        List<DataRow> dataList = new ExcelFile().parseFile(is);
+        Integer columnCount = importType.getRowValidator().getColumnCount();
+        List<DataRow> dataList = new ExcelFile().parseFile(is, columnCount);
         List<String> msgList = new FileChecker().checkDataList(importType, dataList, false);
         if (msgList.size() != 0)
             return msgList;
