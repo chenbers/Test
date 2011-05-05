@@ -33,6 +33,7 @@ import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 /**
  * Integration test for Group Service Implementation.
  */
+@Ignore
 public class GroupServiceTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(GroupServiceTest.class);
     private static int GROUP_ID = 3;
