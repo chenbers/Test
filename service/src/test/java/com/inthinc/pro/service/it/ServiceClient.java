@@ -20,6 +20,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
+import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
@@ -79,6 +80,10 @@ public interface ServiceClient {
     public ClientResponse<List<DriverLocation>> getGroupDriverLocations(@PathParam("groupID") Integer groupID);
 
     @GET
+    @Path("/group/{groupID}/score")
+    public ClientResponse<List<DriverVehicleScoreWrapper>> getDriverScores(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") Integer numberOfDays);
+
+    @GET
     @Path("/driver/{driverID}/trip")
     public ClientResponse<Trip> getLastTrip(@PathParam("driverID") Integer driverID);
 
@@ -94,6 +99,20 @@ public interface ServiceClient {
     @Path("/driver/{driverID}/location")
     public ClientResponse<LastLocation> getLastLocation(@PathParam("driverID") Integer driverID);
 
+    // ----------------------------------------------------------------------------------
+    // Vehicle/Group web-services
+
+    @GET
+    @Path("/vehicle/{vehicleID}/trips/{date}")
+    public ClientResponse<List<Trip>> getLastVehicleTrips(@PathParam("vehicleID") Integer vehicleID, @PathParam("date") String date);
+
+    @GET
+    @Path("/vehicle/{vehicleID}/trips")
+    public ClientResponse<List<Trip>> getLastVehicleTrips(@PathParam("vehicleID") Integer vehicleID);
+
+    @GET
+    @Path("/vehicle/{vehicleID}/location")
+    public ClientResponse<LastLocation> getLastVehicleLocation(@PathParam("vehicleID") Integer vehicleID);
     // --------------------------------------------------------------------------------
     // Performance Reports web-services
     @GET

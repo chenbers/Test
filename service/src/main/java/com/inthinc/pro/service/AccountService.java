@@ -14,7 +14,7 @@ import javax.ws.rs.core.UriInfo;
 import com.inthinc.pro.model.Account;
 
 @Path("/")
-@Produces("application/xml")
+@Produces({"application/xml","application/json", "application/fastinfoset"})
 public interface AccountService extends GenericService<Account> {
 
     @GET

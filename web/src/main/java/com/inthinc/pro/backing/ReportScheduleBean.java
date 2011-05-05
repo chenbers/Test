@@ -19,6 +19,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.MutableDateTime;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.dao.DriverDAO;
@@ -386,16 +390,20 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
     protected void doSave(List<ReportScheduleView> saveItems, boolean create) {
         for (final ReportScheduleView reportSchedule : saveItems) {
             if (reportSchedule.getOccurrence().equals(Occurrence.DAILY) || reportSchedule.getOccurrence().equals(Occurrence.WEEKLY)) {
-                Calendar now = Calendar.getInstance(getUtcTimeZone());
-                reportSchedule.setStartDate(now.getTime());
+//                Calendar now = Calendar.getInstance();
+                DateTime now = new DateTime(getPerson().getTimeZone());
+                reportSchedule.setStartDate(now.toDate());
             }
             else if (reportSchedule.getOccurrence().equals(Occurrence.MONTHLY)) {
                 logger.debug("Day of Month: " + reportSchedule.getDayOfMonth());
-                Calendar now = Calendar.getInstance(getUtcTimeZone());
+//                Calendar now = Calendar.getInstance(getUtcTimeZone());
+                DateTimeZone userTimeZone = DateTimeZone.forID(getPerson().getTimeZone().getID());
+                MutableDateTime dayOfMonth = new MutableDateTime(userTimeZone);
+
                 if (reportSchedule.getDayOfMonth() != null) {
-                    now.set(Calendar.DATE, reportSchedule.getDayOfMonth());
+                    dayOfMonth.setDayOfMonth(reportSchedule.getDayOfMonth());
                 }
-                reportSchedule.setStartDate(now.getTime());
+                reportSchedule.setStartDate(new DateMidnight(dayOfMonth.getMillis(),userTimeZone).toDate());
             }
 
             // Get rid of all end dates

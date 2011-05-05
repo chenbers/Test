@@ -17,7 +17,7 @@ import javax.ws.rs.core.UriInfo;
 import com.inthinc.pro.model.Person;
 
 @Path("/")
-@Produces("application/xml")
+@Produces({"application/xml","application/json", "application/fastinfoset"})
 @Consumes("application/xml")
 public interface PersonService extends GenericService<Person> {
 

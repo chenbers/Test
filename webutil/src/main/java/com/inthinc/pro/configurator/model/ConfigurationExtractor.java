@@ -57,16 +57,16 @@ public class ConfigurationExtractor {
 
         EditableMap<Integer, String> editedDesiredValues = new EditableMap<Integer, String>(productSettings, vehicleSetting.getCombinedSettings());
 
-        String editedDesiredValuesMD5 = MessageDigestUtil.getMD5(concatenate(editedDesiredValues.getOriginalValues()));
+        String editedDesiredValuesHash = MessageDigestUtil.getHash(concatenate(editedDesiredValues.getOriginalValues()));
 
-        Configuration configuration = configurations.get(editedDesiredValuesMD5);
+        Configuration configuration = configurations.get(editedDesiredValuesHash);
         if (configuration != null) {
 
             logger.debug("ConfigurationExtractor: addToMatchingConfiguration - matching found");
             configuration.addVehicleID(vehicleSetting.getVehicleID());
             return;
         }
-        configurations.put(editedDesiredValuesMD5,new Configuration(vehicleSetting.getVehicleID(), configurations.size() + 1, editedDesiredValues, editedDesiredValuesMD5));
+        configurations.put(editedDesiredValuesHash,new Configuration(vehicleSetting.getVehicleID(), configurations.size() + 1, editedDesiredValues, editedDesiredValuesHash));
     }
 
     private String concatenate(Map<Integer, String> stringMap) {

@@ -18,12 +18,11 @@ import javax.ws.rs.core.UriInfo;
 import com.inthinc.pro.model.Vehicle;
 
 @Path("/")
-@Produces("application/xml")
+@Produces({"application/xml","application/json", "application/fastinfoset"})
 public interface VehicleService {
 
     @GET
     @Path("/vehicles")
-    @Produces("application/xml")
     public Response getAll();
 
     @GET
@@ -31,7 +30,7 @@ public interface VehicleService {
     public Response get(@PathParam("id") Integer id);
 
 	/**
-	 * Get Vehilce by VIN
+	 * Get Vehicle by VIN
 	 * @param vin The VIN of the vehicle to find.
      * @returnWrapped Vehicle Returns a vehicle found by VIN.
 	 * @HTTP HTTP 404 - if the vehicle is not found by VIN.

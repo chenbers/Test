@@ -65,7 +65,7 @@ import com.inthinc.pro.model.User;
  *
  */
 @Path("/")
-@Produces("application/xml")
+@Produces({"application/xml","application/json", "application/fastinfoset"})
 @Consumes("application/xml")
 public interface UserService extends GenericService<User> {
 

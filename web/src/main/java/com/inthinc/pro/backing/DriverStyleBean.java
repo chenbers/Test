@@ -36,7 +36,7 @@ public class DriverStyleBean extends BasePerformanceEventsBean
     public DriverStyleBean() {
 		super();
 		
-		selectedBreakdown="OVERALL";
+		selectedBreakdown="SCORE_DRIVING_STYLE";
 	}
 
     @Override
@@ -63,13 +63,13 @@ public class DriverStyleBean extends BasePerformanceEventsBean
         	ScoreableEntity se = tempMap.get(subType);
         	if (se != null && se.getScore() != null)
         	{
-        		scoreMap.put(subType.toString(), se.getScore());
-        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        		scoreMap.put(subType.getDescription(), se.getScore());
+        		styleMap.put(subType.getDescription(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
         	}
         	else
         	{
-        		scoreMap.put(subType.toString(), EMPTY_SCORE_VALUE);
-        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(NO_SCORE, ScoreBoxSizes.MEDIUM));
+        		scoreMap.put(subType.getDescription(), EMPTY_SCORE_VALUE);
+        		styleMap.put(subType.getDescription(), ScoreBox.GetStyleFromScore(NO_SCORE, ScoreBoxSizes.MEDIUM));
 
         	}
         }
@@ -179,7 +179,7 @@ public class DriverStyleBean extends BasePerformanceEventsBean
     	eventsListsMap = new HashMap<String, List<EventReportItem>>();
     	
         List<EventReportItem> sortedEvents = new ArrayList<EventReportItem>();
-        eventsListsMap.put("OVERALL", sortedEvents);
+        eventsListsMap.put("SCORE_DRIVING_STYLE", sortedEvents);
         sortedEvents.addAll(getEvents());
         filteredEvents = sortedEvents;
        

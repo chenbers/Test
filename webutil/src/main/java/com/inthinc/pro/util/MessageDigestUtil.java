@@ -5,12 +5,12 @@ import java.security.NoSuchAlgorithmException;
 
 public class MessageDigestUtil {
     
-    public static String getMD5(String stringToDigest){
+    public static String getHash(String stringToDigest){
         
         byte[] defaultBytes = stringToDigest.getBytes();
         try{
             
-            MessageDigest algorithm = MessageDigest.getInstance("MD5");
+            MessageDigest algorithm = MessageDigest.getInstance("SHA");
             algorithm.reset();
             algorithm.update(defaultBytes);
             byte messageDigest[] = algorithm.digest();

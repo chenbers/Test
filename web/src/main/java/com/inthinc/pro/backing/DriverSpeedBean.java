@@ -39,7 +39,7 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
     public DriverSpeedBean() {
 		super();
 		
-		selectedBreakdown="OVERALL";
+		selectedBreakdown="SCORE_SPEEDING";
 	}
 
     @Override
@@ -181,17 +181,17 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
     {
     	eventsListsMap = new HashMap<String, List<EventReportItem>>();
         List<EventReportItem> speedAll = new ArrayList<EventReportItem>();
-        eventsListsMap.put("OVERALL", speedAll);
+        eventsListsMap.put(ScoreType.SCORE_SPEEDING.toString(), speedAll);
         List<EventReportItem> speed20 = new ArrayList<EventReportItem>();
-        eventsListsMap.put("TWENTYONE", speed20);
+        eventsListsMap.put(ScoreType.SCORE_SPEEDING_21_30.toString(), speed20);
         List<EventReportItem> speed30 = new ArrayList<EventReportItem>();
-        eventsListsMap.put("THIRTYONE", speed30);
+        eventsListsMap.put(ScoreType.SCORE_SPEEDING_31_40.toString(), speed30);
         List<EventReportItem> speed40 = new ArrayList<EventReportItem>();
-        eventsListsMap.put("FOURTYONE", speed40);
+        eventsListsMap.put(ScoreType.SCORE_SPEEDING_41_54.toString(), speed40);
         List<EventReportItem> speed50 = new ArrayList<EventReportItem>();
-        eventsListsMap.put("FIFTYFIVE", speed50);
+        eventsListsMap.put(ScoreType.SCORE_SPEEDING_55_64.toString(), speed50);
         List<EventReportItem> speed60 = new ArrayList<EventReportItem>();
-        eventsListsMap.put("SIXTYFIVE", speed60);
+        eventsListsMap.put(ScoreType.SCORE_SPEEDING_65_80.toString(), speed60);
 
         speedAll.addAll(events);
 

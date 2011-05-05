@@ -286,8 +286,8 @@ var firstLoad = new Boolean(true);
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
-									            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap['SCORE_SPEEDING']}" />
-									            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap['SCORE_SPEEDING']}" />
+									            <ui:param name="score" value="#{vehicleSpeedBean.scoreMap[vehicleSpeedBean.selectedBreakdown]}" />
+									            <ui:param name="scoreStyle" value="#{vehicleSpeedBean.styleMap[vehicleSpeedBean.selectedBreakdown]}" />
  												<ui:param name="context" value="vehicleSpeedScore" />
 										</ui:include>
 									</td>
@@ -338,8 +338,8 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartOverallSpeedForm">
 						  	  <a4j:commandLink id="vehicleSpeedOverall" action="#{vehicleSpeedBean.selectBreakdownChanged}"     
 						  	 					onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="speed" value="OVERALL" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
+						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -379,8 +379,8 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartTwentyOneForm">
 						  	  <a4j:commandLink id="vehicleSpeedTwentyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages[SPEEDING_21_30_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="speed" value="TWENTYONE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
+						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_21_30" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_21_30" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -416,8 +416,8 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartThirtyOneForm">
 						  	  <a4j:commandLink id="vehicleSpeedThirtyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages[SPEEDING_31_40_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="speed" value="THIRTYONE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
+						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_31_40" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_31_40" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -455,8 +455,8 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartFortyOneForm">
 						  	  <a4j:commandLink id="vehicleSpeedFortyOne" action="#{vehicleSpeedBean.selectBreakdownChanged}"     
 						  	 					onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages[SPEEDING_41_54_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="speed" value="FOURTYONE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
+						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_41_54" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_41_54" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -492,8 +492,8 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartFiftyFiveForm">
 						  	  <a4j:commandLink id="vehicleSpeedFiftyFive" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages[SPEEDING_55_64_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="speed" value="FIFTYFIVE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
+						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_55_64" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_55_64" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -529,8 +529,8 @@ var firstLoad = new Boolean(true);
 						  <h:form id="vehicleChartSixtyFiveForm">
 						  	  <a4j:commandLink id="vehicleSpeedSixtyFive" action="#{vehicleSpeedBean.selectBreakdownChanged}"   
 						  	  					onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages[SPEEDING_65_80_KEY]}')" 
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="speed" value="SIXTYFIVE" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
+						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_65_80" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
                                     <h:outputText value="SCORE_SPEEDING_65_80" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>

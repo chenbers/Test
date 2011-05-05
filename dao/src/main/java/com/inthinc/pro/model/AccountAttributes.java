@@ -126,11 +126,12 @@ public class AccountAttributes extends BaseEntity {
 
     public void setSupportContacts(String[] supportContacts) {
         this.supportContacts = supportContacts;
-        setSupportContact1(supportContacts[0]);
-        setSupportContact2(supportContacts[1]);
-        setSupportContact3(supportContacts[2]);
-        setSupportContact4(supportContacts[3]);
-        setSupportContact5(supportContacts[4]);
+        
+        setSupportContact1(supportContacts.length>0?supportContacts[0]:null);
+        setSupportContact2(supportContacts.length>1?supportContacts[1]:null);
+        setSupportContact3(supportContacts.length>2?supportContacts[2]:null);
+        setSupportContact4(supportContacts.length>3?supportContacts[3]:null);
+        setSupportContact5(supportContacts.length>4?supportContacts[4]:null);
     }
 
     public String getWaySmart() {

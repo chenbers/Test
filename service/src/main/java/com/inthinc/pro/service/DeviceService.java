@@ -19,7 +19,7 @@ import com.inthinc.pro.model.Device;
 
 
 @Path("/")
-@Produces("application/xml")
+@Produces({"application/xml","application/json", "application/fastinfoset"})
 public interface DeviceService extends GenericService<Device> {
 
 	@GET

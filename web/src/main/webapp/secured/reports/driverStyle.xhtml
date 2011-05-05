@@ -256,8 +256,8 @@ var firstLoad = new Boolean(true);
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
-									            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE']}" />
-									            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE']}" />
+									            <ui:param name="score" value="#{driverStyleBean.scoreMap[driverStyleBean.selectedBreakdown]}" />
+									            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap[driverStyleBean.selectedBreakdown]}" />
 												<ui:param name="context" value="driverStyleOverallScore" />
 										</ui:include>
 									</td>
@@ -307,8 +307,8 @@ var firstLoad = new Boolean(true);
 						  <div class="tiny_title">
 						  <h:form id="driverStyleOverallForm">
 						  	  <a4j:commandLink id="driverStyleOverall" onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
-						  	  				   action="#{driverStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom">
-						  	  		<a4j:actionparam name="eventType" value="OVERALL" assignTo="#{driverStyleBean.selectedBreakdown}"/>
+						  	  				   action="#{driverStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
+						  	  		<a4j:actionparam name="eventType" value="SCORE_DRIVING_STYLE" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -343,7 +343,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="driverStyleBrakeForm">
 						  	  <a4j:commandLink  id="driverStyleBrake" onclick="SelectBreakDown('BRAKE', chartBrake, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="eventType" value="HARD_BRAKE" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}"/>
 						  	  </a4j:commandLink>
@@ -353,7 +353,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
-									            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_BRAKE']}" />
+									            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['HARD_BRAKE']}" />
 									            <ui:param name="id" value="breakingChart" />
 									            <ui:param name="width" value="220" /> 
 									            <ui:param name="height" value="90" />  
@@ -366,8 +366,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 								<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_BRAKE']}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_BRAKE']}" /> 
+								            <ui:param name="score" value="#{driverStyleBean.scoreMap['HARD_BRAKE']}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['HARD_BRAKE']}" /> 
 											<ui:param name="context" value="driverStyleHardBrake" />
 									</ui:include>
 								</td>
@@ -379,7 +379,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="driverStyleAccelerateForm">
 						  	  <a4j:commandLink  id="driverStyleAccelerate" onclick="SelectBreakDown('ACCELERATE', chartAccel, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="eventType" value="HARD_ACCEL" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}"/>
 						  	  </a4j:commandLink>
@@ -389,7 +389,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_ACCEL']}" />
+								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['HARD_ACCEL']}" />
 								            <ui:param name="id" value="accelerateChart" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -402,8 +402,8 @@ var firstLoad = new Boolean(true);
 									</td>
 									<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_ACCEL']}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_ACCEL']}" /> 
+								            <ui:param name="score" value="#{driverStyleBean.scoreMap['HARD_ACCEL']}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['HARD_ACCEL']}" /> 
 											<ui:param name="context" value="driverStyleHardAccel" />
 									</ui:include>
 								</td>
@@ -417,7 +417,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="driverStyleTurnForm">
 						  	  <a4j:commandLink  id="driverStyleTurn" onclick="SelectBreakDown('TURN', chartTurn, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="eventType" value="HARD_TURN" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_TURN}"/>
 						  	  </a4j:commandLink>
@@ -428,7 +428,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_TURN']}" />
+								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['HARD_TURN']}" />
 								            <ui:param name="id" value="turnChart" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -441,8 +441,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_TURN']}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_TURN']}" /> 
+								            <ui:param name="score" value="#{driverStyleBean.scoreMap['HARD_TURN']}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['HARD_TURN']}" /> 
 											<ui:param name="context" value="driverStyleHardTurn" />
 									</ui:include>
 								</td>
@@ -455,7 +455,7 @@ var firstLoad = new Boolean(true);
 						  <h:form id="driverStyleBumpForm">
 						  	  <a4j:commandLink  id="driverStyleBump"  onclick="SelectBreakDown('BUMP', chartBump, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}')" 
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
-						  	  					reRender="notificationsTable,tableStats,scrollerBottom">
+						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="eventType" value="HARD_VERT" assignTo="#{driverStyleBean.selectedBreakdown}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}"/>
 						  	  </a4j:commandLink>
@@ -465,7 +465,7 @@ var firstLoad = new Boolean(true);
 							  <tr>
 								<td align="center">
 									<ui:include src="../../includes/multiLineChart.xhtml">
-								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['SCORE_DRIVING_STYLE_HARD_BUMP']}" />
+								            <ui:param name="lineChartDef" value="#{driverStyleBean.trendMap['HARD_VERT']}" />
 								            <ui:param name="id" value="bumpChart" />
 								            <ui:param name="width" value="220" /> 
 								            <ui:param name="height" value="90" />  
@@ -478,8 +478,8 @@ var firstLoad = new Boolean(true);
 								</td>
 								<td align="center">
 									<ui:include src="../../includes/scoreBox.xhtml">
-								            <ui:param name="score" value="#{driverStyleBean.scoreMap['SCORE_DRIVING_STYLE_HARD_BUMP']}" />
-								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['SCORE_DRIVING_STYLE_HARD_BUMP']}" /> 
+								            <ui:param name="score" value="#{driverStyleBean.scoreMap['HARD_VERT']}" />
+								            <ui:param name="scoreStyle" value="#{driverStyleBean.styleMap['HARD_VERT']}" /> 
 											<ui:param name="context" value="driverStyleHardBump" />
 									</ui:include>
 								</td>

@@ -15,6 +15,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.log4j.Logger;
+import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.model.Driver;
@@ -97,11 +98,16 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
     @Override
     public Response getLastTrip(Integer driverID) {
         if (driverID != null) {
-            Trip trip = this.getDao().getLastTrip(driverID);
-            if( trip != null)
-                return Response.ok(new GenericEntity<Trip>(trip) {}).build();
-            else
+            try{
+                Trip trip = this.getDao().getLastTrip(driverID);
+                if( trip != null)
+                    return Response.ok(new GenericEntity<Trip>(trip) {}).build();
+                else
+                    return Response.status(Status.NOT_FOUND).build();
+            }
+            catch(AccessDeniedException ade){
                 return Response.status(Status.NOT_FOUND).build();
+            }
         }
         else {
             return Response.status(Status.NOT_FOUND).build();

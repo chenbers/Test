@@ -36,7 +36,7 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
     public VehicleStyleBean() {
 		super();
 
-		selectedBreakdown="OVERALL";
+		selectedBreakdown="SCORE_DRIVING_STYLE";
 	}
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)
@@ -62,13 +62,13 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         	ScoreableEntity se = tempMap.get(subType);
         	if (se != null && se.getScore() != null)
         	{
-        		scoreMap.put(subType.toString(), se.getScore());
-        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
+        		scoreMap.put(subType.getDescription(), se.getScore());
+        		styleMap.put(subType.getDescription(), ScoreBox.GetStyleFromScore(se.getScore(), ScoreBoxSizes.MEDIUM));
         	}
         	else
         	{
-        		scoreMap.put(subType.toString(), EMPTY_SCORE_VALUE);
-        		styleMap.put(subType.toString(), ScoreBox.GetStyleFromScore(NO_SCORE, ScoreBoxSizes.MEDIUM));
+        		scoreMap.put(subType.getDescription(), EMPTY_SCORE_VALUE);
+        		styleMap.put(subType.getDescription(), ScoreBox.GetStyleFromScore(NO_SCORE, ScoreBoxSizes.MEDIUM));
 
         	}
         }
@@ -152,32 +152,13 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         return reportCriteria;
     }
 
-//    @Override
-//    public void exportReportToPdf()
-//    {
-//        getReportRenderer().exportSingleReportToPDF(buildReport(), getFacesContext());
-//    }
-//
-//    @Override
-//    public void emailReport()
-//    {
-//        getReportRenderer().exportReportToEmail(buildReport(), getEmailAddress());
-//    }
-//
-//    @Override
-//    public void exportReportToExcel()
-//    {
-//        getReportRenderer().exportReportToExcel(buildReport(), getFacesContext());
-//    }
-
-
 	@Override
     public void sortEvents()
     { 
     	eventsListsMap = new HashMap<String, List<EventReportItem>>();
     	
         List<EventReportItem> sortedEvents = new ArrayList<EventReportItem>();
-        eventsListsMap.put("OVERALL", sortedEvents);
+        eventsListsMap.put("SCORE_DRIVING_STYLE", sortedEvents);
         sortedEvents.addAll(getEvents());
         filteredEvents = sortedEvents;
        

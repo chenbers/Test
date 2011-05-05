@@ -52,7 +52,7 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
         if (filteredEvents == null)
         {
             initEvents();
-            tableStatsBean.reset(ROWCOUNT, getFilteredEvents().size());
+            tableStatsBean.reset(ROWCOUNT, events.size());
         }
 
 		return filteredEvents;
