@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.utils.Xpath;
 
 public enum NotificationsBarEnum implements SeleniumEnums {
 
@@ -32,25 +33,38 @@ public enum NotificationsBarEnum implements SeleniumEnums {
         this.ID = ID;
         this.xpath = xpath;
         this.xpath_alt = xpath_alt;
-        this.url = null;
     }
 
     private NotificationsBarEnum(String url) {
         this.url = url;
-        this.current = url;
-        this.text = null;
-        this.ID = null;
-        this.xpath = null;
-        this.xpath_alt = null;
     }
 
-    private NotificationsBarEnum(String url, String current) {
-        this.url = url;
-        this.current = current;
-        this.text = null;
-        this.ID = null;
-        this.xpath = null;
-        this.xpath_alt = null;
+    private NotificationsBarEnum(String text, String ID) {
+        this(text, ID, "", null);
+    }
+
+    private NotificationsBarEnum(String text, String ID, String xpath) {
+        this(text, ID, xpath, null);
+    }
+
+    private NotificationsBarEnum(String text, String ID, Xpath xpath, Xpath xpath_alt) {
+        this(text, ID, xpath.toString(), xpath_alt.toString());
+    }
+
+    private NotificationsBarEnum(String text, String ID, Xpath xpath) {
+        this(text, ID, xpath.toString(), null);
+    }
+
+    private NotificationsBarEnum(String text, Xpath xpath) {
+        this(text, null, xpath.toString(), null);
+    }
+
+    private NotificationsBarEnum(Xpath xpath, Xpath xpath_alt) {
+        this(null, null, xpath.toString(), xpath_alt.toString());
+    }
+
+    private NotificationsBarEnum(Xpath xpath) {
+        this(null, null, xpath.toString(), null);
     }
 
     public String getText() {

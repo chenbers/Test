@@ -1,18 +1,50 @@
 package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.utils.Xpath;
 
 public enum VehiclePerformanceEnum implements SeleniumEnums {
-    VIEW_ALL_TRIPS(null, "vehiclePerformanceTrips", null, null, null);
+    VIEW_ALL_TRIPS(null, "vehiclePerformanceTrips");
 
     private String text, ID, xpath, xpath_alt, url;
 
-    private VehiclePerformanceEnum(String text, String ID, String xpath, String xpath_alt, String url) {
+    private VehiclePerformanceEnum(String text, String ID, String xpath, String xpath_alt) {
         this.text = text;
         this.ID = ID;
         this.xpath = xpath;
         this.xpath_alt = xpath_alt;
+    }
+
+    private VehiclePerformanceEnum(String url) {
         this.url = url;
+    }
+
+    private VehiclePerformanceEnum(String text, String ID) {
+        this(text, ID, "", null);
+    }
+
+    private VehiclePerformanceEnum(String text, String ID, String xpath) {
+        this(text, ID, xpath, null);
+    }
+
+    private VehiclePerformanceEnum(String text, String ID, Xpath xpath, Xpath xpath_alt) {
+        this(text, ID, xpath.toString(), xpath_alt.toString());
+    }
+
+    private VehiclePerformanceEnum(String text, String ID, Xpath xpath) {
+        this(text, ID, xpath.toString(), null);
+    }
+
+    private VehiclePerformanceEnum(String text, Xpath xpath) {
+        this(text, null, xpath.toString(), null);
+    }
+
+    private VehiclePerformanceEnum(Xpath xpath, Xpath xpath_alt) {
+        this(null, null, xpath.toString(), xpath_alt.toString());
+    }
+
+    private VehiclePerformanceEnum(Xpath xpath) {
+        this(null, null, xpath.toString(), null);
     }
 
     @Override
