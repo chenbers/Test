@@ -106,7 +106,7 @@ public class VehicleSpeedBeanTest extends BaseBeanTest
         
         vehicleSpeedBean.setEvents(speedingEvents);
         vehicleSpeedBean.setSelectedBreakdown("FOURTYONE");
-        assertTrue(vehicleSpeedBean.getFilteredEvents().size() > 0);
+        assertTrue(vehicleSpeedBean.getEvents().size() > 0);
 
     }
 }

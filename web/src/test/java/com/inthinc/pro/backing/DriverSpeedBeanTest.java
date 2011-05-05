@@ -113,7 +113,7 @@ public class DriverSpeedBeanTest extends BaseBeanTest
         
         driverSpeedBean.setEvents(speedingEvents);
         driverSpeedBean.setSelectedBreakdown("FOURTYONE");
-        assertTrue(driverSpeedBean.getFilteredEvents().size() > 0);
+        assertTrue(driverSpeedBean.getEvents().size() > 0);
         
 
     }
