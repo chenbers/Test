@@ -31,8 +31,6 @@ public class JwimmerSandboxTest extends WebTest {
         liveFleet._link().liveFleet().click();
         
         liveFleet._textField().findAddress().type("Selenium navigated here by clicking on the liveFleet link... page._link.liveFleet.click() ");
-        
-        pause(15);
     }
     
     @Test
@@ -40,10 +38,9 @@ public class JwimmerSandboxTest extends WebTest {
         l.page_login_process("jwimmer", "password");
         liveFleet._link().liveFleet().click();//this is a navigationbar link
         liveFleet._link().help().click();//this is a masthead link
+        //TODO: jwimmer: validate help page/window opened
         
-        liveFleet._textField().findAddress().type("Selenium navigated here by clicking on the liveFleet link... page._link.liveFleet.click() ");
-        
-        pause(15);
+        //pause(15);//TODO: jwimmer: prop integer value for watching? and put in teardown
     }
     
     @Test
@@ -79,26 +76,31 @@ public class JwimmerSandboxTest extends WebTest {
 //        liveFleet._select.numNearestVehicles.select(1);                           liveFleet._textField.findAddress.type("index(1): five?"); pause(waitTime);
 //        liveFleet._select.numNearestVehicles.select("10");                        liveFleet._textField.findAddress.type("select(10) fullMatch; ten?"); pause(waitTime);
 //        liveFleet._select.numNearestVehicles.selectFullMatch("25", 1);            liveFleet._textField.findAddress.type("full(25, 1) first fullMatch ; twentyfive? "); pause(waitTime);
-        liveFleet._select().numNearestVehicles().selectPartMatch("5");                liveFleet._textField().findAddress().type("part(5);fifty?"); pause(waitTime);
-        liveFleet._select().numNearestVehicles().selectPartMatch("0", 3);             liveFleet._textField().findAddress().type("part(0,3); one hundered?"); pause(waitTime);
+//        liveFleet._select().numNearestVehicles().selectPartMatch("5");                liveFleet._textField().findAddress().type("part(5);fifty?"); pause(waitTime);
+//        liveFleet._select().numNearestVehicles().selectPartMatch("0", 3);             liveFleet._textField().findAddress().type("part(0,3); one hundered?"); pause(waitTime);
         
 //        for(String s: liveFleet._link().driverByName("Orson  Bugg").getMyEnum().getLocators()) {
 //            System.out.println("s: "+s);
 //        }
         
-        System.out.println("!!!driver by list posistion0 text: "   +liveFleet._link().driverByListPosition(0).getText());
-        System.out.println("!!!driver by list posistion0 visible: "+liveFleet._link().driverByListPosition(0).isVisible());
-        System.out.println("!!!driver by list posistion0 click: "  +liveFleet._link().driverByListPosition(0).click());
+//        System.out.println("!!!driver by list posistion0 text: "   +liveFleet._link().driverByListPosition(0).getText());
+//        System.out.println("!!!driver by list posistion0 visible: "+liveFleet._link().driverByListPosition(0).isVisible());
+//        System.out.println("!!!driver by list posistion0 click: "  +liveFleet._link().driverByListPosition(0).click());
+//        liveFleet.load();
         
         System.out.println("!!!Orson  Bugg link text: "        +liveFleet._link().driverByName("Orson  Bugg").getText());
         System.out.println("!!!Orson Buggy link isVisible? "   +liveFleet._link().driverByName("Orson  Buggy").isVisible());
         System.out.println("!!!Orson Buggy link focus? "       +liveFleet._link().driverByName("Orson  Buggy").focus());
-        System.out.println("!!!Orson Buggy link click? "       +liveFleet._link().driverByName("Orson  Buggy").click());
+        System.out.println("about to click Orson Buggy link...");pause(15);
+        System.out.println("!!!Orson Buggy link click? "       +liveFleet._link().driverByName("Orson  Buggy").click()); //TODO: jwimmer: figure out why this is NOT visible? as it appears on the page?  figure out why it isnt' clickable (related to visible I assume)
+        pause(10);System.out.println("clicked Orson Buggy link without dying?");
+        liveFleet.load();
         liveFleet._link().driverByName("Orson  Buggy").click();
+        liveFleet.load();
         //liveFleet.addError("just a test error... nothing actually went wrong");
 
         
-        pause(60);
+        //pause(60);
     }
     
     @Test
@@ -226,8 +228,8 @@ public class JwimmerSandboxTest extends WebTest {
     public void login_forgotPassClose_closePopup() {
         l.page_login_open();
         l.link_forgotPassword_click();
-
-        l.button_logInErrorX_click();
+        l.button_forgotPasswordClose_click();
+        //l.button_logInErrorX_click();
         l.page_logIn_validate();
     }
 }

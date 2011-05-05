@@ -1,12 +1,14 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.DropDown;
+import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
+import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
 public class PageLiveFleet extends NavigationBar {
     public LiveFleetTextFields _textField() {
@@ -138,6 +140,25 @@ public class PageLiveFleet extends NavigationBar {
             return new DropDown(LiveFleetEnum.DROPDOWN_LIVE_FLEET_NUM_NEAREST_VEHICLES);
         }
     }
+//TODO: jwimmer: I would prefer page.validate() {...} ??? AND page._type.elementName.validate()  
+//    public class MastheadValidation{
+//        public void footer(){
+//            ElementBase test =  new ElementBase();
+//            test.validateElementsPresent(MastheadEnum.COPYRIGHT,MastheadEnum.PRIVACY,MastheadEnum.LEGAL,
+//                    MastheadEnum.SUPPORT,MastheadEnum.VERSION);
+//            test.validateTextMatches(MastheadEnum.COPYRIGHT,MastheadEnum.PRIVACY,MastheadEnum.LEGAL,
+//                    MastheadEnum.SUPPORT,MastheadEnum.VERSION);
+//        }
+//        
+//        public void header(){
+//            ElementBase test =  new ElementBase();
+//            test.validateElementsPresent(MastheadEnum.LOGO,MastheadEnum.HELP, MastheadEnum.MY_MESSAGES,
+//                    MastheadEnum.MY_ACCOUNT, MastheadEnum.LOGOUT);
+//            test.validateTextMatches(MastheadEnum.LOGO,MastheadEnum.HELP, MastheadEnum.MY_MESSAGES,
+//                    MastheadEnum.MY_ACCOUNT, MastheadEnum.LOGOUT);
+//        }
+//    }
+    
 
     public String getExpectedPath() {
         return LiveFleetEnum.DEFAULT_URL.getURL();

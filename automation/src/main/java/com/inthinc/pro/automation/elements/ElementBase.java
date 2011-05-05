@@ -39,7 +39,7 @@ public class ElementBase implements ElementInterface {
     public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         this.text = anEnum.getText();
         setEnum(anEnum);
-        if (replaceWord!=null){
+        if (replaceNumber!=null){
             myEnum.replaceNumber(replaceNumber.toString());
         }
         if (replaceWord!=null){
@@ -113,7 +113,7 @@ public class ElementBase implements ElementInterface {
 
     public void assertEquals(Object actual, Object expected) {
         if (!actual.equals(expected)) {
-            addError(myEnum.toString() +": "+actual + " != " + expected);
+            addError(myEnum.toString() +": '"+actual+"' != '" + expected+"'");
         }
     }
 
@@ -122,7 +122,11 @@ public class ElementBase implements ElementInterface {
     }
 
     public void assertEquals(SeleniumEnums anEnum) {
+        //TODO: jwimmer: to dTanner: walk my through why you are using the PLACE_HOLDER here? comparing 1: and 2: leads me to believe it is unnecessary and obscures where things are coming from, hindering the debugging process?
+        System.out.print("1: ");
         assertEquals(selenium.getText(AutomationEnum.PLACE_HOLDER.setEnum(anEnum)), anEnum.getText());
+        System.out.print("2: ");
+        assertEquals(selenium.getText(anEnum), anEnum.getText());
     }
     
     public void assertEquals(){

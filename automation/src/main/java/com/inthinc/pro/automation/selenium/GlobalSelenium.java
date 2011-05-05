@@ -34,7 +34,7 @@ public class GlobalSelenium {
             String[] configFiles = new String[] { "classpath:spring/applicationContext-automation.xml" };
             BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
             AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
-            logger.info(apb.getDefaultWebDriverName() + " on portal @" + apb.getBaseURL() + " with Thread: " + currentThread);
+            logger.debug(apb.getDefaultWebDriverName() + " on portal @" + apb.getBaseURL() + " with Thread: " + currentThread);
             selenium = new CoreMethodLib(apb.getDefaultWebDriver(), apb.getBaseURL());
         } catch (NoSuchBeanDefinitionException e) {
             logger.error(StackToString.toString(e));

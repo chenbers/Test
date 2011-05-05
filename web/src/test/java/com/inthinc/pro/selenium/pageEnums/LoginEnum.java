@@ -36,9 +36,9 @@ public enum LoginEnum implements SeleniumEnums {
 
     /* Error pop-up for the Forgot Username/Password pop-up */
     ERROR_BUTTON_OK("OK", "loginErrorForm:loginOk", "//form[@id='loginErrorForm']/div/button", "//form[@id='loginErrorForm']/div/button/span"),
-    ERROR_CLOSE(null, "Richfaces.hideModalPanel('errorPanel')", "//div[@id='errorPanelContentDiv']/div", "//div[@id='errorPanelContentDiv']/div/img"),
+    ERROR_CLOSE("", "Richfaces.hideModalPanel('errorPanel')", "//div[@id='errorPanelContentDiv']/div", "//div[@id='errorPanelContentDiv']/div/img"),//id('forgotPasswordPanelContentDiv')/x:div/x:img
     ERROR_HEADER("Log In Error", "errorPanelHeader", "//table[@id='errorPanelContentTable']/tbody/tr[1]/td/div", null),
-    ERROR_MESSAGE("Incorrect user name or password\n\nPlease try again.", null, "//p", null),
+    ERROR_MESSAGE("Incorrect user name or password.\n\nPlease try again.", null, "//p", null),
 
     /* Success with forgot Username/Password */
     MESSAGE_SENT_BULLET_1("Be patient, it may take a few minutes for the message to arrive in your Inbox.", null, "//table[@id='fd-table-1']/tbody/tr/td/div/ul/li[1]", null),
@@ -47,7 +47,7 @@ public enum LoginEnum implements SeleniumEnums {
     MESSAGE_SENT_HEADER("Didn't get the message?", null, "//table[@id='fd-table-1']/tbody/tr/td/div/h2", null),
     MESSAGE_SENT_TITLE("Message Sent Successfully", null, "//li[@class='l grid_title']", null),
 
-    MESSAGE_SENT_FIRST_PARAGRAPH("A message containing infromation about your user name and password has been sent to the e-mail address provided.", null,
+    MESSAGE_SENT_FIRST_PARAGRAPH("A message containing information about your user name and password has been sent to the e-mail address provided.", null,
             "//table[@id='fd-table-1']/tbody/tr/td/div/div", null),
 
     /* Update Credentials Page */
