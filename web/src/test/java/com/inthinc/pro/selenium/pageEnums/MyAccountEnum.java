@@ -12,11 +12,11 @@ public enum MyAccountEnum implements SeleniumEnums {
     MY_ACCOUNT_URL("account"),
 
     /* Buttons and Title */
-    CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword", Xpath.start().ul(Id.id("grid_nav")).li().button("1"), Xpath.start().button(Id.type("submit"))),
+    CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword", Xpath.start().ul(Id.id("grid_nav")).li().button("1").toString(), Xpath.start().button(Id.type("submit")).toString()),
 
-    EDIT_BUTTON("Edit", "myAccountEdit", Xpath.start().ul(Id.id("grid_nav")).li().button("2"), Xpath.start().button(Id.type("submit"))),
+    EDIT_BUTTON("Edit", "myAccountEdit", Xpath.start().ul(Id.id("grid_nav")).li().button("2").toString(), Xpath.start().button(Id.type("submit")).toString()),
 
-    MAIN_TITLE("My Account", null, Xpath.start().div(Id.clazz("account")), Xpath.start().div(Id.clazz("panel_title"))),
+    MAIN_TITLE("My Account", null, Xpath.start().div(Id.clazz("account")).toString(), Xpath.start().div(Id.clazz("panel_title")).toString()),
 
     /* Account Information */
     ACCOUNT_TITLE("Account Information", null, "//td[1]/div[@class='add_section_title']", null),
@@ -123,16 +123,16 @@ public enum MyAccountEnum implements SeleniumEnums {
 
     WARNING_SELECT(null, "my_form:editAccount-warn", "//select[@name='my_form:editAccount-warn'", null),
 
-    CRITICAL_SELECT(null, "my_form:editAccount-crit", Xpath.start().select(Id.name("my_form:editAccount-crit")), null),
+    CRITICAL_SELECT(null, "my_form:editAccount-crit", Xpath.start().select(Id.name("my_form:editAccount-crit")).toString(), null),
 
     /* Edit Page Error Messages */
 
-    EMAIL1_ERROR(null, null, Xpath.start().table("1").tbody().tr("1").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
-    EMAIL2_ERROR(null, null, Xpath.start().table("1").tbody().tr("2").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
-    PHONE1_ERROR(null, null, Xpath.start().table("2").tbody().tr("1").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
-    PHONE2_ERROR(null, null, Xpath.start().table("2").tbody().tr("2").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
-    TEXT1_ERROR(null, null, Xpath.start().table("3").tbody().tr("1").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
-    TEXT2_ERROR(null, null, Xpath.start().table("3").tbody().tr("2").td().span(Id.contains(Id.id(""), "my_form:"), Id.clazz("rich-message field-error field-msg")).span("1"), null),
+    EMAIL1_ERROR(null, null, Xpath.start().table("1").tbody().tr("1").td().span(Id.contains(Id.id(""), "my_form:").toString(), Id.clazz("rich-message field-error field-msg")).span("1").toString(), null),
+    EMAIL2_ERROR(null, null, Xpath.start().table("1").tbody().tr("2").td().span(Id.contains(Id.id(""), "my_form:").toString(), Id.clazz("rich-message field-error field-msg")).span("1").toString(), null),
+    PHONE1_ERROR(null, null, Xpath.start().table("2").tbody().tr("1").td().span(Id.contains(Id.id(""), "my_form:").toString(), Id.clazz("rich-message field-error field-msg")).span("1").toString(), null),
+    PHONE2_ERROR(null, null, Xpath.start().table("2").tbody().tr("2").td().span(Id.contains(Id.id(""), "my_form:").toString(), Id.clazz("rich-message field-error field-msg")).span("1").toString(), null),
+    TEXT1_ERROR(null, null, Xpath.start().table("3").tbody().tr("1").td().span(Id.contains(Id.id(""), "my_form:").toString(), Id.clazz("rich-message field-error field-msg")).span("1").toString(), null),
+    TEXT2_ERROR(null, null, Xpath.start().table("3").tbody().tr("2").td().span(Id.contains(Id.id(""), "my_form:").toString(), Id.clazz("rich-message field-error field-msg")).span("1").toString(), null),
 
     /* Edit Page text fields */
     EMAIL1_TEXTFIELD(null, "my_form:editAccount-priEmail", "//input[@name='my_form:editAccount-priEmail", null),
@@ -177,14 +177,6 @@ public enum MyAccountEnum implements SeleniumEnums {
         this.text = text;
         this.xpath = xpath;
         this.xpath_alt = xpath_alt;
-        this.url = null;
-    }
-
-    private MyAccountEnum(String text, String ID, Xpath xpath, Xpath xpath_alt) {
-        this.ID = ID;
-        this.text = text;
-        this.xpath = xpath.toString();
-        this.xpath_alt = xpath_alt.toString();
         this.url = null;
     }
 
