@@ -391,7 +391,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         for (final ReportScheduleView reportSchedule : saveItems) {
             if (reportSchedule.getOccurrence().equals(Occurrence.DAILY) || reportSchedule.getOccurrence().equals(Occurrence.WEEKLY)) {
 //                Calendar now = Calendar.getInstance();
-                DateTime now = new DateTime(getPerson().getTimeZone());
+                DateTime now = new DateTime(DateTimeZone.forID(getPerson().getTimeZone().getID()));
                 reportSchedule.setStartDate(now.toDate());
             }
             else if (reportSchedule.getOccurrence().equals(Occurrence.MONTHLY)) {
