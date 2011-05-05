@@ -71,7 +71,8 @@ public class CellPhoneServiceImplTest extends BaseUnitTest {
 
     }
     
-    @Test 
+    @Test
+    @Ignore
     public void testThreadStart(final MovementEventHandler movementEventHandlerMock){
         MovementStartHandlerThread serviceSUT = new MovementStartHandlerThread(movementEventHandlerMock, expecteDriverID);
         

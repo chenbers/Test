@@ -9,12 +9,13 @@ import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.webapp.WebAppContext;
 
 import com.inthinc.pro.service.phonecontrol.CellPhoneService;
-
+@Ignore
 public class CellcontrolZoomsaferIntegrationSmokeTest {
 
     private static int port;

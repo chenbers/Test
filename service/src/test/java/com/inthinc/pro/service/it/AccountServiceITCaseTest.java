@@ -12,10 +12,11 @@ import javax.ws.rs.core.Response;
 import org.apache.log4j.Logger;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Account;
-
+@Ignore
 public class AccountServiceITCaseTest extends BaseITCase {
     private static Logger logger = Logger.getLogger(AccountServiceITCaseTest.class);
 

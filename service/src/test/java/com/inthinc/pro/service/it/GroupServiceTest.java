@@ -22,10 +22,10 @@ import org.jboss.resteasy.client.ProxyFactory;
 import org.jboss.resteasy.client.core.executors.ApacheHttpClientExecutor;
 import org.jboss.resteasy.util.GenericType;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.model.DriverLocation;
-import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
@@ -58,6 +58,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
      * Test if Get DriverLocations service returns the correct content and response.
      */
     @Test
+    @Ignore
     public void testGetGroupDriverLocations() {
         logger.info("Testing Get DriverLocations service... ");
       

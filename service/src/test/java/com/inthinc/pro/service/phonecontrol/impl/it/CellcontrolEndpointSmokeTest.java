@@ -1,19 +1,17 @@
 package com.inthinc.pro.service.phonecontrol.impl.it;
 
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.inthinc.pro.model.phone.CellProviderType;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapter;
 import com.inthinc.pro.service.phonecontrol.PhoneControlAdapterFactory;
 import com.inthinc.pro.service.test.mock.aspects.PhoneControlDaoStubBehaviourAdvice;
-
+@Ignore
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(locations = { "classpath*:spring/applicationContext-*.xml" })
 public class CellcontrolEndpointSmokeTest implements ApplicationContextAware {
