@@ -239,13 +239,13 @@ public class FileImporterTest extends BaseSpringTest {
         
         dumpErrors(msgList);
         System.out.println("size " + msgList.size()) ;
-        assertTrue(msgList.size() == 29);
+        assertTrue(msgList.size() == 34);
         
         int warningCnt = 0;
         for (String msg : msgList)
             if (msg.startsWith("WARNING"))
                 warningCnt++;
-        assertTrue(warningCnt == 3);
+        assertTrue(warningCnt == 4);
     }
 
     @Test
