@@ -10,8 +10,8 @@ import com.inthinc.pro.automation.elements.TimeLink;
 import com.inthinc.pro.selenium.pageEnums.DivisionEnum;
 
 public class PageDashboard extends NavigationBar {
-
-    public class DashboardButtons extends NavigationBar.NavigationBarButtons {
+	
+	public class DashboardButtons extends NavigationBarButtons {
 
         public Button fuelEfficiencyExpand() {
             return new Button(DivisionEnum.FUEL_EFFICIENCY_EXPAND);
@@ -102,11 +102,17 @@ public class PageDashboard extends NavigationBar {
         }
 
     }
-
-    public class DashboardLinks extends NavigationBar.NavigationBarLinks {
+	
+	public class DashboardDropDowns extends NavigationBarDropDowns{}
+	
+	public class DashboardLinks extends NavigationBarLinks {
 
         public TimeLink fuelEfficiencyDuration() {
             return new TimeLink(DivisionEnum.FUEL_EFFICIENCY_DURATION);
+        }
+
+        public TableTextLink groupName(){
+            return new TableTextLink(DivisionEnum.TREND_GROUP_LINK);
         }
 
         public TimeLink idlingDuration() {
@@ -120,42 +126,48 @@ public class PageDashboard extends NavigationBar {
         public TimeLink speedingDuration() {
             return new TimeLink(DivisionEnum.SPEEDING_DURATION);
         }
-
+        
         public TimeLink trendDuration() {
             return new TimeLink(DivisionEnum.TREND_DURATION);
         }
-        
-        public TableTextLink groupName(){
-            return new TableTextLink(DivisionEnum.TREND_GROUP_LINK);
-        }
     }
-    
-    public DashboardText _text(){
-        return new DashboardText();
-    }
-    
-    public class DashboardText extends NavigationBar.NavigationBarTexts{
+	public class DashboardText extends NavigationBarTexts{
 
-        public TableText groupScore(){
-            return new TableText(DivisionEnum.TREND_GROUP_LINK);
-        }
-        
         public TableText groupCrash(){
             return new TableText(DivisionEnum.TREND_GROUP_CRASH_NUMBER);
         }
+        
+        public TableText groupScore(){
+            return new TableText(DivisionEnum.TREND_GROUP_LINK);
+        }
     }
+	
+
+    public class DashboardTextField extends NavigationBarTextFields{}
 
     private String overall = "overallScore", speed = "speedPercentagePanel", trend = "trend";
-
+    
     private String idling = "idlingPercentagePanel", mpg = "mpgChart";
-
+    
     public DashboardButtons _button() {
         return new DashboardButtons();
     }
 
+    public DashboardDropDowns _dropDown(){
+		return new DashboardDropDowns();
+	}
+
     public DashboardLinks _link() {
         return new DashboardLinks();
     }
+
+    public DashboardText _text(){
+        return new DashboardText();
+    }
+
+    public DashboardTextField _textField(){
+		return new DashboardTextField();
+	}
 
     private void clickIt(String rowQualifier, Integer row) {
         if (row != null) {
