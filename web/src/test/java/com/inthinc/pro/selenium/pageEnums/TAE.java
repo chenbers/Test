@@ -80,22 +80,23 @@ public class TAE {
 	}
 
 	public static enum RedFlagPrefs implements SeleniumValueEnums {
-	    EMAIL1("1", MyAccountEnum.EMAIL1_TEXTFIELD, MyAccountEnum.EMAIL1_TITLE),
-	    EMAIL2("2", MyAccountEnum.EMAIL2_TEXTFIELD, MyAccountEnum.EMAIL2_TITLE),
-	    PHONE1("3", MyAccountEnum.PHONE1_TEXTFIELD, MyAccountEnum.PHONE1_TITLE),
-	    PHONE2("4", MyAccountEnum.PHONE2_TEXTFIELD, MyAccountEnum.PHONE2_TITLE),
-	    TEXT1("5", MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES1_TITLE),
-	    TEXT2("6", MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES2_TITLE);
+	    EMAIL1(1, MyAccountEnum.EMAIL1_TEXTFIELD, MyAccountEnum.EMAIL1_TITLE),
+	    EMAIL2(2, MyAccountEnum.EMAIL2_TEXTFIELD, MyAccountEnum.EMAIL2_TITLE),
+	    PHONE1(3, MyAccountEnum.PHONE1_TEXTFIELD, MyAccountEnum.PHONE1_TITLE),
+	    PHONE2(4, MyAccountEnum.PHONE2_TEXTFIELD, MyAccountEnum.PHONE2_TITLE),
+	    TEXT1(5, MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES1_TITLE),
+	    TEXT2(6, MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES2_TITLE);
 	
 	    private String value;
 	    private MyAccountEnum ID, prefix;
+	    private Integer position;
 	
-	    private RedFlagPrefs(String value, MyAccountEnum ID, MyAccountEnum prefix) {
-	        this.value = value;
-	        this.ID = ID;
-	        this.prefix = prefix;
+	    private RedFlagPrefs(Integer position, MyAccountEnum ID, MyAccountEnum prefix) {
+	        this.value = position.toString();
+	        this.position = position;
+            this.ID = ID;
+            this.prefix = prefix;
 	    }
-	
 	    public MyAccountEnum getID() {
 	        return ID;
 	    }
@@ -106,6 +107,10 @@ public class TAE {
 	
 	    public String getValue() {
 	        return value;
+	    }
+	    
+	    public Integer getPosition() {
+	        return position;
 	    }
 	}
 }

@@ -3,7 +3,6 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.selenium.pageEnums.TAE;
 import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
 import com.inthinc.pro.selenium.pageEnums.TAE.RedFlagPrefs;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
@@ -35,7 +34,6 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._select().fuelEfficiency().select("Liters Per 100 Kilometers");
 
 		/* Contact Info */
-
 		my._textField().email1().type("tina1965@test.com");
 		my._textField().email2().type("tlc1965@test.com");
 		my._textField().phone1().type("801-777-7777");
@@ -44,16 +42,15 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._textField().textMessage2().type("801-999-7777@tmomail.net");
 
 		/* Red Flags */
-		my._select().information().select(RedFlagPrefs.TEXT1.getValue());
-		my._select().warning().select(RedFlagPrefs.EMAIL1.getValue());
-		my._select().critical().select(RedFlagPrefs.PHONE1.getValue());
+		my._select().information().select(RedFlagPrefs.TEXT1.getPosition());
+		my._select().warning().select(RedFlagPrefs.EMAIL1.getPosition());
+		my._select().critical().select(RedFlagPrefs.PHONE1.getPosition());
 
 		/* Cancel Changes */
-
 		my._button().cancel().click();
 
 		/* Verify Changes did not take effect */
-		/* Login Info */
+		/* Login Info */        
 		String username = my._text().userName().getText();
 		my.assertEquals("tnilson", username);
 		String locale = my._text().locale().getText();
@@ -119,16 +116,16 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._textField().textMessage2().type("801-999-7777@tmomail.net");
 
 		/* Red Flags */
-		my._select().information().select(RedFlagPrefs.TEXT1.getValue());
-		my._select().warning().select(RedFlagPrefs.EMAIL1.getValue());
-		my._select().critical().select(RedFlagPrefs.PHONE1.getValue());
+		my._select().information().select(RedFlagPrefs.TEXT1.getPosition());
+		my._select().warning().select(RedFlagPrefs.EMAIL1.getPosition());
+		my._select().critical().select(RedFlagPrefs.PHONE1.getPosition());
 
 		/* Save Changes */
 		my._button().save().click();
 
 		/* Verify Changes Display */
 		/* Login Info */
-		String username = my._text().userName().getText();
+		String username = my._text().userName().getText();//TODO: jwimmer: to dTanner: userName isn't getting found?  ends up throwing null pointer rather than just not finding element???
 		my.assertEquals("tnilson", username);
 		String locale = my._text().locale().getText();
 		my.assertEquals(Locale.ENGLISH, locale);
@@ -182,7 +179,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._textField().email1().type("tina1965@test.com");
 		my._button().save().click();
 		String email1 = my._text().email1().getText();
-		my.assertEquals("tnilson@inthinc.com", email1);
+		my.assertEquals("tina1965@test.com", email1);
 
 		my._button().edit().click();
 		my._textField().email2().type("tlc1965@test");
@@ -192,7 +189,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._textField().email2().type("tlc1965@test.com");
 		my._button().save().click();
 		String email2 = my._text().email2().getText();
-		my.assertEquals("", email2);
+		my.assertEquals("tlc1965@test.com", email2);
 
 	}
 
