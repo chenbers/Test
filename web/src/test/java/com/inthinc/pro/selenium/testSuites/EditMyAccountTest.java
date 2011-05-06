@@ -353,22 +353,20 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._button().save().click();
 		// Validate Error //
 		// Clear fields?//
-		my._textField().textMessage1().type("801-777-9999@tmomail.net");
+		my._textField().textMessage1().type("8017779999@tmomail.net");
 		my._button().save().click();
-		String phone1 = my._text().phone1().getText();
-		my.assertEquals("801-777-9999@tmomail.net", phone1);
+		String text1 = my._text().phone1().getText();
+		my.assertEquals("8017779999@tmomail.net", text1);
 
 		my._button().edit().click();
 		my._textField().textMessage2().type("801-999-7777@tmomail");
 		my._button().save().click();
 		// Validate Error //
 		// Clear fields?//
-		my._button().edit().click();
-		my._textField().textMessage2().type("801-999-7777@tmomail.net");
+		my._textField().textMessage2().type("8019997777@tmomail.net");
 		my._button().save().click();
-		String phone2 = my._text().phone2().getText();
-		my.assertEquals("801-999-7777@tmomail.net", phone2);
-
+		String text2 = my._text().textMessage2().getText();
+		my.assertEquals("8019997777@tmomail.net", text2);
 	}
 
 }

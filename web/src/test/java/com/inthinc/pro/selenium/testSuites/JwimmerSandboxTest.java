@@ -36,8 +36,8 @@ public class JwimmerSandboxTest extends WebTest {
     @Test
     public void liveFleet_clickHelp_newWindow() {
         l.page_login_process("jwimmer", "password");
-        liveFleet._link().liveFleet().click();//this is a navigationbar link
-        liveFleet._link().help().click();//this is a masthead link
+        liveFleet._link().liveFleet().click();//TODO: jwimmer: could this be failing on EC2 only, because the liveFleet pageObject hasn't loaded yet???
+        liveFleet._link().help().click();//TODO: jwimmer: I believe this is failing because the help link opens in a new window.  Dtanner: has some code and a todo in masthead to look at this
         //TODO: jwimmer: validate help page/window opened
         
         //pause(15);//TODO: jwimmer: prop integer value for watching? and put in teardown
@@ -95,7 +95,7 @@ public class JwimmerSandboxTest extends WebTest {
 //        System.out.println("!!!Orson Buggy link click? "       +liveFleet._link().driverByName("Orson  Buggy").click()); //TODO: jwimmer: figure out why this is NOT visible? as it appears on the page?  figure out why it isnt' clickable (related to visible I assume)
 //        pause(10);System.out.println("clicked Orson Buggy link without dying?");
         liveFleet.load();
-        liveFleet._link().driverByName("Orson  Buggy").click();
+        liveFleet._link().driverByName("Orson  Buggy").click();//TODO: jwimmer: why is driverByName link not working AS expected?
         liveFleet.load();
         //liveFleet.addError("just a test error... nothing actually went wrong");
 

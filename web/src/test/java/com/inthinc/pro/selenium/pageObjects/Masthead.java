@@ -20,7 +20,7 @@ public abstract class Masthead extends AbstractPage {
     
     protected class MastheadLinks {
         public TextLink help() {
-            return new TextLink(MastheadEnum.HELP);
+            return new TextLink(MastheadEnum.HELP); //TODO: jwimmer: to dTanner: can you apply your "opens in new window" code here?
         }
 
         public TextLink legalNotice() {
