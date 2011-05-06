@@ -79,7 +79,7 @@
 	    // This is called on pageLoad 
 		function bodyLoad()
 		{
-			if ( #{tripViewerBean.tripToShow ne null} ) {
+			if ( #{tripViewerBean.trip eq true} ) {
 				initMap(#{tripViewerBean.tripToShow.route[0].lat},#{tripViewerBean.tripToShow.route[0].lng}, 14);
 		   		showTrips();
 			}
@@ -165,8 +165,8 @@
             		<h:outputText value="How To Use"/>
       			</f:facet>
 				<h:outputLabel value="Select, in the following order, account, group, driver then select 'Get Trips'."/>
-				<h:outputLabel value="When the table is populated with trips, you then need to select a trip by clicking on a row in the table. The map will the appear in the large box below."/>
-				<h:outputLabel value="A bug in the system requires you to select 'Speed vs Limit' for a trip before 'MPG All Trips' can be selected."/>
+				<h:outputLabel value="When the table is populated with trips, you then need to select a trip by clicking on a row in the table. The map will then appear below."/>
+				<h:outputLabel value="Select 'Speed vs. Limit' to see an x-y graph of that data.  Select 'MPG All Trips' to see an x-y graph of mpg for the trips in the selected data range."/>
 				<h:outputLabel value="'Show Notes' can only be selected after a trip is selected."/>
 			</rich:panel>
     		
@@ -218,7 +218,7 @@
 					</rich:calendar>
 					
 					<a4j:commandButton value="Get Trips" action="#{tripViewerBean.findTrips}" enabled="#{tripViewerBean.selectedDriver ne null and tripViewerBean.startDate ne null and tripViewerBean.endDate ne null}"
-						reRender="dataSelection:trps,dataSelection:trpsScroller,speedVsLimit:speedLineElement,mpgOverTime:mpgLineElement,dataSelection:error"/>
+						reRender="dataSelection:trps,dataSelection:trpsScroller,dataSelection:error,selectedTripMap,speedVsLimit,mpgOverTime"/>
 						
 					<a4j:commandButton value="Speed vs Limit" action="#{tripViewerBean.speedVisible}" 
 						enabled="#{tripViewerBean.tripToShow ne null}" reRender="speedVsLimit,mpgOverTime,selectedTripMap"/>
@@ -287,7 +287,7 @@
 		<tr>
 		<td valign="top">
 		<a4j:form id="selectedTripMap">
-                    <rich:panel style="border: 3px black solid;width: 820px; height: 820px;"
+                    <rich:panel style="border: 3px black solid;width: 820px; height: 820px;" id="tripMap"
                     	rendered="#{tripViewerBean.trip eq true}" >
                         <h:outputText rendered="#{tripViewerBean.tripToShow ne null}">
                             <h:panelGroup styleClass="map-border" layout="block">

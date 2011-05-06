@@ -59,6 +59,7 @@ public class TripViewerBean extends BaseBean {
     
     public List<SelectItem> getAccounts()
     {
+        reset();
         
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         List<Account> accts = accountDAO.getAllAcctIDs();
@@ -73,6 +74,8 @@ public class TripViewerBean extends BaseBean {
     
     public void findGroups()
     {
+        reset();
+        
         if ( this.selectedAccount == null ) {
             this.error ="An account must be selected.";
             return;
@@ -92,6 +95,8 @@ public class TripViewerBean extends BaseBean {
 
     public void findDrivers()
     {
+        reset();
+        
         if ( this.selectedGroup == null ) {
             this.error ="A group must be selected.";
             return;
@@ -110,6 +115,7 @@ public class TripViewerBean extends BaseBean {
     }
     
     public void findTrips() {
+        reset();
         
         this.trips.clear();
         this.speedLineDef = null;
@@ -232,6 +238,7 @@ public class TripViewerBean extends BaseBean {
     }
 
     public void setSelectedAccount(Integer selectedAccount) {
+        reset();
         this.selectedAccount = selectedAccount;
     }
 
@@ -240,6 +247,7 @@ public class TripViewerBean extends BaseBean {
     }
 
     public void setSelectedGroup(Integer selectedGroup) {
+        reset();
         this.selectedGroup = selectedGroup;
     }
 
@@ -248,6 +256,7 @@ public class TripViewerBean extends BaseBean {
     }
 
     public void setSelectedDriver(Integer selectedDriver) {
+        reset();
         this.selectedDriver = selectedDriver;
     }
 
@@ -301,6 +310,7 @@ public class TripViewerBean extends BaseBean {
     }
     
     private void createTripAndSpeed() {
+        
         // Events that make up the trip
         List<NoteType> eventTypeList = new ArrayList<NoteType>();
         eventTypeList.add(NoteType.IGNITION_ON);
@@ -494,5 +504,17 @@ public class TripViewerBean extends BaseBean {
 
     public void setMpg(boolean mpg) {
         this.mpg = mpg;
+    }
+    
+    private void reset() {
+        
+        // don't show anything
+        this.speed = false;
+        this.mpg = false;
+        this.trip = false;
+        
+        // clean the trip
+        this.tripToShow = null;
+ 
     }
 }
