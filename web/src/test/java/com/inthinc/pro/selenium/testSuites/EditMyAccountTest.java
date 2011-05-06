@@ -101,7 +101,6 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._button().edit().click();
 
 		/* Login Info */
-
 		my._select().locale().select(Locale.ENGLISH.getText());
 		my._select().measurement().select("Metric");
 		my._select().fuelEfficiency().select("Liters Per 100 Kilometers");
@@ -355,7 +354,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().textMessage1().type("8017779999@tmomail.net");
 		my._button().save().click();
-		String text1 = my._text().phone1().getText();
+		String text1 = my._text().textMessage1().getText();
 		my.assertEquals("8017779999@tmomail.net", text1);
 
 		my._button().edit().click();
