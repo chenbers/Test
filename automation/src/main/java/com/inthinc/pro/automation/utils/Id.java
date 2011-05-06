@@ -109,5 +109,13 @@ public class Id {
     public static String type(String type) {
         return "@type" + end(type);
     }
+    
+    public static String valign() {
+        return "@valign";
+    }
+
+    public static String valign(String valign) {
+        return "@valign" + end(valign);
+    }
 
 }
