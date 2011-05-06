@@ -269,8 +269,8 @@ public class TripsBean extends BaseBean {
     // DATE PROPERTIES
     public Date getStartDate() {
         if (startDate == null) {
-            // Set start date to 7 days ago, apply driver's time zone..
-            startDate = new DateMidnight(new DateTime().minusWeeks(1), DateTimeZone.forTimeZone(getTimeZoneFromEntity())).toDate();
+            // Set start date to 7 days ago, apply driver's time zone (set to six to get a net seven days)
+            startDate = new DateMidnight(new DateTime().minusDays(6), DateTimeZone.forTimeZone(getTimeZoneFromEntity())).toDate();
             startDatePrev = startDate;
         }        
         return startDate;
