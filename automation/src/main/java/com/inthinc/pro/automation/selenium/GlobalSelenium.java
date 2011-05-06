@@ -52,9 +52,13 @@ public class GlobalSelenium {
 
 	public static void dieSeleniumDie() {
 		Long currentThread = Thread.currentThread().getId();
-		multiplicative.get(currentThread).close();
-		multiplicative.get(currentThread).stop();
-		((CoreMethodLib) multiplicative.get(currentThread)).getWrappedDriver();
+		try{
+			multiplicative.get(currentThread).close();
+			multiplicative.get(currentThread).stop();
+			multiplicative.get(currentThread).getWrappedDriver();
+		}catch(NullPointerException e){
+			logger.debug("Selenium already closed");
+		}
 		multiplicative.remove(currentThread);
 	}
 }

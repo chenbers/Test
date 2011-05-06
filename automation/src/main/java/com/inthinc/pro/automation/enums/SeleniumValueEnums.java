@@ -7,8 +7,9 @@ public interface SeleniumValueEnums {
     
     public SeleniumEnums getID();
 
-    public SeleniumEnums getPrefix() ;
+    public SeleniumEnums getPrefix();
 
-    public String getValue() ;
-
+    public String getValue();
+    
+    public Integer getPosition();
 }

@@ -38,6 +38,10 @@ public class DropDown extends Text implements Selectable {
         assertEquals(selected, optionNumber.toString());
         return this;
     }
+    
+    public ElementInterface select(SeleniumValueEnums option) {
+        return select(option.getPosition()+1);
+    }
 
     @Override
     public ElementInterface selectFullMatch(String fullMatch, Integer matchNumber) {

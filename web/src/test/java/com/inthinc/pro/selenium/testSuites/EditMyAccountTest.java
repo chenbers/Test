@@ -38,13 +38,13 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._textField().email2().type("tlc1965@test.com");
 		my._textField().phone1().type("801-777-7777");
 		my._textField().phone2().type("801-999-9999");
-		my._textField().textMessage1().type("801-777-9999@tmomail.net");
-		my._textField().textMessage2().type("801-999-7777@tmomail.net");
+		my._textField().textMessage1().type("8017779999@tmomail.net");
+		my._textField().textMessage2().type("8019997777@tmomail.net");
 
 		/* Red Flags */
-		my._select().information().select(RedFlagPrefs.TEXT1.getPosition());
-		my._select().warning().select(RedFlagPrefs.EMAIL1.getPosition());
-		my._select().critical().select(RedFlagPrefs.PHONE1.getPosition());
+		my._select().information().select(RedFlagPrefs.TEXT1);
+		my._select().warning().select(RedFlagPrefs.EMAIL1);
+		my._select().critical().select(RedFlagPrefs.PHONE1);
 
 		/* Cancel Changes */
 		my._button().cancel().click();
@@ -111,20 +111,20 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._textField().email2().type("tlc1965@test.com");
 		my._textField().phone1().type("801-777-7777");
 		my._textField().phone2().type("801-999-9999");
-		my._textField().textMessage1().type("801-777-9999@tmomail.net");
-		my._textField().textMessage2().type("801-999-7777@tmomail.net");
+		my._textField().textMessage1().type("8017779999@tmomail.net");
+		my._textField().textMessage2().type("8019997777@tmomail.net");
 
 		/* Red Flags */
-		my._select().information().select(RedFlagPrefs.TEXT1.getPosition());
-		my._select().warning().select(RedFlagPrefs.EMAIL1.getPosition());
-		my._select().critical().select(RedFlagPrefs.PHONE1.getPosition());
+		my._select().information().select(RedFlagPrefs.TEXT1);
+		my._select().warning().select(RedFlagPrefs.EMAIL1);
+		my._select().critical().select(RedFlagPrefs.PHONE1);
 
 		/* Save Changes */
 		my._button().save().click();
-
+		my.getSelenium().pause(10);
 		/* Verify Changes Display */
 		/* Login Info */
-		String username = my._text().userName().getText();//TODO: jwimmer: to dTanner: userName isn't getting found?  ends up throwing null pointer rather than just not finding element???
+		String username = my._text().userName().getText();
 		my.assertEquals("tnilson", username);
 		String locale = my._text().locale().getText();
 		my.assertEquals(Locale.ENGLISH, locale);
@@ -159,9 +159,9 @@ public class EditMyAccountTest extends WebRallyTest {
 		String phone2 = my._text().phone2().getText();
 		my.assertEquals("801-999-9999", phone2);
 		String textmsg1 = my._text().textMessage1().getText();
-		my.assertEquals("801-777-9999@tmomail.net", textmsg1);
+		my.assertEquals("8017779999@tmomail.net", textmsg1);
 		String textmsg2 = my._text().textMessage2().getText();
-		my.assertEquals("801-999-7777@tmomail.net", textmsg2);
+		my.assertEquals("8019997777@tmomail.net", textmsg2);
 	}
 
 	@Test
@@ -348,7 +348,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._link().myAccount().click();
 
 		my._button().edit().click();
-		my._textField().textMessage1().type("801-777-9999tmomail.net");
+		my._textField().textMessage1().type("8017779999tmomail.net");
 		my._button().save().click();
 		// Validate Error //
 		// Clear fields?//
@@ -358,7 +358,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my.assertEquals("8017779999@tmomail.net", text1);
 
 		my._button().edit().click();
-		my._textField().textMessage2().type("801-999-7777@tmomail");
+		my._textField().textMessage2().type("8019997777@tmomail");
 		my._button().save().click();
 		// Validate Error //
 		// Clear fields?//
