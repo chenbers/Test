@@ -141,12 +141,12 @@ public class Xpath {
     }
 
     private void inner(String... strings) {
-        if (!strings.equals("")) {
-            for (String Xpath : strings) {
-                writer.write("[");
-                writer.write(Xpath);
-                writer.write("]");
-            }
+    	for (String string : strings) {
+        	if (!string.equals("")){
+	            writer.write("[");
+	            writer.write(string);
+	            writer.write("]");
+        	}
         }
     }
 
