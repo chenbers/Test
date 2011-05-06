@@ -28,7 +28,7 @@ public enum MyAccountEnum implements SeleniumEnums {
     /* Login Information */
     LOGIN_TITLE("Login Information", null, "//td[1]/div[@class='add_section_title']", null),
     USER_NAME_TITLE("User Name:", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[1]/td[1]", null),
-    USER_NAME_TEXT(null, null, Xpath.start().td(Id.valign("top"), "2").table().tbody().tr("1").td("2").toString(), null),
+    USER_NAME_TEXT(null, null, Xpath.start().td(Id.valign("top")).table().tbody().tr("1").td("2").toString(), null),
     LOCALE_TITLE("Locale:", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[2]/td[1]", null),
     LOCALE_TEXT(null, null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[2]/td[2]", null),
     MEASUREMENT_TITLE("Measurement", null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[3]/td[1]", null),

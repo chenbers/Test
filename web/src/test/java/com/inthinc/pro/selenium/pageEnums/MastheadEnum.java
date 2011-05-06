@@ -28,8 +28,8 @@ public enum MastheadEnum implements SeleniumEnums {
     /* Header Elements */
     HELP("Help", "headerForm:contextSensitiveHelp", "//a[@class='tb-help']", "//div[@id='horz_nav']/ul/li[1]/span/a"),
     LOGOUT("Log Out", null, "//div[@id='horz_nav']/ul/li[4]/a", "//a[@class='tb-logout']"),
-    MY_ACCOUNT("My Account", "headerForm:headerMyAccount", "//div[@id='horz_nav']/ul/li[3]/span/a", "//a[@href='/tiwipro/app/account']"),
-    MY_MESSAGES("My Messages", "headerForm:headerMyMessages", "//form[@id='headerForm']/ul/li[2]/span/a", "//a[@href='/tiwipro/app/messages/']"),
+    MY_ACCOUNT("My Account", "headerForm:headerMyAccount", "//div[@id='horz_nav']/ul/li[3]/span/a", null),
+    MY_MESSAGES("My Messages", "headerForm:headerMyMessages", "//form[@id='headerForm']/ul/li[2]/span/a", null),
 
     /* Footer Elements */
     COPYRIGHT(StringEscapeUtils.unescapeHtml("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc"), "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]", null),
