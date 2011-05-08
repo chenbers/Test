@@ -894,5 +894,37 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return 0l;
     }
 
+    @Override
+    public void logoutDriverFromDevice(String commAddress, String employeeId, long logoutTime,  int odometer) 
+    {
+        Connection conn = null;
+        CallableStatement statement = null;
+        try
+        {
+            conn = getConnection();
+            
+            statement = conn.prepareCall("{call hos_logoutDriverFromDevice(?, ?, ?, ?)}");
 
+
+            statement.setString(1, commAddress);
+            statement.setString(2, employeeId);
+            statement.setLong(3, logoutTime);
+            statement.setInt(4, odometer);
+            
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+
+            statement.executeUpdate();
+
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(statement);
+            close(conn);
+        } // end finally
+    }
 }
