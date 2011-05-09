@@ -360,5 +360,11 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public void logoutDriverFromDevice(String commAddress, String employeeId, long logoutTime, int odometer) {
+        // TODO Auto-generated method stub
+        
+    }
     
 }
