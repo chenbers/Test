@@ -5,13 +5,13 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
-import com.inthinc.pro.automation.utils.Attributes;
+import com.inthinc.pro.automation.utils.RandomValues;
 
 public class Unique {
 	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
 	
 	private SiloService portalProxy;
-	private Attributes random = new Attributes();
+	private RandomValues random = new RandomValues();
 	private boolean start;
 	private String startString;
 

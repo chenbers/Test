@@ -1,9 +1,14 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import java.util.jar.Attributes;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.utils.RandomValues;
+import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
 import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
+import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
 import com.inthinc.pro.selenium.pageEnums.TAE.RedFlagPrefs;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
@@ -12,9 +17,11 @@ public class EditMyAccountTest extends WebRallyTest {
 
 	private PageMyAccount my;
 	private PageLogin login;
+	private RandomValues random;
 
 	@Before
 	public void setupPage() {
+		random = new RandomValues();
 		my = new PageMyAccount();
 		login = new PageLogin();
 	}
@@ -24,7 +31,22 @@ public class EditMyAccountTest extends WebRallyTest {
 		set_test_case("TC1271");
 		login.page_login_process("tnilson", "password");
 		my._link().myAccount().click();
-		my.getSelenium().pause(10);
+		/* Get original Values */
+		String email1 = my._text().email1().getText();
+		String email2 = my._text().email2().getText();
+		
+		String phone1 = my._text().phone1().getText();
+		String phone2 = my._text().phone2().getText();
+		
+		String text1 = my._text().textMessage1().getText();
+		String text2 = my._text().textMessage2().getText();
+		
+		
+		String critical = my._text().redFlagCritical().getText();
+		String warning = my._text().redFlagWarn().getText();
+		String information = my._text().redFlagInfo().getText();
+		
+		
 		/* Edit button */
 		my._button().edit().click();
 
@@ -34,12 +56,12 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._select().fuelEfficiency().select("Liters Per 100 Kilometers");
 
 		/* Contact Info */
-		my._textField().email1().type("tina1965@test.com");
-		my._textField().email2().type("tlc1965@test.com");
-		my._textField().phone1().type("801-777-7777");
-		my._textField().phone2().type("801-999-9999");
-		my._textField().textMessage1().type("8017779999@tmomail.net");
-		my._textField().textMessage2().type("8019997777@tmomail.net");
+		my._textField().email1().type(random.randomEmail());
+		my._textField().email2().type(random.randomEmail());
+		my._textField().phone1().type(random.randomPhoneNumber());
+		my._textField().phone2().type(random.randomPhoneNumber());
+		my._textField().textMessage1().type(random.randomTextNumber());
+		my._textField().textMessage2().type(random.randomTextNumber());
 
 		/* Red Flags */
 		my._select().information().select(RedFlagPrefs.TEXT1);
@@ -54,11 +76,11 @@ public class EditMyAccountTest extends WebRallyTest {
 		String username = my._text().userName().getText();
 		my.assertEquals("tnilson", username);
 		String locale = my._text().locale().getText();
-		my.assertEquals(Locale.ENGLISH.getText(), locale);
+		my.assertEquals(Locale.ENGLISH, locale);
 		String measurement = my._text().measurement().getText();
-		my.assertEquals("English", measurement);
+		my.assertEquals(Measurement.METRIC, measurement);
 		String fuel = my._text().fuelEfficiency().getText();
-		my.assertEquals("Miles Per Gallon (US)", fuel);
+		my.assertEquals(Fuel_Ratio.METRIC_LITER_PER_KILO, fuel);
 
 		/* Account Info */
 		String name = my._text().name().getText();
@@ -70,25 +92,25 @@ public class EditMyAccountTest extends WebRallyTest {
 
 		/* Red Flags */
 		String info = my._text().redFlagInfo().getText();
-		my.assertEquals("E-mail 1", info);
+		my.assertEquals(information, info);
 		String warn = my._text().redFlagWarn().getText();
-		my.assertEquals("E-mail 1", warn);
-		String critical = my._text().redFlagCritical().getText();
-		my.assertEquals("E-mail 1", critical);
+		my.assertEquals(warning, warn);
+		String crit = my._text().redFlagCritical().getText();
+		my.assertEquals( critical, crit);
 
 		/* Contact Info */
-		String email1 = my._text().email1().getText();
-		my.assertEquals("tnilson@inthinc.com", email1);
-		String email2 = my._text().email2().getText();
-		my.assertEquals("", email2);
-		String phone1 = my._text().phone1().getText();
-		my.assertEquals("", phone1);
-		String phone2 = my._text().phone2().getText();
-		my.assertEquals("", phone2);
+		String email1n = my._text().email1().getText();
+		my.assertEquals(email1, email1n);
+		String email2n = my._text().email2().getText();
+		my.assertEquals(email2, email2n);
+		String phone1n = my._text().phone1().getText();
+		my.assertEquals(phone1, phone1n);
+		String phone2n = my._text().phone2().getText();
+		my.assertEquals(phone2, phone2n);
 		String textmsg1 = my._text().textMessage1().getText();
-		my.assertEquals("", textmsg1);
+		my.assertEquals(text1, textmsg1);
 		String textmsg2 = my._text().textMessage2().getText();
-		my.assertEquals("", textmsg2);
+		my.assertEquals(text2, textmsg2);
 	}
 
 	@Test
@@ -101,9 +123,9 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._button().edit().click();
 
 		/* Login Info */
-		my._select().locale().select(Locale.ENGLISH.getText());
-		my._select().measurement().select("Metric");
-		my._select().fuelEfficiency().select("Liters Per 100 Kilometers");
+		my._select().locale().select(Locale.ENGLISH);
+		my._select().measurement().select(Measurement.ENGLISH);
+		my._select().fuelEfficiency().select(Fuel_Ratio.ENGLISH_MILES_UK);
 
 		/* Contact Info */
 

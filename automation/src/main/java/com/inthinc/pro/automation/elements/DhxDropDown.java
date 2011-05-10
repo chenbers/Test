@@ -55,7 +55,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 	}
 
 	@Override
-	public ElementInterface select(Integer optionNumber) {
+	public DhxDropDown select(Integer optionNumber) {
 		assignIDs();
 		optionNumber--;
 		String xpath = Xpath.start().body().div(Id.id(myEnum.getIDs()[0]))
@@ -64,20 +64,20 @@ public class DhxDropDown extends DropDown implements Selectable {
 		return this;
 	}
 
-	public ElementInterface select(SeleniumValueEnums option) {
+	public DhxDropDown select(SeleniumValueEnums option) {
 		assignIDs();
 		return select(option.getPosition() + 1);
 	}
 
 	@Override
-	public ElementInterface select(String fullMatch) {
+	public DhxDropDown select(String fullMatch) {
 		assignIDs();
 		select(fullMatch, 1);
 		return this;
 	}
 
 	@Override
-	public ElementInterface select(String fullMatch, Integer matchNumber) {
+	public DhxDropDown select(String fullMatch, Integer matchNumber) {
 		assignIDs();
 		matchNumber--;
 		String xpath = Xpath.start().div(Id.id(myEnum.getIDs()[1]))
@@ -87,13 +87,13 @@ public class DhxDropDown extends DropDown implements Selectable {
 	}
 
 	@Override
-	public ElementInterface selectPartMatch(String partialMatch) {
+	public DhxDropDown selectPartMatch(String partialMatch) {
 		assignIDs();
 		return selectPartMatch(partialMatch, 1);
 	}
 
 	@Override
-	public ElementInterface selectPartMatch(String partialMatch,
+	public DhxDropDown selectPartMatch(String partialMatch,
 			Integer matchNumber) {
 		assignIDs();
 		matchNumber--;

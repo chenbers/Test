@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.SeleniumValueEnums;
+import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
@@ -27,16 +28,20 @@ public class DropDown extends Text implements Selectable {
     
 
     @Override
-    public ElementInterface select(String fullMatch) {
+    public DropDown select(String fullMatch) {
     	
         select(fullMatch, 1);
         String selected = selenium.getSelectedLabel(myEnum);
         assertEquals(selected, fullMatch);
         return this;
     }
+    
+    public DropDown select(TextEnum value){
+    	return select(value.getText());
+    }
 
     @Override
-    public ElementInterface select(Integer optionNumber) {
+    public DropDown select(Integer optionNumber) {
         optionNumber--;
         selenium.select(myEnum, "index="+optionNumber);
         String selected = selenium.getSelectedIndex(myEnum);
@@ -44,12 +49,12 @@ public class DropDown extends Text implements Selectable {
         return this;
     }
     
-    public ElementInterface select(SeleniumValueEnums option) {
+    public DropDown select(SeleniumValueEnums option) {
         return select(option.getPosition()+1);
     }
 
     @Override
-    public ElementInterface select(String fullMatch, Integer matchNumber) {
+    public DropDown select(String fullMatch, Integer matchNumber) {
         matchNumber--;
         String xpath = getSelectIDAsXpath();
         if (xpath==null){
@@ -61,7 +66,7 @@ public class DropDown extends Text implements Selectable {
     }
 
     @Override
-    public ElementInterface selectPartMatch(String partialMatch, Integer matchNumber) {
+    public DropDown selectPartMatch(String partialMatch, Integer matchNumber) {
         matchNumber--;
         String xpath = getSelectIDAsXpath();
         if (xpath==null){
@@ -93,7 +98,7 @@ public class DropDown extends Text implements Selectable {
     }
 
     @Override
-    public ElementInterface selectPartMatch(String partialMatch) {
+    public DropDown selectPartMatch(String partialMatch) {
         return selectPartMatch(partialMatch, 1);
     }
     

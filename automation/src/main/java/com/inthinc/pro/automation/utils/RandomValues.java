@@ -13,7 +13,7 @@ import com.inthinc.pro.automation.resources.FileRW;
 import com.inthinc.pro.model.configurator.ProductType;
 
 
-public class Attributes {
+public class RandomValues {
 	
 	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
 	
@@ -26,9 +26,13 @@ public class Attributes {
 	private Random random;
 	
 
-	public Attributes(){
+	public RandomValues(){
 		random = new Random();
 		file = new FileRW();
+	}
+	
+	public static RandomValues newOne(){
+		return new RandomValues();
 	}
 	
 	public String randomMixedString(Integer length){
@@ -87,6 +91,14 @@ public class Attributes {
 			randomString += random.nextInt(10);
 		}
 		return randomString;
+	}
+	
+	public String randomPhoneNumber(){
+		return randomNumberString(random.nextInt(15));
+	}
+	
+	public String randomTextNumber(){
+		return randomPhoneNumber() + "@tmomail.net";
 	}
 	
 	public Long randomLong(Integer length){
