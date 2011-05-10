@@ -593,7 +593,7 @@ public class SiloServiceTest {
                 null, // vehicleTypeIDs
                 notifyPersonIDs,
                 null, // emailTo
-                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null,
+                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null,null,
                 escalationList,5, null,5);
         Integer redFlagAlertID = redFlagAlertDAO.create(acctID, redFlagAlert);
         assertNotNull(redFlagAlertID);
@@ -650,7 +650,7 @@ public class SiloServiceTest {
                 null, // vehicleTypeIDs
                 notifyPersonIDs,
                 null, // emailTo
-                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null,
+                speedSettings, 10, 10, 10, 10, RedFlagLevel.CRITICAL, null,null,
                 escalationList,5, null,5);
         Integer fleetRedFlagAlertID = redFlagAlertDAO.create(acctID, fleetRedFlagAlert);
         fleetRedFlagAlert.setAlertID(fleetRedFlagAlertID);
@@ -807,7 +807,7 @@ public class SiloServiceTest {
                 notifyPersonIDs, null, // emailTo
                 null,//speed settings
                 null,null,null,null,//aggressive driving settings
-                RedFlagLevel.NONE, zoneID,
+                RedFlagLevel.NONE, zoneID,null,
                 escalationList,5, null,5);
         Integer zoneAlertID = zoneAlertDAO.create(acctID, zoneAlert);
         assertNotNull(zoneAlertID);

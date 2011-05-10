@@ -84,7 +84,9 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     @Column(name = "vert")
     private Integer hardVertical;
     
-    private Integer           zoneID;
+    private Integer zoneID;
+    
+    private Integer idlingThreshold;
     
 
     public RedFlagAlert()
@@ -93,7 +95,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     
     public RedFlagAlert(List<AlertMessageType> types, Integer accountID, Integer userID, String name, String description, Integer startTOD, Integer stopTOD, List<Boolean> dayOfWeek, List<Integer> groupIDs,
             List<Integer> driverIDs, List<Integer> vehicleIDs, List<VehicleType> vehicleTypes, List<Integer> notifyPersonIDs, List<String> emailTo,Integer[] speedSettings,
-            Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, RedFlagLevel severityLevel,Integer zoneID,
+            Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical, RedFlagLevel severityLevel,Integer zoneID, Integer idlingThreshold,
             List<AlertEscalationItem> escalationList,Integer maxEscalationTries, Integer maxEscalationTryTime, Integer escalationTimeBetweenRetries
             /*,Integer timeoutUnits */)
     {
@@ -119,6 +121,7 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
         this.hardVertical = hardVertical;
         this.severityLevel = severityLevel;
         this.zoneID = zoneID;
+        this.idlingThreshold = idlingThreshold;
         this.escalationList = escalationList;
         this.maxEscalationTries = maxEscalationTries;
         this.maxEscalationTryTime = maxEscalationTryTime;
@@ -332,6 +335,14 @@ public class RedFlagAlert extends BaseEntity implements Comparable<RedFlagAlert>
     public void setZoneID(Integer zoneID) {
         this.zoneID = zoneID;
     }
+    public Integer getIdlingThreshold() {
+        return idlingThreshold;
+    }
+
+    public void setIdlingThreshold(Integer idlingThreshold) {
+        this.idlingThreshold = idlingThreshold;
+    }
+
     public RedFlagLevel getSeverityLevel() {
         return severityLevel;
     }

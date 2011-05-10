@@ -624,25 +624,41 @@
                    			<div class="spacer"></div>
                             <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                               <tr>
-                                <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                                <th colspan="2">
+                                	<h:outputText value="#{messages.editRedFlag_setting}" />
+                                </th>
                               </tr>
                                 <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
                                     <h:selectBooleanCheckbox id="tamperingSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_TAMPERING']}" onchange="checkMultiple(this)" />
                                     <h:outputText value="#{messages.alertTypeTampering}" />
                                   </td>
                                   </tr>
                                 <tr class="tableEven">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
                                      <h:selectBooleanCheckbox id="ignitionOnSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IGNITION_ON']}" onchange="checkMultiple(this)" />
                                     <h:outputText value="#{messages.alertTypeIgnitionOn}" />
                                   </td>
                                   </tr>
                                 <tr class="tableOdd">
-                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                  <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;" colspan="2">
                                     <h:selectBooleanCheckbox id="lowBatterySelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_LOW_BATTERY']}" onchange="checkMultiple(this)" />
                                     <h:outputText value="#{messages.alertTypeLowBattery}" />
                                   </td>
+                               </tr>
+                               <tr class="tableEven">
+                               		<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                               		  <h:selectBooleanCheckbox id="idlingThresholdSelected" value="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IDLING_THRESHOLD']}" onchange="checkMultiple(this)" />                              		
+                               		  <h:outputText value="#{messages.alertTypeIdlingLimit}"/>
+                               		</td>
+                               		<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                               		  <rich:inputNumberSlider id="idlingThreshold" value="#{redFlagOrZoneAlertsBean.item.idlingThreshold}" 
+                                          width="250" onfocus="this.select();" showToolTip="false" 
+                                          showBoundaryValues="false" 
+                                          minValue="#{messages.alertTypeLowIdleLimit}" maxValue="#{messages.alertTypeHighIdleLimit}" step="1" 
+                                          onchange="adminSetCheckbox(this.mainTable.id,'redflag','','')"
+                                          convertonchange="checkMultiple('type'); document.getElementById(this.mainTable.id + 'Selected').checked = true" />
+                               		</td> 	
                                </tr>
                                <!--  
                                 <tr class="tableEven">

@@ -307,9 +307,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         redFlagOrZoneAlertView.setAccountID(getAccountID());
         redFlagOrZoneAlertView.setUserID(getUserID());
         
-        // set default severity level to eliminate user confusion for people picker i.e. nothing returned
-//        redFlagOrZoneAlertView.setSeverityLevel(RedFlagLevel.CRITICAL);
-        
         return redFlagOrZoneAlertView;
     }
 
@@ -376,7 +373,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 updateField.put("startTOD", true);
                 updateField.put("stopTOD", true);
             }
-//            final boolean defineAlerts = Boolean.TRUE.equals(updateField.get("defineAlerts"));
         }
         // null out unselected items
         if (EventSubCategory.SPEED.equals(getItem().getEventSubCategory())) {
@@ -402,6 +398,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         
         return super.save();
     }
+    
     private void setAlertTypesFromSubCategory(){
         RedFlagOrZoneAlertView redFlagAlert = getItem();
         Set<AlertMessageType> alertMessageTypes = redFlagAlert.getEventSubCategory().getAlertMessageTypeSet();
@@ -446,7 +443,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         //  will correctly expose the subtype and will then HAVE to be edited, or null (bunch of different ones) which
         //  implies the only thing that can be edited is the common stuff...
         if (saveItem.getEventSubCategory() == null && !isBatchEdit() )
-//        if (saveItem.getEventSubCategory() == null && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("eventSubCategory"))))          
         {
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeTypeMessage"), null);
             FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
@@ -473,41 +469,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 
             }
         }
-//        else if (EventSubCategory.DRIVING_STYLE.equals(saveItem.getEventSubCategory())){
-//             
-//            boolean styleValid = saveItem.isHardAccelerationSelected() 
-//                                || saveItem.isHardBrakeSelected() 
-//                                || saveItem.isHardTurnSelected()
-//                                || saveItem.isHardVerticalSelected();
-//            
-//            if (!styleValid){
-//                
-//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeDrivingStyleMessage"), null);
-//                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
-//                
-//                valid = false;
-//            }
-//        }
-//        else if (EventSubCategory.OFFHOURS.equals(saveItem.getEventSubCategory())){
-//            if (saveItem.isAnytime()) {
-//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("editRedFlag_typeOffHourMessage"), null);
-//                FacesContext.getCurrentInstance().addMessage("edit-form:editRedFlagType", message);
-//                
-//                valid = false;
-//            }
-//        }
         
         // just validating if a zone id is selected, the subtypes will be checked later
         else if(EventSubCategory.ZONES.equals(saveItem.getEventSubCategory()) && checkSubTypes){
-//            if ((!Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_ENTER_ZONE)) && 
-//                    !Boolean.TRUE.equals(saveItem.getTypes().contains(AlertMessageType.ALERT_TYPE_EXIT_ZONE))) 
-//                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("defineAlerts"))))
-//            {
-//                final String summary = MessageUtil.formatMessageString("editZoneAlert_noAlerts");
-//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-//                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-arrival", message);
-//                valid = false;
-//            }
             
             //Validate required Zone id is selected
             if ((saveItem.getZoneID() == null)) {
@@ -515,18 +479,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-zoneID", message); 
                 valid = false;
             }
-            
-            //Validate required name is valid
-//            if ((saveItem.getName() == null) || (saveItem.getName().length() == 0)
-//                    && (!isBatchEdit() || (isBatchEdit() && getUpdateField().get("name"))))
-//            {
-//                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-//                FacesContext.getCurrentInstance().addMessage("edit-form:editZoneAlert-name", message);
-//                valid = false;
-//            }
            
         }
-        
+
         // validate escalation e-mail matches an existing email address for this user
         boolean isInPicker = this.getEscalationEmailPicker().containsLabel(saveItem.getEscEmail());
         if((saveItem.getEscEmail() != null && saveItem.getEscEmail().trim().length() > 0) && !isInPicker) {
@@ -574,6 +529,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     protected void doSave(List<RedFlagOrZoneAlertView> saveItems, boolean create) {
         final FacesContext context = FacesContext.getCurrentInstance();
         for (final RedFlagOrZoneAlertView flag : saveItems) {
+            
             // if batch editing, copy individual speed settings by hand
             if (isBatchEdit()) {
                 flag.setSpeedSelected(null);
@@ -586,18 +542,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                         flag.getSpeedSettings()[index] = getItem().getSpeedSettings()[index];
                      }
             }
+            
             if (flag.isAnytime()) {
                 flag.setStartTOD(RedFlagAlert.MIN_TOD);
                 flag.setStopTOD(RedFlagAlert.MIN_TOD);
             }
-            // since getItem auto-creates the below, null 'em here before saving
-//            if (flag.getSpeedSettings() != null && flag.getSpeedSettings()[0] == null) {
-//                flag.setSpeedSettings(null);
-//            }
-//            if(flag.getEmailTos() != null && !flag.getEmailTos().isEmpty()) {
-//                flag.getEmailTos().remove("");
-//            }
-//            flag.setEmailTo(flag.getEmailTos());
             
             if(item.getEscEmail() == null || item.getEscEmail().equals("")){
                 flag.clearEscEmail();
@@ -633,7 +582,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 flag.setMaxEscalationTries(null);
             }
             flag.setEscalationTimeBetweenRetries(item.getDelay().getCode());
-            
+             
+            // convert input idling time to seconds, if provided 
+            if ( flag.getSelectedAlertTypes().get(AlertMessageType.ALERT_TYPE_IDLING_THRESHOLD.name()) ) {
+                flag.setIdlingThreshold(flag.getIdlingThreshold()*60);
+            }
+              
+            // to the db
             if (create) {
                 flag.setAlertID(redFlagAlertsDAO.create(getAccountID(), flag));
             }

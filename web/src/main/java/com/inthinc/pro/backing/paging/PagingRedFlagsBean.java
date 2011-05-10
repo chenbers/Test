@@ -52,6 +52,7 @@ public class PagingRedFlagsBean extends BasePagingNotificationsBean<RedFlag> {
 		CATEGORIES.add(EventCategory.WARNING);
         CATEGORIES.add(EventCategory.ZONE);
         CATEGORIES.add(EventCategory.HOS);
+        CATEGORIES.add(EventCategory.TEXT);
 	}
 
 	@Override

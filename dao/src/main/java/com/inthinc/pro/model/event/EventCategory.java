@@ -21,7 +21,8 @@ public enum EventCategory implements BaseEnum
     EMERGENCY(5, "EMERGENCY", EnumSet.of(EventSubCategory.EMERGENCY)),
     ZONE(6,"ZONE", EnumSet.of(EventSubCategory.ZONES)),
 //    NO_DRIVER(7,"NO_DRIVER"),
-    HOS(8, "HOS", EnumSet.of(EventSubCategory.HOS));
+    HOS(8, "HOS", EnumSet.of(EventSubCategory.HOS)),
+    TEXT(9,"TEXT", EnumSet.of(EventSubCategory.TEXTMESSAGE));
 
     private String description;
     private int code;
