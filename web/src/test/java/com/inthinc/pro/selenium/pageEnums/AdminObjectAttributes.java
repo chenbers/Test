@@ -52,6 +52,7 @@ public class AdminObjectAttributes {
         public String tableName() {
             return this.idName;
         }
+        
         public String addEditName() {
             return addEditName;
         }

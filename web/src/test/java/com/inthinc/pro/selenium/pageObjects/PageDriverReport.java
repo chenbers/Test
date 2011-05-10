@@ -2,8 +2,12 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import java.util.StringTokenizer;
 
+import com.inthinc.pro.automation.elements.DhxDropDown;
 import com.inthinc.pro.automation.elements.TableTextLink;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
 import com.inthinc.pro.selenium.pageEnums.WebUtilEnum;
 
@@ -80,26 +84,35 @@ public class PageDriverReport extends NavigationBar {
     }
     
     public class DriverReportDropDowns extends NavigationBarDropDowns{
+    	private SeleniumEnums[] enums = {DriverReportEnum.SEATBELT_SCORE_DHX, 
+    			DriverReportEnum.STYLE_SCORE_DHX, DriverReportEnum.SPEED_SCORE_DHX,
+    			DriverReportEnum.OVERALL_SCORE_DHX};
+    	
 
-        public void dropdown_overallScore_selectValue(WebUtilEnum selection) {
-            selenium.click(DriverReportEnum.OVERALL_SCORE_FILTER.getXpath());
-            selenium.click("//div[4]/div[" + selection.getID() + "]");  
+        public DhxDropDown overallScoreFilter() {
+        	return new DhxDropDown(DriverReportEnum.OVERALL_SCORE_DHX)
+        	.tableOptions(enums)
+        	.dropDownButton(DriverReportEnum.OVERALL_SCORE_ARROW);
         }
         
-        public void dropdown_speedScore_selectValue(WebUtilEnum selection) {
-            selenium.click(DriverReportEnum.SPEED_SCORE_FILTER.getXpath());
-            selenium.click("//div[3]/div[" + selection.getID() + "]");  
+        public DhxDropDown speedScoreFilter(){
+        	return new DhxDropDown(DriverReportEnum.STYLE_SCORE_DHX)
+        	.tableOptions(enums)
+        	.dropDownButton(DriverReportEnum.STYLE_SCORE_ARROW);
         }
         
-        public void dropdown_styleScore_selectValue(WebUtilEnum selection) {
-            selenium.click(DriverReportEnum.STYLE_SCORE_FILTER.getXpath());
-            selenium.click("//div[2]/div[" + selection.getID() + "]");  
+        public DhxDropDown styleScoreFilter(){
+        	return new DhxDropDown(DriverReportEnum.SPEED_SCORE_DHX)
+        	.tableOptions(enums)
+        	.dropDownButton(DriverReportEnum.SPEED_SCORE_ARROW);
         }
         
-        public void dropdown_seatbeltScore_selectValue(WebUtilEnum selection) {
-            selenium.click(DriverReportEnum.SEATBELT_SCORE_FILTER.getXpath());
-            selenium.click("//div[" + selection.getID() + "]");  
+        public DhxDropDown seatBeltFilter(){
+        	return new DhxDropDown(DriverReportEnum.SEATBELT_SCORE_DHX)
+        	.tableOptions(enums)
+        	.dropDownButton(DriverReportEnum.SEATBELT_SCORE_ARROW);
         }
+        
     }
     
     private void clickIt(String rowQualifier, Integer row) {

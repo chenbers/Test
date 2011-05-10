@@ -9,52 +9,41 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum TeamOverallEnum implements SeleniumEnums {
 
-    OVERALL_SCORE(null, null, Xpath.start().div(Id.clazz("middle")).table().tbody().tr().toString(), null),
-    OVERALL_SCORE_LABEL(null, null, Xpath.start().div(Id.clazz("middle")).text().toString(), null),
+    OVERALL_SCORE(null, Xpath.start().div(Id.clazz("middle")).table().tbody().tr().toString()),
+    OVERALL_SCORE_LABEL(null, Xpath.start().div(Id.clazz("middle")).text().toString()),
     
-    SCORE_NA(null, null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("1").toString(), null),    
-    SCORE_0_1(null, null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("2").toString(), null),
-    SCORE_1_2(null, null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("3").toString(), null),
-    SCORE_2_3(null, null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("4").toString(), null),
-    SCORE_3_4(null, null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("5").toString(), null),
-    SCORE_4_5(null, null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("6").toString(), null),
-    SCORE_TOTAL(null, null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("7").toString(), null),
+    SCORE_NA(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("1").toString()),    
+    SCORE_0_1(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("2").toString()),
+    SCORE_1_2(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("3").toString()),
+    SCORE_2_3(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("4").toString()),
+    SCORE_3_4(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("5").toString()),
+    SCORE_4_5(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("6").toString()),
+    SCORE_TOTAL(null, Xpath.start().tbody(Id.id("summaryOverallStats:tb")).tr().td("7").toString()),
 
     ;
 
-    private String text, ID, xpath, xpath_alt, url;
-
-    private TeamOverallEnum(String text, String ID, String xpath, String xpath_alt) {
-        this.text = text;
-        this.ID = ID;
-        this.xpath = xpath;
-        this.xpath_alt = xpath_alt;
+    private String text, url;
+    private String[] IDs;
+    
+    private TeamOverallEnum(String url){
+    	this.url = url;
+    }
+    private TeamOverallEnum(String text, String ...IDs){
+        this.text=text;
+    	this.IDs = IDs;
     }
 
-    private TeamOverallEnum(String url) {
-        this.url = url;
+    @Override
+    public String[] getIDs() {
+        return IDs;
     }
 
+    @Override
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public String getXpath() {
-        return xpath;
-    }
-
-    public String getXpath_alt() {
-        return xpath_alt;
-    }
-
+    @Override
     public String getURL() {
         return url;
     }

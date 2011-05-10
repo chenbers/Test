@@ -6,26 +6,26 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
     /* Overall Score */
-    OVERALL_TIME_FRAME_SELECTOR(null, "speedForm:driverSpeed-dateLinksToolsDetail***", null, null),
-    OVERALL_TITLE("Speed: Overall", "titleSpan", null, null),
-    OVERALL_SCORE_LABEL("Overall Score", null, Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("1").h4().toString(), null),
-    OVERALL_SCORE_NUMBER(null, null, Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("2").table().tbody().tr().td().toString(), null),
+    OVERALL_TIME_FRAME_SELECTOR(null, "speedForm:driverSpeed-dateLinksToolsDetail***"),
+    OVERALL_TITLE("Speed: Overall", "titleSpan"),
+    OVERALL_SCORE_LABEL("Overall Score", Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("1").h4().toString()),
+    OVERALL_SCORE_NUMBER(null, Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("2").table().tbody().tr().td().toString()),
 
-    OVERALL_TOOLS(null, "dateLinksForm:toolsIcon", null, null),
-    OVERALL_EMAIL_TOOL(emailReport, "dateLinksForm:emailMenuItem:anchor", null, null),
-    OVERALL_PDF_TOOL(exportPDF, "dateLinksForm:export_menu_item:anchor", null, null),
-    OVERALL_EXCEL_TOOL("Export to Excel", "speedForm:driverSpeed-exportExcelMenuItem:anchor", null, null),
+    OVERALL_TOOLS(null, "dateLinksForm:toolsIcon"),
+    OVERALL_EMAIL_TOOL(emailReport, "dateLinksForm:emailMenuItem:anchor"),
+    OVERALL_PDF_TOOL(exportPDF, "dateLinksForm:export_menu_item:anchor"),
+    OVERALL_EXCEL_TOOL("Export to Excel", "speedForm:driverSpeed-exportExcelMenuItem:anchor"),
 
     /* Email Report Pop-up */
-    EMAIL_HEADER("Driver - ***", "speedForm_singleEmailHeader", null, null),
-    EMAIL_SUB_TITLE("E-mail this report to the following e-mail addresses.", "popupsubtitle", null, null),
-    EMAIL_TEXT("E-mail Address(es): (e-mail addresses separated by a comma)", null, Xpath.start().form(Id.id("speedForm_singleEmail_form")).span().table().tbody().tr("1").toString(), null),
-    EMAIL_TEXT_AREA(null, "speedForm_singleEmail_form:speedForm_singleEmail_email", null, null),
-    EMAIL_CANCEL_BUTTON(cancel, "emailReportPopUpSubmit", null, null),
-    EMAIL_SUBMIT_BUTTON(email, "speedForm_singleEmail_form:emailReportPopupEmail3", null, null),
-    EMAIL_X_BUTTON(null, null, Xpath.start().div(Id.id("speedForm_singleEmailContentDiv")).div().img().toString(), null),
+    EMAIL_HEADER("Driver - ***", "speedForm_singleEmailHeader"),
+    EMAIL_SUB_TITLE("E-mail this report to the following e-mail addresses.", "popupsubtitle"),
+    EMAIL_TEXT("E-mail Address(es): (e-mail addresses separated by a comma)", Xpath.start().form(Id.id("speedForm_singleEmail_form")).span().table().tbody().tr("1").toString()),
+    EMAIL_TEXT_AREA(null, "speedForm_singleEmail_form:speedForm_singleEmail_email"),
+    EMAIL_CANCEL_BUTTON(cancel, "emailReportPopUpSubmit"),
+    EMAIL_SUBMIT_BUTTON(email, "speedForm_singleEmail_form:emailReportPopupEmail3"),
+    EMAIL_X_BUTTON(null, Xpath.start().div(Id.id("speedForm_singleEmailContentDiv")).div().img().toString()),
 
-    RETURN(null, "speedForm:driverSpeed-dateLinksToolsDetailShow", null, null),
+    RETURN(null, "speedForm:driverSpeed-dateLinksToolsDetailShow"),
 
     /* Breakdown by Speed Limit */
     BREAKDOWN_OVERALL_LINK("Overall"),
@@ -35,81 +35,70 @@ public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
     BREAKDOWN_55_64_LINK("55-64 mph"),
     BREAKDOWN_65_80_LINK("65-80 mph"),
 
-    BREAKDOWN_OVERALL_SCORE(null, null, Xpath.start().td(Id.id("OVERALL")).table().tbody().tr().td("2").table().tbody().tr().toString(), null),
-    BREAKDOWN_1_30_SCORE(null, null, Xpath.start().td(Id.id("TWENTYONE")).table().tbody().tr().td("2").table().tbody().tr().toString(), null),
-    BREAKDOWN_31_40_SCORE(null, null, Xpath.start().td(Id.id("THIRTYONE")).table().tbody().tr().td("2").table().tbody().tr().toString(), null),
-    BREAKDOWN_41_54_SCORE(null, null, Xpath.start().td(Id.id("FOURTYONE")).table().tbody().tr().td("2").table().tbody().tr().toString(), null),
-    BREAKDOWN_55_64_SCORE(null, null, Xpath.start().td(Id.id("FIFTYFIVE")).table().tbody().tr().td("2").table().tbody().tr().toString(), null),
-    BREAKDOWN_65_80_SCORE(null, null, Xpath.start().td(Id.id("SIXTYFIVE")).table().tbody().tr().td("2").table().tbody().tr().toString(), null),
+    BREAKDOWN_OVERALL_SCORE(null, Xpath.start().td(Id.id("OVERALL")).table().tbody().tr().td("2").table().tbody().tr().toString()),
+    BREAKDOWN_1_30_SCORE(null, Xpath.start().td(Id.id("TWENTYONE")).table().tbody().tr().td("2").table().tbody().tr().toString()),
+    BREAKDOWN_31_40_SCORE(null, Xpath.start().td(Id.id("THIRTYONE")).table().tbody().tr().td("2").table().tbody().tr().toString()),
+    BREAKDOWN_41_54_SCORE(null, Xpath.start().td(Id.id("FOURTYONE")).table().tbody().tr().td("2").table().tbody().tr().toString()),
+    BREAKDOWN_55_64_SCORE(null, Xpath.start().td(Id.id("FIFTYFIVE")).table().tbody().tr().td("2").table().tbody().tr().toString()),
+    BREAKDOWN_65_80_SCORE(null, Xpath.start().td(Id.id("SIXTYFIVE")).table().tbody().tr().td("2").table().tbody().tr().toString()),
 
     /* Details */
-    DETAILS_TITLE("Details", null, Xpath.start().span(Id.clazz("details")).toString(), null),
-    DETAILS_X_OF_Y("Showing XXX to YYY of ZZZ records", "headerEvents", null, null),
+    DETAILS_TITLE("Details", Xpath.start().span(Id.clazz("details")).toString()),
+    DETAILS_X_OF_Y("Showing XXX to YYY of ZZZ records", "headerEvents"),
 
-    LOCATION_HEADER("Location", "driverSpeedForm:notificationsTable:address_columnheader:sortDiv", null, null),
-    DATE_TIME_HEADER("Date/Time", "driverSpeedForm:notificationsTable:timeheader:sortDiv", null, null),
-    POSTED_HEADER("Posted Speed", "driverSpeedForm:notificationsTable:speedLimitheader:sortDiv", null, null),
-    AVERAGE_HEADER("Avg Speed", "driverSpeedForm:notificationsTable:averageSpeedheader:sortDiv", null, null),
-    TOP_HEADER("Top Speed", "driverSpeedForm:notificationsTable:topSpeedheader:sortDiv", null, null),
-    DISTANCE_HEADER("Distance", "driverSpeedForm:notificationsTable:distanceheader:sortDiv", null, null),
+    LOCATION_HEADER("Location", "driverSpeedForm:notificationsTable:address_columnheader:sortDiv"),
+    DATE_TIME_HEADER("Date/Time", "driverSpeedForm:notificationsTable:timeheader:sortDiv"),
+    POSTED_HEADER("Posted Speed", "driverSpeedForm:notificationsTable:speedLimitheader:sortDiv"),
+    AVERAGE_HEADER("Avg Speed", "driverSpeedForm:notificationsTable:averageSpeedheader:sortDiv"),
+    TOP_HEADER("Top Speed", "driverSpeedForm:notificationsTable:topSpeedheader:sortDiv"),
+    DISTANCE_HEADER("Distance", "driverSpeedForm:notificationsTable:distanceheader:sortDiv"),
 
-    LOCATION_ENTRY(null, "driverSpeedForm:notificationsTable:***:eventAddress", null, null),
-    DATE_TIME_ENTRY(null, "driverSpeedForm:notificationsTable:***:time", null, null),
+    LOCATION_ENTRY(null, "driverSpeedForm:notificationsTable:***:eventAddress"),
+    DATE_TIME_ENTRY(null, "driverSpeedForm:notificationsTable:***:time"),
 
-    POSTED_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:speedLimitValue", null, null),
-    POSTED_ENTRY_SPEED_UNITS(null, null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:speedLimit")).strong().toString(), null),
+    POSTED_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:speedLimitValue"),
+    POSTED_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:speedLimit")).strong().toString()),
 
-    POSTED_ENTRY_SBS_BUTTON(null, "driverSpeedForm:notificationsTable:***:driverSpeedSlcr", null, null),
+    POSTED_ENTRY_SBS_BUTTON(null, "driverSpeedForm:notificationsTable:***:driverSpeedSlcr"),
 
-    AVERAGE_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:averageSpeedValue", null, null),
-    AVERAGE_ENTRY_SPEED_UNITS(null, null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:averageSpeed")).strong().toString(), null),
-    AVERAGE_ENTRY_PLUSMINUS(null, null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:averageSpeed")).span("1").toString(), null),
-    AVERAGE_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:***:averageSpeedDifference", null, null),
+    AVERAGE_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:averageSpeedValue"),
+    AVERAGE_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:averageSpeed")).strong().toString()),
+    AVERAGE_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:averageSpeed")).span("1").toString()),
+    AVERAGE_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:***:averageSpeedDifference"),
 
-    TOP_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:topSpeedValue", null, null),
-    TOP_ENTRY_SPEED_UNITS(null, null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:topSpeed")).strong().toString(), null),
-    TOP_ENTRY_PLUSMINUS(null, null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:topSpeed")).span("1").toString(), null),
-    TOP_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:***:topSpeedDifference", null, null),
+    TOP_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:topSpeedValue"),
+    TOP_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:topSpeed")).strong().toString()),
+    TOP_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:topSpeed")).span("1").toString()),
+    TOP_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:***:topSpeedDifference"),
 
-    DISTANCE_ENTRY(null, "driverSpeedForm:notificationsTable:***:distance", null, null),
+    DISTANCE_ENTRY(null, "driverSpeedForm:notificationsTable:***:distance"),
 
-    EXCLUDE("exclude", "driverSpeedForm:notificationsTable:***:driverSpeedInclude", null, null),
+    EXCLUDE("exclude", "driverSpeedForm:notificationsTable:***:driverSpeedInclude"),
 
     ;
 
-    private String text, ID, xpath, xpath_alt, url;
-
-    private DriverPerformanceSpeedEnum(String text, String ID, String xpath, String xpath_alt) {
-        this.text = text;
-        this.ID = ID;
-        this.xpath = xpath;
-        this.xpath_alt = xpath_alt;
+    private String text, url;
+    private String[] IDs;
+    
+    private DriverPerformanceSpeedEnum(String url){
+    	this.url = url;
+    }
+    private DriverPerformanceSpeedEnum(String text, String ...IDs){
+        this.text=text;
+    	this.IDs = IDs;
     }
 
-    private DriverPerformanceSpeedEnum(String url) {
-        this.url = url;
+    @Override
+    public String[] getIDs() {
+        return IDs;
     }
 
+    @Override
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public String getXpath() {
-        return xpath;
-    }
-
-    public String getXpath_alt() {
-        return xpath_alt;
-    }
-
+    @Override
     public String getURL() {
         return url;
     }

@@ -173,14 +173,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @return the best locator string to use for this element, null if none are found in page
      */
     public String getLocator(SeleniumEnums myEnum) {
-        AutomationEnum blah = AutomationEnum.PLACE_HOLDER.setEnum(myEnum);
-
+        AutomationEnum blah = AutomationEnum.CORE_ONLY.setEnum(myEnum);
+        String last="";
         for(String s: blah.getLocators()){
             if(isElementPresent(s)){
                 return s;
             }
+            last = s;
         }
-        return null;
+        return last;
     }
 
     /**
@@ -262,7 +263,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @return
      */
     public String getText(SeleniumEnums myEnum) {
-        logger.debug(" getText("+myEnum.getID()+")");
+        logger.debug(" getText("+myEnum.toString()+")");
         String element = getLocator(myEnum);
         String error_name = "getText: " + element;
         String text = "";
@@ -306,15 +307,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public Boolean isElementPresent(SeleniumEnums myEnum) {
         String element = getLocator(myEnum);
-        String error_name = "isElementPresent: " + element;
-        try {
-            return isElementPresent(element);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            errors.addError(error_name, e);
-        }
-        return null;
+        return isElementPresent(element);
     }
 
     /**

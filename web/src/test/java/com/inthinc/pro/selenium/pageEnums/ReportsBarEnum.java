@@ -3,48 +3,37 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum ReportsBarEnum implements SeleniumEnums {
-    DRIVERS("Drivers", null, "//div[@class='sub_nav-bg']/ul/li[1]/a", null),
-    VEHICLES("Vehicles", null, "//div[@class='sub_nav-bg']/ul/li[2]/a", null),
-    IDLING("Idling", null, "//div[@class='sub_nav-bg']/ul/li[3]/a", null),
-    DEVICES("Devices", null, "//div[@class='sub_nav-bg']/ul/li[4]/a", null),
-    WAYSMART("waySmart", null, "//div[@class='sub_nav-bg']/ul/li[5]/a", null),
+    DRIVERS("Drivers", "//div[@class='sub_nav-bg']/ul/li[1]/a"),
+    VEHICLES("Vehicles", "//div[@class='sub_nav-bg']/ul/li[2]/a"),
+    IDLING("Idling", "//div[@class='sub_nav-bg']/ul/li[3]/a"),
+    DEVICES("Devices", "//div[@class='sub_nav-bg']/ul/li[4]/a"),
+    WAYSMART("waySmart", "//div[@class='sub_nav-bg']/ul/li[5]/a"),
 
     ;
 
-    private String text, ID, xpath, xpath_alt, url;
-
-    private ReportsBarEnum(String text, String ID, String xpath, String xpath_alt) {
-        this.text = text;
-        this.ID = ID;
-        this.xpath = xpath;
-        this.xpath_alt = xpath_alt;
+    private String text, url;
+    private String[] IDs;
+    
+    private ReportsBarEnum(String url){
+    	this.url = url;
+    }
+    private ReportsBarEnum(String text, String ...IDs){
+        this.text=text;
+    	this.IDs = IDs;
     }
 
-    private ReportsBarEnum(String url) {
-        this.url = url;
+    @Override
+    public String[] getIDs() {
+        return IDs;
     }
 
-    public String getID() {
-        return this.ID;
-    }
-
+    @Override
     public String getText() {
-        return this.text;
+        return text;
     }
 
-    public String getXpath() {
-        return this.xpath;
-    }
-
-    public String getXpath_alt() {
-        return this.xpath_alt;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
+    @Override
     public String getURL() {
-        return null;
+        return url;
     }
 }

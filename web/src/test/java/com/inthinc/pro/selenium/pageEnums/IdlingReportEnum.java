@@ -3,57 +3,40 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum IdlingReportEnum implements SeleniumEnums {
-    TEAM_SEARCH(null, "idling-form:idling:groupfsp", null, null),
-    DRIVER_SEARCH(null, "idling-form:idling:fullNamefsp", null, null),
-    IDLING_FORM(null, "idling-form", null, null),
-    TEAM(null, "idling-form:idling:0:idlingsDashboard", null, null),
-    DRIVER(null, "idling-form:idling:0:idlingDriverPerformance", null, null),
-    TRIPS(null, "idling-form:idling:0:idlingDriverTrips", null, null),
-    START_DATE(null, "idling-form:startCalendarInputDate", null, null),
-    END_DATE(null, "idling-form:endCalendarInputDate", null, null),
-    REFRESH(null, "idling-form:idling_refresh", null, null);
+    TEAM_SEARCH(null, "idling-form:idling:groupfsp"),
+    DRIVER_SEARCH(null, "idling-form:idling:fullNamefsp"),
+    IDLING_FORM(null, "idling-form"),
+    TEAM(null, "idling-form:idling:0:idlingsDashboard"),
+    DRIVER(null, "idling-form:idling:0:idlingDriverPerformance"),
+    TRIPS(null, "idling-form:idling:0:idlingDriverTrips"),
+    START_DATE(null, "idling-form:startCalendarInputDate"),
+    END_DATE(null, "idling-form:endCalendarInputDate"),
+    REFRESH(null, "idling-form:idling_refresh");
 
-    private String text, ID, xpath, xpath_alt, url;
-
-    private IdlingReportEnum(String text, String ID, String xpath, String xpath_alt) {
-        this.text = text;
-        this.ID = ID;
-        this.xpath = xpath;
-        this.xpath_alt = xpath_alt;
+    private String text, url;
+    private String[] IDs;
+    
+    private IdlingReportEnum(String url){
+    	this.url = url;
     }
-
-    private IdlingReportEnum(String url) {
-        this.url = url;
+    private IdlingReportEnum(String text, String ...IDs){
+        this.text=text;
+    	this.IDs = IDs;
     }
 
     @Override
-    public String getID() {
-        return this.ID;
+    public String[] getIDs() {
+        return IDs;
     }
 
     @Override
     public String getText() {
-        return this.text;
-    }
-
-    @Override
-    public String getXpath() {
-        return this.xpath;
-    }
-
-    @Override
-    public String getXpath_alt() {
-        return this.xpath_alt;
-    }
-
-    @Override
-    public void setText(String text) {
-        this.text = text;
+        return text;
     }
 
     @Override
     public String getURL() {
-        return this.url;
+        return url;
     }
 
 }

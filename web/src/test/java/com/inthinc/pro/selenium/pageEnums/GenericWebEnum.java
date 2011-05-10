@@ -6,10 +6,20 @@ public enum GenericWebEnum implements SeleniumEnums {
     
     ;
     
-    private String ID, xpath, xpath_alt, text, url;
+    private String text, url;
+    private String[] IDs;
     
-    private GenericWebEnum(String ID){
-        this.ID=ID;
+    private GenericWebEnum(String url){
+    	this.url = url;
+    }
+    private GenericWebEnum(String text, String ...IDs){
+        this.text=text;
+    	this.IDs = IDs;
+    }
+
+    @Override
+    public String[] getIDs() {
+        return IDs;
     }
 
     @Override
@@ -21,25 +31,4 @@ public enum GenericWebEnum implements SeleniumEnums {
     public String getURL() {
         return url;
     }
-
-    @Override
-    public String getXpath() {
-        return xpath;
-    }
-
-    @Override
-    public String getXpath_alt() {
-        return xpath_alt;
-    }
-    
-    @Override
-    public String getID() {
-        return ID;
-    }
-    
-    @Override
-    public void setText(String text) {
-        this.text = text;
-    }
-
 }

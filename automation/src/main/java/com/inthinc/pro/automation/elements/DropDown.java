@@ -1,10 +1,14 @@
 package com.inthinc.pro.automation.elements;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.SeleniumValueEnums;
+import com.inthinc.pro.automation.utils.Id;
+import com.inthinc.pro.automation.utils.Xpath;
 
 public class DropDown extends Text implements Selectable {
     
@@ -24,7 +28,8 @@ public class DropDown extends Text implements Selectable {
 
     @Override
     public ElementInterface select(String fullMatch) {
-        selenium.select(myEnum, fullMatch);
+    	
+        select(fullMatch, 1);
         String selected = selenium.getSelectedLabel(myEnum);
         assertEquals(selected, fullMatch);
         return this;
@@ -44,15 +49,13 @@ public class DropDown extends Text implements Selectable {
     }
 
     @Override
-    public ElementInterface selectFullMatch(String fullMatch, Integer matchNumber) {
+    public ElementInterface select(String fullMatch, Integer matchNumber) {
         matchNumber--;
-        String xpath;
-        if (myEnum.getID()!=null){
-            String id = myEnum.getID();
-            xpath = "//select[@id='"+id+"']/option[text()='"+fullMatch+"']";
-        }else {
-            xpath = myEnum.getXpath() + "/option[text()='"+fullMatch+"']";
+        String xpath = getSelectIDAsXpath();
+        if (xpath==null){
+        	xpath = getSelectXpath();
         }
+        xpath = xpath + "/option["+Id.text(fullMatch)+"]";
         webDriver.findElements(By.xpath(xpath)).get(matchNumber).setSelected();
         return this;
     }
@@ -60,15 +63,33 @@ public class DropDown extends Text implements Selectable {
     @Override
     public ElementInterface selectPartMatch(String partialMatch, Integer matchNumber) {
         matchNumber--;
-        String xpath;
-        if (myEnum.getID()!=null){
-            String id = myEnum.getID();
-            xpath = "//select[@id='"+id+"']/option[contains(text(),'"+partialMatch+"')]";
-        }else {
-            xpath = myEnum.getXpath() + "/option[contains(text(),'"+partialMatch+"')]";
+        String xpath = getSelectIDAsXpath();
+        if (xpath==null){
+        	xpath = getSelectXpath();
         }
+        xpath = xpath + "/option["+Id.contains(Id.text(), partialMatch)+"]";
         webDriver.findElements(By.xpath(xpath)).get(matchNumber).setSelected();
         return this;
+    }
+    
+    private String getSelectIDAsXpath(){
+    	List<String> ids = myEnum.getLocators();
+    	for (String locator: ids){
+    		if (!locator.contains("=") || !locator.startsWith("//")){
+    			return Xpath.start().select(Id.id(locator)).toString();
+    		}
+    	}
+    	return null;
+    }
+    
+    private String getSelectXpath(){
+    	List<String> ids = myEnum.getLocators();
+    	for (String locator: ids){
+    		if (!locator.contains("=") && locator.startsWith("//")){
+    			return locator;
+    		}
+    	}
+    	return null;
     }
 
     @Override

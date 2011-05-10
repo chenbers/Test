@@ -17,14 +17,8 @@ public interface SeleniumEnums {
     public static String appUrl = "/app"; //TODO: jwimmer: question for dTanner: this is captured in automation.properties
 	
 	public String getText();
-	
-	public void setText(String text);
 
-	public String getID();
+	public String[] getIDs();
 	
 	public String getURL();
-
-	public String getXpath();
-
-	public String getXpath_alt();
 }

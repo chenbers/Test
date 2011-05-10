@@ -9,51 +9,25 @@ import com.inthinc.pro.automation.utils.Xpath;
 public enum AutomationEnum implements SeleniumEnums{
     
     PLACE_HOLDER,
-    FIND_ANCHOR_BY_CONTAINS_TEXT(null, null, Xpath.start().a(Id.contains(Id.text(), "***")).toString(), null),
-    VERSION(null, "footerForm:version", null, null)
+    CORE_ONLY,
+    FIND_ANCHOR_BY_CONTAINS_TEXT(null, Xpath.start().a(Id.contains(Id.text(), "***")).toString()),
+    VERSION(null, "footerForm:version")
     ;
     
-    private String ID, xpath, xpath_alt, text, url;
+    private String text, url, name;
+    private String[] IDs;
     
-    private AutomationEnum(){
-        
+    private AutomationEnum(String url){
+    	this.url = url;
     }
-    
-    private AutomationEnum(String text, String ID, String xpath, String xpath_alt){
-        this.ID=ID;
+    private AutomationEnum(String text, String ...IDs){
         this.text=text;
-        this.xpath=xpath;
-        this.xpath_alt=xpath_alt;
-    }
-    
-    public AutomationEnum setEnum(SeleniumEnums myEnum){
-        ID = myEnum.getID();
-        xpath = myEnum.getXpath();
-        url = myEnum.getURL();
-        xpath_alt = myEnum.getXpath_alt();
-        text = myEnum.getText();
-        return this;
+    	this.IDs = IDs;
     }
 
     @Override
-    public String getID() {
-        return ID;
-    }
-
-    /**
-     * Returns a List of Strings representing the non-null locators for anEnum
-     * @param anEnum
-     * @return non-null element locator strings
-     */
-    public List<String> getLocators() {
-        ArrayList<String> locators = new ArrayList<String>();
-        if(ID != null)
-            locators.add(ID);
-        if(xpath!= null)
-            locators.add(xpath);
-        if(xpath_alt != null)
-            locators.add(xpath_alt);
-        return locators;
+    public String[] getIDs() {
+        return IDs;
     }
 
     @Override
@@ -65,49 +39,69 @@ public enum AutomationEnum implements SeleniumEnums{
     public String getURL() {
         return url;
     }
-
-    @Override
-    public String getXpath() {
-        return xpath;
+    
+    private AutomationEnum(){
+        
     }
 
-    @Override
-    public String getXpath_alt() {
-        return xpath_alt;
+    /**
+     * Returns a List of Strings representing the non-null locators for anEnum
+     * @param anEnum
+     * @return non-null element locator strings
+     */
+    public List<String> getLocators() {
+        ArrayList<String> locators = new ArrayList<String>();
+        locators = new ArrayList<String>();
+    	for (String ID: IDs){
+    		locators.add(ID);
+    	}
+        return locators;
     }
+    
+    public AutomationEnum setEnum(SeleniumEnums myEnum){
+    	name = myEnum.toString();
+    	IDs = myEnum.getIDs();
+        url = myEnum.getURL();
+        text = myEnum.getText();
+        return this;
+    }
+
 
     public AutomationEnum replaceNumber(String number) {
-        if (ID!=null){
-            ID = ID.replace("###", number);
-        }
-        if (xpath!=null){
-            xpath = xpath.replace("###", number);
-        }
-        if (xpath_alt!=null){
-            xpath_alt = xpath_alt.replace("###", number);
-        }
+    	replaceOldWithNew("###", number);
         return this;
     }
 
     public AutomationEnum replaceWord(String word) {
-        if (ID!=null){
-            ID = ID.replace("***", word);
-        }
-        if (xpath!=null){
-            xpath = xpath.replace("***", word);
-        }
-        if (xpath_alt!=null){
-            xpath_alt = xpath_alt.replace("***", word);
-        }
+    	replaceOldWithNew("***", word);
         return this;
     }
-
-
-    @Override
-    public void setText(String text) {
-        this.text = text;
+    
+    public AutomationEnum replaceOldWithNew(String original, String newWord){
+    	for (String ID: IDs){
+    		ID.replace(original, newWord);
+    	}
+    	return this;
     }
     
+    public String toString(){
+    	return name;
+    }
     
+
+	public AutomationEnum setText(String text){
+		this.text = text;
+		return this;
+	}
+	
+	public AutomationEnum setID(String ...IDs){
+		this.IDs = IDs;
+		return this;
+	}
+	
+	public AutomationEnum setUrl(String url){
+		this.url = url;
+		return this;
+	}
 
 }

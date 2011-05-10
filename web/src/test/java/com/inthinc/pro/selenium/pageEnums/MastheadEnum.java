@@ -15,27 +15,27 @@ public enum MastheadEnum implements SeleniumEnums {
     
     /* Paging elements */
     
-    FORWARD_ONE(null, null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#187;"))).toString(), null),
-    FORWARD_ALL(null, null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#8250;"))).toString(), null),
-    BACK_ONE(null, null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#8249;"))).toString(), null),
-    BACK_ALL(null, null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#177;"))).toString(), null),
-    CHOOSE_PAGE(null, null,Xpath.start().td(Id.text("***")).toString(), null),
+    FORWARD_ONE(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#187;"))).toString()),
+    FORWARD_ALL(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#8250;"))).toString()),
+    BACK_ONE(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#8249;"))).toString()),
+    BACK_ALL(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#177;"))).toString()),
+    CHOOSE_PAGE(null,Xpath.start().td(Id.text("***")).toString()),
 
     /* Login Logo */
-    LOGIN(null, "login_logo", "//body/div[1]/div/img", null),
-    LOGO(null, "headerForm:headerInitDashboard", "//form[@id='headerForm']/div[@id='logo']/a/img", null),
+    LOGIN(null, "login_logo", "//body/div[1]/div/img"),
+    LOGO(null, "headerForm:headerInitDashboard", "//form[@id='headerForm']/div[@id='logo']/a/img"),
 
     /* Header Elements */
     HELP("Help", "headerForm:contextSensitiveHelp", "//a[@class='tb-help']", "//div[@id='horz_nav']/ul/li[1]/span/a"),
-    LOGOUT("Log Out", null, "//div[@id='horz_nav']/ul/li[4]/a", "//a[@class='tb-logout']"),
-    MY_ACCOUNT("My Account", "headerForm:headerMyAccount", "//div[@id='horz_nav']/ul/li[3]/span/a", null),
-    MY_MESSAGES("My Messages", "headerForm:headerMyMessages", "//form[@id='headerForm']/ul/li[2]/span/a", null),
+    LOGOUT("Log Out", "//div[@id='horz_nav']/ul/li[4]/a", "//a[@class='tb-logout']"),
+    MY_ACCOUNT("My Account", "headerForm:headerMyAccount", "//div[@id='horz_nav']/ul/li[3]/span/a"),
+    MY_MESSAGES("My Messages", "headerForm:headerMyMessages", "//form[@id='headerForm']/ul/li[2]/span/a"),
 
     /* Footer Elements */
-    COPYRIGHT(StringEscapeUtils.unescapeHtml("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc"), "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]", null),
+    COPYRIGHT(StringEscapeUtils.unescapeHtml("&#169;" + String.valueOf(Calendar.getInstance().get(Calendar.YEAR)) + " inthinc"), "//li[@class='first']", "//form[@id='footerForm']/ul/li[1]"),
     LEGAL("Legal Notice", "footerForm:legal", "//form[@id='footerForm']/ul/li[5]/a", "link=Legal Notice"),
-    PRIVACY("Privacy Policy", "footerForm:privacy", "//form[@id='footerForm']/ul/li[3]/a", null),
-    SUPPORT("Support", "footerForm:customerSupport", "//form[@id='footerForm']/ul/li[7]", null),
+    PRIVACY("Privacy Policy", "footerForm:privacy", "//form[@id='footerForm']/ul/li[3]/a"),
+    SUPPORT("Support", "footerForm:customerSupport", "//form[@id='footerForm']/ul/li[7]"),
     VERSION(null, "footerForm:version", "//form[@id='footerForm']/ul/li[2]", "//li[@class='last']"),
 
     /* HTML Pages */
@@ -47,53 +47,41 @@ public enum MastheadEnum implements SeleniumEnums {
             + "ERROR, OMISSION, INTERRUPTION, DELETION, DEFECT OR DELAY IN OPERATION OR TRANSMISSION; COMPUTER VIRUS; COMMUNICATION LINE FAILURE; "
             + "THEFT, DESTRUCTION OR UNAUTHORIZED ACCESS TO, ALTERATION OF OR USE OF ANY DATA. "
             + "YOU, NOT INTHINC, ASSUME THE ENTIRE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION DUE TO YOUR USE OF THIS WEBSITE.  "
-            + "INTHINC WILL NOT BE LIABLE FOR THE ACTIONS OF THIRD PARTIES.", null, "//p[8]", null),
+            + "INTHINC WILL NOT BE LIABLE FOR THE ACTIONS OF THIRD PARTIES.", "//p[8]"),
 
     PRIVACY_POLICY(StringEscapeUtils.unescapeHtml("We at inthinc take your privacy very seriously. " + "This Privacy Policy describes how we handle personally identifiable information "
             + "(&#8220;Personal Information&#8221;) and other information that we collect or receive " + "through the operation of inthinc products and services, any websites, portals, "
             + "telecommunications, technical or customer service support or information and as part " + "of any of our other business activities.  &#8220;Personal Information&#8221; "
             + "in this context is information that is identifiable to a particular person, including " + "when the information is combined with other information about that individual.  "
-            + "We endeavor to carefully guard and protect the privacy of any " + "Personal Information that we collect or otherwise receive."), null, "//p[4]", null),
+            + "We endeavor to carefully guard and protect the privacy of any " + "Personal Information that we collect or otherwise receive."), "//p[4]"),
 
-    CUSTOMER_SUPPORT_DEFAULT("For assistance, please contact Customer Support at:", null, "//h3", null),
+    CUSTOMER_SUPPORT_DEFAULT("For assistance, please contact Customer Support at:", "//h3"),
     
     ;
 
-    private String text, ID, xpath, xpath_alt, url;
-
-    private MastheadEnum(String text, String ID, String xpath, String xpath_alt) {
-        this.text = text;
-        this.ID = ID;
-        this.xpath = xpath;
-        this.xpath_alt = xpath_alt;
-    }
-
-    private MastheadEnum(String url) {
-        this.url = url;
-    }
+    private String text, url;
+    private String[] IDs;
     
+    private MastheadEnum(String url){
+    	this.url = url;
+    }
+    private MastheadEnum(String text, String ...IDs){
+        this.text=text;
+    	this.IDs = IDs;
+    }
+
+    @Override
+    public String[] getIDs() {
+        return IDs;
+    }
+
+    @Override
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public String getXpath() {
-        return xpath;
-    }
-
-    public String getXpath_alt() {
-        return xpath_alt;
-    }
-
+    @Override
     public String getURL() {
         return url;
     }
-
 }

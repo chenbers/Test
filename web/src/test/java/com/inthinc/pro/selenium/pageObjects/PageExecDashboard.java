@@ -124,7 +124,7 @@ public class PageExecDashboard extends NavigationBar{
     }
     
     private void clickDuration(DivisionEnum locator, Duration duration){
-        selenium.click(locator.getID() + duration.getDuration() );
+//        selenium.click(locator.getID() + duration.getDuration() );
         selenium.pause(10);
     }
 

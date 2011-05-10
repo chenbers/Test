@@ -1,7 +1,6 @@
 package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.utils.Xpath;
 
 public enum WebUtilEnum implements SeleniumEnums {
     DURATION_30DAYS(null, "durationPanelHeaderDays"),
@@ -15,79 +14,29 @@ public enum WebUtilEnum implements SeleniumEnums {
     FILTER_3_TO_4("3.1 - 4.0", "5"),
     FILTER_4_TO_5("4.1 - 5.0", "6");
 
-    private String text, ID, xpath, xpath_alt, url;
-
-    private WebUtilEnum(String text, String ID, String xpath, String xpath_alt) {
-        this.text = text;
-        this.ID = ID;
-        this.xpath = xpath;
-        this.xpath_alt = xpath_alt;
+    private String text, url;
+    private String[] IDs;
+    
+    private WebUtilEnum(String url){
+    	this.url = url;
+    }
+    private WebUtilEnum(String text, String ...IDs){
+        this.text=text;
+    	this.IDs = IDs;
     }
 
-    private WebUtilEnum(String url) {
-        this.url = url;
-    }
-
-    private WebUtilEnum(String text, String ID) {
-        this(text, ID, "", null);
-    }
-
-    private WebUtilEnum(String text, String ID, String xpath) {
-        this(text, ID, xpath, null);
-    }
-
-    private WebUtilEnum(String text, String ID, Xpath xpath, Xpath xpath_alt) {
-        this(text, ID, xpath.toString(), xpath_alt.toString());
-    }
-
-    private WebUtilEnum(String text, String ID, Xpath xpath) {
-        this(text, ID, xpath.toString(), null);
-    }
-
-    private WebUtilEnum(String text, Xpath xpath) {
-        this(text, null, xpath.toString(), null);
-    }
-
-    private WebUtilEnum(Xpath xpath, Xpath xpath_alt) {
-        this(null, null, xpath.toString(), xpath_alt.toString());
-    }
-
-    private WebUtilEnum(Xpath xpath) {
-        this(null, null, xpath.toString(), null);
-    }
     @Override
-    public String getID() {
-        // TODO Auto-generated method stub
-        return this.ID;
+    public String[] getIDs() {
+        return IDs;
     }
 
     @Override
     public String getText() {
-        // TODO Auto-generated method stub
-        return this.text;
-    }
-
-    @Override
-    public String getXpath() {
-        // TODO Auto-generated method stub
-        return this.xpath;
-    }
-
-    @Override
-    public String getXpath_alt() {
-        // TODO Auto-generated method stub
-        return this.xpath_alt;
-    }
-
-    @Override
-    public void setText(String text) {
-        // TODO Auto-generated method stub
-        this.text = text;
+        return text;
     }
 
     @Override
     public String getURL() {
-        // TODO Auto-generated method stub
-        return this.url;
+        return url;
     }
 }

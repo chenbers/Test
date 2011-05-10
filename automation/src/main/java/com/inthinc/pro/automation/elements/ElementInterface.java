@@ -64,7 +64,7 @@ public interface ElementInterface {
          * @param matchNumber
          * @return this Element
          */
-        public ElementInterface selectFullMatch(String fullMatch, Integer matchNumber);//TODO: jwimmer: question to team: in doc, but is there benefit to selectFullMatch(...) over select(...) being the FULLMATCH equivalent and only specifying PART in those method names?
+        public ElementInterface select(String fullMatch, Integer matchNumber);
         /**
          * Selects the <code>matchNumber</code>th partialMatch 
          * @param partialMatch

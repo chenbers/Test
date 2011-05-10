@@ -11,7 +11,7 @@ import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
 
 public class ElementBase implements ElementInterface {
-    private final static Logger logger = Logger.getLogger(ElementBase.class);
+    protected final static Logger logger = Logger.getLogger(ElementBase.class);
     protected CoreMethodLib selenium;
     protected WebDriver webDriver;
 

@@ -212,7 +212,7 @@ public class PageLogin extends Masthead {
 
         selenium.getText(LoginEnum.ERROR_HEADER);
         selenium.getText(LoginEnum.ERROR_MESSAGE);
-        selenium.getText(LoginEnum.ERROR_BUTTON_OK.getXpath());
+        selenium.getText(LoginEnum.ERROR_BUTTON_OK);
         return this;
     }
 

@@ -19,36 +19,29 @@ public enum TeamTimeFrames implements SeleniumEnums {
     THIS_MONTH(CoreMethodLib.getCurrentMonth(), "timeFrameForm:timeFrameMonth"),
     THIS_YEAR("365 Days", "timeFrameForm:timeFrameYear"), ;
 
-    private String ID, text;
-
-    private TeamTimeFrames(String text, String ID) {
-        this.ID = ID;
-        this.text = text;
+    private String text, url;
+    private String[] IDs;
+    
+    private TeamTimeFrames(String url){
+    	this.url = url;
+    }
+    private TeamTimeFrames(String text, String ...IDs){
+        this.text=text;
+    	this.IDs = IDs;
     }
 
-    public String getID() {
-        return ID;
+    @Override
+    public String[] getIDs() {
+        return IDs;
     }
 
+    @Override
     public String getText() {
         return text;
     }
 
-    public String getURL() {
-        return null;
-    }
-
-    public String getXpath() {
-        return null;
-    }
-
-    public String getXpath_alt() {
-        return null;
-    }
-
     @Override
-    public void setText(String text) {
-        this.text = text;
+    public String getURL() {
+        return url;
     }
-
 }

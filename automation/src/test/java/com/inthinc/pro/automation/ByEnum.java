@@ -27,10 +27,10 @@ public class ByEnum extends By {
 
     public ByEnum(SeleniumEnums theEnum) {
         this.theEnum = theEnum;
-        this.idFinder = By.id(theEnum.getID());
-        this.nameFinder = By.name(theEnum.getID()); // TODO: jwimmer: ask DT if we anticipate needing/wanting to find by name???
-        this.xpathFinder = By.xpath(theEnum.getXpath());
-        this.xpathAltFinder = By.xpath(theEnum.getXpath_alt());
+//        this.idFinder = By.id(theEnum.getID());
+//        this.nameFinder = By.name(theEnum.getID()); // TODO: jwimmer: ask DT if we anticipate needing/wanting to find by name???
+//        this.xpathFinder = By.xpath(theEnum.getXpath());
+//        this.xpathAltFinder = By.xpath(theEnum.getXpath_alt());
     }
 
     /**

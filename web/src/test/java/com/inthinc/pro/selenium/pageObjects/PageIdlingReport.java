@@ -28,15 +28,15 @@ public class PageIdlingReport extends NavigationBar {
     }    
     
     public void link_team_click(Integer row) {
-        clickIt(IdlingReportEnum.TEAM.getID(), row);   
+//        clickIt(IdlingReportEnum.TEAM.getID(), row);   
     }  
     
     public void link_driver_click(Integer row) {
-        clickIt(IdlingReportEnum.DRIVER.getID(), row); 
+//        clickIt(IdlingReportEnum.DRIVER.getID(), row); 
     } 
     
     public void link_trips_click(Integer row) {
-        clickIt(IdlingReportEnum.TRIPS.getID(), row); 
+//        clickIt(IdlingReportEnum.TRIPS.getID(), row); 
     }     
     
     private void clickIt(String rowQualifier, Integer row) {

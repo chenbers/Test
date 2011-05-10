@@ -9,7 +9,7 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     RED_FLAGS_URL("redFlags"),
     SAFETY_URL("safety"),
     DIAGNOSTICS_URL("diagnostics"),
-    ZONES_URL("zoneEvents", "zones", "", null),
+    ZONES_URL("zoneEvents", "zones", ""),
     HOS_EXCEPTIONS_URL("hosEvents"),
     EMERGENCY_URL("emergency"),
     CRASH_HISTORY_URL("crashHistory"),
@@ -24,54 +24,30 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     CRASH_HISTORY("Crash History", "link=Crash History", "***-crashHistory", "//li[@id='crashhistorytab']/a"),
 
     ;
-
-    private String text, ID, xpath, xpath_alt, current = "redFlags", url;
-
-    private NotificationsBarEnum(String text, String ID, String xpath, String xpath_alt) {
-        this.text = text;
-        this.ID = ID;
-        this.xpath = xpath;
-        this.xpath_alt = xpath_alt;
+    private String text, url;
+    private String[] IDs;
+    
+    private NotificationsBarEnum(String url){
+    	this.url = url;
+    }
+    private NotificationsBarEnum(String text, String ...IDs){
+        this.text=text;
+    	this.IDs = IDs;
     }
 
-    private NotificationsBarEnum(String url) {
-        this.url = url;
+    @Override
+    public String[] getIDs() {
+        return IDs;
     }
 
+    @Override
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getID() {
-        return ID;
-    }
-
-    public String getXpath(String current) {
-        return xpath.replace("***", current);
-    }
-
-    public String getXpath() {
-        return xpath.replace("***", current);
-    }
-
-    public String getXpath_alt() {
-        return xpath_alt;
-    }
-
+    @Override
     public String getURL() {
         return url;
-    }
-
-    public String getLink() {
-        return current;
-    }
-
-    public void setCurrent(String current) {
-        this.current = current;
     }
 
 }
