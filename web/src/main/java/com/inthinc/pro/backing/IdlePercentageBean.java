@@ -308,6 +308,9 @@ public class IdlePercentageBean extends BaseBean {
     }
 
 	public String getChartDef() {
+	    if ( chartDef == null ) 
+	        createChart();
+	        
 		return chartDef;
 	}
 }

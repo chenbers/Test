@@ -60,7 +60,8 @@ public class OverallScoreBean extends BaseBean {
     private String seatBeltPieDef;
 
     public String getOverallPieDef() {
-//        overallPieDef = createPieDef(ScoreType.SCORE_OVERALL);
+        if ( overallPieDef == null ) 
+        overallPieDef = createPieDef(ScoreType.SCORE_OVERALL);
         // logger.debug("returned string: " + pieDef);
         return overallPieDef;
     }

@@ -261,7 +261,8 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
     }
 
     private int addDataSet(StringBuffer sb, ScoreableEntityPkg se, List<ScoreableEntity> ss) {
-        sb.append("<dataset seriesName=\'\' color=\'");
+   
+        sb.append("<dataset seriesName=\'" + se.getSe().getIdentifier() + "\' color=\'");
         sb.append(se.getColorKey());
         sb.append("\'>");
 
