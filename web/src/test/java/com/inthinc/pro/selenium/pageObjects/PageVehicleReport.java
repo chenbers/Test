@@ -1,107 +1,190 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import java.util.StringTokenizer;
-
+import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.TableText;
 import com.inthinc.pro.automation.elements.TableTextLink;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.selenium.pageEnums.WebUtilEnum;
+import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextButton;
+import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
 
-public class PageVehicleReport  extends NavigationBar {
-    
-    
-	public class VehicleReportLinks{
-		
-	    public TableTextLink link_team_click(Integer row) {
-	        return new TableTextLink(VehicleReportEnum.TEAM);   
-	    }  
-	    
-	    public TableTextLink link_driver_click(Integer row) {
-	        return new TableTextLink(VehicleReportEnum.DRIVER); 
-	    } 
-	    
-	    public TableTextLink link_vehicle_click(Integer row) {
-	        return new TableTextLink(VehicleReportEnum.VEHICLE);
-	    }
-	    
-	    public TableTextLink link_overall_click(Integer row) {
-	        return new TableTextLink(VehicleReportEnum.OVERALL);
-	    }
-	    
-	    public TableTextLink link_style_click(Integer row) {  
-	        return new TableTextLink(VehicleReportEnum.STYLE);
-	    }
-	    
-	    public TableTextLink link_seatbelt_click(Integer row) {
-	        return new TableTextLink(VehicleReportEnum.SEATBELT);        
-	    }
-	}
-    
-    public void textField_driverSearch_type(String driver) {
-        selenium.type(VehicleReportEnum.DRIVER_SEARCH, driver);        
-    }
-    
-    public void textField_teamSearch_type(String driver) {
-        selenium.type(VehicleReportEnum.TEAM_SEARCH, driver);        
-    }
-    
-    public void textField_vehicleSearch_type(String driver) {
-        selenium.type(VehicleReportEnum.VEHICLE_SEARCH, driver);        
-    }
-    
-    public void textField_yearMakeModelSearch_type(String driver) {
-        selenium.type(VehicleReportEnum.YEAR_MAKE_MODEL_SEARCH, driver);        
-    }
-    
-    
-    public class VehicleReportDropDowns{
-    	
-    	private SeleniumEnums[] enums = {VehicleReportEnum.SEATBELT_SCORE_DHX, 
-    			VehicleReportEnum.STYLE_SCORE_DHX, VehicleReportEnum.SPEED_SCORE_DHX,
-    			VehicleReportEnum.OVERALL_SCORE_DHX};
-    	
+public class PageVehicleReport extends ReportsBar {
+	public class VehicleReportButtons extends ReportsBarButtons {
 
-        public DhxDropDown overallScoreFilter(WebUtilEnum selection) {
-        	return new DhxDropDown(VehicleReportEnum.OVERALL_SCORE_DHX).tableOptions(enums);
-        }
-        
-        public DhxDropDown speedScoreFilter(){
-        	return new DhxDropDown(VehicleReportEnum.STYLE_SCORE_DHX).tableOptions(enums);
-        }
-        
-        public DhxDropDown styleScoreFilter(){
-        	return new DhxDropDown(VehicleReportEnum.STYLE_SCORE_DHX).tableOptions(enums);
-        }
-        
-        public DhxDropDown seatBeltFilter(){
-        	return new DhxDropDown(VehicleReportEnum.SEATBELT_SCORE_DHX).tableOptions(enums);
-        }
-    }
-    
-    private void clickIt(String rowQualifier, Integer row) {
-        if ( row != null ) {
-            rowQualifier = insertRow(rowQualifier,row);
-        }
-        selenium.click(rowQualifier);
-        
-        // makes sure the next "thing" is there
-        selenium.pause(10);
-    }
-    
-    private String insertRow(String rowQualifier,Integer row) {
-        StringTokenizer st = new StringTokenizer(rowQualifier,":");
-        
-        StringBuffer sb = new StringBuffer();
-        sb.append(st.nextToken());
-        sb.append(":");
-        sb.append(st.nextToken());
-        sb.append(":");
-        sb.append(Integer.toString(row));
-        sb.append(":");
-        st.nextToken();
-        sb.append(st.nextToken());
-        
-        return sb.toString();
-    }
+		public TextButton editColumns() {
+			return new TextButton(ReportsBarEnum.EDIT_COLUMNS, page);
+		}
+
+		public TextButton exportEmail() {
+			return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
+		}
+
+		public TextButton exportExcel() {
+			return new TextButton(ReportsBarEnum.TOOL_EXCEL, page);
+		}
+
+		public TextButton exportPDF() {
+			return new TextButton(ReportsBarEnum.TOOL_PDF, page);
+		}
+
+		public Button tools() {
+			return new Button(ReportsBarEnum.TOOL_BUTTON, page);
+		}
+	}
+
+	public class VehicleReportDropDowns extends ReportsBarDropDowns {
+
+		public DhxDropDown overallFilter() {
+			return new ReportsBarDropDowns().score(
+					ReportsBarEnum.OVERALL_SCORE_DHX,
+					ReportsBarEnum.OVERALL_SCORE_ARROW, page);
+		}
+
+		public DhxDropDown speedFilter() {
+			return new ReportsBarDropDowns().score(
+					ReportsBarEnum.SPEED_SCORE_DHX,
+					ReportsBarEnum.SPEED_SCORE_ARROW, page);
+		}
+
+		public DhxDropDown styleFilter() {
+			return new ReportsBarDropDowns().score(
+					ReportsBarEnum.STYLE_SCORE_DHX,
+					ReportsBarEnum.STYLE_SCORE_ARROW, page);
+		}
+
+	}
+
+	public class VehicleReportLinks extends ReportsBarLinks {
+
+		public TextLink distanceDrivenSort() {
+			return new TextLink(VehicleReportEnum.DISTANCE_DRIVEN_SORT);
+		}
+
+		public TextLink driverSort() {
+			return new TextLink(VehicleReportEnum.DRIVER_SORT);
+		}
+
+		public TableTextLink driverValue() {
+			return new TableTextLink(VehicleReportEnum.DRIVER_VALUE);
+		}
+
+		public TextLink groupSort() {
+			return new TextLink(VehicleReportEnum.GROUP_SORT);
+		}
+
+		public TableTextLink groupValue() {
+			return new TableTextLink(VehicleReportEnum.GROUP_VALUE);
+		}
+
+		public TextLink odometerSort() {
+			return new TextLink(VehicleReportEnum.ODOMETER_SORT);
+		}
+
+
+		public TextLink overallSort() {
+			return new TextLink(VehicleReportEnum.OVERALL_SCORE_SORT);
+		}
+
+		public TableTextLink overallValue() {
+			return new TableTextLink(VehicleReportEnum.OVERALL_SCORE_VALUE);
+		}
+
+		public TextLink speedSort() {
+			return new TextLink(VehicleReportEnum.SPEED_SCORE_SORT);
+		}
+
+		public TableTextLink speedValue() {
+			return new TableTextLink(VehicleReportEnum.SPEED_SCORE_VALUE);
+		}
+
+		public TextLink styleSort() {
+			return new TextLink(VehicleReportEnum.STYLE_SCORE_SORT);
+		}
+
+		public TableTextLink styleValue() {
+			return new TableTextLink(VehicleReportEnum.STYLE_SCORE_VALUE);
+		}
+
+		public TextLink vehicleIDSort() {
+			return new TextLink(VehicleReportEnum.VEHICLE_SORT);
+		}
+
+		public TableTextLink vehicleValue() {
+			return new TableTextLink(VehicleReportEnum.VEHICLE_VALUE);
+		}
+
+		public TextLink yearMakeModelSort() {
+			return new TextLink(VehicleReportEnum.YEAR_MAKE_MODEL_SORT);
+		}
+
+	}
+
+	public class VehicleReportTextFields extends ReportsBarTextFields {
+
+		public TextField driverSearch(String driver) {
+			return new TextField(VehicleReportEnum.DRIVER_SEARCH);
+		}
+
+		public TextField groupSearch(String driver) {
+			return new TextField(VehicleReportEnum.GROUP_SEARCH);
+		}
+
+		public TextField vehicleSearch(String driver) {
+			return new TextField(VehicleReportEnum.VEHICLE_SEARCH);
+		}
+
+		public TextField yearMakeModelSearch(String driver) {
+			return new TextField(VehicleReportEnum.YEAR_MAKE_MODEL_SEARCH);
+		}
+	}
+
+	public class VehicleReportTexts extends ReportsBarTexts {
+		
+		public Text counter(){
+			return new Text(ReportsBarEnum.COUNTER, page);
+		}
+		
+		public TableText distanceDrivenValue() {
+			return new TableText(VehicleReportEnum.DISTANCE_DRIVEN_VALUE);
+		}
+		
+		public TableText odometerValue() {
+			return new TableText(VehicleReportEnum.ODOMETER_VALUE);
+		}
+
+		public TableText yearMakeModelValue() {
+			return new TableText(VehicleReportEnum.YEAR_MAKE_MODEL_VALUE);
+		}
+
+	}
+
+	private final String page = "vehicles";
+
+	public VehicleReportButtons _button() {
+		return new VehicleReportButtons();
+	}
+
+	public VehicleReportDropDowns _dropDown() {
+		return new VehicleReportDropDowns();
+	}
+
+	public VehicleReportLinks _link() {
+		return new VehicleReportLinks();
+	}
+
+	public ReportsPopUps _popUp() {
+		return new ReportsPopUps(page);
+	}
+
+	public VehicleReportTexts _text() {
+		return new VehicleReportTexts();
+	}
+
+	public VehicleReportTextFields _textField() {
+		return new VehicleReportTextFields();
+	}
+
 }

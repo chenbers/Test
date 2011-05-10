@@ -4,71 +4,79 @@ import com.inthinc.pro.automation.elements.TextLinkContextSense;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 
 public abstract class AdminBar extends NavigationBar {
-    
-    public class AdminBarLinks {
 
-        public TextLinkContextSense adminAccount() {
-            return new TextLinkContextSense(AdminBarEnum.ACCOUNT);
-        }
+	protected class AdminBarButtons extends NavigationBarButtons {
+	}
 
-        public TextLinkContextSense adminAddCustomRole() {
-            return new TextLinkContextSense(AdminBarEnum.ADD_CUSTOM_ROLE);
-        }
+	protected class AdminBarDropDowns extends NavigationBarDropDowns {
+	}
 
-        public TextLinkContextSense adminAddRedFlag() {
-            return new TextLinkContextSense(AdminBarEnum.ADD_RED_FLAG);
-        }
+	protected class AdminBarLinks extends NavigationBarLinks {
 
-        public TextLinkContextSense adminAddReport() {
-            return new TextLinkContextSense(AdminBarEnum.ADD_REPORT);
-        }
+		public TextLinkContextSense adminAccount() {
+			return new TextLinkContextSense(AdminBarEnum.ACCOUNT);
+		}
 
-        public TextLinkContextSense adminAddUser() {
-            return new TextLinkContextSense(AdminBarEnum.ADD_USER);
-        }
+		public TextLinkContextSense adminAddCustomRole() {
+			return new TextLinkContextSense(AdminBarEnum.ADD_CUSTOM_ROLE);
+		}
 
-        public TextLinkContextSense adminAddVehicle() {
-            return new TextLinkContextSense(AdminBarEnum.ADD_VEHICLE);
-        }
+		public TextLinkContextSense adminAddRedFlag() {
+			return new TextLinkContextSense(AdminBarEnum.ADD_RED_FLAG);
+		}
 
-        public TextLinkContextSense adminCustomRoles() {
-            return new TextLinkContextSense(AdminBarEnum.CUSTOM_ROLES);
-        }
+		public TextLinkContextSense adminAddReport() {
+			return new TextLinkContextSense(AdminBarEnum.ADD_REPORT);
+		}
 
-        public TextLinkContextSense adminDevices() {
-            return new TextLinkContextSense(AdminBarEnum.DEVICES);
-        }
+		public TextLinkContextSense adminAddUser() {
+			return new TextLinkContextSense(AdminBarEnum.ADD_USER);
+		}
 
-        public TextLinkContextSense adminOrganization() {
-            return new TextLinkContextSense(AdminBarEnum.ORGANIZATION);
-        }
+		public TextLinkContextSense adminAddVehicle() {
+			return new TextLinkContextSense(AdminBarEnum.ADD_VEHICLE);
+		}
 
-        public TextLinkContextSense adminRedFlags() {
-            return new TextLinkContextSense(AdminBarEnum.RED_FLAGS);
-        }
+		public TextLinkContextSense adminCustomRoles() {
+			return new TextLinkContextSense(AdminBarEnum.CUSTOM_ROLES);
+		}
 
-        public TextLinkContextSense adminReports() {
-            return new TextLinkContextSense(AdminBarEnum.REPORTS);
-        }
+		public TextLinkContextSense adminDevices() {
+			return new TextLinkContextSense(AdminBarEnum.DEVICES);
+		}
 
-        public TextLinkContextSense adminSpeedByStreet() {
-            return new TextLinkContextSense(AdminBarEnum.SPEED_BY_STREET);
-        }
+		public TextLinkContextSense adminOrganization() {
+			return new TextLinkContextSense(AdminBarEnum.ORGANIZATION);
+		}
 
-        public TextLinkContextSense adminUsers() {
-            return new TextLinkContextSense(AdminBarEnum.USERS);
-        }
+		public TextLinkContextSense adminRedFlags() {
+			return new TextLinkContextSense(AdminBarEnum.RED_FLAGS);
+		}
 
-        public TextLinkContextSense adminVehicles() {
-            return new TextLinkContextSense(AdminBarEnum.VEHICLES);
-        }
+		public TextLinkContextSense adminReports() {
+			return new TextLinkContextSense(AdminBarEnum.REPORTS);
+		}
 
-        public TextLinkContextSense adminZones_click() {
-            return new TextLinkContextSense(AdminBarEnum.ZONES);
-        }
-    }
+		public TextLinkContextSense adminSpeedByStreet() {
+			return new TextLinkContextSense(AdminBarEnum.SPEED_BY_STREET);
+		}
 
-    public AdminBarLinks _link() {
-        return new AdminBarLinks();
-    }
+		public TextLinkContextSense adminUsers() {
+			return new TextLinkContextSense(AdminBarEnum.USERS);
+		}
+
+		public TextLinkContextSense adminVehicles() {
+			return new TextLinkContextSense(AdminBarEnum.VEHICLES);
+		}
+
+		public TextLinkContextSense adminZones_click() {
+			return new TextLinkContextSense(AdminBarEnum.ZONES);
+		}
+	}
+
+	protected class AdminBarTextFields extends NavigationBarTextFields {
+	}
+
+	protected class AdminBarTexts extends NavigationBarTexts {
+	}
 }

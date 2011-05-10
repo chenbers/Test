@@ -40,6 +40,13 @@ public interface ElementInterface {
         public ElementInterface type(String inputText);
     }
     
+    public interface Checkable extends ElementInterface {
+    	public ElementInterface check(Integer number);
+    	public ElementInterface uncheck(Integer number);
+    	public Boolean isChecked(Integer number);
+    	public ElementInterface click(Integer number);
+    }
+    
     public interface Clickable extends ElementInterface {
         public ElementInterface click();
     }

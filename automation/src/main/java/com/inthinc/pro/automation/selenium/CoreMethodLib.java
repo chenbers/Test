@@ -283,8 +283,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param myEnum
      * @param condition
      * @return
-     */
-    public Boolean isChecked(SeleniumEnums myEnum, String condition) {
+     */    public Boolean isChecked(SeleniumEnums myEnum) {
         String element = getLocator(myEnum);
         String error_name = "isChecked: " + element;
         try {
@@ -294,7 +293,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
-        return null;
+        return false;
     }
 
 
@@ -326,7 +325,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
-        return null;
+        return false;
     }
 
 
@@ -347,7 +346,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
-        return null;
+        return false;
     }
 
     public CoreMethodLib moveallPanel(SeleniumEnums myEnum, String moveoption) {
@@ -576,7 +575,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#mouseDown(String)}
      * @param myEnum
      */
-    public void mouseOver(SeleniumEnums myEnum) {
+    public CoreMethodLib mouseOver(SeleniumEnums myEnum) {
         String element = getLocator(myEnum);
         String error_name = "mouseOver: " + element;
         try {
@@ -586,6 +585,33 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         } catch (Exception e) {
             errors.addError(error_name, e);
         }
+		return this;
     }
+
+	public CoreMethodLib check(AutomationEnum myEnum) {
+		String element = getLocator(myEnum);
+        String error_name = "mouseOver: " + element;
+        try {
+            check(element);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+		return this;
+	}
+	
+	public CoreMethodLib uncheck(AutomationEnum myEnum) {
+		String element = getLocator(myEnum);
+        String error_name = "mouseOver: " + element;
+        try {
+            uncheck(element);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+		return this;
+	}
 
 }

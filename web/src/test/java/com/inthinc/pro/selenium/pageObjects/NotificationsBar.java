@@ -4,6 +4,10 @@ import com.inthinc.pro.automation.elements.TextLinkContextSense;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 
 public abstract class NotificationsBar extends NavigationBar {
+	protected class NotificationsBarButtons extends NavigationBarButtons{}
+	protected class NotificationsBarTextFields extends NavigationBarTextFields{}
+	protected class NotificationsBarTexts extends NavigationBarTexts{}
+	protected class NotificationsBarDropDowns extends NavigationBarDropDowns{}
 
 	protected class NotificationsBarLinks{
 		

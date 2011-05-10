@@ -173,4 +173,11 @@ public class ElementBase implements ElementInterface {
         }
     }
     
+    protected void replaceNumber(Integer number){
+    	myEnum.replaceNumber(number.toString());
+    }
+    
+    protected void replaceWord(String word){
+    	myEnum.replaceWord(word);
+    }
 }

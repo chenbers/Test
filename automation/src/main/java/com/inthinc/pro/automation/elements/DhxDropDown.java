@@ -4,13 +4,15 @@ import org.openqa.selenium.By;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 
+import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public class DhxDropDown extends DropDown implements Selectable {
-	private SeleniumEnums dhxImage;
+	private AutomationEnum dhxImage;
+	private String page;
 
 	private SeleniumEnums[] enums;
 
@@ -24,6 +26,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord) {
 		super(anEnum, replaceWord);
+		page = replaceWord;
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord,
@@ -34,7 +37,9 @@ public class DhxDropDown extends DropDown implements Selectable {
 	private DhxDropDown assignIDs() {
 		Integer div = 1;
 		for (SeleniumEnums enume : enums) {
-			if (selenium.isElementPresent(enume) && enume != null) {
+			if (selenium.isElementPresent(AutomationEnum.CORE_ONLY.setEnum(
+					enume).replaceWord(page))
+					&& enume != null) {
 				selenium.assignId("//body/div[" + div + "]", enume.toString());
 				div++;
 			}
@@ -45,7 +50,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 	}
 
 	public DhxDropDown dropDownButton(SeleniumEnums enume) {
-		dhxImage = enume;
+		dhxImage = AutomationEnum.TEMP_ONLY.setEnum(enume).replaceWord(page);
 		return this;
 	}
 

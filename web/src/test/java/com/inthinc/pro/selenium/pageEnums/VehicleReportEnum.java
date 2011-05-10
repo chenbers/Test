@@ -3,27 +3,33 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum VehicleReportEnum implements SeleniumEnums {
-    TEAM_SEARCH(null,"vehicles-form:vehicles:groupfsp"),
+    GROUP_SEARCH(null,"vehicles-form:vehicles:groupfsp"),
     DRIVER_SEARCH(null,"vehicles-form:vehicles:fullNamefsp"),
     VEHICLE_SEARCH(null,"vehicles-form:vehicles:namefsp"),
     YEAR_MAKE_MODEL_SEARCH(null,"vehicles-form:vehicles:makeModelYearfsp"),
     
-    OVERALL_SCORE_FILTER(null,"//div[@id='vehicles-form:vehicles:overallScoreheader:sortDiv']/span/span/span/div/img"),
-    SPEED_SCORE_FILTER(null,"//div[@id='vehicles-form:vehicles:speedScoreheader:sortDiv']/span/span/span/div/img"),
-    STYLE_SCORE_FILTER(null,"//div[@id='vehicles-form:vehicles:styleScoreheader:sortDiv']/span/span/span/div/img"),
+
+    GROUP_VALUE(null,"vehicles-form:vehicles:###:vehiclesDashboard"),
+    VEHICLE_VALUE(null,"vehicles-form:vehicles:###:vehiclesVehiclePerformance"),
+    YEAR_MAKE_MODEL_VALUE(null, "vehicles-form:vehicles:###:makeModelYear"),
+    DRIVER_VALUE(null,"vehicles-form:vehicles:###:vehiclesDriverPerformance"),
+    DISTANCE_DRIVEN_VALUE(null, "vehicles-form:vehicles:###:distance"),
+    ODOMETER_VALUE(null, "vehicles-form:vehicles:###:odometer"),
+    OVERALL_SCORE_VALUE(null,"vehicles-form:drivers:###:overallScore"),   
+    STYLE_SCORE_VALUE(null,"vehicles-form:drivers:###:styleScore"),              
+    SPEED_SCORE_VALUE(null,"vehicles-form:drivers:###:speedScore"),
     
-    OVERALL_SCORE_DHX(null, "drivers-form:drivers:overallScoreheader:sortDiv"),
-    SPEED_SCORE_DHX(null, "drivers-form:drivers:speedScoreheader:sortDiv"),
-    STYLE_SCORE_DHX(null, "drivers-form:drivers:styleScoreheader:sortDiv"),
-    SEATBELT_SCORE_DHX(null, "drivers-form:drivers:seatbeltScoreheader:sortDiv"),
     
-    DRIVER_FORM(null,"vehicles-form"),
-    TEAM(null,"vehicles-form:vehicles:0:vehiclesDashboard"),
-    DRIVER(null,"vehicles-form:vehicles:2:vehiclesDriverPerformance"),
-    VEHICLE(null,"vehicles-form:vehicles:0:vehiclesVehiclePerformance"),
-    OVERALL(null,"vehicles-form:drivers:0:overallScore"),          // not correct search term
-    STYLE(null,"vehicles-form:drivers:0:styleScore"),              // not correct search term
-    SEATBELT(null,"vehicles-form:drivers:0:seatbeltScore"),         // not correct search term
+    GROUP_SORT(null,"vehicles-form:vehicles:vehiclesDashboardheader:sortDiv"),
+    VEHICLE_SORT(null,"vehicles-form:vehicles:vehiclesVehiclePerformanceheader:sortDiv"),
+    YEAR_MAKE_MODEL_SORT(null, "vehicles-form:vehicles:makeModelYearheader:sortDiv"),
+    DRIVER_SORT(null,"vehicles-form:vehicles:vehiclesDriverPerformanceheader:sortDiv"),
+    DISTANCE_DRIVEN_SORT(null, "vehicles-form:vehicles:distanceheader:sortDiv"),
+    ODOMETER_SORT(null, "vehicles-form:vehicles:odometerheader:sortDiv"),
+    OVERALL_SCORE_SORT(null,"vehicles-form:drivers:overallScoreheader:sortDiv"),          
+    STYLE_SCORE_SORT(null,"vehicles-form:drivers:styleScoreheader:sortDiv"),              
+    SPEED_SCORE_SORT(null,"vehicles-form:drivers:speedScoreheader:sortDiv"),
+        
     ;
     
     private String text, url;

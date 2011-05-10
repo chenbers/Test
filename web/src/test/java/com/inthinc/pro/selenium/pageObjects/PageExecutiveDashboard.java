@@ -1,7 +1,5 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import java.util.StringTokenizer;
-
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.TableText;
 import com.inthinc.pro.automation.elements.TableTextLink;
@@ -9,7 +7,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TimeLink;
 import com.inthinc.pro.selenium.pageEnums.DivisionEnum;
 
-public class PageDashboard extends NavigationBar {
+public class PageExecutiveDashboard extends NavigationBar {
 	
 	public class DashboardButtons extends NavigationBarButtons {
 
@@ -169,29 +167,4 @@ public class PageDashboard extends NavigationBar {
 		return new DashboardTextField();
 	}
 
-    private void clickIt(String rowQualifier, Integer row) {
-        if (row != null) {
-            rowQualifier = insertRow(rowQualifier, row);
-        }
-        selenium.click(rowQualifier);
-
-        // makes sure the next "thing" is there
-        selenium.pause(10);
-    }
-
-    private String insertRow(String rowQualifier, Integer row) {
-        StringTokenizer st = new StringTokenizer(rowQualifier, ":");
-
-        StringBuffer sb = new StringBuffer();
-        sb.append(st.nextToken());
-        sb.append(":");
-        sb.append(st.nextToken());
-        sb.append(":");
-        sb.append(Integer.toString(row));
-        sb.append(":");
-        st.nextToken();
-        sb.append(st.nextToken());
-
-        return sb.toString();
-    }
 }

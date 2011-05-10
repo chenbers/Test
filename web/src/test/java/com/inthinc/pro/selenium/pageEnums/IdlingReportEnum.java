@@ -6,9 +6,12 @@ public enum IdlingReportEnum implements SeleniumEnums {
     TEAM_SEARCH(null, "idling-form:idling:groupfsp"),
     DRIVER_SEARCH(null, "idling-form:idling:fullNamefsp"),
     IDLING_FORM(null, "idling-form"),
-    TEAM(null, "idling-form:idling:0:idlingsDashboard"),
-    DRIVER(null, "idling-form:idling:0:idlingDriverPerformance"),
-    TRIPS(null, "idling-form:idling:0:idlingDriverTrips"),
+    
+    TEAM(null, "idling-form:idling:0:group"),
+    DRIVER(null, "idling-form:idling:0:fullName"),
+    TRIPS(null, "idling-form:idling:###:idlingDriverTrips"),
+    IDLE_VALUE(null, "idling-form:idling:0:idleSupport"),
+    
     START_DATE(null, "idling-form:startCalendarInputDate"),
     END_DATE(null, "idling-form:endCalendarInputDate"),
     REFRESH(null, "idling-form:idling_refresh");
