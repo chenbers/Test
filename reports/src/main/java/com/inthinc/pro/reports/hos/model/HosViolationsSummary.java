@@ -171,7 +171,7 @@ public class HosViolationsSummary extends ViolationsSummary  {
             else 
                 offDuty_3++;
         }
-        else if (violationType == RuleViolationTypes.CUMMULATIVE_HOURS) {
+        else if (violationType == RuleViolationTypes.CUMMULATIVE_HOURS || violationType == RuleViolationTypes.TWENTY_FOUR_HOURS_OFF_DUTY) {
             if (minutes < 15) 
                 cumulative_1++;
             else if (minutes < 30) 

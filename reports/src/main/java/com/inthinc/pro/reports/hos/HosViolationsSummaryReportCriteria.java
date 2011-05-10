@@ -165,7 +165,6 @@ public class HosViolationsSummaryReportCriteria extends ViolationsSummaryReportC
         addParameter("REPORT_START_DATE", dateTimeFormatter.print(interval.getStart()));
         addParameter("REPORT_END_DATE", dateTimeFormatter.print(interval.getEnd()));
         
-//        setUseMetric(true);
         
     }
 

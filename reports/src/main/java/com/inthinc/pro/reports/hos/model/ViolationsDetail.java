@@ -100,6 +100,7 @@ public class ViolationsDetail implements Comparable<ViolationsDetail> {
                 "Arrays.asList(");
         for (Violation v : violationsList) {
                 System.out.println("    new Violation(" +
+                        "RuleSetType." + getRuleType().getName() + "," +
                         "RuleViolationTypes." + v.getType().getName() + "," +
                         v.getMinutes() + "l),");
         }

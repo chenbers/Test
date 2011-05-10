@@ -157,7 +157,7 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
             List<Violation> violationList = new ArrayList<Violation>();
             for (Entry<RuleViolationTypes, Long> violationEntry : violationData.getViolationMap().entrySet()) {
                 if (includeViolation(violationEntry.getKey(), violationEntry.getValue()))
-                        violationList.add(new Violation(violationEntry.getKey(), violationEntry.getValue()));
+                        violationList.add(new Violation(violationData.getHosViolationRec().getRuleType(), violationEntry.getKey(), violationEntry.getValue()));
             }
             if (violationList.isEmpty())
                 continue;

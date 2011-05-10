@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.TimeZone;
 
 import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSStatus;
@@ -32,6 +33,15 @@ public class HosRecordDataSet extends BaseDataSet {
     public List<HOSGroupMileage> groupMileageList;
     public List<HOSGroupMileage> groupNoDriverMileageList;
 
+    public HosRecordDataSet(Interval interval) {
+        account = MockData.createMockAccount();
+        this.interval = interval;
+        numDays = interval.toPeriod().toStandardDays().getDays();
+        topGroup = new Group(10, account.getAccountID(), "Top Group",0);
+        groupList.add(topGroup);
+        
+        
+    }
 
     public HosRecordDataSet(String basePath, String baseFilename, boolean includeMileage) {
         this(basePath, baseFilename, includeMileage, true);

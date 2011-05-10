@@ -77,7 +77,7 @@ public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCri
         ResourceBundle resourceBundle = ReportType.HOS_VIOLATIONS_DETAIL_REPORT.getResourceBundle(getLocale());
 
         List<String> columnHeaders = new ArrayList<String>();
-        for (int i = 1; i <= 7; i++)
+        for (int i = 1; i <= 8; i++)
             columnHeaders.add(MessageUtil.getBundleString(resourceBundle, "column."+i+".tabular"));
         
         return columnHeaders;
@@ -97,12 +97,12 @@ public class HosViolationsDetailReportCriteria extends ViolationsDetailReportCri
         for (ViolationsDetail detail : dataList) {
             for (Violation violation : detail.getViolationsList()) {
                 List<Result> row = new ArrayList<Result>();
+                row.add(new Result(detail.getGroupName(), detail.getGroupName()));
                 row.add(new Result(detail.getTimeStr(), detail.getNotificationTime()));
                 row.add(new Result(detail.getDriverName(), detail.getDriverName()));
                 row.add(new Result(detail.getVehicleId(), detail.getVehicleId()));
-                row.add(new Result(detail.getGroupName(), detail.getGroupName()));
-                String violationTypeStr = MessageUtil.getBundleString(resourceBundle, "violation."+violation.getType().getName()); 
-                row.add(new Result(violationTypeStr, violationTypeStr));
+                row.add(new Result(violation.getDetails(), violation.getDetails()));
+                row.add(new Result(violation.getCfr(), violation.getCfr()));
                 row.add(new Result(Converter.convertMinutes(violation.getMinutes()), violation.getMinutes()));
                 String ruleSetTypeStr = MessageUtil.getBundleString(resourceBundle, detail.getRuleType().getName()); 
                 row.add(new Result(ruleSetTypeStr,ruleSetTypeStr));
