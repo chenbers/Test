@@ -27,14 +27,14 @@ public enum MyAccountEnum implements SeleniumEnums {
 
     /* Login Information */
     LOGIN_TITLE("Login Information", "//td[1]/div[@class='add_section_title']"),
-    USER_NAME_TITLE("User Name:", "//td[@style='vertical-align: top;'][2]/table/tbody/tr[1]/td[1]"),
+    USER_NAME_TITLE("User Name:", Xpath.start().td(Id.valign("top")).table().tbody().tr("1").td("1").toString()),
     USER_NAME_TEXT(null, Xpath.start().td(Id.valign("top")).table().tbody().tr("1").td("2").toString()),
-    LOCALE_TITLE("Locale:", "//td[@style='vertical-align: top;'][2]/table/tbody/tr[2]/td[1]"),
-    LOCALE_TEXT(null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[2]/td[2]"),
-    MEASUREMENT_TITLE("Measurement", "//td[@style='vertical-align: top;'][2]/table/tbody/tr[3]/td[1]"),
-    MEASUREMENT_TEXT(null, "//td[@style='vertical-align: top;'][2]/table/tbody/tr[3]/td[2]"),
-    FUEL_EFFICIENCY_RATIO_TITLE("Fuel Efficiency Ratio:", "//td[@style='vertical-align: top;']/table/tbody/tr[4]/td[1]"),
-    FUEL_EFFICIENCY_RATIO_TEXT(null, "//td[@style='vertical-align: top;']/table/tbody/tr[4]/td[2]"),
+    LOCALE_TITLE("Locale:", Xpath.start().td(Id.valign("top")).table().tbody().tr("2").td("1").toString()),
+    LOCALE_TEXT(null, Xpath.start().td(Id.valign("top")).table().tbody().tr("2").td("2").toString()),
+    MEASUREMENT_TITLE("Measurement", Xpath.start().td(Id.valign("top")).table().tbody().tr("3").td("1").toString()),
+    MEASUREMENT_TEXT(null, Xpath.start().td(Id.valign("top")).table().tbody().tr("3").td("2").toString()),
+    FUEL_EFFICIENCY_RATIO_TITLE("Fuel Efficiency Ratio:", Xpath.start().td(Id.valign("top")).table().tbody().tr("4").td("1").toString()),
+    FUEL_EFFICIENCY_RATIO_TEXT(null, Xpath.start().td(Id.valign("top")).table().tbody().tr("4").td("2").toString()),
 
     /* Red Flag Preferences */
     RED_FLAGS_TITLE("Red Flag Preferences", "//span[@class='notify']"),
@@ -53,16 +53,22 @@ public enum MyAccountEnum implements SeleniumEnums {
     EMAIL_TITLE("E-mail Addresses", "//div[@class='panel_content']/div[1]"),
     PHONE_TITLE("Phone Numbers", "//div[@class='panel_content']/div[2]"),
     TEXT_TITLE("Text Messages", "//div[@class='panel_content']/div[3]"),
+
     EMAIL1_TITLE("E-mail 1:", "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[1]"),
     EMAIL1_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[2]"),
+    
     EMAIL2_TITLE("E-mail 2:", "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[1]"),
     EMAIL2_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[2]"),
+    
     PHONE1_TITLE("Phone 1:", "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[1]"),
     PHONE1_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[2]"),
+    
     PHONE2_TITLE("Phone 2:", "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[1]"),
     PHONE2_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[2]"),
+    
     TEXT_MESSAGES1_TITLE("Text Message 1:", "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[1]/td[1]"),
     TEXT_MESSAGES1_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[1]/td[2]"),
+    
     TEXT_MESSAGES2_TITLE("Text Message 2:", "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[2]/td[1]"),
     TEXT_MESSAGES2_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[2]/td[2]"),
 

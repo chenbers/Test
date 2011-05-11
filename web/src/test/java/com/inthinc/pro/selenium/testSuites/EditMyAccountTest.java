@@ -47,11 +47,12 @@ public class EditMyAccountTest extends WebRallyTest {
 		
 		/* Edit button */
 		my._button().edit().click();
+		my.getSelenium().pause(5);
 
 		/* Login Info */
-		my._select().locale().select(Locale.ENGLISH.getText());
-		my._select().measurement().select("Metric");
-		my._select().fuelEfficiency().select("Liters Per 100 Kilometers");
+		my._select().locale().select(Locale.ENGLISH);
+		my._select().measurement().select(Measurement.METRIC);
+		my._select().fuelEfficiency().select(Fuel_Ratio.METRIC_LITER_PER_KILO);
 
 		/* Contact Info */
 		my._textField().email1().type(random.getEmail());
@@ -163,11 +164,11 @@ public class EditMyAccountTest extends WebRallyTest {
 
 		/* Red Flags */
 		String info = my._text().redFlagInfo().getText();
-		my.assertEquals("Phone 2", info);
+		my.assertEquals(RedFlagPrefs.TEXT1, info);
 		String warn = my._text().redFlagWarn().getText();
-		my.assertEquals("None", warn);
+		my.assertEquals(RedFlagPrefs.EMAIL1, warn);
 		String critical = my._text().redFlagCritical().getText();
-		my.assertEquals("E-mail 2", critical);
+		my.assertEquals(RedFlagPrefs.PHONE1, critical);
 
 		/* Contact Info */
 		String email1 = my._text().email1().getText();
