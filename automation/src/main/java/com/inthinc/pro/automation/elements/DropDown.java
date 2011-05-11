@@ -28,11 +28,11 @@ public class DropDown extends Text implements Selectable {
     
 
     @Override
-    public DropDown select(String fullMatch) {
+    public DropDown select(String desiredOption) {
     	
-        select(fullMatch, 1);
+        select(desiredOption, 1);
         String selected = selenium.getSelectedLabel(myEnum);
-        assertEquals(selected, fullMatch);
+        assertEquals(selected, desiredOption);
         return this;
     }
     
@@ -53,13 +53,13 @@ public class DropDown extends Text implements Selectable {
     }
 
     @Override
-    public DropDown select(String fullMatch, Integer matchNumber) {
+    public DropDown select(String desiredOption, Integer matchNumber) {
         matchNumber--;
         String xpath = getSelectIDAsXpath();
         if (xpath==null){
         	xpath = getSelectXpath();
         }
-        xpath = xpath + "/option["+Id.text(fullMatch)+"]";
+        xpath = xpath + "/option["+Id.text(desiredOption)+"]";
         webDriver.findElements(By.xpath(xpath)).get(matchNumber).setSelected();
         return this;
     }
