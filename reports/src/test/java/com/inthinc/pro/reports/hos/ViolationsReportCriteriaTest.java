@@ -275,6 +275,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_60_DEGREES_CYCLE_2, Integer.valueOf(6)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_OIL, Integer.valueOf(7)); 
         expectedHosDetailCountMap.put(RuleSetType.CANADA_2007_60_DEGREES_OIL, Integer.valueOf(5)); 
+        expectedHosDetailCountMap.put(RuleSetType.US_7DAY, Integer.valueOf(3)); 
     }
     @Test
     public void gainSummmaryTestCases() {
