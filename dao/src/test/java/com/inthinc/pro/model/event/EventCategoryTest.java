@@ -11,7 +11,7 @@ public class EventCategoryTest {
 
     Integer[] expectedCounts = {
             10,
-            18,
+            16,
             0,
             11,
             2,
