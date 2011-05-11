@@ -149,9 +149,9 @@ public class EditMyAccountTest extends WebRallyTest {
 		String locale = my._text().locale().getText();
 		my.assertEquals(Locale.ENGLISH, locale);
 		String measurement = my._text().measurement().getText();
-		my.assertEquals("Metric", measurement);
+		my.assertEquals("English", measurement);
 		String fuel = my._text().fuelEfficiency().getText();
-		my.assertEquals("Liters Per 100 Kilometers", fuel);
+		my.assertEquals("Miles Per Gallon (UK)", fuel);
 
 		/* Account Info */
 		String name = my._text().name().getText();
@@ -163,11 +163,11 @@ public class EditMyAccountTest extends WebRallyTest {
 
 		/* Red Flags */
 		String info = my._text().redFlagInfo().getText();
-		my.assertEquals("Text Message 1", info);
+		my.assertEquals("Phone 2", info);
 		String warn = my._text().redFlagWarn().getText();
-		my.assertEquals("E-mail 1", warn);
+		my.assertEquals("None", warn);
 		String critical = my._text().redFlagCritical().getText();
-		my.assertEquals("Phone 1", critical);
+		my.assertEquals("E-mail 2", critical);
 
 		/* Contact Info */
 		String email1 = my._text().email1().getText();
