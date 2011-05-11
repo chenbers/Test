@@ -1,7 +1,5 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.jar.Attributes;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,17 +54,17 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._select().fuelEfficiency().select("Liters Per 100 Kilometers");
 
 		/* Contact Info */
-		my._textField().email1().type(random.randomEmail());
-		my._textField().email2().type(random.randomEmail());
-		my._textField().phone1().type(random.randomPhoneNumber());
-		my._textField().phone2().type(random.randomPhoneNumber());
-		my._textField().textMessage1().type(random.randomTextNumber());
-		my._textField().textMessage2().type(random.randomTextNumber());
+		my._textField().email1().type(random.getEmail());
+		my._textField().email2().type(random.getEmail());
+		my._textField().phone1().type(random.getPhoneNumber());
+		my._textField().phone2().type(random.getPhoneNumber());
+		my._textField().textMessage1().type(random.getTextMessageNumber());
+		my._textField().textMessage2().type(random.getTextMessageNumber());
 
 		/* Red Flags */
-		my._select().information().select(RedFlagPrefs.TEXT1);
-		my._select().warning().select(RedFlagPrefs.EMAIL1);
-		my._select().critical().select(RedFlagPrefs.PHONE1);
+		my._select().information().select(random.getEnum(RedFlagPrefs.TEXT1, information));
+		my._select().warning().select(random.getEnum(RedFlagPrefs.TEXT1, warning));
+		my._select().critical().select(random.getEnum(RedFlagPrefs.TEXT1, critical));
 
 		/* Cancel Changes */
 		my._button().cancel().click();

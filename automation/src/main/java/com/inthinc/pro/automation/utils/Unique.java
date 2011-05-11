@@ -32,7 +32,7 @@ public class Unique {
 			}else if (type == UniqueValues.PERSONID_EMAIL){
 				value += random.randomEmail();
 			}else{
-				value += random.randomNumberString(length);
+				value += random.getNumberString(length);
 			}
 			unique = checkUnique(type, value);
 		}

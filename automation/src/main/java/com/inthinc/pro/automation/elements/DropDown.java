@@ -37,6 +37,9 @@ public class DropDown extends Text implements Selectable {
     }
     
     public DropDown select(TextEnum value){
+    	if (value instanceof SeleniumValueEnums){
+    		return select(((SeleniumValueEnums) value).getPosition());
+    	}
     	return select(value.getText());
     }
 
@@ -47,10 +50,6 @@ public class DropDown extends Text implements Selectable {
         String selected = selenium.getSelectedIndex(myEnum);
         assertEquals(selected, optionNumber.toString());
         return this;
-    }
-    
-    public DropDown select(SeleniumValueEnums option) {
-        return select(option.getPosition()+1);
     }
 
     @Override

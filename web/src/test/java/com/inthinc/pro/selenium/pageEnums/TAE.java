@@ -79,7 +79,7 @@ public class TAE {
 	    }
 	}
 
-	public static enum RedFlagPrefs implements SeleniumValueEnums {
+	public static enum RedFlagPrefs implements SeleniumValueEnums, TextEnum {
 	    EMAIL1(1, MyAccountEnum.EMAIL1_TEXTFIELD, MyAccountEnum.EMAIL1_TITLE),
 	    EMAIL2(2, MyAccountEnum.EMAIL2_TEXTFIELD, MyAccountEnum.EMAIL2_TITLE),
 	    PHONE1(3, MyAccountEnum.PHONE1_TEXTFIELD, MyAccountEnum.PHONE1_TITLE),
@@ -87,7 +87,7 @@ public class TAE {
 	    TEXT1(5, MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES1_TITLE),
 	    TEXT2(6, MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES2_TITLE);
 	
-	    private String value;
+	    private String value, text;
 	    private MyAccountEnum ID, prefix;
 	    private Integer position;
 	
@@ -96,9 +96,14 @@ public class TAE {
 	        this.position = position;
             this.ID = ID;
             this.prefix = prefix;
+            this.text = prefix.getText();
 	    }
 	    public MyAccountEnum getID() {
 	        return ID;
+	    }
+	    
+	    public String getText(){
+	    	return text;
 	    }
 	
 	    public MyAccountEnum getPrefix() {

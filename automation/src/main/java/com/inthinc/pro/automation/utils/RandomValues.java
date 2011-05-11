@@ -8,6 +8,7 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.enums.Values;
 import com.inthinc.pro.automation.resources.FileRW;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -43,7 +44,7 @@ public class RandomValues {
 				randomString += random.nextInt(10);
 			}else if (!intOrChar){
 				Boolean capOrLower = random.nextBoolean();
-				char character = randomCharacter();
+				char character = getCharacter();
 				if (capOrLower)randomString += Character.toLowerCase(character);
 				else{
 					randomString += character;
@@ -53,11 +54,31 @@ public class RandomValues {
 		return randomString;
 	}
 	
-	public String randomString(Integer length){
+	private Enum<?> getRandomEnum(Enum<?> startFrom){
+		Enum<?>[] values = startFrom.getDeclaringClass().getEnumConstants();
+		return values[random.nextInt(values.length)];
+	}
+	
+	public TextEnum getEnum(TextEnum random){
+		return (TextEnum)getRandomEnum((Enum<?>) random);
+	}
+	
+	public TextEnum getEnum(TextEnum random, String doesntMatchThis){
+		TextEnum value;
+		while (true){
+			value = getEnum(random);
+			if (!value.getText().equals(doesntMatchThis)){
+				return value;
+			}
+		}
+	}
+		
+	
+	public String getString(Integer length){
 		String random = "";
 		for (int i=0;i<length;i++){
 			Boolean capOrLower = this.random.nextBoolean();
-			char character = randomCharacter();
+			char character = getCharacter();
 			if (capOrLower){
 				random += Character.toLowerCase(character);
 			}
@@ -66,26 +87,27 @@ public class RandomValues {
 		return random;
 	}
 	
-	public char randomCharacter(){
+	public char getCharacter(){
 		char character= (char)(random.nextInt(26)+65);
 		return character;
 	}
 	
-	public String randomUpperString(Integer length){
+	public String getUpperString(Integer length){
 		String randomString = "";
 		for (int i=0; i<length;i++){
 			Boolean intOrChar = random.nextBoolean();
 			if (intOrChar){
 				randomString += random.nextInt(10);
 			}else if (!intOrChar){
-				char character = randomCharacter();
+				char character = getCharacter();
 				randomString += character;
 			}
 		}
 		return randomString;
 	}
 	
-	public String randomNumberString(Integer length){
+	
+	public String getNumberString(Integer length){
 		String randomString = "";
 		for (int i=0;i<length;i++){
 			randomString += random.nextInt(10);
@@ -93,28 +115,22 @@ public class RandomValues {
 		return randomString;
 	}
 	
-	public String randomPhoneNumber(){
-		return randomNumberString(random.nextInt(15));
+	public String getPhoneNumber(){
+		String phone = getNumberString(3) + "555" + getNumberString(4);
+		return phone;
 	}
 	
-	public String randomTextNumber(){
-		return randomPhoneNumber() + "@tmomail.net";
+	public String getTextMessageNumber(){
+		return getPhoneNumber() + "@tmomail.net";
 	}
 	
-	public Long randomLong(Integer length){
+	public Long getLong(Integer length){
 		assert(length<Math.pow(2, 32));
-		String randomInt = "";
-		Boolean first = true;
-		for (int i=0;i<length;i++){
-			Integer add = random.nextInt(10);
-			if (first && add==0) add+=1;
-			randomInt += random.nextInt(10);
-			if (first)first = false;
-		}
+		String randomInt = getNumberString(length);
 		return Long.parseLong(randomInt);
 	}
 	
-	public String randomValue(Values type){
+	public String getValue(Values type){
 		String value = "";
 		switch (type){
 		case MAKE: value = getStringFromFile(type); break;
@@ -247,8 +263,8 @@ public class RandomValues {
 		return randomValue;
 	}
 
-	public String randomEmail() {
-		String address = randomString(15)+"@"+"tiwisucks.com";
+	public String getEmail() {
+		String address = getString(15)+"@"+"tiwisucks.com";
 		logger.debug(address);
 		return address;
 	}
