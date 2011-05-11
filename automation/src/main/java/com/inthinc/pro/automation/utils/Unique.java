@@ -30,7 +30,7 @@ public class Unique {
 			if (type.isString() && type != UniqueValues.PERSONID_EMAIL){
 				value += random.randomMixedString(length);
 			}else if (type == UniqueValues.PERSONID_EMAIL){
-				value += random.randomEmail();
+				value += random.getEmail();
 			}else{
 				value += random.getNumberString(length);
 			}
