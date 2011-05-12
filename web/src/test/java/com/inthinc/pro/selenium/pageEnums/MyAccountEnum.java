@@ -18,12 +18,12 @@ public enum MyAccountEnum implements SeleniumEnums {
 
     /* Account Information */
     ACCOUNT_TITLE("Account Information", "//td[1]/div[@class='add_section_title']"),
-    NAME_TITLE("Name:", "//td[@style='vertical-align: top;'][1]/table/tbody/tr[1]/td[1]"),
-    NAME_TEXT(null, "//td[@style='vertical-align: top;'][1]/table/tbody/tr[1]/td[2]"),
-    GROUP_TITLE("Group:", "//td[@style='vertical-align: top;'][1]/table/tbody/tr[2]/td[1]"),
-    GROUP_TEXT(null, "//td[@style='vertical-align: top;'][1]/table/tbody/tr[2]/td[2]"),
-    TEAM_TITLE("Team:", "//td[@style='vertical-align: top;'][1]/table/tbody/tr[3]/td[1]"),
-    TEAM_TEXT(null, "//td[@style='vertical-align: top;'][1]/table/tbody/tr[3]/td[2]"),
+    NAME_TITLE("Name:", "//td[contains(@style,'vertical-align:')][1]/table/tbody/tr[1]/td[1]"),
+    NAME_TEXT(null, "//td[contains(@style,'vertical-align:')][1]/table/tbody/tr[1]/td[2]"),
+    GROUP_TITLE("Group:", "//td[contains(@style,'vertical-align:')][1]/table/tbody/tr[2]/td[1]"),
+    GROUP_TEXT(null, "//td[contains(@style,'vertical-align:')][1]/table/tbody/tr[2]/td[2]"),
+    TEAM_TITLE("Team:", "//td[contains(@style,'vertical-align:')][1]/table/tbody/tr[3]/td[1]"),
+    TEAM_TEXT(null, "//td[contains(@style,'vertical-align:')][1]/table/tbody/tr[3]/td[2]"),
 
     /* Login Information */
     LOGIN_TITLE("Login Information", "//td[1]/div[@class='add_section_title']"),
