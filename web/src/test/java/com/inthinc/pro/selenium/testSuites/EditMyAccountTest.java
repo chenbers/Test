@@ -27,7 +27,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void CancelButton_Changes() {
 		set_test_case("TC1271");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		/* Get original Values */
 		String email1 = my._text().email1().getText();
@@ -119,7 +119,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void SaveButton_Changes() {
 		set_test_case("TC1280");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		/* Edit button */
@@ -192,7 +192,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void EmailFormatError() {
 		set_test_case("TC1271");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();
@@ -220,7 +220,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void MeasurementValidation() {
 		set_test_case("TC1275");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();
@@ -242,7 +242,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void FuelRatioValidation() {
 		set_test_case("TC1273");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();
@@ -262,7 +262,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void ClearFieldsValidation() {
 		set_test_case("TC1276");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();
@@ -286,7 +286,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void PhoneMaxCharError() {
 		set_test_case("TC1277");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		// my.link_myAccount().click();
 		my._button().edit().click();
@@ -313,7 +313,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void PhoneMissingCharError() {
 		set_test_case("TC1278");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		// my.link_myAccount().click();
 
@@ -342,7 +342,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void PhoneSpecialCharError() {
 		set_test_case("TC1279");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		// my.link_myAccount().click();
 		my._button().edit().click();
@@ -369,7 +369,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void TextMsgFormatError() {
 		set_test_case("TC1282");
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();

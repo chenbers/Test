@@ -2,6 +2,10 @@ package com.inthinc.pro.selenium.pageObjects;
 
 
 import com.inthinc.pro.automation.elements.ElementBase;
+import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextButton;
+import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 /****************************************************************************************
@@ -11,301 +15,95 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
  */
 
 public class PageLogin extends Masthead {
-    private ElementBase validate = new ElementBase();;
-
-    public PageLogin bulletText_forgotPasswordMessageSentBullet1_compareText(String expected) {
-        String actual = bulletText_forgotPasswordMessegeSentBullet1_getText();
-        if (!expected.equals(actual)) {
-            addError("Message Sent Bullet 1", "Expected = " + expected + "\nActual = " + actual);
-        }
-        return this;
-    }
-
-    public PageLogin bulletText_forgotPasswordMessageSentBullet2_compareText(String expected) {
-        String actual = bulletText_forgotPasswordMessegeSentBullet2_getText();
-        if (!expected.equals(actual)) {
-            addError("Message Sent Bullet 2", "Expected = " + expected + "\nActual = " + actual);
-        }
-        return this;
-    }
-
-    public PageLogin bulletText_forgotPasswordMessageSentBullet3_compareText(String expected) {
-        String actual = bulletText_forgotPasswordMessegeSentBullet3_getText();
-        if (!expected.equals(actual)) {
-            addError("Message Sent Bullet 3", "Expected = " + expected + "\nActual = " + actual);
-        }
-        return this;
-    }
-
-    public String bulletText_forgotPasswordMessegeSentBullet1_getText(){
-        return selenium.getText(LoginEnum.MESSAGE_SENT_BULLET_1);
-    }
-
-    public String bulletText_forgotPasswordMessegeSentBullet2_getText(){
-        return selenium.getText(LoginEnum.MESSAGE_SENT_BULLET_2);
-    }
-
-    public String bulletText_forgotPasswordMessegeSentBullet3_getText(){
-        return selenium.getText(LoginEnum.MESSAGE_SENT_BULLET_3);
-    }
-
-    public PageLogin button_confirmChange_click() {
-        selenium.click(LoginEnum.CHANGE_PASSWORD_BUTTON);
-        return this;
-    }
-
-    public PageLogin button_forgotPasswordCancel_click() {
-        selenium.click(LoginEnum.FORGOT_CANCEL_BUTTON);
-        popup_forgotPassword_assertIsClosed();
-        return this;
-    }
-
-    public PageLogin button_forgotPasswordClose_click() {
-        selenium.click(LoginEnum.FORGOT_CLOSE);
-        popup_forgotPassword_assertIsClosed();
-        return this;
-    }
-
-    public PageLogin button_forgotPasswordSend_click() {
-        selenium.click(LoginEnum.FORGOT_SEND);
-        return this;
-    }
-
-    public PageLogin button_forgotPasswordSubmit_click() {
-        selenium.click(LoginEnum.FORGOT_SEND);
-        return this;
-    }
-
-    public PageLogin button_logIn_click() {
-        selenium.click(LoginEnum.LOGIN_BUTTON);
-        selenium.waitForPageToLoad();
-        return this;
-    }
-
-    public PageLogin button_logInErrorOK_click() {
-        selenium.click(LoginEnum.ERROR_BUTTON_OK);
-        popup_badCredentials_assertIsClosed();
-        return this;
-    }
-
-    public PageLogin button_logInErrorX_click() {
-        selenium.click(LoginEnum.ERROR_CLOSE);
-        popup_badCredentials_assertIsClosed();
-        return this;
-    }
-
-    @Override
-    public String getExpectedPath() {
-        return LoginEnum.LOGIN_URL.getURL();
-    }
-
-    public PageLogin header_badCredentials_assertEquals(String expected) {
-        String actual = selenium.getText(LoginEnum.ERROR_HEADER);
-        assertEquals(expected, actual);
-        return this;
-    }
-
-    public PageLogin header_forgotPasswordMessageSent_compareText(String expected) {
-        String actual = header_forgotPasswordMessageSent_getText();
-        if (!expected.equals(actual)) {
-            addError("Message Sent Header", "Expected = " + expected + "\nActual = " + actual);
-        }
-        return this;
-    }
-
-    public String header_forgotPasswordMessageSent_getText(){
-        return  selenium.getText(LoginEnum.MESSAGE_SENT_HEADER);
-    }
-
-    private Boolean header_logInError_isVisible() {
-        return selenium.isVisible(LoginEnum.ERROR_HEADER);
-    }
-
-    public PageLogin link_forgotPassword_click() {
-        selenium.click(LoginEnum.FORGOT_TEXT);
-        popup_forgotPassword_assertIsOpen();
-        popup_forgotPassword_validate();
-        return this;
-    }
-
-    @Override
-    public PageLogin load() {
-        selenium.open(LoginEnum.LOGIN_URL);
-        return this;
-    }
-
-    public String message_forgotPasswordEmailInvalid_getText() {
-        return selenium.getText(LoginEnum.FORGOT_ERROR_EMAIL_FORMAT);
-    }
-
-    public String message_forgotPasswordEmailRequired_getText() {
-        return selenium.getText(LoginEnum.FORGOT_ERROR_EMAIL_UNKNOWN);
-    }
-
-    public String message_forgotPasswordEmailUnknown_getText() {
-        return selenium.getText(LoginEnum.FORGOT_ERROR_EMAIL_UNKNOWN);
+    private ElementBase validate = new ElementBase();
+    
+    public class LoginPopUps extends PopUps{
+    	public ForgotPassword forgotPassword(){
+    		return new ForgotPassword();
+    	}
+    	
+    	public LoginError loginError(){
+    		return new LoginError();
+    	}
     }
     
-    public PageLogin page_login_open() {
-        load();
-        page_logIn_validate();
-        return this;
+    public LoginPopUps _popUp(){
+    	return new LoginPopUps();
     }
 
-    public PageLogin page_login_process(String username, String password) {
-//        if (selenium.verifyLocation(LoginEnum.LOGIN_URL)) {
-            page_logout_open();
-//        }
-        textField_username_type(username);
-        textField_password_type(password);
-        button_logIn_click();
+
+    public LoginButtons _button(){
+    	return new LoginButtons();
+    }
+    public class LoginButtons extends MastheadButtons{
+    	public TextButton logIn(){
+    		return new TextButton(LoginEnum.LOGIN_BUTTON);
+    	}
+    }
+    
+    public LoginTexts _text(){
+    	return new LoginTexts();
+    }
+    public class LoginTexts extends MastheadTexts{
+    	public Text header(){
+    		return new Text(LoginEnum.USERNAME_FIELD);
+    	}
+    	
+    	public Text userName(){
+    		return new Text(LoginEnum.USERNAME_LABEL);
+    	}
+    	public Text password(){
+    		return new Text(LoginEnum.PASSWORD_LABEL);
+    	}
+    }
+    
+    public LoginTextFields _textField(){
+    	return new LoginTextFields();
+    }
+    public class LoginTextFields extends MastheadTextFields{
+    	public TextField userName(){
+    		return new TextField(LoginEnum.USERNAME_FIELD);
+    	}
+    	public TextField password(){
+    		return new TextField(LoginEnum.PASSWORD_FIELD);
+    	}
+    }
+    
+    public LoginLinks _link(){
+    	return new LoginLinks();
+    }
+    public class LoginLinks extends MastheadLinks{
+    	public TextLink forgotUsernamePassword(){
+    		return new TextLink(LoginEnum.FORGOT_USERNAME_LINK);
+    	}
+    }
+    
+
+    public PageLogin loginProcess(String username, String password) {
+        openLogout();
+        new LoginTextFields().userName().type(username);
+        new LoginTextFields().password().type(password);
+        new LoginButtons().logIn().click();
         return this;
     }
     
-    public PageLogin page_logIn_validate() {
-        validate();
-        return this;
-    }
-
-    public PageLogin page_logout_open() {
-        selenium.open(LoginEnum.LOGOUT_URL);
-        page_logIn_validate();
-        return this;
-    }
-    
-    public PageLogin page_sentForgotPassword_validate() {
-        title_forgotPasswordMessageSent_compareText(LoginEnum.MESSAGE_SENT_TITLE.getText());
-        header_forgotPasswordMessageSent_compareText(LoginEnum.MESSAGE_SENT_HEADER.getText());
-        text_forgotPasswordMessageSent_compareText(LoginEnum.MESSAGE_SENT_FIRST_PARAGRAPH.getText());
-
-        bulletText_forgotPasswordMessageSentBullet1_compareText(LoginEnum.MESSAGE_SENT_BULLET_1.getText());
-        bulletText_forgotPasswordMessageSentBullet2_compareText(LoginEnum.MESSAGE_SENT_BULLET_2.getText());
-        bulletText_forgotPasswordMessageSentBullet3_compareText(LoginEnum.MESSAGE_SENT_BULLET_3.getText());
-        return this;
-    }
-
-    public PageLogin popup_badCred_validate() {
-        validate.validateTextMatches(LoginEnum.ERROR_HEADER, LoginEnum.ERROR_MESSAGE, LoginEnum.ERROR_BUTTON_OK, LoginEnum.ERROR_CLOSE);
-        return this;
-    }
-    
-    public PageLogin popup_badCredentials_assertIsClosed() {
-        if (popup_logInError_isVisible() || header_logInError_isVisible()) {
-            addError("Bad Credentials Popup", "Popup didn't close");
-        }
-        return this;
-    }
-    
-    public PageLogin popup_badCredentials_assertIsOpen() {
-        if (!popup_logInError_isVisible() || !header_logInError_isVisible()) {
-            addError("Bad Credentials Popup", "Popup didn't open");
-        }
-        return this;
-    }
-
-    public PageLogin popup_error_validate() {
-        // verify error message is displayed as expected
-
-        selenium.isElementPresent(LoginEnum.ERROR_CLOSE);
-        selenium.isElementPresent(LoginEnum.ERROR_BUTTON_OK);
-        selenium.isElementPresent(LoginEnum.ERROR_HEADER);
-
-        selenium.getText(LoginEnum.ERROR_HEADER);
-        selenium.getText(LoginEnum.ERROR_MESSAGE);
-        selenium.getText(LoginEnum.ERROR_BUTTON_OK);
-        return this;
-    }
-
-    public PageLogin popup_forgotPassword_assertIsClosed() {
-        if (popup_forgotPassword_isVisible()) {
-            addError("Forgot Password Popup", "Popup didn't close");
-        }
-        return this;
-    }
-    
-    public PageLogin popup_forgotPassword_assertIsOpen() {
-        if (!popup_forgotPassword_isVisible()) {
-            addError("Forgot Password Popup", "Popup didn't open");
-        }
-        return this;
-    }
-
-    private Boolean popup_forgotPassword_isVisible() {
-        return selenium.isVisible(LoginEnum.FORGOT_TITLE);
-    }
-
-    private PageLogin popup_forgotPassword_validate() {
-        // verify Forgot password window is displayed as expected
-
-        validate.validateElementsPresent(LoginEnum.FORGOT_EMAIL_FIELD, LoginEnum.FORGOT_CLOSE);
-
-        validate.validateTextMatches(LoginEnum.FORGOT_TITLE, LoginEnum.FORGOT_MESSAGE, LoginEnum.FORGOT_SEND, 
-                LoginEnum.FORGOT_CANCEL_BUTTON
-                /*, LoginEnum.FORGOT_EMAIL_LABEL*/ //TODO: jwimmer: question for dTanner: something is odd with the locator on this element?  try JwimmerSandboxText.forgotPassword_badEmailManual_incorrectFormat with and without this element and you'll see what I'm talking about 
-                );
-        return this;
-    }
-
-    private Boolean popup_logInError_isVisible() {
-        return selenium.isVisible(LoginEnum.ERROR_HEADER);
-    }
-
-    public PageLogin text_forgotPasswordMessageSent_compareText(String expected) {
-        String actual = text_forgotPasswordMessageSent_getText();
-        if (expected == null) {
-            expected = LoginEnum.MESSAGE_SENT_FIRST_PARAGRAPH.getText();
-        }
-        if (!expected.equals(actual)) {
-            addError("Message Sent Text", "Expected = " + expected + "\nActual = " + actual);
-        }
-        return this;
-    }
-
-    public String text_forgotPasswordMessageSent_getText(){
-        return selenium.getText(LoginEnum.MESSAGE_SENT_FIRST_PARAGRAPH);
-    }
-
-    public PageLogin textField_confirmPassword_type(String password) {
-        selenium.type(LoginEnum.CONFIRM_PASSWORD, password);
-        return this;
-    }
-
-    public PageLogin textField_forgotPasswordEmail_type(String email) {
-        selenium.type(LoginEnum.FORGOT_EMAIL_FIELD, email);
-        return this;
-    }
-
-    public PageLogin textField_newPassword_type(String password) {
-        selenium.type(LoginEnum.NEW_PASSWORD, password);
-        return this;
-    }
-
-    public PageLogin textField_password_type(String password) {
-        selenium.type(LoginEnum.PASSWORD_FIELD, password);
-        return this;
-    }
-
-    public PageLogin textField_username_type(String username) {
-        selenium.type(LoginEnum.USERNAME_FIELD, username);
-        return this;
-    }
-
-    public PageLogin title_forgotPasswordMessageSent_compareText(String expected) {
-        String actual = title_forgotPasswordMessageSent_getText();
-        if (!expected.equals(actual)) {
-            addError("Message Sent Title", "Expected = " + expected + "\nActual = " + actual);
-        }
-        return this;
-    }
-
-    public String title_forgotPasswordMessageSent_getText(){
-        return selenium.getText(LoginEnum.MESSAGE_SENT_TITLE);
-    }
-
-    @Override
-    public PageLogin validate() {
-        validate.validateTextMatches(LoginEnum.FORGOT_TEXT, LoginEnum.LOGIN_TEXT, LoginEnum.USERNAME_LABEL, 
+    public PageLogin validatePage() {
+    	validate.validateTextMatches(LoginEnum.FORGOT_USERNAME_LINK, LoginEnum.LOGIN_HEADER, LoginEnum.USERNAME_LABEL, 
                 LoginEnum.PASSWORD_LABEL, LoginEnum.LOGIN_BUTTON);
         return this;
+    }
+
+    public PageLogin openLogout() {
+        selenium.open(LoginEnum.LOGOUT_URL);
+        validatePage();
+        return this;
+    }
+    
+    public LoginDropDowns _dropDown(){
+    	return new LoginDropDowns();
+    }
+    
+    public class LoginDropDowns extends MastheadDropDowns{
+    	
     }
 }

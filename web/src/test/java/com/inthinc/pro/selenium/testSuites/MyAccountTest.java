@@ -13,7 +13,7 @@ public class MyAccountTest extends WebRallyTest {
 		set_test_case("TC1266");
 		PageMyAccount my = new PageMyAccount();
 		PageLogin login = new PageLogin();
-		login.page_login_process("tnilson", "password");
+		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		//my.link_myAccount_click();
 		

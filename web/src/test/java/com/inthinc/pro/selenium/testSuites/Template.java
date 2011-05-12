@@ -21,7 +21,7 @@ public class Template extends WebTest {
         //set_test_case("TC4632");
         
         // navigate the browser to the intended test page
-        loginPage.page_login_open();
+        loginPage.openLogout();
         
         //perform page actions as necessary to recreate testcase
         
@@ -29,7 +29,7 @@ public class Template extends WebTest {
         loginPage.page_bareMinimum_validate();
         
         // additional checks will typically be necessary to ensure your expected result was met
-        loginPage.page_logIn_validate();
+        loginPage.validatePage();
     }  
     
     @Test

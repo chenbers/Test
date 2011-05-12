@@ -5,17 +5,17 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
-public class TimeLink extends TextLink implements Clickable, TextBased {
-    public TimeLink(SeleniumEnums anEnum) {
+public class TextLinkTime extends TextLink implements Clickable, TextBased {
+    public TextLinkTime(SeleniumEnums anEnum) {
         super(anEnum);
     }
-    public TimeLink(SeleniumEnums anEnum, Integer replaceNumber) {
+    public TextLinkTime(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
     }
-    public TimeLink(SeleniumEnums anEnum, String replaceWord) {
+    public TextLinkTime(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
     }
-    public TimeLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+    public TextLinkTime(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
     }
     
@@ -24,11 +24,11 @@ public class TimeLink extends TextLink implements Clickable, TextBased {
     /**
      * Use click(TextEnum duration) instead of click
      */
-    public TimeLink click(){
+    public TextLinkTime click(){
         return null;
     }
     
-    public TimeLink click(TextEnum duration){
+    public TextLinkTime click(TextEnum duration){
         myEnum.replaceWord(duration.getText());
         super.click();
         selenium.pause(8); // Give the page time to update
@@ -53,13 +53,13 @@ public class TimeLink extends TextLink implements Clickable, TextBased {
        return null;
     }
     
-    public TimeLink compareText(TextEnum duration, String expected) {
+    public TextLinkTime compareText(TextEnum duration, String expected) {
         myEnum.replaceWord(duration.getText());
         super.compareText(expected);
         return this;
     }
 
-    public TimeLink compareText(TextEnum duration) {
+    public TextLinkTime compareText(TextEnum duration) {
         myEnum.replaceWord(duration.getText());
         super.compareText();
         return this;

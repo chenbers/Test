@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.TableText;
 import com.inthinc.pro.automation.elements.TableTextLink;
 import com.inthinc.pro.automation.elements.TextButton;
-import com.inthinc.pro.automation.elements.TimeLink;
+import com.inthinc.pro.automation.elements.TextLinkTime;
 import com.inthinc.pro.selenium.pageEnums.ExecutiveDashBoardEnum;
 import com.inthinc.pro.selenium.pageObjects.PopUps.Types;
 
@@ -89,28 +89,28 @@ public class PageExecutiveDashboard extends NavigationBar {
 	
 	public class DashboardLinks extends NavigationBarLinks {
 
-        public TimeLink fuelEfficiencyDuration() {
-            return new TimeLink(ExecutiveDashBoardEnum.FUEL_EFFICIENCY_DURATION);
+        public TextLinkTime fuelEfficiencyDuration() {
+            return new TextLinkTime(ExecutiveDashBoardEnum.FUEL_EFFICIENCY_DURATION);
         }
 
         public TableTextLink groupName(){
             return new TableTextLink(ExecutiveDashBoardEnum.TREND_GROUP_LINK);
         }
 
-        public TimeLink idlingDuration() {
-            return new TimeLink(ExecutiveDashBoardEnum.IDLING_DURATION);
+        public TextLinkTime idlingDuration() {
+            return new TextLinkTime(ExecutiveDashBoardEnum.IDLING_DURATION);
         }
 
-        public TimeLink overallDuration() {
-            return new TimeLink(ExecutiveDashBoardEnum.OVERALL_DURATION);
+        public TextLinkTime overallDuration() {
+            return new TextLinkTime(ExecutiveDashBoardEnum.OVERALL_DURATION);
         }
 
-        public TimeLink speedingDuration() {
-            return new TimeLink(ExecutiveDashBoardEnum.SPEEDING_DURATION);
+        public TextLinkTime speedingDuration() {
+            return new TextLinkTime(ExecutiveDashBoardEnum.SPEEDING_DURATION);
         }
         
-        public TimeLink trendDuration() {
-            return new TimeLink(ExecutiveDashBoardEnum.TREND_DURATION);
+        public TextLinkTime trendDuration() {
+            return new TextLinkTime(ExecutiveDashBoardEnum.TREND_DURATION);
         }
     }
 	public class DashboardText extends NavigationBarTexts{
