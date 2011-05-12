@@ -7,6 +7,17 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
 public class PageMyAccount extends NavigationBar {
+	
+	public class MyAccountPopUps extends PopUps{
+		public MyAccountChangePassword changePassword(){
+			return new MyAccountChangePassword();
+		}
+	}
+	
+	public MyAccountPopUps _popUp(){
+		return new MyAccountPopUps();
+	}
+	
 	public MyAccountTextFields _textField() {
 		return new MyAccountTextFields();
 	}
@@ -32,17 +43,6 @@ public class PageMyAccount extends NavigationBar {
 	}
 
 	public class MyAccountTextFields extends NavigationBarTextFields {
-		public TextField changePopupCurrent() {
-			return new TextField(MyAccountEnum.CURRENT_PASSWORD_TEXTFIELD);
-		}
-
-		public TextField changePopupNew() {
-			return new TextField(MyAccountEnum.NEW_PASSWORD_TEXTFIELD);
-		}
-
-		public TextField changePopupConfirm() {
-			return new TextField(MyAccountEnum.CONFIRM_PASSWORD_TEXTFIELD);
-		}
 
 		public TextField phone1() {
 			return new TextField(MyAccountEnum.PHONE1_TEXTFIELD);
@@ -70,17 +70,6 @@ public class PageMyAccount extends NavigationBar {
 	}
 
 	public class MyAccountButtons extends NavigationBarButtons {
-		public TextButton changePopupCancel() {
-			return new TextButton(MyAccountEnum.CHANGE_PASSWORD_CHANGE_BUTTON);
-		}
-
-		public TextButton changePopupX() {
-			return new TextButton(MyAccountEnum.CHANGE_PASSWORD_X);
-		}
-
-		public TextButton changePopupChange() {
-			return new TextButton(MyAccountEnum.CHANGE_PASSWORD_CHANGE_BUTTON);
-		}
 
 		public TextButton change() {
 			return new TextButton(MyAccountEnum.CHANGE_PASSWORD_BUTTON);
@@ -126,25 +115,6 @@ public class PageMyAccount extends NavigationBar {
 	}
 
 	public class MyAccountTexts extends NavigationBarTexts {
-		public Text changePopupHeader() {
-			return new Text(MyAccountEnum.CHANGE_PASSWORD_TITLE);
-		}
-
-		public Text labelCurrentPassword() {
-			return new Text(MyAccountEnum.CURRENT_PASSWORD_TITLE);
-		}
-
-		public Text labelNewPassword() {
-			return new Text(MyAccountEnum.NEW_PASSWORD_TITLE);
-		}
-
-		public Text labelConfirmPassword() {
-			return new Text(MyAccountEnum.CONFIRM_PASSWORD_LABEL);
-		}
-
-		public Text messagePasswordStrength() {
-			return new Text(MyAccountEnum.PASSWORD_STRENGTH_MSG);
-		}
 
 		public Text email1() {
 			return new Text(MyAccountEnum.EMAIL1_TEXT);
@@ -210,14 +180,6 @@ public class PageMyAccount extends NavigationBar {
 			return new Text(MyAccountEnum.USER_NAME_TEXT);
 		}
 
-		public Text errorConfirmPassword() {
-			return new Text(MyAccountEnum.CONFIRM_PASSWORD_ERROR);
-		}
-
-		public Text errorCurrentPassword() {
-			return new Text(MyAccountEnum.CURRENT_PASSWORD_ERROR);
-		}
-
 		public Text errorEmail1() {
 			return new Text(MyAccountEnum.EMAIL1_ERROR);
 		}
@@ -226,9 +188,6 @@ public class PageMyAccount extends NavigationBar {
 			return new Text(MyAccountEnum.EMAIL2_ERROR);
 		}
 
-		public Text errorNewPassword() {
-			return new Text(MyAccountEnum.NEW_PASSWORD_ERROR);
-		}
 
 		public Text errorPhone1() {
 			return new Text(MyAccountEnum.PHONE1_ERROR);

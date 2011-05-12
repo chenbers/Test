@@ -290,13 +290,13 @@ public class PopUps {
 		}
 	}
 	
-	public class ChangePassword{
+	public class ForgotChangePassword{
 		public ChangeButtons _button(){
 			return new ChangeButtons();
 		}
 		public class ChangeButtons{
 			public TextButton ok(){
-				return new TextButton(PopUpEnum.CHANGE_OK);
+				return new TextButton(PopUpEnum.FORGOT_CHANGE_OK);
 			}
 		}
 		public ChangeText _text(){
@@ -304,10 +304,89 @@ public class PopUps {
 		}
 		public class ChangeText{
 			public Text header(){
-				return new Text(PopUpEnum.CHANGE_SUCCESS);
+				return new Text(PopUpEnum.FORGOT_CHANGE_SUCCESS);
 			}
 			public Text message(){
-				return new Text(PopUpEnum.CHANGE_MESSAGE);
+				return new Text(PopUpEnum.FORGOT_CHANGE_MESSAGE);
+			}
+		}
+	}
+	
+	
+	public class MyAccountChangePassword{
+		public MyChangeTexts _text(){
+			return new MyChangeTexts();
+		}
+		
+		public class MyChangeTexts{
+			public Text title(){
+				return new Text(PopUpEnum.MY_CHANGE_TITLE);
+			}
+			public Text currentPasswordLabel(){
+				return new Text(PopUpEnum.MY_CURRENT_LABEL);
+			}
+			
+			public Text newPasswordLabel(){
+				return new Text(PopUpEnum.MY_NEW_LABEL);
+			}
+			
+			public Text confirmPasswordLabel(){
+				return new Text(PopUpEnum.MY_CONFIRM_LABEL);
+			}
+			
+			public Text currentPasswordError(){
+				return new Text(PopUpEnum.MY_CURRENT_ERROR);
+			}
+			
+			public Text newPasswordError(){
+				return new Text(PopUpEnum.MY_NEW_ERROR);
+			}
+			
+			public Text confirmPasswordError(){
+				return new Text(PopUpEnum.MY_CONFIRM_ERROR);
+			}
+			
+			public Text passwordStrength(){
+				return new Text(PopUpEnum.MY_STRENGTH_MSG);
+			}
+			
+			
+		}
+		
+		public MyChangeTextFields _textField(){
+			return new MyChangeTextFields();
+		}
+		
+		public class MyChangeTextFields{
+			public TextField currentPassword(){
+				return new TextField(PopUpEnum.MY_CURRENT_TEXTFIELD);
+			}
+			
+			public TextField newPassword(){
+				return new TextField(PopUpEnum.MY_NEW_TEXTFIELD);
+			}
+			
+			public TextField confirmNewPassword(){
+				return new TextField(PopUpEnum.MY_CONFIRM_TEXTFIELD);
+			}
+		}
+		
+		
+		
+		public MyChangeButtons _button(){
+			return new MyChangeButtons();
+		}
+		public class MyChangeButtons{
+			public TextButton change(){
+				return new TextButton(PopUpEnum.MY_CHANGE_CHANGE);
+			}
+			
+			public TextButton cancel(){
+				return new TextButton(PopUpEnum.MY_CHANGE_CANCEL);
+			}
+			
+			public Button close(){
+				return new Button(PopUpEnum.MY_CHANGE_X);
 			}
 		}
 	}

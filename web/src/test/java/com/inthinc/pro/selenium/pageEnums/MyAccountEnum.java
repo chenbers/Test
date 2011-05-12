@@ -102,30 +102,7 @@ public enum MyAccountEnum implements SeleniumEnums {
     TEXT_MESSAGES1_TEXTFIELD(null, "my_form:editAccount-priText", "//input[@name='my_form:editAccount-priText"),
     TEXT_MESSAGES2_TEXTFIELD(null, "my_form:editAccount-secText", "//input[@name='my_form:editAccount-secText"),
 
-    /* Change Password items */
-    CHANGE_PASSWORD_TITLE("Change Password", "//div[@id='changePasswordPanelHeader']/span", "//td[@class='rich-mpnl-header-cell']/div[@class='rich-mpnl-text rich-mpnl-header popupHeader']/span"),
-    CHANGE_PASSWORD_X(null, "//div[@id='changePasswordPanelCDiv']/div[@id='changePasswordPanelContentDiv']/div/img[contains(@src,'modal_close')]"),
-    CHANGE_PASSWORD_CANCEL_BUTTON("Cancel", "changePasswordForm:changePasswordCancel", "//button[@name='changePasswordForm:changePasswordCancel']", "//div/button[@class='left'][@type='button']"),
-    CHANGE_PASSWORD_CHANGE_BUTTON("Change", "changePasswordForm:changePasswordSubmit", "//button[@name='changePasswordForm:changePasswordSubmit']", "//div/button[@class='left'][@type='submit']"),
-
-    CURRENT_PASSWORD_TITLE("Current Password:", "//form[@name='changePasswordForm']/table/tbody/tr[1]/td[1]"),
-    CURRENT_PASSWORD_TEXTFIELD(null, "changePasswordForm:oldPassword", "//inpute[@name='changePasswordForm:oldPassword", "//input[@type='password'][1]"),
-
-    PASSWORD_STRENGTH_MSG("Begin Typing", "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]"),
-    PASSWORD_STRENGTH_METER_EMPTY(null, "changePasswordForm_meterEmpty", "//div[@id='pwdTest']/span"),
-    PASSWORD_STRENGTH_METER_FULL(null, "changePasswordForm_meterFull", "//div[@id='pwdTest']/span/span"),
-
-    NEW_PASSWORD_TITLE("New Password:", "//form[@name='changePasswordForm']/table/tbody/tr[2]/td[1]"),
-    NEW_PASSWORD_TEXTFIELD(null, "changePasswordForm:newPassword", "//inpute[@name='changePasswordForm:newPassword", "//input[@type='password'][2]"),
-
-    CONFIRM_PASSWORD_LABEL("Confirm New Password:", "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]"),
-    CONFIRM_PASSWORD_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
-
-    /* Change Password Errors */
-    CURRENT_PASSWORD_ERROR(null, "//tr[1]/td[2]/span/span[@class='rich-message-label']"),
-    NEW_PASSWORD_ERROR(null, "//tr[2]/td[2]/span/span[@class='rich-message-label']"),
-    CONFIRM_PASSWORD_ERROR(null, "//tr[3]/td[2]/span/span[@class='rich-message-label']"),
-
+    
     ;
 
     private String text, url;

@@ -58,11 +58,38 @@ public enum PopUpEnum implements SeleniumEnums {
     
     
     
-    /* Password Change popUp */
-    CHANGE_SUCCESS("Success", "successPanelHeader"),
-    CHANGE_MESSAGE("Your password has been changed.", "//table[@id='successPanelContentTable']/tbody/tr[2]/td/p"),
-    CHANGE_OK("OK", "ok"),
+    /* Forgot Password Change popUp */
+	FORGOT_CHANGE_SUCCESS("Success", "successPanelHeader"),
+    FORGOT_CHANGE_MESSAGE("Your password has been changed.", "//table[@id='successPanelContentTable']/tbody/tr[2]/td/p"),
+    FORGOT_CHANGE_OK("OK", "ok"),
+    
+    
+    
+    /* My Account Change Password */
+    MY_CHANGE_TITLE("Change Password", "//div[@id='changePasswordPanelHeader']/span", "//td[@class='rich-mpnl-header-cell']/div[@class='rich-mpnl-text rich-mpnl-header popupHeader']/span"),
+    MY_CHANGE_X(null, "//div[@id='changePasswordPanelCDiv']/div[@id='changePasswordPanelContentDiv']/div/img[contains(@src,'modal_close')]"),
+    MY_CHANGE_CANCEL(cancel, "changePasswordForm:changePasswordCancel", "//button[@name='changePasswordForm:changePasswordCancel']", "//div/button[@class='left'][@type='button']"),
+    MY_CHANGE_CHANGE("Change", "changePasswordForm:changePasswordSubmit", "//button[@name='changePasswordForm:changePasswordSubmit']", "//div/button[@class='left'][@type='submit']"),
 
+    MY_CURRENT_LABEL("Current Password:", "//form[@name='changePasswordForm']/table/tbody/tr[1]/td[1]"),
+    MY_CURRENT_TEXTFIELD(null, "changePasswordForm:oldPassword", "//inpute[@name='changePasswordForm:oldPassword", "//input[@type='password'][1]"),
+
+    MY_STRENGTH_MSG("Begin Typing", "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]"),
+    MY_STRENGTH_METER_EMPTY(null, "changePasswordForm_meterEmpty", "//div[@id='pwdTest']/span"),
+    MY_STRENGTH_METER_FULL(null, "changePasswordForm_meterFull", "//div[@id='pwdTest']/span/span"),
+
+    MY_NEW_LABEL("New Password:", "//form[@name='changePasswordForm']/table/tbody/tr[2]/td[1]"),
+    MY_NEW_TEXTFIELD(null, "changePasswordForm:newPassword", "//inpute[@name='changePasswordForm:newPassword", "//input[@type='password'][2]"),
+
+    MY_CONFIRM_LABEL("Confirm New Password:", "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]"),
+    MY_CONFIRM_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
+
+    /* Change Password Errors */
+    MY_CURRENT_ERROR(null, "//tr[1]/td[2]/span/span[@class='rich-message-label']"),
+    MY_NEW_ERROR(null, "//tr[2]/td[2]/span/span[@class='rich-message-label']"),
+    MY_CONFIRM_ERROR(null, "//tr[3]/td[2]/span/span[@class='rich-message-label']"),
+
+    
 	;
 
     private String text, url;

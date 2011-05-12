@@ -14,8 +14,8 @@ public class PageChangePassword extends Masthead {
 	
 	
 	public class LoginPopUps extends PopUps{
-    	public ChangePassword success(){
-    		return new ChangePassword();
+    	public ForgotChangePassword success(){
+    		return new ForgotChangePassword();
     	}
     }
     
