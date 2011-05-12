@@ -5,98 +5,82 @@ import com.inthinc.pro.automation.elements.TableText;
 import com.inthinc.pro.automation.elements.TableTextLink;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TimeLink;
-import com.inthinc.pro.selenium.pageEnums.DivisionEnum;
+import com.inthinc.pro.selenium.pageEnums.ExecutiveDashBoardEnum;
+import com.inthinc.pro.selenium.pageObjects.PopUps.Types;
 
 public class PageExecutiveDashboard extends NavigationBar {
 	
 	public class DashboardButtons extends NavigationBarButtons {
+		
+		public Button overviewTools(){
+			page = overview;
+			type = Types.POPUP;
+			return new Button(ExecutiveDashBoardEnum.OVERVIEW_TOOL_BUTTON);
+		}
+		
+		public Button emailOverviewReport(){
+			return new Button(ExecutiveDashBoardEnum.OVERVIEW_EMAIL_BUTTON);
+		}
+		
+		public Button exportOverviewPDF(){
+			return new Button(ExecutiveDashBoardEnum.OVERVIEW_PDF_BUTTON);
+		}
+		
+		public Button overallTools(){
+			page = overall;
+			type = Types.SINGLE;
+			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
+		}
+		
+		public Button speedingTools(){
+			page = speed;
+			type = Types.SINGLE;
+			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
+		}
+		
+		public Button trendTools(){
+			page = trend;
+			type = Types.SINGLE;
+			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
+		}
+		
+		public Button idlingTools(){
+			page = idling;
+			type = Types.SINGLE;
+			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
+		}
+		
+		public Button fuelEfficiencyTools(){
+			page = mpg;
+			type = Types.SINGLE;
+			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
+		}
+		
+		public TextButton exportPDF(){
+			return new TextButton(ExecutiveDashBoardEnum.TOOL_PDF_BUTTON, page);
+		}
+		
+		public TextButton emailReport(){
+			return new TextButton(ExecutiveDashBoardEnum.TOOL_EMAIL_BUTTON, page);
+		}
+		
+		
 
         public Button fuelEfficiencyExpand() {
-            return new Button(DivisionEnum.FUEL_EFFICIENCY_EXPAND);
-        }
-
-        public TextButton idlingToolsEmail() {
-            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, idling);
-        }
-
-        public TextButton idlingToolsEmailCancel() {
-            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, idling);
-        }
-
-        public TextButton idlingToolsEmailSend() {
-            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, idling);
+            return new Button(ExecutiveDashBoardEnum.EXPAND, mpg);
         }
 
         public Button liveFleetExpand() {
-            return new Button(DivisionEnum.LIVE_FLEET_EXPAND);
-        }
-
-        public TextButton mpgToolsEmail() {
-            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, mpg);
-        }
-
-        public TextButton mpgToolsEmailCancel() {
-            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, mpg);
-        }
-
-        public TextButton mpgToolsEmailSend() {
-            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, mpg);
+            return new Button(ExecutiveDashBoardEnum.EXPAND_LIVE_FLEET);
         }
 
         public Button overallExpand() {
-            return new Button(DivisionEnum.OVERALL_EXPAND);
+            return new Button(ExecutiveDashBoardEnum.EXPAND, overall);
         }
 
-        public TextButton overallToolsEmail() {
-            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, overall);
-        }
-
-        public TextButton overallToolsEmailCancel() {
-            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, overall);
-        }
-
-        public TextButton overallToolsEmailSend() {
-            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, overall);
-        }
-
-        public TextButton overviewToolsEmail() {
-            return new TextButton(DivisionEnum.OVERVIEW_EMAIL_BUTTON);
-        }
-
-        public TextButton overviewToolsEmailCancel() {
-            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON);
-        }
-
-        public TextButton overviewToolsEmailSend() {
-            return new TextButton(DivisionEnum.OVERVIEW_SEND_BUTTON);
-        }
-
-        public TextButton speedToolsEmail() {
-            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, speed);
-        }
-
-        public TextButton speedToolsEmailCancel() {
-            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, overall);
-        }
-
-        public TextButton speedToolsEmailSend() {
-            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, overall);
-        }
 
         public Button trendExpand() {
-            return new Button(DivisionEnum.TREND_EXPAND);
-        }
-
-        public TextButton trendToolsEmail() {
-            return new TextButton(DivisionEnum.TOOL_EMAIL_BUTTON, trend);
-        }
-
-        public TextButton trendToolsEmailCancel() {
-            return new TextButton(DivisionEnum.EMAIL_CANCEL_BUTTON, overall);
-        }
-
-        public TextButton trendToolsEmailSend() {
-            return new TextButton(DivisionEnum.EMAIL_SEND_BUTTON, overall);
+            return new Button(ExecutiveDashBoardEnum.EXPAND, trend);
         }
 
     }
@@ -106,46 +90,50 @@ public class PageExecutiveDashboard extends NavigationBar {
 	public class DashboardLinks extends NavigationBarLinks {
 
         public TimeLink fuelEfficiencyDuration() {
-            return new TimeLink(DivisionEnum.FUEL_EFFICIENCY_DURATION);
+            return new TimeLink(ExecutiveDashBoardEnum.FUEL_EFFICIENCY_DURATION);
         }
 
         public TableTextLink groupName(){
-            return new TableTextLink(DivisionEnum.TREND_GROUP_LINK);
+            return new TableTextLink(ExecutiveDashBoardEnum.TREND_GROUP_LINK);
         }
 
         public TimeLink idlingDuration() {
-            return new TimeLink(DivisionEnum.IDLING_DURATION);
+            return new TimeLink(ExecutiveDashBoardEnum.IDLING_DURATION);
         }
 
         public TimeLink overallDuration() {
-            return new TimeLink(DivisionEnum.OVERALL_DURATION);
+            return new TimeLink(ExecutiveDashBoardEnum.OVERALL_DURATION);
         }
 
         public TimeLink speedingDuration() {
-            return new TimeLink(DivisionEnum.SPEEDING_DURATION);
+            return new TimeLink(ExecutiveDashBoardEnum.SPEEDING_DURATION);
         }
         
         public TimeLink trendDuration() {
-            return new TimeLink(DivisionEnum.TREND_DURATION);
+            return new TimeLink(ExecutiveDashBoardEnum.TREND_DURATION);
         }
     }
 	public class DashboardText extends NavigationBarTexts{
 
         public TableText groupCrash(){
-            return new TableText(DivisionEnum.TREND_GROUP_CRASH_NUMBER);
+            return new TableText(ExecutiveDashBoardEnum.TREND_GROUP_CRASH_NUMBER);
         }
         
         public TableText groupScore(){
-            return new TableText(DivisionEnum.TREND_GROUP_LINK);
+            return new TableText(ExecutiveDashBoardEnum.TREND_GROUP_LINK);
         }
     }
 	
 
     public class DashboardTextField extends NavigationBarTextFields{}
 
-    private String overall = "overallScore", speed = "speedPercentagePanel", trend = "trend";
+    private String overall = "executive-overallScore", speed = "executive-speedPercentagePanel", trend = "executive-trend";
     
-    private String idling = "idlingPercentagePanel", mpg = "mpgChart";
+    private String idling = "executive-idlingPercentagePanel", mpg = "executive-mpgChart", overview = "overview";
+    
+    private String page;
+    
+    private Types type;
     
     public DashboardButtons _button() {
         return new DashboardButtons();
@@ -166,5 +154,19 @@ public class PageExecutiveDashboard extends NavigationBar {
     public DashboardTextField _textField(){
 		return new DashboardTextField();
 	}
+    
+    public class DashPopUps extends PopUps{
+    	public DashPopUps(){
+    		super(page, type, 2);
+    	}
+    	
+    	public Email emailReport(){
+    		return new Email();
+    	}
+    }
+    
+    public DashPopUps _popUp(){
+    	return new DashPopUps();
+    }
 
 }

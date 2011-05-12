@@ -13,6 +13,8 @@ public interface SeleniumEnums extends TextEnum {
     public static String batchEdit = "Batch Edit";
     public static String search = "Search";
     public static String editColumns = "Edit Columns";
+    public static String addresses = "E-mail Address(es): (e-mail addresses separated by a comma)";
+    
     
     public static String appUrl = "/app"; //TODO: jwimmer: question for dTanner: this is captured in automation.properties
 	

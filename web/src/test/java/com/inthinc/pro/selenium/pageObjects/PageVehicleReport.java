@@ -8,6 +8,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
 
@@ -15,10 +16,10 @@ public class PageVehicleReport extends ReportsBar {
 	public class VehicleReportButtons extends ReportsBarButtons {
 
 		public TextButton editColumns() {
-			return new TextButton(ReportsBarEnum.EDIT_COLUMNS, page);
+			return new TextButton(PopUpEnum.EDIT_COLUMNS, page);
 		}
 
-		public TextButton exportEmail() {
+		public TextButton emailReport() {
 			return new TextButton(ReportsBarEnum.TOOL_EMAIL, page);
 		}
 
@@ -31,7 +32,7 @@ public class PageVehicleReport extends ReportsBar {
 		}
 
 		public Button tools() {
-			return new Button(ReportsBarEnum.TOOL_BUTTON, page);
+			return new Button(PopUpEnum.TOOL_BUTTON, page);
 		}
 	}
 
@@ -175,8 +176,22 @@ public class PageVehicleReport extends ReportsBar {
 		return new VehicleReportLinks();
 	}
 
-	public ReportsPopUps _popUp() {
-		return new ReportsPopUps(page);
+	public class VehicleReportPopUps extends PopUps{
+    	public VehicleReportPopUps(){
+    		super(page, Types.REPORT, 3);
+    	}
+    	
+    	public Email emailReport(){
+    		return new Email();
+    	}
+    	
+    	public EditColumns editColumns(){
+    		return new EditColumns();
+    	}
+    }
+
+	public VehicleReportPopUps _popUp() {
+		return new VehicleReportPopUps();
 	}
 
 	public VehicleReportTexts _text() {

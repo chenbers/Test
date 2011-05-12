@@ -9,13 +9,14 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
+import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
 public class PageDriverReport extends ReportsBar {
 	public class DriverReportButtons extends ReportsBarButtons {
 
 		public TextButton editColumns() {
-			return new TextButton(ReportsBarEnum.EDIT_COLUMNS, page);
+			return new TextButton(PopUpEnum.EDIT_COLUMNS, page);
 		}
 
 		public TextButton exportEmail() {
@@ -31,7 +32,7 @@ public class PageDriverReport extends ReportsBar {
 		}
 
 		public Button tools() {
-			return new Button(ReportsBarEnum.TOOL_BUTTON, page);
+			return new Button(PopUpEnum.TOOL_BUTTON, page);
 		}
 
 	}
@@ -177,11 +178,25 @@ public class PageDriverReport extends ReportsBar {
 	public DriverReportLinks _link() {
 		return new DriverReportLinks();
 	}
+	
+	public class DriverReportPopUps extends PopUps{
+    	public DriverReportPopUps(){
+    		super(page, Types.REPORT, 3);
+    	}
+    	
+    	public Email emailReport(){
+    		return new Email();
+    	}
+    	
+    	public EditColumns editColumns(){
+    		return new EditColumns();
+    	}
+    }
 
-	public ReportsPopUps _popUp() {
-		return new ReportsPopUps(page);
+	public DriverReportPopUps _popUp() {
+		return new DriverReportPopUps();
 	}
-
+	
 	public DriverReportTexts _text() {
 		return new DriverReportTexts();
 	}

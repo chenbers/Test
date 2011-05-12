@@ -3,18 +3,27 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum IdlingReportEnum implements SeleniumEnums {
-    TEAM_SEARCH(null, "idling-form:idling:groupfsp"),
+    GROUP_SEARCH(null, "idling-form:idling:groupfsp"),
     DRIVER_SEARCH(null, "idling-form:idling:fullNamefsp"),
-    IDLING_FORM(null, "idling-form"),
     
-    TEAM(null, "idling-form:idling:0:group"),
-    DRIVER(null, "idling-form:idling:0:fullName"),
-    TRIPS(null, "idling-form:idling:###:idlingDriverTrips"),
-    IDLE_VALUE(null, "idling-form:idling:0:idleSupport"),
+    GROUP_VALUE(null, "idling-form:idling:###:group"),
+    DRIVER_VALUE(null, "idling-form:idling:###:fullName"),
+    IDLE_SUPPORT_VALUE(null, "idling-form:idling:###:idleSupport"),
+    DURATION_VALUE(null, "idling-form:idling:###:driveTime"),
+    LOW_IDLE_VALUE(null, "idling-form:idling:###:lowHours"),
+//    LOW_IDLE_PERCENT_VALUE(null, "//tbody[@id='idling-form:idling:tb']/tr[###]/td[contains(@"),
+    HIGH_IDLE_VALUE(null, "idling-form:idling:###:highHours"),
+//    HIGH_IDLE_PERCENT_VALUE(null, ""),
+    TOTAL_IDLE_VALUE(null, "idling-form:idling:###:totalHours"),
+//    TOTAL_IDLE_PERCENT_VALUE(null, ""),
+    TRIPS_LINK(null, "idling-form:idling:###:idlingDriverTrips"),
     
     START_DATE(null, "idling-form:startCalendarInputDate"),
     END_DATE(null, "idling-form:endCalendarInputDate"),
-    REFRESH(null, "idling-form:idling_refresh");
+    REFRESH(null, "idling-form:idling_refresh"),
+    
+    IDLING_COUNTER("Report shows XXX out of YYY drivers that are reporting idling statistics.", "idling-form:headerCounts"),
+    ;
 
     private String text, url;
     private String[] IDs;

@@ -18,20 +18,25 @@ public class DhxDropDown extends DropDown implements Selectable {
 
 	public DhxDropDown(SeleniumEnums anEnum) {
 		super(anEnum);
+		enums = new SeleniumEnums[]{myEnum};
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, Integer replaceNumber) {
 		super(anEnum, replaceNumber);
+		enums = new SeleniumEnums[]{myEnum};
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord) {
 		super(anEnum, replaceWord);
 		page = replaceWord;
+		enums = new SeleniumEnums[]{myEnum};
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord,
 			Integer replaceNumber) {
 		super(anEnum, replaceWord, replaceNumber);
+		page = replaceWord;
+		enums = new SeleniumEnums[]{myEnum};
 	}
 
 	private DhxDropDown assignIDs() {

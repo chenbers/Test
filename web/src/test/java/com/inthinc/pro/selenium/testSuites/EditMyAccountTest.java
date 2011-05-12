@@ -44,6 +44,10 @@ public class EditMyAccountTest extends WebRallyTest {
 		String warning = my._text().redFlagWarn().getText();
 		String information = my._text().redFlagInfo().getText();
 		
+		String locale = my._text().locale().getText();
+		String measurement = my._text().measurement().getText();
+		String fuelRatio = my._text().fuelEfficiency().getText();
+		
 		
 		/* Edit button */
 		my._button().edit().click();
@@ -74,12 +78,12 @@ public class EditMyAccountTest extends WebRallyTest {
 		/* Login Info */        
 		String username = my._text().userName().getText();
 		my.assertEquals("tnilson", username);
-		String locale = my._text().locale().getText();
-		my.assertEquals(Locale.ENGLISH, locale);
-		String measurement = my._text().measurement().getText();
-		my.assertEquals(Measurement.METRIC, measurement);
+		String localen = my._text().locale().getText();
+		my.assertEquals(locale, localen);
+		String measurementn = my._text().measurement().getText();
+		my.assertEquals(measurement, measurementn);
 		String fuel = my._text().fuelEfficiency().getText();
-		my.assertEquals(Fuel_Ratio.METRIC_LITER_PER_KILO, fuel);
+		my.assertEquals(fuelRatio, fuel);
 
 		/* Account Info */
 		String name = my._text().name().getText();
