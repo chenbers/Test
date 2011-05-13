@@ -2,6 +2,9 @@ package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Test;
 
+import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
+import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
+import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
@@ -10,53 +13,38 @@ public class MyAccountTest extends WebRallyTest {
 	
 	@Test
 	public void AccountInformation(){
+	    //TODO: jwimmer: to tNilson: this test fails occasionally because it is testing values that get changed (possibly by OTHER tests...) like textMessage1?
 		set_test_case("TC1266");
 		PageMyAccount my = new PageMyAccount();
 		PageLogin login = new PageLogin();
+		
 		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
-		//my.link_myAccount_click();
 		
 	/*Login Info*/
-		String username = my._text().userName().getText();
-		my.assertEquals("tnilson", username);
-		String locale = my._text().locale().getText();
-		my.assertEquals("English (United States)", locale); 
-		String measurement = my._text().measurement().getText();
-		my.assertEquals("English", measurement);
-		String fuel = my._text().fuelEfficiency().getText();
-		my.assertEquals ("Miles Per Gallon (US)", fuel);
+		my._text().userName().validateText("tnilson");
+		my._text().locale().validateText("English (United States)");
+		my._text().locale().validateText(Locale.ENGLISH.getText());
+		my._text().measurement().validateText(Measurement.ENGLISH.getText());
+		my._text().fuelEfficiency().validateText(Fuel_Ratio.ENGLISH_MILES_UK.getText());
 		
 	/*Account Info*/
-		String name = my._text().name().getText();
-		my.assertEquals("Tina L Nilson", name);
-		String group = my._text().group().getText();
-		my.assertEquals("Top", group);
-		String team = my._text().team().getText();
-		my.assertEquals ("Skip's Team", team);
+		my._text().name().validateText("Tina L Nilson");
+		my._text().group().validateText("Top");
+		my._text().team().validateText("Skip's Team");
 	
 	/*Red Flags*/
-		String info = my._text().redFlagInfo().getText();
-		my.assertEquals("E-mail 1", info);
-		String warn = my._text().redFlagWarn().getText();
-		my.assertEquals("E-mail 1", warn);
-		String critical = my._text().redFlagCritical().getText();
-		my.assertEquals("E-mail 1", critical);
+		my._text().redFlagInfo().validateText("Text Message 1");
+		my._text().redFlagWarn().validateText("E-mail 1");
+		my._text().redFlagCritical().validateText("Phone 1");
 		
 	/*Contact Info*/
-		String email1 = my._text().email1().getText();
-		my.assertEquals("tnilson@inthinc.com", email1);
-		String email2 = my._text().email2().getText();
-		my.assertEquals("", email2);
-		String phone1 = my._text().phone1().getText();
-		my.assertEquals("", phone1);
-		String phone2 = my._text().phone2().getText();
-		my.assertEquals("", phone2);
-		String textmsg1 = my._text().textMessage1().getText();
-		my.assertEquals("", textmsg1);
-		String textmsg2 = my._text().textMessage2().getText();
-		my.assertEquals ("", textmsg2);
-						
+		my._text().email1().validateText("tina1965@test.com");
+		my._text().email2().validateText("tlc1965@test.com");
+		my._text().phone1().validateText("801-777-7777");
+		my._text().phone2().validateText("801-999-9999");
+		my._text().textMessage1().validateText("8017779999@tmomail.net");
+		my._text().textMessage2().validateText("8019997777@tmomail.net");
 	}
 
 }
