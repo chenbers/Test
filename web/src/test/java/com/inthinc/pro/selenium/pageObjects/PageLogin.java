@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 /****************************************************************************************
@@ -93,6 +94,9 @@ public class PageLogin extends Masthead {
         return this;
     }
 
+    public String getExpectedPath() {
+        return LoginEnum.LOGIN_URL.getURL();
+    }
     public PageLogin openLogout() {
         selenium.open(LoginEnum.LOGOUT_URL);
         validatePage();

@@ -37,7 +37,8 @@ public class JwimmerSandboxTest extends WebTest {
     public void liveFleet_clickHelp_newWindow() {
         l.loginProcess("jwimmer", "password");
         liveFleet._link().liveFleet().click();//TODO: jwimmer: could this be failing on EC2 only, because the liveFleet pageObject hasn't loaded yet???
-        liveFleet._link().help().click();//TODO: jwimmer: I believe this is failing because the help link opens in a new window.  Dtanner: has some code and a todo in masthead to look at this
+        System.out.println("help().getText(): "+liveFleet._link().help().getText());
+        liveFleet._link().help().click();//TODO: jwimmer: question for dTanner: are we sure that the textLinkNewWindow.click ever works?
         //TODO: jwimmer: validate help page/window opened
         
         //pause(15);//TODO: jwimmer: prop integer value for watching? and put in teardown
@@ -49,35 +50,35 @@ public class JwimmerSandboxTest extends WebTest {
         System.out.println("liveFleet_sandbox_taeThrownError: ");
         l.loginProcess("jwimmer", "password");
         liveFleet.load();
-//        liveFleet._textField.findAddress.type("put some test text in findAddress box.");
+        liveFleet._textField().findAddress().type("put some test text in findAddress box.");
 //        
-//        liveFleet._textField.findAddress.clear();
-//        
-//        liveFleet._textField.findAddress.focus();
-//        liveFleet._textField.findAddress.type("put");                     pause(waitTime);
-//        liveFleet._textField.findAddress.type(" some ");                  pause(waitTime);
-//        liveFleet._textField.findAddress.type(" test text ");             pause(waitTime);
-//        liveFleet._textField.findAddress.type(" in the");                 pause(waitTime);
-//        liveFleet._textField.findAddress.type(" findAddress box ");       pause(waitTime);
-//        liveFleet._button.locate.click();                                 pause(waitTime);
-//        
-//        liveFleet._link.sortDispatchByDriver.click();                     pause(waitTime);
-//        liveFleet._link.sortDispatchByGroup.click();                      pause(waitTime);
-//        liveFleet._link.sortDispatchByNumber.click();                     pause(waitTime);
-//        liveFleet._link.sortDispatchByVehicle.click();                    pause(waitTime);
+        liveFleet._textField().findAddress().clear();
+        
+        liveFleet._textField().findAddress().focus();
+        liveFleet._textField().findAddress().type("put");                     pause(waitTime, "pausing to WATCH the test");
+        liveFleet._textField().findAddress().type(" some ");                  pause(waitTime, "pausing to WATCH the test");
+        liveFleet._textField().findAddress().type(" test text ");             pause(waitTime, "pausing to WATCH the test");
+        liveFleet._textField().findAddress().type(" in the");                 pause(waitTime, "pausing to WATCH the test");
+        liveFleet._textField().findAddress().type(" findAddress box ");       pause(waitTime, "pausing to WATCH the test");
+        liveFleet._button().locate().click();                                 pause(waitTime, "pausing to WATCH the test");
+        
+        liveFleet._link().sortDispatchByDriver().click();                     pause(waitTime, "pausing to WATCH the test");
+        liveFleet._link().sortDispatchByGroup().click();                      pause(waitTime, "pausing to WATCH the test");
+        liveFleet._link().sortDispatchByNumber().click();                     pause(waitTime, "pausing to WATCH the test");
+        liveFleet._link().sortDispatchByVehicle().click();                    pause(waitTime, "pausing to WATCH the test");
         
         
-//        liveFleet._select.numNearestVehicles.select(1);   liveFleet._textField.findAddress.type("index(1); five?");         pause(waitTime);
-//        liveFleet._select.numNearestVehicles.select(2);   liveFleet._textField.findAddress.type("index(2); ten?");          pause(waitTime);
-//        liveFleet._select.numNearestVehicles.select(3);   liveFleet._textField.findAddress.type("index(3); twentyfive?");   pause(waitTime);
-//        liveFleet._select.numNearestVehicles.select(4);   liveFleet._textField.findAddress.type("index(4): fifty?");        pause(waitTime);
-//        liveFleet._select.numNearestVehicles.select(5);   liveFleet._textField.findAddress.type("index(5): one hundred?");  pause(waitTime);
-//        
-//        liveFleet._select.numNearestVehicles.select(1);                           liveFleet._textField.findAddress.type("index(1): five?"); pause(waitTime);
-//        liveFleet._select.numNearestVehicles.select("10");                        liveFleet._textField.findAddress.type("select(10) fullMatch; ten?"); pause(waitTime);
-//        liveFleet._select.numNearestVehicles.selectFullMatch("25", 1);            liveFleet._textField.findAddress.type("full(25, 1) first fullMatch ; twentyfive? "); pause(waitTime);
-//        liveFleet._select().numNearestVehicles().selectPartMatch("5");                liveFleet._textField().findAddress().type("part(5);fifty?"); pause(waitTime);
-//        liveFleet._select().numNearestVehicles().selectPartMatch("0", 3);             liveFleet._textField().findAddress().type("part(0,3); one hundered?"); pause(waitTime);
+        liveFleet._select().numNearestVehicles().select(1);   liveFleet._textField().findAddress().type("index(1); five?");         pause(waitTime, "pausing to WATCH the test");
+        liveFleet._select().numNearestVehicles().select(2);   liveFleet._textField().findAddress().type("index(2); ten?");          pause(waitTime, "pausing to WATCH the test");
+        liveFleet._select().numNearestVehicles().select(3);   liveFleet._textField().findAddress().type("index(3); twentyfive?");   pause(waitTime, "pausing to WATCH the test");
+        liveFleet._select().numNearestVehicles().select(4);   liveFleet._textField().findAddress().type("index(4): fifty?");        pause(waitTime, "pausing to WATCH the test");
+        liveFleet._select().numNearestVehicles().select(5);   liveFleet._textField().findAddress().type("index(5): one hundred?");  pause(waitTime, "pausing to WATCH the test");
+        
+        liveFleet._select().numNearestVehicles().select(1);                           liveFleet._textField().findAddress().type("index(1): five?");                             pause(waitTime, "pausing to WATCH the test");
+        liveFleet._select().numNearestVehicles().select("10");                        liveFleet._textField().findAddress().type("select(10) fullMatch; ten?");                  pause(waitTime, "pausing to WATCH the test");
+        liveFleet._select().numNearestVehicles().select("25", 1);                     liveFleet._textField().findAddress().type("full(25, 1) first fullMatch ; twentyfive? ");  pause(waitTime, "pausing to WATCH the test");
+        liveFleet._select().numNearestVehicles().selectPartMatch("5");                liveFleet._textField().findAddress().type("part(5);fifty?");                              pause(waitTime, "pausing to WATCH the test");
+        liveFleet._select().numNearestVehicles().selectPartMatch("0", 3);             liveFleet._textField().findAddress().type("part(0,3); one hundered?");                    pause(waitTime, "pausing to WATCH the test");
         
 //        for(String s: liveFleet._link().driverByName("Orson  Bugg").getMyEnum().getLocators()) {
 //            System.out.println("s: "+s);
@@ -86,7 +87,7 @@ public class JwimmerSandboxTest extends WebTest {
 //        System.out.println("!!!driver by list posistion0 text: "   +liveFleet._link().driverByListPosition(0).getText());
 //        System.out.println("!!!driver by list posistion0 visible: "+liveFleet._link().driverByListPosition(0).isVisible());
 //        System.out.println("!!!driver by list posistion0 click: "  +liveFleet._link().driverByListPosition(0).click());
-//        liveFleet.load();
+        liveFleet.load();
         
         System.out.println("!!!Orson  Bugg link text: "        +liveFleet._link().driverByName("Orson  Bugg").getText());
         System.out.println("!!!Orson Buggy link isVisible? "   +liveFleet._link().driverByName("Orson  Buggy").isVisible());
@@ -106,7 +107,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test
     public void liveFleet_changeDefaultViewAsNONAdmin_shouldNotSeeLink() {
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_bareMinimum_validate()
-    	//liveFleet.page_loginFirst_open(NONADMIN_USERNAME, NONADMIN_PASSWORD);
+    	//liveFleet.page_loginFirst_open(NONADMIN_USERNAME, NONADMIN_PASSWORD);//TODO: jwimmer: I still think there is benefit to page.loadLoginFirst(username, password) or something similar... consider this for automation backlog post sprint 22
         l.load();
         l.loginProcess(NONADMIN_USERNAME, NONADMIN_PASSWORD);
     	liveFleet.page_bareMinimum_validate();//only continue if the page meets bare minimum this step has more validity in LONGER tests... where we want to fail the test as early as possible
@@ -129,7 +130,7 @@ public class JwimmerSandboxTest extends WebTest {
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_URL_validate()
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_bareMinimum_validate()
     	liveFleet.load();
-    	
+    	liveFleet.validateURL();
     	//asertTrue(!liveFleet.page_URL_validate());	//test should fail on assertion if liveFleet page was loaded without requiring login first
     	//should only continue test if liveFleet was NOT loaded
     	PageLogin login = new PageLogin();
