@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -23,11 +22,8 @@ import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.RuleViolationTypes;
-import com.inthinc.hos.model.ViolationsData;
 import com.inthinc.hos.rules.HOSRules;
 import com.inthinc.hos.rules.RuleSetFactory;
-import com.inthinc.hos.violations.DailyViolations;
-import com.inthinc.hos.violations.ShiftViolations;
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.dao.model.Result;
 import com.inthinc.pro.backing.hos.ui.DateRange;
@@ -117,49 +113,6 @@ public class HOSBean extends BaseBean {
             
         }
         recordCount = records.size();
-/*        
-        // violations
-        List<ViolationsData> violationsList = getDriverViolations(interval, driver, driverTimeZone, driverDOTType, recListForViolationsCalc);
-        if (violationsList == null || violationsList.isEmpty()) {
-            errorMessage = "No violations found in time frame for driver: " + driver.getPerson().getFullName() + " (ID: " + driverID + ")";
-            return;
-        }
-
-        // debug info (shift starts etc)
-        Map<HOSRec, DebugInfo> debugInfoMap = getDebugInfo(interval, driverTimeZone, driverDOTType, recListForViolationsCalc);
-        records = new ArrayList<List<Result>> ();
-        
-        for (ViolationsData data : violationsList) {
-            HOSRec rec = data.getHosViolationRec();
-            DebugInfo debugInfo = debugInfoMap.get(rec);
-            
-            List<Result> row = new ArrayList<Result>();
-            DateTime dateTime = new DateTime(rec.getLogTimeDate(), driverTimeZone);
-            row.add(new Result(dateFormatter.print(dateTime), rec.getLogTimeDate()));
-            row.add(new Result(rec.getRuleType().getName(), rec.getRuleType().getName()));
-            row.add(new Result(rec.getStatus().getName(), rec.getStatus().getName()));
-            String violationsStr = getViolationsStr(data);
-            row.add(new Result(violationsStr, violationsStr));
-            String infoStr = getInfoStr(debugInfo, driverTimeZone, rec.getRuleType());
-            row.add(new Result(infoStr, infoStr));
-            
-            records.add(row);
-            
-        }
-        recordCount = records.size();
-
-    
-        logsRecords = new ArrayList<List<Result>> ();
-        for (HOSRec rec : recListForViolationsCalc) {
-            List<Result> row = new ArrayList<Result>();
-            DateTime dateTime = new DateTime(rec.getLogTimeDate(), driverTimeZone);
-            row.add(new Result(dateFormatter.print(dateTime), rec.getLogTimeDate()));
-            row.add(new Result(rec.getRuleType().getName(), rec.getRuleType().getName()));
-            row.add(new Result(rec.getStatus().getName(), rec.getStatus().getName()));
-            row.add(new Result(formattedMinutes(rec.getTotalRealMinutes()), Long.valueOf(rec.getTotalRealMinutes())));
-            logsRecords.add(row);
-        }
-*/
     }
 
     public void logDetailsAction() {
@@ -169,10 +122,7 @@ public class HOSBean extends BaseBean {
                 logsRecords = info.getLogDisplayList();
                 break;
             }
-            
         }
-
-
     }
 
     private String getInfoStr(DebugInfo debugInfo, DateTimeZone driverTimeZone, RuleSetType ruleType) {
@@ -189,7 +139,6 @@ public class HOSBean extends BaseBean {
             infoStr.append("  <i>Driving Minutes:</i>" + formattedMinutes(debugInfo.getDrivingLimit()) + "<br/>");
             infoStr.append("  <i>On Duty Minutes:</i> " + formattedMinutes(debugInfo.getOnDutyLimit()) + "<br/>");
             infoStr.append("  <i>Off Duty Shift Reset Minutes:</i> " + formattedMinutes(debugInfo.getOffDutyReset()) + "<br/>");
-            infoStr.append("  <i>Cumulative Reset Minutes:</i> " + formattedMinutes(debugInfo.getCumulativeReset()) + "<br/>");
             infoStr.append("<b>Cumulative:</b> <br/>");
             infoStr.append("  <i>Cumulative Start:</i> " + dateFormatter.print(cumulativeDateTime) + "<br/>");
             infoStr.append("  <i>Cumulative On Duty Minutes:</i> " + formattedMinutes(debugInfo.getCumulativeOnDutyMin()) + "<br/>");
@@ -210,15 +159,7 @@ public class HOSBean extends BaseBean {
 
         return infoStr.toString();
     }
-//    private String getViolationsStr(ViolationsData data) {
-//        StringBuffer violations = new StringBuffer();
-//        for (RuleViolationTypes violationType : data.getViolationMap().keySet()) {
-//            if (violations.length() > 0)
-//                violations.append("<br/>");
-//            violations.append(violationType.getName() + " " + formattedMinutes(data.getViolationMap().get(violationType)));
-//        }
-//        return violations.toString();
-//    }
+
     public List<String> getColumnHeaders() {
         if (columnHeaders == null) {
             columnHeaders = new ArrayList<String>();
@@ -259,27 +200,6 @@ public class HOSBean extends BaseBean {
         }
         return sortOrder;
     }
-    
-    protected List<ViolationsData> getDriverViolations(Interval interval,  
-            Driver driver, DateTimeZone driverTimeZone,
-            RuleSetType driverDOTType, List<HOSRec> recListForViolationsCalc) {
-        List<ViolationsData> fullList = new ArrayList<ViolationsData>();
-        
-        fullList.addAll(new DailyViolations().getDailyHosViolationsForReport(interval,
-                driverTimeZone.toTimeZone(),
-                driverDOTType, 
-                recListForViolationsCalc));
-
-        fullList.addAll(new ShiftViolations().getHosViolationsInTimeFrame(
-                interval, driverTimeZone.toTimeZone(),
-                driverDOTType, 
-                null,  
-                recListForViolationsCalc));
-
-        return fullList;
-
-    }
-
     
     private List<HOSRecord> getFilteredList(List<HOSRecord> hosRecords, List<HOSStatus> hosStatusFilterList) {
         List<HOSRecord> filteredList = new ArrayList<HOSRecord>();
@@ -329,7 +249,6 @@ public class HOSBean extends BaseBean {
         if (indexOfCurrent < 0)
             return null;
 
-//        Map<HOSRec, DebugInfo> debugInfoMap = new HashMap<HOSRec, DebugInfo>();
         List<ViolationInfo> violationInfoList = new ArrayList<ViolationInfo>();
         for (int i = indexOfCurrent; i >= 0; i--)
         {
@@ -547,14 +466,23 @@ public class HOSBean extends BaseBean {
             row.add(new Result(rec.getRuleType().getName(), rec.getRuleType().getName()));
             row.add(new Result(rec.getStatus().getName(), rec.getStatus().getName()));
             row.add(new Result(formattedMinutes(rec.getTotalRealMinutes()), Long.valueOf(rec.getTotalRealMinutes())));
+
+            StringBuffer comments = new StringBuffer();
             
             if (isViolation)
-                row.add(new Result("Violation", "Violation"));
-            else if (rec.getLogTimeDate().equals(debugInfo.getShiftStartTime()))
-                row.add(new Result("Shift Start", "Shift Start"));
-            else if (rec.getLogTimeDate().equals(debugInfo.getCumulativeStartTime()))
-                row.add(new Result("Cumulative Start", "Cumulative Start"));
-            else row.add(new Result("", ""));
+                comments.append("Violation");
+            if (rec.getLogTimeDate().equals(debugInfo.getShiftStartTime())) {
+                if (comments.length() > 0)
+                    comments.append("<br/>");
+                comments.append("Shift Reset");
+            }
+            if (rec.getLogTimeDate().equals(debugInfo.getCumulativeStartTime())) {
+                if (comments.length() > 0)
+                    comments.append("<br/>");
+                comments.append("Cumulative Reset");
+            }
+
+            row.add(new Result(comments.toString(), comments.toString()));
             return row;
         }
 
