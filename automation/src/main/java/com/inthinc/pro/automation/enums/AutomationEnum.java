@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.enums;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.inthinc.pro.automation.utils.Id;
@@ -51,12 +52,21 @@ public enum AutomationEnum implements SeleniumEnums{
      * @return non-null element locator strings
      */
     public List<String> getLocators() {
-        ArrayList<String> locators = new ArrayList<String>();
-        locators = new ArrayList<String>();
-    	for (String ID: IDs){
-    		locators.add(ID);
-    	}
+        List<String> locators = new ArrayList<String>();
+        if(IDs != null) {
+        	for (String ID: IDs){
+        		locators.add(ID);
+        	}
+        }
         return locators;
+    }
+    
+    public String getLocatorsAsString() {
+        StringBuffer results = new StringBuffer();
+        for(String s: getLocators()){
+            results.append(s+"; ");
+        }
+        return results.toString();
     }
     
     public AutomationEnum setEnum(SeleniumEnums myEnum){

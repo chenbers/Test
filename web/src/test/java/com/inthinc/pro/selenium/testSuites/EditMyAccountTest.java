@@ -51,7 +51,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		
 		/* Edit button */
 		my._button().edit().click();
-		my.getSelenium().pause(5);
+		my.getSelenium().pause(5, "wait for edit screen");
 
 		/* Login Info */
 		my._select().locale().select(Locale.ENGLISH);
@@ -76,44 +76,28 @@ public class EditMyAccountTest extends WebRallyTest {
 
 		/* Verify Changes did not take effect */
 		/* Login Info */        
-		String username = my._text().userName().getText();
-		my.assertEquals("tnilson", username);
-		String localen = my._text().locale().getText();
-		my.assertEquals(locale, localen);
-		String measurementn = my._text().measurement().getText();
-		my.assertEquals(measurement, measurementn);
-		String fuel = my._text().fuelEfficiency().getText();
-		my.assertEquals(fuelRatio, fuel);
+		my._text().userName().validateText("tnilson");
+		my._text().locale().validateText(locale);
+		my._text().measurement().validateText(measurement);
+		my._text().fuelEfficiency().validateText(fuelRatio);
 
 		/* Account Info */
-		String name = my._text().name().getText();
-		my.assertEquals("Tina L Nilson", name);
-		String group = my._text().group().getText();
-		my.assertEquals("Top", group);
-		String team = my._text().team().getText();
-		my.assertEquals("Skip's Team", team);
+		my._text().name().validateText("Tina L Nilson");
+		my._text().group().validateText("Top");
+		my._text().team().validateText("Skip's Team");
 
 		/* Red Flags */
-		String info = my._text().redFlagInfo().getText();
-		my.assertEquals(information, info);
-		String warn = my._text().redFlagWarn().getText();
-		my.assertEquals(warning, warn);
-		String crit = my._text().redFlagCritical().getText();
-		my.assertEquals( critical, crit);
+		my._text().redFlagInfo().validateText(information);
+		my._text().redFlagWarn().validateText(warning);
+		my._text().redFlagCritical().validateText(critical);
 
 		/* Contact Info */
-		String email1n = my._text().email1().getText();
-		my.assertEquals(email1, email1n);
-		String email2n = my._text().email2().getText();
-		my.assertEquals(email2, email2n);
-		String phone1n = my._text().phone1().getText();
-		my.assertEquals(phone1, phone1n);
-		String phone2n = my._text().phone2().getText();
-		my.assertEquals(phone2, phone2n);
-		String textmsg1 = my._text().textMessage1().getText();
-		my.assertEquals(text1, textmsg1);
-		String textmsg2 = my._text().textMessage2().getText();
-		my.assertEquals(text2, textmsg2);
+		my._text().email1().validateText(email1);
+		my._text().email2().validateText(email2);
+		my._text().phone1().validateText(phone1);
+		my._text().phone2().validateText(phone2);
+		my._text().textMessage1().validateText(text1);
+		my._text().textMessage2().validateText(text2);
 	}
 
 	@Test
@@ -146,47 +130,31 @@ public class EditMyAccountTest extends WebRallyTest {
 
 		/* Save Changes */
 		my._button().save().click();
-		my.getSelenium().pause(10);
+		my.getSelenium().pause(10, "wait for page to save");
 		/* Verify Changes Display */
 		/* Login Info */
-		String username = my._text().userName().getText();
-		my.assertEquals("tnilson", username);
-		String locale = my._text().locale().getText();
-		my.assertEquals(Locale.ENGLISH, locale);
-		String measurement = my._text().measurement().getText();
-		my.assertEquals("English", measurement);
-		String fuel = my._text().fuelEfficiency().getText();
-		my.assertEquals("Miles Per Gallon (UK)", fuel);
+		my._text().userName().validateText("tnilson");
+		my._text().locale().validateText(Locale.ENGLISH.getText());
+		my._text().measurement().validateText("English");
+		my._text().fuelEfficiency().validateText("Miles Per Gallon (UK)");
 
 		/* Account Info */
-		String name = my._text().name().getText();
-		my.assertEquals("Tina L Nilson", name);
-		String group = my._text().group().getText();
-		my.assertEquals("Top", group);
-		String team = my._text().team().getText();
-		my.assertEquals("Skip's Team", team);
+		my._text().name().validateText("Tina L Nilson");
+		my._text().group().validateText("Top");
+		my._text().team().validateText("Skip's Team");
 
 		/* Red Flags */
-		String info = my._text().redFlagInfo().getText();
-		my.assertEquals(RedFlagPrefs.TEXT1, info);
-		String warn = my._text().redFlagWarn().getText();
-		my.assertEquals(RedFlagPrefs.EMAIL1, warn);
-		String critical = my._text().redFlagCritical().getText();
-		my.assertEquals(RedFlagPrefs.PHONE1, critical);
+		my._text().redFlagInfo().validateText(RedFlagPrefs.TEXT1.getText());
+		my._text().redFlagWarn().validateText(RedFlagPrefs.EMAIL1.getText());
+		my._text().redFlagCritical().validateText(RedFlagPrefs.PHONE1.getText());
 
 		/* Contact Info */
-		String email1 = my._text().email1().getText();
-		my.assertEquals("tina1965@test.com", email1);
-		String email2 = my._text().email2().getText();
-		my.assertEquals("tlc1965@test.com", email2);
-		String phone1 = my._text().phone1().getText();
-		my.assertEquals("801-777-7777", phone1);
-		String phone2 = my._text().phone2().getText();
-		my.assertEquals("801-999-9999", phone2);
-		String textmsg1 = my._text().textMessage1().getText();
-		my.assertEquals("8017779999@tmomail.net", textmsg1);
-		String textmsg2 = my._text().textMessage2().getText();
-		my.assertEquals("8019997777@tmomail.net", textmsg2);
+		my._text().email1().validateText("tina1965@test.com");
+		my._text().email2().validateText("tlc1965@test.com");
+		my._text().phone1().validateText("801-777-7777");
+		my._text().phone2().validateText("801-999-9999");
+		my._text().textMessage1().validateText("8017779999@tmomail.net");
+		my._text().textMessage2().validateText("8019997777@tmomail.net");
 	}
 
 	@Test
@@ -202,8 +170,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear?//
 		my._textField().email1().type("tina1965@test.com");
 		my._button().save().click();
-		String email1 = my._text().email1().getText();
-		my.assertEquals("tina1965@test.com", email1);
+		my._text().email1().validateText("tina1965@test.com");
 
 		my._button().edit().click();
 		my._textField().email2().type("tlc1965@test");
@@ -212,9 +179,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear?//
 		my._textField().email2().type("tlc1965@test.com");
 		my._button().save().click();
-		String email2 = my._text().email2().getText();
-		my.assertEquals("tlc1965@test.com", email2);
-
+		my._text().email2().validateText("tlc1965@test.com");
 	}
 
 	@Test
@@ -296,8 +261,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone1().type("801-777-7777");
 		my._button().save().click();
-		String phone1 = my._text().phone1().getText();
-		my.assertEquals("801-777-7777", phone1);
+		my._text().phone1().validateText("801-777-7777");
 
 		my._button().edit().click();
 		my._textField().phone2().type("8");
@@ -306,8 +270,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone2().type("801-999-9999");
 		my._button().save().click();
-		String phone2 = my._text().phone2().getText();
-		my.assertEquals("801-999-9999", phone2);
+		my._text().phone2().validateText("801-999-9999");
 	}
 
 	@Test
@@ -324,8 +287,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone1().type("801-777-7777");
 		my._button().save().click();
-		String phone1 = my._text().phone1().getText();
-		my.assertEquals("801-777-7777", phone1);
+		my._text().phone1().validateText("801-777-7777");
 
 		my._button().edit().click();
 		my._textField().phone2().type("801-999-999");
@@ -334,9 +296,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone2().type("801-999-9999");
 		my._button().save().click();
-		String phone2 = my._text().phone2().getText();
-		my.assertEquals("801-999-9999", phone2);
-
+		my._text().phone2().validateText("801-999-9999");
 	}
 
 	@Test
@@ -362,8 +322,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone2().type("801-999-9999");
 		my._button().save().click();
-		String phone2 = my._text().phone2().getText();
-		my.assertEquals("801-999-9999", phone2);
+		my._text().phone2().validateText("801-999-9999");
 	}
 
 	@Test
@@ -379,8 +338,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().textMessage1().type("8017779999@tmomail.net");
 		my._button().save().click();
-		String text1 = my._text().textMessage1().getText();
-		my.assertEquals("8017779999@tmomail.net", text1);
+		my._text().textMessage1().validateText("8017779999@tmomail.net");
 
 		my._button().edit().click();
 		my._textField().textMessage2().type("8019997777@tmomail");
@@ -389,8 +347,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().textMessage2().type("8019997777@tmomail.net");
 		my._button().save().click();
-		String text2 = my._text().textMessage2().getText();
-		my.assertEquals("8019997777@tmomail.net", text2);
+		my._text().textMessage2().validateText("8019997777@tmomail.net");
 	}
 
 }

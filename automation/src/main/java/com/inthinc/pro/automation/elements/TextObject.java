@@ -26,7 +26,7 @@ public abstract class TextObject extends ElementBase implements TextBased {
         }
         return this;
     }
-
+    
     @Override
     public ElementInterface compareText() {
         return compareText(myEnum.getText());
@@ -34,5 +34,13 @@ public abstract class TextObject extends ElementBase implements TextBased {
 
     public String getText(){
         return selenium.getText(myEnum);
+    }
+    
+    public ElementInterface validateText(String expected) {
+        return compareText(expected);
+    }
+    
+    public ElementInterface validateText(){
+        return compareText();
     }
 }

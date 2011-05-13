@@ -4,21 +4,24 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public abstract class ClickableText extends ClickableObject implements TextBased {
-    private TextObject textStuff = new Text(myEnum);
+    private TextObject textStuff;
     
     public ClickableText(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
+        textStuff = new Text(anEnum);
     }
     public ClickableText(SeleniumEnums anEnum) {
         super(anEnum);
+        textStuff = new Text(anEnum);
     }
     public ClickableText(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
+        textStuff = new Text(anEnum);
     }
     public ClickableText(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
+        textStuff = new Text(anEnum);
     }
-    
     
     @Override
     public ElementInterface compareText(String expected) {

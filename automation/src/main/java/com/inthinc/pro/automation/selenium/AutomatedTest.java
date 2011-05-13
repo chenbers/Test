@@ -103,8 +103,8 @@ public class AutomatedTest {
         }
     }
     
-    public void pause(Integer timeToPauseInSeconds){
-        selenium.pause(timeToPauseInSeconds);
+    public void pause(Integer timeToPauseInSeconds, String reasonForPause){
+        selenium.pause(timeToPauseInSeconds, reasonForPause);
     }
 
 }

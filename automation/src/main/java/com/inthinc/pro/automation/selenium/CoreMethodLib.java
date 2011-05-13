@@ -39,10 +39,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         errors = new ErrorCatcher();
     }
 
-    public CoreMethodLib addtoPanel(SeleniumEnums myEnum, String itemtomove) {
+    public CoreMethodLib addToPanel(SeleniumEnums myEnum, String itemtomove) {
         addSelection(getLocator(myEnum) + "-from", itemtomove);
         click(getLocator(myEnum) + "-move_right");
-        pause(2);
+        pause(2, "addToPanel");
         return this;
     }
     
@@ -57,7 +57,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         String error_name = "click: " + element;
         try {
             click(element);
-            pause(2);
+            pause(2, "click("+myEnum+")");
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
@@ -349,14 +349,14 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return false;
     }
 
-    public CoreMethodLib moveallPanel(SeleniumEnums myEnum, String moveoption) {
+    public CoreMethodLib moveAllPanel(SeleniumEnums myEnum, String moveoption) {
         String element = getLocator(myEnum);
         if (moveoption.contentEquals("Right")) {
             click(element + "-move_all_right");
         } else if (moveoption.contentEquals("Left")) {
             click(element + "-move_all_left");
         }
-        pause(2);
+        pause(2, "moveAllPanel");
         return this;
     }
 
@@ -378,8 +378,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
 
-    public CoreMethodLib pause(Integer timeout_in_secs) {
+    public CoreMethodLib pause(Integer timeout_in_secs, String reasonForPause) {
         try {
+            logger.trace("pausing for "+timeout_in_secs+" seconds because: "+reasonForPause);//TODO: jwimmer: change to trace/debug
             Thread.currentThread();
             Thread.sleep((long) (timeout_in_secs * 1000));
         } catch (InterruptedException e) {
@@ -390,10 +391,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
 
-    public CoreMethodLib removefromPanel(SeleniumEnums myEnum, String itemtomove) {
+    public CoreMethodLib removeFromPanel(SeleniumEnums myEnum, String itemtomove) {
         addSelection(getLocator(myEnum) + "-picked", itemtomove);
         click(getLocator(myEnum) + "-move_left");
-        pause(2);
+        pause(2, "removeFromPanel");
         return this;
     }
 
@@ -409,7 +410,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
         try {
             select(element, label);
-            pause(5);
+            pause(5, "select: " + element + " : Label = " + label);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
@@ -418,29 +419,29 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
     
-    public CoreMethodLib selectDhxCombo(Integer divPosition, String entry_name) {
-        String element = "//div[" + divPosition + "]/div[text()='" + entry_name + "']";
-        click(element);
-        return this;
-    }
-
-    public CoreMethodLib selectDhxCombo(String entry_name) {
-        String element = "//div[text()='" + entry_name + "']";
-        click(element);
-        return this;
-    }
-
-    public CoreMethodLib selectDhxCombo(String[] entry_name) {
-        StringWriter aStringAString = new StringWriter();
-        for (int i = 0; i < entry_name.length; i++) {
-            aStringAString.write(entry_name[i]);
-            if (i != (entry_name.length - 1)) {
-                aStringAString.write(" - ");
-            }
-        }
-        selectDhxCombo(aStringAString.toString());
-        return this;
-    }
+//    public CoreMethodLib selectDhxCombo(Integer divPosition, String entry_name) {
+//        String element = "//div[" + divPosition + "]/div[text()='" + entry_name + "']";
+//        click(element);
+//        return this;
+//    }
+//
+//    public CoreMethodLib selectDhxCombo(String entry_name) {
+//        String element = "//div[text()='" + entry_name + "']";
+//        click(element);
+//        return this;
+//    }
+//
+//    public CoreMethodLib selectDhxCombo(String[] entry_name) {
+//        StringWriter aStringAString = new StringWriter();
+//        for (int i = 0; i < entry_name.length; i++) {
+//            aStringAString.write(entry_name[i]);
+//            if (i != (entry_name.length - 1)) {
+//                aStringAString.write(" - ");
+//            }
+//        }
+//        selectDhxCombo(aStringAString.toString());
+//        return this;
+//    }
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#selectWindow(String)}
@@ -538,7 +539,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             if (isElementPresent(myEnum)){
             	break;
             }
-            pause(1); // second
+            pause(1, "waitForElementPresent"); // second
             x++;
             doneWaiting = x > secondsToWait;
         }

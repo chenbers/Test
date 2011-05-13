@@ -5,18 +5,22 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public class TableTextLink extends TextLink implements Clickable, TextBased {
-    private TableText table = new TableText(myEnum);
+    private TableText table;
     public TableTextLink(SeleniumEnums anEnum) {
         super(anEnum);
+        table = new TableText(anEnum);
     }
     public TableTextLink(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
+        table = new TableText(anEnum);
     }
     public TableTextLink(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
+        table = new TableText(anEnum);
     }
     public TableTextLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
+        table = new TableText(anEnum);
     }
     
     @Override

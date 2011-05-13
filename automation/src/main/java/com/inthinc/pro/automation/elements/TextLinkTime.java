@@ -31,7 +31,7 @@ public class TextLinkTime extends TextLink implements Clickable, TextBased {
     public TextLinkTime click(TextEnum duration){
         myEnum.replaceWord(duration.getText());
         super.click();
-        selenium.pause(8); // Give the page time to update
+        selenium.pause(8, "Give the page time to update"); 
         return this;
     }
     
