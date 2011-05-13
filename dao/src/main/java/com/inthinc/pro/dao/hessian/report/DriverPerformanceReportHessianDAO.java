@@ -34,7 +34,7 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
             return driverPerformanceList;
         
         for (DriverVehicleScoreWrapper score : scoreList) {
-            if (!includeDriver(score.getDriver(), driverIDList))
+            if (!includeDriver(score, driverIDList, (driverIDList != null)))
                 continue;
             DriverPerformance dp = new DriverPerformance();
             dp.setDriverID(score.getDriver().getDriverID());
@@ -67,17 +67,29 @@ public class DriverPerformanceReportHessianDAO implements DriverPerformanceDAO {
         this.groupReportDAO = groupReportDAO;
     }
 
-    private boolean includeDriver(Driver driver, List<Integer> driverIDList) 
+    private boolean includeDriver(DriverVehicleScoreWrapper scoreWrapper, List<Integer> driverIDList, boolean individualDrivers) 
     {
+        if (scoreWrapper.getScore() == null) {
+            return false;
+        }
+        Driver driver = scoreWrapper.getDriver();
         if (driver == null)
             return false;
 
-        if (driverIDList == null)
+        // do not include drivers with no score or no miles driven when getting for individual drivers
+        if (individualDrivers) {
+            Score s = scoreWrapper.getScore();
+            Integer totalMiles = s.getEndingOdometer() == null || s.getStartingOdometer() == null ? 0 : s.getEndingOdometer().intValue() - s.getStartingOdometer().intValue();
+            if (totalMiles.intValue() == 0)
+                return false;
+            for (Integer driverID : driverIDList) 
+                if (driver.getDriverID().equals(driverID))
+                    return true;
+        }
+        else {
             return true;
+        }
         
-        for (Integer driverID : driverIDList) 
-            if (driver.getDriverID().equals(driverID))
-                return true;
         
         return false;
     }

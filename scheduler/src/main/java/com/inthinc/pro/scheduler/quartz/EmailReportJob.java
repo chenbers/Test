@@ -168,6 +168,7 @@ public class EmailReportJob extends QuartzJobBean {
                 case DRIVER_PERFORMANCE_INDIVIDUAL:
                 case DRIVER_PERFORMANCE_RYG_INDIVIDUAL:
                     Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
+                    
                     List<ReportCriteria> rcList = getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(
                             getAccountGroupHierarchy(reportSchedule.getAccountID()), 
                             reportSchedule.getGroupID(), driverIDList,
@@ -188,12 +189,13 @@ public class EmailReportJob extends QuartzJobBean {
                                     break;
                                 }
                             }
-
-                            List<String> emailToList = new ArrayList<String>();
-                            emailToList.add(driver.getPerson().getPriEmail());
-                            reportSchedule.setDriverID(driver.getDriverID());
-                            reportSchedule.setEmailTo(emailToList);
-                            emailReport(reportSchedule, driver.getPerson(), driverReportCriteriaList, owner);
+                            if (!driverReportCriteriaList.isEmpty()) {
+                                List<String> emailToList = new ArrayList<String>();
+                                emailToList.add(driver.getPerson().getPriEmail());
+                                reportSchedule.setDriverID(driver.getDriverID());
+                                reportSchedule.setEmailTo(emailToList);
+                                emailReport(reportSchedule, driver.getPerson(), driverReportCriteriaList, owner);
+                            }
                         }
                     }
                     break;
