@@ -59,11 +59,81 @@
  <PROCESS-ITEM NAME="rules::6" SHAPE="32,689,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules::6" NAME="item" model-entity="JSFProcessItem">
    <PROCESS-ITEM-OUTPUT
-    ID="go_configurator::#secured#configurator.xhtml" NAME="output"
-    PATH="/secured/configurator.xhtml"
-    TARGET="rules:#secured#configurator.xhtml" TITLE="go_configurator" model-entity="JSFProcessItemOutput"/>
+    ID="go_configuratorConfigurations::#secured#configuratorConfigurations.xhtml"
+    NAME="output" PATH="/secured/configuratorConfigurations.xhtml"
+    TARGET="rules:#secured#configuratorConfigurations.xhtml"
+    TITLE="go_configuratorConfigurations" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#secured#configurator.xhtml"
-  PATH="/secured/configurator.xhtml" SHAPE="240,705,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::7" SHAPE="32,801,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::7" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="go_configuratorVehicles::#secured#configuratorVehicles.xhtml"
+    NAME="output" PATH="/secured/configuratorVehicles.xhtml"
+    TARGET="rules:#secured#configuratorVehicles.xhtml"
+    TITLE="go_configuratorVehicles" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::8" SHAPE="32,913,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::8" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="go_configuratorAuditTrail::#secured#configuratorAuditTrail.xhtml"
+    NAME="output" PATH="/secured/configuratorAuditTrail.xhtml"
+    TARGET="rules:#secured#configuratorAuditTrail.xhtml"
+    TITLE="go_configuratorAuditTrail" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::9" SHAPE="32,1025,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::9" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="go_accountOptions::#secured#accountOptions.xhtml" NAME="output"
+    PATH="/secured/accountOptions.xhtml"
+    TARGET="rules:#secured#accountOptions.xhtml"
+    TITLE="go_accountOptions" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::10" SHAPE="32,1137,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::10" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_zonePublish::#secured#zonePublish.xhtml"
+    NAME="output" PATH="/secured/zonePublish.xhtml"
+    TARGET="rules:#secured#zonePublish.xhtml" TITLE="go_zonePublish" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules::11" SHAPE="32,1249,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::11" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_tripViewer::#secured#tripViewer.xhtml"
+    NAME="output" PATH="/secured/tripViewer.xhtml"
+    TARGET="rules:#secured#tripViewer.xhtml" TITLE="go_tripViewer" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#secured#configuratorVehicles.xhtml"
+  PATH="/secured/configuratorVehicles.xhtml" SHAPE="240,817,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#zonePublish.xhtml"
+  PATH="/secured/zonePublish.xhtml" SHAPE="240,1153,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#configuratorConfigurations.xhtml"
+  PATH="/secured/configuratorConfigurations.xhtml" SHAPE="240,705,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#configuratorAuditTrail.xhtml"
+  PATH="/secured/configuratorAuditTrail.xhtml" SHAPE="240,929,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#tripViewer.xhtml"
+  PATH="/secured/tripViewer.xhtml" SHAPE="240,1265,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#secured#accountOptions.xhtml"
+  PATH="/secured/accountOptions.xhtml" SHAPE="240,1041,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::12" SHAPE="32,1361,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::12" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_bulkImport::#secured#bulkImport.xhtml"
+    NAME="output" PATH="/secured/bulkImport.xhtml"
+    TARGET="rules:#secured#bulkImport.xhtml" TITLE="go_bulkImport" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#secured#bulkImport.xhtml"
+  PATH="/secured/bulkImport.xhtml" SHAPE="240,1377,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules::13" SHAPE="32,1473,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules::13" NAME="item" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="go_HOS::#secured#hos.xhtml" NAME="output"
+    PATH="/secured/hos.xhtml" TARGET="rules:#secured#hos.xhtml"
+    TITLE="go_HOS" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#secured#hos.xhtml" PATH="/secured/hos.xhtml"
+  SHAPE="240,1489,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

@@ -80,6 +80,12 @@
    <to-view-id>/secured/bulkImport.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>go_HOS</from-outcome>
+   <to-view-id>/secured/hos.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
  
 
   <!-- =========== FULL CONFIGURATION FILE ================================== -->

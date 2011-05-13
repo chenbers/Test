@@ -457,7 +457,9 @@ public class SiloServiceImpl implements SiloService {
 //    }
 
     @Override
-    @MethodDescription(description = "Fetches all zones for an account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Zone.class)
+    @MethodDescription(description = "Fetches all zones for an account.", crudType=CrudType.READ, 
+            modelClass=com.inthinc.pro.model.Zone.class,
+            mapperClass=com.inthinc.pro.backing.dao.mapper.DaoUtilZoneMapper.class)
     public List<Map<String, Object>> getZonesByAcctID(@DaoParam(name = "accountID", isAccountID=true) Integer accountID) {
         return null;
     }

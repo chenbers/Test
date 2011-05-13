@@ -91,7 +91,6 @@ public class HOSUtil {
             if (hosRecord.getStatus() == null || (hosRecord.getDeleted() != null && hosRecord.getDeleted()))
                 continue;
             long totalRealMinutes = DateUtil.deltaMinutes(hosRecord.getLogTime(), endDate);
-            endDate = hosRecord.getLogTime();
             HOSRec hosRec = new HOSRec(hosRecord.getHosLogID().toString(), 
                     hosRecord.getStatus(), 
                     totalRealMinutes,
@@ -101,6 +100,8 @@ public class HOSUtil {
                     hosRecord.getVehicleName(),
                     (hosRecord.getSingleDriver() == null) ? false : hosRecord.getSingleDriver(),
                     (hosRecord.getVehicleIsDOT() == null) ? false : hosRecord.getVehicleIsDOT() && !isDriverDOT);
+            hosRec.setEndTimeDate(endDate);
+            endDate = hosRecord.getLogTime();
             
             recList.add(hosRec);
 //System.out.println(hosRec.getStatus().getName() + " " + hosRec.getTotalRealMinutes() + " " + hosRec.getLogTimeDate());            

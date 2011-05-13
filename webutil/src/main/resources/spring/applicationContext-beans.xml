@@ -41,6 +41,7 @@
 	<bean id="zonePublishBean" class="com.inthinc.pro.backing.ZonePublishBean" init-method="init" scope="session"/>
 	<bean id="tripViewerBean" class="com.inthinc.pro.backing.tripviewer.TripViewerBean" scope="session"/>
 	<bean id="bulkImportBean" class="com.inthinc.pro.backing.importer.BulkImportBean" scope="session"/>
+	<bean id="hosBean" class="com.inthinc.pro.backing.hos.HOSBean" scope="session"/>
 	
 	<!--  UI beans -->
 	<bean id="productSelectItems" class="com.inthinc.pro.configurator.ui.ProductSelectItems"/>

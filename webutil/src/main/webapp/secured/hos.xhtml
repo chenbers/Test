@@ -1,0 +1,98 @@
+<ui:composition template="/template/template.xhtml"
+   xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" 
+	xmlns:h="http://java.sun.com/jsf/html"
+  	xmlns:f="http://java.sun.com/jsf/core" 
+  	xmlns:a4j="http://richfaces.org/a4j" 
+  	xmlns:rich="http://richfaces.org/rich">
+
+
+<ui:param name="panelTitle" value="HOS"/>
+<ui:param name="groupSelected" value="MAIN"/>
+<ui:define name="util_content">
+
+<div>
+	<a4j:region id="paramsRegion">
+    <rich:panel id="paramsPanel">
+      <f:facet name="header">
+        <h:outputText value="Params" />
+      </f:facet>
+	<h:form>
+	<h:outputText id="inst" value="Enter a driver ID and date range to evaluate HOS data." />
+	<h:panelGrid columns="3">
+    
+		<h:outputText value="Driver ID:" />
+		<h:inputText  id="id" value="#{hosBean.driverID}" required="true" requiredMessage="DriverID is required."/>
+        <rich:message for="id"/>
+	</h:panelGrid>        
+	<ui:include src="/includes/dateRange.xhtml" >
+       	<ui:param name="dateRange" value="#{hosBean.dateRange}"/> 
+       	<ui:param name="dateFormat" value="MM/dd/yy"/> 
+           <ui:param name="reRenderList" value=""/> 
+    </ui:include>
+		
+		
+	<a4j:commandButton value="Evaluate HOS Violations" action="#{hosBean.evaluateAction}" reRender="resultsForm"/>
+	<a4j:status for="paramsRegion">
+		<f:facet name="start">
+        	<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+		</f:facet>
+    </a4j:status>
+	
+	</h:form>
+	</rich:panel>
+	</a4j:region>
+	
+	<a4j:region id="resultsRegion">
+		<a4j:form id="resultsForm">
+			<rich:dataTable rows="5" value="#{hosBean.records}" var="record" id="resultTable" align="left" width="49%"
+							rendered="#{hosBean.errorMessage == null and hosBean.recordCount > 0}">
+			 	<f:facet name="header">
+			 		<h:outputText value="#{hosBean.driverName} - HOS VIOLATIONS" />
+            	</f:facet>
+            	<rich:columns value="#{hosBean.columnHeaders}" var="col" index="index" id="column#{index}" 
+	             			sortBy="#{record[index].sort}" sortOrder="#{hosBean.sortOrder[col]}"> 
+                	<f:facet name="header">
+						<h:outputText value="#{col}" />
+					</f:facet>
+					<h:outputText value="#{record[index].display}" escape="false" rendered="#{index != 5}"/>
+					<a4j:commandLink action="#{hosBean.logDetailsAction}" reRender="resultsForm" rendered="#{index == 5 and record[index].display != 'daily' and hosBean.selected != record[index].display}" 
+							ajaxSingle="true" limitToList="true" immediate="true">
+							<h:outputText value="Show Detailed Logs" />
+							<f:setPropertyActionListener target="#{hosBean.selected}" value="#{record[index].display}" />
+					</a4j:commandLink>
+					<h:outputText value="Detailed Log Displayed -->" rendered="#{index == 5 and hosBean.selected == record[index].display}"/>
+                </rich:columns>
+			 	<f:facet name="footer">
+				 	<rich:datascroller id="resultScrollBottom" renderIfSinglePage="false"/>
+			 	</f:facet>
+            </rich:dataTable>
+			<rich:dataTable rows="25" value="#{hosBean.logsRecords}" var="record" id="logResultTable" align="left" width="49%"
+							rendered="#{hosBean.selected != null}">
+			 	<f:facet name="header">
+			 		<h:outputText value="#{hosBean.driverName} - HOS LOGS" />
+            	</f:facet>
+            	<rich:columns value="#{hosBean.logsColumnHeaders}" var="col" index="index" id="column#{index}" 
+	             			sortBy="#{record[index].sort}" sortOrder="#{hosBean.logsSortOrder[col]}"> 
+                	<f:facet name="header">
+						<h:outputText value="#{col}" />
+					</f:facet>
+					<h:outputText value="#{record[index].display}" escape="false"/>
+                </rich:columns>
+			 	<f:facet name="footer">
+				 	<rich:datascroller id="resultScrollBottom" renderIfSinglePage="false"/>
+			 	</f:facet>
+            </rich:dataTable>
+			<rich:panel rendered="#{hosBean.errorMessage != null}" width="99%" style="padding-bottom: 15px">
+			 	<f:facet name="header">
+                	<h:outputText value=""></h:outputText>
+            	</f:facet>
+            	<h:outputText value="#{hosBean.errorMessage}" style="color:red;"/>
+            </rich:panel>
+            </a4j:form>
+	</a4j:region>
+	
+</div><!-- end page -->
+<div> </div> 
+</ui:define>
+</ui:composition>

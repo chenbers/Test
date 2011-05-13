@@ -62,5 +62,6 @@
     </bean>
 	
     <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
+    <bean id="hosDAO" class="com.inthinc.pro.dao.jdbc.HOSJDBCDAO" parent="genericJDBCDAO"></bean>
     
 </beans>

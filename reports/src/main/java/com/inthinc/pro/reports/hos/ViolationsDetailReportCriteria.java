@@ -109,6 +109,8 @@ public abstract class ViolationsDetailReportCriteria extends GroupListReportCrit
         statusFilterList.add(HOSStatus.ON_DUTY_OCCUPANT); 
         statusFilterList.add(HOSStatus.OFF_DUTY_OCCUPANT);
         statusFilterList.add(HOSStatus.HOS_DERERRAL);
+        statusFilterList.add(HOSStatus.HOS_PERSONALTIME);
+        statusFilterList.add(HOSStatus.TRAVELTIME_OCCUPANT);
         return statusFilterList;
     }
     void initDataSet(Interval interval, GroupHierarchy accountGroupHierarchy, Map<Driver, List<HOSRecord>> driverHOSRecordMap)
