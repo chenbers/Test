@@ -37,6 +37,8 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
 		super();
 
 		selectedBreakdown="SCORE_DRIVING_STYLE";
+		
+		scoreTitle = MessageUtil.getMessageString("SCORE_DRIVING_STYLE") + ": " + MessageUtil.getMessageString("SCORE_OVERALL");
 	}
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)

@@ -37,6 +37,8 @@ public class VehicleSpeedBean extends BasePerformanceEventsBean
     public VehicleSpeedBean() {
 		super();
         selectedBreakdown="SCORE_SPEEDING";
+        
+        scoreTitle = MessageUtil.getMessageString("vehicle_speed_overall");
 	}
     @Override
     protected List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType)

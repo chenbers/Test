@@ -34,6 +34,7 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	protected Map<String, List<EventReportItem>> eventsListsMap;
 	
 	protected GoogleAddressLookup                googleAddressLookupBean;
+    protected String scoreTitle;
   
 	protected static DateFormat dateFormatter;
 	
@@ -260,5 +261,11 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
         
         return local;
 	}
+    public String getScoreTitle() {
+        return scoreTitle;
+    }
+    public void setScoreTitle(String scoreTitle) {
+        this.scoreTitle = scoreTitle;
+    }
     
 }

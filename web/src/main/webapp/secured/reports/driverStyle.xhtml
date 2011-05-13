@@ -252,7 +252,7 @@ var firstLoad = new Boolean(true);
 								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
 								  <tr>
 									<td>
-										<h4>#{messages.driver_overallscore}</h4>
+										<h4>#{driverStyleBean.scoreTitle}</h4>
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
@@ -309,6 +309,7 @@ var firstLoad = new Boolean(true);
 						  	  <a4j:commandLink id="driverStyleOverall" onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}')" 
 						  	  				   action="#{driverStyleBean.selectBreakdownChanged}" reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="eventType" value="SCORE_DRIVING_STYLE" assignTo="#{driverStyleBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_OVERALL}" assignTo="#{driverStyleBean.scoreTitle}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -345,6 +346,7 @@ var firstLoad = new Boolean(true);
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="eventType" value="HARD_BRAKE" assignTo="#{driverStyleBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}" assignTo="#{driverStyleBean.scoreTitle}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BRAKE}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -381,6 +383,7 @@ var firstLoad = new Boolean(true);
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="eventType" value="HARD_ACCEL" assignTo="#{driverStyleBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}" assignTo="#{driverStyleBean.scoreTitle}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_ACCEL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -419,6 +422,7 @@ var firstLoad = new Boolean(true);
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="eventType" value="HARD_TURN" assignTo="#{driverStyleBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_TURN}" assignTo="#{driverStyleBean.scoreTitle}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_TURN}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -457,6 +461,7 @@ var firstLoad = new Boolean(true);
 						  	  					action="#{driverStyleBean.selectBreakdownChanged}"
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="eventType" value="HARD_VERT" assignTo="#{driverStyleBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.SCORE_DRIVING_STYLE}: #{messages.SCORE_DRIVING_STYLE_HARD_BUMP}" assignTo="#{driverStyleBean.scoreTitle}"/>
 						  	  		<h:outputText value="#{messages.SCORE_DRIVING_STYLE_HARD_BUMP}"/>
 						  	  </a4j:commandLink>
 						  </h:form>

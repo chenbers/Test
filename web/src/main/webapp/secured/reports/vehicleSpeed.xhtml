@@ -282,7 +282,7 @@ var firstLoad = new Boolean(true);
 								<table width="220" border="0" cellspacing="0" cellpadding="0" class="scorebox" style="margin: 20px 20px 0 0;">
 								  <tr>
 									<td>
-										<h4>#{messages.vehicle_speed_overall}</h4>
+										<h4>#{vehicleSpeedBean.scoreTitle}</h4>
 									</td>
 									<td width="80" align="center">
 										<ui:include src="../../includes/scoreBox.xhtml">
@@ -340,6 +340,7 @@ var firstLoad = new Boolean(true);
 						  	 					onclick="SelectBreakDown('OVERALL', overallChart2, '#{messages.reports_speed}: #{messages.SCORE_OVERALL}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.reports_speed}: #{messages.SCORE_OVERALL}" assignTo="#{vehicleSpeedBean.scoreTitle}"/>
 						  	  		<h:outputText value="#{messages.SCORE_OVERALL}"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -381,6 +382,7 @@ var firstLoad = new Boolean(true);
 						  	  					onclick="SelectBreakDown('TWENTYONE', chart21, '#{messages.reports_speed}: #{messages[SPEEDING_21_30_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_21_30" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.reports_speed}: #{messages[SPEEDING_21_30_KEY]}" assignTo="#{vehicleSpeedBean.scoreTitle}"/>
                                     <h:outputText value="SCORE_SPEEDING_21_30" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -418,6 +420,7 @@ var firstLoad = new Boolean(true);
 						  	  					onclick="SelectBreakDown('THIRTYONE', chart31, '#{messages.reports_speed}: #{messages[SPEEDING_31_40_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_31_40" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.reports_speed}: #{messages[SPEEDING_31_40_KEY]}" assignTo="#{vehicleSpeedBean.scoreTitle}"/>
                                     <h:outputText value="SCORE_SPEEDING_31_40" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -457,6 +460,7 @@ var firstLoad = new Boolean(true);
 						  	 					onclick="SelectBreakDown('FOURTYONE', chart41, '#{messages.reports_speed}: #{messages[SPEEDING_41_54_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_41_54" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.reports_speed}: #{messages[SPEEDING_41_54_KEY]}" assignTo="#{vehicleSpeedBean.scoreTitle}"/>
                                     <h:outputText value="SCORE_SPEEDING_41_54" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -494,6 +498,7 @@ var firstLoad = new Boolean(true);
 						  	  					onclick="SelectBreakDown('FIFTYFIVE', chart55, '#{messages.reports_speed}: #{messages[SPEEDING_55_64_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_55_64" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.reports_speed}: #{messages[SPEEDING_55_64_KEY]}" assignTo="#{vehicleSpeedBean.scoreTitle}"/>
                                     <h:outputText value="SCORE_SPEEDING_55_64" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>
@@ -531,6 +536,7 @@ var firstLoad = new Boolean(true);
 						  	  					onclick="SelectBreakDown('SIXTYFIVE', chart65, '#{messages.reports_speed}: #{messages[SPEEDING_65_80_KEY]}')" 
 						  	  					reRender="notificationsTable,tableStats,scrollerBottom,overallScoreBox">
 						  	  		<a4j:actionparam name="speed" value="SCORE_SPEEDING_65_80" assignTo="#{vehicleSpeedBean.selectedBreakdown}"/>
+						  	  		<a4j:actionparam name="scoreTitle" value="#{messages.reports_speed}: #{messages[SPEEDING_65_80_KEY]}" assignTo="#{vehicleSpeedBean.scoreTitle}"/>
                                     <h:outputText value="SCORE_SPEEDING_65_80" converter="MeasurementTextConverter"/>
 						  	  </a4j:commandLink>
 						  </h:form>

@@ -35,11 +35,12 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
 	@SuppressWarnings("unused")
     private static final Logger                logger         = Logger.getLogger(DriverSpeedBean.class);
 
-    
     public DriverSpeedBean() {
 		super();
 		
 		selectedBreakdown="SCORE_SPEEDING";
+		
+		scoreTitle = MessageUtil.getMessageString("driver_speed_overall");
 	}
 
     @Override

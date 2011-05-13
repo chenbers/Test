@@ -62,7 +62,7 @@ public class DriverPerformanceBean extends BasePerformanceBean {
     private DurationBean seatBeltDurationBean;
 
     // Driver Bean Dependencies
-    private DriverSpeedBean driverSpeedBean;
+    private BasePerformanceEventsBean driverSpeedBean;
     private DriverStyleBean driverStyleBean;
     private DriverSeatBeltBean driverSeatBeltBean;
     private CrashSummary crashSummary;
@@ -487,11 +487,11 @@ public class DriverPerformanceBean extends BasePerformanceBean {
         getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
     }
 
-    public void setDriverSpeedBean(DriverSpeedBean driverSpeedBean) {
+    public void setDriverSpeedBean(BasePerformanceEventsBean driverSpeedBean) {
         this.driverSpeedBean = driverSpeedBean;
     }
 
-    public DriverSpeedBean getDriverSpeedBean() {
+    public BasePerformanceEventsBean getDriverSpeedBean() {
         return driverSpeedBean;
     }
 
