@@ -76,7 +76,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     public void initFilterValues(){
         super.initFilterValues();
         for(String column:AVAILABLE_COLUMNS){
-            filterValues.put(column, null);
+            getFilterValues().put(column, null);
         }
     }
 

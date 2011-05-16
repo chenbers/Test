@@ -21,6 +21,7 @@ import org.springframework.beans.factory.BeanInitializationException;
 
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.model.ReferenceEntity;
+import com.inthinc.pro.model.configurator.ProductType;
 
 /**
  * Methods for working with beans, complements the methods in {@link BeanUtils}.
@@ -387,4 +388,29 @@ public class BeanUtil
                 target.set(i, Boolean.FALSE);
             }
     }
+    
+    @SuppressWarnings("unchecked")
+    public static Object getFieldValue(Object object, String propertyName){
+        Class clazz = object.getClass();
+        try{
+            PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(clazz, propertyName);
+            Object [] nullArgs = {};
+            Object property = propertyDescriptor.getReadMethod().invoke(object, nullArgs);
+            if (property instanceof ProductType){
+                return ((ProductType)property).getDescription().getProductName();
+            }
+            else
+            if (property instanceof Enum){
+                return ((Enum)property).name();
+            }
+            else{
+                return property;
+            }
+        }
+        catch(Exception e){
+            return null;
+        }
+        
+    }
+
 }

@@ -28,6 +28,9 @@
 -->
 
   <ui:composition>
+	<script>window.dhx_globalImgPath="#{facesContext.externalContext.requestContextPath}/images/dhtml/";</script>
+
+	<link rel="STYLESHEET" type="text/css" href="#{facesContext.externalContext.requestContextPath}/css/dhtml/dhtmlxcombo.css"/>
 
     <rich:modalPanel id="chooseVehicle" headerClass="popupHeader" controlsClass="popupControls" width="650" height="380" autosized="true" zindex="2001">
       <f:facet name="header">
@@ -38,29 +41,104 @@
       </f:facet>
 
       <a4j:form id="chooseVehicleForm">
-
+          <ul id="grid_nav" style="margin: 0;">
+            <li class="l">
+              <table border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                <tr>
+                  <td><h:outputText value="#{messages.button_search}" /></td>
+                  <td>
+                    <h:inputText id="#{context}-filterTable" value="#{editorBean.chooseVehicleSearchKeyword}" class="text" size="20" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('chooseVehicleForm:#{context}-chooseVehicleTableSearch').onclick(); return false; } return true;" />
+                  </td>
+                </tr>
+              </table>
+            </li>
+            <li class="l"><a4j:commandButton id="#{context}-chooseVehicleTableSearch" reRender="#{context}-chooseVehicleTable,#{context}-chooseVehicleScroller" styleClass="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></a4j:commandButton></li>
+            </ul>
+		<rich:spacer height="5px"/>
         <rich:dataTable id="#{context}-chooseVehicleTable" value="#{editorBean.vehicles}" var="item" rowKeyVar="index" styleClass="datagrid"
           rows="10" rowClasses="tableOdd,tableEven" width="100%">
           <rich:column id="name" sortBy="#{item.name}" sortOrder="ASCENDING">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
             <h:outputText value="#{item.name}" />
           </rich:column>
-          <rich:column id="fullName" sortBy="#{item.driver.person.fullName}">
+          <rich:column id="fullName" sortBy="#{editorBean.driverMap[item.driverID].person.fullName}">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
-            <h:outputText value="#{item.driver.person.fullName}" />
+            <h:outputText value="#{editorBean.driverMap[item.driverID].person.fullName}" />
           </rich:column>
-          <rich:column id="group" sortBy="#{item.group.name}">
+          <rich:column id="group" sortBy="#{editorBean.groupMap[item.groupID].name}">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_groupID}" /></f:facet>
-            <h:outputText value="#{item.group.name}" />
+            <h:outputText value="#{editorBean.groupMap[item.groupID].name}" />
           </rich:column>
-          <rich:column id="status" sortBy="#{item.status}">
-            <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_vehicleStatus}" /></f:facet>
-            <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
-          </rich:column>
+   <rich:column id="vehicleStatus" sortBy="#{item.status.description}" custFilterBy="#{item.status.description}" filterValue="#{editorBean.chooseVehicleFiltering['status']}">
+                <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_vehicleStatus}" /></f:facet>
+      <f:facet name="header">
+      	<h:panelGroup>
+			<h:outputText value="#{messages.vehiclesHeader_status}" />
+			<h:panelGroup style="float:right;">
+		       	<rich:spacer style="display:block" height="2"/>
+		       	
+		       	<h:selectOneMenu value="#{editorBean.chooseVehicleFiltering['status']}" styleClass="dhx_combo_box" style="width:120px;size:auto;margin-top:3px;"
+		      		id="editVehicle-statusChoice" >
+		           	<f:selectItems value="#{editorBean.statusSelectItems}" />
+		           	<a4j:support event="onchange" reRender="#{context}-chooseVehicleTable,chooseVehicleForm:header,#{context}-chooseVehicleScroller" />
+		       	</h:selectOneMenu>
+<!--				<ui:include src="/includes/dhtmlSelectBox.xhtml">	-->
+<!--				 	<ui:param name="selectBoxID" value="chooseVehicleForm:#{context}-chooseVehicleTable:editVehicle-statusChoice" />-->
+<!--				</ui:include>-->
+			</h:panelGroup>
+		</h:panelGroup>
+      </f:facet>
+      <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
+    </rich:column>
           <rich:column id="vehicleAssigned" sortBy="#{empty item.deviceID}">
             <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_assigned}" /></f:facet>
             <h:outputText value="#{(empty item.deviceID) ? messages.chooseVehicle_unassigned : messages.chooseVehicle_assigned}" />
           </rich:column>
+<!--          <rich:column id="productVersion" sortBy="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" >-->
+<!--                      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_productType}" /></f:facet>-->
+          <rich:column id="productVersion" custFilterBy="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" 
+          				sortBy="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" filterValue="#{editorBean.chooseVehicleFiltering['productVersion']}">
+      	<f:facet name="header">
+        <h:panelGroup>
+			<h:outputText value="#{messages.vehiclesHeader_productType}" />
+			<h:panelGroup style="float:right;">
+	       	<rich:spacer style="display:block" height="2"/>
+	       	<h:selectOneMenu value="#{editorBean.chooseVehicleFiltering['productVersion']}" styleClass="dhx_combo_box" style="width:120px;size:auto;margin-top:3px;"
+	       					id="chooseVehicle-productChoice" >
+	           	<f:selectItems value="#{editorBean.productTypesSelectItems}" />
+	           	<a4j:support event="onchange" 
+	           		reRender="#{context}-chooseVehicleTable,chooseVehicleForm:header,#{context}-chooseVehicleScroller" />
+	       	</h:selectOneMenu>
+<!--			<ui:include src="/includes/dhtmlSelectBox.xhtml">	-->
+<!--			 	<ui:param name="selectBoxID" value="chooseVehicleForm:#{context}-chooseVehicleTable:chooseVehicle-productChoice" />-->
+<!--			</ui:include>-->
+			</h:panelGroup>
+        </h:panelGroup>
+      </f:facet>
+      <h:outputText value="#{editorBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" />
+    </rich:column>
+
+    <rich:column id="device" sortBy="#{editorBean.deviceMap[item.deviceID].name}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_deviceID}" /></f:facet>
+      <h:outputText value="#{editorBean.deviceMap[item.deviceID].name}" />
+    </rich:column>
+    <rich:column id="vin" sortBy="#{item.VIN}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_VIN}" /></f:facet>
+      <h:outputText value="#{item.VIN}" />
+    </rich:column>
+    <rich:column id="year" sortBy="#{item.year}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_year}" /></f:facet>
+      <h:outputText value="#{item.year}" />
+    </rich:column>
+    <rich:column id="make" sortBy="#{item.make}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_make}" /></f:facet>
+      <h:outputText value="#{item.make}" />
+    </rich:column>
+    <rich:column id="model" sortBy="#{item.model}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_model}" /></f:facet>
+      <h:outputText value="#{item.model}" />
+    </rich:column>
+          
           <rich:column id="vehicle" filterExpression="#{(empty editorBean.item.vehicleID) or (item.vehicleID != editorBean.item.vehicleID)}">
             <f:facet name="header">
               <h:outputText value=" " />

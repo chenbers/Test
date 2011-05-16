@@ -2,7 +2,6 @@ package com.inthinc.pro.backing;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,17 +17,31 @@ import javax.faces.validator.ValidatorException;
 
 import org.springframework.beans.BeanUtils;
 
-import com.inthinc.pro.backing.VehiclesBean.VehicleView;
+import com.inthinc.pro.backing.filtering.ColumnFiltering;
+import com.inthinc.pro.backing.model.supportData.AdminCacheBean;
+import com.inthinc.pro.backing.model.supportData.CacheItemMap;
+import com.inthinc.pro.backing.model.supportData.DeviceMap;
+import com.inthinc.pro.backing.model.supportData.DriverMap;
+import com.inthinc.pro.backing.model.supportData.GroupMap;
+import com.inthinc.pro.backing.model.supportData.VehicleMap;
+import com.inthinc.pro.backing.model.supportData.VehicleSettingMap;
 import com.inthinc.pro.backing.ui.DeviceStatusSelectItems;
 import com.inthinc.pro.backing.ui.ProductTypeSelectItems;
+import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DeviceDAO;
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.configurator.VehicleSetting;
+import com.inthinc.pro.table.columns.VehicleChoiceTableColumns;
 import com.inthinc.pro.util.MessageUtil;
 import com.inthinc.pro.util.MiscUtil;
 import com.inthinc.pro.util.SelectItemUtil;
@@ -38,8 +51,10 @@ import com.inthinc.pro.util.SelectItemUtil;
 @SuppressWarnings("serial")
 public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 {
+    private static final String imeiRegex = "[0-9]{15}";
     private static final List<String> AVAILABLE_COLUMNS;
     private static final int[] DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 2, 5, 6};
+    private static final List<String> CHOOSE_VEHICLE_COLUMNS;
     static
     {
         // available columns
@@ -55,10 +70,45 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         AVAILABLE_COLUMNS.add("altimei");
         AVAILABLE_COLUMNS.add("productVer");
         
+        CHOOSE_VEHICLE_COLUMNS = new ArrayList<String>();
+        CHOOSE_VEHICLE_COLUMNS.add("name");
+        CHOOSE_VEHICLE_COLUMNS.add("driverID");
+        CHOOSE_VEHICLE_COLUMNS.add("groupID");
+        CHOOSE_VEHICLE_COLUMNS.add("year");
+        CHOOSE_VEHICLE_COLUMNS.add("make");
+        CHOOSE_VEHICLE_COLUMNS.add("model");
+        CHOOSE_VEHICLE_COLUMNS.add("VIN");
+        CHOOSE_VEHICLE_COLUMNS.add("status");
+        CHOOSE_VEHICLE_COLUMNS.add("deviceID");
+        CHOOSE_VEHICLE_COLUMNS.add("productVer");
+
+        
     }
-    private DeviceDAO deviceDAO;
-    private VehicleDAO vehicleDAO;
-    private VehiclesBean vehiclesBean;
+    private DeviceDAO   deviceDAO;
+    private VehicleDAO  vehicleDAO;
+    private DriverDAO   driverDAO;
+    private ConfiguratorDAO configuratorDAO;
+
+//    private VehiclesBean vehiclesBean;
+//    private List<EnhancedVehicle> vehicles;
+//    private Map<Integer, EnhancedVehicle> vehicleMap;
+    
+//    private Map<Integer, DeviceView> deviceMap;
+    
+//    private CacheItemMap<Driver,Driver> driverMap;
+//    private CacheItemMap<Vehicle,Vehicle> vehicleMap;
+//    private CacheItemMap<Group,Group> groupMap;
+//    private CacheItemMap<DeviceSettingDefinition,VehicleSetting> vehicleSettingMap;
+//    private CacheItemMap<Device,Device> supportDeviceMap;
+    private ColumnFiltering<Vehicle> chooseVehicleFiltering;
+    private VehicleChoiceTableColumns vehicleChoiceTableColumns;
+    
+    private AdminCacheBean adminCacheBean;
+    
+    private List<Vehicle> chooseVehicleItems;
+    private String chooseVehicleSearchKeyword;
+    
+//    private List<Driver>                          drivers;
 
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
@@ -70,15 +120,15 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         this.vehicleDAO = vehicleDAO;
     }
 
-    public void setVehiclesBean(VehiclesBean vehiclesBean)
-    {
-        this.vehiclesBean = vehiclesBean;
-    }
     @Override
     public void initFilterValues(){
         super.initFilterValues();
         for(String column:AVAILABLE_COLUMNS){
-            filterValues.put(column, null);
+            getFilterValues().put(column, null);
+        }
+        chooseVehicleFiltering = new ColumnFiltering<Vehicle>();
+        for(String column:CHOOSE_VEHICLE_COLUMNS){
+            chooseVehicleFiltering.put(column, null);
         }
     }
     
@@ -86,7 +136,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         
         return ProductTypeSelectItems.INSTANCE.getSelectItems();
     }
-
     public String getViewPath() {
         if(isAdd()){
              
@@ -97,6 +146,56 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             return getEditRedirect();
         }
     }
+    /**
+     * Creates a VehicleView object from the given Vehicle object.
+     * 
+     * @param vehicle
+     *            The vehicle.
+     * @return The new VehicleView object.
+     */
+    private void loadVehicleSettings()
+    {
+        CacheItemMap<DeviceSettingDefinition,VehicleSetting> vehicleSettingMap = new VehicleSettingMap(getUser().getGroupID());
+        vehicleSettingMap.setDAO(configuratorDAO);
+        vehicleSettingMap.buildMap();
+        adminCacheBean.addAssetMap("vehicleSettings",vehicleSettingMap);
+    }
+    private void loadGroups()
+    {
+        CacheItemMap<Group,Group> groupMap = new GroupMap(getUser().getPerson().getAcctID(),getUser().getGroupID());
+        groupMap.setDAO(groupDAO);
+        groupMap.buildMap();
+        adminCacheBean.addAssetMap("groups",groupMap);
+   }
+    private void loadDrivers()
+    {
+        CacheItemMap<Driver,Driver> driverMap = new DriverMap(getUser().getGroupID());
+        driverMap.setDAO(driverDAO);
+        driverMap.buildMap();
+        adminCacheBean.addAssetMap("drivers",driverMap);
+   }
+    private void loadDevices()
+    {
+        
+        CacheItemMap<Device,Device>supportDeviceMap = new DeviceMap(getUser().getPerson().getAcctID());
+        supportDeviceMap.setDAO(deviceDAO);
+        supportDeviceMap.buildMap();
+        adminCacheBean.addAssetMap("devices",supportDeviceMap);
+    }
+
+    private void loadVehicles(){
+        CacheItemMap<Vehicle,Vehicle> vehicleMap = new VehicleMap(getUser().getGroupID());
+        vehicleMap.setDAO(vehicleDAO);
+        vehicleMap.buildMap();
+        adminCacheBean.addAssetMap("vehicles",vehicleMap);
+    }
+    public List<Vehicle> getVehicles(){
+        //filter on the filter item
+        return vehicleChoiceTableColumns.getFilteredItems(adminCacheBean,chooseVehicleSearchKeyword,true);
+//        return (List<Vehicle>) adminCacheBean.getAssets("vehicles");
+    }
+    
+    @SuppressWarnings("unchecked")
     @Override
     protected List<DeviceView> loadItems()
     {
@@ -104,11 +203,27 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
         // convert the Devices to DeviceViews
         final LinkedList<DeviceView> items = new LinkedList<DeviceView>();
-        for (final Device device : plainDevices)
+//        deviceMap = new HashMap<Integer,DeviceView>();
+        for (final Device device : plainDevices){
             items.add(createDeviceView(device));
+        }
+        loadSupportData();
+        chooseVehicleItems = (List<Vehicle>) adminCacheBean.getAssets("vehicles");
+        vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
+        
         return items;
     }
-
+    
+    private void loadSupportData(){
+        
+        adminCacheBean = new AdminCacheBean();
+        loadDevices();
+        loadGroups();
+        loadDrivers();
+        loadVehicleSettings();
+        loadVehicles();
+        
+    }
     /**
      * Creates a DeviceView object from the given Device object.
      * 
@@ -126,6 +241,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         deviceView.setFirmwareVersionDate();
         if (device.getPhone() != null)
             deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
+//        deviceMap.put(deviceView.getId(), deviceView);
+        
         return deviceView;
     }
 
@@ -218,11 +335,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
     }
 
-    public List<VehicleView> getVehicles()
-    {
-        return vehiclesBean.getPlainVehicles();
-    }
-
     public void chooseVehicle()
     {
         final Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -279,7 +391,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
                 getFacesContext().addMessage("edit-form:editDevice-imei", message);
             }
-            else if (!deviceView.getImei().matches("[0-9]{15}")) // format
+            else if (!deviceView.getImei().matches(imeiRegex)) // format
             {
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editDevice_imeiFormat");
@@ -328,7 +440,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public void validateImei(FacesContext context, UIComponent component, Object value)
     {
         final String imei = (String) value;
-        if (!imei.matches("[0-9]{15}"))
+        if (!imei.matches(imeiRegex))
         {
             final String summary = MessageUtil.getMessageString("editDevice_imeiFormat");
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
@@ -388,12 +500,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     private void setVehicleDevice(Integer vehicleID, Integer deviceID)
     {
-        for (final Vehicle vehicle : getVehicles())
-            if (vehicleID.equals(vehicle.getVehicleID()))
-            {
-                vehicle.setDeviceID(deviceID);
-                break;
-            }
+        Vehicle vehicle = (Vehicle)adminCacheBean.getAsset("vehicles", vehicleID);
+        vehicle.setDeviceID(deviceID);
     }
 
     @Override
@@ -426,8 +534,16 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public void resetList()
     {
         super.resetList();
-        vehiclesBean.resetList();
+//        vehiclesBean.resetList();
     }
+//    private Device getDevice(Integer deviceID){
+//        Device device = deviceMap.get(deviceID);
+//        if (device == null){
+//            device = deviceDAO.findByID(deviceID);
+//        }
+//        return device;
+//    }
+
     public static class DeviceView extends Device implements EditItem
     {
         @Column(updateable = false)
@@ -517,5 +633,156 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public boolean isBatchProductChoice(ProductType productType){
         
         return getFilterValues().get("productVersion") == null || getFilterValues().get("productVersion").equals(productType.getDescription());
+    }
+//    public static class EnhancedVehicle extends Vehicle
+//    {
+//        @Column(updateable = false)
+//        private static final long serialVersionUID = -2051727502162908991L;
+//
+//        @Column(updateable = false)
+//        private DevicesBean      bean;
+//        @Column(updateable = false)
+//        private Group             group;
+//        @Column(updateable = false)
+//        private Driver            driver;
+//        @Column(updateable = false)
+//        private Device            device;
+//        @Column(updateable = false)
+//        private EditableVehicleSettings editableVehicleSettings;
+//                
+//        public EnhancedVehicle() {
+//            super();
+//        }
+//        public EnhancedVehicle(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, Integer year, String color, VehicleType vtype, String vin, Integer weight,
+//                String license, State state) {
+//            super(vehicleID, groupID, status, name, make, model, year, color, vtype, vin, weight, license, state);
+//        }
+//        
+//        public void setEditableVehicleSettings(EditableVehicleSettings editableVehicleSettings) {
+//            this.editableVehicleSettings = editableVehicleSettings;
+//        }
+//        public EditableVehicleSettings getEditableVehicleSettings() {
+//            return editableVehicleSettings;
+//        }
+//        public Integer getId()
+//        {
+//            return getVehicleID();
+//        }
+//
+//        public String getProductTypeName() {
+//            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN.getDescription().getProductName();
+//            return editableVehicleSettings.getProductType().getDescription().getProductName();
+//        }
+//        public ProductType getProductType() {
+//            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN;
+//            return editableVehicleSettings.getProductType();
+//        }
+//        @Override
+//        public Integer getWeight()
+//        {
+//            final Integer weight = super.getWeight();
+//            if ((weight != null) && (weight == 0))
+//                return null;
+//            return weight;
+//        }
+//
+//        @Override
+//        public void setGroupID(Integer groupID)
+//        {
+//            super.setGroupID(groupID);
+//            group = null;
+//            driver = null;
+////            bean.driverMap.clearMap();
+//        }
+//
+//        public Group getGroup()
+//        {
+//            if (group == null)
+//                group = bean.groupDAO.findByID(getGroupID());
+//            return group;
+//        }
+//
+//        @Override
+//        public void setDriverID(Integer driverID)
+//        {
+//            super.setDriverID(driverID);
+//            driver = null;
+//        }
+//
+//        public Driver getDriver()
+//        {
+//            if (driver == null)
+//                driver = bean.getDriver(getDriverID());
+//            return driver;
+//        }
+//
+//        public Device getDevice()
+//        {
+//            if (device == null)
+//                device = bean.getDevice(getDeviceID());
+//            return device;
+//        }
+//        
+//        public void setDevice(Device device)
+//        {
+//            this.device = device;
+//        }
+//
+//    }
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
+    }
+
+    public DeviceDAO getDeviceDAO() {
+        return deviceDAO;
+    }
+
+    @SuppressWarnings("unchecked")
+    public CacheItemMap<Driver, Driver> getDriverMap() {
+        return (CacheItemMap<Driver, Driver>)adminCacheBean.getMap("drivers");
+    }
+
+    @SuppressWarnings("unchecked")
+    public CacheItemMap<Device, Device> getDeviceMap() {
+        return (CacheItemMap<Device, Device>)adminCacheBean.getMap("devices");
+    }
+
+    @SuppressWarnings("unchecked")
+    public CacheItemMap<Vehicle, Vehicle> getVehicleMap() {
+        return (CacheItemMap<Vehicle, Vehicle>)adminCacheBean.getMap("vehicles");
+    }
+
+    @SuppressWarnings("unchecked")
+    public CacheItemMap<Group, Group> getGroupMap() {
+        return (CacheItemMap<Group, Group>)adminCacheBean.getMap("groups");
+    }
+    
+    @SuppressWarnings("unchecked")
+    public CacheItemMap<DeviceSettingDefinition,VehicleSetting> getVehicleSettingMap() {
+        return (CacheItemMap<DeviceSettingDefinition, VehicleSetting>)adminCacheBean.getMap("vehicleSettings");
+    }
+
+    public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
+        this.configuratorDAO = configuratorDAO;
+    }
+
+    public ColumnFiltering<Vehicle> getChooseVehicleFiltering() {
+        return chooseVehicleFiltering;
+    }
+
+    public String getChooseVehicleSearchKeyword() {
+        return chooseVehicleSearchKeyword;
+    }
+
+    public void setChooseVehicleSearchKeyword(String chooseVehicleSearchKeyword) {
+        this.chooseVehicleSearchKeyword = chooseVehicleSearchKeyword;
+    }
+
+    public List<Vehicle> getChooseVehicleItems() {
+        return chooseVehicleItems;
     }
 }
