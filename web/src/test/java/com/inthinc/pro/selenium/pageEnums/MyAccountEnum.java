@@ -54,16 +54,16 @@ public enum MyAccountEnum implements SeleniumEnums {
     PHONE_TITLE("Phone Numbers", "//div[@class='panel_content']/div[2]"),
     TEXT_TITLE("Text Messages", "//div[@class='panel_content']/div[3]"),
 
-    EMAIL1_TITLE("E-mail 1:", "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[1]"),
+    EMAIL1_TITLE("E-mail 1", "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[1]"),
     EMAIL1_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[2]"),
     
-    EMAIL2_TITLE("E-mail 2:", "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[1]"),
+    EMAIL2_TITLE("E-mail 2", "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[1]"),
     EMAIL2_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[2]"),
     
-    PHONE1_TITLE("Phone 1:", "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[1]"),
+    PHONE1_TITLE("Phone 1", "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[1]"),
     PHONE1_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[2]"),
     
-    PHONE2_TITLE("Phone 2:", "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[1]"),
+    PHONE2_TITLE("Phone 2", "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[1]"),
     PHONE2_TEXT(null, "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[2]"),
     
     TEXT_MESSAGES1_TITLE("Text Message 1:", "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[1]/td[1]"),
