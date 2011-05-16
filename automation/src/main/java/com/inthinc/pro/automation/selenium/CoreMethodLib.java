@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.selenium;
 
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -407,10 +406,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     public CoreMethodLib select(SeleniumEnums myEnum, String label) {
         String element = getLocator(myEnum);
         String error_name = "select: " + element + " : Label = " + label;
-
+        
         try {
             select(element, label);
-            pause(5, "select: " + element + " : Label = " + label);
+            pause(5, error_name);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
@@ -540,6 +539,21 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
             	break;
             }
             pause(1, "waitForElementPresent"); // second
+            x++;
+            doneWaiting = x > secondsToWait;
+        }
+        return this;
+    }
+    
+    public CoreMethodLib waitForElementPresent(String element, Integer secondsToWait) {
+        Integer x = 0;
+        boolean found = false;
+        boolean doneWaiting = false;
+        while (!found || !doneWaiting) {
+            if (isElementPresent(element)){
+            	break;
+            }
+            pause(1, "waitForElementPresent: " + element); // second
             x++;
             doneWaiting = x > secondsToWait;
         }

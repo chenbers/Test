@@ -60,6 +60,7 @@ public class DropDown extends Text implements Selectable {
         	xpath = getSelectXpath();
         }
         xpath = xpath + "/option["+Id.text(desiredOption)+"]";
+        selenium.waitForElementPresent(xpath, 10);
         webDriver.findElements(By.xpath(xpath)).get(matchNumber).setSelected();
         return this;
     }
@@ -72,6 +73,7 @@ public class DropDown extends Text implements Selectable {
         	xpath = getSelectXpath();
         }
         xpath = xpath + "/option["+Id.contains(Id.text(), partialMatch)+"]";
+        selenium.waitForElementPresent(xpath, 10);
         webDriver.findElements(By.xpath(xpath)).get(matchNumber).setSelected();
         return this;
     }

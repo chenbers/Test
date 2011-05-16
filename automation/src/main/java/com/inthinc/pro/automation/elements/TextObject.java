@@ -22,7 +22,7 @@ public abstract class TextObject extends ElementBase implements TextBased {
     public ElementInterface compareText(String expected) {
         String actual = getText();
         if (!expected.equals(actual)) {
-            addError(this.myEnum.toString(), "Expected = " + expected + "\nActual = " + actual);
+            addError(this.myEnum.toString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual);
         }
         return this;
     }
