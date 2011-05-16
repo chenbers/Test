@@ -50,12 +50,12 @@ import com.inthinc.pro.util.SelectItemUtil;
 /**
  * @author David Gileadi
  */
-
+@SuppressWarnings("unused")
 public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implements PersonChangeListener, Serializable
 {
     private static final long                     serialVersionUID       = 1L;
 
-    static final List<String>                     AVAILABLE_COLUMNS;
+    static final List<String>             AVAILABLE_COLUMNS;
     private static final int[]                    DEFAULT_COLUMN_INDICES = new int[] { 0, 1, 8, 12, 13,18};
 
     private static final Map<String, String>      YEARS;
@@ -120,12 +120,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     private VehicleSettingsFactory              vehicleSettingsFactory;
     private Map<Integer, VehicleSettingManager> vehicleSettingManagers;
 
-//    private CacheBean cacheBean;
+    private CacheBean cacheBean;
     
     private FwdCmdSpoolWS fwdCmdSpoolWS;
 
-    private Map<Integer, Driver> driverMap;
-    private Map<Integer, Device> deviceMap;
     
     @Override
     public void initBean() {
@@ -151,13 +149,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         return getFilterValues().get("productType") == null || getFilterValues().get("productType").equals(productType);
     }
-//    public CacheBean getCacheBean() {
-//		return cacheBean;
-//	}
-//
-//	public void setCacheBean(CacheBean cacheBean) {
-//		this.cacheBean = cacheBean;
-//	}
+    public CacheBean getCacheBean() {
+		return cacheBean;
+	}
+
+	public void setCacheBean(CacheBean cacheBean) {
+		this.cacheBean = cacheBean;
+	}
 
     public void setVehicleDAO(VehicleDAO vehicleDAO)
     {
@@ -191,8 +189,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         // Get all the vehicles
         final List<Vehicle> plainVehicles = vehicleDAO.getVehiclesInGroupHierarchy(getUser().getGroupID());
-        getDrivers();
-        getDevices();
         
        // Get all the settings 
         
@@ -203,9 +199,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         for (final Vehicle vehicle : plainVehicles)
         {
             VehicleView vehicleView = createVehicleView(vehicle);
-            if (!isBatchEdit())
-                vehicleView.initForwardCommandDefs();
-
             checkForSettings(vehicle.getVehicleID());
             vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(vehicle.getVehicleID()).associateSettings(vehicle.getVehicleID()));
 
@@ -269,8 +262,8 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicleView.setOldGroupID(vehicle.getGroupID());
         vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
-//        if (!isBatchEdit())
-//            vehicleView.initForwardCommandDefs();
+        if (!isBatchEdit())
+            vehicleView.initForwardCommandDefs();
 
 
         return vehicleView;
@@ -364,6 +357,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicle.setStatus(Status.ACTIVE);
         //TODO decide how to create add item
         VehicleView vehicleView = createVehicleView(vehicle);
+//        if(batchEditProductChoice != null){
+//            createSettingManagerForCreateItem();
+//            vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
+//        }
         return vehicleView;
     }
 
@@ -448,51 +445,9 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     {
         if (drivers == null)
             drivers = driverDAO.getAllDrivers(getUser().getGroupID());
-            createDriverMap(drivers);
         return drivers;
     }
-    
-    private void createDriverMap(List<Driver> driverList){
-        
-        driverMap = new HashMap<Integer,Driver>();
-        for(Driver driver : driverList){
-            
-            driverMap.put(driver.getDriverID(), driver);
-        }
-    }
-    private Driver getDriver(Integer driverID){
-        Driver driver = driverMap.get(driverID);
-        if (driver == null){
-            driver = driverDAO.findByID(driverID);
-            if(driver != null){
-                driverMap.put(driverID, driver);
-            }
-        }
-        return driver;
-    }
-    public void getDevices()
-    {
-        if (deviceMap == null){
-            List<Device> devices = deviceDAO.getDevicesByAcctID(getUser().getPerson().getAcctID());
-            createDeviceMap(devices);
-        }
-    }
-    
-    private void createDeviceMap(List<Device> driverList){
-        
-        deviceMap = new HashMap<Integer,Device>();
-        for(Device device : driverList){
-            
-            deviceMap.put(device.getDeviceID(), device);
-        }
-    }
-    private Device getDevice(Integer deviceID){
-        Device device = deviceMap.get(deviceID);
-        if (device == null){
-            device = deviceDAO.findByID(deviceID);
-        }
-        return device;
-    }
+
     @Override
     public void personListChanged()
     {
@@ -559,7 +514,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
 
         // TODO: this should be refactored, but to be on the save side, just clear the cache and force a refresh when vehicle(s) change
-//        cacheBean.setVehicleMap(null);
+        cacheBean.setVehicleMap(null);
         return super.save();
     }
     
@@ -741,14 +696,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return ProductTypeSelectItems.INSTANCE.getSelectItems();
     }
 
+    public List<SelectItem> getVehicleTypesSelectItems() {
+        return VehicleTypeSelectItems.INSTANCE.getSelectItems();
+    }
+
     public List<SelectItem> getStatusSelectItems() {
         return DeviceStatusSelectItems.INSTANCE.getSelectItems();
     }
 
-    public List<SelectItem> getVehicleTypesSelectItems() {
-        return VehicleTypeSelectItems.INSTANCE.getSelectItems();
-    }
- 
     public Map<String, State> getStates()
     {
         return STATES;
@@ -900,16 +855,14 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         public Driver getDriver()
         {
             if (driver == null)
-//                driver = bean.driverDAO.findByID(getDriverID());
-                driver = bean.getDriver(getDriverID());
+                driver = bean.driverDAO.findByID(getDriverID());
             return driver;
         }
 
         public Device getDevice()
         {
             if (device == null)
-//                device = bean.deviceDAO.findByID(getDeviceID());
-                device = bean.getDevice(getDeviceID());
+                device = bean.deviceDAO.findByID(getDeviceID());
             return device;
         }
         
