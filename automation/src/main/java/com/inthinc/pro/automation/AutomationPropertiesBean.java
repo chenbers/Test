@@ -29,7 +29,7 @@ public class AutomationPropertiesBean {
         else if(getDefaultWebDriverName().equalsIgnoreCase("firefox"))
             return new FirefoxDriver();
         else
-            return null; //TODO: jwimmer: how do we want to handle boxes with NO default browser set!
+            return new FirefoxDriver(); //TODO: jwimmer: how do we want to handle boxes with NO default browser set!
     }
     public ArrayList<WebDriver> getAvailableWebDrivers() {
        ArrayList<WebDriver> results = new ArrayList<WebDriver>();
