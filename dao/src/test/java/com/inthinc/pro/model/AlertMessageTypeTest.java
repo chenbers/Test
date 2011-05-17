@@ -73,7 +73,8 @@ public class AlertMessageTypeTest {
             System.out.println(type + " mask " + Long.toHexString(mask) +" bitmask " + Long.toHexString(type.getBitMask()));
         }
         
-        assertEquals("fffdfffff", Long.toHexString(mask));
+        String tmp = Long.toHexString(mask);
+        assertEquals("7ffdfffff", Long.toHexString(mask));
         
         List<AlertMessageType> allTypes = AlertMessageType.getAlertMessageTypes(mask);
         for (AlertMessageType type : allTypes)

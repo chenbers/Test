@@ -16,7 +16,7 @@ public class EventCategoryTest {
             11,
             2,
             2,
-            2
+            4
     };
     
     @Test
