@@ -217,6 +217,11 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             alertView.setLimitValue(flag.getMaxEscalationTryTime());
         }
         
+        // convert idlingThreshold
+        if ( alertView.getIdlingThreshold() != null ) {
+            alertView.setIdlingThreshold(alertView.getIdlingThreshold()/60);
+        }
+        
         return alertView;
     }
     
@@ -584,8 +589,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             flag.setEscalationTimeBetweenRetries(item.getDelay().getCode());
              
             // convert input idling time to seconds, if provided 
-            if ( flag.getSelectedAlertTypes().get(AlertMessageType.ALERT_TYPE_IDLING_THRESHOLD.name()) ) {
-                flag.setIdlingThreshold(flag.getIdlingThreshold()*60);
+            if ( flag.getSelectedAlertTypes().get(AlertMessageType.ALERT_TYPE_IDLING.name()) ) {
+                flag.setIdlingThreshold(flag.getIdlingThreshold()*DateUtil.SECONDS_IN_MINUTE);
             }
               
             // to the db
@@ -595,6 +600,12 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             else {
                 redFlagAlertsDAO.update(flag);
             }
+            
+            // reconvert idlingThreshold back, for view
+            if ( flag.getSelectedAlertTypes().get(AlertMessageType.ALERT_TYPE_IDLING.name()) ) {
+                flag.setIdlingThreshold(flag.getIdlingThreshold()/DateUtil.SECONDS_IN_MINUTE);
+            }
+            
             // add a message
             final String summary = MessageUtil.formatMessageString(create ? "redFlag_added" : "redFlag_updated", flag.getName());
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
