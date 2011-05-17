@@ -33,9 +33,7 @@ public enum EventSubCategory implements BaseEnum
             
     VEHICLE(5, 
             EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.POTENTIAL_TAMPERING),
-//            EnumSet.of(EventType.LOW_BATTERY, EventType.DEVICE_LOW_BATTERY, EventType.TAMPERING, EventType.IDLING, EventType.IGNITION_ON, EventType.IGNITION_OFF, EventType.POTENTIAL_TAMPERING,EventType.RF_SWITCH),            
-            EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON,AlertMessageType.ALERT_TYPE_IDLING_THRESHOLD)), 
-//            EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON,AlertMessageType.ALERT_TYPE_RF_SWITCH,AlertMessageType.ALERT_TYPE_IDLING_THRESHOLD)), 
+            EnumSet.of(AlertMessageType.ALERT_TYPE_LOW_BATTERY, AlertMessageType.ALERT_TYPE_TAMPERING,AlertMessageType.ALERT_TYPE_IGNITION_ON,AlertMessageType.ALERT_TYPE_IDLING)), 
             
     WIRELINE(6, 
             EnumSet.of(EventType.WIRELINE_ALARM),
@@ -59,12 +57,7 @@ public enum EventSubCategory implements BaseEnum
             
     TEXTMESSAGE(11,
             EnumSet.of(EventType.TEXT_MESSAGE),
-            EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED)),
-            
-    RF_SWITCH(12,
-            EnumSet.of(EventType.RF_SWITCH),
-            EnumSet.of(AlertMessageType.ALERT_TYPE_RF_SWITCH));
-//    OFFHOURS(12,EnumSet.of(EventType.OFF_HOURS),EnumSet.of(AlertMessageType.ALERT_TYPE_OFF_HOURS));
+            EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED));
     
     private int code;
     
