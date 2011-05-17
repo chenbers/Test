@@ -19,6 +19,8 @@ public class AutomationPropertiesBean {
     private String hasChrome;
 
     public WebDriver getDefaultWebDriver() {
+        System.out.println("public WebDriver getDefaultWebDriver()"); //TODO: jwimmer: remove temporary loggers
+        System.out.println("getDefaultWebDriverName(): "+getDefaultWebDriverName());
         //TODO: jwimmer: replace with switch/case
         if(getDefaultWebDriverName().equalsIgnoreCase("ie"))
             return new InternetExplorerDriver();
