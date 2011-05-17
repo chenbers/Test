@@ -149,7 +149,7 @@ public class DataGenForPaginationTesting extends DataGenForTesting {
 					eventGenerator.generateTripExt(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(5,5,5,5,true,20,100), itData.zone.getZoneID());
 				break;
                 case 3:         // waysmart
-                    eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(0,0,0,0,false,30,0), false, itData.zone.getZoneID(), true);
+                    eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(0,0,0,0,false,30,0), false, itData.zone.getZoneID(), true, true);
                 break;
 				
 				}

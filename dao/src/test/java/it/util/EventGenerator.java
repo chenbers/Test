@@ -194,16 +194,21 @@ public class EventGenerator
     static int eventCount;    
 	public void generateTripExt(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, Integer zoneID ) throws Exception
 	{
-		generateTrip(imeiID, service, startTime, data, true, zoneID, false);
+		generateTrip(imeiID, service, startTime, data, true, zoneID, false, true);
 	}
 //boolean tampering = false;
     public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data ) throws Exception
     {
-		generateTrip(imeiID, service, startTime, data, false, 0, false);
+		generateTrip(imeiID, service, startTime, data, false, 0, false, true);
     	
     }
+    public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, boolean genCoaching ) throws Exception
+    {
+        generateTrip(imeiID, service, startTime, data, false, 0, false, genCoaching);
+        
+    }
 
-    public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, boolean includeExtraEvents, Integer zoneID, boolean includeWaysmartEvents ) throws Exception
+    public void generateTrip(String imeiID, MCMSimulator service, Date startTime, EventGeneratorData data, boolean includeExtraEvents, Integer zoneID, boolean includeWaysmartEvents, boolean genCoaching ) throws Exception
     {
     	System.out.println("generate trip for imei" + imeiID + " Date: " + startTime);
     	
@@ -389,7 +394,7 @@ public class EventGenerator
 
 
             // coaching events
-        	if (data.isSpeedingIndex(i) || data.isSeatbeltIndex(i)) 
+        	if ((data.isSpeedingIndex(i) || data.isSeatbeltIndex(i)) && genCoaching) 
             {
         		if (data.isSpeedingIndex(i))
         			event = new Event(0l, 0, NoteType.COACHING_SPEEDING,

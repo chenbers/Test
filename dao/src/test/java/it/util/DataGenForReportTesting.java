@@ -1,5 +1,6 @@
 package it.util;
 
+import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.IntegrationConfig;
 import it.config.ReportTestConst;
@@ -13,10 +14,15 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+import com.inthinc.pro.dao.hessian.EventHessianDAO;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.NoteType;
 
 public class DataGenForReportTesting extends DataGenForTesting {
 	public String xmlPath;
@@ -25,6 +31,46 @@ public class DataGenForReportTesting extends DataGenForTesting {
 	public Integer numDays;
 
     public static Integer NUM_EVENT_DAYS = 31;
+    
+    
+    @Override
+    protected void generateDayData(MCMSimulator mcmSim, Date date, Integer driverType, List<GroupData> teamGroupData) throws Exception 
+    {
+        EventHessianDAO eventDAO = new EventHessianDAO();
+        eventDAO.setSiloService(siloService);
+        
+        for (GroupData groupData : teamGroupData)
+        {
+            if (groupData.driverType.equals(driverType))
+            {
+                
+                EventGenerator eventGenerator = new EventGenerator();
+                switch (driverType.intValue()) {
+                case 0:         // good
+                    eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,0,false,30,0), false);
+                    // forgive all of the events
+                    List<NoteType> noteTypes = EventCategory.VIOLATION.getNoteTypesInCategory();
+                    Integer driverID = groupData.driver.getDriverID();
+                    List<Event> eventList = eventDAO.getEventsForDriver(driverID, date, new Date(date.getTime() + DateUtil.MILLISECONDS_IN_DAY-1000l), noteTypes, 0);
+System.out.println("found " + eventList.size() + " events to forgive");                    
+                    for (Event event : eventList) {
+                        eventDAO.forgive(driverID, event.getNoteID());
+                    }
+                    break;
+                case 1:         // intermediate
+                    eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(1,1,1,1,false,25,50));
+                break;
+                case 2:         // bad
+                    eventGenerator.generateTrip(groupData.device.getImei(), mcmSim, date, new EventGeneratorData(5,5,5,5,true,20,100));
+                break;
+                
+                }
+            }       
+        }
+            
+        
+    }
+
 
     
     @Override
