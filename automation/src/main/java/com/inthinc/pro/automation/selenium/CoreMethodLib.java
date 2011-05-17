@@ -11,6 +11,8 @@ import org.openqa.selenium.WebDriverBackedSelenium;
 import com.google.common.base.Supplier;
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.utils.Id;
+import com.inthinc.pro.automation.utils.Xpath;
 import com.thoughtworks.selenium.DefaultSelenium;
 
 /****************************************************************************************
@@ -37,13 +39,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         super(baseDriver, baseUrl);
         errors = new ErrorCatcher();
     }
-
-    public CoreMethodLib addToPanel(SeleniumEnums myEnum, String itemtomove) {
-        addSelection(getLocator(myEnum) + "-from", itemtomove);
-        click(getLocator(myEnum) + "-move_right");
-        pause(2, "addToPanel");
-        return this;
-    }
     
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#click(String)}
@@ -53,7 +48,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public CoreMethodLib click(SeleniumEnums myEnum) {
         String element = getLocator(myEnum);
-        String error_name = "click: " + element;
+        String error_name = "click: " + myEnum.toString();
         try {
             click(element);
             pause(2, "click("+myEnum+")");
@@ -100,7 +95,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     
     public String getSelectedIndex(SeleniumEnums myEnum){
         String element = getLocator(myEnum);
-        String error_name = "select: " + element;
+        String error_name = "select: " + myEnum.toString();
         try {
             return getSelectedIndex(element);
         } catch (RuntimeException e) {
@@ -190,7 +185,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public String getSelectedLabel(SeleniumEnums myEnum) {
         String element = getLocator(myEnum);
-        String error_name = "select: " + element;
+        String error_name = "select: " + myEnum.toString();
         try {
             return getSelectedLabel(element);
         } catch (RuntimeException e) {
@@ -210,7 +205,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public CoreMethodLib focus(SeleniumEnums myEnum) {
         String element = getLocator(myEnum);
-        String error_name = "focus: " + element;
+        String error_name = "focus: " + myEnum.toString();
         try {
             focus(element);
         } catch (RuntimeException e) {
@@ -239,7 +234,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public String getTable(SeleniumEnums myEnum, Integer row, Integer col) {
         StringBuffer element = new StringBuffer(getLocator(myEnum));
-        String error_name = "Click: " + element;
+        String error_name = "Click: " + myEnum.toString();
         String text = "";
         try {
             if(row != null && col != null)
@@ -264,7 +259,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     public String getText(SeleniumEnums myEnum) {
         logger.debug(" getText("+myEnum.toString()+")");
         String element = getLocator(myEnum);
-        String error_name = "getText: " + element;
+        String error_name = "getText: " + myEnum.toString();
         String text = "";
         try {
             text = getText(element);
@@ -284,7 +279,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @return
      */    public Boolean isChecked(SeleniumEnums myEnum) {
         String element = getLocator(myEnum);
-        String error_name = "isChecked: " + element;
+        String error_name = "isChecked: " + myEnum.toString();
         try {
             return isChecked(element);
         } catch (RuntimeException e) {
@@ -337,7 +332,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public Boolean isVisible(SeleniumEnums myEnum) {
         String element = getLocator(myEnum);
-        String error_name = "isVisible: " + element;
+        String error_name = "isVisible: " + myEnum.toString();
         try {
             return isVisible(element);
         } catch (RuntimeException e) {
@@ -348,16 +343,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return false;
     }
 
-    public CoreMethodLib moveAllPanel(SeleniumEnums myEnum, String moveoption) {
-        String element = getLocator(myEnum);
-        if (moveoption.contentEquals("Right")) {
-            click(element + "-move_all_right");
-        } else if (moveoption.contentEquals("Left")) {
-            click(element + "-move_all_left");
-        }
-        pause(2, "moveAllPanel");
-        return this;
-    }
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#open(String)}
@@ -366,7 +351,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public CoreMethodLib open(SeleniumEnums myEnum) {
         String element = myEnum.getURL();
-        String error_name = "open: " + element;
+        String error_name = "open: " + myEnum.toString();
         try {
             open(element);
         } catch (RuntimeException e) {
@@ -390,13 +375,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
 
-    public CoreMethodLib removeFromPanel(SeleniumEnums myEnum, String itemtomove) {
-        addSelection(getLocator(myEnum) + "-picked", itemtomove);
-        click(getLocator(myEnum) + "-move_left");
-        pause(2, "removeFromPanel");
-        return this;
-    }
-
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#select(String, String)}
      * @param myEnum
@@ -405,7 +383,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public CoreMethodLib select(SeleniumEnums myEnum, String label) {
         String element = getLocator(myEnum);
-        String error_name = "select: " + element + " : Label = " + label;
+        String error_name = "select: " + myEnum.toString() + " : Label = " + label;
         
         try {
             select(element, label);
@@ -418,30 +396,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
     
-//    public CoreMethodLib selectDhxCombo(Integer divPosition, String entry_name) {
-//        String element = "//div[" + divPosition + "]/div[text()='" + entry_name + "']";
-//        click(element);
-//        return this;
-//    }
-//
-//    public CoreMethodLib selectDhxCombo(String entry_name) {
-//        String element = "//div[text()='" + entry_name + "']";
-//        click(element);
-//        return this;
-//    }
-//
-//    public CoreMethodLib selectDhxCombo(String[] entry_name) {
-//        StringWriter aStringAString = new StringWriter();
-//        for (int i = 0; i < entry_name.length; i++) {
-//            aStringAString.write(entry_name[i]);
-//            if (i != (entry_name.length - 1)) {
-//                aStringAString.write(" - ");
-//            }
-//        }
-//        selectDhxCombo(aStringAString.toString());
-//        return this;
-//    }
-
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#selectWindow(String)}
      * @param ID
@@ -511,7 +465,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public CoreMethodLib type(SeleniumEnums myEnum, String text) {
         String element = getLocator(myEnum);
-        String error_name = "type: " + element;
+        String error_name = "type: " + myEnum.toString();
         try {
             type(element, text);
         } catch (RuntimeException e) {
@@ -592,7 +546,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      */
     public CoreMethodLib mouseOver(SeleniumEnums myEnum) {
         String element = getLocator(myEnum);
-        String error_name = "mouseOver: " + element;
+        String error_name = "mouseOver: " + myEnum.toString();
         try {
             mouseOver(element);
         } catch (RuntimeException e) {
@@ -605,7 +559,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 
 	public CoreMethodLib check(AutomationEnum myEnum) {
 		String element = getLocator(myEnum);
-        String error_name = "mouseOver: " + element;
+        String error_name = "mouseOver: " + myEnum.toString();
         try {
             check(element);
         } catch (RuntimeException e) {
@@ -618,7 +572,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 	
 	public CoreMethodLib uncheck(AutomationEnum myEnum) {
 		String element = getLocator(myEnum);
-        String error_name = "mouseOver: " + element;
+        String error_name = "mouseOver: " + myEnum.toString();
         try {
             uncheck(element);
         } catch (RuntimeException e) {
@@ -628,5 +582,60 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         }
 		return this;
 	}
+
+	public CoreMethodLib addSelection(AutomationEnum myEnum, String item) {
+		String element = getLocator(myEnum);
+        String error_name = "addSelection: " + myEnum.toString();
+        try{
+        	addSelection(element, item);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return this;
+	}
+	
+	public CoreMethodLib removeSelection(AutomationEnum myEnum, String item) {
+		String element = getLocator(myEnum);
+        String error_name = "removeSelection: " + myEnum.toString();
+        try{
+        	removeSelection(element, item);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return this;
+	}
+	
+	public CoreMethodLib removeAllSelections(AutomationEnum myEnum) {
+		String element = getLocator(myEnum);
+        String error_name = "removeAllSelections: " + myEnum.toString();
+        try{
+        	removeAllSelections(element);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return this;
+	}
+
+	public CoreMethodLib selectDhx(AutomationEnum myEnum, String option) {
+		String element = getLocator(myEnum);
+        String error_name = "removeAllSelections: " + myEnum.toString();
+		String xpath = Xpath.start().body().div(Id.id(element)).div(option).toString();
+		try{
+        	click(xpath);
+        	pause(3, "Need a pause");
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return this;
+	}
+
 
 }

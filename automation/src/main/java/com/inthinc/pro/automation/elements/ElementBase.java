@@ -141,7 +141,7 @@ public class ElementBase implements ElementInterface {
     protected void setCurrentLocation(){
         String uri = getCurrentLocation();
         logger.debug(uri);
-        String[] address = uri.split("/"); //TODO: jwimmer: doesn't seem very robust on pages where MORE than the last portion of the URL is significant?
+        String[] address = uri.split("/");
         current = new HashMap<String, String>();
         current.put("protocol", address[0]);
         String[] url = address[2].split(":");

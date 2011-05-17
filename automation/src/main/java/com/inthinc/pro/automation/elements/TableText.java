@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.TextEnum;
 
 public class TableText extends TextObject implements TextBased {
     public TableText(SeleniumEnums anEnum) {
@@ -12,6 +13,10 @@ public class TableText extends TextObject implements TextBased {
     }
     public TableText(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
+    }
+    public TableText(SeleniumEnums anEnum, String replaceWord, TextEnum column){
+    	super(anEnum, replaceWord);
+    	myEnum.replaceOldWithNew("*column*", column.getText());
     }
     public TableText(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);

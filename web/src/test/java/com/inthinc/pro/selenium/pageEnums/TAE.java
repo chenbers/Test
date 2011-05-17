@@ -4,6 +4,27 @@ import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
 public class TAE {
+	public static enum ScoreSelectEnum implements TextEnum{
+
+	    CLEAR(""),
+	    _0_1("0.0 - 1.0"),
+	    _1_2("1.1 - 2.0"),
+	    _2_3("2.1 - 3.0"),
+	    _3_4("3.1 - 4.0"),
+	    _4_5("4.1 - 5.0"),
+	    
+	    ;
+	    
+	    private String text;
+	    private ScoreSelectEnum(String text){
+	    	this.text = text;
+	    }
+	    
+	    public String getText(){
+	    	return text;
+	    }
+	}
+	
 	public static enum Locale implements TextEnum{
 		ENGLISH("English (United States)"),
 		ROMANIAN("rom&acirc;n&#259;"),

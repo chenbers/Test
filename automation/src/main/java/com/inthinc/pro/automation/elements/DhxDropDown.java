@@ -3,7 +3,6 @@ package com.inthinc.pro.automation.elements;
 import org.openqa.selenium.By;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
-
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.SeleniumValueEnums;
@@ -13,6 +12,11 @@ import com.inthinc.pro.automation.utils.Xpath;
 public class DhxDropDown extends DropDown implements Selectable {
 	private AutomationEnum dhxImage;
 	private String page;
+	
+	private String removeScript =
+		"var myBody = document.getElementsByTagName(\"body\"[1]);" +
+		"var div = document.getElementsByTagName(\"div\")[1];" +
+		"myBody.removeChild(div);";
 
 	private SeleniumEnums[] enums;
 
@@ -30,6 +34,12 @@ public class DhxDropDown extends DropDown implements Selectable {
 		super(anEnum, replaceWord);
 		page = replaceWord;
 		enums = new SeleniumEnums[]{myEnum};
+	}
+	
+	public DhxDropDown(SeleniumEnums anEnum, String replaceWord, SeleniumEnums ...enums) {
+		super(anEnum, replaceWord);
+		page = replaceWord;
+		this.enums = enums;
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord,
@@ -49,6 +59,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 				div++;
 			}
 		}
+//		removeOldDivs(div--);
 		selenium.click(dhxImage);
 		myEnum.setID(myEnum.toString());
 		return this;
@@ -62,10 +73,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 	@Override
 	public DhxDropDown select(Integer optionNumber) {
 		assignIDs();
-		optionNumber--;
-		String xpath = Xpath.start().body().div(Id.id(myEnum.getIDs()[0]))
-				.div(optionNumber.toString()).toString();
-		selenium.click(xpath);
+		selenium.selectDhx(myEnum, optionNumber.toString());
 		return this;
 	}
 
@@ -85,9 +93,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 	public DhxDropDown select(String fullMatch, Integer matchNumber) {
 		assignIDs();
 		matchNumber--;
-		String xpath = Xpath.start().div(Id.id(myEnum.getIDs()[1]))
-				.div(Id.text(fullMatch)).toString();
-		webDriver.findElements(By.xpath(xpath)).get(matchNumber).setSelected();
+		getMatches(makeXpath(Id.text(fullMatch)), matchNumber).setSelected();
 		return this;
 	}
 
@@ -102,15 +108,23 @@ public class DhxDropDown extends DropDown implements Selectable {
 			Integer matchNumber) {
 		assignIDs();
 		matchNumber--;
-		String xpath = Xpath.start().div(Id.id(myEnum.getIDs()[1]))
-				.div(Id.contains(Id.text(), partialMatch)).toString();
-		webDriver.findElements(By.xpath(xpath)).get(matchNumber).setSelected();
+		getMatches(makeXpath(Id.contains(Id.text(), partialMatch)), matchNumber).setSelected();
 		return this;
 	}
-
-	public DhxDropDown tableOptions(SeleniumEnums... enums) {
-		this.enums = enums;
+	
+	private String makeXpath(String secondDiv){
+		String xpath = Xpath.start().div(Id.id(myEnum.getIDs()[0]))
+		.div(secondDiv).toString();
+		return xpath;
+	}
+	
+	private DhxDropDown removeOldDivs(Integer divs){
+		Integer newCount = webDriver.findElements(By.xpath("//body/div[@class='dhx_combo_list']")).size();
+		Integer elementsToRemove = newCount - divs;
+		logger.info(elementsToRemove);
+		for (int i=0;i<elementsToRemove;i++){
+			selenium.runScript(removeScript);
+		}
 		return this;
 	}
-
 }

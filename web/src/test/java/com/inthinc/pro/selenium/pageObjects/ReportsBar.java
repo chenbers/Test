@@ -24,8 +24,7 @@ public abstract class ReportsBar extends NavigationBar {
 
 		protected DhxDropDown score(SeleniumEnums DHX, SeleniumEnums arrow,
 				String page) {
-			return new DhxDropDown(DHX, page).tableOptions(enums)
-					.dropDownButton(arrow);
+			return new DhxDropDown(DHX, page, enums).dropDownButton(arrow);
 		}
 	}
 

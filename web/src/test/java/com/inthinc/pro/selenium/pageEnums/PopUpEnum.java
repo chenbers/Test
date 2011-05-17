@@ -88,6 +88,13 @@ public enum PopUpEnum implements SeleniumEnums {
     MY_CURRENT_ERROR(null, "//tr[1]/td[2]/span/span[@class='rich-message-label']"),
     MY_NEW_ERROR(null, "//tr[2]/td[2]/span/span[@class='rich-message-label']"),
     MY_CONFIRM_ERROR(null, "//tr[3]/td[2]/span/span[@class='rich-message-label']"),
+    
+    /* Admin Delete PopUp */
+    DELETE_CONFIRM("Delete", "confirmDeleteForm:***Table-deleteButton"),
+    DELETE_CANCEL("Cancel", "***Table-confirmDeleteCancel"),
+    DELETE_HEADER(null, "confirmDeleteHeader"),
+    DELETE_MESSAGE("Delete the following items? This action is irreversible.", "//table[@id='confirmDeleteContentTable']/tbody/tr[2]/td/div[@class='popupsubtitle']"),
+    DELETE_CLOSE(null, "//div[@id='confirmDeleteContentDiv']/div/img"),
 
     
 	;

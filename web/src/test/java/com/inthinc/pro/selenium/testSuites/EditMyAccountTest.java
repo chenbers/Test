@@ -51,7 +51,6 @@ public class EditMyAccountTest extends WebRallyTest {
 		
 		/* Edit button */
 		my._button().edit().click();
-		my.getSelenium().pause(5, "wait for edit screen");
 
 		/* Login Info */
 		my._select().locale().select(Locale.ENGLISH);

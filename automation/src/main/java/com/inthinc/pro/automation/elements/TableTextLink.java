@@ -3,6 +3,7 @@ package com.inthinc.pro.automation.elements;
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.TextEnum;
 
 public class TableTextLink extends TextLink implements Clickable, TextBased {
     private TableText table;
@@ -17,6 +18,12 @@ public class TableTextLink extends TextLink implements Clickable, TextBased {
     public TableTextLink(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
         table = new TableText(anEnum);
+    }
+    
+    public TableTextLink(SeleniumEnums anEnum, String replaceWord, TextEnum column){
+    	super(anEnum, replaceWord);
+    	table = new TableText(anEnum, replaceWord, column);
+    	myEnum.replaceOldWithNew("*column*", column.getText());
     }
     public TableTextLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
@@ -56,16 +63,6 @@ public class TableTextLink extends TextLink implements Clickable, TextBased {
     
     
     /**
-     * Needs to be figured out how to make second replacement
-     * @param row
-     * @param column
-     * @return
-     */
-    public String getText(Integer row, Integer column){
-        return table.getText(row, column);
-    }
-    
-    /**
      * Choose the row, or Item number, that you want to click.<br />
      * If you are selecting the item from a 2D table<br />
      * then you want to count row by row left to right.<br />
@@ -75,17 +72,6 @@ public class TableTextLink extends TextLink implements Clickable, TextBased {
     public TableTextLink click(Integer row){
         myEnum.replaceNumber(row.toString());
         super.click();
-        return this;
-    }
-    
-    /**
-     * Needs to be figured out how to make second replacement
-     * @param row
-     * @param column
-     * @return
-     */
-    public TableTextLink click(Integer row, Integer column){
-        
         return this;
     }
 }

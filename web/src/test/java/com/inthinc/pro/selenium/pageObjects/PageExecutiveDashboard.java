@@ -12,34 +12,28 @@ public class PageExecutiveDashboard extends NavigationBar {
 	
 	public class DashboardButtons extends NavigationBarButtons {
 		
-		public Button overviewTools(){
-			page = overview;
-			type = Types.POPUP;
-			return new Button(ExecutiveDashBoardEnum.OVERVIEW_TOOL_BUTTON);
-		}
-		
 		public Button emailOverviewReport(){
 			return new Button(ExecutiveDashBoardEnum.OVERVIEW_EMAIL_BUTTON);
+		}
+		
+		public TextButton emailReport(){
+			return new TextButton(ExecutiveDashBoardEnum.TOOL_EMAIL_BUTTON, page);
 		}
 		
 		public Button exportOverviewPDF(){
 			return new Button(ExecutiveDashBoardEnum.OVERVIEW_PDF_BUTTON);
 		}
 		
-		public Button overallTools(){
-			page = overall;
-			type = Types.SINGLE;
-			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
+		public TextButton exportPDF(){
+			return new TextButton(ExecutiveDashBoardEnum.TOOL_PDF_BUTTON, page);
 		}
 		
-		public Button speedingTools(){
-			page = speed;
-			type = Types.SINGLE;
-			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
-		}
+		public Button fuelEfficiencyExpand() {
+            return new Button(ExecutiveDashBoardEnum.EXPAND, mpg);
+        }
 		
-		public Button trendTools(){
-			page = trend;
+		public Button fuelEfficiencyTools(){
+			page = mpg;
 			type = Types.SINGLE;
 			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
 		}
@@ -50,38 +44,44 @@ public class PageExecutiveDashboard extends NavigationBar {
 			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
 		}
 		
-		public Button fuelEfficiencyTools(){
-			page = mpg;
+		public Button liveFleetExpand() {
+            return new Button(ExecutiveDashBoardEnum.EXPAND_LIVE_FLEET);
+        }
+		
+		public Button overallExpand() {
+            return new Button(ExecutiveDashBoardEnum.EXPAND, overall);
+        }
+		
+		public Button overallTools(){
+			page = overall;
 			type = Types.SINGLE;
 			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
 		}
 		
-		public TextButton exportPDF(){
-			return new TextButton(ExecutiveDashBoardEnum.TOOL_PDF_BUTTON, page);
+		
+
+        public Button overviewTools(){
+			page = overview;
+			type = Types.POPUP;
+			return new Button(ExecutiveDashBoardEnum.OVERVIEW_TOOL_BUTTON);
 		}
-		
-		public TextButton emailReport(){
-			return new TextButton(ExecutiveDashBoardEnum.TOOL_EMAIL_BUTTON, page);
+
+        public Button speedingTools(){
+			page = speed;
+			type = Types.SINGLE;
+			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
 		}
-		
-		
-
-        public Button fuelEfficiencyExpand() {
-            return new Button(ExecutiveDashBoardEnum.EXPAND, mpg);
-        }
-
-        public Button liveFleetExpand() {
-            return new Button(ExecutiveDashBoardEnum.EXPAND_LIVE_FLEET);
-        }
-
-        public Button overallExpand() {
-            return new Button(ExecutiveDashBoardEnum.EXPAND, overall);
-        }
-
 
         public Button trendExpand() {
             return new Button(ExecutiveDashBoardEnum.EXPAND, trend);
         }
+
+
+        public Button trendTools(){
+			page = trend;
+			type = Types.SINGLE;
+			return new Button(ExecutiveDashBoardEnum.TOOL_BUTTON, page);
+		}
 
     }
 	
@@ -127,6 +127,16 @@ public class PageExecutiveDashboard extends NavigationBar {
 
     public class DashboardTextField extends NavigationBarTextFields{}
 
+    public class DashPopUps extends PopUps{
+    	public DashPopUps(){
+    		super(page, type, 2);
+    	}
+    	
+    	public Email emailReport(){
+    		return new Email();
+    	}
+    }
+    
     private String overall = "executive-overallScore", speed = "executive-speedPercentagePanel", trend = "executive-trend";
     
     private String idling = "executive-idlingPercentagePanel", mpg = "executive-mpgChart", overview = "overview";
@@ -134,7 +144,7 @@ public class PageExecutiveDashboard extends NavigationBar {
     private String page;
     
     private Types type;
-    
+
     public DashboardButtons _button() {
         return new DashboardButtons();
     }
@@ -147,26 +157,16 @@ public class PageExecutiveDashboard extends NavigationBar {
         return new DashboardLinks();
     }
 
-    public DashboardText _text(){
-        return new DashboardText();
-    }
-
-    public DashboardTextField _textField(){
-		return new DashboardTextField();
-	}
-    
-    public class DashPopUps extends PopUps{
-    	public DashPopUps(){
-    		super(page, type, 2);
-    	}
-    	
-    	public Email emailReport(){
-    		return new Email();
-    	}
-    }
-    
     public DashPopUps _popUp(){
     	return new DashPopUps();
     }
+    
+    public DashboardText _text(){
+        return new DashboardText();
+    }
+    
+    public DashboardTextField _textField(){
+		return new DashboardTextField();
+	}
 
 }

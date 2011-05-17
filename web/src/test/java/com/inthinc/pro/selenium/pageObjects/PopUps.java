@@ -27,6 +27,7 @@ public class PopUps {
 			return type;
 		}
 	}
+	
 
 	public PopUps(String page, Types type, Integer number) {
 		this.page = page;
@@ -102,6 +103,7 @@ public class PopUps {
 		public CheckBox _checkBox() {
 			return new CheckBox(PopUpEnum.EDIT_CHECKBOX, page);
 		}
+		
 	}
 
 	public class Email {
@@ -387,6 +389,39 @@ public class PopUps {
 			
 			public Button close(){
 				return new Button(PopUpEnum.MY_CHANGE_X);
+			}
+		}
+	}
+	
+	
+	public class AdminDelete{
+		public AdminDeleteButtons _button(){
+			return new AdminDeleteButtons();
+		}
+		public class AdminDeleteButtons{
+			public TextButton delete(){
+				return new TextButton(PopUpEnum.DELETE_CONFIRM,page);
+			}
+			
+			public TextButton cancel(){
+				return new TextButton(PopUpEnum.DELETE_CANCEL,page);
+			}
+			
+			public Button close(){
+				return new Button(PopUpEnum.DELETE_CLOSE);
+			}
+		}
+		
+		public AdminDeleteText _text(){
+			return new AdminDeleteText();
+		}
+		public class AdminDeleteText{
+			public Text header(){
+				return new Text(PopUpEnum.DELETE_HEADER);
+			}
+			
+			public Text message(){
+				return new Text(PopUpEnum.DELETE_MESSAGE);
 			}
 		}
 	}

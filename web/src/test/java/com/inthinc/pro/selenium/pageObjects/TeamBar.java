@@ -48,7 +48,7 @@ public abstract class TeamBar extends NavigationBar {
             return new Text(TeamBarEnum.MILES_SINCE_TEXT);
         }
     
-        public Text whatHappened_getText() {
+        public Text whatHappened() {
             return new Text(TeamBarEnum.SUB_TITLE);
         }
     
@@ -61,7 +61,7 @@ public abstract class TeamBar extends NavigationBar {
         }
     }
 
-    public TeamBar section_timeSelectors_validate() {
+    public TeamBar timeSelectors_validate() {
         ElementBase validate = new ElementBase();
         for (TeamTimeFrames selector : EnumSet.allOf(TeamTimeFrames.class)) {
             validate.validateTextMatches(selector);

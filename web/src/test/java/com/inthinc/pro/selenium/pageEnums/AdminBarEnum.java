@@ -47,13 +47,33 @@ public enum AdminBarEnum implements SeleniumEnums {
     ACCOUNT_IMAGE(null, "//tr[11]/td/dl/dd/table/tbody/tr/td[1]"),
     ACCOUNT("Account", "link=Account", "//tr[11]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-account"),
 
-    EDIT_COLUMNS_HEADER(editColumns, "editColumnsHeader"),
-    EDIT_COLUMNS_CANCEL(cancel, "editColumnsForm:***Table-editColumnsPopupCancel"),
-    EDIT_COLUMNS_SAVE(save, "editColumnsForm:***Table-editColumnsPopupSave"),
-    EDIT_COLUMNS_TITLE("The selected columns will be displayed.", Xpath.start().div(Id.clazz("popupsubtitle")).toString()),
+    
+    /* Buttons and Strings */
+    SEARCH_BUTTON("Search", "admin-table-form:***Table-adminTableSearch" ),
+    SEARCH_LABEL("Search", "//table[@id='grid_nav_search_box']/tbody/tr/td[1]" ),
+    SEARCH_TEXTFIELD(null, "admin-table-form:***Table-filterTable" ),
+    DELETE("Delete", "admin-table-form:***Table-adminTableDelete"),
+    BATCH_EDIT("Batch Edit", "admin-table-form:***Table-adminTableEdit" ),
+    
+    COUNTER("Showing XXX to YYY of ZZZ records","admin-table-form:recordCounts"),
 
-    EDIT_COLUMNS_CHECKBOX(null, "editColumnsForm:***Table-editColumnsGrid:###:***Table-col"),
-    EDIT_COLUMNS_LABEL(null, Xpath.start().td(Id.id("editColumnsForm:***Table-editColumnsGrid:###")).label().text().toString())
+    
+    TITLE(null, Xpath.start().span(Id.clazz("admin")).toString()),
+
+    
+    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:personTable-adminTableEditColumns"),
+
+    TABLE_HEADERS(null, "admin-table-form:***Table:*column*header:sortDiv"),
+    TABLE_ENTRIES(null, "admin-table-form:***Table:###:*column*"),
+
+    SELECT_ALL(null, "admin-table-form:***Table:selectAll"),
+    SELECT_ROW(null, "admin-table-form:***Table:###:select"),
+
+    EDIT_ITEM("edit", "admin-table-form:***Table:###:edit"),
+    
+    
+    /* Multi Selector */
+    SELECTOR(null, "edit-form:edit***-*type*"),
 
     ;
 

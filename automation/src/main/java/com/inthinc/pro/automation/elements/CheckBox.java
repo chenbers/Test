@@ -9,5 +9,4 @@ public class CheckBox extends CheckableObject implements Checkable, Clickable {
         super(anEnum, replaceWord);
     }
 	
-	
 }

@@ -79,4 +79,5 @@ public abstract class AdminBar extends NavigationBar {
 
 	protected class AdminBarTexts extends NavigationBarTexts {
 	}
+	
 }
