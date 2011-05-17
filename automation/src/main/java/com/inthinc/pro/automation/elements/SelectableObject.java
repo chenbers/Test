@@ -88,7 +88,7 @@ public class SelectableObject extends Text implements Selectable {
 	    	List<String> ids = myEnum.getLocators();
 	    	for (String locator: ids){
 	    		if (!locator.contains("=") || !locator.startsWith("//")){
-	    			return Xpath.start().div(Id.id(locator)).toString();
+	    			return Xpath.start().select(Id.id(locator)).toString();
 	    		}
 	    	}
 	    	return null;
