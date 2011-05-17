@@ -240,21 +240,54 @@
                           </table>
 
                         </h:panelGroup>
+                        
+                        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'VEHICLE'}">
+                         	<h:panelGrid id="vehicTamp" columns="2" cellpadding="5"
+                         		rendered="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_TAMPERING'] == true}">
+                        		<h:outputText value="#{messages.alertTypeTampering}"/>
+                        		<h:outputText value=" "/>
+                        	</h:panelGrid>   
+                        	
+                        	<h:panelGrid id="vehicIgOn" columns="2" cellpadding="5" 
+                        		rendered="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IGNITION_ON'] == true}">
+                        		<h:outputText value="#{messages.alertTypeIgnitionOn}"/>
+                        		<h:outputText value=" "/>
+                        	</h:panelGrid>  
+                        	
+                        	<h:panelGrid id="vehicLoBat" columns="2" cellpadding="5" 
+                        		rendered="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_LOW_BATTERY'] == true}">
+                        		<h:outputText value="#{messages.alertTypeLowBattery}"/>
+                        		<h:outputText value=" "/>
+                        	</h:panelGrid>    
+                        	                    
+                        	<h:panelGrid id="vehicIdl" columns="2" cellpadding="5" 
+                        		rendered="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IDLING'] == true}">
+                        		<h:outputText value="#{messages.alertTypeIdlingLimit}"/>
+                        		<rich:inputNumberSlider id="idlingThreshold" value="#{redFlagOrZoneAlertsBean.item.idlingThreshold}" 
+                        			disabled="true"
+                                	width="250" onfocus="this.select();" showToolTip="false" 
+                                    showBoundaryValues="false" 
+                                    minValue="#{messages.alertTypeLowIdleLimit}" maxValue="#{messages.alertTypeHighIdleLimit}" step="1" />
+                        	</h:panelGrid>
+                        </h:panelGroup>
 
-                        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory != 'SPEED' and redFlagOrZoneAlertsBean.item.eventSubCategory != 'DRIVING_STYLE' and redFlagOrZoneAlertsBean.item.eventSubCategory != null}">
+                        <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory != 'SPEED' and redFlagOrZoneAlertsBean.item.eventSubCategory != 'DRIVING_STYLE' and redFlagOrZoneAlertsBean.item.eventSubCategory != 'VEHICLE' and redFlagOrZoneAlertsBean.item.eventSubCategory != null}">
 
                           <table width="100%" border="0" cellpadding="2" cellspacing="0" class="datagrid">
                             <tr>
                               <th><h:outputText value="#{messages.editRedFlag_setting}" /></th>
                             </tr>
-                            <tr class="tableEven"><td>
-                            <rich:dataList value="#{redFlagOrZoneAlertsBean.item.types}" var="type" >
-                                <h:outputText value="#{messages[type]}" /><rich:spacer width="5"/>
-                                <h:outputText value="#{redFlagOrZoneAlertsBean.item.zonesString}" />
-                            </rich:dataList>
-                             </td> 
+                            <tr class="tableEven">
+                            	<td>
+                            		<rich:dataList value="#{redFlagOrZoneAlertsBean.item.types}" var="type" >
+                             	   		<h:outputText value="#{messages[type]}" />
+                             	   		<rich:spacer width="5"/>
+                             	   		<h:outputText value="#{redFlagOrZoneAlertsBean.item.zonesString}" />
+                            		</rich:dataList>
+                             	</td> 
                             </tr>
                           </table>
+                          
                         </h:panelGroup>
                       </td>
                     </tr>
