@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.DhxDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.selenium.pageEnums.AdminAddEditUser;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEnum;
@@ -17,7 +18,20 @@ public class PageAddEditUser extends AdminBar {
 	public AddEditUserTexts _text(){
 		return new AddEditUserTexts();
 	}
-	public class AddEditUserTexts extends AdminBarTexts{}
+	public class AddEditUserTexts extends AdminBarTexts{
+		
+		public TextFieldLabel personLabel(AdminUsersEnum label){
+			return new TextFieldLabel(AdminAddEditUser.TEXT_FIELDS, label);
+		}
+		
+		public TextFieldLabel driverLabel(AdminUsersEnum label){
+			return new TextFieldLabel(AdminAddEditUser.TEXT_FIELDS,"driver_", label);
+		}
+		
+		public TextFieldLabel userLabel(AdminUsersEnum label){
+			return new TextFieldLabel(AdminAddEditUser.TEXT_FIELDS,"user_", label);
+		}
+	}
 	
 	public AddEditUserTextFields _textField(){
 		return new AddEditUserTextFields();

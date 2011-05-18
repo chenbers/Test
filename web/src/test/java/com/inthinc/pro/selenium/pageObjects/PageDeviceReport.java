@@ -40,7 +40,7 @@ public class PageDeviceReport extends ReportsBar {
 	public class DeviceReportDropDowns extends ReportsBarDropDowns{
 		
 		protected DhxDropDown status() {
-			return new DhxDropDown(DeviceReportEnum.STATUS_DHX).dropDownButton(DeviceReportEnum.STATUS_ARROW);
+			return new DhxDropDown(DeviceReportEnum.STATUS_DHX);
 		}
 	}
 	public DeviceReportsLinks _link(){

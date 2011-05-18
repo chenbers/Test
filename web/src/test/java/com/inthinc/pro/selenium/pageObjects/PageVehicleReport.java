@@ -40,20 +40,17 @@ public class PageVehicleReport extends ReportsBar {
 
 		public DhxDropDown overallFilter() {
 			return new ReportsBarDropDowns().score(
-					ReportsBarEnum.OVERALL_SCORE_DHX,
-					ReportsBarEnum.OVERALL_SCORE_ARROW, page);
+					ReportsBarEnum.OVERALL_SCORE_DHX, page);
 		}
 
 		public DhxDropDown speedFilter() {
 			return new ReportsBarDropDowns().score(
-					ReportsBarEnum.SPEED_SCORE_DHX,
-					ReportsBarEnum.SPEED_SCORE_ARROW, page);
+					ReportsBarEnum.SPEED_SCORE_DHX, page);
 		}
 
 		public DhxDropDown styleFilter() {
 			return new ReportsBarDropDowns().score(
-					ReportsBarEnum.STYLE_SCORE_DHX,
-					ReportsBarEnum.STYLE_SCORE_ARROW, page);
+					ReportsBarEnum.STYLE_SCORE_DHX, page);
 		}
 
 	}

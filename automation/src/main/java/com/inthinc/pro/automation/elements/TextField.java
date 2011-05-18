@@ -18,8 +18,8 @@ public class TextField extends TextObject implements Typeable {
     public TextField(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
     }
-    public TextField(SeleniumEnums anEnum, String replaceWord, TextEnum replacement) {
-        super(anEnum, replaceWord + replacement.getText());
+    public TextField(SeleniumEnums anEnum, String prefix, TextEnum replacement) {
+        super(anEnum, prefix + replacement.getText());
     }
     public TextField(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);

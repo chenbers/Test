@@ -9,16 +9,15 @@ public enum ReportsBarEnum implements SeleniumEnums {
     DEVICES("Devices", "//div[@class='sub_nav-bg']/ul/li[4]/a"),
     WAYSMART("waySmart", "//div[@class='sub_nav-bg']/ul/li[5]/a"),
     
-    
-    OVERALL_SCORE_DHX(null, "***-form:***:overallScoreheader:sortDiv"),
-    SPEED_SCORE_DHX(null, "***-form:***:speedScoreheader:sortDiv"),
-    STYLE_SCORE_DHX(null, "***-form:***:styleScoreheader:sortDiv"),
-    SEATBELT_SCORE_DHX(null, "***-form:***:seatbeltScoreheader:sortDiv"),
+    OVERALL_SCORE_DHX(null, "//input[@name='***-form:***:overallScoreFilter']"),
+    SPEED_SCORE_DHX(null, "//input[@name='***-form:***:speedScoreFilter']"),
+    STYLE_SCORE_DHX(null, "//input[@name='***-form:***:styleScoreFilter']"),
+    SEATBELT_SCORE_DHX(null, "//input[@name='***-form:***:seatbeltScoreFilter']"),
 
-    OVERALL_SCORE_ARROW(null, "//div[@id='***-form:***:overallScoreheader:sortDiv']/span/span/span/div/img"),
-    SPEED_SCORE_ARROW(null, "//div[@id='***-form:***:speedScoreheader:sortDiv']/span/span/span/div/img"),
-    STYLE_SCORE_ARROW(null, "//div[@id='***-form:***:styleScoreheader:sortDiv']/span/span/span/div/img"),
-    SEATBELT_SCORE_ARROW(null, "//div[@id='***-form:***:seatbeltScoreheader:sortDiv']/span/span/span/div/img"),
+    OVERALL_SCORE_SORT(null, "***-form:***:overallScoreheader:sortDiv"),
+    SPEED_SCORE_SORT(null, "***-form:***:speedScoreheader:sortDiv"),
+    STYLE_SCORE_SORT(null, "***-form:***:styleScoreheader:sortDiv"),
+    SEATBELT_SCORE_SORT(null, "***-form:***:seatbeltScoreheader:sortDiv"),
     
     TOOL_EMAIL("E-mail This Report", "***-form:***-emailMenuItem"),
     TOOL_PDF("Export To PDF", "***-form:***-export_menu_item:anchor"),

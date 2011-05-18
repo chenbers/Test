@@ -1,7 +1,6 @@
 package com.inthinc.pro.automation.enums;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.inthinc.pro.automation.utils.Id;
@@ -11,6 +10,7 @@ public enum AutomationEnum implements SeleniumEnums{
     
     PLACE_HOLDER,
     TEMP_ONLY,
+    DHX,
     CORE_ONLY,
     FIND_ANCHOR_BY_CONTAINS_TEXT(null, Xpath.start().a(Id.contains(Id.text(), "***")).toString()),
     VERSION(null, "footerForm:version")
