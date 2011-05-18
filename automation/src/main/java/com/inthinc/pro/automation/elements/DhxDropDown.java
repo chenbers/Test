@@ -23,23 +23,27 @@ public class DhxDropDown extends DropDown implements Selectable {
 	public DhxDropDown(SeleniumEnums anEnum) {
 		super(anEnum);
 		enums = new SeleniumEnums[]{myEnum};
+		dhxImage = AutomationEnum.TEMP_ONLY.setEnum(anEnum);
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, Integer replaceNumber) {
 		super(anEnum, replaceNumber);
 		enums = new SeleniumEnums[]{myEnum};
+		dhxImage = AutomationEnum.TEMP_ONLY.setEnum(anEnum);
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord) {
 		super(anEnum, replaceWord);
 		page = replaceWord;
 		enums = new SeleniumEnums[]{myEnum};
+		dhxImage = AutomationEnum.TEMP_ONLY.setEnum(anEnum);
 	}
 	
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord, SeleniumEnums ...enums) {
 		super(anEnum, replaceWord);
 		page = replaceWord;
 		this.enums = enums;
+		dhxImage = AutomationEnum.TEMP_ONLY.setEnum(anEnum);
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord,
@@ -47,6 +51,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 		super(anEnum, replaceWord, replaceNumber);
 		page = replaceWord;
 		enums = new SeleniumEnums[]{myEnum};
+		dhxImage = AutomationEnum.TEMP_ONLY.setEnum(anEnum);
 	}
 
 	private DhxDropDown assignIDs() {

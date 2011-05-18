@@ -65,6 +65,7 @@ public enum AdminBarEnum implements SeleniumEnums {
 
     TABLE_HEADERS(null, "admin-table-form:***Table:*column*header:sortDiv"),
     TABLE_ENTRIES(null, "admin-table-form:***Table:###:*column*"),
+    
 
     SELECT_ALL(null, "admin-table-form:***Table:selectAll"),
     SELECT_ROW(null, "admin-table-form:***Table:###:select"),

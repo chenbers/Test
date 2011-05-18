@@ -7,11 +7,17 @@ public enum AdminAddEditUser implements SeleniumEnums {
 	FIRST_NAME("First Name","//td[@valign='top'][1]/table/tbody/tr[1]/td[@valign='top']/text()[1]"),
 	FIRST_NAME_REQUIRED("*","//td[@valign='top'][1]/table/tbody/tr[1]/td[@valign='top']/span"),
 	
+	
 	/* Drop downs and such */
 	DROP_DOWNS(null, "edit-form:editPerson-***"),
 	
-	DRIVER_TEAM_DHX(null, "/table[@id='driverTable']/tbody/tr[7]/td[2]/span[2]/div/img"),
-	USER_GROUP_DHX(null, "/table[@id='userTable']/tbody/tr[5]/td[2]/span[2]/div/img"),
+	DRIVER_TEAM_DHX(null, "edit-form:editPerson-user_groupID"),
+	USER_GROUP_DHX(null, "edit-form:editPerson-driver_groupID"),
+	
+	
+    TEXT_FIELDS(null, "edit-form:editPerson-***"),
+	
+	
 	
 	
 	;
