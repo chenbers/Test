@@ -7,6 +7,18 @@
   <component-type>conditionalCSS</component-type>
   <component-class>com.inthinc.pro.backing.ui.UIConditionalCSS</component-class>
  </component>
+  <component>
+  <component-type>customSelectOneRadio</component-type>
+  <component-class>com.inthinc.pro.backing.ui.component.UICustomSelectOneRadio</component-class>
+ </component>
+ <render-kit>
+   <renderer>
+      <component-family>customSelectOneRadio</component-family>
+      <renderer-type>customSelectOneRadio.renderer</renderer-type>
+      <renderer-class>com.inthinc.pro.backing.ui.component.HTMLCustomSelectOneRadioRenderer
+      </renderer-class>    
+   </renderer>
+</render-kit>
  <component>
   <description>Renders a graphical Score Box Component.  Value is a score value between 0 and 50 inclusive.  Size is a number 1 (smallest) to 5 (largest).</description>
   <display-name>Score Box Component</display-name>
@@ -49,6 +61,15 @@
   <component-type>org.richfaces.Column</component-type>
   <component-class>com.inthinc.pro.table.UIFilterColumn</component-class>
  </component>
+ <component>
+    <component-type>component.CustomSelectOneRadio</component-type>
+    <component-class>com.inthinc.pro.backing.ui.component.UICustomSelectOneRadio
+    </component-class>
+    <component-extension>
+      <component-family>CustomSelectOneRadio</component-family>
+      <renderer-type>renderer.CustomSelectOneRadio</renderer-type>
+    </component-extension>
+</component>
  
  <!-- components -->
  <component>
@@ -675,6 +696,7 @@
   <validator-id>com.inthinc.pro.validators.PasswordStrengthValidator</validator-id>
   <validator-class>com.inthinc.pro.validators.PasswordStrengthValidator</validator-class>
  </validator>
+ 
  <!-- Facelets support -->
  <application>
   <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>

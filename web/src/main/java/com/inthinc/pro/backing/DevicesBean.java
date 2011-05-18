@@ -107,6 +107,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     
     private List<Vehicle> chooseVehicleItems;
     private String chooseVehicleSearchKeyword;
+    private String chosenVehicleID;
     
 //    private List<Driver>                          drivers;
 
@@ -335,6 +336,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         }
     }
 
+    public void assignVehicle(){
+        getItem().setVehicleID(Integer.parseInt(chosenVehicleID));
+        
+    }
     public void chooseVehicle()
     {
         final Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -536,14 +541,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         super.resetList();
 //        vehiclesBean.resetList();
     }
-//    private Device getDevice(Integer deviceID){
-//        Device device = deviceMap.get(deviceID);
-//        if (device == null){
-//            device = deviceDAO.findByID(deviceID);
-//        }
-//        return device;
-//    }
-
     public static class DeviceView extends Device implements EditItem
     {
         @Column(updateable = false)
@@ -634,101 +631,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         
         return getFilterValues().get("productVersion") == null || getFilterValues().get("productVersion").equals(productType.getDescription());
     }
-//    public static class EnhancedVehicle extends Vehicle
-//    {
-//        @Column(updateable = false)
-//        private static final long serialVersionUID = -2051727502162908991L;
-//
-//        @Column(updateable = false)
-//        private DevicesBean      bean;
-//        @Column(updateable = false)
-//        private Group             group;
-//        @Column(updateable = false)
-//        private Driver            driver;
-//        @Column(updateable = false)
-//        private Device            device;
-//        @Column(updateable = false)
-//        private EditableVehicleSettings editableVehicleSettings;
-//                
-//        public EnhancedVehicle() {
-//            super();
-//        }
-//        public EnhancedVehicle(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, Integer year, String color, VehicleType vtype, String vin, Integer weight,
-//                String license, State state) {
-//            super(vehicleID, groupID, status, name, make, model, year, color, vtype, vin, weight, license, state);
-//        }
-//        
-//        public void setEditableVehicleSettings(EditableVehicleSettings editableVehicleSettings) {
-//            this.editableVehicleSettings = editableVehicleSettings;
-//        }
-//        public EditableVehicleSettings getEditableVehicleSettings() {
-//            return editableVehicleSettings;
-//        }
-//        public Integer getId()
-//        {
-//            return getVehicleID();
-//        }
-//
-//        public String getProductTypeName() {
-//            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN.getDescription().getProductName();
-//            return editableVehicleSettings.getProductType().getDescription().getProductName();
-//        }
-//        public ProductType getProductType() {
-//            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN;
-//            return editableVehicleSettings.getProductType();
-//        }
-//        @Override
-//        public Integer getWeight()
-//        {
-//            final Integer weight = super.getWeight();
-//            if ((weight != null) && (weight == 0))
-//                return null;
-//            return weight;
-//        }
-//
-//        @Override
-//        public void setGroupID(Integer groupID)
-//        {
-//            super.setGroupID(groupID);
-//            group = null;
-//            driver = null;
-////            bean.driverMap.clearMap();
-//        }
-//
-//        public Group getGroup()
-//        {
-//            if (group == null)
-//                group = bean.groupDAO.findByID(getGroupID());
-//            return group;
-//        }
-//
-//        @Override
-//        public void setDriverID(Integer driverID)
-//        {
-//            super.setDriverID(driverID);
-//            driver = null;
-//        }
-//
-//        public Driver getDriver()
-//        {
-//            if (driver == null)
-//                driver = bean.getDriver(getDriverID());
-//            return driver;
-//        }
-//
-//        public Device getDevice()
-//        {
-//            if (device == null)
-//                device = bean.getDevice(getDeviceID());
-//            return device;
-//        }
-//        
-//        public void setDevice(Device device)
-//        {
-//            this.device = device;
-//        }
-//
-//    }
     public DriverDAO getDriverDAO() {
         return driverDAO;
     }
@@ -784,5 +686,13 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public List<Vehicle> getChooseVehicleItems() {
         return chooseVehicleItems;
+    }
+
+    public String getChosenVehicleID() {
+        return chosenVehicleID;
+    }
+
+    public void setChosenVehicleID(String chosenVehicleID) {
+        this.chosenVehicleID = chosenVehicleID;
     }
 }

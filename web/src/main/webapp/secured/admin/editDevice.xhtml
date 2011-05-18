@@ -1,12 +1,14 @@
 <ui:composition template="/layout/layout.xhtml" 
               xmlns="http://www.w3.org/1999/xhtml" 
               xmlns:ui="http://java.sun.com/jsf/facelets"
+			  xmlns:c="http://java.sun.com/jstl/core"
               xmlns:h="http://java.sun.com/jsf/html"
               xmlns:rich="http://richfaces.org/rich"
               xmlns:a4j="http://richfaces.org/a4j"
               xmlns:f="http://java.sun.com/jsf/core"
               xmlns:security="http://pro.tiwi.com/jsf/security"
-              xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
+              xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions"
+              xmlns:radio="http://pro.tiwi.com/jsf">
 
   <ui:param name="adminSelected" value="current" />
   <ui:param name="title" value="#{devicesBean.add ? messages.adminHeader_addDevice : (devicesBean.batchEdit ? messages.adminHeader_editDevices : messages.adminHeader_editDevice)}"/>
@@ -152,8 +154,8 @@
                             </table>
 
                           </td>
-                          <td width="10"><h:graphicImage value="/images/x.gif" width="10" /></td>
-                          <td width="390" valign="top">
+                          <td width="10" ><h:graphicImage value="/images/x.gif" width="10" /></td>
+                                                  <td width="390" valign="top">
 
                           <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceProfile}" /></div>
 
@@ -176,29 +178,175 @@
                                 </td>
                               </tr>
                              </table>
-
+                             </td>
+                          
+                        </tr>
                             <ui:fragment rendered="#{not devicesBean.batchEdit}">
+                        <tr>
+							<td colspan="3">
                             <div class="spacer"></div>
 
                             <div class="add_section_title"><h:outputText value="#{messages.editDevice_deviceAssignment}" /></div>
+							</td>
 
-                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
-                                <td>
-                                  <h:panelGroup id="editDevice-vehicleID">
-                                    <h:outputText value="#{devicesBean.item.vehicle.name}" /><h:outputText value=" " />
-                                    <a id="editDeviceChooseVehicle" href="#" onclick="Richfaces.showModalPanel('chooseVehicle'); return false;"><h:outputText value="#{messages.editDevice_assign}" /></a>
-                                  </h:panelGroup>
-                                </td>
-                              </tr>
-                            </table>
-                            </ui:fragment>
-
-                          </td>
                         </tr>
+                            </ui:fragment>
                       </table>
+           <ui:fragment rendered="#{not devicesBean.batchEdit}">
+           <rich:togglePanel switchType="ajax" stateOrder="closed,open" label="#{messages.editDevice_showVehiclesForAssignment}" height="600px" >
+           <f:facet name="closed">
+            <h:panelGrid columns="1">
+          <h:panelGroup >
+                 <table width="100%" border="0" cellspacing="2" cellpadding="4" align="left">
+                    <tr>
+                      <td width="100" valign="top"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
+                      <td width="100"><h:outputText id="chosenVehicleShow" value="#{devicesBean.item.vehicle.name}" /></td>
+            <td width="550" align="right">
+            <rich:toggleControl value="#{messages.editDevice_showVehiclesForAssignment}" switchToState="open" >
+<!--            <h:graphicImage id="pic" style="border-width:0;width:15px;height:15px" value="/images/btn_move_right.png" />-->
+            </rich:toggleControl></td>
+                    </tr>
+                  </table>
+             </h:panelGroup>
+             </h:panelGrid>
+     		</f:facet>
+          <f:facet name="open">
+            <h:panelGrid columns="1">
+          <h:panelGroup >
+                 <table width="100%" border="0" cellspacing="2" cellpadding="4" align="left">
+                    <tr>
+                      <td width="100" valign="top"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
+                      <td width="100"><h:outputText id="chosenVehicleHide" value="#{devicesBean.item.vehicle.name}" /></td>
+            		  <td width="550" align="right"><rich:toggleControl value="#{messages.editDevice_hideVehiclesForAssignment}" switchToState="closed" /></td>
+                    </tr>
+                  </table>
+            </h:panelGroup>
+			<h:panelGroup>
+ 			<ul id="grid_nav" style="margin: 0; ">
+             <li class="l">
+              <table width="100%" border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+                <tr>
+                  <td><h:outputText value="#{messages.button_search}" /></td>
+                  <td>
+                <h:inputText id="editDevice-filterTable" value="#{devicesBean.chooseVehicleSearchKeyword}" class="text" size="20" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('edit-form:editDevice-chooseVehicleTableSearch').onclick(); return false; } return true;" />
+                  </td>
+                </tr>
+              </table>
+            </li>
+             <li class="l">
+				<a4j:commandButton id="editDevice-chooseVehicleTableSearch" reRender="editDevice-chooseVehicleTable,editDevice-chooseVehicleScroller" styleClass="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></a4j:commandButton>
+			</li>
+			</ul>
+		<rich:spacer height="5px"/>
+			</h:panelGroup>
+          <a4j:outputPanel id="tablePanel">
+          <a4j:region>
+          <div class="datagrid_panel" style="width: 780px">
+        <rich:dataTable id="editDevice-chooseVehicleTable" value="#{devicesBean.vehicles}" var="item" rowKeyVar="index" styleClass="datagrid"
+          rows="10" rowClasses="tableOdd,tableEven" width="100%">
+          <rich:column id="vehicle" filterExpression="#{(empty devicesBean.item.vehicleID) or (item.vehicleID != devicesBean.item.vehicleID)}">
+            <f:facet name="header">
+              <h:outputText value=" " />
+            </f:facet>
+              <radio:radioButton id="assignVehicle" 
+                 name="assignVehicle" 
+                 overrideName="true"                              
+                 itemValue="#{item.vehicleID}" 
+                 onClick="chooseVehicle(#{item.vehicleID})">
+          </radio:radioButton>        
+          </rich:column>
+          <rich:column id="name" sortBy="#{item.name}" sortOrder="ASCENDING">
+            <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
+            <h:outputText value="#{item.name}" />
+          </rich:column>
+          <rich:column id="fullName" sortBy="#{devicesBean.driverMap[item.driverID].person.fullName}">
+            <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
+            <h:outputText value="#{devicesBean.driverMap[item.driverID].person.fullName}" />
+          </rich:column>
+          <rich:column id="group" sortBy="#{devicesBean.groupMap[item.groupID].name}">
+            <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_groupID}" /></f:facet>
+            <h:outputText value="#{devicesBean.groupMap[item.groupID].name}" />
+          </rich:column>
+   <rich:column id="vehicleStatus" sortBy="#{item.status.description}" custFilterBy="#{item.status.description}" filterValue="#{devicesBean.chooseVehicleFiltering['status']}">
+                <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_vehicleStatus}" /></f:facet>
+      <f:facet name="header">
+      	<h:panelGroup>
+			<h:outputText value="#{messages.vehiclesHeader_status}" />
+			<h:panelGroup style="float:right;">
+		       	<rich:spacer style="display:block" height="2"/>
+		       	
+		       	<h:selectOneMenu value="#{devicesBean.chooseVehicleFiltering['status']}" style="width:120px;size:auto;margin-top:3px;"
+		      		id="editVehicle-statusChoice" >
+		           	<f:selectItems value="#{devicesBean.statusSelectItems}" />
+		           	<a4j:support event="onchange" reRender="editDevice-chooseVehicleTable,chooseVehicleForm:header,editDevice-chooseVehicleScroller" />
+		       	</h:selectOneMenu>
+				<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+				 	<ui:param name="selectBoxID" value="edit-form:editDevice-chooseVehicleTable:editVehicle-statusChoice" />
+				</ui:include>
+			</h:panelGroup>
+		</h:panelGroup>
+      </f:facet>
+      <c:set var="status" value="status#{item.status.code}" /><h:outputText value="#{messages[status]}" />
+    </rich:column>
+          <rich:column id="vehicleAssigned" sortBy="#{empty item.deviceID}">
+            <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_assigned}" /></f:facet>
+            <h:outputText value="#{(empty item.deviceID) ? messages.chooseVehicle_unassigned : messages.chooseVehicle_assigned}" />
+          </rich:column>
+          <rich:column id="productVersion" custFilterBy="#{devicesBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" 
+          				sortBy="#{devicesBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" filterValue="#{devicesBean.chooseVehicleFiltering['productVersion']}">
+      	<f:facet name="header">
+        <h:panelGroup>
+			<h:outputText value="#{messages.vehiclesHeader_productType}" />
+			<h:panelGroup style="float:right;">
+	       	<rich:spacer style="display:block" height="2"/>
+	       	<h:selectOneMenu value="#{devicesBean.chooseVehicleFiltering['productVersion']}" style="width:120px;size:auto;margin-top:3px;"
+	       					id="chooseVehicle-productChoice" >
+	           	<f:selectItems value="#{devicesBean.productTypesSelectItems}" />
+	           	<a4j:support event="onchange" 
+	           		reRender="editDevice-chooseVehicleTable,chooseVehicleForm:header,editDevice-chooseVehicleScroller" />
+	       	</h:selectOneMenu>
+			<ui:include src="/includes/dhtmlSelectBox.xhtml">	
+			 	<ui:param name="selectBoxID" value="edit-form:editDevice-chooseVehicleTable:chooseVehicle-productChoice" />
+			</ui:include>
+			</h:panelGroup>
+        </h:panelGroup>
+      </f:facet>
+      <h:outputText value="#{devicesBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" />
+    </rich:column>
 
+    <rich:column id="device" sortBy="#{devicesBean.deviceMap[item.deviceID].name}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_deviceID}" /></f:facet>
+      <h:outputText value="#{devicesBean.deviceMap[item.deviceID].name}" />
+    </rich:column>
+    <rich:column id="vin" sortBy="#{item.VIN}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_VIN}" /></f:facet>
+      <h:outputText value="#{item.VIN}" />
+    </rich:column>
+    <rich:column id="year" sortBy="#{item.year}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_year}" /></f:facet>
+      <h:outputText value="#{item.year}" />
+    </rich:column>
+    <rich:column id="make" sortBy="#{item.make}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_make}" /></f:facet>
+      <h:outputText value="#{item.make}" />
+    </rich:column>
+    <rich:column id="model" sortBy="#{item.model}">
+      <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_model}" /></f:facet>
+      <h:outputText value="#{item.model}" />
+    </rich:column>
+          
+        </rich:dataTable>
+		</div>
+        <div class="spacer"></div>
+
+        <rich:datascroller id="editDevice-chooseVehicleScroller" for="editDevice-chooseVehicleTable" reRender="editDevice-chooseVehicleTable" renderIfSinglePage="false"/>
+          </a4j:region>
+          </a4j:outputPanel>
+			</h:panelGrid>
+
+          </f:facet>
+        </rich:togglePanel>
+		</ui:fragment>
 <!--                      <div class="spacer"></div>-->
 
 <!--                      <div><h:outputText value="#{messages.editDevice_speedSensitivityTab}" /></div>-->
@@ -227,6 +375,9 @@
               </div>
 
             </div>
+         <a4j:jsFunction name="chooseVehicle" reRender="chosenVehicleShow,chosenVehicleHide" action="#{devicesBean.assignVehicle}" >
+            <a4j:actionparam name="param1" assignTo="#{devicesBean.chosenVehicleID}"  />                  
+        </a4j:jsFunction>
             
           </a4j:form>
 
@@ -236,11 +387,11 @@
       </tr>
     </table>
 
-    <ui:include src="../../includes/admin/chooseVehicle.xhtml">
-      <ui:param name="editorBean" value="#{devicesBean}" />
-      <ui:param name="reRender" value="edit-form:editDevice-vehicleID" />
-      <ui:param name="context" value="editDevice" />
-    </ui:include>
+<!--    <ui:include src="../../includes/admin/chooseVehicle.xhtml">-->
+<!--      <ui:param name="editorBean" value="#{devicesBean}" />-->
+<!--      <ui:param name="reRender" value="edit-form:editDevice-vehicleID" />-->
+<!--      <ui:param name="context" value="editDevice" />-->
+<!--    </ui:include>-->
     <script type="text/javascript">
   var formElements = ["text", "checkbox", "radio", "select-one", "select-multiple", "textarea"];
 
