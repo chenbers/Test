@@ -440,34 +440,29 @@ public class SiloServiceTest {
         assertNotNull(tripList);
         System.out.println("num trips: " + tripList.size());
         assertTrue(tripList.size() > 0);
-        for (Trip trip : tripList) {
-            // TODO: at the moment, the first trip in the collection has a vehicleID of 0, the rest are 1. I have asked David Story to look at it.
-            // Until he fixes it, I will leave the following line commented
-            // assertEquals(TESTING_VEHICLE_ID, trip.getVehicleID());
-            assertTrue(startDate.before(trip.getStartTime()));
-            assertTrue(endDate.after(trip.getEndTime()));
-            assertTrue(trip.getMileage() > 0);
+        Trip trip = tripList.get(tripList.size()-1);
+        assertEquals("invalid vehicle", TESTING_VEHICLE_ID, trip.getVehicleID());
+        assertTrue("trip invalid start date", startDate.before(trip.getStartTime()));
+        assertTrue("trip invalid end date", endDate.after(trip.getEndTime()));
+        assertTrue("trip invalid mileage", trip.getMileage() > 0);
             
-            System.out.println(" " + trip.getQuality());
-            assertTrue("trip Quality should be set", trip.getQuality().equals(TripQuality.GOOD) || trip.getQuality().equals(TripQuality.BAD) || trip.getQuality().equals(TripQuality.UNKNOWN));
-        }
-        Trip trip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
-        assertNotNull(trip);
+        assertTrue("trip Quality should be set", trip.getQuality().equals(TripQuality.GOOD) || trip.getQuality().equals(TripQuality.BAD) || trip.getQuality().equals(TripQuality.UNKNOWN));
+        
+        Trip lastTrip = driverDAO.getLastTrip(TESTING_DRIVER_ID);
+        assertNotNull(lastTrip);
         tripList = vehicleDAO.getTrips(TESTING_VEHICLE_ID, startDate, endDate);
         assertNotNull(tripList);
         System.out.println("num trips: " + tripList.size());
         assertTrue(tripList.size() > 0);
-        for (Trip t : tripList) {
-            // It is possible that a trip is associated to the Unknown Driver
-            // assertEquals(TESTING_DRIVER_ID, t.getDriverID());
-            assertTrue(startDate.before(t.getStartTime()));
-            assertTrue(endDate.after(t.getEndTime()));
-            assertTrue(t.getMileage() > 0);
+        trip =  tripList.get(tripList.size()-1);
+        assertEquals("trip invalid driver id", TESTING_DRIVER_ID, trip.getDriverID());
+        assertTrue("trip invalid start date", startDate.before(trip.getStartTime()));
+        assertTrue("trip invalid end date", endDate.after(trip.getEndTime()));
+        assertTrue("trip invalid mileage", trip.getMileage() > 0);
+        assertTrue("trip Quality should be set", trip.getQuality().equals(TripQuality.GOOD) || trip.getQuality().equals(TripQuality.BAD) || trip.getQuality().equals(TripQuality.UNKNOWN));
 
-            assertTrue("trip Quality should be set", trip.getQuality().equals(TripQuality.GOOD) || trip.getQuality().equals(TripQuality.BAD) || trip.getQuality().equals(TripQuality.UNKNOWN));
-        }
-        trip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
-        assertNotNull(trip);
+        lastTrip = vehicleDAO.getLastTrip(TESTING_VEHICLE_ID);
+        assertNotNull(lastTrip);
         
     }
 
