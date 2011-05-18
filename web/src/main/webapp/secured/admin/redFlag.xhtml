@@ -242,25 +242,32 @@
                         </h:panelGroup>
                         
                         <h:panelGroup rendered="#{redFlagOrZoneAlertsBean.item.eventSubCategory == 'VEHICLE'}">
-                         	<h:panelGrid id="vehicTamp" columns="2" cellpadding="5"
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                            	<tr class="datagrid">
+                              		<th width="15%"><h:outputText value="#{messages.editRedFlag_setting}" /></th>
+                              		<th width="85%"><h:outputText value=" " /></th>
+                            	</tr>
+                            </table>
+                        	
+                         	<h:panelGrid id="vehicTamp" columns="2" cellspacing="5"
                          		rendered="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_TAMPERING'] == true}">
                         		<h:outputText value="#{messages.alertTypeTampering}"/>
                         		<h:outputText value=" "/>
                         	</h:panelGrid>   
                         	
-                        	<h:panelGrid id="vehicIgOn" columns="2" cellpadding="5" 
+                        	<h:panelGrid id="vehicIgOn" columns="2" cellspacing="5" 
                         		rendered="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IGNITION_ON'] == true}">
                         		<h:outputText value="#{messages.alertTypeIgnitionOn}"/>
                         		<h:outputText value=" "/>
                         	</h:panelGrid>  
                         	
-                        	<h:panelGrid id="vehicLoBat" columns="2" cellpadding="5" 
+                        	<h:panelGrid id="vehicLoBat" columns="2" cellspacing="5" 
                         		rendered="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_LOW_BATTERY'] == true}">
                         		<h:outputText value="#{messages.alertTypeLowBattery}"/>
                         		<h:outputText value=" "/>
                         	</h:panelGrid>    
                         	                    
-                        	<h:panelGrid id="vehicIdl" columns="2" cellpadding="5" 
+                        	<h:panelGrid id="vehicIdl" columns="2" cellspacing="5"
                         		rendered="#{redFlagOrZoneAlertsBean.item.selectedAlertTypes['ALERT_TYPE_IDLING'] == true}">
                         		<h:outputText value="#{messages.alertTypeIdlingLimit}"/>
                         		<rich:inputNumberSlider id="idlingThreshold" value="#{redFlagOrZoneAlertsBean.item.idlingThreshold}" 
