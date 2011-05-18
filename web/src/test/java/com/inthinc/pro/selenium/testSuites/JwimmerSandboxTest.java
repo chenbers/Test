@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
@@ -10,7 +11,7 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 public class JwimmerSandboxTest extends WebTest {
     PageLogin l;
     PageLiveFleet liveFleet;
-    String NONADMIN_USERNAME = "jwimmer"; //TODO: jwimmer: dtanner: more candiates for non-page specific enum???
+    String NONADMIN_USERNAME = "jwimmer"; //TODO: jwimmer: dtanner: more candidates for non-page specific enum???
     String NONADMIN_PASSWORD = "password";
     String ADMIN_USERNAME = "mraby";
     String ADMIN_PASSWORD = "password";	
@@ -44,6 +45,7 @@ public class JwimmerSandboxTest extends WebTest {
         //pause(15);//TODO: jwimmer: prop integer value for watching? and put in teardown
     }
     
+    @Ignore
     @Test
     public void liveFleet_sandbox_taeThrownError() {
         int waitTime = 6;
@@ -129,23 +131,19 @@ public class JwimmerSandboxTest extends WebTest {
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_directURL_load()
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_URL_validate()
     	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_bareMinimum_validate()
+        PageLogin login = new PageLogin(); //going to use this later
     	liveFleet.load();
-    	liveFleet.validateURL();
-    	//asertTrue(!liveFleet.page_URL_validate());	//test should fail on assertion if liveFleet page was loaded without requiring login first
-    	//should only continue test if liveFleet was NOT loaded
-    	PageLogin login = new PageLogin();
-    	login.loginProcess("jwimmer","password");
+    	//liveFleet.validateURL();  //this WOULD fail the test since the browser should NOT automatically go to the liveFleet page without requiring login.
+    	login.validateURL();	//test should fail UNLESS the login page was loaded (since the user has not logged in yet)
     	
-    	liveFleet.validate();		//test should fail on assertion of any page except liveFleet is loaded
-    	liveFleet.page_bareMinimum_validate();	//test should fail if liveFleet is loaded but not (bareMinimum)valid
-    	//no need for more specific validations on THIS test... but there could be more in more specific tests
+    	login.loginProcess("jwimmer","password");
+    	liveFleet.validateURL();   //test should fail on assertion of any page except liveFleet is loaded
+    	liveFleet.validate();      //validate the liveFleet page... just because we can.
     }
     
     @Test
     public void liveFleet_fromBookmarkLoggedIn_goDirectlyToLiveFleet() {
-    	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_directURL_load()
-    	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_URL_validate()
-    	//TODO: jwimmer: pwehan: dtanner: discuss if this method shows justification of page_bareMinimum_validate()
+    	//TODO: jwimmer: current loginProcess(String, String) does NOT function for bookmarked pages...
     	l.load();
     	l.page_bareMinimum_validate();
     	l.loginProcess("jwimmer", "password");
@@ -158,79 +156,88 @@ public class JwimmerSandboxTest extends WebTest {
     
     @Test
     public void login_nullUsernamePassword_appError() {
-//        l.page_login_open();
-//        l.validatePage();
-//        l.button_logIn_click();
-//        l.popup_badCred_validate();
+        l.load();
+        l.validate();
+        l._button().logIn().click();
+        l._popUp().loginError()._text().message().validateText("Incorrect user name or password.\n\nPlease try again.");
     }
 
     @Test
     public void login_closeBadCredModal_noModal() {
-//        l.page_login_open();
-//        l.validatePage();
-//        l.button_logIn_click();
-//        l.popup_badCred_validate();
-//        l.button_logInErrorOK_click(); // TODO: jwimmer: DTanner: this method verifies that the modal/popup closed... we should talk on this.
+        l.load();
+        l.validate();
+        l._button().logIn().click();
+        l._popUp().loginError()._text().message().validateText("Incorrect user name or password.\n\nPlease try again.");
+        l._popUp().loginError()._button().close().click();
     }
 
     private void forgotPassword_Scenario_enterEmailClickSend(String emailAddress) {
-//        l.page_login_open();
-//        l.link_forgotPassword_click();
-//
-//        l.textField_forgotPasswordEmail_type(emailAddress);
-//        l.button_forgotPasswordSend_click(); // TODO: jwimmer: DTanner: this method verifies that the modal/popup closed... we should talk on this.
+        l.load();
+        l._link().forgotUsernamePassword().click();
+        
+        l._popUp().forgotPassword()._textField().email().type(emailAddress);
+        l._popUp().forgotPassword()._button().send().click();
     }
 
     @Test
     public void forgotPassword_badEmailManual_incorrectFormat() {
-        // login_forgotPasswordScenario_enterEmailClickSend(EMAIL_INVALID);
-//        l.page_login_open();
-//        l.link_forgotPassword_click();
-//
-//        l.textField_forgotPasswordEmail_type(EMAIL_INVALID);
-//        l.button_forgotPasswordSend_click();
-        //l.message_forgotPasswordEmailInvalid_validate();//TODO: ensure that we didn't LOSE functionality when we lost this *_validate() method
+        l.load();
+        l._link().forgotUsernamePassword().click();
+        l._popUp().forgotPassword()._textField().email().type(EMAIL_INVALID);
+        l._popUp().forgotPassword()._button().send().click();
+        
+        l._popUp().forgotPassword()._text().error().validateText("Incorrect format (jdoe@tiwipro.com)");
     }
 
     @Test
     public void forgotPassword_badEmail_incorrectFormat() {
         forgotPassword_Scenario_enterEmailClickSend(EMAIL_INVALID);
-        //l.message_forgotPasswordEmailInvalid_validate();//TODO: ensure that we didn't LOSE functionality when we lost this *_validate() method
+        l._popUp().forgotPassword()._text().error().validateText("Incorrect format (jdoe@tiwipro.com)");
+        //TODO: jwimmer: PopUps do not extend BaseElement so we LOST the ability to validate();
     }
 
     @Test
     public void forgotPassword_noEmail_required() {
         forgotPassword_Scenario_enterEmailClickSend(null);
-        //l.message_forgotPasswordEmailRequired_validate();//TODO: ensure that we didn't LOSE functionality when we lost this *_validate() method
+        l._popUp().forgotPassword()._text().error().validateText("Required");
     }
 
     @Test
     public void forgotPassword_unknownEmail_incorrect() {
         forgotPassword_Scenario_enterEmailClickSend(EMAIL_UNKNOWN);
-        //l.message_forgotPasswordEmailUnknown_validate();//TODO: ensure that we didn't LOSE functionality when we lost this *_validate() method
+        l._popUp().forgotPassword()._text().error().validateText("Incorrect e-mail address"); 
     }
 
     @Test
     public void forgotPassword_usersEmail_success() {
         forgotPassword_Scenario_enterEmailClickSend(EMAIL_KNOWN);
-//        l.page_sentForgotPassword_validate();
+        //l._popUp().messageSent().validate(); //TODO: jwimmer: follow up with dTanner about PopUps extending BaseElement, circle back and fix test
     }
 
     @Test
     public void forgotPassword_cancel_closePopup() {
-//        l.page_login_open();
-//        l.link_forgotPassword_click();
-//
-//        l.button_forgotPasswordCancel_click();
-//        l.validatePage();
+        l.load();
+        l._link().forgotUsernamePassword().click(); System.out.println("1");
+        //l._popUp().forgotPassword().validate();
+        l._popUp().forgotPassword()._text().header().validate();    System.out.println("2");
+        l._popUp().forgotPassword()._text().title().validate(); System.out.println("3");
+        //l._popUp().forgotPassword()._text().label().validate();  //TODO: jwimmer: to dTanner: FYI, it looks like this CHOKES
+        
+        l._popUp().forgotPassword()._button().cancel().click();//TODO: jwimmer: to dTanner: this one fails gracefully (but probably shouldn't fail?)
+        //l.validate();  //TODO: jwimmer: need/want a way to fail the test if the forgotPassword popup is STILL open
+        pause(20, "did the last click() action work ?");System.out.println("6");
+        System.out.println("got here without error");
+        pause(20, "end of test pause");
     }
 
     @Test
     public void login_forgotPassClose_closePopup() {
-//        l.page_login_open();
-//        l.link_forgotPassword_click();
-//        l.button_forgotPasswordClose_click();
-        //l.button_logInErrorX_click();
-//        l.validatePage();
+        l.load();
+        l.validate();
+        l._link().forgotUsernamePassword().click();
+        //l._popUp().forgotPassword().validate();//TODO: jwimmer: replace after PopUps extend BaseElement?
+        pause(10, "waiting for forgotUsernamePassword popup to open");
+        l._popUp().forgotPassword()._button().close().click();//TODO: jwimmer: to dTanner: this one fails gracefully (but probably shouldn't fail?)
+        l.validate();
     }
 }
