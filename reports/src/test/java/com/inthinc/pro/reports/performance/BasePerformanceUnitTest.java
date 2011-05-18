@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.PhoneControlDAO;
 import com.inthinc.pro.model.Cellblock;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.GroupHierarchy;
@@ -138,6 +139,13 @@ public class BasePerformanceUnitTest extends BaseUnitTest {
 
         @Override
         public Integer update(Driver entity) {
+            return null;
+        }
+
+
+        @Override
+        public List<DriverName> getDriverNames(Integer groupID) {
+            // TODO Auto-generated method stub
             return null;
         }
         

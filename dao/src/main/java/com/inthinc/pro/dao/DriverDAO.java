@@ -7,6 +7,7 @@ import org.joda.time.Interval;
 
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
@@ -109,4 +110,6 @@ public interface DriverDAO extends GenericDAO<Driver, Integer> {
      * @return List of DriverStopsReportItem or empty map if none found.
      */
     List<DriverStops> getStops(Integer driverID,  Interval interval);
+
+    List<DriverName> getDriverNames(Integer groupID);
 }

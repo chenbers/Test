@@ -107,6 +107,8 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getDriversByGroupID(Integer groupID) throws ProDAOException;
     
     List<Map<String, Object>> getDriversByGroupIDDeep(Integer groupID) throws ProDAOException;
+    
+    List<Map<String, Object>> getDriverNamesByGroupIDDeep(Integer groupID) throws ProDAOException;
 
     List<Long> getRfidsForBarcode(String barcode) throws ProDAOException;
     

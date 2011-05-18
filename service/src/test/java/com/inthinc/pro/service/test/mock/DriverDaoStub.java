@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
@@ -100,5 +101,11 @@ public class DriverDaoStub implements DriverDAO {
     }
     public void setExpectedDriver(Driver driver) {
         this.driver = driver;
+    }
+
+    @Override
+    public List<DriverName> getDriverNames(Integer groupID) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

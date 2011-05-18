@@ -235,8 +235,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private DeviceView createDeviceView(Device device)
     {
         final DeviceView deviceView = new DeviceView();
+        deviceView.bean = this;
         BeanUtils.copyProperties(device, deviceView);
-        deviceView.setVehicleDAO(vehicleDAO);
+//        deviceView.setVehicleDAO(vehicleDAO);
         deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
         deviceView.setFirmwareVersionDate();
@@ -546,7 +547,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
         @Column(updateable = false)
-        private VehicleDAO vehicleDAO;
+        private DevicesBean      bean;
+//        @Column(updateable = false)
+//        private VehicleDAO vehicleDAO;
         @Column(updateable = false)
         private Integer oldVehicleID;
         @Column(updateable = false)
@@ -561,10 +564,10 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             return getDeviceID();
         }
 
-        public void setVehicleDAO(VehicleDAO vehicleDAO)
-        {
-            this.vehicleDAO = vehicleDAO;
-        }
+//        public void setVehicleDAO(VehicleDAO vehicleDAO)
+//        {
+//            this.vehicleDAO = vehicleDAO;
+//        }
 
         Integer getOldVehicleID()
         {
@@ -597,7 +600,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         public Vehicle getVehicle()
         {
             if (vehicle == null && getVehicleID() != null)
-                vehicle = vehicleDAO.findByID(getVehicleID());
+                vehicle = (Vehicle)bean.adminCacheBean.getAsset("vehicles", getVehicleID());
+//                vehicle = vehicleDAO.findByID(getVehicleID());
             return vehicle;
         }
 
@@ -625,6 +629,14 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
                 return;
             }
             firmwareVersionDate = new Date(getFirmwareVersion()*1000L);
+        }
+
+        public DevicesBean getBean() {
+            return bean;
+        }
+
+        public void setBean(DevicesBean bean) {
+            this.bean = bean;
         }
     }
     public boolean isBatchProductChoice(ProductType productType){
