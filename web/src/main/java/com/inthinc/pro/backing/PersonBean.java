@@ -180,6 +180,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     private ListPicker         rolePicker;
     private Account account;
     private Map<Integer, Cellblock> cellblockMap;
+    private boolean passwordUpdated = false;
     public CacheBean getCacheBean() {
 		return cacheBean;
 	}
@@ -268,7 +269,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public boolean isPasswordChangeRequired() {
         return PreferenceLevelOption.REQUIRE.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange()) && isInitialLogin();
     }
-    public boolean isPasswordChangeWarn() {
+    public boolean isPasswordChangeWarn() { this.getUser().getLastLogin(); this.getUser().getModified();
         return PreferenceLevelOption.WARN.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange());
     }
     public Integer getLoginDaysRemaining() {
@@ -279,6 +280,13 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     }
     public static boolean isLoginExpired(Account account, User user) {
         return (getLoginDaysRemaining(account, user) <= 0);
+    }
+    public boolean isPasswordUpdated() {
+        return passwordUpdated;
+    }
+
+    public void setPasswordUpdated(boolean passwordUpdated) {
+        this.passwordUpdated = passwordUpdated;
     }
     public static Integer getLoginDaysRemaining(Account account, User user) {
         Integer loginExpire;
@@ -295,7 +303,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return (loginExpire!=0)? loginExpire - daysSinceLastLogin:NOT_SET_TO_EXPIRE;
     }
     public Integer getPasswordDaysRemaining() {
-        return getPasswordDaysRemaining(getAccount(), this.getUser());
+        return getPasswordDaysRemaining(getAccount(),userDAO.findByID(this.getUser().getUserID()));
     }
     public static Integer getPasswordDaysRemaining(Account account, User user) {
         Integer passwordExpire;
@@ -944,6 +952,8 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if ((person.getPassword() != null) && (person.getPassword().length() > 0)) {
                 person.getUser().setPassword(passwordEncryptor.encryptPassword(person.getPassword()));
                 person.getUser().setPasswordDT(new Date());
+                if(this.getPerson().getPersonID() == person.getPersonID())
+                    this.setPasswordUpdated(true);
             }
             // null out the user/driver before saving
             if (!person.isUserSelected() && (person.getUser() != null)) {
