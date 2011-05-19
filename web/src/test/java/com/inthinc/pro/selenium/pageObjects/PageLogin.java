@@ -26,6 +26,9 @@ public class PageLogin extends Masthead {
     	public LoginError loginError(){
     		return new LoginError();
     	}
+    	public MessageSent messageSent(){
+    	    return new MessageSent();
+    	}
     }
     
     public LoginPopUps _popUp(){
@@ -93,7 +96,7 @@ public class PageLogin extends Masthead {
                 LoginEnum.PASSWORD_LABEL, LoginEnum.LOGIN_BUTTON);
         return this;
     }
-
+    @Override
     public String getExpectedPath() {
         return LoginEnum.LOGIN_URL.getURL();
     }

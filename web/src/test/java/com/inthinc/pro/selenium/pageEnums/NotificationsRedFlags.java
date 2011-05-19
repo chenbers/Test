@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum NotificationsRedFlags implements SeleniumEnums {
+    DEFAULT_URL("/app/notifications/redflags"),
     /* Header */
     MAIN_TITLE("Red Flags", "//div[@class='panel_title']/span[1]", "//div[@class='panel_nw']/div/span[1]"),
     MAIN_TITLE_COMMENT("Red Flags", "//div[@class='panel_title']/span[2]", "//div[@class='panel_nw']/div/span[2]"),

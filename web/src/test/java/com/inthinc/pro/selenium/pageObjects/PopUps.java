@@ -10,7 +10,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 
-public class PopUps {
+public class PopUps {//TODO: jwimmer: to dTanner: is there a reason PopUps do not extend BaseElement?
 	private String page, type;
 	private Integer number;
 

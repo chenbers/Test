@@ -10,6 +10,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.DeviceReportEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
+import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
@@ -150,8 +151,10 @@ public class PageDeviceReport extends ReportsBar {
 		
 		public TextField devicePhoneNumberSearch(){
 			return new TextField(DeviceReportEnum.PHONE_SEARCH);
-		}
-		
-		
+		}		
 	}
+    @Override
+    public String getExpectedPath() {
+        return DeviceReportEnum.DEFAULT_URL.getURL();
+    }
 }

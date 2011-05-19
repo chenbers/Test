@@ -6,7 +6,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEnum;
+import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
 
 public class PageAdminUsers extends ReportsBar {
 	
@@ -98,5 +98,9 @@ public class PageAdminUsers extends ReportsBar {
 	public AdminUsersPopUps _popUp(){
 		return new AdminUsersPopUps();
 	}
-
+	
+    @Override
+    public String getExpectedPath() {
+        return AdminUsersEnum.DEFAULT_URL.getURL();
+    }
 }

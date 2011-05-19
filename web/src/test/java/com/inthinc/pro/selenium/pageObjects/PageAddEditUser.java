@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.selenium.pageEnums.AdminAddEditUser;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
+import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEnum;
 
 public class PageAddEditUser extends AdminBar {
@@ -71,6 +72,9 @@ public class PageAddEditUser extends AdminBar {
 		public DhxDropDown userGroup(){
 			return new DhxDropDown(AdminAddEditUser.USER_GROUP_DHX);
 		}
-		
 	}
+    @Override
+    public String getExpectedPath() {
+        return AdminAddEditUser.DEFAULT_URL.getURL();
+    }
 }

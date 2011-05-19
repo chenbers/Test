@@ -8,6 +8,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.selenium.pageEnums.AdminAddEditUser;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
@@ -198,5 +199,8 @@ public class PageVehicleReport extends ReportsBar {
 	public VehicleReportTextFields _textField() {
 		return new VehicleReportTextFields();
 	}
-
+    @Override
+    public String getExpectedPath() {
+        return VehicleReportEnum.DEFAULT_URL.getURL();
+    }
 }

@@ -7,6 +7,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.selenium.pageEnums.IdlingReportEnum;
+import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
@@ -121,4 +122,8 @@ public class PageIdlingReport extends ReportsBar {
 	public IdlingReportPopUps _popUp() {
 		return new IdlingReportPopUps();
 	}
+    @Override
+    public String getExpectedPath() {
+        return IdlingReportEnum.DEFAULT_URL.getURL();
+    }
 }

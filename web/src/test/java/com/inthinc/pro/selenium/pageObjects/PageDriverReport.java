@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
+import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
@@ -200,4 +201,10 @@ public class PageDriverReport extends ReportsBar {
 	public DriverReportTextFields _textField() {
 		return new DriverReportTextFields();
 	}
+	
+    @Override
+    public String getExpectedPath() {
+        return DriverReportEnum.DEFAULT_URL.getURL();
+    }
+	
 }

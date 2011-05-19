@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
+import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
 public class PageAdminVehicles extends AdminBar {
 	public class AdminVehiclesButtons extends AdminBarButtons {
@@ -45,4 +46,8 @@ public class PageAdminVehicles extends AdminBar {
 	public AdminVehiclesTextFields _textField() {
 		return new AdminVehiclesTextFields();
 	}
+    @Override
+    public String getExpectedPath() {
+        return AdminVehiclesEnum.DEFAULT_URL.getURL();
+    }
 }

@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum AdminAddEditUser implements SeleniumEnums {
+    DEFAULT_URL("/app/admin/editPerson"),
 	/* Entry Labels */ //TODO: dtanner: finish this section up for all of the labels, if we want them
 	FIRST_NAME("First Name","//td[@valign='top'][1]/table/tbody/tr[1]/td[@valign='top']/text()[1]"),
 	FIRST_NAME_REQUIRED("*","//td[@valign='top'][1]/table/tbody/tr[1]/td[@valign='top']/span"),

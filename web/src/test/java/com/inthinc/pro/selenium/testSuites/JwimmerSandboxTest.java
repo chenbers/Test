@@ -7,7 +7,6 @@ import org.junit.Test;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 
-//@Ignore
 public class JwimmerSandboxTest extends WebTest {
     PageLogin l;
     PageLiveFleet liveFleet;
@@ -37,7 +36,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test
     public void liveFleet_clickHelp_newWindow() {
         l.loginProcess("jwimmer", "password");
-        liveFleet._link().liveFleet().click();//TODO: jwimmer: could this be failing on EC2 only, because the liveFleet pageObject hasn't loaded yet???
+        liveFleet._link().liveFleet().click();//TODO: jwimmer: could this be failing on EC2 only, because the pageObject after loginProcess hasn't loaded yet???
         System.out.println("help().getText(): "+liveFleet._link().help().getText());
         liveFleet._link().help().click();//TODO: jwimmer: question for dTanner: are we sure that the textLinkNewWindow.click ever works?
         //TODO: jwimmer: validate help page/window opened

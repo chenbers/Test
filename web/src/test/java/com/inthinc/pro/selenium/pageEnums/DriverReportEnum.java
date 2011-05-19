@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum DriverReportEnum implements SeleniumEnums {
+    DEFAULT_URL("/app/reports/driversReport"),
     GROUP_SEARCH(null, "drivers-form:drivers:groupfsp"),
     DRIVER_SEARCH(null, "drivers-form:drivers:fullNamefsp"),
     VEHICLE_SEARCH(null, "drivers-form:drivers:vehiclenamefsp"),

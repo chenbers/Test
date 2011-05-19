@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum IdlingReportEnum implements SeleniumEnums {
+    DEFAULT_URL("/app/reports/idlingReport"),
     GROUP_SEARCH(null, "idling-form:idling:groupfsp"),
     DRIVER_SEARCH(null, "idling-form:idling:fullNamefsp"),
     
