@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.selenium;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class ErrorCatcher {
         String errorStr = null;
         String type = error.getClass().getSimpleName();
         if (error instanceof String) {
-            errorStr = (String) error;
+            errorStr = addStackTrace((String) error);
             type = "Warning";
         } else if (error instanceof Throwable) {
             // type = "Framework Thrown Exception";
@@ -56,6 +57,13 @@ public class ErrorCatcher {
             errorStr = RallyStrings.toString((StackTraceElement[]) error);
         }
         addError(name, type, errorStr);
+    }
+    
+    private String addStackTrace(String error){
+    	StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+    	Integer length = stack.length;
+    	String errorStr = error +"\n\n"+RallyStrings.toString(Arrays.copyOfRange(stack,4,length));
+    	return errorStr;
     }
     
     public void addFatal(String name, Throwable exception){
@@ -74,7 +82,7 @@ public class ErrorCatcher {
      *            text
      */
     private void addError(String name, String type, String error) {
-        logger.error(name + " :\n\t" + type + " :\n" + error);
+        logger.info("\n"+name + " :\n\t" + type + " :\n" + error);
         if (!errors.containsKey(name)) {
             add_error(name);
         }

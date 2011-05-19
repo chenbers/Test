@@ -40,7 +40,7 @@ public class PageObject {
         selenium.getErrors().addError(errorName, error);
     }
     
-    public void addError(SeleniumEnums errorName, String error){
+    public void addError(AutomationEnum errorName, String error){
         selenium.getErrors().addError(selenium.getLocator(errorName), error);
     }
 }

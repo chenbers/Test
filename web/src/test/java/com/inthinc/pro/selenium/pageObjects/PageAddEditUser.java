@@ -2,11 +2,12 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.DhxDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
+import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.selenium.pageEnums.AdminAddEditUser;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEnum;
 
 public class PageAddEditUser extends AdminBar {
@@ -32,6 +33,20 @@ public class PageAddEditUser extends AdminBar {
 		public TextFieldLabel userLabel(AdminUsersEnum label){
 			return new TextFieldLabel(AdminAddEditUser.TEXT_FIELDS,"user_", label);
 		}
+		
+		public TextFieldError personError(AdminUsersEnum label){
+			return new TextFieldError(AdminAddEditUser.TEXT_FIELDS, label);
+		}
+		
+		public TextFieldError driverError(AdminUsersEnum label){
+			return new TextFieldError(AdminAddEditUser.TEXT_FIELDS,"driver_", label);
+		}
+		
+		public TextFieldError userError(AdminUsersEnum label){
+			return new TextFieldError(AdminAddEditUser.TEXT_FIELDS,"user_", label);
+		}
+		
+		
 	}
 	
 	public AddEditUserTextFields _textField(){
@@ -54,7 +69,23 @@ public class PageAddEditUser extends AdminBar {
 	public AddEditUserButtons _button(){
 		return new AddEditUserButtons();
 	}
-	public class AddEditUserButtons extends AdminBarButtons{}
+	public class AddEditUserButtons extends AdminBarButtons{
+		
+		public TextButton saveTop(){
+			return new TextButton(AdminAddEditUser.SAVE,"1");
+		}
+		public TextButton saveBottom(){
+			return new TextButton(AdminAddEditUser.SAVE,"2");
+		}
+		
+		public TextButton cancelTop(){
+			return new TextButton(AdminAddEditUser.CANCEL,"1");
+		}
+		public TextButton cancelBottom(){
+			return new TextButton(AdminAddEditUser.CANCEL,"2");
+		}
+		
+	}
 	
 	public AddEditUserDropDowns _dropDown(){
 		return new AddEditUserDropDowns();

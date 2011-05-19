@@ -11,6 +11,8 @@ import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
 
 public class ElementBase implements ElementInterface {
+	protected final static String parentXpath = "/..";
+	
     protected final static Logger logger = Logger.getLogger(ElementBase.class);
     protected CoreMethodLib selenium;
     protected WebDriver webDriver;
@@ -110,15 +112,15 @@ public class ElementBase implements ElementInterface {
 
     public void assertEquals(Object actual, Object expected) {
         if (!actual.equals(expected)) {
-            addError(myEnum.toString() +": '"+actual+"' != '" + expected+"'");
+        	addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual);
         }
     }
 
-    public void assertEquals(Object expected, SeleniumEnums actual) {
+    public void assertEquals(Object expected, AutomationEnum actual) {
         assertEquals(expected, selenium.getText(actual));
     }
 
-    public void assertEquals(SeleniumEnums anEnum) {
+    public void assertEquals(AutomationEnum anEnum) {
         assertEquals(selenium.getText(anEnum), anEnum.getText());
     }
     
@@ -169,7 +171,8 @@ public class ElementBase implements ElementInterface {
     
     public void validateTextMatches(SeleniumEnums ...enums){
         for (SeleniumEnums enumerated: enums){
-            assertEquals(enumerated);
+        	
+            assertEquals(AutomationEnum.CORE_ONLY.setEnum(enumerated));
         }
     }
     

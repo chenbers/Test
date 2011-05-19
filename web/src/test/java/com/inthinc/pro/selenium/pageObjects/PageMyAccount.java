@@ -305,10 +305,10 @@ public class PageMyAccount extends NavigationBar {
 
 	public PageMyAccount page_titlesAndLabels_validate() {
 		/* Buttons on the main page */
-		assertEquals(selenium.getText(MyAccountEnum.CHANGE_PASSWORD_BUTTON),
-				MyAccountEnum.CHANGE_PASSWORD_BUTTON);
-		assertEquals(selenium.getText(MyAccountEnum.EDIT_BUTTON),
-				MyAccountEnum.EDIT_BUTTON);
+//		assertEquals(selenium.getText(MyAccountEnum.CHANGE_PASSWORD_BUTTON), //TODO: dtanner: selenium shouldn't be called from page
+//				MyAccountEnum.CHANGE_PASSWORD_BUTTON);
+//		assertEquals(selenium.getText(MyAccountEnum.EDIT_BUTTON),
+//				MyAccountEnum.EDIT_BUTTON);
 
 		/* Titles for the separate sections */
 		_text().titleAccountMain().validate();

@@ -20,6 +20,7 @@ public class TextLinkContextSense extends TextLink implements TextBased, Clickab
     
     @Override
     public TextLinkContextSense click() {
+    	setCurrentLocation();
         String loc = current.get("page");
         if (!loc.equals("")){
             myEnum.replaceWord(loc);

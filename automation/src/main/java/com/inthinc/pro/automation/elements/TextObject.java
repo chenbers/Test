@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.TextEnum;
 
 public abstract class TextObject extends ElementBase implements TextBased {
 
@@ -21,9 +22,7 @@ public abstract class TextObject extends ElementBase implements TextBased {
     @Override
     public ElementInterface compareText(String expected) {
         String actual = getText();
-        if (!expected.equals(actual)) {
-            addError(this.myEnum.toString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual);
-        }
+        assertEquals(actual, expected);
         return this;
     }
     
@@ -38,6 +37,13 @@ public abstract class TextObject extends ElementBase implements TextBased {
     
     public ElementInterface validateText(String expected) {
         return compareText(expected);
+    }
+    
+    public ElementInterface validateText(TextEnum expected) {
+        return compareText(expected.getText());
+    }
+    public ElementInterface validateText(TextEnum expected, String replaceOld, String withNew) {
+        return compareText(expected.getText().replace(replaceOld, withNew));
     }
     
     public ElementInterface validateText(){

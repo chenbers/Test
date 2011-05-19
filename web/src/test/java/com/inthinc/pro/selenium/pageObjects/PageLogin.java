@@ -101,7 +101,7 @@ public class PageLogin extends Masthead {
         return LoginEnum.LOGIN_URL.getURL();
     }
     public PageLogin openLogout() {
-        selenium.open(LoginEnum.LOGOUT_URL);
+        selenium.open(LoginEnum.LOGOUT_URL.getURL());//TODO: dtanner: needs to be updated to new way of doing things
         validatePage();
         return this;
     }

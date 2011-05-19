@@ -4,6 +4,7 @@ import java.util.StringTokenizer;
 
 import org.openqa.selenium.WebDriver;
 
+import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
@@ -48,7 +49,7 @@ public abstract class AbstractPage implements Page {
         assertEquals(expected, actual.getText());
     }
 
-    public void assertEquals(SeleniumEnums anEnum) {
+    public void assertEquals(AutomationEnum anEnum) {
         assertEquals(selenium.getText(anEnum), anEnum.getText());
     }
 

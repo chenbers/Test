@@ -143,9 +143,9 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._text().team().validateText("Skip's Team");
 
 		/* Red Flags */
-		my._text().redFlagInfo().validateText(RedFlagPrefs.TEXT1.getText());
-		my._text().redFlagWarn().validateText(RedFlagPrefs.EMAIL1.getText());
-		my._text().redFlagCritical().validateText(RedFlagPrefs.PHONE1.getText());
+		my._text().redFlagInfo().validateText(RedFlagPrefs.TEXT1, ":", "");
+		my._text().redFlagWarn().validateText(RedFlagPrefs.EMAIL1, ":", "");
+		my._text().redFlagCritical().validateText(RedFlagPrefs.PHONE1, ":", "");
 
 		/* Contact Info */
 		my._text().email1().validateText("tina1965@test.com");

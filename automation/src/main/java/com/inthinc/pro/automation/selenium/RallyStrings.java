@@ -19,6 +19,9 @@ public class RallyStrings {
         Boolean passedTest = false;
         for (StackTraceElement element : stack){
             String line = StringUtils.repeat(tab, 2) + element.toString();
+            if (line.contains("org.openqa")||line.contains("DefaultSelenium")){
+            	continue;
+            }
             if (line.contains("selenium.testSuites")&&!passedTest){
                 passedTest = true;
             }else if (!line.contains("selenium.testSuites") && passedTest){

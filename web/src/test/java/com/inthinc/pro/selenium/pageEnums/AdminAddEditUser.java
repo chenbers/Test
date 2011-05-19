@@ -19,6 +19,9 @@ public enum AdminAddEditUser implements SeleniumEnums {
     TEXT_FIELDS(null, "edit-form:editPerson-***"),
 	
 	
+    CANCEL("Cancel", "edit-form:editPersonCancel***"),
+    SAVE(save, "edit-form:editPersonSave***"),
+    
 	
 	
 	;

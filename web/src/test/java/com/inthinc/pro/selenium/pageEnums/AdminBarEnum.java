@@ -10,7 +10,7 @@ public enum AdminBarEnum implements SeleniumEnums {
     USERS_IMAGE(null, "//tr[1]/td/dl/dd/table/tbody/tr/td[1]"),
     USERS("Users", "link=Users", "//tr[1]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-people"),
 
-    ADD_USER("Add User", "link=Add User", "side-nav-form:people-vlst-people"),
+    ADD_USER("Add User", "link=Add User", "side-nav-form:***-vlst-people"),
 
     VEHICLES_IMAGE(null, "//tr[2]/td/dl/dd/table/tbody/tr/td[1]"),
     VEHICLES("Vehicles", "link=Vehicles", "//tr[2]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-vehicles"),
