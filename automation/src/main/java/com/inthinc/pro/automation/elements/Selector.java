@@ -10,8 +10,9 @@ public class Selector extends SelectableObject implements Selectable {
     public Selector(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
     }
-    public Selector(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
+    public Selector(SeleniumEnums anEnum, String page, String type) {
+        super(anEnum, page);
+        myEnum.replaceOldWithNew("*type*", type);
     }
     public Selector(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);

@@ -10,7 +10,7 @@ public enum AdminBarEnum implements SeleniumEnums {
     USERS_IMAGE(null, "//tr[1]/td/dl/dd/table/tbody/tr/td[1]"),
     USERS("Users", "link=Users", "//tr[1]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-people"),
 
-    ADD_USER("Add User", "link=Add User", "side-nav-form:***-vlst-people"),
+    ADD_USER("Add User", "link=Add User", "side-nav-form:people-vlst-people"),
 
     VEHICLES_IMAGE(null, "//tr[2]/td/dl/dd/table/tbody/tr/td[1]"),
     VEHICLES("Vehicles", "link=Vehicles", "//tr[2]/td/dl/dd/table/tbody/tr/td[2]", "side-nav-form:***-vlt-vehicles"),
@@ -76,6 +76,20 @@ public enum AdminBarEnum implements SeleniumEnums {
     /* Multi Selector */
     SELECTOR(null, "edit-form:edit***-*type*"),
 
+    MOVE_RIGHT(null, "edit***-right"),
+    MOVE_LEFT(null, "edit***-left"),
+    MOVE_ALL_RIGHT(null, "edit***-allRight"),
+    MOVE_ALL_LEFT(null, "edit***-allLeft"), 
+    
+    
+    MASTER_ERROR(null, "//dt[@class='error']"),
+    
+    ADMIN_DETAILS_NAME(null, "//span[@class='admin']"),
+    
+	GO_BACK("< Back to Users", "display-form:***Cancel"),
+	DETAILS_DELETE(delete, "display-form:***Delete"),
+	EDIT("Edit", "display-form:***Edit"),
+    
     ;
 
     private String text, url;
