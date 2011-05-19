@@ -18,7 +18,9 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleName;
 
+@SuppressWarnings("serial")
 public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> implements VehicleDAO, FindByKey<Vehicle> {
     private static final Logger logger = Logger.getLogger(DriverHessianDAO.class);
     private static final String CENTRAL_ID_KEY = "vin";
@@ -164,5 +166,21 @@ public class VehicleHessianDAO extends GenericHessianDAO<Vehicle, Integer> imple
 
     public DeviceDAO getDeviceDAO() {
         return deviceDAO;
+    }
+
+    @Override
+    public List<VehicleName> getVehicleNames(Integer groupID)
+    {
+        
+        try
+        {
+            List<VehicleName> vehicleList = getMapper().convertToModelObject(this.getSiloService().getVehicleNamesByGroupIDDeep(groupID), VehicleName.class);
+            return vehicleList;
+        }
+        catch (EmptyResultSetException e)
+        {
+            return Collections.emptyList();
+        }
+
     }
 }

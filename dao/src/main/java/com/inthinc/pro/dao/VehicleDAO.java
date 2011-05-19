@@ -7,12 +7,15 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleName;
 
 public interface VehicleDAO extends GenericDAO<Vehicle, Integer> {
     List<Vehicle> getVehiclesInGroupHierarchy(Integer groupID);
-
+    
     List<Vehicle> getVehiclesInGroup(Integer groupID);
 
+    List<VehicleName> getVehicleNames(Integer groupID);
+    
     void setVehicleDriver(Integer vehicleID, Integer driverID);
 
     // only use these from test code on dev to generate events in the past

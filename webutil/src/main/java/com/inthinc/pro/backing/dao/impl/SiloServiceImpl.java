@@ -1136,5 +1136,9 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
     
-	
+    @Override
+    @MethodDescription(description = "Fetches the list of all the vehicle names for the vehicles in a group hierarchy.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.DriverName.class)
+    public List<Map<String, Object>> getVehicleNamesByGroupIDDeep(Integer groupID) throws ProDAOException {
+        return null;
+    }
 }

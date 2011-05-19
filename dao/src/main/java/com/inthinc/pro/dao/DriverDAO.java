@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.joda.time.Interval;
 
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
-import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;

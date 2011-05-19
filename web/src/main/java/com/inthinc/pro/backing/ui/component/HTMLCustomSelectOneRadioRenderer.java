@@ -107,7 +107,7 @@ public class HTMLCustomSelectOneRadioRenderer extends Renderer {
                 writer.write(" disabled");
             }           
             if ( aUICustomSelectOneRadio.getItemValue() != null ) {
-                writer.write(" value=\"" + aUICustomSelectOneRadio.getItemValue().trim() + "\"");
+                writer.write(" value=\"" + aUICustomSelectOneRadio.getItemValue().toString().trim() + "\"");
             }       
             if ( aUICustomSelectOneRadio.getOnClick() != null && aUICustomSelectOneRadio.getOnClick().trim().length() > 0 ) {
                 writer.write(" onclick=\"" + aUICustomSelectOneRadio.getOnClick().trim() + "\"");
@@ -126,7 +126,7 @@ public class HTMLCustomSelectOneRadioRenderer extends Renderer {
             }
             if ( aUICustomSelectOneRadio.getValue() != null &&
                     aUICustomSelectOneRadio.getValue().equals(aUICustomSelectOneRadio.getItemValue())) {
-                writer.write(" checked=\"checked\"");               
+                writer.write(" checked");               
             }           
             writer.write(">");
             if ( aUICustomSelectOneRadio.getItemLabel() != null ) {

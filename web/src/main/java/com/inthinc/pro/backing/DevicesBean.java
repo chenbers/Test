@@ -21,7 +21,7 @@ import com.inthinc.pro.backing.filtering.ColumnFiltering;
 import com.inthinc.pro.backing.model.supportData.AdminCacheBean;
 import com.inthinc.pro.backing.model.supportData.CacheItemMap;
 import com.inthinc.pro.backing.model.supportData.DeviceMap;
-import com.inthinc.pro.backing.model.supportData.DriverMap;
+import com.inthinc.pro.backing.model.supportData.DriverNameMap;
 import com.inthinc.pro.backing.model.supportData.GroupMap;
 import com.inthinc.pro.backing.model.supportData.VehicleMap;
 import com.inthinc.pro.backing.model.supportData.VehicleSettingMap;
@@ -35,6 +35,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
@@ -89,17 +90,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private DriverDAO   driverDAO;
     private ConfiguratorDAO configuratorDAO;
 
-//    private VehiclesBean vehiclesBean;
-//    private List<EnhancedVehicle> vehicles;
-//    private Map<Integer, EnhancedVehicle> vehicleMap;
-    
-//    private Map<Integer, DeviceView> deviceMap;
-    
-//    private CacheItemMap<Driver,Driver> driverMap;
-//    private CacheItemMap<Vehicle,Vehicle> vehicleMap;
-//    private CacheItemMap<Group,Group> groupMap;
-//    private CacheItemMap<DeviceSettingDefinition,VehicleSetting> vehicleSettingMap;
-//    private CacheItemMap<Device,Device> supportDeviceMap;
     private ColumnFiltering<Vehicle> chooseVehicleFiltering;
     private VehicleChoiceTableColumns vehicleChoiceTableColumns;
     
@@ -109,8 +99,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private String chooseVehicleSearchKeyword;
     private String chosenVehicleID;
     
-//    private List<Driver>                          drivers;
-
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
         this.deviceDAO = deviceDAO;
@@ -170,7 +158,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
    }
     private void loadDrivers()
     {
-        CacheItemMap<Driver,Driver> driverMap = new DriverMap(getUser().getGroupID());
+        CacheItemMap<Driver,DriverName> driverMap = new DriverNameMap(getUser().getGroupID());
         driverMap.setDAO(driverDAO);
         driverMap.buildMap();
         adminCacheBean.addAssetMap("drivers",driverMap);
@@ -196,7 +184,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 //        return (List<Vehicle>) adminCacheBean.getAssets("vehicles");
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     protected List<DeviceView> loadItems()
     {
@@ -209,20 +196,21 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             items.add(createDeviceView(device));
         }
         loadSupportData();
-        chooseVehicleItems = (List<Vehicle>) adminCacheBean.getAssets("vehicles");
         vehicleChoiceTableColumns = new VehicleChoiceTableColumns();
-        
+       
         return items;
     }
     
+    @SuppressWarnings("unchecked")
     private void loadSupportData(){
         
         adminCacheBean = new AdminCacheBean();
         loadDevices();
         loadGroups();
         loadDrivers();
-        loadVehicleSettings();
+//        loadVehicleSettings();
         loadVehicles();
+        chooseVehicleItems = (List<Vehicle>) adminCacheBean.getAssets("vehicles");
         
     }
     /**

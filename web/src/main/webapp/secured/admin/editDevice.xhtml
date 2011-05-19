@@ -259,9 +259,9 @@
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_name}" /></f:facet>
             <h:outputText value="#{item.name}" />
           </rich:column>
-          <rich:column id="fullName" sortBy="#{devicesBean.driverMap[item.driverID].person.fullName}">
+          <rich:column id="fullName" sortBy="#{devicesBean.driverMap[item.driverID].driverName}">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_driverID}" /></f:facet>
-            <h:outputText value="#{devicesBean.driverMap[item.driverID].person.fullName}" />
+            <h:outputText value="#{devicesBean.driverMap[item.driverID].driverName}" />
           </rich:column>
           <rich:column id="group" sortBy="#{devicesBean.groupMap[item.groupID].name}">
             <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_groupID}" /></f:facet>
@@ -292,8 +292,8 @@
             <f:facet name="header"><h:outputText value="#{messages.chooseVehicle_assigned}" /></f:facet>
             <h:outputText value="#{(empty item.deviceID) ? messages.chooseVehicle_unassigned : messages.chooseVehicle_assigned}" />
           </rich:column>
-          <rich:column id="productVersion" custFilterBy="#{devicesBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" 
-          				sortBy="#{devicesBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" filterValue="#{devicesBean.chooseVehicleFiltering['productVersion']}">
+          <rich:column id="productVersion" custFilterBy="#{devicesBean.deviceMap[item.deviceID].productVersion.description.productName}" 
+          				sortBy="#{devicesBean.deviceMap[item.deviceID].productVersion.description.productName}" filterValue="#{devicesBean.chooseVehicleFiltering['productVersion']}">
       	<f:facet name="header">
         <h:panelGroup>
 			<h:outputText value="#{messages.vehiclesHeader_productType}" />
@@ -311,7 +311,7 @@
 			</h:panelGroup>
         </h:panelGroup>
       </f:facet>
-      <h:outputText value="#{devicesBean.vehicleSettingMap[item.vehicleID].productType.description.productName}" />
+      <h:outputText value="#{devicesBean.deviceMap[item.deviceID].productVersion.description.productName}" />
     </rich:column>
 
     <rich:column id="device" sortBy="#{devicesBean.deviceMap[item.deviceID].name}">

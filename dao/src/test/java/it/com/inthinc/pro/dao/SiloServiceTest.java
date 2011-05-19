@@ -18,7 +18,6 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.hos.model.RuleSetType;
@@ -56,6 +55,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DeviceStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.ForwardCommand;
 import com.inthinc.pro.model.ForwardCommandDef;
@@ -83,6 +83,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripQuality;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.SiteAccessPoints;
@@ -351,6 +352,13 @@ public class SiloServiceTest {
         }
     }
     @Test
+    public void vehicleNames(){
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
+        List<VehicleName> names = vehicleDAO.getVehicleNames(TESTING_GROUP_ID);
+        assertTrue(names.size() >0);
+    }
+    @Test
     //@Ignore
     public void lastLocationVehicle() {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
@@ -465,7 +473,13 @@ public class SiloServiceTest {
         assertNotNull(lastTrip);
         
     }
-
+    @Test
+    public void driverNames(){
+        DriverHessianDAO driverDAO = new DriverHessianDAO();
+        driverDAO.setSiloService(siloService);
+        List<DriverName> names = driverDAO.getDriverNames(TESTING_GROUP_ID);
+        assertTrue(names.size() >0);
+    }
     @Test
     public void admin() {
         // test all create, find, update and any other methods (not delete yet though)

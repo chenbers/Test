@@ -12,9 +12,9 @@ import org.joda.time.Interval;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.util.DateUtil;
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.DriverLocation;
-import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.DriverStops;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
@@ -78,7 +78,6 @@ public class DriverHessianDAO extends GenericHessianDAO<Driver, Integer> impleme
         {
             return Collections.emptyList();
         }
-
     }
 
     @Override

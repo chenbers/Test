@@ -1491,4 +1491,10 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return null;
     }
 
+    @Override
+    public List<Map<String, Object>> getVehicleNamesByGroupIDDeep(Integer groupID) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

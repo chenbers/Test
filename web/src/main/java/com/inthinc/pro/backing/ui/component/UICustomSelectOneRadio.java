@@ -17,6 +17,13 @@ public class UICustomSelectOneRadio extends UIInput {
         else
            return null;         
     }
+    public Object getValueExpressionAsObject(String attr) {
+        ValueExpression valueExpression = getValueExpression(attr);
+        if (valueExpression != null)
+            return valueExpression.getValue(this.getFacesContext().getELContext());
+         else
+            return null;         
+     }
     
     private String name = null;
     private String overrideName = null;
@@ -24,7 +31,7 @@ public class UICustomSelectOneRadio extends UIInput {
     private String style = null;
     private String disabled = null;
     private String itemLabel = null;
-    private String itemValue = null;
+    private Object itemValue = null;
     private String onClick = null;
     private String onMouseOver = null;
     private String onMouseOut = null;
@@ -50,19 +57,19 @@ public class UICustomSelectOneRadio extends UIInput {
         this.overrideName = overrideName;
     }
     public String getStyleClass() {
-        if (null != overrideName) {
-            return overrideName;
+        if (null != styleClass) {
+            return styleClass;
          }
-         return getValueExpressionAsString("overrideName");
+        return getValueExpressionAsString("styleClass");
     }
     public void setStyleClass(String styleClass) {
         this.styleClass = styleClass;
     }
     public String getStyle() {
-        if (null != overrideName) {
-            return overrideName;
+        if (null != style) {
+            return style;
          }
-         return getValueExpressionAsString("overrideName");
+         return getValueExpressionAsString("style");
     }
     public void setStyle(String style) {
         this.style = style;
@@ -85,13 +92,13 @@ public class UICustomSelectOneRadio extends UIInput {
     public void setItemLabel(String itemLabel) {
         this.itemLabel = itemLabel;
     }
-    public String getItemValue() {
+    public Object getItemValue() {
         if (null != itemValue) {
             return itemValue;
          }
-         return getValueExpressionAsString("itemValue");
+         return getValueExpressionAsObject("itemValue");
     }
-    public void setItemValue(String itemValue) {
+    public void setItemValue(Object itemValue) {
         this.itemValue = itemValue;
     }
     public String getOnClick() {
@@ -163,7 +170,7 @@ public class UICustomSelectOneRadio extends UIInput {
         style = (String) values[2];
         disabled = (String) values[3];
         itemLabel = (String) values[4];
-        itemValue = (String) values[5];
+        itemValue =  values[5];
         onClick = (String) values[6];
         onMouseOver = (String) values[7];
         onMouseOut = (String) values[8];
@@ -175,15 +182,4 @@ public class UICustomSelectOneRadio extends UIInput {
      public String getFamily() {
          return COMPONENT_FAMILY;
       }
-//    public String getValue() {
-//        if (null != value) {
-//            return value;
-//        }
-//        return getValueExpressionAsString("value");
-//    }
-//    public void setValue(String value) {
-//        
-//        this.value = value;
-//    }
-
  }

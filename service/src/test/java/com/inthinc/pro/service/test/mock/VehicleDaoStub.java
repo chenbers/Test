@@ -14,6 +14,7 @@ import com.inthinc.pro.model.DriverLocation;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleName;
 
 /**
  * @author dfreitas
@@ -171,6 +172,12 @@ public class VehicleDaoStub implements VehicleDAO {
     @Override
     public Integer update(Vehicle entity) {
         return 0;
+    }
+
+    @Override
+    public List<VehicleName> getVehicleNames(Integer groupID) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
