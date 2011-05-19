@@ -51,7 +51,8 @@ public enum EventType implements BaseEnum {
     HOS_NO_HOURS(35, EnumSet.of(EventAccountFilter.HOS)),
     TEXT_MESSAGE(36, EnumSet.of(EventAccountFilter.WAYSMART)),
     OFF_HOURS(37, EnumSet.of(EventAccountFilter.WAYSMART)),
-    IGNITION_OFF(38);
+    IGNITION_OFF(38),
+    TRAILER_DATA(39, EnumSet.of(EventAccountFilter.HOS) );
     
     private int code;
     private AggressiveDrivingEventType noteSubType;

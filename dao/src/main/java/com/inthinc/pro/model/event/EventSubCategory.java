@@ -52,7 +52,7 @@ public enum EventSubCategory implements BaseEnum
             EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE)),
             
     HOS(10, 
-            EnumSet.of(EventType.DOT_STOPPED, EventType.HOS_NO_HOURS),
+            EnumSet.of(EventType.DOT_STOPPED, EventType.HOS_NO_HOURS, EventType.TRAILER_DATA),
             EnumSet.of(AlertMessageType.ALERT_TYPE_HOS_DOT_STOPPED, AlertMessageType.ALERT_TYPE_HOS_NO_HOURS_REMAINING)),
             
     TEXTMESSAGE(11,
