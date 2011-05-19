@@ -23,6 +23,7 @@
 	<field name="category" class="java.lang.String"/>
 	<field name="detail" class="java.lang.String"/>
 	<field name="eventType" class="java.lang.String"/>
+	<field name="excluded" class="java.lang.Boolean"/>
 	<background>
 		<band/>
 	</background>
@@ -35,78 +36,88 @@
 	<columnHeader>
 		<band height="20">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" x="105" y="3" width="179" height="16"/>
+				<reportElement key="textField-14" x="0" y="3" width="50" height="16"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.level}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="50" y="3" width="180" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.date.time}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="452" y="3" width="102" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.vehicle}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-5" x="554" y="3" width="85" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.category}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-6" x="639" y="3" width="41" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.detail}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-12" x="366" y="3" width="86" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.driver}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-13" x="284" y="3" width="82" height="16"/>
+				<reportElement key="textField-13" x="230" y="3" width="100" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.group}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-14" x="1" y="3" width="53" height="16"/>
+				<reportElement key="textField-12" x="330" y="3" width="100" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.driver}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="430" y="3" width="80" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.vehicle}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-5" x="510" y="3" width="100" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.category}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-6" x="610" y="3" width="110" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.detail}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" x="720" y="3" width="62" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.level}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.redflag.excluded}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="22">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-2" x="105" y="3" width="179" height="17"/>
+				<reportElement key="textField" x="0" y="3" width="50" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[str($F{redFlag.level}.toString())]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="50" y="3" width="180" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-4" x="452" y="3" width="102" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-5" x="554" y="3" width="85" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str("redflags_cat"+$F{category})+" "+str($F{eventType})]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-6" x="639" y="3" width="41" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{detail}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-9" x="284" y="3" width="82" height="17"/>
+				<reportElement key="textField-9" x="230" y="3" width="100" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{group}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-10" x="366" y="3" width="86" height="17"/>
+				<reportElement key="textField-10" x="330" y="3" width="100" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" x="1" y="3" width="53" height="18"/>
+				<reportElement key="textField-4" x="430" y="3" width="80" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[str($F{redFlag.level}.toString())]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-5" x="510" y="3" width="100" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[str("redflags_cat"+$F{category})+" "+str($F{eventType})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-6" x="610" y="3" width="110" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{detail}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="720" y="3" width="62" height="18"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{excluded}.booleanValue()) ? $R{yes}: $R{no}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
