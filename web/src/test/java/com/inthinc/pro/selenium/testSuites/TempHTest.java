@@ -105,17 +105,4 @@ public class TempHTest {
     public void w(){
         fail(failFreq);
     }
-    @Test
-    public void x(){
-        fail(failFreq);
-    }
-    @Test
-    public void y(){
-        fail(failFreq);
-    }
-    @Test
-    public void z(){
-        fail(failFreq);
-    }
-    
 }

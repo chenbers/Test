@@ -80,42 +80,4 @@ public class TempFTest extends WebTest {
     public void q(){
         fail(failFreq);
     }
-    
-    @Test
-    public void r(){
-        fail(failFreq);
-    }
-    @Test
-    public void s(){
-        fail(failFreq);
-    }
-    @Test
-    public void t(){
-        fail(failFreq);
-    }
-    @Test
-    public void u(){
-        fail(failFreq);
-    }
-    @Test
-    public void v(){
-        fail(failFreq);
-    }
-    @Test
-    public void w(){
-        fail(failFreq);
-    }
-    @Test
-    public void x(){
-        fail(failFreq);
-    }
-    @Test
-    public void y(){
-        fail(failFreq);
-    }
-    @Test
-    public void z(){
-        fail(failFreq);
-    }
-    
 }

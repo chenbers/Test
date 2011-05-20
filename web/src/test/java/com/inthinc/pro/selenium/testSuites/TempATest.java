@@ -2,6 +2,9 @@ package com.inthinc.pro.selenium.testSuites;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Test;
 
 public class TempATest extends WebTest {
@@ -9,6 +12,20 @@ public class TempATest extends WebTest {
     public void fail(int freq) {
         int randomNumber = (int)(Math.random() * 100);
         assertTrue((randomNumber>failFreq));
+    }
+    
+    public void primeNumbersAddition() {
+        //                          0,1,2,3 ,4, 5, 6, 7
+        int [] primes = new int [] {3,5,7,11,13,17,19,23};
+        Set<Integer> sums = new HashSet<Integer>();
+        //add original primes... necessary to test for duplicates when only ONE set was run
+        for(int one: primes) {
+            sums.add(one);
+            for(int two: primes) {
+                sums.add(one+two);
+                //itterative approach works fine... obvious candidate for recursion... ?
+            }
+        }
     }
     
     @Test
@@ -23,99 +40,5 @@ public class TempATest extends WebTest {
     @Test
     public void c(){
         fail(failFreq);
-    }
-    @Test
-    public void d(){
-        fail(failFreq);
-    }
-    @Test
-    public void e(){
-        fail(failFreq);
-    }
-    @Test
-    public void f(){
-        fail(failFreq);
-    }
-    @Test
-    public void g(){
-        fail(failFreq);
-    }
-    @Test
-    public void h(){
-        fail(failFreq);
-    }
-    @Test
-    public void i(){
-        fail(failFreq);
-    }
-    @Test
-    public void j(){
-        fail(failFreq);
-    }
-    @Test
-    public void k(){
-        fail(failFreq);
-    }
-    @Test
-    public void l(){
-        fail(failFreq);
-    }
-    @Test
-    public void m(){
-        fail(failFreq);
-    }
-    @Test
-    public void n(){
-        fail(failFreq);
-    }
-    @Test
-    public void o(){
-        fail(failFreq);
-    }
-    @Test
-    public void p(){
-        fail(failFreq);
-    }
-    @Test
-    public void q(){
-        fail(failFreq);
-    }
-    
-    @Test
-    public void r(){
-        fail(failFreq);
-    }
-    @Test
-    public void s(){
-        fail(failFreq);
-    }
-    @Test
-    public void t(){
-        fail(failFreq);
-    }
-    @Test
-    public void u(){
-        fail(failFreq);
-    }
-    @Test
-    public void v(){
-        fail(failFreq);
-    }
-    @Test
-    public void w(){
-        fail(failFreq);
-    }
-    @Test
-    public void x(){
-        fail(failFreq);
-    }
-    @Test
-    public void y(){
-        fail(failFreq);
-    }
-    @Test
-    public void z(){
-        fail(failFreq);
-    }
-    
+    } 
 }
