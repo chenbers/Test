@@ -39,8 +39,8 @@ public class TrailerDataEvent extends Event implements StatusEvent {
     public String getDetails(String formatStr, MeasurementType measurementType,String... noTrailerStr)
     {
         // Trailer: ABC123  Service: 123 Hazmat Flag: 1 
-        return MessageFormat.format(formatStr, new Object[] {trailerId == null ? noTrailerStr : trailerId, 
-                serviceId == null ? "0" : serviceId, 
+        return MessageFormat.format(formatStr, new Object[] {trailerId == null || trailerId.isEmpty() ? noTrailerStr[0] : trailerId, 
+                serviceId == null || serviceId.isEmpty() ? "0" : serviceId, 
                 hazmatFlag == null || !hazmatFlag ? "0" : "1"});
     }
 
