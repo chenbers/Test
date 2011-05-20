@@ -30,23 +30,23 @@ public class EditMyAccountTest extends WebRallyTest {
 		login.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		/* Get original Values */
-		String email1 = my._text().email1().getText();
-		String email2 = my._text().email2().getText();
+		String originalEmail1 = my._text().email1().getText();
+		String originalEmail2 = my._text().email2().getText();
 		
-		String phone1 = my._text().phone1().getText();
-		String phone2 = my._text().phone2().getText();
+		String originalPhone1 = my._text().phone1().getText();
+		String originalPhone2 = my._text().phone2().getText();
 		
-		String text1 = my._text().textMessage1().getText();
-		String text2 = my._text().textMessage2().getText();
+		String originalText1 = my._text().textMessage1().getText();
+		String originalText2 = my._text().textMessage2().getText();
 		
 		
-		String critical = my._text().redFlagCritical().getText();
-		String warning = my._text().redFlagWarn().getText();
-		String information = my._text().redFlagInfo().getText();
+		String originalCritical = my._text().redFlagCritical().getText();
+		String originalWarning = my._text().redFlagWarn().getText();
+		String originalInformation = my._text().redFlagInfo().getText();
 		
-		String locale = my._text().locale().getText();
-		String measurement = my._text().measurement().getText();
-		String fuelRatio = my._text().fuelEfficiency().getText();
+		String originalLocale = my._text().locale().getText();
+		String originalMeasurement = my._text().measurement().getText();
+		String originalFuelRatio = my._text().fuelEfficiency().getText();
 		
 		
 		/* Edit button */
@@ -66,9 +66,9 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._textField().textMessage2().type(random.getTextMessageNumber());
 
 		/* Red Flags */
-		my._select().information().select(random.getEnum(RedFlagPrefs.TEXT1, information));
-		my._select().warning().select(random.getEnum(RedFlagPrefs.TEXT1, warning));
-		my._select().critical().select(random.getEnum(RedFlagPrefs.TEXT1, critical));
+		my._select().information().select(random.getEnum(RedFlagPrefs.TEXT1, originalInformation));
+		my._select().warning().select(random.getEnum(RedFlagPrefs.TEXT1, originalWarning));
+		my._select().critical().select(random.getEnum(RedFlagPrefs.TEXT1, originalCritical));
 
 		/* Cancel Changes */
 		my._button().cancel().click();
@@ -76,9 +76,9 @@ public class EditMyAccountTest extends WebRallyTest {
 		/* Verify Changes did not take effect */
 		/* Login Info */        
 		my._text().userName().validateText("tnilson");
-		my._text().locale().validateText(locale);
-		my._text().measurement().validateText(measurement);
-		my._text().fuelEfficiency().validateText(fuelRatio);
+		my._text().locale().validateText(originalLocale);
+		my._text().measurement().validateText(originalMeasurement);
+		my._text().fuelEfficiency().validateText(originalFuelRatio);
 
 		/* Account Info */
 		my._text().name().validateText("Tina L Nilson");
@@ -86,17 +86,17 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._text().team().validateText("Skip's Team");
 
 		/* Red Flags */
-		my._text().redFlagInfo().validateText(information);
-		my._text().redFlagWarn().validateText(warning);
-		my._text().redFlagCritical().validateText(critical);
+		my._text().redFlagInfo().validateText(originalInformation);
+		my._text().redFlagWarn().validateText(originalWarning);
+		my._text().redFlagCritical().validateText(originalCritical);
 
 		/* Contact Info */
-		my._text().email1().validateText(email1);
-		my._text().email2().validateText(email2);
-		my._text().phone1().validateText(phone1);
-		my._text().phone2().validateText(phone2);
-		my._text().textMessage1().validateText(text1);
-		my._text().textMessage2().validateText(text2);
+		my._text().email1().validateText(originalEmail1);
+		my._text().email2().validateText(originalEmail2);
+		my._text().phone1().validateText(originalPhone1);
+		my._text().phone2().validateText(originalPhone2);
+		my._text().textMessage1().validateText(originalText1);
+		my._text().textMessage2().validateText(originalText2);
 	}
 
 	@Test
