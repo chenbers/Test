@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.inthinc.pro.backing.model.supportData.AdminCacheBean;
 import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Vehicle;
 
@@ -16,9 +16,9 @@ public class VehicleChoiceTableColumns {
         
         NAME {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){return vehicle.getName();}},
         DRIVERID {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){
-            Driver driver = (Driver)adminCacheBean.getAsset("drivers",vehicle.getDriverID());
+            DriverName driver = (DriverName)adminCacheBean.getAsset("drivers",vehicle.getDriverID());
             if (driver == null) return null;
-            return driver.getPerson().getFullName();}},
+            return driver.getDriverName();}},
         GROUPID {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){
             return ((Group)adminCacheBean.getAsset("groups",vehicle.getGroupID())).getName();}},
         YEAR {String getItem(AdminCacheBean adminCacheBean, Vehicle vehicle){
