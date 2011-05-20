@@ -32,6 +32,7 @@
 	<field name="event.avgSpeed" class="java.lang.Integer"/>
 	<field name="event.topSpeed" class="java.lang.Integer"/>
 	<field name="event.distance" class="java.lang.Integer"/>
+	<field name="event.forgiven" class="java.lang.Integer"/>
 	<variable name="DISTANCE_DIVISOR" class="java.lang.Double">
 		<initialValueExpression><![CDATA[new java.lang.Double(100.0)]]></initialValueExpression>
 	</variable>
@@ -46,9 +47,14 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-13" x="297" y="356" width="238" height="17"/>
+				<reportElement key="textField-13" x="297" y="340" width="238" height="17"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.event.count} + " " + $P{RECORD_COUNT}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="297" y="357" width="238" height="17"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.event.excludedKey}]]></textFieldExpression>
 			</textField>
 			<lineChart>
 				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.DriverLineChartCustomizer">
@@ -150,19 +156,19 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.date.time}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="386" y="14" width="54" height="16"/>
+				<reportElement key="textField-12" x="287" y="14" width="56" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.avg.speed}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="378" y="14" width="54" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.top.speed}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-6" x="480" y="14" width="49" height="16"/>
+				<reportElement key="textField-6" x="456" y="14" width="49" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.distance}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-12" x="287" y="14" width="56" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.avg.speed}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -183,12 +189,12 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-4" x="387" y="3" width="53" height="17"/>
+				<reportElement key="textField-4" x="379" y="3" width="53" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.topSpeed},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-6" x="480" y="3" width="51" height="17"/>
+				<reportElement key="textField-6" x="458" y="3" width="51" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistanceAndMovePoint($F{event.distance},$P{USE_METRIC},Integer.valueOf(2),$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mi",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
@@ -198,6 +204,13 @@
 				</reportElement>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.avgSpeed},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="511" y="3" width="24" height="17"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{event.forgiven}.intValue() == 1) ? "*" : ""]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

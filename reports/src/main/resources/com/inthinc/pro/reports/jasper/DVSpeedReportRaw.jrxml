@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Device Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isIgnorePagination="true">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Speed Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isIgnorePagination="true">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<import value="java.util.*"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="ACCOUNT_NAME" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
@@ -19,6 +22,7 @@
 	<field name="event.avgSpeed" class="java.lang.Integer"/>
 	<field name="event.topSpeed" class="java.lang.Integer"/>
 	<field name="event.distance" class="java.lang.Integer"/>
+	<field name="event.forgiven" class="java.lang.Integer"/>
 	<background>
 		<band/>
 	</background>
@@ -30,69 +34,79 @@
 	</pageHeader>
 	<columnHeader>
 		<band height="21">
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-2" x="1" y="4" width="256" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="0" y="4" width="250" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvspeed.location}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-3" x="257" y="4" width="176" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="250" y="4" width="150" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvspeed.date.time}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-4" x="538" y="4" width="83" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-12" x="400" y="4" width="75" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvspeed.posted.speed}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="475" y="4" width="75" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvspeed.avg.speed}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-5" x="621" y="4" width="58" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-5" x="550" y="4" width="75" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvspeed.top.speed}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-6" x="679" y="4" width="96" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-6" x="625" y="4" width="75" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvspeed.distance}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-12" x="443" y="4" width="93" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" x="700" y="4" width="82" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvspeed.posted.speed}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvspeed.excluded}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="22">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-1" x="1" y="3" width="256" height="17"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="0" y="3" width="250" height="17"/>
 				<textElement rotation="None"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{event.addressStr}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-2" x="257" y="3" width="176" height="17"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="250" y="3" width="150" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-4" x="538" y="3" width="81" height="17"/>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-10" x="400" y="3" width="75" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeedLimit($F{event.speedLimit},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="475" y="3" width="75" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.avgSpeed},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-5" x="621" y="3" width="56" height="17"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-5" x="550" y="3" width="75" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.topSpeed},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-6" x="679" y="3" width="94" height="17"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-6" x="625" y="3" width="75" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistanceAndMovePoint($F{event.distance},$P{USE_METRIC},Integer.valueOf(2),$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mi",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-10" x="443" y="3" width="91" height="17"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-7" x="700" y="3" width="82" height="17"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeedLimit($F{event.speedLimit},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{event.forgiven}.intValue() == 1) ? $R{yes}: $R{no}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

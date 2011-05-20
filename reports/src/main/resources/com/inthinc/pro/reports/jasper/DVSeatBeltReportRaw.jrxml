@@ -21,6 +21,7 @@
 	<field name="event.avgSpeed" class="java.lang.Integer"/>
 	<field name="event.topSpeed" class="java.lang.Integer"/>
 	<field name="event.distance" class="java.lang.Integer"/>
+	<field name="event.forgiven" class="java.lang.Integer"/>
 	<background>
 		<band/>
 	</background>
@@ -33,61 +34,72 @@
 	<columnHeader>
 		<band height="21">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-2" x="1" y="4" width="280" height="16"/>
+				<reportElement key="textField-2" x="0" y="4" width="250" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.location}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" x="281" y="4" width="222" height="16"/>
+				<reportElement key="textField-3" x="250" y="4" width="150" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.date.time}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="598" y="4" width="105" height="16"/>
+				<reportElement key="textField-12" x="400" y="4" width="100" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.avg.speed}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="500" y="4" width="100" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.top.speed}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-5" x="703" y="4" width="79" height="16"/>
+				<reportElement key="textField-5" x="600" y="4" width="100" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.distance}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-12" x="503" y="4" width="95" height="16"/>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-6" x="700" y="4" width="82" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.avg.speed}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.dvseatbelt.excluded}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="22">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="1" y="3" width="280" height="17"/>
+				<reportElement key="textField-1" x="0" y="3" width="250" height="17"/>
 				<textElement rotation="None"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{event.addressStr}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-2" x="281" y="3" width="222" height="17"/>
+				<reportElement key="textField-2" x="250" y="3" width="150" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{date}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-4" x="598" y="3" width="105" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.topSpeed},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-5" x="703" y="3" width="79" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistanceAndMovePoint($F{event.distance},$P{USE_METRIC},Integer.valueOf(2),$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mi",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-10" x="503" y="3" width="95" height="17">
+				<reportElement key="textField-10" x="400" y="3" width="100" height="17">
 					<printWhenExpression><![CDATA[Boolean.valueOf($F{event.avgSpeed} != null && !$F{event.avgSpeed}.toString().isEmpty())]]></printWhenExpression>
 				</reportElement>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.avgSpeed},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="500" y="3" width="100" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertSpeed($F{event.topSpeed},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mph",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-5" x="600" y="3" width="100" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistanceAndMovePoint($F{event.distance},$P{USE_METRIC},Integer.valueOf(2),$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mi",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement key="textField-6" x="700" y="3" width="82" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{event.forgiven}.intValue() == 1) ? $R{yes}: $R{no}]]></textFieldExpression>
+			</textField>
+			
 		</band>
 	</detail>
 	<columnFooter>
