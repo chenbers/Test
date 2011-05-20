@@ -21,12 +21,12 @@ public class AutomationPropertiesBean {
     public WebDriver getDefaultWebDriver() {
         System.out.println("public WebDriver getDefaultWebDriver()"); //TODO: jwimmer: remove temporary loggers
         System.out.println("getDefaultWebDriverName(): "+getDefaultWebDriverName());
-        //TODO: jwimmer: replace with switch/case
-        if(getDefaultWebDriverName().equalsIgnoreCase("ie"))
+        //TODO: jwimmer: I'd rather pull these from some .properties file
+        if(getDefaultWebDriverName().startsWith("ie"))
             return new InternetExplorerDriver();
-        else if(getDefaultWebDriverName().equalsIgnoreCase("chrome"))
+        else if(getDefaultWebDriverName().startsWith("chrome"))
             return new ChromeDriver();
-        else if(getDefaultWebDriverName().equalsIgnoreCase("firefox"))
+        else if(getDefaultWebDriverName().startsWith("ff"))
             return new FirefoxDriver();
         else
             return new FirefoxDriver(); //TODO: jwimmer: how do we want to handle boxes with NO default browser set!
@@ -36,9 +36,9 @@ public class AutomationPropertiesBean {
        //TODO: jwimmer: use switch/case
        if(getHasIE().equalsIgnoreCase("true"))
            results.add( new InternetExplorerDriver());
-       else if(getDefaultWebDriverName().equalsIgnoreCase("chrome"))
+       else if(getHasChrome().equalsIgnoreCase("true"))
            results.add( new ChromeDriver());
-       else if(getDefaultWebDriverName().equalsIgnoreCase("firefox"))
+       else if(getHasFirefox().equalsIgnoreCase("true"))
            results.add( new FirefoxDriver());
        
        return results;
