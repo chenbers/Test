@@ -19,6 +19,9 @@ public class VehicleNameMap extends CacheItemMap<Vehicle, VehicleName> {
 
     @Override
     protected VehicleName fetchItem(Integer key) {
+        
+        if(key==null) return null;
+        
         Vehicle vehicle = vehicleDAO.findByID(key);
         if(vehicle != null){
             VehicleName vehicleName = new VehicleName(vehicle.getVehicleID(),vehicle.getName());
