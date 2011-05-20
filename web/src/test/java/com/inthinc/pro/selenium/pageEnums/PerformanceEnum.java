@@ -5,7 +5,6 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public enum PerformanceEnum implements SeleniumEnums {
-	BREADCRUMB_ITEM(null, "breadcrumbForm:breadcrumbitem:###:***Performance-dashboard"),
 
     /* Crash History Summary */
     CRASH_TITLE("Crash History Summary", Xpath.start().span(Id.clazz("crash")).toString()),
@@ -51,6 +50,12 @@ public enum PerformanceEnum implements SeleniumEnums {
     /* Fuel Efficiency */
     COACHING_TITLE("Coaching Events", Xpath.start().span(Id.clazz("coaching")).toString()),
     COACHING_TIME_FRAME(null, "coachingForm:dateLinks***"),
+
+    
+
+    /* Details */
+    DETAILS_TITLE("Details", Xpath.start().span(Id.clazz("details")).toString()),
+    DETAILS_X_OF_Y("Showing XXX to YYY of ZZZ records", "headerEvents"),
 
 	
 	;

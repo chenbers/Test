@@ -176,11 +176,26 @@ public class ElementBase implements ElementInterface {
         }
     }
     
-    protected void replaceNumber(Integer number){
+    protected ElementBase replaceNumber(Integer number){
     	myEnum.replaceNumber(number.toString());
+    	return this;
     }
     
-    protected void replaceWord(String word){
+    protected ElementBase replaceWord(String word){
     	myEnum.replaceWord(word);
+    	return this;
+    }
+    /**
+     * This method should only be used by the page objects to make a replacement.<br />
+     * If you have to use it, we accept no responsibility for the outcome.<br />
+     * You have been warned.<br />
+     * 
+     * @param replaceOld
+     * @param withNew
+     * @return
+     */
+    public ElementBase replaceSubStringInMyEnum(String replaceOld, String withNew){
+    	myEnum.replaceOldWithNew(replaceOld, withNew);
+    	return this;
     }
 }

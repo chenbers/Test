@@ -18,14 +18,6 @@ public enum DriverPerformanceStyleEnum implements SeleniumEnums {
     OVERALL_PDF_TOOL(exportPDF, "dateLinksForm:export_menu_item:anchor"),
     OVERALL_EXCEL_TOOL("Export to Excel", "styleForm:driverStyle-exportExcelMenuItem:anchor"),
 
-    /* Email Report Pop-up */
-    EMAIL_HEADER("Driver - ***", "styleForm_singleEmailHeader"),
-    EMAIL_SUB_TITLE("E-mail this report to the following e-mail addresses.", "popupsubtitle"),
-    EMAIL_TEXT("E-mail Address(es): (e-mail addresses separated by a comma)", Xpath.start().form(Id.id("styleForm_singleEmail_form")).span().table().tbody().tr("1").toString()),
-    EMAIL_TEXT_AREA(null, "styleForm_singleEmail_form:styleForm_singleEmail_email"),
-    EMAIL_CANCEL_BUTTON(cancel, "emailReportPopUpSubmit"),
-    EMAIL_SUBMIT_BUTTON(email, "styleForm_singleEmail_form:emailReportPopupEmail3"),
-    EMAIL_X_BUTTON(null, Xpath.start().div(Id.id("styleForm_singleEmailContentDiv")).div().img().toString()),
 
     RETURN(null, "styleForm:driverStyle-dateLinksToolsDetailShow"),
 
@@ -42,10 +34,6 @@ public enum DriverPerformanceStyleEnum implements SeleniumEnums {
     BREAKDOWN_UNSAFE_TURN_SCORE(null, Xpath.start().td(Id.id("TURN")).table().tbody().tr().td("2").table().tbody().tr().toString()),
     BREAKDOWN_HARD_BUMP_SCORE(null, Xpath.start().td(Id.id("BUMP")).table().tbody().tr().td("2").table().tbody().tr().toString()),
 
-    /* Details */
-    DETAILS_TITLE("Details", Xpath.start().span(Id.clazz("details")).toString()),
-    DETAILS_X_OF_Y("Showing XXX to YYY of ZZZ records", "headerEvents"),
-
     LOCATION_HEADER("Location", "driverStyleEventTable:notificationsTable:address_columnheader:sortDiv"),
     DATE_TIME_HEADER("Date/Time", "driverStyleEventTable:notificationsTable:timeheader:sortDiv"),
     EVENT_HEADER("Posted Speed", "driverStyleEventTable:notificationsTable:typeheader:sortDiv"),
@@ -60,7 +48,8 @@ public enum DriverPerformanceStyleEnum implements SeleniumEnums {
 
     SEVERITY_ENTRY_SEVERITY(null, Xpath.start().td(Id.id("driverStyleEventTable:notificationsTable:***:severity")).tbody().tr("1").toString()),
 
-    EXCLUDE("exclude", "driverStyleEventTable:notificationsTable:***:driverStyleInclude"),
+    EXCLUDE("exclude", "driverStyleEventTable:notificationsTable:***:driverStyleIncluded"),
+    INCLUDE("exclude", "driverStyleEventTable:notificationsTable:***:driverStyleInclude"),
 
     ;
 

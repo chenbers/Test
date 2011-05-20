@@ -3,7 +3,11 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum VehiclePerformanceEnum implements SeleniumEnums {
-    VIEW_ALL_TRIPS(null, "vehiclePerformanceTrips");
+    VIEW_ALL_TRIPS(null, "vehiclePerformanceTrips"), 
+    BREADCRUMB_ITEM(null, "vehiclePerformanceBreadCrumb:breadcrumbitem:###:vehiclePerformance-dashboard"), 
+    DRIVER_NAME_LINK(null, "vehiclePerformanceBreadCrumb:vehiclePerformance"),
+    
+    ;
 
     private String text, url;
     private String[] IDs;

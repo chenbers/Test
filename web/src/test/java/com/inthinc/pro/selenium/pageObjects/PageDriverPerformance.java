@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkTime;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
+import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 
 public class PageDriverPerformance extends NavigationBar {
 	private String page = "driver";
@@ -12,27 +13,33 @@ public class PageDriverPerformance extends NavigationBar {
 	
 	public class DriverPerformanceButtons extends NavigationBarButtons {
 		public Button tools(){
-			return new Button(DriverPerformanceEnum.OVERALL_TOOLS);
+			return new Button(PerformanceEnum.OVERALL_TOOLS);
 		}
 		
 		public Button emailReport(){
-			return new Button(DriverPerformanceEnum.OVERALL_EMAIL);
+			return new Button(PerformanceEnum.OVERALL_EMAIL);
 		}
 		
 		public Button exportPDF(){
-			return new Button(DriverPerformanceEnum.OVERALL_PDF);
+			return new Button(PerformanceEnum.OVERALL_PDF);
 		}
 		
 		public Button maximizeSpeed(){
-			return new Button(DriverPerformanceEnum.SPEED_DETAILS);
+			Button button =new Button(PerformanceEnum.SPEED_DETAILS);
+			button.replaceSubStringInMyEnum("*page*", page);
+			return button;
 		}
 		
 		public Button maximizeDrivingStyle(){
-			return new Button(DriverPerformanceEnum.STYLE_DETAILS);
+			Button button = new Button(PerformanceEnum.STYLE_DETAILS);
+			button.replaceSubStringInMyEnum("*page*", page);
+			return button;
 		}
 		
 		public Button maximizeSeatBelt(){
-			return new Button(DriverPerformanceEnum.SEATBELT_DETAILS);
+			Button button = new Button(PerformanceEnum.SEATBELT_DETAILS);
+			button.replaceSubStringInMyEnum("*page*", page);
+			return button;
 		}
 	}
 
@@ -53,27 +60,39 @@ public class PageDriverPerformance extends NavigationBar {
 		}
 		
 		public TextLinkTime overallDuration(){
-			return new TextLinkTime(DriverPerformanceEnum.OVERALL_TIME_FRAME);
+			TextLinkTime time = new TextLinkTime(PerformanceEnum.OVERALL_TIME_FRAME);
+			time.replaceSubStringInMyEnum("*page*", page);
+			return time;
 		}
 		
 		public TextLinkTime speedDuration(){
-			return new TextLinkTime(DriverPerformanceEnum.SPEED_TIME_FRAME);
+			TextLinkTime time = new TextLinkTime(PerformanceEnum.SPEED_TIME_FRAME);
+			time.replaceSubStringInMyEnum("*page*", page);
+			return time;
 		}
 		
 		public TextLinkTime coachingEventsDuration(){
-			return new TextLinkTime(DriverPerformanceEnum.COACHING_TIME_FRAME);
+			TextLinkTime time = new TextLinkTime(PerformanceEnum.COACHING_TIME_FRAME);
+			time.replaceSubStringInMyEnum("*page*", page);
+			return time;
 		}
 		
 		public TextLinkTime fuelEfficiencyDuration(){
-			return new TextLinkTime(DriverPerformanceEnum.MPG_TIME_FRAME);
+			TextLinkTime time = new TextLinkTime(PerformanceEnum.MPG_TIME_FRAME);
+			time.replaceSubStringInMyEnum("*page*", page);
+			return time;
 		}
 		
 		public TextLinkTime drivingStyleDuration(){
-			return new TextLinkTime(DriverPerformanceEnum.STYLE_TIME_FRAME);
+			TextLinkTime time = new TextLinkTime(PerformanceEnum.STYLE_TIME_FRAME);
+			time.replaceSubStringInMyEnum("*page*", page);
+			return time;
 		}
 		
 		public TextLinkTime seatBeltDuration(){
-			return new TextLinkTime(DriverPerformanceEnum.SEATBELT_TIME_FRAME);
+			TextLinkTime time = new TextLinkTime(PerformanceEnum.SEATBELT_TIME_FRAME);
+			time.replaceSubStringInMyEnum("*page*", page);
+			return time;
 		}
 		
 		
@@ -84,43 +103,43 @@ public class PageDriverPerformance extends NavigationBar {
 
 	public class DriverPerformanceTexts extends NavigationBarTexts {
 		public Text crashesPerMillionMilesTitle(){
-			return new Text(DriverPerformanceEnum.CRASHES_PER_TEXT);
+			return new Text(PerformanceEnum.CRASHES_PER_TEXT);
 		}
 		public Text crashesPerMillionMilesValue(){
-			return new Text(DriverPerformanceEnum.CRASHES_PER_NUMBER);
+			return new Text(PerformanceEnum.CRASHES_PER_NUMBER);
 		}
 		public Text crashesPerMillionMilesTime(){
-			return new Text(DriverPerformanceEnum.CRASHES_PER_TIME_FRAME);
+			return new Text(PerformanceEnum.CRASHES_PER_TIME_FRAME);
 		}
 		public Text totalCrashesTitle(){
-			return new Text(DriverPerformanceEnum.TOTAL_CRASHES_TEXT);
+			return new Text(PerformanceEnum.TOTAL_CRASHES_TEXT);
 		}
 		public Text totalCrashesValue(){
-			return new Text(DriverPerformanceEnum.TOTAL_CRASHES_NUMBER);
+			return new Text(PerformanceEnum.TOTAL_CRASHES_NUMBER);
 		}
 		
 		public Text overallScoreLabel(){
-			return new Text(DriverPerformanceEnum.OVERALL_SCORE_LABEL);
+			return new Text(PerformanceEnum.OVERALL_SCORE_LABEL);
 		}
 		
 		public Text overallScore(){
-			return new Text(DriverPerformanceEnum.OVERALL_SCORE_NUMBER);
+			return new Text(PerformanceEnum.OVERALL_SCORE_NUMBER);
 		}
 		
 		public Text speedScore(){
-			return new Text(DriverPerformanceEnum.SPEED_SCORE_BOX);
+			return new Text(PerformanceEnum.SPEED_SCORE_BOX);
 		}
 		
 		public Text drivingStyleScore(){
-			return new Text(DriverPerformanceEnum.STYLE_SCORE_BOX);
+			return new Text(PerformanceEnum.STYLE_SCORE_BOX);
 		}
 		
 		public Text seatBeltScore(){
-			return new Text(DriverPerformanceEnum.SEATBELT_SCORE_BOX);
+			return new Text(PerformanceEnum.SEATBELT_SCORE_BOX);
 		}
 		
 		public Text overallTitle(){
-			return new Text(DriverPerformanceEnum.OVERALL_TITLE);
+			return new Text(PerformanceEnum.OVERALL_TITLE);
 		}
 	}
 
