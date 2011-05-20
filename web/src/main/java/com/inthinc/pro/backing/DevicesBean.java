@@ -24,7 +24,7 @@ import com.inthinc.pro.backing.model.supportData.DeviceMap;
 import com.inthinc.pro.backing.model.supportData.DriverNameMap;
 import com.inthinc.pro.backing.model.supportData.GroupMap;
 import com.inthinc.pro.backing.model.supportData.VehicleMap;
-import com.inthinc.pro.backing.model.supportData.VehicleSettingMap;
+//import com.inthinc.pro.backing.model.supportData.VehicleSettingMap;
 import com.inthinc.pro.backing.ui.DeviceStatusSelectItems;
 import com.inthinc.pro.backing.ui.ProductTypeSelectItems;
 import com.inthinc.pro.dao.ConfiguratorDAO;
@@ -142,13 +142,13 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
      *            The vehicle.
      * @return The new VehicleView object.
      */
-    private void loadVehicleSettings()
-    {
-        CacheItemMap<DeviceSettingDefinition,VehicleSetting> vehicleSettingMap = new VehicleSettingMap(getUser().getGroupID());
-        vehicleSettingMap.setDAO(configuratorDAO);
-        vehicleSettingMap.buildMap();
-        adminCacheBean.addAssetMap("vehicleSettings",vehicleSettingMap);
-    }
+//    private void loadVehicleSettings()
+//    {
+//        CacheItemMap<DeviceSettingDefinition,VehicleSetting> vehicleSettingMap = new VehicleSettingMap(getUser().getGroupID());
+//        vehicleSettingMap.setDAO(configuratorDAO);
+//        vehicleSettingMap.buildMap();
+//        adminCacheBean.addAssetMap("vehicleSettings",vehicleSettingMap);
+//    }
     private void loadGroups()
     {
         CacheItemMap<Group,Group> groupMap = new GroupMap(getUser().getPerson().getAcctID(),getUser().getGroupID());

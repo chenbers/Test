@@ -21,8 +21,11 @@ public class DriverNameMap extends CacheItemMap<Driver, DriverName> {
     @Override
     protected DriverName fetchItem(Integer key) {
         Driver driver = driverDAO.findByID(key);
-        DriverName driverName = new DriverName(driver.getDriverID(),driver.getPerson().getFullName());
-        return driverName;
+        if (driver != null){
+            DriverName driverName = new DriverName(driver.getDriverID(),driver.getPerson().getFullName());
+            return driverName;
+        }
+        return null;
     }
 
     @Override
