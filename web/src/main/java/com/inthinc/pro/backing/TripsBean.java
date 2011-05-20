@@ -695,10 +695,12 @@ public class TripsBean extends BaseBean {
 	}
 	public Double getAnchorLat(){
 		if(lastLocation==null) setLastLocation();
+		if(lastLocation == null) return null;
 		return lastLocation.getLat();
 	}
 	public Double getAnchorLng(){
 		if(lastLocation==null) setLastLocation();
+        if(lastLocation == null) return null;
 		return lastLocation.getLng();
 	}
 	private void setLastLocation(){
@@ -711,14 +713,19 @@ public class TripsBean extends BaseBean {
 		if(lastLocation==null){
 			lastLocation = getEntityLastLocation();
 		}
+        if(lastLocation==null){
+            lastLocation = getGroupHierarchy().getTopGroup().getMapCenter();
+        }
 	}
 	private LatLng  getEntityLastLocation(){
 		if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
 	        LastLocation ll = driverDAO.getLastLocation(identifiableEntityBean.getId());
+	        if(ll == null) return null;
 	        return ll.getLoc();
 	    }
 		else{
 	    	LastLocation ll = vehicleDAO.getLastLocation(identifiableEntityBean.getId());
+            if(ll == null) return null;
 	        return ll.getLoc();
 	    }
 	}
