@@ -26,7 +26,6 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventSubCategory;
-import com.inthinc.pro.model.event.EventType;
 import com.inthinc.pro.model.event.NoteType;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -51,11 +50,11 @@ public class TeamTripsBean extends BaseBean {
 	private Map<Integer, DriverTrips> driversTripsMap;
 	private Integer driversPage;
 	
-	private Map<Long,Event> eventsMap;
+	private Map<String,Event> eventsMap;
     private EventData eventData;
     private List<EventData> clusterBubbleEvents;
 	
-    private List<Long> eventIDs;
+    private List<String> eventIDs;
     private LatLng clusterLatLng;
     
     private List<DriverTrips> selectedDrivers;
@@ -70,10 +69,10 @@ public class TeamTripsBean extends BaseBean {
 		labels = new ArrayList<String>(Arrays.asList( Pattern.compile("\",\"|\"").split(MessageUtil.getMessageString("teamLabels"))));
 		labels.remove(0);
 
-		eventsMap = new HashMap<Long,Event>();
+		eventsMap = new HashMap<String,Event>();
 		eventData = new EventData();
 		clusterBubbleEvents = new ArrayList<EventData>();
-		eventIDs = new ArrayList<Long>();
+		eventIDs = new ArrayList<String>();
 		driversPage = 1;
     }
     private void initDrivers(){
@@ -159,7 +158,7 @@ public class TeamTripsBean extends BaseBean {
 			eventData.createEventBubbleData(event);
 		}
 	}
-	public EventData setUpClusterBubbleData(Long eventID){
+	public EventData setUpClusterBubbleData(String eventID){
 		
 		//Assumes eventID has been set
 		//get event from map
@@ -237,12 +236,12 @@ public class TeamTripsBean extends BaseBean {
 		this.clusterBubbleEvents = clusterBubbleEvents;
 	}
 
-	public void setClusterEventID(Long eventID){
+	public void setClusterEventID(String eventID){
 		
 		EventData eventData = new EventData();
 		eventData.setEventID(eventID);
 	}
-	public List<Long> getEventIDList() {
+	public List<String> getEventIDList() {
 		return eventIDs;
 	}
 	public String getClusterEventData(){
@@ -278,7 +277,7 @@ public class TeamTripsBean extends BaseBean {
 			clusterBubbleEvents = new ArrayList<EventData>();
 			for(int i = 0; i<eventIDs.length(); i++){
 				
-				Long eventID = (Long)eventIDs.getLong(i);
+				String eventID = eventIDs.getString(i);
 
 				EventData eventData = setUpClusterBubbleData(eventID);
 				if(eventData != null){
@@ -390,7 +389,7 @@ public class TeamTripsBean extends BaseBean {
 			
 			for(Event event: events){
 				
-				eventsMap.put(event.getNoteID(), event);
+				eventsMap.put(event.getNoteID().toString(), event);
 			}
 		}
 		private boolean eventInInterval(Date eventTime, Date startTime, Date endTime){
@@ -563,9 +562,9 @@ public class TeamTripsBean extends BaseBean {
 			    	startEvent.setLongitude(beginningPoint.getLng());
 			    	startEventItem.latLng = new LatLng(startEvent.getLatitude(), startEvent.getLongitude());
 		        }
-		    	eventsMap.put(startEvent.getNoteID(), startEvent);
+		    	eventsMap.put(startEvent.getNoteID().toString(), startEvent);
 		    	
-		    	startEventItem.eventID = startEvent.getNoteID();
+		    	startEventItem.eventID = startEvent.getNoteID().toString();
 
 		    }
 		    private void createEndEvent(Trip trip){
@@ -595,9 +594,9 @@ public class TeamTripsBean extends BaseBean {
 		            endEventItem.latLng = new LatLng(endEvent.getLatitude(), endEvent.getLongitude());
 		        }
 		        
-		    	endEventItem.eventID = endEvent.getNoteID();
+		    	endEventItem.eventID = endEvent.getNoteID().toString();
 
-		        eventsMap.put(endEvent.getNoteID(), endEvent);
+		        eventsMap.put(endEvent.getNoteID().toString(), endEvent);
 
 		    }
 			private List<EventItem> getTripViolations(List<Event> violations){
@@ -607,7 +606,7 @@ public class TeamTripsBean extends BaseBean {
 				for (Event event:violations){
 					
 					EventItem eventItem = new EventItem();
-					eventItem.setEventID(event.getNoteID());
+					eventItem.setEventID(event.getNoteID().toString());
 					eventItem.setLatLng(event.getLatLng());
 					tripViolations.add(eventItem);
 				}
@@ -620,7 +619,7 @@ public class TeamTripsBean extends BaseBean {
 				for (Event event:idles){
 					
 					EventItem eventItem = new EventItem();
-					eventItem.setEventID(event.getNoteID());
+					eventItem.setEventID(event.getNoteID().toString());
 					eventItem.setLatLng(event.getLatLng());
 					tripIdles.add(eventItem);
 				}
@@ -633,15 +632,12 @@ public class TeamTripsBean extends BaseBean {
 				for (Event event:tampers){
 					
 					EventItem eventItem = new EventItem();
-					eventItem.setEventID(event.getNoteID());
+					eventItem.setEventID(event.getNoteID().toString());
 					eventItem.setLatLng(event.getLatLng());
 					tripTampers.add(eventItem);
 				}
 				return tripTampers;
 			}
-//			private boolean isGoodRoute(){
-//			    return route !=null && route.size()>1;
-//			}
 
 		    public List<LatLng> getRoute()
 		    {
@@ -731,13 +727,13 @@ public class TeamTripsBean extends BaseBean {
  */
 	public class EventItem{
 		
-		private Long eventID;
+		private String eventID;
 		private LatLng latLng;
 		
-		public Long getEventID() {
+		public String getEventID() {
 			return eventID;
 		}
-		public void setEventID(Long eventID) {
+		public void setEventID(String eventID) {
 			this.eventID = eventID;
 		}
 		public LatLng getLatLng() {
@@ -754,7 +750,7 @@ public class TeamTripsBean extends BaseBean {
 	 */
 	public class EventData{
 		
-		private Long eventID;
+		private String eventID;
 		
 		private Integer driverID;
 		private Double lat;
@@ -766,7 +762,7 @@ public class TeamTripsBean extends BaseBean {
 		private String eventName;
 		private String eventDescription;
 		
-		public EventData(Long eventID){
+		public EventData(String eventID){
 			
 			this();
 			this.eventID = eventID;
@@ -827,10 +823,10 @@ public class TeamTripsBean extends BaseBean {
 		public void setLng(Double lng) {
 			this.lng = lng;
 		}
-		public Long getEventID() {
-			return eventID;
+		public String getEventID() {
+			return eventID.toString();
 		}
-		public void setEventID(Long eventID) {
+		public void setEventID(String eventID) {
 			this.eventID = eventID;
 		}
 		public void createEventBubbleData(Event event){
@@ -849,7 +845,7 @@ public class TeamTripsBean extends BaseBean {
 			}
 			else {
 				
-				setEventName(MessageUtil.getMessageString(event.getEventType().toString()));
+			    setEventName(MessageUtil.getMessageString(event.getEventType().toString()));
                 setEventDescription(
                         event.getDetails(
                                 MessageUtil.getMessageString(
