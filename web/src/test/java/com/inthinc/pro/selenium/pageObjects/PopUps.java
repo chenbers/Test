@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.ClickableObject;
-import com.inthinc.pro.automation.elements.TableText;
+import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
@@ -86,8 +86,8 @@ public class PopUps {//TODO: jwimmer: to dTanner: is there a reason PopUps do no
 
 		public class EditColumnsText {
 
-			public TableText entry() {
-				return new TableText(PopUpEnum.EDIT_LABEL, page);
+			public TextTable entry() {
+				return new TextTable(PopUpEnum.EDIT_LABEL, page);
 			}
 
 			public Text header() {

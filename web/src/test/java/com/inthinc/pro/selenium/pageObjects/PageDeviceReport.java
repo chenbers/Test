@@ -2,8 +2,8 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.DhxDropDown;
-import com.inthinc.pro.automation.elements.TableText;
-import com.inthinc.pro.automation.elements.TableTextLink;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
@@ -50,8 +50,8 @@ public class PageDeviceReport extends ReportsBar {
 	
 	public class DeviceReportsLinks extends ReportsBarLinks{
 		
-		public TableTextLink vehicleValue(){
-			return new TableTextLink(DriverReportEnum.VEHICLE_VALUE);
+		public TextTableLink vehicleValue(){
+			return new TextTableLink(DriverReportEnum.VEHICLE_VALUE);
 		}
 		
 		public TextLink deviceIDSort(){
@@ -82,20 +82,20 @@ public class PageDeviceReport extends ReportsBar {
 			return new Text(DeviceReportEnum.STATUS_NONSORT);
 		}
 		
-		public TableText deviceIDValue(){
-			return new TableText(DeviceReportEnum.DEVICE_ID_VALUE);
+		public TextTable deviceIDValue(){
+			return new TextTable(DeviceReportEnum.DEVICE_ID_VALUE);
 		}
 		
-		public TableText imeiValue(){
-			return new TableText(DeviceReportEnum.IMEI_VALUE);
+		public TextTable imeiValue(){
+			return new TextTable(DeviceReportEnum.IMEI_VALUE);
 		}
 		
-		public TableText phoneNumberValue(){
-			return new TableText(DeviceReportEnum.PHONE_VALUE);
+		public TextTable phoneNumberValue(){
+			return new TextTable(DeviceReportEnum.PHONE_VALUE);
 		}
 		
-		public TableText statusValue(){
-			return new TableText(DeviceReportEnum.STATUS_VALUE);
+		public TextTable statusValue(){
+			return new TextTable(DeviceReportEnum.STATUS_VALUE);
 		}
 		
 		public Text counter(){

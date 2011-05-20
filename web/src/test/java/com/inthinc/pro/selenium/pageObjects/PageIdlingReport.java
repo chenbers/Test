@@ -1,8 +1,8 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.TableText;
-import com.inthinc.pro.automation.elements.TableTextLink;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
@@ -15,20 +15,20 @@ public class PageIdlingReport extends ReportsBar {
 	private String page = "idling";
 	
 	public class IdlingReportTexts extends ReportsBarTexts{
-		public TableText idleSupportValue(){
-			return new TableText(IdlingReportEnum.IDLE_SUPPORT_VALUE);
+		public TextTable idleSupportValue(){
+			return new TextTable(IdlingReportEnum.IDLE_SUPPORT_VALUE);
 		}
-		public TableText durationValue(){
-			return new TableText(IdlingReportEnum.DURATION_VALUE);
+		public TextTable durationValue(){
+			return new TextTable(IdlingReportEnum.DURATION_VALUE);
 		}
-		public TableText lowIdleHoursValue(){
-			return new TableText(IdlingReportEnum.LOW_IDLE_VALUE);
+		public TextTable lowIdleHoursValue(){
+			return new TextTable(IdlingReportEnum.LOW_IDLE_VALUE);
 		}
-		public TableText highIdleHoursValue(){
-			return new TableText(IdlingReportEnum.HIGH_IDLE_VALUE);
+		public TextTable highIdleHoursValue(){
+			return new TextTable(IdlingReportEnum.HIGH_IDLE_VALUE);
 		}
-		public TableText totalIdleHoursValue(){
-			return new TableText(IdlingReportEnum.TOTAL_IDLE_VALUE);
+		public TextTable totalIdleHoursValue(){
+			return new TextTable(IdlingReportEnum.TOTAL_IDLE_VALUE);
 		}
 		
 		public Text counter(){
@@ -91,16 +91,16 @@ public class PageIdlingReport extends ReportsBar {
     
 	public class IdlingReportLinks extends ReportsBarLinks{
 		
-	    public TableTextLink groupValue() {
-	        return new TableTextLink(IdlingReportEnum.GROUP_VALUE);   
+	    public TextTableLink groupValue() {
+	        return new TextTableLink(IdlingReportEnum.GROUP_VALUE);   
 	    }  
 	    
-	    public TableTextLink driverValue() {
-	    	return new TableTextLink(IdlingReportEnum.DRIVER_VALUE); 
+	    public TextTableLink driverValue() {
+	    	return new TextTableLink(IdlingReportEnum.DRIVER_VALUE); 
 	    } 
 	    
-	    public TableTextLink tripsValue() {
-	    	return new TableTextLink(IdlingReportEnum.TRIPS_LINK); 
+	    public TextTableLink tripsValue() {
+	    	return new TextTableLink(IdlingReportEnum.TRIPS_LINK); 
 	    }
 	    
 	}   

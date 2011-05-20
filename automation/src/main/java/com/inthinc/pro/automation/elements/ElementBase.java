@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
 
@@ -32,6 +33,10 @@ public class ElementBase implements ElementInterface {
 
     public ElementBase(SeleniumEnums anEnum, String replaceWord) {
         this(anEnum, replaceWord, null);
+    }
+
+    public ElementBase(SeleniumEnums anEnum, TextEnum replaceWord){
+    	this(anEnum, replaceWord.getText(), null);
     }
     
     public ElementBase(SeleniumEnums anEnum, Integer replaceNumber) {

@@ -3,12 +3,12 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.automation.elements.TextLinkTime;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
+import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 
 public class PageVehiclePerformance extends NavigationBar {
-private String page = "driver";
+private String page = "vehicle";
 	
 	
 	public class DriverPerformanceButtons extends NavigationBarButtons {
@@ -59,38 +59,34 @@ private String page = "driver";
 			return new TextLink(VehiclePerformanceEnum.VIEW_ALL_TRIPS);
 		}
 		
-		public TextLinkTime overallDuration(){
-			TextLinkTime time = new TextLinkTime(PerformanceEnum.OVERALL_TIME_FRAME);
+		public TextLink overallDuration(TimeDuration timeFrame){
+			TextLink time = new TextLink(PerformanceEnum.OVERALL_TIME_FRAME, timeFrame);
 			time.replaceSubStringInMyEnum("*page*", page);
 			return time;
 		}
 		
-		public TextLinkTime speedDuration(){
-			TextLinkTime time = new TextLinkTime(PerformanceEnum.SPEED_TIME_FRAME);
+		public TextLink speedDuration(TimeDuration timeFrame){
+			TextLink time = new TextLink(PerformanceEnum.SPEED_TIME_FRAME, timeFrame);
 			time.replaceSubStringInMyEnum("*page*", page);
 			return time;
 		}
 		
-		public TextLinkTime coachingEventsDuration(){
-			TextLinkTime time = new TextLinkTime(PerformanceEnum.COACHING_TIME_FRAME);
+		public TextLink coachingEventsDuration(TimeDuration timeFrame){
+			return new TextLink(PerformanceEnum.COACHING_TIME_FRAME, timeFrame);
+		}
+		
+		public TextLink fuelEfficiencyDuration(TimeDuration timeFrame){
+			return new TextLink(PerformanceEnum.MPG_TIME_FRAME, timeFrame);
+		}
+		
+		public TextLink drivingStyleDuration(TimeDuration timeFrame){
+			TextLink time = new TextLink(PerformanceEnum.STYLE_TIME_FRAME, timeFrame);
 			time.replaceSubStringInMyEnum("*page*", page);
 			return time;
 		}
 		
-		public TextLinkTime fuelEfficiencyDuration(){
-			TextLinkTime time = new TextLinkTime(PerformanceEnum.MPG_TIME_FRAME);
-			time.replaceSubStringInMyEnum("*page*", page);
-			return time;
-		}
-		
-		public TextLinkTime drivingStyleDuration(){
-			TextLinkTime time = new TextLinkTime(PerformanceEnum.STYLE_TIME_FRAME);
-			time.replaceSubStringInMyEnum("*page*", page);
-			return time;
-		}
-		
-		public TextLinkTime seatBeltDuration(){
-			TextLinkTime time = new TextLinkTime(PerformanceEnum.SEATBELT_TIME_FRAME);
+		public TextLink seatBeltDuration(TimeDuration timeFrame){
+			TextLink time = new TextLink(PerformanceEnum.SEATBELT_TIME_FRAME, timeFrame);
 			time.replaceSubStringInMyEnum("*page*", page);
 			return time;
 		}

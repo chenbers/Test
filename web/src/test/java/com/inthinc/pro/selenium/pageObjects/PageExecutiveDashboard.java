@@ -1,11 +1,12 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.TableText;
-import com.inthinc.pro.automation.elements.TableTextLink;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.TextButton;
-import com.inthinc.pro.automation.elements.TextLinkTime;
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.ExecutiveDashBoardEnum;
+import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageObjects.PopUps.Types;
 
 public class PageExecutiveDashboard extends NavigationBar {
@@ -89,38 +90,38 @@ public class PageExecutiveDashboard extends NavigationBar {
 	
 	public class DashboardLinks extends NavigationBarLinks {
 
-        public TextLinkTime fuelEfficiencyDuration() {
-            return new TextLinkTime(ExecutiveDashBoardEnum.FUEL_EFFICIENCY_DURATION);
+        public TextLink fuelEfficiencyDuration(TimeDuration duration) {
+            return new TextLink(ExecutiveDashBoardEnum.FUEL_EFFICIENCY_DURATION, duration);
         }
 
-        public TableTextLink groupName(){
-            return new TableTextLink(ExecutiveDashBoardEnum.TREND_GROUP_LINK);
+        public TextTableLink groupName(){
+            return new TextTableLink(ExecutiveDashBoardEnum.TREND_GROUP_LINK);
         }
 
-        public TextLinkTime idlingDuration() {
-            return new TextLinkTime(ExecutiveDashBoardEnum.IDLING_DURATION);
+        public TextLink idlingDuration(TimeDuration duration) {
+            return new TextLink(ExecutiveDashBoardEnum.IDLING_DURATION, duration);
         }
 
-        public TextLinkTime overallDuration() {
-            return new TextLinkTime(ExecutiveDashBoardEnum.OVERALL_DURATION);
+        public TextLink overallDuration(TimeDuration duration) {
+            return new TextLink(ExecutiveDashBoardEnum.OVERALL_DURATION, duration);
         }
 
-        public TextLinkTime speedingDuration() {
-            return new TextLinkTime(ExecutiveDashBoardEnum.SPEEDING_DURATION);
+        public TextLink speedingDuration(TimeDuration duration) {
+            return new TextLink(ExecutiveDashBoardEnum.SPEEDING_DURATION, duration);
         }
         
-        public TextLinkTime trendDuration() {
-            return new TextLinkTime(ExecutiveDashBoardEnum.TREND_DURATION);
+        public TextLink trendDuration(TimeDuration duration) {
+            return new TextLink(ExecutiveDashBoardEnum.TREND_DURATION, duration);
         }
     }
 	public class DashboardText extends NavigationBarTexts{
 
-        public TableText groupCrash(){
-            return new TableText(ExecutiveDashBoardEnum.TREND_GROUP_CRASH_NUMBER);
+        public TextTable groupCrash(){
+            return new TextTable(ExecutiveDashBoardEnum.TREND_GROUP_CRASH_NUMBER);
         }
         
-        public TableText groupScore(){
-            return new TableText(ExecutiveDashBoardEnum.TREND_GROUP_LINK);
+        public TextTable groupScore(){
+            return new TextTable(ExecutiveDashBoardEnum.TREND_GROUP_LINK);
         }
     }
 	

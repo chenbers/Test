@@ -16,15 +16,6 @@ public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
     OVERALL_PDF_TOOL(exportPDF, "dateLinksForm:export_menu_item:anchor"),
     OVERALL_EXCEL_TOOL("Export to Excel", "speedForm:driverSpeed-exportExcelMenuItem:anchor"),
 
-    /* Email Report Pop-up */
-    EMAIL_HEADER("Driver - ***", "speedForm_singleEmailHeader"),
-    EMAIL_SUB_TITLE("E-mail this report to the following e-mail addresses.", "popupsubtitle"),
-    EMAIL_TEXT("E-mail Address(es): (e-mail addresses separated by a comma)", Xpath.start().form(Id.id("speedForm_singleEmail_form")).span().table().tbody().tr("1").toString()),
-    EMAIL_TEXT_AREA(null, "speedForm_singleEmail_form:speedForm_singleEmail_email"),
-    EMAIL_CANCEL_BUTTON(cancel, "emailReportPopUpSubmit"),
-    EMAIL_SUBMIT_BUTTON(email, "speedForm_singleEmail_form:emailReportPopupEmail3"),
-    EMAIL_X_BUTTON(null, Xpath.start().div(Id.id("speedForm_singleEmailContentDiv")).div().img().toString()),
-
     RETURN(null, "speedForm:driverSpeed-dateLinksToolsDetailShow"),
 
     /* Breakdown by Speed Limit */
@@ -53,27 +44,28 @@ public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
     TOP_HEADER("Top Speed", "driverSpeedForm:notificationsTable:topSpeedheader:sortDiv"),
     DISTANCE_HEADER("Distance", "driverSpeedForm:notificationsTable:distanceheader:sortDiv"),
 
-    LOCATION_ENTRY(null, "driverSpeedForm:notificationsTable:***:eventAddress"),
-    DATE_TIME_ENTRY(null, "driverSpeedForm:notificationsTable:***:time"),
+    LOCATION_ENTRY(null, "driverSpeedForm:notificationsTable:###:eventAddress"),
+    DATE_TIME_ENTRY(null, "driverSpeedForm:notificationsTable:###:time"),
 
     POSTED_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:speedLimitValue"),
-    POSTED_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:speedLimit")).strong().toString()),
+    POSTED_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:speedLimit")).strong().toString()),
 
-    POSTED_ENTRY_SBS_BUTTON(null, "driverSpeedForm:notificationsTable:***:driverSpeedSlcr"),
+    POSTED_ENTRY_SBS_BUTTON(null, "driverSpeedForm:notificationsTable:###:driverSpeedSlcr"),
 
-    AVERAGE_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:averageSpeedValue"),
-    AVERAGE_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:averageSpeed")).strong().toString()),
-    AVERAGE_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:averageSpeed")).span("1").toString()),
-    AVERAGE_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:***:averageSpeedDifference"),
+    AVERAGE_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:###:averageSpeedValue"),
+    AVERAGE_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:averageSpeed")).strong().toString()),
+    AVERAGE_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:averageSpeed")).span("1").toString()),
+    AVERAGE_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:###:averageSpeedDifference"),
 
-    TOP_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:***:topSpeedValue"),
-    TOP_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:topSpeed")).strong().toString()),
-    TOP_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:***:topSpeed")).span("1").toString()),
-    TOP_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:***:topSpeedDifference"),
+    TOP_ENTRY_SPEED(null, "driverSpeedForm:notificationsTable:###:topSpeedValue"),
+    TOP_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:topSpeed")).strong().toString()),
+    TOP_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("driverSpeedForm:notificationsTable:###:topSpeed")).span("1").toString()),
+    TOP_ENTRY_DIFF(null, "driverSpeedForm:notificationsTable:###:topSpeedDifference"),
 
-    DISTANCE_ENTRY(null, "driverSpeedForm:notificationsTable:***:distance"),
+    DISTANCE_ENTRY(null, "driverSpeedForm:notificationsTable:##:distance"),
 
-    EXCLUDE("exclude", "driverSpeedForm:notificationsTable:***:driverSpeedInclude"),
+    EXCLUDE("exclude", "driverSpeedForm:notificationsTable:###:driverSpeedInclude"),
+    INCLUDE("include", "driverSpeedForm:notificationsTable:###:driverSpeed_excluded");
 
     ;
 

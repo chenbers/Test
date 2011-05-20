@@ -5,29 +5,29 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
-public class TableTextLink extends TextLink implements Clickable, TextBased {
-    private TableText table;
-    public TableTextLink(SeleniumEnums anEnum) {
+public class TextTableLink extends TextLink implements Clickable, TextBased {
+    private TextTable table;
+    public TextTableLink(SeleniumEnums anEnum) {
         super(anEnum);
-        table = new TableText(anEnum);
+        table = new TextTable(anEnum);
     }
-    public TableTextLink(SeleniumEnums anEnum, Integer replaceNumber) {
+    public TextTableLink(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
-        table = new TableText(anEnum);
+        table = new TextTable(anEnum);
     }
-    public TableTextLink(SeleniumEnums anEnum, String replaceWord) {
+    public TextTableLink(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
-        table = new TableText(anEnum);
+        table = new TextTable(anEnum);
     }
     
-    public TableTextLink(SeleniumEnums anEnum, String replaceWord, TextEnum column){
+    public TextTableLink(SeleniumEnums anEnum, String replaceWord, TextEnum column){
     	super(anEnum, replaceWord);
-    	table = new TableText(anEnum, replaceWord, column);
+    	table = new TextTable(anEnum, replaceWord, column);
     	myEnum.replaceOldWithNew("*column*", column.getText());
     }
-    public TableTextLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+    public TextTableLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
-        table = new TableText(anEnum);
+        table = new TextTable(anEnum);
     }
     
     @Override
@@ -46,7 +46,7 @@ public class TableTextLink extends TextLink implements Clickable, TextBased {
      * Please use click(Integer row) or <br />
      * click(Integer row, Integer column)<br />
      */
-    public TableTextLink click(){
+    public TextTableLink click(){
         return null;
     }
     
@@ -69,7 +69,7 @@ public class TableTextLink extends TextLink implements Clickable, TextBased {
      * @param row
      * @return
      */
-    public TableTextLink click(Integer row){
+    public TextTableLink click(Integer row){
         myEnum.replaceNumber(row.toString());
         super.click();
         return this;

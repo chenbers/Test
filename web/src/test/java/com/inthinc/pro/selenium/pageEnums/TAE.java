@@ -79,6 +79,24 @@ public class TAE {
 	        return text;
 	    }
 	}
+	
+	public static enum TimeDuration implements TextEnum {
+		DAYS_30("Days"),
+	    MONTHS_3("ThreeMonths"),
+	    MONTHS_6("SixMonths"),
+	    MONTHS_12("TwelveMonths"), 
+	    ;
+
+	    private String duration;
+
+	    private TimeDuration(String duration) {
+	        this.duration = duration;
+	    }
+
+	    public String getText() {
+	        return duration;
+	    }
+	}
 		
 	
 	

@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.TableText;
-import com.inthinc.pro.automation.elements.TableTextLink;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
@@ -35,16 +35,16 @@ public class PageAdminUsers extends ReportsBar {
 			return new TextLink(AdminBarEnum.EDIT_COLUMNS_LINK, page);
 		}
 		
-		public TableTextLink tableEntry(AdminUsersEnum column){
-			return new TableTextLink(AdminBarEnum.TABLE_ENTRIES, page, column);
+		public TextTableLink tableEntry(AdminUsersEnum column){
+			return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, column);
 		}
 		
-		public TableTextLink sortByColumn(AdminUsersEnum column){
-			return new TableTextLink(AdminBarEnum.TABLE_HEADERS, page, column);
+		public TextTableLink sortByColumn(AdminUsersEnum column){
+			return new TextTableLink(AdminBarEnum.TABLE_HEADERS, page, column);
 		}
 		
-		public TableTextLink edit(){
-			return new TableTextLink(AdminBarEnum.EDIT_ITEM);
+		public TextTableLink edit(){
+			return new TextTableLink(AdminBarEnum.EDIT_ITEM);
 		}
 	}
 
@@ -56,8 +56,8 @@ public class PageAdminUsers extends ReportsBar {
 	}
 
 	public class AdminUsersTexts extends ReportsBarTexts {
-		public TableText tableEntry(AdminUsersEnum column){
-			return new TableText(AdminBarEnum.TABLE_ENTRIES, page, column);
+		public TextTable tableEntry(AdminUsersEnum column){
+			return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
 		}
 	}
 
