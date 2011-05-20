@@ -24,8 +24,9 @@
         
     	<div class="datagrid_panel" style="width:925px; overflow: auto">
         
+        <a4j:region id="#{context}_tableRegion">
         <rich:dataTable id="#{context}" value="#{bean.table.model}" var="event" rowKeyVar="index" 
-        		reRender="#{context}-form:header,#{context}-form:#{context}_bottomScroller"
+        		reRender="#{context}-form:header,#{context}-form:#{context}_bottomScroller" 
         		styleClass="datagrid filterabledatagrid"  rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{bean.table.pageData.rowsPerPage}" width="100%">
 
             <!-- Data -->
@@ -126,9 +127,18 @@
 				</ui:include>
             </rich:column>
             
-            <rich:column id="exclude" rendered="#{tableColumns['clear'].visible}">
+            <rich:column id="exclude" rendered="#{tableColumns['clear'].visible}" custFilterBy="#{event.forgiven}" filterValue="#{bean.filterForgiven}">
                 <f:facet name="header">
-                    <h:outputText value="" />
+                	<h:panelGroup>
+                    	<h:outputText value="#{messages.notes_status}" />
+                    	<rich:spacer style="display:block" height="2" styleClass="wide_select_status"/>
+                    	<h:selectOneMenu id="forgivenFilter" value="#{bean.filterForgiven}" 
+                    		style="height:22px;size:auto;letter-spacing:0;padding:3px;" styleClass="wide_select_status">
+                        	<f:selectItems value="#{bean.filterForgivenSelections}" />
+                        	<a4j:support event="onchange" 
+                        		reRender="#{context},#{context}-form:header, #{context}_pageHeader,#{context}-form:#{context}_bottomScroller" />
+                    	</h:selectOneMenu>
+                    </h:panelGroup>
                 </f:facet>
                            <security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_FORGIVEACCESS">
 							<a4j:commandLink id="clear" rendered="#{event.forgiven == 0}" 
@@ -150,12 +160,15 @@
  							</security:authorize>
             </rich:column>
         </rich:dataTable>
+		</a4j:region>
     </div>
-    
+
     <rich:datascroller id="#{context}_bottomScroller" for="#{context}" 
             immediate="true" scrollerListener="#{bean.table.scrollerListener}" 
-            reRender="#{context},#{context}-form:header,#{context}_pageHeader" oncomplete="initializeTable();" 
+            reRender="#{context},#{context}-form:header,#{context}_pageHeader" oncomplete="initializeTable();"
             page="#{bean.table.pageData.currentPage}" styleClass="dataScroller" renderIfSinglePage="false"/>
+            
+            
     </h:form>
     
     

@@ -43,8 +43,18 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 
 	private EventCategoryFilter filterCategory;
 	private Integer filterCategoryKey;
+	
+	private String filterForgiven;
+	
+    public String getFilterForgiven() {
+        return filterForgiven;
+    }
 
-	public Integer getFilterCategoryKey() {
+    public void setFilterForgiven(String filterForgiven) {
+        this.filterForgiven = filterForgiven;
+    }
+
+    public Integer getFilterCategoryKey() {
 		return filterCategoryKey;
 	}
 
@@ -96,7 +106,7 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
             if ((eventType.isHOSOnlyEvent() && !getAccountIsHOS()) ||
                 (eventType.isWaysmartOnlyEvent() && !getAccountIsWaysmart()))
                 continue;
-            items.add(new SelectItem(eventType.getCode(), MessageUtil.getMessageString(eventType.toString())));
+            items.add(new SelectItem(eventType.getCode(), MessageUtil.getMessageString(eventType.toString(), getLocale())));
             eventCategoryMap.put(eventType.getCode(), eventType.getEventCategoryFilter());
         }
         return items.toArray(new SelectItem[0]);
@@ -144,6 +154,15 @@ public abstract class BasePagingNotificationsBean<T> extends BaseBean {
 		return teams;
 	}
 
+    public List<SelectItem> getFilterForgivenSelections() {
+        final List<SelectItem> filterSelections = new ArrayList<SelectItem>();
+        SelectItem blankItem = new SelectItem("", BLANK_SELECTION);
+        blankItem.setEscape(false);
+        filterSelections.add(blankItem);
+        filterSelections.add(new SelectItem("0", MessageUtil.getMessageString("included", getLocale())));
+        filterSelections.add(new SelectItem("1", MessageUtil.getMessageString("excluded", getLocale())));
+        return filterSelections;
+    }
 	public Event getClearItem() {
 		return clearItem;
 	}

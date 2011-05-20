@@ -332,7 +332,7 @@ public class PaginationTableDataModel<T> extends ExtendedDataModel implements Se
 						for (TableFilterField tableFilterField : tableFilterFieldList) {
 							dataProvider.addFilterField(tableFilterField);
 						}
-						return;
+						continue;
 					}
 				}
 				if (filterField instanceof ExtendedFilterField) {

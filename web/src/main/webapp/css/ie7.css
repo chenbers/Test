@@ -79,3 +79,9 @@ table.left_tab_table td
 	margin-top: 2px;
 	line-height: 22px;
 }
+
+.wide_select_status {
+	width: 90px;
+	margin-top: 2px;
+	line-height: 22px;
+}

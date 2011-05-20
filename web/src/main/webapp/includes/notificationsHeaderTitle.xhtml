@@ -9,12 +9,17 @@
     		<span class="panel_links">
              			#{description}
     		</span>
-			<a4j:status id="#{context}_status" for="#{context}_searchRegion">
+			<a4j:status id="#{context}_statusSearch" for="#{context}_searchRegion" onstop="initializeTable();">
 				<f:facet name="start">
 					<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
 				</f:facet>
 			</a4j:status>
-		</div>
+			<a4j:status id="#{context}_status" for="#{context}_tableRegion" onstop="initializeTable();">
+				<f:facet name="start">
+					<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
+				</f:facet>
+			</a4j:status>
+ 		</div>
 	</h:panelGroup>
 
 
