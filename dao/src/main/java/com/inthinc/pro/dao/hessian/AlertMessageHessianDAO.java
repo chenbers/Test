@@ -21,6 +21,7 @@ import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
+import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
@@ -181,6 +182,25 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
                 }
             case ALERT_TYPE_TAMPERING:
             case ALERT_TYPE_LOW_BATTERY:
+                break;
+            case ALERT_TYPE_IDLING:
+                int totalIdling = 0;
+                
+                if ( ((IdleEvent)event).getHighIdle() != null ) {
+                    totalIdling += ((IdleEvent)event).getHighIdle();
+                }
+                if ( ((IdleEvent)event).getLowIdle() != null ) {
+                    totalIdling += ((IdleEvent)event).getLowIdle();
+                }
+                parameterList.add(String.valueOf(totalIdling/60));
+                
+                try {
+                    parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
+                }
+                catch (NoAddressFoundException nafe){
+                    //Shouldn't happen because returning lat lng when there is no address
+                }
+                
                 break;
             default:
                 try {
