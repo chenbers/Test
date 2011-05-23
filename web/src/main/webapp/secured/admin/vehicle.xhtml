@@ -114,13 +114,6 @@
                                 <td><h:outputText value="#{vehiclesBean.item.odometer}" converter="MilesToKilometersConverter"/></td>
                               </tr>                              
                               <ui:include src="../../includes/#{vehiclesBean.item.productTypeName}/properties.xhtml"/>
-	                         <ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
-                              <tr>
-                                <td width="100"><h:outputText value="#{messages.editVehicle_DOT}" /></td>
-                                <td><h:outputText value="#{messages[vehiclesBean.item.dot]}" /></td>
-                              </tr>
-                              </ui:fragment>                              
-
                             </table>
                             <ui:include src="../../includes/#{vehiclesBean.item.productTypeName}/options.xhtml"/>
 

@@ -83,6 +83,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripQuality;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
@@ -512,7 +513,11 @@ public class SiloServiceTest {
         // assign devices to vehicles in team1 group
         assignDevicesToVehicles(team1Group.getGroupID());
         System.out.println("Admin - vehicles done");
-    	
+
+
+// TODO: add back in when David deploys the backend        
+//        waysmartDOTTypeForwardCommandCheck(team2Group.getGroupID());
+
        // person
         persons(acctID, team1Group.getGroupID());
         persons(acctID, team2Group.getGroupID());
@@ -547,6 +552,7 @@ public class SiloServiceTest {
         
         superuser(team1Group.getGroupID());
     }
+
 
     private void superuser(Integer groupID) {
         UserHessianDAO userDAO = new UserHessianDAO();
@@ -1072,7 +1078,9 @@ public class SiloServiceTest {
                     "555555123" + i);
 //            , // phone
 //                    "555555987" + i); // ephone
-            device.setProductVersion(ProductType.TIWIPRO_R74);
+            if (i == DEVICE_COUNT-1)
+                device.setProductVersion(ProductType.WAYSMART);
+            else device.setProductVersion(ProductType.TIWIPRO_R74);
             Integer deviceID = deviceDAO.create(acctID, device);
             assertNotNull(deviceID);
             device.setDeviceID(deviceID);
@@ -1651,6 +1659,41 @@ public class SiloServiceTest {
         groupDriverList = driverDAO.getAllDrivers(groupID);
         assertEquals("number of drivers in group: " + groupID, groupPersonList.size(), groupDriverList.size());
     }
+    
+    private void waysmartDOTTypeForwardCommandCheck(Integer groupID) {
+        VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
+        vehicleDAO.setSiloService(siloService);
+        DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
+        deviceDAO.setSiloService(siloService);
+        vehicleDAO.setDeviceDAO(deviceDAO);
+        List<Vehicle> groupVehicles = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
+
+        // switch device assignment
+        Integer vehicleID = groupVehicles.get(0).getVehicleID();
+        Integer wsdeviceID = deviceList.get(DEVICE_COUNT-1).getDeviceID();
+        
+        vehicleDAO.setVehicleDevice(vehicleID, wsdeviceID);
+        
+        Vehicle vehicle = vehicleDAO.findByID(vehicleID);
+        
+        vehicle.setDot(VehicleDOTType.PROMPT_FOR_DOT_TRIP);
+        vehicleDAO.update(vehicle);
+        
+        
+        List<ForwardCommand> queuedCommands = deviceDAO.getForwardCommands(wsdeviceID, ForwardCommandStatus.STATUS_QUEUED);
+        assertEquals("queued forward commands", 1, queuedCommands.size());
+        boolean found = false;
+        for (ForwardCommand forwardCommand : queuedCommands) {
+            if (forwardCommand.getCmd().equals(ForwardCommandID.DOT_PROMPT_BY_TRIP)) 
+                found = true;
+        }
+        
+        assertTrue("expected forward command " + ForwardCommandID.DOT_PROMPT_BY_TRIP + " not found", found);
+
+        
+        
+    }
+
 
     private void assignDevicesToVehicles(Integer groupID) {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();

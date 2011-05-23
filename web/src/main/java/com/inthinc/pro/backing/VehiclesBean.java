@@ -41,6 +41,7 @@ import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TableType;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -687,6 +688,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         return selectItemList;
     }
+    
+    public List<SelectItem> getDotTypes() {
+        return SelectItemUtil.toList(VehicleDOTType.class, false);
+    }
+
+    
     public List<SelectItem> getTiwiProTypes() {
         return SelectItemUtil.toList(VehicleType.class, false);
     }
@@ -795,6 +802,25 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN;
             return editableVehicleSettings.getProductType();
         }
+        
+        @Override
+        public VehicleDOTType getDot() {
+            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null || editableVehicleSettings.getProductType() != ProductType.WAYSMART)
+                return null;
+            
+            return VehicleDOTType.getFromSetting(((WaySmartEditableVehicleSettings)editableVehicleSettings).getDotVehicleType());
+        }
+
+        @Override
+        public void setDot(VehicleDOTType dot) {
+            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null || editableVehicleSettings.getProductType() != ProductType.WAYSMART)
+                return;
+            
+            int settingValue  = dot.getConfiguratorSetting();
+            ((WaySmartEditableVehicleSettings)editableVehicleSettings).setDotVehicleType(settingValue);
+        }
+
+
         @Override
         public Integer getWeight()
         {

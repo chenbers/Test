@@ -7,11 +7,12 @@
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:tiwiprofn="http://pro.tiwi.com/jsffunctions">
 
-<!--    <tr>-->
-<!--     <td width="100"><h:outputText value="#{messages.editDevice_dot}" /></td>-->
-<!--     <td><c:set var="dot" value="#{vehiclesBean.item.dot?'yes':'no'}" />-->
-<!--     	<h:outputText value="#{vehiclesBean.item.dot}" /></td>-->
-<!--   </tr>-->
+	<ui:fragment rendered="#{vehiclesBean.accountIsHOS}">
+	<tr>
+		<td width="100"><h:outputText value="#{messages.editVehicle_DOT}"/></td>
+		<td><h:outputText value="#{messages[vehiclesBean.item.dot]}" /></td>
+    </tr>
+	</ui:fragment>
     <tr>
       <td width="100"><h:outputText value="#{messages.editVehicle_type}" /></td>
       <td><h:outputText value="#{vehiclesBean.item.vtype.description}" /></td>

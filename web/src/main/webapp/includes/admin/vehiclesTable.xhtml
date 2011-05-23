@@ -142,7 +142,7 @@
       <f:facet name="header">
 		<h:outputText value="#{messages.vehiclesHeader_DOT}" />    
       </f:facet>
-      <h:outputText value="#{item.dot}" />
+      <h:outputText value="#{messages[item.dot]}" />
     </rich:column>
     <rich:column id="ePhone" rendered="#{vehiclesBean.tableColumns['ephone'].visible}" filterValue="#{vehiclesBean.filterValues['ephone']}" sortBy="#{item.editableVehicleSettings.ephone}">
       <f:facet name="header">

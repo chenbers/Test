@@ -7,6 +7,7 @@ import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
+import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
@@ -38,9 +39,11 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         Integer hardTurn = vehicleSensitivitySliders.getHardTurnSlider().getDefaultValueIndex();
         Integer hardAcceleration =  vehicleSensitivitySliders.getHardAccelerationSlider().getDefaultValueIndex();
         Integer hardBrake = vehicleSensitivitySliders.getHardBrakeSlider().getDefaultValueIndex();
+        
+        
         return new WaySmartEditableVehicleSettings(vehicleID==null?-1:vehicleID, speedLimit,speedBuffer,severeSpeed,
                                         hardAcceleration, hardBrake, hardTurn,hardVertical, getMeasurementType(), 
-                                        null, null, 15);
+                                        null, null, 15, VehicleDOTType.NON_DOT.getConfiguratorSetting());
     }
     
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
@@ -59,11 +62,12 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         String  doorAlarmPasscode = vs.getCombined(SettingType.WIRELINE_DOOR_ALARM_PASSCODE.getSettingID());
         String  killMotorPasscode = vs.getCombined(SettingType.WIRELINE_KILL_MOTOR_PASSCODE.getSettingID());
         Integer autoArmTime = NumberUtil.convertString(vs.getCombined(SettingType.WIRELINE_AUTO_ARM_TIME.getSettingID()));
+        Integer dotVehicleType = NumberUtil.convertString(vs.getCombined(SettingType.DOT_VEHICLE_TYPE.getSettingID()));
 
 
         return new WaySmartEditableVehicleSettings(vehicleID, speedLimit,speedBuffer,severeSpeed, 
                                           hardAcceleration, hardBrake, hardTurn,hardVertical, getMeasurementType(),
-                                          doorAlarmPasscode, killMotorPasscode, autoArmTime);
+                                          doorAlarmPasscode, killMotorPasscode, autoArmTime, dotVehicleType);
     }
     
     
@@ -109,6 +113,9 @@ public class WaySmartSettingManager extends VehicleSettingManager {
                     ""+waySmartEditableVehicleSettings.getAutoArmTime(), 
                     vehicleSetting.getCombined(SettingType.WIRELINE_AUTO_ARM_TIME.getSettingID()));
 
+            changedSettings.addSettingIfNeeded(SettingType.DOT_VEHICLE_TYPE,
+                    ""+waySmartEditableVehicleSettings.getDotVehicleType(), 
+                    vehicleSetting.getCombined(SettingType.DOT_VEHICLE_TYPE.getSettingID()));
             
 	        return changedSettings.getDesiredSettings();
 	    }
@@ -157,6 +164,9 @@ public class WaySmartSettingManager extends VehicleSettingManager {
                     ""+waySmartEditableVehicleSettings.getAutoArmTime(), 
                     vehicleSetting.getCombined(SettingType.WIRELINE_AUTO_ARM_TIME.getSettingID()));
 
+            newSettings.addSettingIfNeeded(SettingType.DOT_VEHICLE_TYPE,
+                    ""+waySmartEditableVehicleSettings.getDotVehicleType(), 
+                    vehicleSetting.getCombined(SettingType.DOT_VEHICLE_TYPE.getSettingID()));
 	        return newSettings.getDesiredSettings();
         
         }

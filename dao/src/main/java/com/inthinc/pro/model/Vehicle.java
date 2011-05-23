@@ -35,7 +35,7 @@ public class Vehicle extends BaseEntity
     
     private Integer           odometer;
     
-    private Boolean           dot;
+    private VehicleDOTType    dot;
     private Boolean           ifta;
     
     public Vehicle()
@@ -43,11 +43,13 @@ public class Vehicle extends BaseEntity
         super();
     }
 
-    public Boolean getDot() {
+    public VehicleDOTType getDot() {
+        if (dot == null)
+            return VehicleDOTType.NON_DOT;
         return dot;
     }
 
-    public void setDot(Boolean dot) {
+    public void setDot(VehicleDOTType dot) {
         this.dot = dot;
     }
 

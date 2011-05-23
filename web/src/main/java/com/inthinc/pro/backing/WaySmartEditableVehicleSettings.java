@@ -20,6 +20,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     private String  doorAlarmPasscode;
     private String  killMotorPasscode;
     private Integer autoArmTime;
+    private Integer dotVehicleType;
 
     private MeasurementType measurementType;
 
@@ -34,7 +35,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
                                   			Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
                                   			Integer hardVertical, MeasurementType measurementType,
                                   			String doorAlarmPasscode, 
-                                  			String killMotorPasscode, Integer autoArmTime) {
+                                  			String killMotorPasscode, Integer autoArmTime, Integer dotVehicleType) {
         
         super(vehicleID,ProductType.WAYSMART,"");
         
@@ -49,6 +50,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
         this.doorAlarmPasscode = doorAlarmPasscode; 
         this.killMotorPasscode = killMotorPasscode;
         this.autoArmTime = autoArmTime;
+        this.dotVehicleType = dotVehicleType;
     }
 
     public void setHardAcceleration(Integer hardAcceleration) {
@@ -193,5 +195,15 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     public void setMeasurementType(MeasurementType measurementType) {
         this.measurementType = measurementType;
     }
+
+    public Integer getDotVehicleType() {
+        return dotVehicleType;
+    }
+
+
+    public void setDotVehicleType(Integer dotVehicleType) {
+        this.dotVehicleType = dotVehicleType;
+    }
+
 
 }

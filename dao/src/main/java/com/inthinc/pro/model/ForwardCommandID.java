@@ -134,6 +134,8 @@ public interface ForwardCommandID
     public static Integer SET_SERVER_URL = 692; // server string follows the forward command
     public static Integer SET_SERVER_CONTEXT = 708; // context string follows the forward command
 
+    public static Integer DOT_PROMPT_BY_TRIP = 948; // context string follows the forward command
+
     // added for the teen product
     public static Integer SYSTEM_RESET = 2000;
     public static Integer GET_DIAGNOSTICS_REPORT = 2001;
