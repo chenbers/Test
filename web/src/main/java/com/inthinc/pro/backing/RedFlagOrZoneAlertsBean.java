@@ -1021,8 +1021,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.delay = delay;
         }
         public String getLimitValueDisplay() {
-//            if(LimitType.TIME.equals(getLimitType()) && limitValue != null)
-//                return (limitValue/DateUtil.SECONDS_IN_MINUTE)+"";
+            if(LimitType.TIME.equals(getLimitType()) && limitValue != null)
+                return (limitValue/DateUtil.SECONDS_IN_MINUTE)+"";
             
             return limitValue+"";
         }
