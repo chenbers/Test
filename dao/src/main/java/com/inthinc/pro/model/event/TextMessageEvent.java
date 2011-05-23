@@ -32,11 +32,7 @@ public class TextMessageEvent extends Event {
         @Override
         public String getDetails(String formatStr,MeasurementType measurementType,String... mString)
         {
-            if ( getType().equals(NoteType.WAYSMART_TEXT_MSG) ) {
-                return getTextMsg(); 
-            } else {
-                return Messages.getString("txtMsg_wsDMR_" + getTextId().toString());
-            }
+            return getTextMsg(); 
         }  
         
         public EventType getEventType()
