@@ -583,7 +583,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 flag.setMaxEscalationTries(item.getLimitValue());
                 flag.setMaxEscalationTryTime(null);
             } else if(LimitType.TIME.equals(item.getLimitType())) {
-                flag.setMaxEscalationTryTime(item.getLimitValue()*DateUtil.SECONDS_IN_MINUTE);
+                item.setLimitValue(item.getLimitValue()*DateUtil.SECONDS_IN_MINUTE);
+                flag.setMaxEscalationTryTime(item.getLimitValue());
                 flag.setMaxEscalationTries(null);
             }
             flag.setEscalationTimeBetweenRetries(item.getDelay().getCode());
