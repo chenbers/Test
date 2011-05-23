@@ -19,10 +19,21 @@
                   <tr>
 				  	<td>#{messages.hosLog_driver}</td>
 			  	 	<td>
-						<h:selectOneMenu value="#{hosBean.driverID}" id="#{context}_driverSelect" style="width:130px;size:auto;" >
-							<f:selectItems value="#{hosBean.drivers}" />
-							<a4j:support reRender="#{context}-hosSendLogsStatus,hos-table-form" event="onchange"/>  
-						</h:selectOneMenu>
+			  	 	<h:inputText value="#{hosBean.driverName}" id="driverName" />
+                <rich:suggestionbox id="driverSuggestionBoxId" for="driverName"
+                    suggestionAction="#{hosBean.autocomplete}" var="result"
+                    fetchValue="#{result.driverName}" 
+                    usingSuggestObjects="true">
+                      <h:column>
+                        <h:outputText id="driverSelected" value="#{result.driverName}" />
+                    </h:column>
+                    <a4j:support ajaxSingle="true" event="onselect" reRender="#{context}-hosSendLogsStatus,hos-table-form">
+            			<f:setPropertyActionListener value="#{result.driverID}" target="#{hosBean.driverID}" />
+            			<f:setPropertyActionListener value="#{result.driverName}" target="#{hosBean.driverName}" />
+         			</a4j:support>
+                    
+                </rich:suggestionbox>
+
 					</td>
 					</tr>
 				</table>

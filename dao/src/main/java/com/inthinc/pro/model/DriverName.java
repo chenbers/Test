@@ -1,6 +1,6 @@
 package com.inthinc.pro.model;
 
-public class DriverName{
+public class DriverName implements Comparable<DriverName>{
     
     private Integer driverID;
     private String driverName;
@@ -23,6 +23,11 @@ public class DriverName{
     }
     public void setDriverName(String driverName) {
         this.driverName = driverName;
+    }
+    @Override
+    public int compareTo(DriverName o) {
+        
+        return driverName.compareTo(o.getDriverName());
     }
     
 }

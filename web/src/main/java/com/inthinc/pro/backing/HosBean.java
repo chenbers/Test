@@ -38,6 +38,7 @@ import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWS;
 import com.inthinc.pro.dao.util.HOSUtil;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.ForwardCommandID;
 import com.inthinc.pro.model.ForwardCommandSpool;
 import com.inthinc.pro.model.Vehicle;
@@ -72,7 +73,10 @@ public class HosBean extends BaseBean {
     private boolean               selectAll;
     private Map<String, Boolean> updateField;
     private String sendLogsMsg;
-
+    
+    private String driverName;
+    private List<DriverName> driverNameList;
+    
     private static final String EDIT_REDIRECT = "pretty:hosEdit";    
     private static final String VIEW_REDIRECT = "pretty:hos";    
     protected final static String BLANK_SELECTION = "&#160;";
@@ -812,6 +816,30 @@ logger.info("in loadItems()");
         this.fwdCmdSpoolWS = fwdCmdSpoolWS;
     }
 
+    public void getDriversForSuggestionBox(){
+        driverNameList = driverDAO.getDriverNames(this.getUser().getGroupID());
+    }
+
+    public List<DriverName> autocomplete(Object suggest) {
+        String pref = (String)suggest;
+        ArrayList<DriverName> result = new ArrayList<DriverName>();
+        getDriversForSuggestionBox();
+        for(DriverName driver :driverNameList){
+            String name =driver.getDriverName();
+            if (name != null && name.toLowerCase().contains(pref.toLowerCase()) || "".equals(pref))
+            {
+                result.add(driver);
+            }
+        }
+        Collections.sort(result);
+        return result;
+    }
+    public String getDriverName() {
+        return driverName;
+    }
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
 }
 
     
