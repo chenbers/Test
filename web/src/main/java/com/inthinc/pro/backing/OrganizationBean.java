@@ -652,7 +652,9 @@ public class OrganizationBean extends BaseBean
             return null;
         }
 
-        return getAddressDAO().update(address);
+        // must return a valid address id, not a count of updated things....
+        getAddressDAO().update(address);
+        return address.getAddrID();
     }
     
     private void fetchGroupAddress(Group g) {
