@@ -8,6 +8,9 @@ public enum DriverPerformanceEnum implements SeleniumEnums {
     BREADCRUMB_ITEM(null, "breadcrumbForm:breadcrumbitem:###:driverPerformance-dashboard"),
 
     VIEW_ALL_TRIPS("View all trips", "driverPerformanceDriverTrips"), 
+    
+    EXPANDED_DRIVER_NAME_LINK(null, "driver***ChartForm:driver***DriverPerformance"),
+    EXPANDED_BREADCRUMB(null, "driver***ChartForm:breadcrumbitem:###:driver***-dashboard"),
     ;
 
     private String text, url;
