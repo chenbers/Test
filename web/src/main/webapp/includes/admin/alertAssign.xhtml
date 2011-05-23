@@ -26,7 +26,7 @@
 -->
 
   <ui:composition>
-
+	<a4j:region>
     <c:if test="#{empty formName}">
       <c:set var="formName" value="edit-form" />
     </c:if>
@@ -36,21 +36,30 @@
         <td><h:outputText value="#{messages.editAlerts_assignType}" /></td>
         <td>
           <h:selectOneMenu id="#{context}-assignType" value="#{alertsBean.assignType}">
-            <a4j:support event="onchange" reRender="#{context}-from,#{context}-pickedIDs" limitToList="true" />
+            <a4j:support event="onchange" reRender="#{context}-all,#{context}-from,#{context}-pickedIDs" limitToList="true" 
+            		oncomplete="filterFromList('#{alertsBean.searchKeyword}');"/>
             <f:selectItem itemValue="groups" itemLabel="#{messages.editAlerts_groups}" />
             <f:selectItem itemValue="vehicleTypes" itemLabel="#{messages.editAlerts_vehicleTypes}" />
             <f:selectItem itemValue="vehicles" itemLabel="#{messages.editAlerts_vehicles}" />
             <f:selectItem itemValue="drivers" itemLabel="#{messages.editAlerts_drivers}" />
           </h:selectOneMenu>
         </td>
+        </tr><tr>
+        <td><h:outputText value="#{messages.button_filter}:" /></td>
+        <td>
+          <h:inputText id="editAlert-filterKeyword" value="#{alertsBean.searchKeyword}" onkeyup="filterFromList(this.value)" class="text" size="20" >
+          </h:inputText>
+
+         </td>
       </tr>
     </table>
-
+	
     <ui:include src="listPicker.xhtml">
       <ui:param name="bean" value="#{alertsBean.assignPicker}" />
       <ui:param name="id" value="alertAssign" />
       <ui:param name="formName" value="#{formName}" />
       <ui:param name="context" value="#{context}" />
+      <ui:param name="keyword" value="editAlert-filterKeyword"/>
     </ui:include>
 
 
@@ -66,7 +75,7 @@
 		<h:selectOneMenu id="#{context}-userID" value="#{alertsBean.item.userID}" style="width: 200px">
 				<f:selectItems value="#{alertsBean.allGroupUsers}" />
                 <a4j:support action="#{alertsBean.ownerChangedAction}" event="onchange" 
-                		reRender="edit-form:#{context}-from,edit-form:#{context}-pickedIDs,edit-form:#{context}-picked"/>
+                		reRender="edit-form:#{context}-all,edit-form:#{context}-from,edit-form:#{context}-pickedIDs,edit-form:#{context}-picked"/>
         </h:selectOneMenu>
         </td>
       </tr>
@@ -77,6 +86,7 @@
         </tr>
 	</table>
       </ui:fragment>
+      </a4j:region>
   </ui:composition>
 
 </html>

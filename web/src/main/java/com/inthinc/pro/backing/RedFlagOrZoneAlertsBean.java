@@ -621,10 +621,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     protected String getDisplayRedirect() {
         
-//        if (getItem().getType().equals(AlertMessageType.ALERT_TYPE_ZONES)){
-//          
-//             return "pretty:adminZone";
-//        }
         return "pretty:adminRedFlag";
     }
 

@@ -7,12 +7,15 @@ import java.util.List;
 
 import javax.faces.model.SelectItem;
 
+import com.inthinc.pro.util.BeanUtil;
+
 /**
  * For use with listPicker.xhtml.
  */
 public class ListPicker
 {
     private List<SelectItem>            pickFrom;
+    private List<SelectItem>            filteredPickFrom;
     private List<SelectItem>            picked;
     private String                      pickedIDs;
     private HashMap<String, SelectItem> cachedItems = new HashMap<String, SelectItem>();
@@ -37,9 +40,17 @@ public class ListPicker
     {
         this.pickFrom = pickFrom;
         removePickedItems();
-        addToCache(pickFrom);
+        copyToFilteredPickFrom(pickFrom);
+        addToCache(filteredPickFrom);
     }
-
+    private void copyToFilteredPickFrom(List<SelectItem> pickFrom){
+        filteredPickFrom = new ArrayList<SelectItem>();
+        for(SelectItem item : pickFrom){
+            SelectItem copy = new SelectItem();
+            BeanUtil.deepCopy(item, copy);
+            filteredPickFrom.add(copy);
+        }
+    }
     public List<SelectItem> getPicked()
     {
         return picked;
@@ -122,5 +133,13 @@ public class ListPicker
                     list.add(item);
             }
         }
+    }
+
+    public List<SelectItem> getFilteredPickFrom() {
+        return filteredPickFrom;
+    }
+
+    public void setFilteredPickFrom(List<SelectItem> filteredPickFrom) {
+        this.filteredPickFrom = filteredPickFrom;
     }
 }

@@ -38,30 +38,37 @@
     <c:if test="#{empty rows}">
       <c:set var="rows" value="12" />
     </c:if>
-
+    <c:if test="#{empty keyword}">
+      <c:set var="keyword" value="none" />
+     </c:if>
+    
     <table border="0" cellspacing="4" cellpadding="2" width="100%">
       <tr>
         <td width="46%">
-          <h:selectManyListbox id="#{context}-from" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons();checkMultiple('#{id}')">
+          <h:selectManyListbox id="#{context}-all" value="#{bean.emptyItems}" size="#{rows}" style="display:none" >
             <f:selectItems value="#{bean.pickFrom}" />
+          </h:selectManyListbox>
+        
+          <h:selectManyListbox id="#{context}-from" value="#{bean.emptyItems}" size="#{rows}" style="width:100%" onchange="enablePickButtons();checkMultiple('#{id}')">
+            <f:selectItems value="#{bean.filteredPickFrom}" />
           </h:selectManyListbox>
         </td>
         <td width="8%" align="center">
           <table border="0" cellspacing="4" cellpadding="0">
             <tr>
-              <td><a href="#" id="#{context}-right" onclick="pickMove('right', false); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_right" value="/images/btn_move_right.png" style="border:0px" /></a></td>
+              <td><a href="#" id="#{context}-right" onclick="pickMoveAdd(false); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_right" value="/images/btn_move_right.png" style="border:0px" /></a></td>
             </tr>
             <tr>
-              <td><a href="#" id="#{context}-left" onclick="pickMove('left', false); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_left" value="/images/btn_move_left.png" style="border:0px" /></a></td>
+              <td><a href="#" id="#{context}-left" onclick="pickMoveRemove(false); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_left" value="/images/btn_move_left.png" style="border:0px" /></a></td>
             </tr>
             <tr>
               <td><hr noshade="noshade" /></td>
             </tr>
             <tr>
-              <td><a href="#" id="#{context}-allRight" onclick="pickMove('right', true); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_all_right" value="/images/btn_move_all_right.png" style="border:0px" /></a></td>
+              <td><a href="#" id="#{context}-allRight" onclick="pickMoveAdd(true); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_all_right" value="/images/btn_move_all_right.png" style="border:0px" /></a></td>
             </tr>
             <tr>
-              <td><a href="#" id="#{context}-allLeft" onclick="pickMove('left', true); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_all_left" value="/images/btn_move_all_left.png" style="border:0px" /></a></td>
+              <td><a href="#" id="#{context}-allLeft" onclick="pickMoveRemove(true); return false;" style="cursor:default"><h:graphicImage id="#{context}-move_all_left" value="/images/btn_move_all_left.png" style="border:0px" /></a></td>
             </tr>
           </table>
         </td>
@@ -75,23 +82,50 @@
     </table>
 
     <script type="text/javascript">
-      function pickMove(dir, all)
+      function pickMoveAdd(all)
       {
-        var left = document.getElementById("#{formName}:#{context}-from");
-        var right = document.getElementById("#{formName}:#{context}-picked");
-        var from = left;
-        var to = right;
-        if (dir == "left")
-        {
-          from = right;
-          to = left;
-        }
+        var allFrom = document.getElementById("#{formName}:#{context}-all");
+        var from = document.getElementById("#{formName}:#{context}-from");
+        var to = document.getElementById("#{formName}:#{context}-picked");
 
         var changed = false;
         for (var i = 0; i &lt; from.length; i++)
           if (all || from.options[i].selected)
           {
             to.options[to.options.length] = new Option(from.options[i].text, from.options[i].value);
+            from.remove(i);
+            allFrom.remove(i);
+            changed = true;
+            i--;
+          }
+
+        if (changed)
+        {
+          var s = "";
+          for (var i = 0; i &lt; to.length; i++)
+          {
+            if (s.length &gt; 0)
+              s += ",";
+            s += to.options[i].value;
+          }
+          document.getElementById("#{formName}:#{context}-pickedIDs").value = s;
+          enablePickButtons();
+          #{onchange}
+        }
+      }
+    
+      function pickMoveRemove( all)
+      {
+        var from = document.getElementById("#{formName}:#{context}-picked");
+        var to =  document.getElementById("#{formName}:#{context}-from");
+        var allTo = document.getElementById("#{formName}:#{context}-all");
+
+        var changed = false;
+        for (var i = 0; i &lt; from.length; i++)
+          if (all || from.options[i].selected)
+          {
+            to.options[to.options.length] = new Option(from.options[i].text, from.options[i].value);
+            allTo.options[allTo.options.length] = new Option(from.options[i].text, from.options[i].value);
             from.remove(i);
             changed = true;
             i--;
@@ -100,17 +134,36 @@
         if (changed)
         {
           var s = "";
-          for (var i = 0; i &lt; right.length; i++)
+          for (var i = 0; i &lt; from.length; i++)
           {
             if (s.length &gt; 0)
               s += ",";
-            s += right.options[i].value;
+            s += from.options[i].value;
           }
           document.getElementById("#{formName}:#{context}-pickedIDs").value = s;
           enablePickButtons();
           #{onchange}
         }
       }
+      
+	  function filterFromList(keyword){
+	  alert(keyword);
+        var allFrom = document.getElementById("#{formName}:#{context}-all");
+        var from = document.getElementById("#{formName}:#{context}-from");
+        from.options.length = 0;
+	  	if(!keyword) keyword = "";
+        var lowerCaseKeyword = keyword.toLowerCase();
+        for (var i = 0; i &lt; allFrom.length; i++){
+           	if (allFrom.options[i].text.toLowerCase().indexOf(lowerCaseKeyword) != -1){
+           		from.options[from.options.length] = new Option(allFrom.options[i].text, allFrom.options[i].value);
+           	}
+	  	}
+	  }
+	  function resetKeyword(){
+	   	if('#{keyword}' != 'none'){
+	   		document.getElementById("#{formName}:#{keyword}").value = "";
+	   	}
+	  }
 
       function restorePicked()
       {
@@ -118,6 +171,7 @@
         if (!value)
           return;
         var ids = value.split(",");
+        var allFrom = document.getElementById("#{formName}:#{context}-all");
         var from = document.getElementById("#{formName}:#{context}-from");
         var to = document.getElementById("#{formName}:#{context}-picked");
         for (var i = 0; i &lt; ids.length; i++)
@@ -126,6 +180,7 @@
             {
               to.options[to.options.length] = new Option(from.options[j].text, from.options[j].value);
               from.remove(j);
+              allFrom.remove(j);
               break;
             }
       }
@@ -148,8 +203,10 @@
         else
           image.src = "#{facesContext.externalContext.requestContextPath}/images/btn_" + id + "_disabled.png";
       }
-
+		
       restorePicked();
+      resetKeyword();
+	  filterFromList("");
       enablePickButtons();
     </script>
 

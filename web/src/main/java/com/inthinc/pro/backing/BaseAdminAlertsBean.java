@@ -1,19 +1,21 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.backing.ui.AutocompletePicker;
 import com.inthinc.pro.backing.ui.ListPicker;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.PersonDAO;
-import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.dao.VehicleDAO;
+import com.inthinc.pro.model.DriverName;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlagAlert;
@@ -21,6 +23,7 @@ import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
@@ -30,10 +33,9 @@ import com.inthinc.pro.util.SelectItemUtil;
 @SuppressWarnings("serial")
 public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAlertView> extends BaseAdminBean<T> implements PersonChangeListener
 {
-    //protected static UserDAO   userDAO;
     protected PersonDAO         personDAO;
     protected DriverDAO         driverDAO;
-    private VehiclesBean        vehiclesBean;
+    protected VehicleDAO        vehicleDAO;
     private String              assignType;
     private List<SelectItem>    allVehicles;
     private List<SelectItem>    allDrivers;
@@ -42,9 +44,10 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     private AutocompletePicker  escalationPeoplePicker;
     private AutocompletePicker  escalationEmailPicker;
     private T                   oldItem;
-//    private String             oldEmailToString;
-    
+
     private List<Person>        peopleInGroupHierarchy = new ArrayList<Person>();
+    
+    private String searchKeyword;
     
     @Override
     public String toString() {
@@ -60,70 +63,92 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         this.driverDAO = driverDAO;
     }
 
-    public void setVehiclesBean(VehiclesBean vehiclesBean)
-    {
-        this.vehiclesBean = vehiclesBean;
-    }
-
     public String getAssignType()
     {
         return assignType;
     }
     
     public void ownerChangedAction() {
-        List<Integer> selectedGroupIDs = (item.getGroupIDs() == null) ? null : new ArrayList<Integer>(item.getGroupIDs());
-        List<Integer> selectedVehicleIDs = (item.getVehicleIDs() == null) ? null : new ArrayList<Integer>(item.getVehicleIDs());
-        List<Integer> selectedDriverIDs = (item.getDriverIDs() == null) ? null : new ArrayList<Integer>(item.getDriverIDs());
+        
     	assignPicker = null;
     	item.setGroupIDs(null);
     	item.setVehicleIDs(null);
     	item.setDriverIDs(null);
+    	
+    	User owner = determineOwner();
+    	
+        setNewGroupIDs(owner.getGroupID());
+        setNewVehicleIDs(owner.getGroupID());
+        setNewDriverIDs(owner.getGroupID());
+    }
+    private User determineOwner(){
         Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
         User owner = null;
         if (!ownerID.equals(getUserID()))
             owner = userDAO.findByID(ownerID);
         else owner = getUser();
-        List<Integer> groupIDList = getGroupHierarchy().getSubGroupIDList(owner.getGroupID());
-
-        List<Integer> newGroupIDs = new ArrayList<Integer>();
-        for (Integer id : selectedGroupIDs)
-            for (Integer groupID : groupIDList)
-                if (groupID.equals(id)) {
-                    newGroupIDs.add(id);
-                    break;
-                }
-        item.setGroupIDs(newGroupIDs);
-        List<Integer> newVehicleIDs = new ArrayList<Integer>();
-        final List<VehicleView> vehicles = vehiclesBean.getItems();
-        for (Integer id : selectedVehicleIDs)
-            for (VehicleView vehicle : vehicles)
-                if (vehicle.getVehicleID().equals(id)) {
-                    for (Integer groupID : groupIDList)
-                        if (groupID.equals(vehicle.getGroupID())) {
-                            newVehicleIDs.add(id);
-                            break;
-                        }
-                    break;
-                }
-        item.setVehicleIDs(newVehicleIDs);
-        List<Integer> newDriverIDs = new ArrayList<Integer>();
-        List<Driver> drivers = driverDAO.getAllDrivers(owner.getGroupID());
-        for (Integer id : selectedDriverIDs)
-            for (Driver driver : drivers)
-                if (driver.getDriverID().equals(id)) {
-                    newDriverIDs.add(id);
-                    break;
-                }
-        item.setDriverIDs(newDriverIDs);
+        return owner;
     }
+    private void setNewGroupIDs(Integer groupID){
+        List<Integer> groupIDList = getGroupHierarchy().getSubGroupIDList(groupID);
+        List<Integer> selectedGroupIDs = (item.getGroupIDs() == null) ? null : new ArrayList<Integer>(item.getGroupIDs());
+        List<Integer> newGroupIDs = new ArrayList<Integer>();
+        for (Integer group : groupIDList){
+            if(selectedGroupIDs.contains(group)){
+                newGroupIDs.add(group);
+            }
+        }
+        item.setGroupIDs(newGroupIDs);
 
+    }
+    private void setNewVehicleIDs(Integer groupID){
+        List<Integer> selectedVehicleIDs = (item.getVehicleIDs() == null) ? null : new ArrayList<Integer>(item.getVehicleIDs());
+        List<Integer> newVehicleIDs = new ArrayList<Integer>();
+        final List<VehicleName> vehicles = vehicleDAO.getVehicleNames(groupID);
+        for (final VehicleName vehicle : vehicles) {
+            if(selectedVehicleIDs.contains(vehicle.getVehicleID())){
+                newVehicleIDs.add(vehicle.getVehicleID());
+            }
+        }
+        item.setVehicleIDs(newVehicleIDs);
+    }
+    private void setNewDriverIDs(Integer groupID){
+        List<Integer> selectedDriverIDs = (item.getDriverIDs() == null) ? null : new ArrayList<Integer>(item.getDriverIDs());
+        List<Integer> newDriverIDs = new ArrayList<Integer>();
+        final List<DriverName> drivers = driverDAO.getDriverNames(groupID);
+        for (final DriverName driver : drivers) {
+            if(selectedDriverIDs.contains(driver.getDriverID())){
+                newDriverIDs.add(driver.getDriverID());
+            }
+        }
+        item.setDriverIDs(newDriverIDs);
+
+    }
     public void setAssignType(String assignType)
     {
         this.assignType = assignType;
-        if (assignPicker != null)
+         if (assignPicker != null)
             assignPicker.setPickFrom(getAssignPickFrom());
     }
+    private AssignTypeStrategy getAssignTypeStrategy(){
+        if ((assignType == null) || "groups".equals(assignType)){
+            return new GroupAssignTypeStrategy();
+        }
+        else if ("vehicleTypes".equals(assignType))
+        {
+            return new VehicleTypeAssignTypeStrategy();
+        }
+        else if ("vehicles".equals(assignType))
+        {
+            return new VehicleAssignTypeStrategy();
+        }
+        else if ("drivers".equals(assignType))
+        {
+            return new DriverAssignTypeStrategy();
+        }
+        return new GroupAssignTypeStrategy();
 
+    }
     public ListPicker getAssignPicker()
     {
         if (assignPicker == null)
@@ -133,62 +158,88 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
     private List<SelectItem> getAssignPickFrom()
     {
-    	Integer ownerID = item == null || item.getUserID() == null ? getUserID() : item.getUserID();
-    	User owner = null;
-    	if (!ownerID.equals(getUserID()))
-    		owner = userDAO.findByID(ownerID);
-    	else owner = getUser();
-        final LinkedList<SelectItem> pickFrom = new LinkedList<SelectItem>();
-        if ((assignType == null) || "groups".equals(assignType))
-        {
-            for (final Group group : getGroupHierarchy().getSubGroupList(owner.getGroupID()))
-                pickFrom.add(new SelectItem("group" + group.getGroupID(), group.getName()));
-        }
-        else if ("vehicleTypes".equals(assignType))
-        {
-            pickFrom.add(new SelectItem(VehicleType.LIGHT.name(), MessageUtil.getMessageString("editAlerts_lightVehicles")));
-            pickFrom.add(new SelectItem(VehicleType.MEDIUM.name(), MessageUtil.getMessageString("editAlerts_mediumVehicles")));
-            pickFrom.add(new SelectItem(VehicleType.HEAVY.name(), MessageUtil.getMessageString("editAlerts_heavyVehicles")));
-        }
-        else if ("vehicles".equals(assignType))
-        {
-            pickFrom.addAll(getAllVehicles(owner.getGroupID()));
-        }
-        else if ("drivers".equals(assignType))
-        {
-            pickFrom.addAll(getAllDrivers(owner.getGroupID()));
-        }
+        User owner = determineOwner();
+        final List<SelectItem> pickFrom = getAssignTypeStrategy().getPickFromList(owner.getGroupID());
+       
         return pickFrom;
     }
 
     protected List<SelectItem> getAllVehicles()
     {
-        if ((allVehicles == null) && (vehiclesBean != null))
+        if ((allVehicles == null))
         {
-//            final List<VehicleView> vehicles = vehiclesBean.getItems();
-            final List<VehicleView> vehicles = getVehicles();
-            allVehicles = new ArrayList<SelectItem>(vehicles.size());
-            for (final Vehicle vehicle : vehicles)
-                allVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getName()));
-            MiscUtil.sortSelectItems(allVehicles);
+            allVehicles = getAllVehicles(getUser().getGroupID());
         }
         return allVehicles;
+     }
+    protected List<SelectItem> getAllVehicles(Integer groupID)
+    {
+        List<SelectItem> groupVehicles = new ArrayList<SelectItem>();
+        List<VehicleName> vehicles = vehicleDAO.getVehicleNames(groupID);
+//        vehicles = filterVehicles(vehicles);
+        for (final VehicleName vehicle : vehicles) {
+
+            groupVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getVehicleName()));
+        }
+        MiscUtil.sortSelectItems(groupVehicles);
+        return groupVehicles;
     }
+//    private List<VehicleName> filterVehicles(List<VehicleName> vehicles){
+//        if (searchKeyword == null || searchKeyword.isEmpty()) return vehicles;
+//        final String[] filterWords = searchKeyword.toLowerCase().split("\\s+");
+//        List<VehicleName> filteredList = new ArrayList<VehicleName>();
+//        for(VehicleName vehicleName : vehicles){
+//            if(match(vehicleName.getVehicleName(),filterWords)){
+//                filteredList.add(vehicleName);
+//            }
+//        }
+//        return filteredList;
+//    }
 
     protected List<SelectItem> getAllDrivers()
     {
         if ((allDrivers == null) && (driverDAO != null))
         {
-            final List<Driver> drivers = driverDAO.getAllDrivers(getUser().getGroupID());
-            allDrivers = new ArrayList<SelectItem>(drivers.size());
-            for (final Driver driver : drivers)
-                allDrivers.add(new SelectItem("driver" + driver.getDriverID(), driver.getPerson().getFirst() + ' ' + driver.getPerson().getLast()));
-            MiscUtil.sortSelectItems(allDrivers);
+            allDrivers = getAllDrivers(getUser().getGroupID());
         }
         return allDrivers;
     }
-
-    public List<Person> getPeopleInGroupHierarchy() {
+    protected List<SelectItem> getAllDrivers(Integer groupID)
+    {
+        List<DriverName> drivers = driverDAO.getDriverNames(groupID);
+//        drivers = filterDrivers(drivers);
+        
+        List<SelectItem> groupDrivers = new ArrayList<SelectItem>(drivers.size());
+        for (final DriverName driver : drivers)
+            groupDrivers.add(new SelectItem("driver" + driver.getDriverID(), driver.getDriverName()));
+        MiscUtil.sortSelectItems(groupDrivers);
+        
+        return groupDrivers;
+    }
+//    private List<DriverName> filterDrivers(List<DriverName> drivers){
+//        if (searchKeyword == null || searchKeyword.isEmpty()) return drivers;
+//        final String[] filterWords = searchKeyword.toLowerCase().split("\\s+");
+//        List<DriverName> filteredList = new ArrayList<DriverName>();
+//        for(DriverName driverName : drivers){
+//            if(match(driverName.getDriverName(),filterWords)){
+//                filteredList.add(driverName);
+//            }
+//        }
+//        return filteredList;
+//    }
+//    public boolean match(String name, String []filterWords){
+//        for (String filterWord : filterWords){
+//            if(!containsKeyword(name,filterWord)){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+//    private boolean containsKeyword(String field, String keyword){
+//        if (field == null) return false;
+//        return field.toLowerCase().contains(keyword.toLowerCase());
+//    }
+   public List<Person> getPeopleInGroupHierarchy() {
         
         if( peopleInGroupHierarchy.size() == 0 ) {
             peopleInGroupHierarchy = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());            
@@ -197,39 +248,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         return peopleInGroupHierarchy;
     }
  
-    protected List<SelectItem> getAllVehicles(Integer groupID)
-    {
-    	List<Group> subGroupList = getGroupHierarchy().getSubGroupList(groupID);
-//    	final List<VehicleView> vehicles = vehiclesBean.getItems();
-      final List<VehicleView> vehicles = getVehicles();
-    	List<SelectItem> groupVehicles = new ArrayList<SelectItem>();
-        for (final Vehicle vehicle : vehicles) {
-        	for (Group group : subGroupList) {
-        		if (group.getGroupID().equals(vehicle.getGroupID())) {
-        			groupVehicles.add(new SelectItem("vehicle" + vehicle.getVehicleID(), vehicle.getName()));
-        			break;
-        		}
-        	}
-        }
-        MiscUtil.sortSelectItems(groupVehicles);
-        return groupVehicles;
-    }
-
-    public List<VehicleView> getVehicles()
-    {
-        return vehiclesBean.getPlainVehicles();
-    }
-    protected List<SelectItem> getAllDrivers(Integer groupID)
-    {
-        final List<Driver> drivers = driverDAO.getAllDrivers(groupID);
-        List<SelectItem> groupDrivers = new ArrayList<SelectItem>(drivers.size());
-        for (final Driver driver : drivers)
-            groupDrivers.add(new SelectItem("driver" + driver.getDriverID(), driver.getPerson().getFirst() + ' ' + driver.getPerson().getLast()));
-        MiscUtil.sortSelectItems(groupDrivers);
-        
-        return groupDrivers;
-    }
-
     private List<SelectItem> getAssignPicked()
     {
         final LinkedList<SelectItem> picked = new LinkedList<SelectItem>();
@@ -260,8 +278,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         RedFlagLevel severityLevel = (this.oldItem instanceof RedFlagAlert)?((RedFlagAlert)this.oldItem).getSeverityLevel():null;
         if (peoplePicker == null || (peoplePicker.size() < 1) || peoplePicker.isOutdated())
         {
-            //final List<User> users = userDAO.getUsersInGroupHierarchy(getTopGroup().getGroupID());
-//            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
             for (final Person person : getPeopleInGroupHierarchy()) {
                 //only add users if they have values for the severity level of this alert
@@ -282,7 +298,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     public AutocompletePicker getEscalationEmailPicker() {
         if (escalationEmailPicker == null)
         {
-//            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
             for (final Person person : getPeopleInGroupHierarchy()) {
                 if(null != person.getPriEmail() && !"".equals(person.getPriEmail()))
@@ -377,7 +392,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         if (item != oldItem)
         {
             oldItem = item;
-//            oldEmailToString = item.getEmailToString();
             getAssignPicker().setPicked(getAssignPicked());
             getAssignPicker().setPickFrom(getAssignPickFrom());
             getPeoplePicker().setPicked(getNotifyPicked());
@@ -415,7 +429,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         getAssignPicker().setPicked(getAssignPicked());
         getPeoplePicker().setPicked(getNotifyPicked());
         getEscalationPeoplePicker().setPicked(getEscalationPicked());
-//        getItem().setEmailToString(getOldEmailToString());
         return super.cancelEdit();
     }
 
@@ -423,7 +436,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     public String save()
     {
         // if batch-changing assignment, change all assignment types
-//        final Map<String, Boolean> updateField = getUpdateField();
         final boolean assignTo = Boolean.TRUE.equals(getUpdateField().get("assignTo"));
         getUpdateField().put("groupIDs", assignTo);
         getUpdateField().put("vehicleTypes", assignTo);
@@ -542,37 +554,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
             }
         }
 
-// not used
-/*        
-        if(!isBatchEdit() || (isBatchEdit() && getUpdateField().get("emailToString")))
-        {
-            // valid e-mail addresses
-            for (final String email : saveItem.getEmailTo())
-            {
-                final Matcher matcher = EmailValidator.EMAIL_REGEX.matcher(email);
-                if (!matcher.matches())
-                {
-                    final String summary = MessageUtil.formatMessageString("editAlerts_emailFormat", email);
-                    final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                    context.addMessage("edit-form:"+getAlertPage()+"-emailToString", message);
-                    valid = false;
-                    break;
-                }
-            }
-        }
-*/        
         return valid;
     }
-
-//    protected String getOldEmailToString()
-//    {
-//        return oldEmailToString;
-//    }
-//
-//    protected void setOldEmailToString(String oldEmailToString)
-//    {
-//        this.oldEmailToString = oldEmailToString;
-//    }
 
     protected static boolean isAnytime(BaseAlertView alert)
     {
@@ -601,6 +584,20 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
     public abstract String getAlertPage();
 
+    public VehicleDAO getVehicleDAO() {
+        return vehicleDAO;
+    }
+    public void setVehicleDAO(VehicleDAO vehicleDAO) {
+        this.vehicleDAO = vehicleDAO;
+    }
+    public String getSearchKeyword() {
+        return searchKeyword;
+    }
+    public void setSearchKeyword(String searchKeyword) {
+        this.searchKeyword = searchKeyword;
+//        if (assignPicker != null)
+//            assignPicker.setPickFrom(getAssignPickFrom());
+    }
     public interface BaseAlertView extends EditItem
     {
         public boolean isAnytime();
@@ -641,24 +638,51 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         
         public void setEscalationPersonIDs(List<Integer> notifyPersonIDs);
 
-//        public List<String> getEmailTo();
-//
-//        public void setEmailTo(List<String> emailTo);
-//
-//        public String getEmailToString();
-//
-//        public void setEmailToString(String emailToString);
-        
         public Integer getUserID();
         
         public void setFullName(String fullName);
         
         public List<Integer> getVoiceEscalationPersonIDs();
         
-//        public void setVoiceEscalationPersonIDs(List<Integer> voiceEscalationPersonIDs);
-
         public Integer getEmailEscalationPersonID();
 
-//        public void setEmailEscalationPersonID(Integer emailEscalationPersonID);
     }
+    private interface AssignTypeStrategy{
+        public List<SelectItem> getPickFromList(Integer groupID);
+    }
+    private class GroupAssignTypeStrategy implements AssignTypeStrategy{
+        
+        public List<SelectItem> getPickFromList(Integer groupID){
+             List<SelectItem> pickFrom = new ArrayList<SelectItem>();
+             for (final Group group : getGroupHierarchy().getSubGroupList(groupID))
+                 pickFrom.add(new SelectItem("group" + group.getGroupID(), group.getName()));
+
+             return pickFrom;
+         }
+     }
+    private class DriverAssignTypeStrategy implements AssignTypeStrategy{
+        public List<SelectItem> getPickFromList(Integer groupID){
+             List<SelectItem> pickFrom = new ArrayList<SelectItem>();
+             pickFrom.addAll(getAllDrivers(groupID));
+             return pickFrom;
+         }
+     }
+    private class VehicleAssignTypeStrategy implements AssignTypeStrategy{
+        public List<SelectItem> getPickFromList(Integer groupID){
+            
+             List<SelectItem> pickFrom = new ArrayList<SelectItem>();
+             pickFrom.addAll(getAllVehicles(groupID));
+             
+             return pickFrom;
+         }
+     }
+    private class VehicleTypeAssignTypeStrategy implements AssignTypeStrategy{
+        public List<SelectItem> getPickFromList(Integer groupID){
+             List<SelectItem> pickFrom = new ArrayList<SelectItem>();
+             pickFrom.add(new SelectItem(VehicleType.LIGHT.name(), MessageUtil.getMessageString("editAlerts_lightVehicles")));
+             pickFrom.add(new SelectItem(VehicleType.MEDIUM.name(), MessageUtil.getMessageString("editAlerts_mediumVehicles")));
+             pickFrom.add(new SelectItem(VehicleType.HEAVY.name(), MessageUtil.getMessageString("editAlerts_heavyVehicles")));
+             return pickFrom;
+         }
+     }
 }

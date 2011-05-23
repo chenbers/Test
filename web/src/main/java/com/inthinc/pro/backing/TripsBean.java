@@ -718,15 +718,14 @@ public class TripsBean extends BaseBean {
         }
 	}
 	private LatLng  getEntityLastLocation(){
+	    LastLocation ll;
 		if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
-	        LastLocation ll = driverDAO.getLastLocation(identifiableEntityBean.getId());
-	        if(ll == null) return null;
-	        return ll.getLoc();
+	        ll = driverDAO.getLastLocation(identifiableEntityBean.getId());
 	    }
 		else{
-	    	LastLocation ll = vehicleDAO.getLastLocation(identifiableEntityBean.getId());
-            if(ll == null) return null;
-	        return ll.getLoc();
+	    	ll = vehicleDAO.getLastLocation(identifiableEntityBean.getId());
 	    }
+        if(ll == null) return null;
+        return ll.getLoc();
 	}
 }
