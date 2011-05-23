@@ -6,7 +6,7 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
     /* Overall Score */
-    OVERALL_TIME_FRAME_SELECTOR(null, "speedForm:driverSpeed-dateLinksToolsDetail***"),
+    TIME_FRAME_SELECTOR(null, "speedForm:driverSpeed-dateLinksToolsDetail***"),
     OVERALL_TITLE("Speed: Overall", "titleSpan"),
     OVERALL_SCORE_LABEL("Overall Score", Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("1").h4().toString()),
     OVERALL_SCORE_NUMBER(null, Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("2").table().tbody().tr().td().toString()),
@@ -19,12 +19,12 @@ public enum DriverPerformanceSpeedEnum implements SeleniumEnums {
     RETURN(null, "speedForm:driverSpeed-dateLinksToolsDetailShow"),
 
     /* Breakdown by Speed Limit */
-    BREAKDOWN_OVERALL_LINK("Overall"),
-    BREAKDOWN_1_30_LINK("1-30 mph"),
-    BREAKDOWN_31_40_LINK("31-40 mph"),
-    BREAKDOWN_41_54_LINK("41-54 mph"),
-    BREAKDOWN_55_64_LINK("55-64 mph"),
-    BREAKDOWN_65_80_LINK("65-80 mph"),
+    BREAKDOWN_OVERALL_LINK("Overall", "driverChartOverallForm:driverSpeedOverall"),
+    BREAKDOWN_1_30_LINK("1-30 mph", "driverChartTwentyOneForm:driverSpeedTwentyOne"),
+    BREAKDOWN_31_40_LINK("31-40 mph", "driverChartThirtyOneForm:driverSpeedThirtyOne"),
+    BREAKDOWN_41_54_LINK("41-54 mph", "driverChartFortyOneForm:driverSpeedFortyOne"),
+    BREAKDOWN_55_64_LINK("55-64 mph", "driverChartFiftyFiveForm:driverSpeedFiftyFive"),
+    BREAKDOWN_65_80_LINK("65-80 mph", "driverChartSixtyFiveForm:driverSpeedSixtyFive"),
 
     BREAKDOWN_OVERALL_SCORE(null, Xpath.start().td(Id.id("OVERALL")).table().tbody().tr().td("2").table().tbody().tr().toString()),
     BREAKDOWN_1_30_SCORE(null, Xpath.start().td(Id.id("TWENTYONE")).table().tbody().tr().td("2").table().tbody().tr().toString()),
