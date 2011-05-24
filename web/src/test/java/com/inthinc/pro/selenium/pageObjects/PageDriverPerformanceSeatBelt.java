@@ -1,13 +1,122 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.selenium.pageEnums.DriverPerformanceSeatBeltEnum;
+import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
+import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
+
 
 public class PageDriverPerformanceSeatBelt extends NavigationBar {
-	public class DriverSeatBeltPopUps extends PopUps{}
-	public class DriverSeatBeltLinks extends NavigationBarLinks{}
-	public class DriverSeatBeltTexts extends NavigationBarTexts{}
+	public class DriverSeatBeltPopUps extends PopUps{
+
+		public DriverSeatBeltPopUps() {
+			super("seatBelt", Types.SINGLE, 3);
+		}
+
+		public Email emailReport() {
+			return new Email();
+		}
+
+	}
+	public class DriverSeatBeltLinks extends NavigationBarLinks{
+		public TextLink driverName(){
+			return new TextLink(DriverPerformanceSeatBeltEnum.DRIVER_NAME_LINK);
+		}
+		
+		public TextLink breadcrumbItem(Integer position){
+			return new TextLink(DriverPerformanceSeatBeltEnum.BREADCRUMB, position);
+		}
+		
+		public TextLink duration(TimeDuration duration){
+			return new TextLink(DriverPerformanceSeatBeltEnum.OVERALL_TIME_FRAME_SELECTOR);
+		}
+		
+		public TextLink location(Integer row){
+			return new TextLink(DriverPerformanceSeatBeltEnum.LOCATION_ENTRY, row);
+		}
+		
+		public TextLink dateTimeSort(){
+			return new TextLink(DriverPerformanceSeatBeltEnum.DATE_TIME_HEADER);
+		}
+		
+		public TextLink avgSpeedSort(){
+			return new TextLink(DriverPerformanceSeatBeltEnum.AVERAGE_SPEED_HEADER);
+		}
+		
+		public TextLink topSpeedSort(){
+			return new TextLink(DriverPerformanceSeatBeltEnum.TOP_SPEED_HEADER);
+		}
+		
+		public TextLink distanceSort(){
+			return new TextLink(DriverPerformanceSeatBeltEnum.DISTANCE_HEADER);
+		}
+		
+		public TextLink exclude(Integer row){
+			return new TextLink(DriverPerformanceSeatBeltEnum.EXCLUDE, row);
+		}
+		
+		public TextLink include(Integer row){
+			return new TextLink(DriverPerformanceSeatBeltEnum.INCLUDE, row);
+		}
+		
+	}
+	public class DriverSeatBeltTexts extends NavigationBarTexts{
+		
+		public Text dateTime(Integer row){
+			return new Text(DriverPerformanceSeatBeltEnum.DATE_TIME_ENTRY, row);
+		}
+		
+		public Text avgSpeed(Integer row){
+			return new Text(DriverPerformanceSeatBeltEnum.AVERAGE_SPEED_ENTRY, row);
+		}
+		
+		public Text topSpeed(Integer row){
+			return new Text(DriverPerformanceSeatBeltEnum.TOP_SPEED_ENTRY, row);
+		}
+		
+		public Text distance(Integer row){
+			return new Text(DriverPerformanceSeatBeltEnum.DISTANCE_ENTRY, row);
+		}
+		
+		public Text overallScoreLabel(){
+			return new Text(DriverPerformanceSeatBeltEnum.OVERALL_SCORE_LABEL);
+		}
+		
+		public Text overallScoreValue(){
+			return new Text(DriverPerformanceSeatBeltEnum.OVERALL_SCORE_NUMBER);
+		}
+		
+		public Text counter(){
+			return new Text(PerformanceEnum.DETAILS_X_OF_Y);
+		}
+	}
+	
 	public class DriverSeatBeltTextFields extends NavigationBarTextFields{}
 	public class DriverSeatBeltDropDowns extends NavigationBarDropDowns{}
-	public class DriverSeatBeltButtons extends NavigationBarButtons{}
+	public class DriverSeatBeltButtons extends NavigationBarButtons{
+		
+		public Button tools(){
+			return new Button(DriverPerformanceSeatBeltEnum.OVERALL_TOOLS);
+		}
+		
+		public Button emailReport(){
+			return new Button(DriverPerformanceSeatBeltEnum.OVERALL_EMAIL_TOOL);
+		}
+		
+		public Button exportToPDF(){
+			return new Button(DriverPerformanceSeatBeltEnum.OVERALL_PDF_TOOL);
+		}
+		
+		public Button exportToExcel(){
+			return new Button(DriverPerformanceSeatBeltEnum.OVERALL_EXCEL_TOOL);
+		}
+		
+		public Button returnToPerformancePage(){
+			return new Button(DriverPerformanceSeatBeltEnum.RETURN);
+		}
+	}
 
 	
 	public DriverSeatBeltLinks _link(){

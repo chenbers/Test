@@ -21,13 +21,12 @@ public enum DriverPerformanceSeatBeltEnum implements SeleniumEnums {
 
     /* Details */
     DETAILS_TITLE("Details", Xpath.start().span(Id.clazz("details")).toString()),
-    DETAILS_X_OF_Y("Showing XXX to YYY of ZZZ records", "headerEvents"),
 
     LOCATION_HEADER("Location", "driverSeatBeltForm:events:address_columnheader:sortDiv"),
     DATE_TIME_HEADER("Date/Time", "driverSeatBeltForm:events:timeheader:sortDiv"),
-    AVERAGE_SPEED_HEADER("Posted Speed", "driverSeatBeltForm:events:averageSpeedheader:sortDiv"),
-    TOP_SPEED_HEADER("Avg Speed", "driverSeatBeltForm:events:topSpeedheader:sortDiv"),
-    DISTANCE_HEADER("Top Speed", "driverSeatBeltForm:events:distanceheader:sortDiv"),
+    AVERAGE_SPEED_HEADER("Avg Speed", "driverSeatBeltForm:events:averageSpeedheader:sortDiv"),
+    TOP_SPEED_HEADER("Top Speed", "driverSeatBeltForm:events:topSpeedheader:sortDiv"),
+    DISTANCE_HEADER("Distance", "driverSeatBeltForm:events:distanceheader:sortDiv"),
 
     LOCATION_ENTRY(null, "driverSpeedForm:notificationsTable:###:driverSpeedShow"),
     DATE_TIME_ENTRY(null, "driverSeatBeltForm:events:###:time"),
@@ -37,6 +36,9 @@ public enum DriverPerformanceSeatBeltEnum implements SeleniumEnums {
 
     EXCLUDE("exclude", "driverSeatBeltForm:events:###:driverSeatBelt_included"),
     INCLUDE("include", "driverSeatBeltForm:events:###:driverSeatBelt_excluded"),
+    
+    DRIVER_NAME_LINK(null, "//a[contains(@id,'driverSeatBeltDriverPerformance')]"),
+    BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:driversSeatBelt-dashboard')]"),
 
     ;
 

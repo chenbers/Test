@@ -22,11 +22,11 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 			return new Button(DriverPerformanceSpeedEnum.OVERALL_TOOLS);
 		}
 		
-		public Button restore(){
+		public Button returnToPerformancePage(){
 			return new Button(DriverPerformanceSpeedEnum.RETURN);
 		}
 		
-		public Button pdf(){
+		public Button exportToPDF(){
 			return new Button(DriverPerformanceSpeedEnum.OVERALL_PDF_TOOL);
 		}
 		
