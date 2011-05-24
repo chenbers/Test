@@ -1,23 +1,17 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import junit.runner.Version;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized.Parameters;
 
-//import com.inthinc.pro.automation.utils.Parallelized;
-import com.inthinc.pro.automation.utils.ParallelizedRunner;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
-//@RunWith(ParallelizedLastWeek.class)
 //@RunWith(ParallelizedRunner.class)
 public class JwimmerSandboxTest extends WebTest {
     private PageLogin l;
