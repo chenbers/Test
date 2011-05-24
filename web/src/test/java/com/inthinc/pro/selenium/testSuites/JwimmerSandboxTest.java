@@ -1,28 +1,54 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import junit.runner.Version;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized.Parameters;
 
+//import com.inthinc.pro.automation.utils.Parallelized;
+import com.inthinc.pro.automation.utils.ParallelizedRunner;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
-
+//@RunWith(ParallelizedLastWeek.class)
+//@RunWith(ParallelizedRunner.class)
 public class JwimmerSandboxTest extends WebTest {
-    PageLogin l;
-    PageLiveFleet liveFleet;
-    String NONADMIN_USERNAME = "jwimmer"; //TODO: jwimmer: dtanner: more candidates for non-page specific enum???
-    String NONADMIN_PASSWORD = "password";
-    String ADMIN_USERNAME = "mraby";
-    String ADMIN_PASSWORD = "password";	
-    String EMAIL_KNOWN = "jwimmer@inthinc.com";
-    String EMAIL_UNKNOWN = "jaaacen@gmail.com";
-    String EMAIL_INVALID = "username_at_domain_dot_tld";
+    private PageLogin l;
+    private PageLiveFleet liveFleet;
+    private String NONADMIN_USERNAME = "jwimmer"; //TODO: jwimmer: dtanner: more candidates for non-page specific enum???
+    private String NONADMIN_PASSWORD = "password";
+    private String ADMIN_USERNAME = "mraby";
+    private String ADMIN_PASSWORD = "password";	
+    private String EMAIL_KNOWN = "jwimmer@inthinc.com";
+    private String EMAIL_UNKNOWN = "jaaacen@gmail.com";
+    private String EMAIL_INVALID = "username_at_domain_dot_tld";
 
+    private String param;
+    
+    public JwimmerSandboxTest(String param) {
+        //this.param = param; //TODO: jwimmer: placeholder... determine best use for param if any to get paralellize tests... 
+        //TODO: jwimmer: might be nice if this was NOT needed in each test case...
+    }
+    
+    @Parameters
+    public static Collection data() {
+      Object[][] data = new Object[][] { { "a" } };
+      return Arrays.asList(data);
+    }
 
     @Before
     public void setupPage() {
     	l = new PageLogin();
     	liveFleet = new PageLiveFleet();
+    	
+    	System.out.println("JUnit version is: " + Version.id());
     }
 
     @Test
