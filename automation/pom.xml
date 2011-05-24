@@ -46,13 +46,13 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-remote-control</artifactId>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.2</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		--><dependency>
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-api</artifactId>
 		</dependency>

@@ -68,6 +68,8 @@
 		<skipUT>false</skipUT>
 		<skipIT>false</skipIT>
 		<skipAT>true</skipAT>
+		<AT.threadCount>2</AT.threadCount>
+		<AT.isThreadCountPerCore>true</AT.isThreadCountPerCore>
 		<junit.version>4.4</junit.version>
 		<spring.version>2.5.6.SEC02</spring.version>
 		<spring.security.version>2.0.6.RELEASE</spring.security.version>
@@ -159,6 +161,8 @@
 						<configuration>
 							<skip>${skipAT}</skip>
 							<parallel>classes</parallel>
+							<threadCount>${AT.threadCount}</threadCount>
+							<perCoreThreadCount>${AT.isThreadCountPerCore}</perCoreThreadCount>
 							<excludes>
 								<exclude>none</exclude>
 							</excludes>

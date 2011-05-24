@@ -2,8 +2,11 @@ package com.inthinc.pro.automation.selenium;
 
 import java.util.HashMap;
 
+import junit.runner.Version;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -19,7 +22,8 @@ public class GlobalSelenium {
 	// semantics for volatile changed in Java 5.
 	// private volatile static GlobalSelenium globalSelenium;
 	private volatile static HashMap<Long, CoreMethodLib> multiplicative = new HashMap<Long, CoreMethodLib>();
-
+	private final static String BASE_URL_DEFAULT = "https://qa.tiwipro.com:8423/tiwipro/";
+	
 	public static CoreMethodLib getSelenium() {
 		Long currentThread = Thread.currentThread().getId();
 		return multiplicative.get(currentThread);
@@ -27,7 +31,6 @@ public class GlobalSelenium {
 
 	public static CoreMethodLib getYourOwn() {
 	    CoreMethodLib selenium;
-
         Long currentThread = Thread.currentThread().getId();
         
 	    try {
@@ -35,17 +38,14 @@ public class GlobalSelenium {
             BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
             AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
             logger.debug(apb.getDefaultWebDriverName() + " on portal @" + apb.getBaseURL() + " with Thread: " + currentThread);
+            logger.debug("JUnit version is: " + Version.id());
             selenium = new CoreMethodLib(apb.getDefaultWebDriver(), apb.getBaseURL());
-        } catch (NoSuchBeanDefinitionException e) {
+        } catch (BeansException e) {
             logger.error(StackToString.toString(e));
-            selenium = new CoreMethodLib(new FirefoxDriver(), "https://qa.tiwipro.com:8423/tiwipro/");
-        } catch (BeanCreationException e) {
-            logger.error(StackToString.toString(e));
-            selenium = new CoreMethodLib(new FirefoxDriver(), "https://qa.tiwipro.com:8423/tiwipro/");
-        }
+            selenium = new CoreMethodLib(new FirefoxDriver(), BASE_URL_DEFAULT);
+        } 
 
 		multiplicative.put(currentThread, selenium);
-		
 		return multiplicative.get(currentThread);
 	}
 
