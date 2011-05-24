@@ -650,6 +650,10 @@ public class OrganizationBean extends BaseBean
                 return getAddressDAO().create(address.getAccountID(), address);
             }
             return null;
+        } else {
+            if ( address.getAddrID() == null ) {
+                address.setAddrID(group.getAddressID());
+            }
         }
 
         // must return a valid address id, not a count of updated things....
