@@ -158,6 +158,7 @@
 						</goals>
 						<configuration>
 							<skip>${skipAT}</skip>
+							<parallel>classes</parallel>
 							<excludes>
 								<exclude>none</exclude>
 							</excludes>
