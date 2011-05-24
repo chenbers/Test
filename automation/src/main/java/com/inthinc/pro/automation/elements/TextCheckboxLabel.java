@@ -4,18 +4,18 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
-public class TextLabel extends Text implements TextBased{
+public class TextCheckboxLabel extends Text implements TextBased{
 	
-	public TextLabel(SeleniumEnums anEnum) {
+	public TextCheckboxLabel(SeleniumEnums anEnum) {
         super(anEnum);
     }
-    public TextLabel(SeleniumEnums anEnum, Integer replaceNumber) {
+    public TextCheckboxLabel(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
     }
-    public TextLabel(SeleniumEnums anEnum, String replaceWord) {
+    public TextCheckboxLabel(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
     }
-    public TextLabel(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+    public TextCheckboxLabel(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
     }
     

@@ -9,4 +9,7 @@ public class CheckBox extends CheckableObject implements Checkable, Clickable {
         super(anEnum, replaceWord);
     }
 	
+	public CheckBox(SeleniumEnums anEnum) {
+        super(anEnum);
+    }
 }

@@ -178,7 +178,7 @@ public class JwimmerSandboxTest extends WebTest {
         l.load();
         l.validate();
         l._button().logIn().click();
-        l._popUp().loginError()._text().message().validateText("Incorrect user name or password.\n\nPlease try again.");
+        l._popUp().loginError()._text().message().validate("Incorrect user name or password.\n\nPlease try again.");
     }
 
     @Test
@@ -186,7 +186,7 @@ public class JwimmerSandboxTest extends WebTest {
         l.load();
         l.validate();
         l._button().logIn().click();
-        l._popUp().loginError()._text().message().validateText("Incorrect user name or password.\n\nPlease try again.");
+        l._popUp().loginError()._text().message().validate("Incorrect user name or password.\n\nPlease try again.");
         l._popUp().loginError()._button().close().click();
     }
 
@@ -205,26 +205,26 @@ public class JwimmerSandboxTest extends WebTest {
         l._popUp().forgotPassword()._textField().email().type(EMAIL_INVALID);
         l._popUp().forgotPassword()._button().send().click();
         
-        l._popUp().forgotPassword()._text().error().validateText("Incorrect format (jdoe@tiwipro.com)");
+        l._popUp().forgotPassword()._text().error().validate("Incorrect format (jdoe@tiwipro.com)");
     }
 
     @Test
     public void forgotPassword_badEmail_incorrectFormat() {
         forgotPassword_Scenario_enterEmailClickSend(EMAIL_INVALID);
-        l._popUp().forgotPassword()._text().error().validateText("Incorrect format (jdoe@tiwipro.com)");
+        l._popUp().forgotPassword()._text().error().validate("Incorrect format (jdoe@tiwipro.com)");
         //TODO: jwimmer: PopUps do not extend BaseElement so we LOST the ability to validate();
     }
 
     @Test
     public void forgotPassword_noEmail_required() {
         forgotPassword_Scenario_enterEmailClickSend(null);
-        l._popUp().forgotPassword()._text().error().validateText("Required");
+        l._popUp().forgotPassword()._text().error().validate("Required");
     }
 
     @Test
     public void forgotPassword_unknownEmail_incorrect() {
         forgotPassword_Scenario_enterEmailClickSend(EMAIL_UNKNOWN);
-        l._popUp().forgotPassword()._text().error().validateText("Incorrect e-mail address"); 
+        l._popUp().forgotPassword()._text().error().validate("Incorrect e-mail address"); 
     }
 
     @Test

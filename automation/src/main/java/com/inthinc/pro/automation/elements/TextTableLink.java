@@ -31,23 +31,23 @@ public class TextTableLink extends TextLink implements Clickable, TextBased {
     }
     
     @Override
-    @Deprecated
     /**
+     * This will only get the first row/item<br />
      * Please use click(Integer row) or <br />
      * click(Integer row, Integer column)<br />
      */
     public String getText(){
-        return null;
+        return getText(1);
     }
     
     @Override
-    @Deprecated
     /**
+     * This will only get the first row/item<br />
      * Please use click(Integer row) or <br />
      * click(Integer row, Integer column)<br />
      */
     public TextTableLink click(){
-        return null;
+        return click(1);
     }
     
     /**

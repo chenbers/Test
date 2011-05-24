@@ -15,6 +15,13 @@ import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
 public abstract class Masthead extends AbstractPage {
+	
+	public Masthead loginProcess(String username, String password){
+		PageLogin login = new PageLogin();
+		login.openLogout();
+		login.loginProcess(username, password);
+		return this;
+	}
 
 	protected class MastheadButtons {
 	}

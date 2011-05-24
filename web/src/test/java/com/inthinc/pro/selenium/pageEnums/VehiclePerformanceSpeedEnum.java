@@ -48,7 +48,7 @@ public enum VehiclePerformanceSpeedEnum implements SeleniumEnums {
     LOCATION_ENTRY(null, "notificationsTableForm:notificationsTable:###:eventAddress"),
     DATE_TIME_ENTRY(null, "notificationsTableForm:notificationsTable:###:time"),
 
-    POSTED_ENTRY_SPEED(null, "notificationsTableForm:notificationsTable:***:speedLimitValue"),
+    POSTED_ENTRY_SPEED(null, "notificationsTableForm:notificationsTable:###:speedLimitValue"),
     POSTED_ENTRY_SPEED_UNITS(null, Xpath.start().td(Id.id("notificationsTableForm:notificationsTable:###:speedLimit")).strong().toString()),
 
     POSTED_ENTRY_SBS_BUTTON(null, "notificationsTableForm:notificationsTable:###:notificationsTableSlcr"),
@@ -63,10 +63,7 @@ public enum VehiclePerformanceSpeedEnum implements SeleniumEnums {
     TOP_ENTRY_PLUSMINUS(null, Xpath.start().td(Id.id("notificationsTableForm:notificationsTable:###:topSpeed")).span("1").toString()),
     TOP_ENTRY_DIFF(null, "notificationsTableForm:notificationsTable:###:topSpeedDifference"),
 
-    DISTANCE_ENTRY(null, "notificationsTableForm:notificationsTable:##:distance"),
-
-    EXCLUDE("exclude", "notificationsTableForm:notificationsTable:###:vehicleSpeedIncluded"),
-    INCLUDE("include", "notificationsTableForm:notificationsTable:###:vehicleSpeed_excluded");
+    DISTANCE_ENTRY(null, "notificationsTableForm:notificationsTable:###:distance"),
 
     ;
 

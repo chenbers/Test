@@ -7,6 +7,7 @@ import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceSpeedEnum;
+import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 
 
@@ -204,6 +205,10 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 		
 		public TextTable distance(){
 			return new TextTable(DriverPerformanceSpeedEnum.DISTANCE_ENTRY);
+		}
+		
+		public Text counter(){
+			return new Text(PerformanceEnum.DETAILS_X_OF_Y);
 		}
 	}
 

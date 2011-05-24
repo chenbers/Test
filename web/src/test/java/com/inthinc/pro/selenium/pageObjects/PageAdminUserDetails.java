@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
-import com.inthinc.pro.automation.elements.TextLabel;
+import com.inthinc.pro.automation.elements.TextCheckboxLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
@@ -34,12 +34,12 @@ public class PageAdminUserDetails extends AdminBar {
 
 	public class UserDetailsTexts extends AdminBarTexts {
 
-		public TextLabel labels(AdminUserDetailsEnum value) {
-			return new TextLabel(value);
+		public TextCheckboxLabel labels(AdminUserDetailsEnum value) {
+			return new TextCheckboxLabel(value);
 		}
 
 		public Text values(AdminUserDetailsEnum value) {
-			return new TextLabel(value);
+			return new TextCheckboxLabel(value);
 		}
 
 	}

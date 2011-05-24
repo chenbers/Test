@@ -52,7 +52,7 @@ private String page = "vehicle";
 		}
 		
 		public TextLink driverName(){
-			return new TextLink(VehiclePerformanceEnum.DRIVER_NAME_LINK);
+			return new TextLink(VehiclePerformanceEnum.VEHICLE_NAME_LINK);
 		}
 		
 		public TextLink viewAllTrips() {

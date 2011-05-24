@@ -33,15 +33,6 @@ public enum VehiclePerformanceSeatBeltEnum implements SeleniumEnums {
     TOP_SPEED_ENTRY(null, "eventTableForm:notificationsTable:###:topSpeed"),
     DISTANCE_ENTRY(null, "eventTableForm:notificationsTable:###:distance"),
 
-    EXCLUDE("exclude", "eventTableForm:notificationsTable:###:vehicleSeatBeltIncluded"),
-    INCLUDE("include", "eventTableForm:notificationsTable:###:vehicleSeatBelt_excluded"), 
-    DRIVER_NAME_LINK(null, "//a[contains(@id,'vehicleSeatBeltTitle')]"), 
-    
-    BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:vehicleSeatBelt-dashboard')]"),
-    
-    
-    
-
     ;
 
     private String text, url;

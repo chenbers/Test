@@ -35,18 +35,18 @@ public abstract class TextObject extends ElementBase implements TextBased {
         return selenium.getText(myEnum);
     }
     
-    public ElementInterface validateText(String expected) {
+    public ElementInterface validate(String expected) {
         return compareText(expected);
     }
     
-    public ElementInterface validateText(TextEnum expected) {
+    public ElementInterface validate(TextEnum expected) {
         return compareText(expected.getText());
     }
-    public ElementInterface validateText(TextEnum expected, String replaceOld, String withNew) {
+    public ElementInterface validate(TextEnum expected, String replaceOld, String withNew) {
         return compareText(expected.getText().replace(replaceOld, withNew));
     }
     
-    public ElementInterface validateText(){
+    public ElementInterface validate(){
         return compareText();
     }
 }

@@ -3,11 +3,15 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceStyleEnum;
+import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 
 public class PageDriverPerformanceStyle extends NavigationBar {
+	private static String page2 = "Style";
 
 	public class DriverStyleButtons extends NavigationBarButtons {
 
@@ -47,7 +51,7 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 
 		public TextLink driverName() {
 			return new TextLink(
-					DriverPerformanceEnum.EXPANDED_DRIVER_NAME_LINK, "Style");
+					DriverPerformanceEnum.EXPANDED_DRIVER_NAME_LINK, page2);
 		}
 
 		public TextLink duration(TimeDuration timeFrame) {
@@ -60,8 +64,8 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 			return new TextLink(DriverPerformanceStyleEnum.EVENT_HEADER);
 		}
 
-		public TextLink exclude(Integer row) {
-			return new TextLink(DriverPerformanceStyleEnum.EXCLUDE, row);
+		public TextTableLink exclude() {
+			return new TextTableLink(DriverPerformanceStyleEnum.EXCLUDE, page2);
 		}
 
 		public TextLink hardAccel() {
@@ -79,12 +83,12 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 					DriverPerformanceStyleEnum.BREAKDOWN_HARD_BUMP_LINK);
 		}
 
-		public TextLink include(Integer row) {
-			return new TextLink(DriverPerformanceStyleEnum.INCLUDE, row);
+		public TextTableLink include() {
+			return new TextTableLink(DriverPerformanceStyleEnum.INCLUDE, page2);
 		}
 
-		public TextLink location(Integer row) {
-			return new TextLink(DriverPerformanceStyleEnum.LOCATION_ENTRY, row);
+		public TextTableLink location() {
+			return new TextTableLink(DriverPerformanceStyleEnum.LOCATION_ENTRY);
 		}
 
 		public TextLink overallChart() {
@@ -123,11 +127,11 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 	public class DriverStyleTexts extends NavigationBarTexts {
 
 		public Text counter() {
-			return new Text(DriverPerformanceEnum.COUNTER);
+			return new Text(PerformanceEnum.DETAILS_X_OF_Y);
 		}
 
-		public Text dateTime(Integer row) {
-			return new Text(DriverPerformanceStyleEnum.DATE_TIME_ENTRY, row);
+		public TextTable dateTime() {
+			return new TextTable(DriverPerformanceStyleEnum.DATE_TIME_ENTRY);
 		}
 
 		public Text drivingStyleScoreLabel() {
@@ -138,8 +142,8 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 			return new Text(DriverPerformanceStyleEnum.OVERALL_SCORE_NUMBER);
 		}
 
-		public Text event(Integer row) {
-			return new Text(DriverPerformanceStyleEnum.EVENT_ENTRY, row);
+		public TextTable event() {
+			return new TextTable(DriverPerformanceStyleEnum.EVENT_ENTRY);
 		}
 
 		public Text hardAccellBreakdownScore() {
@@ -161,13 +165,13 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 			return new Text(DriverPerformanceStyleEnum.BREAKDOWN_OVERALL_SCORE);
 		}
 
-		public Text severity(Integer row) {
-			return new Text(DriverPerformanceStyleEnum.SEVERITY_ENTRY_SEVERITY,
-					row);
+		public TextTable severity() {
+			return new TextTable(
+					DriverPerformanceStyleEnum.SEVERITY_ENTRY_SEVERITY);
 		}
 
-		public Text speed(Integer row) {
-			return new Text(DriverPerformanceStyleEnum.SPEED_ENTRY, row);
+		public TextTable speed() {
+			return new TextTable(DriverPerformanceStyleEnum.SPEED_ENTRY);
 		}
 
 		public Text unsafeTurnBreakdownScore() {

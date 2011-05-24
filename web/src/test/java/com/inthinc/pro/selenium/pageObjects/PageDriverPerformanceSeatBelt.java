@@ -3,6 +3,8 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceSeatBeltEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
@@ -21,6 +23,7 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
 
 	}
 	public class DriverSeatBeltLinks extends NavigationBarLinks{
+		
 		public TextLink driverName(){
 			return new TextLink(DriverPerformanceSeatBeltEnum.DRIVER_NAME_LINK);
 		}
@@ -33,8 +36,8 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
 			return new TextLink(DriverPerformanceSeatBeltEnum.OVERALL_TIME_FRAME_SELECTOR);
 		}
 		
-		public TextLink location(Integer row){
-			return new TextLink(DriverPerformanceSeatBeltEnum.LOCATION_ENTRY, row);
+		public TextTableLink location(){
+			return new TextTableLink(DriverPerformanceSeatBeltEnum.LOCATION_ENTRY);
 		}
 		
 		public TextLink dateTimeSort(){
@@ -53,31 +56,31 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
 			return new TextLink(DriverPerformanceSeatBeltEnum.DISTANCE_HEADER);
 		}
 		
-		public TextLink exclude(Integer row){
-			return new TextLink(DriverPerformanceSeatBeltEnum.EXCLUDE, row);
+		public TextTableLink exclude(){
+			return new TextTableLink(DriverPerformanceSeatBeltEnum.EXCLUDE);
 		}
 		
-		public TextLink include(Integer row){
-			return new TextLink(DriverPerformanceSeatBeltEnum.INCLUDE, row);
+		public TextTableLink include(){
+			return new TextTableLink(DriverPerformanceSeatBeltEnum.INCLUDE);
 		}
 		
 	}
 	public class DriverSeatBeltTexts extends NavigationBarTexts{
 		
-		public Text dateTime(Integer row){
-			return new Text(DriverPerformanceSeatBeltEnum.DATE_TIME_ENTRY, row);
+		public TextTable dateTime(){
+			return new TextTable(DriverPerformanceSeatBeltEnum.DATE_TIME_ENTRY);
 		}
 		
-		public Text avgSpeed(Integer row){
-			return new Text(DriverPerformanceSeatBeltEnum.AVERAGE_SPEED_ENTRY, row);
+		public TextTable avgSpeed(){
+			return new TextTable(DriverPerformanceSeatBeltEnum.AVERAGE_SPEED_ENTRY);
 		}
 		
-		public Text topSpeed(Integer row){
-			return new Text(DriverPerformanceSeatBeltEnum.TOP_SPEED_ENTRY, row);
+		public TextTable topSpeed(){
+			return new TextTable(DriverPerformanceSeatBeltEnum.TOP_SPEED_ENTRY);
 		}
 		
-		public Text distance(Integer row){
-			return new Text(DriverPerformanceSeatBeltEnum.DISTANCE_ENTRY, row);
+		public TextTable distance(){
+			return new TextTable(DriverPerformanceSeatBeltEnum.DISTANCE_ENTRY);
 		}
 		
 		public Text overallScoreLabel(){

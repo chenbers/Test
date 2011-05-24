@@ -48,9 +48,6 @@ public enum VehiclePerformanceStyleEnum implements SeleniumEnums {
 
     SEVERITY_ENTRY_SEVERITY(null, Xpath.start().td(Id.id("eventTable:notificationsTable:###:severity")).tbody().tr("1").toString()),
 
-    EXCLUDE("exclude", "eventTable:notificationsTable:###:vehicleStyleIncluded"),
-    INCLUDE("include", "eventTable:notificationsTable:###:vehicleStyle_excluded"),
-
     ;
 
     private String text, url;

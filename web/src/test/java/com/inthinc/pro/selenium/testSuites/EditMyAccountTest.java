@@ -8,26 +8,23 @@ import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
 import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
 import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
 import com.inthinc.pro.selenium.pageEnums.TAE.RedFlagPrefs;
-import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
 public class EditMyAccountTest extends WebRallyTest {
 
 	private PageMyAccount my;
-	private PageLogin login;
 	private RandomValues random;
 
 	@Before
 	public void setupPage() {
 		random = new RandomValues();
 		my = new PageMyAccount();
-		login = new PageLogin();
 	}
 
 	@Test
 	public void CancelButton_Changes() {
 		set_test_case("TC1271");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		/* Get original Values */
 		String originalEmail1 = my._text().email1().getText();
@@ -75,34 +72,34 @@ public class EditMyAccountTest extends WebRallyTest {
 
 		/* Verify Changes did not take effect */
 		/* Login Info */        
-		my._text().userName().validateText("tnilson");
-		my._text().locale().validateText(originalLocale);
-		my._text().measurement().validateText(originalMeasurement);
-		my._text().fuelEfficiency().validateText(originalFuelRatio);
+		my._text().userName().validate("tnilson");
+		my._text().locale().validate(originalLocale);
+		my._text().measurement().validate(originalMeasurement);
+		my._text().fuelEfficiency().validate(originalFuelRatio);
 
 		/* Account Info */
-		my._text().name().validateText("Tina L Nilson");
-		my._text().group().validateText("Top");
-		my._text().team().validateText("Skip's Team");
+		my._text().name().validate("Tina L Nilson");
+		my._text().group().validate("Top");
+		my._text().team().validate("Skip's Team");
 
 		/* Red Flags */
-		my._text().redFlagInfo().validateText(originalInformation);
-		my._text().redFlagWarn().validateText(originalWarning);
-		my._text().redFlagCritical().validateText(originalCritical);
+		my._text().redFlagInfo().validate(originalInformation);
+		my._text().redFlagWarn().validate(originalWarning);
+		my._text().redFlagCritical().validate(originalCritical);
 
 		/* Contact Info */
-		my._text().email1().validateText(originalEmail1);
-		my._text().email2().validateText(originalEmail2);
-		my._text().phone1().validateText(originalPhone1);
-		my._text().phone2().validateText(originalPhone2);
-		my._text().textMessage1().validateText(originalText1);
-		my._text().textMessage2().validateText(originalText2);
+		my._text().email1().validate(originalEmail1);
+		my._text().email2().validate(originalEmail2);
+		my._text().phone1().validate(originalPhone1);
+		my._text().phone2().validate(originalPhone2);
+		my._text().textMessage1().validate(originalText1);
+		my._text().textMessage2().validate(originalText2);
 	}
 
 	@Test
 	public void SaveButton_Changes() {
 		set_test_case("TC1280");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		/* Edit button */
@@ -132,34 +129,34 @@ public class EditMyAccountTest extends WebRallyTest {
 		my.getSelenium().pause(10, "wait for page to save");
 		/* Verify Changes Display */
 		/* Login Info */
-		my._text().userName().validateText("tnilson");
-		my._text().locale().validateText(Locale.ENGLISH.getText());
-		my._text().measurement().validateText("English");
-		my._text().fuelEfficiency().validateText("Miles Per Gallon (UK)");
+		my._text().userName().validate("tnilson");
+		my._text().locale().validate(Locale.ENGLISH.getText());
+		my._text().measurement().validate("English");
+		my._text().fuelEfficiency().validate("Miles Per Gallon (UK)");
 
 		/* Account Info */
-		my._text().name().validateText("Tina L Nilson");
-		my._text().group().validateText("Top");
-		my._text().team().validateText("Skip's Team");
+		my._text().name().validate("Tina L Nilson");
+		my._text().group().validate("Top");
+		my._text().team().validate("Skip's Team");
 
 		/* Red Flags */
-		my._text().redFlagInfo().validateText(RedFlagPrefs.TEXT1, ":", "");
-		my._text().redFlagWarn().validateText(RedFlagPrefs.EMAIL1, ":", "");
-		my._text().redFlagCritical().validateText(RedFlagPrefs.PHONE1, ":", "");
+		my._text().redFlagInfo().validate(RedFlagPrefs.TEXT1, ":", "");
+		my._text().redFlagWarn().validate(RedFlagPrefs.EMAIL1, ":", "");
+		my._text().redFlagCritical().validate(RedFlagPrefs.PHONE1, ":", "");
 
 		/* Contact Info */
-		my._text().email1().validateText("tina1965@test.com");
-		my._text().email2().validateText("tlc1965@test.com");
-		my._text().phone1().validateText("801-777-7777");
-		my._text().phone2().validateText("801-999-9999");
-		my._text().textMessage1().validateText("8017779999@tmomail.net");
-		my._text().textMessage2().validateText("8019997777@tmomail.net");
+		my._text().email1().validate("tina1965@test.com");
+		my._text().email2().validate("tlc1965@test.com");
+		my._text().phone1().validate("801-777-7777");
+		my._text().phone2().validate("801-999-9999");
+		my._text().textMessage1().validate("8017779999@tmomail.net");
+		my._text().textMessage2().validate("8019997777@tmomail.net");
 	}
 
 	@Test
 	public void EmailFormatError() {
 		set_test_case("TC1271");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();
@@ -169,7 +166,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear?//
 		my._textField().email1().type("tina1965@test.com");
 		my._button().save().click();
-		my._text().email1().validateText("tina1965@test.com");
+		my._text().email1().validate("tina1965@test.com");
 
 		my._button().edit().click();
 		my._textField().email2().type("tlc1965@test");
@@ -178,13 +175,13 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear?//
 		my._textField().email2().type("tlc1965@test.com");
 		my._button().save().click();
-		my._text().email2().validateText("tlc1965@test.com");
+		my._text().email2().validate("tlc1965@test.com");
 	}
 
 	@Test
 	public void MeasurementValidation() {
 		set_test_case("TC1275");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();
@@ -206,7 +203,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void FuelRatioValidation() {
 		set_test_case("TC1273");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();
@@ -226,7 +223,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void ClearFieldsValidation() {
 		set_test_case("TC1276");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();
@@ -250,7 +247,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void PhoneMaxCharError() {
 		set_test_case("TC1277");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		// my.link_myAccount().click();
 		my._button().edit().click();
@@ -260,7 +257,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone1().type("801-777-7777");
 		my._button().save().click();
-		my._text().phone1().validateText("801-777-7777");
+		my._text().phone1().validate("801-777-7777");
 
 		my._button().edit().click();
 		my._textField().phone2().type("8");
@@ -269,13 +266,13 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone2().type("801-999-9999");
 		my._button().save().click();
-		my._text().phone2().validateText("801-999-9999");
+		my._text().phone2().validate("801-999-9999");
 	}
 
 	@Test
 	public void PhoneMissingCharError() {
 		set_test_case("TC1278");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		// my.link_myAccount().click();
 
@@ -286,7 +283,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone1().type("801-777-7777");
 		my._button().save().click();
-		my._text().phone1().validateText("801-777-7777");
+		my._text().phone1().validate("801-777-7777");
 
 		my._button().edit().click();
 		my._textField().phone2().type("801-999-999");
@@ -295,13 +292,13 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone2().type("801-999-9999");
 		my._button().save().click();
-		my._text().phone2().validateText("801-999-9999");
+		my._text().phone2().validate("801-999-9999");
 	}
 
 	@Test
 	public void PhoneSpecialCharError() {
 		set_test_case("TC1279");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 		// my.link_myAccount().click();
 		my._button().edit().click();
@@ -321,13 +318,13 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().phone2().type("801-999-9999");
 		my._button().save().click();
-		my._text().phone2().validateText("801-999-9999");
+		my._text().phone2().validate("801-999-9999");
 	}
 
 	@Test
 	public void TextMsgFormatError() {
 		set_test_case("TC1282");
-		login.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		my._button().edit().click();
@@ -337,7 +334,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().textMessage1().type("8017779999@tmomail.net");
 		my._button().save().click();
-		my._text().textMessage1().validateText("8017779999@tmomail.net");
+		my._text().textMessage1().validate("8017779999@tmomail.net");
 
 		my._button().edit().click();
 		my._textField().textMessage2().type("8019997777@tmomail");
@@ -346,7 +343,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Clear fields?//
 		my._textField().textMessage2().type("8019997777@tmomail.net");
 		my._button().save().click();
-		my._text().textMessage2().validateText("8019997777@tmomail.net");
+		my._text().textMessage2().validate("8019997777@tmomail.net");
 	}
 
 }

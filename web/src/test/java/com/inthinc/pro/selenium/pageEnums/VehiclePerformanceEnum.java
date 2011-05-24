@@ -5,7 +5,16 @@ import com.inthinc.pro.automation.enums.SeleniumEnums;
 public enum VehiclePerformanceEnum implements SeleniumEnums {
     VIEW_ALL_TRIPS(null, "vehiclePerformanceTrips"), 
     BREADCRUMB_ITEM(null, "vehiclePerformanceBreadCrumb:breadcrumbitem:###:vehiclePerformance-dashboard"), 
-    DRIVER_NAME_LINK(null, "vehiclePerformanceBreadCrumb:vehiclePerformance"),
+    VEHICLE_NAME_LINK(null, "vehiclePerformanceBreadCrumb:vehiclePerformance"),
+    
+    EXPANDED_VEHICLE_NAME_LINK(null, "//a[contains(@id,'vehicleSeatBeltTitle')]"), 
+    
+    EXPANDED_BREADCRUMB(null, "//a[contains(@id,'breadcrumbitem:###:vehicle***-dashboard')]"),
+    
+
+    EXCLUDE("exclude", "eventTableForm:notificationsTable:###:vehicle***Included"),
+    INCLUDE("include", "eventTableForm:notificationsTable:###:vehicle***_excluded"), 
+
     
     ;
 

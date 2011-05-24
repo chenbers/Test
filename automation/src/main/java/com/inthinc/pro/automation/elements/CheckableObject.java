@@ -9,7 +9,10 @@ import com.inthinc.pro.automation.utils.Xpath;
 
 public class CheckableObject extends ClickableObject implements Checkable,
 		Clickable {
-
+	
+	public CheckableObject(SeleniumEnums anEnum) {
+		super(anEnum);
+	}
 	public CheckableObject(SeleniumEnums anEnum, String replaceWord) {
 		super(anEnum, replaceWord);
 	}
