@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
-import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceSeatBBeltEnum;
+import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceSeatBeltEnum;
 
 
 public class PageVehiclePerformanceSeatBelt extends NavigationBar {
@@ -23,70 +23,70 @@ public class PageVehiclePerformanceSeatBelt extends NavigationBar {
 	}
 	public class VehicleSeatBeltLinks extends NavigationBarLinks{
 		public TextLink driverName(){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.DRIVER_NAME_LINK);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.DRIVER_NAME_LINK);
 		}
 		
 		public TextLink breadcrumbItem(Integer position){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.BREADCRUMB, position);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.BREADCRUMB, position);
 		}
 		
 		public TextLink duration(TimeDuration duration){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.OVERALL_TIME_FRAME_SELECTOR);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.OVERALL_TIME_FRAME_SELECTOR);
 		}
 		
 		public TextLink location(Integer row){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.LOCATION_ENTRY, row);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.LOCATION_ENTRY, row);
 		}
 		
 		public TextLink dateTimeSort(){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.DATE_TIME_HEADER);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.DATE_TIME_HEADER);
 		}
 		
 		public TextLink avgSpeedSort(){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.AVERAGE_SPEED_HEADER);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.AVERAGE_SPEED_HEADER);
 		}
 		
 		public TextLink topSpeedSort(){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.TOP_SPEED_HEADER);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.TOP_SPEED_HEADER);
 		}
 		
 		public TextLink distanceSort(){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.DISTANCE_HEADER);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.DISTANCE_HEADER);
 		}
 		
 		public TextLink exclude(Integer row){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.EXCLUDE, row);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.EXCLUDE, row);
 		}
 		
 		public TextLink include(Integer row){
-			return new TextLink(VehiclePerformanceSeatBBeltEnum.INCLUDE, row);
+			return new TextLink(VehiclePerformanceSeatBeltEnum.INCLUDE, row);
 		}
 		
 	}
 	public class VehicleSeatBeltTexts extends NavigationBarTexts{
 		
 		public Text dateTime(Integer row){
-			return new Text(VehiclePerformanceSeatBBeltEnum.DATE_TIME_ENTRY, row);
+			return new Text(VehiclePerformanceSeatBeltEnum.DATE_TIME_ENTRY, row);
 		}
 		
 		public Text avgSpeed(Integer row){
-			return new Text(VehiclePerformanceSeatBBeltEnum.AVERAGE_SPEED_ENTRY, row);
+			return new Text(VehiclePerformanceSeatBeltEnum.AVERAGE_SPEED_ENTRY, row);
 		}
 		
 		public Text topSpeed(Integer row){
-			return new Text(VehiclePerformanceSeatBBeltEnum.TOP_SPEED_ENTRY, row);
+			return new Text(VehiclePerformanceSeatBeltEnum.TOP_SPEED_ENTRY, row);
 		}
 		
 		public Text distance(Integer row){
-			return new Text(VehiclePerformanceSeatBBeltEnum.DISTANCE_ENTRY, row);
+			return new Text(VehiclePerformanceSeatBeltEnum.DISTANCE_ENTRY, row);
 		}
 		
 		public Text overallScoreLabel(){
-			return new Text(VehiclePerformanceSeatBBeltEnum.OVERALL_SCORE_LABEL);
+			return new Text(VehiclePerformanceSeatBeltEnum.OVERALL_SCORE_LABEL);
 		}
 		
 		public Text overallScoreValue(){
-			return new Text(VehiclePerformanceSeatBBeltEnum.OVERALL_SCORE_NUMBER);
+			return new Text(VehiclePerformanceSeatBeltEnum.OVERALL_SCORE_NUMBER);
 		}
 		
 		public Text counter(){
@@ -99,23 +99,23 @@ public class PageVehiclePerformanceSeatBelt extends NavigationBar {
 	public class VehicleSeatBeltButtons extends NavigationBarButtons{
 		
 		public Button tools(){
-			return new Button(VehiclePerformanceSeatBBeltEnum.OVERALL_TOOLS);
+			return new Button(VehiclePerformanceSeatBeltEnum.OVERALL_TOOLS);
 		}
 		
 		public Button emailReport(){
-			return new Button(VehiclePerformanceSeatBBeltEnum.OVERALL_EMAIL_TOOL);
+			return new Button(VehiclePerformanceSeatBeltEnum.OVERALL_EMAIL_TOOL);
 		}
 		
 		public Button exportToPDF(){
-			return new Button(VehiclePerformanceSeatBBeltEnum.OVERALL_PDF_TOOL);
+			return new Button(VehiclePerformanceSeatBeltEnum.OVERALL_PDF_TOOL);
 		}
 		
 		public Button exportToExcel(){
-			return new Button(VehiclePerformanceSeatBBeltEnum.OVERALL_EXCEL_TOOL);
+			return new Button(VehiclePerformanceSeatBeltEnum.OVERALL_EXCEL_TOOL);
 		}
 		
 		public Button returnToPerformancePage(){
-			return new Button(VehiclePerformanceSeatBBeltEnum.RETURN);
+			return new Button(VehiclePerformanceSeatBeltEnum.RETURN);
 		}
 	}
 

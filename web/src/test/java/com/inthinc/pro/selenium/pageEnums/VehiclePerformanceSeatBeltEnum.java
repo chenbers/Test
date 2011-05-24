@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
-public enum VehiclePerformanceSeatBBeltEnum implements SeleniumEnums {
+public enum VehiclePerformanceSeatBeltEnum implements SeleniumEnums {
 	/* Overall */
     OVERALL_TIME_FRAME_SELECTOR(null, "seatBeltForm:vehicleSeatBelt-dateLinksToolsDetail***"),
     OVERALL_TITLE("Seat Belt: Overall", "titleSpan"),
@@ -47,10 +47,10 @@ public enum VehiclePerformanceSeatBBeltEnum implements SeleniumEnums {
     private String text, url;
     private String[] IDs;
     
-    private VehiclePerformanceSeatBBeltEnum(String url){
+    private VehiclePerformanceSeatBeltEnum(String url){
     	this.url = url;
     }
-    private VehiclePerformanceSeatBBeltEnum(String text, String ...IDs){
+    private VehiclePerformanceSeatBeltEnum(String text, String ...IDs){
         this.text=text;
     	this.IDs = IDs;
     }
