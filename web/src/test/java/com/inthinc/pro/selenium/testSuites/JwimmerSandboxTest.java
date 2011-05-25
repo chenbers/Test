@@ -26,23 +26,21 @@ public class JwimmerSandboxTest extends WebTest {
 
     private String param;
     
-    public JwimmerSandboxTest(String param) {
-        //this.param = param; //TODO: jwimmer: placeholder... determine best use for param if any to get paralellize tests... 
-        //TODO: jwimmer: might be nice if this was NOT needed in each test case...
-    }
-    
-    @Parameters
-    public static Collection data() {
-      Object[][] data = new Object[][] { { "a" } };
-      return Arrays.asList(data);
-    }
+//    public JwimmerSandboxTest(String param) {
+//        //this.param = param; //TODO: jwimmer: placeholder... determine best use for param if any to get parallelize tests... 
+//        //TODO: jwimmer: might be nice if this was NOT needed in each test case...
+//    }
+//    
+//    @Parameters
+//    public static Collection data() {
+//      Object[][] data = new Object[][] { { "a" } };
+//      return Arrays.asList(data);
+//    }
 
     @Before
     public void setupPage() {
     	l = new PageLogin();
     	liveFleet = new PageLiveFleet();
-    	
-    	System.out.println("JUnit version is: " + Version.id());
     }
 
     @Test
