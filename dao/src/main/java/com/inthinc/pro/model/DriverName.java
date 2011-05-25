@@ -1,5 +1,8 @@
 package com.inthinc.pro.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class DriverName implements Comparable<DriverName>{
     
     private Integer driverID;
