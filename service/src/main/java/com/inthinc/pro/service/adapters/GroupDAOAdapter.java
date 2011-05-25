@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.dao.GenericDAO;
+import com.inthinc.pro.dao.DriverDAO;
+import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.report.GroupReportDAO;
+import com.inthinc.pro.model.DriverName;
+import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
@@ -26,6 +30,10 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
     private GroupDAO groupDAO;	
     @Autowired
     private GroupReportDAO groupReportDAO;
+    @Autowired
+    private DriverDAO driverDAO;
+    @Autowired
+    private VehicleDAO vehicleDAO;
     
 	@Override
 	public List<Group> getAll() {
@@ -60,6 +68,14 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
         return groupReportDAO.getVehicleScores(groupID, duration);
     }
 
+    public List<DriverName> getGroupDriverNames(Integer groupID) {
+    	return driverDAO.getDriverNames(groupID);
+    }
+
+    public List<VehicleName> getGroupVehicleNames(Integer groupID) {
+    	return vehicleDAO.getVehicleNames(groupID);
+    }
+
 	// Getters and setters -----------------------------------------------------
     
 	/**
@@ -88,5 +104,18 @@ public class GroupDAOAdapter extends BaseDAOAdapter<Group> {
 	 */
 	public void setGroupReportDAO(GroupReportDAO groupReportDAO) {
 		this.groupReportDAO = groupReportDAO;
-	}    
+	}
+	
+	public DriverDAO getDriverDAO() {
+		return driverDAO;
+	}
+	public void setDriverDAO(DriverDAO driverDAO) {
+		this.driverDAO = driverDAO;
+	}
+	public VehicleDAO getVehicleDAO() {
+		return vehicleDAO;
+	}
+	public void setVehicleDAO(VehicleDAO vehicleDAO) {
+		this.vehicleDAO = vehicleDAO;
+	}
 }

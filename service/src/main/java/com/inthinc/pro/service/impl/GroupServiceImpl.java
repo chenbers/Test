@@ -9,6 +9,8 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.model.DriverName;
+import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
@@ -24,6 +26,22 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
     public Response getAll() {
         List<Group> list = getDao().getAll();
         return Response.ok(new GenericEntity<List<Group>>(list) {}).build();
+    }
+
+    @Override
+    public Response getGroupDriverNames(Integer groupID) {
+        List<DriverName> list = getDao().getGroupDriverNames(groupID);
+        if (!list.isEmpty())
+            return Response.status(Status.NOT_FOUND).build();
+        return Response.ok(new GenericEntity<List<DriverName>>(list) {}).build();
+    }
+
+    @Override
+    public Response getGroupVehicleNames(Integer groupID) {
+        List<VehicleName> list = getDao().getGroupVehicleNames(groupID);
+        if (!list.isEmpty())
+            return Response.status(Status.NOT_FOUND).build();
+        return Response.ok(new GenericEntity<List<VehicleName>>(list) {}).build();
     }
 
     @Override

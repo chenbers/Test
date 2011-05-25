@@ -13,9 +13,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.jboss.resteasy.annotations.providers.jaxb.json.Mapped;
-import org.jboss.resteasy.annotations.providers.jaxb.json.XmlNsMap;
-
 import com.inthinc.pro.model.Group;
 
 @Path("/")
@@ -45,6 +42,14 @@ public interface GroupService {
     // @GET
     // @Path("/group/{groupID}/score/vehicle/{numberOfDays}")
     // public Response getVehicleScore(@PathParam("groupID") Integer groupID, @PathParam("numberOfDays") @DefaultValue("30") Integer numberOfDays);
+
+    @GET
+    @Path("/group/{groupID}/drivernames")
+    public Response getGroupDriverNames(@PathParam("groupID") Integer groupID);
+
+    @GET
+    @Path("/group/{groupID}/vehiclenames")
+    public Response getGroupVehicleNames(@PathParam("groupID") Integer groupID);
 
     @GET
     @Path("/group/{groupID}/subgroups/trends/driver/{numberOfDays}")
