@@ -22,7 +22,9 @@ public class RecapUS extends Recap {
     public RecapUS(RuleSetType ruleSetType, DateTime day, List<HOSRec> hosRecList, int minutesWorkedToday, DateTimeZone dateTimeZone) {
         super(ruleSetType, day, hosRecList, RecapType.US, minutesWorkedToday, dateTimeZone);
 
-        maxRecapDay = (ruleSetType == RuleSetType.US_7DAY || ruleSetType == RuleSetType.US_OIL_7DAY) ? 7 : 8;
+     // TEMPORARILY REMOVING UNTIL FIRMWARE ALSO IMPLEMENTS
+//        maxRecapDay = (ruleSetType == RuleSetType.US_7DAY || ruleSetType == RuleSetType.US_OIL_7DAY) ? 7 : 8;
+        maxRecapDay = 8;
         cummulativeData = cummulativeDataMap.get(RuleViolationTypes.CUMMULATIVE_HOURS);
         
         setDay(getRecapDay(day));

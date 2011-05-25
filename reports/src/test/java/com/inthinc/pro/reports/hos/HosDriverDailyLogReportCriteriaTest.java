@@ -50,7 +50,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         "test11_01192010_01212010_rule11",
         "test12_07132010_07172010_personalTime",
         "test13_06062010_06102010_travelTimeOccupant",
-        "test14_01242010_01312010_rule16",
+// TEMPORARILY REMOVING UNTIL FIRMWARE ALSO IMPLEMENTS
+//        "test14_01242010_01312010_rule16",
     };
 
     public static final int testDay[] = {
@@ -157,9 +158,10 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
                 new HOSRecAdjusted("54",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),180l,68,12,true,"","",174l,RuleSetType.US_OIL, 54),
                 new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL, 53),
         },
-        {   // test14_01242010_01312010_rule16
-            new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1264316400000l),TimeZone.getTimeZone("UTC"),new Date(1264316400000l),1440l,0,96,false,"","",1440l,RuleSetType.US_7DAY, 17),
-    },
+        // TEMPORARILY REMOVING UNTIL FIRMWARE ALSO IMPLEMENTS
+//        {   // test14_01242010_01312010_rule16
+//            new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1264316400000l),TimeZone.getTimeZone("UTC"),new Date(1264316400000l),1440l,0,96,false,"","",1440l,RuleSetType.US_7DAY, 17),
+//    },
     };
     public HOSRecAdjusted expectedOriginalList[][]  = {
             {     // test0_03302010_04012010_rule2
@@ -193,8 +195,9 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
                 new HOSRecAdjusted("54",HOSStatus.ON_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),180l,68,12,false,"","",174l,RuleSetType.US_OIL, 5),
                 new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL, 5),
             },
-            {     // test14_01242010_01312010_rule16
-            },
+            // TEMPORARILY REMOVING UNTIL FIRMWARE ALSO IMPLEMENTS
+//            {     // test14_01242010_01312010_rule16
+//            },
     };
     public Boolean expectedEdited[] = {
             Boolean.FALSE,
@@ -211,7 +214,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             Boolean.FALSE,
             Boolean.FALSE,
             Boolean.TRUE,
-            Boolean.FALSE,
+            // TEMPORARILY REMOVING UNTIL FIRMWARE ALSO IMPLEMENTS
+//            Boolean.FALSE,
     };
     
     ExpectedRecap expectedRecap[] = {
@@ -244,7 +248,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             //13 test13_06062010_06102010_travelTimeOccupant
         new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00.00","70.00","-","00.00","70.00","","",0),
             // 14 test14_01242010_01312010_rule16
-        new ExpectedRecap(RecapType.US,RuleSetType.US_7DAY,1,"00.00","60.00","00.00","-","60.00","","",0),
+// TEMPORARILY REMOVING UNTIL FIRMWARE ALSO IMPLEMENTS
+//        new ExpectedRecap(RecapType.US,RuleSetType.US_7DAY,1,"00.00","60.00","00.00","-","60.00","","",0),
     };
     
     @Test
