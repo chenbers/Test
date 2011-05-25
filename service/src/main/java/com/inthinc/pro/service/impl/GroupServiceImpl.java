@@ -31,7 +31,7 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
     @Override
     public Response getGroupDriverNames(Integer groupID) {
         List<DriverName> list = getDao().getGroupDriverNames(groupID);
-        if (!list.isEmpty())
+        if (list.isEmpty())
             return Response.status(Status.NOT_FOUND).build();
         return Response.ok(new GenericEntity<List<DriverName>>(list) {}).build();
     }
@@ -39,7 +39,7 @@ public class GroupServiceImpl extends AbstractService<Group, GroupDAOAdapter> im
     @Override
     public Response getGroupVehicleNames(Integer groupID) {
         List<VehicleName> list = getDao().getGroupVehicleNames(groupID);
-        if (!list.isEmpty())
+        if (list.isEmpty())
             return Response.status(Status.NOT_FOUND).build();
         return Response.ok(new GenericEntity<List<VehicleName>>(list) {}).build();
     }
