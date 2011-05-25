@@ -2,8 +2,6 @@ package com.inthinc.pro.automation.selenium;
 
 import java.util.HashMap;
 
-import junit.runner.Version;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.BeansException;
@@ -38,7 +36,6 @@ public class GlobalSelenium {
             BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
             AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
             logger.debug(apb.getDefaultWebDriverName() + " on portal @" + apb.getBaseURL() + " with Thread: " + currentThread);
-            logger.debug("JUnit version is: " + Version.id());
             selenium = new CoreMethodLib(apb.getDefaultWebDriver(), apb.getBaseURL());
         } catch (BeansException e) {
             logger.error(StackToString.toString(e));
