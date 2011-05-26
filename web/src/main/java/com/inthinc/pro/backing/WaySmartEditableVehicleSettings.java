@@ -146,6 +146,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     }    
 
     public Integer getSpeedBufferInteger() {
+        if (speedBuffer == null) return null;
         return speedBuffer.intValue();
     }
 
