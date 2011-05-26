@@ -515,8 +515,7 @@ public class SiloServiceTest {
         System.out.println("Admin - vehicles done");
 
 
-// TODO: add back in when David deploys the backend        
-//        waysmartDOTTypeForwardCommandCheck(team2Group.getGroupID());
+        waysmartDOTTypeForwardCommandCheck(team2Group.getGroupID());
 
        // person
         persons(acctID, team1Group.getGroupID());
@@ -1681,14 +1680,14 @@ public class SiloServiceTest {
         
         
         List<ForwardCommand> queuedCommands = deviceDAO.getForwardCommands(wsdeviceID, ForwardCommandStatus.STATUS_QUEUED);
-        assertEquals("queued forward commands", 1, queuedCommands.size());
+        assertTrue("queued forward commands exist", queuedCommands.size()>0);
         boolean found = false;
         for (ForwardCommand forwardCommand : queuedCommands) {
             if (forwardCommand.getCmd().equals(ForwardCommandID.DOT_PROMPT_BY_TRIP)) 
                 found = true;
         }
         
-        assertTrue("expected forward command " + ForwardCommandID.DOT_PROMPT_BY_TRIP + " not found", found);
+        assertTrue("expected forward command " + ForwardCommandID.DOT_PROMPT_BY_TRIP + " not found vehicleID: " + vehicleID + " wsdeviceID: " + wsdeviceID, found);
 
         
         
