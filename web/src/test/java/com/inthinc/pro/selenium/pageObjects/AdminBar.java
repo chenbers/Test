@@ -69,7 +69,7 @@ public abstract class AdminBar extends NavigationBar {
 			return new TextLinkContextSense(AdminBarEnum.VEHICLES);
 		}
 
-		public TextLinkContextSense adminZones_click() {
+		public TextLinkContextSense adminZones_click() {//TODO: jwimmer: to dTanner: is there a reason this one ends in _click?
 			return new TextLinkContextSense(AdminBarEnum.ZONES);
 		}
 	}
