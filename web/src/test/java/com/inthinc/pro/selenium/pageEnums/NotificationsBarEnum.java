@@ -22,6 +22,23 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     HOS_EXCEPTIONS("HOS Exceptions", "link=HOS Exceptions", "***-hosEvents", "//li[@id='hosEventstab']/a"),
     EMERGENCY("Emergency", "link=Emergency", "***-emergency", "//li[@id='emergencytab']/a"),
     CRASH_HISTORY("Crash History", "link=Crash History", "***-crashHistory", "//li[@id='crashhistorytab']/a"),
+    
+    
+
+    LEVEL_FILTER_DHX(null, "***-form:***:levelFilter"),
+    TIME_FRAME_DHX(null, "***_search:***_timeframe"),
+    TEAM_SELECTION_DHX(null, "***_search:***_groupID"),
+    
+    REFRESH(null, "***_search:***_refresh"),
+    
+    EDIT_COLUMNS(null, "***_search:***_editColumns"),
+    
+    TOOLS(null, "***_search:***_reportToolImageId"),
+    EMAIL_REPORT(null, "***_search:***-emailMenuItem:anchor"),
+    EXPORT_TO_PDF(null, "***_search:***-export_menu_item:anchor"),
+    EXPORT_TO_EXCEL(null, "***_search:***-exportExcelMEnuItem:anchor"),
+    
+    COUNTER(null, "***-form:header"),
 
     ;
     private String text, url;

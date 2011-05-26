@@ -13,46 +13,33 @@ public class CreateHessian {
 	
 	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
 
-	private ProcessServer process;
 	private SiloService portalProxy;
 	private MCMProxy mcmProxy;
 
-	private String pUrl, mcmUrl;
-	private Integer pPort, mcmPort;
+	private Addresses server;
 	
-	public CreateHessian(){
-		process = new ProcessServer();
-	}
 	
 	public void setUrls(Addresses server, Boolean portal){
-		Addresses[] address = process.getUrl(server);
-		
-		pUrl = address[0].getCode();
-		pPort = Integer.parseInt(address[1].getCode());
-		mcmUrl = address[2].getCode();
-		mcmPort = Integer.parseInt(address[3].getCode());
+		this.server = server;
 		if (portal){ createPortalProxy();}
 		else{createMcmProxy();}
 	}
 	
 	public void setUrls(String url, Integer port, Boolean portal){
+		server = Addresses.USER_CREATED.setUrlAndPort(url, port, url, port);
 		if (portal){
-			pUrl = url;
-			pPort = port;
 			createPortalProxy();
 		}
 		else{
-			mcmUrl = url;
-			mcmPort = port;
 			createMcmProxy();
 		}
 	}
 
 	private void createPortalProxy() {
-		logger.info("Portal Proxy = " + pUrl +":"+pPort);
+		logger.info(server.toString());
 		HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
 		try {
-			portalProxy = (SiloService)factory.create( SiloService.class, pUrl, pPort);
+			portalProxy = (SiloService)factory.create( SiloService.class, server.getPortalUrl(), server.getPortalPort());
 		} catch (NumberFormatException e) {
 			logger.debug(StackToString.toString(e));
 		} catch (MalformedURLException e) {
@@ -61,10 +48,10 @@ public class CreateHessian {
 	}
 	
 	private void createMcmProxy() {
-		logger.info("MCM Proxy    = "+mcmUrl + ":" +mcmPort);
+		logger.info(server.toString());
 		HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
 		try {
-			mcmProxy = (MCMProxy)factory.create( MCMProxy.class, mcmUrl, mcmPort);
+			mcmProxy = (MCMProxy)factory.create( MCMProxy.class, server.getMCMUrl(), server.getMCMPort());
 		} catch (NumberFormatException e) {
 			logger.fatal(StackToString.toString(e));
 		} catch (MalformedURLException e) {
@@ -91,13 +78,13 @@ public class CreateHessian {
 	}
 	
 	public String getUrl(Boolean portal){
-		if(portal) return pUrl;
-		return mcmUrl;
+		if(portal) return server.getPortalUrl();
+		return server.getMCMUrl();
 	}
 	
 	public Integer getPort(Boolean portal){
-		if (portal) return pPort;
-		return mcmPort;
+		if (portal) return server.getPortalPort();
+		return server.getMCMPort();
 	}
 
 }

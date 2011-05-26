@@ -1,0 +1,32 @@
+	
+	public class ***Links extends ###Links{}
+	public class ***Texts extends ###Texts{}
+	public class ***TextFields extends ###TextFields{}
+	public class ***Buttons extends ###Buttons{}
+	public class ***DropDowns extends ###DropDowns{}
+	public class ***PopUps extends PopUps{}
+	
+	public ***Links _links(){
+        return new ***Links();
+    }
+    
+    public ***Texts _text(){
+        return new ***Texts();
+    }
+        
+    public ***Buttons _button(){
+        return new ***Buttons();
+    }
+    
+    public ***TextFields _textField(){
+        return new ***TextFields();
+    }
+    
+    public ***DropDowns _dropDown(){
+        return new ***DropDowns();
+    }
+    
+    public ***PopUps _popUp(){
+        return new ***PopUps();
+    }
+    

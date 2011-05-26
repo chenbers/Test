@@ -2,76 +2,76 @@ package com.inthinc.pro.automation.enums;
 
 
 public enum Addresses {
-    
-    QA,
-    QA2,
-    DEV,
-    EC2,
-    PROD,
-    TEEN_PROD,
-    TEEN_QA,
-    CHEVRON,
-    SCHLUMBERGER,
+	
+	USER_CREATED(null, null, null, null),
     
     
-    DEV_PORTAL("dev-pro.inthinc.com"),
-    DEV_PORT("8099"),
-    DEV_MCM("dev-pro.inthinc.com"),
-    DEV_MCM_PORT("8090"),
+    DEV("dev-pro.inthinc.com"),
     
-    
-    EC2_PORTAL("204.236.172.41"),
-    EC2_PORT("8099"),
-    EC2_MCM("stage.inthinc.com"),
-    EC2_MCM_PORT("8090"),
+    EC2("204.236.172.41",8099,"stage.inthinc.com",8090),
 
-    QA_PORTAL("qa.tiwipro.com"),
-    QA_PORT("8199"),
-    QA_MCM("qa.tiwipro.com"),
-    QA_MCM_PORT("8190"),
+    QA("qa.tiwipro.com",8199,"qa.tiwipro.com",8190),
     
-    QA2_PORTAL("qa2.tiwipro.com"),
-    QA2_PORT("8299"),
-    QA2_MCM("qa2.tiwipro.com"),
-    QA2_MCM_PORT("8290"),
+    QA2("qa2.tiwipro.com",8299,"qa2.tiwipro.com",8290),
 
-    TEEN_MCM_QA("192.168.1.215"),
-    TEEN_MCM_PORT_QA("8090"),
-    TEEN_PORTAL_QA("192.168.1.215"),
-    TEEN_PORT_QA("8099"),
+    TEEN_QA("192.168.1.215"),
 
-    PROD_MCM("my.inthinc.com"),
-    PROD_MCM_PORT("8090"),
-    PROD_PORTAL("my.inthinc.com"),
-    PROD_PORT("8099"),
+    PROD("my.inthinc.com"),
     
-    CHEVRON_MCM("chevron.inthinc.com"),
-    CHEVRON_MCM_PORT("8090"),
-    CHEVRON_PORTAL("chevron.inthinc.com"),
-    CHEVRON_PORT("8099"),
+    CHEVRON("chevron.inthinc.com"),
     
-    SLB_MCM("schlumberger.inthinc.com"),
-    SLB_MCM_PORT("8090"),
-    SLB_PORTAL("schlumberger.inthinc.com"),
-    SLB_PORT("8099");
+    SLB("schlumberger.inthinc.com"),
+    
+    WEATHORFORD("weatherford.inthinc.com"),
     
     
 //    PROD_MCM_EC2("my.inthinc.com"),
 //    PROD_MCM_PORT_EC2("8090"),
 //    PROD_PORTAL_EC2("50.16.201.215"),
 //    PROD_PORT_EC2("8099");
+    
+    ;
 
     
-    private String code;
+    private String portalUrl, mcmUrl;
+    private Integer portalPort, mcmPort;
     
-    private Addresses() {}
-
-    private Addresses(String c) {
-      code = c;
+    private Addresses(String url) {
+    	setUrlAndPort(url, 8099, url,8090);
+    }
+    
+    private Addresses(String portalUrl, Integer portalPort, String mcmUrl, Integer mcmPort){
+    	setUrlAndPort(portalUrl, portalPort, mcmUrl, mcmPort);
+    }
+    
+    public Addresses setUrlAndPort(String portalUrl, Integer portalPort, String mcmUrl, Integer mcmPort){
+    	this.portalUrl = portalUrl;
+    	this.portalPort = portalPort;
+    	this.mcmUrl = mcmUrl;
+    	this.mcmPort = mcmPort;
+    	return this;
     }
 
-    public String getCode() {
-      return code;
+    public String getPortalUrl(){
+    	return portalUrl;
+    }
+    
+    public Integer getPortalPort(){
+    	return portalPort;
+    }
+    
+    public String getMCMUrl(){
+    	return mcmUrl;
+    }
+    
+    public Integer getMCMPort(){
+    	return mcmPort;
+    }
+    
+    public String toString(){
+    	return this.name() +
+    			"\n\tPortal Proxy = " + portalUrl +":"+portalPort + 
+    			"\n\tMCM Proxy    = "+mcmUrl + ":" +mcmPort+"\n";
     }
 
 }
