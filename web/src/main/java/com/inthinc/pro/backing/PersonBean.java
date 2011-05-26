@@ -270,7 +270,7 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public boolean isPasswordChangeRequired() {
         return PreferenceLevelOption.REQUIRE.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange()) && isInitialLogin();
     }
-    public boolean isPasswordChangeWarn() { this.getUser().getLastLogin(); this.getUser().getModified();
+    public boolean isPasswordChangeWarn() { 
         return PreferenceLevelOption.WARN.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange());
     }
     public Integer getLoginDaysRemaining() {
