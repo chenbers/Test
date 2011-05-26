@@ -121,6 +121,9 @@ public class PageIdlingReport extends ReportsBar {
 	public IdlingReportPopUps _popUp() {
 		return new IdlingReportPopUps();
 	}
+	public IdlingReportLinks _link() {
+	    return new IdlingReportLinks();
+	}
     @Override
     public String getExpectedPath() {
         return IdlingReportEnum.DEFAULT_URL.getURL();

@@ -8,11 +8,11 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
 
-public class PageAdminUsers extends ReportsBar {
+public class PageAdminUsers extends AdminBar {
 	
 	private String page="person";
 
-	public class AdminUsersButtons extends ReportsBarButtons {
+	public class AdminUsersButtons extends AdminBarButtons {
 		public TextButton delete(){
 			return new TextButton(AdminBarEnum.DELETE, page);
 		}
@@ -26,10 +26,10 @@ public class PageAdminUsers extends ReportsBar {
 		}
 	}
 
-	public class AdminUsersDropDowns extends ReportsBarDropDowns {
+	public class AdminUsersDropDowns extends AdminBarDropDowns {
 	}
 
-	public class AdminUsersLinks extends ReportsBarLinks {
+	public class AdminUsersLinks extends AdminBarLinks {
 		
 		public TextLink editColumns(){
 			return new TextLink(AdminBarEnum.EDIT_COLUMNS_LINK, page);
@@ -48,14 +48,14 @@ public class PageAdminUsers extends ReportsBar {
 		}
 	}
 
-	public class AdminUsersTextFields extends ReportsBarTextFields {
+	public class AdminUsersTextFields extends AdminBarTextFields {
 		public TextField search(){
 			return new TextField(AdminBarEnum.SEARCH_TEXTFIELD, page);
 		}
 		
 	}
 
-	public class AdminUsersTexts extends ReportsBarTexts {
+	public class AdminUsersTexts extends AdminBarTexts {
 		public TextTable tableEntry(AdminUsersEnum column){
 			return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
 		}
