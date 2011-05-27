@@ -490,4 +490,27 @@ public class TAE {
 		}
 	}
 	
+	public static enum NotificationsEnums implements TextEnum{
+	    ALERT_LEVEL("level"),
+	    DETAILS("alerts"),
+	    DATE_TIME("time"),
+	    GROUP("group"),
+	    DRIVER("driver"),
+	    VEHICLE("vehicle"),
+	    CATEGORY("category"),
+	    DETAIL("detail"),
+	    STATUS("clear"),
+	    
+		;
+		
+		private String text;
+		private NotificationsEnums(String text){
+			this.text = text;
+		}
+		
+		public String getText(){
+			return text;
+		}
+	}
+	
 }

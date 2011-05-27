@@ -68,11 +68,11 @@ public class HanSoloTrip {
         Integer initialTime = currentTime.intValue();
         Addresses address;
         String imei;
-//        imei = "444444444444444";  address=Addresses.QA; initialTime = 1304010578;// vehicleID=7293 in QA
+        imei = "444444444444444";  address=Addresses.QA; initialTime = 1304116357;// vehicleID=7293 in QA, deviceID=3753, acctID=2
 //        imei = "999456789012345";  address=Addresses.SCHLUMBERGER; initialTime = 1304010578;// vehicleID=150994955 in QA
 //        imei = "thisisajavadevice"; address=Addresses.CHEVRON; initialTime=1304113419;// vehicleID=117441441   deviceID=117441936 in QA
 //        imei = "111111111111111"; address=Addresses.PROD; initialTime=1304113419;
-        imei = "FAKEIMEIFORTINA"; address=Addresses.WEATHORFORD;initialTime=1306443089;// vehicleID=
+//        imei = "FAKEIMEIFORTINA"; address=Addresses.WEATHORFORD;initialTime=1306443089;// vehicleID=
         
         
         trip.hanSolosFirstTrip( imei, address, initialTime);

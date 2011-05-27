@@ -23,6 +23,17 @@ public enum NotificationsRedFlagsEnum implements SeleniumEnums {
     DRIVER_SORT("Driver", "redFlags-form:redFlags:driverheader:sortDiv"),
     VEHICLE_SORT("Vehicle", "redFlags-form:redFlags:vehicleheader:sortDiv"),
     
+    ALERT_LEVEL_ENTRY(null, "redFlags-form:redFlags:###:level"),
+    DETAILS_ENTRY(null, "redFlags-form:redFlags:###:alerts"),
+    DATE_TIME_ENTRY(null, "redFlags-form:redFlags:###:time"),
+    GROUP_ENTRY(null, "redFlags-form:redFlags:###:group"),
+    DRIVER_ENTRY(null, "redFlags-form:redFlags:###:driver"),
+    VEHICLE_ENTRY(null, "redFlags-form:redFlags:###:vehicle"),
+    CATEGORY_ENTRY(null, "redFlags-form:redFlags:###:category"),
+    DETAIL_ENTRY(null, "redFlags-form:redFlags:###:detail"),
+    STATUS_ENTRY(null, "redFlags-form:redFlags:###:clear"),
+    
+    
     
     
     ;

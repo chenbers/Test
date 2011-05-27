@@ -19,9 +19,29 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 	}
 	
 	
-	public class RedFlagsLinks extends NotificationsBarLinks{
+	public class RedFlagsLinks extends NotificationsBarLinks{//TODO: dtanner: Still Updating  change enums to main Notifications, and provide changes
 		public TextLink editColumns(){
 			return new TextLink(NotificationsBarEnum.EDIT_COLUMNS, page);
+		}
+		
+		public TextLink alertDetailsEntry(){
+			return new TextLink(NotificationsRedFlagsEnum.ALERT_LEVEL_ENTRY);
+		}
+		
+		public TextLink groupEntry(){
+			return new TextLink(NotificationsRedFlagsEnum.GROUP_ENTRY);
+		}
+		
+		public TextLink driverEntry(){
+			return new TextLink(NotificationsRedFlagsEnum.DRIVER_ENTRY);
+		}
+		
+		public TextLink vehicleEntry(){
+			return new TextLink(NotificationsRedFlagsEnum.VEHICLE_ENTRY);
+		}
+		
+		public TextLink statusEntry(){
+			return new TextLink(NotificationsRedFlagsEnum.STATUS_ENTRY);
 		}
 		
 		
