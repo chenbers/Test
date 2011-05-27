@@ -818,6 +818,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             
             int settingValue  = dot.getConfiguratorSetting();
             ((WaySmartEditableVehicleSettings)editableVehicleSettings).setDotVehicleType(settingValue);
+            super.setDot(dot);
         }
 
 
