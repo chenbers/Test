@@ -39,6 +39,10 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     EXPORT_TO_EXCEL(null, "***_search:***-exportExcelMEnuItem:anchor"),
     
     COUNTER(null, "***-form:header"),
+    
+
+    LOCATION(null, "***-form:***:###:mapIcon"),
+    
 
     ;
     private String text, url;

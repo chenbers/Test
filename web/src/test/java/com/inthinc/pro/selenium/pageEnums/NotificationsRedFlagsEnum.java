@@ -24,6 +24,7 @@ public enum NotificationsRedFlagsEnum implements SeleniumEnums {
     VEHICLE_SORT("Vehicle", "redFlags-form:redFlags:vehicleheader:sortDiv"),
     
     
+    
     ;
 
     private String text, url;

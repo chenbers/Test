@@ -1,7 +1,12 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.ButtonTable;
 import com.inthinc.pro.automation.elements.DhxDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
+import com.inthinc.pro.automation.elements.TextButton;
+import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
 
@@ -14,14 +19,56 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 	}
 	
 	
-	public class RedFlagsLinks extends NotificationsBarLinks{}
+	public class RedFlagsLinks extends NotificationsBarLinks{
+		public TextLink editColumns(){
+			return new TextLink(NotificationsBarEnum.EDIT_COLUMNS, page);
+		}
+		
+		
+	}
 	
 	public class RedFlagsTexts extends NotificationsBarTexts{}
 	
-	public class RedFlagsTextFields extends NotificationsBarTextFields{}
+	public class RedFlagsTextFields extends NotificationsBarTextFields{
+		
+		public TextField group(){
+			return new TextField(NotificationsRedFlagsEnum.GROUP_FILTER);
+		}
+		
+		public TextField driver(){
+			return new TextField(NotificationsRedFlagsEnum.DRIVER_FILTER);
+		}
+		
+		public TextField vehicle(){
+			return new TextField(NotificationsRedFlagsEnum.VEHICLE_FILTER);
+		}
+	}
 	
 	public class RedFlagsButtons extends NotificationsBarButtons{
 		
+		public TextButton refresh(){
+			return new TextButton(NotificationsBarEnum.REFRESH, page);
+		}
+		
+		public Button tools(){
+			return new Button(NotificationsBarEnum.TOOLS, page);
+		}
+		
+		public Button exportToPDF(){
+			return new Button(NotificationsBarEnum.EXPORT_TO_PDF, page);
+		}
+		
+		public Button emailReport(){
+			return new Button(NotificationsBarEnum.EMAIL_REPORT, page);
+		}
+		
+		public Button exportToExcel(){
+			return new Button(NotificationsBarEnum.EXPORT_TO_EXCEL, page);
+		}
+		
+		public ButtonTable eventLocation(){
+			return new ButtonTable(NotificationsBarEnum.LOCATION, page);
+		}
 		
 	}
 	

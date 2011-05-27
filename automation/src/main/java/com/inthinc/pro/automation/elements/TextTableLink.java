@@ -6,28 +6,34 @@ import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
 public class TextTableLink extends TextLink implements Clickable, TextBased {
-    private TextTable table;
+    private TextTable tableText;
+    private LinkTable tableLink;
     public TextTableLink(SeleniumEnums anEnum) {
         super(anEnum);
-        table = new TextTable(anEnum);
+        tableText = new TextTable(myEnum);
+        tableLink = new LinkTable(myEnum);
     }
     public TextTableLink(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
-        table = new TextTable(anEnum);
+        tableText = new TextTable(myEnum);
+        tableLink = new LinkTable(myEnum);
     }
     public TextTableLink(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
-        table = new TextTable(anEnum);
+        tableText = new TextTable(anEnum);
+        tableLink = new LinkTable(anEnum);
     }
     
     public TextTableLink(SeleniumEnums anEnum, String replaceWord, TextEnum column){
     	super(anEnum, replaceWord);
-    	table = new TextTable(anEnum, replaceWord, column);
     	myEnum.replaceOldWithNew("*column*", column.getText());
+    	tableText = new TextTable(myEnum, replaceWord, column);
+    	tableLink = new LinkTable(myEnum);
     }
     public TextTableLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
-        table = new TextTable(anEnum);
+        tableText = new TextTable(myEnum);
+        tableLink = new LinkTable(myEnum);
     }
     
     @Override
@@ -58,7 +64,7 @@ public class TextTableLink extends TextLink implements Clickable, TextBased {
      * @return
      */
     public String getText(Integer row){
-        return table.getText(row);
+        return tableText.getText(row);
     }
     
     
@@ -70,8 +76,7 @@ public class TextTableLink extends TextLink implements Clickable, TextBased {
      * @return
      */
     public TextTableLink click(Integer row){
-        myEnum.replaceNumber(row.toString());
-        super.click();
+        tableLink.click(row);
         return this;
     }
 }
