@@ -32,6 +32,7 @@
 		<property name="serverPort" value="${automation.testserver.port}" />
 		<property name="appPath" value="${automation.testserver.appPath}" />
 		<property name="defaultWebDriverName" value="${automation.browser.default}" />
+		<property name="operatingSystem" value="${automation.operatingSystem}" />
 
 		<property name="hasIE" value="${automation.browser.ie}" />
 		<property name="hasFirefox" value="${automation.browser.firefox}" />
