@@ -208,14 +208,21 @@ public class UpdateCredentialsBean extends BaseBean
     }
 
     private Integer findMinPasswordStrength() {
-        User user;
+        User user ;
+        try {
+            user = getUser();
+        } catch (ClassCastException e) {
+            user = null;
+        }
         Integer results = null;
-        if(username != null && !username.equals("")) {
-            user = userDAO.findByUserName(username);
-        } else if(userID != null) {
-            user = userDAO.findByID(userID);
-        } else {
-            return 0; //TODO: jwimmer: something bad happened handle appropriately?
+        if(user == null) {
+            if(username != null && !username.equals("")) {
+                user = userDAO.findByUserName(username);
+            } else if(userID != null) {
+                user = userDAO.findByID(userID);
+            } else {
+                return 0; //TODO: jwimmer: something bad happened handle appropriately?
+            }
         }
         Account account = accountDAO.findByID(user.getPerson().getAccountID());
         try{
@@ -226,7 +233,7 @@ public class UpdateCredentialsBean extends BaseBean
         return results;
     }
     public Integer getMinPasswordStrength() {
-        if(minPasswordStrength == null){
+        if(minPasswordStrength == null || minPasswordStrength == 0){
            minPasswordStrength = findMinPasswordStrength();
         }
         return minPasswordStrength;
