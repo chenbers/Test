@@ -163,6 +163,10 @@ public class AccountAttributes extends BaseEntity {
     public void setPasswordChange(String passwordChange) {
         this.passwordChange = passwordChange;
     }
+    /**
+     * Returns the account's "Initial Password Change" setting
+     * @return none, warn, or require
+     */
     public String getPasswordChange() {
         return passwordChange;
     }
