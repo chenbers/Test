@@ -1,7 +1,10 @@
 package com.inthinc.pro.automation.selenium;
 
 import org.apache.commons.httpclient.NameValuePair;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.rally.RallyWebServices;
 import com.inthinc.pro.rally.TestCaseResult;
 
@@ -64,5 +67,13 @@ public abstract class RallyTest extends AutomatedTest {
 
 	public void set_test_case(String formattedID) {
 		rally.setTestCase(new NameValuePair("FormattedID", formattedID));
+	}
+	
+	public void set_test_suite(String formatedID) {
+	    String[] configFiles = new String[] { "classpath:spring/applicationContext-automation.xml" };
+        BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
+        AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
+        
+        //apb.getDefaultWebDriverName();
 	}
 }
