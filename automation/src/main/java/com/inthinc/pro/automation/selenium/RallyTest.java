@@ -54,7 +54,7 @@ public abstract class RallyTest extends AutomatedTest {
 	    super.after();
 		if (!skip) {
 			try {
-				setTestSet("Automation Demo");
+				setTestSet(determineTestSet());
 				rally.setBuildNumber(getBuildNumber());
 				rally.setVerdict(getTestVerdict());
                 rally.setNotes(errors);
@@ -74,11 +74,11 @@ public abstract class RallyTest extends AutomatedTest {
 		rally.setTestCase(new NameValuePair("FormattedID", formattedID));
 	}
 	
-	public void set_test_suite(String formatedID) {
+	public String determineTestSet() {
 	    String[] configFiles = new String[] { "classpath:spring/applicationContext-automation.xml" };
         BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
         AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
         
-        //apb.getDefaultWebDriverName();
+        return "automation_"+apb.getOperatingSystem()+"_"+apb.getDefaultWebDriverName();
 	}
 }
