@@ -8,6 +8,7 @@ public enum RallyWebServices {
 	WORKSPACE("Workspace"),
 	TYPE_DEFINITION("TypeDefinition"),
 	TEST_CASE_RESULTS("TestCaseResult"),
+	TEST_SET("TestSet"),
 	
 	INTHINC(665449629), 
 	SANDBOX(558474157),   

@@ -12,6 +12,13 @@ import com.inthinc.pro.selenium.pageEnums.DriverPerformanceTripsEnum;
 
 
 public class PageDriverPerformanceTrips extends NavigationBar {
+	
+
+    public DriverTripsPopUps _popUp(){
+        return new DriverTripsPopUps();
+    }
+    
+	public class DriverTripsPopUps extends MastheadPopUps{}
 
 
 	public class DriverTripsLinks extends NavigationBarLinks{

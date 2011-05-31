@@ -3,8 +3,18 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
+import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
+import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceTrips.DriverTripsPopUps;
 
 public class PageAdminVehicles extends AdminBar {
+	
+	public AdminVehiclesPopUps _popUp(){
+        return new AdminVehiclesPopUps();
+    }
+    
+	public class AdminVehiclesPopUps extends MastheadPopUps{}
+
+	
 	public class AdminVehiclesButtons extends AdminBarButtons {
 		public TextButton tableSearch() {
 			return new TextButton(AdminVehiclesEnum.SEARCH_BUTTON);

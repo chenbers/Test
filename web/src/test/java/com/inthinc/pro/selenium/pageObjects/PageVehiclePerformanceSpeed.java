@@ -226,7 +226,7 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
 	public class VehicleSpeedDropDowns{}
 
 	
-	public class VehicleSpeedPopUp extends PopUps{
+	public class VehicleSpeedPopUp extends MastheadPopUps{
 		public VehicleSpeedPopUp(){
 			super(page, Types.SINGLE, 3);
 		}

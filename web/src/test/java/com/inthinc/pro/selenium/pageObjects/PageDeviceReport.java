@@ -18,7 +18,7 @@ public class PageDeviceReport extends ReportsBar {
     // i.e. to me PageReportsDevices makes more sense for this pageObject since I click "Reports" then "Devices" to navigate to it?
 	private String page = "devices";
 
-	public class DeviceReportPopUps extends PopUps{
+	public class DeviceReportPopUps extends MastheadPopUps{
     	public DeviceReportPopUps(){
     		super(page, Types.REPORT, 3);
     	}

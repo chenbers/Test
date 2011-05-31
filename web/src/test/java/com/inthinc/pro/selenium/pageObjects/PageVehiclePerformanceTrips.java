@@ -9,8 +9,18 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceTripsEnum;
+import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
+import com.inthinc.pro.selenium.pageObjects.PageUserDetails.UserDetailsPopUps;
 
 public class PageVehiclePerformanceTrips extends NavigationBar {
+	
+
+	public VehicleTripsPopUps _popUp(){
+        return new VehicleTripsPopUps();
+    }
+    
+	public class VehicleTripsPopUps extends MastheadPopUps{}
+
 
 	public class VehicleTripsLinks extends NavigationBarLinks{
 		

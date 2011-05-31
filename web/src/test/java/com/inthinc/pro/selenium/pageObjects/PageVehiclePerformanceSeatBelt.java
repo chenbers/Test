@@ -14,7 +14,7 @@ import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceSeatBeltEnum;
 public class PageVehiclePerformanceSeatBelt extends NavigationBar {
 	private static String page = "SeatBelt";
 	
-	public class VehicleSeatBeltPopUps extends PopUps{
+	public class VehicleSeatBeltPopUps extends MastheadPopUps{
 
 		public VehicleSeatBeltPopUps() {
 			super("seatBelt", Types.SINGLE, 3);

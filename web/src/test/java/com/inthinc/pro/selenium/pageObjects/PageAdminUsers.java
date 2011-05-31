@@ -81,7 +81,7 @@ public class PageAdminUsers extends AdminBar {
 		return new AdminUsersTextFields();
 	}
 	
-	public class AdminUsersPopUps extends PopUps{
+	public class AdminUsersPopUps extends MastheadPopUps{
 		public AdminUsersPopUps(){
 			super(page);
 		}

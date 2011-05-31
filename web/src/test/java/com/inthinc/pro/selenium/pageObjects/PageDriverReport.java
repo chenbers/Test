@@ -175,7 +175,7 @@ public class PageDriverReport extends ReportsBar {
 		return new DriverReportLinks();
 	}
 	
-	public class DriverReportPopUps extends PopUps{
+	public class DriverReportPopUps extends MastheadPopUps{
     	public DriverReportPopUps(){
     		super(page, Types.REPORT, 3);
     	}

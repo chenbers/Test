@@ -3,10 +3,12 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.ClickableObject;
-import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 
@@ -326,16 +328,16 @@ public class PopUps {
 			public Text title(){
 				return new Text(PopUpEnum.MY_CHANGE_TITLE);
 			}
-			public Text currentPasswordLabel(){
-				return new Text(PopUpEnum.MY_CURRENT_LABEL);
+			public TextFieldLabel currentPasswordLabel(){
+				return new TextFieldLabel(PopUpEnum.MY_CURRENT_TEXTFIELD);
 			}
 			
-			public Text newPasswordLabel(){
-				return new Text(PopUpEnum.MY_NEW_LABEL);
+			public TextFieldLabel newPasswordLabel(){
+				return new TextFieldLabel(PopUpEnum.MY_NEW_TEXTFIELD);
 			}
 			
-			public Text confirmPasswordLabel(){
-				return new Text(PopUpEnum.MY_CONFIRM_LABEL);
+			public TextFieldLabel confirmPasswordLabel(){
+				return new TextFieldLabel(PopUpEnum.MY_CONFIRM_TEXTFIELD);
 			}
 			
 			public Text currentPasswordError(){
@@ -424,6 +426,190 @@ public class PopUps {
 			
 			public Text message(){
 				return new Text(PopUpEnum.DELETE_MESSAGE);
+			}
+		}
+	}
+	
+	public class PasswordChangeRequired{
+		public PasswordChangeRequiredButtons _button(){
+			return new PasswordChangeRequiredButtons();
+		}
+		
+		public PasswordChangeRequiredTexts _text(){
+			return new PasswordChangeRequiredTexts();
+		}
+		
+		public PasswordChangeRequiredTextFields _textField(){
+			return new PasswordChangeRequiredTextFields();
+		}
+		
+		public class PasswordChangeRequiredTextFields{
+			
+			public TextField currentPassword(){
+				return new TextField(PopUpEnum.MY_CURRENT_TEXTFIELD);
+			}
+			
+			public TextField newPassword(){
+				return new TextField(PopUpEnum.MY_NEW_TEXTFIELD);
+			}
+			
+			public TextField confirmNewPassword(){
+				return new TextField(PopUpEnum.MY_CONFIRM_TEXTFIELD);
+			}
+		}
+		
+		
+		public class PasswordChangeRequiredButtons{
+			public TextButton change(){
+				return new TextButton(PopUpEnum.MY_CHANGE_CHANGE);
+			}
+		}
+		
+		public class PasswordChangeRequiredTexts{
+			public TextFieldLabel currentPassword(){
+				return new TextFieldLabel(PopUpEnum.MY_CURRENT_TEXTFIELD);
+			}
+			
+			public TextFieldLabel newPassword(){
+				return new TextFieldLabel(PopUpEnum.MY_CURRENT_TEXTFIELD);
+			}
+			
+			public TextFieldLabel confirmPassword(){
+				return new TextFieldLabel(PopUpEnum.MY_CURRENT_TEXTFIELD);
+			}
+			
+			public Text header(){
+				return new Text(PopUpEnum.MY_CHANGE_TITLE_REQUIRED);
+			}
+
+			public Text currentPasswordError(){
+				return new Text(PopUpEnum.MY_CURRENT_ERROR);
+			}
+			
+			public Text newPasswordError(){
+				return new Text(PopUpEnum.MY_NEW_ERROR);
+			}
+			
+			public Text confirmPasswordError(){
+				return new Text(PopUpEnum.MY_CONFIRM_ERROR);
+			}
+			
+			public Text passwordStrength(){
+				return new Text(PopUpEnum.MY_STRENGTH_MSG);
+			}
+		}
+	}
+	
+	public class UpdatePasswordReminder{
+		public UpdateLinks _link(){
+			return new UpdateLinks();
+		}
+		
+		public UpdateButtons _button(){
+			return new UpdateButtons();
+		}
+		
+		public UpdateTexts _text(){
+			return new UpdateTexts();
+		}
+		
+		public class UpdateButtons{
+			public Button close(){
+				return new Button(PopUpEnum.UPDATE_PASSWORD_CLOSE);
+			}
+		}
+		
+		public class UpdateTexts{
+			public Text header(){
+				return new Text(PopUpEnum.UPDATE_PASSWORD_HEADER);
+			}
+			
+			public Text message(){
+				return new Text(PopUpEnum.UPDATE_PASSWORD_MESSAGE);
+			}
+		}
+		
+		public class UpdateLinks{
+			public TextLink changePassword(){
+				return new TextLink(PopUpEnum.UPDATE_PASSWORD_CHANGE_PASSWORD);
+			}
+		}
+	}
+	
+	public class PasswordChange{
+		public PasswordChangeTexts _text(){
+			return new PasswordChangeTexts();
+		}
+		
+		public class PasswordChangeTexts{
+			public Text title(){
+				return new Text(PopUpEnum.MY_CHANGE_TITLE);
+			}
+			public TextFieldLabel currentPasswordLabel(){
+				return new TextFieldLabel(PopUpEnum.MY_CURRENT_TEXTFIELD);
+			}
+			
+			public TextFieldLabel newPasswordLabel(){
+				return new TextFieldLabel(PopUpEnum.MY_NEW_TEXTFIELD);
+			}
+			
+			public TextFieldLabel confirmPasswordLabel(){
+				return new TextFieldLabel(PopUpEnum.MY_CONFIRM_TEXTFIELD);
+			}
+			
+			public Text currentPasswordError(){
+				return new Text(PopUpEnum.MY_CURRENT_ERROR);
+			}
+			
+			public Text newPasswordError(){
+				return new Text(PopUpEnum.MY_NEW_ERROR);
+			}
+			
+			public Text confirmPasswordError(){
+				return new Text(PopUpEnum.MY_CONFIRM_ERROR);
+			}
+			
+			public Text passwordStrength(){
+				return new Text(PopUpEnum.CHANGE_PASSWORD_FORM_STRENGTH_MSG);
+			}
+			
+			
+		}
+		
+		public PasswordChangeTextFields _textField(){
+			return new PasswordChangeTextFields();
+		}
+		
+		public class PasswordChangeTextFields{
+			public TextField currentPassword(){
+				return new TextField(PopUpEnum.MY_CURRENT_TEXTFIELD);
+			}
+			
+			public TextField newPassword(){
+				return new TextField(PopUpEnum.MY_NEW_TEXTFIELD);
+			}
+			
+			public TextField confirmNewPassword(){
+				return new TextField(PopUpEnum.MY_CONFIRM_TEXTFIELD);
+			}
+		}
+		
+		
+		
+		public PasswordChangeButtons _button(){
+			return new PasswordChangeButtons();
+		}
+		public class PasswordChangeButtons{
+			public TextButton change(){
+				return new TextButton(PopUpEnum.MY_CHANGE_CHANGE);
+			}
+			
+			public TextButton cancel(){
+				return new TextButton(PopUpEnum.MY_CHANGE_CANCEL);
+			}
+			
+			public Button close(){
+				return new Button(PopUpEnum.CHANGE_PASSWORD_FORM_CHANGE_X);
 			}
 		}
 	}

@@ -24,7 +24,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void CancelButton_Changes() {
 		set_test_case("TC1271");
-		my.loginProcess("tnilson", "password");
+		my.loginProcess("tnilson", "password123");
 		my._link().myAccount().click();
 		/* Get original Values */
 		String originalEmail1 = my._text().email1().getText();

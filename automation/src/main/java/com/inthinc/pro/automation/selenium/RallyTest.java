@@ -54,6 +54,7 @@ public abstract class RallyTest extends AutomatedTest {
 	    super.after();
 		if (!skip) {
 			try {
+				setTestSet("Automation Demo");
 				rally.setBuildNumber(getBuildNumber());
 				rally.setVerdict(getTestVerdict());
                 rally.setNotes(errors);
@@ -63,6 +64,10 @@ public abstract class RallyTest extends AutomatedTest {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private void setTestSet(String name){
+		rally.setTestSet(new NameValuePair("Name", name));
 	}
 
 	public void set_test_case(String formattedID) {

@@ -8,8 +8,8 @@ import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
 public class PageMyAccount extends NavigationBar {
 	
-	public class MyAccountPopUps extends PopUps{
-		public MyAccountChangePassword changePassword(){
+	public class MyAccountPopUps extends MastheadPopUps{
+		public MyAccountChangePassword changeMyPassword(){
 			return new MyAccountChangePassword();
 		}
 	}

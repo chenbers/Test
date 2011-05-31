@@ -11,7 +11,7 @@ import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 
 
 public class PageDriverPerformanceSeatBelt extends NavigationBar {
-	public class DriverSeatBeltPopUps extends PopUps{
+	public class DriverSeatBeltPopUps extends MastheadPopUps{
 
 		public DriverSeatBeltPopUps() {
 			super("seatBelt", Types.SINGLE, 3);

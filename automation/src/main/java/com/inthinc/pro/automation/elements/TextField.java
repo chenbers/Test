@@ -34,6 +34,9 @@ public class TextField extends TextObject implements Typeable {
         selenium.type(myEnum, inputText);
         return this;
     }
+	public void assertPresent(Boolean present) {
+		assertTrue(present == isElementPresent());
+	}
 
 
 }

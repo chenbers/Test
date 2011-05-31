@@ -225,7 +225,7 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 	public class DriverSpeedDropDowns{}
 
 	
-	public class DriverSpeedPopUp extends PopUps{
+	public class DriverSpeedPopUp extends MastheadPopUps{
 		public DriverSpeedPopUp(){
 			super(page, Types.SINGLE, 3);
 		}

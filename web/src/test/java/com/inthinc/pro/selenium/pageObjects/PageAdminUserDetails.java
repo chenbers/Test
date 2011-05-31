@@ -6,8 +6,19 @@ import com.inthinc.pro.automation.elements.TextCheckboxLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
+import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
+import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles.AdminVehiclesPopUps;
 
 public class PageAdminUserDetails extends AdminBar {
+	
+
+	public UserDetailsPopUps _popUp(){
+        return new UserDetailsPopUps();
+    }
+    
+	public class UserDetailsPopUps extends MastheadPopUps{}
+
+	
 	public class UserDetailsButtons extends AdminBarButtons {
 
 		public TextButton delete() {

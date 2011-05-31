@@ -104,7 +104,7 @@ public class PageIdlingReport extends ReportsBar {
 	    
 	}   
 	
-	public class IdlingReportPopUps extends PopUps{
+	public class IdlingReportPopUps extends MastheadPopUps{
     	public IdlingReportPopUps(){
     		super(page, Types.REPORT, 3);
     	}

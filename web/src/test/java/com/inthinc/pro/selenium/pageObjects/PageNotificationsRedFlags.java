@@ -114,9 +114,9 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 			return new DropDown(NotificationsRedFlagsEnum.STATUS_FILTER);
 		}
 	}
-	public class RedFlagsPopUps extends PopUps{}
+	public class RedFlagsPopUps extends MastheadPopUps{}
 	
-	public RedFlagsLinks _links(){
+	public RedFlagsLinks _link(){
         return new RedFlagsLinks();
     }
     

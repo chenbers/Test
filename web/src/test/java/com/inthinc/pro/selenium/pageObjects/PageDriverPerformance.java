@@ -159,7 +159,7 @@ public class PageDriverPerformance extends NavigationBar {
 		return new DriverPerformanceTextFields();
 	}
 	
-	public class DriverPerformancePopUps extends PopUps{
+	public class DriverPerformancePopUps extends MastheadPopUps{
     	public DriverPerformancePopUps(){
     		super(page, Types.PERFORMANCE, 3);
     	}

@@ -17,7 +17,7 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 public class PageLogin extends Masthead {
     private ElementBase validate = new ElementBase();
     
-    public class LoginPopUps extends PopUps{
+    public class LoginPopUps extends MastheadPopUps{
     	public ForgotPassword forgotPassword(){
     		return new ForgotPassword();
     	}

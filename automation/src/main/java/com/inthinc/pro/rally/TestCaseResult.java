@@ -193,6 +193,18 @@ public class TestCaseResult {
             logger.fatal(StackToString.toString(e));
         }
     }
+    
+    public void setTestSet(NameValuePair searchParams){
+    	TestSet testSet = new TestSet(http);
+    	try{
+    		testCaseResults.put("TestSet", testSet.getTestSet(searchParams));
+    	} catch (JSONException e) {
+            logger.fatal(StackToString.toString(e));
+        }
+    	
+    	
+    	
+    }
 
     /**
      * Method setVerdict<br />

@@ -61,6 +61,10 @@ public class ElementBase implements ElementInterface {
     public boolean isVisible() {
         return selenium.isVisible(myEnum);
     }
+    
+    public boolean assertVisibility(Boolean visible) {
+        return assertTrue(selenium.isVisible(myEnum));
+    }
 
     @Override
     public ElementInterface validate() {
@@ -99,10 +103,12 @@ public class ElementBase implements ElementInterface {
         }
     }
     
-    public void assertTrue(Boolean test) {
+    public Boolean assertTrue(Boolean test) {
         if (!test) {
             addError(myEnum.toString());
+            return false;
         }
+        return true;
     }
 
     public void assertNotEquals(Object expected, SeleniumEnums actual) {

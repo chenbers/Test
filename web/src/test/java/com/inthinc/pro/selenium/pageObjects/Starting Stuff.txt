@@ -4,7 +4,7 @@
 	public class ***TextFields extends ###TextFields{}
 	public class ***Buttons extends ###Buttons{}
 	public class ***DropDowns extends ###DropDowns{}
-	public class ***PopUps extends PopUps{}
+	public class ***PopUps extends MastheadPopUps{}
 	
 	public ***Links _links(){
         return new ***Links();

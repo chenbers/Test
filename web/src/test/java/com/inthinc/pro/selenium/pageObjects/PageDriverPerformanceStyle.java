@@ -110,7 +110,7 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 		}
 	}
 
-	public class DriverStylePopUps extends PopUps {
+	public class DriverStylePopUps extends MastheadPopUps {
 		public DriverStylePopUps() {
 			super("style", Types.SINGLE, 3);
 		}

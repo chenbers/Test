@@ -13,7 +13,7 @@ public class PageChangePassword extends Masthead {
 	}
 	
 	
-	public class LoginPopUps extends PopUps{
+	public class LoginPopUps extends MastheadPopUps{
     	public ForgotChangePassword success(){
     		return new ForgotChangePassword();
     	}

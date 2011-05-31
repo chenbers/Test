@@ -173,7 +173,7 @@ public class PageVehicleReport extends ReportsBar {
 		return new VehicleReportLinks();
 	}
 
-	public class VehicleReportPopUps extends PopUps{
+	public class VehicleReportPopUps extends MastheadPopUps{
     	public VehicleReportPopUps(){
     		super(page, Types.REPORT, 3);
     	}

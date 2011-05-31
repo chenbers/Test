@@ -36,7 +36,7 @@ public class CreateHessian {
 	}
 
 	private void createPortalProxy() {
-		logger.info(server.toString());
+		logger.debug(server.toString());
 		HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
 		try {
 			portalProxy = (SiloService)factory.create( SiloService.class, server.getPortalUrl(), server.getPortalPort());
@@ -48,7 +48,7 @@ public class CreateHessian {
 	}
 	
 	private void createMcmProxy() {
-		logger.info(server.toString());
+		logger.debug(server.toString());
 		HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
 		try {
 			mcmProxy = (MCMProxy)factory.create( MCMProxy.class, server.getMCMUrl(), server.getMCMPort());

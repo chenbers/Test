@@ -128,7 +128,7 @@ public class PageExecutiveDashboard extends NavigationBar {
 
     public class DashboardTextField extends NavigationBarTextFields{}
 
-    public class DashPopUps extends PopUps{
+    public class DashPopUps extends MastheadPopUps{
     	public DashPopUps(){
     		super(page, type, 2);
     	}

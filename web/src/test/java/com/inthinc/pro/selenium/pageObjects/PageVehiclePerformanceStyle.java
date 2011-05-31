@@ -111,7 +111,7 @@ public class PageVehiclePerformanceStyle extends NavigationBar {
 		}
 	}
 
-	public class VehicleStylePopUps extends PopUps {
+	public class VehicleStylePopUps extends MastheadPopUps {
 		public VehicleStylePopUps() {
 			super("style", Types.SINGLE, 3);
 		}

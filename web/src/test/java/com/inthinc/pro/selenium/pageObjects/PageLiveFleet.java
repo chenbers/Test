@@ -7,8 +7,18 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
+import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
+import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceTrips.DriverTripsPopUps;
 
 public class PageLiveFleet extends NavigationBar {
+	
+	public LiveFleetPopUps _popUp(){
+        return new LiveFleetPopUps();
+    }
+    
+	public class LiveFleetPopUps extends MastheadPopUps{}
+
+	
     public LiveFleetTextFields _textField() {
         return new LiveFleetTextFields();
     }

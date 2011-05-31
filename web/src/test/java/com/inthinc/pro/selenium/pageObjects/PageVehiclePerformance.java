@@ -159,7 +159,7 @@ private String page = "vehicle";
 		return new DriverPerformanceTextFields();
 	}
 	
-	public class DriverPerformancePopUps extends PopUps{
+	public class DriverPerformancePopUps extends MastheadPopUps{
     	public DriverPerformancePopUps(){
     		super(page, Types.PERFORMANCE, 3);
     	}

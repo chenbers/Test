@@ -66,22 +66,20 @@ public enum PopUpEnum implements SeleniumEnums {
     
     
     /* My Account Change Password */
-    MY_CHANGE_TITLE("Change Password", "//div[@id='changePasswordPanelHeader']/span", "//td[@class='rich-mpnl-header-cell']/div[@class='rich-mpnl-text rich-mpnl-header popupHeader']/span"),
+    MY_CHANGE_TITLE("Change Password", "changePasswordPanelHeader", "//td[@class='rich-mpnl-header-cell']/div[@class='rich-mpnl-text rich-mpnl-header popupHeader']/span"),
+    MY_CHANGE_TITLE_REQUIRED("Change PasswordRequired", "changePasswordPanelHeader", "//td[@class='rich-mpnl-header-cell']/div[@class='rich-mpnl-text rich-mpnl-header popupHeader']/span"),
     MY_CHANGE_X(null, "//div[@id='changePasswordPanelCDiv']/div[@id='changePasswordPanelContentDiv']/div/img[contains(@src,'modal_close')]"),
     MY_CHANGE_CANCEL(cancel, "changePasswordForm:changePasswordCancel", "//button[@name='changePasswordForm:changePasswordCancel']", "//div/button[@class='left'][@type='button']"),
     MY_CHANGE_CHANGE("Change", "changePasswordForm:changePasswordSubmit", "//button[@name='changePasswordForm:changePasswordSubmit']", "//div/button[@class='left'][@type='submit']"),
 
-    MY_CURRENT_LABEL("Current Password:", "//form[@name='changePasswordForm']/table/tbody/tr[1]/td[1]"),
     MY_CURRENT_TEXTFIELD(null, "changePasswordForm:oldPassword", "//inpute[@name='changePasswordForm:oldPassword", "//input[@type='password'][1]"),
 
     MY_STRENGTH_MSG("Begin Typing", "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]"),
     MY_STRENGTH_METER_EMPTY(null, "changePasswordForm_meterEmpty", "//div[@id='pwdTest']/span"),
     MY_STRENGTH_METER_FULL(null, "changePasswordForm_meterFull", "//div[@id='pwdTest']/span/span"),
 
-    MY_NEW_LABEL("New Password:", "//form[@name='changePasswordForm']/table/tbody/tr[2]/td[1]"),
     MY_NEW_TEXTFIELD(null, "changePasswordForm:newPassword", "//inpute[@name='changePasswordForm:newPassword", "//input[@type='password'][2]"),
 
-    MY_CONFIRM_LABEL("Confirm New Password:", "//form[@name='changePasswordForm']/table/tbody/tr[3]/td[1]"),
     MY_CONFIRM_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
 
     /* Change Password Errors */
@@ -95,6 +93,17 @@ public enum PopUpEnum implements SeleniumEnums {
     DELETE_HEADER(null, "confirmDeleteHeader"),
     DELETE_MESSAGE("Delete the following items? This action is irreversible.", "//table[@id='confirmDeleteContentTable']/tbody/tr[2]/td/div[@class='popupsubtitle']"),
     DELETE_CLOSE(null, "//div[@id='confirmDeleteContentDiv']/div/img"),
+
+    
+    /* Update Password Reminder */
+    UPDATE_PASSWORD_HEADER("Update Password Reminder", "passwordReminderPanelHeader"),
+    UPDATE_PASSWORD_MESSAGE("Welcome ***. Your password is going to expire in ### days. Please update your password before it expires. ", "//table[@id='passwordReminderPanelContentTable']/tbody/tr[2]/td/p[2]"),
+    UPDATE_PASSWORD_CLOSE(null, "//a[contains(@id,':passwordWarningClose')]/img"),
+    UPDATE_PASSWORD_CHANGE_PASSWORD("Change Password", "//a[contains(@id,':changePasswordLink')]"),
+    
+    /* Change Password Form */
+    CHANGE_PASSWORD_FORM_CHANGE_X(null, "//a[contains(@id,':updateCredentialsSubmit')]"),
+    CHANGE_PASSWORD_FORM_STRENGTH_MSG("Begin Typing", "changePasswordForm_strengthMsg"),
 
     
 	;

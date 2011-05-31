@@ -16,6 +16,34 @@ import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
 public abstract class Masthead extends AbstractPage {
 	
+	public class MastheadPopUps extends PopUps{
+		public MastheadPopUps(){
+			
+		}
+		public MastheadPopUps(String page) {
+			super(page);
+		}
+
+		public MastheadPopUps(String page, Types report, Integer i) {
+			super(page, report, i);
+		}
+		public PasswordChangeRequired changePasswordRequired(){
+			return new PasswordChangeRequired();
+		}
+		
+		public PasswordChange changePassword(){
+			return new PasswordChange();
+		}
+		
+		public UpdatePasswordReminder updatePasswordReminder(){
+			return new UpdatePasswordReminder();
+		}
+	}
+	
+	public MastheadPopUps _popUp(){
+		return new MastheadPopUps();
+	}
+	
 	public Masthead loginProcess(String username, String password){
 		PageLogin login = new PageLogin();
 		login.openLogout();

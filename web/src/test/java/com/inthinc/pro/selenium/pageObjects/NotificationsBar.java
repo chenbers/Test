@@ -25,10 +25,7 @@ public abstract class NotificationsBar extends NavigationBar {
 	protected class NotificationsBarDropDowns extends NavigationBarDropDowns{}
 	
 
-	protected class NotificationsBarLinks{
-		
-		
-		
+	protected class NotificationsBarLinks extends NavigationBarLinks{
 		
 		public TextLinkContextSense redFlags(){
 			return new TextLinkContextSense(NotificationsBarEnum.RED_FLAGS, page);
