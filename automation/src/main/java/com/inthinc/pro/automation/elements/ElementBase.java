@@ -63,7 +63,7 @@ public class ElementBase implements ElementInterface {
     }
     
     public boolean assertVisibility(Boolean visible) {
-        return assertTrue(selenium.isVisible(myEnum));
+        return assertTrue(visible == selenium.isVisible(myEnum));
     }
 
     @Override

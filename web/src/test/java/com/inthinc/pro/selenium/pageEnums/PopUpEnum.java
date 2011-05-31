@@ -82,10 +82,6 @@ public enum PopUpEnum implements SeleniumEnums {
 
     MY_CONFIRM_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
 
-    /* Change Password Errors */
-    MY_CURRENT_ERROR(null, "//tr[1]/td[2]/span/span[@class='rich-message-label']"),
-    MY_NEW_ERROR(null, "//tr[2]/td[2]/span/span[@class='rich-message-label']"),
-    MY_CONFIRM_ERROR(null, "//tr[3]/td[2]/span/span[@class='rich-message-label']"),
     
     /* Admin Delete PopUp */
     DELETE_CONFIRM("Delete", "confirmDeleteForm:***Table-deleteButton"),

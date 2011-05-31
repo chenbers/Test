@@ -684,5 +684,20 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
 	}
 
+	public CoreMethodLib fireEvent(AutomationEnum myEnum, String eventName) {
+		String element = getLocator(myEnum);
+        String error_name = "fireEvent: "+eventName+": " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
+        try{
+        	fireEvent(element, eventName);
+        } catch (SeleniumException e) {
+            errors.addError(error_name, e);
+        } catch (RuntimeException e) {
+            throw e;
+        } catch (Exception e) {
+            errors.addError(error_name, e);
+        }
+        return this;
+	}
+
 
 }

@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.elements.ClickableObject;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -341,15 +342,15 @@ public class PopUps {
 			}
 			
 			public Text currentPasswordError(){
-				return new Text(PopUpEnum.MY_CURRENT_ERROR);
+				return new Text(PopUpEnum.MY_CURRENT_TEXTFIELD);
 			}
 			
 			public Text newPasswordError(){
-				return new Text(PopUpEnum.MY_NEW_ERROR);
+				return new Text(PopUpEnum.MY_NEW_TEXTFIELD);
 			}
 			
 			public Text confirmPasswordError(){
-				return new Text(PopUpEnum.MY_CONFIRM_ERROR);
+				return new Text(PopUpEnum.MY_CONFIRM_TEXTFIELD);
 			}
 			
 			public Text passwordStrength(){
@@ -471,7 +472,7 @@ public class PopUps {
 			}
 			
 			public TextFieldLabel newPassword(){
-				return new TextFieldLabel(PopUpEnum.MY_CURRENT_TEXTFIELD);
+				return new TextFieldLabel(PopUpEnum.MY_NEW_TEXTFIELD);
 			}
 			
 			public TextFieldLabel confirmPassword(){
@@ -483,15 +484,15 @@ public class PopUps {
 			}
 
 			public Text currentPasswordError(){
-				return new Text(PopUpEnum.MY_CURRENT_ERROR);
+				return new Text(PopUpEnum.MY_CURRENT_TEXTFIELD);
 			}
 			
 			public Text newPasswordError(){
-				return new Text(PopUpEnum.MY_NEW_ERROR);
+				return new Text(PopUpEnum.MY_NEW_TEXTFIELD);
 			}
 			
 			public Text confirmPasswordError(){
-				return new Text(PopUpEnum.MY_CONFIRM_ERROR);
+				return new Text(PopUpEnum.MY_CONFIRM_TEXTFIELD);
 			}
 			
 			public Text passwordStrength(){
@@ -557,16 +558,16 @@ public class PopUps {
 				return new TextFieldLabel(PopUpEnum.MY_CONFIRM_TEXTFIELD);
 			}
 			
-			public Text currentPasswordError(){
-				return new Text(PopUpEnum.MY_CURRENT_ERROR);
+			public TextFieldError currentPasswordError(){
+				return new TextFieldError(PopUpEnum.MY_CURRENT_TEXTFIELD);
 			}
 			
-			public Text newPasswordError(){
-				return new Text(PopUpEnum.MY_NEW_ERROR);
+			public TextFieldError newPasswordError(){
+				return new TextFieldError(PopUpEnum.MY_NEW_TEXTFIELD);
 			}
 			
-			public Text confirmPasswordError(){
-				return new Text(PopUpEnum.MY_CONFIRM_ERROR);
+			public TextFieldError confirmPasswordError(){
+				return new TextFieldError(PopUpEnum.MY_CONFIRM_TEXTFIELD);
 			}
 			
 			public Text passwordStrength(){
