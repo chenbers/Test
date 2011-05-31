@@ -96,6 +96,9 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
     public List<Trip> getTrips(Integer vehicleID, Date startDate, Date endDate) {
         return vehicleDAO.getTrips(vehicleID, startDate, endDate);
     }
+    public Trip getLastTrip(Integer vehicleID) {
+        return vehicleDAO.getLastTrip(vehicleID);
+    }
 
 	// Getters and setters -----------------------------------------------------
     

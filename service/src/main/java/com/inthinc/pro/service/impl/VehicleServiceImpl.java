@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response.Status;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.security.AccessDeniedException;
 
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
@@ -97,6 +98,28 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
     // getDao().getLastTrip(driverID);
     // getDao().getVehiclesNearLoc(groupID, numof, lat, lng);
     // getDao().getVehiclesInGroup(groupID);
+    /**
+     * {@inheritDoc}
+     * @see com.inthinc.pro.service.DriverService#getLastTrip(java.lang.Integer)
+     */
+    @Override
+    public Response getLastTrip(Integer vehicleID) {
+        if (vehicleID != null) {
+            try{
+                Trip trip = this.getDao().getLastTrip(vehicleID);
+                if( trip != null)
+                    return Response.ok(new GenericEntity<Trip>(trip) {}).build();
+                else
+                    return Response.status(Status.NOT_FOUND).build();
+            }
+            catch(AccessDeniedException ade){
+                return Response.status(Status.NOT_FOUND).build();
+            }
+        }
+        else {
+            return Response.status(Status.NOT_FOUND).build();
+        }
+    }
 
     @Override
     public Response getTrips(Integer vehicleID, String day) {

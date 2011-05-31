@@ -55,6 +55,9 @@ public interface VehicleService {
     @GET
     @Path("/vehicle/{id}/trips")
     public Response getTrips(@PathParam("id") Integer id);
+    @GET
+    @Path("/vehicle/{vehicleID}/trip")
+    Response getLastTrip(@PathParam("vehicleID") Integer vehicleID);
 
 //    @GET
 //    @Path("/vehicle/{id}/events/{date}")
