@@ -17,10 +17,9 @@ public class AutomationPropertiesBean {
     private String hasFirefox;
     private String hasIE;
     private String hasChrome;
+    private String operatingSystem;
 
     public WebDriver getDefaultWebDriver() {
-        System.out.println("public WebDriver getDefaultWebDriver()"); //TODO: jwimmer: remove temporary loggers
-        System.out.println("getDefaultWebDriverName(): "+getDefaultWebDriverName());
         //TODO: jwimmer: I'd rather pull these from some .properties file
         if(getDefaultWebDriverName().startsWith("ie"))
             return new InternetExplorerDriver();
@@ -29,11 +28,10 @@ public class AutomationPropertiesBean {
         else if(getDefaultWebDriverName().startsWith("ff"))
             return new FirefoxDriver();
         else
-            return new FirefoxDriver(); //TODO: jwimmer: how do we want to handle boxes with NO default browser set!
+            return new FirefoxDriver(); 
     }
     public ArrayList<WebDriver> getAvailableWebDrivers() {
        ArrayList<WebDriver> results = new ArrayList<WebDriver>();
-       //TODO: jwimmer: use switch/case
        if(getHasIE().equalsIgnoreCase("true"))
            results.add( new InternetExplorerDriver());
        else if(getHasChrome().equalsIgnoreCase("true"))
@@ -93,5 +91,11 @@ public class AutomationPropertiesBean {
     }
     public void setServerProtocol(String serverProtocol) {
         this.serverProtocol = serverProtocol;
+    }
+    public String getOperatingSystem() {
+        return operatingSystem;
+    }
+    public void setOperatingSystem(String operatingSystem) {
+        this.operatingSystem = operatingSystem;
     }
 }
