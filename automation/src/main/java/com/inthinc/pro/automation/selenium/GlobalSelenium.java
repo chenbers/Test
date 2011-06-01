@@ -24,7 +24,11 @@ public class GlobalSelenium {
 	
 	public static CoreMethodLib getSelenium() {
 		Long currentThread = Thread.currentThread().getId();
-		return multiplicative.get(currentThread);
+		CoreMethodLib result =  multiplicative.get(currentThread);
+		if(result == null)
+		        result = getYourOwn();
+		
+		return result;
 	}
 
 	public static CoreMethodLib getYourOwn() {
