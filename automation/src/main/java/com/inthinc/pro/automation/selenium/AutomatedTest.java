@@ -26,6 +26,7 @@ public class AutomatedTest {
     protected CoreMethodLib selenium;
 
     public static void afterClass() {
+        System.out.println(" ");
         GlobalSelenium.dieSeleniumDie();
     }// tear down
 
@@ -55,9 +56,9 @@ public class AutomatedTest {
             }finally{
                 GlobalSelenium.dieSeleniumDie();   
             }
-            logger.warn(".");
+            System.out.print(".");
         } else {
-            logger.warn("skip");
+            System.out.print(" skip ");
         }
     }
 
