@@ -9,9 +9,6 @@ import com.inthinc.pro.selenium.testSuites.WebRallyTest;
 
 public class LoginTest extends WebRallyTest {
     PageLogin login;
-    // TODO: jwimmer: question for DTanner: I can see a benefit from having SOME of these types of things defined in a non-page-specific enum? email is a good example (actually not
-    // sure there are (m)any others???_) since there are lots of pages where an email address is expected, and it could be nice to have these three quickly available for tests on
-    // ANY page
     String EMAIL_KNOWN = "jwimmer@inthinc.com";
     String EMAIL_UNKNOWN = "jaaacen@gmail.com";
     String EMAIL_INVALID = "username_at_domain_dot_tld";
@@ -21,7 +18,7 @@ public class LoginTest extends WebRallyTest {
         login = new PageLogin();
     }
 
-    @Test
+    @Test(timeout=300000)
     public void LoginButton() {
         // Set up test data
         set_test_case("TC1247");
