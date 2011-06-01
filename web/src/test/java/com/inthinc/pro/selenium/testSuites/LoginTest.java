@@ -18,7 +18,7 @@ public class LoginTest extends WebRallyTest {
         login = new PageLogin();
     }
 
-    @Test(timeout=300000)
+    @Test
     public void LoginButton() {
         // Set up test data
         set_test_case("TC1247");

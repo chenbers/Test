@@ -21,7 +21,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my = new PageMyAccount();
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void CancelButton_Changes() {
 		set_test_case("TC1271");
 		my.loginProcess("tnilson", "password123");
@@ -96,10 +96,10 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._text().textMessage2().validate(originalText2);
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void SaveButton_Changes() {
 		set_test_case("TC1280");
-		my.loginProcess("jwimmer", "password");
+		my.loginProcess("tnilson", "password");
 		my._link().myAccount().click();
 
 		/* Edit button */
@@ -153,7 +153,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._text().textMessage2().validate("8019997777@tmomail.net");
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void EmailFormatError() {
 		set_test_case("TC1271");//TODO: find the actual testcase for this
 		my.loginProcess("tnilson", "password");
@@ -178,7 +178,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._text().email2().validate("tlc1965@test.com");
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void MeasurementValidation() {
 		set_test_case("TC1275");
 		my.loginProcess("tnilson", "password");
@@ -200,7 +200,7 @@ public class EditMyAccountTest extends WebRallyTest {
 
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void FuelRatioValidation() {
 		set_test_case("TC1273");
 		my.loginProcess("tnilson", "password");
@@ -220,7 +220,7 @@ public class EditMyAccountTest extends WebRallyTest {
 
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void ClearFieldsValidation() {
 		set_test_case("TC1276");
 		my.loginProcess("tnilson", "password");
@@ -244,7 +244,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		// Email Required//
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void PhoneMaxCharError() {
 		set_test_case("TC1277");
 		my.loginProcess("tnilson", "password");
@@ -269,7 +269,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._text().phone2().validate("801-999-9999");
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void PhoneMissingCharError() {
 		set_test_case("TC1278");
 		my.loginProcess("tnilson", "password");
@@ -295,7 +295,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._text().phone2().validate("801-999-9999");
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void PhoneSpecialCharError() {
 		set_test_case("TC1279");
 		my.loginProcess("tnilson", "password");
@@ -321,7 +321,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		my._text().phone2().validate("801-999-9999");
 	}
 
-	@Test(timeout=300000)
+	@Test
 	public void TextMsgFormatError() {
 		set_test_case("TC1282");
 		my.loginProcess("tnilson", "password");

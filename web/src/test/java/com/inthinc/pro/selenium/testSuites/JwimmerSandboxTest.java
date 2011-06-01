@@ -43,7 +43,7 @@ public class JwimmerSandboxTest extends WebTest {
     	liveFleet = new PageLiveFleet();
     }
 
-    @Test(timeout=300000)
+    @Test
     public void liveFleet_byNavBar_openPage() {
         l.loginProcess("jwimmer", "password");
         pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
@@ -52,7 +52,7 @@ public class JwimmerSandboxTest extends WebTest {
         liveFleet._textField().findAddress().type("Selenium navigated here by clicking on the liveFleet link... page._link.liveFleet.click() ");
     }
     
-    @Test(timeout=300000)
+    @Test
     public void liveFleet_clickHelp_newWindow() {
         l.loginProcess("jwimmer", "password");
         pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
@@ -63,7 +63,7 @@ public class JwimmerSandboxTest extends WebTest {
     }
     
     @Ignore
-    @Test(timeout=300000)
+    @Test
     public void liveFleet_sandbox_taeThrownError() {
         int waitTime = 6;
         System.out.println("liveFleet_sandbox_taeThrownError: ");
@@ -124,7 +124,7 @@ public class JwimmerSandboxTest extends WebTest {
         //pause(60);
     }
     
-    @Test(timeout=300000)
+    @Test
     public void liveFleet_changeDefaultViewAsNONAdmin_shouldNotSeeLink() {
         l.load();
         pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
@@ -134,7 +134,7 @@ public class JwimmerSandboxTest extends WebTest {
     	//assertTrue(!liveFleet.page_admin_validate()); //NON-ADMIN users should NOT see the change link
     }
     
-    @Test(timeout=300000)
+    @Test
     public void liveFleet_changeDefaultViewAsAdmin_canChange() {
         l.load();
         pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
@@ -143,7 +143,7 @@ public class JwimmerSandboxTest extends WebTest {
     	//assertTrue(liveFleet.page_admin_validate()); //NON-ADMIN users should NOT see the change link
     }
     
-    @Test(timeout=300000)
+    @Test
     public void liveFleet_fromBookmarkNotLoggedIn_mustLoginFirst() {
     	//TODO: jwimmer: dtanner: discuss if this method shows justification of page_directURL_load(String password, String usernamer)... NOT needed, we want a bookmark that returns a STRING that is the URL, that can later be used by some other method navigateTOBookmark
     	//TODO: jwimmer: dtanner: discuss if this method shows justification of page.validate()... it shouldn't be called VALIDATE unless actually validates EVERYTHING expected to be on the page.  a better sanity check is something more like "didPageLoad()" which merely checks the URL for correctness (expected) AND makes sure the appError element in NOT present
@@ -156,7 +156,7 @@ public class JwimmerSandboxTest extends WebTest {
     	liveFleet.validate();      //validate the liveFleet page... just because we can.
     }
     
-    @Test(timeout=300000)
+    @Test
     public void liveFleet_fromBookmarkLoggedIn_goDirectlyToLiveFleet() {
     	l.load();
     	pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
@@ -169,7 +169,7 @@ public class JwimmerSandboxTest extends WebTest {
     }
     
     
-    @Test(timeout=300000)
+    @Test
     public void login_nullUsernamePassword_appError() {
         l.load();
         pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
@@ -178,7 +178,7 @@ public class JwimmerSandboxTest extends WebTest {
         l._popUp().loginError()._text().message().validate("Incorrect user name or password.\n\nPlease try again.");
     }
 
-    @Test(timeout=300000)
+    @Test
     public void login_closeBadCredModal_noModal() {
         l.load();
         pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
@@ -197,7 +197,7 @@ public class JwimmerSandboxTest extends WebTest {
         l._popUp().forgotPassword()._button().send().click();
     }
 
-    @Test(timeout=300000)
+    @Test
     public void forgotPassword_badEmailManual_incorrectFormat() {
         l.load();
         pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
@@ -208,31 +208,31 @@ public class JwimmerSandboxTest extends WebTest {
         l._popUp().forgotPassword()._text().error().validate("Incorrect format (jdoe@tiwipro.com)");
     }
 
-    @Test(timeout=300000)
+    @Test
     public void forgotPassword_badEmail_incorrectFormat() {
         forgotPassword_Scenario_enterEmailClickSend(EMAIL_INVALID);
         l._popUp().forgotPassword()._text().error().validate("Incorrect format (jdoe@tiwipro.com)");
     }
 
-    @Test(timeout=300000)
+    @Test
     public void forgotPassword_noEmail_required() {
         forgotPassword_Scenario_enterEmailClickSend(null);
         l._popUp().forgotPassword()._text().error().validate("Required");
     }
 
-    @Test(timeout=300000)
+    @Test
     public void forgotPassword_unknownEmail_incorrect() {
         forgotPassword_Scenario_enterEmailClickSend(EMAIL_UNKNOWN);
         l._popUp().forgotPassword()._text().error().validate("Incorrect e-mail address"); 
     }
 
-    @Test(timeout=300000)
+    @Test
     public void forgotPassword_usersEmail_success() {
         forgotPassword_Scenario_enterEmailClickSend(EMAIL_KNOWN);
         l._popUp().messageSent();
     }
 
-    @Test(timeout=300000)
+    @Test
     public void forgotPassword_cancel_closePopup() {
         l.load();
         pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
@@ -250,7 +250,7 @@ public class JwimmerSandboxTest extends WebTest {
         pause(20, "end of test pause");
     }
 
-    @Test(timeout=300000)
+    @Test
     public void login_forgotPassClose_closePopup() {
         l.load();
         pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
