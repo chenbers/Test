@@ -146,9 +146,11 @@
                                 <f:selectItems value="#{params.drivers}"/>
                                 <a4j:support event="onchange" reRender="#{context}_paramsPanelError, #{reRenderList}"/>
                             </h:selectOneMenu>
+                            <!-- 
                             <ui:include src="/includes/dhtmlSelectBox.xhtml">   
                                 <ui:param name="selectBoxID" value="#{context}_form:#{context}-driverParam" />
                             </ui:include>
+                             -->
                             </a4j:outputPanel>
                         </td>
                     </tr>
