@@ -2,6 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Driver Report" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isIgnorePagination="true">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -32,100 +35,100 @@
 		<band/>
 	</pageHeader>
 	<columnHeader>
-		<band height="23">
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-2" x="143" y="5" width="93" height="16"/>
+		<band height="17">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-14" x="0" y="0" width="130" height="17"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.group}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-2" x="130" y="0" width="100" height="17"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.employeeId}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-3" x="236" y="5" width="149" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-3" x="230" y="0" width="150" height="17"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.driver}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-4" x="600" y="5" width="45" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.overall}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-5" x="645" y="5" width="41" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.speed}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-6" x="686" y="5" width="41" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.style}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-7" x="729" y="5" width="47" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.seatbelt}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-12" x="536" y="5" width="64" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.distance.driven}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-13" x="385" y="5" width="146" height="16"/>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-13" x="380" y="0" width="150" height="17"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.vehicle}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-14" x="7" y="5" width="136" height="16"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.group}]]></textFieldExpression>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField-12" x="530" y="0" width="70" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.distance.driven}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="600" y="0" width="45" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.overall}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-5" x="645" y="0" width="45" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.speed}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-6" x="690" y="0" width="40" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.style}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-7" x="730" y="0" width="52" height="17"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.driver.seatbelt}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="23">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-1" x="143" y="3" width="93" height="17"/>
-				<textElement rotation="None"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeeID}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-2" x="236" y="3" width="149" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-9" x="385" y="3" width="146" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
-			</textField>
-			<textField pattern="###0" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-10" x="536" y="3" width="64" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{milesDriven},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mi",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField" x="7" y="3" width="136" height="17"/>
+		<band height="17">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="0" y="0" width="130" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.0" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-4" x="600" y="3" width="45" height="17"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="130" y="0" width="100" height="17"/>
+				<textElement rotation="None"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employeeID}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="230" y="0" width="150" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-9" x="380" y="0" width="150" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0" isBlankWhenNull="true">
+				<reportElement key="textField-10" x="530" y="0" width="70" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.MeasurementConverter.convertDistance100th($F{milesDriven},$P{USE_METRIC},$P{REPORT_LOCALE}) + " " + com.inthinc.pro.reports.converter.MeasurementTextConverter.getMessage("report.mi",$P{REPORT_LOCALE},$P{USE_METRIC})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement key="textField-4" x="600" y="0" width="45" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[(($F{overallScore}==null)||($F{overallScore}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{overallScore}.doubleValue()/10)]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-5" x="645" y="3" width="41" height="17"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-5" x="645" y="0" width="45" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[(($F{speedScore}==null)||($F{speedScore}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{speedScore}.doubleValue()/10)]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-7" x="729" y="3" width="47" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[(($F{seatbeltScore}==null)||($F{seatbeltScore}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{seatbeltScore}.doubleValue()/10)]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-6" x="688" y="3" width="41" height="17"/>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-6" x="690" y="0" width="40" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[(($F{styleScore}==null)||($F{styleScore}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{styleScore}.doubleValue()/10)]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField-7" x="730" y="0" width="52" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[(($F{seatbeltScore}==null)||($F{seatbeltScore}.doubleValue() <0.0))?$R{notApplicable}:$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.0",$P{REPORT_LOCALE}).format($F{seatbeltScore}.doubleValue()/10)]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

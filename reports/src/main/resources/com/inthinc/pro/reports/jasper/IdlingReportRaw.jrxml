@@ -34,7 +34,7 @@
 	<columnHeader>
 		<band height="21">
 			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-2" x="1" y="2" width="94" height="16"/>
+				<reportElement key="textField-2" x="0" y="2" width="95" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.group}]]></textFieldExpression>
 			</textField>
@@ -44,98 +44,98 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.driver.name}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-4" x="468" y="2" width="65" height="16"/>
+				<reportElement key="textField-3" x="255" y="2" width="100" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.low.idle}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.hasRPM}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-5" x="535" y="2" width="27" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.percent}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-6" x="562" y="2" width="71" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.high.idle}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-7" x="633" y="2" width="27" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.percent}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-12" x="380" y="2" width="79" height="16"/>
+				<reportElement key="textField-12" x="355" y="2" width="80" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.drive.time}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-14" x="660" y="2" width="71" height="16"/>
+				<reportElement key="textField-4" x="435" y="2" width="65" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.total.idle}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.low.idle}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-15" x="731" y="2" width="31" height="16"/>
+				<reportElement key="textField-5" x="500" y="2" width="30" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.percent}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false" hyperlinkType="None">
-				<reportElement key="textField-3" x="257" y="2" width="100" height="16"/>
+				<reportElement key="textField-6" x="530" y="2" width="70" height="16"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.hasRPM}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.high.idle}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-7" x="600" y="2" width="30" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.percent}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-14" x="630" y="2" width="70" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.total.idle}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false" hyperlinkType="None">
+				<reportElement key="textField-15" x="700" y="2" width="82" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.idling.percent}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="23">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-1" x="1" y="2" width="93" height="17"/>
+				<reportElement key="textField-1" x="0" y="2" width="95" height="17"/>
 				<textElement rotation="None"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{groupName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-2" x="94" y="2" width="160" height="17"/>
+				<reportElement key="textField-2" x="95" y="2" width="160" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{driverName}]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement key="textField-2" x="255" y="2" width="100" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[($F{hasRPM}.intValue() == 1) ? $R{yes} : $R{no}]]></textFieldExpression>
+			</textField>
 			<textField pattern="###0.0" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-4" x="468" y="2" width="65" height="17"/>
+				<reportElement key="textField-10" x="355" y="2" width="80" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{driveTime})]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true" hyperlinkType="None">
+				<reportElement key="textField-4" x="435" y="2" width="65" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{lowIdleTime})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-5" x="534" y="2" width="27" height="17"/>
+				<reportElement key="textField-5" x="500" y="2" width="30" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{lowIdlePercent}.floatValue())]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-6" x="561" y="2" width="71" height="17"/>
+				<reportElement key="textField-6" x="530" y="2" width="70" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{highIdleTime})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-7" x="633" y="2" width="27" height="17"/>
+				<reportElement key="textField-7" x="600" y="2" width="30" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{highIdlePercent}.floatValue())]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.0" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-10" x="380" y="2" width="85" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{driveTime})]]></textFieldExpression>
-			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-11" x="661" y="2" width="70" height="17"/>
+				<reportElement key="textField-11" x="630" y="2" width="70" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.converter.TimeToStringConverter.convertSeconds($F{totalIdleTime})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-12" x="732" y="2" width="29" height="17"/>
+				<reportElement key="textField-12" x="700" y="2" width="82" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_FORMAT_FACTORY}.createNumberFormat("0.00",$P{REPORT_LOCALE}).format($F{totalIdlePercent}.floatValue())]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true" hyperlinkType="None">
-				<reportElement key="textField-2" x="257" y="2" width="100" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[($F{hasRPM}.intValue() == 1) ? $R{yes} : $R{no}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

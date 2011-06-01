@@ -32,58 +32,58 @@
 	<columnHeader>
 		<band height="21">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-2" x="1" y="4" width="143" height="16"/>
+				<reportElement key="textField-2" x="0" y="4" width="150" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.id}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-3" x="144" y="4" width="182" height="16"/>
+				<reportElement key="textField-3" x="150" y="4" width="200" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.assigned.vehicle}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" x="538" y="4" width="83" height="16"/>
+				<reportElement key="textField-12" x="350" y="4" width="210" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.imei}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField-4" x="560" y="4" width="140" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.phone}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-5" x="621" y="4" width="58" height="16"/>
+				<reportElement key="textField-5" x="700" y="4" width="82" height="16"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.status}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField-12" x="326" y="4" width="210" height="16"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.device.imei}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="22">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="1" y="3" width="143" height="17"/>
+				<reportElement key="textField-1" x="0" y="3" width="150" height="17"/>
 				<textElement rotation="None"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceName}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-2" x="144" y="3" width="182" height="17"/>
+				<reportElement key="textField-2" x="150" y="3" width="200" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{vehicleName}]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-10" x="350" y="3" width="210" height="17"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceIMEI}]]></textFieldExpression>
+			</textField>
 			<textField isStretchWithOverflow="true" pattern="###0.0" isBlankWhenNull="true">
-				<reportElement key="textField-4" x="538" y="3" width="81" height="17"/>
+				<reportElement key="textField-4" x="560" y="3" width="140" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{devicePhone}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-5" x="621" y="3" width="56" height="17"/>
+				<reportElement key="textField-5" x="700" y="3" width="82" height="17"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[str("status"+$F{deviceStatus.code}.intValue())]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-10" x="326" y="3" width="208" height="17"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{deviceIMEI}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
