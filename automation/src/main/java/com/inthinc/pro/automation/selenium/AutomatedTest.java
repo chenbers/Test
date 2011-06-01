@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
+import com.thoughtworks.selenium.SeleniumException;
 
 public class AutomatedTest {
 
@@ -28,6 +29,11 @@ public class AutomatedTest {
     public static void afterClass() {
         System.out.println(" ");
         GlobalSelenium.dieSeleniumDie();
+        try {
+            Thread.sleep((long) (30 * 1000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }// tear down
 
     public static void print(Object printToScreen) {
