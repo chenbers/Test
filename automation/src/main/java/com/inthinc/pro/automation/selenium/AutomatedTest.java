@@ -102,7 +102,7 @@ public class AutomatedTest {
     
     public void didTestFail(){
         if (getTestVerdict() != Verdicts.PASS) {
-            throw new AssertionError(errors.toString());
+            throw new AssertionError(errors!=null?errors.toString():"errors was null?");
         }
     }
     
