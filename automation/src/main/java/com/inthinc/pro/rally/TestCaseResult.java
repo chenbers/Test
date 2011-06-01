@@ -1,14 +1,8 @@
 package com.inthinc.pro.rally;
 
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -190,7 +184,8 @@ public class TestCaseResult {
         try {
             testCaseResults.put("TestCase", testcase.getTestCase(searchParams));
         } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
+        	logger.info("No TestCase with " + searchParams.getName() +" = " + searchParams.getValue());
+            logger.debug(StackToString.toString(e));
         }
     }
     
@@ -199,7 +194,8 @@ public class TestCaseResult {
     	try{
     		testCaseResults.put("TestSet", testSet.getTestSet(searchParams));
     	} catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
+    		logger.info("No TestSet with " + searchParams.getName() +" = " + searchParams.getValue());
+            logger.debug(StackToString.toString(e));
         }
     	
     	
