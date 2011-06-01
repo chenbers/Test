@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
@@ -64,6 +65,7 @@ public class ChangePasswordTest extends WebTest {
 		redFlags = new PageNotificationsRedFlags();
 	}
 	
+	@Ignore //TODO: dTanner: hessian calls cannot be made from cloudshare ip's
 	@Test
 	public void passwordStrengthTest(){
 		resetPasswordExpiry(_90DaysAgo);
@@ -82,6 +84,7 @@ public class ChangePasswordTest extends WebTest {
 		redFlags._popUp().changePassword()._text().newPasswordError().compareText("Minimum Password Strength Not Met");
 	}
 	
+	@Ignore //TODO: dTanner: hessian calls cannot be made from cloudshare ip's
 	@Test
 	public void onlyHaveToChangeOnce(){
 		resetPasswordExpiry(_90DaysAgo);
