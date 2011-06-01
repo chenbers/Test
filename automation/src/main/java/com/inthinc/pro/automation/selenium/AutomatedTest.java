@@ -30,7 +30,7 @@ public class AutomatedTest {
         System.out.println(" ");
         GlobalSelenium.dieSeleniumDie();
         try {
-            Thread.sleep((long) (30 * 1000));
+            Thread.sleep((long) (10 * 1000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
