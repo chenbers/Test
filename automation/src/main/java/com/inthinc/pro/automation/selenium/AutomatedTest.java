@@ -55,6 +55,9 @@ public class AutomatedTest {
             }finally{
                 GlobalSelenium.dieSeleniumDie();   
             }
+            logger.warn(".");
+        } else {
+            logger.warn("skip");
         }
     }
 
