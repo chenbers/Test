@@ -29,11 +29,6 @@ public class AutomatedTest {
     public static void afterClass() {
         System.out.println(" ");
         GlobalSelenium.dieSeleniumDie();
-        try {
-            Thread.sleep((long) (10 * 1000));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }// tear down
 
     public static void print(Object printToScreen) {

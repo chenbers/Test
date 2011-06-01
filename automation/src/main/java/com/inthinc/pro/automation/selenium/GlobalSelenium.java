@@ -25,9 +25,10 @@ public class GlobalSelenium {
 	public static CoreMethodLib getSelenium() {
 		Long currentThread = Thread.currentThread().getId();
 		CoreMethodLib result =  multiplicative.get(currentThread);
-		if(result == null)
-		        result = getYourOwn();
-		
+		if(result == null) {
+		        logger.warn("no CoreMethodLib for thread "+currentThread);
+		        logger.warn("multiplicative.size() "+multiplicative.size());
+		}
 		return result;
 	}
 
@@ -39,7 +40,7 @@ public class GlobalSelenium {
             String[] configFiles = new String[] { "classpath:spring/applicationContext-automation.xml" };
             BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
             AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
-            logger.debug(apb.getDefaultWebDriverName() + " on portal @" + apb.getBaseURL() + " with Thread: " + currentThread);
+            logger.info(apb.getDefaultWebDriverName() + " on portal @" + apb.getBaseURL() + " with Thread: " + currentThread);
             selenium = new CoreMethodLib(apb.getDefaultWebDriver(), apb.getBaseURL());
         } catch (BeansException e) {
             logger.error(StackToString.toString(e));
@@ -57,8 +58,11 @@ public class GlobalSelenium {
 			multiplicative.get(currentThread).close();
 			multiplicative.get(currentThread).stop();
 			multiplicative.get(currentThread).getWrappedDriver();
+			Thread.sleep(10*1000);
 		}catch(NullPointerException e){
 			logger.debug("Selenium already closed");
+		}catch(Exception e){
+		    logger.error(e);
 		}
 		multiplicative.remove(currentThread);
 	}
