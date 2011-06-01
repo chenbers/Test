@@ -10,9 +10,9 @@ import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 /*My Account test*/
 public class MyAccountTest extends WebRallyTest {
 	
-	@Test
+	@Test(timeout=300000)
 	public void AccountInformation(){
-	    //TODO: jwimmer: to tNilson: This test needs to be corrected using the Admin > Users page
+	    //TODO: dtanner: to tNilson: This test needs to be corrected using the Admin > Users page
 		set_test_case("TC1266");
 		PageMyAccount my = new PageMyAccount();
 		
