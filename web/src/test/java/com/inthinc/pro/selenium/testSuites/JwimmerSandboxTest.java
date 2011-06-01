@@ -46,6 +46,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void liveFleet_byNavBar_openPage() {
         l.loginProcess("jwimmer", "password");
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         liveFleet._link().liveFleet().click();
         
         liveFleet._textField().findAddress().type("Selenium navigated here by clicking on the liveFleet link... page._link.liveFleet.click() ");
@@ -54,6 +55,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void liveFleet_clickHelp_newWindow() {
         l.loginProcess("jwimmer", "password");
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         liveFleet._link().liveFleet().click();//TODO: jwimmer: could this be failing on EC2 only, because the pageObject after loginProcess hasn't loaded yet???
         System.out.println("help().getText(): "+liveFleet._link().help().getText());
         
@@ -67,6 +69,7 @@ public class JwimmerSandboxTest extends WebTest {
         System.out.println("liveFleet_sandbox_taeThrownError: ");
         l.loginProcess("jwimmer", "password");
         liveFleet.load();
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         liveFleet._textField().findAddress().type("put some test text in findAddress box.");
 //        
         liveFleet._textField().findAddress().clear();
@@ -124,7 +127,9 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void liveFleet_changeDefaultViewAsNONAdmin_shouldNotSeeLink() {
         l.load();
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         l.loginProcess(NONADMIN_USERNAME, NONADMIN_PASSWORD);
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
     	liveFleet.page_bareMinimum_validate();//only continue if the page meets bare minimum this step has more validity in LONGER tests... where we want to fail the test as early as possible
     	//assertTrue(!liveFleet.page_admin_validate()); //NON-ADMIN users should NOT see the change link
     }
@@ -132,6 +137,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void liveFleet_changeDefaultViewAsAdmin_canChange() {
         l.load();
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         l.loginProcess(ADMIN_USERNAME, ADMIN_PASSWORD);
     	liveFleet.page_bareMinimum_validate();//only continue if the page meets bare minimum
     	//assertTrue(liveFleet.page_admin_validate()); //NON-ADMIN users should NOT see the change link
@@ -143,6 +149,7 @@ public class JwimmerSandboxTest extends WebTest {
     	//TODO: jwimmer: dtanner: discuss if this method shows justification of page.validate()... it shouldn't be called VALIDATE unless actually validates EVERYTHING expected to be on the page.  a better sanity check is something more like "didPageLoad()" which merely checks the URL for correctness (expected) AND makes sure the appError element in NOT present
         PageLogin login = new PageLogin(); //going to use this later
     	liveFleet.load();
+    	pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
     	//liveFleet.validateURL();  //this WOULD fail the test since the browser should NOT automatically go to the liveFleet page without requiring login.
     	login.validateURL();	//test should fail UNLESS the login page was loaded (since the user has not logged in yet)
     	liveFleet.validateURL();   //test should fail on assertion of any page except liveFleet is loaded
@@ -152,6 +159,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void liveFleet_fromBookmarkLoggedIn_goDirectlyToLiveFleet() {
     	l.load();
+    	pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
     	l.page_bareMinimum_validate();
     	l.loginProcess("jwimmer", "password");
     	//dashboard.page_validate();
@@ -164,6 +172,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void login_nullUsernamePassword_appError() {
         l.load();
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         l.validate();
         l._button().logIn().click();
         l._popUp().loginError()._text().message().validate("Incorrect user name or password.\n\nPlease try again.");
@@ -172,6 +181,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void login_closeBadCredModal_noModal() {
         l.load();
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         l.validate();
         l._button().logIn().click();
         l._popUp().loginError()._text().message().validate("Incorrect user name or password.\n\nPlease try again.");
@@ -180,6 +190,7 @@ public class JwimmerSandboxTest extends WebTest {
 
     private void forgotPassword_Scenario_enterEmailClickSend(String emailAddress) {
         l.load();
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         l._link().forgotUsernamePassword().click();
         
         l._popUp().forgotPassword()._textField().email().type(emailAddress);
@@ -189,6 +200,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void forgotPassword_badEmailManual_incorrectFormat() {
         l.load();
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         l._link().forgotUsernamePassword().click();
         l._popUp().forgotPassword()._textField().email().type(EMAIL_INVALID);
         l._popUp().forgotPassword()._button().send().click();
@@ -223,6 +235,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void forgotPassword_cancel_closePopup() {
         l.load();
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         l._link().forgotUsernamePassword().click(); System.out.println("1");
         //l._popUp().forgotPassword().validate();
         l._popUp().forgotPassword()._text().header().validate();    System.out.println("2");
@@ -240,6 +253,7 @@ public class JwimmerSandboxTest extends WebTest {
     @Test(timeout=300000)
     public void login_forgotPassClose_closePopup() {
         l.load();
+        pause(15, "stopping to allow viewer to catch intranet browser setting issue in IE");
         l.validate();
         l._link().forgotUsernamePassword().click();
         pause(10, "waiting for forgotUsernamePassword popup to open");
