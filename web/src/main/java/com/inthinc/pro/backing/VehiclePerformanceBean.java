@@ -215,7 +215,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             if (tempTrip != null)
             {
             	hasLastTrip = true;
-                emptyLastTrip = tempTrip.getRoute().size() == 0;
+            	
+                emptyLastTrip = (tempTrip.getRoute() == null)||(tempTrip.getRoute().size() == 0);
 
                 setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 

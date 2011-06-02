@@ -1,7 +1,6 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -214,7 +213,7 @@ public class DriverPerformanceBean extends BasePerformanceBean {
             if (tempTrip != null){
             	
                 hasLastTrip = true;
-                emptyLastTrip = tempTrip.getRoute().size() == 0;
+                emptyLastTrip = (tempTrip.getRoute() == null)||(tempTrip.getRoute().size() == 0);
                 
                 TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), getAddressLookup());
                 if(tempTrip.getRoute().size() > 0){
