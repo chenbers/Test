@@ -70,11 +70,8 @@ public class TiwiproSettingManager extends VehicleSettingManager{
     }
     
     private Integer[] createSpeedSettings(){
-       
-        Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
-        for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
-            speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING; 
-        }
+        Integer[] speedSettings = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING; 
+
         return speedSettings;
     }
     private String getCompleteHardVerticalValue(Integer sliderValue){

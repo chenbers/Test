@@ -319,7 +319,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     public RedFlagOrZoneAlertView getItem() {
         final RedFlagOrZoneAlertView item = super.getItem();
         if (item.getSpeedSettings() == null)
-            item.setSpeedSettings(new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS]);
+            item.setSpeedSettings(TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING);
         return item;
     }
 
@@ -887,8 +887,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
         public Boolean[] getSpeedSelected() {
             if ((speedSelected == null)) {
                 speedSelected = new Boolean[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
+                
                 for (int i = 0; i < speedSelected.length && getSpeedSettings()!=null; i++)
-                    speedSelected[i] = getSpeedSettings()[i]!=null;
+                    speedSelected[i] = false;
             }
             return speedSelected;
         }
