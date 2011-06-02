@@ -32,14 +32,13 @@ public class Slider {
             defaultValueIndex =  sensitivitySliderValues.getDefaultValueIndex();
         }
     }
-    public int getDefaultValueIndex() {
-        return defaultValueIndex;
-    }
-    public void setDefaultValueIndex(int defaultValueIndex) {
-        this.defaultValueIndex = defaultValueIndex;
-    }
     public Integer getSliderValueFromSettings(Map<Integer,String> settings){
-        
+        //If you have a set of values for a slider this returns the corresponding slider position.  
+        //If it doesn't match it returns the highest slider position + 1 which is the "custom" value
+        //This may happen if the settings have been set in the configurator
+        //Where there is a value in the setting that represents the slider position it is ignored
+        // in the matching because it won't get set correctly in the configurator.  This value should
+        // eventually be dropped
         if (settings == null || settings.isEmpty()) return sliderPositionCount+1;
         
         Set<Entry<Integer,String>> settingEntries = settings.entrySet();
@@ -51,22 +50,22 @@ public class Slider {
         return sliderPositionCount+1;
     }
     private boolean settingsMatch(int sliderValue,Set<Entry<Integer,String>> settingEntries){
+        //Where there are several settings for a slider value all must match
         boolean match = true;
         for (Entry<Integer,String> settingEntry : settingEntries){
             
-            Integer settingID = settingEntry.getKey(); //settingID
-            String settingValue = settingEntry.getValue();//setting value
-            SensitivitySliderValues sensitvitySliderValues = settingsForThisSlider.get(settingID);
+            SensitivitySliderValues sensitvitySliderValues = settingsForThisSlider.get(settingEntry.getKey());
             
-            match = subValuesMatch(settingValue,sensitvitySliderValues.getValues().get(sliderValue));
+            match = subValuesMatch(settingEntry.getValue(),sensitvitySliderValues.getValues().get(sliderValue));
             
-            if (match) return true;
+            if(!match) return false;
         }
-        return false;
+        return true;
         
     }
     private Boolean subValuesMatch(String settingValue, String thisSliderValue){
-
+        //Where one setting has several values within it all must match except for the 
+        // one representing the slider position (hardcoded to value 2)
         if (null == settingValue) return false;
         
         List<String> settingValues = Arrays.asList(settingValue.split(" "));
@@ -94,7 +93,7 @@ public class Slider {
     }
 
     public Map<Integer, String> getSettingValuesFromSliderValue(Integer sliderValue) {
-           
+        //If you have a slider value, this returns a map of setting values that match it   
         if (!sliderValueInRange(sliderValue)) return new HashMap<Integer, String>();
         
         Map<Integer, String> sliderValues = getValuesForSliderValue(sliderValue);
@@ -140,5 +139,11 @@ public class Slider {
     public Set<Integer> getSettingIDsForThisSlider(){
         
         return settingsForThisSlider.keySet();
+    }
+    public int getDefaultValueIndex() {
+        return defaultValueIndex;
+    }
+    public void setDefaultValueIndex(int defaultValueIndex) {
+        this.defaultValueIndex = defaultValueIndex;
     }
 }

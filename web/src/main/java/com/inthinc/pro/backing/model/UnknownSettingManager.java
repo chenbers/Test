@@ -8,10 +8,15 @@ import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.model.configurator.Slider;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 //Has no special settings
+@SuppressWarnings("serial")
 public class UnknownSettingManager extends VehicleSettingManager {
 
 	protected UnknownSettingManager(ConfiguratorDAO configuratorDAO, VehicleSetting vehicleSetting) {
 	    
+        super();
+    }
+    protected UnknownSettingManager(ConfiguratorDAO configuratorDAO) {
+        
         super();
     }
 
@@ -29,7 +34,7 @@ public class UnknownSettingManager extends VehicleSettingManager {
 
  
     @Override
-	protected EditableVehicleSettings createDefaultValues(Integer vehicleID) {
+	public EditableVehicleSettings createDefaultValues(Integer vehicleID) {
 		return null;
 	}
 

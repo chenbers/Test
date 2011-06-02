@@ -18,16 +18,16 @@ import javax.faces.validator.ValidatorException;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.filtering.ColumnFiltering;
+import com.inthinc.pro.backing.model.VehicleSettingManager;
+import com.inthinc.pro.backing.model.VehicleSettingsFactory;
 import com.inthinc.pro.backing.model.supportData.AdminCacheBean;
 import com.inthinc.pro.backing.model.supportData.CacheItemMap;
 import com.inthinc.pro.backing.model.supportData.DeviceMap;
 import com.inthinc.pro.backing.model.supportData.DriverNameMap;
 import com.inthinc.pro.backing.model.supportData.GroupMap;
 import com.inthinc.pro.backing.model.supportData.VehicleMap;
-//import com.inthinc.pro.backing.model.supportData.VehicleSettingMap;
 import com.inthinc.pro.backing.ui.DeviceStatusSelectItems;
 import com.inthinc.pro.backing.ui.ProductTypeSelectItems;
-import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.VehicleDAO;
@@ -88,7 +88,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private DeviceDAO   deviceDAO;
     private VehicleDAO  vehicleDAO;
     private DriverDAO   driverDAO;
-    private ConfiguratorDAO configuratorDAO;
 
     private ColumnFiltering<Vehicle> chooseVehicleFiltering;
     private VehicleChoiceTableColumns vehicleChoiceTableColumns;
@@ -98,6 +97,11 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private List<Vehicle> chooseVehicleItems;
     private String chooseVehicleSearchKeyword;
     private String chosenVehicleID;
+    
+    // Stuff to do with vehicleSettings for the device
+    private VehicleSettingsFactory vehicleSettingsFactory;
+    private VehicleSettingManager vehicleSettingManager;
+
     
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
@@ -142,13 +146,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
      *            The vehicle.
      * @return The new VehicleView object.
      */
-//    private void loadVehicleSettings()
-//    {
-//        CacheItemMap<DeviceSettingDefinition,VehicleSetting> vehicleSettingMap = new VehicleSettingMap(getUser().getGroupID());
-//        vehicleSettingMap.setDAO(configuratorDAO);
-//        vehicleSettingMap.buildMap();
-//        adminCacheBean.addAssetMap("vehicleSettings",vehicleSettingMap);
-//    }
     private void loadGroups()
     {
         CacheItemMap<Group,Group> groupMap = new GroupMap(getUser().getPerson().getAcctID(),getUser().getGroupID());
@@ -181,7 +178,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public List<Vehicle> getVehicles(){
         //filter on the filter item
         return vehicleChoiceTableColumns.getFilteredItems(adminCacheBean,chooseVehicleSearchKeyword,true);
-//        return (List<Vehicle>) adminCacheBean.getAssets("vehicles");
     }
     
     @Override
@@ -191,7 +187,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final List<Device> plainDevices = deviceDAO.getDevicesByAcctID(getAccountID());
         // convert the Devices to DeviceViews
         final LinkedList<DeviceView> items = new LinkedList<DeviceView>();
-//        deviceMap = new HashMap<Integer,DeviceView>();
         for (final Device device : plainDevices){
             items.add(createDeviceView(device));
         }
@@ -208,7 +203,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         loadDevices();
         loadGroups();
         loadDrivers();
-//        loadVehicleSettings();
         loadVehicles();
         chooseVehicleItems = (List<Vehicle>) adminCacheBean.getAssets("vehicles");
         
@@ -225,13 +219,11 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         final DeviceView deviceView = new DeviceView();
         deviceView.bean = this;
         BeanUtils.copyProperties(device, deviceView);
-//        deviceView.setVehicleDAO(vehicleDAO);
         deviceView.setOldVehicleID(device.getVehicleID());
         deviceView.setSelected(false);
         deviceView.setFirmwareVersionDate();
         if (device.getPhone() != null)
             deviceView.setPhone(MiscUtil.formatPhone(device.getPhone()));
-//        deviceMap.put(deviceView.getId(), deviceView);
         
         return deviceView;
     }
@@ -490,6 +482,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         vehicleDAO.setVehicleDevice(device.getVehicleID(), device.getDeviceID());
         setVehicleDevice(device.getVehicleID(), device.getDeviceID());
         device.setOldVehicleID(device.getVehicleID());
+        //Create configurator settings record if it doesn't exist
+        updateSettingsRecord(device);
     }
 
     private void setVehicleDevice(Integer vehicleID, Integer deviceID)
@@ -497,7 +491,16 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         Vehicle vehicle = (Vehicle)adminCacheBean.getAsset("vehicles", vehicleID);
         vehicle.setDeviceID(deviceID);
     }
-
+    private void updateSettingsRecord(DeviceView device){
+        //Only want to do this if they aren't set to something else already
+        //But can't tell if it's a new record here so not sure what to do
+        //It somehow magically comes into existence
+        if(!vehicleSettingsFactory.settingsRecordExists(device.getVehicleID())){
+            vehicleSettingManager = vehicleSettingsFactory.getSettingManager(device.getProductVersion(), device.getVehicleID(), device.getDeviceID());
+            EditableVehicleSettings editableVehicleSettings = vehicleSettingManager.createDefaultValues(device.getVehicleID());
+            vehicleSettingManager.setVehicleSettings(device.getVehicleID(), editableVehicleSettings, this.getUserID(), "Assigning new vehicle");
+        }
+     }
     @Override
     protected String getDisplayRedirect()
     {
@@ -668,10 +671,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         return (CacheItemMap<DeviceSettingDefinition, VehicleSetting>)adminCacheBean.getMap("vehicleSettings");
     }
 
-    public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
-        this.configuratorDAO = configuratorDAO;
-    }
-
     public ColumnFiltering<Vehicle> getChooseVehicleFiltering() {
         return chooseVehicleFiltering;
     }
@@ -694,5 +693,13 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public void setChosenVehicleID(String chosenVehicleID) {
         this.chosenVehicleID = chosenVehicleID;
+    }
+
+    public VehicleSettingsFactory getVehicleSettingsFactory() {
+        return vehicleSettingsFactory;
+    }
+
+    public void setVehicleSettingsFactory(VehicleSettingsFactory vehicleSettingsFactory) {
+        this.vehicleSettingsFactory = vehicleSettingsFactory;
     }
 }

@@ -20,6 +20,15 @@ public class VehicleSetting {
 	    
         combinedSettings = new HashMap<Integer,String>();
     }
+	
+    public VehicleSetting(Integer vehicleID, Integer deviceID, ProductType productType) {
+        super();
+        this.vehicleID = vehicleID;
+        this.deviceID = deviceID;
+        this.productType = productType;
+
+        combinedSettings = new HashMap<Integer,String>();
+}
     public Integer getVehicleID() {
         return vehicleID;
     }

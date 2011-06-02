@@ -203,7 +203,7 @@
                       <td width="100" style="font-weight:bold;"><h:outputText id="chosenVehicleShow" value="#{devicesBean.item.vehicle.name}" /></td>
             <td width="550" align="right">
             <rich:toggleControl value="#{messages.editDevice_showVehiclesForAssignment}" switchToState="open" >
-<!--            <h:graphicImage id="pic" style="border-width:0;width:15px;height:15px" value="/images/btn_move_right.png" />-->
+            <h:graphicImage id="picclosed" style="border-width:0;width:12px;height:12px" value="/images/tree_button_unpressed.gif" />
             </rich:toggleControl></td>
                     </tr>
                   </table>
@@ -217,7 +217,11 @@
                     <tr>
                       <td width="100" valign="top"><h:outputText value="#{messages.editDevice_vehicleID}" /></td>
                       <td width="100" style="font-weight:bold;"><h:outputText id="chosenVehicleHide" value="#{devicesBean.item.vehicle.name}" /></td>
-            		  <td width="550" align="right"><rich:toggleControl value="#{messages.editDevice_hideVehiclesForAssignment}" switchToState="closed" /></td>
+            		  <td width="550" align="right">
+            		  <rich:toggleControl value="#{messages.editDevice_hideVehiclesForAssignment}" switchToState="closed" >
+            			<h:graphicImage id="picopen" style="border-width:0;width:12px;height:12px" value="/images/tree_button_pressed.gif" />
+            		  </rich:toggleControl>
+              		  </td>
                     </tr>
                   </table>
             </h:panelGroup>

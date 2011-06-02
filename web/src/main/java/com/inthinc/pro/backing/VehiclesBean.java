@@ -51,7 +51,6 @@ import com.inthinc.pro.util.SelectItemUtil;
 /**
  * @author David Gileadi
  */
-@SuppressWarnings("unused")
 public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implements PersonChangeListener, Serializable
 {
     private static final long                     serialVersionUID       = 1L;
@@ -217,7 +216,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             }
             else {
                 
-                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(batchEditProductChoice,vehicleID, null));
+                vehicleSettingManagers.put(vehicleID, vehicleSettingsFactory.getSettingManager(batchEditProductChoice,vehicleID));
             }
         }
     }
@@ -416,7 +415,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
     }
     private void createSettingManagerForCreateItem(){
                         
-        vehicleSettingManagers.put(-1, vehicleSettingsFactory.getSettingManager(batchEditProductChoice,-1, null));
+        vehicleSettingManagers.put(-1, vehicleSettingsFactory.getSettingManager(batchEditProductChoice,-1));
     }
     @Override
     public String cancelEdit()

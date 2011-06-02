@@ -44,7 +44,6 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         setHardVertical(hardVertical);
         
     }
-    
     public void setSpeedSettings(Integer[] speedSettings) {
         if (speedSettings == null)
         {

@@ -12,11 +12,17 @@ import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
+@SuppressWarnings("serial")
 public class TiwiproSettingManager extends VehicleSettingManager{
 
     public TiwiproSettingManager(ConfiguratorDAO configuratorDAO, ProductType productType, VehicleSetting vehicleSetting) {
         
         super(configuratorDAO,productType,vehicleSetting);
+        
+    }
+    public TiwiproSettingManager(ConfiguratorDAO configuratorDAO, ProductType productType, Integer vehicleID, Integer deviceID) {
+        
+        super(configuratorDAO,productType,vehicleID,deviceID);
         
     }
 	@Override

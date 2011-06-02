@@ -4,6 +4,7 @@ public class SliderKey {
     
     private volatile int hashCode;
     
+    // The slider values in the database are uniquely keyed on the following fields.
     private Integer sensitivityType;
     private Integer productType;
     private Integer minFirmwareVersion;

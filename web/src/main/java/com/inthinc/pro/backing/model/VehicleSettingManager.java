@@ -12,6 +12,7 @@ import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.Slider;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
+@SuppressWarnings("serial")
 public abstract class VehicleSettingManager extends BaseBean {
 
 	protected ConfiguratorDAO configuratorDAO;
@@ -30,6 +31,12 @@ public abstract class VehicleSettingManager extends BaseBean {
         vehicleSensitivitySliders = new VehicleSensitivitySliders(productType, 0, 1000000);
     }
     
+    protected VehicleSettingManager(ConfiguratorDAO configuratorDAO, ProductType productType, Integer vehicleID, Integer deviceID) {
+
+        this.configuratorDAO = configuratorDAO;
+        this.vehicleSetting = new VehicleSetting(vehicleID,deviceID,productType);
+        vehicleSensitivitySliders = new VehicleSensitivitySliders(productType, 0, 1000000);
+    }
     public VehicleSettingManager() {
 
     }
@@ -56,7 +63,7 @@ public abstract class VehicleSettingManager extends BaseBean {
 	    }
 	}
 	
-    protected abstract EditableVehicleSettings createDefaultValues(Integer vehicleID);
+    public abstract EditableVehicleSettings createDefaultValues(Integer vehicleID);
     protected abstract EditableVehicleSettings createFromExistingValues(Integer vehicleID,VehicleSetting vs);
     
     protected Map<Integer, String> getHardAccelerationValue(Integer sliderValue){

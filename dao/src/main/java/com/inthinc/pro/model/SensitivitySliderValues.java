@@ -11,13 +11,15 @@ import com.inthinc.pro.model.configurator.ProductType;
 public class SensitivitySliderValues {
 	
     //Slider values from the database
-    
-    private Integer sensitivityType;
+    //These four fields uniquely key a set of slider values
+    private Integer sensitivityType; //maps to Hard Vertical, Unsafe Turn, Hard Acceleration, Hard Brake
 	private ProductType productType;
 	private Integer minFirmwareVersion;
 	private Integer maxFirmwareVersion;
 	
+	//Some slider values have multiple values
 	private Integer sensitivitySubtype;
+	//This matches the settingIDs in the settingDefs table
 	private Integer settingID;
 	@Column (name="fwdCmd")
 	private Integer forwardCommand;

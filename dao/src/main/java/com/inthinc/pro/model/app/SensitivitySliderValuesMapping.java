@@ -27,7 +27,7 @@ public class SensitivitySliderValuesMapping {
     }
 
     public void init(){
-        
+        //Get the sensitivity values table data and build a map of sliders
         List<SensitivitySliderValues> sensitivitySliderValuesList = configuratorDAO.getSensitivitySliderValues();
         if (!sensitivitySliderValuesList.isEmpty()){
             buildSliders(sensitivitySliderValuesList);
