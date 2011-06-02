@@ -22,8 +22,10 @@ import org.springframework.context.MessageSource;
 
 import com.inthinc.pro.dao.AccountDAO;
 import com.inthinc.pro.dao.UserDAO;
+import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.User;
+import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 
 public class UpdateCredentialsBean extends BaseBean
 {
@@ -214,23 +216,18 @@ public class UpdateCredentialsBean extends BaseBean
         } catch (ClassCastException e) {
             user = null;
         }
-        Integer results = null;
+        
         if(user == null) {
             if(username != null && !username.equals("")) {
                 user = userDAO.findByUserName(username);
             } else if(userID != null) {
                 user = userDAO.findByID(userID);
             } else {
-                return 0; //TODO: jwimmer: something bad happened handle appropriately?
+                return 0;
             }
         }
         Account account = accountDAO.findByID(user.getPerson().getAccountID());
-        try{
-            results = Integer.parseInt(account.getProps().getPasswordStrength());
-        } catch(NumberFormatException nfe) {
-            logger.warn("Couldn't parse an Integer for passwordStrength from "+account.getProps().getPasswordStrength());
-        }
-        return results;
+        return NumberUtil.convertString(account.getProps().getPasswordStrength());
     }
     public Integer getMinPasswordStrength() {
         if(minPasswordStrength == null || minPasswordStrength == 0){
