@@ -39,7 +39,7 @@ public class Slider {
         //Where there is a value in the setting that represents the slider position it is ignored
         // in the matching because it won't get set correctly in the configurator.  This value should
         // eventually be dropped
-        if (settings == null || settings.isEmpty()) return sliderPositionCount+1;
+        if (settings == null || settings.isEmpty() || settingsAllNull(settings)) return defaultValueIndex;
         
         Set<Entry<Integer,String>> settingEntries = settings.entrySet();
 
@@ -48,6 +48,15 @@ public class Slider {
             if (settingsMatch(sliderValue,settingEntries)) return sliderValue+1;
         }
         return sliderPositionCount+1;
+    }
+    private boolean settingsAllNull(Map<Integer,String> settings){
+        Set<Entry<Integer,String>> settingEntries = settings.entrySet();
+        
+        for (Entry<Integer,String> settingEntry : settingEntries){
+            
+            if (settingEntry.getValue() != null) return false;
+        }
+        return true;
     }
     private boolean settingsMatch(int sliderValue,Set<Entry<Integer,String>> settingEntries){
         //Where there are several settings for a slider value all must match
