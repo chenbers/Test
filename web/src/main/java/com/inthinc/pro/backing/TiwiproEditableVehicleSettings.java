@@ -47,7 +47,10 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
     public void setSpeedSettings(Integer[] speedSettings) {
         if (speedSettings == null)
         {
-            this.speedSettings = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING;
+            this.speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
+            for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
+                this.speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
+            }
         }
         else {
         	
@@ -67,7 +70,10 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 		
         if (speedSettings == null)
         {
-             speedSettings = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING;
+            Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
+            for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
+                speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
+            }
         }
         return speedSettings;
 	}

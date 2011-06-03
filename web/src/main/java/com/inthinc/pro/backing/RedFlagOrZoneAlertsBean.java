@@ -318,8 +318,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
     @Override
     public RedFlagOrZoneAlertView getItem() {
         final RedFlagOrZoneAlertView item = super.getItem();
-        if (item.getSpeedSettings() == null)
-            item.setSpeedSettings(TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING);
+        if (item.getSpeedSettings() == null){
+            Integer[] speedSettings = new Integer[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
+            for (int i = 0; i < TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS; i++){
+                speedSettings[i] = TiwiproSpeedingConstants.INSTANCE.DEFAULT_SPEED_SETTING[i]; 
+            }
+            item.setSpeedSettings(speedSettings);
+        }
         return item;
     }
 
