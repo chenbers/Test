@@ -520,14 +520,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         boolean found = false;
         boolean doneWaiting = false;
         while (!found && !doneWaiting) {
-            found =    ((element instanceof String)         && (isElementPresent((String)element))        )
-                    || ((element instanceof AutomationEnum) && (isElementPresent((AutomationEnum)element)));
+            boolean foundByString = ((element instanceof String) && (isElementPresent((String) element)));
+            boolean foundByEnum = ((element instanceof AutomationEnum) && (isElementPresent((AutomationEnum) element))); 
+            found =  foundByString || foundByEnum;
             pause(1, "waitForElementPresent: " + element); // second
             x++;
             doneWaiting = x > secondsToWait;
         }
-        if(!found)
-            errors.addError("waitForElementPresent TIMEOUT", "while waiting for "+element);
+        if (!found)
+            errors.addError("waitForElementPresent TIMEOUT", "while waiting for " + element);
         return this;
     }
 
