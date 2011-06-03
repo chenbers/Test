@@ -386,7 +386,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     public CoreMethodLib pause(Integer timeout_in_secs, String reasonForPause) {
         try {
             logger.debug("pausing for "+timeout_in_secs+" seconds because: "+reasonForPause);
-            Thread.currentThread();
+            //Thread.currentThread();
             Thread.sleep((long) (timeout_in_secs * 1000));
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -514,34 +514,20 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
     public Boolean verifyLocation(String expected) {
         return expected.equals(getLocation(expected));
     }
-
-    public CoreMethodLib waitForElementPresent(AutomationEnum myEnum, Integer secondsToWait) {
-        Integer x = 0;
-        boolean found = false;
-        boolean doneWaiting = false;
-        while (!found || !doneWaiting) {
-            if (isElementPresent(myEnum)){
-            	break;
-            }
-            pause(1, "waitForElementPresent"); // second
-            x++;
-            doneWaiting = x > secondsToWait;
-        }
-        return this;
-    }
     
-    public CoreMethodLib waitForElementPresent(String element, Integer secondsToWait) {
+    public CoreMethodLib waitForElementPresent(Object element, Integer secondsToWait) {
         Integer x = 0;
         boolean found = false;
         boolean doneWaiting = false;
-        while (!found || !doneWaiting) {
-            if (isElementPresent(element)){
-            	break;
-            }
+        while (!found && !doneWaiting) {
+            found =    ((element instanceof String)         && (isElementPresent((String)element))        )
+                    || ((element instanceof AutomationEnum) && (isElementPresent((AutomationEnum)element)));
             pause(1, "waitForElementPresent: " + element); // second
             x++;
             doneWaiting = x > secondsToWait;
         }
+        if(!found)
+            errors.addError("waitForElementPresent TIMEOUT", "while waiting for "+element);
         return this;
     }
 
