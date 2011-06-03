@@ -100,6 +100,7 @@ public abstract class Masthead extends AbstractPage {
 		}
 	}
 
+	//TODO: dtanner: not used anywhere yet... beware using the word VALIDATE... as it sounds like its validating EVERYTHING
 	public class MastheadValidation {
 		public void footer() {
 			ElementBase test = new ElementBase();

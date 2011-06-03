@@ -2,7 +2,7 @@ package com.inthinc.pro.automation.enums;
 
 
 public interface SeleniumEnums extends TextEnum {
-    //TODO: jwimmer: question for dTanner: not sure what these Strings are?  let's leverage enums for situations when we need more than just key/value pairs.  These look like things that should be in .properties files? or possibly even pulled from messages.properties
+    //TODO: place Strings that are used repeatedly here, until they can be pulled from .properties (potentially messages.properties)
     public static String email = "E-mail";
     public static String emailReport = email + " This Report";
     public static String exportPDF = "Export To PDF";
@@ -16,7 +16,7 @@ public interface SeleniumEnums extends TextEnum {
     public static String addresses = "E-mail Address(es): (e-mail addresses separated by a comma)";
     
     
-    public static String appUrl = "/app"; //TODO: jwimmer: question for dTanner: this is captured in automation.properties
+    public static String appUrl = "/app"; 
 	
 	public String[] getIDs();
 	

@@ -97,6 +97,7 @@ public class ElementBase implements ElementInterface {
         selenium.getErrors().addExpected(errorName, expected);
     }
 
+    //TODO: jwimmer: dtanner: asserts should not be made available to the test writers.  test writers should compare/validate/? Elements, where the assert methods do not necessarily operate on the element.  note: pulling certain methods up one layer to an object that parents AutomatedTest and ElementBase would reveal them in both places... IF that is done make sure we are only revealing methods to the test writers that we think they need and/or will use
     public void assertNotEquals(Object actual, Object expected) {
         if (actual.equals(expected)) {
             addError(actual + " == " + expected);

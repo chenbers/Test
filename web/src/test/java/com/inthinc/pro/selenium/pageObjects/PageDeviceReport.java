@@ -14,7 +14,7 @@ import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
 public class PageDeviceReport extends ReportsBar {
-    //TODO: jwimmer: dtanner: should we consider quickly refactoring pageObject names to utilize ide completion? 
+    //TODO: dtanner: change to match navigation i.e. PageReportDevice 
     // i.e. to me PageReportsDevices makes more sense for this pageObject since I click "Reports" then "Devices" to navigate to it?
 	private String page = "devices";
 

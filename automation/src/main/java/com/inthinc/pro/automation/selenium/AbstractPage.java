@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.selenium;
 
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.openqa.selenium.WebDriver;
@@ -12,10 +13,16 @@ public abstract class AbstractPage implements Page {
     protected CoreMethodLib selenium;
     protected WebDriver webDriver;
     protected String currentPage;
+    public static ArrayList<Class<? extends AbstractPage>> instantiatedPages = new ArrayList<Class<? extends AbstractPage>>(); //TODO: jwimmer: should not stay public
 
     public AbstractPage() {
-        selenium = GlobalSelenium.getSelenium();
+        selenium = GlobalSelenium.getSelenium(); System.out.println("selenium: "+selenium);
         webDriver = selenium.getWrappedDriver();
+        
+        Class<? extends AbstractPage> derivedClass = this.getClass();
+        if(!instantiatedPages.contains(derivedClass)) {
+            instantiatedPages.add(derivedClass);
+        }
     }
 
     public void addError(String errorName) {
@@ -53,15 +60,6 @@ public abstract class AbstractPage implements Page {
         assertEquals(selenium.getText(anEnum), anEnum.getText());
     }
 
-    // /*
-    // * (non-Javadoc)
-    // *
-    // * @see com.inthinc.pro.web.selenium.Page#page_loginLoad()
-    // */
-    // public AbstractPage page_directURL_loginThenLoad() { //TODO: jwimmer: to dTanner: this was the method I was talking about 20110502 vs. putting loginProcess in Masthead FYI
-    // return (AbstractPage) loginLoad()
-    // }
-
     public void assertNotEquals(Object actual, Object expected) {
         if (actual.equals(expected)) {
             addError(actual + " == " + expected);
@@ -77,13 +75,7 @@ public abstract class AbstractPage implements Page {
             addError(partialString + " not in " + fullString);
         }
     }
-
-    public String browser_location_getCurrent() {
-        String[] url = webDriver.getCurrentUrl().split("/");// TODO: jwimmer: seems like this doesn't capture ALL of the pertinent location info for some pages? i.e.
-                                                            // https://my.inthinc.com/tiwipro/app/driver/214
-        return url[url.length - 1];
-    }
-
+    
     public ErrorCatcher get_errors() {
         return selenium.getErrors();
     }
@@ -111,15 +103,14 @@ public abstract class AbstractPage implements Page {
     public AbstractPage validateURL() {
         boolean results = getCurrentLocation().contains(getExpectedPath());
         if (!results)
-            addError("validateURL", getCurrentLocation() + " does not contain " + getExpectedPath() + " ?"); // TODO: jwimmer: this should fail test if called and results = false.
-                                                                                                             // ??? does this (addError(...) fail the test)
+            addError("validateURL", getCurrentLocation() + " does not contain " + getExpectedPath() + " ?"); 
         return this;
     }
 
     @Override
     public Page load() {
         selenium.open(this.getExpectedPath());
-        return this;// TODO: did change from null to this break anything? jwimmer:
+        return this;// TODO: jwimmer: remove load()... jwimmer is the only one using it.
     }
 
     public AbstractPage page_bareMinimum_validate() {
@@ -128,32 +119,8 @@ public abstract class AbstractPage implements Page {
 
     @Override
     public AbstractPage validate() {
+        addError("no validate method", "automation cannot validate AbstractPage OR there is no validate() method for the concrete page being tested.");
         // TODO Auto-generated method stub
         return this;
-    }
-
-    //TODO: jwimmer: try without these AT ALL (slated for removal because they should be obsolete
-    protected void clickIt(String rowQualifier, Integer row) {
-        if (row != null) {
-            rowQualifier = insertRow(rowQualifier, row);
-        }
-        selenium.click(rowQualifier);
-        selenium.pause(10, "makes sure the next \"thing\" is there");
-    }
-
-    protected String insertRow(String rowQualifier, Integer row) {
-        StringTokenizer st = new StringTokenizer(rowQualifier, ":");
-
-        StringBuffer sb = new StringBuffer();
-        sb.append(st.nextToken());
-        sb.append(":");
-        sb.append(st.nextToken());
-        sb.append(":");
-        sb.append(Integer.toString(row));
-        sb.append(":");
-        st.nextToken();
-        sb.append(st.nextToken());
-
-        return sb.toString();
     }
 }
