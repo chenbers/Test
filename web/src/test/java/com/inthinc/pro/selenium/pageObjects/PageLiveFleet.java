@@ -7,8 +7,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
-import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
-import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceTrips.DriverTripsPopUps;
+
 
 public class PageLiveFleet extends NavigationBar {
 	
@@ -59,8 +58,6 @@ public class PageLiveFleet extends NavigationBar {
         }
 
         public TextLink vehicleByListPosition(Integer position) {
-            // TODO: jwimmer: discuss with team: is there a beneficial naming convention for a piece of text that we KNOW is going to be dynamic from the database? i.e. *_NEED_*
-            // indicates that it expects something?
             return new TextLink(LiveFleetEnum.LINK_DISPATCH_VEHICLE_NEED_INDEX, null, position);
         }
     }
@@ -148,24 +145,6 @@ public class PageLiveFleet extends NavigationBar {
             return new DropDown(LiveFleetEnum.DROPDOWN_LIVE_FLEET_NUM_NEAREST_VEHICLES);
         }
     }
-//TODO: jwimmer: I would prefer page.validate() {...} ??? AND page._type.elementName.validate()  
-//    public class MastheadValidation{
-//        public void footer(){
-//            ElementBase test =  new ElementBase();
-//            test.validateElementsPresent(MastheadEnum.COPYRIGHT,MastheadEnum.PRIVACY,MastheadEnum.LEGAL,
-//                    MastheadEnum.SUPPORT,MastheadEnum.VERSION);
-//            test.validateTextMatches(MastheadEnum.COPYRIGHT,MastheadEnum.PRIVACY,MastheadEnum.LEGAL,
-//                    MastheadEnum.SUPPORT,MastheadEnum.VERSION);
-//        }
-//        
-//        public void header(){
-//            ElementBase test =  new ElementBase();
-//            test.validateElementsPresent(MastheadEnum.LOGO,MastheadEnum.HELP, MastheadEnum.MY_MESSAGES,
-//                    MastheadEnum.MY_ACCOUNT, MastheadEnum.LOGOUT);
-//            test.validateTextMatches(MastheadEnum.LOGO,MastheadEnum.HELP, MastheadEnum.MY_MESSAGES,
-//                    MastheadEnum.MY_ACCOUNT, MastheadEnum.LOGOUT);
-//        }
-//    }
     
     @Override
     public String getExpectedPath() {
