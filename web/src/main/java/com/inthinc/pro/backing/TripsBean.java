@@ -25,6 +25,7 @@ import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.EntityType;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Trip;
@@ -714,7 +715,12 @@ public class TripsBean extends BaseBean {
 			lastLocation = getEntityLastLocation();
 		}
         if(lastLocation==null){
-            lastLocation = getGroupHierarchy().getTopGroup().getMapCenter();
+            //try group default locations for driver or vehicle
+            lastLocation = getGroupDefaultLocation();
+        }
+        if(lastLocation==null){
+            //something has gone horribly wrong - center on our office latlng
+            lastLocation = new LatLng(40.7,-112.012);
         }
 	}
 	private LatLng  getEntityLastLocation(){
@@ -727,5 +733,24 @@ public class TripsBean extends BaseBean {
 	    }
         if(ll == null) return null;
         return ll.getLoc();
+	}
+	private LatLng getGroupDefaultLocation(){
+		return getGroupHierarchy().getTopGroup().getMapCenter();
+//	    Integer groupID;
+//        if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
+//            groupID = ((Driver)identifiableEntityBean.getEntity()).getGroupID();
+//        }
+//        else{
+//            groupID = ((Vehicle)identifiableEntityBean.getEntity()).getGroupID();
+//        }
+//        Group group = getGroupHierarchy().getGroup(groupID);
+//        while ((group != null)&&(group.getMapCenter() == null)){
+//            group = getGroupHierarchy().getParentGroup(group);
+//        }
+//        if ((group == null )||(group.getMapCenter() == null)){
+//            return null;
+//        }
+//        return group.getMapCenter();
+	    
 	}
 }
