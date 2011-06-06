@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.utils.RandomValues;
@@ -9,6 +10,7 @@ import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
 import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
 import com.inthinc.pro.selenium.pageEnums.TAE.RedFlagPrefs;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
+import junit.runner.Version;
 
 public class EditMyAccountTest extends WebRallyTest {
 
@@ -24,6 +26,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	}
 
 	@Test
+	@Ignore
 	public void MeasurementValidation() {
 		set_test_case("TC1275");
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
@@ -47,6 +50,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	}
 
 	@Test
+	@Ignore
 	public void FuelRatioValidation() {
 		set_test_case("TC1273");
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
@@ -63,7 +67,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		myAccountPage._select().fuelEfficiency().select("Miles Per Gallon (US)");
 		myAccountPage._button().save().click();
 		// Validate MPG Here//
-
+		//TODO: jwimmer: dtanner: tnilson: this test doesn't seem to VALIDATE anything?  I don't see any EXPECTED results?
 	}
 
 	@Test
@@ -88,6 +92,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		myAccountPage._button().save().click();
 
 		// Email Required//
+		//TODO: jwimmer: dtanner: tnilson: this test doesn't seem to VALIDATE anything?  I don't see any EXPECTED results?  
 	}
 
 	@Test
@@ -192,6 +197,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		myAccountPage._text().textMessage2().validate("8019997777@tmomail.net");
 	}
 	@Test
+	@Ignore
     public void SaveButton_Changes() {
         set_test_case("TC1280");
         myAccountPage.loginProcess(USERNAME, PASSWORD);
@@ -273,6 +279,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	        myAccountPage._text().email2().validate("tlc1965@test.com");
 	    }
 	   @Test
+	   @Ignore
 	    public void CancelButton_Changes() {
 	        set_test_case("TC1271");
 	        myAccountPage.loginProcess(USERNAME, PASSWORD);
