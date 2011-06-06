@@ -38,12 +38,15 @@ public class CheckableObject extends ClickableObject implements Checkable,
 	}
 
 	@Override
-	@Deprecated
+	@Deprecated 
 	/**
 	 * Use click(Integer number) to specify which item you are clicking
+	 * 
+	 * @deprecated use {@link com.inthinc.pro.automation.elements.CheckableObject#click(Integer)}
 	 */
 	public ClickableObject click() {
-		return null;//TODO: dtanner: fail the test or something
+	    addError("CheckableObject.click()", "more information is required to determine WHICH item to click.  please supply either an (Integer number) or a (String label)");
+		return null;
 	}
 
 	public ClickableObject click(Integer number) {
