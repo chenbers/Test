@@ -26,7 +26,6 @@ public class Template extends WebTest {
         //perform page actions as necessary to recreate testcase
         
         // verify that the page meets the bareMinimum expectations
-        loginPage.page_bareMinimum_validate();
         
         // additional checks will typically be necessary to ensure your expected result was met
         loginPage.validatePage();
