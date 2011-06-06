@@ -40,6 +40,4 @@ public interface Page {
      * @return true if all validation checks pass, otherwise false
      */
     public Page validate();
-    
-    //public Page loginLoad();
 }

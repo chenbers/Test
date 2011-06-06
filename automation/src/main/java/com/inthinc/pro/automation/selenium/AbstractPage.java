@@ -52,6 +52,7 @@ public abstract class AbstractPage implements Page {
         }
     }
 
+    //TODO: jwimmer: to dtanner: if we could talk though the thoughts on page.assert*() methods... this might just be a documentation issue, but it feels like these should be part of the TEST not the page?
     public void assertEquals(Object expected, SeleniumEnums actual) {
         assertEquals(expected, actual.getText());
     }
@@ -70,6 +71,7 @@ public abstract class AbstractPage implements Page {
         assertNotEquals(expected, actual.getText());
     }
 
+    //TODO: jwimmer: to dtanner: seems misleading when used... page.assertContains makes it seem like we are testing that the PAGE contains something?
     public void assertContains(String fullString, String partialString) {
         if (!fullString.contains(partialString)) {
             addError(partialString + " not in " + fullString);
@@ -110,11 +112,8 @@ public abstract class AbstractPage implements Page {
     @Override
     public Page load() {
         selenium.open(this.getExpectedPath());
-        return this;// TODO: jwimmer: remove load()... jwimmer is the only one using it.
-    }
-
-    public AbstractPage page_bareMinimum_validate() {
-        return validate();
+        return this;//TODO: jwimmer: remove load()... jwimmer is the only one using it.
+                    //TODO: jwimmer: to dtaner: I am waiting to remove this until the navigateToBookmark functionality you prefer is in place 
     }
 
     @Override
