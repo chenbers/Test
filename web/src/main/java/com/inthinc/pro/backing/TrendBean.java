@@ -31,6 +31,7 @@ import com.inthinc.pro.reports.ReportRenderer;
 import com.inthinc.pro.reports.service.ReportCriteriaService;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
+import com.inthinc.pro.util.MiscUtil;
 import com.inthinc.pro.wrapper.ScoreableEntityPkg;
 
 @KeepAlive
@@ -258,11 +259,14 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
         sb.append("</chart>");
 
         lineDef = sb.toString();
+        System.out.println("linedef " + lineDef);
     }
 
     private int addDataSet(StringBuffer sb, ScoreableEntityPkg se, List<ScoreableEntity> ss) {
-   
-        sb.append("<dataset seriesName=\'" + se.getSe().getIdentifier() + "\' color=\'");
+        
+        // escape any bad characters
+        String escaped = MiscUtil.escapeBadCharacters(se.getSe().getIdentifier());
+        sb.append("<dataset seriesName=\'" + escaped + "\' color=\'");
         sb.append(se.getColorKey());
         sb.append("\'>");
 
