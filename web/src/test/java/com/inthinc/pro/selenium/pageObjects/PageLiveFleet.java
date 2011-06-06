@@ -60,13 +60,12 @@ public class PageLiveFleet extends NavigationBar {
         public TextLink vehicleByListPosition(Integer position) {
             return new TextLink(LiveFleetEnum.LINK_DISPATCH_VEHICLE_NEED_INDEX, null, position);
         }
+        public TextLink mapBubbleDefaultChangeView() {
+            return new TextLink(LiveFleetEnum.LINK_MAP_BUBBLE_DEFAULT_CHANGE_VIEW);
+        }
     }
 
     public class LiveFleetTexts extends NavigationBarTexts {
-        public Text mapBubbleDefaultChangeView() {
-            return new Text(LiveFleetEnum.TEXTFIELD_LIVE_FLEET_FIND_ADDRESS);
-        }
-
         public Text liveFleetHeader() {
             return new Text(LiveFleetEnum.HEADER_BOX_DISPATCH);
         }
