@@ -203,7 +203,6 @@
                       <td width="100" style="font-weight:bold;"><h:outputText id="chosenVehicleShow" value="#{devicesBean.item.vehicle.name}" /></td>
             <td width="550" align="right">
             <rich:toggleControl value="#{messages.editDevice_showVehiclesForAssignment}" switchToState="open" >
-            <h:graphicImage id="picclosed" style="border-width:0;width:12px;height:12px" value="/images/tree_button_unpressed.gif" />
             </rich:toggleControl></td>
                     </tr>
                   </table>
@@ -219,27 +218,29 @@
                       <td width="100" style="font-weight:bold;"><h:outputText id="chosenVehicleHide" value="#{devicesBean.item.vehicle.name}" /></td>
             		  <td width="550" align="right">
             		  <rich:toggleControl value="#{messages.editDevice_hideVehiclesForAssignment}" switchToState="closed" >
-            			<h:graphicImage id="picopen" style="border-width:0;width:12px;height:12px" value="/images/tree_button_pressed.gif" />
             		  </rich:toggleControl>
               		  </td>
                     </tr>
                   </table>
             </h:panelGroup>
 			<h:panelGroup>
- 			<ul id="grid_nav" style="margin: 0; ">
+ 			<ul id="grid_nav" style="margin: 0; padding: 0pt 0pt 5px; height: 36px;">
              <li class="l">
-              <table width="100%" border="0" cellspacing="0" cellpadding="4" id="grid_nav_search_box">
+              <table width="100%" border="0" cellspacing="0"  id="grid_nav_search_box">
                 <tr>
-                  <td><h:outputText value="#{messages.button_search}" /></td>
-                  <td>
+                  <td style="padding:0pt 10px 0pt 0pt"><h:outputText value="#{messages.button_search}" /></td>
+                  <td style="padding:0pt 10px 0pt 0pt">
                 <h:inputText id="editDevice-filterTable" value="#{devicesBean.chooseVehicleSearchKeyword}" class="text" size="20" onkeypress="if (event &amp;&amp; event.keyCode == 13) { document.getElementById('edit-form:editDevice-chooseVehicleTableSearch').onclick(); return false; } return true;" />
                   </td>
+              <td class="l" style="padding:0pt 10px 0pt 0pt">
+				<a4j:commandButton id="editDevice-chooseVehicleTableSearch" reRender="editDevice-chooseVehicleTable,editDevice-chooseVehicleScroller" styleClass="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></a4j:commandButton>
+			</td>
                 </tr>
               </table>
             </li>
-             <li class="l">
-				<a4j:commandButton id="editDevice-chooseVehicleTableSearch" reRender="editDevice-chooseVehicleTable,editDevice-chooseVehicleScroller" styleClass="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></a4j:commandButton>
-			</li>
+<!--             <li class="l">-->
+<!--				<a4j:commandButton id="editDevice-chooseVehicleTableSearch" reRender="editDevice-chooseVehicleTable,editDevice-chooseVehicleScroller" styleClass="left"><span class="search"><h:outputText value="#{messages.button_search}" /></span></a4j:commandButton>-->
+<!--			</li>-->
 			</ul>
 		<rich:spacer height="5px"/>
 			</h:panelGroup>
