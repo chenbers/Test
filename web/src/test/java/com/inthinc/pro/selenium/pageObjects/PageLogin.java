@@ -83,7 +83,8 @@ public class PageLogin extends Masthead {
     
 
     public PageLogin loginProcess(String username, String password) {
-        openLogout();
+        if(!this._textField().userName().isPresent())
+            openLogout();//TODO: jwimmer: to dTanner: if we ONLY have scriptwriters use loginProcess WHEN there IS a loginform on the page then it can be used for bookmark login navigation, see JwimmerSandboxTest.liveFleet_fromBookmarkLoggedIn_goDirectlyToLiveFleet
         new LoginTextFields().userName().type(username);
         new LoginTextFields().password().type(password);
         new LoginButtons().logIn().click();
