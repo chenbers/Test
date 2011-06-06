@@ -5,6 +5,7 @@ import com.inthinc.pro.model.File;
 
 public interface ElementInterface {
     public boolean isVisible();
+    public boolean isPresent();
     public ElementInterface focus();
     public ElementInterface validate();
     public ElementInterface addError(String errorName);

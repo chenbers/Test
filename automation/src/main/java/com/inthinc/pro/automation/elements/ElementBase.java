@@ -55,14 +55,16 @@ public class ElementBase implements ElementInterface {
         selenium = GlobalSelenium.getSelenium();
         webDriver = selenium.getWrappedDriver();
     }
-    
-
+    @Override
+    public boolean isPresent() {
+        return selenium.isElementPresent(myEnum);
+    }
     @Override
     public boolean isVisible() {
         return selenium.isVisible(myEnum);
     }
     
-    public boolean assertVisibility(Boolean visible) {
+    public boolean assertVisibility(Boolean visible) {  
         return assertTrue(visible == selenium.isVisible(myEnum));
     }
 
