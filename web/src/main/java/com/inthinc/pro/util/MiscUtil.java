@@ -167,4 +167,19 @@ public class MiscUtil
     public static boolean notEmpty(String s){
         return s!=null && s.length()>0;
     }
+    
+    public static String escapeBadCharacters(String string) {
+        StringBuffer sb = new StringBuffer();
+        
+        for (int i=0; i<string.length(); i++) {
+            char c = string.charAt(i);
+            if (c == '\'') {
+                sb.append("&quot;");
+            } else {
+                sb.append(c);
+            }
+          }
+
+        return sb.toString();
+    }
 }
