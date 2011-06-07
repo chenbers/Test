@@ -1,4 +1,6 @@
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util" xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
     http://www.springframework.org/schema/util 
@@ -6,139 +8,157 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName">
-   
-   
-   <bean id="propertyPlaceholderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-   		<property name="ignoreResourceNotFound" value="true" />
-    	<property name="locations">
-      		<list>
-        		<value>classpath:tiwipro.properties</value>
-        		<value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
-      		</list>
-    	</property>
-   </bean>   
 
-   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-         <property name="host" value="${mailserver}" />
- 	</bean>
 
-   <bean id="mailDispatcher"	class="com.inthinc.pro.scheduler.dispatch.MailDispatcher">
+	<bean id="propertyPlaceholderConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:tiwipro.properties</value>
+				<value>file:${CATALINA_HOME}/conf/tiwipro.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mailserver}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.debug">${mail.debug}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="mailDispatcher" class="com.inthinc.pro.scheduler.dispatch.MailDispatcher">
 		<property name="mailSender" ref="mailSender" />
-         <property name="from">
-      		<value><![CDATA[DriveAware Support <${accountOptions.noReplyEmailAddress}>]]></value>
-    	</property>
+		<property name="from">
+			<value><![CDATA[DriveAware Support <${accountOptions.noReplyEmailAddress}>]]></value>
+		</property>
 	</bean>
 
-   <bean id="phoneDispatcher" class="com.inthinc.pro.scheduler.dispatch.PhoneDispatcher" init-method="init">
-<!--         <property name="phoneServerURL" value="${voxeo.phoneServerURL}" />-->
-<!--         <property name="callerID" value="${voxeo.callerID}" />-->
-<!--         <property name="tokenID" value="${voxeo.tokenID}" />-->
-         <property name="maxThreads" value="${voxeo.maxThreads}" />
+	<bean id="phoneDispatcher" class="com.inthinc.pro.scheduler.dispatch.PhoneDispatcher"
+		init-method="init">
+		<!-- <property name="phoneServerURL" value="${voxeo.phoneServerURL}" /> -->
+		<!-- <property name="callerID" value="${voxeo.callerID}" /> -->
+		<!-- <property name="tokenID" value="${voxeo.tokenID}" /> -->
+		<property name="maxThreads" value="${voxeo.maxThreads}" />
 	</bean>
-   <bean id="callServiceMessageSender" class="${callServiceMessageSender}">
-        <property name="phoneServerURL" value="${voxeo.phoneServerURL}" />
-        <property name="callerID" value="${voxeo.callerID}" />
-        <property name="tokenID" value="${voxeo.tokenID}" />
-   </bean>
-   <!--  QUARTZ (jobs and triggers) -->
+	<bean id="callServiceMessageSender" class="${callServiceMessageSender}">
+		<property name="phoneServerURL" value="${voxeo.phoneServerURL}" />
+		<property name="callerID" value="${voxeo.callerID}" />
+		<property name="tokenID" value="${voxeo.tokenID}" />
+	</bean>
+	<!-- QUARTZ (jobs and triggers) -->
 	<bean id="baseAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean">
-		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.BaseAlertJob"/>
+		<property name="jobClass"
+			value="com.inthinc.pro.scheduler.quartz.BaseAlertJob" />
 		<property name="jobDataAsMap">
 			<map>
-				<entry key="alertMessageDAO" value-ref="alertMessageDAO"/>
-				<entry key="mailDispatcher" value-ref="mailDispatcher"/>
-				<entry key="phoneDispatcher" value-ref="phoneDispatcher"/>
+				<entry key="alertMessageDAO" value-ref="alertMessageDAO" />
+				<entry key="mailDispatcher" value-ref="mailDispatcher" />
+				<entry key="phoneDispatcher" value-ref="phoneDispatcher" />
 			</map>
 		</property>
-   </bean>
-   
-	<bean name="emailAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
-		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.EmailAlertJob"/>
 	</bean>
-	
-	<bean name="emailReportJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
-		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.EmailReportJob"/>
+
+	<bean name="emailAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean"
+		parent="baseAlertJob">
+		<property name="jobClass"
+			value="com.inthinc.pro.scheduler.quartz.EmailAlertJob" />
+	</bean>
+
+	<bean name="emailReportJob" class="org.springframework.scheduling.quartz.JobDetailBean"
+		parent="baseAlertJob">
+		<property name="jobClass"
+			value="com.inthinc.pro.scheduler.quartz.EmailReportJob" />
 		<property name="jobDataAsMap">
 			<map>
-				<entry key="reportCreator" value-ref="reportCreator"/>
-				<entry key="reportCriteriaService" value-ref="reportCriteriaService"/>
-				<entry key="reportScheduleDAO" value-ref="reportScheduleDAO"/>
-				<entry key="userDAO" value-ref="userDAO"/>
-				<entry key="accountDAO" value-ref="accountDAO"/>
-				<entry key="groupDAO" value-ref="groupDAO"/>
-				<entry key="driverDAO" value-ref="driverDAO"/>
-				<entry key="webContextPath" value="${contextPath.web}"/>
+				<entry key="reportCreator" value-ref="reportCreator" />
+				<entry key="reportCriteriaService" value-ref="reportCriteriaService" />
+				<entry key="reportScheduleDAO" value-ref="reportScheduleDAO" />
+				<entry key="userDAO" value-ref="userDAO" />
+				<entry key="accountDAO" value-ref="accountDAO" />
+				<entry key="groupDAO" value-ref="groupDAO" />
+				<entry key="driverDAO" value-ref="driverDAO" />
+				<entry key="webContextPath" value="${contextPath.web}" />
 				<entry key="encryptPassword" value="j$2yptt3xt3ncrypt0r23cr3tp422w0rd" />
 			</map>
 		</property>
 	</bean>
-	
-	<bean name="smsAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
-		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.SMSAlertJob"/>
+
+	<bean name="smsAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean"
+		parent="baseAlertJob">
+		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.SMSAlertJob" />
 	</bean>
-	
-	<bean name="phoneAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
-		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.PhoneAlertJob"/>
+
+	<bean name="phoneAlertJob" class="org.springframework.scheduling.quartz.JobDetailBean"
+		parent="baseAlertJob">
+		<property name="jobClass"
+			value="com.inthinc.pro.scheduler.quartz.PhoneAlertJob" />
 	</bean>
 
 
-	<bean name="zonePublishJob" class="org.springframework.scheduling.quartz.JobDetailBean" parent="baseAlertJob">
-		<property name="jobClass" value="com.inthinc.pro.scheduler.quartz.ZonePublishJob"/>
+	<bean name="zonePublishJob" class="org.springframework.scheduling.quartz.JobDetailBean"
+		parent="baseAlertJob">
+		<property name="jobClass"
+			value="com.inthinc.pro.scheduler.quartz.ZonePublishJob" />
 		<property name="jobDataAsMap">
 			<map>
-				<entry key="accountDAO" value-ref="accountDAO"/>
-				<entry key="zoneDAO" value-ref="zoneDAO"/>
-				<entry key="zonePublishDAO" value-ref="zonePublishDAO"/>
+				<entry key="accountDAO" value-ref="accountDAO" />
+				<entry key="zoneDAO" value-ref="zoneDAO" />
+				<entry key="zonePublishDAO" value-ref="zonePublishDAO" />
 			</map>
 		</property>
 	</bean>
 
-	
+
 	<bean id="emailReportCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-	  <property name="jobDetail" ref="emailReportJob"/>
-	  <property name="cronExpression" value="${cron.emailReport}"/>
+		<property name="jobDetail" ref="emailReportJob" />
+		<property name="cronExpression" value="${cron.emailReport}" />
 	</bean>
 
 	<bean id="emailMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-	  <property name="jobDetail" ref="emailAlertJob"/>
+		<property name="jobDetail" ref="emailAlertJob" />
 		<!-- run every odd minute -->
-	  <property name="cronExpression" value="${cron.emailAlert}"/>
+		<property name="cronExpression" value="${cron.emailAlert}" />
 	</bean>
-			
+
 	<bean id="smsMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-	  <property name="jobDetail" ref="smsAlertJob"/>
+		<property name="jobDetail" ref="smsAlertJob" />
 		<!-- run every even minute -->
-	  <property name="cronExpression" value="${cron.smsAlert}"/>
+		<property name="cronExpression" value="${cron.smsAlert}" />
 	</bean>
 
 	<bean id="phoneMessageCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-	  <property name="jobDetail" ref="phoneAlertJob"/>
+		<property name="jobDetail" ref="phoneAlertJob" />
 		<!-- run every odd minute - 30 seconds into it -->
-	  <property name="cronExpression" value="${cron.phoneAlert}"/>
+		<property name="cronExpression" value="${cron.phoneAlert}" />
 	</bean>
 
 	<bean id="zonePublishCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-	  <property name="jobDetail" ref="zonePublishJob"/>
-	  <property name="cronExpression" value="${cron.zonePublish}"/>
+		<property name="jobDetail" ref="zonePublishJob" />
+		<property name="cronExpression" value="${cron.zonePublish}" />
 	</bean>
 
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean" lazy-init="false">
-	  <property name="triggers">
-    	<list>
-	      <ref bean="emailMessageCronTrigger"/>
-	      <ref bean="smsMessageCronTrigger"/>
-	      <ref bean="phoneMessageCronTrigger"/>
-	      <ref bean="emailReportCronTrigger"/>
-	      <ref bean="zonePublishCronTrigger"/>
-	    </list>
-	  </property>
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+		lazy-init="false">
+		<property name="triggers">
+			<list>
+				<ref bean="emailMessageCronTrigger" />
+				<ref bean="smsMessageCronTrigger" />
+				<ref bean="phoneMessageCronTrigger" />
+				<ref bean="emailReportCronTrigger" />
+				<ref bean="zonePublishCronTrigger" />
+			</list>
+		</property>
 	</bean>
-			
-   <!--  QUARTZ  END -->
-   
-   <bean id="googleMapFinderBean" class="com.inthinc.pro.map.SimpleGoogleMapKeyFinder">
-  		<property name="key" value="${googleMapKey}"/>
-  </bean>
-   
-   
+
+	<!-- QUARTZ END -->
+
+	<bean id="googleMapFinderBean" class="com.inthinc.pro.map.SimpleGoogleMapKeyFinder">
+		<property name="key" value="${googleMapKey}" />
+	</bean>
+
+
 </beans>
