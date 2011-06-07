@@ -894,7 +894,13 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
                 speedSelected = new Boolean[TiwiproSpeedingConstants.INSTANCE.NUM_SPEEDS];
                 
                 for (int i = 0; i < speedSelected.length && getSpeedSettings()!=null; i++)
-                    speedSelected[i] = false;
+                    
+                    // Existing, use those, new, un-select all
+                    if ( getId() != null ) {
+                        speedSelected[i] = getSpeedSettings()[i]!=null;
+                    } else {
+                        speedSelected[i] = false;
+                    }
             }
             return speedSelected;
         }
