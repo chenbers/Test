@@ -20,7 +20,7 @@ public enum Addresses {
     
     CHEVRON("chevron.inthinc.com"),
     
-    SLB("schlumberger.inthinc.com"),
+    SCHLUMBERGER("schlumberger.inthinc.com"),
     
     WEATHORFORD("weatherford.inthinc.com"),
     

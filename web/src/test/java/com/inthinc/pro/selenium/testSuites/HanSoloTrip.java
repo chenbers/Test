@@ -68,11 +68,13 @@ public class HanSoloTrip {
         Integer initialTime = currentTime.intValue();
         Addresses address;
         String imei;
-        imei = "444444444444444";  address=Addresses.QA; initialTime = 1304116357;// vehicleID=7293 in QA, deviceID=3753, acctID=2
-//        imei = "999456789012345";  address=Addresses.SCHLUMBERGER; initialTime = 1304010578;// vehicleID=150994955 in QA
-//        imei = "thisisajavadevice"; address=Addresses.CHEVRON; initialTime=1304113419;// vehicleID=117441441   deviceID=117441936 in QA
-//        imei = "111111111111111"; address=Addresses.PROD; initialTime=1304113419;
-//        imei = "FAKEIMEIFORTINA"; address=Addresses.WEATHORFORD;initialTime=1306443089;// vehicleID=
+        imei = "DEVICEDOESNTEXIST"; address=Addresses.QA;//         initialTime = initialTime; // NO VEHICLE            NO DEVICE
+//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1307479805;  // vehicleID=37706       deviceID=34506
+//        imei = "444444444444444";   address=Addresses.QA;           initialTime = 1307309503;  // vehicleID=7293        deviceID=3753
+//        imei = "111111111111111";   address=Addresses.PROD;         initialTime = 1307310972;  // vehicleID=1           deviceID=1
+//        imei = "thisisajavadevice"; address=Addresses.CHEVRON;      initialTime = 1307491773;  // vehicleID=117441441   deviceID=117441936 
+//        imei = "999456789012345";   address=Addresses.SCHLUMBERGER; initialTime = 1307309503;  // vehicleID=150994955   deviceID=150994955
+//        imei = "FAKEIMEIFORTINA";   address=Addresses.WEATHORFORD;  initialTime = 1307315379;  // vehicleID=184549575   deviceID=184549735
         
         
         trip.hanSolosFirstTrip( imei, address, initialTime);

@@ -272,6 +272,7 @@ public abstract class Base {
         } else {
             logger.info("The device is already off.");
         }
+        logger.info("Last note created at: " +time);
         return this;
     }
 
