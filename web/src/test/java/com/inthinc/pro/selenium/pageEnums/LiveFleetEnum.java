@@ -7,7 +7,7 @@ public enum LiveFleetEnum implements SeleniumEnums {
     DEFAULT_URL("app/liveFleet"),
 
     /* Main LiveFleet Page Elements */
-    HEADER_BOX_DISPATCH("Dispatch", "//div[@id=wrapper]/table/tbody/tr[1]/td[1]/div/div/span"),
+    HEADER_BOX_DISPATCH("Dispatch", "//div[@id='wrapper']/table/tbody/tr/td[1]/div/div[1]/div/span[1]"),
     LINK_SORT_DISPATCH_BY_NUMBER("#", "//div[@id='dispatchForm:driversDataTable:positionheader:sortDiv']/span"),
     LINK_SORT_DISPATCH_BY_DRIVER("Driver", "//div[@id='dispatchForm:driversDataTable:driverheader:sortDiv']/span"),
     LINK_SORT_DISPATCH_BY_VEHICLE("Vehicle", "//div[@id='dispatchForm:driversDataTable:vehicleheader:sortDiv']/span"),
