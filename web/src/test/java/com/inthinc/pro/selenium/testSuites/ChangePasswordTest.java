@@ -77,11 +77,11 @@ public class ChangePasswordTest extends WebTest {
 		redFlags._popUp().changePassword()._textField().currentPassword().type(initialPassword);
 		redFlags._popUp().changePassword()._textField().newPassword().type(weakPassword);
 		redFlags._popUp().changePassword()._textField().confirmNewPassword().type(weakPassword);
-		redFlags._popUp().changePassword()._text().passwordStrength().compareText("Minimum Password Strength Not Met");
+		redFlags._popUp().changePassword()._text().passwordStrength().compare("Minimum Password Strength Not Met");
 		redFlags._popUp().changePassword()._button().change().click();
 		pause(30, "");
 		redFlags._popUp().changePassword()._textField().currentPassword().assertVisibility(true);
-		redFlags._popUp().changePassword()._text().newPasswordError().compareText("Minimum Password Strength Not Met");
+		redFlags._popUp().changePassword()._text().newPasswordError().compare("Minimum Password Strength Not Met");
 	}
 	
 	@Ignore //TODO: dTanner: hessian calls cannot be made from cloudshare ip's

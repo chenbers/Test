@@ -1,18 +1,29 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.utils.RandomValues;
+import com.inthinc.pro.selenium.pageEnums.TAE;
 import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
 import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
 import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
 import com.inthinc.pro.selenium.pageEnums.TAE.RedFlagPrefs;
+import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
+import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
+
 import junit.runner.Version;
 
 public class EditMyAccountTest extends WebRallyTest {
+    //TODO: jwimmer: to dTanner: we should have a conversation about test class naming conventions, 
+    //it would be nice to have a standard in place before we turn too many people loose (if possible)
 
 	private PageMyAccount myAccountPage;
 	private RandomValues random;
@@ -26,60 +37,120 @@ public class EditMyAccountTest extends WebRallyTest {
 	}
 
 	@Test
-	@Ignore
 	public void MeasurementValidation() {
 		set_test_case("TC1275");
+		//0. login
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
-		myAccountPage._link().myAccount().click();
 		
-
+		//1. From the Edit My Account page, 
+		myAccountPage._link().myAccount().click();
+		String originalMeasurement = myAccountPage._text().measurement().getText();
 		myAccountPage._button().edit().click();
-		myAccountPage._select().measurement().select("Metric");
-		myAccountPage._select().fuelEfficiency().select("Kilometers Per Liter");
+		
+		//1a. select a different Measurement from the drop-down menu.
+		Measurement origMeasure;
+		Measurement newMeasure = null;
+		Fuel_Ratio newFuel = null;
+		String distanceDisplay = null;
+		if(originalMeasurement.equals(Measurement.ENGLISH.getText())) {
+		    origMeasure = Measurement.ENGLISH;
+		    newMeasure = Measurement.METRIC;
+		    distanceDisplay = "kilometers";
+		    newFuel = Fuel_Ratio.METRIC_KILO_PER_LITER;
+		} else if(originalMeasurement.equals(Measurement.METRIC.getText())) {
+            origMeasure = Measurement.METRIC;
+            newMeasure = Measurement.ENGLISH;
+            distanceDisplay = "miles";
+            newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
+		} else {
+		    myAccountPage.addError("Measurement","Original Measurement has unexpected value of: "+originalMeasurement);
+		    assertTrue("MeasurementValidation test cannot continue without capturing valid Original Measurement", false);
+		}
+        myAccountPage._select().measurement().select(newMeasure.getText());
+        myAccountPage._select().fuelEfficiency().select(newFuel.getText());
+        
+        //2. Click Save.
 		myAccountPage._button().save().click();
-
-		// validate pages for Metric Units Goes Here//
-
-		myAccountPage._button().edit().click();
-		myAccountPage._select().measurement().select("English");
-		myAccountPage._select().fuelEfficiency().select("Miles Per Gallon (US)");
-		myAccountPage._button().save().click();
-
-		// validation for English Units Goes Here//
-
+		myAccountPage._text().measurement().validate(newMeasure.getText());
+		
+		//3. Navigate to other pages throughout the UI.
+		myAccountPage._link().liveFleet().click();
+		PageLiveFleet liveFleet = new PageLiveFleet();
+		liveFleet._link().vehicleByListPosition(1).click();
+		PageVehiclePerformance vPerform = new PageVehiclePerformance();
+		
+		//1. VERIFY - The display of distance (miles or kilometeres) throughout the UI appears in the selected measurement setting.
+		//goes to the vehicle performance page and checks the crashes per million miles(/kilo) title
+		vPerform._text().crashesPerMillionMilesTitle().validateContains(distanceDisplay);
+		
+		//TODO: add other pages to verify (original Rally instructions states "pageS")
 	}
 
 	@Test
-	@Ignore
 	public void FuelRatioValidation() {
 		set_test_case("TC1273");
-		myAccountPage.loginProcess(USERNAME, PASSWORD);
-		myAccountPage._link().myAccount().click();
-
-		myAccountPage._button().edit().click();
-		myAccountPage._select().measurement().select("Metric");
-		myAccountPage._select().fuelEfficiency().select("Kilometers Per Liter");
-		myAccountPage._button().save().click();
-		// Validate KM Per Liter Here//
-
-		myAccountPage._button().edit().click();
-		myAccountPage._select().measurement().select("English");
-		myAccountPage._select().fuelEfficiency().select("Miles Per Gallon (US)");
-		myAccountPage._button().save().click();
-		// Validate MPG Here//
-		//TODO: jwimmer: dtanner: tnilson: this test doesn't seem to VALIDATE anything?  I don't see any EXPECTED results?
+		//0. login
+        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        
+        //1. From the Edit My Account page, 
+        myAccountPage._link().myAccount().click();
+        String originalMeasurement = myAccountPage._text().measurement().getText();
+        String originalFuelRatio = myAccountPage._text().fuelEfficiency().getText();
+        myAccountPage._button().edit().click();
+        
+        Measurement newMeasure = null;
+        Fuel_Ratio newFuel = null;
+        //find old value, setup new value. notice that we rotate through ALL 4 fuel ratio options if the test is run 4 times
+        if(originalFuelRatio.equals(Fuel_Ratio.ENGLISH_MILES_UK.getText())) {
+            newMeasure = Measurement.METRIC;
+            newFuel = Fuel_Ratio.METRIC_KILO_PER_LITER;
+        } else if(originalFuelRatio.equals(Fuel_Ratio.METRIC_KILO_PER_LITER.getText())) {
+            newMeasure = Measurement.ENGLISH;
+            newFuel = Fuel_Ratio.ENGLISH_MILES_US;
+        } else if(originalFuelRatio.equals(Fuel_Ratio.ENGLISH_MILES_US.getText())) {
+            newMeasure = Measurement.METRIC;
+            newFuel = Fuel_Ratio.METRIC_LITER_PER_KILO;
+        } else if(originalFuelRatio.equals(Fuel_Ratio.METRIC_LITER_PER_KILO.getText())) {
+            newMeasure = Measurement.ENGLISH;
+            newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
+        } else {
+            myAccountPage.addError("Fuel Ratio","Original Fuel Ratio has unexpected value of: "+originalFuelRatio);
+            assertTrue("FuelRatioValidation test cannot continue without capturing valid Original Fuel Ratio", false);
+        }
+        myAccountPage._select().measurement().select(newMeasure.getText());
+        myAccountPage._select().fuelEfficiency().select(newFuel.getText());
+        
+        //2. Click Save.
+        myAccountPage._button().save().click();
+        myAccountPage._text().measurement().validate(newMeasure.getText());
+        myAccountPage._text().fuelEfficiency().validate(newFuel.getText());
+        
+        //3. Navigate to other pages throughout the UI.
+        myAccountPage._link().liveFleet().click();
+        PageLiveFleet liveFleet = new PageLiveFleet();
+        liveFleet._link().vehicleByListPosition(1).click(); //brittle... assumes that there is a vehicle in position 1
+        PageVehiclePerformance vPerform = new PageVehiclePerformance();
+        
+        //1. VERIFY - The display of distance (miles or kilometeres) throughout the UI appears in the selected measurement setting.
+        //goes to the vehicle performance page and checks the crashes per million miles(/kilo) title
+        //TODO: add AT LEAST ONE validation of distance per volume values
+        //TODO: add other pages to verify (original Rally instructions states "pageS")
 	}
 
 	@Test
 	public void ClearFieldsValidation() {
 		set_test_case("TC1276");
+		//Rally: Input
+		/* 1. If necessary, click My Account then click Edit.
+		 * 2. Clear all possible fields.
+		 * 3. Click Save.
+		 */
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
 		myAccountPage._link().myAccount().click();
 
 		myAccountPage._button().edit().click();
 
-		/* Contact Info */
-
+		/* 2. Clear all possible fields */
 		myAccountPage._textField().email1().type("");
 		myAccountPage._textField().email2().type("");
 		myAccountPage._textField().phone1().type("");
@@ -87,123 +158,156 @@ public class EditMyAccountTest extends WebRallyTest {
 		myAccountPage._textField().textMessage1().type("");
 		myAccountPage._textField().textMessage2().type("");
 
-		/* Save Empty Fields */
-
+		/* 3. Click Save. */
 		myAccountPage._button().save().click();
 
-		// Email Required//
-		//TODO: jwimmer: dtanner: tnilson: this test doesn't seem to VALIDATE anything?  I don't see any EXPECTED results?  
+		//Rally: Expected
+		//1. A 'Required' validation error alert appears above the following fields:
+		//    * E-mail 1
+		myAccountPage._text().errorEmail1().validate("Required");  
 	}
 
 	@Test
 	public void PhoneMaxCharError() {
 		set_test_case("TC1277");
+		String phoneNumEighteen = "801-777-7777-44444421";
+		String phoneNumTwentyFive = "01-234-5678-901234-5678901234";
+		//the following are left to show additional ways constants MIGHT be used in tests.
+		//String phoneNumRandomTwelve = random.getPhoneNumber() +"-"+random.getNumberString(2);
+		//String phoneNumReal = "801-777-7777";
+		//String phoneNumShort = "8";
+		
+		//Rally: Input
+		// 1. From the Edit My Account page, enter more than 10 characters in the Phone 1 and Phone 2 text fields.
+		// 2. Click Save.
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
 		myAccountPage._link().myAccount().click();
-		// my.link_myAccount().click();
 		myAccountPage._button().edit().click();
-		myAccountPage._textField().phone1().type("801-777-7777-44444421");
+		
+		myAccountPage._textField().phone1().type(phoneNumEighteen);
+		myAccountPage._textField().phone2().type(phoneNumTwentyFive);
 		myAccountPage._button().save().click();
-		// Validate Error//
-		// Clear fields?//
-		myAccountPage._textField().phone1().type("801-777-7777");
-		myAccountPage._button().save().click();
-		myAccountPage._text().phone1().validate("801-777-7777");
-
-		myAccountPage._button().edit().click();
-		myAccountPage._textField().phone2().type("8");
-		myAccountPage._button().save().click();
-		// Validate Error//
-		// Clear fields?//
-		myAccountPage._textField().phone2().type("801-999-9999");
-		myAccountPage._button().save().click();
-		myAccountPage._text().phone2().validate("801-999-9999");
+		
+		//Rally: Expected
+		// 1. The following validation error alert appears above the text field:
+		//    'Must consist of 10 numeric characters'
+		myAccountPage._text().errorPhone1().validate("Must consist of up to 15 numeric characters");//NOTE: the error message was changed from what RALLY wanted to what the error ACTUALLY says
+		myAccountPage._text().errorPhone2().validate("Must consist of up to 15 numeric characters");
 	}
 
 	@Test
 	public void PhoneMissingCharError() {
 		set_test_case("TC1278");
+		String phoneNumShortOne = random.getNumberString(1);
+		String phoneNumShortTwo = random.getNumberString(2);
+		
+		//Rally: input
+		// 1. From the Edit My Account page, enter 1 or 2 characters in the Phone 1 and Phone 2 text fields.
+		// 2. Click Save.
+		
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
 		myAccountPage._link().myAccount().click();
-		// my.link_myAccount().click();
-
 		myAccountPage._button().edit().click();
-		myAccountPage._textField().phone1().type("801-777-777");
+		myAccountPage._textField().phone1().type(phoneNumShortOne);
+		myAccountPage._textField().phone2().type(phoneNumShortTwo);
 		myAccountPage._button().save().click();
-		// Validate Error//
-		// Clear fields?//
-		myAccountPage._textField().phone1().type("801-777-7777");
-		myAccountPage._button().save().click();
-		myAccountPage._text().phone1().validate("801-777-7777");
-
-		myAccountPage._button().edit().click();
-		myAccountPage._textField().phone2().type("801-999-999");
-		myAccountPage._button().save().click();
-		// Validate Error//
-		// Clear fields?//
-		myAccountPage._textField().phone2().type("801-999-9999");
-		myAccountPage._button().save().click();
-		myAccountPage._text().phone2().validate("801-999-9999");
+		
+		//Rally: expected
+		// 1. The following validation error alert appears above the text field:
+		//    'Must consist of 10 numeric characters'
+		myAccountPage._text().errorPhone1().validate("Must consist of up to 15 numeric characters");//NOTE: the error message was changed from what RALLY wanted to what the error ACTUALLY says
+		myAccountPage._text().errorPhone2().validate("Must consist of up to 15 numeric characters");
 	}
 
 	@Test
 	public void PhoneSpecialCharError() {
 		set_test_case("TC1279");
+		//Rally: input
+		// 1. From the Edit My Account page, enter special characters (e.g. &, ^, $) in the Phone 1 and Phone 2 text fields.
+		// 2. Click Save.
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
 		myAccountPage._link().myAccount().click();
-		// my.link_myAccount().click();
 		myAccountPage._button().edit().click();
 		myAccountPage._textField().phone1().type("801-@$%-777&");
+		myAccountPage._textField().phone2().type("801-ABC-&^$");
 		myAccountPage._button().save().click();
-		// Validate Error//
-		// Clear fields?//
-		myAccountPage._textField().phone1().type("801-777-7777");
-		myAccountPage._button().save().click();
-		String phone1 = myAccountPage._text().phone1().getText();
-		myAccountPage.assertEquals("801-777-7777", phone1);
-
-		myAccountPage._button().edit().click();
-		myAccountPage._textField().phone2().type("801-ABC-$%+");
-		myAccountPage._button().save().click();
-		// Validate Error//
-		// Clear fields?//
-		myAccountPage._textField().phone2().type("801-999-9999");
-		myAccountPage._button().save().click();
-		myAccountPage._text().phone2().validate("801-999-9999");
+		
+		//Rally: Expected Result
+		// 1. The following validation error alert appears above the text field:
+		//    'Must consist of 10 numeric characters'
+		myAccountPage._text().errorPhone1().validate("Must consist of up to 15 numeric characters");
+		myAccountPage._text().errorPhone2().validate("Must consist of up to 15 numeric characters");
 	}
 
 	@Test
 	public void TextMsgFormatError() {
 		set_test_case("TC1282");
+		ArrayList<String> badTextMessageAddresses = new ArrayList<String>();
+		String twoAtSymbols = "8015551234@domain@domain.com";//NOTE: this is defect 6654
+		String lessThanTenNumeric = "12@domain.com";
+		String hasSpace = "8015551234 @domain.com";
+		String hasQuotedString = "801555\"1234\"@domain.com";
+		String hasIllegalChars = "801*555&1234@domain.com";
+		String hasAlphaInPhNum = "801362judi@domain.com";
+		badTextMessageAddresses.add(twoAtSymbols);
+		badTextMessageAddresses.add(lessThanTenNumeric);
+		badTextMessageAddresses.add(hasSpace);
+		badTextMessageAddresses.add(hasQuotedString);
+		badTextMessageAddresses.add(hasIllegalChars);
+		badTextMessageAddresses.add(hasAlphaInPhNum);
+		
+		//Rally: input
+		// 1. From the Edit My Account page, enter a text message address that DOES NOT conform to the address attributes listed in Note 1 below in the Text Message 1 and Text Message 2 text fields.
+		// 2. Click Save.
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
 		myAccountPage._link().myAccount().click();
-
 		myAccountPage._button().edit().click();
-		myAccountPage._textField().textMessage1().type("8017779999tmomail.net");
-		myAccountPage._button().save().click();
-		// Validate Error //
-		// Clear fields?//
-		myAccountPage._textField().textMessage1().type("8017779999@tmomail.net");
-		myAccountPage._button().save().click();
-		myAccountPage._text().textMessage1().validate("8017779999@tmomail.net");
-
-		myAccountPage._button().edit().click();
-		myAccountPage._textField().textMessage2().type("8019997777@tmomail");
-		myAccountPage._button().save().click();
-		// Validate Error //
-		// Clear fields?//
-		myAccountPage._textField().textMessage2().type("8019997777@tmomail.net");
-		myAccountPage._button().save().click();
-		myAccountPage._text().textMessage2().validate("8019997777@tmomail.net");
+		
+		for(String address: badTextMessageAddresses){
+    		myAccountPage._textField().textMessage1().type(address);
+    		myAccountPage._textField().textMessage2().type(address); //NOTE: there might be an additional TC to test if textMessage1 is in an incorrect format by textMessage2 is not (and vice versa)
+    		myAccountPage._button().save().click(); //NOTE: IF one of these "saves" is successful, it will cause subsequent itterations of this loop to FAIL (because we will NOT be on the Edit page any longer)
+    		
+    		//Rally: Expected Result
+    		// An error message appears in red saying 'Incorrect format (8015551212@tmomail.com)'
+    		myAccountPage._text().errorText1().validate("Incorrect format (8015551212@tmomail.com)");
+    		myAccountPage._text().errorText2().validate("Incorrect format (8015551212@tmomail.com)");
+		}
+		
 	}
 	@Test
-	@Ignore
     public void SaveButton_Changes() {
         set_test_case("TC1280");
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        //Rally: input
+        // 1. If necessary, click My Account then click Edit.
+        // 2. Add or change the data in all fields.
+        //3. Click Save.
+        
+        //Rally: Expected
+        //1. The changes made appear on the My Account page.
+ 
+        //myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess("jwimmer","password");
         myAccountPage._link().myAccount().click();
+        
+        //hang onto original values so the account can be returned to it's original state
+        String origLocal = myAccountPage._text().locale().getText();
+        String origMeasure = myAccountPage._text().measurement().getText();
+        String origFuelEfficiency = myAccountPage._text().fuelEfficiency().getText();
+        String origEmail1 = myAccountPage._text().email1().getText();
+        String origEmail2 = myAccountPage._text().email2().getText();
+        String origPhone1 = myAccountPage._text().phone1().getText();
+        String origPhone2 = myAccountPage._text().phone2().getText();
+        String origText1 = myAccountPage._text().textMessage1().getText();
+        String origText2 = myAccountPage._text().textMessage2().getText();
+        String origInfo = myAccountPage._text().redFlagInfo().getText();
+        String origWarn = myAccountPage._text().redFlagWarn().getText();
+        String origCrit = myAccountPage._text().redFlagCritical().getText();
+        //these 3 can't be changed but hanging onto them allows us to test with different (any?) login
+        String origName = myAccountPage._text().name().getText();
+        String origGroup = myAccountPage._text().group().getText();
+        String origTeam = myAccountPage._text().team().getText(); 
 
-        /* Edit button */
         myAccountPage._button().edit().click();
 
         /* Login Info */
@@ -212,9 +316,8 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._select().fuelEfficiency().select(Fuel_Ratio.ENGLISH_MILES_UK);
 
         /* Contact Info */
-
-        myAccountPage._textField().email1().type("tina1965@test.com");
-        myAccountPage._textField().email2().type("tlc1965@test.com");
+        myAccountPage._textField().email1().type("someOtherwiseUnusedEmail@test.com");
+        myAccountPage._textField().email2().type("anotherOtherwiseUnusedEmail@test.com");
         myAccountPage._textField().phone1().type("801-777-7777");
         myAccountPage._textField().phone2().type("801-999-9999");
         myAccountPage._textField().textMessage1().type("8017779999@tmomail.net");
@@ -228,6 +331,7 @@ public class EditMyAccountTest extends WebRallyTest {
         /* Save Changes */
         myAccountPage._button().save().click();
         myAccountPage.getSelenium().pause(10, "wait for page to save");
+        
         /* Verify Changes Display */
         /* Login Info */
         myAccountPage._text().userName().validate(USERNAME);
@@ -236,9 +340,9 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._text().fuelEfficiency().validate("Miles Per Gallon (UK)");
 
         /* Account Info */
-        myAccountPage._text().name().validate("Tina L Nilson");
-        myAccountPage._text().group().validate("Top");
-        myAccountPage._text().team().validate("Skip's Team");
+        myAccountPage._text().name().validate(origName);
+        myAccountPage._text().group().validate(origGroup);
+        myAccountPage._text().team().validate(origTeam);
 
         /* Red Flags */
         myAccountPage._text().redFlagInfo().validate(RedFlagPrefs.TEXT1, ":", "");
@@ -246,12 +350,29 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._text().redFlagCritical().validate(RedFlagPrefs.PHONE1, ":", "");
 
         /* Contact Info */
-        myAccountPage._text().email1().validate("tina1965@test.com");
-        myAccountPage._text().email2().validate("tlc1965@test.com");
+        myAccountPage._text().email1().validate("someOtherwiseUnusedEmail@test.com");
+        myAccountPage._text().email2().validate("anotherOtherwiseUnusedEmail@test.com");
         myAccountPage._text().phone1().validate("801-777-7777");
         myAccountPage._text().phone2().validate("801-999-9999");
         myAccountPage._text().textMessage1().validate("8017779999@tmomail.net");
         myAccountPage._text().textMessage2().validate("8019997777@tmomail.net");
+        
+        //return account to original condition
+        myAccountPage._button().edit().click();
+        myAccountPage._select().locale().select(origLocal);
+        myAccountPage._select().measurement().select(origMeasure);
+        myAccountPage._select().fuelEfficiency().select(origFuelEfficiency);
+        myAccountPage._textField().email1().type(origEmail1);
+        myAccountPage._textField().email2().type(origEmail2);
+        myAccountPage._textField().phone1().type(origPhone1);
+        myAccountPage._textField().phone2().type(origPhone2);
+        myAccountPage._textField().textMessage1().type(origText1);
+        myAccountPage._textField().textMessage2().type(origText2);
+        myAccountPage._select().information().selectPartMatch(origInfo);
+        myAccountPage._select().warning().selectPartMatch(origWarn);
+        myAccountPage._select().critical().selectPartMatch(origCrit);
+        myAccountPage._button().save().click();
+        
     }
 	
 	   @Test
@@ -279,7 +400,6 @@ public class EditMyAccountTest extends WebRallyTest {
 	        myAccountPage._text().email2().validate("tlc1965@test.com");
 	    }
 	   @Test
-	   @Ignore
 	    public void CancelButton_Changes() {
 	        set_test_case("TC1271");
 	        myAccountPage.loginProcess(USERNAME, PASSWORD);

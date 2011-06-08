@@ -143,8 +143,6 @@ public class JwimmerSandboxTest extends WebTest {
     	login.loginProcess(NONADMIN_USERNAME, NONADMIN_PASSWORD);
     	liveFleet.validateURL();   //test should fail on assertion of any page except liveFleet is loaded
     	liveFleet._text().liveFleetHeader().validate(); //small check to ensure browser is on the right page.
-    	//liveFleet.validate();      //validate the liveFleet page... just because we can.
-    	
     }
     
     @Test
@@ -180,7 +178,7 @@ public class JwimmerSandboxTest extends WebTest {
         l._popUp().forgotPassword()._button().send().click();
     }
 
-    @Test
+    @Test(timeout=2000) 
     public void forgotPassword_badEmailManual_incorrectFormat() {
         l.load();
         l._link().forgotUsernamePassword().click();
@@ -215,20 +213,15 @@ public class JwimmerSandboxTest extends WebTest {
     }
 
     @Test
-    public void forgotPassword_cancel_closePopup() {
+    public void forgotPassword_cancel_closePopup() {//todo: jwimmer: run this again!!!
         l.load();
-        l._link().forgotUsernamePassword().click(); System.out.println("1");
-        //l._popUp().forgotPassword().validate();
-        l._popUp().forgotPassword()._text().header().validate();    System.out.println("2");
-        l._popUp().forgotPassword()._text().title().validate(); System.out.println("3");
-        //l._popUp().forgotPassword()._text().label().validate();  //TODO: jwimmer: to dTanner: FYI, it looks like this CHOKES
+        l._link().forgotUsernamePassword().click();
+        l._popUp().forgotPassword()._text().header().validate();
+        l._popUp().forgotPassword()._text().title().validate();
+        l._popUp().forgotPassword()._text().label().validate();  //TODO: jwimmer: to dTanner: FYI, it looks like this CHOKES!!!!!!!does this still choke?
         
-        //jason, see if this is now checking during the "click()" action
         l._popUp().forgotPassword()._button().cancel().click();//TODO: jwimmer: to dTanner: this one fails gracefully (but probably shouldn't fail?)
-        //l.validate();  //TODO: jwimmer: need/want a way to fail the test if the forgotPassword popup is STILL open
-        pause(20, "did the last click() action work ?");System.out.println("6");
-        System.out.println("got here without error");
-        pause(20, "end of test pause");
+        //l.validate();  //TODO: jwimmer: need/want a way to fail the test if the forgotPassword popup is STILL open        
     }
 
     @Test
