@@ -302,6 +302,9 @@ public class HosDailyDriverLogReportCriteria {
 
     private String getVehicleNameStr(Integer vehicleID)
     {
+        if (vehicleID == null || vehicleID.intValue() == 0) {
+            return "";
+        }
         Vehicle vehicle = vehicleMap.get(vehicleID);
         if (vehicle == null) {
             vehicle = vehicleDAO.findByID(vehicleID);

@@ -591,7 +591,7 @@ logger.info("in loadItems()");
         return VIEW_REDIRECT;
     }
     private void updateVehicleName() {
-        if (item != null && item.getVehicleID() != null) {
+        if (item != null && item.getVehicleID() != null && item.getVehicleID().intValue() != 0) {
             Vehicle vehicle = vehicleDAO.findByID(item.getVehicleID());
             item.setVehicleName(vehicle.getName());
         }
