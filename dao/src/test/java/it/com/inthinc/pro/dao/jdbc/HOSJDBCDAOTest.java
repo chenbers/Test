@@ -218,7 +218,7 @@ System.out.println("district user " + itData.districtUser.getUserID());
 
         // TODO: fix these, they should not be ignored
         // vehicleIsDOT is hardcoded in stored proc to 1
-        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT" };
+        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT", "serviceID", "trailerID" };
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
 
