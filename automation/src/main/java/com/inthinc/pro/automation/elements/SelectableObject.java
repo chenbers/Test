@@ -30,7 +30,7 @@ public class SelectableObject extends Text implements Selectable {
 	 @Override
 	    public SelectableObject select(String desiredOption) {
 	    	
-	        select(desiredOption, 1);
+	        select(desiredOption, 1);//TODO: if there is no match for desiredOption the whole thing blows up;  preferably selenium error is logged and test TRIES to continue (in case TAE is trying to change multiple selects at one go... then ALL (or at least more) errors can be logged at once)
 	        String selected = selenium.getSelectedLabel(myEnum);
 	        assertEquals(selected, desiredOption);
 	        return this;
@@ -59,7 +59,7 @@ public class SelectableObject extends Text implements Selectable {
 	        if (xpath==null){
 	        	xpath = getSelectXpath();
 	        }
-	        getMatches(xpath, Id.text(desiredOption), matchNumber).setSelected();
+	        getMatches(xpath, Id.text(desiredOption), matchNumber).setSelected(); //TODO: related to line 33 issue above
 	        return this;
 	    }
 
@@ -76,12 +76,12 @@ public class SelectableObject extends Text implements Selectable {
 	    
 	    protected WebElement getMatches(String select, String option, Integer matchNumber){
 	    	String xpath = select+"/option["+option+"]";
-	    	return getMatches(xpath, matchNumber);
+	    	return getMatches(xpath, matchNumber); //TODO: related to line 33 issue above
 	    }
 	    
 	    protected WebElement getMatches(String xpath, Integer matchNumber){
 	    	selenium.waitForElementPresent(xpath, 10);
-	    	return webDriver.findElements(By.xpath(xpath)).get(matchNumber);
+	    	return webDriver.findElements(By.xpath(xpath)).get(matchNumber); //TODO: related to line 33 issue above; ultimately this is where the IndexOutOfBoundsException can occur
 	    }
 	    
 	    private String getSelectIDAsXpath(){
