@@ -58,7 +58,6 @@ public class GlobalSelenium {
 			multiplicative.get(currentThread).close();
 			multiplicative.get(currentThread).stop();
 			multiplicative.get(currentThread).getWrappedDriver();
-			Thread.sleep(10*1000);
 		}catch(NullPointerException e){
 			logger.debug("Selenium already closed");
 		}catch(Exception e){
