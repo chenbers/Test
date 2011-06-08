@@ -113,7 +113,7 @@ public class HosDailyDriverLogReportCriteria {
         for (Driver driver : reportDriverList) {
                 if (account == null) {
                     account = accountDAO.findByID(driver.getPerson().getAcctID());
-                    if (account.getAddress() == null && account.getAddressID() != null) {
+                    if (account.getAddress() == null && account.getAddressID() != null && account.getAddressID().intValue() != 0) {
                         account.setAddress(addressDAO.findByID(account.getAddressID()));
                     }
                 }
@@ -129,7 +129,7 @@ public class HosDailyDriverLogReportCriteria {
     {
         Driver driver = driverDAO.findByID(driverID);
         Account account = accountDAO.findByID(driver.getPerson().getAcctID());
-        if (account.getAddress() == null && account.getAddressID() != null) {
+        if (account.getAddress() == null && account.getAddressID() != null && account.getAddressID().intValue() != 0) {
             account.setAddress(addressDAO.findByID(account.getAddressID()));
         }
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
@@ -149,7 +149,7 @@ public class HosDailyDriverLogReportCriteria {
 
     
     private Address getTerminalAddress(Group group, GroupHierarchy groupHierarchy) {
-        if (group.getAddress() == null && group.getAddressID() != null) {
+        if (group.getAddress() == null && group.getAddressID() != null && group.getAddressID().intValue() != 0) {
             return addressDAO.findByID(group.getAddressID());
         }
         Group parentGroup = groupHierarchy.getGroup(group.getParentID());
@@ -524,6 +524,8 @@ public class HosDailyDriverLogReportCriteria {
 
     private String getEditUserFullName(Integer editUserID) {
         
+        if (editUserID == null || editUserID.intValue() == 0)
+            return "";
         User user = userDAO.findByID(editUserID);
         if (user == null || user.getPerson() == null)
             return "";
