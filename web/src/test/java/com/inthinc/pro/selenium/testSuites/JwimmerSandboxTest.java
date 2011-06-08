@@ -178,7 +178,7 @@ public class JwimmerSandboxTest extends WebTest {
         l._popUp().forgotPassword()._button().send().click();
     }
 
-    @Test(timeout=2000) 
+    @Test
     public void forgotPassword_badEmailManual_incorrectFormat() {
         l.load();
         l._link().forgotUsernamePassword().click();
