@@ -131,8 +131,10 @@ logger.info("initTableData() - end");
         {
         	if(timeFrameBean.getTimeFrame() == null)
         	    crashList = crashReportDAO.findByGroupID(getSearchCoordinationBean().getGroup().getGroupID());
-        	else
-        	    crashList = crashReportDAO.findByGroupID(getSearchCoordinationBean().getGroup().getGroupID(), timeFrameBean.getTimeFrame().getInterval().getStart().toDate(), timeFrameBean.getTimeFrame().getInterval().getEnd().toDate(), ForgivenType.INCLUDE);
+        	else {
+        	    DateTimeZone userTimeZone = DateTimeZone.forTimeZone(getProUser().getUser().getPerson().getTimeZone());
+        	    crashList = crashReportDAO.findByGroupID(getSearchCoordinationBean().getGroup().getGroupID(), timeFrameBean.getTimeFrame().getInterval(userTimeZone).getStart().toDate(), timeFrameBean.getTimeFrame().getInterval(userTimeZone).getEnd().toDate(), ForgivenType.INCLUDE);
+        	}
         }
 
         List<CrashHistoryReportItem> histList = new ArrayList<CrashHistoryReportItem>();
