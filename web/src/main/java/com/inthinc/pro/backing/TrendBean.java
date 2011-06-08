@@ -259,7 +259,6 @@ public class TrendBean extends CustomSortBean<TrendBeanItem> {
         sb.append("</chart>");
 
         lineDef = sb.toString();
-        System.out.println("linedef " + lineDef);
     }
 
     private int addDataSet(StringBuffer sb, ScoreableEntityPkg se, List<ScoreableEntity> ss) {
