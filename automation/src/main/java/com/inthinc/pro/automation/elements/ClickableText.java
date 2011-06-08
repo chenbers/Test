@@ -28,13 +28,13 @@ public abstract class ClickableText extends ClickableObject implements TextBased
     }
     
     @Override
-    public ElementInterface compareText(String expected) {
-        return textStuff.compareText(expected);
+    public ElementInterface compare(String expected) {
+        return textStuff.compare(expected);
     }
 
     @Override
-    public ElementInterface compareText() {
-        return textStuff.compareText();
+    public ElementInterface compare() {
+        return textStuff.compare();
     }
 
     @Override

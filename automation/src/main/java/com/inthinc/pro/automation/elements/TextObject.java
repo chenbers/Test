@@ -20,33 +20,38 @@ public abstract class TextObject extends ElementBase implements TextBased {
     }
 
     @Override
-    public ElementInterface compareText(String expected) {
+    public ElementInterface compare(String expected) {
         String actual = getText();
         assertEquals(actual, expected);
         return this;
     }
     
     @Override
-    public ElementInterface compareText() {
-        return compareText(myEnum.getText());
+    public ElementInterface compare() {
+        return compare(myEnum.getText());
     }
 
     public String getText(){
         return selenium.getText(myEnum);
     }
     
+    public ElementInterface validateContains(String expectedPart) {
+        String actual = getText();
+        assertContains(actual, expectedPart);
+        return this;
+    }
     public ElementInterface validate(String expected) {
-        return compareText(expected);
+        return compare(expected);
     }
     
     public ElementInterface validate(TextEnum expected) {
-        return compareText(expected.getText());
+        return compare(expected.getText());
     }
     public ElementInterface validate(TextEnum expected, String replaceOld, String withNew) {
-        return compareText(expected.getText().replace(replaceOld, withNew));
+        return compare(expected.getText().replace(replaceOld, withNew));
     }
     
     public ElementInterface validate(){
-        return compareText();
+        return compare();
     }
 }

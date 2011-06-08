@@ -21,12 +21,12 @@ public interface ElementInterface {
          * @param expected
          * @return this Element
          */
-        public ElementInterface compareText(String expected);
+        public ElementInterface compare(String expected);
         /**
          * Compares the value of this Element to the expected value stored in the Elements enum.
          * @return this Element
          */
-        public ElementInterface compareText();
+        public ElementInterface compare();
     }
     
     public interface URLBased extends ElementInterface {
