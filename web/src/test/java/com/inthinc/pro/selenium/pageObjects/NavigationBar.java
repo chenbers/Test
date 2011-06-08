@@ -64,4 +64,18 @@ public abstract class NavigationBar extends Masthead {
 	public NavigationTree _navTree() {
 		return new NavigationTree();
 	}
+	
+	protected class NavigationBarPopUps extends MastheadPopUps{
+
+		public NavigationBarPopUps(){
+			
+		}
+		public NavigationBarPopUps(String page) {
+			super(page);
+		}
+
+		public NavigationBarPopUps(String page, Types report, Integer i) {
+			super(page, report, i);
+		}
+	}
 }

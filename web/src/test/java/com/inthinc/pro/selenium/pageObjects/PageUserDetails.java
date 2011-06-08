@@ -1,8 +1,5 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
-import com.inthinc.pro.selenium.pageObjects.PageLiveFleet.LiveFleetPopUps;
-
 
 public class PageUserDetails extends AdminBar {
 	
@@ -36,6 +33,6 @@ public class PageUserDetails extends AdminBar {
         return new UserDetailsPopUps();
     }
     
-	public class UserDetailsPopUps extends MastheadPopUps{}
+	public class UserDetailsPopUps extends AdminBarPopUps{}
 
 }

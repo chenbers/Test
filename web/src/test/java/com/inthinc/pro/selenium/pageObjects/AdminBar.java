@@ -80,4 +80,18 @@ public abstract class AdminBar extends NavigationBar {
 	protected class AdminBarTexts extends NavigationBarTexts {
 	}
 	
+	protected class AdminBarPopUps extends MastheadPopUps{
+
+		public AdminBarPopUps(){
+			
+		}
+		public AdminBarPopUps(String page) {
+			super(page);
+		}
+
+		public AdminBarPopUps(String page, Types report, Integer i) {
+			super(page, report, i);
+		}
+	}
+	
 }

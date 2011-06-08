@@ -3,8 +3,6 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
-import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
-import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceTrips.DriverTripsPopUps;
 
 public class PageAdminVehicles extends AdminBar {
 	
@@ -12,7 +10,7 @@ public class PageAdminVehicles extends AdminBar {
         return new AdminVehiclesPopUps();
     }
     
-	public class AdminVehiclesPopUps extends MastheadPopUps{}
+	public class AdminVehiclesPopUps extends AdminBarPopUps{}
 
 	
 	public class AdminVehiclesButtons extends AdminBarButtons {

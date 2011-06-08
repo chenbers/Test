@@ -13,8 +13,6 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.selenium.pageEnums.AdminAddEditUserEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEnum;
-import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails.UserDetailsPopUps;
 
 public class PageAddEditUser extends AdminBar {
 	private static String page = "Person";

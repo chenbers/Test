@@ -10,6 +10,9 @@ public abstract class NotificationsBar extends NavigationBar {
 	
 	protected NotificationsBar setPage(String page){
 		this.page = page;
+		if (this.page==null){
+			this.page = "redFlags";
+		}
 		return this;
 	}
 	
