@@ -146,7 +146,7 @@ public enum ReportGroup
             ReportType.PAYROLL_DETAIL),
      PAYROLL_SIGNOFF("Payroll Report Driver Signoff",16,EntityType.ENTITY_GROUP_LIST_OR_DRIVER,
              new CriteriaType[]{CriteriaType.TIMEFRAME}, 
-             new GroupType[]{}, ReportCategory.Performance,
+             new GroupType[]{GroupType.DIVISION,GroupType.FLEET,GroupType.TEAM}, ReportCategory.Performance,
              EnumSet.of(ReportAccountType.WAYSMART, ReportAccountType.HOS),
              ReportType.PAYROLL_SIGNOFF),       
      TEN_HOUR_DAY_VIOLATIONS("Ten Hour Day Violations", 17, EntityType.ENTITY_GROUP,
