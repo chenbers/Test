@@ -7,10 +7,14 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 import com.inthinc.pro.automation.selenium.AbstractPage;
+import com.inthinc.pro.automation.selenium.CoreMethodLib;
 
 public class FusionChartUtilities extends AbstractPage {
+	private CoreMethodLib selenium;
     
-    public FusionChartUtilities() {}
+    public FusionChartUtilities() {
+    	selenium = super.getSelenium();
+    }
 
     public OverallScoreSummary findOverallScoreData(String chart) {
         OverallScoreSummary oss = new OverallScoreSummary();

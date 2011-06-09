@@ -8,8 +8,6 @@ public interface ElementInterface {
     public boolean isPresent();
     public ElementInterface focus();
     public ElementInterface validate();
-    public ElementInterface addError(String errorName);
-    public ElementInterface addError(String errorName, String error);
     
     public interface TextBased extends ElementInterface {
         /**
@@ -27,6 +25,8 @@ public interface ElementInterface {
          * @return this Element
          */
         public ElementInterface compare();
+        
+        public ElementInterface assertEquals(String compareAgainst);
     }
     
     public interface URLBased extends ElementInterface {

@@ -37,7 +37,7 @@ public class TextField extends TextObject implements Typeable {
         return this;
     }
 	public void assertPresent(Boolean present) {
-		assertTrue(present == isElementPresent());
+		assertTrue(present == isElementPresent(), myEnum.toString());
 	}
 
 

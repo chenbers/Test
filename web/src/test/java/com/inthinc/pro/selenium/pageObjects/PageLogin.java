@@ -15,6 +15,10 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
  */
 
 public class PageLogin extends Masthead {
+	public PageLogin(){
+		url = LoginEnum.LOGIN_URL;	
+	}
+	
     private ElementBase validate = new ElementBase();
     
     public class LoginPopUps extends MastheadPopUps{
@@ -84,7 +88,7 @@ public class PageLogin extends Masthead {
 
     public PageLogin loginProcess(String username, String password) {
         if(!this._textField().userName().isPresent())
-            openLogout();//TODO: jwimmer: to dTanner: if we ONLY have scriptwriters use loginProcess WHEN there IS a loginform on the page then it can be used for bookmark login navigation, see JwimmerSandboxTest.liveFleet_fromBookmarkLoggedIn_goDirectlyToLiveFleet
+            openLogout();
         new LoginTextFields().userName().type(username);
         new LoginTextFields().password().type(password);
         new LoginButtons().logIn().click();
@@ -92,16 +96,13 @@ public class PageLogin extends Masthead {
     }
     
     public PageLogin validatePage() {
-    	validate.validateTextMatches(LoginEnum.FORGOT_USERNAME_LINK, LoginEnum.LOGIN_HEADER, LoginEnum.USERNAME_LABEL, 
+    	validate.validateTextMatches( LoginEnum.LOGIN_HEADER, LoginEnum.USERNAME_LABEL, 
                 LoginEnum.PASSWORD_LABEL, LoginEnum.LOGIN_BUTTON);
         return this;
     }
-    @Override
-    public String getExpectedPath() {
-        return LoginEnum.LOGIN_URL.getURL();
-    }
+    
     public PageLogin openLogout() {
-        selenium.open(LoginEnum.LOGOUT_URL.getURL());//TODO: dtanner: needs to be updated to new way of doing things
+        open(LoginEnum.LOGOUT_URL);
         validatePage();
         return this;
     }

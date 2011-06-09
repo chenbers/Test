@@ -71,7 +71,7 @@ public class PopUps {
 					@Override
 					public ClickableObject click(){
 						super.click();
-						assertTrue(selenium.isVisible(myEnum));
+						assertVisibility(false);
 						return this;
 					}
 				};
@@ -82,7 +82,7 @@ public class PopUps {
 					@Override
 					public ClickableObject click(){
 						super.click();
-						assertTrue(selenium.isVisible(myEnum));
+						assertVisibility(false);
 						return this;
 					}
 				};
@@ -136,7 +136,7 @@ public class PopUps {
 					@Override
 					public ClickableObject click(){
 						super.click();
-						assertTrue(selenium.isVisible(myEnum));
+						assertVisibility(false);
 						return this;
 					}
 				};
@@ -147,7 +147,7 @@ public class PopUps {
 					@Override
 					public ClickableObject click(){
 						super.click();
-						assertTrue(selenium.isVisible(myEnum));
+						assertVisibility(false);
 						return this;
 					}
 				};
@@ -278,7 +278,7 @@ public class PopUps {
 					@Override
 					public ClickableObject click(){
 						super.click();
-						assertTrue(!selenium.isVisible(myEnum));
+						assertVisibility(false);
 						return this;
 					}
 				};
@@ -289,7 +289,7 @@ public class PopUps {
 					@Override
 					public ClickableObject click(){
 						super.click();
-						assertTrue(!selenium.isVisible(myEnum));
+						assertVisibility(false);
 						return this;
 					}
 				};

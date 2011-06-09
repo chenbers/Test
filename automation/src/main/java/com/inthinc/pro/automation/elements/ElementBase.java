@@ -9,9 +9,9 @@ import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
-import com.inthinc.pro.automation.selenium.GlobalSelenium;
+import com.inthinc.pro.automation.utils.MasterTest;
 
-public class ElementBase implements ElementInterface {
+public class ElementBase extends MasterTest implements ElementInterface {
 	protected final static String parentXpath = "/..";
 	
     protected final static Logger logger = Logger.getLogger(ElementBase.class);
@@ -52,7 +52,7 @@ public class ElementBase implements ElementInterface {
         if (replaceWord!=null){
             myEnum.replaceWord(replaceWord);
         }
-        selenium = GlobalSelenium.getSelenium();
+        selenium = super.getSelenium();
         webDriver = selenium.getWrappedDriver();
     }
     @Override
@@ -65,7 +65,7 @@ public class ElementBase implements ElementInterface {
     }
     
     public boolean assertVisibility(Boolean visible) {  
-        return assertTrue(visible == selenium.isVisible(myEnum));
+        return assertTrue(visible == selenium.isVisible(myEnum), myEnum.toString());
     }
 
     @Override
@@ -84,63 +84,17 @@ public class ElementBase implements ElementInterface {
         return this;
     }
 
-    public ElementBase addError(String errorName) {
-        selenium.getErrors().addError(errorName, Thread.currentThread().getStackTrace());
-        return this;
-    }
+    /**
+     * Will only work if the Enumerated Value<br />
+     * has text for a default!!!<br />
+     * Since this is not always the case<br />
+     * use at your own risk of false positives.
+     * 
+     */
+	public void assertEquals() {
+		assertEquals(myEnum);
+	}
 
-    public ElementBase addError(String errorName, String error) {
-        selenium.getErrors().addError(errorName, error);
-        return this;
-    }
-
-    public void addErrorWithExpected(String errorName, String error, String expected) {
-        selenium.getErrors().addError(errorName, error);
-        selenium.getErrors().addExpected(errorName, expected);
-    }
-
-    //TODO: jwimmer: dtanner: asserts should not be made available to the test writers.  test writers should compare/validate/? Elements, where the assert methods do not necessarily operate on the element.  note: pulling certain methods up one layer to an object that parents AutomatedTest and ElementBase would reveal them in both places... IF that is done make sure we are only revealing methods to the test writers that we think they need and/or will use
-    public void assertNotEquals(Object actual, Object expected) {
-        if (actual.equals(expected)) {
-            addError(actual + " == " + expected);
-        }
-    }
-    
-    public Boolean assertTrue(Boolean test) {
-        if (!test) {
-            addError(myEnum.toString());
-            return false;
-        }
-        return true;
-    }
-
-    public void assertNotEquals(Object expected, SeleniumEnums actual) {
-        assertNotEquals(expected, actual.getText());
-    }
-
-    public void assertContains(String fullString, String partialString) {
-        if (!fullString.contains(partialString)) {
-            addError(partialString + " not in " + fullString);
-        }
-    }
-
-    public void assertEquals(Object actual, Object expected) {
-        if (!actual.equals(expected)) {
-        	addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual);
-        }
-    }
-
-    public void assertEquals(Object expected, AutomationEnum actual) {
-        assertEquals(expected, selenium.getText(actual));
-    }
-
-    public void assertEquals(AutomationEnum anEnum) {
-        assertEquals(selenium.getText(anEnum), anEnum.getText());
-    }
-    
-    public void assertEquals(){
-        assertEquals(myEnum);
-    }
 
     public SeleniumEnums getMyEnum() {
         return myEnum;
@@ -150,9 +104,6 @@ public class ElementBase implements ElementInterface {
         this.myEnum = AutomationEnum.PLACE_HOLDER.setEnum(anEnum);
     }
 
-    public CoreMethodLib getselenium() {
-        return selenium;
-    }
     
     protected void setCurrentLocation(){
         String uri = getCurrentLocation();
@@ -179,16 +130,17 @@ public class ElementBase implements ElementInterface {
     public void validateElementsPresent(SeleniumEnums ...enums){
         for (SeleniumEnums enumerated: enums){
             setMyEnum(enumerated);
-            assertTrue(isElementPresent());
+            assertTrue(isElementPresent(), myEnum.toString());
         }
     }
     
     public void validateTextMatches(SeleniumEnums ...enums){
         for (SeleniumEnums enumerated: enums){
-        	
             assertEquals(AutomationEnum.CORE_ONLY.setEnum(enumerated));
         }
     }
+    
+
     
     protected ElementBase replaceNumber(Integer number){
     	myEnum.replaceNumber(number.toString());

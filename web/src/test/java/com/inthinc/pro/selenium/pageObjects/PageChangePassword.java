@@ -8,7 +8,7 @@ import com.inthinc.pro.selenium.pageEnums.ChangePasswordEnum;
 public class PageChangePassword extends Masthead {
 
 	public PageChangePassword openChangePasswordPage(String url){
-		selenium.open(url);
+		open(url);
 		return this;
 	}
 	

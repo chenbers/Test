@@ -37,7 +37,7 @@ public abstract class TextObject extends ElementBase implements TextBased {
     
     public ElementInterface validateContains(String expectedPart) {
         String actual = getText();
-        assertContains(actual, expectedPart);
+        assertStringContains(actual, expectedPart);
         return this;
     }
     public ElementInterface validate(String expected) {
@@ -53,5 +53,10 @@ public abstract class TextObject extends ElementBase implements TextBased {
     
     public ElementInterface validate(){
         return compare();
+    }
+    
+    public ElementInterface assertEquals(String compareAgainst){
+    	assertEquals(compareAgainst, myEnum);
+    	return this;
     }
 }

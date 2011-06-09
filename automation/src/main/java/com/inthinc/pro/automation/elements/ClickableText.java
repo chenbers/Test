@@ -41,4 +41,8 @@ public abstract class ClickableText extends ClickableObject implements TextBased
     public String getText() {
        return textStuff.getText();
     }
+	@Override
+	public ElementInterface assertEquals(String compareAgainst) {
+		return textStuff.assertEquals(compareAgainst);
+	}
 }

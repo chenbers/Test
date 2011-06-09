@@ -79,4 +79,16 @@ public class TextTableLink extends TextLink implements Clickable, TextBased {
         tableLink.click(row);
         return this;
     }
+    
+    @Override
+    public TextTableLink assertEquals(String compareAgainst){ //TODO: dtanner or jwimmer: Should we default, or fail
+    	logger.info("Defaulting to the first entry");
+    	assertEquals(1,compareAgainst);
+    	return this;
+    }
+    
+    public TextTableLink assertEquals(Integer row, String compareAgainst){
+    	assertEquals(getText(row),compareAgainst);
+    	return this;
+    }
 }

@@ -121,7 +121,7 @@ public class JwimmerSandboxTest extends WebTest {
         l.loginProcess(NONADMIN_USERNAME, NONADMIN_PASSWORD);
     	liveFleet.load();
     	System.out.println(liveFleet._link().mapBubbleDefaultChangeView().isPresent());
-    	assertTrue("mapBubbleChangeView should NOT be visible", !liveFleet._link().mapBubbleDefaultChangeView().isPresent());
+    	assertTrue(!liveFleet._link().mapBubbleDefaultChangeView().isPresent(), "mapBubbleChangeView should NOT be visible");
     }
     
     @Test
@@ -129,7 +129,7 @@ public class JwimmerSandboxTest extends WebTest {
         l.load();
         l.loginProcess(ADMIN_USERNAME, ADMIN_PASSWORD);
         liveFleet.load();
-        assertTrue(liveFleet._link().mapBubbleDefaultChangeView().isVisible());
+        liveFleet._link().mapBubbleDefaultChangeView().assertVisibility(true);
         //TODO: jwimmer: proper test should actually CLICK the change link...
     }
     
@@ -139,7 +139,7 @@ public class JwimmerSandboxTest extends WebTest {
     	//TODO: jwimmer: dtanner: discuss if this method shows justification of page.validate()... it shouldn't be called VALIDATE unless actually validates EVERYTHING expected to be on the page.  a better sanity check is something more like "didPageLoad()" which merely checks the URL for correctness (expected) AND makes sure the appError element in NOT present
         PageLogin login = new PageLogin(); //going to use this later
     	liveFleet.load();
-    	assertTrue("login form should be present since this test has NOT yet logged in", login._textField().userName().isPresent());	//test should fail UNLESS the login page was loaded (since the user has not logged in yet)
+    	assertTrue(login._textField().userName().isPresent(), "login form should be present since this test has NOT yet logged in");	//test should fail UNLESS the login page was loaded (since the user has not logged in yet)
     	login.loginProcess(NONADMIN_USERNAME, NONADMIN_PASSWORD);
     	liveFleet.validateURL();   //test should fail on assertion of any page except liveFleet is loaded
     	liveFleet._text().liveFleetHeader().validate(); //small check to ensure browser is on the right page.

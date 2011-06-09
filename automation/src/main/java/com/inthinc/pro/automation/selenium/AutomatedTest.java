@@ -7,11 +7,11 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
-import com.thoughtworks.selenium.SeleniumException;
 
-public class AutomatedTest {
+public class AutomatedTest extends MasterTest{
 
     protected Long startTime;
     protected ErrorCatcher errors;
@@ -27,7 +27,6 @@ public class AutomatedTest {
     protected CoreMethodLib selenium;
 
     public static void afterClass() {
-        System.out.println(" ");
         GlobalSelenium.dieSeleniumDie();
     }// tear down
 
@@ -66,7 +65,7 @@ public class AutomatedTest {
     public void before() {
         startTime = currentTime();
         try {
-            selenium = GlobalSelenium.getYourOwn();
+            selenium = super.getSelenium();
         } catch (Exception e) {
             logger.fatal(StackToString.toString(e));
             skip = true;
@@ -104,7 +103,7 @@ public class AutomatedTest {
     
     public void didTestFail(){
         if (getTestVerdict() != Verdicts.PASS) {
-            throw new AssertionError(errors!=null?errors.toString():"errors was null?");
+            throw new AssertionError(errors != null ? errors.toString() : "errors was null?");
         }
     }
     

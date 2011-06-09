@@ -52,22 +52,22 @@ public class EditMyAccountTest extends WebRallyTest {
 		Measurement newMeasure = null;
 		Fuel_Ratio newFuel = null;
 		String distanceDisplay = null;
-		if(originalMeasurement.equals(Measurement.ENGLISH.getText())) {
+		if(compare(Measurement.ENGLISH, originalMeasurement)) {
 		    origMeasure = Measurement.ENGLISH;
 		    newMeasure = Measurement.METRIC;
 		    distanceDisplay = "kilometers";
 		    newFuel = Fuel_Ratio.METRIC_KILO_PER_LITER;
-		} else if(originalMeasurement.equals(Measurement.METRIC.getText())) {
+		} else if(compare(Measurement.METRIC, originalMeasurement)) {
             origMeasure = Measurement.METRIC;
             newMeasure = Measurement.ENGLISH;
             distanceDisplay = "miles";
             newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
 		} else {
-		    myAccountPage.addError("Measurement","Original Measurement has unexpected value of: "+originalMeasurement);
-		    assertTrue("MeasurementValidation test cannot continue without capturing valid Original Measurement", false);
+		    addError("Measurement","Original Measurement has unexpected value of: "+originalMeasurement);
+		    assertTrue(false,"MeasurementValidation test cannot continue without capturing valid Original Measurement");
 		}
-        myAccountPage._select().measurement().select(newMeasure.getText());
-        myAccountPage._select().fuelEfficiency().select(newFuel.getText());
+        myAccountPage._select().measurement().select(newMeasure);
+        myAccountPage._select().fuelEfficiency().select(newFuel);
         
         //2. Click Save.
 		myAccountPage._button().save().click();
@@ -114,8 +114,8 @@ public class EditMyAccountTest extends WebRallyTest {
             newMeasure = Measurement.ENGLISH;
             newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
         } else {
-            myAccountPage.addError("Fuel Ratio","Original Fuel Ratio has unexpected value of: "+originalFuelRatio);
-            assertTrue("FuelRatioValidation test cannot continue without capturing valid Original Fuel Ratio", false);
+            addError("Fuel Ratio","Original Fuel Ratio has unexpected value of: "+originalFuelRatio);
+            assertTrue(false, "FuelRatioValidation test cannot continue without capturing valid Original Fuel Ratio");
         }
         myAccountPage._select().measurement().select(newMeasure.getText());
         myAccountPage._select().fuelEfficiency().select(newFuel.getText());
@@ -330,7 +330,7 @@ public class EditMyAccountTest extends WebRallyTest {
 
         /* Save Changes */
         myAccountPage._button().save().click();
-        myAccountPage.getSelenium().pause(10, "wait for page to save");
+        pause(10, "wait for page to save");
         
         /* Verify Changes Display */
         /* Login Info */

@@ -10,6 +10,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.automation.utils.StackToString;
 
 /****************************************************************************************
@@ -35,15 +36,25 @@ public class ErrorCatcher {
         errorList = new HashMap<String, String>();
         errors.put(name, errorList);
     }
+    
+    /**
+     * Adds the error to the error list<br />
+     * 
+     * @param name
+     * @param error
+     */
+    public void addError(String name, Object error) {
+    	addError(name, error, ErrorLevel.ERROR);
+    }
 
     /**
      * Adds the error to the error list<br />
      * 
      * @param name
      * @param error
-     * @throws Throwable
+     * @param level
      */
-    public void addError(String name, Object error) {
+    public void addError(String name, Object error, ErrorLevel level) {
         String errorStr = null;
         String type = error.getClass().getSimpleName();
         if (error instanceof String) {
@@ -56,7 +67,7 @@ public class ErrorCatcher {
             type = "Tester Thrown Error";
             errorStr = RallyStrings.toString((StackTraceElement[]) error);
         }
-        addError(name, type, errorStr);
+        addError(name, type, errorStr, level);
     }
     
     private String addStackTrace(String error){
@@ -66,11 +77,6 @@ public class ErrorCatcher {
     	return errorStr;
     }
     
-    public void addFatal(String name, Throwable exception){
-        String errorStr = RallyStrings.toString(exception);
-        String type = exception.getClass().getSimpleName();
-        addError(name, type, errorStr);
-    }
 
     /**
      * Helper method for other error(name, error) methods. <br />
@@ -81,17 +87,17 @@ public class ErrorCatcher {
      * @param error
      *            text
      */
-    private void addError(String name, String type, String error) {
+    private void addError(String name, String type, String error, ErrorLevel level ) {
         logger.info("\n"+name + " :\n\t" + type + " :\n" + error);
         if (!errors.containsKey(name)) {
             add_error(name);
         }
         errors.get(name).put(type, error);
-//        if (!type.equals("Tester Thrown Error")){
-//            throw new AssertionError(error);
-//        }
+        if (level == ErrorLevel.FAIL){
+            throw new AssertionError(error);
+        }
     }
-
+    
     /**
      * Take the expected string for comparison against the actual<br />
      * 

@@ -33,7 +33,7 @@ public class LoginTest extends WebRallyTest {
         login._button().logIn().click();//Click Log In
         
         /* Expected Result */
-        login.assertContains(login.getCurrentLocation(), "dashboard");//You are logged into the inthinc portal
-        dash.assertEquals("Mother Group", dash._link().groupName().getText(1));//The page is the expected level/group for that user
+        assertStringContains(login.getCurrentLocation(), "dashboard");//You are logged into the inthinc portal
+        dash._link().groupName().assertEquals( 1, "Mother Group");//The page is the expected level/group for that user
     }
 }

@@ -1,22 +1,23 @@
 package com.inthinc.pro.automation.selenium;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.utils.MasterTest;
 
-public abstract class AbstractPage implements Page {
-    protected CoreMethodLib selenium;
+public abstract class AbstractPage extends MasterTest implements Page {
+	protected SeleniumEnums url;
+	protected SeleniumEnums[] checkMe;
+    private CoreMethodLib selenium;
     protected WebDriver webDriver;
     protected String currentPage;
     public static ArrayList<Class<? extends AbstractPage>> instantiatedPages = new ArrayList<Class<? extends AbstractPage>>(); //TODO: jwimmer: should not stay public
 
     public AbstractPage() {
-        selenium = GlobalSelenium.getSelenium(); System.out.println("selenium: "+selenium);
+        selenium = super.getSelenium(); System.out.println("selenium: "+selenium);
         webDriver = selenium.getWrappedDriver();
         
         Class<? extends AbstractPage> derivedClass = this.getClass();
@@ -25,63 +26,7 @@ public abstract class AbstractPage implements Page {
         }
     }
 
-    public void addError(String errorName) {
-        selenium.getErrors().addError(errorName, Thread.currentThread().getStackTrace());
-    }
-
-    public void addError(String errorName, String error) {
-        selenium.getErrors().addError(errorName, error);
-    }
-
-    public void addErrorWithExpected(String errorName, String error, String expected) {
-        selenium.getErrors().addError(errorName, error);
-        selenium.getErrors().addExpected(errorName, expected);
-    }
-
-    public void assertEquals(Object actual, Object expected) {
-        String string;
-        if (actual instanceof TextEnum) {
-            string = ((TextEnum) actual).getText();
-            if (!string.equals(expected)) {
-                addError("'" + string + "'" + " != '" + expected + "'");
-            }
-        } else {
-            if (!actual.equals(expected)) {
-                addError("'" + actual + "'" + " != '" + expected + "'");
-            }
-        }
-    }
-
-    //TODO: jwimmer: to dtanner: if we could talk though the thoughts on page.assert*() methods... this might just be a documentation issue, but it feels like these should be part of the TEST not the page?
-    public void assertEquals(Object expected, SeleniumEnums actual) {
-        assertEquals(expected, actual.getText());
-    }
-
-    public void assertEquals(AutomationEnum anEnum) {
-        assertEquals(selenium.getText(anEnum), anEnum.getText());
-    }
-
-    public void assertNotEquals(Object actual, Object expected) {
-        if (actual.equals(expected)) {
-            addError(actual + " == " + expected);
-        }
-    }
-
-    public void assertNotEquals(Object expected, SeleniumEnums actual) {
-        assertNotEquals(expected, actual.getText());
-    }
-
-    //TODO: jwimmer: to dtanner: seems misleading when used... page.assertContains makes it seem like we are testing that the PAGE contains something?
-    public void assertContains(String fullString, String partialString) {
-        if (!fullString.contains(partialString)) {
-            addError(partialString + " not in " + fullString);
-        }
-    }
-    
-    public ErrorCatcher get_errors() {
-        return selenium.getErrors();
-    }
-
+   
     @Override
     public String getCurrentLocation() {
         return selenium.getLocation();
@@ -89,13 +34,9 @@ public abstract class AbstractPage implements Page {
 
     @Override
     public String getExpectedPath() {
-        // TODO Auto-generated method stub
-        return null;
+        return url.getURL();
     }
 
-    public CoreMethodLib getSelenium() {
-        return selenium;
-    }
 
     /*
      * (non-Javadoc)
@@ -108,12 +49,19 @@ public abstract class AbstractPage implements Page {
             addError("validateURL", getCurrentLocation() + " does not contain " + getExpectedPath() + " ?"); 
         return this;
     }
+    
+    protected void open(SeleniumEnums pageToOpen){
+    	selenium.open(AutomationEnum.CORE_ONLY.setEnum(pageToOpen));
+    }
+    
+    protected void open(String url){
+    	selenium.open(url);
+    }
 
     @Override
     public Page load() {
-        selenium.open(this.getExpectedPath());
-        return this;//TODO: jwimmer: remove load()... jwimmer is the only one using it.
-                    //TODO: jwimmer: to dtaner: I am waiting to remove this until the navigateToBookmark functionality you prefer is in place 
+        open(url);
+        return this;
     }
 
     @Override
