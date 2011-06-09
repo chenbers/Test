@@ -551,20 +551,31 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         String returnString = "";
         SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy",LocaleBean.getCurrentLocale());
         sdf.setTimeZone(getUtcTimeZone());
-        if ("name".equals(column))
+        
+        if (        "name".equals(column)) {
             returnString = item.getName();
-        else if ("startDate".equals(column))
+            
+        } else if ( "startDate".equals(column)) {
             returnString = item.getStartDate() != null ? sdf.format(item.getStartDate()) : "";
-        else if ("endDate".equals(column))
+            
+        } else if ( "endDate".equals(column)) {
             returnString = item.getEndDate() != null ? sdf.format(item.getEndDate()) : "";
-        else if ("occurrence".equals(column))
+            
+        } else if ( "occurrence".equals(column)) {
             returnString = item.getOccurrence() != null ? item.getOccurrence().toString() : "";
-        else if ("lastEmail".equals(column))
+            
+        } else if ( "lastEmail".equals(column)) {
             returnString = item.getLastDate() != null ? sdf.format(item.getLastDate()) : "";
-        else if ("report".equals(column))
+            
+        } else if ( "report".equals(column)) {
             returnString = item.getReport() != null ? MessageUtil.getMessageString(item.getReport().toString(), getLocale()) : "";
-        else if ("status".equals(column))
+            
+        } else if ( "status".equals(column)) {
             returnString = item.getStatus() != null ? item.getStatus().toString() : "";
+            
+        } else if ( "owner".equals(column)) {
+            returnString = item.getFullName();
+        }
         logger.debug("column: " + column);
         logger.debug("returnValue: " + returnString);
         return returnString;
@@ -645,6 +656,7 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         final ReportScheduleView reportScheduleView = new ReportScheduleView();
         BeanUtils.copyProperties(reportSchedule, reportScheduleView);
         reportScheduleView.setSelected(false);
+        
         if (reportSchedule.getDriverID() != null) {
             Driver driver = driverDAO.findByID(reportScheduleView.getDriverID());
             reportScheduleView.setDriverName(driver.getPerson().getFullName());
@@ -804,7 +816,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         @Column(updateable = false)
         private String[] listDisplay;
         
-        
         public String[] getListDisplay() {
             return listDisplay;
         }
@@ -949,5 +960,6 @@ public class ReportScheduleBean extends BaseAdminBean<ReportScheduleBean.ReportS
         public Integer getDayOfMonth() {
             return dayOfMonth;
         }
+
     }
 }
