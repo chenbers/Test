@@ -212,19 +212,19 @@ public class ZonePublishTest {
 
         Zone zone2 = new Zone(91580, 1, Status.ACTIVE, "Light-Heavy test 10mph", "", 1);
         zone2.setPoints(getPoints("-112.006066,40.707589,-112.006001,40.702318,-112.005401,40.702318,-112.005401,40.70754,-112.006066,40.707589"));
-        zone2.setOptions(getZoneOptions("10,false,false,true,true,false,0,0,true,true,true,true,true,false,0,true,true,true,true,true,false,,91580,false,2,,,"));
+        zone2.setOptions(getZoneOptions("10,false,false,true,true,false,0,0,true,true,true,true,true,false,0,true,true,true,true,true,false,,91580,false,2,,,", ZoneVehicleType.HEAVY));
         zoneList.add(zone2);
 
         Zone zone1 = new Zone(12777, 1, Status.ACTIVE, "Tim-Home", "", 1);
         zone1.setPoints(getPoints("-112.0224,40.624752,-112.0221,40.624736,-112.0218,40.624746,-112.021652,40.624748,-112.021641,40.62483,-112.021572,40.624828,-112.021577,40.624756,-112.021472,40.624746,-112.021314,40.624773,-112.02118,40.624807,-112.021086,40.624858,-112.020931,40.624815,-112.020933,40.624724,-112.020968,40.624673,-112.021046,40.624653,-112.021126,40.624661,-112.021212,40.624691,-112.021306,40.624677,-112.021416,40.624667,-112.021518,40.624661,-112.021666,40.624657,-112.021818,40.624663,-112.021987,40.624651,-112.022164,40.624655,-112.022296,40.624657,-112.022403,40.624646,-112.02236,40.624669,-112.0224,40.624752"));
-        zone1.setOptions(getZoneOptions("30,false,false,true,true,false,0,0,true,true,true,true,true,false,0,true,true,true,true,true,false,,12777,false,2,,,"));
+        zone1.setOptions(getZoneOptions("30,false,false,true,true,false,0,0,true,true,true,true,true,false,0,true,true,true,true,true,false,,12777,false,2,,,", ZoneVehicleType.ALL));
         zoneList.add(zone1);
 
         return zoneList;
     }
 
 
-    private List<ZoneOption> getZoneOptions(String optString) {
+    private List<ZoneOption> getZoneOptions(String optString, ZoneVehicleType zoneVehicleType) {
 //        speed_limit,caution_area,hazmat_area,report_on_arrival,report_on_departure,disable_RF,preferred_comm,position_update,seatbelt_violation,
 //        speeding_violation,driverID_violation,ignition_on_event,ignition_off_event,theft_alert,DOT_rule_set,master_buzzer,
 //        hard_turn_event,hard_vertical_event,hard_brake_event,monitor_idle,display_on_portal,Flag,IntId,deleted,vehicleType,blast_zone,lightning_present,blast_enabled
@@ -250,7 +250,7 @@ public class ZonePublishTest {
         options.add(new ZoneOption(ZoneAvailableOption.HARD_BRAKE_EVENT, getOptionValue(ZoneAvailableOption.HARD_BRAKE_EVENT, opts[18])));
         options.add(new ZoneOption(ZoneAvailableOption.MONITOR_IDLE, getOptionValue(ZoneAvailableOption.MONITOR_IDLE, opts[19])));
         // display_on_portal,Flag,IntId,deleted (20,21,22,23)
-        options.add(new ZoneOption(ZoneAvailableOption.VEHICLE_TYPE, ZoneVehicleType.HEAVY));
+        options.add(new ZoneOption(ZoneAvailableOption.VEHICLE_TYPE, zoneVehicleType));
         
 
         return options;

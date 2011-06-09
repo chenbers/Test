@@ -173,7 +173,8 @@ public class ZonePublisher {
         int rowCnt = 0;
         for (Zone zone : zoneList) {
             Map<ZoneAvailableOption, OptionValue> zoneOptionsMap = zone.getOptionsMap();
-            if (!(zoneVehicleType == ZoneVehicleType.ALL || zoneVehicleType == zoneOptionsMap.get(ZoneAvailableOption.VEHICLE_TYPE)))
+            
+            if (!includeZone(zone, zoneVehicleType))
                 continue;
             
             Object [] fields = new Object[dbColumns.length];
@@ -220,7 +221,7 @@ public class ZonePublisher {
         double radiCnt = 1.00;
         for (Zone zone : zoneList) {
             Map<ZoneAvailableOption, OptionValue> zoneOptionsMap = zone.getOptionsMap();
-            if (!(zoneVehicleType == ZoneVehicleType.ALL || zoneVehicleType == zoneOptionsMap.get(ZoneAvailableOption.VEHICLE_TYPE)))
+            if (!includeZone(zone, zoneVehicleType))
                 continue;
             // all are polygon in tiwipro
             // now get the count of the pairs
@@ -249,6 +250,11 @@ public class ZonePublisher {
         
     }
     
+    private boolean includeZone(Zone zone, ZoneVehicleType zoneVehicleType) {
+        Map<ZoneAvailableOption, OptionValue> zoneOptionsMap = zone.getOptionsMap();
+        ZoneVehicleType zoneType = (ZoneVehicleType)zoneOptionsMap.get(ZoneAvailableOption.VEHICLE_TYPE);
+        return zoneVehicleType == ZoneVehicleType.ALL || zoneType == ZoneVehicleType.ALL || zoneVehicleType == zoneType;
+    }
     
 
     byte[] createTar(List<ZonePublishInfo> zonePublishInfoList) throws IOException, NoSuchAlgorithmException {
