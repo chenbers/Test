@@ -46,7 +46,6 @@ public abstract class Masthead extends AbstractPage {
 	
 	public Masthead loginProcess(String username, String password){
 		PageLogin login = new PageLogin();
-		login.openLogout();
 		login.loginProcess(username, password);
 		return this;
 	}
