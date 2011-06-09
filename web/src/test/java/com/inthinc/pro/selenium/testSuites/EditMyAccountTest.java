@@ -101,29 +101,29 @@ public class EditMyAccountTest extends WebRallyTest {
         Measurement newMeasure = null;
         Fuel_Ratio newFuel = null;
         //find old value, setup new value. notice that we rotate through ALL 4 fuel ratio options if the test is run 4 times
-        if(originalFuelRatio.equals(Fuel_Ratio.ENGLISH_MILES_UK.getText())) {
+        if(compare(Fuel_Ratio.ENGLISH_MILES_UK, originalFuelRatio)) {
             newMeasure = Measurement.METRIC;
             newFuel = Fuel_Ratio.METRIC_KILO_PER_LITER;
-        } else if(originalFuelRatio.equals(Fuel_Ratio.METRIC_KILO_PER_LITER.getText())) {
+        } else if(compare(Fuel_Ratio.METRIC_KILO_PER_LITER, originalFuelRatio)) {
             newMeasure = Measurement.ENGLISH;
             newFuel = Fuel_Ratio.ENGLISH_MILES_US;
-        } else if(originalFuelRatio.equals(Fuel_Ratio.ENGLISH_MILES_US.getText())) {
+        } else if(compare(Fuel_Ratio.ENGLISH_MILES_US, originalFuelRatio)) {
             newMeasure = Measurement.METRIC;
             newFuel = Fuel_Ratio.METRIC_LITER_PER_KILO;
-        } else if(originalFuelRatio.equals(Fuel_Ratio.METRIC_LITER_PER_KILO.getText())) {
+        } else if(compare(Fuel_Ratio.METRIC_LITER_PER_KILO, originalFuelRatio)) {
             newMeasure = Measurement.ENGLISH;
             newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
         } else {
             addError("Fuel Ratio","Original Fuel Ratio has unexpected value of: "+originalFuelRatio);
             assertTrue(false, "FuelRatioValidation test cannot continue without capturing valid Original Fuel Ratio");
         }
-        myAccountPage._select().measurement().select(newMeasure.getText());
-        myAccountPage._select().fuelEfficiency().select(newFuel.getText());
+        myAccountPage._select().measurement().select(newMeasure);
+        myAccountPage._select().fuelEfficiency().select(newFuel);
         
         //2. Click Save.
         myAccountPage._button().save().click();
-        myAccountPage._text().measurement().validate(newMeasure.getText());
-        myAccountPage._text().fuelEfficiency().validate(newFuel.getText());
+        myAccountPage._text().measurement().validate(newMeasure);
+        myAccountPage._text().fuelEfficiency().validate(newFuel);
         
         //3. Navigate to other pages throughout the UI.
         myAccountPage._link().liveFleet().click();
@@ -170,8 +170,8 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void PhoneMaxCharError() {
 		set_test_case("TC1277");
-		String phoneNumEighteen = "801-777-7777-44444421";
-		String phoneNumTwentyFive = "01-234-5678-901234-5678901234";
+		String phoneNumEighteen = random.getNumberString(18);
+		String phoneNumTwentyFive = random.getNumberString(25);
 		//the following are left to show additional ways constants MIGHT be used in tests.
 		//String phoneNumRandomTwelve = random.getPhoneNumber() +"-"+random.getNumberString(2);
 		//String phoneNumReal = "801-777-7777";
@@ -214,9 +214,12 @@ public class EditMyAccountTest extends WebRallyTest {
 		
 		//Rally: expected
 		// 1. The following validation error alert appears above the text field:
-		//    'Must consist of 10 numeric characters'
-		myAccountPage._text().errorPhone1().validate("Must consist of up to 15 numeric characters");//NOTE: the error message was changed from what RALLY wanted to what the error ACTUALLY says
-		myAccountPage._text().errorPhone2().validate("Must consist of up to 15 numeric characters");
+		//    'Must consist of 15 numeric characters'
+//		myAccountPage._text().errorPhone1().validate("Must consist of up to 15 numeric characters");
+//		myAccountPage._text().errorPhone2().validate("Must consist of up to 15 numeric characters");
+		myAccountPage._text().errorPhone1().validate("What is the minimum number of characters???");//TODO: dtanner: to whomever, what is minimum value
+		myAccountPage._text().errorPhone2().validate("What is the minimum number of characters???");
+		
 	}
 
 	@Test
@@ -228,8 +231,8 @@ public class EditMyAccountTest extends WebRallyTest {
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
 		myAccountPage._link().myAccount().click();
 		myAccountPage._button().edit().click();
-		myAccountPage._textField().phone1().type("801-@$%-777&");
-		myAccountPage._textField().phone2().type("801-ABC-&^$");
+		myAccountPage._textField().phone1().type(random.specialNumberString(10));
+		myAccountPage._textField().phone2().type(random.specialNumberString(10));
 		myAccountPage._button().save().click();
 		
 		//Rally: Expected Result
@@ -243,18 +246,12 @@ public class EditMyAccountTest extends WebRallyTest {
 	public void TextMsgFormatError() {
 		set_test_case("TC1282");
 		ArrayList<String> badTextMessageAddresses = new ArrayList<String>();
-		String twoAtSymbols = "8015551234@domain@domain.com";//NOTE: this is defect 6654
-		String lessThanTenNumeric = "12@domain.com";
-		String hasSpace = "8015551234 @domain.com";
-		String hasQuotedString = "801555\"1234\"@domain.com";
-		String hasIllegalChars = "801*555&1234@domain.com";
-		String hasAlphaInPhNum = "801362judi@domain.com";
-		badTextMessageAddresses.add(twoAtSymbols);
-		badTextMessageAddresses.add(lessThanTenNumeric);
-		badTextMessageAddresses.add(hasSpace);
-		badTextMessageAddresses.add(hasQuotedString);
-		badTextMessageAddresses.add(hasIllegalChars);
-		badTextMessageAddresses.add(hasAlphaInPhNum);
+		badTextMessageAddresses.add("8015551234@domain@domain.com");					// NOTE: this is defect 6654
+		badTextMessageAddresses.add(random.getNumberString(5)+"@domain.com");			// phone number is to short
+		badTextMessageAddresses.add("8015551234 @domain.com"); 							// contains a space
+		badTextMessageAddresses.add("801555\"1234\"@domain.com");						// has quotes inside
+		badTextMessageAddresses.add(random.specialNumberString(10)+"@domain.com");		// Special Characters for number
+		badTextMessageAddresses.add("801362judi@domain.com"); 							// contains letters
 		
 		//Rally: input
 		// 1. From the Edit My Account page, enter a text message address that DOES NOT conform to the address attributes listed in Note 1 below in the Text Message 1 and Text Message 2 text fields.
@@ -266,7 +263,7 @@ public class EditMyAccountTest extends WebRallyTest {
 		for(String address: badTextMessageAddresses){
     		myAccountPage._textField().textMessage1().type(address);
     		myAccountPage._textField().textMessage2().type(address); //NOTE: there might be an additional TC to test if textMessage1 is in an incorrect format by textMessage2 is not (and vice versa)
-    		myAccountPage._button().save().click(); //NOTE: IF one of these "saves" is successful, it will cause subsequent itterations of this loop to FAIL (because we will NOT be on the Edit page any longer)
+    		myAccountPage._button().save().click(); //NOTE: IF one of these "saves" is successful, it will cause subsequent iterations of this loop to FAIL (because we will NOT be on the Edit page any longer)
     		
     		//Rally: Expected Result
     		// An error message appears in red saying 'Incorrect format (8015551212@tmomail.com)'
@@ -275,6 +272,8 @@ public class EditMyAccountTest extends WebRallyTest {
 		}
 		
 	}
+	
+	
 	@Test
     public void SaveButton_Changes() {
         set_test_case("TC1280");
@@ -291,22 +290,22 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._link().myAccount().click();
         
         //hang onto original values so the account can be returned to it's original state
-        String origLocal = myAccountPage._text().locale().getText();
-        String origMeasure = myAccountPage._text().measurement().getText();
-        String origFuelEfficiency = myAccountPage._text().fuelEfficiency().getText();
-        String origEmail1 = myAccountPage._text().email1().getText();
-        String origEmail2 = myAccountPage._text().email2().getText();
-        String origPhone1 = myAccountPage._text().phone1().getText();
-        String origPhone2 = myAccountPage._text().phone2().getText();
-        String origText1 = myAccountPage._text().textMessage1().getText();
-        String origText2 = myAccountPage._text().textMessage2().getText();
-        String origInfo = myAccountPage._text().redFlagInfo().getText();
-        String origWarn = myAccountPage._text().redFlagWarn().getText();
-        String origCrit = myAccountPage._text().redFlagCritical().getText();
+        String origLocal 			= myAccountPage._text().locale().getText();
+        String origMeasure 			= myAccountPage._text().measurement().getText();
+        String origFuelEfficiency 	= myAccountPage._text().fuelEfficiency().getText();
+        String origEmail1 			= myAccountPage._text().email1().getText();
+        String origEmail2 			= myAccountPage._text().email2().getText();
+        String origPhone1 			= myAccountPage._text().phone1().getText();
+        String origPhone2 			= myAccountPage._text().phone2().getText();
+        String origText1 			= myAccountPage._text().textMessage1().getText();
+        String origText2 			= myAccountPage._text().textMessage2().getText();
+        String origInfo 			= myAccountPage._text().redFlagInfo().getText();
+        String origWarn 			= myAccountPage._text().redFlagWarn().getText();
+        String origCrit 			= myAccountPage._text().redFlagCritical().getText();
         //these 3 can't be changed but hanging onto them allows us to test with different (any?) login
-        String origName = myAccountPage._text().name().getText();
-        String origGroup = myAccountPage._text().group().getText();
-        String origTeam = myAccountPage._text().team().getText(); 
+        String origName 			= myAccountPage._text().name().getText();
+        String origGroup 			= myAccountPage._text().group().getText();
+        String origTeam 			= myAccountPage._text().team().getText(); 
 
         myAccountPage._button().edit().click();
 

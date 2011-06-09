@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.utils;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -20,9 +21,10 @@ public class RandomValues {
 	
 	private static ArrayList<String> colors= new ArrayList<String>(), make= new ArrayList<String>(), model = new ArrayList<String>();
 	private static HashMap<String, HashMap<String, String>> rfid = new HashMap<String, HashMap<String, String>>();
-	private Iterator<String> itr;
 	private FileRW file;
 	private static HashMap<String, HashMap<ProductType, Integer>> states = new HashMap<String, HashMap<ProductType, Integer>>();
+	
+	public static char[] special = {'!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~' };
 
 	private Random random;
 	
@@ -37,21 +39,21 @@ public class RandomValues {
 	}
 	
 	public String randomMixedString(Integer length){
-		String randomString = "";
+        StringWriter aStringAString = new StringWriter();
 		for (int i=0; i<length;i++){
 			Boolean intOrChar = random.nextBoolean();
 			if (intOrChar){
-				randomString += random.nextInt(10);
+				aStringAString.write(random.nextInt(10));
 			}else if (!intOrChar){
 				Boolean capOrLower = random.nextBoolean();
 				char character = getCharacter();
-				if (capOrLower)randomString += Character.toLowerCase(character);
+				if (capOrLower)aStringAString.write(Character.toLowerCase(character));
 				else{
-					randomString += character;
+					aStringAString.write(character);
 				}
 			}
 		}
-		return randomString;
+		return aStringAString.toString();
 	}
 	
 	private Enum<?> getRandomEnum(Enum<?> startFrom){
@@ -75,16 +77,18 @@ public class RandomValues {
 		
 	
 	public String getString(Integer length){
-		String random = "";
+        StringWriter aStringAString = new StringWriter();
 		for (int i=0;i<length;i++){
 			Boolean capOrLower = this.random.nextBoolean();
 			char character = getCharacter();
 			if (capOrLower){
-				random += Character.toLowerCase(character);
+				aStringAString.write(Character.toLowerCase(character));
 			}
-			else{ random += character;}
+			else{ 
+				aStringAString.write(character);
+			}
 		}
-		return random;
+		return aStringAString.toString();
 	}
 	
 	public char getCharacter(){
@@ -93,26 +97,26 @@ public class RandomValues {
 	}
 	
 	public String getUpperString(Integer length){
-		String randomString = "";
+        StringWriter aStringAString = new StringWriter();
 		for (int i=0; i<length;i++){
 			Boolean intOrChar = random.nextBoolean();
 			if (intOrChar){
-				randomString += random.nextInt(10);
+				aStringAString.write(random.nextInt(10));
 			}else if (!intOrChar){
 				char character = getCharacter();
-				randomString += character;
+				aStringAString.write(character);
 			}
 		}
-		return randomString;
+		return aStringAString.toString();
 	}
 	
 	
 	public String getNumberString(Integer length){
-		String randomString = "";
+        StringWriter aStringAString = new StringWriter();
 		for (int i=0;i<length;i++){
-			randomString += random.nextInt(10);
+			aStringAString.write(random.nextInt(10));
 		}
-		return randomString;
+		return aStringAString.toString();
 	}
 	
 	public String getPhoneNumber(){
@@ -227,6 +231,7 @@ public class RandomValues {
 	}
 	
 	public HashMap<String, String> getRFID(String barcode){
+		Iterator<String> itr;
 		HashMap<String, String> card;
 		ArrayList<String> cards = new ArrayList<String>();
 		String[] line = new String[3];
@@ -267,6 +272,15 @@ public class RandomValues {
 		String address = getString(15)+"@"+"tiwisucks.com";
 		logger.debug(address);
 		return address;
+	}
+
+	public String specialNumberString(int length) {
+        StringWriter aStringAString = new StringWriter();
+		Integer value = random.nextInt(special.length);
+		for (int i=0;i<length;i++){
+			aStringAString.append(special[value]);
+		}
+		return aStringAString.toString();
 	}
 	
 	
