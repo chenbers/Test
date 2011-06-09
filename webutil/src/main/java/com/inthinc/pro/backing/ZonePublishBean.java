@@ -57,6 +57,8 @@ public class ZonePublishBean extends BaseBean {
 
     public void publishAction() {
         if (account != null) {
+            // reinit in case data is stale
+            account = initAccount(account.getAccountID());
             publishZones(account, zoneList);
             setPublishActionMsg("Success: Zones have been published for Account: " + account.getAcctName());
         }
@@ -153,7 +155,6 @@ public class ZonePublishBean extends BaseBean {
     }
 
     public void setZoneDAO(ZoneDAO zoneDAO) {
-System.out.println("setzonedao");        
         this.zoneDAO = zoneDAO;
     }
 
