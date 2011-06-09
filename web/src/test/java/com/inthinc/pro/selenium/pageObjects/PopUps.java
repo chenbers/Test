@@ -278,7 +278,7 @@ public class PopUps {
 					@Override
 					public ClickableObject click(){
 						super.click();
-						assertTrue(selenium.isVisible(myEnum));
+						assertTrue(!selenium.isVisible(myEnum));
 						return this;
 					}
 				};
