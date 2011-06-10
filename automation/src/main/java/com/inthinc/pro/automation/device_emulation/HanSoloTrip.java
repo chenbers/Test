@@ -1,6 +1,5 @@
-package com.inthinc.pro.selenium.testSuites;
+package com.inthinc.pro.automation.device_emulation;
 
-import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.enums.Addresses;
 
 public class HanSoloTrip {
