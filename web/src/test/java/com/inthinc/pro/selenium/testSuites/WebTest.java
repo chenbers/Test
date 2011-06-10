@@ -6,7 +6,7 @@ import org.junit.Before;
 
 import com.inthinc.pro.automation.selenium.AutomatedTest;
 
-public class WebTest extends AutomatedTest {
+public abstract class WebTest extends AutomatedTest {
 
     @Before
     public void a_before() {

@@ -7,7 +7,7 @@ import org.junit.BeforeClass;
 
 import com.inthinc.pro.automation.selenium.RallyTest;
 
-public class WebRallyTest extends RallyTest{
+public abstract class WebRallyTest extends RallyTest{
     
     @BeforeClass
     public static void beforeClass(){
