@@ -542,10 +542,12 @@ public class VehiclePerformanceBean extends BasePerformanceBean
                 reportCriteria.addParameter("MAP_URL", imageUrl);
             }
         } else {
-            Group vehicleGroup = getGroupHierarchy().getGroup(getVehicle().getGroupID());
-            String imageUrlDef = MapLookup.getMap(vehicleGroup.getMapLat(), vehicleGroup.getMapLng(), 250, 200);
-            // String imageUrlDef = MapLookup.getMap(40.709922, -111.993041, 250, 200);
-            reportCriteria.addParameter("MAP_URL", imageUrlDef);
+            if (enableGoogleMapsInReports) {
+               Group vehicleGroup = getGroupHierarchy().getGroup(getVehicle().getGroupID());
+                String imageUrlDef = MapLookup.getMap(vehicleGroup.getMapLat(), vehicleGroup.getMapLng(), 250, 200);
+                // String imageUrlDef = MapLookup.getMap(40.709922, -111.993041, 250, 200);
+                reportCriteria.addParameter("MAP_URL", imageUrlDef);
+            }
         }
         reportCriteria.addChartDataSet(createMpgJasperDef());
         reportCriteria.addChartDataSet(createSingleJasperDefCoaching(id, coachDurationBean.getDuration()));

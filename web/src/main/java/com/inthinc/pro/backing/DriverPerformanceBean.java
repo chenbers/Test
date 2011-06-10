@@ -74,19 +74,18 @@ public class DriverPerformanceBean extends BasePerformanceBean {
     private String overallScoreStyle;
     private String mpgHistory;
     private String coachingHistory;
-    private Boolean hasLastTrip;
+    
+//    private Boolean hasLastTrip;
     private Boolean emptyLastTrip;
-    private Boolean tripMayExist;
+    private Boolean haveNotCheckedForTripsYet;
 
     protected Long selectedViolationID;
 
     protected Map<Long, Event> violationEventsMap;
 
-//    private static final String NO_LAST_TRIP_FOUND = "no_last_trip_found";
-
     public DriverPerformanceBean() {
         super();
-        tripMayExist = true;
+        haveNotCheckedForTripsYet = true;
     }
 
     public Boolean getEmptyLastTrip() {
@@ -207,34 +206,33 @@ public class DriverPerformanceBean extends BasePerformanceBean {
 
     // LAST TRIP
     public TripDisplay getLastTrip() {
-        if (lastTrip == null && tripMayExist) {
+        if (lastTrip == null && haveNotCheckedForTripsYet) {
             Trip tempTrip = driverBean.getDriverDAO().getLastTrip(getDriver().getDriverID());
 
             if (tempTrip != null){
-            	
-                hasLastTrip = true;
                 emptyLastTrip = (tempTrip.getRoute() == null)||(tempTrip.getRoute().size() == 0);
                 
-                TripDisplay trip = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), getAddressLookup());
-                if(tempTrip.getRoute().size() > 0){
-	                if (trip.getStartAddress() == null) {
-	                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), trip.getBeginningPoint()));
-	                }
-	                if (trip.getEndAddress() == null) {
-	                    trip.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), new LatLng(trip.getEndPointLat(), trip.getEndPointLng())));
-	                }
-                }
-                setLastTrip(trip);
-                initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
-            } else {
-                hasLastTrip = false;
+                TripDisplay tripDisplay = createTripDisplay(tempTrip);
+                setLastTrip(tripDisplay);
+                initViolations(tripDisplay.getTrip().getStartTime(), tripDisplay.getTrip().getEndTime());
             }
-            tripMayExist = false;
-
+            haveNotCheckedForTripsYet = false;
         }
         return lastTrip;
     }
-
+    private TripDisplay createTripDisplay(Trip trip){
+        TripDisplay tripDisplay = new TripDisplay(trip, getDriver().getPerson().getTimeZone(), getAddressLookup());
+        if(trip.getRoute().size() > 0){
+            if (tripDisplay.getStartAddress() == null) {
+                tripDisplay.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), tripDisplay.getBeginningPoint()));
+            }
+            if (tripDisplay.getEndAddress() == null) {
+                tripDisplay.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), new LatLng(tripDisplay.getEndPointLat(), tripDisplay.getEndPointLng())));
+            }
+        }
+        return tripDisplay;
+ 
+    }
     public void setLastTrip(TripDisplay lastTrip) {
         this.lastTrip = lastTrip;
     }
@@ -397,10 +395,18 @@ public class DriverPerformanceBean extends BasePerformanceBean {
                 reportCriteria.addParameter("MAP_URL", imageUrl);
             }
         } else {
-            Group vehicleGroup = getGroupHierarchy().getGroup(getVehicle().getGroupID());
-            String imageUrlDef = MapLookup.getMap(vehicleGroup.getMapLat(), vehicleGroup.getMapLng(), 250, 200);
-            // String imageUrlDef = MapLookup.getMap(40.709922, -111.993041, 250, 200);
-            reportCriteria.addParameter("MAP_URL", imageUrlDef);
+            if (enableGoogleMapsInReports) {
+                if (getVehicle() != null) {
+                    Group vehicleGroup = getGroupHierarchy().getGroup(getVehicle().getGroupID());
+                    String imageUrlDef = MapLookup.getMap(vehicleGroup.getMapLat(), vehicleGroup.getMapLng(), 250, 200);
+                    reportCriteria.addParameter("MAP_URL", imageUrlDef);
+                }
+                else{
+                    LatLng groupDefaultLocation = getGroupHierarchy().getTopGroup().getMapCenter();
+                    String imageUrlDef = MapLookup.getMap(groupDefaultLocation.getLat(), groupDefaultLocation.getLng(), 250, 200);
+                    reportCriteria.addParameter("MAP_URL", imageUrlDef);
+                }
+            }
         }
         
         reportCriteria.addChartDataSet(createMpgJasperDef());
@@ -466,15 +472,13 @@ public class DriverPerformanceBean extends BasePerformanceBean {
     }
 
     public Boolean getHasLastTrip() {
-        // if (this.lastTrip == null)
-        // this.getLastTrip();
 
-        return hasLastTrip;
+        return lastTrip != null;
     }
 
-    public void setHasLastTrip(Boolean hasLastTrip) {
-        this.hasLastTrip = hasLastTrip;
-    }
+//    public void setHasLastTrip(Boolean hasLastTrip) {
+//        this.hasLastTrip = hasLastTrip;
+//    }
 
     @Override
     public void exportReportToPdf() {
@@ -543,15 +547,6 @@ public class DriverPerformanceBean extends BasePerformanceBean {
         }
         selectedViolationID = violationEvents.size() > 0 ? violationEvents.get(0).getNoteID() : null;
     }
-
-    //
-    // public Event getSelectedViolation() {
-    // return selectedViolation;
-    // }
-    //
-    // public void setSelectedViolation(Event selectedViolation) {
-    // this.selectedViolation = selectedViolation;
-    // }
 
     public Long getSelectedViolationID() {
         return selectedViolationID;
