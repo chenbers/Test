@@ -28,11 +28,11 @@ public class Unique {
 			}else value = "";
 			
 			if (type.isString() && type != UniqueValues.PERSONID_EMAIL){
-				value += random.randomMixedString(length);
+				value += random.getMixedString(length);
 			}else if (type == UniqueValues.PERSONID_EMAIL){
 				value += random.getEmail();
 			}else{
-				value += random.getNumberString(length);
+				value += random.getIntString(length);
 			}
 			unique = checkUnique(type, value);
 		}

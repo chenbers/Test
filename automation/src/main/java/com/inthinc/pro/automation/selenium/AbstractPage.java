@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 
-import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.utils.MasterTest;
 
@@ -26,11 +25,6 @@ public abstract class AbstractPage extends MasterTest implements Page {
         }
     }
 
-   
-    @Override
-    public String getCurrentLocation() {
-        return selenium.getLocation();
-    }
 
     @Override
     public String getExpectedPath() {
@@ -50,14 +44,6 @@ public abstract class AbstractPage extends MasterTest implements Page {
         return this;
     }
     
-    protected void open(SeleniumEnums pageToOpen){
-    	selenium.open(AutomationEnum.CORE_ONLY.setEnum(pageToOpen));
-    }
-    
-    protected void open(String url){
-    	selenium.open(url);
-    }
-
     @Override
     public Page load() {
         open(url);

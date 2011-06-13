@@ -24,8 +24,10 @@ public class RandomValues {
 	private FileRW file;
 	private static HashMap<String, HashMap<ProductType, Integer>> states = new HashMap<String, HashMap<ProductType, Integer>>();
 	
-	public static char[] special = {'!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~' };
+	public static final char[] special = {' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~' };
 
+	private static enum Types{CHARACTER, INTEGER, SPECIAL};
+	
 	private Random random;
 	
 
@@ -38,19 +40,21 @@ public class RandomValues {
 		return new RandomValues();
 	}
 	
-	public String randomMixedString(Integer length){
-        StringWriter aStringAString = new StringWriter();
-		for (int i=0; i<length;i++){
-			Boolean intOrChar = random.nextBoolean();
-			if (intOrChar){
-				aStringAString.write(random.nextInt(10));
-			}else if (!intOrChar){
-				Boolean capOrLower = random.nextBoolean();
-				char character = getCharacter();
-				if (capOrLower)aStringAString.write(Character.toLowerCase(character));
-				else{
-					aStringAString.write(character);
+	public String getMixedString(Integer length){
+		StringWriter aStringAString = new StringWriter();
+		for (int i=0;i<length;i++){
+			Types type = (Types) getRandomEnum(Types.CHARACTER);
+			if (type==Types.CHARACTER){
+				Boolean upperCase = this.random.nextBoolean();
+				if (upperCase){				
+					aStringAString.write(Character.toUpperCase(getCharacter()));
+				}else{
+					aStringAString.write(Character.toLowerCase(getCharacter()));
 				}
+			}else if(type==Types.INTEGER){
+				aStringAString.write(getInt());
+			}else if(type==Types.SPECIAL){
+				aStringAString.write(getSpecial());
 			}
 		}
 		return aStringAString.toString();
@@ -74,44 +78,36 @@ public class RandomValues {
 			}
 		}
 	}
+
+	private char getSpecial(){
+		return special[random.nextInt(special.length)];
+	}
 		
 	
-	public String getString(Integer length){
+	public String getCharString(Integer length){
         StringWriter aStringAString = new StringWriter();
 		for (int i=0;i<length;i++){
-			Boolean capOrLower = this.random.nextBoolean();
-			char character = getCharacter();
-			if (capOrLower){
-				aStringAString.write(Character.toLowerCase(character));
+			Boolean upperCase = this.random.nextBoolean();
+			if (upperCase){
+				aStringAString.write(Character.toLowerCase(getCharacter()));
 			}
 			else{ 
-				aStringAString.write(character);
+				aStringAString.write(getCharacter());
 			}
 		}
 		return aStringAString.toString();
 	}
 	
-	public char getCharacter(){
+	private char getCharacter(){
 		char character= (char)(random.nextInt(26)+65);
 		return character;
 	}
-	
-	public String getUpperString(Integer length){
-        StringWriter aStringAString = new StringWriter();
-		for (int i=0; i<length;i++){
-			Boolean intOrChar = random.nextBoolean();
-			if (intOrChar){
-				aStringAString.write(random.nextInt(10));
-			}else if (!intOrChar){
-				char character = getCharacter();
-				aStringAString.write(character);
-			}
-		}
-		return aStringAString.toString();
+
+	private int getInt(){
+		return random.nextInt(10);
 	}
 	
-	
-	public String getNumberString(Integer length){
+	public String getIntString(Integer length){
         StringWriter aStringAString = new StringWriter();
 		for (int i=0;i<length;i++){
 			aStringAString.write(random.nextInt(10));
@@ -120,7 +116,7 @@ public class RandomValues {
 	}
 	
 	public String getPhoneNumber(){
-		String phone = getNumberString(3) + "555" + getNumberString(4);
+		String phone = getIntString(3) + "555" + getIntString(4);
 		return phone;
 	}
 	
@@ -129,8 +125,8 @@ public class RandomValues {
 	}
 	
 	public Long getLong(Integer length){
-		assert(length<Math.pow(2, 32));
-		String randomInt = getNumberString(length);
+		assert(length<Long.MAX_VALUE);
+		String randomInt = getIntString(length);
 		return Long.parseLong(randomInt);
 	}
 	
@@ -269,12 +265,18 @@ public class RandomValues {
 	}
 
 	public String getEmail() {
-		String address = getString(15)+"@"+"tiwisucks.com";
+		String address = getCharString(15)+"@"+"tiwisucks.com";
+		logger.debug(address);
+		return address;
+	}
+	
+	public String getEmail(Integer length, String domain) {
+		String address = getCharString(length)+"@"+domain;
 		logger.debug(address);
 		return address;
 	}
 
-	public String specialNumberString(int length) {
+	public String getSpecialString(int length) {
         StringWriter aStringAString = new StringWriter();
 		Integer value = random.nextInt(special.length);
 		for (int i=0;i<length;i++){

@@ -15,6 +15,8 @@ public class MasterTest {
 		WARN,
 		COMPARE;
 	}
+	
+	private String savedPage;
 
 	private CoreMethodLib selenium;
 
@@ -23,14 +25,9 @@ public class MasterTest {
 				Thread.currentThread().getStackTrace());
 	}
 	
-	protected Boolean compare (TextEnum expected, String actual){
-		return (actual == expected.getText());
-	}
-
 	protected void addError(String errorName, String error) {
 		selenium.getErrors().addError(errorName, error);
 	}
-
 
 	protected void addErrorWithExpected(String errorName, String error,
 			String expected) {
@@ -39,23 +36,18 @@ public class MasterTest {
 	}
 
 
-	protected void assertStringContains(String fullString, String partialString) {
-		if (!fullString.contains(partialString)) {
-			addError(partialString + " not in " + fullString);
-		}
-	}
-
-
-
 	protected void assertEquals(AutomationEnum anEnum) {
 		assertEquals(selenium.getText(anEnum), anEnum.getText());
 	}
+
 
 	protected void assertEquals(Object expected, AutomationEnum actual) {
 		assertEquals(expected, selenium.getText(actual));
 	}
 
-	protected void assertEquals(Object actual, Object expected) {
+
+
+	protected void assertEquals(Object expected, Object actual) {
 		String string;
 		if (actual instanceof TextEnum) {
 			string = ((TextEnum) actual).getText();
@@ -69,29 +61,17 @@ public class MasterTest {
 		}
 	}
 
-	protected void assertEquals(Object actual, Object expected, AutomationEnum myEnum) {
+	protected void assertEquals(Object expected, Object actual, AutomationEnum myEnum) {
 		if (!actual.equals(expected)) {
 			addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(),
 					"\t\tExpected = " + expected + "\n\t\tActual = " + actual);
 		}
 	}
 
-
-	// TODO: jwimmer: dtanner: asserts should not be made available to the test
-	// writers. test writers should compare/validate/? Elements, where the
-	// assert methods do not necessarily operate on the element. note: pulling
-	// certain methods up one layer to an object that parents AutomatedTest and
-	// ElementBase would reveal them in both places... IF that is done make sure
-	// we are only revealing methods to the test writers that we think they need
-	// and/or will use
-	protected void assertNotEquals(Object actual, Object expected) {
-		if (actual.equals(expected)) {
-			addError(actual + " == " + expected);
+	protected void assertStringContains(String partialString, String fullString) {
+		if (!fullString.contains(partialString)) {
+			addError(partialString + " not in " + fullString);
 		}
-	}
-
-	protected void assertNotEquals(Object expected, SeleniumEnums actual) {
-		assertNotEquals(expected, actual.getText());
 	}
 
 	protected Boolean assertTrue(Boolean test, String error) {
@@ -102,9 +82,17 @@ public class MasterTest {
 		return true;
 	}
 
+	protected Boolean compare (TextEnum expected, String actual){
+		return (actual == expected.getText());
+	}
+
 	protected ErrorCatcher get_errors() {
 		return selenium.getErrors();
 	}
+
+	public String getCurrentLocation() {
+        return selenium.getLocation();
+    }
 
 	protected CoreMethodLib getSelenium() {
 		if (selenium == null){
@@ -112,8 +100,24 @@ public class MasterTest {
 		}
 		return selenium;
 	}
-
-	protected void setSelenium() {
+	
+    protected void open(SeleniumEnums pageToOpen){
+    	selenium.open(AutomationEnum.CORE_ONLY.setEnum(pageToOpen));
+    }
+    
+    protected void open(String url){
+    	selenium.open(url);
+    }
+    
+    protected void openSavedPage(){
+    	open(savedPage);
+    }
+    
+    protected void savePageLink(){
+    	savedPage = getCurrentLocation();
+    }
+    
+    protected void setSelenium() {
 		this.selenium = GlobalSelenium.getYourOwn();
 	}
 }
