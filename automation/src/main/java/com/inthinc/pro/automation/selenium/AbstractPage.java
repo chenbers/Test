@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 
+import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.utils.MasterTest;
 
@@ -23,6 +24,11 @@ public abstract class AbstractPage extends MasterTest implements Page {
         if(!instantiatedPages.contains(derivedClass)) {
             instantiatedPages.add(derivedClass);
         }
+    }
+    
+    public Boolean verifyOnPage(){ //TODO: dtanner or jwimmer: come up with a better name
+    	ElementBase test = new ElementBase(){};
+    	return test.validateElementsPresent(checkMe);
     }
 
 
