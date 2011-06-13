@@ -15,6 +15,7 @@ public enum MyAccountEnum implements SeleniumEnums {
     CHANGE_PASSWORD_BUTTON("Change Password", "myAccountPassword", Xpath.start().ul(Id.id("grid_nav")).li().button("1").toString(), Xpath.start().button(Id.type("submit")).toString()),
     EDIT_BUTTON("Edit", "myAccountEdit", Xpath.start().ul(Id.id("grid_nav")).li().button("2").toString(), Xpath.start().button(Id.type("submit")).toString()),
     MAIN_TITLE("My Account", Xpath.start().div(Id.clazz("account")).toString(), Xpath.start().div(Id.clazz("panel_title")).toString()),
+    MESSAGE(null, "//dt[@class='info']/span"),
 
     /* Account Information */
     ACCOUNT_TITLE("Account Information", "//td[1]/div[@class='add_section_title']"),

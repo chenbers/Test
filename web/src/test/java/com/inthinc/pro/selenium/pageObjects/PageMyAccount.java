@@ -300,6 +300,10 @@ public class PageMyAccount extends NavigationBar {
 		public Text titleRedFlags() {
 			return new Text(MyAccountEnum.RED_FLAGS_TITLE);
 		}
+		
+		public Text infoMessage(){
+			return new Text(MyAccountEnum.MESSAGE);
+		}
 
 	}
 
