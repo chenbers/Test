@@ -3,6 +3,9 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum VehicleReportEnum implements SeleniumEnums {
+	
+	TITLE("Vehicle Report", "//span[@class='vehicle']"),
+	
     DEFAULT_URL("/app/reports/vehiclesReport"),
     GROUP_SEARCH(null,"vehicles-form:vehicles:groupfsp"),
     DRIVER_SEARCH(null,"vehicles-form:vehicles:fullNamefsp"),
