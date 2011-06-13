@@ -16,6 +16,16 @@ import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
 public abstract class Masthead extends AbstractPage {
 	
+
+	public Masthead(){
+		checkMe.add(MastheadEnum.COPYRIGHT);
+		checkMe.add(MastheadEnum.PRIVACY);
+		checkMe.add(MastheadEnum.LEGAL);
+		checkMe.add(MastheadEnum.SUPPORT);
+		checkMe.add(MastheadEnum.VERSION);
+	}
+	
+	
 	public class MastheadPopUps extends PopUps{
 		public MastheadPopUps(){
 			

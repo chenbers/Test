@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.elements;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
@@ -127,11 +128,16 @@ public class ElementBase extends MasterTest implements ElementInterface {
         return selenium.getLocation();
     }
     
-    public void validateElementsPresent(SeleniumEnums ...enums){
-        for (SeleniumEnums enumerated: enums){
+    public Boolean validateElementsPresent(SeleniumEnums ...enums){
+    	for (SeleniumEnums enumerated: enums){
             setMyEnum(enumerated);
             assertTrue(isElementPresent(), myEnum.toString());
         }
+    	return true;
+    }
+    
+    public Boolean validateElementsPresent(ArrayList<SeleniumEnums> enums){
+    	return validateElementsPresent((SeleniumEnums[]) enums.toArray());
     }
     
     public void validateTextMatches(SeleniumEnums ...enums){

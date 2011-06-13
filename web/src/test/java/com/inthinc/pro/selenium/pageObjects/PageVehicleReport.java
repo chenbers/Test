@@ -8,7 +8,6 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
@@ -16,8 +15,8 @@ import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
 public class PageVehicleReport extends ReportsBar {
 	
 	public PageVehicleReport(){
-		super.url = VehicleReportEnum.DEFAULT_URL;
-		super.checkMe = new SeleniumEnums[]{VehicleReportEnum.TITLE};
+		url = VehicleReportEnum.DEFAULT_URL;
+		checkMe.add(VehicleReportEnum.TITLE);
 	}
 	
 	public class VehicleReportButtons extends ReportsBarButtons {

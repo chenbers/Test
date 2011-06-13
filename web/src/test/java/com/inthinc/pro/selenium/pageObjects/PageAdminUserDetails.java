@@ -9,6 +9,11 @@ import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
 
 public class PageAdminUserDetails extends AdminBar {
 	
+	public PageAdminUserDetails(){
+		url = null;
+		checkMe.add(AdminUserDetailsEnum.FIRST_NAME);
+	}
+	
 
 	public UserDetailsPopUps _popUp(){
         return new UserDetailsPopUps();

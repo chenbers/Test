@@ -17,7 +17,10 @@ import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEnum;
 public class PageAddEditUser extends AdminBar {
 	private static String page = "Person";
 
-	
+	public PageAddEditUser(){
+		url = AdminAddEditUserEnum.DEFAULT_URL;
+		checkMe.add(AdminAddEditUserEnum.DRIVER_TEAM_DHX);
+	}
 
 	public AddEditUserPopUps _popUp(){
         return new AddEditUserPopUps();

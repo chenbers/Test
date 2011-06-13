@@ -10,7 +10,7 @@ import com.inthinc.pro.automation.utils.MasterTest;
 
 public abstract class AbstractPage extends MasterTest implements Page {
 	protected SeleniumEnums url;
-	protected SeleniumEnums[] checkMe;
+	protected ArrayList<SeleniumEnums> checkMe;
     private CoreMethodLib selenium;
     protected WebDriver webDriver;
     protected String currentPage;
@@ -19,6 +19,7 @@ public abstract class AbstractPage extends MasterTest implements Page {
     public AbstractPage() {
         selenium = super.getSelenium(); System.out.println("selenium: "+selenium);
         webDriver = selenium.getWrappedDriver();
+        checkMe = new ArrayList<SeleniumEnums>();
         
         Class<? extends AbstractPage> derivedClass = this.getClass();
         if(!instantiatedPages.contains(derivedClass)) {
