@@ -170,8 +170,8 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void PhoneMaxCharError() {
 		set_test_case("TC1277");
-		String phoneNumEighteen = random.getNumberString(18);
-		String phoneNumTwentyFive = random.getNumberString(25);
+		String phoneNumEighteen = random.getIntString(18);
+		String phoneNumTwentyFive = random.getIntString(25);
 		//the following are left to show additional ways constants MIGHT be used in tests.
 		//String phoneNumRandomTwelve = random.getPhoneNumber() +"-"+random.getNumberString(2);
 		//String phoneNumReal = "801-777-7777";
@@ -198,8 +198,8 @@ public class EditMyAccountTest extends WebRallyTest {
 	@Test
 	public void PhoneMissingCharError() {
 		set_test_case("TC1278");
-		String phoneNumShortOne = random.getNumberString(1);
-		String phoneNumShortTwo = random.getNumberString(2);
+		String phoneNumShortOne = random.getIntString(1);
+		String phoneNumShortTwo = random.getIntString(2);
 		
 		//Rally: input
 		// 1. From the Edit My Account page, enter 1 or 2 characters in the Phone 1 and Phone 2 text fields.
@@ -231,8 +231,8 @@ public class EditMyAccountTest extends WebRallyTest {
 		myAccountPage.loginProcess(USERNAME, PASSWORD);
 		myAccountPage._link().myAccount().click();
 		myAccountPage._button().edit().click();
-		myAccountPage._textField().phone1().type(random.specialNumberString(10));
-		myAccountPage._textField().phone2().type(random.specialNumberString(10));
+		myAccountPage._textField().phone1().type(random.getSpecialString(10));
+		myAccountPage._textField().phone2().type(random.getSpecialString(10));
 		myAccountPage._button().save().click();
 		
 		//Rally: Expected Result
@@ -247,10 +247,10 @@ public class EditMyAccountTest extends WebRallyTest {
 		set_test_case("TC1282");
 		ArrayList<String> badTextMessageAddresses = new ArrayList<String>();
 		badTextMessageAddresses.add("8015551234@domain@domain.com");					// NOTE: this is defect 6654
-		badTextMessageAddresses.add(random.getNumberString(5)+"@domain.com");			// phone number is to short
+		badTextMessageAddresses.add(random.getIntString(5)+"@domain.com");			// phone number is to short
 		badTextMessageAddresses.add("8015551234 @domain.com"); 							// contains a space
 		badTextMessageAddresses.add("801555\"1234\"@domain.com");						// has quotes inside
-		badTextMessageAddresses.add(random.specialNumberString(10)+"@domain.com");		// Special Characters for number
+		badTextMessageAddresses.add(random.getSpecialString(10)+"@domain.com");		// Special Characters for number
 		badTextMessageAddresses.add("801362judi@domain.com"); 							// contains letters
 		
 		//Rally: input
