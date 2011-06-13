@@ -49,6 +49,13 @@ public abstract class Masthead extends AbstractPage {
 		login.loginProcess(username, password);
 		return this;
 	}
+	
+	public Masthead simpleLogin(String username, String password){
+		PageLogin login = new PageLogin();
+		login._textField().userName().type(username);
+		login._textField().password().type(password);
+		return this;
+	}
 
 	protected class MastheadButtons {
 	}
