@@ -7,9 +7,11 @@ import java.util.Set;
 import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.EditableVehicleSettings;
 import com.inthinc.pro.dao.ConfiguratorDAO;
+import com.inthinc.pro.model.app.SensitivitySliders;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
-import com.inthinc.pro.model.configurator.Slider;
+import com.inthinc.pro.model.configurator.SensitivitySlider;
+import com.inthinc.pro.model.configurator.SliderType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
 @SuppressWarnings("serial")
@@ -17,36 +19,51 @@ public abstract class VehicleSettingManager extends BaseBean {
 
 	protected ConfiguratorDAO configuratorDAO;
     protected VehicleSetting  vehicleSetting;
-    protected VehicleSensitivitySliders vehicleSensitivitySliders;
-    
-    private Integer adjustedHardAccelerationSetting;
-    private Integer adjustedHardBrakeSetting;
-    private Integer adjustedHardVerticalSetting;
-    private Integer adjustedHardTurnSetting;
-    
-    protected VehicleSettingManager(ConfiguratorDAO configuratorDAO, ProductType productType, VehicleSetting vehicleSetting) {
 
-        this.configuratorDAO = configuratorDAO;
-        this.vehicleSetting = vehicleSetting;
-        vehicleSensitivitySliders = new VehicleSensitivitySliders(productType, 0, 1000000);
-    }
+    protected VehicleSensitivitySlider hardAccelerationSlider;
+    protected VehicleSensitivitySlider hardBrakeSlider;
+    protected VehicleSensitivitySlider hardVerticalSlider;
+    protected VehicleSensitivitySlider hardTurnSlider;
     
-    protected VehicleSettingManager(ConfiguratorDAO configuratorDAO, ProductType productType, Integer vehicleID, Integer deviceID) {
-
-        this.configuratorDAO = configuratorDAO;
-        this.vehicleSetting = new VehicleSetting(vehicleID,deviceID,productType);
-        vehicleSensitivitySliders = new VehicleSensitivitySliders(productType, 0, 1000000);
-    }
     public VehicleSettingManager() {
 
     }
+    protected VehicleSettingManager(ConfiguratorDAO configuratorDAO, SensitivitySliders sensitivitySliders,
+                                    ProductType productType, VehicleSetting vehicleSetting) {
 
+        this.configuratorDAO = configuratorDAO;
+        this.vehicleSetting = vehicleSetting;
+        createVehicleSensitivitySliders(sensitivitySliders,productType, 0, 1000000);
+    }
+    
+    protected VehicleSettingManager(ConfiguratorDAO configuratorDAO,SensitivitySliders sensitivitySliders,
+                                    ProductType productType, Integer vehicleID, Integer deviceID) {
+
+        this.configuratorDAO = configuratorDAO;
+        this.vehicleSetting = new VehicleSetting(vehicleID,deviceID,productType);
+        createVehicleSensitivitySliders(sensitivitySliders,productType, 0, 1000000);
+    }
+    private void createVehicleSensitivitySliders(SensitivitySliders sensitivitySliders,
+                                    ProductType productType, int minFirmwareVersion, int maxFirmwareVersion){
+        if (productType == null) return; 
+        
+        hardAccelerationSlider =  new VehicleSensitivitySlider(sensitivitySliders,SliderType.HARD_ACCEL_SLIDER,productType,minFirmwareVersion, maxFirmwareVersion);
+        hardBrakeSlider = new VehicleSensitivitySlider(sensitivitySliders,SliderType.HARD_BRAKE_SLIDER,productType,minFirmwareVersion, maxFirmwareVersion);
+        hardVerticalSlider = new VehicleSensitivitySlider(sensitivitySliders,SliderType.HARD_BUMP_SLIDER,productType,minFirmwareVersion, maxFirmwareVersion);
+        hardTurnSlider = new VehicleSensitivitySlider(sensitivitySliders,SliderType.HARD_TURN_SLIDER,productType,minFirmwareVersion, maxFirmwareVersion);
+       
+    }
     public abstract void init();
     public abstract Map<Integer, String> evaluateSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings);
     public abstract Map<Integer, String> evaluateChangedSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings);
     public abstract void setVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason);
-    public abstract void updateVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason);
+//    public abstract void updateVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason);
 
+    public void updateVehicleSettings(Integer vehicleID, EditableVehicleSettings editableVehicleSettings, Integer userID, String reason) {
+        
+        Map<Integer, String> setMap = evaluateChangedSettings(vehicleID,editableVehicleSettings);
+        configuratorDAO.updateVehicleSettings(vehicleID, setMap, userID, reason);
+    }
 
     public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
         this.configuratorDAO = configuratorDAO;
@@ -68,39 +85,39 @@ public abstract class VehicleSettingManager extends BaseBean {
     
     protected Map<Integer, String> getHardAccelerationValue(Integer sliderValue){
         
-        return vehicleSensitivitySliders.getHardAccelerationSlider().getSettingValuesFromSliderValue(sliderValue);
+        return hardAccelerationSlider.getSettingValuesFromSliderValue(sliderValue);
     }
 
     protected Map<Integer, String> getHardBrakeValue(Integer sliderValue){
         
-        return vehicleSensitivitySliders.getHardBrakeSlider().getSettingValuesFromSliderValue(sliderValue);
+        return hardBrakeSlider.getSettingValuesFromSliderValue(sliderValue);
     }
     protected Map<Integer, String> getHardTurnValue(Integer sliderValue){
         
-        return vehicleSensitivitySliders.getHardTurnSlider().getSettingValuesFromSliderValue(sliderValue);
+        return hardTurnSlider.getSettingValuesFromSliderValue(sliderValue);
     }
     protected Map<Integer, String> getHardVerticalValue(Integer sliderValue){
         
-        return vehicleSensitivitySliders.getHardVerticalSlider().getSettingValuesFromSliderValue(sliderValue);
+        return hardVerticalSlider.getSettingValuesFromSliderValue(sliderValue);
     }
 
-    public Slider getHardAccelerationSlider() {
-        return vehicleSensitivitySliders.getHardAccelerationSlider();
+    public SensitivitySlider getHardAccelerationSlider() {
+        return hardAccelerationSlider.getSensitivitySlider();
     }
 
-    public Slider getHardBrakeSlider() {
-        return vehicleSensitivitySliders.getHardBrakeSlider();
+    public SensitivitySlider getHardBrakeSlider() {
+        return hardBrakeSlider.getSensitivitySlider();
     }
 
-    public Slider getHardTurnSlider() {
-        return vehicleSensitivitySliders.getHardTurnSlider();
+    public SensitivitySlider getHardTurnSlider() {
+        return hardTurnSlider.getSensitivitySlider();
     }
 
-    public Slider getHardVerticalSlider() {
-        return vehicleSensitivitySliders.getHardVerticalSlider();
+    public SensitivitySlider getHardVerticalSlider() {
+        return hardVerticalSlider.getSensitivitySlider();
     }
 
-    protected Map<Integer, String> getVehicleSettingsForSliderSettingIDs(VehicleSetting vehicleSetting,Slider slider){
+    protected Map<Integer, String> getVehicleSettingsForSliderSettingIDs(VehicleSetting vehicleSetting,VehicleSensitivitySlider slider){
         
         Map<Integer, String> vehicleSettings = new HashMap<Integer, String>();
         
@@ -113,44 +130,12 @@ public abstract class VehicleSettingManager extends BaseBean {
         return vehicleSettings;
     }
 
-    protected Integer extractHardAccelerationValue( Map<Integer, String> settings){
-        
-        if (settings == null) {
-            
-            return vehicleSensitivitySliders.getHardAccelerationSlider().getDefaultValueIndex();
-        }
-        return vehicleSensitivitySliders.getHardAccelerationSlider().getSliderValueFromSettings(settings);
-    }
-    protected Integer extractHardBrakeValue( Map<Integer, String> settings){
-        
-        if (settings == null) {
-            
-            return vehicleSensitivitySliders.getHardBrakeSlider().getDefaultValueIndex();
-        }
-        return vehicleSensitivitySliders.getHardBrakeSlider().getSliderValueFromSettings(settings);
-    }
-    protected Integer extractHardTurnValue( Map<Integer, String> settings){
-        
-        if (settings == null) {
-            
-            return vehicleSensitivitySliders.getHardTurnSlider().getDefaultValueIndex();
-        }
-        return vehicleSensitivitySliders.getHardTurnSlider().getSliderValueFromSettings(settings);
-    }
-    protected Integer extractHardVerticalValue( Map<Integer, String> settings){
-        
-        if (settings == null) {
-            
-            return vehicleSensitivitySliders.getHardVerticalSlider().getDefaultValueIndex();
-        }
-        return vehicleSensitivitySliders.getHardVerticalSlider().getSliderValueFromSettings(settings);
-    }
     protected void adjustCountsForCustomValues(Integer hardAcceleration, Integer hardBrake, Integer hardTurn, Integer hardVertical){
         
-        adjustedHardAccelerationSetting = vehicleSensitivitySliders.adjustHardAccelerationSettingCountToAllowForCustomValues(hardAcceleration);
-        adjustedHardBrakeSetting = vehicleSensitivitySliders.adjustHardBrakeSettingCountToAllowForCustomValues(hardBrake);
-        adjustedHardTurnSetting = vehicleSensitivitySliders.adjustHardTurnSettingCountToAllowForCustomValues(hardTurn);
-        adjustedHardVerticalSetting = vehicleSensitivitySliders.adjustHardVerticalSettingCountToAllowForCustomValues(hardVertical);
+        hardAccelerationSlider.adjustSettingCountToAllowForCustomValues(hardAcceleration);
+        hardBrakeSlider.adjustSettingCountToAllowForCustomValues(hardBrake);
+        hardTurnSlider.adjustSettingCountToAllowForCustomValues(hardTurn);
+        hardVerticalSlider.adjustSettingCountToAllowForCustomValues(hardVertical);
     }
     public abstract class DesiredSettings{
 
@@ -220,18 +205,18 @@ public abstract class VehicleSettingManager extends BaseBean {
       }
    }
       public Integer getAdjustedHardAccelerationSetting() {
-          return adjustedHardAccelerationSetting;
+          return hardAccelerationSlider.getAdjustedSetting();
       }
 
       public Integer getAdjustedHardBrakeSetting() {
-          return adjustedHardBrakeSetting;
+          return hardBrakeSlider.getAdjustedSetting();
       }
 
       public Integer getAdjustedHardVerticalSetting() {
-          return adjustedHardVerticalSetting;
+          return hardVerticalSlider.getAdjustedSetting();
       }
 
       public Integer getAdjustedHardTurnSetting() {
-          return adjustedHardTurnSetting;
+          return hardTurnSlider.getAdjustedSetting();
       }
 }

@@ -141,13 +141,14 @@ public class VehicleStyleBean extends BasePerformanceEventsBean
         }
         
         // Prior to sending the data, get the addresses, if using google client side geocoding
-        List<EventReportItem> local = new ArrayList<EventReportItem>();
-        local.addAll(this.events);
-        
-        if ( super.getAddressFormat() == 3 ) {
-            local.clear();
-            local = this.populateAddresses(this.events);
-        }
+//        List<EventReportItem> local = new ArrayList<EventReportItem>();
+//        local.addAll(this.events);
+//        
+//        if ( super.getAddressFormat() == 3 ) {
+//            local.clear();
+//            local = this.populateAddresses(this.events);
+//        }
+        List<EventReportItem> local = this.populateAddresses(this.events);
         
         reportCriteria.setMainDataset(local);
 

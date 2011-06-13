@@ -139,7 +139,7 @@ public class Zone extends BaseEntity implements Cloneable
             }
         }
     }
-
+    
 
     public Status getStatus()
     {
@@ -200,5 +200,31 @@ public class Zone extends BaseEntity implements Cloneable
         }
         
     }
-    
+    public boolean containsLatLng(LatLng latLng){
+        
+        boolean inZone = false; 
+        
+        //  We save the first point TWICE, at 0 and at the end, therefore, subtract 1 to get the unique points
+        int numPoints = getPoints().size() - 1;           
+        int j = numPoints-1;
+        
+        for(int i=0; i < numPoints; i++) { 
+            LatLng vertex1 = getPoints().get(i);
+            LatLng vertex2 = getPoints().get(j);                        
+
+            if (    vertex1.getLng() < latLng.getLng() && 
+                    vertex2.getLng() >= latLng.getLng() || 
+                    vertex2.getLng() < latLng.getLng() && 
+                    vertex1.getLng() >= latLng.getLng() )                                  
+            {                                       
+                               
+                if (vertex1.getLat() + (latLng.getLng() - vertex1.getLng()) / (vertex2.getLng() - vertex1.getLng()) * (vertex2.getLat() - vertex1.getLat()) < latLng.getLat()) {               
+                    inZone = !inZone;                    
+                }
+            }
+
+            j = i;
+        }   
+        return inZone;
+    }
 }

@@ -6,13 +6,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.configurator.SliderKey;
+import com.inthinc.pro.model.configurator.SliderType;
 
 @XmlRootElement
 public class SensitivitySliderValues {
 	
-    //Slider values from the database
+    //SensitivitySlider values from the database
     //These four fields uniquely key a set of slider values
-    private Integer sensitivityType; //maps to Hard Vertical, Unsafe Turn, Hard Acceleration, Hard Brake
+    @Column (name="sensitivityType")
+    private SliderType sliderType;
 	private ProductType productType;
 	private Integer minFirmwareVersion;
 	private Integer maxFirmwareVersion;
@@ -39,12 +42,6 @@ public class SensitivitySliderValues {
 	}
 	public void setSettingID(Integer settingID) {
 		this.settingID = settingID;
-	}
-	public Integer getSensitivityType() {
-		return sensitivityType;
-	}
-	public void setSensitivityType(Integer sensitivityType) {
-		this.sensitivityType = sensitivityType;
 	}
 	public Integer getSensitivitySubtype() {
 		return sensitivitySubtype;
@@ -88,4 +85,15 @@ public class SensitivitySliderValues {
     public void setForwardCommandName(String forwardCommandName) {
         this.forwardCommandName = forwardCommandName;
     }
+    public SliderType getSliderType() {
+        return sliderType;
+    }
+    public void setSliderType(SliderType sliderType) {
+        this.sliderType = sliderType;
+    }
+    public SliderKey getSliderKey(){
+        
+        return new SliderKey(sliderType,productType,minFirmwareVersion,maxFirmwareVersion);
+    }
+
 }

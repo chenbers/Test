@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -25,6 +27,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.FindByKey;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.AddressHessianDAO;
+import com.inthinc.pro.dao.hessian.ConfiguratorHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.DriverHessianDAO;
 import com.inthinc.pro.dao.hessian.EventHessianDAO;
@@ -75,6 +78,7 @@ import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.ReportParamType;
 import com.inthinc.pro.model.ReportSchedule;
+import com.inthinc.pro.model.SensitivitySliderValues;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.TablePreference;
@@ -87,10 +91,16 @@ import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.app.SensitivitySliders;
 import com.inthinc.pro.model.app.SiteAccessPoints;
 import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.model.app.SupportedTimeZones;
+import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.model.configurator.SensitivitySlider;
+import com.inthinc.pro.model.configurator.SliderKey;
+import com.inthinc.pro.model.configurator.SliderType;
+import com.inthinc.pro.model.configurator.VehicleSetting;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.NoteType;
@@ -253,7 +263,99 @@ public class SiloServiceTest {
     	assertEquals("expected list size to be back to original after delete", list.size(), newList.size());
     	
     }
-    
+    @Test
+    public void sensitivitySliderValues(){
+        
+        ConfiguratorHessianDAO configuratorDAO = new ConfiguratorHessianDAO();
+        configuratorDAO.setSiloService(siloService);
+        SensitivitySliders sensitivitySliders = new SensitivitySliders();
+        sensitivitySliders.setConfiguratorDAO(configuratorDAO);
+        sensitivitySliders.init();
+        SensitivitySlider slider = sensitivitySliders.getSensitivitySliders().get(new SliderKey(SliderType.HARD_ACCEL_SLIDER,ProductType.TIWIPRO_R74,0,1000000));
+        
+        assertEquals(4,slider.getDefaultValueIndex());
+        Set<Integer> idsForThisSlider = slider.getSettingIDsForThisSlider();
+        assertTrue(idsForThisSlider.contains(new Integer(157)));
+        assertTrue(idsForThisSlider.size()==1);
+        
+        Map<Integer,SensitivitySliderValues> settings = slider.getSettingsForThisSlider();
+        assertTrue(settings.size()==1);
+        assertTrue(settings.get(157) != null);
+        SensitivitySliderValues sensitivitySliderValues = settings.get(157);
+        assertEquals(new Integer(4),(Integer)sensitivitySliderValues.getDefaultValueIndex());
+        
+        Map<Integer,String> settingValues = slider.getSettingValuesFromSliderValue(1);
+        assertTrue(settingValues.size()==1);
+        assertTrue(settingValues.get(157) != null);
+        assertEquals("3000 40 1",settingValues.get(157));
+
+        Integer sliderValue = slider.getSliderValueFromSettings(settingValues);
+        assertTrue(sliderValue==1);
+        
+        slider = sensitivitySliders.getSensitivitySliders().get(new SliderKey(SliderType.HARD_ACCEL_SLIDER,ProductType.WAYSMART,0,1000000));
+        
+        assertEquals(slider.getDefaultValueIndex(),8);
+        idsForThisSlider = slider.getSettingIDsForThisSlider();
+        assertTrue(idsForThisSlider.contains(new Integer(1234)));
+        assertTrue(idsForThisSlider.contains(new Integer(1232)));
+        assertTrue(idsForThisSlider.size()==2);
+        
+        settings = slider.getSettingsForThisSlider();
+        assertTrue(settings.size()==2);
+        assertTrue(settings.get(1234) != null);
+        sensitivitySliderValues = settings.get(1234);
+        assertEquals(new Integer(8),(Integer)sensitivitySliderValues.getDefaultValueIndex());
+        
+        settingValues = slider.getSettingValuesFromSliderValue(1);
+        assertTrue(settingValues.size()==2);
+        assertTrue(settingValues.get(1234) != null);
+        assertEquals("300",settingValues.get(1234));
+
+        sliderValue = slider.getSliderValueFromSettings(settingValues);
+        assertTrue(sliderValue==1);
+    }
+    @Test
+    public void settingDefs(){
+        ConfiguratorHessianDAO configuratorDAO = new ConfiguratorHessianDAO();
+        configuratorDAO.setSiloService(siloService);
+        //If there are any regex errors they will be logged as INFO
+        List<DeviceSettingDefinition> settingDefs = configuratorDAO.getDeviceSettingDefinitions();
+        assertTrue("No deviceSettingDefinitions were found", settingDefs.size() > 0);
+
+        System.out.println("The following settings are in error - correct in spreadsheets and reimport:");
+        for(DeviceSettingDefinition deviceSettingDefinition : settingDefs){
+            boolean regexok = ((deviceSettingDefinition.getChoices() == null)^(deviceSettingDefinition.getRegex() == null)) || deviceSettingDefinition.getIgnore()==1;
+            if(!regexok){
+                String choices = deviceSettingDefinition.getChoices()!=null?deviceSettingDefinition.getChoices().toString():"null";
+                String regex = deviceSettingDefinition.getRegex()!=null?deviceSettingDefinition.getRegex().toString():"null";
+                System.out.println(deviceSettingDefinition.getSettingID()+" "+deviceSettingDefinition.getName()+
+                        " choices are "+choices+
+                        " regex is "+regex+
+                        " and visibility is "+
+                        deviceSettingDefinition.getVisibility()+
+                        " and ignore is "+
+                        deviceSettingDefinition.getIgnore());
+            }
+        }
+    }
+    @Test
+    public void vehicleSettings(){
+        ConfiguratorHessianDAO configuratorDAO = new ConfiguratorHessianDAO();
+        configuratorDAO.setSiloService(siloService);
+        VehicleSetting vs = configuratorDAO.getVehicleSettings(TESTING_VEHICLE_ID);
+        assertEquals(ProductType.TIWIPRO_R74,vs.getProductType());
+        assertEquals(new Integer(1),vs.getVehicleID());
+        assertTrue(vs.getActual()!= null);
+        assertTrue(vs.getDesired()!=null);
+        assertEquals(new Integer(1),vs.getDeviceID());
+    }
+    @Test
+    public void vehicleSettingsForGroup(){
+        ConfiguratorHessianDAO configuratorDAO = new ConfiguratorHessianDAO();
+        configuratorDAO.setSiloService(siloService);
+        List<VehicleSetting> vehiclesSettings = configuratorDAO.getVehicleSettingsByGroupIDDeep(TESTING_GROUP_ID);
+        assertTrue(vehiclesSettings != null);
+    }
     @Test
     //@Ignore
     public void rfidsFromBarcode(){

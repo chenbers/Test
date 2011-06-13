@@ -36,18 +36,18 @@ public class LatLngAddressConverter extends BaseConverter
             LatLng latlng = LatLng.class.cast(value);
                                
             if ((latlng.getLat() < -0.0001 || latlng.getLat() > 0.0001) && (latlng.getLng() < -0.0001 || latlng.getLng() > 0.0001)){
-            	try{
-            		return addressLookup.getAddress(latlng);
-            	}
-            	catch (NoAddressFoundException nafe){
-            	    
-//  Failed on lookup, try finding a zone name instead
-            	    String addr = (MiscUtil.findZoneName(zoneList, latlng) == null) ?
-                            MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng()) :
-            	            MiscUtil.findZoneName(zoneList, latlng);
-
-            	    return addr;
-            	}
+//            	try{
+            		return addressLookup.getAddressOrZoneOrLatLng(latlng,zoneList);
+//            	}
+//            	catch (NoAddressFoundException nafe){
+//            	    
+////  Failed on lookup, try finding a zone name instead
+//            	    String addr = (MiscUtil.findZoneName(zoneList, latlng) == null) ?
+//                            MessageUtil.formatMessageString("noAddressFound", nafe.getLat(),nafe.getLng()) :
+//            	            MiscUtil.findZoneName(zoneList, latlng);
+//
+//            	    return addr;
+//            	}
             }
         }
         return MessageUtil.getMessageString("noAddressFound");

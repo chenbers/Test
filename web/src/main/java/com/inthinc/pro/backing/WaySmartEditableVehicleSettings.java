@@ -124,7 +124,10 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
         Integer speedLimitInteger = convertMPHtoKPH((speedLimit == null) ? 0 : speedLimit.intValue());
         return speedLimitInteger;
     }
-
+    public Integer getSpeedLimitValue(){
+        if (speedLimit == null) speedLimit = 0.0;
+        return speedLimit.intValue();
+    }
     public Integer convertMPHtoKPH(Integer mph) throws ConverterException
     {
             if (getMeasurementType().equals(MeasurementType.METRIC))

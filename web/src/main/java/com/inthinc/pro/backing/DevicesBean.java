@@ -493,9 +493,8 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     }
     private void updateSettingsRecord(DeviceView device){
         //Only want to do this if they aren't set to something else already
-        //But can't tell if it's a new record here so not sure what to do
-        //It somehow magically comes into existence
-        if(!vehicleSettingsFactory.settingsRecordExists(device.getVehicleID())){
+        VehicleSetting vehicleSetting = vehicleSettingsFactory.getVehicleSetting(device.getVehicleID());
+        if((vehicleSetting == null) || vehicleSetting.settingsAreEmpty()){
             vehicleSettingManager = vehicleSettingsFactory.getSettingManager(device.getProductVersion(), device.getVehicleID(), device.getDeviceID());
             EditableVehicleSettings editableVehicleSettings = vehicleSettingManager.createDefaultValues(device.getVehicleID());
             vehicleSettingManager.setVehicleSettings(device.getVehicleID(), editableVehicleSettings, this.getUserID(), "Assigning new vehicle");

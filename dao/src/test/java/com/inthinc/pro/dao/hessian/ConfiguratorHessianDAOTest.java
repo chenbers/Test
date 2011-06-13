@@ -1,8 +1,6 @@
 package com.inthinc.pro.dao.hessian;
 
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 
 import org.junit.After;
@@ -12,10 +10,9 @@ import org.junit.Test;
 
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.model.SensitivitySliderValues;
-import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 import com.inthinc.pro.model.configurator.ProductType;
 
-
+@Ignore
 public class ConfiguratorHessianDAOTest {
 
     ConfiguratorHessianDAO configuratorHessianDAO;
@@ -28,19 +25,10 @@ public class ConfiguratorHessianDAOTest {
 
     @After
     public void tearDown() throws Exception {}
-    
-    @Ignore
-    @Test
-    public void deviceSettingDefinitions(){
         
-       List<DeviceSettingDefinition> deviceSettingDefinitions = configuratorHessianDAO.getDeviceSettingDefinitions();
-       assertTrue("No deviceSettingDefinitions were found", deviceSettingDefinitions.size() > 0);
-    }
-    
-    @Ignore
     @Test
     public void createSliderCorrectionQueries(){
-        
+        //This was to create sql to correct some setting defs - not needed any more
         List<SensitivitySliderValues> sensitivitySliderValues = configuratorHessianDAO.getSensitivitySliderValues();
         for (SensitivitySliderValues ssv :sensitivitySliderValues){
             

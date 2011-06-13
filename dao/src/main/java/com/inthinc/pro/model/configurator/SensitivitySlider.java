@@ -10,26 +10,22 @@ import java.util.Map.Entry;
 
 import com.inthinc.pro.model.SensitivitySliderValues;
 
-public class Slider {
+public class SensitivitySlider {
     
+    private SliderKey sliderKey;
     private Map<Integer,SensitivitySliderValues> settingsForThisSlider;
     private int sliderPositionCount;
     private int defaultValueIndex;
-    private SliderType sliderType;
-    private SliderKey sliderKey;
     
-    public Slider(SliderKey sliderKey){
+    public SensitivitySlider(SliderKey sliderKey){
         this.sliderKey = sliderKey;
-        sliderType = SliderType.valueOf(sliderKey.getSensitivityType());
         settingsForThisSlider = new HashMap<Integer,SensitivitySliderValues>();
-    }
-    public SliderType getSliderType() {
-        return sliderType;
     }
     public void addSetting(SensitivitySliderValues sensitivitySliderValues){
         settingsForThisSlider.put(sensitivitySliderValues.getSettingID(),sensitivitySliderValues);
-        if(sensitivitySliderValues.getDefaultValueIndex() != null){
+        if(sensitivitySliderValues.getSensitivitySubtype() == 0){
             defaultValueIndex =  sensitivitySliderValues.getDefaultValueIndex();
+            sliderPositionCount = sensitivitySliderValues.getValues().size();
         }
     }
     public Integer getSliderValueFromSettings(Map<Integer,String> settings){
@@ -97,10 +93,6 @@ public class Slider {
         return settingsForThisSlider;
     }
 
-    public void setSettingsForThisSlider(Map<Integer,SensitivitySliderValues> settingsForThisSlider) {
-        this.settingsForThisSlider = settingsForThisSlider;
-    }
-
     public Map<Integer, String> getSettingValuesFromSliderValue(Integer sliderValue) {
         //If you have a slider value, this returns a map of setting values that match it   
         if (!sliderValueInRange(sliderValue)) return new HashMap<Integer, String>();
@@ -132,15 +124,6 @@ public class Slider {
         }
         return settings;
     }
-    public void setSliderPositionCount(){
-        
-        
-        Iterator<SensitivitySliderValues> sliderValuesIterator = settingsForThisSlider.values().iterator();
-        if(sliderValuesIterator.hasNext()){
-            sliderPositionCount = sliderValuesIterator.next().getValues().size();
-        }
-        else sliderPositionCount = 0;
-    }
     
     public int getSliderPositionCount(){
         return sliderPositionCount;
@@ -151,8 +134,5 @@ public class Slider {
     }
     public int getDefaultValueIndex() {
         return defaultValueIndex;
-    }
-    public void setDefaultValueIndex(int defaultValueIndex) {
-        this.defaultValueIndex = defaultValueIndex;
     }
 }

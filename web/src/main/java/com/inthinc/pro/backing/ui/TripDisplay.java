@@ -2,16 +2,15 @@ package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.TripStatus;
+import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.util.MessageUtil;
 
 public class TripDisplay implements Comparable<TripDisplay>
@@ -33,13 +32,12 @@ public class TripDisplay implements Comparable<TripDisplay>
  //   private static final int MINUTES_BUFFER = 5;    
 	private static DateFormat dateFormatter;
     
-    public TripDisplay(Trip trip, TimeZone timeZone, AddressLookup addressLookup)
+    public TripDisplay(Trip trip, TimeZone timeZone, AddressLookup addressLookup,List<Zone> zones)
     {
         this.trip = trip;
         this.timeZone = timeZone;
         
         route = trip.getRoute();
-        
         dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat"));
         dateFormatter.setTimeZone(timeZone);
         setDateShort(dateFormatter.format(trip.getEndTime()));
@@ -61,20 +59,8 @@ public class TripDisplay implements Comparable<TripDisplay>
             
             beginningPoint = route.get(0);
             beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
-            try{
-            	setStartAddress(addressLookup.getAddress(route.get(0).getLat(), route.get(0).getLng()));
-            }
-            catch (NoAddressFoundException nafe){
-            	
-            	setStartAddress(MessageUtil.getMessageString(nafe.getMessage()));
-            }
-            try {
-            	setEndAddress(addressLookup.getAddress(route.get(route.size()-1).getLat(), route.get(route.size()-1).getLng()));
-            }
-            catch (NoAddressFoundException nafe){
-            	
-            	setEndAddress(MessageUtil.getMessageString(nafe.getMessage()));
-            }
+        	setStartAddress(addressLookup.getAddressOrZoneOrLatLng(route.get(0),zones));
+        	setEndAddress(addressLookup.getAddressOrZoneOrLatLng(route.get(route.size()-1),zones));
         }
         else{
         	setEndAddress(MessageUtil.getMessageString("no_route_data_for_trip"));
@@ -133,6 +119,11 @@ public class TripDisplay implements Comparable<TripDisplay>
     {
         this.distance = distance;
     }
+    public String getStartAddress(AddressLookup addressLookup,List<Zone> zones)
+    {
+        return addressLookup.getAddressOrZoneOrLatLng(beginningPoint, zones);
+    }
+    
     public String getStartAddress()
     {
         return startAddress;
@@ -142,10 +133,14 @@ public class TripDisplay implements Comparable<TripDisplay>
     {
         this.startAddress = startAddress;
     }
-
     public String getEndAddress()
     {
         return endAddress;
+    }
+
+    public String getEndAddress(AddressLookup addressLookup,List<Zone> zones)
+    {
+        return addressLookup.getAddressOrZoneOrLatLng(route.get(route.size()-1),zones);
     }
 
     public void setEndAddress(String endAddress)

@@ -3,7 +3,6 @@ package com.inthinc.pro.backing;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +13,10 @@ import com.inthinc.pro.charts.FusionColumnChart;
 import com.inthinc.pro.charts.FusionMultiAreaChart;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.map.AddressLookup;
+import com.inthinc.pro.map.LatLngFormatterBean;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
-import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Vehicle;
@@ -51,6 +51,10 @@ public abstract class BasePerformanceBean extends BaseBean {
     protected PerformanceDataBean performanceDataBean;
 
     protected Boolean enableGoogleMapsInReports = Boolean.TRUE; //defaults to true
+
+    protected AddressLookup reportAddressLookupBean;
+
+    protected AddressLookup disabledGoogleMapsInReportsAddressLookupBean;
 
     protected abstract List<ScoreableEntity> getTrendCumulative(Integer id, Duration duration, ScoreType scoreType);
 
@@ -187,7 +191,7 @@ public abstract class BasePerformanceBean extends BaseBean {
 
             int count = 0;
             for (ScoreableEntity se : scoreList) {
-                Date date = new Date(cal.getTimeInMillis());
+//                Date date = new Date(cal.getTimeInMillis());
                 Calendar scoreDate = Calendar.getInstance();
                 scoreDate.setTime(se.getDate());
                 if (cal.get(Calendar.DAY_OF_MONTH) == scoreDate.get(Calendar.DAY_OF_MONTH)) {
@@ -440,5 +444,14 @@ public abstract class BasePerformanceBean extends BaseBean {
     public abstract void exportReportToPdf();
 
     public abstract void emailReport();
+
+
+    public void setDisabledGoogleMapsInReportsAddressLookupBean(AddressLookup disabledGoogleMapsInReportsAddressLookupBean) {
+        this.disabledGoogleMapsInReportsAddressLookupBean = disabledGoogleMapsInReportsAddressLookupBean;
+    }
+
+    public void setReportAddressLookupBean(AddressLookup reportAddressLookupBean) {
+        this.reportAddressLookupBean = reportAddressLookupBean;
+    }
 
 }

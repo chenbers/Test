@@ -47,7 +47,7 @@ public class GeonamesAddressLookup extends AddressLookup
      * @return
      */
     @Override
-    public String getAddress(LatLng latLng,boolean returnLatLng) throws NoAddressFoundException
+    public String getAddress(LatLng latLng) throws NoAddressFoundException
     {
         //The caching is broken until David Story or Dave Harry update their hessian library to handle many references to one object. After this is done, the equals() an hashcode() methods in the LatLng class need to be uncommented.
         if (addressMap.containsKey(latLng))
@@ -69,15 +69,7 @@ public class GeonamesAddressLookup extends AddressLookup
             }
             else
             {
-                if(returnLatLng){
-                    address = latLng.getLat() + ", " + latLng.getLng();
-                }else{
-//                    address = "No address found at location.";
-                	//Changed to an exception because the hardcoded string needed to be replaced by a resource bundle message
-                	//so it can be i18ned
-                	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
-                }
-                
+            	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
             }
             return address;
         }
@@ -86,18 +78,6 @@ public class GeonamesAddressLookup extends AddressLookup
             logger.debug(e);
            	return "";
         }
-    }
-
-    @Override
-    public String getAddress(double lat, double lng) throws NoAddressFoundException
-    {
-        return getAddress(new LatLng(lat, lng));
-    }
-    
-    @Override
-    public String getAddress(LatLng latLng) throws NoAddressFoundException
-    {
-        return getAddress(latLng, false);
     }
 
     protected String sendRequest(URL mapServerURL)
@@ -284,4 +264,5 @@ public class GeonamesAddressLookup extends AddressLookup
             return buffer.toString();
         }
     }
+
 }

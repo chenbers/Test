@@ -16,6 +16,7 @@ import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.EntityType;
@@ -23,7 +24,6 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.MpgEntity;
-import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.model.Trip;
@@ -38,7 +38,6 @@ import com.inthinc.pro.reports.map.MapMarker;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.MiscUtil;
 
 @KeepAlive
 public class DriverPerformanceBean extends BasePerformanceBean {
@@ -61,7 +60,7 @@ public class DriverPerformanceBean extends BasePerformanceBean {
     private DurationBean seatBeltDurationBean;
 
     // Driver Bean Dependencies
-    private BasePerformanceEventsBean driverSpeedBean;
+    private BasePerformanceBean driverSpeedBean;
     private DriverStyleBean driverStyleBean;
     private DriverSeatBeltBean driverSeatBeltBean;
     private CrashSummary crashSummary;
@@ -75,7 +74,6 @@ public class DriverPerformanceBean extends BasePerformanceBean {
     private String mpgHistory;
     private String coachingHistory;
     
-//    private Boolean hasLastTrip;
     private Boolean emptyLastTrip;
     private Boolean haveNotCheckedForTripsYet;
 
@@ -125,18 +123,8 @@ public class DriverPerformanceBean extends BasePerformanceBean {
 
             // Lookup Addresses for events and add to map
             for (Event event : violationEvents) {
-                String address = "";
-                try {
-                    address = getAddressLookup().getAddress(event.getLatitude(), event.getLongitude());
-                } catch (NoAddressFoundException nafe) {
-
-                    address = MessageUtil.getMessageString(nafe.getMessage());
-                }
+                String address = getAddressLookup().getAddressOrZoneOrLatLng(event.getLatLng(),this.getProUser().getZones());
                 event.setAddressStr(address);
-                if (event.getAddressStr() == null) {
-                    event.setAddressStr(MiscUtil.findZoneName(this.getProUser().getZones(), new LatLng(event.getLatitude(), event.getLongitude())));
-                }
-
                 violationEventsMap.put(event.getNoteID(), event);
             }
             selectedViolationID = violationEvents.size() > 0 ? violationEvents.get(0).getNoteID() : null;
@@ -212,26 +200,13 @@ public class DriverPerformanceBean extends BasePerformanceBean {
             if (tempTrip != null){
                 emptyLastTrip = (tempTrip.getRoute() == null)||(tempTrip.getRoute().size() == 0);
                 
-                TripDisplay tripDisplay = createTripDisplay(tempTrip);
+                TripDisplay tripDisplay = new TripDisplay(tempTrip, getDriver().getPerson().getTimeZone(), getAddressLookup(),this.getProUser().getZones());
                 setLastTrip(tripDisplay);
                 initViolations(tripDisplay.getTrip().getStartTime(), tripDisplay.getTrip().getEndTime());
             }
             haveNotCheckedForTripsYet = false;
         }
         return lastTrip;
-    }
-    private TripDisplay createTripDisplay(Trip trip){
-        TripDisplay tripDisplay = new TripDisplay(trip, getDriver().getPerson().getTimeZone(), getAddressLookup());
-        if(trip.getRoute().size() > 0){
-            if (tripDisplay.getStartAddress() == null) {
-                tripDisplay.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), tripDisplay.getBeginningPoint()));
-            }
-            if (tripDisplay.getEndAddress() == null) {
-                tripDisplay.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), new LatLng(tripDisplay.getEndPointLat(), tripDisplay.getEndPointLng())));
-            }
-        }
-        return tripDisplay;
- 
     }
     public void setLastTrip(TripDisplay lastTrip) {
         this.lastTrip = lastTrip;
@@ -364,12 +339,13 @@ public class DriverPerformanceBean extends BasePerformanceBean {
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", this.getDriver().getPerson().getFullName());
         reportCriteria.addParameter("ENABLE_GOOGLE_MAPS", enableGoogleMapsInReports);
+        AddressLookup reportAddressLookup = enableGoogleMapsInReports?reportAddressLookupBean:disabledGoogleMapsInReportsAddressLookupBean; 
 
         if (lastTrip != null) {
             reportCriteria.addParameter("START_TIME", lastTrip.getStartDateString());
-            reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
+            reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress(reportAddressLookup,this.getProUser().getZones()));
             reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
-            reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());
+            reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress(reportAddressLookup,this.getProUser().getZones()));
 
             if (enableGoogleMapsInReports) {
                 // Need to have approximately 60 location pairs for the server to accept the encoded url
@@ -476,10 +452,6 @@ public class DriverPerformanceBean extends BasePerformanceBean {
         return lastTrip != null;
     }
 
-//    public void setHasLastTrip(Boolean hasLastTrip) {
-//        this.hasLastTrip = hasLastTrip;
-//    }
-
     @Override
     public void exportReportToPdf() {
         getReportRenderer().exportReportToPDF(buildReportCriteria(), getFacesContext());
@@ -490,11 +462,11 @@ public class DriverPerformanceBean extends BasePerformanceBean {
         getReportRenderer().exportReportToEmail(buildReportCriteria(), getEmailAddress(), getNoReplyEmailAddress());
     }
 
-    public void setDriverSpeedBean(BasePerformanceEventsBean driverSpeedBean) {
+    public void setDriverSpeedBean(BasePerformanceBean driverSpeedBean) {
         this.driverSpeedBean = driverSpeedBean;
     }
 
-    public BasePerformanceEventsBean getDriverSpeedBean() {
+    public BasePerformanceBean getDriverSpeedBean() {
         return driverSpeedBean;
     }
 

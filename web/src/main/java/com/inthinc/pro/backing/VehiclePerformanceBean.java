@@ -20,6 +20,7 @@ import com.inthinc.pro.dao.MpgDAO;
 import com.inthinc.pro.dao.ScoreDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.CrashSummary;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Duration;
@@ -41,7 +42,6 @@ import com.inthinc.pro.reports.map.MapMarker;
 import com.inthinc.pro.reports.model.CategorySeriesData;
 import com.inthinc.pro.util.GraphicUtil;
 import com.inthinc.pro.util.MessageUtil;
-import com.inthinc.pro.util.MiscUtil;
 
 @KeepAlive
 public class VehiclePerformanceBean extends BasePerformanceBean
@@ -81,7 +81,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
     private VehicleStyleBean    vehicleStyleBean;
     private VehicleSeatBeltBean vehicleSeatBeltBean;
     private CrashSummary 		crashSummary;
-    private Boolean 			tripMayExist;
+    private Boolean haveNotCheckedForTripsYet;
     private Boolean				emptyLastTrip;
     
 	public Boolean getEmptyLastTrip() {
@@ -92,11 +92,9 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
 	protected Map<Long,Event> violationEventsMap;
     
-    //private static final String NO_LAST_TRIP_FOUND = "no_last_trip_found";   
-    
     public VehiclePerformanceBean() {
 		super();
-		tripMayExist = true;
+        haveNotCheckedForTripsYet = true;
     }
     
     @Override
@@ -142,11 +140,8 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
             for (Event event : violationEvents)
             {
-                event.setAddressStr(getAddress(event.getLatLng()));
-                if ( event.getAddressStr() == null ) {
-                    event.setAddressStr(MiscUtil.findZoneName(this.getProUser().getZones(),
-                            event.getLatLng()));
-                }
+                String address = getAddressLookup().getAddressOrZoneOrLatLng(event.getLatLng(),this.getProUser().getZones());
+                event.setAddressStr(address);
                 violationEventsMap.put(event.getNoteID(), event);
             }
             selectedViolationID = violationEvents.size()>0?violationEvents.get(0).getNoteID():null;
@@ -208,7 +203,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
     public TripDisplay getLastTrip()
     {
-        if (lastTrip == null && tripMayExist)
+        if (lastTrip == null && haveNotCheckedForTripsYet)
         {
             Trip tempTrip = vehicleDAO.getLastTrip(getVehicle().getVehicleID());
 
@@ -220,17 +215,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 
                 setDriver(driverDAO.findByID(tempTrip.getDriverID()));
 
-                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), getAddressLookup());
-                if(tempTrip.getRoute().size() > 0){
-	                if ( trip.getStartAddress() == null ) {
-	                    trip.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
-	                            trip.getBeginningPoint()));
-	                }
-	                if ( trip.getEndAddress() == null ) {
-	                    trip.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), 
-	                            new LatLng(trip.getEndPointLat(),trip.getEndPointLng())));
-	                }
-                }
+                TripDisplay trip = new TripDisplay(tempTrip, getTimeZone(), getAddressLookup(),getProUser().getZones());
                 setLastTrip(trip);
                 initViolations(trip.getTrip().getStartTime(), trip.getTrip().getEndTime());
             }
@@ -238,7 +223,7 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             {
                 hasLastTrip = false;
             }
-            tripMayExist = false;
+            haveNotCheckedForTripsYet = false;
         }
         return lastTrip;
     }
@@ -511,12 +496,13 @@ public class VehiclePerformanceBean extends BasePerformanceBean
         reportCriteria.addParameter("OVERALL_SCORE", this.getOverallScore() / 10.0D);
         reportCriteria.addParameter("DRIVER_NAME", getVehicle().getFullName());
         reportCriteria.addParameter("ENABLE_GOOGLE_MAPS", enableGoogleMapsInReports);
+        AddressLookup reportAddressLookup = enableGoogleMapsInReports?reportAddressLookupBean:disabledGoogleMapsInReportsAddressLookupBean; 
 
         if (getLastTrip() != null) {
             reportCriteria.addParameter("START_TIME", lastTrip.getStartDateString());
-            reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress());
+            reportCriteria.addParameter("START_LOCATION", lastTrip.getStartAddress(reportAddressLookup,this.getProUser().getZones()));
             reportCriteria.addParameter("END_TIME", lastTrip.getEndDateString());
-            reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress());
+            reportCriteria.addParameter("END_LOCATION", lastTrip.getEndAddress(reportAddressLookup,this.getProUser().getZones()));
 
             if (enableGoogleMapsInReports) {
                 // Need to have approximately 60 location pairs for the server to accept the encoded url
@@ -545,7 +531,6 @@ public class VehiclePerformanceBean extends BasePerformanceBean
             if (enableGoogleMapsInReports) {
                Group vehicleGroup = getGroupHierarchy().getGroup(getVehicle().getGroupID());
                 String imageUrlDef = MapLookup.getMap(vehicleGroup.getMapLat(), vehicleGroup.getMapLng(), 250, 200);
-                // String imageUrlDef = MapLookup.getMap(40.709922, -111.993041, 250, 200);
                 reportCriteria.addParameter("MAP_URL", imageUrlDef);
             }
         }
@@ -638,15 +623,6 @@ public class VehiclePerformanceBean extends BasePerformanceBean
 	        }
 	        selectedViolationID = violationEvents.size()>0?violationEvents.get(0).getNoteID():null;
 		}
-	//
-	//	public Event getSelectedViolation() {
-	//		return selectedViolation;
-	//	}
-	//
-	//	public void setSelectedViolation(Event selectedViolation) {
-	//		this.selectedViolation = selectedViolation;
-	//	}
-
 	public Long getSelectedViolationID() {
 		return selectedViolationID;
 	}

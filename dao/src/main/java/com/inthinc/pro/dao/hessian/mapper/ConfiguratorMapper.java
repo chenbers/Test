@@ -42,12 +42,14 @@ public class ConfiguratorMapper extends AbstractMapper {
             	}
         	}
         	catch (PatternSyntaxException pse){
-        		
-        		logger.debug("regex "+pse.getPattern()+" threw a PatternSyntaxException - "+pse.getMessage());
+        	    
+        	    deviceSettingDefinition.setRegex(null);
+        	    deviceSettingDefinition.setChoices(null);
+        		logger.info("regex "+pse.getPattern()+" threw a PatternSyntaxException - "+pse.getMessage());
         	}
         }    	
     }
-    private boolean containsChoicesOnly(String choiceCandidate){
+    protected boolean containsChoicesOnly(String choiceCandidate){
 
     	return !choiceEliminator.matcher(choiceCandidate).find() && choiceCandidate.contains("|");
     }

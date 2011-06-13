@@ -1,10 +1,12 @@
 package com.inthinc.pro.map;
 
+import java.util.List;
+
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
+import com.inthinc.pro.model.Zone;
 
 public abstract class  AddressLookup {
-	
 	public enum AddressFormat{ADDRESS(1), LINK(2), LATLNG(3);
 	
 		private int code;
@@ -20,16 +22,52 @@ public abstract class  AddressLookup {
 	}
 	
 	private AddressFormat addressFormat;
-		
-	public abstract String getAddress(LatLng latLng,boolean returnLatLng) throws NoAddressFoundException;
-	public abstract String getAddress(double lat, double lng) throws NoAddressFoundException;
-	public abstract String getAddress(LatLng latLng) throws NoAddressFoundException;
+    protected void setAddressFormat(AddressFormat addressFormat) {
+        this.addressFormat = addressFormat;
+    }
+    public AddressFormat getAddressFormat() {
+        return addressFormat;
+    }
+    public abstract String getAddress(LatLng latLng) throws NoAddressFoundException;
+
+    public String getAddress(double lat, double lng)
+            throws NoAddressFoundException {
+        
+        return getAddress(new LatLng(lat,lng));
+    }
 	
-	public AddressFormat getAddressFormat() {
-		return addressFormat;
-	}
-	public void setAddressFormat(AddressFormat addressFormat) {
-		this.addressFormat = addressFormat;
-	}
-		
+    public String getAddressOrLatLng(LatLng latLng){
+        try{
+            return getAddress(latLng);
+        }
+        catch(NoAddressFoundException nafe){
+            return getLatLngString(latLng);
+        }
+    }
+
+    public String getAddressOrZoneOrLatLng(LatLng latLng, List<Zone> zones){
+        try{
+            return getAddress(latLng);
+        }
+        catch(NoAddressFoundException nafe){
+            String zone = findZoneName(zones,latLng);
+            if(zone != null){
+                return zone;
+            }
+            return getLatLngString(latLng);
+        }
+    }
+	
+    private String getLatLngString(LatLng latLng){
+        return latLng.getLat() + ", " + latLng.getLng();
+    }
+    
+    private String findZoneName(List<Zone> zoneList,LatLng latLng) {
+        for ( Zone z: zoneList ) {
+            if (z.containsLatLng(latLng) ) {
+                return z.getName();
+            }
+        }
+        return null;
+    }
 }

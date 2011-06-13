@@ -21,10 +21,10 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 //    private String ephone;
 	private Integer autologoffSeconds;
 	private Integer[] speedSettings;
-	private Integer hardAcceleration; //Slider value
-	private Integer hardBrake; //Slider value
-	private Integer hardTurn; //Slider value
-    private Integer hardVertical; //Slider value
+	private Integer hardAcceleration; //SensitivitySlider value
+	private Integer hardBrake; //SensitivitySlider value
+	private Integer hardTurn; //SensitivitySlider value
+    private Integer hardVertical; //SensitivitySlider value
      
     public TiwiproEditableVehicleSettings() {
         super();

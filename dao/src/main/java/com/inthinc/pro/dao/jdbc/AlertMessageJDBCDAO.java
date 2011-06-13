@@ -34,7 +34,6 @@ import com.inthinc.pro.model.AlertSentStatus;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.MeasurementType;
-import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.RedFlagLevel;
@@ -344,7 +343,7 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         
         AlertMessageBuilder alertMessageBuilder = createBuilder(alertMessage, person, messageType);
         
-        List<String> parameterList = getParameterList(event, alertMessage, person);
+        List<String> parameterList = new  ParameterList(event, person, alertMessage).getParameterList();
         alertMessageBuilder.setParamterList(parameterList);
         
         return alertMessageBuilder;
@@ -385,108 +384,6 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
         return locale;
     }
 
-    private List<String> getParameterList(Event event, AlertMessage alertMessage,Person person){
-        
-      List<String> parameterList = new ArrayList<String>();
-      
-      parameterList = addDriverRelatedData(event, parameterList);
-      parameterList = addVehicleRelatedData(event, parameterList);
-      parameterList = addAlertRelatedData(event, person, alertMessage, parameterList);
-      
-      return parameterList;
-    }
-    private List<String> addDriverRelatedData(Event event, List<String> parameterList){
-        
-        Driver driver = driverDAO.findByID(event.getDriverID());
-        
-        SimpleDateFormat driverDateFormat = getDriverDate(driver);     
-        // Construct the message parameter list
-        parameterList.add(driverDateFormat.format(event.getTime()));
-        
-        String driverFullName = getDriverFullName(driver);
-        parameterList.add(driverFullName);
-        
-        return parameterList;
-    }
-    private SimpleDateFormat getDriverDate(Driver driver){
-        
-        SimpleDateFormat driverDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
-        
-        if ( (driver != null) && (driver.getPerson() != null) ) {
-            driverDateFormat.setTimeZone(driver.getPerson().getTimeZone());
-        } else {
-            driverDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        }
-        return driverDateFormat;
-    }
-    private String getDriverFullName(Driver driver){
-        
-        if (driver != null && driver.getPerson() != null)
-           return driver.getPerson().getFullName();
-        else {
-            return "";
-        }
-        
-    }
-    private List<String> addVehicleRelatedData(Event event, List<String> parameterList){
-        
-        Vehicle vehicle = vehicleDAO.findByID(event.getVehicleID());
-        parameterList.add(vehicle.getName());
-        
-        return parameterList;
-    }
-    private List<String> addAlertRelatedData(Event event, Person person, AlertMessage alertMessage, List<String> parameterList){
-        
-        switch (alertMessage.getAlertMessageType()) {
-            case ALERT_TYPE_ENTER_ZONE:
-            case ALERT_TYPE_EXIT_ZONE:
-                
-                parameterList = addZoneRelatedData(alertMessage.getZoneID(), parameterList);
-                break;
-            case ALERT_TYPE_SPEEDING:
-                parameterList = addSpeedingRelatedData((SpeedingEvent) event,  person.getMeasurementType(), parameterList);
-                break;
-            case ALERT_TYPE_TAMPERING:
-            case ALERT_TYPE_LOW_BATTERY:
-                break;
-            default:
-                parameterList = addAddress(event, parameterList);
-        }
-       return parameterList;
-    }
-    private List<String> addZoneRelatedData(Integer zoneID, List<String> parameterList){
-        
-        Zone zone = zoneDAO.findByID(zoneID);
-        if (zone == null) {
-            logger.error("Zone could not be found for zoneID: " + zoneID);
-        }
-        else {
-            parameterList.add(zone.getName());
-        }
-
-        return parameterList;
-    }
-
-    private List<String> addSpeedingRelatedData(SpeedingEvent event, MeasurementType measurementType, List<String> parameterList){
-        Number topSpeed = MeasurementConversionUtil.convertSpeed(event.getTopSpeed(), measurementType);
-        Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), measurementType);
-        parameterList.add(String.valueOf(topSpeed));
-        parameterList.add(String.valueOf(speedLimit));
-        parameterList = addAddress(event, parameterList);
-        
-        return parameterList;
-
-    }
-    private List<String> addAddress(Event event, List<String> parameterList){
-        
-        try {
-            parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
-        }
-        catch (NoAddressFoundException nafe){
-            //Shouldn't happen because returning lat lng when there is no address
-        }
-        return parameterList;
-    }
     public void setEventDAO(EventDAO eventDAO) {
         this.eventDAO = eventDAO;
     }
@@ -593,5 +490,94 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
             close(conn);
         } // end finally   
         
+    }
+    
+    public class ParameterList {
+        private List<String> parameterList;
+
+        public ParameterList(Event event,Person person, AlertMessage alertMessage) {
+            super();
+            parameterList = new ArrayList<String>();
+            addDriverRelatedData(event);
+            addVehicleRelatedData(event);
+            addAlertRelatedData(event, person, alertMessage);
+
+        }
+        
+        public void addDriverRelatedData(Event event){
+            Driver driver = driverDAO.findByID(event.getDriverID());
+            
+            SimpleDateFormat driverDateFormat = getDriverDate(driver);     
+            // Construct the message parameter list
+            parameterList.add(driverDateFormat.format(event.getTime()));
+            
+            String driverFullName = getDriverFullName(driver);
+            parameterList.add(driverFullName);
+            
+        }
+        private SimpleDateFormat getDriverDate(Driver driver){
+            
+            SimpleDateFormat driverDateFormat = new SimpleDateFormat("MMM d, yyyy h:mm a (z)");
+            
+            if ( (driver != null) && (driver.getPerson() != null) ) {
+                driverDateFormat.setTimeZone(driver.getPerson().getTimeZone());
+            } else {
+                driverDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+            }
+            return driverDateFormat;
+        }
+        private String getDriverFullName(Driver driver){
+            
+            if (driver != null && driver.getPerson() != null)
+               return driver.getPerson().getFullName();
+            else {
+               return "";
+            }
+        }
+        public void addVehicleRelatedData(Event event){
+            Vehicle vehicle = vehicleDAO.findByID(event.getVehicleID());
+            parameterList.add(vehicle.getName());            
+        }
+        public void addAlertRelatedData(Event event, Person person, AlertMessage alertMessage){
+            switch (alertMessage.getAlertMessageType()) {
+                case ALERT_TYPE_ENTER_ZONE:
+                case ALERT_TYPE_EXIT_ZONE:
+                    addZoneRelatedData(alertMessage.getZoneID());
+                    break;
+                case ALERT_TYPE_SPEEDING:
+                    addSpeedingRelatedData((SpeedingEvent) event,  person.getMeasurementType());
+                    break;
+                case ALERT_TYPE_TAMPERING:
+                case ALERT_TYPE_LOW_BATTERY:
+                    break;
+                default:
+                    addAddress(event);
+            }
+        }
+        private void addAddress(Event event){
+            parameterList.add(addressLookup.getAddressOrLatLng(new LatLng(event.getLatitude(), event.getLongitude())));
+        }
+
+        private void addZoneRelatedData(Integer zoneID){
+            
+            Zone zone = zoneDAO.findByID(zoneID);
+            if (zone == null) {
+                logger.error("Zone could not be found for zoneID: " + zoneID);
+            }
+            else {
+                parameterList.add(zone.getName());
+            }
+        }
+
+        private void addSpeedingRelatedData(SpeedingEvent event, MeasurementType measurementType){
+            Number topSpeed = MeasurementConversionUtil.convertSpeed(event.getTopSpeed(), measurementType);
+            Number speedLimit = MeasurementConversionUtil.convertSpeed(event.getSpeedLimit(), measurementType);
+            parameterList.add(String.valueOf(topSpeed));
+            parameterList.add(String.valueOf(speedLimit));
+            addAddress(event);
+        }
+        public List<String> getParameterList() {
+            return parameterList;
+        }
     }
 }

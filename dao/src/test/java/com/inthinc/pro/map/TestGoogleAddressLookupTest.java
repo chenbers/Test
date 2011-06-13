@@ -115,11 +115,10 @@ public class TestGoogleAddressLookupTest {
     
     
     public final void getAddressLatLngBoolean_validLatLngReturnAddress_returnValidAddress() {
-        boolean returnLatLng = false;
         LatLng latLng = new LatLng(32.0429, -102.085);
         String address = null;
         try {
-            address = gal.getAddress(latLng, returnLatLng);
+            address = gal.getAddress(latLng);
         } catch (NoAddressFoundException e) {
             fail();
         }

@@ -233,7 +233,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         List<String> classNames = new ArrayList<String>();
         if(vehicleSettingManagers.get(null) == null){
-            vehicleSettingManagers.put(null, new TiwiproSettingManager(null, batchEditProductChoice, null));
+            vehicleSettingManagers.put(null, new TiwiproSettingManager(null,null, batchEditProductChoice, null));
         }
         for (Entry<Integer,VehicleSettingManager> vsm : vehicleSettingManagers.entrySet()){
             

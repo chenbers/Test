@@ -91,5 +91,7 @@ public class VehicleSetting {
 	public void clearCombinedSettings() {
 		this.combinedSettings = null;
 	}
-
+	public boolean settingsAreEmpty(){
+	    return actual.isEmpty() && desired.isEmpty();
+	}
 }

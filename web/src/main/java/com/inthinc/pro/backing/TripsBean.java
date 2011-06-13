@@ -99,18 +99,18 @@ public class TripsBean extends BaseBean {
             
             for (Trip trip : tempTrips) {
             	            	
-                TripDisplay td = new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), getAddressLookup());
+                TripDisplay td = new TripDisplay(trip, getTimeZoneFromDriver(trip.getDriverID()), getAddressLookup(), getProUser().getZones());
                 
                 if ((td.getRoute() != null) && (td.getRoute().size() > 0)){
 	                // If starting or ending address is null, try to set a zone name
-	                if ( td.getStartAddress() == null ) {
-	                    LatLng latLng = new LatLng(td.getRoute().get(0).getLat(),td.getRoute().get(0).getLng());
-	                    td.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
-	                }                
-	                if ( td.getEndAddress() == null ) {
-	                    LatLng latLng = new LatLng(td.getEndPointLat(),td.getEndPointLng());
-	                    td.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
-	                }
+//	                if ( td.getStartAddress() == null ) {
+//	                    LatLng latLng = new LatLng(td.getRoute().get(0).getLat(),td.getRoute().get(0).getLng());
+//	                    td.setStartAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
+//	                }                
+//	                if ( td.getEndAddress() == null ) {
+//	                    LatLng latLng = new LatLng(td.getEndPointLat(),td.getEndPointLng());
+//	                    td.setEndAddress(MiscUtil.findZoneName(this.getProUser().getZones(), latLng));
+//	                }
                 }
                 trips.add(td);
             }
@@ -735,22 +735,22 @@ public class TripsBean extends BaseBean {
         return ll.getLoc();
 	}
 	private LatLng getGroupDefaultLocation(){
-		return getGroupHierarchy().getTopGroup().getMapCenter();
-//	    Integer groupID;
-//        if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
-//            groupID = ((Driver)identifiableEntityBean.getEntity()).getGroupID();
-//        }
-//        else{
-//            groupID = ((Vehicle)identifiableEntityBean.getEntity()).getGroupID();
-//        }
-//        Group group = getGroupHierarchy().getGroup(groupID);
-//        while ((group != null)&&(group.getMapCenter() == null)){
-//            group = getGroupHierarchy().getParentGroup(group);
-//        }
-//        if ((group == null )||(group.getMapCenter() == null)){
-//            return null;
-//        }
-//        return group.getMapCenter();
+//		return getGroupHierarchy().getTopGroup().getMapCenter();
+	    Integer groupID;
+        if(identifiableEntityBean.getEntityType().equals(EntityType.ENTITY_DRIVER)){
+            groupID = ((Driver)identifiableEntityBean.getEntity()).getGroupID();
+        }
+        else{
+            groupID = ((Vehicle)identifiableEntityBean.getEntity()).getGroupID();
+        }
+        Group group = getGroupHierarchy().getGroup(groupID);
+        while ((group != null)&&(group.getMapCenter() == null)){
+            group = getGroupHierarchy().getParentGroup(group);
+        }
+        if ((group == null )||(group.getMapCenter() == null)){
+            return null;
+        }
+        return group.getMapCenter();
 	    
 	}
 }

@@ -20,21 +20,19 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.ProxyException;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.map.AddressLookup;
-import com.inthinc.pro.model.event.AggressiveDrivingEvent;
-import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.AlertMessage;
 import com.inthinc.pro.model.AlertMessageBuilder;
 import com.inthinc.pro.model.AlertMessageDeliveryType;
 import com.inthinc.pro.model.Driver;
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.RedFlag;
 import com.inthinc.pro.model.Silo;
-import com.inthinc.pro.model.event.Event;
-import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.NoAddressFoundException;
-import com.inthinc.pro.model.Person;
-import com.inthinc.pro.model.event.SpeedingEvent;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.IdleEvent;
+import com.inthinc.pro.model.event.SpeedingEvent;
 
 public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Integer> implements AlertMessageDAO {
     
@@ -45,7 +43,6 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     private static final long serialVersionUID = 1L;
     
     private static final Logger logger = Logger.getLogger(AlertMessageHessianDAO.class);
-    private Integer MAX_SILO_ID = 1;
     private EventDAO eventDAO;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
@@ -96,7 +93,6 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
     public List<AlertMessageBuilder> getMessageBuilders(AlertMessageDeliveryType messageType) {
         try {
             List<AlertMessageBuilder> messages = new ArrayList<AlertMessageBuilder>();
-//            for (Integer siloID = 0; siloID < MAX_SILO_ID; siloID++) {
             Silo silo = getMapper().convertToModelObject(getSiloService().getNextSilo(), Silo.class);
             Integer siloID = silo.getSiloID();
             {
@@ -174,12 +170,7 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
                 Number speedLimit = MeasurementConversionUtil.convertSpeed(((SpeedingEvent) event).getSpeedLimit(), person.getMeasurementType());
                 parameterList.add(String.valueOf(topSpeed));
                 parameterList.add(String.valueOf(speedLimit));
-                try {
-                	parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
-                }
-                catch (NoAddressFoundException nafe){
-                	//Shouldn't happen because returning lat lng when there is no address
-                }
+                parameterList.add(addressLookup.getAddressOrLatLng(new LatLng(event.getLatitude(), event.getLongitude())));
             case ALERT_TYPE_TAMPERING:
             case ALERT_TYPE_LOW_BATTERY:
                 break;
@@ -193,22 +184,10 @@ public class AlertMessageHessianDAO extends GenericHessianDAO<AlertMessage, Inte
                     totalIdling += ((IdleEvent)event).getLowIdle();
                 }
                 parameterList.add(String.valueOf(totalIdling/60));
-                
-                try {
-                    parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
-                }
-                catch (NoAddressFoundException nafe){
-                    //Shouldn't happen because returning lat lng when there is no address
-                }
-                
+                parameterList.add(addressLookup.getAddressOrLatLng(new LatLng(event.getLatitude(), event.getLongitude())));
                 break;
             default:
-                try {
-                	parameterList.add(addressLookup.getAddress(new LatLng(event.getLatitude(), event.getLongitude()), true));
-                }
-                catch (NoAddressFoundException nafe){
-                	//Shouldn't happen because returning lat lng when there is no address
-                }
+                parameterList.add(addressLookup.getAddressOrLatLng(new LatLng(event.getLatitude(), event.getLongitude())));
         }
         alertMessageBuilder.setParamterList(parameterList);
         return alertMessageBuilder;

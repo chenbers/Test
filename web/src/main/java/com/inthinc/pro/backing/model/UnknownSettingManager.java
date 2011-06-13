@@ -5,7 +5,7 @@ import java.util.Map;
 import com.inthinc.pro.backing.EditableVehicleSettings;
 import com.inthinc.pro.backing.UnknownEditableVehicleSettings;
 import com.inthinc.pro.dao.ConfiguratorDAO;
-import com.inthinc.pro.model.configurator.Slider;
+import com.inthinc.pro.model.configurator.SensitivitySlider;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 //Has no special settings
 @SuppressWarnings("serial")
@@ -28,7 +28,7 @@ public class UnknownSettingManager extends VehicleSettingManager {
 
 
     @Override
-    protected Map<Integer, String> getVehicleSettingsForSliderSettingIDs(VehicleSetting vehicleSetting, Slider slider) {
+    protected Map<Integer, String> getVehicleSettingsForSliderSettingIDs(VehicleSetting vehicleSetting, VehicleSensitivitySlider slider) {
         return super.getVehicleSettingsForSliderSettingIDs(vehicleSetting, slider);
     }
 

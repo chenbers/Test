@@ -21,7 +21,6 @@ import com.inthinc.pro.model.NoAddressFoundException;
 
 public class GoogleAddressLookup extends AddressLookup {
 	
-//	private GoogleMapKeyFinder googleMapKeyFinder;
     private String googleMapGeoUrl;
     private MeasurementType measurementType = MeasurementType.ENGLISH;
     private boolean debugMode = false;
@@ -63,27 +62,10 @@ public class GoogleAddressLookup extends AddressLookup {
     }
 
 	@Override
-	public String getAddress(LatLng latLng, boolean returnLatLng)
+	public String getAddress(LatLng latLng)
 			throws NoAddressFoundException {
 		
-//		if ((googleMapKeyFinder == null) || (googleMapKeyFinder.getKey()==null) ||googleMapKeyFinder.getKey().isEmpty()) {
-			if (returnLatLng){
-				
-				return latLng.getLat() + ", " + latLng.getLng();
-			}
-//			else {
-//				
-//				throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_MAP_KEY);
-//			}
-//		}
 		this.latLng = latLng;
-		
-//		StringBuilder request = new StringBuilder("http://maps.google.com/maps/geo?q=");
-//		request.append(latLng.getLat());
-//		request.append(",");
-//		request.append(latLng.getLng());
-//		request.append("&output=xml&sensor=true&key=");
-//		request.append(getGoogleMapKeyFinder().getKey());
 		
 		StringBuilder request = new StringBuilder(googleMapGeoUrl)
 		    .append(latLng.getLat())
@@ -96,45 +78,17 @@ public class GoogleAddressLookup extends AddressLookup {
 			address = sendRequest(new URL(request.toString()), ResultType.ADDRESS);
 			if ((address == null) || address.isEmpty()) {
 				
-               if(returnLatLng){
-            	   
-                    return latLng.getLat() + ", " + latLng.getLng();
-               }
-               else{
-
-                	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
-               }
+            	throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.NO_ADDRESS_FOUND);
 			}
 		}
 		catch(MalformedURLException murle){
 			
-            if(returnLatLng){
-         	   
-                return latLng.getLat() + ", " + latLng.getLng();
-           }
-           else{
-
-        	   throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
-           }
+    	   throw new NoAddressFoundException(latLng.getLat(),latLng.getLng(), NoAddressFoundException.reasons.COULD_NOT_REACH_SERVICE);
 		}
 		return address;
 		
 	}
 
-
-	@Override
-	public String getAddress(double lat, double lng)
-			throws NoAddressFoundException {
-		
-		return getAddress(new LatLng(lat,lng), false);
-	}
-
-	@Override
-	public String getAddress(LatLng latLng) throws NoAddressFoundException {
-		
-		return getAddress(latLng,false);
-		
-	}
 	protected String sendRequst(URL mapServerURL) throws NoAddressFoundException {
 	    return sendRequest(mapServerURL, ResultType.ADDRESS);
 	}
@@ -517,14 +471,5 @@ public class GoogleAddressLookup extends AddressLookup {
     public void setLatLng(LatLng latLng) {
         this.latLng = latLng;
     }
-
-//	public GoogleMapKeyFinder getGoogleMapKeyFinder() {
-//		return googleMapKeyFinder;
-//	}
-//
-//
-//	public void setGoogleMapKeyFinder(GoogleMapKeyFinder googleMapKeyFinder) {
-//		this.googleMapKeyFinder = googleMapKeyFinder;
-//	}
 
 }

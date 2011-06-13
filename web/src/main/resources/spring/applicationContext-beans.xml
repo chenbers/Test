@@ -45,8 +45,7 @@
   <bean id="siteAccessPoints" class="com.inthinc.pro.model.app.SiteAccessPoints" init-method="init">
     <property name="roleDAO" ref="roleDAO"></property>
   </bean>
-<!--  <bean id="sensitivityMapping" class="com.inthinc.pro.model.app.SensitivityMapping" init-method="init">  </bean>	-->
-  <bean id="sensitivitySliderValuesMapping" class="com.inthinc.pro.model.app.SensitivitySliderValuesMapping" init-method="init">  </bean>
+  <bean id="sensitivitySliders" class="com.inthinc.pro.model.app.SensitivitySliders" init-method="init">  </bean>
   <!-- Backing Beans -->
   <bean id="errorBean" class="com.inthinc.pro.backing.ErrorBean"></bean>
   <bean id="baseBean" abstract="true" class="com.inthinc.pro.backing.BaseBean">
@@ -478,12 +477,13 @@
     <property name="vehicleBean" ref="vehicleBean" />
     <property name="performanceDataBean" ref="performanceDataBean" />
     <property name="enableGoogleMapsInReports" value="${enableGoogleMapsInReports}"/>
+    <property name="reportAddressLookupBean" ref="${reportAddressLookup}"></property>
+    <property name="disabledGoogleMapsInReportsAddressLookupBean" ref="${disabledGoogleMapsInReportsAddressLookup}"></property>
   </bean>
 
   <bean id="basePerformanceEventsBean" class="com.inthinc.pro.backing.BasePerformanceEventBean" scope="request" parent="basePerformanceBean">
     <property name="scoreDAO" ref="scoreDAO"></property>
     <property name="eventDAO" ref="eventDAO"></property>
-    <property name="googleAddressLookupBean" ref="googleAddressLookupBean"></property>
   </bean>
   <bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request" />
   <bean id="fuelEfficiencyBean" class="com.inthinc.pro.backing.FuelEfficiencyBean" scope="request" />

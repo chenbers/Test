@@ -9,15 +9,15 @@ import java.util.Map;
 import com.inthinc.pro.backing.ui.EventReportItem;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.ScoreDAO;
-import com.inthinc.pro.map.GoogleAddressLookup;
+import com.inthinc.pro.map.AddressLookup;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.LatLng;
-import com.inthinc.pro.model.NoAddressFoundException;
 import com.inthinc.pro.model.ScoreType;
 import com.inthinc.pro.model.ScoreableEntity;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.util.MessageUtil;
 
+@SuppressWarnings("serial")
 public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 
 	protected ScoreDAO 			scoreDAO;
@@ -33,8 +33,7 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	protected List<EventReportItem>              events;
 	protected Map<String, List<EventReportItem>> eventsListsMap;
 	
-	protected GoogleAddressLookup                googleAddressLookupBean;
-    protected String scoreTitle;
+	protected String scoreTitle;
   
 	protected static DateFormat dateFormatter;
 	
@@ -146,13 +145,6 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	    return durationBean.getDuration();
 	}
   
-
-	public GoogleAddressLookup getGoogleAddressLookupBean() {
-        return googleAddressLookupBean;
-    }
-    public void setGoogleAddressLookupBean(GoogleAddressLookup googleAddressLookupBean) {
-        this.googleAddressLookupBean = googleAddressLookupBean;
-    }
     @Override
 	public Map<String, Integer> getScoreMap() {
 	    if (scoreMap == null)
@@ -232,40 +224,24 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	}
 	@Override
 	public String getAddress(LatLng latLng) {
-		try{
-			
-			return getAddressLookup().getAddress(latLng, true);
-		}
-		catch(NoAddressFoundException nafe){
-		
-		}
-		return "";
+		return getAddressLookup().getAddressOrLatLng(latLng);
 	}
 	
-	protected List<EventReportItem> populateAddresses(List<EventReportItem> evnts) {
+	protected List<EventReportItem> populateAddresses(List<EventReportItem> events) {
         
-        List<EventReportItem> local = new ArrayList<EventReportItem>();
-        
-        for ( EventReportItem eri: evnts) {
-            try{      
-//                String addr = googleAddressLookupBean.getAddress(eri.getEvent().getLatLng());
-                String addr = "Lat: " + eri.getEvent().getLatitude() + " Lng: " + eri.getEvent().getLongitude();
-                eri.getEvent().setAddressStr(addr);
-            } catch (Exception e) {
-                eri.getEvent().setAddressStr(
-                        MessageUtil.formatMessageString("noAddressFound", 
-                                eri.getEvent().getLatitude(),eri.getEvent().getLongitude()));
-            }
-            local.add(eri);
+        List<EventReportItem> eventReportItems = new ArrayList<EventReportItem>();
+        AddressLookup reportAddressLookup = enableGoogleMapsInReports?reportAddressLookupBean:disabledGoogleMapsInReportsAddressLookupBean; 
+        for ( EventReportItem eri: events) {
+            String addr = reportAddressLookup.getAddressOrLatLng(eri.getEvent().getLatLng());
+            eri.getEvent().setAddressStr(addr);
+            eventReportItems.add(eri);
         }
-        
-        return local;
+        return eventReportItems;
 	}
     public String getScoreTitle() {
         return scoreTitle;
     }
     public void setScoreTitle(String scoreTitle) {
         this.scoreTitle = scoreTitle;
-    }
-    
+    }    
 }

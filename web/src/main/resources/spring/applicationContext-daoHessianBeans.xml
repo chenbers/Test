@@ -49,6 +49,7 @@ default-autowire="byName">
   </bean>
   <bean id="googleAjaxAddressLookupBean" class="com.inthinc.pro.map.GoogleAjaxAddressLookup">
   </bean>
+  <bean id="latLngFormatterBean" class="com.inthinc.pro.map.LatLngFormatterBean"/>
 
 	
   <bean id="reportDAO" class="com.inthinc.pro.dao.hessian.ReportHessianDAO"/>
