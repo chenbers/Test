@@ -13,7 +13,7 @@ import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
-public class PageDeviceReport extends ReportsBar {
+public class PageReportsDevices extends ReportsBar {
     //TODO: dtanner: change to match navigation i.e. PageReportDevice 
     // i.e. to me PageReportsDevices makes more sense for this pageObject since I click "Reports" then "Devices" to navigate to it?
 	private String page = "devices";

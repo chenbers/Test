@@ -10,6 +10,14 @@ import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
 
 public class PageAdminUsers extends AdminBar {
 	
+	public PageAdminUsers(){
+		url = AdminUsersEnum.DEFAULT_URL;
+		checkMe.add(AdminUsersEnum.BATCH_EDIT);
+		checkMe.add(AdminUsersEnum.EDIT_COLUMNS_LINK);
+		checkMe.add(AdminUsersEnum.SEARCH_BUTTON);
+	}
+	
+	
 	private String page="person";
 
 	public class AdminUsersButtons extends AdminBarButtons {

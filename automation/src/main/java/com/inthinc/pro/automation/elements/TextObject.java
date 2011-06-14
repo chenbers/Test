@@ -20,14 +20,12 @@ public abstract class TextObject extends ElementBase implements TextBased {
     }
 
     @Override
-    public ElementInterface compare(String expected) {
-        String actual = getText();
-        assertEquals(actual, expected);
-        return this;
+    public Boolean compare(String expected) {
+        return compare(expected, getText());
     }
     
     @Override
-    public ElementInterface compare() {
+    public Boolean compare() {
         return compare(myEnum.getText());
     }
 
@@ -40,23 +38,23 @@ public abstract class TextObject extends ElementBase implements TextBased {
         assertStringContains(actual, expectedPart);
         return this;
     }
-    public ElementInterface validate(String expected) {
+    public Boolean validate(String expected) {
         return compare(expected);
     }
     
-    public ElementInterface validate(TextEnum expected) {
+    public Boolean validate(TextEnum expected) {
         return compare(expected.getText());
     }
-    public ElementInterface validate(TextEnum expected, String replaceOld, String withNew) {
+    public Boolean validate(TextEnum expected, String replaceOld, String withNew) {
         return compare(expected.getText().replace(replaceOld, withNew));
     }
     
-    public ElementInterface validate(){
-        return compare();
+
+    public Boolean validate() {
+        return validateEquals(myEnum.getText(), getText());
     }
     
-    public ElementInterface assertEquals(String compareAgainst){
-    	assertEquals(compareAgainst, myEnum);
-    	return this;
+    public Boolean assertEquals(String compareAgainst){
+    	return assertEquals(compareAgainst, myEnum);
     }
 }

@@ -18,7 +18,7 @@ public enum AdminVehiclesEnum implements SeleniumEnums {
     TABLE_ENTRIES(null, "admin-table-form:vehiclesTable:###:***"),
     SELECT_ALL(null, "admin-table-form:vehiclesTable:selectAll"),
     SELECT_ROW(null, "admin-table-form:vehiclesTable:###:select"),
-    EDIT_USER("edit", "admin-table-form:vehiclesTable:###:edit"),
+    EDIT_VEHICLE("edit", "admin-table-form:vehiclesTable:###:edit"),
 
     ;
 

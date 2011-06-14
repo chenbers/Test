@@ -3,9 +3,19 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldError;
+import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.selenium.pageEnums.ChangePasswordEnum;
 
 public class PageChangePassword extends Masthead {
+	
+	public PageChangePassword(){
+		url = null;
+		checkMe.add(ChangePasswordEnum.CHANGE_TITLE);
+		checkMe.add(ChangePasswordEnum.CHANGE_PASSWORD_BUTTON);
+		checkMe.add(ChangePasswordEnum.CONFIRM_PASSWORD);
+	}
+	
 
 	public PageChangePassword openChangePasswordPage(String url){
 		open(url);
@@ -35,27 +45,27 @@ public class PageChangePassword extends Masthead {
 			return new Text(ChangePasswordEnum.MESSAGE);
 		}
 		
-		public Text usernameLabel(){
-			return new Text(ChangePasswordEnum.USERNAME_TEXT_LABEL);
+		public TextFieldLabel usernameLabel(){
+			return new TextFieldLabel(ChangePasswordEnum.USERNAME_TEXT);
 		}
 		
 		public Text usernameValue(){
-			return new Text(ChangePasswordEnum.USERNAME_TEXT_FIELD);
+			return new Text(ChangePasswordEnum.USERNAME_TEXT);
 		}
 		
-		public Text newPasswordLabel(){
-			return new Text(ChangePasswordEnum.NEW_PASSWORD_LABEL);
+		public TextFieldLabel newPasswordLabel(){
+			return new TextFieldLabel(ChangePasswordEnum.NEW_PASSWORD);
 		}
 		
-		public Text newPasswordError(){
-			return new Text(ChangePasswordEnum.NEW_PASSWORD_ERROR);
+		public TextFieldError newPasswordError(){
+			return new TextFieldError(ChangePasswordEnum.NEW_PASSWORD);
 		}
 		
-		public Text confirmNewPasswordError(){
-			return new Text(ChangePasswordEnum.CONFIRM_PASSWORD_ERROR);
+		public TextFieldError confirmNewPasswordError(){
+			return new TextFieldError(ChangePasswordEnum.CONFIRM_PASSWORD);
 		}
-		public Text confirmNewPasswordLabel(){
-			return new Text(ChangePasswordEnum.CONFIRM_PASSWORD_LABEL);
+		public TextFieldLabel confirmNewPasswordLabel(){
+			return new TextFieldLabel(ChangePasswordEnum.CONFIRM_PASSWORD);
 		}
 		
 		public Text passwordStrengthLabel(){

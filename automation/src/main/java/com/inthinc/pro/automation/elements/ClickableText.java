@@ -28,12 +28,12 @@ public abstract class ClickableText extends ClickableObject implements TextBased
     }
     
     @Override
-    public ElementInterface compare(String expected) {
+    public Boolean compare(String expected) {
         return textStuff.compare(expected);
     }
 
     @Override
-    public ElementInterface compare() {
+    public Boolean compare() {
         return textStuff.compare();
     }
 
@@ -42,7 +42,7 @@ public abstract class ClickableText extends ClickableObject implements TextBased
        return textStuff.getText();
     }
 	@Override
-	public ElementInterface assertEquals(String compareAgainst) {
+	public Boolean assertEquals(String compareAgainst) {
 		return textStuff.assertEquals(compareAgainst);
 	}
 }

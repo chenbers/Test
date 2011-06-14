@@ -63,8 +63,7 @@ public class EditMyAccountTest extends WebRallyTest {
             distanceDisplay = "miles";
             newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
 		} else {
-		    addError("Measurement","Original Measurement has unexpected value of: "+originalMeasurement);
-		    assertTrue(false,"MeasurementValidation test cannot continue without capturing valid Original Measurement");
+		    addError("Measurement","Original Measurement has unexpected value of: "+originalMeasurement, ErrorLevel.FAIL);
 		}
         myAccountPage._select().measurement().select(newMeasure);
         myAccountPage._select().fuelEfficiency().select(newFuel);
@@ -114,8 +113,7 @@ public class EditMyAccountTest extends WebRallyTest {
             newMeasure = Measurement.ENGLISH;
             newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
         } else {
-            addError("Fuel Ratio","Original Fuel Ratio has unexpected value of: "+originalFuelRatio);
-            assertTrue(false, "FuelRatioValidation test cannot continue without capturing valid Original Fuel Ratio");
+            addError("Fuel Ratio","Original Fuel Ratio has unexpected value of: "+originalFuelRatio, ErrorLevel.FAIL);
         }
         myAccountPage._select().measurement().select(newMeasure);
         myAccountPage._select().fuelEfficiency().select(newFuel);

@@ -12,7 +12,7 @@ import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.selenium.pageEnums.AdminAddEditUserEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEnum;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 
 public class PageAddEditUser extends AdminBar {
 	private static String page = "Person";
@@ -71,27 +71,27 @@ public class PageAddEditUser extends AdminBar {
 			return new Text(AdminBarEnum.MASTER_ERROR);
 		}
 		
-		public TextFieldLabel personLabel(AdminUsersEnum label){
+		public TextFieldLabel personLabel(AdminUsersEntries label){
 			return new TextFieldLabel(AdminAddEditUserEnum.TEXT_FIELDS, label);
 		}
 		
-		public TextFieldLabel driverLabel(AdminUsersEnum label){
+		public TextFieldLabel driverLabel(AdminUsersEntries label){
 			return new TextFieldLabel(AdminAddEditUserEnum.TEXT_FIELDS,"driver_", label);
 		}
 		
-		public TextFieldLabel userLabel(AdminUsersEnum label){
+		public TextFieldLabel userLabel(AdminUsersEntries label){
 			return new TextFieldLabel(AdminAddEditUserEnum.TEXT_FIELDS,"user_", label);
 		}
 		
-		public TextFieldError personError(AdminUsersEnum label){
+		public TextFieldError personError(AdminUsersEntries label){
 			return new TextFieldError(AdminAddEditUserEnum.TEXT_FIELDS, label);
 		}
 		
-		public TextFieldError driverError(AdminUsersEnum label){
+		public TextFieldError driverError(AdminUsersEntries label){
 			return new TextFieldError(AdminAddEditUserEnum.TEXT_FIELDS,"driver_", label);
 		}
 		
-		public TextFieldError userError(AdminUsersEnum label){
+		public TextFieldError userError(AdminUsersEntries label){
 			return new TextFieldError(AdminAddEditUserEnum.TEXT_FIELDS,"user_", label);
 		}
 		
@@ -102,15 +102,15 @@ public class PageAddEditUser extends AdminBar {
 		return new AddEditUserTextFields();
 	}
 	public class AddEditUserTextFields extends AdminBarTextFields{
-		public TextField personFields(AdminUsersEnum textField){
+		public TextField personFields(AdminUsersEntries textField){
 			return new TextField(AdminBarEnum.TABLE_ENTRIES, textField);
 		}
 		
-		public TextField driverFields(AdminUsersEnum textField){
+		public TextField driverFields(AdminUsersEntries textField){
 			return new TextField(AdminAddEditUserEnum.TEXT_FIELDS, "driver_",textField);
 		}
 		
-		public TextField userFields(AdminUsersEnum textField){
+		public TextField userFields(AdminUsersEntries textField){
 			return new TextField(AdminAddEditUserEnum.TEXT_FIELDS, "user_", textField);
 		}
 	}
@@ -154,7 +154,7 @@ public class PageAddEditUser extends AdminBar {
 	}
 	public class AddEditUserDropDowns extends AdminBarDropDowns{
 		
-		public DropDown regularDropDowns(AdminUsersEnum dropDown){
+		public DropDown regularDropDowns(AdminUsersEntries dropDown){
 			return new DropDown(AdminAddEditUserEnum.DROP_DOWNS, dropDown);
 		}
 		

@@ -12,6 +12,9 @@ public class PageAdminUserDetails extends AdminBar {
 	public PageAdminUserDetails(){
 		url = null;
 		checkMe.add(AdminUserDetailsEnum.FIRST_NAME);
+		checkMe.add(AdminUserDetailsEnum.EMPLOYEE_INFORMATION);
+		checkMe.add(AdminUserDetailsEnum.NOTIFICATIONS);
+		checkMe.add(AdminUserDetailsEnum.USER_INFORMATION);
 	}
 	
 

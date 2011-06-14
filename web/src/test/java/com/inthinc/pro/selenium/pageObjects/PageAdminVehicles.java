@@ -6,6 +6,13 @@ import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
 
 public class PageAdminVehicles extends AdminBar {
 	
+	public PageAdminVehicles(){
+		url = AdminVehiclesEnum.DEFAULT_URL;
+		checkMe.add(AdminVehiclesEnum.BATCH_EDIT);
+		checkMe.add(AdminVehiclesEnum.DELETE);
+		checkMe.add(AdminVehiclesEnum.EDIT_COLUMNS_LINK);
+	}
+	
 	public AdminVehiclesPopUps _popUp(){
         return new AdminVehiclesPopUps();
     }

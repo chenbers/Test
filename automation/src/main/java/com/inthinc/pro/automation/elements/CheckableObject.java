@@ -45,7 +45,7 @@ public class CheckableObject extends ClickableObject implements Checkable,
 	 * @deprecated use {@link com.inthinc.pro.automation.elements.CheckableObject#click(Integer)}
 	 */
 	public ClickableObject click() {
-	    addError("CheckableObject.click()", "more information is required to determine WHICH item to click.  please supply either an (Integer number) or a (String label)");
+	    addError("CheckableObject.click()", "more information is required to determine WHICH item to click.  please supply either an (Integer number) or a (String label)", ErrorLevel.FAIL);
 		return null;
 	}
 

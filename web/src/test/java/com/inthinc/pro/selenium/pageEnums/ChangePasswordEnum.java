@@ -9,22 +9,17 @@ public enum ChangePasswordEnum implements SeleniumEnums {
     MESSAGE("Your user name is indicated below. To change your password, enter a new password in the fields below.", "//form[@id='updateCredentialsForm']/p"),
     CONFIRM_CHANGE("Your password has been changed.", "//table[@id='successPanelContentTable']/tbody/tr[2]/td/p"),
    
-    USERNAME_TEXT_LABEL("User Name:", "//form[@id='updateCredentialsForm']/table/tbody/tr/td/table/tbody/tr[1]/td[1]"),
-    USERNAME_TEXT_FIELD(null, "//form[@id='updateCredentialsForm']/table/tbody/tr/td/table/tbody/tr[1]/td[2]"),
+    USERNAME_TEXT("User Name:", "//form[@id='updateCredentialsForm']/table/tbody/tr/td/table/tbody/tr[1]/td[2]/strong"),
 
-    NEW_PASSWORD_LABEL("New Password:", "//form[@id='updateCredentialsForm']/table/tbody/tr/td/table/tbody/tr[2]/td[1]"),
-    NEW_PASSWORD(null, "updateCredentialsForm:newPassword", "//form[@id='updateCredentialsForm']/table/tbody/tr/td/table/tbody/tr[2]/td[2]"),
-    NEW_PASSWORD_ERROR(null, "//span[@class='rich-message field-error field-msg']/span"),
+    NEW_PASSWORD("New Password:", "updateCredentialsForm:newPassword", "//form[@id='updateCredentialsForm']/table/tbody/tr/td/table/tbody/tr[2]/td[2]"),
 
-    CONFIRM_PASSWORD_LABEL("Confirm New Password:", "//form[@id='updateCredentialsForm']/table/tbody/tr/td/table/tbody/tr[3]/td[1]"),
-    CONFIRM_PASSWORD(null, "updateCredentialsForm:newPassword", "//form[@id='updateCredentialsForm']/table/tbody/tr/td/table/tbody/tr[3]/td[2]"),
-    CONFIRM_PASSWORD_ERROR(null, "//span[@class='rich-message field-error field-msg']/span"),
+    CONFIRM_PASSWORD("Confirm New Password:", "updateCredentialsForm:newPassword", "//form[@id='updateCredentialsForm']/table/tbody/tr/td/table/tbody/tr[3]/td[2]/input"),
     
     PASSWORD_STRENGTH("Password Strength:", "//tr[4]/td[1]"),
     PASSWORD_STRENGTH_MESSAGE(null, "updateCredentialsForm_strengthMsg"),
 
     CHANGE_PASSWORD_BUTTON("Change", "updateCredentialsForm:updateCredentialsSubmit", "//button[@type='submit']", "//span[@class='save']"),
-    CANCEL_CHANGE("Cancel", "updateCredentialsCancel", "//button[@type='button']", "//span[@class='cancel']");
+    CANCEL_CHANGE(cancel, "updateCredentialsCancel", "//button[@type='button']", "//span[@class='cancel']");
 
     
 	

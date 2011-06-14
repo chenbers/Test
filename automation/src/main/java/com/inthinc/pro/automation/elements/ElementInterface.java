@@ -7,7 +7,6 @@ public interface ElementInterface {
     public boolean isVisible();
     public boolean isPresent();
     public ElementInterface focus();
-    public ElementInterface validate();
     
     public interface TextBased extends ElementInterface {
         /**
@@ -19,14 +18,14 @@ public interface ElementInterface {
          * @param expected
          * @return this Element
          */
-        public ElementInterface compare(String expected);
+        public Boolean compare(String expected);
         /**
          * Compares the value of this Element to the expected value stored in the Elements enum.
          * @return this Element
          */
-        public ElementInterface compare();
+        public Boolean compare();
         
-        public ElementInterface assertEquals(String compareAgainst);
+        public Boolean assertEquals(String compareAgainst);
     }
     
     public interface URLBased extends ElementInterface {

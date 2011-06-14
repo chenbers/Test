@@ -69,11 +69,6 @@ public class ElementBase extends MasterTest implements ElementInterface {
         return assertTrue(visible == selenium.isVisible(myEnum), myEnum.toString());
     }
 
-    @Override
-    public ElementInterface validate() {
-        assertEquals(myEnum);
-        return this;
-    }
     
     protected Boolean isElementPresent(){
         return selenium.isElementPresent(myEnum);

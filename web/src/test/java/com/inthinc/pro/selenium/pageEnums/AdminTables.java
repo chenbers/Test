@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.enums.TextEnum;
 
 public class AdminTables {
 	
-	public enum AdminUsersEnum implements TextEnum{
+	public enum AdminUsersEntries implements TextEnum{
 		/* Person Attributes */
 		FULL_NAME("name"),
         
@@ -58,7 +58,7 @@ public class AdminTables {
 
 		private String text;
 		
-		private AdminUsersEnum(String text){
+		private AdminUsersEntries(String text){
 			this.text = text;
 		}
 		@Override
