@@ -11,7 +11,7 @@ public enum DriverPerformanceStyleEnum implements SeleniumEnums {
     OVERALL_TIME_FRAME_SELECTOR(null, "styleForm:driverStyle-dateLinksToolsDetail***"),
     OVERALL_TITLE("Driving Style: Overall", "titleSpan"),
     OVERALL_SCORE_LABEL("Overall Score", Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("1").h4().toString()),
-    OVERALL_SCORE_NUMBER(null, Xpath.start().div(Id.id("overallScoreBox_body")).table().tbody().tr().td("2").table().tbody().tr().td().toString()),
+    OVERALL_SCORE_NUMBER(null, "//div[@id='overallScoreBox_body']/table/tbody/tr/td[2]/table/tbody/tr/td"),
 
     OVERALL_TOOLS(null, "styleForm:toolsIcon"),
     OVERALL_EMAIL_TOOL(emailReport, "dateLinksForm:emailMenuItem:anchor"),
