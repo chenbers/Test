@@ -13,6 +13,15 @@ import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 public class PageDriverPerformanceStyle extends NavigationBar {
 	private static String page2 = "Style";
 
+	
+	public PageDriverPerformanceStyle(){
+		url = null;
+		checkMe.add(DriverPerformanceStyleEnum.BREAKDOWN_HARD_ACCEL_LINK);
+		checkMe.add(DriverPerformanceStyleEnum.BREAKDOWN_HARD_ACCEL_SCORE);
+		checkMe.add(DriverPerformanceStyleEnum.BREAKDOWN_HARD_BRAKE_LINK);
+		checkMe.add(DriverPerformanceStyleEnum.BREAKDOWN_HARD_BUMP_LINK);
+		
+	}
 	public class DriverStyleButtons extends NavigationBarButtons {
 
 		public Button emailReport() {
@@ -180,12 +189,12 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 		}
 	}
 
-	public DriverStyleLinks _button() {
-		return new DriverStyleLinks();
+	public DriverStyleButtons _button() {
+		return new DriverStyleButtons();
 	}
 
-	public DriverStyleLinks _dropDown() {
-		return new DriverStyleLinks();
+	public DriverStyleDropDowns _dropDown() {
+		return new DriverStyleDropDowns();
 	}
 
 	public DriverStyleLinks _link() {
@@ -196,12 +205,12 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 		return new DriverStylePopUps();
 	}
 
-	public DriverStyleLinks _text() {
-		return new DriverStyleLinks();
+	public DriverStyleTexts _text() {
+		return new DriverStyleTexts();
 	}
 
-	public DriverStyleLinks _textField() {
-		return new DriverStyleLinks();
+	public DriverStyleTextFields _textField() {
+		return new DriverStyleTextFields();
 	}
 
 }
