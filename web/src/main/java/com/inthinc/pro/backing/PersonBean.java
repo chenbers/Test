@@ -268,7 +268,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return this.getProUser().getPreviousLogin() == null;
     }
     public boolean isPasswordChangeRequired() {
-        return PreferenceLevelOption.REQUIRE.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange()) && isInitialLogin() && !isPasswordUpdated();
+        boolean results = PreferenceLevelOption.REQUIRE.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange()) && isInitialLogin() && !isPasswordUpdated();
+        if(results)
+            logger.debug("getPasswordChange(): "+getAccount().getProps().getPasswordChange()+"; isInitialLogin(): "+isInitialLogin()+"; isPasswordUpdated: "+isPasswordUpdated());
+        return results;
     }
     public boolean isPasswordChangeWarn() { 
         return PreferenceLevelOption.WARN.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange());
@@ -293,7 +296,10 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
         return "Set password as updated (for this login) to avoid passwordReminder rendering on ";
     }
     public boolean isShowPasswordReminder() {
-        return (((getPasswordDaysRemaining() < 16)  || ((isInitialLogin()) && (isPasswordChangeWarn())))  && !isPasswordUpdated());
+        boolean results = (((getPasswordDaysRemaining() < 16)  || ((isInitialLogin()) && (isPasswordChangeWarn())))  && !isPasswordUpdated());
+        if(results)
+            logger.debug("getPasswordDaysRemaining():"+getPasswordDaysRemaining()+"; isInitialLogin():"+isInitialLogin()+"; isPasswordChangeWarn():"+isPasswordChangeWarn()+"; isPasswordUpdated():"+isPasswordUpdated());
+        return results;
     }
     public static Integer getLoginDaysRemaining(Account account, User user) {
         Integer loginExpire;
@@ -959,8 +965,14 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
             if ((person.getPassword() != null) && (person.getPassword().length() > 0)) {
                 person.getUser().setPassword(passwordEncryptor.encryptPassword(person.getPassword()));
                 person.getUser().setPasswordDT(new Date());
-                if(this.getPerson().getPersonID() == person.getPersonID())
+                if(this.getPerson().getPersonID().equals(person.getPersonID())){
                     this.setPasswordUpdated(true);
+                } else {
+                    // reset the last login to null only if a user, and not self
+                    if ( person.getUser() != null ) {
+                        person.getUser().setLastLogin(null);
+                    }
+                }
             }
             // null out the user/driver before saving
             if (!person.isUserSelected() && (person.getUser() != null)) {
