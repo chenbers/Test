@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriverBackedSelenium;
 import com.google.common.base.Supplier;
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.utils.Id;
+import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.automation.utils.Xpath;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleniumException;
@@ -374,7 +375,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         try {
             open(element);
         } catch (SeleniumException e) {
-            errors.addError(error_name, e);
+            errors.addError(error_name, e, ErrorLevel.FAIL);
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
