@@ -546,7 +546,9 @@
 			           [  {data: obdSpeed, label: "#{messages.crashReport_obdSpeed} = 0", color: "#0000FF"}, 
 				          {data: gpsSpeed, label: "#{messages.crashReport_gpsSpeed} = 0", color: "#00FF00"}, 
 				          {data: rpm, label: "#{messages.crashReport_rpm} = 0", color: "#FF9900", yaxis: 2}],
-			           { xaxis: {  tickFormatter: function (time, axis) {
+			           { xaxis: {  
+			    				   ticks: 6,
+			           			   tickFormatter: function (time, axis) {
 							        return formatDate(new Date(time));
 							      } },
 		            	 y2axis: { tickFormatter: function (v, axis) { return v.toFixed(0) }},
