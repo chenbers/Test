@@ -2,17 +2,24 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.DhxDropDown;
-import com.inthinc.pro.automation.elements.TextTable;
-import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
+import com.inthinc.pro.selenium.pageEnums.ReportsDriversEnum;
 
 public class PageDriverReport extends ReportsBar {
+	
+	public PageDriverReport(){
+		url = null;
+		checkMe.add(ReportsDriversEnum.TITLE);
+		checkMe.add(ReportsDriversEnum.EDIT_COLUMNS);
+	}
+	
 	public class DriverReportButtons extends ReportsBarButtons {
 
 		public TextButton editColumns() {
@@ -63,86 +70,86 @@ public class PageDriverReport extends ReportsBar {
 	public class DriverReportLinks extends ReportsBarLinks {
 
 		public TextLink distanceDrivenSort() {
-			return new TextLink(DriverReportEnum.DISTANCE_DRIVEN_SORT);
+			return new TextLink(ReportsDriversEnum.DISTANCE_DRIVEN_SORT);
 		}
 
 		public TextLink driverSort() {
-			return new TextLink(DriverReportEnum.DRIVER_SORT);
+			return new TextLink(ReportsDriversEnum.DRIVER_SORT);
 		}
 
 		public TextTableLink driverValue() {
-			return new TextTableLink(DriverReportEnum.DRIVER_VALUE);
+			return new TextTableLink(ReportsDriversEnum.DRIVER_VALUE);
 		}
 
 		public TextLink employeeIDSort() {
-			return new TextLink(DriverReportEnum.EMPLOYEE_ID_SORT);
+			return new TextLink(ReportsDriversEnum.EMPLOYEE_ID_SORT);
 		}
 
 		public TextLink groupSort() {
-			return new TextLink(DriverReportEnum.GROUP_SORT);
+			return new TextLink(ReportsDriversEnum.GROUP_SORT);
 		}
 
 		public TextTableLink groupValue() {
-			return new TextTableLink(DriverReportEnum.GROUP_VALUE);
+			return new TextTableLink(ReportsDriversEnum.GROUP_VALUE);
 		}
 
 		public TextLink overallSort() {
-			return new TextLink(DriverReportEnum.OVERALL_SCORE_SORT);
+			return new TextLink(ReportsDriversEnum.OVERALL_SCORE_SORT);
 		}
 
 		public TextTableLink overallValue() {
-			return new TextTableLink(DriverReportEnum.OVERALL_SCORE_VALUE);
+			return new TextTableLink(ReportsDriversEnum.OVERALL_SCORE_VALUE);
 		}
 
 		public TextLink seatBeltSort() {
-			return new TextLink(DriverReportEnum.SEATBELT_SCORE_SORT);
+			return new TextLink(ReportsDriversEnum.SEATBELT_SCORE_SORT);
 		}
 
 		public TextTableLink seatbeltValue() {
-			return new TextTableLink(DriverReportEnum.SEATBELT_SCORE_VALUE);
+			return new TextTableLink(ReportsDriversEnum.SEATBELT_SCORE_VALUE);
 		}
 
 		public TextLink speedSort() {
-			return new TextLink(DriverReportEnum.SPEED_SCORE_SORT);
+			return new TextLink(ReportsDriversEnum.SPEED_SCORE_SORT);
 		}
 
 		public TextTableLink speedValue() {
-			return new TextTableLink(DriverReportEnum.SPEED_SCORE_VALUE);
+			return new TextTableLink(ReportsDriversEnum.SPEED_SCORE_VALUE);
 		}
 
 		public TextLink styleSort() {
-			return new TextLink(DriverReportEnum.STYLE_SCORE_SORT);
+			return new TextLink(ReportsDriversEnum.STYLE_SCORE_SORT);
 		}
 
 		public TextTableLink styleValue() {
-			return new TextTableLink(DriverReportEnum.STYLE_SCORE_VALUE);
+			return new TextTableLink(ReportsDriversEnum.STYLE_SCORE_VALUE);
 		}
 
 		public TextLink vehicleSort() {
-			return new TextLink(DriverReportEnum.VEHICLE_SORT);
+			return new TextLink(ReportsDriversEnum.VEHICLE_SORT);
 		}
 
 		public TextTableLink vehicleValue() {
-			return new TextTableLink(DriverReportEnum.VEHICLE_VALUE);
+			return new TextTableLink(ReportsDriversEnum.VEHICLE_VALUE);
 		}
 	}
 
 	public class DriverReportTextFields extends ReportsBarTextFields {
 
 		public TextField driverSearch() {
-			return new TextField(DriverReportEnum.DRIVER_SEARCH);
+			return new TextField(ReportsDriversEnum.DRIVER_SEARCH);
 		}
 
 		public TextField employeeSearch() {
-			return new TextField(DriverReportEnum.EMPLOYEE_SEARCH);
+			return new TextField(ReportsDriversEnum.EMPLOYEE_SEARCH);
 		}
 
 		public TextField groupSearch() {
-			return new TextField(DriverReportEnum.GROUP_SEARCH);
+			return new TextField(ReportsDriversEnum.GROUP_SEARCH);
 		}
 
 		public TextField vehicleSearch() {
-			return new TextField(DriverReportEnum.VEHICLE_SEARCH);
+			return new TextField(ReportsDriversEnum.VEHICLE_SEARCH);
 		}
 	}
 
@@ -153,11 +160,11 @@ public class PageDriverReport extends ReportsBar {
 		}
 
 		public TextTable distanceDriven() {
-			return new TextTable(DriverReportEnum.DISTANCE_DRIVEN_VALUE);
+			return new TextTable(ReportsDriversEnum.DISTANCE_DRIVEN_VALUE);
 		}
 
 		public TextTable employeeID() {
-			return new TextTable(DriverReportEnum.EMPLOYEE_ID_VALUE);
+			return new TextTable(ReportsDriversEnum.EMPLOYEE_ID_VALUE);
 		}
 	}
 
@@ -200,10 +207,5 @@ public class PageDriverReport extends ReportsBar {
 	public DriverReportTextFields _textField() {
 		return new DriverReportTextFields();
 	}
-	
-    @Override
-    public String getExpectedPath() {
-        return DriverReportEnum.DEFAULT_URL.getURL();
-    }
 	
 }

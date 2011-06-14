@@ -10,6 +10,11 @@ import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 public class PageDriverPerformance extends NavigationBar {
 	private String page = "driver";
 	
+	public PageDriverPerformance(){
+		url=null;
+		checkMe.add(DriverPerformanceEnum.DRIVER_NAME_LINK);
+		checkMe.add(DriverPerformanceEnum.VIEW_ALL_TRIPS);
+	}
 	
 	public class DriverPerformanceButtons extends NavigationBarButtons {
 		public Button tools(){

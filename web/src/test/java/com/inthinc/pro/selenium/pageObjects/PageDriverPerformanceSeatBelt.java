@@ -11,6 +11,13 @@ import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 
 
 public class PageDriverPerformanceSeatBelt extends NavigationBar {
+	
+	public PageDriverPerformanceSeatBelt(){
+		url=null;
+		checkMe.add(DriverPerformanceSeatBeltEnum.DETAILS_TITLE);
+		checkMe.add(DriverPerformanceSeatBeltEnum.DRIVER_NAME_LINK);
+	}
+	
 	public class DriverSeatBeltPopUps extends MastheadPopUps{
 
 		public DriverSeatBeltPopUps() {

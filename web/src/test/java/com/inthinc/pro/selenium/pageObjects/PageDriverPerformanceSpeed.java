@@ -14,6 +14,13 @@ import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 public class PageDriverPerformanceSpeed extends NavigationBar {
 	private String page = "speedForm";
 	
+	public PageDriverPerformanceSpeed(){
+		url = null;
+		checkMe.add(DriverPerformanceSpeedEnum.DETAILS_TITLE);
+		checkMe.add(DriverPerformanceSpeedEnum.OVERALL_TITLE);
+		checkMe.add(DriverPerformanceSpeedEnum.RETURN);
+	}
+	
 	public DriverSpeedButtons _button(){
 		return new DriverSpeedButtons();
 	}

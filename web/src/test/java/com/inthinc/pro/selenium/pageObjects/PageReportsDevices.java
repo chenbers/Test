@@ -9,7 +9,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.DeviceReportEnum;
-import com.inthinc.pro.selenium.pageEnums.DriverReportEnum;
+import com.inthinc.pro.selenium.pageEnums.ReportsDriversEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
@@ -52,7 +52,7 @@ public class PageReportsDevices extends ReportsBar {
 	public class DeviceReportsLinks extends ReportsBarLinks{
 		
 		public TextTableLink vehicleValue(){
-			return new TextTableLink(DriverReportEnum.VEHICLE_VALUE);
+			return new TextTableLink(ReportsDriversEnum.VEHICLE_VALUE);
 		}
 		
 		public TextLink deviceIDSort(){

@@ -13,6 +13,13 @@ import com.inthinc.pro.selenium.pageEnums.DriverPerformanceTripsEnum;
 
 public class PageDriverPerformanceTrips extends NavigationBar {
 	
+	public PageDriverPerformanceTrips(){
+		url = null;
+		checkMe.add(DriverPerformanceTripsEnum.DATE_ENTRY);
+		checkMe.add(DriverPerformanceTripsEnum.DRIVER_NAME);
+		checkMe.add(DriverPerformanceTripsEnum.SHOW_TAMPERING);
+		
+	}
 
     public DriverTripsPopUps _popUp(){
         return new DriverTripsPopUps();
