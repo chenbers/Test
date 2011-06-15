@@ -155,17 +155,17 @@ public class PageDriverPerformanceTrips extends NavigationBar {
 	public DriverTripsLinks _link(){
 		return new DriverTripsLinks();
 	}
-	public DriverTripsLinks _button(){
-		return new DriverTripsLinks();
+	public DriverTripsButtons _button(){
+		return new DriverTripsButtons();
 	}
-	public DriverTripsLinks _text(){
-		return new DriverTripsLinks();
+	public DriverTripsTexts _text(){
+		return new DriverTripsTexts();
 	}
-	public DriverTripsLinks _textField(){
-		return new DriverTripsLinks();
+	public DriverTripsTextFields _textField(){
+		return new DriverTripsTextFields();
 	}
-	public DriverTripsLinks _dropDown(){
-		return new DriverTripsLinks();
+	public DriverTripsDropDowns _dropDown(){
+		return new DriverTripsDropDowns();
 	}
 	
 	public class DriverTripsCheckbox{

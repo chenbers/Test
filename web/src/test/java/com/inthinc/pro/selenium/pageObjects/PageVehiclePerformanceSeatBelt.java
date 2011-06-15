@@ -127,17 +127,17 @@ public class PageVehiclePerformanceSeatBelt extends NavigationBar {
 	public VehicleSeatBeltLinks _link(){
 		return new VehicleSeatBeltLinks();
 	}
-	public VehicleSeatBeltLinks _button(){
-		return new VehicleSeatBeltLinks();
+	public VehicleSeatBeltButtons _button(){
+		return new VehicleSeatBeltButtons();
 	}
-	public VehicleSeatBeltLinks _text(){
-		return new VehicleSeatBeltLinks();
+	public VehicleSeatBeltTexts _text(){
+		return new VehicleSeatBeltTexts();
 	}
-	public VehicleSeatBeltLinks _textField(){
-		return new VehicleSeatBeltLinks();
+	public VehicleSeatBeltTextFields _textField(){
+		return new VehicleSeatBeltTextFields();
 	}
-	public VehicleSeatBeltLinks _dropDown(){
-		return new VehicleSeatBeltLinks();
+	public VehicleSeatBeltDropDowns _dropDown(){
+		return new VehicleSeatBeltDropDowns();
 	}
 	public VehicleSeatBeltPopUps _popUp(){
 		return new VehicleSeatBeltPopUps();

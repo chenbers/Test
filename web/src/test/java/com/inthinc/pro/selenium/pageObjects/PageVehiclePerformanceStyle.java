@@ -181,12 +181,12 @@ public class PageVehiclePerformanceStyle extends NavigationBar {
 		}
 	}
 
-	public VehicleStyleLinks _button() {
-		return new VehicleStyleLinks();
+	public VehicleStyleButtons _button() {
+		return new VehicleStyleButtons();
 	}
 
-	public VehicleStyleLinks _dropDown() {
-		return new VehicleStyleLinks();
+	public VehicleStyleDropDowns _dropDown() {
+		return new VehicleStyleDropDowns();
 	}
 
 	public VehicleStyleLinks _link() {
@@ -197,11 +197,11 @@ public class PageVehiclePerformanceStyle extends NavigationBar {
 		return new VehicleStylePopUps();
 	}
 
-	public VehicleStyleLinks _text() {
-		return new VehicleStyleLinks();
+	public VehicleStyleTexts _text() {
+		return new VehicleStyleTexts();
 	}
 
-	public VehicleStyleLinks _textField() {
-		return new VehicleStyleLinks();
+	public VehicleStyleTextFields _textField() {
+		return new VehicleStyleTextFields();
 	}
 }

@@ -147,17 +147,17 @@ public class PageVehiclePerformanceTrips extends NavigationBar {
 	public VehicleTripsLinks _link(){
 		return new VehicleTripsLinks();
 	}
-	public VehicleTripsLinks _button(){
-		return new VehicleTripsLinks();
+	public VehicleTripsButtons _button(){
+		return new VehicleTripsButtons();
 	}
-	public VehicleTripsLinks _text(){
-		return new VehicleTripsLinks();
+	public VehicleTripsTexts _text(){
+		return new VehicleTripsTexts();
 	}
-	public VehicleTripsLinks _textField(){
-		return new VehicleTripsLinks();
+	public VehicleTripsTextFields _textField(){
+		return new VehicleTripsTextFields();
 	}
-	public VehicleTripsLinks _dropDown(){
-		return new VehicleTripsLinks();
+	public VehicleTripsDropDowns _dropDown(){
+		return new VehicleTripsDropDowns();
 	}
 	
 	public class VehicleTripsCheckbox{
