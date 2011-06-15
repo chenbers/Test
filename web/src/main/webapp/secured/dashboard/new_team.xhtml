@@ -137,7 +137,6 @@
 			}
 
 			Team.tabChange = function(tab){
-				//TODO: jwimmer: could probably implement without using jQuery.address lib at all?
 				//set the window location to something "bookmarkable" for direct entry
 				window.location=jQuery.address.baseURL().replace(/\/tab\/.+/i,"")+"/tab/"+Team.getSelectedTabId().replace("_lbl","");
 				return false;

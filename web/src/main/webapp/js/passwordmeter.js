@@ -59,10 +59,6 @@ level 1 (2 points): mixed case letters, numbers and special
 
 
 ************************************************************ */
-//TODO: jwimmer: following lines not working in IE 8, BUT they work if called IN the function (so they are called as needed IN the function right now)
-//var formSubmit = document.getElementById("formSubmit");
-//var meterFull = document.getElementById("meterFull");
-//var strengthMsg = document.getElementById("strengthMsg");
 
 function testPasswordStrength(passwd, formName)
 {
