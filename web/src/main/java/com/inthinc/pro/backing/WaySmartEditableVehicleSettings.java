@@ -1,9 +1,5 @@
 package com.inthinc.pro.backing;
 
-import javax.faces.convert.ConverterException;
-
-import com.inthinc.pro.dao.util.MeasurementConversionUtil;
-import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
@@ -22,10 +18,6 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
     private Integer autoArmTime;
     private Integer dotVehicleType;
 
-    private MeasurementType measurementType;
-
-
-
     public WaySmartEditableVehicleSettings() {
         super();
     }
@@ -33,7 +25,7 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 
     public WaySmartEditableVehicleSettings(	int vehicleID, Double speedLimit, Double speedBuffer, Double severeSpeed,
                                   			Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
-                                  			Integer hardVertical, MeasurementType measurementType,
+                                  			Integer hardVertical,
                                   			String doorAlarmPasscode, 
                                   			String killMotorPasscode, Integer autoArmTime, Integer dotVehicleType) {
         
@@ -46,7 +38,6 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
         setHardBrake(hardBrake);
         setHardTurn(hardTurn);
         setHardVertical(hardVertical);
-        this.measurementType = measurementType;
         this.doorAlarmPasscode = doorAlarmPasscode; 
         this.killMotorPasscode = killMotorPasscode;
         this.autoArmTime = autoArmTime;
@@ -119,34 +110,13 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
         return hardVertical;
 	}
 
-    public Integer getSpeedLimitInteger() {
-        //Need to convert here for the validation to work correctly on the number slider
-        Integer speedLimitInteger = convertMPHtoKPH((speedLimit == null) ? 0 : speedLimit.intValue());
-        return speedLimitInteger;
-    }
-    public Integer getSpeedLimitValue(){
+    public Integer getSpeedLimitInteger(){
         if (speedLimit == null) speedLimit = 0.0;
         return speedLimit.intValue();
     }
-    public Integer convertMPHtoKPH(Integer mph) throws ConverterException
-    {
-            if (getMeasurementType().equals(MeasurementType.METRIC))
-                return (Integer) MeasurementConversionUtil.fromMPHtoKPH(mph);
-            else
-                return mph;
-    }    
-
-    public void setSpeedLimitInteger(Integer speedLimit) {
-        Integer speedLimitInteger = convertKPHtoMPH(speedLimit);
-        this.speedLimit = new Double(speedLimitInteger);
+    public void setSpeedLimitInteger(Integer speedLimitValue){
+        speedLimit = new Double(speedLimitValue);
     }
-    public Integer convertKPHtoMPH(Integer kph) throws ConverterException
-    {
-            if (getMeasurementType().equals(MeasurementType.METRIC))
-                return (Integer) MeasurementConversionUtil.fromKPHtoMPH(kph);
-            else
-                return kph;
-    }    
 
     public Integer getSpeedBufferInteger() {
         if (speedBuffer == null) return null;
@@ -187,17 +157,6 @@ public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 
     public void setAutoArmTime(Integer autoArmTime) {
         this.autoArmTime = autoArmTime;
-    }
-
-    public MeasurementType getMeasurementType() {
-        if (measurementType == null)
-            return MeasurementType.ENGLISH;
-        return measurementType;
-    }
-
-
-    public void setMeasurementType(MeasurementType measurementType) {
-        this.measurementType = measurementType;
     }
 
     public Integer getDotVehicleType() {

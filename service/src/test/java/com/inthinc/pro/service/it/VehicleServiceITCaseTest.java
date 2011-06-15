@@ -271,4 +271,15 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
         //assertEquals(Response.Status.BAD_REQUEST, trips.getResponseStatus());
     }
 
+    @Test 
+    public void createVehicleTest() throws Exception{
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/");
+
+        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137712</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+
+        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlText);
+
+        String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
+        System.out.println(response);
+    }
 }

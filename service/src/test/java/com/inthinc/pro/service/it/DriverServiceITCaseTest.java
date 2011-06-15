@@ -254,5 +254,16 @@ public class DriverServiceITCaseTest extends BaseEmbeddedServerITCase {
 
         //assertEquals(Response.Status.BAD_REQUEST, trips.getResponseStatus());
     }
+    @Test 
+    public void createDriverTest() throws Exception{
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/driver/");
+
+        String xmlText = "<driver><dot>NON_DOT</dot><expiration>2012-03-20T18:00:00-06:00</expiration><groupID>276</groupID><license>2111111111</license><licenseClass>A</licenseClass><state><stateID>3</stateID></state><status>ACTIVE</status></driver>";
+
+        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlText);
+
+        String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
+        System.out.println(response);
+    }
 
 }

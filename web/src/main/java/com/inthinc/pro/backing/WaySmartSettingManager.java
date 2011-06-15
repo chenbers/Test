@@ -3,12 +3,9 @@ package com.inthinc.pro.backing;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.security.context.SecurityContextHolder;
-
 import com.inthinc.pro.backing.model.VehicleSettingManager;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.dao.util.NumberUtil;
-import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.app.SensitivitySliders;
 import com.inthinc.pro.model.configurator.ProductType;
@@ -52,7 +49,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         
         
         return new WaySmartEditableVehicleSettings(vehicleID==null?-1:vehicleID, speedLimit,speedBuffer,severeSpeed,
-                                        hardAcceleration, hardBrake, hardTurn,hardVertical, getMeasurementType(), 
+                                        hardAcceleration, hardBrake, hardTurn,hardVertical, 
                                         null, null, 15, VehicleDOTType.NON_DOT.getConfiguratorSetting());
     }
     
@@ -76,7 +73,7 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 
 
         return new WaySmartEditableVehicleSettings(vehicleID, speedLimit,speedBuffer,severeSpeed, 
-                                          hardAcceleration, hardBrake, hardTurn,hardVertical, getMeasurementType(),
+                                          hardAcceleration, hardBrake, hardTurn,hardVertical,
                                           doorAlarmPasscode, killMotorPasscode, autoArmTime, dotVehicleType);
     }
     
@@ -262,11 +259,5 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 			throw new IllegalArgumentException();
 		}
 		return(WaySmartEditableVehicleSettings)editableVehicleSettings;
-    }
-    public MeasurementType getMeasurementType(){
-        if(SecurityContextHolder.getContext().getAuthentication()==null){
-            return MeasurementType.ENGLISH;
-        }
-        else return super.getMeasurementType();
     }
 }

@@ -86,7 +86,7 @@
                                      </td>
                                   <td style="padding: 6px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     <rich:inputNumberSlider disabled="#{disabled}" onfocus="this.select();" 
-                                          id="speedLimit" value="#{vehiclesBean.item.editableVehicleSettings.self.speedLimitValue}" width="250"
+                                          id="speedLimit" value="#{vehiclesBean.item.editableVehicleSettings.self.speedLimitInteger}" width="250"
                                           converter="MphToKphConverter"
                                           showToolTip="false" showBoundaryValues="false" 
                                           minValue="${tiwiprofn:convertMphToKph(40)}" maxValue="${tiwiprofn:convertMphToKph(90)}" step="1" 

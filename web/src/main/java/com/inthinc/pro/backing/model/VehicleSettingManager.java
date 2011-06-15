@@ -4,18 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.inthinc.pro.backing.BaseBean;
 import com.inthinc.pro.backing.EditableVehicleSettings;
 import com.inthinc.pro.dao.ConfiguratorDAO;
 import com.inthinc.pro.model.app.SensitivitySliders;
 import com.inthinc.pro.model.configurator.ProductType;
-import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.SensitivitySlider;
+import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.SliderType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
 
-@SuppressWarnings("serial")
-public abstract class VehicleSettingManager extends BaseBean {
+public abstract class VehicleSettingManager {
 
 	protected ConfiguratorDAO configuratorDAO;
     protected VehicleSetting  vehicleSetting;

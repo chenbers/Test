@@ -19,7 +19,7 @@ default-autowire="byName">
     	<property name="vehicleDAO"    ref="vehicleDAO"></property>
     	<property name="eventDAO"      ref="eventDAO"></property>
     	<property name="zoneDAO"      ref="zoneDAO"></property>
-    	<property name="addressLookup" ref="${addressLookup2}"></property>
+    	<property name="addressLookup" ref="${reportAddressLookup}"></property>
   </bean>
   <bean id="driveTimeDAO" class="com.inthinc.pro.dao.jdbc.DriveTimeJDBCDAO" parent="genericJDBCDAO"/>
   
