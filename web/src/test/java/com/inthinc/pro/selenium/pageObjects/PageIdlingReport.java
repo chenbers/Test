@@ -13,6 +13,13 @@ import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 public class PageIdlingReport extends ReportsBar {
 	private String page = "idling";
 	
+	public PageIdlingReport(){
+		url = IdlingReportEnum.DEFAULT_URL;
+		checkMe.add(IdlingReportEnum.IDLING_COUNTER);
+		checkMe.add(IdlingReportEnum.START_DATE);
+		checkMe.add(IdlingReportEnum.END_DATE);
+	}
+	
 	public class IdlingReportTexts extends ReportsBarTexts{
 		public TextTable idleSupportValue(){
 			return new TextTable(IdlingReportEnum.IDLE_SUPPORT_VALUE);
@@ -124,8 +131,4 @@ public class PageIdlingReport extends ReportsBar {
 	public IdlingReportLinks _link() {
 	    return new IdlingReportLinks();
 	}
-    @Override
-    public String getExpectedPath() {
-        return IdlingReportEnum.DEFAULT_URL.getURL();
-    }
 }

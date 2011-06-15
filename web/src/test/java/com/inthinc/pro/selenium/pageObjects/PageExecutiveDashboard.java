@@ -11,6 +11,13 @@ import com.inthinc.pro.selenium.pageObjects.PopUps.Types;
 
 public class PageExecutiveDashboard extends NavigationBar {
 	
+	public PageExecutiveDashboard(){
+		url = ExecutiveDashBoardEnum.HOME_PAGE;
+		checkMe.add(ExecutiveDashBoardEnum.OVERVIEW_EMAIL_BUTTON);
+		checkMe.add(ExecutiveDashBoardEnum.EXPAND);
+		checkMe.add(ExecutiveDashBoardEnum.HOME_PAGE);
+	}
+	
 	public class DashboardButtons extends NavigationBarButtons {
 		
 		public Button emailOverviewReport(){

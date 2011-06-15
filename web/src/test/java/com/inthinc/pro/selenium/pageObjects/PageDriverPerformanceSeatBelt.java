@@ -132,17 +132,17 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
 	public DriverSeatBeltLinks _link(){
 		return new DriverSeatBeltLinks();
 	}
-	public DriverSeatBeltLinks _button(){
-		return new DriverSeatBeltLinks();
+	public DriverSeatBeltButtons _button(){
+		return new DriverSeatBeltButtons();
 	}
-	public DriverSeatBeltLinks _text(){
-		return new DriverSeatBeltLinks();
+	public DriverSeatBeltTexts _text(){
+		return new DriverSeatBeltTexts();
 	}
-	public DriverSeatBeltLinks _textField(){
-		return new DriverSeatBeltLinks();
+	public DriverSeatBeltTextFields _textField(){
+		return new DriverSeatBeltTextFields();
 	}
-	public DriverSeatBeltLinks _dropDown(){
-		return new DriverSeatBeltLinks();
+	public DriverSeatBeltDropDowns _dropDown(){
+		return new DriverSeatBeltDropDowns();
 	}
 	public DriverSeatBeltPopUps _popUp(){
 		return new DriverSeatBeltPopUps();
