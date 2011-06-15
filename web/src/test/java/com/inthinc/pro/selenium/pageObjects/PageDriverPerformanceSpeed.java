@@ -86,7 +86,7 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 			return new TextTableLink(DriverPerformanceSpeedEnum.LOCATION_ENTRY);
 		}
 		
-		public TextLink timeFrame(TimeDuration duration){
+		public TextLink duration(TimeDuration duration){
 			return new TextLink(DriverPerformanceSpeedEnum.TIME_FRAME_SELECTOR, duration);
 		}
 		
