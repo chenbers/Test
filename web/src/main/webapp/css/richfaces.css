@@ -76,7 +76,10 @@
 	white-space: normal;
 	padding: 4px 1px;
 	}
-
+.filterabledatagrid th.rich-table-subheadercell
+{
+	white-space: normal;
+}
 .datatable.rich-table th.rich-table-subheadercell, .datatable.rich-table td.rich-subtable-headercell 
  {
 	font: bold 9px Verdana, Arial, Helvetica, sans-serif;
@@ -95,6 +98,8 @@
 	color: #4f6b72;
 	background: transparent;
 }
+
+
 
 .datatable.rich-table a {
 	text-decoration: underline;
