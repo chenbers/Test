@@ -159,11 +159,11 @@ public class PageDriverReport extends ReportsBar {
 			return new Text(ReportsBarEnum.COUNTER, page);
 		}
 
-		public TextTable distanceDriven() {
+		public TextTable distanceDrivenValue() {
 			return new TextTable(ReportsDriversEnum.DISTANCE_DRIVEN_VALUE);
 		}
 
-		public TextTable employeeID() { //TODO: jwimmer: to dtanner: is this named correctly?  what is it?
+		public TextTable employeeIDValue() { 
 			return new TextTable(ReportsDriversEnum.EMPLOYEE_ID_VALUE);
 		}
 	}
