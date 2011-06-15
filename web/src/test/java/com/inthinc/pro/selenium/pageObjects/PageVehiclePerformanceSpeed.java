@@ -80,7 +80,7 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
 			return new TextTableLink(VehiclePerformanceSpeedEnum.LOCATION_ENTRY);
 		}
 		
-		public TextLink timeFrame(TimeDuration duration){
+		public TextLink duration(TimeDuration duration){
 			return new TextLink(VehiclePerformanceSpeedEnum.TIME_FRAME_SELECTOR, duration);
 		}
 		

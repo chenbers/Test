@@ -50,7 +50,7 @@ public class PageVehiclePerformanceStyle extends NavigationBar {
 			return new TextLink(VehiclePerformanceStyleEnum.DATE_TIME_HEADER);
 		}
 
-		public TextLink driverName() {
+		public TextLink vehicleName() {
 			return new TextLink(
 					VehiclePerformanceEnum.EXPANDED_VEHICLE_NAME_LINK, page2);
 		}

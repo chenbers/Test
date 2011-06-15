@@ -26,7 +26,7 @@ public class PageVehiclePerformanceSeatBelt extends NavigationBar {
 
 	}
 	public class VehicleSeatBeltLinks extends NavigationBarLinks{
-		public TextLink driverName(){
+		public TextLink vehicleName(){
 			return new TextLink(VehiclePerformanceEnum.VEHICLE_NAME_LINK);
 		}
 		

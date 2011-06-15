@@ -51,7 +51,7 @@ private String page = "vehicle";
 			return new TextLink(VehiclePerformanceEnum.BREADCRUMB_ITEM, position);
 		}
 		
-		public TextLink driverName(){
+		public TextLink vehicleName(){
 			return new TextLink(VehiclePerformanceEnum.VEHICLE_NAME_LINK);
 		}
 		
