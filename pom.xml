@@ -570,13 +570,13 @@ WWUUnm]]>
 	<!-- Dependencies -->
 	<!--              -->
 	<dependencies>
-		<dependency>
-			<!-- JMockit MUST appear before JUnit -->
+<!-- 		<dependency>
+			JMockit MUST appear before JUnit
 			<groupId>mockit</groupId>
 			<artifactId>jmockit</artifactId>
 			<version>${jmockit.version}</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

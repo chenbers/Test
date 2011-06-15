@@ -41,9 +41,9 @@
 			<artifactId>jetty</artifactId>
 			<version>6.1.15</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency>		
+		<!-- JMockit MUST appear before JUnit and spring-test -->
 		<dependency>
-			<!-- JMockit MUST appear before JUnit and spring-test -->
 			<groupId>mockit</groupId>
 			<artifactId>jmockit</artifactId>
 		</dependency>
