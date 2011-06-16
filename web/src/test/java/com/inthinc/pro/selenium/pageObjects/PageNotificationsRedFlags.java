@@ -16,8 +16,8 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 	
 	public PageNotificationsRedFlags(){
 		super.setPage(page);
+		url = NotificationsRedFlagsEnum.DEFAULT_URL;
 	}
-	
 	
 	public class RedFlagsLinks extends NotificationsBarLinks{//TODO: dtanner: Still Updating  change enums to main Notifications, and provide changes
 		public TextLink editColumns(){

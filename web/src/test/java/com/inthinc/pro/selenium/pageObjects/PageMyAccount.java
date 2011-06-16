@@ -7,7 +7,9 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
 public class PageMyAccount extends NavigationBar {
-	
+	public PageMyAccount() {
+		url = MyAccountEnum.MY_ACCOUNT_URL;
+	}
 	public class MyAccountPopUps extends MastheadPopUps{
 		public MyAccountChangePassword changeMyPassword(){
 			return new MyAccountChangePassword();
