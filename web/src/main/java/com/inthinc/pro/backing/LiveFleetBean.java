@@ -57,8 +57,7 @@ public class LiveFleetBean extends BaseBean
     private void populateDriverLocations()
     {
         // Get drivers
-        Group fleetGroup = organizationHierarchy.getTopGroup();
-        setDrivers(vehicleDAO.getVehiclesNearLoc(fleetGroup.getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng()));
+        setDrivers(vehicleDAO.getVehiclesNearLoc(this.getUser().getGroupID(), maxCount, addressLatLng.getLat(), addressLatLng.getLng()));
         setNumRecords(driverLocationsMap.size());
 
         // Get colored map icons.
