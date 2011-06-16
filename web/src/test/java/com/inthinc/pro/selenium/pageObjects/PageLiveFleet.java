@@ -8,8 +8,10 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 
-
 public class PageLiveFleet extends NavigationBar {
+	public PageLiveFleet(){
+		url = LiveFleetEnum.DEFAULT_URL;	
+	}
 	
 	public LiveFleetPopUps _popUp(){
         return new LiveFleetPopUps();
