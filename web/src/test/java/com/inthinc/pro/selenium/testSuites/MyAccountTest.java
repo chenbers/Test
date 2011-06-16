@@ -1,7 +1,9 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
 import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
 import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
@@ -10,13 +12,26 @@ import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 /*My Account test*/
 public class MyAccountTest extends WebRallyTest {
 	
+	private PageMyAccount myAccountPage;
+	private RandomValues random;
+	private String USERNAME = "tnilson";
+	private String PASSWORD = "password123";
+	
+	@Before
+	public void setupPage() {
+		random = new RandomValues();
+		myAccountPage = new PageMyAccount();
+	}
+	
 	@Test
 	public void AccountInformation(){
 	    //TODO: dtanner: to tNilson: This test needs to be corrected using the Admin > Users page
 		set_test_case("TC1266");
+		
+		
 		PageMyAccount my = new PageMyAccount();
 		
-		my.loginProcess("tnilson", "password");
+		myAccountPage.loginProcess(USERNAME, PASSWORD);
 		my._link().myAccount().click();
 		
 	/*Login Info*/

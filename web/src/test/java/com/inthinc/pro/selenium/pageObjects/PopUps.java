@@ -341,16 +341,16 @@ public class PopUps {
 				return new TextFieldLabel(PopUpEnum.MY_CONFIRM_TEXTFIELD);
 			}
 			
-			public Text currentPasswordError(){
-				return new Text(PopUpEnum.MY_CURRENT_TEXTFIELD);
+			public TextFieldError currentPasswordError(){
+				return new TextFieldError(PopUpEnum.MY_CURRENT_TEXTFIELD);
 			}
 			
-			public Text newPasswordError(){
-				return new Text(PopUpEnum.MY_NEW_TEXTFIELD);
+			public TextFieldError newPasswordError(){
+				return new TextFieldError(PopUpEnum.MY_NEW_TEXTFIELD);
 			}
 			
-			public Text confirmPasswordError(){
-				return new Text(PopUpEnum.MY_CONFIRM_TEXTFIELD);
+			public TextFieldError confirmPasswordError(){
+				return new TextFieldError(PopUpEnum.MY_CONFIRM_TEXTFIELD);
 			}
 			
 			public Text passwordStrength(){

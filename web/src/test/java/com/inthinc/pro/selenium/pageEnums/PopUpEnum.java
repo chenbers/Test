@@ -80,7 +80,7 @@ public enum PopUpEnum implements SeleniumEnums {
 
     MY_NEW_TEXTFIELD(null, "changePasswordForm:newPassword", "//inpute[@name='changePasswordForm:newPassword", "//input[@type='password'][2]"),
 
-    MY_CONFIRM_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//inpute[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
+    MY_CONFIRM_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//input[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
 
     
     /* Admin Delete PopUp */
