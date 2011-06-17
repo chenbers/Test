@@ -24,6 +24,7 @@ public class ElementBase extends MasterTest implements ElementInterface {
     protected HashMap<String, String> current;
     
     public ElementBase(){
+        selenium = super.getSelenium();
     }
 
     public ElementBase(SeleniumEnums anEnum) {
@@ -118,10 +119,10 @@ public class ElementBase extends MasterTest implements ElementInterface {
         return selenium.getLocation();
     }
     
-    public Boolean validateElementsPresent(SeleniumEnums ...enums){
+    public Boolean validateElementsPresent(Object ...enums){
     	SeleniumEnumWrapper temp = myEnum;
-    	for (SeleniumEnums enumerated: enums){
-            setMyEnum(enumerated);
+    	for (Object enumerated: enums){
+            setMyEnum((SeleniumEnums) enumerated);
             assertTrue(isPresent(), myEnum.toString());
         }
         myEnum = temp;
@@ -129,7 +130,7 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
     
     public Boolean validateElementsPresent(ArrayList<SeleniumEnums> enums){
-    	return validateElementsPresent((SeleniumEnums[]) enums.toArray());
+    	return validateElementsPresent(enums.toArray());
     }
     
     public void validateTextMatches(SeleniumEnums ...enums){

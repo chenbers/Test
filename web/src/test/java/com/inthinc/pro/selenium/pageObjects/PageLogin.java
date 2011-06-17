@@ -1,10 +1,10 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 
-import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 
@@ -17,10 +17,10 @@ import com.inthinc.pro.selenium.pageEnums.LoginEnum;
 public class PageLogin extends Masthead {
 	public PageLogin(){
 		url = LoginEnum.LOGIN_URL;	
+		checkMe.add(LoginEnum.LOGIN_BUTTON);
+		checkMe.add(LoginEnum.LOGIN_HEADER);
 	}
 	
-    private ElementBase validate = new ElementBase();
-    
     public class LoginPopUps extends MastheadPopUps{
     	public ForgotPassword forgotPassword(){
     		return new ForgotPassword();
@@ -53,14 +53,14 @@ public class PageLogin extends Masthead {
     }
     public class LoginTexts extends MastheadTexts{
     	public Text header(){
-    		return new Text(LoginEnum.USERNAME_FIELD);
+    		return new Text(LoginEnum.LOGIN_HEADER);
     	}
     	
-    	public Text userName(){
-    		return new Text(LoginEnum.USERNAME_LABEL);
+    	public TextFieldLabel userName(){
+    		return new TextFieldLabel(LoginEnum.USERNAME_FIELD);
     	}
-    	public Text password(){
-    		return new Text(LoginEnum.PASSWORD_LABEL);
+    	public TextFieldLabel password(){
+    		return new TextFieldLabel(LoginEnum.PASSWORD_FIELD);
     	}
     }
     
@@ -95,15 +95,10 @@ public class PageLogin extends Masthead {
         return this;
     }
     
-    public PageLogin validatePage() {
-    	validate.validateTextMatches( LoginEnum.LOGIN_HEADER, LoginEnum.USERNAME_LABEL, 
-                LoginEnum.PASSWORD_LABEL, LoginEnum.LOGIN_BUTTON);
-        return this;
-    }
     
     public PageLogin openLogout() {
         open(LoginEnum.LOGOUT_URL);
-        validatePage();
+        verifyOnPage();
         return this;
     }
     

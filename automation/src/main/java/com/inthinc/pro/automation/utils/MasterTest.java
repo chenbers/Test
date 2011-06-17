@@ -143,7 +143,6 @@ public class MasterTest {
 	}
 
 	protected void open(SeleniumEnums pageToOpen) {
-		print("We got here");
 		selenium.open(new SeleniumEnumWrapper(pageToOpen));
 	}
 
