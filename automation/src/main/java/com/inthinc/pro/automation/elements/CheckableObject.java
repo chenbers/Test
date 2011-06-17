@@ -49,7 +49,7 @@ public class CheckableObject extends ClickableObject implements Checkable,
 	}
 
 	public ClickableObject click(Integer number) {
-		replaceNumber(number);
+		replaceNumber(--number);
 		return super.click();
 	}
 
