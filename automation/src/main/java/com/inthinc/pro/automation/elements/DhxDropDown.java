@@ -1,7 +1,7 @@
 package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
-import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.SeleniumValueEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
@@ -9,7 +9,7 @@ import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public class DhxDropDown extends DropDown implements Selectable {
-	private AutomationEnum makeDropDown;
+	private SeleniumEnumWrapper makeDropDown;
 	private String page;
 	
 
@@ -18,27 +18,27 @@ public class DhxDropDown extends DropDown implements Selectable {
 	public DhxDropDown(SeleniumEnums anEnum) {
 		super(anEnum);
 		enums = new SeleniumEnums[]{myEnum};
-		makeDropDown = AutomationEnum.DHX.setEnum(anEnum);
+		makeDropDown = new SeleniumEnumWrapper(anEnum);
 	}
 	
 	public DhxDropDown(SeleniumEnums anEnum, Integer replaceNumber) {
 		super(anEnum, replaceNumber);
 		enums = new SeleniumEnums[]{myEnum};
-		makeDropDown = AutomationEnum.DHX.setEnum(anEnum);
+		makeDropDown = new SeleniumEnumWrapper(anEnum);
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord) {
 		super(anEnum, replaceWord);
 		page = replaceWord;
 		enums = new SeleniumEnums[]{myEnum};
-		makeDropDown = AutomationEnum.DHX.setEnum(anEnum);
+		makeDropDown = new SeleniumEnumWrapper(anEnum);
 	}
 	
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord, SeleniumEnums ...enums) {
 		super(anEnum, replaceWord);
 		page = replaceWord;
 		this.enums = enums;
-		makeDropDown = AutomationEnum.DHX.setEnum(anEnum);
+		makeDropDown = new SeleniumEnumWrapper(anEnum);
 	}
 
 	public DhxDropDown(SeleniumEnums anEnum, String replaceWord,
@@ -46,14 +46,13 @@ public class DhxDropDown extends DropDown implements Selectable {
 		super(anEnum, replaceWord, replaceNumber);
 		page = replaceWord;
 		enums = new SeleniumEnums[]{myEnum};
-		makeDropDown = AutomationEnum.DHX.setEnum(anEnum);
+		makeDropDown = new SeleniumEnumWrapper(anEnum);
 	}
 
 	private DhxDropDown assignIDs() {
 		Integer div = 1;
 		for (SeleniumEnums enume : enums) {
-			if (selenium.isElementPresent(AutomationEnum.CORE_ONLY.setEnum(
-					enume).replaceWord(page))
+			if (selenium.isElementPresent(new SeleniumEnumWrapper(enume).replaceWord(page))
 					&& enume != null) {
 				selenium.assignId("//body/div[" + div + "]", enume.toString());
 				div++;

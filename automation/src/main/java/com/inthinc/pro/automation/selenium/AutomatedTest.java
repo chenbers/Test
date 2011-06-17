@@ -6,7 +6,6 @@ import java.util.GregorianCalendar;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
@@ -50,7 +49,7 @@ public class AutomatedTest extends MasterTest{
                 } else if (!errors.isEmpty()) {
                     setTestVerdict(Verdicts.FAIL); // errors = fail
                 }
-                setBuildNumber(selenium.getText(AutomationEnum.VERSION));
+                setBuildNumber(selenium.getText(webVersionID));
             } catch (Exception e) {
                 logger.fatal(StackToString.toString(e));
             }finally{

@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.selenium.pageEnums.GenericWebEnum;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 
 public class PageLiveFleet extends NavigationBar {
@@ -48,7 +48,7 @@ public class PageLiveFleet extends NavigationBar {
 
 
         public TextLink driverByName(String driverName) {
-            return new TextLink(AutomationEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, driverName, null);
+            return new TextLink(GenericWebEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, driverName, null);
         }
 
         public TextLink driverByListPosition(Integer position) {
@@ -56,7 +56,7 @@ public class PageLiveFleet extends NavigationBar {
         }
 
         public TextLink vehicleByName(String vehicleName) {
-            return new TextLink(AutomationEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, vehicleName, null);
+            return new TextLink(GenericWebEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, vehicleName, null);
         }
 
         public TextLink vehicleByListPosition(Integer position) {

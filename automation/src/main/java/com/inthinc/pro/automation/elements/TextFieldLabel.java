@@ -1,7 +1,7 @@
 package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
@@ -30,7 +30,7 @@ public class TextFieldLabel extends Text implements TextBased {
    
     @Override
     public void setMyEnum(SeleniumEnums anEnum){
-    	myEnum = AutomationEnum.PLACE_HOLDER.setEnum(anEnum);
+    	myEnum = new SeleniumEnumWrapper(anEnum);
     	String[] newIds = new String[myEnum.getIDs().length];
     	String twoUpFirstTd = parentXpath+parentXpath+"/td[1]";
     	for (int i=0;i<myEnum.getIDs().length;i++){

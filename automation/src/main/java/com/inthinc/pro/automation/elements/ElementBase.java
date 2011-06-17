@@ -6,7 +6,7 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
-import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
@@ -19,13 +19,12 @@ public class ElementBase extends MasterTest implements ElementInterface {
     protected CoreMethodLib selenium;
     protected WebDriver webDriver;
 
-    protected AutomationEnum myEnum;
+    protected SeleniumEnumWrapper myEnum;
     protected String text;
     
     protected HashMap<String, String> current;
     
     public ElementBase(){
-        this(AutomationEnum.PLACE_HOLDER, null, null);
     }
 
     public ElementBase(SeleniumEnums anEnum) {
@@ -95,7 +94,7 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
 
     public void setMyEnum(SeleniumEnums anEnum) {
-        this.myEnum = AutomationEnum.PLACE_HOLDER.setEnum(anEnum);
+        this.myEnum = new SeleniumEnumWrapper(anEnum);
     }
 
     
@@ -122,10 +121,12 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
     
     public Boolean validateElementsPresent(SeleniumEnums ...enums){
+    	SeleniumEnumWrapper temp = myEnum;
     	for (SeleniumEnums enumerated: enums){
             setMyEnum(enumerated);
             assertTrue(isPresent(), myEnum.toString());
         }
+        myEnum = temp;
     	return true;
     }
     
@@ -134,9 +135,12 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
     
     public void validateTextMatches(SeleniumEnums ...enums){
+    	SeleniumEnumWrapper temp = myEnum;
         for (SeleniumEnums enumerated: enums){
-            assertEquals(AutomationEnum.CORE_ONLY.setEnum(enumerated));
+        	setMyEnum(enumerated);
+            assertEquals();
         }
+        myEnum = temp;
     }
     
     protected ElementBase replaceNumber(Integer number){

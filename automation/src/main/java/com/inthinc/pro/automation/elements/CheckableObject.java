@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.enums.AutomationEnum;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
@@ -56,7 +55,7 @@ public class CheckableObject extends ClickableObject implements Checkable,
 
 	public ClickableObject click(String label) {
 		String xpath = Xpath.start().label(Id.text(label)).input().toString();
-		myEnum = AutomationEnum.PLACE_HOLDER.setID(xpath);
+		myEnum.setID(xpath);
 		return super.click();
 	}
 

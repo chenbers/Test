@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 
 import com.google.common.base.Supplier;
-import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.automation.utils.Xpath;
@@ -47,7 +47,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replacement
      * @return
      */
-    public CoreMethodLib click(AutomationEnum myEnum) {
+    public CoreMethodLib click(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         String error_name = "click: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -96,7 +96,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return timeFrame;
     }
     
-    public String getSelectedIndex(AutomationEnum myEnum){
+    public String getSelectedIndex(SeleniumEnumWrapper myEnum){
         String element = getLocator(myEnum);
         String error_name = "select: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -173,7 +173,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replaceNumber
      * @return the best locator string to use for this element, null if none are found in page
      */
-    public String getLocator(AutomationEnum myEnum) {
+    public String getLocator(SeleniumEnumWrapper myEnum) {
         String last="";
         for(String s: myEnum.getLocators()){
             if(isElementPresent(s)){
@@ -189,7 +189,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param myEnum
      * @return
      */
-    public String getSelectedLabel(AutomationEnum myEnum) {
+    public String getSelectedLabel(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         String error_name = "select: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -211,7 +211,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replaceNumber
      * @return
      */
-    public CoreMethodLib focus(AutomationEnum myEnum) {
+    public CoreMethodLib focus(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         String error_name = "focus: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -231,7 +231,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param myEnum
      * @return
      */
-    public String getTable(AutomationEnum myEnum) {
+    public String getTable(SeleniumEnumWrapper myEnum) {
         return getTable(myEnum, null, null);
     }
 
@@ -242,7 +242,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param col
      * @return
      */
-    public String getTable(AutomationEnum myEnum, Integer row, Integer col) {
+    public String getTable(SeleniumEnumWrapper myEnum, Integer row, Integer col) {
         StringBuffer element = new StringBuffer(getLocator(myEnum));
         String error_name = "Click: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         String text = "";
@@ -268,7 +268,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replacmentNumber
      * @return
      */
-    public String getText(AutomationEnum myEnum) {
+    public String getText(SeleniumEnumWrapper myEnum) {
         logger.debug(" getText("+myEnum.toString() +"\n"+ myEnum.getLocatorsAsString()+")");
         String element = getLocator(myEnum);
         String error_name = "getText: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
@@ -291,7 +291,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param myEnum
      * @param condition
      * @return
-     */    public Boolean isChecked(AutomationEnum myEnum) {
+     */    public Boolean isChecked(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         String error_name = "isChecked: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -314,7 +314,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replacementNumber
      * @return
      */
-    public Boolean isElementPresent(AutomationEnum myEnum) {
+    public Boolean isElementPresent(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         return isElementPresent(element);
     }
@@ -348,7 +348,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param replacementNumber
      * @return
      */
-    public Boolean isVisible(AutomationEnum myEnum) {
+    public Boolean isVisible(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         String error_name = "isVisible: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -369,7 +369,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param myEnum
      * @return
      */
-    public CoreMethodLib open(AutomationEnum myEnum) {
+    public CoreMethodLib open(SeleniumEnumWrapper myEnum) {
         String element = myEnum.getURL();
         String error_name = "open: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -403,7 +403,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param label
      * @return
      */
-    public CoreMethodLib select(AutomationEnum myEnum, String label) {
+    public CoreMethodLib select(SeleniumEnumWrapper myEnum, String label) {
         String element = getLocator(myEnum);
         String error_name = "select: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString() + " : Label = " + label;
         
@@ -493,7 +493,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @param text
      * @return
      */
-    public CoreMethodLib type(AutomationEnum myEnum, String text) {
+    public CoreMethodLib type(SeleniumEnumWrapper myEnum, String text) {
         String element = getLocator(myEnum);
         String error_name = "type: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -508,7 +508,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
     }
 
-    public Boolean verifyLocation(AutomationEnum myEnum) {
+    public Boolean verifyLocation(SeleniumEnumWrapper myEnum) {
         return myEnum.getURL().equals(getLocator(myEnum));
     }
 
@@ -522,7 +522,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         boolean doneWaiting = false;
         while (!found && !doneWaiting) {
             boolean foundByString = ((element instanceof String) && (isElementPresent((String) element)));
-            boolean foundByEnum = ((element instanceof AutomationEnum) && (isElementPresent((AutomationEnum) element))); 
+            boolean foundByEnum = ((element instanceof SeleniumEnumWrapper) && (isElementPresent((SeleniumEnumWrapper) element))); 
             found =  foundByString || foundByEnum;
             pause(1, "waitForElementPresent: " + element); // second
             x++;
@@ -565,7 +565,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#mouseDown(String)}
      * @param myEnum
      */
-    public CoreMethodLib mouseOver(AutomationEnum myEnum) {
+    public CoreMethodLib mouseOver(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         String error_name = "mouseOver: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -580,7 +580,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 		return this;
     }
 
-	public CoreMethodLib check(AutomationEnum myEnum) {
+	public CoreMethodLib check(SeleniumEnumWrapper myEnum) {
 		String element = getLocator(myEnum);
         String error_name = "mouseOver: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -595,7 +595,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 		return this;
 	}
 	
-	public CoreMethodLib uncheck(AutomationEnum myEnum) {
+	public CoreMethodLib uncheck(SeleniumEnumWrapper myEnum) {
 		String element = getLocator(myEnum);
         String error_name = "mouseOver: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try {
@@ -610,7 +610,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
 		return this;
 	}
 
-	public CoreMethodLib addSelection(AutomationEnum myEnum, String item) {
+	public CoreMethodLib addSelection(SeleniumEnumWrapper myEnum, String item) {
 		String element = getLocator(myEnum);
         String error_name = "addSelection: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try{
@@ -625,7 +625,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
 	}
 	
-	public CoreMethodLib removeSelection(AutomationEnum myEnum, String item) {
+	public CoreMethodLib removeSelection(SeleniumEnumWrapper myEnum, String item) {
 		String element = getLocator(myEnum);
         String error_name = "removeSelection: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try{
@@ -640,7 +640,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
 	}
 	
-	public CoreMethodLib removeAllSelections(AutomationEnum myEnum) {
+	public CoreMethodLib removeAllSelections(SeleniumEnumWrapper myEnum) {
 		String element = getLocator(myEnum);
         String error_name = "removeAllSelections: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try{
@@ -655,7 +655,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
 	}
 
-	public CoreMethodLib selectDhx(AutomationEnum myEnum, String option) {
+	public CoreMethodLib selectDhx(SeleniumEnumWrapper myEnum, String option) {
 		String element = getLocator(myEnum);
         String error_name = "removeAllSelections: " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
 		String xpath = Xpath.start().body().div(Id.id(element)).div(option).toString();
@@ -672,7 +672,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium {
         return this;
 	}
 
-	public CoreMethodLib fireEvent(AutomationEnum myEnum, String eventName) {
+	public CoreMethodLib fireEvent(SeleniumEnumWrapper myEnum, String eventName) {
 		String element = getLocator(myEnum);
         String error_name = "fireEvent: "+eventName+": " + myEnum.toString() +"\n"+ myEnum.getLocatorsAsString();
         try{

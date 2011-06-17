@@ -1,6 +1,6 @@
 package com.inthinc.pro.automation.utils;
 
-import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
@@ -15,6 +15,8 @@ public class MasterTest {
 		WARN, 
 		COMPARE;
 	}
+	
+	public final static String webVersionID = "footerForm:version";
 
 	private String savedPage;
 
@@ -40,11 +42,11 @@ public class MasterTest {
 		getErrors().addError(errorName, error, level);
 	}
 
-	protected Boolean assertEquals(AutomationEnum anEnum) {
+	protected Boolean assertEquals(SeleniumEnumWrapper anEnum) {
 		return assertEquals(anEnum.getText(), selenium.getText(anEnum), anEnum);
 	}
 
-	protected Boolean assertEquals(Object expected, AutomationEnum actual) {
+	protected Boolean assertEquals(Object expected, SeleniumEnumWrapper actual) {
 		return assertEquals(expected, selenium.getText(actual));
 	}
 
@@ -53,7 +55,7 @@ public class MasterTest {
 	}
 
 	protected Boolean assertEquals(Object expected, Object actual,
-			AutomationEnum myEnum) {
+			SeleniumEnumWrapper myEnum) {
 		if (!compare(expected, actual)) {
 			addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(),
 					"\t\tExpected = " + expected + "\n\t\tActual = " + actual,
@@ -138,7 +140,7 @@ public class MasterTest {
 	}
 
 	protected void open(SeleniumEnums pageToOpen) {
-		selenium.open(AutomationEnum.CORE_ONLY.setEnum(pageToOpen));
+		selenium.open(new SeleniumEnumWrapper(pageToOpen));
 	}
 
 	protected void open(String url) {

@@ -2,7 +2,7 @@ package com.inthinc.pro.automation.selenium;
 
 import java.util.HashMap;
 
-import com.inthinc.pro.automation.enums.AutomationEnum;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 
@@ -40,7 +40,7 @@ public class PageObject {
         selenium.getErrors().addError(errorName, error);
     }
     
-    public void addError(AutomationEnum errorName, String error){
+    public void addError(SeleniumEnumWrapper errorName, String error){
         selenium.getErrors().addError(selenium.getLocator(errorName), error);
     }
 }

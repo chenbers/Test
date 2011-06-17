@@ -1,8 +1,13 @@
 package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.utils.Id;
+import com.inthinc.pro.automation.utils.Xpath;
 
 public enum GenericWebEnum implements SeleniumEnums {
+	
+
+	FIND_ANCHOR_BY_CONTAINS_TEXT(null, Xpath.start().a(Id.contains(Id.text(), "***")).toString()),
     
     ;
     
