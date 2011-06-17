@@ -1,12 +1,52 @@
 package com.inthinc.pro.automation.elements;
 
+import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.model.File;
 
 
 public interface ElementInterface {
-    public boolean isVisible();
-    public boolean isPresent();
+    public Boolean isVisible();
+    public Boolean isPresent();
     public ElementInterface focus();
+    public Boolean assertVisibility(Boolean visibile);
+    
+    public interface TableBased extends ElementInterface {
+    	public Boolean isVisible(Integer row);
+        public Boolean isPresent(Integer row);
+        public ElementInterface focus(Integer row);
+        public Boolean assertVisibility(Integer row, Boolean visible);
+        
+    }
+    
+    public interface TextTableBased extends TableBased{
+    	/**
+         * @return the actual (in browser at test runtime) value of this Element.
+         */
+        public String getText(Integer row);
+        /**
+         * Compares the value of this Element to the expected value provided as a parameter.
+         * @param expected
+         * @return this Element
+         */
+        public Boolean compare(Integer row, String expected);
+        /**
+         * Compares the value of this Element to the expected value stored in the Elements enum.
+         * @return this Element
+         */
+        public Boolean compare(Integer row);
+        
+        public Boolean assertEquals(Integer row, String compareAgainst);
+        
+        public Boolean validateContains(Integer row, String expectedPart);
+        
+        public Boolean validate(Integer row, String expected);
+        
+        public Boolean validate(Integer row, TextEnum expected);
+        
+        public Boolean validate(Integer row, TextEnum expected, String replaceOld, String withNew);
+        
+        public Boolean validate(Integer row);
+    }
     
     public interface TextBased extends ElementInterface {
         /**
@@ -26,6 +66,17 @@ public interface ElementInterface {
         public Boolean compare();
         
         public Boolean assertEquals(String compareAgainst);
+        
+        public Boolean validateContains(String expectedPart);
+        
+        public Boolean validate(String expected);
+        
+        public Boolean validate(TextEnum expected);
+        
+        public Boolean validate(TextEnum expected, String replaceOld, String withNew);
+        
+        public Boolean validate();
+        
     }
     
     public interface URLBased extends ElementInterface {

@@ -56,23 +56,21 @@ public class ElementBase extends MasterTest implements ElementInterface {
         selenium = super.getSelenium();
         webDriver = selenium.getWrappedDriver();
     }
+    
     @Override
-    public boolean isPresent() {
+    public Boolean isPresent() {
         return selenium.isElementPresent(myEnum);
     }
     @Override
-    public boolean isVisible() {
+    public Boolean isVisible() {
         return selenium.isVisible(myEnum);
     }
     
-    public boolean assertVisibility(Boolean visible) {  
+    public Boolean assertVisibility(Boolean visible) {  
         return assertTrue(visible == selenium.isVisible(myEnum), myEnum.toString());
     }
 
     
-    protected Boolean isElementPresent(){
-        return selenium.isElementPresent(myEnum);
-    }
 
     @Override
     public ElementInterface focus() {
@@ -126,7 +124,7 @@ public class ElementBase extends MasterTest implements ElementInterface {
     public Boolean validateElementsPresent(SeleniumEnums ...enums){
     	for (SeleniumEnums enumerated: enums){
             setMyEnum(enumerated);
-            assertTrue(isElementPresent(), myEnum.toString());
+            assertTrue(isPresent(), myEnum.toString());
         }
     	return true;
     }
@@ -140,8 +138,6 @@ public class ElementBase extends MasterTest implements ElementInterface {
             assertEquals(AutomationEnum.CORE_ONLY.setEnum(enumerated));
         }
     }
-    
-
     
     protected ElementBase replaceNumber(Integer number){
     	myEnum.replaceNumber(number.toString());

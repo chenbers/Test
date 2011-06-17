@@ -54,7 +54,7 @@ public interface SiloService extends HessianService
     List<Map<String, Object>> getDevicesByAcctID(Integer accountID) throws ProDAOException;
 
     // ------- Vehicle  ----------
-    Map<String, Object> createVehicle(Integer acctID, Map<String, Object> vehicleMap) throws ProDAOException;
+    Map<String, Object> createVehicle(Integer groupID, Map<String, Object> vehicleMap) throws ProDAOException;
 
     Map<String, Object> deleteVehicle(Integer vehicleID) throws ProDAOException;
 

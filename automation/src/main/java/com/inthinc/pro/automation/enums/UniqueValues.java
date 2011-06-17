@@ -5,7 +5,7 @@ public enum UniqueValues {
 	USERID("username", true),
 	PERSONID_EMAIL("email", true),
 	DEVICEID_IMEI("imei", false),
-	VEHICLEID("vin", true),
+	VEHICLE_VIN("vin", true),
 	DEVICEID_SERIAL("serialNum", true),
 	DRIVERID("barcode", false),
 	DEVICEID_MCMID("mcmid", false);

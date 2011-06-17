@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
-public abstract class TextObject extends ElementBase implements TextBased {
+public class TextObject extends ElementBase implements TextBased {
 
     public TextObject(SeleniumEnums anEnum) {
         super(anEnum);
@@ -17,6 +17,10 @@ public abstract class TextObject extends ElementBase implements TextBased {
     }
     public TextObject(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
+    }
+    
+    public TextObject(SeleniumEnums anEnum, TextEnum replaceWord){
+    	super(anEnum, replaceWord);
     }
 
     @Override
@@ -33,11 +37,12 @@ public abstract class TextObject extends ElementBase implements TextBased {
         return selenium.getText(myEnum);
     }
     
-    public ElementInterface validateContains(String expectedPart) {
+    public Boolean validateContains(String expectedPart) {
         String actual = getText();
-        assertStringContains(actual, expectedPart);
-        return this;
+        return validateStringContains(actual, expectedPart);
     }
+    
+    
     public Boolean validate(String expected) {
         return compare(expected);
     }

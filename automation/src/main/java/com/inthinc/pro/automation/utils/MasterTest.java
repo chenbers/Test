@@ -93,6 +93,14 @@ public class MasterTest {
 		}
 		return true;
 	}
+	
+	protected Boolean validateStringContains(String partialString, String fullString){
+		if (!fullString.contains(partialString)) {
+			addError(partialString + " not in " + fullString, ErrorLevel.ERROR);
+			return false;
+		}
+		return true;
+	}
 
 	protected Boolean assertTrue(Boolean test, String error) {
 		if (!test) {

@@ -9,184 +9,196 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.ListEnum;
 import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.enums.Values;
-import com.inthinc.pro.automation.resources.FileRW;
 import com.inthinc.pro.model.configurator.ProductType;
 
-
 public class RandomValues {
+
+	private final static Logger logger = Logger
+			.getLogger(AutomationLogger.class);
+
 	
-	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
-	
-	private static ArrayList<String> colors= new ArrayList<String>(), make= new ArrayList<String>(), model = new ArrayList<String>();
 	private static HashMap<String, HashMap<String, String>> rfid = new HashMap<String, HashMap<String, String>>();
-	private FileRW file;
 	private static HashMap<String, HashMap<ProductType, Integer>> states = new HashMap<String, HashMap<ProductType, Integer>>();
-	
-	public static final char[] special = {' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~' };
 
-	private static enum Types{CHARACTER, INTEGER, SPECIAL};
-	
+	public static final char[] special = { ' ', '!', '"', '#', '$', '%', '&',
+			'\'', '(', ')', '*', '+', ',', '.', '/', ':', ';', '<', '=', '>',
+			'?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~' };
+
+	private static enum Types {
+		CHARACTER, INTEGER, SPECIAL
+	};
+
 	private Random random;
-	
 
-	public RandomValues(){
+	public RandomValues() {
 		random = new Random();
-		file = new FileRW();
 	}
-	
-	public static RandomValues newOne(){
+
+	public static RandomValues newOne() {
 		return new RandomValues();
 	}
-	
-	public String getMixedString(Integer length){
+
+	public String getMixedString(Integer length) {
+		return getString(length, Types.values());
+	}
+
+	private String getString(Integer length, Types... types) {
 		StringWriter aStringAString = new StringWriter();
-		for (int i=0;i<length;i++){
-			Types type = (Types) getRandomEnum(Types.CHARACTER);
-			if (type==Types.CHARACTER){
+		for (int i = 0; i < length; i++) {
+			Types type = types[random.nextInt(types.length)];
+			if (type == Types.CHARACTER) {
 				Boolean upperCase = this.random.nextBoolean();
-				if (upperCase){				
-					aStringAString.write(Character.toUpperCase(getCharacter()));
-				}else{
-					aStringAString.write(Character.toLowerCase(getCharacter()));
+				if (upperCase) {
+					aStringAString.write(getCharacter());
+				} else {
+					aStringAString.write(getCharacter());
 				}
-			}else if(type==Types.INTEGER){
-				aStringAString.write(getInt());
-			}else if(type==Types.SPECIAL){
+			} else if (type == Types.INTEGER) {
+				aStringAString.write(getInt().toString());
+			} else if (type == Types.SPECIAL) {
 				aStringAString.write(getSpecial());
 			}
 		}
 		return aStringAString.toString();
 	}
-	
-	private Enum<?> getRandomEnum(Enum<?> startFrom){
+
+	public String getCharIntString(Integer length) {
+		return getString(length, Types.CHARACTER, Types.INTEGER);
+	}
+
+	private Enum<?> getRandomEnum(Enum<?> startFrom) {
 		Enum<?>[] values = startFrom.getDeclaringClass().getEnumConstants();
 		return values[random.nextInt(values.length)];
 	}
-	
-	public TextEnum getEnum(TextEnum random){
-		return (TextEnum)getRandomEnum((Enum<?>) random);
+
+	public TextEnum getEnum(TextEnum random) {
+		return (TextEnum) getRandomEnum((Enum<?>) random);
 	}
-	
-	public TextEnum getEnum(TextEnum random, String doesntMatchThis){
+
+	public TextEnum getEnum(TextEnum random, String doesntMatchThis) {
 		TextEnum value;
-		while (true){
+		while (true) {
 			value = getEnum(random);
-			if (!value.getText().equals(doesntMatchThis)){
+			if (!value.getText().equals(doesntMatchThis)) {
 				return value;
 			}
 		}
 	}
 
-	private char getSpecial(){
+	private char getSpecial() {
 		return special[random.nextInt(special.length)];
 	}
-		
-	
-	public String getCharString(Integer length){
-        StringWriter aStringAString = new StringWriter();
-		for (int i=0;i<length;i++){
-			Boolean upperCase = this.random.nextBoolean();
-			if (upperCase){
-				aStringAString.write(Character.toLowerCase(getCharacter()));
-			}
-			else{ 
-				aStringAString.write(getCharacter());
-			}
-		}
-		return aStringAString.toString();
+
+	public String getCharString(Integer length) {
+		return getString(length, Types.CHARACTER);
 	}
-	
-	private char getCharacter(){
-		char character= (char)(random.nextInt(26)+65);
+
+	private Character getCharacter() {
+		Character character = (char) (random.nextInt(26) + 65);
 		return character;
 	}
 
-	private int getInt(){
+	private Integer getInt() {
 		return random.nextInt(10);
 	}
-	
-	public String getIntString(Integer length){
-        StringWriter aStringAString = new StringWriter();
-		for (int i=0;i<length;i++){
-			aStringAString.write(random.nextInt(10));
-		}
-		return aStringAString.toString();
+
+	public String getIntString(Integer length) {
+		return getString(length, Types.CHARACTER);
 	}
-	
-	public String getPhoneNumber(){
+
+	public String getPhoneNumber() {
 		String phone = getIntString(3) + "555" + getIntString(4);
 		return phone;
 	}
-	
-	public String getTextMessageNumber(){
-		return getPhoneNumber() + "@tmomail.net";
+
+	public String getTextMessageNumber() {
+		return getTextMessageNumber(10, nextString(Values.TEXT_MESSAGE));
 	}
 	
-	public Long getLong(Integer length){
-		assert(length<Long.MAX_VALUE);
+	public String getTextMessageNumber(Integer length) {
+		return getTextMessageNumber(length, nextString(Values.TEXT_MESSAGE));
+	}
+	
+	
+	public String getTextMessageNumber(Integer length, String domain){
+		if (!domain.startsWith("@")){
+			domain = "@"+domain;
+		}
+		return getIntString(length)+domain;
+	}
+
+	public Long getLong(Integer length) {
+		assert (length < Long.MAX_VALUE);
 		String randomInt = getIntString(length);
 		return Long.parseLong(randomInt);
 	}
-	
-	public String getValue(Values type){
+
+	public String getValue(Values type) {
 		String value = "";
-		switch (type){
-		case MAKE: value = getStringFromFile(type); break;
-		case MODEL: value = getStringFromFile(type); break;
-		case COLOR: value = getStringFromFile(type); break;
-		case YEAR: value = getYear(); break;
+		switch (type) {
+		case YEAR:
+			value = getYear();
+			break;
+		case STATES:
+			value = getRandomState();
+		default:
+			value = nextString(type);
+			break;
 		}
 		return value;
 	}
-	
-	public Integer getStateByName(String name, ProductType productType){
-		if (states.isEmpty()){
+
+	public Integer getStateByName(String name, ProductType productType) {
+		if (states.isEmpty()) {
 			getStates();
 		}
-		
+
 		return states.get(name).get(productType);
 	}
-	
-	public Integer getStateByName(String name){
+
+	public Integer getStateByName(String name) {
 		return getStateByName(name, ProductType.TIWIPRO_R74);
 	}
 
 	private String getYear() {
 		Calendar calendar = Calendar.getInstance();
-		Integer max = calendar.get(Calendar.YEAR)-1969;
-		String randomYear = ""+(random.nextInt(max) + 1970);
+		Integer max = calendar.get(Calendar.YEAR) - 1969;
+		String randomYear = "" + (random.nextInt(max) + 1970);
 		return randomYear;
 	}
-	
-	public String getStateByID(Integer id, ProductType productType){
-		if (states.isEmpty()){
+
+	public String getStateByID(Integer id, ProductType productType) {
+		if (states.isEmpty()) {
 			getStates();
 		}
 		Iterator<String> itr = states.keySet().iterator();
-		
-		while (itr.hasNext()){
+
+		while (itr.hasNext()) {
 			String state = itr.next();
-			if (states.get(state).get(productType)==id) return state;
+			if (states.get(state).get(productType) == id)
+				return state;
 		}
 		return "Invalid ID";
 	}
-	public String getStateByID(Integer id){
+
+	public String getStateByID(Integer id) {
 		return getStateByID(id, ProductType.TIWIPRO_R74);
 	}
-	
-	public Integer getRandomStateID(ProductType type){
+
+	public Integer getRandomStateID(ProductType type) {
 		Integer state;
-		if (states.isEmpty()){
+		if (states.isEmpty()) {
 			getStates();
 		}
 		Integer x = 0;
 		Integer y = random.nextInt(states.size());
 		Iterator<String> itr = states.keySet().iterator();
-		while (itr.hasNext()){
+		while (itr.hasNext()) {
 			String next = itr.next();
-			if (x==y){
+			if (x == y) {
 				state = states.get(next).get(type);
 				return state;
 			}
@@ -194,14 +206,14 @@ public class RandomValues {
 		}
 		return 40;
 	}
-	
-	private void getStates(){
+
+	private void getStates() {
 		states = new HashMap<String, HashMap<ProductType, Integer>>();
 		ArrayList<String> rawStates;
-		rawStates = file.read(Values.STATES);
+		rawStates = Values.STATES.getList();
 		Iterator<String> itr = rawStates.iterator();
 		String[] line = new String[3];
-		while (itr.hasNext()){
+		while (itr.hasNext()) {
 			line = itr.next().split("=");
 			HashMap<ProductType, Integer> state = new HashMap<ProductType, Integer>();
 			state.put(ProductType.TIWIPRO_R74, Integer.parseInt(line[0]));
@@ -209,32 +221,32 @@ public class RandomValues {
 			states.put(line[1], state);
 		}
 	}
-	
-	public String getRandomState(){
+
+	public String getRandomState() {
 		String state;
-		if (states.isEmpty()){
+		if (states.isEmpty()) {
 			getStates();
 		}
 		String[] list = (String[]) states.keySet().toArray();
 		state = list[random.nextInt(list.length)];
 		return state;
 	}
-	
-	public HashMap<String, String> getRandomRFID(){
+
+	public HashMap<String, String> getRandomRFID() {
 		String barcode;
-		barcode = String.format("%07d", random.nextInt(0004250+1));
+		barcode = String.format("%07d", random.nextInt(0004250 + 1));
 		return getRFID(barcode);
 	}
-	
-	public HashMap<String, String> getRFID(String barcode){
+
+	public HashMap<String, String> getRFID(String barcode) {
 		Iterator<String> itr;
 		HashMap<String, String> card;
 		ArrayList<String> cards = new ArrayList<String>();
 		String[] line = new String[3];
-		if (rfid.isEmpty()){
-			cards = file.read(Values.RFID);
+		if (rfid.isEmpty()) {
+			cards = Values.RFID.getList();
 			itr = cards.iterator();
-			while (itr.hasNext()){
+			while (itr.hasNext()) {
 				line = itr.next().split("=");
 				card = new HashMap<String, String>();
 				card.put("Barcode", line[0]);
@@ -245,45 +257,29 @@ public class RandomValues {
 		}
 		return rfid.get(barcode);
 	}
-	
-	
-	private String getStringFromFile(Values type){
-		String randomValue = "";
-		ArrayList<String> array = null, temp = new ArrayList<String>();
-		switch (type){
-		case MODEL: array = make;break;
-		case MAKE:  array = model;break;
-		case COLOR: array = colors;break;
-		}
-		if (array.isEmpty()){
-			temp = file.read(type);
-			array.addAll(temp);
-		}
-		randomValue = array.get(random.nextInt(array.size()));
-		logger.debug("Random String from " + array.toString() + ": " + randomValue);
-		return randomValue;
+
+	private String nextString(ListEnum enumerated){
+		ArrayList<String> list = enumerated.getList();
+		return list.get(random.nextInt(list.size()));
 	}
 
 	public String getEmail() {
-		String address = getCharString(15)+"@"+"tiwisucks.com";
-		logger.debug(address);
-		return address;
+		return getEmail(15, nextString(Values.EMAIL_DOMAINS));
 	}
-	
+
 	public String getEmail(Integer length, String domain) {
-		String address = getCharString(length)+"@"+domain;
+		String address = getCharString(length) + "@" + domain;
 		logger.debug(address);
 		return address;
 	}
 
 	public String getSpecialString(int length) {
-        StringWriter aStringAString = new StringWriter();
+		StringWriter aStringAString = new StringWriter();
 		Integer value = random.nextInt(special.length);
-		for (int i=0;i<length;i++){
+		for (int i = 0; i < length; i++) {
 			aStringAString.append(special[value]);
 		}
 		return aStringAString.toString();
 	}
-	
-	
+
 }

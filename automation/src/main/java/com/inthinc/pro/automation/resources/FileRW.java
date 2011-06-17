@@ -14,7 +14,6 @@ import javax.swing.ImageIcon;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.enums.Values;
 import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.inthinc.pro.automation.utils.StackToString;
 
@@ -82,9 +81,6 @@ public class FileRW {
 		return results;
 	}
 	
-	public ArrayList<String> read(Values type){
-		return read(type.getFileName());
-	}
 	
 	public void close(){
 		try {

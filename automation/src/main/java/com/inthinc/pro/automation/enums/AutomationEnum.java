@@ -71,7 +71,7 @@ public enum AutomationEnum implements SeleniumEnums{
     
     public AutomationEnum setEnum(SeleniumEnums myEnum){
     	name = myEnum.toString();
-    	IDs = myEnum.getIDs();
+    	IDs = myEnum.getIDs().clone();
         url = myEnum.getURL();
         text = myEnum.getText();
         return this;

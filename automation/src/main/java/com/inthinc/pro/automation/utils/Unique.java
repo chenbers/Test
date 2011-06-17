@@ -1,11 +1,13 @@
 package com.inthinc.pro.automation.utils;
 
+import java.io.StringWriter;
+
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
-import com.inthinc.pro.automation.utils.RandomValues;
 
 public class Unique {
 	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
@@ -19,27 +21,34 @@ public class Unique {
 		this.portalProxy = portalProxy;
 	}
 	
+	public Unique(Addresses getYourOwn){
+		this.portalProxy = new CreateHessian().getPortalProxy(getYourOwn);
+	}
+	
 	public String getUniqueValue(Integer length, UniqueValues type){
 		Boolean unique = false;
-		String value = "";
+		StringWriter aStringAString = new StringWriter();
 		while (!unique){
 			if (this.start){
-				value = this.startString;
-			}else value = "";
-			
-			if (type.isString() && type != UniqueValues.PERSONID_EMAIL){
-				value += random.getMixedString(length);
-			}else if (type == UniqueValues.PERSONID_EMAIL){
-				value += random.getEmail();
-			}else{
-				value += random.getIntString(length);
+				aStringAString.write(this.startString);
 			}
-			unique = checkUnique(type, value);
+			
+			if (type == UniqueValues.VEHICLE_VIN){
+				aStringAString.write(random.getCharIntString(length));
+			}
+			else if (type.isString() && type != UniqueValues.PERSONID_EMAIL){
+				aStringAString.write(random.getCharIntString(length));
+			}else if (type == UniqueValues.PERSONID_EMAIL){
+				aStringAString.write(random.getEmail());
+			}else{
+				aStringAString.write(random.getIntString(length));
+			}
+			unique = checkUnique(type, aStringAString.toString());
 		}
 		start = false; 
 		startString = "";
-		logger.debug("Random " + type.toString()+": "+value);
-		return value;
+		logger.debug("Random " + type.toString()+": "+aStringAString.toString());
+		return aStringAString.toString();
 	}
 	
 	public String getUniqueValue(String start, Integer length, UniqueValues type){

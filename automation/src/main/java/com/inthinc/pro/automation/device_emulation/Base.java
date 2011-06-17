@@ -55,7 +55,7 @@ public abstract class Base {
     protected int timeSinceLastLoc = 0;
     protected int timeBetweenNotes = 15;
 
-    protected final int[] dbErrors = { 302, 303, 402 };
+    protected final static int[] dbErrors = { 302, 303, 402 };
 
     protected long time;
     protected long time_last;
@@ -65,8 +65,11 @@ public abstract class Base {
     protected Object reply;
 
     protected String imei;
+    
+    protected Addresses portal;
 
     public Base(String IMEI, Addresses server, Map<?, String> map, Integer version) {
+    	portal = server;
         Settings = new HashMap<DeviceProperties, String>();
         set_IMEI(IMEI, server, map, version);
     }
@@ -134,6 +137,9 @@ public abstract class Base {
     }
 
     private Base configurate_device() {
+    	if (portal==Addresses.TEEN_PROD){
+    		return this;
+    	}
         dump_settings();
         get_changes();
         return this;
@@ -144,6 +150,9 @@ public abstract class Base {
     protected abstract Base createAckNote(Map<String, Object> reply);
 
     public Base dump_settings() {
+    	if (portal==Addresses.TEEN_PROD){
+    		return this;
+    	}
         assert (imei.getClass() == "".getClass());
 
         if (WMP >= 17013) {
@@ -178,6 +187,9 @@ public abstract class Base {
     }
 
     protected Base get_changes() {
+    	if (portal==Addresses.TEEN_PROD){
+    		return this;
+    	}
         if (WMP >= 17013) {
             reply = dbErrors[0];
             while (check_error(reply)) {

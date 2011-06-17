@@ -4,8 +4,22 @@ package com.inthinc.pro.automation.enums;
 public enum Addresses {
 	
 	USER_CREATED(null, null, null, null),
+	
+
+    PROD("my.inthinc.com"),
     
+    CHEVRON("chevron.inthinc.com"),
     
+    SCHLUMBERGER("schlumberger.inthinc.com"),
+    
+    WEATHORFORD("weatherford.inthinc.com"),
+    
+	CINTAS("cintas.inthinc.com"),
+	
+	BARRICK("barrick.inthinc.com"),
+	
+	TECK("teck.inthinc.com"),
+	
     DEV("dev-pro.inthinc.com"),
     
     EC2("204.236.172.41",8099,"stage.inthinc.com",8090),
@@ -15,14 +29,8 @@ public enum Addresses {
     QA2("qa2.tiwipro.com",8299,"qa2.tiwipro.com",8290),
 
     TEEN_QA("192.168.1.215"),
-
-    PROD("my.inthinc.com"),
     
-    CHEVRON("chevron.inthinc.com"),
-    
-    SCHLUMBERGER("schlumberger.inthinc.com"),
-    
-    WEATHORFORD("weatherford.inthinc.com"),
+    TEEN_PROD("my.tiwi.com"),
     
     
 //    PROD_MCM_EC2("my.inthinc.com"),

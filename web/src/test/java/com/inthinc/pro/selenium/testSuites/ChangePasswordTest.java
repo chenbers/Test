@@ -73,7 +73,7 @@ public class ChangePasswordTest extends WebTest {
 		pause(5, "");
 		login.loginProcess("passwords", initialPassword);
 		redFlags._popUp().updatePasswordReminder()._link().changePassword().click();
-		redFlags._popUp().changePassword()._textField().currentPassword().assertPresent(true);
+		assertTrue(redFlags._popUp().changePassword()._textField().currentPassword().isPresent()==true,"The popup didn't appear");
 		redFlags._popUp().changePassword()._textField().currentPassword().type(initialPassword);
 		redFlags._popUp().changePassword()._textField().newPassword().type(weakPassword);
 		redFlags._popUp().changePassword()._textField().confirmNewPassword().type(weakPassword);
@@ -92,7 +92,7 @@ public class ChangePasswordTest extends WebTest {
 		pause(5, "");
 		login.loginProcess("passwords", initialPassword);
 		redFlags._popUp().updatePasswordReminder()._link().changePassword().click();
-		redFlags._popUp().changePassword()._textField().currentPassword().assertPresent(true);
+		assertTrue(redFlags._popUp().changePassword()._textField().currentPassword().isPresent()==true,"The popup didn't appear");
 		redFlags._popUp().changePassword()._textField().currentPassword().type(initialPassword);
 		redFlags._popUp().changePassword()._textField().newPassword().type(strongPassword);
 		redFlags._popUp().changePassword()._textField().confirmNewPassword().type(strongPassword);

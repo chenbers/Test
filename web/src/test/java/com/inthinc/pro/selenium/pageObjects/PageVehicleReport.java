@@ -128,19 +128,19 @@ public class PageVehicleReport extends ReportsBar {
 
 	public class VehicleReportTextFields extends ReportsBarTextFields {
 
-		public TextField driverSearch(String driver) {
+		public TextField driverSearch() {
 			return new TextField(VehicleReportEnum.DRIVER_SEARCH);
 		}
 
-		public TextField groupSearch(String driver) {
+		public TextField groupSearch() {
 			return new TextField(VehicleReportEnum.GROUP_SEARCH);
 		}
 
-		public TextField vehicleSearch(String driver) {
+		public TextField vehicleSearch() {
 			return new TextField(VehicleReportEnum.VEHICLE_SEARCH);
 		}
 
-		public TextField yearMakeModelSearch(String driver) {
+		public TextField yearMakeModelSearch() {
 			return new TextField(VehicleReportEnum.YEAR_MAKE_MODEL_SEARCH);
 		}
 	}

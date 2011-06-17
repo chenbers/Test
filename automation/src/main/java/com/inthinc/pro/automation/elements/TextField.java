@@ -26,7 +26,7 @@ public class TextField extends TextObject implements Typeable {
     }
     
     public TextField clear() {
-        type(null);
+        type("");
         return this;
     }
     
@@ -36,9 +36,4 @@ public class TextField extends TextObject implements Typeable {
         selenium.fireEvent(myEnum, "keyup");
         return this;
     }
-	public void assertPresent(Boolean present) {
-		assertTrue(present == isElementPresent(), myEnum.toString());
-	}
-
-
 }
