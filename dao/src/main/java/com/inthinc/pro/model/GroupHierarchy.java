@@ -73,11 +73,16 @@ public class GroupHierarchy implements Serializable
         
         return idList;
     }
-    
-    public Group getTopGroup()
-    {
-        //TODO: warning. this does not (necessarily) return the top group in the hierarchy, it returns the group with the LOWEST groupID
-        return groupMap.values().iterator().next();
+
+    public Group getTopGroup() {
+    	Group initialGroup = groupMap.values().iterator().next();
+    	return getTopGroup(initialGroup);
+    }
+    private Group getTopGroup(Group childGroup) {
+    	Group potentialParent = getParentGroup(childGroup);
+    	if(potentialParent == null)
+    		return childGroup;
+    	return getParentGroup(potentialParent);
     }
     public Group getGroup(Integer groupID)
     {
