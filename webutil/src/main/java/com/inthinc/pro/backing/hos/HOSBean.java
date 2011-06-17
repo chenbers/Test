@@ -81,6 +81,8 @@ public class HOSBean extends BaseBean {
         List<HOSRecord> filteredhosRecordList = getFilteredList(hosRecordList, getHOSStatusFilterList());
 
         RuleSetType driverDOTType = driver.getDot();
+        if (driverDOTType == null)
+            driverDOTType = RuleSetType.NON_DOT;
         DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
         if (reportEndDate.isAfterNow())
             reportEndDate = new DateTime();
