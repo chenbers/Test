@@ -137,7 +137,7 @@ public class ElementBase extends MasterTest implements ElementInterface {
     	SeleniumEnumWrapper temp = myEnum;
         for (SeleniumEnums enumerated: enums){
         	setMyEnum(enumerated);
-            assertEquals();
+            validateEquals(isPresent(), true);
         }
         myEnum = temp;
     }
