@@ -20,7 +20,6 @@ public class ElementBase extends MasterTest implements ElementInterface {
     protected WebDriver webDriver;
 
     protected SeleniumEnumWrapper myEnum;
-    protected String text;
     
     protected HashMap<String, String> current;
     
@@ -44,7 +43,6 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
 
     public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        this.text = anEnum.getText();
         setMyEnum(anEnum);
         if (replaceNumber!=null){
             myEnum.replaceNumber(replaceNumber.toString());

@@ -13,9 +13,15 @@ public class SeleniumEnumWrapper implements SeleniumEnums{
 
     public SeleniumEnumWrapper(SeleniumEnums myEnum){
     	name = new String(myEnum.toString());
-    	IDs = myEnum.getIDs().clone();
-        url = new String(myEnum.getURL());
-        text = new String(myEnum.getText());
+    	if (myEnum.getIDs()!=null){
+    		IDs = myEnum.getIDs().clone();
+    	}
+        if (myEnum.getURL()!=null){
+        	url = new String(myEnum.getURL());
+        }
+        if (myEnum.getText()!=null){
+        	text = new String(myEnum.getText());
+        }
     }
 
     @Override

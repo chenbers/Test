@@ -1,8 +1,5 @@
 package com.inthinc.pro.automation.selenium;
 
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
@@ -29,14 +26,7 @@ public class AutomatedTest extends MasterTest{
         GlobalSelenium.dieSeleniumDie();
     }// tear down
 
-    public static void print(Object printToScreen) {
-        StackTraceElement element = Thread.currentThread().getStackTrace()[2];
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        String time = sdf.format(GregorianCalendar.getInstance().getTime());
-        String className = element.getFileName().replace(".java", "");
-        System.out.printf("%s, %s.%s:%3d - %s\n", time, className, element.getMethodName(), element.getLineNumber(), printToScreen.toString());
-    }
-
+    
     // public abstract void failTest();
     public void after() {
         stopTime = currentTime();

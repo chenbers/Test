@@ -1,5 +1,8 @@
 package com.inthinc.pro.automation.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
+
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
@@ -140,6 +143,7 @@ public class MasterTest {
 	}
 
 	protected void open(SeleniumEnums pageToOpen) {
+		print("We got here");
 		selenium.open(new SeleniumEnumWrapper(pageToOpen));
 	}
 
@@ -180,4 +184,12 @@ public class MasterTest {
 	protected Boolean validateNotEquals(Object expected, Object actual) {
 		return validateEquals(expected, actual, false);
 	}
+	
+	public static void print(Object printToScreen) {
+        StackTraceElement element = Thread.currentThread().getStackTrace()[2];
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String time = sdf.format(GregorianCalendar.getInstance().getTime());
+        String className = element.getFileName().replace(".java", "");
+        System.out.printf("%s, %s.%s:%3d - %s\n", time, className, element.getMethodName(), element.getLineNumber(), printToScreen.toString());
+    }
 }
