@@ -67,13 +67,12 @@ public class TextTable extends TextObject implements TextTableBased{
     
     @Override
 	public Boolean compare(Integer row) {
-        myEnum.replaceNumber(row.toString());
-		return super.compare();
+		return this.compare(row, getText(row));
 	}
     
 	public Boolean compare(Integer row, String compareAgainst){
     	myEnum.replaceNumber(row.toString());
-    	return super.compare(compareAgainst);
+    	return compare(compareAgainst, getText(row));
     }
 	@Override
     @Deprecated
