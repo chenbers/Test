@@ -55,7 +55,7 @@ public abstract class NavigationBar extends Masthead {
 	protected class NavigationBarTexts extends MastheadTexts {
 	}
 
-	protected class NavigationTree {
+	public class NavigationTree {
 		public NavTree groups() {
 			return new NavTree(NavigationBarEnum.HOME);
 		}

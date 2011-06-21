@@ -16,9 +16,9 @@ public enum MastheadEnum implements SeleniumEnums {
     /* Paging elements */
     
     FORWARD_ONE(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#187;"))).toString()),
-    FORWARD_ALL(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#8250;"))).toString()),
-    BACK_ONE(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#8249;"))).toString()),
-    BACK_ALL(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#177;"))).toString()),
+    FORWARD_ALL(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#187;&#187;"))).toString()),
+    BACK_ONE(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#171;"))).toString()),
+    BACK_ALL(null,Xpath.start().td(Id.text(StringEscapeUtils.unescapeHtml("&#171;&#171;"))).toString()),
     CHOOSE_PAGE(null,Xpath.start().td(Id.text("***")).toString()),
 
     /* Login Logo */

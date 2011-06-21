@@ -24,7 +24,7 @@ public class TextTable extends TextObject implements TextTableBased{
     
     @Override
 	public Boolean assertEquals(Integer row, String compareAgainst) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.assertEquals(compareAgainst);
 	}
     
@@ -51,7 +51,7 @@ public class TextTable extends TextObject implements TextTableBased{
     
     @Override
 	public Boolean assertVisibility(Integer row, Boolean visible) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.assertVisibility(visible);
 	}
     
@@ -71,7 +71,7 @@ public class TextTable extends TextObject implements TextTableBased{
 	}
     
 	public Boolean compare(Integer row, String compareAgainst){
-    	myEnum.replaceNumber(row.toString());
+    	replaceNumber(row);
     	return compare(compareAgainst, getText(row));
     }
 	@Override
@@ -94,7 +94,7 @@ public class TextTable extends TextObject implements TextTableBased{
 	}
 	@Override
 	public ElementInterface focus(Integer row) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.focus();
 	}
 	
@@ -116,7 +116,7 @@ public class TextTable extends TextObject implements TextTableBased{
      * @return
      */
     public String getText(Integer row){
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
         return super.getText();
     }
 	/**
@@ -126,7 +126,7 @@ public class TextTable extends TextObject implements TextTableBased{
      * @return
      */
     public String getText(Integer row, Integer column){
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
         return super.getText();
     }
 	@Override
@@ -140,7 +140,7 @@ public class TextTable extends TextObject implements TextTableBased{
 	}
 	@Override
 	public Boolean isPresent(Integer row) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.isPresent();
 	}
 	@Override
@@ -154,7 +154,7 @@ public class TextTable extends TextObject implements TextTableBased{
 	}
 	@Override
 	public Boolean isVisible(Integer row) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.isVisible();
 	}
 	@Override
@@ -168,17 +168,17 @@ public class TextTable extends TextObject implements TextTableBased{
 	}
 	@Override
 	public Boolean validate(Integer row) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.validate();
 	}
 	@Override
 	public Boolean validate(Integer row, String expected) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.validate(expected);
 	}
 	@Override
 	public Boolean validate(Integer row, TextEnum expected) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.validate(expected);
 	}
 	
@@ -186,7 +186,7 @@ public class TextTable extends TextObject implements TextTableBased{
 	@Override
 	public Boolean validate(Integer row, TextEnum expected, String replaceOld,
 			String withNew) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.validate(expected, replaceOld, withNew);
 	}
 	@Override
@@ -222,7 +222,7 @@ public class TextTable extends TextObject implements TextTableBased{
 	
 	@Override
 	public Boolean validateContains(Integer row, String expectedPart) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.validateContains(expectedPart);
 	}
 	@Override

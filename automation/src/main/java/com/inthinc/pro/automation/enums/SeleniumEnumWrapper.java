@@ -64,13 +64,16 @@ public class SeleniumEnumWrapper implements SeleniumEnums{
     }
 
 
-    public SeleniumEnumWrapper replaceNumber(String number) {
-    	replaceOldWithNew("###", number);
+    public SeleniumEnumWrapper replaceNumber(Integer number) {
+    	replaceOldWithNew("###", number.toString());
         return this;
     }
 
     public SeleniumEnumWrapper replaceOldWithNew(String original, String newWord){
     	for (int i=0;i<IDs.length;i++){
+    		if (original.equals("###") && !IDs[i].startsWith("//")){
+    			newWord = Integer.parseInt(newWord)-1+"";
+    		}
     		IDs[i]=IDs[i].replace(original, newWord);
     	}
     	return this;

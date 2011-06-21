@@ -8,6 +8,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.ElementBase;
+import com.inthinc.pro.automation.elements.PageScroller;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkNewWindow;
@@ -25,6 +26,38 @@ public abstract class Masthead extends AbstractPage {
 		checkMe.add(MastheadEnum.VERSION);
 	}
 	
+	public class Paging{
+		
+		private String page;
+		
+		public Paging(){
+			page=null;
+		}
+		public Paging(String page){
+			this.page=page;
+		}
+		
+		public PageScroller backAll(){
+			return new PageScroller(MastheadEnum.BACK_ALL, page);
+		}
+		
+		public PageScroller backOne(){
+			return new PageScroller(MastheadEnum.BACK_ONE, page);
+		}
+		
+		public PageScroller forwardAll(){
+			return new PageScroller(MastheadEnum.FORWARD_ALL, page);
+		}
+		
+		public PageScroller forwardOne(){
+			return new PageScroller(MastheadEnum.FORWARD_ONE, page);
+		}
+		
+		public PageScroller selectPageNumber(){
+			return new PageScroller(MastheadEnum.CHOOSE_PAGE, page);
+		}
+		
+	}
 	
 	public class MastheadPopUps extends PopUps{
 		public MastheadPopUps(){

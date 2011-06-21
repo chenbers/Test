@@ -21,23 +21,19 @@ public class LinkTable extends ClickableTableObject implements Clickable, TableB
 	    
 	    @Override
 		public Boolean isVisible(Integer row) {
-	        myEnum.replaceNumber(row.toString());
-			return super.isVisible();
+			return super.isVisible(row);
 		}
 		@Override
 		public Boolean isPresent(Integer row) {
-	        myEnum.replaceNumber(row.toString());
-			return super.isPresent();
+			return super.isPresent(row);
 		}
 		@Override
 		public ElementInterface focus(Integer row) {
-	        myEnum.replaceNumber(row.toString());
-			return super.focus();
+			return super.focus(row);
 		}
 		@Override
 		public Boolean assertVisibility(Integer row, Boolean visible) {
-	        myEnum.replaceNumber(row.toString());
-			return super.assertVisibility(visible);
+			return super.assertVisibility(row, visible);
 		}
 		
 		

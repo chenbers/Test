@@ -1,12 +1,13 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
+import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
-public class CheckableObject extends ClickableObject implements Checkable,
+public class CheckableObject extends LinkTable implements Checkable, TableBased,
 		Clickable {
 	
 	public CheckableObject(SeleniumEnums anEnum) {
@@ -43,20 +44,23 @@ public class CheckableObject extends ClickableObject implements Checkable,
 	 * 
 	 * @deprecated use {@link com.inthinc.pro.automation.elements.CheckableObject#click(Integer)}
 	 */
-	public ClickableObject click() {
-	    addError("CheckableObject.click()", "more information is required to determine WHICH item to click.  please supply either an (Integer number) or a (String label)", ErrorLevel.FAIL);
+	public CheckableObject click() {
+    	addError(
+				".click()",
+				"please supply an Integer number for the row on the table)",
+				ErrorLevel.FAIL);
 		return null;
 	}
 
-	public ClickableObject click(Integer number) {
-		replaceNumber(--number);
-		return super.click();
+	public CheckableObject click(Integer row) {
+		super.click(row);
+		return this;
 	}
 
 	public ClickableObject click(String label) {
 		String xpath = Xpath.start().label(Id.text(label)).input().toString();
 		myEnum.setID(xpath);
-		return super.click();
+		super.click(1);
+		return this;
 	}
-
 }

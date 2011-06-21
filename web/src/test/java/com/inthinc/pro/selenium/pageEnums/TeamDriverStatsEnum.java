@@ -12,14 +12,6 @@ public enum TeamDriverStatsEnum implements SeleniumEnums {
     /* Edit Columns */
     EDIT_COLUMNS_BUTTON(null, "teamStatisticsForm:teamStatisticsEditColumns"),
 
-    EDIT_COLUMNS_HEADER("Edit Columns", "editColumnsHeader"),
-    EDIT_COLUMNS_X_BUTTON(null, Xpath.start().div(Id.id("editColumnsContentDiv")).div().img().toString()),
-    EDIT_COLUMNS_SAVE(save, "editColumnsForm:teamStatistics-editColumnsPopupSave"),
-    EDIT_COLUMNS_CANCEL(cancel, "editColumnsForm:teamStatistics-editColumnsPopupCancel"),
-    EDIT_COLUMNS_SUB_TITLE("The selected columns will be displayed.", "popupsubtitle"),
-
-    EDIT_COLUMNS_CHECKBOX(null, "editColumnsForm:teamStatistics-editColumnsGrid:***:teamStatistics-col"),
-    EDIT_COLUMNS_TEXT(null, Xpath.start().td("editColumnsForm:teamStatistics-editColumnsGrid:***").label().text("2").toString()),
 
     /* Export Tool */
     EXPORT_TOOLS(null, Xpath.start().span(Id.id("teamStatisticsForm:teamStatistics_reportToolImageId")).span("2").toString()),
@@ -28,15 +20,6 @@ public enum TeamDriverStatsEnum implements SeleniumEnums {
     EXPORT_EMAIL_TOOL(emailReport, "teamStatisticsForm:teamStatistics-emailMenuItem:anchor"),
     EXPORT_EXCEL_TOOL(exportExcel, "teamStatisticsForm:teamStatistics-exportExcelMEnuItem:anchor"),
 
-    EMAIL_HEADER("Team - ***", "teamStatisticsForm:teamStatistics_reportEmailModalHeader"),
-    EMAIL_SUB_TITLE(email + " this report to the following " + email.toLowerCase() + " addresses.", Xpath.start().div(Id.clazz("popupsubtitle")).toString()),
-    EMAIL_TITLE(email + " Address(es): (" + email.toLowerCase() + " addresses separated by a comma)", Xpath.start().form(Id.id("teamStatisticsForm:teamStatistics_reportEmailModal_form")).span()
-            .table().tbody().tr("1").toString()),
-    EMAIL_TEXT_AREA(null, "teamStatisticsForm:teamStatistics_reportEmailModal_form:teamStatistics_reportEmailModal_email"),
-
-    EMAIL_SUBMIT(email, "teamStatisticsForm:teamStatistics_reportEmailModal_form:emailReportPopupEmail3"),
-    EMAIL_CANCEL(cancel, "emailReportPopUpSubmit"),
-    EMAIL_X_BUTTON(null, Xpath.start().div(Id.clazz("rich-mpnl-text rich-mpnl-controls popupControls")).img().toString()),
 
     /* Team rows */
     TEAM_NAME_HEADER("Team", "teamStatisticsForm:drivers:driverTotals:newTeamStatsTab-totalsTeamNameheader:sortDiv"),
@@ -83,7 +66,7 @@ public enum TeamDriverStatsEnum implements SeleniumEnums {
     DRIVER_SAFETY_HEADER("Safety", "teamStatisticsForm:drivers:newTeamStatsTab-safetyheader:sortDiv"),
 
     DRIVER_NAME_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-driverName"),
-    DRIVER_SCORE_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-overallScore"),
+    DRIVER_SCORE_ENTRY(null, "//div[@id='teamStatisticsForm:drivers:###:newTeamStatsTab-overallScore']/div/div/div/div/div/a"),
     DRIVER_VEHICLE_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-vehicle"),
     DRIVER_TRIPS_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-trips"),
     DRIVER_STOPS_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-tripStops"),
@@ -97,7 +80,9 @@ public enum TeamDriverStatsEnum implements SeleniumEnums {
     DRIVER_CRASHES_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-crashes"),
     DRIVER_SAFETY_ENTRY(null, "teamStatisticsForm:drivers:###:newTeamStatsTab-safety"),
 
+    
     ;
+    
 
     private String text, url;
     private String[] IDs;

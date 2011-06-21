@@ -323,6 +323,11 @@ public abstract class Base {
             reply = dbErrors[0];
             while (check_error(reply)) {
                 reply = mcmProxy.note(imei, sendingQueue);
+                try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
                 if (check_error(reply)){
                     logger.info("Invalid Reply from server: "+reply);
                 }

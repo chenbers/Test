@@ -46,7 +46,7 @@ public class ElementBase extends MasterTest implements ElementInterface {
     public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         setMyEnum(anEnum);
         if (replaceNumber!=null){
-            myEnum.replaceNumber(replaceNumber.toString());
+            myEnum.replaceNumber(replaceNumber);
         }
         if (replaceWord!=null){
             myEnum.replaceWord(replaceWord);
@@ -143,7 +143,7 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
     
     protected ElementBase replaceNumber(Integer number){
-    	myEnum.replaceNumber(number.toString());
+    	myEnum.replaceNumber(number);
     	return this;
     }
     

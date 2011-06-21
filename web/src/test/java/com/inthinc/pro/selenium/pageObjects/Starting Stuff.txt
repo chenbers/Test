@@ -6,7 +6,7 @@
 	public class ***DropDowns extends ###DropDowns{}
 	public class ***PopUps extends MastheadPopUps{}
 	
-	public ***Links _links(){
+	public ***Links _link(){
         return new ***Links();
     }
     

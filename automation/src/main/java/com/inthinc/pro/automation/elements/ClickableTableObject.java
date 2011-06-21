@@ -41,7 +41,7 @@ public class ClickableTableObject extends ClickableObject implements Clickable, 
      * @return
      */
     public ClickableTableObject click(Integer row){
-    	myEnum.replaceNumber(row.toString());
+    	replaceNumber(row);
     	super.click();
     	return this;
     }
@@ -49,22 +49,22 @@ public class ClickableTableObject extends ClickableObject implements Clickable, 
     
     @Override
 	public Boolean isVisible(Integer row) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.isVisible();
 	}
 	@Override
 	public Boolean isPresent(Integer row) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.isPresent();
 	}
 	@Override
 	public ElementInterface focus(Integer row) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.focus();
 	}
 	@Override
 	public Boolean assertVisibility(Integer row, Boolean visible) {
-        myEnum.replaceNumber(row.toString());
+        replaceNumber(row);
 		return super.assertVisibility(visible);
 	}
 	
