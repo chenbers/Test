@@ -11,10 +11,12 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 
-public class PopUps {
-	private String page, type;
+public class PopUps extends MasterTest{
+	private String page;
+	private String type;
 	private Integer number;
 
 	public enum Types implements TextEnum {
@@ -37,7 +39,7 @@ public class PopUps {
 	public PopUps(String page, Types type, Integer number) {
 		this.page = page;
 		this.type = type.getText();
-		this.number = number;
+		this.number = ++number;
 	}
 
 	public PopUps(String page) {
