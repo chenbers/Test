@@ -17,6 +17,7 @@ public class PageReportsDevices extends ReportsBar {
 	private String page = "devices";
 	public PageReportsDevices() {
 		url = DeviceReportEnum.DEFAULT_URL;
+//		checkMe.add(e) //TODO: add verifyOnPage elements.
 	}
 
 	public class DeviceReportPopUps extends MastheadPopUps{
@@ -42,7 +43,7 @@ public class PageReportsDevices extends ReportsBar {
 	}
 	public class DeviceReportDropDowns extends ReportsBarDropDowns{
 		
-		protected DhxDropDown status() {
+		public DhxDropDown status() {
 			return new DhxDropDown(DeviceReportEnum.STATUS_DHX);
 		}
 	}
@@ -155,8 +156,4 @@ public class PageReportsDevices extends ReportsBar {
 			return new TextField(DeviceReportEnum.PHONE_SEARCH);
 		}		
 	}
-    @Override
-    public String getExpectedPath() {
-        return DeviceReportEnum.DEFAULT_URL.getURL();
-    }
 }
