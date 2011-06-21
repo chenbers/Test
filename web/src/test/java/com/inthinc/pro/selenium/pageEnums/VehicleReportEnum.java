@@ -24,15 +24,15 @@ public enum VehicleReportEnum implements SeleniumEnums {
     SPEED_SCORE_VALUE(null,"vehicles-form:drivers:###:speedScore"),
     
     
-    GROUP_SORT(null,"vehicles-form:vehicles:vehiclesDashboardheader:sortDiv"),
-    VEHICLE_SORT(null,"vehicles-form:vehicles:vehiclesVehiclePerformanceheader:sortDiv"),
+    GROUP_SORT(null,"vehicles-form:vehicles:groupheader:sortDiv"),
+    VEHICLE_SORT(null,"vehicles-form:vehicles:nameheader:sortDiv"),
     YEAR_MAKE_MODEL_SORT(null, "vehicles-form:vehicles:makeModelYearheader:sortDiv"),
-    DRIVER_SORT(null,"vehicles-form:vehicles:vehiclesDriverPerformanceheader:sortDiv"),
+    DRIVER_SORT(null,"vehicles-vehicles-form:vehicles:fullNameheader:sortDiv"),
     DISTANCE_DRIVEN_SORT(null, "vehicles-form:vehicles:distanceheader:sortDiv"),
     ODOMETER_SORT(null, "vehicles-form:vehicles:odometerheader:sortDiv"),
-    OVERALL_SCORE_SORT(null,"vehicles-form:drivers:overallScoreheader:sortDiv"),          
-    STYLE_SCORE_SORT(null,"vehicles-form:drivers:styleScoreheader:sortDiv"),              
-    SPEED_SCORE_SORT(null,"vehicles-form:drivers:speedScoreheader:sortDiv"),
+    OVERALL_SCORE_SORT(null,"vehicles-form:vehicles:overallScoreheader:sortDiv"),          
+    STYLE_SCORE_SORT(null,"vehicles-form:vehicles:styleScoreheader:sortDiv"),              
+    SPEED_SCORE_SORT(null,"vehicles-form:vehicles:speedScoreheader:sortDiv"),
         
     ;
     
