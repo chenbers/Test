@@ -46,6 +46,8 @@ public interface ElementInterface {
         public Boolean validate(Integer row, TextEnum expected, String replaceOld, String withNew);
         
         public Boolean validate(Integer row);
+
+        public Boolean assertNotEquals(Integer row, String compareAgainst);
     }
     
     public interface TextBased extends ElementInterface {
@@ -76,6 +78,8 @@ public interface ElementInterface {
         public Boolean validate(TextEnum expected, String replaceOld, String withNew);
         
         public Boolean validate();
+        
+        public Boolean assertNotEquals(String compareAgainst);
         
     }
     

@@ -62,4 +62,8 @@ public class TextObject extends ElementBase implements TextBased {
     public Boolean assertEquals(String compareAgainst){
     	return assertEquals(compareAgainst, myEnum);
     }
+    
+    public Boolean assertNotEquals(String compareAgainst){
+    	return assertNotEquals(compareAgainst, myEnum);
+    }
 }

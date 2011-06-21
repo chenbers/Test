@@ -38,6 +38,22 @@ public class TextTable extends TextObject implements TextTableBased{
 		return null;
 	}
     
+    @Override
+	public Boolean assertNotEquals(Integer row, String compareAgainst) {
+        replaceNumber(row);
+		return super.assertNotEquals(compareAgainst);
+	}
+    
+    @Override
+	@Deprecated
+	public Boolean assertNotEquals(String compareAgainst) {
+    	addError(
+				".assertNotEquals()",
+				"please supply an Integer number for the row on the table)",
+				ErrorLevel.FAIL);
+		return null;
+	}
+    
     
     @Override
 	@Deprecated
@@ -223,8 +239,10 @@ public class TextTable extends TextObject implements TextTableBased{
 	@Override
 	public Boolean validateContains(Integer row, String expectedPart) {
         replaceNumber(row);
-		return super.validateContains(expectedPart);
+		return validateStringContains(expectedPart, super.getText());
 	}
+	
+	
 	@Override
 	@Deprecated
 	public Boolean validateContains(String expectedPart) {
