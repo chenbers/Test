@@ -27,15 +27,15 @@ public enum ReportsDriversEnum implements SeleniumEnums {
     SEATBELT_SCORE_VALUE(null, "//td[@id='drivers-form:drivers:###:seatbeltScore']/span/div/div/div/div/div/a"), 
         
     
-    GROUP_SORT("Group:", "drivers-form:drivers:driversDashboardheader:sortDiv"),
-    DRIVER_SORT("Driver:", "drivers-form:drivers:driversDriverPerformanceheader:sortDiv"),
-    VEHICLE_SORT("Vehicle", "drivers-form:drivers:driversVehiclePerformanceheader:sortDiv"),
-    EMPLOYEE_ID_SORT("Employee ID", "drivers-form:drivers:empidheader:sortDiv"),
-    DISTANCE_DRIVEN_SORT("Distance Driven", "drivers-form:drivers:distanceheader:sortDiv"),
-    OVERALL_SCORE_SORT("Overall", "drivers-form:drivers:overallScoreheader:sortDiv"),
-    STYLE_SCORE_SORT("Style", "drivers-form:drivers:styleScoreheader:sortDiv"),
-    SPEED_SCORE_SORT("Speed", "drivers-form:drivers:speadScoreheader:sortDiv"), 
-    SEATBELT_SCORE_SORT("Seat Belt", "drivers-form:drivers:seatbeltScoreheader:sortDiv"), 
+    GROUP_SORT("Group:"						, "drivers-form:drivers:groupheader:sortDiv"),
+    DRIVER_SORT("Driver:"					, "drivers-form:drivers:fullNameheader:sortDiv"),
+    VEHICLE_SORT("Vehicle"					, "drivers-form:drivers:vehiclenameheader:sortDiv"),
+    EMPLOYEE_ID_SORT("Employee ID"			, "drivers-form:drivers:empidheader:sortDiv"),
+    DISTANCE_DRIVEN_SORT("Distance Driven"	, "drivers-form:drivers:distanceheader:sortDiv"),
+    OVERALL_SCORE_SORT("Overall"			, "drivers-form:drivers:overallScoreheader:sortDiv"),
+    STYLE_SCORE_SORT("Style"				, "drivers-form:drivers:styleScoreheader:sortDiv"),
+    SPEED_SCORE_SORT("Speed"				, "drivers-form:drivers:speadScoreheader:sortDiv"), 
+    SEATBELT_SCORE_SORT("Seat Belt"			, "drivers-form:drivers:seatbeltScoreheader:sortDiv"), 
          
     ;
 
