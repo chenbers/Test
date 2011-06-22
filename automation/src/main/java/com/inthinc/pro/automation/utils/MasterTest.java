@@ -117,8 +117,8 @@ public class MasterTest {
 
 	protected Boolean compare(Object expected, Object actual) {
 		Boolean results = false;
-		if (actual instanceof TextEnum) {
-			results = compare(expected, ((TextEnum) actual).getText());
+		if (actual instanceof SeleniumEnumWrapper) {
+			results = compare(expected, selenium.getText((SeleniumEnumWrapper) actual));
 		} else if (expected instanceof TextEnum) {
 			results = compare(((TextEnum) expected).getText(), actual);
 		} else {
@@ -191,4 +191,6 @@ public class MasterTest {
         String className = element.getFileName().replace(".java", "");
         System.out.printf("%s, %s.%s:%3d - %s\n", time, className, element.getMethodName(), element.getLineNumber(), printToScreen.toString());
     }
+	
+	
 }
