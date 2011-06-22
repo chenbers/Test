@@ -60,7 +60,6 @@ public class Util
                 System.out.println("getMethod is null for key  " + key);            
                 continue;
             }
-System.out.println("getMethod: " + getMethod.getName());            
             Object value1;
             Object value2;
             try
