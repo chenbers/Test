@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
@@ -91,12 +92,25 @@ public class HosDailyDriverLogReportCriteria {
     private static int MAX_RULESET_DAYSBACK = 24;
 
     private Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
+    
+    private ResourceBundle resourceBundle;
 
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) 
     {
         this.locale = locale;
         this.defaultUseMetric = defaultUseMetric;
         dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy").withLocale(locale);
+        setResourceBundle(ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale));
+    }
+
+    public ResourceBundle getResourceBundle() {
+        if (resourceBundle == null)
+            resourceBundle = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale);
+        return resourceBundle;
+    }
+
+    public void setResourceBundle(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
     }
 
     public void init(GroupHierarchy accountGroupHierarchy, List<Integer> groupIDList, Interval interval)
@@ -315,12 +329,12 @@ public class HosDailyDriverLogReportCriteria {
         }
         String returnStr = "";
         if (vehicle.getName() != null) {
-            String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.header.vehicleName");
+            String formatString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.header.vehicleName");
             returnStr += MessageFormat.format(formatString, new Object[] {
                 vehicle.getName() });
         }
         if (vehicle.getLicense() != null && !vehicle.getLicense().isEmpty()) {
-            String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.header.vehicleLicense");
+            String formatString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.header.vehicleLicense");
             if (!returnStr.isEmpty())
                 returnStr += " - ";
             returnStr += MessageFormat.format(formatString, new Object[] {
@@ -491,15 +505,17 @@ public class HosDailyDriverLogReportCriteria {
                 remarkLog.setDeleted(false);
                 remarkLog.setLogTimeDate(dayEnd.toDate());
                 remarkLog.setLogTimeZone(hosRecord.getTimeZone());
-                remarkLog.setLocation(MessageUtil.getMessageString("report.ddl.webLogin", locale));
-                remarkLog.setStatusDescription(MessageUtil.getMessageString("report.ddl.deferralDay2", locale));
+
+                remarkLog.setLocation(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.webLogin"));
+                remarkLog.setStatusDescription(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.deferralDay2"));
                 return remarkLog;
                 
             }
         }
         return null;
     }
-    private RemarkLog populateRemarkLog(HOSRecord hosRecord) {
+    
+    RemarkLog populateRemarkLog(HOSRecord hosRecord) {
         RemarkLog remarkLog = new RemarkLog();
         remarkLog.setEdited(hosRecord.getEdited() || hosRecord.getOrigin().equals(HOSOrigin.PORTAL));
         remarkLog.setDeleted(hosRecord.getDeleted());
@@ -509,21 +525,26 @@ public class HosDailyDriverLogReportCriteria {
         remarkLog.setOriginalLocation(hosRecord.getOriginalLocation());
         remarkLog.setStartOdometer(hosRecord.getVehicleOdometer()); 
         remarkLog.setStatusDescription(getStatusDescription(hosRecord));
+        remarkLog.setStatus(hosRecord.getStatus());
         if (remarkLog.getEdited() && 
             ((remarkLog.getLocation() == null && remarkLog.getOriginalLocation() != null) ||
              (remarkLog.getOriginalLocation() == null && remarkLog.getLocation() != null) ||
              !remarkLog.getLocation().equals(remarkLog.getOriginalLocation())))
              remarkLog.setLocationEdited(true);
         else remarkLog.setLocationEdited(false);
-        if (remarkLog.getEdited() && hosRecord.getEditUserID() != null)
-            remarkLog.setEditor(getEditUserFullName(hosRecord.getEditUserID()));
-        else remarkLog.setEditor("");
+        remarkLog.setEditor("");
+        if (remarkLog.getEdited()) {
+            if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.KIOSK)) 
+                remarkLog.setEditor(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.kiosk"));
+            else if (hosRecord.getEditUserID() != null && hosRecord.getEditUserID() != 0)
+                remarkLog.setEditor(getEditUserFullName(hosRecord.getEditUserID()));
+        }
         return remarkLog;
     }
     
 
     private String getEditUserFullName(Integer editUserID) {
-        
+      
         if (editUserID == null || editUserID.intValue() == 0)
             return "";
         User user = userDAO.findByID(editUserID);
@@ -537,37 +558,37 @@ public class HosDailyDriverLogReportCriteria {
         
         String statusString = "";
         if (hosRecord.getStatus() != null)
-            statusString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status."+hosRecord.getStatus().getCode()); 
+            statusString = MessageUtil.getBundleString(getResourceBundle(),"status."+hosRecord.getStatus().getCode()); 
 
         if (hosRecord.getStatus() == HOSStatus.OFF_DUTY) {
             if (inspectionRequired(hosRecord)) {
                 if (inspectionPerformed(hosRecord)) {
-                    statusString += " - " + ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status." + HOSStatus.HOS_POSTTRIP_INSPECTION.getCode());
+                    statusString += " - " + MessageUtil.getBundleString(getResourceBundle(),"status." + HOSStatus.HOS_POSTTRIP_INSPECTION.getCode());
                 }
                 else {
-                    statusString += " - " + ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status." + HOSStatus.HOS_POSTTRIP_INSPECTION_NOT_NEEDED.getCode());
+                    statusString += " - " + MessageUtil.getBundleString(getResourceBundle(),"status." + HOSStatus.HOS_POSTTRIP_INSPECTION_NOT_NEEDED.getCode());
                 }
             }
         }
         else if (hosRecord.getStatus() == HOSStatus.ON_DUTY) {
             if (inspectionRequired(hosRecord)) {
                 if (inspectionPerformed(hosRecord)) {
-                    statusString += " - " + ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status." + HOSStatus.HOS_PRETRIP_INSPECTION.getCode());
+                    statusString += " - " + MessageUtil.getBundleString(getResourceBundle(),"status." + HOSStatus.HOS_PRETRIP_INSPECTION.getCode());
                 }
                 else {
-                    statusString += " - " + ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("status." + HOSStatus.HOS_PRETRIP_INSPECTION_NOT_NEEDED.getCode());
+                    statusString += " - " + MessageUtil.getBundleString(getResourceBundle(),"status." + HOSStatus.HOS_PRETRIP_INSPECTION_NOT_NEEDED.getCode());
                 }
             }
         }
         else if (hosRecord.getStatus() == HOSStatus.FUEL_STOP) {
             if (defaultUseMetric) {
-                String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.fuelStopDescription.METRIC");
+                String formatString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.fuelStopDescription.METRIC");
                 statusString += " " + MessageFormat.format(formatString, new Object[] {
                         MeasurementConversionUtil.fromGallonsToLiters(hosRecord.getTruckGallons()),
                         MeasurementConversionUtil.fromGallonsToLiters(hosRecord.getTrailerGallons())});
             }
             else {
-                String formatString = ReportType.HOS_DAILY_DRIVER_LOG_REPORT.getResourceBundle(locale).getString("report.ddl.fuelStopDescription");
+                String formatString = MessageUtil.getBundleString(getResourceBundle(),"report.ddl.fuelStopDescription");
                 statusString += " " + MessageFormat.format(formatString, new Object[] {hosRecord.getTruckGallons(),hosRecord.getTrailerGallons()});
             }
         }

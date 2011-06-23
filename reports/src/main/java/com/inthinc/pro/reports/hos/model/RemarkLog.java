@@ -18,6 +18,27 @@ public class RemarkLog {
     private Boolean     locationEdited;
     private String      editor;
     
+    public RemarkLog()
+    {
+        
+    }
+    
+    public RemarkLog(HOSStatus status, Date logTimeDate, TimeZone logTimeZone, Boolean edited, String location, String originalLocation, Boolean deleted, Number startOdometer,
+            String statusDescription, Boolean locationEdited, String editor) {
+        super();
+        this.status = status;
+        this.logTimeDate = logTimeDate;
+        this.logTimeZone = logTimeZone;
+        this.edited = edited;
+        this.location = location;
+        this.originalLocation = originalLocation;
+        this.deleted = deleted;
+        this.startOdometer = startOdometer;
+        this.statusDescription = statusDescription;
+        this.locationEdited = locationEdited;
+        this.editor = editor;
+    }
+
     public String getEditor() {
         return editor;
     }

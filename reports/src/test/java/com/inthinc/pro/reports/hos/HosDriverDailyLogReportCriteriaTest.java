@@ -1,5 +1,6 @@
 package com.inthinc.pro.reports.hos;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -10,9 +11,11 @@ import java.util.TimeZone;
 
 import org.junit.Test;
 
+import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
 import com.inthinc.pro.reports.ReportCriteria;
@@ -22,6 +25,7 @@ import com.inthinc.pro.reports.hos.model.RecapCanada;
 import com.inthinc.pro.reports.hos.model.RecapCanada2007;
 import com.inthinc.pro.reports.hos.model.RecapType;
 import com.inthinc.pro.reports.hos.model.RecapUS;
+import com.inthinc.pro.reports.hos.model.RemarkLog;
 import com.inthinc.pro.reports.hos.testData.DDLDataSet;
 
 public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
@@ -331,9 +335,41 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             dump("DDL", testCaseCnt, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.HTML);
         }
     }
-
-
     
+    HOSRecord[] hosRecords = {
+            new HOSRecord(1l, 1, RuleSetType.US, null, null, false, 
+                    0l, new Date(), new Date(), TimeZone.getDefault(), HOSStatus.DRIVING,
+                    HOSOrigin.KIOSK, "slc", 0.0f, 0.0f, 0l, null, null, true, true, "", false),
+    };
+
+    RemarkLog[] expectedRemarkLogs = {
+//            public RemarkLog(HOSStatus status, Date logTimeDate, TimeZone logTimeZone, Boolean edited, String location, String originalLocation, Boolean deleted, Number startOdometer,
+//                    String statusDescription, Boolean locationEdited, String editor) {
+            new RemarkLog(HOSStatus.DRIVING, new Date(), TimeZone.getDefault(), true, "slc", "slc", false, 0l, "Driving", false, "Driver Kiosk"), 
+            
+    };
+    
+    @Test
+    public void remarks() {
+        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+        assertNotNull("resource bundle should be initialized", ddlCriteria.getResourceBundle());
+        int cnt = 0;
+        for (HOSRecord hosRecord : hosRecords) {
+            hosRecord.setOriginalLocation(hosRecord.getLocation());
+            RemarkLog remarkLog = ddlCriteria.populateRemarkLog(hosRecord);
+            compareRemarkLog(cnt, expectedRemarkLogs[cnt], remarkLog);
+            cnt ++;
+        }
+    }
+
+    private void compareRemarkLog(int cnt, RemarkLog expectedRemarkLog, RemarkLog remarkLog) {
+        assertEquals(cnt + " isDeleted", expectedRemarkLog.getDeleted(), remarkLog.getDeleted());
+        assertEquals(cnt + " Editor", expectedRemarkLog.getEditor(), remarkLog.getEditor());
+        assertEquals(cnt + " Location", expectedRemarkLog.getLocation(), remarkLog.getLocation());
+        assertEquals(cnt + " LocationEdited", expectedRemarkLog.getLocationEdited(), remarkLog.getLocationEdited());
+        assertEquals(cnt + " OriginalLocation", expectedRemarkLog.getOriginalLocation(), remarkLog.getOriginalLocation());
+        assertEquals(cnt + " Status", expectedRemarkLog.getStatus(), remarkLog.getStatus());
+    }
 
     private void compareHOSRecAdjusted(HOSRecAdjusted expectedRec, HOSRecAdjusted rec, int recCnt, int testCaseCnt) {
         String prefix = "testcase: " + testCaseCnt + " " + testCaseName[testCaseCnt] + " adjustedRec [" +recCnt + "] field: "; 
