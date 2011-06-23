@@ -143,7 +143,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="400" y="0" width="50" height="20" backcolor="#FFFFFF"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Integer"><![CDATA[$P{CUSTOMER}.getAcctID()]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$P{CUSTOMER}.getAccountID()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-77" mode="Opaque" x="450" y="0" width="50" height="20" backcolor="#FFFFFF"/>
