@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextLinkScoreTable;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
@@ -97,32 +98,32 @@ public class PageDriverReport extends ReportsBar {
 			return new TextLink(ReportsDriversEnum.OVERALL_SCORE_SORT);
 		}
 
-		public TextTableLink overallValue() {
-			return new TextTableLink(ReportsDriversEnum.OVERALL_SCORE_VALUE);
+		public TextLinkScoreTable overallValue() {
+			return new TextLinkScoreTable(ReportsDriversEnum.OVERALL_SCORE_VALUE);
 		}
 
 		public TextLink seatBeltSort() {
 			return new TextLink(ReportsDriversEnum.SEATBELT_SCORE_SORT);
 		}
 
-		public TextTableLink seatbeltValue() {
-			return new TextTableLink(ReportsDriversEnum.SEATBELT_SCORE_VALUE);
+		public TextLinkScoreTable seatbeltValue() {
+			return new TextLinkScoreTable(ReportsDriversEnum.SEATBELT_SCORE_VALUE);
 		}
 
 		public TextLink speedSort() {
 			return new TextLink(ReportsDriversEnum.SPEED_SCORE_SORT);
 		}
 
-		public TextTableLink speedValue() {
-			return new TextTableLink(ReportsDriversEnum.SPEED_SCORE_VALUE);
+		public TextLinkScoreTable speedValue() {
+			return new TextLinkScoreTable(ReportsDriversEnum.SPEED_SCORE_VALUE);
 		}
 
 		public TextLink styleSort() {
 			return new TextLink(ReportsDriversEnum.STYLE_SCORE_SORT);
 		}
 
-		public TextTableLink styleValue() {
-			return new TextTableLink(ReportsDriversEnum.STYLE_SCORE_VALUE);
+		public TextLinkScoreTable styleValue() {
+			return new TextLinkScoreTable(ReportsDriversEnum.STYLE_SCORE_VALUE);
 		}
 
 		public TextLink vehicleSort() {
