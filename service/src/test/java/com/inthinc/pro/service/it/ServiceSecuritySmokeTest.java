@@ -1,5 +1,6 @@
 package com.inthinc.pro.service.it;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
@@ -20,6 +21,7 @@ import com.inthinc.pro.service.UserService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext-beans.xml", "classpath:spring/applicationContext-dao.xml", "classpath:spring/applicationContext-sbs.xml",
         "classpath:spring/applicationContext-security.xml" })
+@Ignore
 public class ServiceSecuritySmokeTest implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
