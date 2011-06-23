@@ -1,7 +1,5 @@
 package com.inthinc.pro.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +17,8 @@ import com.inthinc.pro.model.event.Event;
 
 public class SecureVehicleDAO extends SecureDAO<Vehicle> {
 
+    String SIMPLE_DATE_FORMAT = "yyyyMMdd";
+    
     private VehicleDAO vehicleDAO;
     private VehicleReportDAO vehicleReportDAO;
     private SecureGroupDAO groupDAO;
@@ -117,8 +117,6 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
     public List<Event> getEvents(Integer vehicleID, Date startDate, Date endDate) {
 		if (isAuthorized(vehicleID))
 		{
-//			List<Integer> eventTypes = new LinkedList<Integer>();
-//			eventTypes.add(EventMapper.TIWIPRO_EVENT_FULLEVENT);
         	return driverDAO.getEventDAO().getEventsForVehicle(vehicleID, startDate, endDate, null, 0);
 		}
         return null;
@@ -149,19 +147,6 @@ public class SecureVehicleDAO extends SecureDAO<Vehicle> {
 
         vehicleDAO.setVehicleDriver(id, driverID);
         return vehicleDAO.findByID(id);
-    }
-
-    private Date parseDate(String datestring) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-
-        Date date = null;
-
-        try {
-            date = formatter.parse(datestring);
-        } catch (ParseException e) {
-            return null;
-        }
-        return date;
     }
 
     public MpgDAO getMpgDAO() {

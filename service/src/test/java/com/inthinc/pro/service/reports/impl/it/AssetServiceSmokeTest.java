@@ -31,12 +31,12 @@ public class AssetServiceSmokeTest {
     private static final int START_ROW = 1;
     private static final int END_ROW = 10;
     private static final int STATUS_BAD_REQUEST = 400;
-
+    private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     private static int port;
 
     private static AssetServiceClient assetServiceClient;
 
-    private SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat formatter = new SimpleDateFormat(SIMPLE_DATE_FORMAT);
 
     /**
      * Dummy test required to avoid JUnit initialization errors.

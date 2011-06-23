@@ -27,6 +27,7 @@ import com.inthinc.pro.service.adapters.DriverDAOAdapter;
  */
 public class DriverServiceImplTest extends BaseUnitTest {
     protected static final String TOO_EARLY_STRING_START_DATE = "20100102";
+    
     private static final SimpleDateFormat sdf = new SimpleDateFormat(DriverServiceImpl.getSimpleDateFormat());
     
     DriverServiceImpl serviceSUT = new DriverServiceImpl();

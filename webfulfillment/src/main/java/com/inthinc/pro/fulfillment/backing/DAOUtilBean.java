@@ -1114,13 +1114,13 @@ if (accounts.size()>100)
 			for (Iterator<Account> aiter = accounts.iterator(); aiter.hasNext()
 					&& limit > 0; limit--) {
 				Account account = aiter.next();
-				account = accountDAO.findByID(account.getAcctID());
+				account = accountDAO.findByID(account.getAccountID());
 				if (account != null && account.getStatus() == Status.ACTIVE) {
 					String acctName = account.getAcctName();
 					if (acctName == null) {
-						acctName = account.getAcctID().toString();
+						acctName = account.getAccountID().toString();
 					}
-					accountMap.put(account.getAcctID(), acctName);
+					accountMap.put(account.getAccountID(), acctName);
 				}
 			}
 		}

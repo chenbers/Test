@@ -102,9 +102,9 @@ public class AlertMessagesTest extends BaseJDBCTest{
         if (!itData.parseTestData(stream, siloService, true, true)) {
             throw new Exception("Error parsing Test data xml file");
         }
-System.out.println("account id " + itData.account.getAcctID());        
-        List<RedFlagAlert> alerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
-        originalAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
+System.out.println("account id " + itData.account.getAccountID());        
+        List<RedFlagAlert> alerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAccountID());
+        originalAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAccountID());
         zoneAlerts = new ArrayList<RedFlagAlert>();
         redFlagAlerts = new ArrayList<RedFlagAlert>();
     	

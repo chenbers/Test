@@ -2,6 +2,7 @@ package com.inthinc.pro.service.security;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import mockit.Expectations;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.context.SecurityContextImpl;
 import org.springframework.security.providers.TestingAuthenticationToken;
 
+import com.inthinc.pro.dao.SuperuserDAO;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
@@ -88,7 +90,15 @@ public class TiwiproPrincipalTest extends BaseUnitTest {
      * Test for isInthincUser().
      */
     @Test
-    public void testIsInthincUser() {
+    public void testIsInthincUser(final SuperuserDAO superuserDAOMock) {
+        principalSUT.setSuperuserDAO(superuserDAOMock);
+        new Expectations() {
+            {
+                superuserDAOMock.isSuperuser(USER_ID);
+                result = false;
+            }
+        };
+
         boolean isInthinc = principalSUT.isInthincUser();
         assertFalse(isInthinc);
     }

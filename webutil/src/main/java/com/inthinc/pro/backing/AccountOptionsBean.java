@@ -30,7 +30,7 @@ public class AccountOptionsBean extends BaseBean {
 
         accountSelectList.add(new SelectItem(NONE, "<Select>"));
         for (Account account : accountList) {
-            accountSelectList.add(new SelectItem(account.getAcctID(), account.getAcctID() + " - " + account.getAcctName()));
+            accountSelectList.add(new SelectItem(account.getAccountID(), account.getAccountID() + " - " + account.getAcctName()));
         }
         
         sort(accountSelectList);
@@ -96,7 +96,7 @@ public class AccountOptionsBean extends BaseBean {
         if (account != null) {
             accountDAO.update(account);
             setSaveActionMsg("Success: HOS is " + (account.getHos() == AccountHOSType.NONE ? "Disabled" : "Enabled") +
-                                " , Waysmart is " + (account.getWaySmartSupport() ? "Enabled" : "Disabled") + 
+                                " , Waysmart is " + (account.hasWaySmartSupport() ? "Enabled" : "Disabled") + 
                                 " , Login Expire is " +(account.getProps().getLoginExpire()) + 
                                 " , Password Expire is "+(account.getProps().getPasswordExpire()) +
                                 " , Password Strength is "+(account.getProps().getPasswordStrength()) +

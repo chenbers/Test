@@ -57,7 +57,7 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
         
         assertEquals("Error creating account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.CREATED, response.getResponseStatus());
         assertEquals(response.getEntity().getAcctName(),account1.getAcctName() );
-        account1.setAcctID(response.getEntity().getAcctID() ) ;
+        account1.setAccountID(response.getEntity().getAccountID() ) ;
         logger.info("Account 1  created successfully");
         
         Account account2 = new Account();
@@ -68,7 +68,7 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
         
         assertEquals("Error creating account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.CREATED, response.getResponseStatus());
         assertEquals(response.getEntity().getAcctName(),account2.getAcctName() );
-        account2.setAcctID(response.getEntity().getAcctID() ) ;
+        account2.setAccountID(response.getEntity().getAccountID() ) ;
         logger.info("Account 2 created successfully");
         
         // Getting accounts
@@ -82,13 +82,13 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
         logger.info("Account 2 found successfully");
         
         // Deleting accounts
-        response = adminClient.delete(account1.getAcctID());
+        response = adminClient.delete(account1.getAccountID());
         
         assertEquals("Error deleting account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         assertTrue(this.checkListcontainsElement(accounts.getEntity(), account1));
         logger.info("Account 1 deleted successfully");
         
-        response = adminClient.delete(account2.getAcctID());
+        response = adminClient.delete(account2.getAccountID());
         
         assertEquals("Error deleting account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         assertTrue(this.checkListcontainsElement(accounts.getEntity(), account2));
@@ -109,7 +109,7 @@ public class WebServiceITCaseTest extends BaseEmbeddedServerITCase {
         boolean res = false;
         for (Account acct: accounts){
             if(acct.getAcctName().equals(account.getAcctName())
-                       && acct.getAcctID().equals(account.getAcctID())) {
+                       && acct.getAccountID().equals(account.getAccountID())) {
                res = true;
             }
         }

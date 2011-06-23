@@ -1,6 +1,7 @@
 package com.inthinc.pro.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
@@ -250,7 +251,6 @@ public class Vehicle extends BaseEntity
     {
         this.vtype = vtype;
     }
-
     public String getFullName()
     {
         if ((this.year == null) && (this.make == null) && (this.model == null))
@@ -264,7 +264,9 @@ public class Vehicle extends BaseEntity
         sb.append(this.model!=null?this.model:"");
         return sb.toString();
     }
-
+    public void setFullName(String fullName){
+        //just to keep the Jackson JSON marshaller happy
+    }
     @Override
     public String toString() {
         return "Vehicle [VIN=" + VIN + ", color=" + color + ", deviceID=" + deviceID + ", driverID=" + driverID + ", groupID=" + groupID

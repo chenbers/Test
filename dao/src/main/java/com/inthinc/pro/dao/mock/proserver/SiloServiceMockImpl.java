@@ -620,7 +620,7 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
 
     @Override
     public Map<String, Object> getAcct(Integer acctID) throws ProDAOException {
-        return doMockLookup(Account.class, "acctID", acctID, "No Account for ID: " + acctID, "getAccount");
+        return doMockLookup(Account.class, "accountID", acctID, "No Account for ID: " + acctID, "getAccount");
     }
 
     @Override

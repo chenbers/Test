@@ -44,7 +44,7 @@ public class AccountDAOAdapter extends BaseDAOAdapter<Account> {
 
 	@Override
 	protected Integer getResourceID(Account account) {
-		return account.getAcctID();
+		return account.getAccountID();
 	}
 	
 	// Getters and setters -------------------------------------------------

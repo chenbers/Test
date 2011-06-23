@@ -145,7 +145,7 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
         if(strDate == null)
             return null;
         
-        DateFormat df = new SimpleDateFormat(getSimpleDateFormat()); 
+        DateFormat df = new SimpleDateFormat(SIMPLE_DATE_FORMAT); 
         try
         {
             Date convertedDate = df.parse(strDate);           
@@ -163,14 +163,10 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
      */
     @Override
     public Response getLastTrips(Integer driverID) {
-        DateFormat df = new SimpleDateFormat(getSimpleDateFormat()); 
+        DateFormat df = new SimpleDateFormat(SIMPLE_DATE_FORMAT); 
         Calendar c = Calendar.getInstance(); 
         c.add(Calendar.DATE, DEFAULT_PAST_TIMING);      
         return getLastTrips(driverID,  df.format(c.getTime()));
-    }
-
-    public static String getSimpleDateFormat() {
-        return SIMPLE_DATE_FORMAT;
     }
 
     /**
@@ -207,6 +203,10 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
             return Response.status(Status.NOT_FOUND).build();
         }
         return Response.ok(new GenericEntity<List<DriverLocation>>(list) {}).build();
+    }
+
+    public static String getSimpleDateFormat() {
+        return SIMPLE_DATE_FORMAT;
     }
 
 }

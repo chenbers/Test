@@ -24,7 +24,7 @@ import com.inthinc.pro.service.validation.annotations.ValidStartEndDates;
 @Component
 public class StartEndDatesValidator extends AbstractServiceValidator implements ConstraintValidator<ValidStartEndDates, HasStartEndDates> {
 	
-    private final String DATE_FORMAT = "yyyyMMdd";
+    private final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 	
 	/**
 	 * {@inheritDoc}
@@ -54,7 +54,7 @@ public class StartEndDatesValidator extends AbstractServiceValidator implements 
 
 	private List<String> getPrintableDates(HasStartEndDates bean) {
 		List<String> dates = new ArrayList<String>();
-		SimpleDateFormat formatter = new SimpleDateFormat(DATE_FORMAT);
+		SimpleDateFormat formatter = new SimpleDateFormat(SIMPLE_DATE_FORMAT);
 		dates.add(formatter.format(bean.getStartDate()));
 		dates.add(formatter.format(bean.getEndDate()));
 		return dates;

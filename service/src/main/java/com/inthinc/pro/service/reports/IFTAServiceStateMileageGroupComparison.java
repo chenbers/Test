@@ -22,7 +22,7 @@ import com.inthinc.pro.util.GroupList;
 @Produces("application/xml")
 @Path("")
 public interface IFTAServiceStateMileageGroupComparison {
-    String DATE_FORMAT = "yyyyMMdd";
+    String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 
     /**
      * Service for State mileage by vehicle / Group Comparison by State-Province Report with given group & IFTA only & given dates.
@@ -52,8 +52,8 @@ public interface IFTAServiceStateMileageGroupComparison {
     @Path("/group/{groupID}/report/ifta/stateComparison/iftaOnly/{startDate}/{endDate}")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonWithIftaAndDates(@PathParam("groupID") Integer groupID, 
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
     
@@ -95,8 +95,8 @@ public interface IFTAServiceStateMileageGroupComparison {
     @Consumes("application/xml")
     Response getStateMileageByVehicleStateComparisonWithIftaAndDatesMultiGroup(
             GroupList groupList, 
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
 
@@ -259,8 +259,8 @@ public interface IFTAServiceStateMileageGroupComparison {
     @Path("/group/{groupID}/report/ifta/stateComparison/{startDate}/{endDate}")
     @Produces("application/xml")
     Response getStateMileageByVehicleStateComparisonWithDates(@PathParam("groupID") Integer groupID, 
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
     
@@ -303,8 +303,8 @@ public interface IFTAServiceStateMileageGroupComparison {
     @Consumes("application/xml")
     Response getStateMileageByVehicleStateComparisonWithDatesMultiGroup(
             GroupList groupList, 
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
 

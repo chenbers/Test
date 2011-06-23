@@ -114,7 +114,7 @@ public class AccountCreationITCase extends BaseITCase {
     }
 
     private void deleteAccount(Account account) throws Exception {
-        ClientRequest request = new ClientRequest(url + "/account/" + account.getAcctID(), clientExecutor);
+        ClientRequest request = new ClientRequest(url + "/account/" + account.getAccountID(), clientExecutor);
         ClientResponse response = request.delete();
         assertEquals("Error deleting account. HTTP Status Code: " + response.getStatus() + " - " + response.getResponseStatus(), Response.Status.OK, response.getResponseStatus());
         ClientResponse<Account> accountResponse = request.get(Account.class);
@@ -128,7 +128,7 @@ public class AccountCreationITCase extends BaseITCase {
         // then using that service after creating the following groups
         List<Group> groupList = new ArrayList<Group>();
         Group fleetGroup = new Group();
-        fleetGroup.setAccountID(account.getAcctID());
+        fleetGroup.setAccountID(account.getAccountID());
         fleetGroup.setParentID(0);
         fleetGroup.setDescription("Fleet");
         fleetGroup.setType(GroupType.FLEET);
@@ -145,7 +145,7 @@ public class AccountCreationITCase extends BaseITCase {
         groupList.add(fleetGroup);
 
         Group divisionGroup = new Group();
-        divisionGroup.setAccountID(account.getAcctID());
+        divisionGroup.setAccountID(account.getAccountID());
         divisionGroup.setParentID(fleetGroup.getGroupID());
         divisionGroup.setDescription("Division");
         divisionGroup.setType(GroupType.DIVISION);
@@ -162,7 +162,7 @@ public class AccountCreationITCase extends BaseITCase {
         groupList.add(divisionGroup);
 
         Group teamGroup = new Group();
-        teamGroup.setAccountID(account.getAcctID());
+        teamGroup.setAccountID(account.getAccountID());
         teamGroup.setParentID(divisionGroup.getGroupID());
         teamGroup.setDescription("Team");
         teamGroup.setType(GroupType.TEAM);
@@ -220,7 +220,7 @@ public class AccountCreationITCase extends BaseITCase {
 
     private Address createAddress(Account account) throws Exception {
         Address address = new Address();
-        address.setAccountID(account.getAcctID());
+        address.setAccountID(account.getAccountID());
         address.setAddr1("Address1_" + randomInt);
         address.setAddr2("Address2_" + randomInt);
         address.setCity("West Valley City");
@@ -266,7 +266,7 @@ public class AccountCreationITCase extends BaseITCase {
 
     private Person createPerson(Account account, List<Group> groupList, Address address) throws Exception {
         Person person = new Person();
-        person.setAcctID(account.getAcctID());
+        person.setAcctID(account.getAccountID());
         person.setDept("ITDepartment");
         person.setDob(new DateTime(1969, 1, 1, 1, 1, 1, 1).toDate());
         person.setEmpid("66666666");
@@ -309,7 +309,7 @@ public class AccountCreationITCase extends BaseITCase {
         person.setUser(user);
         person.setDriver(driver);
 
-        ClientRequest request = new ClientRequest(url + "/person/" + account.getAcctID(), clientExecutor);
+        ClientRequest request = new ClientRequest(url + "/person/" + account.getAccountID(), clientExecutor);
         request.body(MediaType.APPLICATION_XML_TYPE, person);
         ClientResponse<Person> response = request.post(Person.class);
 
@@ -447,7 +447,7 @@ public class AccountCreationITCase extends BaseITCase {
 
     private Device createDevice(Account account) throws Exception {
         Device device = new Device();
-        device.setAccountID(account.getAcctID());
+        device.setAccountID(account.getAccountID());
 //        device.setAutoLogoff(AutoLogoff.OFF);
 //        device.setEphone("IT_EPHONE" + randomInt);
         device.setImei("IT_IMEI" + randomInt);

@@ -15,15 +15,20 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.StateMileageByVehicleRoadStatus;
+import com.inthinc.pro.service.exceptionMappers.BadDateRangeExceptionMapper;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicleRoadStatus;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
+import com.inthinc.pro.util.DateUtil;
 import com.inthinc.pro.util.GroupList;
+import common.Logger;
 
 @Component
 public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportServiceImpl 
                                 implements IFTAServiceStateMileageByVehicleRoadStatus {
 
+    private static Logger logger = Logger.getLogger(IFTAServiceStateMileageByVehicleRoadStatusImpl.class);
     @Autowired
     public IFTAServiceStateMileageByVehicleRoadStatusImpl(ReportsFacade reportsFacade) {
         super(reportsFacade);
@@ -71,22 +76,25 @@ public class IFTAServiceStateMileageByVehicleRoadStatusImpl extends BaseReportSe
         // No validation error found
         List<StateMileageByVehicleRoadStatus> list = null;
 
-        Interval interval = getInterval(startDate, endDate);
+        Interval interval = null;
         try {
+            interval = DateUtil.getInterval(startDate, endDate);
             list = reportsFacade.getStateMileageByVehicleRoadStatus(groupList, interval, iftaOnly, locale, measurementType);
+            // Some data found
+        } catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+                
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
-        // Some data found
-        if (list != null && !list.isEmpty()) {
-            return Response.ok(new GenericEntity<List<StateMileageByVehicleRoadStatus>>(list) {}).build();
-        }
-        // No data found
-        else {
-            return Response.status(Status.NOT_FOUND).build();
-        }
-
+            if (list != null && !list.isEmpty()) {
+                return Response.ok(new GenericEntity<List<StateMileageByVehicleRoadStatus>>(list) {}).build();
+            }
+            // No data found
+            else {
+                return Response.status(Status.NOT_FOUND).build();
+            }
     }
 
     /**

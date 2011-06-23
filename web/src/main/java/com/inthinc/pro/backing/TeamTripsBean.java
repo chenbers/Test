@@ -370,7 +370,7 @@ public class TeamTripsBean extends BaseBean {
 	
 	       for (Trip trip : tripsList) {
 	    	   
-	           if (trip.isGoodRoute()){
+	           if (trip.hasGoodRoute()){
     	    	   TeamTrip td = new TeamTrip(trip,
     			   						getTripViolations(violations,trip.getStartTime(),trip.getEndTime()),
     			   						getTripIdles(idles,trip.getStartTime(),trip.getEndTime()),
@@ -533,7 +533,7 @@ public class TeamTripsBean extends BaseBean {
 		    private List<LatLng> compressRoute(Trip trip, int compressionFactor){
 		    	
 		    	List<LatLng> compressedRoute = new ArrayList<LatLng>();
-		    	if (trip.isGoodRoute()){
+		    	if (trip.hasGoodRoute()){
 		    	    List<LatLng> tripRoute = trip.getRoute();
     		    	compressedRoute.add(tripRoute.get(0));
     		    	for (int i=compressionFactor; i< tripRoute.size();i+=compressionFactor){
@@ -554,7 +554,7 @@ public class TeamTripsBean extends BaseBean {
 		    	
 		    	startEventItem = new EventItem();
 		    	
-		        if(trip.isGoodRoute()){
+		        if(trip.hasGoodRoute()){
 
 		            beginningPoint = route.get(0);
 		            beginningPoint.setLat(beginningPoint.getLat() - 0.00001);
@@ -584,7 +584,7 @@ public class TeamTripsBean extends BaseBean {
 
 		        endEventItem = new EventItem();
 
-		        if(trip.isGoodRoute())
+		        if(trip.hasGoodRoute())
 		        {
 		            routeLastStep = route.get(route.size()-1);
 		            routeLastStep.setLat(routeLastStep.getLat() + 0.00001);

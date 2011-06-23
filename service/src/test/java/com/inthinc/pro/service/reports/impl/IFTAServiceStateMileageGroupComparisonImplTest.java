@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import mockit.Expectations;
 import mockit.Mocked;
@@ -17,8 +18,10 @@ import org.junit.Test;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.util.DateUtil;
 import com.inthinc.pro.util.GroupList;
 
 /** 
@@ -54,15 +57,21 @@ public class IFTAServiceStateMileageGroupComparisonImplTest extends BaseUnitTest
     @Before
     public void setUp() {
         serviceSUT = new IFTAServiceStateMileageGroupComparisonImpl(reportsFacadeMock);
-        interval = serviceSUT.getInterval(expectedStartDate, expectedEndDate);
+        try{
+        interval = DateUtil.getInterval(expectedStartDate, expectedEndDate);
+        } catch(BadDateRangeException bdre){
+            System.out.println(bdre.getMessage());
+            
+        }
     }
     
     // Negative tests
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void testGetStateMileageGroupComparisonWihInvalidDates() {
 
-        serviceSUT.getStateMileageByVehicleStateComparisonWithDates(expectedGroupID, 
+        Response response = serviceSUT.getStateMileageByVehicleStateComparisonWithDates(expectedGroupID, 
                 buildDateFromString("20110101"), buildDateFromString("20100202"), locale, measureType);
+        Assert.assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),response.getStatus());
 
     }
 

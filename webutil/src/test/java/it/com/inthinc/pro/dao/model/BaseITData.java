@@ -186,7 +186,7 @@ public abstract class BaseITData {
         {
 	        try
 	        {
-		        Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, group.getName()+"Device", 
+		        Device device = new Device(0, account.getAccountID(), DeviceStatus.ACTIVE, group.getName()+"Device", 
 		        		genNumericID(group.getGroupID(), 15), genNumericID(group.getGroupID(), 19), genNumericID(group.getGroupID(), 10), 
 		        		genNumericID(group.getGroupID(), 10));
 //		        , 
@@ -195,7 +195,7 @@ public abstract class BaseITData {
 //		        device.setAccel("1100 50 4");
 //		        device.setEmuMd5("696d6acbc199d607a5704642c67f4d86");
 		        System.out.println("device imei " + device.getImei());
-		        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
+		        Integer deviceID = deviceDAO.create(account.getAccountID(), device);
 		        device.setDeviceID(deviceID);
 		        
 		        return device;
@@ -297,7 +297,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
         // create
         Integer siloID = TESTING_SILO;
         Integer acctID = accountDAO.create(siloID, account);
-        account.setAcctID(acctID);
+        account.setAccountID(acctID);
     }
     protected void createRedFlagAlerts() {
         RedFlagAlertHessianDAO redFlagAlertDAO = new RedFlagAlertHessianDAO();
@@ -352,7 +352,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
         emailList.add("cjennings@inthinc.com");
         List<AlertMessageType>list = new ArrayList<AlertMessageType>();
         list.add(type);
-        RedFlagAlert redFlagAlert = new RedFlagAlert(list, account.getAcctID(), 
+        RedFlagAlert redFlagAlert = new RedFlagAlert(list, account.getAccountID(), 
     		fleetUser.getUserID(), type + " Red Flag", type + " Red Flag Description", 0,
             1439, // start/end time
             anyDay(), 
@@ -374,7 +374,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
     protected void addRedFlagAlert(RedFlagAlert redFlagAlert,
 			RedFlagAlertHessianDAO redFlagAlertDAO) {
 		
-        Integer redFlagAlertID = redFlagAlertDAO.create(account.getAcctID(), redFlagAlert);
+        Integer redFlagAlertID = redFlagAlertDAO.create(account.getAccountID(), redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setAlertID(redFlagAlertID);
     	xml.writeObject(redFlagAlert);
@@ -386,7 +386,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
         RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
         List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
-        RedFlagAlert zoneAlert = new RedFlagAlert(list,account.getAcctID(), 
+        RedFlagAlert zoneAlert = new RedFlagAlert(list,account.getAccountID(), 
         		fleetUser.getUserID(), "Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
                 null, // vehicleIDs
@@ -398,7 +398,7 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
                 RedFlagLevel.NONE,
                 zone.getZoneID(),null,
                 escalationList(),5, null,5);
-        Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
+        Integer zoneAlertID = zoneAlertDAO.create(account.getAccountID(), zoneAlert);
         assertNotNull(zoneAlertID);
         zoneAlert.setAlertID(zoneAlertID);
     	xml.writeObject(zoneAlert);
@@ -412,16 +412,16 @@ System.out.println("acct name: " + "TEST " + timeStamp.substring(15));
         zoneDAO.setSiloService(siloService);
 
         // create a zone to use
-        zone = new Zone(0, account.getAcctID(), Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107", fleetGroup.getGroupID());
+        zone = new Zone(0, account.getAccountID(), Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107", fleetGroup.getGroupID());
         List<LatLng> points = new ArrayList<LatLng>();
-        zone.setName("Zone " + account.getAcctID());
+        zone.setName("Zone " + account.getAccountID());
         points.add(new LatLng(32.96453094482422f, -117.12944793701172f ));
         points.add(new LatLng(32.96453094482422f, -117.12352752685547f));
         points.add(new LatLng(32.96186447143555f, -117.12352752685547f));
         points.add(new LatLng(32.96186447143555f, -117.12944793701172f));
         points.add(new LatLng(32.96453094482422f, -117.12944793701172f));
         zone.setPoints(points);
-        Integer zoneID = zoneDAO.create(account.getAcctID(), zone);
+        Integer zoneID = zoneDAO.create(account.getAccountID(), zone);
         zone.setZoneID(zoneID);
     	xml.writeObject(zone);
 

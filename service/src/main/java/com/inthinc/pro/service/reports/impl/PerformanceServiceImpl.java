@@ -15,9 +15,12 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.reports.performance.model.DriverHours;
 import com.inthinc.pro.reports.performance.model.TenHoursViolation;
+import com.inthinc.pro.service.exceptionMappers.BadDateRangeExceptionMapper;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.reports.PerformanceService;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
+import com.inthinc.pro.util.DateUtil;
 
 /**
  * PerformanceService implementation class.
@@ -52,14 +55,19 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
     public Response getTenHourViolations(Integer groupID, Date startDate, Date endDate, Locale locale) {
         String method = "Ten Hour Day Violations Request ";
         
-        Interval interval = getInterval(startDate, endDate);
+        Interval interval = null;
 
         logger.debug(method+"("+groupID+", "+startDate+", "+endDate+") started");
         
         logger.debug(method+"calls ReportsFacade.getTenHourViolations()");
         List<TenHoursViolation> violations = null;
         try {
+            interval = DateUtil.getInterval(startDate, endDate);
             violations = reportsFacade.getTenHourViolations(groupID, interval, locale);
+        } catch(BadDateRangeException bdre){
+            logger.error(bdre.getMessage());
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+            
         } catch (Exception e) {
             logger.error(e.toString(), e);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
@@ -99,13 +107,14 @@ public class PerformanceServiceImpl extends BaseReportServiceImpl implements Per
     public Response getDriverHours(Integer groupID, Date startDate, Date endDate, Locale locale) {
         String method = "Driver Hours Request ";
         
-        Interval interval = getInterval(startDate, endDate);
+        Interval interval = null;
 
         logger.debug(method+"("+groupID+", "+startDate+", "+endDate+") started");
         
         logger.debug(method+"calls ReportsFacade.getDriverHours()");
         List<DriverHours> driverHoursList = null;
         try {
+            interval = DateUtil.getInterval(startDate, endDate);
             driverHoursList = reportsFacade.getDriverHours(groupID, interval, locale);
         } catch (Exception e) {
             logger.error(e.toString(), e);

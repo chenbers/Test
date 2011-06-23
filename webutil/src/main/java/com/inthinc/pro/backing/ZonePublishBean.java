@@ -39,7 +39,7 @@ public class ZonePublishBean extends BaseBean {
 
         accountSelectList.add(new SelectItem(NONE, "<Select>"));
         for (Account account : accountList) {
-            accountSelectList.add(new SelectItem(account.getAcctID(), account.getAcctID() + " - " + account.getAcctName()));
+            accountSelectList.add(new SelectItem(account.getAccountID(), account.getAccountID() + " - " + account.getAcctName()));
         }
         
         sort(accountSelectList);

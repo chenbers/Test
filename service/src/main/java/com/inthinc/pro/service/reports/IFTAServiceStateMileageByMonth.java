@@ -22,7 +22,7 @@ import com.inthinc.pro.util.GroupList;
 @Produces("application/xml")
 @Path("")
 public interface IFTAServiceStateMileageByMonth {
-    String DATE_FORMAT = "yyyyMMdd";
+    String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 
     /**
      * Service for State Mileage by Vehicle / Month Report with an explicit Interval.
@@ -51,8 +51,8 @@ public interface IFTAServiceStateMileageByMonth {
     @GET
     @Path("/group/{groupID}/report/ifta/monthMileage/iftaOnly/{startDate}/{endDate}")
     Response getStateMileageByVehicleByMonthWithIftaAndDates(@PathParam("groupID") Integer groupID, 
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
     
@@ -92,8 +92,8 @@ public interface IFTAServiceStateMileageByMonth {
     @Path("/groups/report/ifta/monthMileage/iftaOnly/{startDate}/{endDate}")
     @Consumes("application/xml")
     Response getStateMileageByVehicleByMonthWithIftaAndDatesMultiGroup(GroupList groupList, 
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
 
@@ -247,8 +247,8 @@ public interface IFTAServiceStateMileageByMonth {
     @GET
     @Path("/group/{groupID}/report/ifta/monthMileage/{startDate}/{endDate}")
     Response getStateMileageByVehicleByMonthWithDates(@PathParam("groupID") Integer groupID, 
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
     
@@ -288,8 +288,8 @@ public interface IFTAServiceStateMileageByMonth {
     @Path("/groups/report/ifta/monthMileage/{startDate}/{endDate}")
     @Consumes("application/xml")
     Response getStateMileageByVehicleByMonthWithDatesMultiGroup(GroupList groupList, 
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
 

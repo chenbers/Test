@@ -86,7 +86,7 @@ public class FileImporterTest extends BaseSpringTest {
         Account account = new Account(null, accountName, Status.ACTIVE);
         // create an account
         Integer acctID = accountDAO.create(account);
-        account.setAcctID(acctID);
+        account.setAccountID(acctID);
         
         GroupHessianDAO groupDAO = new GroupHessianDAO();
         groupDAO.setSiloService(siloServiceCreator.getService());

@@ -133,8 +133,8 @@ public class DaoUtilTest extends BaseSpringTest {
         GroupData groupData = itData.teamGroupData.get(0);
         Integer userID = groupData.user.getUserID();
         Person person = getPerson(groupData.user.getPersonID());
-        Role role = getRole(itData.account.getAcctID());
-        ReportSchedule reportSchedule = getReportSchedule(itData.account.getAcctID(), userID, groupData.group.getGroupID());
+        Role role = getRole(itData.account.getAccountID());
+        ReportSchedule reportSchedule = getReportSchedule(itData.account.getAccountID(), userID, groupData.group.getGroupID());
         TablePreference tablePreference = getTablePreference(userID);
         
         Map<ValidatorType, String> valueMap = new HashMap<ValidatorType, String>();

@@ -41,11 +41,11 @@ public class ITDataExt extends BaseITData {
         writeObject(account);
 
         // Address
-        createAddress(account.getAcctID());
+        createAddress(account.getAccountID());
         writeObject(address);
         
         // Group Hierarchy
-        createGroupHierarchy(account.getAcctID(), false);
+        createGroupHierarchy(account.getAccountID(), false);
         writeObject(fleetGroup);
         writeObject(districtGroup);
         for (GroupListData team : teamGroupListData)
@@ -53,14 +53,14 @@ public class ITDataExt extends BaseITData {
 
         // User at fleet level
         System.out.println("Fleet Level");
-        fleetUser = createUser(account.getAcctID(), fleetGroup);
+        fleetUser = createUser(account.getAccountID(), fleetGroup);
         writeObject(fleetUser);
 
         // User at team level
         System.out.println("Team Level");
         for (GroupListData team : teamGroupListData)
         {
-        	team.user = createUser(account.getAcctID(), team.group);
+        	team.user = createUser(account.getAccountID(), team.group);
         	writeObject(team.user);
         	
         	team.deviceList = new ArrayList<Device>();
@@ -177,7 +177,7 @@ public class ITDataExt extends BaseITData {
         // just spot check that account and team exist (this could be more comprehensive)
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
-        Account existingAccount = accountDAO.findByID(account.getAcctID());
+        Account existingAccount = accountDAO.findByID(account.getAccountID());
         boolean dataExists = (existingAccount != null);
         if (dataExists) {
             GroupHessianDAO groupDAO = new GroupHessianDAO();

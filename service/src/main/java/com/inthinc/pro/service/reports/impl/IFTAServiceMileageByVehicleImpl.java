@@ -15,9 +15,12 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.service.exceptionMappers.BadDateRangeExceptionMapper;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.reports.IFTAServiceMileageByVehicle;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
+import com.inthinc.pro.util.DateUtil;
 import com.inthinc.pro.util.GroupList;
 import common.Logger;
 
@@ -127,22 +130,23 @@ public class IFTAServiceMileageByVehicleImpl extends BaseReportServiceImpl imple
 
     /** Service implementation for Mileage by Vehicle report */
     Response getMileageByVehicleMultiGroup(List<Integer> idlist, Date startDate, Date endDate, Boolean iftaOnly, Locale locale, MeasurementType measurementType) {
-
-        Interval interval = getInterval(startDate, endDate);
-
+        Interval interval = null;
         List<MileageByVehicle> list = null;
-        try {
+        try{
+            interval = DateUtil.getInterval(startDate, endDate);
             list = reportsFacade.getMileageByVehicle(idlist, interval, iftaOnly, locale, measurementType);
+            if (list == null || list.isEmpty()) {
+                return Response.status(Status.NOT_FOUND).build();
+            }
+        } catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+                
         } catch (Exception e) {
             logger.error(e.toString() + " for groupIDs:" + idlist + ", interval:" + interval + ", iftaOnly:" + iftaOnly + ", locale:" + locale + ", measurementType: " + measurementType);
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
-
-        if (list == null || list.isEmpty()) {
-            return Response.status(Status.NOT_FOUND).build();
-        }
-
         return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
+
     }
 
 }

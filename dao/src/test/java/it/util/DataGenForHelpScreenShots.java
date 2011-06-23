@@ -182,16 +182,16 @@ public class DataGenForHelpScreenShots {
 
         // Account
         createAccount();
-        System.out.println("account ID: " + account.getAcctID());
+        System.out.println("account ID: " + account.getAccountID());
 
         // Address
-        createAddress(account.getAcctID());
+        createAddress(account.getAccountID());
         
         // Group Hierarchy
-        createGroupHierarchy(account.getAcctID());
+        createGroupHierarchy(account.getAccountID());
 
         // User at fleet level
-        fleetUser = createUser(account.getAcctID(), fleetGroup);
+        fleetUser = createUser(account.getAccountID(), fleetGroup);
         System.out.println("Fleet Level User " + fleetUser.getUsername());
 
         // User at team level
@@ -201,18 +201,18 @@ public class DataGenForHelpScreenShots {
         	int num = Util.randomInt(3, 7);
         	for (int i = 0; i < num; i++)
         	{
-        		User user = createUser(account.getAcctID(), team.group);
+        		User user = createUser(account.getAccountID(), team.group);
         		Device device = createDevice(team.group, user.getUserID());
         		Driver driver = createDriver(team.group);
         		Vehicle vehicle = createVehicle(team.group, device.getDeviceID(), driver.getDriverID());
         		device.setVehicleID(vehicle.getVehicleID());
-                zoneAlert(account.getAcctID(), team.group.getGroupID(), driver.getPerson().getPersonID());
+                zoneAlert(account.getAccountID(), team.group.getGroupID(), driver.getPerson().getPersonID());
                 team.userList.add(user);
                 team.deviceList.add(device);
                 team.vehicleList.add(vehicle);
                 team.driverList.add(driver);
         	}
-            redFlagAlert(account.getAcctID(), team.group.getGroupID());
+            redFlagAlert(account.getAccountID(), team.group.getGroupID());
         }
     }
     
@@ -402,14 +402,14 @@ public class DataGenForHelpScreenShots {
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
         
-        Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device_" + uniqueID, 
+        Device device = new Device(0, account.getAccountID(), DeviceStatus.ACTIVE, "Device_" + uniqueID, 
         		genNumericID(uniqueID, 15), genNumericID(uniqueID, 19), genNumericID(uniqueID, 10), 
         		genNumericID(uniqueID, 10));
 //        , 
 //        		"5555559876");
         
 //        device.setAccel("1100 50 4");
-        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
+        Integer deviceID = deviceDAO.create(account.getAccountID(), device);
         device.setDeviceID(deviceID);
         
         
@@ -581,7 +581,7 @@ public class DataGenForHelpScreenShots {
         // create
         Integer siloID = TESTING_SILO;
         Integer acctID = accountDAO.create(siloID, account);
-        account.setAcctID(acctID);
+        account.setAccountID(acctID);
         
     }
 	

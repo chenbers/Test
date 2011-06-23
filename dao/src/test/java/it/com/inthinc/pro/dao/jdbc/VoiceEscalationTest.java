@@ -106,9 +106,9 @@ public class VoiceEscalationTest extends BaseJDBCTest{
         }
         initPersonPhones();
         
-System.out.println("account id " + itData.account.getAcctID());        
-        List<RedFlagAlert> alerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
-        originalAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAcctID());
+System.out.println("account id " + itData.account.getAccountID());        
+        List<RedFlagAlert> alerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAccountID());
+        originalAlerts = redFlagAlertHessianDAO.getRedFlagAlerts(itData.account.getAccountID());
         redFlagAlerts = new ArrayList<RedFlagAlert>();
         
         for (RedFlagAlert alert : alerts) {

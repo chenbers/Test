@@ -3,6 +3,7 @@ package com.inthinc.pro.model;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
@@ -20,7 +21,8 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
 
 	//TODO: refactor names of fields. Remove the prefix acct. Acct is in
 	@ID
-    private Integer                   acctID;	
+    @Column(name="acctID")
+    private Integer                   accountID;	
 	@Column(name="name")
 	private String                    acctName;
 	
@@ -49,47 +51,50 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
         props = new AccountAttributes();
     }
     
-    public Account(Integer acctID, Status status)
+    public Account(Integer accountID, Status status)
     {
         super();
-        this.acctID = acctID;
+        this.accountID = accountID;
         this.status = status;
     }
     
-    public Account(Integer acctID, String acctName, Status status)
+    public Account(Integer accountID, String acctName, Status status)
     {
         super();
-        this.acctID = acctID;
+        this.accountID = accountID;
         this.acctName = acctName;
         this.status = status;
     }
     
-    public Account(Integer acctID, String acctName, Status status, AccountAttributes props)
+    public Account(Integer accountID, String acctName, Status status, AccountAttributes props)
     {
         super();
-        this.acctID = acctID;
+        this.accountID = accountID;
         this.acctName = acctName;
         this.status = status;
         this.props = props;
     }    
-
-    public Integer getAcctID()
+    public Integer getAccountID()
     {
-        return acctID;
+        return accountID;
+    }
+    public void setAccountID(Integer acctID)
+    {
+        this.accountID = acctID;
     }
 
     /*
      * Note: The getAcctID() method should be flagged as deprecated and this method should be used instead.
      */
-    public Integer getAccountID()
-    {
-        return acctID;
-    }
-
-    public void setAcctID(Integer acctID)
-    {
-        this.acctID = acctID;
-    }
+//    public Integer getAccountID()
+//    {
+//        return accountID;
+//    }
+//
+//    public void setAccountID(Integer accountID)
+//    {
+//        this.accountID = accountID;
+//    }
 
 
     public Status getStatus()
@@ -173,10 +178,10 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
 
     @Override
     public String toString() {
-        return "Account [acctID=" + acctID + ", acctName=" + acctName + ", status=" + status + ", unkDriverID=" + unkDriverID + "]";
+        return "Account [accountID=" + accountID + ", acctName=" + acctName + ", status=" + status + ", unkDriverID=" + unkDriverID + "]";
     }
     
-    public Boolean getWaySmartSupport() {
+    public Boolean hasWaySmartSupport() {
         AccountAttributes options = getProps();
         if (options == null)
             return false;
@@ -188,5 +193,4 @@ public class Account extends BaseEntity implements Comparable<Account>, HasAccou
         return Boolean.valueOf(waySmart);
         
     }
-
 }

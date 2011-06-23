@@ -22,7 +22,7 @@ import com.inthinc.pro.util.GroupList;
 @Produces("application/xml")
 @Path("")
 public interface IFTAServiceStateMileageFuelByVehicle {
-    String DATE_FORMAT = "yyyyMMdd";
+    String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 
     /**
      * Service for State mileage fuel by vehicle Report with an explicit Interval.
@@ -58,9 +58,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      * @param groupID
      *            the Group ID
      * @param startDate
-     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#SIMPLE_DATE_FORMAT}
      * @param endDate
-     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#SIMPLE_DATE_FORMAT}
      * @param locale  
      *            Overrides the Locale associated with the authenticated user. </br>
      *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
@@ -81,8 +81,8 @@ public interface IFTAServiceStateMileageFuelByVehicle {
     @Produces("application/xml")
     Response getStateMileageFuelByVehicleWithDates(
             @PathParam("groupID") Integer groupID,
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
 
@@ -122,9 +122,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      * @param groupID
      *            the Group ID
      * @param startDate
-     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#SIMPLE_DATE_FORMAT}
      * @param endDate
-     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#SIMPLE_DATE_FORMAT}
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
      * @param locale  
@@ -147,8 +147,8 @@ public interface IFTAServiceStateMileageFuelByVehicle {
     @Produces("application/xml")
     Response getStateMileageFuelByVehicleWithIftaAndDates(
             @PathParam("groupID") Integer groupID,
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
 
@@ -203,9 +203,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *   &lt;/groupList&gt;</br>
      * </code>  
      * @param startDate
-     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#SIMPLE_DATE_FORMAT}
      * @param endDate
-     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#SIMPLE_DATE_FORMAT}
      * @param locale  
      *            Overrides the Locale associated with the authenticated user. </br>
      *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
@@ -226,8 +226,8 @@ public interface IFTAServiceStateMileageFuelByVehicle {
     @Produces("application/xml")
     Response getStateMileageFuelByVehicleWithDatesMultiGroup(
             GroupList groupList,
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
 
@@ -283,9 +283,9 @@ public interface IFTAServiceStateMileageFuelByVehicle {
      *   &lt;/groupList&gt;</br>
      * </code>  
      * @param startDate
-     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     *            the start date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#SIMPLE_DATE_FORMAT}
      * @param endDate
-     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#DATE_FORMAT}
+     *            the end date in format {@value com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle#SIMPLE_DATE_FORMAT}
      * @param iftaOnly
      *            the DOT indicator. If set to true, only DOT data will be returned. Defaulted to false.
      * @param locale  
@@ -308,8 +308,8 @@ public interface IFTAServiceStateMileageFuelByVehicle {
     @Produces("application/xml")
     Response getStateMileageFuelByVehicleWithIftaAndDatesMultiGroup(
             GroupList groupList,
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @QueryParam("locale") Locale locale,
             @QueryParam("measurementType") MeasurementType measurementType);
 }

@@ -10,6 +10,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
+import org.jboss.resteasy.annotations.providers.jaxb.IgnoreMediaTypes;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 import org.junit.Ignore;
@@ -55,6 +56,7 @@ public class AccountServiceITCaseTest extends BaseITCase {
 
     @SuppressWarnings("unchecked")
     @Test
+    @IgnoreMediaTypes("application/*+json")
     public void getAccountJSONTest() throws Exception {
 
        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/account.json");

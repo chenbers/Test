@@ -74,7 +74,7 @@ public class AccountAuthorizationAdviceTest {
         try {
             principal.setAccountID(10);
             principal.setInthincUser(false);
-            account.setAcctID(10); // Make address account id same as principal account id.
+            account.setAccountID(10); // Make address account id same as principal account id.
 
             adapter.findByID(23);
         } catch (AccessDeniedException e) {
@@ -84,7 +84,7 @@ public class AccountAuthorizationAdviceTest {
         // Test acceptance by Inthinc user.
         try {
             principal.setAccountID(99);
-            account.setAcctID(88); // Make address account id different than principal account id.
+            account.setAccountID(88); // Make address account id different than principal account id.
             principal.setInthincUser(true); // But flags principal as Inthinc user
 
             adapter.findByID(23);
@@ -102,7 +102,7 @@ public class AccountAuthorizationAdviceTest {
         try {
             principal.setAccountID(10);
             principal.setInthincUser(false);
-            account.setAcctID(11); // Make address account id same as principal account id.
+            account.setAccountID(11); // Make address account id same as principal account id.
 
             adapter.findByID(23);
             fail("Test should have thrown exception " + AccessDeniedException.class);
@@ -118,13 +118,13 @@ public class AccountAuthorizationAdviceTest {
         principal.setAccountID(10);
         principal.setInthincUser(false);
         Account account = new Account();
-        account.setAcctID(10); // Set account id the same as the principal.
+        account.setAccountID(10); // Set account id the same as the principal.
 
         adapter.create(account);
 
         // Test against Inthinc user
         principal.setAccountID(12);
-        account.setAcctID(13); // Set account id different than the principal's.
+        account.setAccountID(13); // Set account id different than the principal's.
         principal.setInthincUser(true); // But flags user as Inthinc
 
         adapter.create(account);
@@ -136,7 +136,7 @@ public class AccountAuthorizationAdviceTest {
             principal.setAccountID(12);
 
             Account account = new Account();
-            account.setAcctID(13); // Set account id different than the principal's.
+            account.setAccountID(13); // Set account id different than the principal's.
             principal.setInthincUser(false); // And user is not Inthinc
 
             adapter.create(account);
@@ -154,13 +154,13 @@ public class AccountAuthorizationAdviceTest {
         principal.setAccountID(10);
         principal.setInthincUser(false);
         Account account = new Account();
-        account.setAcctID(10); // Set account id the same as the principal.
+        account.setAccountID(10); // Set account id the same as the principal.
 
         adapter.create(account);
 
         // Test against Inthinc user
         principal.setAccountID(12);
-        account.setAcctID(13); // Set account id different than the principal's.
+        account.setAccountID(13); // Set account id different than the principal's.
         principal.setInthincUser(true); // But flags user as Inthinc
 
         adapter.update(account);
@@ -172,7 +172,7 @@ public class AccountAuthorizationAdviceTest {
             principal.setAccountID(12);
 
             Account account = new Account();
-            account.setAcctID(13); // Set account id different than the principal's.
+            account.setAccountID(13); // Set account id different than the principal's.
             principal.setInthincUser(false); // And user is not Inthinc
 
             adapter.update(account);
@@ -191,7 +191,7 @@ public class AccountAuthorizationAdviceTest {
         principal.setInthincUser(true);
         Account address = new Account();
         accountDaoStub.setExpectedaccount(address);
-        address.setAcctID(11); // Set account id to be different than the principal.
+        address.setAccountID(11); // Set account id to be different than the principal.
 
         adapter.delete(11);
     }
@@ -205,7 +205,7 @@ public class AccountAuthorizationAdviceTest {
             Account address = new Account();
             accountDaoStub.setExpectedaccount(address);
 
-            address.setAcctID(13); // Set account id different than the principal's.
+            address.setAccountID(13); // Set account id different than the principal's.
             principal.setInthincUser(false); // And user is not Inthinc
 
             adapter.delete(11);
@@ -222,7 +222,7 @@ public class AccountAuthorizationAdviceTest {
             Account address = new Account();
             accountDaoStub.setExpectedaccount(address);
 
-            address.setAcctID(10); // Set account id different than the principal's.
+            address.setAccountID(10); // Set account id different than the principal's.
             principal.setInthincUser(false); // And user is not Inthinc
 
             adapter.delete(11);

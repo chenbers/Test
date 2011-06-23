@@ -16,7 +16,7 @@ import com.inthinc.pro.service.annotations.DateFormat;
  */
 @Path("/group/{groupID}")
 public interface AssetService {
-
+    String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     /**
      * Gets the group's redflags count for the current day (today).
      * 
@@ -44,7 +44,7 @@ public interface AssetService {
      */
     @GET
     @Path("/redflags/count/{startDate}")
-    public Response getRedFlagCount(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate);
+    public Response getRedFlagCount(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate);
 
     /**
      * Gets the group's amount of redflags from the specified start date to the end date.
@@ -61,7 +61,7 @@ public interface AssetService {
      */
     @GET
     @Path("/redflags/count/{startDate}/{endDate}")
-    public Response getRedFlagCount(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate, @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate);
+    public Response getRedFlagCount(@PathParam("groupID") Integer groupID, @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate, @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate);
 
     /**
      * Gets a list of today's red flags for the specified group. Only the records specified in the firstRecord-lastRecord range will be returned.
@@ -103,7 +103,7 @@ public interface AssetService {
     @Path("/redflags/{firstRecord}/{lastRecord}/{startDate}")
     @Produces("application/xml")
     public Response getRedFlags(@PathParam("groupID") Integer groupID, @PathParam("firstRecord") Integer firstRecord, @PathParam("lastRecord") Integer lastRecord,
-            @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate);
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate);
 
     /**
      * Gets a list of red flags for the specified group generated from startDate to endDate. Only the records specified in the firstRecord-lastRecord range will be returned.
@@ -128,6 +128,6 @@ public interface AssetService {
     @Path("/redflags/{firstRecord}/{lastRecord}/{startDate}/{endDate}")
     @Produces("application/xml")
     public Response getRedFlags(@PathParam("groupID") Integer groupID, @PathParam("firstRecord") Integer firstRecord, @PathParam("lastRecord") Integer lastRecord,
-            @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate, @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate);
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate, @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate);
 
 }

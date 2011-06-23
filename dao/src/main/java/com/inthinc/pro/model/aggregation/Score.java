@@ -310,7 +310,7 @@ public class Score {
     }
 
     public void setMpgHeavy(Number mpgHeavy) {
-        this.mpgHeavy = mpgHeavy.doubleValue();
+        this.mpgHeavy = mpgHeavy;
     }
 
     public Number getMpgLight() {
@@ -715,6 +715,9 @@ public class Score {
     			((aggressiveLeftEvents == null) ? 0 : aggressiveLeftEvents.longValue()) + 
     			((aggressiveRightEvents == null) ? 0 : aggressiveRightEvents.longValue());
     }
+    public void setSafetyTotal(Number safetyTotal){
+        //Dummy to keep Jackson happy
+    }
     public Number getWeightedMpg() {
         double totalMpg = (mpgHeavy == null ? 0 : mpgHeavy.doubleValue()/100) * (odometerHeavy == null ? 0 : odometerHeavy.doubleValue()/100d)  +
         				  (mpgMedium == null ? 0 : mpgMedium.doubleValue()/100)  * (odometerMedium == null ? 0 : odometerMedium.doubleValue()/100d)  +
@@ -726,16 +729,28 @@ public class Score {
         	return 0d;
     	return (totalMpg / (totalMiles/100d));
     }
+    public void setWeightedMpg(Number weightedMpg){
+        //Dummy to keep Jackson happy
+    }
     public Number getMilesDriven() {
     	return ((endingOdometer == null) ? 0l : endingOdometer.longValue()) - 
     			((startingOdometer == null) ? 0l : startingOdometer.longValue());  
+    }
+    public void setMilesDriven(Number milesDriven){
+        //Dummy to keep Jackson happy
     }
     public Number getIdleTotal() {
     	return ((idleLo == null) ? 0l : idleLo.longValue()) + 
     			((idleHi == null) ? 0l : idleHi.longValue());  
     }
+    public void setIdleTotal(Number idleTotal){
+        //Dummy to keep Jackson happy
+    }
     public Number getIdlePercent() {
     	return (driveTime == null || driveTime.longValue() == 0l) ? 0 : (getIdleTotal().doubleValue() * 100.0)/driveTime.doubleValue();
+    }
+    public void setIdlePercent(Number idlePercent){
+        //Dummy to keep Jackson happy
     }
     public Number getSpeedEvents1To7MphOver() {
         return speedEvents1To7MphOver;

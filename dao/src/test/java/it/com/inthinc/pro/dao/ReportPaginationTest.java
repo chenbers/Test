@@ -150,7 +150,7 @@ public class ReportPaginationTest {
 
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
-        Account account = accountDAO.findByID(itData.account.getAcctID());
+        Account account = accountDAO.findByID(itData.account.getAccountID());
         itData.account.setUnkDriverID(account.getUnkDriverID());
 
 

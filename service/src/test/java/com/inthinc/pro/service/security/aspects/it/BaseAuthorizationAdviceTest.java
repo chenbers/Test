@@ -64,13 +64,13 @@ public class BaseAuthorizationAdviceTest {
         principal.setAccountID(10);
         principal.setInthincUser(false);
         Account account = new Account();
-        account.setAcctID(10); // Set account id the same as the principal.
+        account.setAccountID(10); // Set account id the same as the principal.
 
         adapter.update(account);
 
         // Test against Inthinc user
         principal.setAccountID(12);
-        account.setAcctID(13); // Set account id different than the principal's.
+        account.setAccountID(13); // Set account id different than the principal's.
         principal.setInthincUser(true); // But flags user as Inthinc
 
         adapter.update(account);
@@ -82,7 +82,7 @@ public class BaseAuthorizationAdviceTest {
             principal.setAccountID(12);
 
             Account account = new Account();
-            account.setAcctID(13); // Set account id different than the principal's.
+            account.setAccountID(13); // Set account id different than the principal's.
             principal.setInthincUser(false); // And user is not Inthinc
 
             adapter.update(account);
@@ -102,13 +102,13 @@ public class BaseAuthorizationAdviceTest {
         principal.setAccountID(10);
         principal.setInthincUser(false);
         Account account = new Account();
-        account.setAcctID(10); // Set account id the same as the principal.
+        account.setAccountID(10); // Set account id the same as the principal.
 
         adapter.create(account);
 
         // Test against Inthinc user
         principal.setAccountID(12);
-        account.setAcctID(13); // Set account id different than the principal's.
+        account.setAccountID(13); // Set account id different than the principal's.
         principal.setInthincUser(true); // But flags user as Inthinc
 
         adapter.create(account);
@@ -120,7 +120,7 @@ public class BaseAuthorizationAdviceTest {
             principal.setAccountID(12);
 
             Account account = new Account();
-            account.setAcctID(13); // Set account id different than the principal's.
+            account.setAccountID(13); // Set account id different than the principal's.
             principal.setInthincUser(false); // And user is not Inthinc
 
             adapter.create(account);
@@ -138,7 +138,7 @@ public class BaseAuthorizationAdviceTest {
 
         // Test acceptance by same account ID.
         try {
-            account.setAcctID(10); // Make account id same as principal account id.
+            account.setAccountID(10); // Make account id same as principal account id.
             principal.setAccountID(10);
             principal.setInthincUser(false);
 
@@ -150,7 +150,7 @@ public class BaseAuthorizationAdviceTest {
         // Test acceptance by Inthinc user.
         try {
             principal.setAccountID(99);
-            account.setAcctID(88); // Make address account id different than principal account id.
+            account.setAccountID(88); // Make address account id different than principal account id.
             principal.setInthincUser(true); // But flags principal as Inthinc user
 
             adapter.findByID(23);
@@ -168,7 +168,7 @@ public class BaseAuthorizationAdviceTest {
         try {
             principal.setAccountID(10);
             principal.setInthincUser(false);
-            address.setAcctID(11); // Make address account id same as principal account id.
+            address.setAccountID(11); // Make address account id same as principal account id.
 
             adapter.findByID(23);
             fail("Test should have thrown exception " + AccessDeniedException.class);

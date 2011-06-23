@@ -251,7 +251,7 @@ public class FwdCmdBean
             List<Account> accounts = accountDAO.getAllAcctIDs();
             for (Account account : accounts)
             {
-                accountList.add(new SelectItem(account.getAcctID(), account.getAcctName() == null ? account.getAcctID().toString() : account.getAcctName()));
+                accountList.add(new SelectItem(account.getAccountID(), account.getAcctName() == null ? account.getAccountID().toString() : account.getAcctName()));
             }
             accountList.set(0, new SelectItem(null, ""));
         }

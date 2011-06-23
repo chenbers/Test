@@ -69,7 +69,7 @@ public class AccountDAOAdapterTest {
 
 	@Test
 	public void testGetResourceID(){
-		account.setAcctID(ACCOUNT_ID); 
+		account.setAccountID(ACCOUNT_ID); 
 		
 		assertEquals(adapterSUT.getResourceID(account), ACCOUNT_ID);
 	}		

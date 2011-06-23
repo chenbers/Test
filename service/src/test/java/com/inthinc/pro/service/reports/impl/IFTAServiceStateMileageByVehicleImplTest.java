@@ -11,7 +11,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import junit.framework.Assert;
-
 import mockit.Expectations;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
@@ -24,8 +23,10 @@ import org.junit.Test;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.impl.BaseUnitTest;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
+import com.inthinc.pro.util.DateUtil;
 import com.inthinc.pro.util.GroupList;
 
 public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
@@ -51,7 +52,13 @@ public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
         returnList.add(new MileageByVehicle());
         expectedStartDate = buildDateFromString("20101201");
         expectedEndDate = buildDateFromString("20101231");
-        interval = serviceSUT.getInterval(expectedStartDate, expectedEndDate);
+        try{
+            interval = DateUtil.getInterval(expectedStartDate, expectedEndDate);
+        }
+        
+        catch(BadDateRangeException bdre){
+            
+        }
         expectedGroupIDList = new ArrayList<Integer>();
         expectedGroupIDList.add(SAMPLE_GROUP_ID);
     }
@@ -244,7 +251,13 @@ public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
         
         new Verifications() {
             {
-                serviceSUT.getInterval(null, null);
+                try{
+                    DateUtil.getInterval(null, null);
+                }
+                
+                catch(BadDateRangeException bdre){
+                    
+                }
             }            
         };
     }
@@ -271,7 +284,13 @@ public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
         
         new Verifications() {
             {
-                serviceSUT.getInterval(expectedStartDate, expectedEndDate);
+                try{
+                    DateUtil.getInterval(expectedStartDate, expectedEndDate);
+                }
+                
+                catch(BadDateRangeException bdre){
+                    
+                }
             }
         };
     }
@@ -297,7 +316,13 @@ public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
         
         new Verifications() {
             {
-                serviceSUT.getInterval(null, null);
+                try{
+                    DateUtil.getInterval(null, null);
+                }
+                
+                catch(BadDateRangeException bdre){
+                    
+                }
             }
         };
     }
@@ -323,7 +348,13 @@ public class IFTAServiceStateMileageByVehicleImplTest extends BaseUnitTest {
         
         new Verifications() {
             {
-                serviceSUT.getInterval(expectedStartDate, expectedEndDate);
+                try{
+                    DateUtil.getInterval(expectedStartDate, expectedEndDate);
+                }
+                
+                catch(BadDateRangeException bdre){
+                    
+                }
             }
         };
     }

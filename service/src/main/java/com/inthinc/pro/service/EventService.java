@@ -13,31 +13,44 @@ import javax.ws.rs.core.UriInfo;
 
 import com.inthinc.pro.service.annotations.DateFormat;
 @Path("/")
+@Produces({"application/xml","application/json", "application/fastinfoset"})
 public interface EventService {
+
+    String SIMPLE_DATE_FORMAT = "yyyyMMdd";
+
     @GET
-    @Produces({"application/xml","application/json", "application/fastinfoset"})
+    @Produces({"text/*"})
     @Path("group/{groupID}/events/{noteTypes:all|.*}/{startDate}/{endDate}/count")
     public Response getEventCount(@PathParam("groupID")Integer groupID,
             @PathParam("noteTypes")String noteTypes,
-            @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate,
-            @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate);
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate);
+    
     @GET
-    @Produces({"application/xml","application/json", "application/fastinfoset"})
+    @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}/{endDate}")
+    public Response getEventsFirstPage(@PathParam("entity") String entity,
+            @PathParam("entityID")Integer entityID,
+            @PathParam("eventTypes")String eventTypes,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
+            @Context UriInfo uriInfo);
+
+    @GET
     @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}/{endDate}/{page}")
     public Response getEvents(@PathParam("entity") String entity,
             @PathParam("entityID")Integer entityID,
             @PathParam("eventTypes")String eventTypes,
-            @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate,
-            @PathParam("endDate") @DateFormat("yyyyMMdd") Date endDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate,
             @PathParam("page") PathSegment page,
             @Context UriInfo uriInfo);
+    
     @GET
-    @Produces({"application/xml","application/json", "application/fastinfoset"})
     @Path("{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}/{page}")
     public Response getEvents(@PathParam("entity") String entity,
             @PathParam("entityID")Integer entityID,
             @PathParam("eventTypes")String eventTypes,
-            @PathParam("startDate") @DateFormat("yyyyMMdd") Date startDate,
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
             @PathParam("page") PathSegment page,
             @Context UriInfo uriInfo);
 }

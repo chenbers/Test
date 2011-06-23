@@ -15,13 +15,18 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.StateMileageByMonth;
+import com.inthinc.pro.service.exceptionMappers.BadDateRangeExceptionMapper;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.reports.IFTAServiceStateMileageByMonth;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
+import com.inthinc.pro.util.DateUtil;
 import com.inthinc.pro.util.GroupList;
+import common.Logger;
 
 @Component
 public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl implements IFTAServiceStateMileageByMonth {
+    private static Logger logger = Logger.getLogger(IFTAServiceStateMileageByMonthImpl.class);
 
     @Autowired
     public IFTAServiceStateMileageByMonthImpl(ReportsFacade reportsFacade) {
@@ -55,18 +60,22 @@ public class IFTAServiceStateMileageByMonthImpl extends BaseReportServiceImpl im
             Date startDate, Date endDate, boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
         List<StateMileageByMonth> list = null;
-
-        Interval interval = getInterval(startDate, endDate);
+        Interval interval = null;
         try {
+            interval = DateUtil.getInterval(startDate, endDate);
             list = reportsFacade.getStateMileageByMonth(groupList, interval, iftaOnly, locale, measurementType);
+            if (list == null || list.isEmpty()) {
+                // No data found
+                return Response.status(Status.NOT_FOUND).build();            
+            }
+            
+        } catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+                    
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
-        if (list == null || list.isEmpty()) {
-            // No data found
-            return Response.status(Status.NOT_FOUND).build();            
-        }
         // Some data found
         return Response.ok(new GenericEntity<List<StateMileageByMonth>>(list) {}).build();
     }

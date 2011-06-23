@@ -73,7 +73,7 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
      * Test getTenHourViolations with the interval.
      */
     @SuppressWarnings("unchecked")
-    @Test(expected=IllegalArgumentException.class)
+    @Test
     public void testGetTenHourViolationsWithInterval() {
         // create interval dates
         Calendar endDate = Calendar.getInstance();
@@ -109,7 +109,8 @@ public class PerformanceServiceImplTest extends BaseUnitTest {
         
         // check for wrong interval
         response = serviceSUT.getTenHourViolations(GROUP_ID, endDate.getTime(), startDate.getTime(), Locale.US);
-        Assert.fail("IllegalArgumentException expected to throw");
+        Assert.assertEquals(Status.BAD_REQUEST.getStatusCode(),response.getStatus());
+//        Assert.fail("IllegalArgumentException expected to throw");
     }
     
     @SuppressWarnings("unchecked")

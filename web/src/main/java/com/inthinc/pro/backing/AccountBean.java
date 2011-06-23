@@ -113,7 +113,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
 
         for (final AccountView a : saveItems) {
             if (a.getAddressID() == null) {
-                Integer addrID = getAddressDAO().create(a.getAcctID(), a.getAddress());
+                Integer addrID = getAddressDAO().create(a.getAccountID(), a.getAddress());
                 a.setAddressID(addrID);
             }
             else {
@@ -334,7 +334,7 @@ public class AccountBean extends BaseAdminBean<AccountBean.AccountView> {
         
         @Override
         public Integer getId() {
-            return getAcctID();
+            return getAccountID();
         }
 
         @Override

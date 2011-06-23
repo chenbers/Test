@@ -200,16 +200,16 @@ public class DataGenForStressTesting {
 
         // Account
         createAccount();
-        System.out.println("account ID: " + account.getAcctID());
+        System.out.println("account ID: " + account.getAccountID());
 
         // Address
-        createAddress(account.getAcctID());
+        createAddress(account.getAccountID());
         
         // Group Hierarchy
-        createGroupHierarchy(account.getAcctID());
+        createGroupHierarchy(account.getAccountID());
 
         // User at fleet level
-        fleetUser = createUser(account.getAcctID(), fleetGroup);
+        fleetUser = createUser(account.getAccountID(), fleetGroup);
         System.out.println("Fleet Level User " + fleetUser.getUsername());
         fleetUserName = fleetUser.getUsername();
 
@@ -219,18 +219,18 @@ public class DataGenForStressTesting {
         	int num = Util.randomInt(10, 25);
         	for (int i = 0; i < num; i++)
         	{
-        		User user = createUser(account.getAcctID(), team.group);
+        		User user = createUser(account.getAccountID(), team.group);
         		Device device = createDevice(team.group, user.getUserID());
         		Driver driver = createDriver(team.group);
         		Vehicle vehicle = createVehicle(team.group, device.getDeviceID(), driver.getDriverID());
         		device.setVehicleID(vehicle.getVehicleID());
-                zoneAlert(account.getAcctID(), team.group.getGroupID(), driver.getPerson().getPersonID());
+                zoneAlert(account.getAccountID(), team.group.getGroupID(), driver.getPerson().getPersonID());
                 team.userList.add(user);
                 team.deviceList.add(device);
                 team.vehicleList.add(vehicle);
                 team.driverList.add(driver);
         	}
-            redFlagAlert(account.getAcctID(), team.group.getGroupID());
+            redFlagAlert(account.getAccountID(), team.group.getGroupID());
         }
         
     	// zone
@@ -290,7 +290,7 @@ public class DataGenForStressTesting {
         emailList.add("cjennings@inthinc.com");
         List<AlertMessageType> list = new ArrayList<AlertMessageType>();
         list.add(type);
-        RedFlagAlert redFlagAlert = new RedFlagAlert(list, account.getAcctID(), 
+        RedFlagAlert redFlagAlert = new RedFlagAlert(list, account.getAccountID(), 
     		fleetUser.getUserID(),
     		type + " Red Flag", type + " Red Flag Description", 0,
             1439, // start/end time
@@ -317,7 +317,7 @@ public class DataGenForStressTesting {
             typeBuilder.append(amt + " Red Flag");
             descriptionBuilder.append(amt + " Red Flag Description\n");
         }
-        RedFlagAlert redFlagAlert = new RedFlagAlert(types, account.getAcctID(),
+        RedFlagAlert redFlagAlert = new RedFlagAlert(types, account.getAccountID(),
             fleetUser.getUserID(),
             typeBuilder.toString(), descriptionBuilder.toString(), 0,
             1439, // start/end time
@@ -337,7 +337,7 @@ public class DataGenForStressTesting {
 	private void addRedFlagAlert(RedFlagAlert redFlagAlert,
 			RedFlagAlertHessianDAO redFlagAlertDAO) {
 		
-        Integer redFlagAlertID = redFlagAlertDAO.create(account.getAcctID(), redFlagAlert);
+        Integer redFlagAlertID = redFlagAlertDAO.create(account.getAccountID(), redFlagAlert);
         assertNotNull(redFlagAlertID);
         redFlagAlert.setAlertID(redFlagAlertID);
 	}
@@ -348,7 +348,7 @@ public class DataGenForStressTesting {
         RedFlagAlertHessianDAO zoneAlertDAO = new RedFlagAlertHessianDAO();
         zoneAlertDAO.setSiloService(siloService);
         List<AlertMessageType>list = new ArrayList<AlertMessageType>(EnumSet.of(AlertMessageType.ALERT_TYPE_ENTER_ZONE,AlertMessageType.ALERT_TYPE_EXIT_ZONE));
-        RedFlagAlert zoneAlert = new RedFlagAlert(list,account.getAcctID(), 
+        RedFlagAlert zoneAlert = new RedFlagAlert(list,account.getAccountID(), 
         		fleetUser.getUserID(),
         		"Zone Alert Profile", "Zone Alert Profile Description", 0, 1439, // start/end time setting to null to indicate anytime?
                 anyDay(), anyTeam(), null, // driverIDs
@@ -361,7 +361,7 @@ public class DataGenForStressTesting {
                 RedFlagLevel.NONE,
                 zone.getZoneID(),null,
                 null,5,null, 5);
-        Integer zoneAlertID = zoneAlertDAO.create(account.getAcctID(), zoneAlert);
+        Integer zoneAlertID = zoneAlertDAO.create(account.getAccountID(), zoneAlert);
         assertNotNull(zoneAlertID);
         zoneAlert.setAlertID(zoneAlertID);
 
@@ -374,16 +374,16 @@ public class DataGenForStressTesting {
         zoneDAO.setSiloService(siloService);
 
         // create a zone to use
-        zone = new Zone(0, account.getAcctID(), Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107", fleetGroup.getGroupID());
+        zone = new Zone(0, account.getAccountID(), Status.ACTIVE, "Zone With Alerts", "123 Street, Salt Lake City, UT 84107", fleetGroup.getGroupID());
         List<LatLng> points = new ArrayList<LatLng>();
-        zone.setName("Zone " + account.getAcctID());
+        zone.setName("Zone " + account.getAccountID());
         points.add(new LatLng(32.96453094482422f, -117.12944793701172f ));
         points.add(new LatLng(32.96453094482422f, -117.12352752685547f));
         points.add(new LatLng(32.96186447143555f, -117.12352752685547f));
         points.add(new LatLng(32.96186447143555f, -117.12944793701172f));
         points.add(new LatLng(32.96453094482422f, -117.12944793701172f));
         zone.setPoints(points);
-        zoneID = zoneDAO.create(account.getAcctID(), zone);
+        zoneID = zoneDAO.create(account.getAccountID(), zone);
         zone.setZoneID(zoneID);
 
 	}
@@ -608,14 +608,14 @@ System.out.println("deviceID: " + deviceID);
         for (int retryCnt = 0; retryCnt < 100; retryCnt++) {
 System.out.println("retryCnt: " + retryCnt);        	
 	        try{
-		        Device device = new Device(0, account.getAcctID(), DeviceStatus.ACTIVE, "Device_" + uniqueID, 
+		        Device device = new Device(0, account.getAccountID(), DeviceStatus.ACTIVE, "Device_" + uniqueID, 
 		        		genNumericID(uniqueID, 15), genNumericID(uniqueID, 19), genNumericID(uniqueID, 10), 
 		        		genNumericID(uniqueID, 10));
 //		        , 
 //		        		"5555559876");
 		        
 //		        device.setAccel("1100 50 4");
-		        Integer deviceID = deviceDAO.create(account.getAcctID(), device);
+		        Integer deviceID = deviceDAO.create(account.getAccountID(), device);
 		        device.setDeviceID(deviceID);
 		        
 		        
@@ -781,7 +781,7 @@ System.out.println("retryCnt: " + retryCnt);
         // create
         Integer siloID = TESTING_SILO;
         Integer acctID = accountDAO.create(siloID, account);
-        account.setAcctID(acctID);
+        account.setAccountID(acctID);
         
     }
 	

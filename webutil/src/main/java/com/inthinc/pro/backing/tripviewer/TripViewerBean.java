@@ -66,7 +66,7 @@ public class TripViewerBean extends BaseBean {
         
         for (Account acct:accts)
         {
-               selectItemList.add(new SelectItem(acct.getAcctID(),acct.getAcctName()));
+               selectItemList.add(new SelectItem(acct.getAccountID(),acct.getAcctName()));
         }
         
         return selectItemList;

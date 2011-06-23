@@ -77,9 +77,9 @@ public class DDLDataSet {
 
     public DDLDataSet(String baseFilename) {
         account = MockData.createMockAccount();
-        group = MockData.createMockGroup(account.getAcctID());
-        driver = MockData.createMockDriver(account.getAcctID());
-        occupant = MockData.createMockDriver(account.getAcctID(), 20, "Occupant", "Driver");
+        group = MockData.createMockGroup(account.getAccountID());
+        driver = MockData.createMockDriver(account.getAccountID());
+        occupant = MockData.createMockDriver(account.getAccountID(), 20, "Occupant", "Driver");
 
         vehicleNameIDMap = new HashMap<String, Integer>();
 

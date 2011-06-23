@@ -84,7 +84,7 @@
 		init-method="init" />
 	<bean id="deviceSensitivityMapping" class="com.inthinc.pro.model.app.DeviceSensitivityMapping"
 		init-method="init" />
-
+	<bean id="tiwiproPrincipal" class="com.inthinc.pro.service.security.TiwiproPrincipal"/>
 	<!-- RestEasy Config -->
 	<!--
 		<bean class="com.inthinc.pro.service.impl.SpeedByStreetServiceImpl">
@@ -124,7 +124,7 @@
 	</bean>
 	<bean id="vehicleService" class="com.inthinc.pro.service.impl.VehicleServiceImpl">
 		<property name="dao" ref="vehicleDAOAdapter" />
-		<property name="addressLookup" ref="geonamesAddressLookupBean" />
+		<property name="addressLookup" ref="googleAddressLookupBean" />
 	</bean>
 	<bean id="voiceService" class="com.inthinc.pro.service.voicexml.VoiceServiceImpl">
 		<property name="voxeoAudioURL" value="${voxeoAudioURL}" />
@@ -135,6 +135,8 @@
 		<property name="alertMessageDAO" ref="alertMessageDAO" />
 	</bean>
 	<bean id="noteService" class="com.inthinc.pro.service.impl.NoteServiceImpl"/>
+	<bean id="eventService" class="com.inthinc.pro.service.impl.EventServiceImpl"/>
+	<bean id="testService" class="com.inthinc.pro.service.impl.TestServiceImpl"/>
 
 	<!--
 		<bean class="com.inthinc.pro.service.impl.NoteServiceImpl"> <property

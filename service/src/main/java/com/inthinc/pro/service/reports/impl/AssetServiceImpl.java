@@ -19,7 +19,7 @@ import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.service.phonecontrol.Clock;
 import com.inthinc.pro.service.reports.AssetService;
-import com.inthinc.pro.util.dateUtil.DateUtil;
+import com.inthinc.pro.util.DateUtil;
 
 /**
  * Default interface for Asset Reports Services.

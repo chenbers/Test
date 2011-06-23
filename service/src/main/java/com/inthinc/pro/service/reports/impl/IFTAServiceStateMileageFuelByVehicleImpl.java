@@ -15,13 +15,18 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.StateMileageFuelByVehicle;
+import com.inthinc.pro.service.exceptionMappers.BadDateRangeExceptionMapper;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.reports.IFTAServiceStateMileageFuelByVehicle;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
+import com.inthinc.pro.util.DateUtil;
 import com.inthinc.pro.util.GroupList;
+import common.Logger;
 
 @Component
 public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceImpl implements IFTAServiceStateMileageFuelByVehicle {
+    private static Logger logger = Logger.getLogger(IFTAServiceStateMileageFuelByVehicleImpl.class);
 
     @Autowired
     public IFTAServiceStateMileageFuelByVehicleImpl(ReportsFacade reportsFacade) {
@@ -65,10 +70,14 @@ public class IFTAServiceStateMileageFuelByVehicleImpl extends BaseReportServiceI
     Response getStateMileageByVehicleRoadStatusWithFullParametersMultiGroup(List<Integer> groupList, Date startDate, Date endDate, boolean iftaOnly, Locale locale, MeasurementType measurementType) {
 
         List<StateMileageFuelByVehicle> list = null;
-        Interval interval = getInterval(startDate, endDate);
-
+        Interval interval = null;
         try {
+            interval = DateUtil.getInterval(startDate, endDate);
+
             list = reportsFacade.getStateMileageFuelByVehicle(groupList, interval, iftaOnly, locale, measurementType);
+        } catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+            
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }

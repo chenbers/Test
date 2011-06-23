@@ -44,7 +44,7 @@ public class ZonePublishJob extends QuartzJobBean {
         logger.debug("Account Count: " + accounts.size());
 
         for (Account account : accounts) {
-            Account a = accountDAO.findByID(account.getAcctID());
+            Account a = accountDAO.findByID(account.getAccountID());
             if (a != null && a.getStatus() != null && !a.getStatus().equals(Status.DELETED)) {
                 logger.debug("Account: " + a.getAcctName());
                 List<Zone> zoneList = zoneDAO.getZones(account.getAccountID());

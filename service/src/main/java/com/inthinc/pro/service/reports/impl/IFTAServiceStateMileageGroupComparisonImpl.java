@@ -14,10 +14,14 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.StateMileageCompareByGroup;
+import com.inthinc.pro.service.exceptionMappers.BadDateRangeExceptionMapper;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.reports.IFTAServiceStateMileageGroupComparison;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
+import com.inthinc.pro.util.DateUtil;
 import com.inthinc.pro.util.GroupList;
+
 import common.Logger;
 
 @Component
@@ -50,9 +54,13 @@ public class IFTAServiceStateMileageGroupComparisonImpl extends BaseReportServic
 
         List<StateMileageCompareByGroup> list = null;
 
-        Interval interval = getInterval(startDate, endDate);
+        Interval interval = null;
         try {
+            interval = DateUtil.getInterval(startDate, endDate);
             list = reportsFacade.getStateMileageGroupComparison(groupList, interval, iftaOnly, locale, measurementType);
+        } catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+                
         } catch (Exception e) {
             logger.error(e.toString() + ", interval:" + interval 
                     + ", iftaOnly:" + iftaOnly + ", locale:" + locale + ", measurementType: " + measurementType);

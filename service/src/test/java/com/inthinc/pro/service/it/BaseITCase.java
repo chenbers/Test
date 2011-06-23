@@ -19,14 +19,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/applicationContext-*.xml" })
-@SuppressWarnings("unchecked")
 public abstract class BaseITCase implements ApplicationContextAware {
     
         private ApplicationContext applicationContext;
         private static final int port = 8080;
         private static final String domain = "localhost";
-//        private static final int port = 8080;
-//        private static final String domain = "localhost";
         protected static final String url = "http://" + domain + ":" + port + "/service/api";
             
         protected HttpClient httpClient;

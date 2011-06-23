@@ -105,19 +105,24 @@ public class Trip extends BaseEntity {
     }
 
     public LatLng getStartLoc() {
-        if (isGoodRoute()) {
+        if (hasGoodRoute()) {
             return route.get(0);
         }
         return null;
     }
-
+    public void setStartLoc(LatLng startLoc){
+        //Just to keep Jackson marshallling happy
+    }
     public LatLng getEndLoc() {
-        if (isGoodRoute()) {
+        if (hasGoodRoute()) {
             return route.get(route.size() - 1);
         }
         return null;
     }
-    public boolean isGoodRoute(){
+    public void setEndLoc(LatLng endLoc){
+        //Just to keep Jackson marshallling happy
+    }
+    public boolean hasGoodRoute(){
         return route != null && route.size() > 1;
     }
     public int compareTo(Trip trip) {
@@ -132,9 +137,9 @@ public class Trip extends BaseEntity {
         this.events = events;
     }
 
-    public boolean isEventsExist() {
-        return events != null && events.size() > 0;
-    }
+//    public boolean isEventsExist() {
+//        return events != null && events.size() > 0;
+//    }
 
     public Long getTripID() {
         if (startTime != null) {

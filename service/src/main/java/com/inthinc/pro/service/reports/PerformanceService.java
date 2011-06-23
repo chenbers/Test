@@ -18,7 +18,7 @@ import com.inthinc.pro.service.annotations.DateFormat;
 @Path("/group/{groupID}/report/performance")
 @Produces("application/xml")
 public interface PerformanceService {
-    String DATE_FORMAT = "yyyyMMdd";
+    String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 
     /**
      * Service for 10 Hours Violations Report with default Interval.
@@ -40,8 +40,8 @@ public interface PerformanceService {
     /**
      * Service for 10 Hours Violations Report with an explicit Interval.
      * @param groupID the Group ID
-     * @param startDate the start date in format {@value com.inthinc.pro.service.reports.PerformanceService#DATE_FORMAT}
-     * @param endDate the end date in format {@value com.inthinc.pro.service.reports.PerformanceService#DATE_FORMAT}
+     * @param startDate the start date in format {@value com.inthinc.pro.service.reports.PerformanceService#SIMPLE_DATE_FORMAT}
+     * @param endDate the end date in format {@value com.inthinc.pro.service.reports.PerformanceService#SIMPLE_DATE_FORMAT}
      * @param locale  
      *            Overrides the Locale associated with the authenticated user. </br>
      *            Example:</br> <code>http://server:8080/service?locale=fr_CA </code></br>
@@ -54,8 +54,8 @@ public interface PerformanceService {
     @GET
     @Path("/10HourViolations/{startDate}/{endDate}")
     Response getTenHourViolations(@PathParam("groupID") Integer groupID,
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate, 
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate, 
             @QueryParam("locale") Locale locale);
     
     /*------------------------------------------------------------------------------------------------------*/
@@ -94,7 +94,7 @@ public interface PerformanceService {
     @Path("/driverHours/{startDate}/{endDate}")
     @Produces("application/xml")
     Response getDriverHours(@PathParam("groupID") Integer groupID,
-            @PathParam("startDate") @DateFormat(DATE_FORMAT) Date startDate,
-            @PathParam("endDate") @DateFormat(DATE_FORMAT) Date endDate, 
+            @PathParam("startDate") @DateFormat(SIMPLE_DATE_FORMAT) Date startDate,
+            @PathParam("endDate") @DateFormat(SIMPLE_DATE_FORMAT) Date endDate, 
             @QueryParam("locale") Locale locale);
 }

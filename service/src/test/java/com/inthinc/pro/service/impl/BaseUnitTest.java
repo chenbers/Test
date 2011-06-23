@@ -14,7 +14,7 @@ import org.junit.After;
  */
 public abstract class BaseUnitTest {
 
-    private static final String DATE_FORMAT = "yyyyMMdd";
+    private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 
     /**
      * Generic method to reset all mocked classes after each test.
@@ -25,7 +25,7 @@ public abstract class BaseUnitTest {
     }
 
     protected Date buildDateFromString(String strDate) {
-        DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+        DateFormat df = new SimpleDateFormat(SIMPLE_DATE_FORMAT);
         try {
             Date convertedDate = df.parse(strDate);
             return convertedDate;

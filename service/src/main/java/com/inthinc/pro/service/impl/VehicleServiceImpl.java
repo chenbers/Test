@@ -29,6 +29,8 @@ import com.inthinc.pro.service.model.BatchResponse;
 
 public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapter> implements VehicleService {
 
+    private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
+
     private AddressLookup addressLookup;
 
     @Override
@@ -123,7 +125,7 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
 
     @Override
     public Response getTrips(Integer vehicleID, String day) {
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(SIMPLE_DATE_FORMAT);
         DateTime startDate = formatter.parseDateTime(day).minusDays(1);
         List<Trip> list = getDao().getTrips(vehicleID, startDate.toDate(), new Date());
 
@@ -153,7 +155,7 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
 
 //    @Override
 //    public Response getEvents(Integer vehicleID, String day) {
-//        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMdd");
+//        DateTimeFormatter formatter = DateTimeFormat.forPattern(SIMPLE_DATE_FORMAT);
 //        DateTime startDate = formatter.parseDateTime(day).minusDays(1);
 //        List<Event> list = getDao().getEvents(vehicleID, startDate.toDate(), new Date());
 //

@@ -35,7 +35,7 @@ import com.inthinc.pro.util.GroupList;
 @Path("/service/api")
 @Consumes("application/xml")
 public interface ServiceClient {
-    String DATE_FORMAT = "yyyyMMdd";
+    String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 
     // --------------------------------------------------------------------------------
     // Account services

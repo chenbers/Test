@@ -88,18 +88,18 @@ public class EmailReportJob extends QuartzJobBean {
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
         for (Account account : accounts) {
             if (isValidAccount(account)){
-                reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAcctID()));
+                reportSchedules.addAll(reportScheduleDAO.getReportSchedulesByAccountID(account.getAccountID()));
             }
         }
         return reportSchedules;
     }
     private boolean isValidAccount(Account account){
-        Account a = accountDAO.findByID(account.getAcctID());
+        Account a = accountDAO.findByID(account.getAccountID());
         if (a == null) {
             logger.info("no account found for account.getAcctID()");
         }
         if ( logger.isDebugEnabled() && (a == null || account.getStatus() == null || account.getStatus().equals(Status.DELETED))) {
-            logger.debug("Account ID Deleted: " + account.getAcctID());
+            logger.debug("Account ID Deleted: " + account.getAccountID());
         }
         return a != null && a.getStatus() != null && !a.getStatus().equals(Status.DELETED);
     }

@@ -59,7 +59,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
      * Test if Get DriverLocations service returns the correct content and response.
      */
     @Test
-    @Ignore
+//    @Ignore
     public void testGetGroupDriverLocations() {
         logger.info("Testing Get DriverLocations service... ");
       
@@ -75,13 +75,13 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
     /**
      * Test if Get DriverLocations service returns 404 response when empty/null list.
      */
-//    @Test
-//    public void testGetGroupDriverLocationsNoData() {
-//        logger.info("Testing Get DriverLocations service when no data... ");
-//        ClientResponse<List<DriverLocation>> response = client.getGroupDriverLocations(343);
-//        logger.info("Get DriverLocations response: " + response.getStatus());
-//        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-//    }
+    @Test
+    public void testGetGroupDriverLocationsNoData() {
+        logger.info("Testing Get DriverLocations service when no data... ");
+        ClientResponse<List<DriverLocation>> response = client.getGroupDriverLocations(343);
+        logger.info("Get DriverLocations response: " + response.getStatus());
+        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+    }
     /**
      * Test if getDriverScores service.
      */
@@ -118,7 +118,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             logger.info("Get DriverVehicleScoreWrapper response: " + response.getStatus());
             assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
             
-            List<DriverVehicleScoreWrapper> list = response.getEntity();
+            List<DriverVehicleScoreWrapper> list = response.getEntity(new GenericType<List<DriverVehicleScoreWrapper>>() {});
             assertNotNull(list);
             assertFalse(list.isEmpty());
         } catch (Exception e) {
@@ -140,7 +140,7 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             logger.info("Get DriverVehicleScoreWrapper response: " + response.getStatus());
             assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
             
-            List<GroupTrendWrapper> list = response.getEntity();
+            List<GroupTrendWrapper> list = response.getEntity(new GenericType<List<GroupTrendWrapper>>() {});
             assertNotNull(list);
             assertFalse(list.isEmpty());
         } catch (Exception e) {
@@ -180,7 +180,6 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/"+GROUP_ID+"/scores/drivers/30.json");
         try {
             ClientResponse<List<DriverVehicleScoreWrapper>> response = request.get();
-//        ClientResponse<List<DriverVehicleScoreWrapper>> response = client.getDriverScores(GROUP_ID, 30);
             logger.info("Get DriverVehicleScoreWrapper response: " + response.getStatus());
             assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
             

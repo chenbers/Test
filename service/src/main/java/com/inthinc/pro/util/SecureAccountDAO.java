@@ -43,7 +43,7 @@ public class SecureAccountDAO extends SecureDAO<Account> {
     @Override
     public boolean isAuthorized(Account account) {
         if (account != null) {
-            if (isInthincUser() || getAccountID().equals(account.getAcctID()))
+            if (isInthincUser() || getAccountID().equals(account.getAccountID()))
                 return true;
         }
         return false;
@@ -52,7 +52,7 @@ public class SecureAccountDAO extends SecureDAO<Account> {
     @Override
     public Account update(Account account) {
         if(isAuthorized(account) && accountDAO.update(account) != 0) 
-            return accountDAO.findByID(account.getAcctID());
+            return accountDAO.findByID(account.getAccountID());
         return null;
             
     }

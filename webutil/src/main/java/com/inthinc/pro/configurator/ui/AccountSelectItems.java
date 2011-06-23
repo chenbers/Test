@@ -28,7 +28,7 @@ public class AccountSelectItems implements Serializable {
 		Collections.sort(accounts);
 		for(Account account: accounts){
 			
-			accountSelectItems.add(new SelectItem(account.getAcctID(),account.getAcctName()));
+			accountSelectItems.add(new SelectItem(account.getAccountID(),account.getAcctName()));
 		}
 	}
 

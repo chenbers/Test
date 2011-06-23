@@ -51,11 +51,11 @@ public class ITData extends BaseITData{
         writeObject(account);
 
         // Address
-        createAddress(account.getAcctID());
+        createAddress(account.getAccountID());
         writeObject(address);
         
         // Group Hierarchy
-        createGroupHierarchy(account.getAcctID(), includeWSGroup);
+        createGroupHierarchy(account.getAccountID(), includeWSGroup);
         writeObject(fleetGroup);
         writeObject(districtGroup);
         for (GroupData team : teamGroupData)
@@ -63,17 +63,17 @@ public class ITData extends BaseITData{
 
         // User at fleet level
         System.out.println("Fleet Level");
-        fleetUser = createUser(account.getAcctID(), fleetGroup);
+        fleetUser = createUser(account.getAccountID(), fleetGroup);
         writeObject(fleetUser);
 
-        districtUser = createUser(account.getAcctID(), districtGroup);
+        districtUser = createUser(account.getAccountID(), districtGroup);
         writeObject(districtUser);
 
         // User at team level
         System.out.println("Team Level");
         for (GroupData team : teamGroupData)
         {
-        	team.user = createUser(account.getAcctID(), team.group);
+        	team.user = createUser(account.getAccountID(), team.group);
             team.device = createDevice(team.group, assignmentDate);
             team.driver = createDriver(team.group);
 //            team.vehicle = createVehicle(team.group, null, team.driver.getDriverID());
@@ -212,7 +212,7 @@ public class ITData extends BaseITData{
         // just spot check that account and team exist (this could be more comprehensive)
         AccountHessianDAO accountDAO = new AccountHessianDAO();
         accountDAO.setSiloService(siloService);
-        Account existingAccount = accountDAO.findByID(account.getAcctID());
+        Account existingAccount = accountDAO.findByID(account.getAccountID());
         boolean dataExists = (existingAccount != null);
         if (dataExists) {
             GroupHessianDAO groupDAO = new GroupHessianDAO();

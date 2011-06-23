@@ -587,7 +587,7 @@ public class SiloServiceTest {
     public void admin() {
         // test all create, find, update and any other methods (not delete yet though)
         account();
-        Integer acctID = account.getAcctID();
+        Integer acctID = account.getAccountID();
         unknownDriver(acctID);
         
         groupHierarchy(acctID);
@@ -1014,11 +1014,11 @@ public class SiloServiceTest {
         Integer siloID = TESTING_SILO;
         Integer acctID = accountDAO.create(siloID, account);
         assertNotNull("Create Account failed", acctID);
-        account.setAcctID(acctID);
-        logger.debug("CREATED ACCOUNT: " + account.getAcctID());
+        account.setAccountID(acctID);
+        logger.debug("CREATED ACCOUNT: " + account.getAccountID());
         // find
         String ignoreFields[] = { "modified", "unkDriverID", "props" };  // baseID was the previous 2nd value? found on device object but?
-        Account savedAccount = accountDAO.findByID(account.getAcctID());
+        Account savedAccount = accountDAO.findByID(account.getAccountID());
         Util.compareObjects(account, savedAccount, ignoreFields);
         assertNotNull("Account unknownDriverID",savedAccount.getUnkDriverID());
         
@@ -1030,7 +1030,7 @@ public class SiloServiceTest {
         // update
         Integer changedCount = accountDAO.update(account);
         assertEquals("Account update count", Integer.valueOf(1), changedCount);
-        savedAccount = accountDAO.findByID(account.getAcctID());
+        savedAccount = accountDAO.findByID(account.getAccountID());
         Util.compareObjects(account, savedAccount, ignoreFields);
         List<Account> accountList = accountDAO.getAllAcctIDs();
         assertTrue(!accountList.isEmpty());

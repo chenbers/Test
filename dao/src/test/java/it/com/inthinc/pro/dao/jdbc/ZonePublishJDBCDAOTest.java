@@ -48,7 +48,7 @@ public class ZonePublishJDBCDAOTest extends BaseJDBCTest {
         // create
         Integer siloID = TESTING_SILO;
         Integer acctID = accountDAO.create(siloID, account);
-        account.setAcctID(acctID);
+        account.setAccountID(acctID);
         
         return account;
     }
@@ -63,10 +63,10 @@ public class ZonePublishJDBCDAOTest extends BaseJDBCTest {
         ZonePublishDAO zonePublishDAO = new ZonePublishJDBCDAO();
         ((ZonePublishJDBCDAO)zonePublishDAO).setDataSource(new ITDataSource().getRealDataSource());
 
-System.out.println("acct id " + testAccount.getAcctID());        
+System.out.println("acct id " + testAccount.getAccountID());        
         for (ZoneVehicleType zoneVehicleType : ZoneVehicleType.values()) {
             ZonePublish zonePublish = new ZonePublish();
-            zonePublish.setAcctID(testAccount.getAcctID());
+            zonePublish.setAcctID(testAccount.getAccountID());
             zonePublish.setZoneVehicleType(zoneVehicleType);
             String zoneDataStr = new String(zoneVehicleType.getName() + "ZONE DATA");
             zonePublish.setPublishZoneData(zoneDataStr.getBytes());
@@ -74,7 +74,7 @@ System.out.println("acct id " + testAccount.getAcctID());
             // create
             zonePublishDAO.publishZone(zonePublish);
             
-            ZonePublish retrievedZonePublish = zonePublishDAO.getPublishedZone(testAccount.getAcctID(), zoneVehicleType);
+            ZonePublish retrievedZonePublish = zonePublishDAO.getPublishedZone(testAccount.getAccountID(), zoneVehicleType);
             assertEquals("acctID should match", zonePublish.getAcctID(), retrievedZonePublish.getAcctID());
             assertEquals("zoneVehicleType should match", zonePublish.getZoneVehicleType(), retrievedZonePublish.getZoneVehicleType());
             for (int i = 0; i < zonePublish.getPublishZoneData().length; i++)
@@ -86,7 +86,7 @@ System.out.println("acct id " + testAccount.getAcctID());
             zonePublish.setPublishZoneData(zoneDataStr.getBytes());
             zonePublishDAO.publishZone(zonePublish);
             
-            retrievedZonePublish = zonePublishDAO.getPublishedZone(testAccount.getAcctID(), zoneVehicleType);
+            retrievedZonePublish = zonePublishDAO.getPublishedZone(testAccount.getAccountID(), zoneVehicleType);
             assertEquals("acctID should match", zonePublish.getAcctID(), retrievedZonePublish.getAcctID());
             assertEquals("zoneVehicleType should match", zonePublish.getZoneVehicleType(), retrievedZonePublish.getZoneVehicleType());
             for (int i = 0; i < zonePublish.getPublishZoneData().length; i++)
@@ -105,16 +105,16 @@ System.out.println("acct id " + testAccount.getAcctID());
         ZonePublishDAO zonePublishDAO = new ZonePublishJDBCDAO();
         ((ZonePublishJDBCDAO)zonePublishDAO).setDataSource(new ITDataSource().getRealDataSource());
 
-System.out.println("acct id " + testAccount.getAcctID());        
+System.out.println("acct id " + testAccount.getAccountID());        
         for (ZoneVehicleType zoneVehicleType : ZoneVehicleType.values()) {
             ZonePublish zonePublish = new ZonePublish();
-            zonePublish.setAcctID(testAccount.getAcctID());
+            zonePublish.setAcctID(testAccount.getAccountID());
             zonePublish.setZoneVehicleType(zoneVehicleType);
             String zoneDataStr = new String(zoneVehicleType.getName() + "ZONE DATA");
             zonePublish.setPublishZoneData(zoneDataStr.getBytes());
             
             // create
-            Integer id = zonePublishDAO.create(testAccount.getAcctID(), zonePublish);
+            Integer id = zonePublishDAO.create(testAccount.getAccountID(), zonePublish);
             System.out.println("returned id " + id);        
             zonePublish.setZonePublishID(id);
             

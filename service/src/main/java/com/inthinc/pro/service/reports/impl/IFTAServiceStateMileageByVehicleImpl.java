@@ -14,13 +14,19 @@ import org.springframework.stereotype.Component;
 
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.reports.ifta.model.MileageByVehicle;
+import com.inthinc.pro.service.exceptionMappers.BadDateRangeExceptionMapper;
+import com.inthinc.pro.service.exceptions.BadDateRangeException;
 import com.inthinc.pro.service.reports.IFTAServiceStateMileageByVehicle;
 import com.inthinc.pro.service.reports.facade.ReportsFacade;
 import com.inthinc.pro.service.validation.annotations.ValidParams;
+import com.inthinc.pro.util.DateUtil;
 import com.inthinc.pro.util.GroupList;
+import common.Logger;
 
 @Component
 public class IFTAServiceStateMileageByVehicleImpl extends BaseReportServiceImpl implements IFTAServiceStateMileageByVehicle {
+
+    private static Logger logger = Logger.getLogger(IFTAServiceStateMileageByVehicleImpl.class);
 
     @Autowired
     public IFTAServiceStateMileageByVehicleImpl(ReportsFacade reportsFacade) {
@@ -137,19 +143,22 @@ public class IFTAServiceStateMileageByVehicleImpl extends BaseReportServiceImpl 
     private Response getStateMileageByVehicleWithFullParamsMultiGroup(GroupList groupList, 
             Date startDate, Date endDate, boolean iftaOnly, Locale locale, MeasurementType measurementType) {
         
-        Interval interval = getInterval(startDate, endDate);
-
+        Interval interval = null;
         List<MileageByVehicle> list = null;
         try {
+            interval = DateUtil.getInterval(startDate, endDate);
             list = reportsFacade.getStateMileageByVehicle(groupList.getValueListAsIntegers(), interval, 
                     iftaOnly, locale, measurementType);
+            if (list == null || list.isEmpty()) {
+                return Response.status(Status.NOT_FOUND).build();
+            }
+        } catch(BadDateRangeException bdre){
+            return BadDateRangeExceptionMapper.getResponse(bdre);
+                
         } catch (Exception e) {
             return Response.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
-        if (list == null || list.isEmpty()) {
-            return Response.status(Status.NOT_FOUND).build();
-        }
 
         return Response.ok(new GenericEntity<List<MileageByVehicle>>(list) {}).build();
     }
