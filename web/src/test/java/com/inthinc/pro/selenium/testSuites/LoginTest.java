@@ -3,37 +3,150 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
-import com.inthinc.pro.selenium.testSuites.WebRallyTest;
+import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
+import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
 public class LoginTest extends WebRallyTest {
-    PageLogin login;
-    String EMAIL_KNOWN = "jwimmer@inthinc.com";
-    String EMAIL_UNKNOWN = "jaaacen@gmail.com";
-    String EMAIL_INVALID = "username_at_domain_dot_tld";
+    String BLOCK_TEXT = "Your access has been blocked. If you have any questions regarding this action, contact your organization's tiwiPRO system administrator.";
+    String CORRECT_USERNAME = "skumer1";
+    String CORRECT_PASSWORD = "ROBOT_ROCK";
+    String INCORRECT_USERNAME = "notarealkumer";
+    String INCORRECT_PASSWORD = "abcdef";
+    String BAD_CASE_USERNAME = "SKUMER1";
+    String BAD_CASE_PASSWORD = "robot_rock";
+    PageLogin pl;
 
     @Before
-    public void setupPage() {
-        login = new PageLogin();
+    public void before(){
+        pl = new PageLogin();
+    }
+    
+    @Test
+    public void accessBlockedTest1240() {
+
+        set_test_case("TC1240");
+
+        pl.loginProcess("bskumer", "abcdef");
+        pl._popUp().loginError()._text().message().assertEquals(BLOCK_TEXT);
+        pl._popUp().loginError()._button().ok().click();
+        assertStringContains("login", pl.getCurrentLocation());
+        pl._textField().userName().assertEquals("");
+        pl._textField().password().assertEquals("");
     }
 
     @Test
-    public void LoginButton() {
-        // Set up test data
+    public void blankUsernameAndPasswordTest1241() {
+
+        set_test_case("TC1241");
+
+        pl.openLogout();
+        pl._button().logIn().click();
+        pl._popUp().loginError()._text().message().assertEquals();
+        pl._popUp().loginError()._button().ok().click();
+        assertStringContains("login", pl.getCurrentLocation());
+        pl._textField().userName().assertEquals("");
+        pl._textField().password().assertEquals("");
+    }
+
+    @Test
+    public void bookmarkPageTest1242() {
+        set_test_case("TC1242");
+
+        savePageLink();
+
+        openSavedPage();
+        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        assertStringContains("dashboard", pl.getCurrentLocation());
+
+        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        String team = ptds._text().teamName().getText();
+        ptds._link().myAccount().click();
+        PageMyAccount pma = new PageMyAccount();
+        pma._text().team().assertEquals(team);
+    }
+
+    @Test
+    public void invalidPasswordTest1245() {
+
+        set_test_case("TC1245");
+
+        pl.loginProcess(CORRECT_USERNAME, INCORRECT_PASSWORD);
+        pl._popUp().loginError()._text().message().assertEquals();
+        pl._popUp().loginError()._button().ok().click();
+        assertStringContains("login", pl.getCurrentLocation());
+        pl._textField().userName().assertEquals("");
+        pl._textField().password().assertEquals("");
+    }
+
+    @Test
+    public void invalidUsernameTest1246() {
+
+        set_test_case("TC1246");
+
+        pl.loginProcess(INCORRECT_USERNAME, CORRECT_PASSWORD);
+        pl._popUp().loginError()._text().message().assertEquals();
+        pl._popUp().loginError()._button().ok().click();
+        assertStringContains("login", pl.getCurrentLocation());
+        pl._textField().userName().assertEquals("");
+        pl._textField().password().assertEquals("");
+    }
+
+    @Test
+    public void buttonTest1247() {
         set_test_case("TC1247");
+
+        pl.openLogout();
+        pl._textField().userName().type(CORRECT_USERNAME);// Type valid username
+        pl._textField().password().type(CORRECT_PASSWORD);// Type valid password
+        pl._button().logIn().click();
+
+        assertStringContains("dashboard", pl.getCurrentLocation());
+
+        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        String team = ptds._text().teamName().getText();
+        ptds._link().myAccount().click();
+        PageMyAccount pma = new PageMyAccount();
+        pma._text().team().assertEquals(team);
+    }
+
+    @Test
+    public void passwordIncorrectCaseTest1248() {
+
+        set_test_case("TC1248");
+
+        pl.loginProcess(CORRECT_USERNAME, BAD_CASE_PASSWORD);
+        pl._popUp().loginError()._text().message().assertEquals();
+        pl._popUp().loginError()._button().ok().click();
+        assertStringContains("login", pl.getCurrentLocation());
+        pl._textField().userName().assertEquals("");
+        pl._textField().password().assertEquals("");
+    }
+
+    @Test
+    public void loginUITest1250() {
+        set_test_case("TC1250");
         
-        // Instantiate additional pages that this test needs
-        PageExecutiveDashboard dash = new PageExecutiveDashboard();
-        
-        /* Input */
-        login.openLogout();//Navigate to page
-        login._textField().userName().type("darth");//Type valid username
-        login._textField().password().type("password");//Type valid password
-        login._button().logIn().click();//Click Log In
-        
-        /* Expected Result */
-        assertStringContains(login.getCurrentLocation(), "dashboard");//You are logged into the inthinc portal
-        dash._link().groupName().assertEquals( 1, "Mother Group");//The page is the expected level/group for that user
+        pl.openLogout();
+
+        assertStringContains("login", pl.getCurrentLocation());
+        pl._textField().userName().assertPresence(true);
+        pl._textField().password().assertPresence(true);
+        pl._button().logIn().assertPresence(true);
+        pl._link().forgotUsernamePassword().assertPresence(true);
+        pl._text().version().assertPresence(true);
+    }
+
+    @Test
+    public void usernameIncorrectCaseTest1251() {
+
+        set_test_case("TC1251");
+
+        pl.loginProcess(BAD_CASE_USERNAME, CORRECT_PASSWORD);
+        pl._popUp().loginError()._text().message().assertEquals();
+        pl._popUp().loginError()._button().ok().click();
+        assertStringContains("login", pl.getCurrentLocation());
+        pl._textField().userName().assertEquals("");
+        pl._textField().password().assertEquals("");
     }
 }
