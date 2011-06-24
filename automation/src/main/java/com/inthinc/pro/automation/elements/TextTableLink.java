@@ -66,13 +66,4 @@ public class TextTableLink extends TextTable implements Clickable, TextTableBase
 		return this;
 	}
 
-	@Override
-	@Deprecated
-	public Boolean assertEquals(String compareAgainst) {
-		addError(
-				"TextTableLink.assertEquals()",
-				"more information is required to determine WHICH item to click.  please supply an Integer number)",
-				ErrorLevel.FAIL);
-		return false;
-	}
 }

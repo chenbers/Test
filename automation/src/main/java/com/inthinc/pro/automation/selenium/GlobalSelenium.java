@@ -17,20 +17,20 @@ public class GlobalSelenium {
 	private volatile static HashMap<Long, CoreMethodLib> multiplicative = new HashMap<Long, CoreMethodLib>();
 	private final static String BASE_URL_DEFAULT = "https://qa.tiwipro.com:8423/tiwipro/";
 	
-	public static CoreMethodLib getSelenium() {
+	public static CoreMethodInterface getSelenium() {
 		Long currentThread = Thread.currentThread().getId();
 		if (multiplicative.containsKey(currentThread)){
-			return multiplicative.get(currentThread);
+			return multiplicative.get(currentThread).getErrors().newInstance();
 		} else {
 			return getYourOwn();
 		}
 	}
 
-	public static CoreMethodLib getYourOwn() {
+	public static CoreMethodInterface getYourOwn() {
 	    CoreMethodLib selenium;
         Long currentThread = Thread.currentThread().getId();
         if (multiplicative.containsKey(currentThread)){
-        	return multiplicative.get(currentThread);
+        	return multiplicative.get(currentThread).getErrors().newInstance();
         }
         
 	    try {
@@ -43,9 +43,8 @@ public class GlobalSelenium {
             logger.error(StackToString.toString(e));
             selenium = new CoreMethodLib(new FirefoxDriver(), BASE_URL_DEFAULT);
         } 
-
-		multiplicative.put(currentThread, selenium);
-		return multiplicative.get(currentThread);
+        multiplicative.put(currentThread, selenium);
+		return multiplicative.get(currentThread).getErrors().newInstance();
 	}
 
 

@@ -9,14 +9,14 @@ import org.openqa.selenium.WebDriver;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public class ElementBase extends MasterTest implements ElementInterface {
 	protected final static String parentXpath = "/..";
 	
     protected final static Logger logger = Logger.getLogger(ElementBase.class);
-    protected CoreMethodLib selenium;
+    protected CoreMethodInterface selenium;
     protected WebDriver webDriver;
 
     protected SeleniumEnumWrapper myEnum;

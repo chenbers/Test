@@ -20,7 +20,7 @@ public class AutomatedTest extends MasterTest{
 
     private String buildNumber;
     protected Long stopTime;
-    protected CoreMethodLib selenium;
+    protected CoreMethodInterface selenium;
 
     public static void afterClass() {
         GlobalSelenium.dieSeleniumDie();
@@ -45,7 +45,6 @@ public class AutomatedTest extends MasterTest{
             }finally{
                 GlobalSelenium.dieSeleniumDie();   
             }
-            System.out.print(".");
         } else {
             System.out.print(" skip ");
         }
@@ -99,5 +98,4 @@ public class AutomatedTest extends MasterTest{
     public void pause(Integer timeToPauseInSeconds, String reasonForPause){
         selenium.pause(timeToPauseInSeconds, reasonForPause);
     }
-
 }

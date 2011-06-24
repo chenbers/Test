@@ -2,9 +2,15 @@ package com.inthinc.pro.automation.selenium;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -12,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.automation.utils.StackToString;
+import com.thoughtworks.selenium.SeleniumException;
 
 /****************************************************************************************
  * Purpose: To catch the errors raised by Selenium, and format them into a nice HashMap<br />
@@ -22,12 +29,69 @@ import com.inthinc.pro.automation.utils.StackToString;
  * @author dtanner
  * @see HashMap
  */
-public class ErrorCatcher {
+public class ErrorCatcher implements InvocationHandler {
     private final static Logger logger = Logger.getLogger(ErrorCatcher.class);
     private HashMap<String, HashMap<String, String>> errors = new HashMap<String, HashMap<String, String>>();
     private HashMap<String, String> errorList;
+    private final CoreMethodLib delegate;
 
-    /**
+    public ErrorCatcher(CoreMethodLib delegate){
+    	this.delegate=delegate;
+    }
+    
+    public CoreMethodInterface newInstance(){
+    	return (CoreMethodInterface) Proxy.newProxyInstance(delegate.getClass().getClassLoader(), getInterfaces(delegate.getClass()), this);
+    }
+    
+    private static Class<?>[] getInterfaces(Class<?> c) {
+        List<Class<?>> result = new ArrayList<Class<?>>();
+        if (c.isInterface()) {
+            result.add(c);
+        } else {
+            do {
+                addInterfaces(c, result);
+                c = c.getSuperclass();
+            } while (c != null);
+        }
+        for (int i = 0; i < result.size(); ++i) {
+            addInterfaces(result.get(i), result);
+        }
+        return result.toArray(new Class<?>[result.size()]);
+    }
+    
+    private static void addInterfaces(Class<?> c, List<Class<?>> list) {
+        for (Class<?> intf: c.getInterfaces()) {
+            if (!list.contains(intf)) {
+                list.add(intf);
+            }
+        }
+    }
+
+    
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable{
+    	Object result = null;
+    	try {
+    	    logger.debug("before method " + method.getName());
+    	    result = method.invoke(delegate, args);
+        } catch (InvocationTargetException e){
+        	sortErrors(e.getCause());
+        } catch (Exception e) {
+        	sortErrors(e);
+    	} finally {
+    		logger.debug("after method " + method.getName());
+    	}
+    	return result;
+    }
+    
+    private void sortErrors(Throwable e) {
+    	if (e instanceof SeleniumException){
+    		addError(delegate.getErrorName(), e);
+    	} else {
+    		addError(delegate.getErrorName(), e);
+    	}
+	}
+
+	/**
      * Add an error by Name<br />
      * 
      * @param errorName

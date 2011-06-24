@@ -1,12 +1,17 @@
 package com.inthinc.pro.automation.utils;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+
+import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
 
@@ -19,11 +24,11 @@ public class MasterTest {
 		COMPARE;
 	}
 	
-	public final static String webVersionID = "footerForm:version";
+	protected static SeleniumEnumWrapper webVersionID;
 
 	private String savedPage;
 
-	private CoreMethodLib selenium;
+	private CoreMethodInterface selenium;
 
 	protected void addError(String errorName, ErrorLevel level) {
 		getErrors().addError(errorName, Thread.currentThread().getStackTrace(),
@@ -135,7 +140,7 @@ public class MasterTest {
 		return selenium.getErrors();
 	}
 
-	protected CoreMethodLib getSelenium() {
+	protected CoreMethodInterface getSelenium() {
 		if (selenium == null) {
 			selenium = GlobalSelenium.getSelenium();
 		}
@@ -192,5 +197,35 @@ public class MasterTest {
         System.out.printf("%s, %s.%s:%3d - %s\n", time, className, element.getMethodName(), element.getLineNumber(), printToScreen.toString());
     }
 	
+
+	protected static void enterKey(){
+		try {
+			Robot r = new Robot();
+			r.keyPress(KeyEvent.VK_ENTER);
+			r.keyRelease(KeyEvent.VK_ENTER);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected String getTextFromElementWithFocus(){
+		WebDriver web = selenium.getWrappedDriver();
+		return web.switchTo().activeElement().getText();
+	}
+	
+	protected void typeToElementWithFocus(String type){
+		WebDriver web = selenium.getWrappedDriver();
+		web.switchTo().activeElement().sendKeys(type);
+	}
+	
+	protected static void tabKey(){
+		try {
+			Robot r = new Robot();
+			r.keyPress(KeyEvent.VK_TAB);
+			r.keyRelease(KeyEvent.VK_TAB);
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

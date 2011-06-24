@@ -8,14 +8,14 @@ import com.inthinc.pro.automation.selenium.CoreMethodLib;
 
 public class PageObject {
 
-    protected CoreMethodLib selenium;
+    protected CoreMethodInterface selenium;
     private volatile static HashMap<Long, String> currentLocation = new HashMap<Long, String>();
 
     public PageObject() {
         selenium = GlobalSelenium.getSelenium();
     }
 
-    protected CoreMethodLib getSelenium() {
+    protected CoreMethodInterface getSelenium() {
         return selenium;
     }
     

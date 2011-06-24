@@ -15,9 +15,8 @@ public interface SeleniumEnums extends TextEnum {
     public static String editColumns = "Edit Columns";
     public static String addresses = "E-mail Address(es): (e-mail addresses separated by a comma)";
     
-    
     public static String appUrl = "/app"; 
-	
+    
 	public String[] getIDs();
 	
 	public String getURL();

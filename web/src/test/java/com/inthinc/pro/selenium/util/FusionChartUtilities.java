@@ -7,10 +7,10 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 
 import com.inthinc.pro.automation.selenium.AbstractPage;
-import com.inthinc.pro.automation.selenium.CoreMethodLib;
+import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 
 public class FusionChartUtilities extends AbstractPage {
-	private CoreMethodLib selenium;
+	private CoreMethodInterface selenium;
     
     public FusionChartUtilities() {
     	selenium = super.getSelenium();

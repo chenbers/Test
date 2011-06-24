@@ -11,7 +11,7 @@ import com.inthinc.pro.automation.utils.MasterTest;
 public abstract class AbstractPage extends MasterTest implements Page {
 	protected SeleniumEnums url;
 	protected ArrayList<SeleniumEnums> checkMe;
-	private CoreMethodLib selenium;
+	private CoreMethodInterface selenium;
 	protected WebDriver webDriver;
 	protected String currentPage;
 	private static ArrayList<Class<? extends AbstractPage>> instantiatedPages = new ArrayList<Class<? extends AbstractPage>>(); 

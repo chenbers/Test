@@ -11,15 +11,20 @@ public class RallyStrings {
     
     public final static String toString(Throwable stack){
         StackTraceElement[] stackElements = stack.getStackTrace();
-        return toString(stackElements);
+        return toString(stackElements, stack.getMessage());
     }
     
     public final static String toString(StackTraceElement[] stack){
+    	return toString(stack, "");
+    }
+    
+    public final static String toString(StackTraceElement[] stack, String message){
         StringWriter result = new StringWriter();
         Boolean passedTest = false;
+        result.write(StringUtils.repeat(tab, 2) + message.replace("\n", newLineChar+StringUtils.repeat(tab, 2)) + newLineChar);
         for (StackTraceElement element : stack){
             String line = StringUtils.repeat(tab, 2) + element.toString();
-            if (line.contains("org.openqa")||line.contains("DefaultSelenium")){
+            if (!line.contains("com.inthinc")||line.contains(".invoke")||line.contains("Unknown Source")){
             	continue;
             }
             if (line.contains("selenium.testSuites")&&!passedTest){
