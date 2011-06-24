@@ -21,7 +21,9 @@ public class RallyStrings {
     public final static String toString(StackTraceElement[] stack, String message){
         StringWriter result = new StringWriter();
         Boolean passedTest = false;
-        result.write(StringUtils.repeat(tab, 2) + message.replace("\n", newLineChar+StringUtils.repeat(tab, 2)) + newLineChar);
+        if(message != null){      
+            result.write(StringUtils.repeat(tab, 2) + message.replace("\n", newLineChar+StringUtils.repeat(tab, 2)) + newLineChar);
+        }
         for (StackTraceElement element : stack){
             String line = StringUtils.repeat(tab, 2) + element.toString();
             if (!line.contains("com.inthinc")||line.contains(".invoke")||line.contains("Unknown Source")){
