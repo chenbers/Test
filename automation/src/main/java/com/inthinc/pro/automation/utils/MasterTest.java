@@ -76,8 +76,8 @@ public class MasterTest {
 	private Boolean assertEquals(Object expected, Object actual,
 			Boolean areObjectsEqual) {
 		if (!compare(expected, actual)) {
-			addError("your expected: '" + actual + "'" + " does not equal: '"
-					+ expected + "'", ErrorLevel.FAIL);
+			addError("your expected: '" + expected + "'" + " does not equal: '"
+					+ actual + "'", ErrorLevel.FAIL);
 			return false;
 		}
 		return true;
