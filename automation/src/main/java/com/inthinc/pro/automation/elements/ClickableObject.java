@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
-public abstract class ClickableObject extends ElementBase implements Clickable {
+public class ClickableObject extends ElementBase implements Clickable {
 
     public ClickableObject(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);

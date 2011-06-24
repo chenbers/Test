@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -22,6 +23,14 @@ public class MasterTest {
 	ERROR,
 	WARN,
 	COMPARE;
+    }
+    
+    protected static String unescapeHtml(String original){
+	return StringEscapeUtils.unescapeHtml(original);
+    }
+    
+    protected static String escapeHtml(String original){
+	return StringEscapeUtils.escapeHtml(original);
     }
 
     protected static void enterKey() {

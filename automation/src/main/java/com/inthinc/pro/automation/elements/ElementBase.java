@@ -164,4 +164,19 @@ public class ElementBase extends MasterTest implements ElementInterface {
     	myEnum.replaceOldWithNew(replaceOld, withNew);
     	return this;
     }
+
+    @Override
+    public Boolean validateVisibility(Boolean visible) {
+	return validateEquals(visible, isVisible());
+    }
+
+    @Override
+    public Boolean validatePresence(Boolean present) {
+	return validateEquals(present, isPresent());
+    }
+
+    @Override
+    public Boolean assertPresence(Boolean present) {
+	return assertEquals(present, isPresent());
+    }
 }

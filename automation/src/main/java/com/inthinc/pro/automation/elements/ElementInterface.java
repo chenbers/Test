@@ -6,15 +6,23 @@ import com.inthinc.pro.model.File;
 
 public interface ElementInterface {
     public Boolean isVisible();
-    public Boolean isPresent();
-    public ElementInterface focus();
+    public Boolean validateVisibility(Boolean visible);
     public Boolean assertVisibility(Boolean visibile);
+    public Boolean isPresent();
+    public Boolean validatePresence(Boolean present);
+    public Boolean assertPresence(Boolean present);
+    public ElementInterface focus();
     
     public interface TableBased extends ElementInterface {
-    	public Boolean isVisible(Integer row);
-        public Boolean isPresent(Integer row);
         public ElementInterface focus(Integer row);
+
+    	public Boolean isVisible(Integer row);
+        public Boolean validateVisibility(Integer row, Boolean visible);
         public Boolean assertVisibility(Integer row, Boolean visible);
+
+        public Boolean isPresent(Integer row);
+        public Boolean validatePresence(Integer row, Boolean present);
+        public Boolean assertPresence(Integer row, Boolean present);
         
     }
     
