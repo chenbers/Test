@@ -9,7 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+//import org.openqa.selenium.interactions.Actions;
 
 import com.google.common.base.Supplier;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -218,7 +218,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         	System.out.println(element);
         }else return this;
 
-        new Actions(getWrappedDriver()).moveToElement(item).build().perform();
+//        new Actions(getWrappedDriver()).moveToElement(item).build().perform();
         
         return this;
     }
