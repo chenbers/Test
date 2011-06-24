@@ -30,6 +30,9 @@ public class AutomatedTest extends MasterTest{
         GlobalSelenium.dieSeleniumDie();
     }// tear down
     
+    public AutomatedTest(){
+	webVersionID=null;
+    }
     
     public AutomatedTest(SeleniumEnums version){
     	webVersionID = new SeleniumEnumWrapper(version);
