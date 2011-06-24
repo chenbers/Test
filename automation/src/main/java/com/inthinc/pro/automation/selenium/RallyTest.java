@@ -5,6 +5,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.rally.RallyWebServices;
 import com.inthinc.pro.rally.TestCaseResult;
 
@@ -25,6 +26,10 @@ public abstract class RallyTest extends AutomatedTest {
 	private final static String username = "dtanner@inthinc.com";
 	private final static String password = "aOURh7PL5v";
 	private final static RallyWebServices workspace = RallyWebServices.INTHINC;
+	
+	public RallyTest(SeleniumEnums version){
+		super(version);
+	}
 
 	public static void beforeClass() {
 		try {

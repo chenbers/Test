@@ -6,8 +6,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.inthinc.pro.automation.selenium.RallyTest;
+import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
 public abstract class WebRallyTest extends RallyTest{
+	
+	public WebRallyTest(){
+		super(MastheadEnum.VERSION);
+	}
     
     @BeforeClass
     public static void beforeClass(){

@@ -3,6 +3,8 @@ package com.inthinc.pro.automation.selenium;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
@@ -21,10 +23,17 @@ public class AutomatedTest extends MasterTest{
     private String buildNumber;
     protected Long stopTime;
     protected CoreMethodInterface selenium;
+    
+    private final SeleniumEnumWrapper webVersionID;
 
     public static void afterClass() {
         GlobalSelenium.dieSeleniumDie();
     }// tear down
+    
+    
+    public AutomatedTest(SeleniumEnums version){
+    	webVersionID = new SeleniumEnumWrapper(version);
+    }
 
     
     // public abstract void failTest();
