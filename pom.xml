@@ -82,7 +82,7 @@
 		<log4j.version>1.2.12</log4j.version>
 		<jmockit.version>0.999.4</jmockit.version>
 		<hos.version>0.0.6-SNAPSHOT</hos.version>
-		<selenium.version>2.0rc2</selenium.version>
+		<selenium.version>2.0rc3</selenium.version>
 	</properties>
 	<build>
 		<finalName>pro</finalName>
@@ -540,6 +540,11 @@ WWUUnm]]>
 				<version>5.1.9</version>
 			</dependency>
 			<dependency>
+        		<groupId>org.seleniumhq.selenium</groupId>
+        		<artifactId>selenium-java</artifactId>
+     		   <version>2.0rc3</version>
+			</dependency> 
+			<dependency>
 				<groupId>org.seleniumhq.selenium</groupId>
 				<artifactId>selenium-firefox-driver</artifactId>
 				<version>${selenium.version}</version>
@@ -552,11 +557,6 @@ WWUUnm]]>
 			<dependency>
 				<groupId>org.seleniumhq.selenium</groupId>
 				<artifactId>selenium-chrome-driver</artifactId>
-				<version>${selenium.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.seleniumhq.selenium</groupId>
-				<artifactId>selenium-remote-control</artifactId>
 				<version>${selenium.version}</version>
 			</dependency>
 			<dependency>
