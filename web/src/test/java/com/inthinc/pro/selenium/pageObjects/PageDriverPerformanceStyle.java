@@ -5,6 +5,9 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.selenium.AbstractPage;
+import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
+import com.inthinc.pro.selenium.pageEnums.AdminVehicleViewEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.DriverPerformanceStyleEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
@@ -212,5 +215,19 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 	public DriverStyleTextFields _textField() {
 		return new DriverStyleTextFields();
 	}
-
+    @Override
+    @Deprecated
+	/**
+	 * PageAdminVehicleView's .load method cannot be used without specifying a vehicleID
+	 * 
+	 * @deprecated use {@link com.inthinc.pro.selenium.pageObjects.PageAdminVehicleView#load(Integer)}
+	 */
+    public AbstractPage load(){
+    	addError("PageDriverPerformanceStyle.load()", "This page cannot be loaded without more information.  Please supply an (Integer vehicleID)", ErrorLevel.FAIL);
+		return null;
+    }
+    public PageDriverPerformanceStyle load(Integer vehicleID) {
+    	open(AdminVehicleViewEnum.DEFAULT_URL, vehicleID);
+    	return this;
+    }
 }
