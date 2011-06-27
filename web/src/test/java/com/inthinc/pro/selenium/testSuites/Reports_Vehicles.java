@@ -2,7 +2,6 @@ package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.internal.selenesedriver.GetCurrentUrl;
 
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageVehicleReport;
