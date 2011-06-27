@@ -19,8 +19,6 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.HOSOrigin;
@@ -80,7 +78,7 @@ public class HosBean extends BaseBean {
     private static final String EDIT_REDIRECT = "pretty:hosEdit";    
     private static final String VIEW_REDIRECT = "pretty:hos";    
     protected final static String BLANK_SELECTION = "&#160;";
-    private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss z");
+//    private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("MM/dd/yyyy hh:mm:ss z");
 
     public HosBean() {
         super();

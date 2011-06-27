@@ -2,7 +2,6 @@ package com.inthinc.pro.table.columns;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.inthinc.pro.model.TableType;
 

@@ -3,7 +3,7 @@ package com.inthinc.pro.model;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class VehicleName {
+public class VehicleName implements Comparable<VehicleName> {
     private Integer vehicleID;
     private String vehicleName;
     
@@ -26,6 +26,11 @@ public class VehicleName {
     }
     public void setVehicleName(String vehicleName) {
         this.vehicleName = vehicleName;
+    }
+    @Override
+    public int compareTo(VehicleName o) {
+        
+        return vehicleName.compareTo(o.getVehicleName());
     }
 
 }

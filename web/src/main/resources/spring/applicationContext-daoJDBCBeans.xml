@@ -14,9 +14,11 @@ default-autowire="byName">
   <bean id="waysmartDAO" class=" com.inthinc.pro.reports.dao.impl.WaysmartDAOImpl"></bean>
   <bean id="zonePublishDAO" class="com.inthinc.pro.dao.jdbc.ZonePublishJDBCDAO" parent="genericJDBCDAO"></bean>
   <bean id="alertMessageDAO" class="com.inthinc.pro.dao.jdbc.AlertMessageJDBCDAO" parent="genericJDBCDAO"></bean>
+<!--   <bean id="fuelStopDAO" class="com.inthinc.pro.dao.jdbc.FuelStopMockDAO" parent="genericJDBCDAO"></bean> -->
   
 <!-- Un-comment and comment out DAOs above this to use mock data    
   <bean id="hosDAO" class=" com.inthinc.pro.dao.mock.MockHOSDAO"></bean>-->
+  <bean id="fuelStopDAO" class="com.inthinc.pro.dao.jdbc.FuelStopMockDAO"></bean>
     
 <!--  <bean id="stateMileageDAO" class="com.inthinc.pro.reports.dao.mock.MockStateMileageDAO"></bean>-->
   <bean id="stateMileageDAO" class="com.inthinc.pro.dao.jdbc.StateMileageJDBCDAO" parent="genericJDBCDAO"/>

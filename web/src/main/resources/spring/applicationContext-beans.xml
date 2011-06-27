@@ -665,6 +665,7 @@
   <bean id="hosTableColumns" class="com.inthinc.pro.table.columns.HosTableColumns" scope="request" parent="baseTableColumns" />
   <bean id="zoneEventsTableColumns" class="com.inthinc.pro.table.columns.ZoneEventsTableColumns" scope="request" parent="eventsTableColumns" />
   <bean id="hosEventsTableColumns" class="com.inthinc.pro.table.columns.HOSEventsTableColumns" scope="request" parent="eventsTableColumns" />
+  <bean id="fuelStopsTableColumns" class="com.inthinc.pro.table.columns.FuelStopsTableColumns" scope="request" parent="baseTableColumns" />
   
 <!--    
   <bean id="phoneBean" class="com.inthinc.pro.backing.PhoneBean" parent="baseBean">
@@ -695,5 +696,7 @@
   <bean id="waysmartReportsBean" class="com.inthinc.pro.backing.WaysmartReportsBean" scope="request" init-method="init">
     <property name="reportCriteriaService" ref="reportCriteriaService" />
     <property name="reportRenderer" ref="reportRenderer" />
+  </bean>
+  <bean id="fuelStopsBean" class="com.inthinc.pro.backing.FuelStopsBean" scope="session" init-method="init">
   </bean>
 </beans>

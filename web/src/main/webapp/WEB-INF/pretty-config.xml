@@ -527,5 +527,17 @@
         <pattern>/app/hosReports</pattern>
         <view-id>/secured/hos/hosReports.faces</view-id>
     </url-mapping>  
+    <url-mapping id="fuelStops">
+        <pattern>/app/fuelStops</pattern>
+        <view-id>/secured/hos/fuelStops.faces</view-id>
+    </url-mapping>  
+    <url-mapping id="fuelStopsVehicle">
+        <pattern>/app/fuelStops/#{fuelStopsBean.vehicleID}</pattern>
+        <view-id>/secured/hos/fuelStops.faces</view-id>
+    </url-mapping>  
+    <url-mapping id="fuelStopEdit">
+        <pattern>/app/fuelStopEdit/#{fuelStopsBean.vehicleID}</pattern>
+        <view-id>/secured/hos/fuelStopEdit.faces</view-id>
+    </url-mapping>  
 
 </pretty-config>
