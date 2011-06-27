@@ -9,12 +9,12 @@ import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
 public class LoginTest extends WebRallyTest {
     String BLOCK_TEXT = "Your access has been blocked. If you have any questions regarding this action, contact your organization's tiwiPRO system administrator.";
-    String CORRECT_USERNAME = "skumer1";
-    String CORRECT_PASSWORD = "ROBOT_ROCK";
-    String INCORRECT_USERNAME = "notarealkumer";
+    String CORRECT_USERNAME = "dastardly";
+    String CORRECT_PASSWORD = "Muttley";
+    String INCORRECT_USERNAME = "notarealusername";
     String INCORRECT_PASSWORD = "abcdef";
-    String BAD_CASE_USERNAME = "SKUMER1";
-    String BAD_CASE_PASSWORD = "robot_rock";
+    String BAD_CASE_USERNAME = "DASTARDLY";
+    String BAD_CASE_PASSWORD = "mUTTley";
     PageLogin pl;
 
     @Before
