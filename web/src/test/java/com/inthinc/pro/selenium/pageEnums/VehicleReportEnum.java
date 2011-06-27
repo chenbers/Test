@@ -19,9 +19,9 @@ public enum VehicleReportEnum implements SeleniumEnums {
     DRIVER_VALUE(null,"vehicles-form:vehicles:###:vehiclesDriverPerformance"),
     DISTANCE_DRIVEN_VALUE(null, "vehicles-form:vehicles:###:distance"),
     ODOMETER_VALUE(null, "vehicles-form:vehicles:###:odometer"),
-    OVERALL_SCORE_VALUE(null,"//td[@id='vehicles-form:vehicles:###:overallScore']/span/div/div/div/div/div/a"),   
-    STYLE_SCORE_VALUE(null,"//td[@id='vehicles-form:vehicles:###:styleScore']/span/div/div/div/div/div/a"),              
-    SPEED_SCORE_VALUE(null,"//td[@id='vehicles-form:vehicles:###:speedScore']/span/div/div/div/div/div/a"),
+    OVERALL_SCORE_VALUE(null,"vehicles-form:vehicles:###:overallScore"),   
+    STYLE_SCORE_VALUE(null,"vehicles-form:vehicles:###:styleScore"),              
+    SPEED_SCORE_VALUE(null,"vehicles-form:vehicles:###:speedScore"),
     
     
     GROUP_SORT(null,"vehicles-form:vehicles:groupheader:sortDiv"),
