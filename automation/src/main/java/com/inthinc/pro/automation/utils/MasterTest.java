@@ -26,7 +26,7 @@ public class MasterTest {
     }
     
     protected static String unescapeHtml(String original){
-	return StringEscapeUtils.unescapeHtml(original.replace("\n", "").replace("\r", ""));
+	return StringEscapeUtils.unescapeHtml(original);
     }
     
     protected static String escapeHtml(String original){
@@ -242,5 +242,4 @@ public class MasterTest {
 	}
 	return true;
     }
-
 }
