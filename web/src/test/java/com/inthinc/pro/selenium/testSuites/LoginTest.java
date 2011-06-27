@@ -10,6 +10,7 @@ import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 public class LoginTest extends WebRallyTest {
     String BLOCK_TEXT = "Your access has been blocked. If you have any questions regarding this action, contact your organization's tiwiPRO system administrator.";
     String CORRECT_USERNAME = "dastardly";
+    String BLOCKED_USERNAME = "whiplash";
     String CORRECT_PASSWORD = "Muttley";
     String INCORRECT_USERNAME = "notarealusername";
     String INCORRECT_PASSWORD = "abcdef";
@@ -27,7 +28,7 @@ public class LoginTest extends WebRallyTest {
 
         set_test_case("TC1240");
 
-        pl.loginProcess("bskumer", "abcdef");
+        pl.loginProcess(BLOCKED_USERNAME, CORRECT_PASSWORD);
         pl._popUp().loginError()._text().message().assertEquals(BLOCK_TEXT);
         pl._popUp().loginError()._button().ok().click();
         assertStringContains("login", pl.getCurrentLocation());
