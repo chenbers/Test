@@ -82,7 +82,7 @@ public class GroupHierarchy implements Serializable
     	Group potentialParent = getParentGroup(childGroup);
     	if(potentialParent == null)
     		return childGroup;
-    	return getParentGroup(potentialParent);
+    	return getTopGroup(potentialParent);
     }
     public Group getGroup(Integer groupID)
     {
