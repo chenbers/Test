@@ -3,12 +3,14 @@ package com.inthinc.pro.automation.enums;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.thoughtworks.selenium.SeleniumException;
+
 
 public class SeleniumEnumWrapper implements SeleniumEnums{
     
     
     private String text, url, name;
-    private String[] IDs;
+    private String[] IDs = new String[0];
     
 
     public SeleniumEnumWrapper(SeleniumEnums myEnum){
@@ -76,6 +78,19 @@ public class SeleniumEnumWrapper implements SeleniumEnums{
     		}
     		IDs[i]=IDs[i].replace(original, newWord);
     	}
+    	
+    	return this;
+    }
+    public SeleniumEnumWrapper updateURL(Integer number) {
+    	return updateURL("###", number.toString());
+    }
+    public SeleniumEnumWrapper updateURL(String word) {
+    	return updateURL("***", word);	
+    }
+    private SeleniumEnumWrapper updateURL(String original, String replacement) {
+    	if(url == null)
+    		throw new NullPointerException("Cannot updateURL() if url is null");
+    	url=url.replace("###", replacement);
     	return this;
     }
     
