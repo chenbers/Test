@@ -1,16 +1,19 @@
 package com.inthinc.pro.automation.enums;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.thoughtworks.selenium.SeleniumException;
-
 
 public class SeleniumEnumWrapper implements SeleniumEnums{
     
     
     private String text, url, name;
     private String[] IDs = new String[0];
+    
+    public SeleniumEnumWrapper(String name, String ...IDs){
+	this.name = name;
+	this.IDs = IDs;
+    }
     
 
     public SeleniumEnumWrapper(SeleniumEnums myEnum){
@@ -48,10 +51,16 @@ public class SeleniumEnumWrapper implements SeleniumEnums{
     
 
     public String getLocatorsAsString() {
-        StringBuffer results = new StringBuffer();
+        StringWriter results = new StringWriter();
+        results.write("Element Identifiers( ");
+        int length = getLocators().size();
         for(String s: getLocators()){
-            results.append(s+"; ");
+            results.write(s);
+            if (--length!=0){
+        	results.write(", ");
+            }
         }
+        results.write(" )");
         return results.toString();
     }
     
