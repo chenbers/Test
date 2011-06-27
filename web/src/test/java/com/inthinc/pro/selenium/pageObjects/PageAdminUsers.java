@@ -1,11 +1,12 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.TextTable;
-import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
 
 public class PageAdminUsers extends AdminBar {
@@ -43,11 +44,11 @@ public class PageAdminUsers extends AdminBar {
 			return new TextLink(AdminBarEnum.EDIT_COLUMNS_LINK, page);
 		}
 		
-		public TextTableLink tableEntry(AdminUsersEnum column){
+		public TextTableLink tableEntry(AdminUsersEntries column){
 			return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, column);
 		}
 		
-		public TextTableLink sortByColumn(AdminUsersEnum column){
+		public TextTableLink sortByColumn(AdminUsersEntries column){
 			return new TextTableLink(AdminBarEnum.TABLE_HEADERS, page, column);
 		}
 		
@@ -64,7 +65,7 @@ public class PageAdminUsers extends AdminBar {
 	}
 
 	public class AdminUsersTexts extends AdminBarTexts {
-		public TextTable tableEntry(AdminUsersEnum column){
+		public TextTable tableEntry(AdminUsersEntries column){
 			return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
 		}
 	}
