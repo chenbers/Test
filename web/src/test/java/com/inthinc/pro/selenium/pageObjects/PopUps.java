@@ -107,7 +107,7 @@ public class PopUps extends MasterTest{
 
 		}
 
-		public CheckBox _checkBox() {
+		public CheckBox _checkBox() {//TODO: jwimmer: to dTanner: this seems to break with the convention of ...elementName().action();  is there a way to provide that, if not should we be providing enums full of values i.e. DriverEditColumns.GROUP = 1, DriverEditColumns.DRIVER = 3?
 			return new CheckBox(PopUpEnum.EDIT_CHECKBOX, page);
 		}
 		
