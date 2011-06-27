@@ -81,6 +81,28 @@ public class GroupHierarchyTest{
     {
     }
 
+    @Test
+    public void testGetTopGroup_topGroupNotLowestID() {
+    	Integer groupID = 1;
+    	list = new ArrayList<Group>();
+    	groupHierarchy = new GroupHierarchy();
+    	Group topGroup = new Group();
+    	topGroup.setParentID(null);
+    	topGroup.setGroupID(9);
+    	topGroup.setName("The Top Group");
+    	topGroup.setType(GroupType.FLEET);
+    	list.add(topGroup);
+    	
+    	Group groupWithIdLowerThanTop = new Group();
+    	groupWithIdLowerThanTop.setParentID(topGroup.getGroupID());
+    	groupWithIdLowerThanTop.setType(GroupType.DIVISION);
+    	groupWithIdLowerThanTop.setGroupID(groupID++);
+    	list.add(groupWithIdLowerThanTop);
+    	
+    	groupHierarchy = new GroupHierarchy(list);
+    	assertEquals("top group test", topGroup.getGroupID() ,groupHierarchy.getTopGroup().getGroupID());
+    	
+    }
 	@Test
 	public void testGetTopGroup() {
 		
