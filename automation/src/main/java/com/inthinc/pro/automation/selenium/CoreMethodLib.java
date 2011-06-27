@@ -9,14 +9,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
-//import org.openqa.selenium.interactions.Actions;
 
 import com.google.common.base.Supplier;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 import com.thoughtworks.selenium.DefaultSelenium;
-
 
 
 /****************************************************************************************
@@ -689,6 +687,4 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-
 }

@@ -15,7 +15,7 @@ public class AutomatedTest extends MasterTest{
     protected ErrorCatcher errors;
     private AutomationPropertiesBean automationPropertiesBean;
 
-    private final static Logger logger = Logger.getLogger(AutomatedTest.class);
+    protected final static Logger logger = Logger.getLogger(AutomatedTest.class);
 
     protected Boolean skip = false;
     private Verdicts testVerdict;

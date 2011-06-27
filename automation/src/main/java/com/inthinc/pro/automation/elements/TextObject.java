@@ -36,6 +36,10 @@ public class TextObject extends ElementBase implements TextBased {
     public String getText(){
         return selenium.getText(myEnum);
     }
+    @Override
+    public String toString(){
+    	return getText();
+    }
     
     public Boolean validateContains(String expectedPart) {
         String actual = getText();

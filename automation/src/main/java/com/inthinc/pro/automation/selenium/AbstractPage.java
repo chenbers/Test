@@ -14,7 +14,7 @@ public abstract class AbstractPage extends MasterTest implements Page {
 	private CoreMethodInterface selenium;
 	protected WebDriver webDriver;
 	protected String currentPage;
-	private static ArrayList<Class<? extends AbstractPage>> instantiatedPages = new ArrayList<Class<? extends AbstractPage>>(); 
+	public static ArrayList<Class<? extends AbstractPage>> instantiatedPages = new ArrayList<Class<? extends AbstractPage>>(); 
 	
 	public AbstractPage() {
 		selenium = super.getSelenium();
@@ -27,8 +27,7 @@ public abstract class AbstractPage extends MasterTest implements Page {
 		}
 	}
 
-	public Boolean verifyOnPage() { // TODO: dtanner or jwimmer: come up with a
-									// better name
+	public Boolean verifyOnPage() { // TODO: dtanner or jwimmer: come up with a better name
 		ElementBase test = new ElementBase() {};
 		return test.validateElementsPresent(checkMe);
 	}

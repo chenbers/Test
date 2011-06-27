@@ -25,7 +25,7 @@ public class ClickableObject extends ElementBase implements Clickable {
     public ClickableObject click() {
         selenium.click(myEnum);
         selenium.waitForPageToLoad();
-        setCurrentLocation();
+        //setCurrentLocation(); //TODO: jwimmer: to dTanner: how do you feel about ONLY calling setCurrentLocation() if current.* is needed (like on TextLinkContextSense) 
         return this;
     }
 }

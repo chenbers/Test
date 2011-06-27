@@ -165,6 +165,11 @@ public class MasterTest {
     public String getCurrentLocation() {
 	return selenium.getLocation();
     }
+	protected void open(SeleniumEnums pageToOpen, Integer replaceNumber){
+		SeleniumEnumWrapper urlWithNumber = new SeleniumEnumWrapper(pageToOpen);
+		urlWithNumber.updateURL(replaceNumber);
+		selenium.open(urlWithNumber);
+	}
 
     protected ErrorCatcher getErrors() {
 	return selenium.getErrors();

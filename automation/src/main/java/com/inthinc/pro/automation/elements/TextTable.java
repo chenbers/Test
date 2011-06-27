@@ -6,6 +6,7 @@ import com.inthinc.pro.automation.enums.TextEnum;
 
 public class TextTable extends TextObject implements TextTableBased {
 
+	//TODO: jwimmer: to dtanner: shouldn't textTables have a size? or number of rows?
     public TextTable(SeleniumEnums anEnum) {
 	super(anEnum);
     }
