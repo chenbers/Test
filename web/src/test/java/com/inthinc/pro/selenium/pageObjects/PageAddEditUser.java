@@ -65,6 +65,7 @@ public class PageAddEditUser extends AdminBar {
 	public AddEditUserTexts _text(){
 		return new AddEditUserTexts();
 	}
+	
 	public class AddEditUserTexts extends AdminBarTexts{
 		
 		public Text masterError(){
@@ -102,8 +103,9 @@ public class PageAddEditUser extends AdminBar {
 		return new AddEditUserTextFields();
 	}
 	public class AddEditUserTextFields extends AdminBarTextFields{
+		
 		public TextField personFields(AdminUsersEntries textField){
-			return new TextField(AdminBarEnum.TABLE_ENTRIES, textField);
+			return new TextField(AdminAddEditUserEnum.TEXT_FIELDS, textField);
 		}
 		
 		public TextField driverFields(AdminUsersEntries textField){
