@@ -42,6 +42,6 @@ public class TextButton extends ClickableText implements TextBased, Clickable {
 	}
 	@Override
 	public Boolean validate() {
-		return validate();
+		return super.validate();
 	}
 }
