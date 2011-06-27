@@ -34,7 +34,11 @@ public class CheckableObject extends LinkTable implements Checkable, TableBased,
 	@Override
 	public Boolean isChecked(Integer number) {
 		replaceNumber(number);
-		return selenium.isChecked(myEnum);
+		return isChecked();
+	}
+	
+	private Boolean isChecked(){
+	    return selenium.isChecked(myEnum);
 	}
 
 	@Override
@@ -57,10 +61,23 @@ public class CheckableObject extends LinkTable implements Checkable, TableBased,
 		return this;
 	}
 
-	public ClickableObject click(String label) {
+	public CheckableObject click(String label) {
 		String xpath = Xpath.start().label(Id.text(label)).input().toString();
 		myEnum.setID(xpath);
 		super.click(1);
 		return this;
+	}
+	@Override
+	public Boolean validateChecked(Integer number, Boolean checked) {
+	    return validateEquals(checked, isChecked());
+	}
+	@Override
+	public Boolean assertChecked(Integer number, Boolean checked) {
+	    return assertEquals(checked, isChecked());
+	}
+	@Override
+	public Boolean hasFocus(Integer number) {
+	    replaceNumber(number);
+	    return super.hasFocus();
 	}
 }

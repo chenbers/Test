@@ -75,6 +75,11 @@ public class ElementBase extends MasterTest implements ElementInterface {
         selenium.focus(myEnum);
         return this;
     }
+    
+    @Override
+    public Boolean hasFocus(){
+	return selenium.hasFocus(myEnum);
+    }
 
     /**
      * Will only work if the Enumerated Value<br />

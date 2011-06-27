@@ -31,9 +31,7 @@ public class TextField extends TextObject implements Typeable {
     }
     
     public TextField type(String inputText) {
-    	selenium.fireEvent(myEnum, "keydown");
         selenium.type(myEnum, inputText);
-        selenium.fireEvent(myEnum, "keyup");
         return this;
     }
 }

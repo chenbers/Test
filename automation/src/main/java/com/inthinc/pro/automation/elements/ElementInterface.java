@@ -12,6 +12,7 @@ public interface ElementInterface {
     public Boolean validatePresence(Boolean present);
     public Boolean assertPresence(Boolean present);
     public ElementInterface focus();
+    public Boolean hasFocus();
     
     public interface TableBased extends ElementInterface {
         public ElementInterface focus(Integer row);
@@ -107,7 +108,18 @@ public interface ElementInterface {
     	public ElementInterface check(Integer number);
     	public ElementInterface uncheck(Integer number);
     	public Boolean isChecked(Integer number);
+    	public Boolean validateChecked(Integer number, Boolean checked);
+    	public Boolean assertChecked(Integer number, Boolean checked);
     	public ElementInterface click(Integer number);
+    	
+        public Boolean isVisible(Integer number);
+        public Boolean validateVisibility(Integer number,Boolean visible);
+        public Boolean assertVisibility(Integer number,Boolean visibile);
+        public Boolean isPresent(Integer number);
+        public Boolean validatePresence(Integer number,Boolean present);
+        public Boolean assertPresence(Integer number,Boolean present);
+        public ElementInterface focus(Integer number);
+        public Boolean hasFocus(Integer number);
     }
     
     public interface Clickable extends ElementInterface {
