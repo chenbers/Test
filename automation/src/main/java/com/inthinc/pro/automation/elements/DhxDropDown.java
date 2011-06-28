@@ -16,18 +16,23 @@ public class DhxDropDown extends DropDown implements Selectable {
 
     private SeleniumEnums[] enums;
 
-    public DhxDropDown(SeleniumEnums anEnum) {
+    public DhxDropDown(SeleniumEnums ...anEnum) {
+	super(anEnum[0]);
+	enums = anEnum;		
+	makeDropDown = new SeleniumEnumWrapper(anEnum[0]);
+    }
+    
+    public DhxDropDown(SeleniumEnums anEnum, SeleniumEnums[] enums) {
 	super(anEnum);
-	enums = new SeleniumEnums[] {
-	    myEnum
-	};
+	this.enums = enums;		
 	makeDropDown = new SeleniumEnumWrapper(anEnum);
     }
+    
 
     public DhxDropDown(SeleniumEnums anEnum, Integer replaceNumber) {
 	super(anEnum, replaceNumber);
 	enums = new SeleniumEnums[] {
-	    myEnum
+		myEnum
 	};
 	makeDropDown = new SeleniumEnumWrapper(anEnum);
     }
@@ -36,7 +41,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 	super(anEnum, replaceWord);
 	page = replaceWord;
 	enums = new SeleniumEnums[] {
-	    myEnum
+		myEnum
 	};
 	makeDropDown = new SeleniumEnumWrapper(anEnum);
     }
@@ -54,7 +59,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 	super(anEnum, replaceWord, replaceNumber);
 	page = replaceWord;
 	enums = new SeleniumEnums[] {
-	    myEnum
+		myEnum
 	};
 	makeDropDown = new SeleniumEnumWrapper(anEnum);
     }
@@ -72,7 +77,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 		div++;
 	    }
 	}
-	makeDropDown.setID(makeDropDown.getIDs()[0] + "/../img");
+	makeDropDown.setID("//input[@name='" + makeDropDown.getIDs()[0] + "']/../img");
 	myEnum.setID(myEnum.toString());
 	return this;
     }

@@ -6,6 +6,13 @@
 	public class ***DropDowns extends ###DropDowns{}
 	public class ***PopUps extends MastheadPopUps{}
 	
+	
+    public class ***Pager{
+    	public Paging pageIndex(){
+    		return new Paging();
+    	}
+    }
+	
 	public ***Links _link(){
         return new ***Links();
     }
@@ -29,4 +36,10 @@
     public ***PopUps _popUp(){
         return new ***PopUps();
     }
+    
+    public ***Pager _page(){
+    	return new ***Pager();
+    }
+    
+    
     

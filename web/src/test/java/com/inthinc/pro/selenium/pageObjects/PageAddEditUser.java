@@ -10,8 +10,10 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminAddEditUserEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
+import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 
 public class PageAddEditUser extends AdminBar {
@@ -155,17 +157,20 @@ public class PageAddEditUser extends AdminBar {
 		return new AddEditUserDropDowns();
 	}
 	public class AddEditUserDropDowns extends AdminBarDropDowns{
+	    
+	    private SeleniumEnums[] enums = { AdminAddEditUserEnum.DRIVER_TEAM_DHX, AdminAddEditUserEnum.USER_GROUP_DHX };
+
 		
 		public DropDown regularDropDowns(AdminUsersEntries dropDown){
 			return new DropDown(AdminAddEditUserEnum.DROP_DOWNS, dropDown);
 		}
 		
 		public DhxDropDown driverTeam(){
-			return new DhxDropDown(AdminAddEditUserEnum.DRIVER_TEAM_DHX);
+			return new DhxDropDown(AdminAddEditUserEnum.DRIVER_TEAM_DHX, enums);
 		}
 		
 		public DhxDropDown userGroup(){
-			return new DhxDropDown(AdminAddEditUserEnum.USER_GROUP_DHX);
+			return new DhxDropDown(AdminAddEditUserEnum.USER_GROUP_DHX, enums);
 		}
 	}
     @Override

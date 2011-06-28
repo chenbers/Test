@@ -12,8 +12,8 @@ public enum AdminAddEditUserEnum implements SeleniumEnums {
 	/* Drop downs and such */
 	DROP_DOWNS(null, "edit-form:editPerson-***"),
 	
-	DRIVER_TEAM_DHX(null, "edit-form:editPerson-user_groupID"),
-	USER_GROUP_DHX(null, "edit-form:editPerson-driver_groupID"),
+	DRIVER_TEAM_DHX(null, "edit-form:editPerson-driver_groupID"),
+	USER_GROUP_DHX(null, "edit-form:editPerson-user_groupID"),
 	
 	
     TEXT_FIELDS(null, "edit-form:editPerson-***"),

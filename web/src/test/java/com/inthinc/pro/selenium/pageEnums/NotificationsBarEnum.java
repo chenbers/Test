@@ -3,16 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum NotificationsBarEnum implements SeleniumEnums {
-
     DEFAULT_URL("notifications/"),
-    DEFAULT_CURRENT(""),
-    RED_FLAGS_URL("redFlags"),
-    SAFETY_URL("safety"),
-    DIAGNOSTICS_URL("diagnostics"),
-    ZONES_URL("zoneEvents", "zones", ""),
-    HOS_EXCEPTIONS_URL("hosEvents"),
-    EMERGENCY_URL("emergency"),
-    CRASH_HISTORY_URL("crashHistory"),
 
     /* Navigation Bar for Notifications */
     RED_FLAGS("Red Flags", "link=Red Flags", "***-redFlags", "//li[@id='redflagtab']/a"),
@@ -22,6 +13,13 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     HOS_EXCEPTIONS("HOS Exceptions", "link=HOS Exceptions", "***-hosEvents", "//li[@id='hosEventstab']/a"),
     EMERGENCY("Emergency", "link=Emergency", "***-emergency", "//li[@id='emergencytab']/a"),
     CRASH_HISTORY("Crash History", "link=Crash History", "***-crashHistory", "//li[@id='crashhistorytab']/a"),
+    
+
+    STATUS_FILTER(null, "***-form:***:forgivenFilter"),
+    CATEGORY_FILTER(null, "***-form:***:catFilter"),
+    VEHICLE_FILTER(null, "***-form:***:vehiclefsp"),
+    DRIVER_FILTER(null, "***-form:***:driverfsp"),
+    GROUP_FILTER(null, "***-form:***:groupfsp"),
     
     
 
@@ -43,6 +41,21 @@ public enum NotificationsBarEnum implements SeleniumEnums {
 
     LOCATION(null, "***-form:***:###:mapIcon"),
     
+    
+    ALERT_LEVEL_ENTRY(null, "***-form:***:###:level"),
+    DETAILS_ENTRY(null, "***-form:***:###:alerts"),
+    DATE_TIME_ENTRY(null, "***-form:***:###:time"),
+    GROUP_ENTRY(null, "***-form:***:###:group"),
+    DRIVER_ENTRY(null, "***-form:***:###:driver"),
+    VEHICLE_ENTRY(null, "***-form:***:###:vehicle"),
+    CATEGORY_ENTRY(null, "***-form:***:###:category"),
+    DETAIL_ENTRY(null, "***-form:***:###:detail"),
+    STATUS_ENTRY(null, "***-form:***:###:clear"),
+    
+
+    GROUP_SORT("Group", "***-form:***:groupheader:sortDiv"),
+    DRIVER_SORT("Driver", "***-form:***:driverheader:sortDiv"),
+    VEHICLE_SORT("Vehicle", "***-form:***:vehicleheader:sortDiv"),
 
     ;
     private String text, url;

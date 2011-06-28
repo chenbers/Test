@@ -24,14 +24,6 @@ public class MasterTest {
 	WARN,
 	COMPARE;
     }
-    
-    protected static String unescapeHtml(String original){
-	return StringEscapeUtils.unescapeHtml(original);
-    }
-    
-    protected static String escapeHtml(String original){
-	return StringEscapeUtils.escapeHtml(original);
-    }
 
     protected static void enterKey() {
 	try {
@@ -41,6 +33,10 @@ public class MasterTest {
 	} catch (AWTException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    protected static String escapeHtml(String original) {
+	return StringEscapeUtils.escapeHtml(original);
     }
 
     public static void print(Object printToScreen) {
@@ -61,6 +57,10 @@ public class MasterTest {
 	} catch (AWTException e) {
 	    e.printStackTrace();
 	}
+    }
+
+    protected static String unescapeHtml(String original) {
+	return StringEscapeUtils.unescapeHtml(original);
     }
 
     private String savedPage;
@@ -93,7 +93,7 @@ public class MasterTest {
 
     private Boolean assertEquals(Object expected, Object actual,
 	    Boolean areObjectsEqual) {
-	if (compare(expected, actual)!=areObjectsEqual) {
+	if (compare(expected, actual) != areObjectsEqual) {
 	    addError("your expected: '" + expected + "'" + " does not equal: '"
 		    + actual + "'", ErrorLevel.FAIL);
 	    return false;
@@ -132,6 +132,23 @@ public class MasterTest {
 	return assertEquals(expected, actual, false);
     }
 
+    protected Boolean assertNotEquals(Object expected, Object actual,
+	    SeleniumEnumWrapper myEnum) {
+	if (compare(expected, actual)) {
+	    addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(),
+		    "\t\tExpected = " + expected + "\n\t\tActual = " + actual,
+		    ErrorLevel.FAIL);
+	    return false;
+	}
+	return true;
+    }
+
+    protected Boolean assertNotEquals(Object expected,
+	    SeleniumEnumWrapper anEnum) {
+	return assertNotEquals(anEnum.getText(), selenium.getText(anEnum),
+		anEnum);
+    }
+
     protected Boolean assertStringContains(String partialString,
 	    String fullString) {
 	if (!fullString.contains(partialString)) {
@@ -165,11 +182,6 @@ public class MasterTest {
     public String getCurrentLocation() {
 	return selenium.getLocation();
     }
-	protected void open(SeleniumEnums pageToOpen, Integer replaceNumber){
-		SeleniumEnumWrapper urlWithNumber = new SeleniumEnumWrapper(pageToOpen);
-		urlWithNumber.updateURL(replaceNumber);
-		selenium.open(urlWithNumber);
-	}
 
     protected ErrorCatcher getErrors() {
 	return selenium.getErrors();
@@ -189,6 +201,12 @@ public class MasterTest {
 
     protected void open(SeleniumEnums pageToOpen) {
 	selenium.open(new SeleniumEnumWrapper(pageToOpen));
+    }
+
+    protected void open(SeleniumEnums pageToOpen, Integer replaceNumber) {
+	SeleniumEnumWrapper urlWithNumber = new SeleniumEnumWrapper(pageToOpen);
+	urlWithNumber.updateURL(replaceNumber);
+	selenium.open(urlWithNumber);
     }
 
     protected void open(String url) {
