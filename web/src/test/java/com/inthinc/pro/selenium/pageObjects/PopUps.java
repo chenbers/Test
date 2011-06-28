@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.CheckBox;
+import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.ClickableObject;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -39,7 +39,7 @@ public class PopUps extends MasterTest{
 	public PopUps(String page, Types type, Integer number) {
 		this.page = page;
 		this.type = type.getText();
-		this.number = ++number;
+		this.number = ++number; //TODO: dtanner: better way?
 	}
 
 	public PopUps(String page) {
@@ -107,8 +107,8 @@ public class PopUps extends MasterTest{
 
 		}
 
-		public CheckBox _checkBox() {//TODO: jwimmer: to dTanner: this seems to break with the convention of ...elementName().action();  is there a way to provide that, if not should we be providing enums full of values i.e. DriverEditColumns.GROUP = 1, DriverEditColumns.DRIVER = 3?
-			return new CheckBox(PopUpEnum.EDIT_CHECKBOX, page);
+		public CheckBoxTable _checkBox() {//TODO: jwimmer: to dTanner: this seems to break with the convention of ...elementName().action();  is there a way to provide that, if not should we be providing enums full of values i.e. DriverEditColumns.GROUP = 1, DriverEditColumns.DRIVER = 3?
+			return new CheckBoxTable(PopUpEnum.EDIT_CHECKBOX, page);
 		}
 		
 	}

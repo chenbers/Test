@@ -105,6 +105,14 @@ public interface ElementInterface {
     }
     
     public interface Checkable extends ElementInterface {
+	public ElementInterface check();
+    	public ElementInterface uncheck();
+    	public Boolean isChecked();
+    	public Boolean validateChecked(Boolean checked);
+    	public Boolean assertChecked(Boolean checked);
+    }
+    
+    public interface CheckableTable extends ElementInterface {
     	public ElementInterface check(Integer number);
     	public ElementInterface uncheck(Integer number);
     	public Boolean isChecked(Integer number);

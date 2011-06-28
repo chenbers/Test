@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.CheckBox;
+import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
@@ -29,8 +29,8 @@ public class PageTeamTrips extends TeamBar {
 	public class TeamTripsDropDowns extends TeamBarDropDowns{}
 	public class TeamTripsPopUps extends MastheadPopUps{}
 	
-	public CheckBox _checkBox(){
-		return new CheckBox(TeamTripsEnum.CHECK_BOX_ENTRY);
+	public CheckBoxTable _checkBox(){
+		return new CheckBoxTable(TeamTripsEnum.CHECK_BOX_ENTRY);
 	}
 	
 	public TeamTripsLinks _link(){
