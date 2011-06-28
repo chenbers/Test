@@ -158,7 +158,7 @@ public class PageAddEditUser extends AdminBar {
 	}
 	public class AddEditUserDropDowns extends AdminBarDropDowns{
 	    
-	    private SeleniumEnums[] enums = { AdminAddEditUserEnum.DRIVER_TEAM_DHX, AdminAddEditUserEnum.USER_GROUP_DHX };
+	    private SeleniumEnums[] enums = { AdminAddEditUserEnum.USER_GROUP_DHX, AdminAddEditUserEnum.DRIVER_TEAM_DHX };
 
 		
 		public DropDown regularDropDowns(AdminUsersEntries dropDown){
