@@ -104,6 +104,10 @@ public class RandomValues {
 	private Integer getInt() {
 		return random.nextInt(10);
 	}
+	
+	public Integer getInt(Integer max) {
+		return random.nextInt(max+1);
+	}
 
 	public String getIntString(Integer length) {
 		return getString(length, Types.CHARACTER);
