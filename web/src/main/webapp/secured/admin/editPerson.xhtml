@@ -89,7 +89,7 @@
                         <tr>
                           <td width="100" valign="top"><h:outputText value="#{messages.editPerson_middle}" /></td>
                           <td>
-                            <h:inputText value="#{personBean.item.middle}" id="middle" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="20" />
+                            <h:inputText value="#{personBean.item.middle}" id="editPerson-middle" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="20" />
                           </td>
                         </tr>
                         <tr>
@@ -448,8 +448,8 @@
                             <h:outputText value="#{messages.editPerson_empid}" />
                           </td>
                           <td>
-                            <rich:message for="editPerson-empid" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            <h:inputText value="#{personBean.item.empid}" id="editPerson-empid" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30"
+                            <rich:message for="editPerson-empId" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            <h:inputText value="#{personBean.item.empid}" id="editPerson-empId" disabled="#{!personBean.item.userEditable}" onchange="checkMultiple(this)" styleClass="text" size="30"
                               maxlength="20"/>
                           </td>
                         </tr>   
