@@ -1,11 +1,12 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTableBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
-public class ClickableTableObject extends ClickableObject implements Clickable,
+public class ClickableTableObject extends ClickableObject implements
+	ClickableTableBased,
 	TableBased {
 
     public ClickableTableObject(SeleniumEnums anEnum, String replaceWord,
@@ -133,6 +134,54 @@ public class ClickableTableObject extends ClickableObject implements Clickable,
     public Boolean assertPresence(Integer row, Boolean present) {
 	replaceNumber(row);
 	return super.assertPresence(present);
+    }
+
+    @Override
+    public Boolean isClickable(Integer row) {
+	replaceNumber(row);
+	return super.isClickable();
+    }
+
+    @Override
+    public Boolean validateClickable(Integer row, Boolean clickable) {
+	replaceNumber(row);
+	return super.validateClickable(clickable);
+    }
+
+    @Override
+    public Boolean assertClickable(Integer row, Boolean clickable) {
+	replaceNumber(row);
+	return super.assertClickable(clickable);
+    }
+
+    @Override
+    @Deprecated
+    public Boolean isClickable() {
+	addError(
+		".isClickable()",
+		"please supply an Integer number for the row on the table)",
+		ErrorLevel.FAIL);
+	return null;
+    }
+
+    @Override
+    @Deprecated
+    public Boolean validateClickable(Boolean clickable) {
+	addError(
+		".validateClickable()",
+		"please supply an Integer number for the row on the table)",
+		ErrorLevel.FAIL);
+	return null;
+    }
+
+    @Override
+    @Deprecated
+    public Boolean assertClickable(Boolean clickable) {
+	addError(
+		".assertClickable()",
+		"please supply an Integer number for the row on the table)",
+		ErrorLevel.FAIL);
+	return null;
     }
 
 }

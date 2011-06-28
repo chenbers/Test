@@ -27,7 +27,7 @@ import com.thoughtworks.selenium.SeleniumException;
  * <p>
  * The idea is to take a stack trace, or string, and tie it to an error name.<br />
  * Then associate that error with a name for easy reading to see what broke.<br
- * />
+ * * />
  * 
  * @author dtanner
  * @see HashMap
@@ -91,24 +91,28 @@ public class ErrorCatcher implements InvocationHandler {
     private void sortErrors(Throwable e, Method method, Object[] args) {
 	StringWriter string = new StringWriter();
 	string.write(method.getName() + "( ");
-	int length = args.length;
-	for (Object arg : args) {
-	    if (arg instanceof String){
-		string.write("\""+arg.toString()+"\"");
-	    }else {
-		string.write(arg.toString());
-	    }
-	    if (--length!=0){
-		string.write(", ");
+	if (args != null) {
+	    int length = args.length;
+	    for (Object arg : args) {
+		if (arg instanceof String) {
+		    string.write("\"" + arg.toString() + "\"");
+		} else {
+		    string.write(arg.toString());
+		}
+		if (--length != 0) {
+		    string.write(", ");
+		}
 	    }
 	}
 	string.write(" );\n");
-	for (Object arg : args ){
-	    if (arg instanceof SeleniumEnumWrapper){
-		string.write(arg.toString() + ": " + ((SeleniumEnumWrapper) arg).getLocatorsAsString() + "\n");	    
+	for (Object arg : args) {
+	    if (arg instanceof SeleniumEnumWrapper) {
+		string.write(arg.toString() + ": "
+			    + ((SeleniumEnumWrapper) arg).getLocatorsAsString()
+			    + "\n");
 	    }
-	}
-	
+    }
+
 	if (e instanceof SeleniumException) {
 	    addError(string.toString(), e);
 	} else {

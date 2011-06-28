@@ -126,18 +126,16 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements
     public CoreMethodLib focus(SeleniumEnumWrapper myEnum) {
 
 	do {
-	    selectWindow("");    
+	    selectWindow("");
 	    tabKey();
-	}
-	while (hasFocus(myEnum));
-	
+	} while (hasFocus(myEnum));
+
 	return this;
     }
-    
 
     @Override
     public boolean hasFocus(SeleniumEnumWrapper anEnum) {
-	String element = getLocator(myEnum);
+	String element = getLocator(anEnum);
 	WebElement item = null;
 	if (element.startsWith("//")) {
 	    item = getWrappedDriver().findElement(By.xpath(element));
@@ -146,12 +144,21 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements
 	} else {
 	    return false;
 	}
-	
+
 	WebElement hasFocus = getWrappedDriver().switchTo().activeElement();
+
 	return hasFocus.equals(item);
+
+	// if (item.getX()!=hasFocus.getX()){
+	// return false;
+	// }else if (item.getY()!=item.getY()){
+	// return false;
+	// }else {
+	// return true;
+	// }
     }
-    
-    private void tabKey(){
+
+    private void tabKey() {
 	try {
 	    Robot r = new Robot();
 	    r.keyPress(KeyEvent.VK_TAB);
@@ -345,9 +352,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements
     }
 
     @Override
-    public boolean isEditable(SeleniumEnumWrapper anEnum) {
-	// TODO Auto-generated method stub
-	return false;
+    public boolean isEditable(SeleniumEnumWrapper myEnum) {
+	String element = getLocator(myEnum);
+	return isEditable(element);
     }
 
     /**
@@ -665,5 +672,30 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements
 	return this;
     }
 
+    @Override
+    public Boolean isClickable(SeleniumEnumWrapper myEnum) {
+	String element = getLocator(myEnum);
+	WebElement item = getWrappedDriver().findElement(getLocator(element));
+	String tag = item.getTagName();
+	boolean results = false;
+	if (tag.equals("button")||tag.equals("a")){
+	    results = true;
+	}else if ( element.startsWith("//")){
+	    results = isElementPresent(element+"/a");
+	}else if ( !element.contains("=")){
+	    results = isElementPresent("//"+tag+"[@id='"+element+"']/a");
+	}
+	return results;
+    }
+
+    private By getLocator(String locator) {
+	if (locator.startsWith("//")) {
+	    return By.xpath(locator);
+	} else if (!locator.contains("=")) {
+	    return By.id(locator);
+	} else {
+	    return null;
+	}
+    }
 
 }

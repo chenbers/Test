@@ -28,4 +28,16 @@ public class ClickableObject extends ElementBase implements Clickable {
         //setCurrentLocation(); //TODO: jwimmer: to dTanner: how do you feel about ONLY calling setCurrentLocation() if current.* is needed (like on TextLinkContextSense) 
         return this;
     }
+    @Override
+    public Boolean isClickable() {
+	return selenium.isClickable(myEnum);
+    }
+    @Override
+    public Boolean validateClickable(Boolean clickable) {
+	return validateEquals(clickable, isClickable());
+    }
+    @Override
+    public Boolean assertClickable(Boolean clickable) {
+	return assertEquals(clickable, isClickable());
+    }
 }

@@ -7,7 +7,6 @@
 
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.elements.PageScroller;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
@@ -142,26 +141,4 @@ public abstract class Masthead extends AbstractPage {
 		}
 	}
 
-	//TODO: dtanner: not used anywhere yet... beware using the word VALIDATE... as it sounds like its validating EVERYTHING
-	public class MastheadValidation {
-		public void footer() {
-			ElementBase test = new ElementBase();
-			test.validateElementsPresent(MastheadEnum.COPYRIGHT,
-					MastheadEnum.PRIVACY, MastheadEnum.LEGAL,
-					MastheadEnum.SUPPORT, MastheadEnum.VERSION);
-			test.validateTextMatches(MastheadEnum.COPYRIGHT,
-					MastheadEnum.PRIVACY, MastheadEnum.LEGAL,
-					MastheadEnum.SUPPORT, MastheadEnum.VERSION);
-		}
-
-		public void header() {
-			ElementBase test = new ElementBase();
-			test.validateElementsPresent(MastheadEnum.LOGO, MastheadEnum.HELP,
-					MastheadEnum.MY_MESSAGES, MastheadEnum.MY_ACCOUNT,
-					MastheadEnum.LOGOUT);
-			test.validateTextMatches(MastheadEnum.LOGO, MastheadEnum.HELP,
-					MastheadEnum.MY_MESSAGES, MastheadEnum.MY_ACCOUNT,
-					MastheadEnum.LOGOUT);
-		}
-	}
 }

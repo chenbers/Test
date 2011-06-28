@@ -13,10 +13,10 @@ public enum VehicleReportEnum implements SeleniumEnums {
     YEAR_MAKE_MODEL_SEARCH(null,"vehicles-form:vehicles:makeModelYearfsp"),
     
 
-    GROUP_VALUE(null,"vehicles-form:vehicles:###:vehiclesDashboard"),
-    VEHICLE_VALUE(null,"vehicles-form:vehicles:###:vehiclesVehiclePerformance"),
+    GROUP_VALUE(null,"vehicles-form:vehicles:###:group"),
+    VEHICLE_VALUE(null,"vehicles-form:vehicles:###:vehicle"),
     YEAR_MAKE_MODEL_VALUE(null, "vehicles-form:vehicles:###:makeModelYear"),
-    DRIVER_VALUE(null,"vehicles-form:vehicles:###:vehiclesDriverPerformance"),
+    DRIVER_VALUE(null,"vehicles-form:vehicles:###:fullName"),
     DISTANCE_DRIVEN_VALUE(null, "vehicles-form:vehicles:###:distance"),
     ODOMETER_VALUE(null, "vehicles-form:vehicles:###:odometer"),
     OVERALL_SCORE_VALUE(null,"vehicles-form:vehicles:###:overallScore"),   

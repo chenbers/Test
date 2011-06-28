@@ -13,7 +13,6 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.AdminAddEditUserEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
-import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 
 public class PageAddEditUser extends AdminBar {

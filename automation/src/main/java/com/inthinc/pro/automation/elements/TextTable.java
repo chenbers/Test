@@ -141,19 +141,8 @@ public class TextTable extends TextObject implements TextTableBased {
      * @param row
      * @return
      */
+    @Override
     public String getText(Integer row) {
-	replaceNumber(row);
-	return super.getText();
-    }
-
-    /**
-     * Needs to be figured out how to make second replacement
-     * 
-     * @param row
-     * @param column
-     * @return
-     */
-    public String getText(Integer row, Integer column) {
 	replaceNumber(row);
 	return super.getText();
     }
@@ -288,5 +277,11 @@ public class TextTable extends TextObject implements TextTableBased {
     public Boolean assertPresence(Integer row, Boolean present) {
 	replaceNumber(row);
 	return super.assertPresence(present);
+    }
+
+    @Override
+    public Boolean assertEquals(Integer row) {
+	replaceNumber(row);
+	return super.assertEquals();
     }
 }
