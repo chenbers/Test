@@ -16,13 +16,17 @@ public class CheckBox extends ClickableObject implements Checkable, Clickable {
 
     @Override
     public CheckBox check() {
-	selenium.check(myEnum);
+	if (!isChecked()){
+	    click();
+	}
 	return this;
     }
 
     @Override
     public CheckBox uncheck() {
-	selenium.uncheck(myEnum);
+	if (isChecked()){
+	    click();
+	}
 	return this;
     }
 
