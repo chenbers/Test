@@ -7,7 +7,7 @@ public enum NotificationsBarEnum implements SeleniumEnums {
 
     /* Navigation Bar for Notifications */
     RED_FLAGS("Red Flags", "link=Red Flags", "***-redFlags", "//li[@id='redflagtab']/a"),
-    SAFETY("Safety", "link=Zones", "***-safety", "//li[@id='safetytab']/a"),
+    SAFETY("Safety", "link=Safety", "***-safety", "//li[@id='safetytab']/a"),
     DIAGNOSTICS("Diagnostics", "link=Diagnostics", "***-diagnostics", "//li[@id='diagnosticstab']/a"),
     ZONES("Zones", "link=Zones", "***-zoneEvents", "//li[@id='zoneEventstab']/a"),
     HOS_EXCEPTIONS("HOS Exceptions", "link=HOS Exceptions", "***-hosEvents", "//li[@id='hosEventstab']/a"),
