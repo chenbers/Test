@@ -4,9 +4,11 @@ import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.ButtonTable;
 import com.inthinc.pro.automation.elements.DhxDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
+import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
 
@@ -25,42 +27,67 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 		}
 		
 		public TextLink alertDetailsEntry(){
-			return new TextLink(NotificationsRedFlagsEnum.ALERT_LEVEL_ENTRY);
+			return new TextLink(NotificationsBarEnum.ALERT_LEVEL_ENTRY, page);
 		}
 		
 		public TextLink groupEntry(){
-			return new TextLink(NotificationsRedFlagsEnum.GROUP_ENTRY);
+			return new TextLink(NotificationsBarEnum.GROUP_ENTRY, page);
 		}
 		
 		public TextLink driverEntry(){
-			return new TextLink(NotificationsRedFlagsEnum.DRIVER_ENTRY);
+			return new TextLink(NotificationsBarEnum.DRIVER_ENTRY, page);
 		}
 		
 		public TextLink vehicleEntry(){
-			return new TextLink(NotificationsRedFlagsEnum.VEHICLE_ENTRY);
+			return new TextLink(NotificationsBarEnum.VEHICLE_ENTRY, page);
 		}
 		
 		public TextLink statusEntry(){
-			return new TextLink(NotificationsRedFlagsEnum.STATUS_ENTRY);
+			return new TextLink(NotificationsBarEnum.STATUS_ENTRY, page);
 		}
 		
 		
 	}
 	
-	public class RedFlagsTexts extends NotificationsBarTexts{}
+	public class RedFlagsTexts extends NotificationsBarTexts{
+	    
+	    public TextTable dateTimeEntry(){
+		return new TextTable(NotificationsBarEnum.DATE_TIME_ENTRY, page);
+	    }
+	    
+	    public TextTable categoryEntry(){
+		return new TextTable(NotificationsBarEnum.CATEGORY_ENTRY, page);
+	    }
+	    
+	    public TextTable detailEntry(){
+		return new TextTable(NotificationsBarEnum.DETAIL_ENTRY, page);
+	    }
+	    
+	    public Text counter(){
+		return new Text(NotificationsBarEnum.COUNTER, page);
+	    }
+	    
+	    public Text title(){
+		return new Text(NotificationsRedFlagsEnum.MAIN_TITLE);
+	    }
+	    
+	    public Text note(){
+		return new Text(NotificationsRedFlagsEnum.MAIN_TITLE_COMMENT);
+	    }
+	}
 	
 	public class RedFlagsTextFields extends NotificationsBarTextFields{
 		
 		public TextField group(){
-			return new TextField(NotificationsRedFlagsEnum.GROUP_FILTER);
+			return new TextField(NotificationsBarEnum.GROUP_FILTER, page);
 		}
 		
 		public TextField driver(){
-			return new TextField(NotificationsRedFlagsEnum.DRIVER_FILTER);
+			return new TextField(NotificationsBarEnum.DRIVER_FILTER, page);
 		}
 		
 		public TextField vehicle(){
-			return new TextField(NotificationsRedFlagsEnum.VEHICLE_FILTER);
+			return new TextField(NotificationsBarEnum.VEHICLE_FILTER, page);
 		}
 	}
 	
@@ -107,11 +134,11 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 		}
 		
 		public DropDown category(){
-			return new DropDown(NotificationsRedFlagsEnum.CATEGORY_FILTER);
+			return new DropDown(NotificationsBarEnum.CATEGORY_FILTER, page);
 		}
 		
 		public DropDown statusFilter(){
-			return new DropDown(NotificationsRedFlagsEnum.STATUS_FILTER);
+			return new DropDown(NotificationsBarEnum.STATUS_FILTER, page);
 		}
 	}
 	public class RedFlagsPopUps extends MastheadPopUps{}
