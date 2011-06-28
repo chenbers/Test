@@ -48,7 +48,7 @@ public class TextTable extends TextObject implements TextTableBased {
     @Override
     public Boolean assertNotEquals(Integer row, String compareAgainst) {
 	replaceNumber(row);
-	return super.assertNotEquals(compareAgainst, super.getText());
+	return super.assertNotEquals(compareAgainst);
     }
 
     @Override
