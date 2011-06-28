@@ -42,7 +42,7 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     LOCATION(null, "***-form:***:###:mapIcon"),
     
     
-    ALERT_LEVEL_ENTRY(null, "***-form:***:###:level"),
+    LEVEL_ENTRY(null, "***-form:***:###:level"),
     DETAILS_ENTRY(null, "***-form:***:###:alerts"),
     DATE_TIME_ENTRY(null, "***-form:***:###:time"),
     GROUP_ENTRY(null, "***-form:***:###:group"),
@@ -50,7 +50,7 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     VEHICLE_ENTRY(null, "***-form:***:###:vehicle"),
     CATEGORY_ENTRY(null, "***-form:***:###:category"),
     DETAIL_ENTRY(null, "***-form:***:###:detail"),
-    STATUS_ENTRY(null, "***-form:***:###:clear"),
+    STATUS_ENTRY("exclude", "***-form:***:###:clear"),
     
 
     GROUP_SORT("Group", "***-form:***:groupheader:sortDiv"),

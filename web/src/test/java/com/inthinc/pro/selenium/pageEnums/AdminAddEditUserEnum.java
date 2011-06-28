@@ -12,6 +12,7 @@ public enum AdminAddEditUserEnum implements SeleniumEnums {
     USER_GROUP_DHX(null, "edit-form:editPerson-user_groupID"),
 
     TEXT_FIELDS(null, "edit-form:editPerson-***"),
+    MIDDLE_FIELD(null, "edit-form:middle"),
 
     CANCEL("Cancel", "edit-form:editPersonCancel***"),
     SAVE(save, "edit-form:editPersonSave***"),
