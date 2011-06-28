@@ -11,6 +11,9 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
+import com.inthinc.pro.selenium.pageObjects.PopUps.EditColumns;
+import com.inthinc.pro.selenium.pageObjects.PopUps.Email;
+import com.inthinc.pro.selenium.pageObjects.PopUps.Types;
 
 
 public class PageNotificationsRedFlags extends NotificationsBar {
@@ -27,7 +30,7 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 		}
 		
 		public TextLink alertDetailsEntry(){
-			return new TextLink(NotificationsBarEnum.ALERT_LEVEL_ENTRY, page);
+			return new TextLink(NotificationsBarEnum.DETAILS_ENTRY, page);
 		}
 		
 		public TextLink groupEntry(){
@@ -50,6 +53,10 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 	}
 	
 	public class RedFlagsTexts extends NotificationsBarTexts{
+	    
+	    public TextTable levelEntry(){
+		return new TextTable(NotificationsBarEnum.LEVEL_ENTRY, page);
+	    }
 	    
 	    public TextTable dateTimeEntry(){
 		return new TextTable(NotificationsBarEnum.DATE_TIME_ENTRY, page);
@@ -141,7 +148,20 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 			return new DropDown(NotificationsBarEnum.STATUS_FILTER, page);
 		}
 	}
-	public class RedFlagsPopUps extends MastheadPopUps{}
+	public class RedFlagsPopUps extends MastheadPopUps{
+	    
+	    public RedFlagsPopUps(){
+		    super(page, Types.REPORT, 3 );
+		}
+		
+		public EditColumns editColumns(){
+		    return new EditColumns();
+		}
+		
+		public Email emailReport(){
+		    return new Email();
+		}
+	}
 	
 	public RedFlagsLinks _link(){
         return new RedFlagsLinks();
