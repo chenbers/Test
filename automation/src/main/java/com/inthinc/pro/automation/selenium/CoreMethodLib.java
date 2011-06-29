@@ -1,14 +1,12 @@
 package com.inthinc.pro.automation.selenium;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
@@ -124,49 +122,45 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements
      */
     @Override
     public CoreMethodLib focus(SeleniumEnumWrapper myEnum) {
-
-	do {
-	    selectWindow("");
-	    tabKey();
-	} while (hasFocus(myEnum));
-
-	return this;
-    }
-
-    @Override
-    public boolean hasFocus(SeleniumEnumWrapper anEnum) {
-	String element = getLocator(anEnum);
+	String element = getLocator(myEnum);
 	WebElement item = null;
 	if (element.startsWith("//")) {
 	    item = getWrappedDriver().findElement(By.xpath(element));
 	} else if (!element.contains("=")) {
 	    item = getWrappedDriver().findElement(By.id(element));
 	} else {
+	    return this;
+	}
+	item.findElement(By.xpath("..")).click();
+
+	return this;
+    }
+
+    @Override
+    public boolean hasFocus(SeleniumEnumWrapper myEnum) {
+	String element = getLocator(myEnum);
+	WebElement item = null;
+	if (element.startsWith("//")) {
+	    item = getWrappedDriver().findElement(By.xpath(element));
+	    focus(element);
+	} else if (!element.contains("=")) {
+	    item = getWrappedDriver().findElement(By.id(element));
+	    element = "//"+item.getTagName()+"[@id='"+element+"']";
+	    focus(element);
+	} else {
 	    return false;
 	}
 
 	WebElement hasFocus = getWrappedDriver().switchTo().activeElement();
+	
+	Point one = item.getLocation();
+	Point two = hasFocus.getLocation();
+	Boolean same = one.equals(two);
+	Boolean sameElement = hasFocus.equals(item);
+	return same;
 
-	return hasFocus.equals(item);
-
-	// if (item.getX()!=hasFocus.getX()){
-	// return false;
-	// }else if (item.getY()!=item.getY()){
-	// return false;
-	// }else {
-	// return true;
-	// }
     }
 
-    private void tabKey() {
-	try {
-	    Robot r = new Robot();
-	    r.keyPress(KeyEvent.VK_TAB);
-	    r.keyRelease(KeyEvent.VK_TAB);
-	} catch (AWTException e) {
-	    e.printStackTrace();
-	}
-    }
 
     @Deprecated
     @Override

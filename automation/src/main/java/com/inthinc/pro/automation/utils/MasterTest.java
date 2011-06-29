@@ -1,7 +1,5 @@
 package com.inthinc.pro.automation.utils;
 
-import java.awt.AWTException;
-import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
@@ -26,13 +24,7 @@ public class MasterTest {
     }
 
     protected static void enterKey() {
-	try {
-	    Robot r = new Robot();
-	    r.keyPress(KeyEvent.VK_ENTER);
-	    r.keyRelease(KeyEvent.VK_ENTER);
-	} catch (AWTException e) {
-	    e.printStackTrace();
-	}
+	KeyCommands.typeKey(KeyEvent.VK_ENTER);
     }
 
     protected static String escapeHtml(String original) {
@@ -50,13 +42,7 @@ public class MasterTest {
     }
 
     protected static void tabKey() {
-	try {
-	    Robot r = new Robot();
-	    r.keyPress(KeyEvent.VK_TAB);
-	    r.keyRelease(KeyEvent.VK_TAB);
-	} catch (AWTException e) {
-	    e.printStackTrace();
-	}
+	KeyCommands.typeKey(KeyEvent.VK_TAB);
     }
 
     protected static String unescapeHtml(String original) {
