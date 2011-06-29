@@ -32,5 +32,7 @@ public interface HOSDAO extends GenericDAO<HOSRecord, Long> {
     HOSDriverLogin isValidLogin(String commAddress, String employeeId, long loginTime, boolean occupantFlag, int odometer);
     List<HOSOccupantHistory> getHOSOccupantHistory(HOSDriverLogin driverLogin);
     List<HOSOccupantHistory> getHOSOccupantHistory(String commAddress, String employeeId);
-    void logoutDriverFromDevice(String commAddress, String employeeId, long logoutTime,  int odometer); 
+    void logoutDriverFromDevice(String commAddress, String employeeId, long logoutTime,  int odometer);
+    
+   List<HOSRecord> getFuelStopRecordsForVehicle(Integer vehicleID, Interval interval);
 }
