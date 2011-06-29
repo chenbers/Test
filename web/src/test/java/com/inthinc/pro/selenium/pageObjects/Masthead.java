@@ -104,7 +104,7 @@ public abstract class Masthead extends AbstractPage {
 		}
 
 		public TextLinkNewWindow legalNotice() {
-			return new TextLinkNewWindow(MastheadEnum.LEGAL_NOTICE);
+			return new TextLinkNewWindow(MastheadEnum.LEGAL);
 		}
 
 		public TextLink logout() {
@@ -120,7 +120,7 @@ public abstract class Masthead extends AbstractPage {
 		}
 
 		public TextLinkNewWindow privacyPolicy() {
-			return new TextLinkNewWindow(MastheadEnum.PRIVACY_POLICY);
+			return new TextLinkNewWindow(MastheadEnum.PRIVACY);
 		}
 
 		public TextLinkNewWindow support() {
