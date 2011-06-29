@@ -32,7 +32,7 @@ public class CheckBoxTable extends LinkTable implements CheckableTable,
     @Override
     public CheckableTable uncheck(Integer number) {
 	checkBox.replaceNumber(number);
-	checkBox.check();
+	checkBox.uncheck();
 	return null;
     }
 
