@@ -55,13 +55,13 @@ public enum NotificationsBarEnum implements SeleniumEnums {
 
     HEADER_LEVEL("Level", "***-form:***:levelheader"),
     HEADER_DETAILS("Alert Details", "***-form:***:alertsheader"),
-    SORT_DATE_TIME("Date/Time", "***-form:***:timeheader:sortDiv"),
+    SORT_DATE_TIME("Date/Time", "***-form:***:dateheader:sortDiv"),
     SORT_GROUP("Group", "***-form:***:groupheader:sortDiv"),
     SORT_DRIVER("Driver", "***-form:***:driverheader:sortDiv"),
     SORT_VEHICLE("Vehicle", "***-form:***:vehicleheader:sortDiv"),
     HEADER_CATEGORY("Category", "***-form:***:categoryheader"),
     HEADER_DETAIL("Detail", "***-form:***:detailheader"),
-    HEADER_STATUS("Status", "***-form:***:clear"),
+    HEADER_STATUS("Status", "***-form:***:excludeheader"),
 
     ;
     private String text, url;
