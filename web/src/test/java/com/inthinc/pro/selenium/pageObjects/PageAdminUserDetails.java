@@ -22,7 +22,15 @@ public class PageAdminUserDetails extends AdminBar {
         return new UserDetailsPopUps();
     }
     
-	public class UserDetailsPopUps extends AdminBarPopUps{}
+	public class UserDetailsPopUps extends AdminBarPopUps{
+	    public UserDetailsPopUps(){
+		super(page);
+	    }
+	    
+	    public AdminDelete deleteUser(){
+		return new AdminDelete(false);
+	    }
+	}
 
 	
 	public class UserDetailsButtons extends AdminBarButtons {
@@ -61,7 +69,7 @@ public class PageAdminUserDetails extends AdminBar {
 
 	}
 
-	private String page = "person";
+	private static String page = "person";
 
 	public UserDetailsButtons _button() {
 		return new UserDetailsButtons();

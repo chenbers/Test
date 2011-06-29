@@ -89,6 +89,11 @@ public enum PopUpEnum implements SeleniumEnums {
     DELETE_HEADER(null, "confirmDeleteHeader"),
     DELETE_MESSAGE("Delete the following items? This action is irreversible.", "//table[@id='confirmDeleteContentTable']/tbody/tr[2]/td/div[@class='popupsubtitle']"),
     DELETE_CLOSE(null, "//div[@id='confirmDeleteContentDiv']/div/img"),
+    
+    /* Admin Details Delet PopUp */
+
+    DETAILS_DELETE_CONFIRM("Delete", "confirmDeleteForm:***-deleteButtonDirect"),
+    DETAILS_DELETE_CANCEL("Cancel", "***-confirmDeleteCancel"),
 
     
     /* Update Password Reminder */

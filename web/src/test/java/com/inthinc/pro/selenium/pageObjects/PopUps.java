@@ -402,16 +402,29 @@ public class PopUps extends MasterTest{
 	
 	
 	public class AdminDelete{
+	    private PopUpEnum delete;
+	    private PopUpEnum cancel;
+	    
+	    public AdminDelete(Boolean table){
+		if (table){
+		    delete = PopUpEnum.DELETE_CONFIRM;
+		    cancel = PopUpEnum.DELETE_CANCEL;
+		}else {
+		    delete = PopUpEnum.DETAILS_DELETE_CONFIRM;
+		    cancel = PopUpEnum.DETAILS_DELETE_CANCEL;
+		}
+	    }
+	    
 		public AdminDeleteButtons _button(){
 			return new AdminDeleteButtons();
 		}
 		public class AdminDeleteButtons{
 			public TextButton delete(){
-				return new TextButton(PopUpEnum.DELETE_CONFIRM,page);
+				return new TextButton(delete,page);
 			}
 			
 			public TextButton cancel(){
-				return new TextButton(PopUpEnum.DELETE_CANCEL,page);
+				return new TextButton(cancel,page);
 			}
 			
 			public Button close(){
