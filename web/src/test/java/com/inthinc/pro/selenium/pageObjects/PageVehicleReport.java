@@ -117,8 +117,8 @@ public class PageVehicleReport extends ReportsBar {
 			return new TextLink(VehicleReportEnum.VEHICLE_SORT);
 		}
 
-		public TextLinkScoreTable vehicleValue() {
-			return new TextLinkScoreTable(VehicleReportEnum.VEHICLE_VALUE);
+		public TextTableLink vehicleValue() {
+			return new TextTableLink(VehicleReportEnum.VEHICLE_VALUE);
 		}
 
 		public TextLink yearMakeModelSort() {
