@@ -156,7 +156,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements
 	Point one = item.getLocation();
 	Point two = hasFocus.getLocation();
 	Boolean same = one.equals(two);
-	Boolean sameElement = hasFocus.equals(item);
+//	Boolean sameElement = hasFocus.equals(item);
 	return same;
 
     }
@@ -603,9 +603,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements
     }
 
     @Override
-    public CoreMethodLib typeKeys(SeleniumEnumWrapper anEnum, String value) {
-	// TODO Auto-generated method stub
-	return null;
+    public CoreMethodLib typeKeys(SeleniumEnumWrapper myEnum, String value) {
+	String element = getLocator(myEnum);
+	typeKeys(element, value);
+	pause(5,"Let the portal catch up");
+	return this;
     }
 
     @Override

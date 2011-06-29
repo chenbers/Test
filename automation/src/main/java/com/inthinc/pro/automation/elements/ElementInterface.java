@@ -149,6 +149,12 @@ public interface ElementInterface {
         public Boolean validateContains(String expectedPart);
         
     }
+    
+    public interface TextFieldWithSuggestions extends TextBased {
+	public TextLink getSuggestion(Integer row);
+	public TextLink getSuggestion(String fullName);
+    }
+    
     public interface TextTableBased extends TableBased{
     	public Boolean assertEquals(Integer row);
         public Boolean assertEquals(Integer row, String compareAgainst);

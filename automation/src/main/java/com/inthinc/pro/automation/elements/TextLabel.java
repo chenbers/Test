@@ -1,22 +1,27 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.TextTableBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
-public class TextCheckboxLabel extends TextTableLink implements TextTableBased{
-	
-	public TextCheckboxLabel(SeleniumEnums anEnum) {
-        super(anEnum);
+
+public class TextLabel extends Text implements TextBased {
+
+    public TextLabel(SeleniumEnums anEnum, Integer replaceNumber) {
+	super(anEnum, replaceNumber);
     }
-    public TextCheckboxLabel(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
+
+    public TextLabel(SeleniumEnums anEnum, String replaceWord,
+	    Integer replaceNumber) {
+	super(anEnum, replaceWord, replaceNumber);
     }
-    public TextCheckboxLabel(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
+
+    public TextLabel(SeleniumEnums anEnum, String replaceWord) {
+	super(anEnum, replaceWord);
     }
-    public TextCheckboxLabel(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
+
+    public TextLabel(SeleniumEnums anEnum) {
+	super(anEnum);
     }
     
     @Override
@@ -30,11 +35,10 @@ public class TextCheckboxLabel extends TextTableLink implements TextTableBased{
     		if(id.startsWith("//")){
     			newId = id + oneUpFirstTd;
     		}else if( !id.contains("=")){
-    			newId = "//input[@id='"+id+"']"+oneUpFirstTd;
+    			newId = "//td[@id='"+id+"']"+oneUpFirstTd;
     		}
     		newIds[i]=newId;
     	}
     	myEnum.setID(newIds);
     }
-
 }

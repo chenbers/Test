@@ -59,7 +59,7 @@ public class SelectableObject extends Text implements Selectable {
 	        if (xpath==null){
 	        	xpath = getSelectXpath();
 	        }
-	        getMatches(xpath, Id.text(desiredOption), matchNumber).setSelected(); //TODO: related to line 33 issue above
+	        getMatches(xpath, Id.text(desiredOption), matchNumber).click(); //TODO: related to line 33 issue above
 	        return this;
 	    }
 
@@ -70,7 +70,7 @@ public class SelectableObject extends Text implements Selectable {
 	        if (xpath==null){
 	        	xpath = getSelectXpath();
 	        }
-	        getMatches(xpath, Id.contains(Id.text(), partialMatch), matchNumber).setSelected();
+	        getMatches(xpath, Id.contains(Id.text(), partialMatch), matchNumber).click();
 	        return this;
 	    }
 	    

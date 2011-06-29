@@ -23,12 +23,12 @@ public class ClickableText extends ClickableObject implements TextBased,
 
     public ClickableText(SeleniumEnums anEnum, Integer replaceNumber) {
 	super(anEnum, replaceNumber);
-	textStuff = new Text(anEnum);
+	textStuff = new Text(anEnum, replaceNumber);
     }
 
     public ClickableText(SeleniumEnums anEnum, String replaceWord) {
 	super(anEnum, replaceWord);
-	textStuff = new Text(anEnum);
+	textStuff = new Text(anEnum, replaceWord);
     }
 
     public ClickableText(SeleniumEnums anEnum, TextEnum replaceWord) {
