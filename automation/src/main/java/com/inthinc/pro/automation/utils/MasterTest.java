@@ -44,6 +44,10 @@ public class MasterTest {
     protected static void tabKey() {
 	KeyCommands.typeKey(KeyEvent.VK_TAB);
     }
+    
+    protected static void spaceBar() {
+	KeyCommands.typeKey(KeyEvent.VK_SPACE);
+    }
 
     protected static String unescapeHtml(String original) {
 	return StringEscapeUtils.unescapeHtml(original);
