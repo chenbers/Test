@@ -47,9 +47,42 @@ public class PageNotificationsSafety extends NotificationsBar {
 	public TextLink statusEntry() {
 	    return new TextLink(NotificationsBarEnum.STATUS_ENTRY, page);
 	}
+
+	public TextLink sortByGroup(){
+	    return new TextLink(NotificationsBarEnum.SORT_GROUP, page);
+	}
+	
+	public TextLink sortByDriver(){
+	    return new TextLink(NotificationsBarEnum.SORT_DRIVER, page);
+	}
+	
+	public TextLink sortByVehicle(){
+	    return new TextLink(NotificationsBarEnum.SORT_VEHICLE, page);
+	}
+	
+	public TextLink sortByDateTime(){
+	    return new TextLink(NotificationsBarEnum.SORT_DATE_TIME, page);
+	}
     }
 
     public class NotificationsSafetyTexts extends NotificationsBarTexts {
+	
+	
+	public Text headerAlertDetails(){
+	    return new Text(NotificationsBarEnum.HEADER_DETAILS, page);
+	}
+	
+	public Text headerDetail(){
+	    return new Text(NotificationsBarEnum.HEADER_DETAIL, page);
+	}
+	
+	public Text headerStatus(){
+	    return new Text(NotificationsBarEnum.HEADER_STATUS, page);
+	}
+	
+	public Text headerCategory(){
+	    return new Text(NotificationsBarEnum.HEADER_CATEGORY, page);
+	}
 
 	public TextTable dateTimeEntry() {
 	    return new TextTable(NotificationsBarEnum.DATE_TIME_ENTRY, page);
