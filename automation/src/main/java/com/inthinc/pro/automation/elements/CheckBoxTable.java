@@ -19,7 +19,7 @@ public class CheckBoxTable extends LinkTable implements CheckableTable,
 
     public CheckBoxTable(SeleniumEnums anEnum, String replaceWord) {
 	super(anEnum, replaceWord);
-	checkBox = new CheckBox(anEnum);
+	checkBox = new CheckBox(anEnum, replaceWord);
     }
 
     @Override
