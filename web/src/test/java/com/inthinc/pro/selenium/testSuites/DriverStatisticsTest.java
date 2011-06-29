@@ -40,8 +40,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         ped._navTree().groups().click("Test Group WR");
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds.getLinkByText("Alpha Betical").assertPresence(true);
-        //Cannot confirm user deletion pop-up.
-        //deleteUser("Alpha Betical");
+        deleteUser("Alpha Betical");
         
         //TODO test creation of vehicle, zone, zone alert, and red flag.
     }
@@ -69,8 +68,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds.getLinkByText("Blooregard Kazoo").assertPresence(true);
         ptds.getLinkByText("Alma Mater").assertPresence(false);
-        //Cannot confirm user deletion pop-up.
-        //deleteUser("Blooregard Kazoo");
+        deleteUser("Blooregard Kazoo");
     }
     
     @Test
@@ -85,18 +83,17 @@ public class DriverStatisticsTest extends WebRallyTest {
         pau.getLinkByText("Alto Soprano").click();
         PageAdminUserDetails paud = new PageAdminUserDetails();
         paud._button().delete().click();
-        
+        paud._popUp().deleteUser()._button().delete().click();
         paud._navTree().groups().click("Test Group WR");
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
-        //Cannot confirm user deletion pop-up.
-        //ptds.getLinkByText("Alto Soprano").assertPresence(false);
+        ptds.getLinkByText("Alto Soprano").assertPresence(false);
         
         //TODO test deletion of vehicle, zone, zone alert, and red flag.
     }
 
     @Test
     public void bookmarkPageTest4578() {
-        //set_test_case("TC4578");
+        set_test_case("TC4578");
 
         pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
         
@@ -113,7 +110,7 @@ public class DriverStatisticsTest extends WebRallyTest {
     
     @Test
     public void switchTeamTest4582(){
-        //set_test_case("TC4582");
+        set_test_case("TC4582");
     
         pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
         createDriver("Swappy", "McGee", "Top - Test Group WR");
@@ -131,8 +128,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         ptds.getLinkByText("Swappy McGee").assertPresence(false);
         ptds._navTree().groups().click("Test Group RW");
         ptds.getLinkByText("Swappy McGee").assertPresence(true);
-        //Cannot confirm user deletion pop-up.
-        //deleteUser("Swappy McGee");
+        deleteUser("Swappy McGee");
     }
     
     //@Test
@@ -182,6 +178,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         pau.getLinkByText(fullName).click();
         PageAdminUserDetails paud = new PageAdminUserDetails();
         paud._button().delete().click();
+        paud._popUp().deleteUser()._button().delete().click();
     }
 
 }
