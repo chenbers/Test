@@ -66,6 +66,25 @@ public class LoginTest extends WebRallyTest {
         PageMyAccount pma = new PageMyAccount();
         pma._text().team().assertEquals(team);
     }
+    
+    @Test
+    public void enterKeyTest1243(){
+        set_test_case("TC1243");
+        //NOTE!  This test must be the main window!
+        pl.openLogout();
+        pl._textField().userName().type(CORRECT_USERNAME);
+        pl._textField().password().type(CORRECT_PASSWORD);
+        pl._textField().userName().focus();
+        enterKey();
+
+        assertStringContains("dashboard", pl.getCurrentLocation());
+
+        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        String team = ptds._text().teamName().getText();
+        ptds._link().myAccount().click();
+        PageMyAccount pma = new PageMyAccount();
+        pma._text().team().assertEquals(team);
+    }
 
     @Test
     public void invalidPasswordTest1245() {
@@ -122,6 +141,38 @@ public class LoginTest extends WebRallyTest {
         assertStringContains("login", pl.getCurrentLocation());
         pl._textField().userName().assertEquals("");
         pl._textField().password().assertEquals("");
+    }
+    
+    @Test
+    public void tabOrderTest1249(){
+        set_test_case("TC1249");
+        //NOTE!  This test must be the main window!
+        pl.openLogout();
+        pl._textField().userName().focus();
+        tabKey();
+        if(!pl._textField().password().hasFocus()){
+            addError("Incorrect Focus", "Focus is expected to be on password text field.", ErrorLevel.FAIL);
+        }
+        tabKey();
+        if(!pl._button().logIn().hasFocus()){
+            addError("Incorrect Focus", "Focus is expected to be on log-in button.", ErrorLevel.FAIL);
+        }
+        tabKey();
+        if(!pl._link().forgotUsernamePassword().hasFocus()){
+            addError("Incorrect Focus", "Focus is expected to be on forgot username/password link.", ErrorLevel.FAIL);
+        }
+        tabKey();
+        if(!pl._link().privacyPolicy().hasFocus()){
+            addError("Incorrect Focus", "Focus is expected to be on privacy policy link.", ErrorLevel.FAIL);
+        }
+        tabKey();
+        if(!pl._link().legalNotice().hasFocus()){
+            addError("Incorrect Focus", "Focus is expected to be on legal notice link.", ErrorLevel.FAIL);
+        }
+        tabKey();
+        if(!pl._link().support().hasFocus()){
+            addError("Incorrect Focus", "Focus is expected to be on support link.", ErrorLevel.FAIL);
+        }
     }
 
     @Test
