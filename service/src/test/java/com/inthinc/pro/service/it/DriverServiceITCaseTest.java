@@ -27,7 +27,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 //Run locally with your localhost service running on port 8080
-@Ignore
+//@Ignore
 public class DriverServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(DriverServiceITCaseTest.class);
     private static int DRIVER_ID = 3;
@@ -259,6 +259,17 @@ public class DriverServiceITCaseTest extends BaseEmbeddedServerITCase {
         ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/driver/");
 
         String xmlText = "<driver><dot>NON_DOT</dot><expiration>2012-03-20T18:00:00-06:00</expiration><groupID>276</groupID><license>2111111111</license><licenseClass>A</licenseClass><state><stateID>3</stateID></state><status>ACTIVE</status></driver>";
+
+        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlText);
+
+        String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
+        System.out.println(response);
+    }
+    @Test 
+    public void createTestThing() throws Exception{
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/test/add");
+
+        String xmlText = "<testJAXBXMLSchemaType><locale>en_US</locale></testJAXBXMLSchemaType>";
 
         request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlText);
 

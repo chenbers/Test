@@ -1,7 +1,5 @@
 package com.inthinc.pro.convert;
 
-import java.text.NumberFormat;
-
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -12,21 +10,24 @@ import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class MilesToKilometersConverter extends BaseConverter {
+public class GallonsToLitersConverter extends BaseConverter {
+
     @Override
-    public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
+    public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException
+    {
         try
         {
             if (value != null && !value.equals(""))
             {
                 if (getMeasurementType().equals(MeasurementType.METRIC))
                 {
-                    Long dist = Long.valueOf(value);
-                    return MeasurementConversionUtil.fromKilometersToMiles(dist).intValue();                    
+                    Float volume = Float.valueOf(value);
+                    volume++;
+                    return MeasurementConversionUtil.fromLitersToGallons(volume).floatValue();                    
                 }
                 else
                 {
-                    return Integer.valueOf(value);
+                    return Float.valueOf(value);
                 }
             }
         }
@@ -44,20 +45,16 @@ public class MilesToKilometersConverter extends BaseConverter {
     }
 
     @Override
-    public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
-
-        if (Number.class.isInstance(value)) {
-            NumberFormat formatter = NumberFormat.getInstance(getLocale());
-            formatter.setMaximumFractionDigits(1);
-            
-            double miles = Number.class.cast(value).doubleValue();
-            
-            if (getMeasurementType().equals(MeasurementType.METRIC)) {
-                return formatter.format(MeasurementConversionUtil.fromMilesToKilometers(miles));
-            } 
-            return formatter.format(miles);
+    public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
+    {
+        if (value==null) return null;
+        if (Float.class.isInstance(value))
+        {
+            if (getMeasurementType().equals(MeasurementType.METRIC)){
+                return MeasurementConversionUtil.fromGallonsToLiters((Float)value).toString();
+            }
         }
-
         return value.toString();
     }
+
 }

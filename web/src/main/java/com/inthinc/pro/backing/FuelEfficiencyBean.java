@@ -24,18 +24,23 @@ public class FuelEfficiencyBean extends BaseBean {
     public void init(MeasurementType measurementType){
     	
      	fuelEfficiencyTypeItems = new ArrayList<SelectItem>();
+     	if(measurementType == null) measurementType = MeasurementType.ENGLISH;
+     	
+        for(FuelEfficiencyType fet : measurementType.getValidFuelEfficiencyTypes()){
+            fuelEfficiencyTypeItems.add(new SelectItem(fet, MessageUtil.getMessageString(fet.toString(), getLocale())));
+        }
    	
-    	if (measurementType != null && measurementType.equals(MeasurementType.METRIC)){
-    		
-            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.KMPL, MessageUtil.getMessageString(FuelEfficiencyType.KMPL.toString(), getLocale())));
-            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.LP100KM, MessageUtil.getMessageString(FuelEfficiencyType.LP100KM.toString(), getLocale())));
-               		
-    	}
-    	else{
-    		
-            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.MPG_US, MessageUtil.getMessageString(FuelEfficiencyType.MPG_US.toString(), getLocale())));
-            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.MPG_UK, MessageUtil.getMessageString(FuelEfficiencyType.MPG_UK.toString(), getLocale())));
-    	}
+//    	if (measurementType != null && measurementType.equals(MeasurementType.METRIC)){
+//    		
+//            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.KMPL, MessageUtil.getMessageString(FuelEfficiencyType.KMPL.toString(), getLocale())));
+//            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.LP100KM, MessageUtil.getMessageString(FuelEfficiencyType.LP100KM.toString(), getLocale())));
+//               		
+//    	}
+//    	else{
+//    		
+//            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.MPG_US, MessageUtil.getMessageString(FuelEfficiencyType.MPG_US.toString(), getLocale())));
+//            fuelEfficiencyTypeItems.add(new SelectItem(FuelEfficiencyType.MPG_UK, MessageUtil.getMessageString(FuelEfficiencyType.MPG_UK.toString(), getLocale())));
+//    	}
     	
     }
 }

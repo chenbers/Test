@@ -18,6 +18,7 @@ import org.jboss.resteasy.client.ClientResponse;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
@@ -55,6 +56,9 @@ public interface ServiceClient {
     @Path("/devices")
     public ClientResponse<List<Device>> getAllDevices();
 
+    @GET
+    @Path("/groups")
+    public ClientResponse<List<Group>> getAllGroups();
     // --------------------------------------------------------------------------------
     // CellControl/ZoomSafer services
     @POST

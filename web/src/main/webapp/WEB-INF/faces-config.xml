@@ -166,6 +166,10 @@
   <converter-class>com.inthinc.pro.convert.MilesToKilometersConverterInput</converter-class>
  </converter>
  <converter>
+  <converter-id>MilesToKilometersConverterLong</converter-id>
+  <converter-class>com.inthinc.pro.convert.MilesToKilometersConverterLong</converter-class>
+ </converter>
+ <converter>
   <converter-id>PerMillionsMilesToPerMillionsKmConverter</converter-id>
   <converter-class>com.inthinc.pro.convert.PerMillionsMilesToPerMillionsKmConverter</converter-class>
  </converter>
@@ -188,6 +192,10 @@
  <converter>
   <converter-id>LbsToKgConverter</converter-id>
   <converter-class>com.inthinc.pro.convert.LbsToKgConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-id>GallonsToLitersConverter</converter-id>
+  <converter-class>com.inthinc.pro.convert.GallonsToLitersConverter</converter-class>
  </converter>
  <converter>
   <converter-id>MphToKphLabelConverter</converter-id>

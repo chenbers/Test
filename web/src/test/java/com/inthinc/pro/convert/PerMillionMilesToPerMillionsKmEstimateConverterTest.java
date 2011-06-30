@@ -1,7 +1,8 @@
 package com.inthinc.pro.convert;
 
 
-import org.junit.Ignore;
+import java.util.Locale;
+
 import org.junit.Test;
 
 import com.inthinc.pro.backing.BaseBeanTest;
@@ -11,6 +12,10 @@ import com.inthinc.pro.security.userdetails.ProUser;
 
 
 public class PerMillionMilesToPerMillionsKmEstimateConverterTest extends BaseBeanTest {
+    
+  static final String BELOW_POINT_ZERO_ONE = "<0.01";
+  static final String BELOW_POINT_ZERO_ONE_EURO = "<0,01";
+  static final String ABOVE_FIFTY = ">50";
 	
 	public PerMillionMilesToPerMillionsKmEstimateConverterTest()
 	{
@@ -23,7 +28,7 @@ public class PerMillionMilesToPerMillionsKmEstimateConverterTest extends BaseBea
 	
 	
     @Test
-    @Ignore
+//    @Ignore
     public void getAsString()
     {
     	
@@ -31,37 +36,50 @@ public class PerMillionMilesToPerMillionsKmEstimateConverterTest extends BaseBea
     	LocaleBean localeBean = new LocaleBean();
     	localeBean.getLocale();
     
-//    	this.getProUser().getUser().setLocale(LocaleBean.getCurrentLocale());
     	
     	PerMillionsMilesToPerMillionsKmEstimateConverter converter = new PerMillionsMilesToPerMillionsKmEstimateConverter();
     	
     	// English units
     	String str = converter.getAsString(this.facesContext, null, 100.0);
-    	assertEquals(PerMillionsMilesToPerMillionsKmEstimateConverter.ABOVE_FIFTY, str);
+    	assertEquals(ABOVE_FIFTY, str);
     	
     	str = converter.getAsString(this.facesContext, null, 2.024);
-    	assertEquals("2.0", str);
+    	assertEquals("2.024", str);
 
     	str = converter.getAsString(this.facesContext, null, 2.051);
-    	assertEquals("2.1", str);
+    	assertEquals("2.051", str);
     	
     	str = converter.getAsString(this.facesContext, null, 0.001);
-    	assertEquals(PerMillionsMilesToPerMillionsKmEstimateConverter.BELOW_POINT_ZERO_ONE, str);
+    	assertEquals(BELOW_POINT_ZERO_ONE, str);
     	
     	str = converter.getAsString(this.facesContext, null, 0.0);
-    	assertEquals(PerMillionsMilesToPerMillionsKmEstimateConverter.BELOW_POINT_ZERO_ONE, str);
+    	assertEquals(BELOW_POINT_ZERO_ONE, str);
     	
    	// Metric units  (conversion: perMilMiles * 0.62137 = perMilKM)
     	user.getUser().getPerson().setMeasurementType(MeasurementType.METRIC);
     	str = converter.getAsString(this.facesContext, null, 100.0);		// 100 pmm = 62 pmkm 
-    	assertEquals(PerMillionsMilesToPerMillionsKmEstimateConverter.ABOVE_FIFTY, str);
+    	assertEquals(ABOVE_FIFTY, str);
     	
     	str = converter.getAsString(this.facesContext, null, 2.024);		// 2.024 pmm = 1.25765 pmkm
-    	assertEquals("1.3", str);
+    	assertEquals("1.258", str);
 
     	
     	str = converter.getAsString(this.facesContext, null, 0.001);		// .001 pmm = 0.00062137 pmkm
-    	assertEquals(PerMillionsMilesToPerMillionsKmEstimateConverter.BELOW_POINT_ZERO_ONE, str);
+    	assertEquals(BELOW_POINT_ZERO_ONE, str);
+    	
+        // Metric units  (conversion: perMilMiles * 0.62137 = perMilKM) and romainian locale
+        user.getUser().getPerson().setMeasurementType(MeasurementType.METRIC);
+        user.getUser().getPerson().setLocale(new Locale("ro"));
+        
+        str = converter.getAsString(this.facesContext, null, 100.0);        // 100 pmm = 62 pmkm 
+        assertEquals(ABOVE_FIFTY, str);
+        
+        str = converter.getAsString(this.facesContext, null, 2.024);        // 2.024 pmm = 1.25765 pmkm
+        assertEquals("1,258", str);
+
+        
+        str = converter.getAsString(this.facesContext, null, 0.001);        // .001 pmm = 0.00062137 pmkm
+        assertEquals(BELOW_POINT_ZERO_ONE_EURO, str);
     }
 
 

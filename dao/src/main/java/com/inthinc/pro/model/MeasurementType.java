@@ -7,12 +7,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public enum MeasurementType implements BaseEnum {
-    ENGLISH(1, new FuelEfficiencyType[]{FuelEfficiencyType.MPG_UK,FuelEfficiencyType.MPG_US}), 
-    METRIC(2, new FuelEfficiencyType[]{FuelEfficiencyType.KMPL,FuelEfficiencyType.LP100KM});
+    ENGLISH(1, EnumSet.of(FuelEfficiencyType.MPG_UK,FuelEfficiencyType.MPG_US)), 
+    METRIC(2,EnumSet.of(FuelEfficiencyType.KMPL,FuelEfficiencyType.LP100KM));
+    
     private int code;
-    private FuelEfficiencyType[] validFuelEfficiencyTypes;
+    private EnumSet<FuelEfficiencyType> validFuelEfficiencyTypes;
 
-    private MeasurementType(int code, FuelEfficiencyType[] validFuelEfficiencyTypes) {
+    private MeasurementType(int code, EnumSet<FuelEfficiencyType> validFuelEfficiencyTypes) {
         this.code = code;
         this.validFuelEfficiencyTypes = validFuelEfficiencyTypes;
     }
@@ -41,7 +42,7 @@ public enum MeasurementType implements BaseEnum {
         return sb.toString();
     }
     
-    public FuelEfficiencyType[] getValidFuelEfficiencyTypes(){
+    public EnumSet<FuelEfficiencyType> getValidFuelEfficiencyTypes(){
     	
     	return validFuelEfficiencyTypes;
     }

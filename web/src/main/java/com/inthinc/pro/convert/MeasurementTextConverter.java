@@ -5,7 +5,6 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.util.MessageUtil;
 

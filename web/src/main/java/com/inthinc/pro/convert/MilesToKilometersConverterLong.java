@@ -12,7 +12,7 @@ import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.util.MessageUtil;
 
-public class MilesToKilometersConverter extends BaseConverter {
+public class MilesToKilometersConverterLong extends BaseConverter {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) throws ConverterException {
         try
@@ -21,12 +21,13 @@ public class MilesToKilometersConverter extends BaseConverter {
             {
                 if (getMeasurementType().equals(MeasurementType.METRIC))
                 {
-                    Long dist = Long.valueOf(value);
-                    return MeasurementConversionUtil.fromKilometersToMiles(dist).intValue();                    
+                    Double dist = Double.valueOf(value);
+                    dist++;
+                    return MeasurementConversionUtil.fromKilometersToMiles(dist).longValue();                    
                 }
                 else
                 {
-                    return Integer.valueOf(value);
+                    return Long.valueOf(value);
                 }
             }
         }
@@ -46,18 +47,13 @@ public class MilesToKilometersConverter extends BaseConverter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException {
 
-        if (Number.class.isInstance(value)) {
-            NumberFormat formatter = NumberFormat.getInstance(getLocale());
-            formatter.setMaximumFractionDigits(1);
-            
-            double miles = Number.class.cast(value).doubleValue();
-            
-            if (getMeasurementType().equals(MeasurementType.METRIC)) {
-                return formatter.format(MeasurementConversionUtil.fromMilesToKilometers(miles));
-            } 
-            return formatter.format(miles);
+        if (Long.class.isInstance(value))
+        {
+            if (getMeasurementType().equals(MeasurementType.METRIC))
+                return MeasurementConversionUtil.fromMilesToKilometers(((Long) value).longValue()).toString();
+            else
+                return value.toString();
         }
-
-        return value.toString();
+        return null;
     }
 }

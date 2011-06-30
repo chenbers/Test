@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +33,6 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.hos.FuelStopRecord;
 import com.inthinc.pro.table.PageData;
-import com.inthinc.pro.util.BeanUtil;
 import com.inthinc.pro.util.MessageUtil;
 
 public class FuelStopsBean extends BaseBean {
@@ -58,7 +56,7 @@ public class FuelStopsBean extends BaseBean {
     protected FuelStopView item;
     protected LinkedHashMap<Long,FuelStopView> items;
     private boolean               selectAll;
-    private Map<String, Boolean> updateField;
+//    private Map<String, Boolean> updateField;
     private List<VehicleName> vehicleNameList;
     
     private CRUDStrategy crudStrategy;
@@ -218,37 +216,41 @@ public class FuelStopsBean extends BaseBean {
     }
     
     public String getCrudMessageKey(){
-        if(crudStrategy == null) return null;
+        if(crudStrategy == null){
+            add();
+        }
         return crudStrategy.getMessageKey();
     }
     public Boolean getAdd(){
-        if(crudStrategy == null) return false;
+        if(crudStrategy == null){
+            add();
+        }
         return crudStrategy.isAdd();
         
     }
 
-    public FuelStopView getItem() {
-        if (item == null)
-        {
-//            batchEdit = false;
-
-            int selected = 0;
-            FuelStopView selection = null;
-            for (FuelStopView t : getItems())
-                if (t.isSelected())
-                {
-                    selection = t;
-                    selected++;
-                    if (selected > 1)
-                        break;
-                }
-            
-            if(logger.isTraceEnabled())
-                logger.trace("BEGIN getItem: " + selection);
-            if (selected == 0)
-                item = createAddItem();
-            else if (selected == 1)
-                item = selection;
+//    public FuelStopView getItem() {
+//        if (item == null)
+//        {
+////            batchEdit = false;
+//
+//            int selected = 0;
+//            FuelStopView selection = null;
+//            for (FuelStopView t : getItems())
+//                if (t.isSelected())
+//                {
+//                    selection = t;
+//                    selected++;
+//                    if (selected > 1)
+//                        break;
+//                }
+//            
+//            if(logger.isTraceEnabled())
+//                logger.trace("BEGIN getItem: " + selection);
+//            if (selected == 0)
+//                item = createAddItem();
+//            else if (selected == 1)
+//                item = selection;
 //            else
 //            {
 //                batchEdit = true;
@@ -260,21 +262,21 @@ public class FuelStopsBean extends BaseBean {
 //                    BeanUtil.compareAndInit(item, t);
 //            } 
             
-            if(logger.isTraceEnabled())
-                logger.trace("END getItem: " + item);
-        }
-        return item;
-        
+//            if(logger.isTraceEnabled())
+//                logger.trace("END getItem: " + item);
+//        }
+//        return item;
+//        
+//    }
+
+//    public void setItem(FuelStopView item) {
+//        this.item = item;
+//    }
+    
+    public boolean isBatchEdit() {
+        return false;
     }
 
-    public void setItem(FuelStopView item) {
-        this.item = item;
-    }
-    
-//    public boolean isBatchEdit() {
-//        return batchEdit;
-//    }
-//
 //    public void setBatchEdit(boolean batchEdit) {
 //        this.batchEdit = batchEdit;
 //    }
@@ -298,7 +300,7 @@ logger.info("in loadItems()");
         if (plainRecords == null)
             return items;
         for (final FuelStopRecord rec : plainRecords) {
-            if (interval.contains(rec.getDateTime().getTime()))
+            if (interval.contains(rec.getLogTime().getTime()))
                     items.add(createFuelStopView(rec));
         }
         return items;
@@ -308,7 +310,8 @@ logger.info("in loadItems()");
     private FuelStopView createFuelStopView(FuelStopRecord fuelStopRecord)
     {
         final FuelStopView fuelStopView = new FuelStopView();
-        BeanUtils.copyProperties(fuelStopRecord, fuelStopView);
+        String[] ignoreProperties = {"timeInSec"};
+        BeanUtils.copyProperties(fuelStopRecord, fuelStopView, ignoreProperties);
         fuelStopView.setSelected(false);
         fuelStopView.setDriverName(locateDriverName());
         
@@ -372,15 +375,15 @@ logger.info("in loadItems()");
         }
 
         public int getTimeInSec() {
-            DateTime dateTime = new DateTime(getDateTime(), DateTimeZone.forID(getTimeZone().getID()));
+            DateTime dateTime = new DateTime(getLogTime(), DateTimeZone.forID(getTimeZone().getID()));
             return dateTime.getSecondOfDay();
         }
 
         public void setTimeInSec(int timeInSec) {
             try
             {
-                DateTime dateTime = new DateMidnight(getDateTime(), DateTimeZone.forID(getTimeZone().getID())).toDateTime().plusSeconds(timeInSec);
-                setDateTime(dateTime.toDate());
+                DateTime dateTime = new DateMidnight(getLogTime(), DateTimeZone.forID(getTimeZone().getID())).toDateTime().plusSeconds(timeInSec);
+                setLogTime(dateTime.toDate());
             }
             catch (java.lang.NullPointerException e) {
                 e.printStackTrace();
@@ -398,6 +401,7 @@ logger.info("in loadItems()");
             return "";
         
         unselectAllItems();
+        
         crudStrategy = new CreateStrategy();
         return crudStrategy.init();
     }
@@ -420,13 +424,12 @@ logger.info("in loadItems()");
     }
     
     private FuelStopView createAddItem() {
-        FuelStopRecord fuelsStopRecord = new FuelStopRecord();
-// TODO find out how to get timezone from vehicle        
-        fuelsStopRecord.setTimeZone(TimeZone.getDefault());
-        fuelsStopRecord.setDateTime(new Date());
-        fuelsStopRecord.setVehicleID(vehicleID);
+        FuelStopRecord fuelStopRecord = new FuelStopRecord();
+        fuelStopRecord.setTimeZone(TimeZone.getDefault());
+        fuelStopRecord.setLogTime(new Date());
+        fuelStopRecord.setVehicleID(vehicleID);
         
-        return createFuelStopView(fuelsStopRecord);
+        return createFuelStopView(fuelStopRecord);
     }
 
     public List<FuelStopView> getSelectedItems()
@@ -442,32 +445,11 @@ logger.info("in loadItems()");
         return selectedItems;
     }
     
-    public Map<String, Boolean> getUpdateField()
-    {
-        if ((updateField == null) || (updateField.size() == 0))
-        {
-            if (updateField == null)
-                updateField = new HashMap<String, Boolean>();
-            if (getItem() != null)
-                for (final String name : BeanUtil.getPropertyNames(getItem()))
-                    updateField.put(name, false);
-        }
-        return updateField;
-    }
-
     public String save()
     {
         crudStrategy.save();
         return VIEW_REDIRECT;
     }
-    private void updateVehicleName() {
-        if (item != null && item.getVehicleID() != null && item.getVehicleID().intValue() != 0) {
-            Vehicle vehicle = vehicleDAO.findByID(item.getVehicleID());
-            item.setVehicleName(vehicle.getName());
-        }
-        
-    }
-
     protected boolean validate(List<FuelStopView> saveItems)
     {
         boolean valid = true;
@@ -487,48 +469,12 @@ logger.info("in loadItems()");
        crudStrategy = null;
        
        return VIEW_REDIRECT;
-//        // revert the edit item
-//        if (/*!isBatchEdit() && */!isAdd())
-//        {
-//            final int index = getItems().indexOf(getItem());
-//            if (index != -1)
-//                items.put(item.getFuelStopID(), revertItem(item));
-//        }
-//
-//        // deselect all edit items
-//        for (FuelStopView  item : getSelectedItems())
-//            item.setSelected(false);
-//
-//        return VIEW_REDIRECT;
     }
     
     protected FuelStopView revertItem(FuelStopView editItem)
     {
         return createFuelStopView(fuelStopDAO.findByID(editItem.getFuelStopID()));
     }
-
-//    protected void doSave(List<FuelStopView> saveItems, boolean create)
-//    {
-//        final FacesContext context = FacesContext.getCurrentInstance();
-//        
-//        Integer editUserID = getUser().getUserID();
-//
-//        for (FuelStopView log : saveItems)
-//        {
-//            log.setEditUserID(editUserID);
-//            log.setEdited(true);
-//            if (create)
-//                log.setFuelStopID(fuelStopDAO.create(0l, log));
-//            else
-//                fuelStopDAO.update(log);
-//
-//            // add a message
-//            final String summary = MessageUtil.formatMessageString(create ? "hosLog_added" : "hosLog_updated", log.getId());
-//            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
-//            context.addMessage(null, message);
-//        }
-//
-//    }
 
     public void doSelectAll()
     {
@@ -580,12 +526,61 @@ logger.info("in loadItems()");
     }
     
     private abstract class CRUDStrategy {
+        
+//        protected FuelStopView item;
         protected abstract String init();
-        protected abstract Boolean validate(FuelStopView fuelStopView);
         protected abstract String save();
         protected abstract void cancel();
         protected abstract String getMessageKey();
         protected abstract Boolean isAdd();
+
+        protected void updateVehicleName() {
+            if (item != null && item.getVehicleID() != null && item.getVehicleID().intValue() != 0) {
+                Vehicle vehicle = vehicleDAO.findByID(item.getVehicleID());
+                item.setVehicleName(vehicle.getName());
+            }
+            
+        }
+
+        protected void setEditingUser(){
+            Integer editUserID = getUser().getUserID();
+
+            item.setEditUserID(editUserID);
+            item.setEdited(true);
+        }
+        protected Boolean validate(FuelStopView fuelStopView) {
+            boolean valid = true;
+            if (!validateLocation(fuelStopView)) valid = false;
+            if (!validateDateTime(fuelStopView)) valid = false;
+            
+            return valid;
+        }
+        private Boolean validateLocation(FuelStopView fuelStopView){
+            if (fuelStopView.getLocation() == null || fuelStopView.getLocation().isEmpty()) {
+                
+                addMessageForField("required","edit-form:editFuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
+                return false;
+            }
+            return true;
+        }
+        private Boolean validateDateTime(FuelStopView fuelStopView){
+            
+            if (fuelStopView.getLogTime().after(new Date())) {
+                addMessageForField(" editFuelStop_future_date_not_allowed","edit-form:editFuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
+                return false;
+            }
+            return true;
+        }
+        private void addMessageForField(String messageKey, String messageField, FacesMessage.Severity severity){
+            FacesMessage message = new FacesMessage(severity, MessageUtil.getMessageString(messageKey), null);
+            FacesContext.getCurrentInstance().addMessage(messageField, message);
+        }
+
+        protected void addMessageForPage(String messageKey, FacesMessage.Severity severity){
+            final String summary = MessageUtil.formatMessageString(messageKey, item.getId());
+            final FacesMessage message = new FacesMessage(severity, summary, null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
     private class CreateStrategy extends CRUDStrategy{
         
@@ -609,55 +604,25 @@ logger.info("in loadItems()");
 
             try
             {
+                setEditingUser();
                 
-                Integer editUserID = getUser().getUserID();
-
-                item.setEditUserID(editUserID);
-                item.setEdited(true);
                 item.setFuelStopID(fuelStopDAO.create(0l, item));
 
+                getItems();
                 items.put(item.getFuelStopID(),item);
+                
+                addMessageForPage("fuelStop_added", FacesMessage.SEVERITY_INFO);
                     // add a message
-                final String summary = MessageUtil.formatMessageString("fuelStop_added", item.getId());
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
-                FacesContext.getCurrentInstance().addMessage(null, message);
                 
                 return VIEW_REDIRECT;
             }
             catch (HessianException e)
             {
-                final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getLocalizedMessage(), null);
-                FacesContext.getCurrentInstance().addMessage(null, message);
+                addMessageForPage(e.getLocalizedMessage(),FacesMessage.SEVERITY_ERROR);
                 logger.debug("Hessian error while saving", e);
                 return null;
             }
             
-        }
-        @Override
-        protected Boolean validate(FuelStopView fuelStopView) {
-            boolean valid = true;
-            if (!validateLocation(fuelStopView)) valid = false;
-            if (!validateDateTime(fuelStopView)) valid = false;
-            
-            return valid;
-        }
-        private Boolean validateLocation(FuelStopView fuelStopView){
-            if (fuelStopView.getLocation() == null || fuelStopView.getLocation().isEmpty() && getUpdateField().get("location")) {
-                
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString("required"), null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:editFuelStop_location", message);
-                return false;
-            }
-            return true;
-        }
-        private Boolean validateDateTime(FuelStopView fuelStopView){
-            
-            if (fuelStopView.getDateTime().after(new Date())) {
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessageString(" editFuelStop_future_date_not_allowed"), null);
-                FacesContext.getCurrentInstance().addMessage("edit-form:editFuelStop_dateTime", message);
-                return false;
-            }
-            return true;
         }
         @Override
         protected void cancel() {
@@ -684,35 +649,49 @@ logger.info("in loadItems()");
             final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             if (parameterMap.get(paramName) != null)
             {
-                final int editID = Integer.parseInt(parameterMap.get(paramName));
+                final long editID = Long.parseLong(parameterMap.get(paramName));
                 selectItem(editID);
                 return true;
             }
             return false;
         }
         
-        private void selectItem(Integer id)
+        private void selectItem(Long id)
         {
                 for (FuelStopView fuelStop : getItems())
                     fuelStop.setSelected(fuelStop.getId().equals(id));
 
-                item = null;
-                getItem();
+                item = items.get(id);
                 item.setSelected(false);
         }
 
         @Override
         protected String save() {
-            return null;
-        }
-        @Override
-        protected Boolean validate(FuelStopView fuelStopView) {
-            // TODO Auto-generated method stub
-            return true;
+            updateVehicleName();
+
+            // validate
+            if (!validate(item)) {
+                return null;
+            }
+            try
+            {
+                  setEditingUser();
+                  fuelStopDAO.update(item);
+                  
+                  addMessageForPage("fuelStop_updated",FacesMessage.SEVERITY_INFO);
+                  // add a message
+                  return VIEW_REDIRECT;
+            }
+            catch (HessianException e)
+            {
+                addMessageForPage(e.getLocalizedMessage(),FacesMessage.SEVERITY_ERROR);
+                logger.debug("Hessian error while saving", e);
+                return null;
+            }
         }
         @Override
         protected void cancel() {
-            final int index = getItems().indexOf(getItem());
+            final int index = getItems().indexOf(item);
             if (index != -1)
                 items.put(item.getFuelStopID(), revertItem(item));
             // deselect all edit items
@@ -727,5 +706,9 @@ logger.info("in loadItems()");
             return false;
         }
 
+    }
+
+    public FuelStopView getItem() {
+        return item;
     }
 }

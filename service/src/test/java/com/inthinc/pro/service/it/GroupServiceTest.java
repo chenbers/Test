@@ -25,7 +25,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.model.Address;
 import com.inthinc.pro.model.DriverLocation;
+import com.inthinc.pro.model.GroupStatus;
+import com.inthinc.pro.model.GroupType;
 import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupScoreWrapper;
 import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
@@ -33,7 +37,7 @@ import com.inthinc.pro.model.aggregation.GroupTrendWrapper;
 /**
  * Integration test for Group Service Implementation.
  */
-@Ignore
+//@Ignore
 public class GroupServiceTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(GroupServiceTest.class);
     private static int GROUP_ID = 3;
@@ -260,5 +264,29 @@ public class GroupServiceTest extends BaseEmbeddedServerITCase {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    @Test 
+    public void createGroupTest() throws Exception{
+        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/group/");
+        StringBuilder xmlString = new StringBuilder()
+        .append("<group>")
+        .append("<accountID>2</accountID>")
+        .append("<name>service created 3</name>")
+        .append("<parentID>4917</parentID>")
+        .append("<status>GROUP_ACTIVE</status>")
+        .append("<type>DIVISION</type>")
+        .append("<managerID>3</managerID>")
+//        .append("<mapZoom>12</mapZoom>")
+//        .append("<mapLat>40.711</mapLat>")
+//        .append("<mapLng>-111.992</mapLng>")
+//        .append("<zoneRev>120</zoneRev>")
+//        .append("<addressID></addressID")
+//        .append("<address></address")
+        .append("</group>");
+        
+        request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlString.toString());
+
+        String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
+        System.out.println(response);
     }
 }

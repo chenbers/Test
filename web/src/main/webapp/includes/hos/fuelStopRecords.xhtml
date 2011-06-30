@@ -98,37 +98,41 @@
                 <h:selectBooleanCheckbox id="select" value="#{item.selected}">
                 </h:selectBooleanCheckbox>
 			</rich:column>
-			<rich:column id="datetime" rendered="#{fuelStopsTableColumns.tableColumns['datetime'].visible}" sortBy="#{item.dateTime}" sortOrder="DESCENDING">
+			<rich:column id="datetime" rendered="#{fuelStopsTableColumns.tableColumns['datetime'].visible}" sortBy="#{item.logTime}" sortOrder="DESCENDING">
 			      <f:facet name="header"><h:outputText value="#{messages.fuelStops_datetime}" /></f:facet>
-            	    <h:outputText value="#{item.dateTime}">
+            	    <h:outputText value="#{item.logTime}">
                 		<f:converter converterId="DateTimeTZConverter"/>
 						<f:attribute name="timeZone" value="#{item.timeZone}"/>
                 		<f:attribute name="pattern" value="#{messages.longDateTimeFormat}"/>
                 	</h:outputText>
 			</rich:column>
-<!-- 		    <rich:column id="driver" rendered="#{fuelStopsTableColumns.tableColumns['driver'].visible}" sortBy="#{item.driverName}"> -->
-<!-- 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_driver}" /></f:facet> -->
-<!-- 		      <h:outputText value="#{item.driverName}" /> -->
-<!-- 		    </rich:column> -->
+		    <rich:column id="driver" rendered="#{fuelStopsTableColumns.tableColumns['driver'].visible}" sortBy="#{item.driverName}">
+		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_driver}" /></f:facet>
+		      <h:outputText value="#{item.driverName}" />
+		    </rich:column>
 		    <rich:column id="vehicle" rendered="#{fuelStopsTableColumns.tableColumns['vehicle'].visible}" sortBy="#{item.vehicleName}">
 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_vehicle}" /></f:facet>
 		      <h:outputText value="#{item.vehicleName}" />
 		    </rich:column>
 		   	<rich:column id="truckGallons" rendered="#{fuelStopsTableColumns.tableColumns['truckGallons'].visible}" sortBy="#{item.truckGallons}">
 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_truckGallons}" /></f:facet>
-		      <h:outputText value="#{item.truckGallons}" />
+		      <h:outputText value="#{item.truckGallons}" converter="GallonsToLitersConverter"/><rich:spacer width="5px"/>
+	          <h:outputText value="editFuelStop_truckGallons" converter="MeasurementTextConverter"/>
 		    </rich:column>
 		   	<rich:column id="trailerGallons" rendered="#{fuelStopsTableColumns.tableColumns['trailerGallons'].visible}" sortBy="#{item.trailerGallons}">
 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_trailerGallons}" /></f:facet>
-		      <h:outputText value="#{item.trailerGallons}" />
+		      <h:outputText value="#{item.trailerGallons}" converter="GallonsToLitersConverter"/><rich:spacer width="5px"/>
+		      <h:outputText value="editFuelStop_trailerGallons" converter="MeasurementTextConverter"/>
 		    </rich:column>
 		   	<rich:column id="odometerBefore" rendered="#{fuelStopsTableColumns.tableColumns['odometerBefore'].visible}" sortBy="#{item.odometerBefore}">
 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_odometerBefore}" /></f:facet>
-		      <h:outputText value="#{item.odometerBefore}" />
+		      <h:outputText value="#{item.odometerBefore}" converter="MilesToKilometersConverter"/><rich:spacer width="5px"/>
+				<h:outputText value="editFuelStop_odometerBefore" converter="MeasurementTextConverter"/>
 		    </rich:column>
 		   	<rich:column id="odometerAfter" rendered="#{fuelStopsTableColumns.tableColumns['odometerAfter'].visible}" sortBy="#{item.odometerAfter}">
 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_odometerAfter}" /></f:facet>
-		      <h:outputText value="#{item.odometerAfter}" />
+		      <h:outputText value="#{item.odometerAfter}" converter="MilesToKilometersConverter"/><rich:spacer width="5px"/>
+		      <h:outputText value="editFuelStop_odometerAfter" converter="MeasurementTextConverter"/>
 		    </rich:column>
 <!-- 		    <rich:column id="service" rendered="#{fuelStopsTableColumns.tableColumns['service'].visible}" sortBy="#{item.serviceID}"> -->
 <!-- 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_service}" /></f:facet> -->

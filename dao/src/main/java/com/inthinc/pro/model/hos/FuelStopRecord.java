@@ -3,6 +3,10 @@ package com.inthinc.pro.model.hos;
 import java.util.Date;
 import java.util.TimeZone;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.pro.model.BaseEntity;
 
@@ -17,7 +21,7 @@ public class FuelStopRecord extends BaseEntity {
     private Boolean vehicleIsDOT;
     private Long odometerBefore;
     private Long odometerAfter;
-    private Date dateTime;
+    private Date logTime;
     private TimeZone timeZone;
     private String location;
     private Float lat;
@@ -48,7 +52,7 @@ public class FuelStopRecord extends BaseEntity {
         this.vehicleIsDOT = vehicleIsDOT;
         this.odometerBefore = odometerBefore;
         this.odometerAfter = odometerAfter;
-        this.dateTime = dateTime;
+        this.logTime = dateTime;
         this.timeZone = timeZone;
         this.location = location;
         this.lat = lat;
@@ -93,11 +97,11 @@ public class FuelStopRecord extends BaseEntity {
     public void setVehicleIsDOT(Boolean vehicleIsDOT) {
         this.vehicleIsDOT = vehicleIsDOT;
     }
-    public Date getDateTime() {
-        return dateTime;
+    public Date getLogTime() {
+        return logTime;
     }
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
+    public void setLogTime(Date logTime) {
+        this.logTime = logTime;
     }
     public TimeZone getTimeZone() {
         return timeZone;

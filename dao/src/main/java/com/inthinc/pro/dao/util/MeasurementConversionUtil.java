@@ -1,7 +1,5 @@
 package com.inthinc.pro.dao.util;
 
-import java.text.NumberFormat;
-
 import com.inthinc.pro.model.FuelEfficiencyType;
 import com.inthinc.pro.model.MeasurementType;
 
@@ -159,9 +157,9 @@ public class MeasurementConversionUtil
     }
     
     public static Number fromGallonsToLiters(Number gallons) {
-        
-        
         return gallons == null ? null : Math.round(gallons.doubleValue() * LITERS_PER_GALLON);
-
+    }
+    public static Number fromLitersToGallons(Number liters) {
+        return liters == null ? null : Math.round(liters.doubleValue() / LITERS_PER_GALLON);
     }
 }

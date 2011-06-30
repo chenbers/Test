@@ -51,206 +51,218 @@
                         </li>
                       </ul>
                         
-<!--                       <ui:fragment rendered="${tiwiprofn:messagesAvailable()}"> -->
-<!--                         <dl id="display-form:j_id122" class="rich-messages msg" style=""> -->
-<!--                            <dt class="error"> -->
-<!--                               <h:outputFormat value="#{messages.error_validationMsg}"> -->
-<!--                                  <f:param value="${tiwiprofn:getMessageCount()}"/> -->
-<!--                               </h:outputFormat> -->
-<!--                            </dt> -->
-<!--                         </dl> -->
-<!--                       </ui:fragment> -->
-<!--                       <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" /> -->
+                      <ui:fragment rendered="${tiwiprofn:messagesAvailable()}">
+                        <dl id="display-form:j_id122" class="rich-messages msg" style="">
+                           <dt class="error">
+                              <h:outputFormat value="#{messages.error_validationMsg}">
+                                 <f:param value="${tiwiprofn:getMessageCount()}"/>
+                              </h:outputFormat>
+                           </dt>
+                        </dl>
+                      </ui:fragment>
+                      <rich:messages globalOnly="true" errorClass="error" fatalClass="error" warnClass="warning" infoClass="info" styleClass="msg" />
 
-<!--                       <div class="spacer"></div> -->
+                      <div class="spacer"></div>
 
-<!--                       <table width="790" border="0" cellspacing="0" cellpadding="0"> -->
-<!--                         <tr> -->
-<!--                           <td width="390" valign="top"> -->
+                      <table width="790" border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="390" valign="top">
 
-<!--                             <div class="add_section_title"><h:outputText value="#{messages.fuelStops_information}" /></div> -->
+                            <div class="add_section_title"><h:outputText value="#{messages.fuelStops_information}" /></div>
 
-<!--                             <table width="370" border="0" cellspacing="2" cellpadding="4" align="center"> -->
-<!--                               <ui:fragment rendered="#{not fuelStopsBean.batchEdit}"> -->
-<!--                               <tr> -->
-<!--                                 <td width="100" valign="top"> -->
-<!--                                   <h:outputText value="#{messages.fuelStop_date}" /> -->
-<!--                                   <span class="required">*</span> -->
-<!--                                 </td> -->
-<!--                                 <td> -->
-<!--                                   <rich:message for="editfuelStop_dateTime" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> -->
-<!--                             	  <rich:calendar value="#{fuelStopsBean.item.logTime}" id="editfuelStop_dateTime"  -->
-<!--                             	  		todayControlMode="hidden" enableManualInput="false"  datePattern="MMM d, yyyy" -->
-<!--                             	  		timeZone="#{fuelStopsBean.item.timeZone}" inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;"/> -->
-<!--                                 </td> -->
-<!--                               </tr> -->
-<!--                               <tr> -->
-<!--                                 <td width="100" valign="top"> -->
-<!--                                   <h:outputText value="#{messages.fuelStop_time}" /> -->
-<!--                                   <span class="required">*</span> -->
-<!--                                 </td> -->
-<!--                                 <td> -->
-<!-- 						          <ui:include src="/includes/component/hhmmssTimePicker.xhtml"> -->
-<!--             						<ui:param name="value" value="#{fuelStopsBean.item.timeInSec}" /> -->
-<!--             						<ui:param name="formName" value="edit-form"/> -->
-<!--             						<ui:param name="timezoneName" value="#{fuelStopsBean.item.timezoneName}"/> -->
-<!--             						<ui:param name="context" value="fuelStopEdit"/> -->
-<!--           						  </ui:include> -->
-<!--                                 </td> -->
-<!--                               </tr> -->
-<!--                               </ui:fragment> -->
-<!--                               <tr> -->
-<!-- 		                          <td width="100" valign="top"> -->
-<!-- 		                              <ui:include src="../../includes/admin/inputLabel.xhtml"> -->
-<!-- 		                                 <ui:param name="required" value="TRUE"/> -->
-<!-- 		                                 <ui:param name="for" value="editfuelStop_status"/> -->
-<!-- 		                                 <ui:param name="fieldName" value="status"/> -->
-<!-- 		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/> -->
-<!-- 		                                 <ui:param name="label" value="#{messages.fuelStop_status}"/> -->
-<!-- 		                              </ui:include> -->
-<!-- 		                          </td> -->
-<!-- 		                          <td> -->
-<!-- 		                            <h:selectOneMenu value="#{fuelStopsBean.item.status}"  -->
-<!-- 		                              	id="editfuelStop_status"  -->
-<!-- 		                                onchange="checkMultiple(this)" -->
-<!-- 		                                converter="SimpleBeanConverter"> -->
-<!-- 		                              <f:selectItems value="#{fuelStopsBean.statuses}"/> -->
-<!-- 		                            </h:selectOneMenu> -->
-<!-- 		                          </td> -->
-<!--                               </tr> -->
-<!--                               <tr> -->
-<!--                                 <td width="100" valign="top"> -->
-<!-- 		                              <ui:include src="../../includes/admin/inputLabel.xhtml"> -->
-<!-- 		                                 <ui:param name="required" value="FALSE"/> -->
-<!-- 		                                 <ui:param name="for" value="editfuelStop_trailer"/> -->
-<!-- 		                                 <ui:param name="fieldName" value="trailerID"/> -->
-<!-- 		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/> -->
-<!-- 		                                 <ui:param name="label" value="#{messages.fuelStop_trailer}"/> -->
-<!-- 		                              </ui:include> -->
-<!--                                 </td> -->
-<!--                                 <td> -->
-<!--                                   <rich:message for="editfuelStop_trailer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> -->
-<!--                                   <h:inputText value="#{fuelStopsBean.item.trailerID}" id="editfuelStop_trailer" onchange="checkMultiple(this)" styleClass="text" size="30" -->
-<!--                                     maxlength="50"/> -->
-<!--                                 </td> -->
-<!--                               </tr> -->
-<!--                               <tr> -->
-<!--                                 <td width="100" valign="top"> -->
-<!-- 	                              <ui:include src="../../includes/admin/inputLabel.xhtml"> -->
-<!-- 		                                 <ui:param name="required" value="FALSE"/> -->
-<!-- 		                                 <ui:param name="for" value="editfuelStop_service"/> -->
-<!-- 		                                 <ui:param name="fieldName" value="serviceID"/> -->
-<!-- 		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/> -->
-<!-- 		                                 <ui:param name="label" value="#{messages.fuelStop_service}"/> -->
-<!-- 	                              </ui:include> -->
-<!--                                 </td> -->
-<!--                                 <td> -->
-<!--                                   <rich:message for="editfuelStop_service" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> -->
-<!--                                   <h:inputText value="#{fuelStopsBean.item.serviceID}" id="editfuelStop_service" onchange="checkMultiple(this)" styleClass="text" size="30" -->
-<!--                                     maxlength="50"/> -->
-<!--                                 </td> -->
-<!--                               </tr> -->
-<!--                               <tr> -->
-<!--                                 <td width="100" valign="top"> -->
-<!-- 	                              <ui:include src="../../includes/admin/inputLabel.xhtml"> -->
-<!-- 		                                 <ui:param name="required" value="TRUE"/> -->
-<!-- 		                                 <ui:param name="for" value="editfuelStop_driver"/> -->
-<!-- 		                                 <ui:param name="fieldName" value="driverID"/> -->
-<!-- 		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/> -->
-<!-- 		                                 <ui:param name="label" value="#{messages.fuelStop_driver}"/> -->
-<!-- 	                              </ui:include> -->
-<!--                                 </td> -->
-<!--                                 <td> -->
-<!--                                   <rich:message for="editfuelStop_driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> -->
-<!-- 	                              <h:selectOneMenu value="#{fuelStopsBean.item.driverID}"  -->
-<!-- 		                              	id="editfuelStop_driver"  -->
-<!-- 		                                onchange="checkMultiple(this)" -->
-<!-- 		                                required="#{(not fuelStopsBean.batchEdit) or fuelStopsBean.updateField['driver']}"  requiredMessage="#{messages.fuelStop_driver_required}"> -->
-<!-- 		                              <f:selectItems value="#{fuelStopsBean.drivers}"/> -->
-<!-- 		                          </h:selectOneMenu> -->
-<!--                                 </td> -->
-<!--                               </tr> -->
-<!--                               <tr> -->
-<!--                                 <td width="100" valign="top"> -->
-<!-- 	                              <ui:include src="../../includes/admin/inputLabel.xhtml"> -->
-<!-- 		                                 <ui:param name="required" value="FALSE"/> -->
-<!-- 		                                 <ui:param name="for" value="editfuelStop_vehicle"/> -->
-<!-- 		                                 <ui:param name="fieldName" value="vehicleID"/> -->
-<!-- 		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/> -->
-<!-- 		                                 <ui:param name="label" value="#{messages.fuelStop_vehicle}"/> -->
-<!-- 	                              </ui:include> -->
-<!--                                 </td> -->
-<!--                                 <td> -->
-<!--                                   <rich:message for="editfuelStop_vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> -->
-<!-- 	                              <h:selectOneMenu value="#{fuelStopsBean.item.vehicleID}"  -->
-<!-- 		                              	id="editfuelStop_vehicle"  -->
-<!-- 		                                onchange="checkMultiple(this)"> -->
-<!-- 		                              <f:selectItems value="#{fuelStopsBean.vehicles}"/> -->
-<!-- 		                          </h:selectOneMenu> -->
-<!--                                 </td> -->
-<!--                               </tr> -->
-<!--                               <tr> -->
-<!--                                 <td width="100" valign="top"> -->
-<!-- 	                              <ui:include src="../../includes/admin/inputLabel.xhtml"> -->
-<!-- 		                                 <ui:param name="required" value="TRUE"/> -->
-<!-- 		                                 <ui:param name="for" value="editfuelStop_location"/> -->
-<!-- 		                                 <ui:param name="fieldName" value="location"/> -->
-<!-- 		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/> -->
-<!-- 		                                 <ui:param name="label" value="#{messages.fuelStop_location}"/> -->
-<!-- 	                              </ui:include> -->
-<!--                                 </td> -->
-<!--                                 <td> -->
-<!--                                   <rich:message for="editfuelStop_location" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /> -->
-<!--                                   <h:inputText value="#{fuelStopsBean.item.location}" id="editfuelStop_location" onchange="checkMultiple(this)" styleClass="text" size="30" -->
-<!--                                     maxlength="50" required="#{(not fuelStopsBean.batchEdit) or fuelStopsBean.updateField['location']}"  requiredMessage="#{messages.fuelStop_location_required}"/> -->
-<!--                                 </td> -->
-<!--                               </tr> -->
-<!--                               <tr> -->
-<!--                                 <td width="100" valign="top"> -->
-<!-- 								</td> -->
-<!-- 								<td> -->
-<!--                                 	<h:outputText value="#{messages.fuelStop_location_format}" style="font:italic 11px Verdana,Tahoma,Arial,sans-serif;"/> -->
-<!-- 								</td> -->
-<!-- 							  </tr>	 -->
-<!--                               <tr> -->
-<!-- 		                          <td width="100" valign="top"> -->
-<!-- 	                              <ui:include src="../../includes/admin/inputLabel.xhtml"> -->
-<!-- 		                                 <ui:param name="required" value="TRUE"/> -->
-<!-- 		                                 <ui:param name="for" value="editfuelStop_dot"/> -->
-<!-- 		                                 <ui:param name="fieldName" value="driverDotType"/> -->
-<!-- 		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/> -->
-<!-- 		                                 <ui:param name="label" value="#{messages.fuelStop_dot}"/> -->
-<!-- 	                              </ui:include> -->
-<!-- 		                          </td> -->
-<!-- 		                          <td> -->
-<!-- 		                            <h:selectOneMenu value="#{fuelStopsBean.item.driverDotType}"  -->
-<!-- 		                              	id="editfuelStop_dot"  -->
-<!-- 		                                onchange="checkMultiple(this)" -->
-<!-- 		                                converter="SimpleBeanConverter"> -->
-<!-- 		                              <f:selectItems value="#{fuelStopsBean.dots}"/> -->
-<!-- 		                            </h:selectOneMenu> -->
-<!-- 		                          </td> -->
-<!--                               </tr> -->
+                            <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
+                              <tr>
+                                <td width="100" valign="top">
+                                  <h:outputText value="#{messages.fuelStop_date}" />
+                                  <span class="required">*</span>
+                                </td>
+                                <td>
+                                  <rich:message for="editfuelStop_dateTime" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                            	  <rich:calendar value="#{fuelStopsBean.item.logTime}" id="editfuelStop_dateTime" 
+                            	  		todayControlMode="hidden" enableManualInput="false"  datePattern="MMM d, yyyy"
+                            	  		timeZone="#{fuelStopsBean.item.timeZone}" inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+                                  <h:outputText value="#{messages.fuelStop_time}" />
+                                  <span class="required">*</span>
+                                </td>
+                                <td>
+						          <ui:include src="/includes/component/hhmmssTimePicker.xhtml">
+            						<ui:param name="value" value="#{fuelStopsBean.item.timeInSec}" />
+            						<ui:param name="formName" value="edit-form"/>
+            						<ui:param name="timezoneName" value="#{fuelStopsBean.item.timezoneName}"/>
+            						<ui:param name="context" value="fuelStopEdit"/>
+          						  </ui:include>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+		                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="FALSE"/>
+		                                 <ui:param name="for" value="editfuelStop_trailer"/>
+		                                 <ui:param name="fieldName" value="trailerID"/>
+		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
+		                                 <ui:param name="label" value="#{messages.fuelStop_trailer}"/>
+		                              </ui:include>
+                                </td>
+                                <td>
+                                  <rich:message for="editfuelStop_trailer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{fuelStopsBean.item.trailerID}" id="editfuelStop_trailer" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                    maxlength="50"/>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editfuelStop_truckGallons"/>
+		                                 <ui:param name="fieldName" value="truckGallons"/>
+		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
+		                                 <ui:param name="label" value="#{messages.fuelStop_truckGallons}"/>
+	                              </ui:include>
+	                                  </td>
+                              <td>
+                            <rich:message for="editfuelStop_truckGallons" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{fuelStopsBean.item.truckGallons}" converter="GallonsToLitersConverter" id="editfuelStop_truckGallons" onchange="checkMultiple(this)" 
+                                  			styleClass="text" size="10"/><rich:spacer width="5px"/>
+	                              <h:outputText value="editFuelStop_truckGallons" converter="MeasurementTextConverter"/>
+                              </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editfuelStop_trailerGallons"/>
+		                                 <ui:param name="fieldName" value="trailerGallons"/>
+		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
+		                                 <ui:param name="label" value="#{messages.fuelStop_trailerGallons}"/>
+	                              </ui:include>
+	                              
+	                                  </td>
+                              <td>
+                            <rich:message for="editfuelStop_trailerGallons" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{fuelStopsBean.item.trailerGallons}" converter="GallonsToLitersConverter" id="editfuelStop_trailerGallons" onchange="checkMultiple(this)" 
+                                  			styleClass="text" size="10"/><rich:spacer width="5px"/>
+	                              <h:outputText value="editFuelStop_trailerGallons" converter="MeasurementTextConverter"/>
+                              </td>
+                              </tr>
+                                                            <tr>
+                                <td width="100" valign="top">
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editfuelStop_odometerBefore"/>
+		                                 <ui:param name="fieldName" value="odometerBefore"/>
+		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
+		                                 <ui:param name="label" value="#{messages.fuelStop_odometerBefore}"/>
+	                              </ui:include>
+	                                  </td>
+                              <td>
+                            <rich:message for="editfuelStop_odometerBefore" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{fuelStopsBean.item.odometerBefore}" converter="MilesToKilometersConverterLong" id="editfuelStop_odometerBefore" onchange="checkMultiple(this)" 
+                                  			styleClass="text" size="20"/><rich:spacer width="5px"/>
+	                              <h:outputText value="editFuelStop_odometerBefore" converter="MeasurementTextConverter"/>
+                              </td>
+                              </tr>
+                                                            <tr>
+                                <td width="100" valign="top">
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editfuelStop_odometerAfter"/>
+		                                 <ui:param name="fieldName" value="odometerAfter"/>
+		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
+		                                 <ui:param name="label" value="#{messages.fuelStop_odometerAfter}"/>
+	                              </ui:include>
+	                                  </td>
+                              <td>
+                            <rich:message for="editfuelStop_odometerAfter" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{fuelStopsBean.item.odometerAfter}" converter="MilesToKilometersConverterLong" id="editfuelStop_odometerAfter" onchange="checkMultiple(this)" 
+                                  			styleClass="text" size="20"/><rich:spacer width="5px"/>
+	                              <h:outputText value="editFuelStop_odometerAfter" converter="MeasurementTextConverter"/>
+                              </td>
+                              </tr>
+                              
+                              <tr>
+                                <td width="100" valign="top">
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editfuelStop_driver"/>
+		                                 <ui:param name="fieldName" value="driverID"/>
+		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
+		                                 <ui:param name="label" value="#{messages.fuelStop_driver}"/>
+	                              </ui:include>
+                                </td>
+                                <td>
+                                  <rich:message for="editfuelStop_driver" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+	                              <h:selectOneMenu value="#{fuelStopsBean.item.driverID}" 
+		                              	id="editfuelStop_driver" 
+		                                onchange="checkMultiple(this)"
+		                                required="#{true}"  requiredMessage="#{messages.fuelStop_driver_required}">
+		                              <f:selectItems value="#{fuelStopsBean.drivers}"/>
+		                          </h:selectOneMenu>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="FALSE"/>
+		                                 <ui:param name="for" value="editfuelStop_vehicle"/>
+		                                 <ui:param name="fieldName" value="vehicleID"/>
+		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
+		                                 <ui:param name="label" value="#{messages.fuelStop_vehicle}"/>
+	                              </ui:include>
+                                </td>
+                                <td>
+                                  <rich:message for="editfuelStop_vehicle" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <ui:fragment rendered="#{fuelStopsBean.add}">
+	                              <h:selectOneMenu value="#{fuelStopsBean.item.vehicleID}" 
+		                              	id="editfuelStop_vehicle" 
+		                                onchange="checkMultiple(this)">
+		                              <f:selectItems value="#{fuelStopsBean.vehicles}"/>
+		                          </h:selectOneMenu>
+		                          </ui:fragment>
+                                  <ui:fragment rendered="#{not fuelStopsBean.add}">
+                                  	<h:outputText value="#{fuelStopsBean.item.vehicleName}" />
+                                  </ui:fragment>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="100" valign="top">
+	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
+		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="for" value="editfuelStop_location"/>
+		                                 <ui:param name="fieldName" value="location"/>
+		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
+		                                 <ui:param name="label" value="#{messages.fuelStop_location}"/>
+	                              </ui:include>
+                                </td>
+                                <td>
+                                  <rich:message for="editfuelStop_location" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <h:inputText value="#{fuelStopsBean.item.location}" id="editfuelStop_location" onchange="checkMultiple(this)" styleClass="text" size="30"
+                                    maxlength="50" required="#{true}"  requiredMessage="#{messages.fuelStop_location_required}"/>
+                                </td>
+                              </tr>
 
-<!--                             </table> -->
+                            </table>
 
-<!--                           </td> -->
-<!--                         </tr> -->
-<!--                       </table> -->
+                          </td>
+                        </tr>
+                      </table>
 
-<!--                       <div class="spacer"></div> -->
+                      <div class="spacer"></div>
 
-<!--                       <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div> -->
+                      <div class="required-key"><h:outputText value="#{messages.requiredKey}" /></div>
 
-<!--                       <div class="spacer"></div> -->
+                      <div class="spacer"></div>
 
-<!--                       <ul id="grid_nav" style="margin: 0;"> -->
-<!--                         <li class="r"> -->
-<!--                           <h:commandButton id="editfuelStopDelete2" action="#{fuelStopsBean.delete}" styleClass="left" rendered="#{not fuelStopsBean.add and not fuelStopsBean.batchEdit and fuelStopsBean.item.canDelete}"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></h:commandButton> -->
-<!--                           <h:outputText value=" " /><h:commandButton id="editfuelStopSave2" action="#{fuelStopsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton> -->
-<!--                           <h:outputText value=" " /><h:commandButton id="editfuelStopCancel2" action="#{fuelStopsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton> -->
-<!--                         </li> -->
-<!--                       </ul> -->
+                      <ul id="grid_nav" style="margin: 0;">
+                        <li class="r">
+                          <h:commandButton id="editfuelStopDelete2" action="#{fuelStopsBean.delete}" styleClass="left" rendered="#{not fuelStopsBean.add}"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editfuelStopSave2" action="#{fuelStopsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editfuelStopCancel2" action="#{fuelStopsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                        </li>
+                      </ul>
 
                 </div>
               </div>

@@ -130,17 +130,19 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
         List<Trip> list = getDao().getTrips(vehicleID, startDate.toDate(), new Date());
 
         for (Trip trip : list) {
-            try {
-                trip.setStartAddressStr(addressLookup.getAddress(trip.getStartLoc()));
-            } catch (NoAddressFoundException nafe) {
-
-                trip.setStartAddressStr("Address Not Found at" + nafe.getLat() + "," + nafe.getLng());
-            }
-
-            try {
-                trip.setEndAddressStr(addressLookup.getAddress(trip.getEndLoc()));
-            } catch (NoAddressFoundException nafe) {
-                trip.setStartAddressStr("Address Not Found at" + nafe.getLat() + "," + nafe.getLng());
+            if(trip.hasGoodRoute()){
+                try {
+                    trip.setStartAddressStr(addressLookup.getAddress(trip.getStartLoc()));
+                } catch (NoAddressFoundException nafe) {
+    
+                    trip.setStartAddressStr("Address Not Found at" + nafe.getLat() + "," + nafe.getLng());
+                }
+    
+                try {
+                    trip.setEndAddressStr(addressLookup.getAddress(trip.getEndLoc()));
+                } catch (NoAddressFoundException nafe) {
+                    trip.setStartAddressStr("Address Not Found at" + nafe.getLat() + "," + nafe.getLng());
+                }
             }
         }
         return Response.ok(new GenericEntity<List<Trip>>(list) {}).build();

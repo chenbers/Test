@@ -143,6 +143,8 @@ public class BaseBeanTest extends AbstractJsfTestCase implements ApplicationCont
         Roles roles = new Roles();
         roles.setRoleDAO(getRoleDAO());
         roles.init(user.getPerson().getAcctID());
+        //Allocate a Locale
+        user.getPerson().setLocale(new Locale("en", "US"));
 
  //       String roleName = user.getRolesString();
         ProUser proUser = new ProUser(user, true, true,getGrantedAuthorities(user));

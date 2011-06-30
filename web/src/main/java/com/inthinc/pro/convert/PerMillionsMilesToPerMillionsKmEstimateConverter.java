@@ -1,6 +1,5 @@
 package com.inthinc.pro.convert;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import javax.faces.component.UIComponent;
@@ -14,10 +13,6 @@ import com.inthinc.pro.model.MeasurementType;
 
 public class PerMillionsMilesToPerMillionsKmEstimateConverter extends BaseConverter {
 	
-	private static final DecimalFormat onePlace = new DecimalFormat("#0.0");
-	static final String BELOW_POINT_ZERO_ONE = "<0.01";
-	static final String ABOVE_FIFTY = ">50";
-
 	@Override
 	public Object getAsObject(FacesContext context, UIComponent component,
 			String value) throws ConverterException {
