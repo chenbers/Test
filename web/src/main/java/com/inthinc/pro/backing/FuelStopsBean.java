@@ -25,6 +25,7 @@ import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.DeviceDAO;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.FuelStopDAO;
+import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
@@ -32,6 +33,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.hos.FuelStopRecord;
+import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.table.PageData;
 import com.inthinc.pro.util.MessageUtil;
 
@@ -46,7 +48,7 @@ public class FuelStopsBean extends BaseBean {
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private DeviceDAO deviceDAO;
-    private FuelStopDAO fuelStopDAO;
+    private HOSDAO hosDAO;
     private PageData pageData;
     private int page;
     private List<SelectItem> drivers;
@@ -203,7 +205,7 @@ public class FuelStopsBean extends BaseBean {
     public void setItems(List<FuelStopView> items) {
         this.items = new LinkedHashMap<Long,FuelStopView>();
         for(FuelStopView fsv : items){
-            this.items.put(fsv.getFuelStopID(), fsv);
+            this.items.put(fsv.getHosLogID(), fsv);
         }
     }
 
@@ -296,10 +298,10 @@ logger.info("in loadItems()");
             return items;
         
         Interval interval = dateRange.getInterval();
-        List<FuelStopRecord> plainRecords = fuelStopDAO.getFuelStopRecords(getVehicleID(), interval);
+        List<HOSRecord> plainRecords = hosDAO.getFuelStopRecordsForVehicle(getVehicleID(), interval);
         if (plainRecords == null)
             return items;
-        for (final FuelStopRecord rec : plainRecords) {
+        for (final HOSRecord rec : plainRecords) {
             if (interval.contains(rec.getLogTime().getTime()))
                     items.add(createFuelStopView(rec));
         }
@@ -307,7 +309,7 @@ logger.info("in loadItems()");
     }
     
 
-    private FuelStopView createFuelStopView(FuelStopRecord fuelStopRecord)
+    private FuelStopView createFuelStopView(HOSRecord fuelStopRecord)
     {
         final FuelStopView fuelStopView = new FuelStopView();
         String[] ignoreProperties = {"timeInSec"};
@@ -325,8 +327,14 @@ logger.info("in loadItems()");
         }
         return driverName;
     }
+    public FuelStopView getItem() {
+        return item;
+    }
+    public void setHosDAO(HOSDAO hosDAO) {
+        this.hosDAO = hosDAO;
+    }
 
-    public static class FuelStopView extends FuelStopRecord implements EditItem
+    public static class FuelStopView extends HOSRecord implements EditItem
     {
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
@@ -343,10 +351,10 @@ logger.info("in loadItems()");
 
         public Integer getId()
         {
-            if (getFuelStopID() == null)
+            if (getHosLogID() == null)
                 return null;
             
-            return getFuelStopID().intValue();
+            return getHosLogID().intValue();
 
         }
 
@@ -417,14 +425,14 @@ logger.info("in loadItems()");
             return VIEW_REDIRECT;   //shouldn't happen
         
         FuelStopView delItem = selected.get(0);
-        fuelStopDAO.deleteByID(delItem.getFuelStopID());
+        hosDAO.deleteByID(delItem.getHosLogID());
         items.remove(delItem);
         
         return VIEW_REDIRECT;
     }
     
     private FuelStopView createAddItem() {
-        FuelStopRecord fuelStopRecord = new FuelStopRecord();
+        HOSRecord fuelStopRecord = new HOSRecord();
         fuelStopRecord.setTimeZone(TimeZone.getDefault());
         fuelStopRecord.setLogTime(new Date());
         fuelStopRecord.setVehicleID(vehicleID);
@@ -473,7 +481,7 @@ logger.info("in loadItems()");
     
     protected FuelStopView revertItem(FuelStopView editItem)
     {
-        return createFuelStopView(fuelStopDAO.findByID(editItem.getFuelStopID()));
+        return createFuelStopView(hosDAO.findByID(editItem.getHosLogID()));
     }
 
     public void doSelectAll()
@@ -514,9 +522,6 @@ logger.info("in loadItems()");
         }
         Collections.sort(result);
         return result;
-    }
-    public void setFuelStopDAO(FuelStopDAO fuelStopDAO) {
-        this.fuelStopDAO = fuelStopDAO;
     }
     public Vehicle getVehicle() {
         return vehicle;
@@ -606,10 +611,10 @@ logger.info("in loadItems()");
             {
                 setEditingUser();
                 
-                item.setFuelStopID(fuelStopDAO.create(0l, item));
+                item.setHosLogID(hosDAO.create(0l, item));
 
                 getItems();
-                items.put(item.getFuelStopID(),item);
+                items.put(item.getHosLogID(),item);
                 
                 addMessageForPage("fuelStop_added", FacesMessage.SEVERITY_INFO);
                     // add a message
@@ -676,7 +681,7 @@ logger.info("in loadItems()");
             try
             {
                   setEditingUser();
-                  fuelStopDAO.update(item);
+                  hosDAO.update(item);
                   
                   addMessageForPage("fuelStop_updated",FacesMessage.SEVERITY_INFO);
                   // add a message
@@ -693,7 +698,7 @@ logger.info("in loadItems()");
         protected void cancel() {
             final int index = getItems().indexOf(item);
             if (index != -1)
-                items.put(item.getFuelStopID(), revertItem(item));
+                items.put(item.getHosLogID(), revertItem(item));
             // deselect all edit items
             unselectAllItems();
             
@@ -708,7 +713,4 @@ logger.info("in loadItems()");
 
     }
 
-    public FuelStopView getItem() {
-        return item;
-    }
 }
