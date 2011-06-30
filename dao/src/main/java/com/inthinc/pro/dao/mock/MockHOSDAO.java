@@ -13,7 +13,6 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.HOSDAO;
-import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
@@ -365,6 +364,12 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
     public void logoutDriverFromDevice(String commAddress, String employeeId, long logoutTime, int odometer) {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    public List<HOSRecord> getFuelStopRecordsForVehicle(Integer vehicleID, Interval interval) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
 }
