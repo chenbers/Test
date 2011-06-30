@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -264,11 +265,14 @@ public class EmailReportJob extends QuartzJobBean {
      * date. Rule 5: Report Schedule must be active. Rule 7: OCCURRENCE.Monthly - Make sure currenty day of month is the same ans the start date day of month.
      */
     protected boolean isTimeToEmailReport(ReportSchedule reportSchedule, Person person) {
+        DateTime currentDateTime = new DateTime(DateTimeZone.forID(person.getTimeZone().getID()));
+        return isTimeToEmailReport(reportSchedule, person, currentDateTime);
+    }
+    protected boolean isTimeToEmailReport(ReportSchedule reportSchedule, Person person, DateTime currentDateTime ) {
         if (person == null) {
             logger.error("Unable to get Person record for userID" + reportSchedule.getUserID());
             return false;
         }
-        DateTime currentDateTime = new DateTime(DateTimeZone.forID(person.getTimeZone().getID()));
         int dayOfWeek = currentDateTime.getDayOfWeek();
 //        Calendar currentDateTime = Calendar.getInstance(person.getTimeZone());
 //        int dayOfWeek = currentDateTime.get(Calendar.DAY_OF_WEEK);
@@ -378,13 +382,24 @@ public class EmailReportJob extends QuartzJobBean {
 
         return true;
     }
+    
+    private static Map<Integer, Integer> dayOfWeekMap = new HashMap<Integer, Integer>();
+    static {
+        dayOfWeekMap.put(0,DateTimeConstants.SUNDAY);
+        dayOfWeekMap.put(1,DateTimeConstants.MONDAY);
+        dayOfWeekMap.put(2,DateTimeConstants.TUESDAY);
+        dayOfWeekMap.put(3,DateTimeConstants.WEDNESDAY);
+        dayOfWeekMap.put(4,DateTimeConstants.THURSDAY);
+        dayOfWeekMap.put(5,DateTimeConstants.FRIDAY);
+        dayOfWeekMap.put(6,DateTimeConstants.SATURDAY);
+    }
 
-    private boolean isValidDayOfWeek(List<Boolean> daysOfWeek, int dayOfWeek) {
+    boolean isValidDayOfWeek(List<Boolean> scheduledDaysOfWeek, int dayOfWeek) {
         Boolean returnBoolean = false;
-        if (daysOfWeek != null) {
-            for (int i = 0; i < daysOfWeek.size(); i++) {
-                Boolean dayBoolean = daysOfWeek.get(i);
-                if (i == (dayOfWeek - 1) && dayBoolean) {
+        if (scheduledDaysOfWeek != null) {
+            for (int scheduledDay = 0; scheduledDay < scheduledDaysOfWeek.size(); scheduledDay++) {
+                Boolean isScheduledDay = scheduledDaysOfWeek.get(scheduledDay);
+                if (isScheduledDay && dayOfWeekMap.get(scheduledDay) == dayOfWeek) {
                     returnBoolean = true;
                 }
             }
