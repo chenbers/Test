@@ -27,7 +27,7 @@ import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 //Run locally with your localhost service running on port 8080
-//@Ignore
+@Ignore
 public class DriverServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(DriverServiceITCaseTest.class);
     private static int DRIVER_ID = 3;
