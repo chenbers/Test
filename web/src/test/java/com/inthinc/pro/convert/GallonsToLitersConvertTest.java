@@ -41,23 +41,23 @@ public class GallonsToLitersConvertTest extends BaseBeanTest {
         
         user.getUser().getPerson().setMeasurementType(MeasurementType.METRIC);
 
-        Integer gallons = 1000;
+        Float gallons = (float) 1000.0;
         GallonsToLitersConverter converter = new GallonsToLitersConverter();
         String liters = converter.getAsString(null, null, gallons);
         Object convertedGallons = converter.getAsObject(null, null, liters);
-        assertEquals(gallons,(Integer)convertedGallons);
+        assertEquals(gallons,(Float)convertedGallons);
         
-        gallons = 55555;
+        gallons = (float) 55555;
         converter = new GallonsToLitersConverter();
         liters = converter.getAsString(null, null, gallons);
         convertedGallons = converter.getAsObject(null, null, liters);
-        assertEquals(gallons,(Integer)convertedGallons);
+        assertEquals(gallons,(Float)convertedGallons);
 
-        gallons = 100;
+        gallons = (float) 100;
         converter = new GallonsToLitersConverter();
         liters = converter.getAsString(null, null, gallons);
         convertedGallons = converter.getAsObject(null, null, liters);
-        assertEquals(gallons,(Integer)convertedGallons);
+        assertEquals(gallons,(Float)convertedGallons);
     }
 
 

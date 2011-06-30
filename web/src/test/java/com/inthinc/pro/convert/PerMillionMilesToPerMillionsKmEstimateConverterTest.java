@@ -36,6 +36,8 @@ public class PerMillionMilesToPerMillionsKmEstimateConverterTest extends BaseBea
     	LocaleBean localeBean = new LocaleBean();
     	localeBean.getLocale();
     
+        user.getUser().getPerson().setMeasurementType(MeasurementType.ENGLISH);
+        user.getUser().getPerson().setLocale(new Locale("en","US"));
     	
     	PerMillionsMilesToPerMillionsKmEstimateConverter converter = new PerMillionsMilesToPerMillionsKmEstimateConverter();
     	
