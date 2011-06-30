@@ -518,8 +518,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setString(7, hosRecord.getTrailerID());
             statement.setString(8, hosRecord.getServiceID());
             statement.setString(9, hosRecord.getLocation());
-            statement.setFloat(10, hosRecord.getTruckGallons());
-            statement.setFloat(11, hosRecord.getTrailerGallons());
+            statement.setFloat(10, (hosRecord.getTruckGallons()== null) ? 0f : hosRecord.getTruckGallons());
+            statement.setFloat(11, (hosRecord.getTrailerGallons() == null) ? 0f : hosRecord.getTrailerGallons());
             statement.setInt(12, hosRecord.getEditUserID());
 			
             if(logger.isDebugEnabled())
@@ -667,8 +667,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setString(8, hosRecord.getTrailerID());
             statement.setString(9, hosRecord.getServiceID());
             statement.setString(10, hosRecord.getLocation());
-            statement.setFloat(11, hosRecord.getTruckGallons());
-            statement.setFloat(12, hosRecord.getTrailerGallons());
+            statement.setFloat(11, hosRecord.getTruckGallons() == null ? 0f : hosRecord.getTruckGallons());
+            statement.setFloat(12, hosRecord.getTrailerGallons() == null ? 0f : hosRecord.getTrailerGallons());
             statement.setInt(13, hosRecord.getEditUserID());
 			
             if(logger.isDebugEnabled())
