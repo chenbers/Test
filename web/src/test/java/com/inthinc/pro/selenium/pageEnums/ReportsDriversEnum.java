@@ -14,9 +14,14 @@ public enum ReportsDriversEnum implements SeleniumEnums {
     VEHICLE_SEARCH(null, "drivers-form:drivers:vehiclenamefsp"),
     EMPLOYEE_SEARCH(null, "drivers-form:drivers:empidfsp"),
 
-    GROUP_VALUE(null, "drivers-form:drivers:###:group"),
-    DRIVER_VALUE(null, "drivers-form:drivers:###:fullName"),
-    VEHICLE_VALUE(null, "drivers-form:drivers:###:vehicleName"),
+    //GROUP_VALUE(null    , "drivers-form:drivers:###:group"),//TODO: jwimmer: to dTanner: these three locator values changed recently?  but don't appear to work? tested via ReportsDriver.DriverLink
+    //DRIVER_VALUE(null   , "drivers-form:drivers:###:fullName"),
+    //VEHICLE_VALUE(null  , "drivers-form:drivers:###:vehicleName"),
+    GROUP_VALUE(null    , "drivers-form:drivers:###:driversDashboard"),
+    DRIVER_VALUE(null   , "drivers-form:drivers:###:driversDriverPerformance"),
+    VEHICLE_VALUE(null  , "drivers-form:drivers:###:driversVehiclePerformance"),
+    
+    
     EMPLOYEE_ID_VALUE(null, "drivers-form:drivers:###:empid"),
     DISTANCE_DRIVEN_VALUE(null, "drivers-form:drivers:###:distance"),
     OVERALL_SCORE_VALUE(null, "drivers-form:drivers:###:overallScore"),
