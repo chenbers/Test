@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
 
@@ -161,6 +162,7 @@ public class PageNotificationsRedFlags extends NotificationsBar {
     }
 
     public class RedFlagsDropDowns extends NotificationsBarDropDowns {
+        private SeleniumEnums[] enums = {NotificationsBarEnum.LEVEL_FILTER_DHX, NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
 
 	public DhxDropDown team() {
 	    return new DhxDropDown(NotificationsBarEnum.TEAM_SELECTION_DHX,
