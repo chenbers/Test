@@ -16,10 +16,30 @@ public class DriverStatisticsTest extends WebRallyTest {
     String CORRECT_USERNAME_TOP = "pitstop";
     String CORRECT_PASSWORD = "Muttley";
     PageLogin pl;
+    
+    //TODO TC1698 (requires new window)
+    //TODO TC4333, 4334 (requires PDF)
+    //TODO Finish TC1695 (requires email)
+    //TODO Finish TC4586 (requires mid-drive driver switch)
+    //TODO Finish TC4625, 5515, 5516 (requires data)
 
     @Before
     public void before(){
         pl = new PageLogin();
+    }
+    
+    @Test
+    public void emailTest1695(){
+        //set_test_case("TC1695");
+        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        
+        //TODO Update when tools and email is on PageTeamDashboardStatistics page.
+//        ptds._button().tools().click();
+//        ptds._button().emailReport().click();
+//        ptds._popUp().emailReport()._textField().emailAddresses().clear();
+//        ptds._popUp().emailReport()._textField().emailAddresses().type("fail@a.com");
+        //TODO Update when email can be checked.
     }
     
     @Test
@@ -61,6 +81,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         //Middle Name fix will be in the next build.
         //paeu._textField().personFields(AdminUsersEntries.MIDDLE_NAME).type("Q");
         paeu._textField().personFields(AdminUsersEntries.LAST_NAME).clear().type("Kazoo");
+        paeu._dropDown().regularDropDowns(AdminUsersEntries.GENDER).select("Male");
         paeu._button().saveBottom().click();
         //TODO test edit of vehicle.
         //TODO get driver information to check on.
