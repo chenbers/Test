@@ -14,14 +14,13 @@ public enum ReportsDriversEnum implements SeleniumEnums {
     VEHICLE_SEARCH(null, "drivers-form:drivers:vehiclenamefsp"),
     EMPLOYEE_SEARCH(null, "drivers-form:drivers:empidfsp"),
 
-    //GROUP_VALUE(null    , "drivers-form:drivers:###:group"),//TODO: jwimmer: to dTanner: these three locator values changed recently?  but don't appear to work? tested via ReportsDriver.DriverLink
-    //DRIVER_VALUE(null   , "drivers-form:drivers:###:fullName"),
-    //VEHICLE_VALUE(null  , "drivers-form:drivers:###:vehicleName"),
-    GROUP_VALUE(null    , "drivers-form:drivers:###:driversDashboard"),
-    DRIVER_VALUE(null   , "drivers-form:drivers:###:driversDriverPerformance"),
-    VEHICLE_VALUE(null  , "drivers-form:drivers:###:driversVehiclePerformance"),
-    
-    
+    // GROUP_VALUE(null , "drivers-form:drivers:###:group"),//TODO: jwimmer: to dTanner: these three locator values changed recently? but don't appear to work? tested via ReportsDriver.DriverLink
+    // DRIVER_VALUE(null , "drivers-form:drivers:###:fullName"),
+    // VEHICLE_VALUE(null , "drivers-form:drivers:###:vehicleName"),
+    GROUP_VALUE(null, "drivers-form:drivers:###:driversDashboard"),
+    DRIVER_VALUE(null, "drivers-form:drivers:###:driversDriverPerformance"),
+    VEHICLE_VALUE(null, "drivers-form:drivers:###:driversVehiclePerformance"),
+
     EMPLOYEE_ID_VALUE(null, "drivers-form:drivers:###:empid"),
     DISTANCE_DRIVEN_VALUE(null, "drivers-form:drivers:###:distance"),
     OVERALL_SCORE_VALUE(null, "drivers-form:drivers:###:overallScore"),
@@ -33,14 +32,11 @@ public enum ReportsDriversEnum implements SeleniumEnums {
     DRIVER_SORT("Driver:", "drivers-form:drivers:fullNameheader:sortDiv"),
     VEHICLE_SORT("Vehicle", "drivers-form:drivers:vehiclenameheader:sortDiv"),
     EMPLOYEE_ID_SORT("Employee ID", "drivers-form:drivers:empidheader:sortDiv"),
-    DISTANCE_DRIVEN_SORT("Distance Driven",
-	    "drivers-form:drivers:distanceheader:sortDiv"),
-    OVERALL_SCORE_SORT("Overall",
-	    "drivers-form:drivers:overallScoreheader:sortDiv"),
+    DISTANCE_DRIVEN_SORT("Distance Driven", "drivers-form:drivers:distanceheader:sortDiv"),
+    OVERALL_SCORE_SORT("Overall", "drivers-form:drivers:overallScoreheader:sortDiv"),
     STYLE_SCORE_SORT("Style", "drivers-form:drivers:styleScoreheader:sortDiv"),
     SPEED_SCORE_SORT("Speed", "drivers-form:drivers:speadScoreheader:sortDiv"),
-    SEATBELT_SCORE_SORT("Seat Belt",
-	    "drivers-form:drivers:seatbeltScoreheader:sortDiv"),
+    SEATBELT_SCORE_SORT("Seat Belt", "drivers-form:drivers:seatbeltScoreheader:sortDiv"),
 
     ;
 
@@ -48,26 +44,26 @@ public enum ReportsDriversEnum implements SeleniumEnums {
     private String[] IDs;
 
     private ReportsDriversEnum(String url) {
-	this.url = url;
+        this.url = url;
     }
 
     private ReportsDriversEnum(String text, String... IDs) {
-	this.text = text;
-	this.IDs = IDs;
+        this.text = text;
+        this.IDs = IDs;
     }
 
     @Override
     public String[] getIDs() {
-	return IDs;
+        return IDs;
     }
 
     @Override
     public String getText() {
-	return text;
+        return text;
     }
 
     @Override
     public String getURL() {
-	return url;
+        return url;
     }
 }
