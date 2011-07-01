@@ -76,7 +76,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         GroupData testGroupData = itData.teamGroupData.get(ITData.GOOD);
         Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
         Date hosRecordDate = new Date();
-        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testDriver, hosRecordDate, null); 
+        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testDriver, hosRecordDate, null, 34.0f,45.0f); 
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         
         HOSRecord expectedHosRecord = constructExpectedHosRecord(hosRecord, testDriver, null);
@@ -102,7 +102,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         Vehicle testVehicle = testGroupData.vehicle;
         
         Date hosRecordDate = new Date();
-        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testDriver, hosRecordDate, testVehicle.getVehicleID());
+        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testDriver, hosRecordDate, testVehicle.getVehicleID(), 34.0f,45.0f);
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
 
         HOSRecord expectedHosRecord = constructExpectedHosRecord(hosRecord, testDriver, testVehicle);
@@ -127,7 +127,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         Vehicle testVehicle = testGroupData.vehicle;
         
         Date hosRecordDate = new Date();
-        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testDriver, hosRecordDate, testVehicle.getVehicleID());
+        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testDriver, hosRecordDate, testVehicle.getVehicleID(), 34.0f,45.0f);
         
         hosDAO.deleteByID(hosRecord.getHosLogID());
         
@@ -159,7 +159,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         Vehicle testBadVehicle = testBadGroupData.vehicle;
         
         Date hosRecordDate = new Date();
-        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testGoodDriver, hosRecordDate, testGoodVehicle.getVehicleID());
+        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testGoodDriver, hosRecordDate, testGoodVehicle.getVehicleID(), 34.0f,45.0f);
         HOSRecord editHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         
 System.out.println("fleet user " + itData.fleetUser.getUserID());
@@ -207,7 +207,7 @@ System.out.println("district user " + itData.districtUser.getUserID());
         Vehicle testBadVehicle = testBadGroupData.vehicle;
         
         Date hosRecordDate = new Date();
-        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testGoodDriver, hosRecordDate, testGoodVehicle.getVehicleID(), HOSStatus.ON_DUTY_OCCUPANT);
+        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testGoodDriver, hosRecordDate, testGoodVehicle.getVehicleID(), HOSStatus.ON_DUTY_OCCUPANT, 34.0f,45.0f);
         HOSRecord editHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         
         editHosRecord.setEditUserID(itData.fleetUser.getUserID());
@@ -268,12 +268,54 @@ System.out.println("numHosRecords " + numHosRecords);
         int status = 0;
         for (long i = 0; i < numHosRecords; i++) {
             createMinimalHosRecord(hosDAO, testDriver, new Date(startDate.getTime() + i*msDelta), 
-                    testVehicle.getVehicleID(), HOSStatus.values()[status++]);
+                    testVehicle.getVehicleID(), HOSStatus.values()[status++], 34.0f,45.0f);
         }
         
         Interval queryInterval = new Interval(new DateTime(startDate.getTime(), DateTimeZone.UTC), new DateTime(new Date(),DateTimeZone.UTC));
         System.out.println(" " + queryInterval);
         List<HOSRecord> driverRecords = hosDAO.getHOSRecordsFilteredByInterval(testDriver.getDriverID(), queryInterval, false);
+        
+        assertEquals("unexpected record count returned", numHosRecords, driverRecords.size());
+        
+        
+        
+    }
+    @Test
+    public void fuelStopByVehicleTest() {
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+
+        GroupData testGroupData = itData.teamGroupData.get(ITData.INTERMEDIATE);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        Vehicle testVehicle = testGroupData.vehicle;
+        
+        long numHosRecords = Util.randomInt(1, 5);
+        
+System.out.println("numHosRecords " + numHosRecords);        
+        
+        
+        Date currentDate = new Date();  
+        Date startDate = new Date(currentDate.getTime()/1000l * 1000l);
+        
+        try {
+            // sleep so that no other records are within the time interval
+            System.out.println("sleeping for " + msDelta*(numHosRecords+1) + " ms");
+            Thread.sleep(msDelta*(numHosRecords+1));
+            System.out.println("sleeping done");
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        int status = 0;
+        for (long i = 0; i < numHosRecords; i++) {
+            createMinimalHosRecord(hosDAO, testDriver, new Date(startDate.getTime() + i*msDelta), 
+                    testVehicle.getVehicleID(), HOSStatus.FUEL_STOP, 34.0f,45.0f);
+        }
+        
+        Interval queryInterval = new Interval(new DateTime(startDate.getTime()), new DateTime(new Date()));
+        System.out.println(" " + queryInterval);
+        List<HOSRecord> driverRecords = hosDAO.getFuelStopRecordsForVehicle(testVehicle.getVehicleID(), queryInterval);
         
         assertEquals("unexpected record count returned", numHosRecords, driverRecords.size());
         
@@ -390,10 +432,10 @@ System.out.println("numHosRecords " + numHosRecords);
         
     }
     
-    private HOSRecord createMinimalHosRecord(HOSDAO hosDAO, Driver driver, Date hosRecordDate, Integer vehicleID) {
-        return createMinimalHosRecord(hosDAO, driver, hosRecordDate, vehicleID, HOSStatus.OFF_DUTY);
+    private HOSRecord createMinimalHosRecord(HOSDAO hosDAO, Driver driver, Date hosRecordDate, Integer vehicleID, Float truckGallons, Float trailerGallons) {
+        return createMinimalHosRecord(hosDAO, driver, hosRecordDate, vehicleID, HOSStatus.OFF_DUTY, truckGallons,trailerGallons);
     }
-    private HOSRecord createMinimalHosRecord(HOSDAO hosDAO, Driver driver, Date hosRecordDate, Integer vehicleID, HOSStatus status) {
+    private HOSRecord createMinimalHosRecord(HOSDAO hosDAO, Driver driver, Date hosRecordDate, Integer vehicleID, HOSStatus status,Float truckGallons, Float trailerGallons) {
         
         
         HOSRecord hosRecord = new HOSRecord();
@@ -406,8 +448,8 @@ System.out.println("numHosRecords " + numHosRecords);
         hosRecord.setEditUserID(itData.fleetUser.getUserID());
         hosRecord.setVehicleID(vehicleID);
         // TODO: Check what these should be - causing a null pointer exception in the jdbc
-        hosRecord.setTruckGallons(0.0f);
-        hosRecord.setTrailerGallons(0.0f);
+        hosRecord.setTruckGallons(truckGallons);
+        hosRecord.setTrailerGallons(trailerGallons);
         Long hosLogID = hosDAO.create(0l, hosRecord);
         System.out.println("hosLogID: " + hosLogID + " " + hosRecordDate);
         hosRecord.setHosLogID(hosLogID);
@@ -438,11 +480,11 @@ System.out.println("numHosRecords " + numHosRecords);
         expectedHosRecord.setSingleDriver(true);
         expectedHosRecord.setStatus(hosRecord.getStatus());
         expectedHosRecord.setTimeZone(hosRecord.getTimeZone());
-        expectedHosRecord.setTrailerGallons(0f);
+        expectedHosRecord.setTrailerGallons(45.0f);
         expectedHosRecord.setTrailerID(hosRecord.getTrailerID());
         expectedHosRecord.setTripInspectionFlag(false);
         expectedHosRecord.setTripReportFlag(false);
-        expectedHosRecord.setTruckGallons(0f);
+        expectedHosRecord.setTruckGallons(34.0f);
         expectedHosRecord.setVehicleID((vehicle == null) ? 0 : vehicle.getVehicleID());
         expectedHosRecord.setVehicleIsDOT((vehicle == null || vehicle.getDot() == null) ? false : vehicle.getDot().equals(VehicleDOTType.DOT));
         expectedHosRecord.setVehicleLicense((vehicle == null) ? "" : vehicle.getLicense());

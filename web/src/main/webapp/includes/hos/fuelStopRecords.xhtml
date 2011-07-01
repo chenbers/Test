@@ -29,7 +29,6 @@
                     </h:column>
                     <a4j:support ajaxSingle="true" event="onselect" reRender="#{context}-fuelStopsStatus,fuelStops-table-form">
             			<f:setPropertyActionListener value="#{result.vehicleID}" target="#{fuelStopsBean.vehicleID}" />
-            			<f:setPropertyActionListener value="#{result.vehicleName}" target="#{fuelStopsBean.vehicleName}" />
          			</a4j:support>
                     
                 </rich:suggestionbox>
@@ -124,16 +123,6 @@
 		      <h:outputText value="#{item.trailerGallons}" converter="GallonsToLitersConverter"/><rich:spacer width="5px"/>
 		      <h:outputText value="editFuelStop_trailerGallons" converter="MeasurementTextConverter"/>
 		    </rich:column>
-		   	<rich:column id="odometerBefore" rendered="#{fuelStopsTableColumns.tableColumns['odometerBefore'].visible}" sortBy="#{item.odometerBefore}">
-		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_odometerBefore}" /></f:facet>
-		      <h:outputText value="#{item.odometerBefore}" converter="MilesToKilometersConverter"/><rich:spacer width="5px"/>
-				<h:outputText value="editFuelStop_odometerBefore" converter="MeasurementTextConverter"/>
-		    </rich:column>
-		   	<rich:column id="odometerAfter" rendered="#{fuelStopsTableColumns.tableColumns['odometerAfter'].visible}" sortBy="#{item.odometerAfter}">
-		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_odometerAfter}" /></f:facet>
-		      <h:outputText value="#{item.odometerAfter}" converter="MilesToKilometersConverter"/><rich:spacer width="5px"/>
-		      <h:outputText value="editFuelStop_odometerAfter" converter="MeasurementTextConverter"/>
-		    </rich:column>
 <!-- 		    <rich:column id="service" rendered="#{fuelStopsTableColumns.tableColumns['service'].visible}" sortBy="#{item.serviceID}"> -->
 <!-- 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_service}" /></f:facet> -->
 <!-- 		      <h:outputText value="#{item.serviceID}" /> -->
@@ -155,7 +144,8 @@
                   <h:outputText value=" " />
                 </f:facet>
                 <a4j:htmlCommandLink id="edit" action="#{fuelStopsBean['edit']}" value="#{messages.fuelStop_edit}">
-                  <f:param name="editID" value="#{item.id}" />
+<!--                   <f:param name="editID" value="#{item.id}" /> -->
+            			<f:setPropertyActionListener value="#{item}" target="#{fuelStopsBean.item}" />
                 </a4j:htmlCommandLink>
             </rich:column>
            </rich:dataTable>

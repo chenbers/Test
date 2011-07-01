@@ -40,7 +40,7 @@ public class HOSLogExporter extends HOSBase {
             addRecordToStream(out, hosRecord);
         }
         // gain adds this record to the end of the list on export
-        addRecordToStream(out, new HOSRecord(0, 0, RuleSetType.NON_DOT, 0, "", true, 14l, new Date(948842477000l), null, null, HOSStatus.OFF_DUTY, HOSOrigin.PORTAL, "", 0f, 0f, 0l, "","",false, false, "", false));
+        addRecordToStream(out, new HOSRecord(0, 0, RuleSetType.NON_DOT, 0, "", true, 14l, new Date(948842477000l), null, null, HOSStatus.OFF_DUTY, HOSOrigin.PORTAL, "", 0f, 0f, 0l, "","",false, false, "", false, 0f, 0f));
     }
 
 

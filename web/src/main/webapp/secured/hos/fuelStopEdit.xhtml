@@ -148,40 +148,6 @@
 	                              <h:outputText value="editFuelStop_trailerGallons" converter="MeasurementTextConverter"/>
                               </td>
                               </tr>
-                                                            <tr>
-                                <td width="100" valign="top">
-	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
-		                                 <ui:param name="required" value="TRUE"/>
-		                                 <ui:param name="for" value="editfuelStop_odometerBefore"/>
-		                                 <ui:param name="fieldName" value="odometerBefore"/>
-		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
-		                                 <ui:param name="label" value="#{messages.fuelStop_odometerBefore}"/>
-	                              </ui:include>
-	                                  </td>
-                              <td>
-                            <rich:message for="editfuelStop_odometerBefore" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{fuelStopsBean.item.odometerBefore}" converter="MilesToKilometersConverterLong" id="editfuelStop_odometerBefore" onchange="checkMultiple(this)" 
-                                  			styleClass="text" size="20"/><rich:spacer width="5px"/>
-	                              <h:outputText value="editFuelStop_odometerBefore" converter="MeasurementTextConverter"/>
-                              </td>
-                              </tr>
-                                                            <tr>
-                                <td width="100" valign="top">
-	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
-		                                 <ui:param name="required" value="TRUE"/>
-		                                 <ui:param name="for" value="editfuelStop_odometerAfter"/>
-		                                 <ui:param name="fieldName" value="odometerAfter"/>
-		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
-		                                 <ui:param name="label" value="#{messages.fuelStop_odometerAfter}"/>
-	                              </ui:include>
-	                                  </td>
-                              <td>
-                            <rich:message for="editfuelStop_odometerAfter" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{fuelStopsBean.item.odometerAfter}" converter="MilesToKilometersConverterLong" id="editfuelStop_odometerAfter" onchange="checkMultiple(this)" 
-                                  			styleClass="text" size="20"/><rich:spacer width="5px"/>
-	                              <h:outputText value="editFuelStop_odometerAfter" converter="MeasurementTextConverter"/>
-                              </td>
-                              </tr>
                               
                               <tr>
                                 <td width="100" valign="top">
@@ -199,7 +165,7 @@
 		                              	id="editfuelStop_driver" 
 		                                onchange="checkMultiple(this)"
 		                                required="#{true}"  requiredMessage="#{messages.fuelStop_driver_required}">
-		                              <f:selectItems value="#{fuelStopsBean.drivers}"/>
+		                              <f:selectItems value="#{fuelStopsBean.driversSelectItems}"/>
 		                          </h:selectOneMenu>
                                 </td>
                               </tr>
@@ -219,7 +185,7 @@
 	                              <h:selectOneMenu value="#{fuelStopsBean.item.vehicleID}" 
 		                              	id="editfuelStop_vehicle" 
 		                                onchange="checkMultiple(this)">
-		                              <f:selectItems value="#{fuelStopsBean.vehicles}"/>
+		                              <f:selectItems value="#{fuelStopsBean.vehiclesSelectItems}"/>
 		                          </h:selectOneMenu>
 		                          </ui:fragment>
                                   <ui:fragment rendered="#{not fuelStopsBean.add}">

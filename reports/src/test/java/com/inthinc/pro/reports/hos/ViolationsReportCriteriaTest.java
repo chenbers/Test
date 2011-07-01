@@ -451,14 +451,14 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
                 ruleSetType, null, null, Boolean.FALSE,
                 0l, logTime.toDate(), logTime.toDate(), person.getTimeZone(), HOSStatus.OFF_DUTY, HOSOrigin.PORTAL, "SLC, UT", 
                 0.0f, 0.0f, 0l,
-                null, null, Boolean.TRUE, Boolean.TRUE, "TEST USER", Boolean.FALSE);
+                null, null, Boolean.TRUE, Boolean.TRUE, "TEST USER", Boolean.FALSE, 0f,0f);
         recordList.add(record);
         logTime = dateTime.plusHours(1);
         record = new HOSRecord(1, driver.getDriverID(),
                 ruleSetType, null, null, Boolean.FALSE,
                 0l, logTime.toDate(), logTime.toDate(), person.getTimeZone(), HOSStatus.DRIVING, HOSOrigin.PORTAL, "SLC, UT", 
                 0.0f, 0.0f, 0l,
-                null, null, Boolean.TRUE, Boolean.TRUE, "TEST USER", Boolean.FALSE);
+                null, null, Boolean.TRUE, Boolean.TRUE, "TEST USER", Boolean.FALSE, 0f,0f);
         recordList.add(record);
         // for 24 days prior last 2 hours of the day off duty and previous 22 on duty
         for (int i = 0; i < 24; i++) {
@@ -467,14 +467,14 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
                     ruleSetType, null, null, Boolean.FALSE,
                     0l, logTime.toDate(), logTime.toDate(), person.getTimeZone(), HOSStatus.OFF_DUTY, HOSOrigin.PORTAL, "SLC, UT", 
                     0.0f, 0.0f, 0l,
-                    null, null, Boolean.TRUE, Boolean.TRUE, "TEST USER", Boolean.FALSE);
+                    null, null, Boolean.TRUE, Boolean.TRUE, "TEST USER", Boolean.FALSE, 0f,0f);
             recordList.add(record);
             logTime = dateTime.minusHours(24);
             record = new HOSRecord(1, driver.getDriverID(),
                     ruleSetType, null, null, Boolean.FALSE,
                     0l, logTime.toDate(), logTime.toDate(), person.getTimeZone(), HOSStatus.ON_DUTY, HOSOrigin.PORTAL, "SLC, UT", 
                     0.0f, 0.0f, 0l,
-                    null, null, Boolean.TRUE, Boolean.TRUE, "TEST USER", Boolean.FALSE);
+                    null, null, Boolean.TRUE, Boolean.TRUE, "TEST USER", Boolean.FALSE, 0f,0f);
             recordList.add(record);
             
             dateTime = dateTime.minusDays(1);

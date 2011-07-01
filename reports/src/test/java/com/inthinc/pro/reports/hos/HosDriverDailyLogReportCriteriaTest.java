@@ -1,7 +1,7 @@
 package com.inthinc.pro.reports.hos;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.Date;
@@ -339,7 +339,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     HOSRecord[] hosRecords = {
             new HOSRecord(1l, 1, RuleSetType.US, null, null, false, 
                     0l, new Date(), new Date(), TimeZone.getDefault(), HOSStatus.DRIVING,
-                    HOSOrigin.KIOSK, "slc", 0.0f, 0.0f, 0l, null, null, true, true, "", false),
+                    HOSOrigin.KIOSK, "slc", 0.0f, 0.0f, 0l, null, null, true, true, "", false, 0f,0f),
     };
 
     RemarkLog[] expectedRemarkLogs = {

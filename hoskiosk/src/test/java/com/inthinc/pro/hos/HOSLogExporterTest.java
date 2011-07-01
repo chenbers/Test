@@ -27,8 +27,8 @@ public class HOSLogExporterTest {
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd yyyy hh:mm:ss:SSSa");
 
     HOSRecord testdata[] = {
-            new HOSRecord(0, 0, RuleSetType.US_OIL, 0, "", true, 14l, parseDBDate("Sep 23 2010 10:29:20:623PM"), null, TimeZone.getTimeZone("US/Mountain"), HOSStatus.OFF_DUTY, HOSOrigin.PORTAL, "Salt Lake City, UT", 0f, 0f, 0l, "","",false, false, "", false),
-            new HOSRecord(0, 0, RuleSetType.US_OIL, 0, "", true, 14l, parseDBDate("Aug 18 2010  8:15:06:000PM"), null, TimeZone.getTimeZone("US/Mountain"), HOSStatus.SLEEPER, HOSOrigin.PORTAL, "test city, UT", 0f, 0f, 0l, "","",false, false, "", false),
+            new HOSRecord(0, 0, RuleSetType.US_OIL, 0, "", true, 14l, parseDBDate("Sep 23 2010 10:29:20:623PM"), null, TimeZone.getTimeZone("US/Mountain"), HOSStatus.OFF_DUTY, HOSOrigin.PORTAL, "Salt Lake City, UT", 0f, 0f, 0l, "","",false, false, "", false, 0f,0f),
+            new HOSRecord(0, 0, RuleSetType.US_OIL, 0, "", true, 14l, parseDBDate("Aug 18 2010  8:15:06:000PM"), null, TimeZone.getTimeZone("US/Mountain"), HOSStatus.SLEEPER, HOSOrigin.PORTAL, "test city, UT", 0f, 0f, 0l, "","",false, false, "", false, 0f,0f),
             
     };
     

@@ -59,15 +59,15 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     public HOSRecord(Integer hosLogID, Integer driverID,// String driverName,
             RuleSetType driverDotType, Integer vehicleID, String vehicleName, Boolean vehicleIsDOT,
             Long vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Float lat, Float lng, Long distance,
-            String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted) {
+            String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted, Float truckGallons, Float trailerGallons) {
         this(Long.valueOf(hosLogID.longValue()), driverID, driverDotType, vehicleID, vehicleName,
                 vehicleIsDOT, vehicleOdometer, logTime, addedTime, timeZone, status, origin, location, lat, lng, distance,
-                trailerID, serviceID, singleDriver, edited, editUserName, deleted);
+                trailerID, serviceID, singleDriver, edited, editUserName, deleted, truckGallons, trailerGallons);
     }
     public HOSRecord(Long hosLogID, Integer driverID,// String driverName,
             RuleSetType driverDotType, Integer vehicleID, String vehicleName, Boolean vehicleIsDOT,
             Long vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Float lat, Float lng, Long distance,
-            String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted) {
+            String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted, Float truckGallons, Float trailerGallons) {
         this.hosLogID = hosLogID;
         this.driverID = driverID;
         this.driverDotType = driverDotType;
@@ -90,6 +90,8 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
         this.edited = edited;
         this.editUserName = editUserName;
         this.deleted = deleted;
+        this.truckGallons = truckGallons;
+        this.trailerGallons = trailerGallons;
     }
     
     public Integer getChangedCnt() {

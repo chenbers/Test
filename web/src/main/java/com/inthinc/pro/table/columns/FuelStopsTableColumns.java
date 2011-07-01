@@ -23,8 +23,6 @@ public class FuelStopsTableColumns extends BaseTableColumns {
         AVAILABLE_COLUMNS.add("location");
         AVAILABLE_COLUMNS.add("truckGallons");
         AVAILABLE_COLUMNS.add("trailerGallons");
-        AVAILABLE_COLUMNS.add("odometerBefore");
-        AVAILABLE_COLUMNS.add("odometerAfter");
         AVAILABLE_COLUMNS.add("edited");
         
     }
