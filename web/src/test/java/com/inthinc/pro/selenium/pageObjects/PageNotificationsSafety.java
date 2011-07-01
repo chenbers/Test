@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsSafetyEnum;
@@ -155,18 +156,22 @@ public class PageNotificationsSafety extends NotificationsBar {
     }
 
     public class NotificationsSafetyDropDowns extends NotificationsBarDropDowns {
-
+        private SeleniumEnums[] enums = {
+                NotificationsBarEnum.TIME_FRAME_DHX,
+                NotificationsBarEnum.TEAM_SELECTION_DHX,
+                NotificationsBarEnum.LEVEL_FILTER_DHX
+            };
 	public DhxDropDown team() {
 	    return new DhxDropDown(NotificationsBarEnum.TEAM_SELECTION_DHX,
-		    page);
+		    page, enums);
 	}
 
 	public DhxDropDown timeFrame() {
-	    return new DhxDropDown(NotificationsBarEnum.TIME_FRAME_DHX, page);
+	    return new DhxDropDown(NotificationsBarEnum.TIME_FRAME_DHX, page, enums);
 	}
 
 	public DhxDropDown levelFilter() {
-	    return new DhxDropDown(NotificationsBarEnum.LEVEL_FILTER_DHX, page);
+	    return new DhxDropDown(NotificationsBarEnum.LEVEL_FILTER_DHX, page, enums);
 	}
 
 	public DropDown category() {
