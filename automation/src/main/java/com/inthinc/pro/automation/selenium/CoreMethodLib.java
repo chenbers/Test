@@ -494,7 +494,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements
 	try {
 	    logger.debug("pausing for " + timeout_in_secs
 		    + " seconds because: " + reasonForPause);
-	    // Thread.currentThread();
 	    Thread.sleep((long) (timeout_in_secs * 1000));
 	} catch (InterruptedException e) {
 	    e.printStackTrace();
