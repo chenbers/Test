@@ -17,53 +17,47 @@ public class DhxDropDown extends DropDown implements Selectable {
     private SeleniumEnums[] enums;
 
     public DhxDropDown(SeleniumEnums ...anEnum) {
-	super(anEnum[0]);
-	enums = anEnum;		
-	makeDropDown = new SeleniumEnumWrapper(anEnum[0]);
+	super(anEnum[0], null, null);
+	init(anEnum[0], null, anEnum);
     }
     
     public DhxDropDown(SeleniumEnums anEnum, SeleniumEnums[] enums) {
-	super(anEnum);
-	this.enums = enums;		
-	makeDropDown = new SeleniumEnumWrapper(anEnum);
+	super(anEnum, null, null);
+	init(anEnum, null, enums);
     }
     
 
     public DhxDropDown(SeleniumEnums anEnum, Integer replaceNumber) {
-	super(anEnum, replaceNumber);
-	enums = new SeleniumEnums[] {
-		myEnum
-	};
-	makeDropDown = new SeleniumEnumWrapper(anEnum);
+	super(anEnum ,null ,replaceNumber);
+	init(anEnum, null, null);
     }
 
     public DhxDropDown(SeleniumEnums anEnum, String replaceWord) {
-	super(anEnum, replaceWord);
-	page = replaceWord;
-	enums = new SeleniumEnums[] {
-		myEnum
-	};
-	makeDropDown = new SeleniumEnumWrapper(anEnum);
+	super(anEnum, replaceWord, null);
+	init(anEnum, replaceWord, null);
     }
 
     public DhxDropDown(SeleniumEnums anEnum, String replaceWord,
-	    SeleniumEnums... enums) {
-	super(anEnum, replaceWord);
-	page = replaceWord;
-	this.enums = enums;
-	makeDropDown = new SeleniumEnumWrapper(anEnum);
+	    SeleniumEnums[] enums) {
+	super(anEnum, replaceWord, null);
+	init(anEnum, replaceWord, enums);
     }
 
     public DhxDropDown(SeleniumEnums anEnum, String replaceWord,
 			Integer replaceNumber) {
 	super(anEnum, replaceWord, replaceNumber);
-	page = replaceWord;
-	enums = new SeleniumEnums[] {
-		myEnum
-	};
-	makeDropDown = new SeleniumEnumWrapper(anEnum);
+	init(anEnum, replaceWord, null);
     }
 
+    private void init(SeleniumEnums anEnum, String replaceWord, SeleniumEnums[] enums){
+        page = replaceWord;
+        if(enums == null){
+            this.enums = new SeleniumEnums[] {myEnum};
+        } else {
+            this.enums = enums;
+        }
+        makeDropDown = new SeleniumEnumWrapper(anEnum); 
+    }
     private DhxDropDown assignIDs() {
 	Integer div = 1;
 	if (page == null) {
@@ -77,7 +71,7 @@ public class DhxDropDown extends DropDown implements Selectable {
 		div++;
 	    }
 	}
-	makeDropDown.setID("//input[@name='" + makeDropDown.getIDs()[0] + "']/../img");
+	makeDropDown.setID("//input[@name='" + makeDropDown.replaceWord(page).getIDs()[0] + "']/../img");
 	myEnum.setID(myEnum.toString());
 	return this;
     }
