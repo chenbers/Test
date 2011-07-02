@@ -174,8 +174,8 @@ System.out.println("district user " + itData.districtUser.getUserID());
         editHosRecord.setTrailerID("new trailer id");
         editHosRecord.setVehicleID(testBadVehicle.getVehicleID());
         editHosRecord.setEditUserID(itData.districtUser.getUserID());
-        editHosRecord.setTruckGallons(0.0f);
-        editHosRecord.setTrailerGallons(0.0f);
+        editHosRecord.setTruckGallons(34.0f);
+        editHosRecord.setTrailerGallons(45.0f);
         hosDAO.update(editHosRecord);
 
         HOSRecord expectedHosRecord = constructExpectedHosRecord(editHosRecord, testGoodDriver, testBadVehicle);
