@@ -113,7 +113,7 @@
 					<f:setPropertyActionListener target="#{bean.sentDetailsItem}" value="#{redFlag}"/>
 				</a4j:commandLink>
             </rich:column>
-            <rich:column id="time" rendered="#{tableColumns['date'].visible}" sortBy="#{redFlag.event.time}" sortOrder="DESCENDING">
+            <rich:column id="date" rendered="#{tableColumns['date'].visible}" sortBy="#{redFlag.event.time}" sortOrder="DESCENDING">
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_date}" />
                 </f:facet>
@@ -183,7 +183,7 @@
 	            	<ui:param name="event" value="#{redFlag.event}" />
 				</ui:include>
             </rich:column>
-    	    <rich:column id="clear" rendered="#{tableColumns['clear'].visible}" custFilterBy="#{redFlag.event.forgiven}" filterValue="#{bean.filterForgiven}">
+    	    <rich:column id="exclude" rendered="#{tableColumns['clear'].visible}" custFilterBy="#{redFlag.event.forgiven}" filterValue="#{bean.filterForgiven}">
                 <f:facet name="header">
                 	<h:panelGroup>
                     	<h:outputText value="#{messages.notes_redflags_status}" />
