@@ -25,127 +25,124 @@ public class ElementBase extends MasterTest implements ElementInterface {
     protected HashMap<String, String> current;
 
     public ElementBase() {
-	selenium = super.getSelenium();
+        selenium = super.getSelenium();
     }
 
     public ElementBase(SeleniumEnums anEnum) {
-	this(anEnum, null, null);
+        this(anEnum, null, null);
     }
 
     public ElementBase(SeleniumEnums anEnum, String replaceWord) {
-	this(anEnum, replaceWord, null);
+        this(anEnum, replaceWord, null);
     }
 
     public ElementBase(SeleniumEnums anEnum, TextEnum replaceWord) {
-	this(anEnum, replaceWord.getText(), null);
+        this(anEnum, replaceWord.getText(), null);
     }
 
     public ElementBase(SeleniumEnums anEnum, Integer replaceNumber) {
-	this(anEnum, null, replaceNumber);
+        this(anEnum, null, replaceNumber);
     }
 
-    public ElementBase(SeleniumEnums anEnum, String replaceWord,
-	    Integer replaceNumber) {
-	setMyEnum(anEnum);
-	if (replaceNumber != null) {
-	    myEnum.replaceNumber(replaceNumber);
-	}
-	if (replaceWord != null) {
-	    myEnum.replaceWord(replaceWord);
-	}
-	selenium = super.getSelenium();
-	webDriver = selenium.getWrappedDriver();
+    public ElementBase(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+        setMyEnum(anEnum);
+        if (replaceNumber != null) {
+            myEnum.replaceNumber(replaceNumber);
+        }
+        if (replaceWord != null) {
+            myEnum.replaceWord(replaceWord);
+        }
+        selenium = super.getSelenium();
+        webDriver = selenium.getWrappedDriver();
     }
 
     @Override
     public Boolean isPresent() {
-	return selenium.isElementPresent(myEnum);
+        return selenium.isElementPresent(myEnum);
     }
 
     @Override
     public Boolean isVisible() {
-	return selenium.isVisible(myEnum);
+        return selenium.isVisible(myEnum);
     }
 
     @Override
     public Boolean assertVisibility(Boolean visible) {
-	return assertTrue(visible == selenium.isVisible(myEnum),
-		myEnum.toString());
+        return assertTrue(visible == selenium.isVisible(myEnum), myEnum.toString());
     }
 
     @Override
     public ElementInterface focus() {
-	selenium.focus(myEnum);
-	return this;
+        selenium.focus(myEnum);
+        return this;
     }
 
     @Override
     public Boolean hasFocus() {
-	return selenium.hasFocus(myEnum);
+        return selenium.hasFocus(myEnum);
     }
 
     @Override
     public SeleniumEnums getMyEnum() {
-	return myEnum;
+        return myEnum;
     }
 
     @Override
     public void setMyEnum(SeleniumEnums anEnum) {
-	this.myEnum = new SeleniumEnumWrapper(anEnum);
+        this.myEnum = new SeleniumEnumWrapper(anEnum);
     }
 
     protected void setCurrentLocation() {
-	String uri = getCurrentLocation();
-	logger.debug(uri);
-	String[] address = uri.split("/");
-	current = new HashMap<String, String>();
-	current.put("protocol", address[0]);
-	String[] url = address[2].split(":");
-	current.put("url", url[0]);
-	current.put("port", url[1]);
-	current.put("appPath", address[3]);
-	current.put("page", address[address.length - 1]);
+        String uri = getCurrentLocation();
+        logger.debug(uri);
+        String[] address = uri.split("/");
+        current = new HashMap<String, String>();
+        current.put("protocol", address[0]);
+        String[] url = address[2].split(":");
+        current.put("url", url[0]);
+        current.put("port", url[1]);
+        current.put("appPath", address[3]);
+        current.put("page", address[address.length - 1]);
 
-	if (address.length == 7) {
-	    current.put("label", address[4]);
-	    current.put("section", address[5]);
-	}
+        if (address.length == 7) {
+            current.put("label", address[4]);
+            current.put("section", address[5]);
+        }
     }
 
     @Override
     public String getCurrentLocation() {
-	return selenium.getLocation();
+        return selenium.getLocation();
     }
 
     @Override
     public Boolean validateElementsPresent(Object... enums) {
-	SeleniumEnumWrapper temp = myEnum;
-	for (Object enumerated : enums) {
-	    setMyEnum((SeleniumEnums) enumerated);
-	    assertTrue(isPresent(), myEnum.toString());
-	}
-	myEnum = temp;
-	return true;
+        SeleniumEnumWrapper temp = myEnum;
+        for (Object enumerated : enums) {
+            setMyEnum((SeleniumEnums) enumerated);
+            assertTrue(isPresent(), myEnum.toString());
+        }
+        myEnum = temp;
+        return true;
     }
 
     @Override
     public Boolean validateElementsPresent(ArrayList<SeleniumEnums> enums) {
-	return validateElementsPresent(enums.toArray());
+        return validateElementsPresent(enums.toArray());
     }
 
     protected ElementBase replaceNumber(Integer number) {
-	myEnum.replaceNumber(number);
-	return this;
+        myEnum.replaceNumber(number);
+        return this;
     }
 
     protected ElementBase replaceWord(String word) {
-	myEnum.replaceWord(word);
-	return this;
+        myEnum.replaceWord(word);
+        return this;
     }
 
     /**
-     * This method should only be used by the page objects to make a
-     * replacement.<br />
+     * This method should only be used by the page objects to make a replacement.<br />
      * If you have to use it, we accept no responsibility for the outcome.<br />
      * You have been warned.<br />
      * 
@@ -153,24 +150,23 @@ public class ElementBase extends MasterTest implements ElementInterface {
      * @param withNew
      * @return
      */
-    public ElementBase replaceSubStringInMyEnum(String replaceOld,
-	    String withNew) {
-	myEnum.replaceOldWithNew(replaceOld, withNew);
-	return this;
+    public ElementBase replaceSubStringInMyEnum(String replaceOld, String withNew) {
+        myEnum.replaceOldWithNew(replaceOld, withNew);
+        return this;
     }
 
     @Override
     public Boolean validateVisibility(Boolean visible) {
-	return validateEquals(visible, isVisible());
+        return validateEquals(visible, isVisible());
     }
 
     @Override
     public Boolean validatePresence(Boolean present) {
-	return validateEquals(present, isPresent());
+        return validateEquals(present, isPresent());
     }
 
     @Override
     public Boolean assertPresence(Boolean present) {
-	return assertEquals(present, isPresent());
+        return assertEquals(present, isPresent());
     }
 }
