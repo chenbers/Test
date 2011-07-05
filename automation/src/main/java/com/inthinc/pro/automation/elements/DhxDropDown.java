@@ -16,36 +16,77 @@ public class DhxDropDown extends DropDown implements Selectable {
 
     private SeleniumEnums[] enums;
 
+    /**
+     * Construct a DhxDropDown.
+     * @param anEnum
+     * NOTE: SeleniumEnums in <code>anEnum</code> must be in the order they are added to the page. 
+     */
     public DhxDropDown(SeleniumEnums... anEnum) {
         super(anEnum[0], null, null);
         init(anEnum[0], null, anEnum);
     }
 
+    /**
+     * Construct a DhxDropDown.
+     * @param anEnum
+     * @param enums
+     * NOTE: SeleniumEnums in <code>enums</code> must be in the order they are added to the page.
+     */
     public DhxDropDown(SeleniumEnums anEnum, SeleniumEnums[] enums) {
         super(anEnum, null, null);
         init(anEnum, null, enums);
     }
 
+    /**
+     * Construct a DhxDropDown.
+     * @param anEnum
+     * @param replaceNumber
+     */
     public DhxDropDown(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, null, replaceNumber);
         init(anEnum, null, null);
     }
 
+    /**
+     * Construct a DhxDropDown.
+     * @param anEnum
+     * @param replaceWord
+     */
     public DhxDropDown(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord, null);
         init(anEnum, replaceWord, null);
     }
 
+    /**
+     * Construct a DhxDropDown.
+     * @param anEnum
+     * @param replaceWord
+     * @param enums
+     * NOTE: the SeleniumEnums in <code>enums</code> must be in the order they are added to the page.
+     */
     public DhxDropDown(SeleniumEnums anEnum, String replaceWord, SeleniumEnums[] enums) {
         super(anEnum, replaceWord, null);
         init(anEnum, replaceWord, enums);
     }
 
+    /**
+     * Construct a DhxDropDown.
+     * @param anEnum
+     * @param replaceWord
+     * @param replaceNumber
+     */
     public DhxDropDown(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
         init(anEnum, replaceWord, null);
     }
 
+    /**
+     * Consolidates initialization of new DhxDropDown Objects into a single method.
+     * @param anEnum
+     * @param replaceWord
+     * @param enums
+     * NOTE: enums in <code>enums</code> must be in the order they are added to the page.
+     */
     private void init(SeleniumEnums anEnum, String replaceWord, SeleniumEnums[] enums) {
         page = replaceWord;
         if (enums == null) {
@@ -56,6 +97,11 @@ public class DhxDropDown extends DropDown implements Selectable {
         makeDropDown = new SeleniumEnumWrapper(anEnum);
     }
 
+    /**
+     * Assigns slow/complicated xpaths for DhxDropDown elements on a page to ID's for easy retrieval.
+     * NOTE: if <code>this</code> Object's enums are NOT in the same order that the DhxDropDown's appear on the rendered page they will not be assigned correctly.
+     * @return this DhxDropDown (to allow method chaining)
+     */
     private DhxDropDown assignIDs() {
         Integer div = 1;
         if (page == null) {
