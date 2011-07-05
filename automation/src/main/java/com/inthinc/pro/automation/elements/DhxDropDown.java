@@ -109,6 +109,7 @@ public class DhxDropDown extends DropDown implements Selectable {
         }
         for (SeleniumEnums enume : enums) {
             if (selenium.isElementPresent(new SeleniumEnumWrapper(enume).replaceWord(page)) && enume != null) {
+                logger.debug("//body/div[" + div + "]"+", "+enume.toString());
                 selenium.assignId("//body/div[" + div + "]", enume.toString());
                 div++;
             }
