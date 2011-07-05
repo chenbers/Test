@@ -74,7 +74,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_crashhistory_vehicle}" />
                 </f:facet>                
-                <pretty:link id="#{context}-vehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle != null}">
+                <pretty:link id="#{context}_vehiclePerformance" mappingId="vehiclePerformance" rendered="#{item.vehicle != null}">
                     <f:param value="#{item.vehicle.vehicleID}"/>
                     #{item.vehicleName}
                 </pretty:link>

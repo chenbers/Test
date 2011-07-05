@@ -147,7 +147,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages.notes_redflags_vehicle}" />
                 </f:facet>
-                <pretty:link id="redFlagsVehiclePerformance" mappingId="vehiclePerformance">
+                <pretty:link id="#{context}_vehiclePerformance" mappingId="vehiclePerformance">
                     <f:param value="#{redFlag.event.vehicleID}"/>
                     #{redFlag.event.vehicleName}
                 </pretty:link>
