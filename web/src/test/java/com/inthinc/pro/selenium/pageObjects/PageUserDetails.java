@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 
 public class PageUserDetails extends AdminBar {
-	
+	//TODO: naming review this pageObject is clearly not complete?  what is it's status in Rally
 	public UserDetailsLinks _link(){
 		return new UserDetailsLinks();
 	}
