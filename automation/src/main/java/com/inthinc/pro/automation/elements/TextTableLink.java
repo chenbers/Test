@@ -5,37 +5,34 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextTableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
-public class TextTableLink extends TextTable implements ClickableTableBased,
-	TextTableBased {
+public class TextTableLink extends TextTable implements ClickableTableBased, TextTableBased {
 
     private LinkTable tableLink;
 
     public TextTableLink(SeleniumEnums anEnum) {
-	super(anEnum);
-	tableLink = new LinkTable(myEnum);
+        super(anEnum);
+        tableLink = new LinkTable(myEnum);
     }
 
     public TextTableLink(SeleniumEnums anEnum, Integer replaceNumber) {
-	super(anEnum, replaceNumber);
-	tableLink = new LinkTable(myEnum);
+        super(anEnum, replaceNumber);
+        tableLink = new LinkTable(myEnum);
     }
 
     public TextTableLink(SeleniumEnums anEnum, String replaceWord) {
-	super(anEnum, replaceWord);
-	tableLink = new LinkTable(anEnum);
+        super(anEnum, replaceWord);
+        tableLink = new LinkTable(anEnum);
     }
 
-    public TextTableLink(SeleniumEnums anEnum, String replaceWord,
-			TextEnum column) {
-	super(anEnum, replaceWord);
-	myEnum.replaceOldWithNew("*column*", column.getText());
-	tableLink = new LinkTable(myEnum);
+    public TextTableLink(SeleniumEnums anEnum, String replaceWord, TextEnum column) {
+        super(anEnum, replaceWord);
+        myEnum.replaceOldWithNew("*column*", column.getText());
+        tableLink = new LinkTable(myEnum);
     }
 
-    public TextTableLink(SeleniumEnums anEnum, String replaceWord,
-			Integer replaceNumber) {
-	super(anEnum, replaceWord, replaceNumber);
-	tableLink = new LinkTable(myEnum);
+    public TextTableLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+        super(anEnum, replaceWord, replaceNumber);
+        tableLink = new LinkTable(myEnum);
     }
 
     @Override
@@ -46,11 +43,8 @@ public class TextTableLink extends TextTable implements ClickableTableBased,
      * click(Integer row, Integer column)<br />
      */
     public Clickable click() {
-	addError(
-				"TextTableLink.click()",
-				"more information is required to determine WHICH item to click.  please supply an Integer number)",
-				ErrorLevel.FAIL);
-	return null;
+        addError("TextTableLink.click()", "more information is required to determine WHICH item to click.  please supply an Integer number)", ErrorLevel.FAIL);
+        return null;
     }
 
     /**
@@ -62,53 +56,44 @@ public class TextTableLink extends TextTable implements ClickableTableBased,
      * @return
      */
     public TextTableLink click(Integer row) {
-	tableLink.click(row);
-	return this;
+        tableLink.click(row);
+        return this;
     }
 
     @Override
     @Deprecated
     public Boolean isClickable() {
-	addError(
-		".isClickable()",
-		"more information is required to determine WHICH item to click.  please supply an Integer number)",
-		ErrorLevel.FAIL);
-	return null;
+        addError(".isClickable()", "more information is required to determine WHICH item to click.  please supply an Integer number)", ErrorLevel.FAIL);
+        return null;
     }
 
     @Override
     @Deprecated
     public Boolean validateClickable(Boolean clickable) {
-	addError(
-		".validateClickable()",
-		"more information is required to determine WHICH item to click.  please supply an Integer number)",
-		ErrorLevel.FAIL);
-	return null;
+        addError(".validateClickable()", "more information is required to determine WHICH item to click.  please supply an Integer number)", ErrorLevel.FAIL);
+        return null;
     }
 
     @Override
     @Deprecated
     public Boolean assertClickable(Boolean clickable) {
-	addError(
-		".assertClickable()",
-		"more information is required to determine WHICH item to click.  please supply an Integer number)",
-		ErrorLevel.FAIL);
-	return null;
+        addError(".assertClickable()", "more information is required to determine WHICH item to click.  please supply an Integer number)", ErrorLevel.FAIL);
+        return null;
     }
 
     @Override
     public Boolean isClickable(Integer row) {
-	return tableLink.isClickable(row);
+        return tableLink.isClickable(row);
     }
 
     @Override
     public Boolean validateClickable(Integer row, Boolean clickable) {
-	return tableLink.validateClickable(row, clickable);
+        return tableLink.validateClickable(row, clickable);
     }
 
     @Override
     public Boolean assertClickable(Integer row, Boolean clickable) {
-	return tableLink.assertClickable(row, clickable);
+        return tableLink.assertClickable(row, clickable);
     }
 
 }
