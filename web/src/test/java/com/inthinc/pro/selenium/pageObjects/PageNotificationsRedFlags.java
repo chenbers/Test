@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
@@ -28,24 +29,24 @@ public class PageNotificationsRedFlags extends NotificationsBar {
             return new TextLink(NotificationsBarEnum.EDIT_COLUMNS, page);
         }
 
-        public TextLink alertDetailsEntry() {
-            return new TextLink(NotificationsBarEnum.DETAILS_ENTRY, page);
+        public TextTableLink alertDetailsEntry() {
+            return new TextTableLink(NotificationsBarEnum.DETAILS_ENTRY, page);
         }
 
-        public TextLink groupEntry() {
-            return new TextLink(NotificationsBarEnum.GROUP_ENTRY, page);
+        public TextTableLink groupEntry() {
+            return new TextTableLink(NotificationsBarEnum.GROUP_ENTRY, page);
         }
 
-        public TextLink driverEntry() {
-            return new TextLink(NotificationsBarEnum.DRIVER_ENTRY, page);
+        public TextTableLink driverEntry() {
+            return new TextTableLink(NotificationsBarEnum.DRIVER_ENTRY, page);
         }
 
-        public TextLink vehicleEntry() {
-            return new TextLink(NotificationsBarEnum.VEHICLE_ENTRY, page);
+        public TextTableLink vehicleEntry() {
+            return new TextTableLink(NotificationsBarEnum.VEHICLE_ENTRY, page);
         }
 
-        public TextLink statusEntry() {
-            return new TextLink(NotificationsBarEnum.STATUS_ENTRY, page);
+        public TextTableLink statusEntry() {
+            return new TextTableLink(NotificationsBarEnum.STATUS_ENTRY, page);
         }
 
         public TextLink sortByGroup() {
@@ -164,15 +165,15 @@ public class PageNotificationsRedFlags extends NotificationsBar {
         private SeleniumEnums[] enums = { NotificationsBarEnum.LEVEL_FILTER_DHX, NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
 
         public DhxDropDown team() {
-            return new DhxDropDown(NotificationsBarEnum.TEAM_SELECTION_DHX, page);
+            return new DhxDropDown(NotificationsBarEnum.TEAM_SELECTION_DHX, page, enums);
         }
 
         public DhxDropDown timeFrame() {
-            return new DhxDropDown(NotificationsBarEnum.TIME_FRAME_DHX, page);
+            return new DhxDropDown(NotificationsBarEnum.TIME_FRAME_DHX, page, enums);
         }
 
         public DhxDropDown levelFilter() {
-            return new DhxDropDown(NotificationsBarEnum.LEVEL_FILTER_DHX, page);
+            return new DhxDropDown(NotificationsBarEnum.LEVEL_FILTER_DHX, page, enums);
         }
 
         public DropDown category() {

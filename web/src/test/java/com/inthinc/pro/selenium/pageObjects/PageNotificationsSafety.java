@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
@@ -33,20 +34,20 @@ public class PageNotificationsSafety extends NotificationsBar {
             return new TextLink(NotificationsBarEnum.DETAILS_ENTRY, page);
         }
 
-        public TextLink groupEntry() {
-            return new TextLink(NotificationsBarEnum.GROUP_ENTRY, page);
+        public TextTableLink groupEntry() {
+            return new TextTableLink(NotificationsBarEnum.GROUP_ENTRY, page);
         }
 
-        public TextLink driverEntry() {
-            return new TextLink(NotificationsBarEnum.DRIVER_ENTRY, page);
+        public TextTableLink driverEntry() {
+            return new TextTableLink(NotificationsBarEnum.DRIVER_ENTRY, page);
         }
 
-        public TextLink vehicleEntry() {
-            return new TextLink(NotificationsBarEnum.VEHICLE_ENTRY, page);
+        public TextTableLink vehicleTableEntry() {
+            return new TextTableLink(NotificationsBarEnum.VEHICLE_ENTRY, page);
         }
 
-        public TextLink statusEntry() {
-            return new TextLink(NotificationsBarEnum.STATUS_ENTRY, page);
+        public TextTableLink statusEntry() {
+            return new TextTableLink(NotificationsBarEnum.STATUS_ENTRY, page);
         }
 
         public TextLink sortByGroup() {
