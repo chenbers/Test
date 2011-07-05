@@ -21,7 +21,7 @@ public class TextTableLink extends TextTable implements ClickableTableBased, Tex
 
     public TextTableLink(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
-        tableLink = new LinkTable(anEnum);
+        tableLink = new LinkTable(myEnum);
     }
 
     public TextTableLink(SeleniumEnums anEnum, String replaceWord, TextEnum column) {
