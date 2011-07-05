@@ -27,7 +27,7 @@
                       <h:column>
                         <h:outputText id="vehicleSelected" value="#{result.vehicleName}" />
                     </h:column>
-                    <a4j:support ajaxSingle="true" event="onselect" reRender="#{context}-fuelStopsStatus,fuelStops-table-form">
+                    <a4j:support ajaxSingle="true" event="onselect" action="#{fuelStopsBean.fetchFuelStopsForVehicle}" reRender="#{context}-fuelStopsStatus,fuelStops-table-form">
             			<f:setPropertyActionListener value="#{result.vehicleID}" target="#{fuelStopsBean.vehicleID}" />
          			</a4j:support>
                     
@@ -57,6 +57,14 @@
             		<span class="add"><h:outputText value="#{messages.button_add}" /></span>
 				</h:commandButton>
 			</li>
+            <li class="l">
+            	<a4j:commandButton id="#{context}-fuelStopsTableDelete" styleClass="left" 
+            		onclick="Richfaces.showModalPanel('confirmDelete'); return false;">
+            		<span class="delete">
+            			<h:outputText value="#{messages.button_delete}" />
+            		</span>
+            	</a4j:commandButton>
+            </li>
             <li class="r text">
 				<span title="#{messages.button_editColumns}">
 				<a4j:commandLink id="#{context}-fuelStopsTableEditColumns"  
@@ -90,11 +98,12 @@
               rows="#{fuelStopsBean.pageData.rowsPerPage}" rowClasses="tableOdd,tableEven"  width="100%" >
 			<rich:column>
                 <f:facet name="header">
-                  <h:selectBooleanCheckbox value="#{fuelStopsBean.selectAll}" id="selectAll">
-                    <a4j:support event="onclick" action="#{fuelStopsBean.doSelectAll}" ajaxSingle="true" reRender="#{context}" limitToList="true" />
+                  <h:selectBooleanCheckbox value="#{fuelStopsBean.allSelected}" id="selectAll">
+                    <a4j:support event="onclick" action="#{fuelStopsBean.selectAllDependingOnAllSelected}" ajaxSingle="true" reRender="#{context},confirmDelete" limitToList="true" />
                   </h:selectBooleanCheckbox>
                 </f:facet>
                 <h:selectBooleanCheckbox id="select" value="#{item.selected}">
+                  <a4j:support event="onclick" reRender="select,selectAll,confirmDelete" limitToList="true" />
                 </h:selectBooleanCheckbox>
 			</rich:column>
 			<rich:column id="datetime" rendered="#{fuelStopsTableColumns.tableColumns['datetime'].visible}" sortBy="#{item.logTime}" sortOrder="DESCENDING">
@@ -123,10 +132,6 @@
 		      <h:outputText value="#{item.trailerGallons}" converter="GallonsToLitersConverter"/><rich:spacer width="5px"/>
 		      <h:outputText value="editFuelStop_trailerGallons" converter="MeasurementTextConverter"/>
 		    </rich:column>
-<!-- 		    <rich:column id="service" rendered="#{fuelStopsTableColumns.tableColumns['service'].visible}" sortBy="#{item.serviceID}"> -->
-<!-- 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_service}" /></f:facet> -->
-<!-- 		      <h:outputText value="#{item.serviceID}" /> -->
-<!-- 		    </rich:column> -->
 		    <rich:column id="trailer" rendered="#{fuelStopsTableColumns.tableColumns['trailer'].visible}" sortBy="#{item.trailerID}">
 		      <f:facet name="header"><h:outputText value="#{messages.fuelStops_trailer}" /></f:facet>
 		      <h:outputText value="#{item.trailerID}" />
@@ -144,7 +149,6 @@
                   <h:outputText value=" " />
                 </f:facet>
                 <a4j:htmlCommandLink id="edit" action="#{fuelStopsBean['edit']}" value="#{messages.fuelStop_edit}">
-<!--                   <f:param name="editID" value="#{item.id}" /> -->
             			<f:setPropertyActionListener value="#{item}" target="#{fuelStopsBean.item}" />
                 </a4j:htmlCommandLink>
             </rich:column>
@@ -158,6 +162,13 @@
 		</a4j:outputPanel>
     </a4j:form>
 
+    <ui:include src="../confirmDelete.xhtml">
+      <ui:param name="deleteBean" value="#{fuelStopsBean}" />
+      <ui:param name="reRender" value="#{context},recordCounts,#{context}-dataTableScroller" />
+      <ui:param name="deleteItems" value="#{fuelStopsBean.selectedItems}" />
+      <ui:param name="context" value="#{context}" />
+    </ui:include>
+    
     <ui:include src="/includes/columnSelectionPopup.xhtml">
 		<ui:param name="bean" value="#{fuelStopsTableColumns}"/>	
       <ui:param name="reRender" value="#{context}" />

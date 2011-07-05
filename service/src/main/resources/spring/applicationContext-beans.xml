@@ -136,7 +136,8 @@
 	</bean>
 	<bean id="noteService" class="com.inthinc.pro.service.impl.NoteServiceImpl"/>
 	<bean id="eventService" class="com.inthinc.pro.service.impl.EventServiceImpl"/>
-
+	<bean id="testService" class="com.inthinc.pro.service.impl.TestServiceImpl"/>
+	
 	<!--
 		<bean class="com.inthinc.pro.service.impl.NoteServiceImpl"> <property
 		name="mcmService" ref="mcmServiceBean"/> </bean>

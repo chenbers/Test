@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
@@ -21,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.backing.model.ItemsGetter;
 import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.HOSDAO;
@@ -39,25 +38,23 @@ public class FuelStopsBean extends BaseBean {
     private static final long serialVersionUID = 1L;
     
     private Integer vehicleID;
-    private String vehicleName;
     private Vehicle vehicle;
     
     protected FuelStopView item;
-    protected LinkedHashMap<Long,FuelStopView> items;
-
+    protected List<FuelStopView> items;
+    protected ItemsGetter<FuelStopView> itemsGetter;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private HOSDAO hosDAO;
     
     private PageData pageData;
-    private int page;
     
     private List<SelectItem> driversSelectItems;
     private List<SelectItem> vehiclesSelectItems;
     
     private DateRange dateRange;
     
-    private boolean               selectAll;
+    private boolean               allSelected;
     private List<VehicleName> vehicleNameList;
     
     private CRUDStrategy crudStrategy;
@@ -71,35 +68,44 @@ public class FuelStopsBean extends BaseBean {
         super();
     }
     public void init(){
+        itemsGetter = new NullFuelStopGetter();
+        startPageData();
+        initDateRange();
+    }
+    private void startPageData(){
         pageData = new PageData();
-        page = 0;
-        pageData.initPage(page);
-        // use the timezone of the logged on user for date range
+        pageData.initPage(0);
+    }
+    private void initDateRange(){
         dateRange = new DateRange(getLocale(), getDateTimeZone().toTimeZone());
     }
-    
     public List<SelectItem> getDriversSelectItems() {
         if (driversSelectItems == null) {
             driversSelectItems = initSelectItems();
-            for (Driver d : driverDAO.getAllDrivers(this.getUser().getGroupID())) {
-                if(d.getDot() != null)
-                    driversSelectItems.add(new SelectItem(d.getDriverID(), d.getPerson().getFullName()));
-            }
+            createDriversSelectItemsForUsersGroup();
             sort(driversSelectItems);
         }
         return driversSelectItems;
     }
+    private void createDriversSelectItemsForUsersGroup(){
+        for (Driver d : driverDAO.getAllDrivers(this.getUser().getGroupID())) {
+            if(d.getDot() != null)
+                driversSelectItems.add(new SelectItem(d.getDriverID(), d.getPerson().getFullName()));
+        }
+    }
     public List<SelectItem> getVehiclesSelectItems() {
         if (vehiclesSelectItems == null) {
             vehiclesSelectItems = initSelectItems();
-            for (Vehicle v : vehicleDAO.getVehiclesInGroupHierarchy(this.getUser().getGroupID())) {
-                vehiclesSelectItems.add(new SelectItem(v.getVehicleID(), v.getName()));
-            }
+            createVehiclesSelectItemsForUsersGroup();
             sort(vehiclesSelectItems);
         }
         return vehiclesSelectItems;
     }
-    
+    private void createVehiclesSelectItemsForUsersGroup(){
+        for (Vehicle v : vehicleDAO.getVehiclesInGroupHierarchy(this.getUser().getGroupID())) {
+            vehiclesSelectItems.add(new SelectItem(v.getVehicleID(), v.getName()));
+        }
+    }
     private List<SelectItem> initSelectItems(){
         
         final String BLANK_SELECTION = "&#160;";
@@ -133,31 +139,34 @@ public class FuelStopsBean extends BaseBean {
     public void refresh() {
         
         if (dateRange.getInterval() != null) {
-            items = null;
+            itemsGetter.reset();
         }
     }
     // end date range stuff
-    
+
+    public String unselectAll(){
+        if (items != null)
+            for (FuelStopView item : itemsGetter.getItems())
+                item.setSelected(false);
+        return null;
+    }
     public String getVehicleName() {
         if (vehicle != null) return vehicle.getName();
         return null;
     }
     public void setVehicleName(String vehicleName) {
-        this.vehicleName = vehicleName;
     }
+
     public Integer getVehicleID() {
         return vehicleID;
     }
-    public void setVehicleID(Integer vehicleID) {
-        if(vehicleIDChanged(vehicleID)){
-            
-            this.vehicleID = vehicleID;
-            vehicle = vehicleDAO.findByID(vehicleID);
-            items = null;
-        }
+    public String fetchFuelStopsForVehicle(){
+       vehicle = vehicleDAO.findByID(vehicleID);
+       itemsGetter.reset();
+       return null; 
     }
-    private boolean vehicleIDChanged(Integer newVehicleID){
-        return (this.vehicleID == null && newVehicleID != null) || (this.vehicleID != newVehicleID);
+    public void setVehicleID(Integer vehicleID) {
+        this.vehicleID = vehicleID;
     }
     public DriverDAO getDriverDAO() {
         return driverDAO;
@@ -181,35 +190,10 @@ public class FuelStopsBean extends BaseBean {
         this.hosDAO = hosDAO;
     }
 
-//    @Override
     public List<FuelStopView> getItems() {
-        if (items == null) {
-            loadItems();
-            initPageData();
-        }
-        
-        return new ArrayList<FuelStopView>(items.values());
-    }
-    protected void loadItems() {
-
-        items = new LinkedHashMap<Long,FuelStopView>();
-
-        if (getVehicleID() == null) return;
-        
-        List<HOSRecord> plainRecords = hosDAO.getFuelStopRecordsForVehicle(getVehicleID(), dateRange.getInterval());
-        if (plainRecords == null) return;
-
-        for (final HOSRecord rec : plainRecords) {
-            items.put(rec.getHosLogID(),createFuelStopView(rec));
-        }
+        return itemsGetter.getItems();
     }
     
-    private void initPageData() {
-        pageData = new PageData();
-        pageData.initPage(items.size());
-        page = pageData.getCurrentPage();
-    }
-
     public PageData getPageData() {
         return pageData;
     }
@@ -236,12 +220,16 @@ public class FuelStopsBean extends BaseBean {
         return false;
     }
 
-    public boolean isSelectAll() {
-        return selectAll;
+    public boolean isAllSelected() {
+        if(itemsGetter.isEmpty()) return false;
+        for (FuelStopView fsv : itemsGetter.getItems())
+            if(!fsv.isSelected()) return false;
+
+        return true;
     }
 
-    public void setSelectAll(boolean selectAll) {
-        this.selectAll = selectAll;
+    public void setAllSelected(boolean allSelected) {
+        this.allSelected = allSelected;
     }
     
 
@@ -261,6 +249,8 @@ public class FuelStopsBean extends BaseBean {
     public void setItem(FuelStopView item){
         this.item = item;
     }
+    
+    
     public  class FuelStopView extends HOSRecord implements EditItem
     {
         @Column(updateable = false)
@@ -269,7 +259,7 @@ public class FuelStopsBean extends BaseBean {
         private boolean selected;
 
         private Driver driver;
-
+        
         public FuelStopView()
         {
             super();
@@ -281,7 +271,6 @@ public class FuelStopsBean extends BaseBean {
                 return null;
             
             return getHosLogID().intValue();
-
         }
 
         public boolean isSelected()
@@ -303,8 +292,7 @@ public class FuelStopsBean extends BaseBean {
 
         @Override
         public String getName() {
-            // TODO Auto-generated method stub
-            return null;
+            return getDriverName() +", "+getLogTime();
         }
  
         public int getTimeInSec() {
@@ -333,35 +321,29 @@ public class FuelStopsBean extends BaseBean {
         if (vehicleID == null)
             return "";
         
-        unselectAllItems();
-        
         crudStrategy = new CreateStrategy();
         return crudStrategy.init();
     }
-    private void unselectAllItems(){
-        if (items != null)
-            for (FuelStopView item : getSelectedItems())
-                item.setSelected(false);
-    }
-    public String delete()
+    public String deleteSingle()
     {
-//        List<FuelStopView> selected = getSelectedItems();
-//        if (selected.size() != 1) 
-//            return VIEW_REDIRECT;   //shouldn't happen
-//        
-//        FuelStopView delItem = selected.get(0);
         hosDAO.deleteByID(item.getHosLogID());
-//        items.remove(item.getHosLogID());
-        
+        itemsGetter.reset();
         return VIEW_REDIRECT;
     }
-    
+    //Batch delete - standard name to use the confirmDelete.xhtml
+    public String delete(){
+        for(FuelStopView fsv : getSelectedItems()){
+            hosDAO.deleteByID(fsv.getHosLogID());
+        }
+        itemsGetter.reset();
+        return VIEW_REDIRECT;
+    }
     private FuelStopView createAddItem() {
         HOSRecord fuelStopRecord = new HOSRecord();
         fuelStopRecord.setTimeZone(TimeZone.getDefault());
         fuelStopRecord.setLogTime(new Date());
         fuelStopRecord.setVehicleID(vehicleID);
-        fuelStopRecord.setVehicleName(vehicleName);
+        fuelStopRecord.setVehicleName(getVehicleName());
         fuelStopRecord.setStatus(HOSStatus.FUEL_STOP);
         fuelStopRecord.setDriverID(getVehicle().getDriverID());
         
@@ -371,13 +353,9 @@ public class FuelStopsBean extends BaseBean {
     public List<FuelStopView> getSelectedItems()
     {
         List<FuelStopView> selectedItems = new ArrayList<FuelStopView>();
-        for (FuelStopView t : getItems())
+        for (FuelStopView t : itemsGetter.getItems())
             if (t.isSelected())
                 selectedItems.add(t);
-
-//        if (selectedItems.size() == 0 && !isAdd())
-//            selectedItems.add(item);
-
         return selectedItems;
     }
     
@@ -399,7 +377,7 @@ public class FuelStopsBean extends BaseBean {
     }
 
     
-    public String cancelEdit()
+    public String cancel()
     {
        crudStrategy.cancel();
        crudStrategy = null;
@@ -407,15 +385,10 @@ public class FuelStopsBean extends BaseBean {
        return VIEW_REDIRECT;
     }
     
-    protected FuelStopView revertItem(FuelStopView editItem)
+    public void selectAllDependingOnAllSelected()
     {
-        return createFuelStopView(hosDAO.findByID(editItem.getHosLogID()));
-    }
-
-    public void doSelectAll()
-    {
-        for (FuelStopView log : getItems())
-            log.setSelected(selectAll);
+        for (FuelStopView fsv : itemsGetter.getItems())
+            fsv.setSelected(allSelected);
     }
 
     public String edit()
@@ -424,12 +397,11 @@ public class FuelStopsBean extends BaseBean {
         return crudStrategy.init();
     }
     public int getPage() {
-        return page;
+        return pageData.getCurrentPage();
     }
 
     public void setPage(int page) {
-        this.page = page;
-        pageData.initPage(page, getItems().size());
+        pageData.initPage(page, itemsGetter.getSize());
     }
     
 
@@ -460,12 +432,37 @@ public class FuelStopsBean extends BaseBean {
     
     private abstract class CRUDStrategy {
         
-//        protected FuelStopView item;
         protected abstract String init();
-        protected abstract String save();
+        protected abstract void dao();
         protected abstract void cancel();
         protected abstract String getMessageKey();
         protected abstract Boolean isAdd();
+
+        protected String save() {
+            
+            if (!validate(item)) {
+                return null;
+            }
+
+            try
+            {
+                setEditingUser();
+                RuleSetType dotType = getDotTypeFromDriver(item.getDriverID());
+                item.setDriverDotType(dotType);
+                dao();
+
+                itemsGetter.reset();
+
+                return VIEW_REDIRECT;
+            }
+            catch (HessianException e)
+            {
+                addMessageForPage(e.getLocalizedMessage(),FacesMessage.SEVERITY_ERROR);
+                logger.debug("Hessian error while saving", e);
+                return null;
+            }
+            
+        }
 
         protected void setEditingUser(){
             Integer editUserID = getUser().getUserID();
@@ -481,20 +478,26 @@ public class FuelStopsBean extends BaseBean {
             return valid;
         }
         private Boolean validateLocation(FuelStopView fuelStopView){
-            if (fuelStopView.getLocation() == null || fuelStopView.getLocation().isEmpty()) {
+            if (locationIsInvalid(fuelStopView.getLocation())) {
                 
                 addMessageForField("required","edit-form:editFuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
                 return false;
             }
             return true;
         }
+        private Boolean locationIsInvalid(String location){
+            return location == null || location.isEmpty();
+        }
         private Boolean validateDateTime(FuelStopView fuelStopView){
             
-            if (fuelStopView.getLogTime().after(new Date())) {
+            if (dateInFuture(fuelStopView.getLogTime())) {
                 addMessageForField(" editFuelStop_future_date_not_allowed","edit-form:editFuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
                 return false;
             }
             return true;
+        }
+        private Boolean dateInFuture(Date date){
+            return date.after(new Date());
         }
         private void addMessageForField(String messageKey, String messageField, FacesMessage.Severity severity){
             FacesMessage message = new FacesMessage(severity, MessageUtil.getMessageString(messageKey), null);
@@ -522,40 +525,13 @@ public class FuelStopsBean extends BaseBean {
             return EDIT_REDIRECT;
 
         }
-        @Override
-        protected String save() {
-            
-            // validate
-            if (!validate(item)) {
-                return null;
-            }
-
-            try
-            {
-                setEditingUser();
-                RuleSetType dotType = getDotTypeFromDriver(item.getDriverID());
-                item.setDriverDotType(dotType);
-                item.setHosLogID(hosDAO.create(0l, item));
-
-                getItems();
-                items.put(item.getHosLogID(),item);
-                
-                addMessageForPage("fuelStop_added", FacesMessage.SEVERITY_INFO);
-                    // add a message
-                
-                return VIEW_REDIRECT;
-            }
-            catch (HessianException e)
-            {
-                addMessageForPage(e.getLocalizedMessage(),FacesMessage.SEVERITY_ERROR);
-                logger.debug("Hessian error while saving", e);
-                return null;
-            }
-            
+        protected void dao(){
+            hosDAO.create(0l, item);
+            addMessageForPage("fuelStop_added", FacesMessage.SEVERITY_INFO);
         }
         @Override
         protected void cancel() {
-            
+           item = null; 
         }
         @Override
         protected String getMessageKey() {
@@ -570,60 +546,16 @@ public class FuelStopsBean extends BaseBean {
         
         @Override
         protected String init() {
-//            selectItem("editID");
             return EDIT_REDIRECT;
         }
-//        private void selectItem(String paramName)
-//        {
-//            final Map<String, String> parameterMap = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//            if (parameterMap.get(paramName) != null)
-//            {
-//                final long editID = Long.parseLong(parameterMap.get(paramName));
-//                selectItem(editID);
-//            }
-//        }
-//        
-//        private void selectItem(Long id)
-//        {
-//                for (FuelStopView fuelStop : getItems())
-//                    fuelStop.setSelected(fuelStop.getId().equals(id));
-//
-////                item = items.get(id);
-////                item.setSelected(false);
-//        }
-
-        @Override
-        protected String save() {
-//            updateVehicleName();
-
-            // validate
-            if (!validate(item)) {
-                return null;
-            }
-            try
-            {
-                  setEditingUser();
-                  hosDAO.update(item);
-                  
-                  addMessageForPage("fuelStop_updated",FacesMessage.SEVERITY_INFO);
-                  // add a message
-                  return VIEW_REDIRECT;
-            }
-            catch (HessianException e)
-            {
-                addMessageForPage(e.getLocalizedMessage(),FacesMessage.SEVERITY_ERROR);
-                logger.debug("Hessian error while saving", e);
-                return null;
-            }
+        protected void dao(){
+            hosDAO.update(item);
+            addMessageForPage("fuelStop_updated", FacesMessage.SEVERITY_INFO);
         }
+
         @Override
         protected void cancel() {
-            final int index = getItems().indexOf(item);
-            if (index != -1)
-                items.put(item.getHosLogID(), revertItem(item));
-            // deselect all edit items
-            unselectAllItems();
-            
+            item = null;
         }
         @Override
         protected String getMessageKey() {
@@ -634,5 +566,70 @@ public class FuelStopsBean extends BaseBean {
         }
 
     }
+    public class FuelStopGetter implements ItemsGetter<FuelStopView>{
+
+        @Override
+        public List<FuelStopView> getItems() {
+            return items;
+        }
+
+        @Override
+        public void reset() {
+            items = null;
+            item = null;
+            itemsGetter = new NullFuelStopGetter();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return items.isEmpty();
+        }
+
+        @Override
+        public int getSize() {
+            return items.size();
+        }
+    }
+    public class NullFuelStopGetter implements ItemsGetter<FuelStopView>{
+      @Override
+      public List<FuelStopView> getItems() {
+          loadItems();
+          initPageData();
+          itemsGetter = new FuelStopGetter();
+          return items;
+      }
+      protected void loadItems() {
+
+          items = new ArrayList<FuelStopView>();
+
+          if (getVehicleID() == null) return;
+          
+          List<HOSRecord> plainRecords = hosDAO.getFuelStopRecordsForVehicle(getVehicleID(), dateRange.getInterval());
+          if (plainRecords == null) return;
+
+          for (final HOSRecord rec : plainRecords) {
+              items.add(createFuelStopView(rec));
+          }
+      }
+      private void initPageData() {
+          pageData = new PageData();
+          pageData.initPage(items.size());
+      }
+    @Override
+    public void reset() {
+        item = null;
+        items = null;
+    }
+    @Override
+    public boolean isEmpty() {
+        getItems();
+        return items.isEmpty();
+    }
+    @Override
+    public int getSize() {
+        getItems();
+        return items.size();
+    }
+  }
 
 }

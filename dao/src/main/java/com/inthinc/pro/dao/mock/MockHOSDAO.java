@@ -276,8 +276,14 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
 
     @Override
     public Integer deleteByID(Long id) {
-        // TODO Auto-generated method stub
-        return null;
+        System.out.println("delete called with id = " + id);
+        for(HOSRecord hr:plainRecords){
+            if (hr.getHosLogID() == id) {
+                plainRecords.remove(hr);
+                return 1;
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -291,8 +297,12 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
 
     @Override
     public Integer update(HOSRecord entity) {
-        for (HOSRecord rec :  getMockHOSRecords()) {
+        List<HOSRecord> records = getMockHOSRecords();
+        for (HOSRecord rec :  records) {
             if (rec.getHosLogID().equals(entity.getHosLogID())) {
+                records.remove(rec);
+                records.add(entity);
+                
                 return 1;
             }
         }

@@ -685,7 +685,7 @@ form input.txt {
 form select {
 	float: left;
 	display: block;
-	margin-top: 3px;
+/* 	margin-top: 3px; */
 	font: 10px Verdana, Arial, Helvetica, sans-serif;
 }
 
