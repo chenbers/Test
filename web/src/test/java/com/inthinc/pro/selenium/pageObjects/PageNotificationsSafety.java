@@ -42,7 +42,7 @@ public class PageNotificationsSafety extends NotificationsBar {
             return new TextTableLink(NotificationsBarEnum.DRIVER_ENTRY, page);
         }
 
-        public TextTableLink vehicleTableEntry() {
+        public TextTableLink vehicleEntry() {
             return new TextTableLink(NotificationsBarEnum.VEHICLE_ENTRY, page);
         }
 
