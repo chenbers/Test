@@ -69,12 +69,12 @@ public class FuelStopsBean extends BaseBean {
     }
     public void init(){
         itemsGetter = new NullFuelStopGetter();
-        startPageData();
+        initPageData(0);
         initDateRange();
     }
-    private void startPageData(){
+    private void initPageData(int dataSize){
         pageData = new PageData();
-        pageData.initPage(0);
+        pageData.initPage(dataSize);
     }
     private void initDateRange(){
         dateRange = new DateRange(getLocale(), getDateTimeZone().toTimeZone());
@@ -594,7 +594,7 @@ public class FuelStopsBean extends BaseBean {
       @Override
       public List<FuelStopView> getItems() {
           loadItems();
-          initPageData();
+          initPageData(items.size());
           itemsGetter = new FuelStopGetter();
           return items;
       }
@@ -610,10 +610,6 @@ public class FuelStopsBean extends BaseBean {
           for (final HOSRecord rec : plainRecords) {
               items.add(createFuelStopView(rec));
           }
-      }
-      private void initPageData() {
-          pageData = new PageData();
-          pageData.initPage(items.size());
       }
     @Override
     public void reset() {

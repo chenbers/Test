@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,7 @@ import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.hos.HOSRecord;
+import com.inthinc.pro.table.PageData;
 
 public class FuelStopsBeanTest extends BaseBeanTest {
 
@@ -35,9 +37,17 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         fuelStops = fuelStopsBean.getHosDAO().getFuelStopRecordsForVehicle(130, new DateRange(new Locale("en_US"),TimeZone.getTimeZone("America/Denver")).getInterval());
         countBefore = fuelStops.size();
     }
+    @After
+    public void after(){
+        countBefore = 0;
+        fuelStops = null;
+        fuelStopsBean = null;
+    }
     @Test
     public void beanInit()
     {        
+        assertEquals(new Integer(0),fuelStopsBean.getPageData().getCurrentPage());
+        assertEquals(new Integer(0),fuelStopsBean.getPageData().getNumPages());
         assertEquals(new Integer(15),fuelStopsBean.getPageData().getRowsPerPage());
         assertEquals(new Integer(0),fuelStopsBean.getPageData().getPageStartRow());
         assertEquals(TimeZone.getTimeZone("America/Denver"),fuelStopsBean.getDateRange().getTimeZone());
@@ -208,5 +218,14 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         assertFalse(fuelStopsBean.isAllSelected());
         fsv.setSelected(true);
         assertTrue(fuelStopsBean.isAllSelected());
+    }
+    @Test
+    public void pageTest(){
+        
+        fuelStopsViews = fuelStopsBean.getItems();
+        PageData pageData = fuelStopsBean.getPageData();
+        assertEquals(new Integer(1),pageData.getCurrentPage());
+        assertEquals(new Integer(15),pageData.getRowsPerPage());
+        assertEquals(new Integer(1),pageData.getNumPages());
     }
 }
