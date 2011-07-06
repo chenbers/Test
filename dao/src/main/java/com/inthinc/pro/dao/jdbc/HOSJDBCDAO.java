@@ -345,6 +345,84 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
         return recordList;
     }
+    
+    @Override
+    public List<HOSRecord> getRecordsForVehicle(Integer vehicleID, Interval interval, Boolean driverStatusOnly)  {
+
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+
+        ArrayList<HOSRecord> recordList = new ArrayList<HOSRecord>();
+        
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall("{call hos_getRecordsForVehicle(?, ?, ?, ?)}");
+            statement.setInt(1, vehicleID);
+            statement.setLong(2, interval.getStartMillis());
+            statement.setLong(3, interval.getEndMillis());
+            statement.setBoolean(4, driverStatusOnly);
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next())
+            {
+                HOSRecord hosRecord = new HOSRecord();
+                
+                hosRecord.setHosLogID(resultSet.getLong(1));
+                hosRecord.setDriverID(resultSet.getInt(2));
+                hosRecord.setVehicleID(resultSet.getInt(3));
+                long ms = resultSet.getLong(4);
+                hosRecord.setLogTime(new Date(ms));
+                hosRecord.setTimeZone(TimeZone.getTimeZone(resultSet.getString(5)));
+                hosRecord.setStatus(HOSStatus.valueOf(resultSet.getInt(6)));
+                hosRecord.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(7)));
+                hosRecord.setVehicleIsDOT(resultSet.getBoolean(8));
+                hosRecord.setVehicleOdometer(Long.valueOf(resultSet.getInt(9)));
+                hosRecord.setOrigin(HOSOrigin.valueOf(resultSet.getInt(10)));
+                hosRecord.setTrailerID(resultSet.getString(11));
+                hosRecord.setServiceID(resultSet.getString(12));
+                hosRecord.setLat(resultSet.getFloat(13));
+                hosRecord.setLng(resultSet.getFloat(14));
+                hosRecord.setLocation(resultSet.getString(15));
+                hosRecord.setOriginalLocation(resultSet.getString(16));
+                hosRecord.setDeleted(resultSet.getBoolean(17));
+                hosRecord.setEdited(resultSet.getBoolean(18));
+                hosRecord.setChangedCnt(resultSet.getInt(19));
+                hosRecord.setEditUserName(resultSet.getString(20));
+                hosRecord.setTruckGallons(resultSet.getFloat(21));
+                hosRecord.setTrailerGallons(resultSet.getFloat(22));
+                hosRecord.setTripReportFlag(resultSet.getBoolean(23));
+                hosRecord.setTripInspectionFlag(resultSet.getBoolean(24));
+                hosRecord.setVehicleName(resultSet.getString(25));
+                ms = resultSet.getLong(26);
+                hosRecord.setOriginalLogTime(new Date(ms));
+                hosRecord.setVehicleLicense(resultSet.getString(27));
+                hosRecord.setEmployeeID(resultSet.getString(28));
+                hosRecord.setEditUserID(resultSet.getInt(29));
+                hosRecord.setSingleDriver(resultSet.getBoolean(30));
+                hosRecord.setOriginalStatus(HOSStatus.valueOf(resultSet.getInt(31)));
+                
+                recordList.add(hosRecord);
+            }
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+
+        return recordList;
+    }
+        
 
     @Override
     public List<HOSRecord> getFuelStopRecordsForVehicle(Integer vehicleID, Interval interval)  {
