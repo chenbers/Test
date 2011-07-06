@@ -29,18 +29,24 @@ public class TestTranslations {
         checkLang(lang);
     }
 
+    @Test
+    public void frTest() throws IOException {
+        
+        String lang = "fr";
+        checkLang(lang);
+    }
 
     private void checkLang(String lang) throws IOException {
         List<File> propFileList = new ArrayList<File>();
         File baseDir = new File("..");
         BaseTranslationUtil baseUtil = new BaseTranslationUtil();
         propFileList.addAll(baseUtil.getFiles(baseDir, new PropertiesFileFilter(null)));
-        
+        int totalErrorCount = 0;
         for (File enFile : propFileList) {
             
             File langFile = baseUtil.getLangPropFile(enFile, lang);
             if (!langFile.exists()) {
-                System.out.println("WARNING FILE DOES NOT EXIST " + langFile.getAbsolutePath());
+//                System.out.println("WARNING FILE DOES NOT EXIST " + langFile.getAbsolutePath());
                 continue;
             }
             
@@ -82,10 +88,14 @@ public class TestTranslations {
             }
 
             Collections.sort(missing);
-            for (String key : missing)
-                System.out.println("nonTranslatedList.add(\"" + key + "\");");
+//            for (String key : missing)
+//                System.out.println("nonTranslatedList.add(\"" + key + "\");");
                     
-            assertEquals(lang + " messages need translations", 0, errorCount);
+//            assertEquals(lang + " messages need translations", 0, errorCount);
+            totalErrorCount += errorCount;
+//            System.out.println("nonTranslated_fr.put(\"" + langFile.getAbsolutePath()+ "\", nonTranslatedList");
         }
+
+        assertEquals(lang + " messages need translations", 0, totalErrorCount);
     }
 }

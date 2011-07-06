@@ -18,7 +18,7 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
         
     }
     
-    public void genList(String saveFilePath, String root, String lang) 
+    public void genList(String saveFilePath, String root, String lang, String all) 
     {
         PrintWriter toTranslateWriter = null;
         try {
@@ -43,8 +43,10 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
                 String keyPath = getKeyPath(baseDir.getAbsolutePath(), propFile.getAbsolutePath());
                 List<String> nonTranslatedList = NonTranslated.getList(lang, keyPath);
                 
-                List<String> toTranslateList = getToTranslateList(propFile, getLangPropFile(propFile, lang), lang, nonTranslatedList);
-//                List<String> toTranslateList = getAllToTranslateList(propFile);
+                List<String> toTranslateList = null;
+                if (all == null) 
+                    toTranslateList = getToTranslateList(propFile, getLangPropFile(propFile, lang), lang, nonTranslatedList);
+                else toTranslateList = getAllToTranslateList(propFile);
                 if (toTranslateList.size() > 0) {
                     toTranslateWriter.println(BaseTranslationUtil.PROPERTIES_MARKER + " " + keyPath + " " + BaseTranslationUtil.PROPERTIES_MARKER);
                     for (String prop : toTranslateList) {
@@ -73,6 +75,7 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
         String name = enPropFile.getAbsolutePath().toLowerCase();
         if (name.contains("log4j") || 
                 name.contains("it.properties") || 
+                name.contains("automation.properties") || 
                 name.contains("qa.properties") ||
                 name.contains("tiwipro.properties") ||
                 name.contains("totranslate") ||
@@ -150,7 +153,7 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
 
     public static void main(String[] args)
     {
-        String usageErrorMsg = "Usage: GenerateListToTranslate <translations list file path (created)> <root dir of files to check translate> <language code>";
+        String usageErrorMsg = "Usage: GenerateListToTranslate <translations list file path (created)> <root dir of files to check translate> <language code> <ALL(optional)>";
         
         if (args.length < 3)
         {
@@ -158,7 +161,7 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
             System.exit(1);
         }
         
-        new GenerateListToTranslate().genList(args[0], args[1], args[2]);
+        new GenerateListToTranslate().genList(args[0], args[1], args[2], args.length > 3 ? args[3] : null);
         System.exit(0);
         
     }
