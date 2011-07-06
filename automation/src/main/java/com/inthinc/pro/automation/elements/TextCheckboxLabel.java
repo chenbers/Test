@@ -23,18 +23,17 @@ public class TextCheckboxLabel extends TextTableLink implements TextTableBased{
     public void setMyEnum(SeleniumEnums anEnum){
     	myEnum = new SeleniumEnumWrapper(anEnum);
     	String[] newIds = new String[myEnum.getIDs().length];
-    	String oneUpFirstTd = parentXpath+"/td[1]";
+    	String downLable = "/label";
     	for (int i=0;i<myEnum.getIDs().length;i++){
     		String newId = "";
     		String id = myEnum.getIDs()[i];
     		if(id.startsWith("//")){
-    			newId = id + oneUpFirstTd;
+    			newId = id + downLable;
     		}else if( !id.contains("=")){
-    			newId = "//input[@id='"+id+"']"+oneUpFirstTd;
+    			newId = "//td[@id='"+id+"']"+downLable;
     		}
     		newIds[i]=newId;
     	}
     	myEnum.setID(newIds);
     }
-
 }
