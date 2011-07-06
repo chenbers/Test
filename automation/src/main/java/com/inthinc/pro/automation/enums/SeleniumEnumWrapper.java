@@ -82,10 +82,17 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
 
     public SeleniumEnumWrapper replaceOldWithNew(String original, String neww) {
 	for (int i = 0; i < IDs.length; i++) {
-	    if (original.equals("###")
-		    && (!IDs[i].startsWith("//")
-			    || Pattern.matches(regex, IDs[i]))) {
-		neww = Integer.parseInt(neww) - 1 + "";
+	    if (original.equals("###")){
+		String id = IDs[i];
+		if (id.startsWith("//")){
+		    if (id.contains("@id")){
+			id = id.substring(id.indexOf("[@id"));
+			id = id.substring(0, id.indexOf("']"));
+			if (id.contains("###"))
+			    neww = Integer.parseInt(neww) - 1 + "";    
+		    }
+		}
+		
 	    }
 	    IDs[i] = IDs[i].replace(original, neww);
 	}
