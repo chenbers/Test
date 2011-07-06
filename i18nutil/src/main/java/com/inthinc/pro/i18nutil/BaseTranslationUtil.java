@@ -54,6 +54,20 @@ public class BaseTranslationUtil {
         return new File(langPath);
     }
 
+    protected String getValueString(String value) {
+        if (value == null)
+            return "";
+        String[] lines = value.split("\\r\\n");
+        if (lines.length == 1)
+            return lines[0];
+        StringBuffer returnBuffer = new StringBuffer();
+        for (String line : lines) {
+            if (returnBuffer.length() > 0)
+                returnBuffer.append("\\r\\n");
+            returnBuffer.append(line);
+        }
+        return returnBuffer.toString();
+    }
     
     
 }

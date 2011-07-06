@@ -188,7 +188,7 @@ System.out.println("propPath: " + propPath);
             String value = prop.getProperty(key);
 //            if (value != null)
 //                value = value.replaceAll("\\r", " ").replaceAll("\\n", " ");
-            sortedPropList.add(key + " = " + value);
+            sortedPropList.add(key + " = " + getValueString(value));
         }
         return sortedPropList;
     }

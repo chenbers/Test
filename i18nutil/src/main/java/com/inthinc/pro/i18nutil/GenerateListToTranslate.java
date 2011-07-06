@@ -135,21 +135,22 @@ public class GenerateListToTranslate extends BaseTranslationUtil {
 
             
             if (langValue == null) {
-                toTranslate.add(key + " = " + value);
+                toTranslate.add(key + " = " + getValueString(value));
             }
             else if (langValue.trim().isEmpty() && value.trim().isEmpty())
                 continue;
             else if (langValue.trim().isEmpty()) {
-                toTranslate.add(key + " = " + value);
+                toTranslate.add(key + " = " + getValueString(value));
             }
             else if (langValue.trim().equalsIgnoreCase(value.trim()) || langValue.contains("(" + lang+ ")")) { 
-                toTranslate.add(key + " = " + value);
+                toTranslate.add(key + " = " + getValueString(value));
             }
         }
         return toTranslate;
         
         
     }
+
 
     public static void main(String[] args)
     {
