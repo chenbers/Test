@@ -91,6 +91,8 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
 			if (id.contains("###"))
 			    neww = Integer.parseInt(neww) - 1 + "";    
 		    }
+		}else if (!id.startsWith("//")){
+		    neww = Integer.parseInt(neww) - 1 + "";
 		}
 		
 	    }
