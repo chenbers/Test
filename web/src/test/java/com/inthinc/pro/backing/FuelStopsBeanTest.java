@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -227,5 +231,29 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         assertEquals(new Integer(1),pageData.getCurrentPage());
         assertEquals(new Integer(15),pageData.getRowsPerPage());
         assertEquals(new Integer(1),pageData.getNumPages());
+    }
+    @Test
+    public void cantEditBeforeDate(){
+        String result = fuelStopsBean.add();
+        
+        assertEquals("pretty:fuelStopEdit",result);
+        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+        
+        assertEquals(new Integer(130), item.getVehicleID());
+        item.setTruckGallons(20.0f);
+        item.setTrailerGallons(34.5f);
+        item.setLocation("Sandy, UT");
+        LocalDate localDate = new LocalDate(new DateMidnight(new Date(), DateTimeZone.forID("America/Denver")));
+        DateTime logTime = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(26);
+        
+        item.setLogTime(logTime.toDate());
+        
+        assertFalse(item.getEditable());
+
+        localDate = new LocalDate(new DateMidnight(new Date(), DateTimeZone.forID("America/Denver")));
+        logTime = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(25);
+        item.setLogTime(logTime.toDate());
+        
+        assertTrue(item.getEditable());
     }
 }

@@ -148,7 +148,7 @@
                 <f:facet name="header">
                   <h:outputText value=" " />
                 </f:facet>
-                <a4j:htmlCommandLink id="edit" action="#{fuelStopsBean['edit']}" value="#{messages.fuelStop_edit}">
+                <a4j:htmlCommandLink id="edit" action="#{fuelStopsBean['edit']}" value="#{messages.fuelStop_edit}" rendered="#{item.editable}">
             			<f:setPropertyActionListener value="#{item}" target="#{fuelStopsBean.item}" />
                 </a4j:htmlCommandLink>
             </rich:column>

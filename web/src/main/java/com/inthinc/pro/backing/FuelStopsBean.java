@@ -1,6 +1,7 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -15,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.HOSStatus;
@@ -253,8 +255,11 @@ public class FuelStopsBean extends BaseBean {
     
     public  class FuelStopView extends HOSRecord implements EditItem
     {
+        
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
+        @Column(updateable = false)
+        private static final int iftaAggreagationDays = 25;
         @Column(updateable = false)
         private boolean selected;
 
@@ -313,6 +318,12 @@ public class FuelStopsBean extends BaseBean {
         }        
         public String getTimezoneName() {
             return getTimeZone().getID();
+        }
+        public Boolean getEditable(){
+            LocalDate localDate = new LocalDate(new DateMidnight(new Date(), DateTimeZone.forID(getTimeZone().getID())));
+            Date dateTooManyDaysAgo = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID(getTimeZone().getID())).minusDays(iftaAggreagationDays+1).toDate();
+            
+            return this.getLogTime().after(dateTooManyDaysAgo);
         }
     }
     
