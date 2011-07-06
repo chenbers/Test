@@ -276,10 +276,48 @@ System.out.println("numHosRecords " + numHosRecords);
         List<HOSRecord> driverRecords = hosDAO.getHOSRecordsFilteredByInterval(testDriver.getDriverID(), queryInterval, false);
         
         assertEquals("unexpected record count returned", numHosRecords, driverRecords.size());
-        
-        
-        
     }
+
+    @Test
+    public void hosRecordsByVehicleListTest() {
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+
+        GroupData testGroupData = itData.teamGroupData.get(ITData.INTERMEDIATE);
+        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
+        Vehicle testVehicle = testGroupData.vehicle;
+        
+        long numHosRecords = Util.randomInt(1, 5);
+        
+System.out.println("numHosRecords " + numHosRecords);        
+        
+        
+        Date currentDate = new Date();  
+        Date startDate = new Date(currentDate.getTime()/1000l * 1000l);
+        
+        try {
+            // sleep so that no other records are within the time interval
+            System.out.println("sleeping for " + msDelta*(numHosRecords+1) + " ms");
+            Thread.sleep(msDelta*(numHosRecords+1));
+            System.out.println("sleeping done");
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        int status = 0;
+        for (long i = 0; i < numHosRecords; i++) {
+            createMinimalHosRecord(hosDAO, testDriver, new Date(startDate.getTime() + i*msDelta), 
+                    testVehicle.getVehicleID(), HOSStatus.values()[status++], 34.0f,45.0f);
+        }
+        
+        Interval queryInterval = new Interval(new DateTime(startDate.getTime(), DateTimeZone.UTC), new DateTime(new Date(),DateTimeZone.UTC));
+        System.out.println(" " + queryInterval);
+        List<HOSRecord> vehicleRecords = hosDAO.getRecordsForVehicle(testVehicle.getVehicleID(), queryInterval, false);
+        
+        assertEquals("unexpected record count returned", numHosRecords, vehicleRecords.size());
+    }
+
     @Test
     public void fuelStopByVehicleTest() {
         HOSDAO hosDAO = new HOSJDBCDAO();
