@@ -133,7 +133,7 @@ public class ClickableTableObject extends ClickableObject implements ClickableTa
     @Override
     public Boolean assertClickable(Integer row, Boolean clickable) {
         replaceNumber(row);
-        return super.assertClickable(clickable);
+        return assertEquals(clickable, isClickable(row));
     }
 
     @Override
