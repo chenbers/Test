@@ -392,4 +392,10 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
     public Long getLastID(){
         return (long) (plainRecords.size()-1);
     }
+
+    @Override
+    public List<HOSRecord> getRecordsForVehicle(Integer vehicleID, Interval interval, Boolean driverStatusOnly) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
