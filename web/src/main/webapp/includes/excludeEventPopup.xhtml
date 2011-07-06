@@ -11,10 +11,10 @@
             <h:outputText value="#{title}" />
         </f:facet>
         <f:facet name="controls">
-            <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clear#{context}Panel')" />
+            <h:graphicImage id="closeExcludePopup" value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clear#{context}Panel')" />
         </f:facet>
 
-        <h:panelGroup layout="block" styleClass="popupsubtitle">
+        <h:panelGroup id="excludePopupSubtitle" layout="block" styleClass="popupsubtitle">
             <h:outputText value="#{inst}" />
         </h:panelGroup>
 
