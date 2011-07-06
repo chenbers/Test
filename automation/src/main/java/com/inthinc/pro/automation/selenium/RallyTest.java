@@ -59,7 +59,7 @@ public abstract class RallyTest extends AutomatedTest {
 	    super.after();
 		if (!skip) {
 			try {
-				setTestSet(determineTestSet());
+				//setTestSet(determineTestSet());//TODO: jwimmer: re-add this once we have created the appropriate test sets in Rally
 				rally.setBuildNumber(getBuildNumber());
 				rally.setVerdict(getTestVerdict());
                 rally.setNotes(errors);
