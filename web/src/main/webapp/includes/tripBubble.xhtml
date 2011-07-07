@@ -7,6 +7,8 @@
             <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.startTime}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.startAddress}" />
             <ui:param name="context" value="#{context}-pageName"/> 
+            <ui:param name="timeZoneObject" value="#{navigationBean.driver.person.timeZone}" />  
+            
 	</ui:include>
 -->
 <ui:composition 
@@ -27,9 +29,10 @@
 		<f:facet name="header">
 			<h:outputText value="#{bubbleTitle}" />
 		</f:facet>
-		<h:outputText value="#{eventDateTime}" >
-			<iwi:dateTimeOutputConverter/>
+		<h:outputText value="#{eventDateTime}">
+			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{messages.dateTimeFormat}"/>
 		</h:outputText>
+		
 		<!--
 		 Format DateTime with TimeZone in bean if this include is used in ui:repeater.
 		 

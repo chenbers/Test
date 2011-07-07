@@ -334,6 +334,7 @@
         			<ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
            			<ui:param name="tripBubbleAddress" value="tripStartAddress"/>
  					<ui:param name="context" value="driverTripsStart" />
+                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="tripEndBubble" />
@@ -343,6 +344,7 @@
          			<ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
            			<ui:param name="tripBubbleAddress" value="tripEndAddress"/>
   					<ui:param name="context" value="driverTripsEnd" />
+                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="tripInProgressBubble" />
@@ -352,6 +354,7 @@
         			<ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
           			<ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
  					<ui:param name="context" value="driverTripsInProgress" />
+                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
                 </ui:include>
 		</rich:panel>
 		</rich:panel>

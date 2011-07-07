@@ -139,6 +139,7 @@
  	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
  			<ui:param name="context" value="driverPerformanceStart" />
+            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
 	</ui:include>
 	
 	<ui:include src="/includes/tripBubble.xhtml">
@@ -149,6 +150,7 @@
  	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
  			<ui:param name="context" value="driverPerformanceEnd" />
+            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
 	</ui:include>
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripInProgessBubble" />
@@ -158,6 +160,7 @@
  	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
  			<ui:param name="context" value="driverPerformanceInProgress" />
+            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
 	</ui:include>
 	
 			<ui:param name="violation" value="#{driverPerformanceBean.violationEventsMap[driverPerformanceBean.selectedViolationID]}"/>

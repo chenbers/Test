@@ -134,8 +134,9 @@
             <ui:param name="eventDateTime" value="#{vehiclePerformanceBean.lastTrip.trip.startTime}" />
             <ui:param name="eventLocation" value="#{vehiclePerformanceBean.lastTrip.startAddress}" />
   	        <ui:param name="addressLookupAddressFormat" value="#{vehiclePerformanceBean.addressFormat}"/>
-           <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
+            <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
  		 	<ui:param name="context" value="vehiclePerformanceStart" />
+            <ui:param name="timeZoneObject" value="#{vehiclePerformanceBean.timeZone}" />
 	</ui:include>
 	
 	<ui:include src="/includes/tripBubble.xhtml">
@@ -144,8 +145,9 @@
             <ui:param name="eventDateTime" value="#{vehiclePerformanceBean.lastTrip.trip.endTime}" />
             <ui:param name="eventLocation" value="#{vehiclePerformanceBean.lastTrip.endAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{vehiclePerformanceBean.addressFormat}"/>
-           <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
+            <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
 		 	<ui:param name="context" value="vehiclePerformanceEnd" />
+            <ui:param name="timeZoneObject" value="#{vehiclePerformanceBean.timeZone}" />
 	</ui:include>
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripInProgressBubble" />
@@ -153,8 +155,9 @@
             <ui:param name="eventDateTime" value="#{vehiclePerformanceBean.lastTrip.trip.endTime}" />
             <ui:param name="eventLocation" value="#{vehiclePerformanceBean.lastTrip.endAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{vehiclePerformanceBean.addressFormat}"/>
-           <ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
+            <ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
 		 	<ui:param name="context" value="vehiclePerformanceInProgress" />
+            <ui:param name="timeZoneObject" value="#{vehiclePerformanceBean.timeZone}" />
 	</ui:include>
 	
 	

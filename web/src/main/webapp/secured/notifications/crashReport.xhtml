@@ -242,6 +242,7 @@
  	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
     	 	<ui:param name="context" value="crashReportStart" />
+            <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
 		</ui:include>
 		<ui:include src="/includes/tripBubble.xhtml">
 			<ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
@@ -251,6 +252,7 @@
  	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
     	 	<ui:param name="context" value="crashReportEnd" />
+            <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
 		</ui:include>
 
 

@@ -333,6 +333,7 @@
 										<ui:param name="addressLookupAddressFormat" value="#{vehicleTripsBean.addressFormat}" />
 										<ui:param name="tripBubbleAddress" value="tripStartAddress" />
 										<ui:param name="context" value="vehicleTripsStart" />
+										<ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
 								</ui:include>
 								<ui:include src="/includes/tripBubble.xhtml">
 										<ui:param name="hiddenDivID" value="tripEndBubble" />
@@ -342,6 +343,7 @@
 										<ui:param name="addressLookupAddressFormat" value="#{vehicleTripsBean.addressFormat}" />
 										<ui:param name="tripBubbleAddress" value="tripEndAddress" />
 										<ui:param name="context" value="vehicleTripsEnd" />
+										<ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
 								</ui:include>
 								<ui:include src="/includes/tripBubble.xhtml">
 										<ui:param name="hiddenDivID" value="tripInProgressBubble" />
@@ -351,6 +353,7 @@
 										<ui:param name="addressLookupAddressFormat" value="#{vehicleTripsBean.addressFormat}" />
 										<ui:param name="tripBubbleAddress" value="tripInProgressAddress" />
 										<ui:param name="context" value="vehicleTripsInProgress" />
+										<ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
 								</ui:include>
 						</rich:panel>
 						</rich:panel>
