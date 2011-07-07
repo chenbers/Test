@@ -48,13 +48,13 @@ public class AddEditUser extends WebRallyTest {
 		myAdminUsers._button().search().click(); 
 		myAdminUsers.getLinkByText("Tina Automated").click();
 		myAdminUserDetails._button().edit().click();
-		String original = myAddEditUser._textField().personFields(AdminUsersEntries.EMP_ID_EDIT).getText();
+		String original = myAddEditUser._textField().personFields(AdminUsersEntries.EMPLOYEE_ID).getText();
 				
 		String[] emp_id = {random.getCharString(10).toLowerCase(), random.getCharString(10).toUpperCase(),random.getCharString(5).toLowerCase()+ random.getCharString(5).toUpperCase(), original};
 		//.2 Edit User's Employee ID
 		for (String string: emp_id){
-			myAddEditUser._textField().personFields(AdminUsersEntries.EMP_ID_EDIT).clear();
-			myAddEditUser._textField().personFields(AdminUsersEntries.EMP_ID_EDIT).type(string);
+			myAddEditUser._textField().personFields(AdminUsersEntries.EMPLOYEE_ID).clear();
+			myAddEditUser._textField().personFields(AdminUsersEntries.EMPLOYEE_ID).type(string);
 			myAddEditUser._button().saveTop().click();
 			
 			//.2a Leave User Details page and return to verify changes saved correctly.
