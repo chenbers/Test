@@ -3,6 +3,7 @@ package com.inthinc.pro.model;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public enum VehicleDOTType implements BaseEnum {
     
@@ -41,7 +42,9 @@ public enum VehicleDOTType implements BaseEnum {
         }
         return null;
     }
-
+    public static Set<VehicleDOTType> getDOTTypes(){
+        return EnumSet.of(VehicleDOTType.DOT,VehicleDOTType.PROMPT_FOR_DOT_TRIP);
+    }
     public int getConfiguratorSetting() {
         return configuratorSetting;
     }

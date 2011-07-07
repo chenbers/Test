@@ -699,4 +699,7 @@
   </bean>
   <bean id="fuelStopsBean" class="com.inthinc.pro.backing.FuelStopsBean" scope="session" init-method="init">
   </bean>
+  <bean id="locateVehicleByTime" class="com.inthinc.pro.backing.model.LocateVehicleByTime">
+  	<property name="googleAddressLookupBean" ref="googleAddressLookupBean"/>
+  </bean>
 </beans>

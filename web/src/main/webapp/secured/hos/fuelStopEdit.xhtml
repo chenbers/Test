@@ -47,7 +47,7 @@
                         <li class="r">
                           <h:commandButton id="editfuelStopDelete1" action="#{fuelStopsBean.deleteSingle}" styleClass="left" rendered="#{not fuelStopsBean.add}"><span class="delete"><h:outputText value="#{messages.button_delete}" /></span></h:commandButton>
                           <h:outputText value=" " /><h:commandButton id="editfuelStopSave1" action="#{fuelStopsBean.save}" styleClass="left"><span class="save"><h:outputText value="#{messages.button_save}" /></span></h:commandButton>
-                          <h:outputText value=" " /><h:commandButton id="editfuelStopCancel1" action="#{fuelStopsBean.cancelEdit}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
+                          <h:outputText value=" " /><h:commandButton id="editfuelStopCancel1" action="#{fuelStopsBean.cancel}" immediate="true" styleClass="left"><span class="cancel"><h:outputText value="#{messages.button_cancel}" /></span></h:commandButton>
                         </li>
                       </ul>
                         
@@ -70,33 +70,38 @@
 
                             <div class="add_section_title"><h:outputText value="#{messages.fuelStops_information}" /></div>
 
-                            <table width="450" border="0" cellspacing="2" cellpadding="4" align="center">
+                            <table width="550" border="0" cellspacing="2" cellpadding="4" align="center">
                               <tr>
                                 <td width="100" valign="top">
                                   <h:outputText value="#{messages.fuelStop_date}" />
                                   <span class="required">*</span>
                                 </td>
-                                <td>
+                                <td width="450">
                                   <rich:message for="editfuelStop_dateTime" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            	  <rich:calendar value="#{fuelStopsBean.item.logTime}" id="editfuelStop_dateTime" 
-                            	  		todayControlMode="hidden" enableManualInput="false"  datePattern="MMM d, yyyy"
-                            	  		timeZone="#{fuelStopsBean.item.timeZone}" inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;"/>
+                            	  <rich:calendar value="#{fuelStopsBean.item.logTime}" id="editfuelStop_dateTime" valueChangeListener="#{fuelStopsBean.updateDate}"  immediate="true"
+                            	  		todayControlMode="hidden" enableManualInput="false"  datePattern="MMM d, yyyy hh:mm a"
+                            	  		timeZone="#{fuelStopsBean.item.timeZone}" inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;width:120px;">
+                            	  		<a4j:support event="onchanged"  reRender="editfuelStop_location" limitToList="true" immediate="true"/>
+                            	  </rich:calendar>
+                            	  <rich:spacer width="5px"/><h:outputText value="#{fuelStopsBean.item.timezoneName}"/>
+<!--                             	  <h:outputText value="#{messages.fuelStop_earliest}" />		 -->
                                 </td>
                               </tr>
-                              <tr>
-                                <td width="100" valign="top">
-                                  <h:outputText value="#{messages.fuelStop_time}" />
-                                  <span class="required">*</span>
-                                </td>
-                                <td>
-						          <ui:include src="/includes/component/hhmmssTimePicker.xhtml">
-            						<ui:param name="value" value="#{fuelStopsBean.item.timeInSec}" />
-            						<ui:param name="formName" value="edit-form"/>
-            						<ui:param name="timezoneName" value="#{fuelStopsBean.item.timezoneName}"/>
-            						<ui:param name="context" value="fuelStopEdit"/>
-          						  </ui:include>
-                                </td>
-                              </tr>
+                              <tr><td></td><td><h:outputText value="#{messages.fuelStop_earliest}" /></td></tr>
+<!--                               <tr> -->
+<!--                                 <td width="100" valign="top"> -->
+<!--                                   <h:outputText value="#{messages.fuelStop_time}" /> -->
+<!--                                   <span class="required">*</span> -->
+<!--                                 </td> -->
+<!--                                 <td> -->
+<!-- 						          <ui:include src="/includes/component/hhmmssTimePicker.xhtml"> -->
+<!--             						<ui:param name="value" value="#{fuelStopsBean.item.timeInSec}" /> -->
+<!--             						<ui:param name="formName" value="edit-form"/> -->
+<!--             						<ui:param name="timezoneName" value="#{fuelStopsBean.item.timezoneName}"/> -->
+<!--             						<ui:param name="context" value="fuelStopEdit"/> -->
+<!--           						  </ui:include> -->
+<!--                                 </td> -->
+<!--                               </tr> -->
                               <tr>
                                 <td width="100" valign="top">
 		                              <ui:include src="../../includes/admin/inputLabel.xhtml">
@@ -195,18 +200,10 @@
                               </tr>
                               <tr>
                                 <td width="100" valign="top">
-	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
-		                                 <ui:param name="required" value="TRUE"/>
-		                                 <ui:param name="for" value="editfuelStop_location"/>
-		                                 <ui:param name="fieldName" value="location"/>
-		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
-		                                 <ui:param name="label" value="#{messages.fuelStop_location}"/>
-	                              </ui:include>
+                                  <h:outputText value="#{messages.fuelStop_location}" />
                                 </td>
                                 <td>
-                                  <rich:message for="editfuelStop_location" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                                  <h:inputText value="#{fuelStopsBean.item.location}" id="editfuelStop_location" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="50" required="#{true}"  requiredMessage="#{messages.fuelStop_location_required}"/>
+                                  <h:outputText value="#{fuelStopsBean.item.location}" id="editfuelStop_location" />
                                 </td>
                               </tr>
 

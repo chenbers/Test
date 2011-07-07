@@ -13,6 +13,7 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.HOSDAO;
+import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
@@ -219,7 +220,8 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
         plainRecords.add(new HOSRecord(187,130,RuleSetType.US_OIL,null,null,false,null,new Date(1276097509250l),new Date(1276097509250l),TimeZone.getTimeZone("US/Mountain"),HOSStatus.ON_DUTY,HOSOrigin.KIOSK,"Grand Junction, Colorado",null,null,null,null,null,true,false,"",false, 0f, 0f));
 
         plainRecords.add(new HOSRecord(188,130,RuleSetType.US_OIL,130,"10971659",true,1300L,new Date(1276255395000l),new Date(1276255478753l),TimeZone.getTimeZone("US/Mountain"),HOSStatus.FUEL_STOP,HOSOrigin.DEVICE,"Clifton, CO",null,null,null,"","7422867",true,false,"",false, 100.0f, 75.0f));
-        plainRecords.add(new HOSRecord(189,130,RuleSetType.US_OIL,130,"10971659",true,1200L,new Date(1276255215000l),new Date(1276255319673l),TimeZone.getTimeZone("US/Mountain"),HOSStatus.FUEL_STOP,HOSOrigin.DEVICE,"Clifton, CO",null,null,null,"","7422867",true,false,"",false, 90.0f, 80.0f));
+        plainRecords.add(new HOSRecord(189,130,RuleSetType.US_OIL,130,"10971659",true,1200L,new Date(1309922848000l),new Date(1309922848673l),TimeZone.getTimeZone("US/Mountain"),HOSStatus.FUEL_STOP,HOSOrigin.DEVICE,"Clifton, CO",null,null,null,"","7422867",true,false,"",false, 90.0f, 80.0f));
+        plainRecords.add(new HOSRecord(190,130,RuleSetType.US_OIL,130,"10971659",true,1200L,new Date(1306898678000l),new Date(1306898678673l),TimeZone.getTimeZone("US/Mountain"),HOSStatus.FUEL_STOP,HOSOrigin.DEVICE,"Clifton, CO",null,null,null,"","7422867",true,false,"",false, 90.0f, 80.0f));
         return plainRecords;
     }
 
@@ -392,10 +394,21 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
     public Long getLastID(){
         return (long) (plainRecords.size()-1);
     }
-
-    @Override
+//    public List<LatLng> getLocationByTime(Integer vehicleID, Interval interval){
+//        List<LatLng> latLngs = new ArrayList<LatLng>();
+//        //1600 Amphitheatre Parkway, Mountain View, CA
+//        latLngs.add(new LatLng(37.4213068,-122.0852900));
+//        return latLngs;
+//    }
     public List<HOSRecord> getRecordsForVehicle(Integer vehicleID, Interval interval, Boolean driverStatusOnly) {
-        // TODO Auto-generated method stub
-        return null;
+        List<HOSRecord> hosRecords = new ArrayList<HOSRecord>();
+        for(HOSRecord hosRecord : getMockHOSRecords()){
+            hosRecords.add(hosRecord);
+            hosRecord.setLogTime(interval.getStart().toDate());
+            hosRecord.setLat(37.4213068f);
+            hosRecord.setLng(-122.0852900f);
+        }
+        return hosRecords;
+        
     }
 }

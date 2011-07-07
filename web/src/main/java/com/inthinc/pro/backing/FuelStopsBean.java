@@ -1,15 +1,17 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -22,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.backing.model.ItemsGetter;
+import com.inthinc.pro.backing.model.LocateVehicleByTime;
 import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.HOSDAO;
@@ -30,6 +33,7 @@ import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.table.PageData;
@@ -48,7 +52,7 @@ public class FuelStopsBean extends BaseBean {
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private HOSDAO hosDAO;
-    
+    private LocateVehicleByTime locateVehicleByTime;
     private PageData pageData;
     
     private List<SelectItem> driversSelectItems;
@@ -104,9 +108,23 @@ public class FuelStopsBean extends BaseBean {
         return vehiclesSelectItems;
     }
     private void createVehiclesSelectItemsForUsersGroup(){
-        for (Vehicle v : vehicleDAO.getVehiclesInGroupHierarchy(this.getUser().getGroupID())) {
+        List<Vehicle> eligibleVehicles = getEligibleVehicles();
+        for (Vehicle v : eligibleVehicles) {
             vehiclesSelectItems.add(new SelectItem(v.getVehicleID(), v.getName()));
         }
+    }
+    private List<Vehicle> getEligibleVehicles(){
+        Set<VehicleDOTType> dotTypes = VehicleDOTType.getDOTTypes();
+
+        List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(this.getUser().getGroupID());
+        Iterator<Vehicle> it = vehicles.iterator();
+        while (it.hasNext()){
+            Vehicle vehicle = it.next();
+            if (!dotTypes.contains(vehicle.getDot())){
+                it.remove();
+            }
+        }
+        return vehicles;
     }
     private List<SelectItem> initSelectItems(){
         
@@ -225,7 +243,7 @@ public class FuelStopsBean extends BaseBean {
     public boolean isAllSelected() {
         if(itemsGetter.isEmpty()) return false;
         for (FuelStopView fsv : itemsGetter.getItems())
-            if(!fsv.isSelected()) return false;
+            if(!fsv.isSelected() && fsv.getEditable()) return false;
 
         return true;
     }
@@ -251,15 +269,25 @@ public class FuelStopsBean extends BaseBean {
     public void setItem(FuelStopView item){
         this.item = item;
     }
-    
-    
+    public void setLocateVehicleByTime(LocateVehicleByTime locateVehicleByTime) {
+        this.locateVehicleByTime = locateVehicleByTime;
+    }    
+    public void updateDate(ValueChangeEvent event){
+        item.setLogTime((Date)event.getNewValue());
+        locateVehicleByTime();
+    }
+    private void locateVehicleByTime(){
+        String location = locateVehicleByTime.getNearestCity(vehicleID, item.getLogTime());
+        if (location == null) location = "Mountain View, CA";
+        item.setLocation(location);
+    }
     public  class FuelStopView extends HOSRecord implements EditItem
     {
         
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
         @Column(updateable = false)
-        private static final int iftaAggreagationDays = 25;
+        private static final int iftaAggregationDays = 25;
         @Column(updateable = false)
         private boolean selected;
 
@@ -285,7 +313,7 @@ public class FuelStopsBean extends BaseBean {
 
         public void setSelected(boolean selected)
         {
-            this.selected = selected;
+            this.selected = selected && getEditable();
         }
         
         public String getDriverName() {
@@ -321,7 +349,7 @@ public class FuelStopsBean extends BaseBean {
         }
         public Boolean getEditable(){
             LocalDate localDate = new LocalDate(new DateMidnight(new Date(), DateTimeZone.forID(getTimeZone().getID())));
-            Date dateTooManyDaysAgo = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID(getTimeZone().getID())).minusDays(iftaAggreagationDays+1).toDate();
+            Date dateTooManyDaysAgo = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID(getTimeZone().getID())).minusDays(iftaAggregationDays+1).toDate();
             
             return this.getLogTime().after(dateTooManyDaysAgo);
         }
@@ -357,6 +385,7 @@ public class FuelStopsBean extends BaseBean {
         fuelStopRecord.setVehicleName(getVehicleName());
         fuelStopRecord.setStatus(HOSStatus.FUEL_STOP);
         fuelStopRecord.setDriverID(getVehicle().getDriverID());
+        fuelStopRecord.setLocation(locateVehicleByTime.getNearestCity(vehicleID, fuelStopRecord.getLogTime()));
         
         return createFuelStopView(fuelStopRecord);
     }
@@ -372,8 +401,7 @@ public class FuelStopsBean extends BaseBean {
     
     public String save()
     {
-        crudStrategy.save();
-        return VIEW_REDIRECT;
+        return crudStrategy.save();
     }
     protected boolean validate(List<FuelStopView> saveItems)
     {
@@ -483,26 +511,37 @@ public class FuelStopsBean extends BaseBean {
         }
         protected Boolean validate(FuelStopView fuelStopView) {
             boolean valid = true;
-            if (!validateLocation(fuelStopView)) valid = false;
+//            if (!validateLocation(fuelStopView)) valid = false;
+            if(!validateFuel(fuelStopView)) valid = false;
             if (!validateDateTime(fuelStopView)) valid = false;
             
             return valid;
         }
-        private Boolean validateLocation(FuelStopView fuelStopView){
-            if (locationIsInvalid(fuelStopView.getLocation())) {
-                
-                addMessageForField("required","edit-form:editFuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
+//        private Boolean validateLocation(FuelStopView fuelStopView){
+//            if (locationIsInvalid(fuelStopView.getLocation())) {
+//                
+//                addMessageForField("required","edit-form:editFuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
+//                return false;
+//            }
+//            return true;
+//        }
+//        private Boolean locationIsInvalid(String location){
+//            return location == null || location.isEmpty();
+//        }
+        private Boolean validateFuel(FuelStopView fuelStopView){
+            if(bothTruckAndTrailerGallonsEmpty(fuelStopView.getTruckGallons(),fuelStopView.getTrailerGallons())){
+                addMessageForField("fuelStop_truckAndTrailerFuelInvalid","edit-form:editfuelStop_truckGallons", FacesMessage.SEVERITY_ERROR); 
                 return false;
             }
             return true;
         }
-        private Boolean locationIsInvalid(String location){
-            return location == null || location.isEmpty();
+        private Boolean bothTruckAndTrailerGallonsEmpty(Float truckGallons, Float trailerGallons){
+            return ((truckGallons == null)||(truckGallons <= 0.0f)) && ((trailerGallons == null)||(trailerGallons <= 0.0f));
         }
         private Boolean validateDateTime(FuelStopView fuelStopView){
             
             if (dateInFuture(fuelStopView.getLogTime())) {
-                addMessageForField(" editFuelStop_future_date_not_allowed","edit-form:editFuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
+                addMessageForField("fuelStop_future_date_not_allowed","edit-form:editfuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
                 return false;
             }
             return true;
@@ -638,5 +677,6 @@ public class FuelStopsBean extends BaseBean {
         return items.size();
     }
   }
+
 
 }

@@ -102,7 +102,7 @@
                     <a4j:support event="onclick" action="#{fuelStopsBean.selectAllDependingOnAllSelected}" ajaxSingle="true" reRender="#{context},confirmDelete" limitToList="true" />
                   </h:selectBooleanCheckbox>
                 </f:facet>
-                <h:selectBooleanCheckbox id="select" value="#{item.selected}">
+                <h:selectBooleanCheckbox id="select" value="#{item.selected}" rendered="#{item.editable}">
                   <a4j:support event="onclick" reRender="select,selectAll,confirmDelete" limitToList="true" />
                 </h:selectBooleanCheckbox>
 			</rich:column>

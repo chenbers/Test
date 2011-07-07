@@ -1,9 +1,16 @@
 package com.inthinc.pro.backing;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -12,9 +19,12 @@ import org.joda.time.LocalDate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.richfaces.component.html.HtmlCalendar;
 
 import com.inthinc.pro.backing.FuelStopsBean.FuelStopView;
+import com.inthinc.pro.backing.model.LocateVehicleByTime;
 import com.inthinc.pro.backing.ui.DateRange;
+import com.inthinc.pro.map.GoogleAddressLookup;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
@@ -28,7 +38,8 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     private List<FuelStopsBean.FuelStopView> fuelStopsViews;
     private List<HOSRecord> fuelStops;
     private int countBefore;
-    
+    private LocateVehicleByTime locateVehicleByTime;
+    private GoogleAddressLookup googleAddressLookupBean;
     @Before
     public void before(){
         // team level login
@@ -40,6 +51,11 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         fuelStopsBean.setVehicle(new Vehicle(130,0,Status.ACTIVE,"vehicle130","Subaru","Impreza",2011,"blue",VehicleType.LIGHT,"12345678901234567", null,"123abc",State.valueOf(45)));
         fuelStops = fuelStopsBean.getHosDAO().getFuelStopRecordsForVehicle(130, new DateRange(new Locale("en_US"),TimeZone.getTimeZone("America/Denver")).getInterval());
         countBefore = fuelStops.size();
+        
+         locateVehicleByTime =(LocateVehicleByTime)applicationContext.getBean("locateVehicleByTime");
+         googleAddressLookupBean = new GoogleAddressLookup();
+         googleAddressLookupBean.setGoogleMapGeoUrl("https://maps-api-ssl.google.com/maps/geo?client=gme-inthinc&sensor=false&q=");
+         locateVehicleByTime.setGoogleAddressLookupBean(googleAddressLookupBean);
     }
     @After
     public void after(){
@@ -108,6 +124,32 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         HOSRecord hosLog = fuelStopsBean.getHosDAO().findByID(hosLogID);
         assertEquals(50.0f, hosLog.getTruckGallons());
         assertEquals("pretty:fuelStops",result);
+    }
+    @Test
+    public void beanEditInvalid(){
+        
+        assertTrue("Should be some fuel stops",fuelStops.size() > 0);
+        fuelStopsViews = fuelStopsBean.getItems();
+
+        fuelStopsViews.get(fuelStops.size()-1);
+        fuelStopsBean.setItem(fuelStopsViews.get(fuelStops.size()-1));
+        
+        String result = fuelStopsBean.edit();
+        
+        assertEquals("pretty:fuelStopEdit",result);
+        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+//        Long hosLogID = item.getHosLogID();
+        assertEquals(new Integer(130), item.getVehicleID());
+        item.setTruckGallons(null);
+        item.setTrailerGallons(-0.1f);
+        item.setLocation("Sandy, UT");
+        item.setLogTime(new DateTime().plusDays(1).toDate());
+        
+        result = fuelStopsBean.save();
+        Iterator<FacesMessage> messages = FacesContext.getCurrentInstance().getMessages();
+        assertTrue(messages.hasNext());
+        
+        assertEquals(null,result);
     }
     @Test
     public void beanDelete(){
@@ -192,10 +234,16 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     public void beanSelect(){
         fuelStopsViews = fuelStopsBean.getItems();
         int totalFuelStops = fuelStopsViews.size();
+        List<FuelStopView> nonEditables = new ArrayList<FuelStopView>();
+        for (FuelStopView fsv :fuelStopsViews){
+            if(!fsv.getEditable()){
+                nonEditables.add(fsv);
+            }
+        }
         fuelStopsBean.setAllSelected(true);
         fuelStopsBean.selectAllDependingOnAllSelected();
         List<FuelStopView> selected = fuelStopsBean.getSelectedItems();
-        assertEquals(totalFuelStops,selected.size());
+        assertEquals(totalFuelStops-nonEditables.size(),selected.size());
         fuelStopsBean.setAllSelected(false);
         fuelStopsBean.selectAllDependingOnAllSelected();
         selected = fuelStopsBean.getSelectedItems();
@@ -204,8 +252,15 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         fuelStopsBean.setAllSelected(true);
         fuelStopsBean.selectAllDependingOnAllSelected();
         selected = fuelStopsBean.getSelectedItems();
-        assertEquals(totalFuelStops,selected.size());
+        nonEditables = new ArrayList<FuelStopView>();
+        for (FuelStopView fsv :fuelStopsViews){
+            if(!fsv.getEditable()){
+                nonEditables.add(fsv);
+            }
+        }
+        assertEquals(totalFuelStops-nonEditables.size(),selected.size());
         assertTrue(fuelStopsBean.isAllSelected());
+        
         fuelStopsBean.unselectAll();
         selected = fuelStopsBean.getSelectedItems();
         assertEquals(0,selected.size());
@@ -255,5 +310,25 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         item.setLogTime(logTime.toDate());
         
         assertTrue(item.getEditable());
+    }
+    @Test
+    public void locationOfVehicleByTime(){
+        String result = fuelStopsBean.add();
+        
+        assertEquals("pretty:fuelStopEdit",result);
+        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+        
+        assertEquals(new Integer(130), item.getVehicleID());
+        item.setTruckGallons(20.0f);
+        item.setTrailerGallons(34.5f);
+        
+        DateTime logTime = new DateTime().minusDays(1);
+        
+//        item.setLogTime(logTime.toDate());
+        UIComponent component = new HtmlCalendar();
+        ValueChangeEvent event = new ValueChangeEvent(component, item.getLogTime(), logTime.toDate());
+        fuelStopsBean.updateDate(event);
+
+        assertTrue(item.getLocation().equals("Mountain View, CA"));
     }
 }
