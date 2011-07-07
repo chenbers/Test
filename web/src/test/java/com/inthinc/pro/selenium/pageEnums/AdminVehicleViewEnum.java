@@ -11,8 +11,13 @@ public enum AdminVehicleViewEnum implements SeleniumEnums {
     
     LINK_BACK_TO_VEHICLES("< Back to Vehicles", "vehicleForm:vehicleCancel1"),
     
-    BTN_DELETE("Delete", "vehicleForm:vehicleDelete1"),
-    BTN_EDIT("Edit", "vehicleForm:vehicleEdit1"),
+    BTN_DELETE_TOP("Delete", "vehicleForm:vehicleDelete1", "vehicleForm:vehicleDelete2"),
+    BTN_EDIT_TOP("Edit", "vehicleForm:vehicleEdit1", "vehicleForm:vehicleEdit2"),
+    BTN_SAVE_TOP("Save", "edit-form:editVehicleSave1", "edit-form:editVehicleSave3"),
+    BTN_CANCEL_TOP("Cancel", "edit-form:editVehicleCancel1", "edit-form:editVehicleCancel3"),
+    
+    BTN_SAVE_BOTTOM("Save", "edit-form:editVehicleSave2", "edit-form:editVehicleSave4"),
+    BTN_CANCEL_BOTTOM("Cancel", "edit-form:editVehicleCancel2", "edit-form:editVehicleCancel4"),
     
     //DETAILS
     TAB_DETAILS("Details", "id('vehicleForm:details_lbl')"),
@@ -64,6 +69,31 @@ public enum AdminVehicleViewEnum implements SeleniumEnums {
     TXT_HARD_BRAKE("", "hardBrakeLevel"),
     TXT_HARD_BUMP("", "hardVerticalLevel"),
     TXT_UNSAFE_TURN("", "hardTurnLevel"),
+    TXT_IDLING_THRESHOLD("", "idlingThreshold"),
+    
+    TXTFIELD_HARD_ACCEL("", "edit-form:editVehicle-hardAccelerationInput"),
+    TXTFIELD_HARD_BRAKE("", "edit-form:editVehicle-hardBrakeInput"),
+    TXTFIELD_HARD_BUMP("", "edit-form:editVehicle-hardVerticalInput"),
+    TXTFIELD_UNSAFE_TURN("", "edit-form:editVehicle-hardTurnInput"),
+    TXTFIELD_IDLING_THRESHOLD("", "edit-form:editVehicle-idlingThresholdInput"),
+    
+    TXTFIELD_VIN(""            ,"edit-form:editVehicle-VIN"),
+    TXTFIELD_MAKE(""           ,"edit-form:editVehicle-make"),
+    TXTFIELD_MODEL(""          ,"edit-form:editVehicle-model"),
+    DROPDOWN_YEAR(""           ,"edit-form:editVehicle-year"),
+    TXTFIELD_COLOR(""          ,"edit-form:editVehicle-color"),
+    TXTFIELD_WEIGHT(""         ,"edit-form:editVehicle-weight"),
+    TXTFIELD_LICENCE(""        ,"edit-form:editVehicle-license"),
+    DROPDOWN_STATE(""          ,"edit-form:editVehicle-state"),
+    TXTFIELD_ODO(""            ,"edit-form:editVehicle-odometer"),
+    DROPDOWN_ZONE(""           ,"edit-form:editVehicle-type"),
+    TXTFIELD_ECALLPHONE(""     ,"edit-form:editVehicle-ephone"),
+    SLIDER_AUTOLOGOFF(""       ,"edit-form:editVehicle-autoLogoff"),
+    TXTFIELD_AUTOLOGOFF(""     ,"edit-form:editVehicle-autoLogoffInput"),
+    TXTFIELD_VEHICLEID(""      ,"edit-form:editVehicle-name"),
+    DROPDOWN_STATUS(""         ,"edit-form:editVehicle-status"),
+    DHXDROP_TEAM(""            ,"edit-form:editVehicle-groupID"),
+    LINK_ASSIGN_DRIVER(""      ,"editVehicle-chooseDriver"),
     
     TAB_SPEED_AND_SENSITIVITY("Speed & Sensitivity", "vehicleForm:speedSensitivity_lbl")
     

@@ -1,5 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
@@ -7,40 +9,50 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.AdminVehicleViewEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
-import com.inthinc.pro.selenium.pageObjects.PopUps.AdminDelete;
 
-public class PageAdminVehicleView extends AdminBar {
+public class PageAdminVehicleEdit extends AdminBar {
 	
-	public PageAdminVehicleView(){
+	public PageAdminVehicleEdit(){
 		url = AdminVehicleViewEnum.DEFAULT_URL;
 //		checkMe.add(AdminVehiclesEnum.BATCH_EDIT);
 //		checkMe.add(AdminVehiclesEnum.DELETE);
 //		checkMe.add(AdminVehiclesEnum.EDIT_COLUMNS_LINK);
 	}
 	
-	public AdminVehicleViewPopUps _popUp(){
-        return new AdminVehicleViewPopUps();
+	public AdminVehicleEditPopUps _popUp(){
+        return new AdminVehicleEditPopUps();
     }
     
-	public class AdminVehicleViewPopUps extends AdminBarPopUps{
-	    public AdminDelete delete() {return new AdminDelete(false);}
+	public class AdminVehicleEditPopUps extends AdminBarPopUps{
+	    
 	}
 
 	
-	public class AdminVehicleViewButtons extends AdminBarButtons {
-		public TextButton delete() {  return new TextButton(AdminVehicleViewEnum.BTN_DELETE_TOP); }
-		public TextButton edit() {    return new TextButton(AdminVehicleViewEnum.BTN_EDIT_TOP);   }
+	public class AdminVehicleEditButtons extends AdminBarButtons {
+	    public TextButton cancelTop() {    return new TextButton(AdminVehicleViewEnum.BTN_CANCEL_TOP); }
+        public TextButton saveTop() {      return new TextButton(AdminVehicleViewEnum.BTN_SAVE_TOP);   }
+        public TextButton cancelBottom() { return new TextButton(AdminVehicleViewEnum.BTN_CANCEL_BOTTOM); }
+        public TextButton saveBottom() {   return new TextButton(AdminVehicleViewEnum.BTN_SAVE_BOTTOM);   }
+        
 	}
 
-	public class AdminVehicleViewDropDowns extends AdminBarDropDowns {
+	public class AdminVehicleEditDropDowns extends AdminBarDropDowns {
+        public DhxDropDown team() { return new DhxDropDown(AdminVehicleViewEnum.DHXDROP_TEAM);}
+        public DropDown year(){     return new DropDown(AdminVehicleViewEnum.DROPDOWN_YEAR);       }
+        public DropDown state(){    return new DropDown(AdminVehicleViewEnum.DROPDOWN_STATE);      }
+        public DropDown zone(){     return new DropDown(AdminVehicleViewEnum.DROPDOWN_ZONE);       }
+        public DropDown status(){   return new DropDown(AdminVehicleViewEnum.DROPDOWN_STATUS);     }
+
 	}
 
-	public class AdminVehicleViewLinks extends AdminBarLinks {
-	    public TextLink detailsTab() {return new TextLink(AdminVehicleViewEnum.TAB_DETAILS);}
-	    public TextLink SpeedAndSensitivityTab() {return new TextLink(AdminVehicleViewEnum.TAB_SPEED_AND_SENSITIVITY);}
+	public class AdminVehicleEditLinks extends AdminBarLinks {
+	    public TextLink detailsTab() {             return new TextLink(AdminVehicleViewEnum.TAB_DETAILS);}
+	    public TextLink speedAndSensitivityTab() { return new TextLink(AdminVehicleViewEnum.TAB_SPEED_AND_SENSITIVITY);}
+	    public TextLink backToVehicles() {         return new TextLink(AdminVehicleViewEnum.LINK_BACK_TO_VEHICLES);}
+	    public TextLink assignDriver() {           return new TextLink(AdminVehicleViewEnum.LINK_ASSIGN_DRIVER);}
 	}
 
-	public class AdminVehicleViewTextFields extends AdminBarTextFields {
+	public class AdminVehicleEditTextFields extends AdminBarTextFields {
 		public TextField tableSearch() {return new TextField(AdminVehiclesEnum.SEARCH_TEXT_FIELD);}
 		public TextField notifyWhenExceedingBy(Integer limit) {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, (limit/5)-1);}
 		public TextField notifyWhenExceeding05MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 0);}
@@ -59,11 +71,28 @@ public class PageAdminVehicleView extends AdminBar {
 		public TextField notifyWhenExceeding70MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 13);}
 		public TextField notifyWhenExceeding75MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 14);}
 		
+		public TextField notifyOnHardAccel(){         return new TextField(AdminVehicleViewEnum.TXTFIELD_HARD_ACCEL);}
+		public TextField notifyOnHardBrake(){         return new TextField(AdminVehicleViewEnum.TXTFIELD_HARD_BRAKE);}
+		public TextField notifyOnHardBump() {         return new TextField(AdminVehicleViewEnum.TXTFIELD_HARD_BUMP);}
+		public TextField notifyOnUnsafeTurn() {       return new TextField(AdminVehicleViewEnum.TXTFIELD_UNSAFE_TURN);}
+		public TextField notifyOnIdlingTimeout() {    return new TextField(AdminVehicleViewEnum.TXTFIELD_IDLING_THRESHOLD);}
 		
+		public TextField VIN(){          return new TextField(AdminVehicleViewEnum.TXTFIELD_VIN);        }
+        public TextField make(){         return new TextField(AdminVehicleViewEnum.TXTFIELD_MAKE);       }
+        public TextField model(){        return new TextField(AdminVehicleViewEnum.TXTFIELD_MODEL);      }
+        public TextField color(){        return new TextField(AdminVehicleViewEnum.TXTFIELD_COLOR);      }
+        public TextField weight(){       return new TextField(AdminVehicleViewEnum.TXTFIELD_WEIGHT);     }
+        public TextField licence(){      return new TextField(AdminVehicleViewEnum.TXTFIELD_LICENCE);    }
+        public TextField odometer(){     return new TextField(AdminVehicleViewEnum.TXTFIELD_ODO);        }
+        public TextField eCallPhone(){   return new TextField(AdminVehicleViewEnum.TXTFIELD_ECALLPHONE); }
+        public TextField autoLogOff(){   return new TextField(AdminVehicleViewEnum.TXTFIELD_AUTOLOGOFF); }
+        
+        public TextField vehicleID(){  return new TextField(AdminVehicleViewEnum.TXTFIELD_VEHICLEID);  }
+        
 		
 	}
 
-	public class AdminVehicleViewTexts extends AdminBarTexts {
+	public class AdminVehicleEditTexts extends AdminBarTexts {
 		public Text titleWindow(){	return new Text(AdminVehicleViewEnum.TITLE);				}
 		public Text VIN(){			return new Text(AdminVehicleViewEnum.TXT_VALUE_VIN);		}
 		public Text make(){			return new Text(AdminVehicleViewEnum.TXT_VALUE_MAKE);		}
@@ -91,24 +120,24 @@ public class PageAdminVehicleView extends AdminBar {
 		public Text unsafeTurn(){ return new Text(AdminVehicleViewEnum.TXT_UNSAFE_TURN);      }
 	}
 
-	public AdminVehicleViewButtons _button() {
-		return new AdminVehicleViewButtons();
+	public AdminVehicleEditButtons _button() {
+		return new AdminVehicleEditButtons();
 	}
 
-	public AdminVehicleViewDropDowns _dropDown() {
-		return new AdminVehicleViewDropDowns();
+	public AdminVehicleEditDropDowns _dropDown() {
+		return new AdminVehicleEditDropDowns();
 	}
 
-	public AdminVehicleViewLinks _link() {
-		return new AdminVehicleViewLinks();
+	public AdminVehicleEditLinks _link() {
+		return new AdminVehicleEditLinks();
 	}
 
-	public AdminVehicleViewTexts _text() {
-		return new AdminVehicleViewTexts();
+	public AdminVehicleEditTexts _text() {
+		return new AdminVehicleEditTexts();
 	}
 
-	public AdminVehicleViewTextFields _textField() {
-		return new AdminVehicleViewTextFields();
+	public AdminVehicleEditTextFields _textField() {
+		return new AdminVehicleEditTextFields();
 	}
     @Override
     public String getExpectedPath() {
@@ -117,16 +146,12 @@ public class PageAdminVehicleView extends AdminBar {
     @Override
     @Deprecated
 	/**
-	 * PageAdminVehicleView's .load method cannot be used without specifying a vehicleID
+	 * PageAdminVehicleEdit's .load method should not be used.  Please use UI elements to navigate to the Admin - Edit Vehicle page.
 	 * 
-	 * @deprecated use {@link com.inthinc.pro.selenium.pageObjects.PageAdminVehicleView#load(Integer)}
+	 * @deprecated 
 	 */
     public AbstractPage load(){
     	addError("PageAdminVehicleView.load()", "This page cannot be loaded without more information.  Please supply an (Integer vehicleID)", ErrorLevel.FAIL);
 		return null;
-    }
-    public PageAdminVehicleView load(Integer vehicleID) {
-    	open(AdminVehicleViewEnum.DEFAULT_URL, vehicleID);
-    	return this;
     }
 }

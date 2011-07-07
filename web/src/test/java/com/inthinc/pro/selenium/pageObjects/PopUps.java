@@ -10,6 +10,8 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
@@ -358,7 +360,73 @@ public class PopUps extends MasterTest {
             }
         }
     }
+    public class AssignDriverToVehicle {
 
+        public DriverToVehicleButtons _button() {
+            return new DriverToVehicleButtons();
+        }
+
+        public class DriverToVehicleButtons {
+            public TextButton x() {
+                return new TextButton(PopUpEnum.X, "chooseDriver"){
+
+                    @Override
+                    public ClickableObject click() {
+                        super.click();
+                        assertVisibility(false);
+                        return this;
+                    }
+                };
+            }
+        }
+
+        public DriverToVehicleText _text() {
+            return new DriverToVehicleText();
+        }
+
+        public class DriverToVehicleText {
+            public TextTable columnEmployeeID() {
+                return new TextTable(PopUpEnum.TXTTABLE_D2V_EMPID);
+            }
+            public TextTable columnName() {
+                return new TextTable(PopUpEnum.TXTTABLE_D2V_NAME);
+            }
+            public TextTable columnDriverTeam() {
+                return new TextTable(PopUpEnum.TXTTABLE_D2V_TEAM);
+            }
+            public TextTable columnDriverStatusD() {
+                return new TextTable(PopUpEnum.TXTTABLE_D2V_STATUS);
+            }
+            public TextTable columnAssigned() {
+                return new TextTable(PopUpEnum.TXTTABLE_D2V_ASSIGNED);
+            }
+        }
+        public DriverToVehicleLinks _links() {
+            return new DriverToVehicleLinks();
+        }
+        public class DriverToVehicleLinks {
+
+            public TextLink sortEmployeeID() {
+                return new TextLink(PopUpEnum.TXTLINKSORT_D2V_EMPID);
+            }
+            public TextLink sortName() {
+                return new TextLink(PopUpEnum.TXTLINKSORT_D2V_NAME);
+            }
+            public TextLink sortDriverTeam() {
+                return new TextLink(PopUpEnum.TXTLINKSORT_D2V_TEAM);
+            }
+            public TextLink sortDriverStatus() {
+                return new TextLink(PopUpEnum.TXTLINKSORT_D2V_STATUS);
+            }
+            public TextLink sortAssigned() {
+                return new TextLink(PopUpEnum.TXTLINKSORT_D2V_ASSIGNED);
+            }
+            
+            public TextTableLink assign() {
+                return new TextTableLink(PopUpEnum.TXTTABLELINK_D2V_ASSIGN);
+            }
+        }
+    }
     public class MyAccountChangePassword {
 
         public MyChangeTexts _text() {

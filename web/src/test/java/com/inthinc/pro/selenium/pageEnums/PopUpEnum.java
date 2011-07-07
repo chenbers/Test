@@ -93,6 +93,23 @@ public enum PopUpEnum implements SeleniumEnums {
     /* Change Password Form */
     CHANGE_PASSWORD_FORM_CHANGE_X(null, "//a[contains(@id,':updateCredentialsSubmit')]"),
     CHANGE_PASSWORD_FORM_STRENGTH_MSG("Begin Typing", "changePasswordForm_strengthMsg"),
+    
+    /* Assign Driver to Vehicle */
+    
+    TXTLINKSORT_D2V_EMPID("", "chooseDriverForm:editVehicle-chooseDriverTable:empIdheader"),
+    TXTLINKSORT_D2V_NAME("", "chooseDriverForm:editVehicle-chooseDriverTable:fullNameheader"),
+    TXTLINKSORT_D2V_TEAM("", "chooseDriverForm:editVehicle-chooseDriverTable:groupIdheader"),
+    TXTLINKSORT_D2V_STATUS("", "chooseDriverForm:editVehicle-chooseDriverTable:statusheader"),
+    TXTLINKSORT_D2V_ASSIGNED("", "chooseDriverForm:editVehicle-chooseDriverTable:driverIdheader"),
+    
+    TXTTABLE_D2V_EMPID("", "chooseDriverForm:editVehicle-chooseDriverTable:###:empId"),
+    TXTTABLE_D2V_NAME("", "chooseDriverForm:editVehicle-chooseDriverTable:###:fullName"),
+    TXTTABLE_D2V_TEAM("", "chooseDriverForm:editVehicle-chooseDriverTable:###:groupId"),
+    TXTTABLE_D2V_STATUS("", "chooseDriverForm:editVehicle-chooseDriverTable:###:status"),
+    TXTTABLE_D2V_ASSIGNED("", "chooseDriverForm:editVehicle-chooseDriverTable:###:assignedDriver"),
+    TXTTABLELINK_D2V_ASSIGN("", "chooseDriverForm:editVehicle-chooseDriverTable:###:driverId"),
+    
+    
 
     ;
 
