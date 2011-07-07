@@ -7,6 +7,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import com.inthinc.pro.backing.ui.AutologoffSetting;
+import com.inthinc.pro.backing.ui.IdlingSetting;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.TiwiproSpeedingConstants;
 import com.inthinc.pro.util.MessageUtil;
@@ -19,7 +20,8 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
      */
     private static final long serialVersionUID = 1L;
 //    private String ephone;
-	private Integer autologoffSeconds;
+    private Integer autologoffSeconds;
+    private Integer idlingSeconds;
 	private Integer[] speedSettings;
 	private Integer hardAcceleration; //SensitivitySlider value
 	private Integer hardBrake; //SensitivitySlider value
@@ -32,17 +34,17 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 
     public TiwiproEditableVehicleSettings(Integer vehicleID, String ephone, Integer autoLogoffSeconds, Integer[] speedSettings,
                                  Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
-                                 Integer hardVertical) {
+                                 Integer hardVertical, Integer idlingThreshold) {
        
         super(vehicleID, ProductType.TIWIPRO_R74, ephone);
 
         this.autologoffSeconds = autoLogoffSeconds;
+        this.idlingSeconds = idlingThreshold;
         setSpeedSettings(speedSettings);
         setHardAcceleration(hardAcceleration);
         setHardBrake(hardBrake);
         setHardTurn(hardTurn);
         setHardVertical(hardVertical);
-        
     }
     public void setSpeedSettings(Integer[] speedSettings) {
         if (speedSettings == null)
@@ -132,6 +134,34 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         if (autologoffSeconds == null) return AutologoffSetting.OFF.getSlider();
         return AutologoffSetting.findBySeconds(autologoffSeconds).getSlider();
     }
+    public void setIdlingSlider(Integer idlingSlider){
+    	
+    	setIdlingSeconds(IdlingSetting.valueOf((Integer)idlingSlider).getSeconds());
+    }
+    public Integer getIdlingSlider(){
+    	
+        if (idlingSeconds == null) return IdlingSetting.OFF.getSlider();
+        return IdlingSetting.findBySeconds(idlingSeconds).getSlider();
+    }
+	public Integer getIdlingSeconds() {
+		return idlingSeconds;
+	}
+
+	public void setIdlingSeconds(Integer idlingSeconds) {
+		this.idlingSeconds = idlingSeconds;
+	}
+	public Integer getIdlingSecondsDefault() {
+		return IdlingSetting.getDefault().getSlider();
+	}
+	public Integer getIdlingSecondsCount() {
+		return IdlingSetting.values().length;
+	}
+	public Integer getIdlingSecondsMin() {
+	    return IdlingSetting.OFF.getSlider();
+	}
+	public Integer getIdlingSecondsMax() {
+	    return IdlingSetting.MAX.getSlider();
+	}
     public String getAutologoffDisplayString(){
         
         if (autologoffSeconds == null || autologoffSeconds == 0){

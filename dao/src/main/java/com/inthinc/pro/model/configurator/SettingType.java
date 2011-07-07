@@ -70,8 +70,9 @@ public enum SettingType implements BaseEnum
     WIRELINE_KILL_MOTOR_PASSCODE(42, 1150, 0, 0, "wireline_kill_motor_passwd"),
     WIRELINE_AUTO_ARM_TIME(43, 1151, 0, 0, "wireline_auto_armtime"),
     PARENT_MODE(44, 59, 0, 0, "parent_mode"),
-    DOT_VEHICLE_TYPE(45, 1261, 0, 0, "hos_vehicle_type");
-    
+    DOT_VEHICLE_TYPE(45, 1261, 0, 0, "hos_vehicle_type"),
+    EVENT_IDLING(46, 105, 2, 1, "idlingEvent"),
+    IDLING_TIMEOUT(47,106, 64, 60, "idleThreshold");
     private Integer       settingsCount; //This is how many possible values there are for this device setting
     private Integer       settingID; //SettingID in settingDefs table
     private Integer       defaultSetting;  //This is the index of the default value for this setting.
