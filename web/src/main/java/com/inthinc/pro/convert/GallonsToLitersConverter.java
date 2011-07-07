@@ -33,7 +33,7 @@ public class GallonsToLitersConverter extends BaseConverter {
         }
         catch (NumberFormatException e)
         {
-            final String summary = MessageUtil.getMessageString("error_number_format");
+            final String summary = MessageUtil.getMessageString("error_float_format");
             final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
             context.addMessage(component.getClientId(context), message);
             if(component instanceof UIInput){

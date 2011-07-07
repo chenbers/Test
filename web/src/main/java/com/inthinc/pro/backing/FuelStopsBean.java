@@ -349,7 +349,7 @@ public class FuelStopsBean extends BaseBean {
         }
         public Boolean getEditable(){
             LocalDate localDate = new LocalDate(new DateMidnight(new Date(), DateTimeZone.forID(getTimeZone().getID())));
-            Date dateTooManyDaysAgo = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID(getTimeZone().getID())).minusDays(iftaAggregationDays+1).toDate();
+            Date dateTooManyDaysAgo = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID(getTimeZone().getID())).minusDays(iftaAggregationDays).toDate();
             
             return this.getLogTime().after(dateTooManyDaysAgo);
         }
@@ -511,23 +511,11 @@ public class FuelStopsBean extends BaseBean {
         }
         protected Boolean validate(FuelStopView fuelStopView) {
             boolean valid = true;
-//            if (!validateLocation(fuelStopView)) valid = false;
-            if(!validateFuel(fuelStopView)) valid = false;
+            if (!validateFuel(fuelStopView)) valid = false;
             if (!validateDateTime(fuelStopView)) valid = false;
             
             return valid;
         }
-//        private Boolean validateLocation(FuelStopView fuelStopView){
-//            if (locationIsInvalid(fuelStopView.getLocation())) {
-//                
-//                addMessageForField("required","edit-form:editFuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
-//                return false;
-//            }
-//            return true;
-//        }
-//        private Boolean locationIsInvalid(String location){
-//            return location == null || location.isEmpty();
-//        }
         private Boolean validateFuel(FuelStopView fuelStopView){
             if(bothTruckAndTrailerGallonsEmpty(fuelStopView.getTruckGallons(),fuelStopView.getTrailerGallons())){
                 addMessageForField("fuelStop_truckAndTrailerFuelInvalid","edit-form:editfuelStop_truckGallons", FacesMessage.SEVERITY_ERROR); 
