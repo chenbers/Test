@@ -299,14 +299,14 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         item.setTrailerGallons(34.5f);
         item.setLocation("Sandy, UT");
         LocalDate localDate = new LocalDate(new DateMidnight(new Date(), DateTimeZone.forID("America/Denver")));
-        DateTime logTime = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(26);
+        DateTime logTime = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(25);
         
         item.setLogTime(logTime.toDate());
         
         assertFalse(item.getEditable());
 
         localDate = new LocalDate(new DateMidnight(new Date(), DateTimeZone.forID("America/Denver")));
-        logTime = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(25);
+        logTime = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(24);
         item.setLogTime(logTime.toDate());
         
         assertTrue(item.getEditable());
