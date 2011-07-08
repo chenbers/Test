@@ -14,6 +14,7 @@ import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsSafetyEnum;
+import com.inthinc.pro.selenium.pageObjects.PopUps.ExcludeEvent;
 
 public class PageNotificationsSafety extends NotificationsBar {
 
@@ -190,6 +191,10 @@ public class PageNotificationsSafety extends NotificationsBar {
 
         public Email emailReport() {
             return new Email();
+        }
+        
+        public ExcludeEvent excludeEvent(){
+            return new ExcludeEvent(true);
         }
     }
 

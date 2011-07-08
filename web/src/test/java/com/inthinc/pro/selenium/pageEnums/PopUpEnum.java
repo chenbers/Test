@@ -110,6 +110,23 @@ public enum PopUpEnum implements SeleniumEnums {
     TXTTABLELINK_D2V_ASSIGN("", "chooseDriverForm:editVehicle-chooseDriverTable:###:driverId"),
     
     
+	    
+    /* Exclude events */
+    EXCLUDE_NOTIFICATIONS_TITLE(null, "clear***PanelHeader"),
+    EXCLUDE_NOTIFICATIONS_MESSAGE(null, "***_clearItemForm:clearItem"),
+    EXCLUDE_NOTIFICATIONS_HEADER(null, "excludePopupSubtitle"),
+    EXCLUDE_NOTIFICATIONS_CONFIRM("Yes", "***_clearItemForm:***_yes"),
+    EXCLUDE_NOTIFICATIONS_CANCEL("No", "***_no"),
+    EXCLUDE_NOTIFICATIONS_CLOSE(null, "closeExcludePopup"),
+    
+    EXCLUDE_PERFORMANCE_TITLE(null, "clear***PanelHeader"),
+    EXCLUDE_PERFORMANCE_MESSAGE(null, "***clearItemForm:clearItem"),
+    EXCLUDE_PERFORMANCE_HEADER(null, "excludePopupSubtitle"),
+    EXCLUDE_PERFORMANCE_CONFIRM("Yes", "clearItemForm:***Confirm"),
+    EXCLUDE_PERFORMANCE_CANCEL("No", "***No"),
+    EXCLUDE_PERFORMANCE_CLOSE(null, "closeExcludePopup"),
+    
+    
 
     ;
 

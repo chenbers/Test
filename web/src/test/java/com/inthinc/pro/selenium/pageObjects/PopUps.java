@@ -1,5 +1,8 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.ClickableObject;
@@ -190,6 +193,76 @@ public class PopUps extends MasterTest {
             public TextField emailAddresses() {
                 return new TextField(PopUpEnum.EMAIL_TEXTFIELD, page + type);
             }
+        }
+    }
+
+    public class ExcludeEvent {
+        
+        private Map<String, PopUpEnum> enums;
+        private static final String message = "message";
+        private static final String title = "title";
+        private static final String header = "header";
+        private static final String confirm = "confirm";
+        private static final String cancel = "cancel";
+        private static final String close = "close";
+        
+        
+
+        public ExcludeEvent(boolean notifications) {
+            enums = new HashMap<String, PopUpEnum>();
+            if (notifications) {
+                enums.put(message, PopUpEnum.EXCLUDE_NOTIFICATIONS_MESSAGE);
+                enums.put(title, PopUpEnum.EXCLUDE_NOTIFICATIONS_TITLE);
+                enums.put(header, PopUpEnum.EXCLUDE_NOTIFICATIONS_HEADER);
+                enums.put(confirm, PopUpEnum.EXCLUDE_NOTIFICATIONS_CONFIRM);
+                enums.put(cancel, PopUpEnum.EXCLUDE_NOTIFICATIONS_CANCEL);
+                enums.put(close, PopUpEnum.EXCLUDE_NOTIFICATIONS_CLOSE);
+            } else {
+                enums.put(message, PopUpEnum.EXCLUDE_PERFORMANCE_MESSAGE);
+                enums.put(title, PopUpEnum.EXCLUDE_PERFORMANCE_TITLE);
+                enums.put(header, PopUpEnum.EXCLUDE_PERFORMANCE_HEADER);
+                enums.put(confirm, PopUpEnum.EXCLUDE_PERFORMANCE_CONFIRM);
+                enums.put(cancel, PopUpEnum.EXCLUDE_PERFORMANCE_CANCEL);
+                enums.put(close, PopUpEnum.EXCLUDE_PERFORMANCE_CLOSE);
+            }
+        }
+        
+        public ExcludeEventTexts _text(){
+            return new ExcludeEventTexts();
+        }
+        
+        public class ExcludeEventTexts{
+            public Text title(){
+                return new Text(enums.get(title));
+            }
+            
+            public Text header(){
+                return new Text(enums.get(header));
+            }
+            
+            public Text message(){
+                return new Text(enums.get(message));
+            }
+        }
+        
+        
+        public ExcludeEventButtons _button(){
+            return new ExcludeEventButtons();
+        }
+        
+        public class ExcludeEventButtons{
+            public TextButton yes(){
+                return new TextButton(enums.get(confirm));
+            }
+            
+            public TextButton no(){
+                return new TextButton(enums.get(cancel));
+            }
+            
+            public TextButton close(){
+                return new TextButton(enums.get(close));
+            }
+            
         }
     }
 

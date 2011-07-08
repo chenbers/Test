@@ -198,6 +198,10 @@ public class PageNotificationsRedFlags extends NotificationsBar {
         public Email emailReport() {
             return new Email();
         }
+        
+        public ExcludeEvent excludeEvent(){
+            return new ExcludeEvent(true);
+        }
     }
 
     public RedFlagsLinks _link() {
