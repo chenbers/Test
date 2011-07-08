@@ -15,4 +15,9 @@ public class PageScroller extends ClickableObject implements Clickable {
 				myEnum.setID("//table[@id='"+pageID+"']/tbody/tr"+id);
 		}
 	}
+	
+	public PageScroller(SeleniumEnums anEnum, String pageID, Integer pageNumber){
+        this(anEnum, pageID);
+        replaceNumber(pageNumber);
+    }
 }

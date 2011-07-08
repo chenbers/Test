@@ -52,8 +52,8 @@ public abstract class Masthead extends AbstractPage {
 			return new PageScroller(MastheadEnum.FORWARD_ONE, page);
 		}
 		
-		public PageScroller selectPageNumber(){
-			return new PageScroller(MastheadEnum.CHOOSE_PAGE, page);
+		public PageScroller selectPageNumber(int pageNumber){
+			return new PageScroller(MastheadEnum.CHOOSE_PAGE, page, pageNumber);
 		}
 		
 	}
