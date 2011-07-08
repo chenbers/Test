@@ -9,17 +9,16 @@ import com.inthinc.pro.selenium.pageEnums.GenericWebEnum;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 
 public class PageLiveFleet extends NavigationBar {
-	public PageLiveFleet(){
-		url = LiveFleetEnum.DEFAULT_URL;	
-	}
-	
-	public LiveFleetPopUps _popUp(){
+    public PageLiveFleet() {
+        url = LiveFleetEnum.DEFAULT_URL;
+    }
+
+    public LiveFleetPopUps _popUp() {
         return new LiveFleetPopUps();
     }
-    
-	public class LiveFleetPopUps extends MastheadPopUps{}
 
-	
+    public class LiveFleetPopUps extends MastheadPopUps {}
+
     public LiveFleetTextFields _textField() {
         return new LiveFleetTextFields();
     }
@@ -41,11 +40,21 @@ public class PageLiveFleet extends NavigationBar {
     }
 
     public class LiveFleetLinks extends NavigationBarLinks {
-        public TextLink sortDispatchByNumber() {return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_NUMBER);}
-        public TextLink sortDispatchByDriver() {return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_DRIVER);}
-        public TextLink sortDispatchByVehicle() {return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_VEHICLE);}
-        public TextLink sortDispatchByGroup() {return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_GROUP);}
+        public TextLink sortDispatchByNumber() {
+            return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_NUMBER);
+        }
 
+        public TextLink sortDispatchByDriver() {
+            return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_DRIVER);
+        }
+
+        public TextLink sortDispatchByVehicle() {
+            return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_VEHICLE);
+        }
+
+        public TextLink sortDispatchByGroup() {
+            return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_GROUP);
+        }
 
         public TextLink driverByName(String driverName) {
             return new TextLink(GenericWebEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, driverName, null);
@@ -62,6 +71,7 @@ public class PageLiveFleet extends NavigationBar {
         public TextLink vehicleByListPosition(Integer position) {
             return new TextLink(LiveFleetEnum.LINK_DISPATCH_VEHICLE_NEED_INDEX, null, position);
         }
+
         public TextLink mapBubbleDefaultChangeView() {
             return new TextLink(LiveFleetEnum.LINK_MAP_BUBBLE_DEFAULT_CHANGE_VIEW);
         }
@@ -146,9 +156,20 @@ public class PageLiveFleet extends NavigationBar {
             return new DropDown(LiveFleetEnum.DROPDOWN_LIVE_FLEET_NUM_NEAREST_VEHICLES);
         }
     }
-    
+
     @Override
     public String getExpectedPath() {
         return LiveFleetEnum.DEFAULT_URL.getURL();
     }
+
+    public LiveFleetPager _page() {
+        return new LiveFleetPager();
+    }
+    
+    public class LiveFleetPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+
 }
