@@ -158,6 +158,14 @@ public class DataCache {
         
         return deviceDAO.findByIMEI(imei);
     }
+    
+    public static boolean isValidRFIDBarcode(String barcode)
+    {
+        List<Long> rfidList = driverDAO.getRfidsByBarcode(barcode);
+        
+        return !(rfidList == null || rfidList.isEmpty());
+    }
+    
     public PersonDAO getPersonDAO() {
         return personDAO;
     }

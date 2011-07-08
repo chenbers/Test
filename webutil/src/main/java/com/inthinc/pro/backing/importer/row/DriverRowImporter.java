@@ -37,6 +37,9 @@ public class DriverRowImporter extends RowImporter {
     @Override
     public String importRow(List<String> rowData) {
 
+        Person person = null;
+        Driver driver = null;
+        User user = null;
         try {
         
             String accountName = rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX);
@@ -45,9 +48,9 @@ public class DriverRowImporter extends RowImporter {
             String groupPath = rowData.get(DriverTemplateFormat.TEAM_PATH_IDX);
             Integer groupID = findOrCreateGroupByPath(groupPath, account.getAccountID());
             
-            Person person = findPersonByEmployeeID(account.getAccountID(), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));
-            Driver driver = null;
-            User user = null;
+            person = findPersonByEmployeeID(account.getAccountID(), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));
+            driver = null;
+            user = null;
             if (person != null) {
                 driver = person.getDriver();
                 user = person.getUser();
@@ -71,10 +74,12 @@ public class DriverRowImporter extends RowImporter {
                 user = createOrUpdateUser(user, person, groupID, getAdminRole(account.getAccountID()), rowData.get(DriverTemplateFormat.USERNAME_IDX), rowData.get(DriverTemplateFormat.PASSWORD_IDX));
             }
         }
-        catch (ProDAOException proEx) {
-            return "ERROR: " + proEx.getMessage();
-        }
         catch (Throwable t) {
+            if (person != null && driver == null && user == null) {
+                personDAO.delete(person);
+                return "ERROR: " + t.getMessage() + " orphaned person record deleted, personID = " + person.getPersonID();
+            }
+             
             return "ERROR: " + t.getMessage();
         }
         return null;
@@ -136,6 +141,11 @@ public class DriverRowImporter extends RowImporter {
         
         if (isCreate) {
             Integer driverID = driverDAO.create(person.getPersonID(), driver);
+            if (driverID == null || driverID == 0) {
+                throw new ProDAOException("Unknown Error Occured during Driver Creation");
+                
+            }
+
             driver.setDriverID(driverID);
             logger.info("Created  " + driver.toString());
         }

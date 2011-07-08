@@ -7,12 +7,12 @@ import java.util.Map;
 
 import com.inthinc.pro.backing.importer.DataRow;
 import com.inthinc.pro.backing.importer.DriverTemplateFormat;
-import com.inthinc.pro.backing.importer.VehicleTemplateFormat;
 import com.inthinc.pro.backing.importer.datacheck.AccountNameChecker;
 import com.inthinc.pro.backing.importer.datacheck.DuplicateEmailChecker;
 import com.inthinc.pro.backing.importer.datacheck.DuplicateEmployeeIDChecker;
 import com.inthinc.pro.backing.importer.datacheck.DuplicateUsernameChecker;
 import com.inthinc.pro.backing.importer.datacheck.GroupPathChecker;
+import com.inthinc.pro.backing.importer.datacheck.ValidRFIDBarcodeChecker;
 
 public class DriverRowValidator extends RowValidator {
 
@@ -35,6 +35,13 @@ public class DriverRowValidator extends RowValidator {
                 if (includeWarnings && error == null)
                     addToList(new DuplicateEmployeeIDChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX)), errorList);
             }
+            
+
+            if (rowData.size() > DriverTemplateFormat.BARCODE_IDX) {
+                String error = new ValidRFIDBarcodeChecker().checkForErrors(rowData.get(DriverTemplateFormat.BARCODE_IDX));
+                addToList(error, errorList);
+            }
+
             
             if (rowData.size() > DriverTemplateFormat.USERNAME_IDX ) {
                 String username = rowData.get(DriverTemplateFormat.USERNAME_IDX);

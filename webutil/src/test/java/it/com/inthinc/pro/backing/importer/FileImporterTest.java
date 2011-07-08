@@ -167,6 +167,9 @@ public class FileImporterTest extends BaseSpringTest {
     }
 
     
+    // Note: this test depends on an entry being in the centdb, rfid table on dev server (or where ever tests are hitting)
+    // If the db gets wiped out run this to insert the needed entry into the centdb.
+    //insert into rfid(rfid, barcode) values (11112222, 'UNITTESTBAR')
     @Test
     public void driversImport()
     {
@@ -188,9 +191,9 @@ public class FileImporterTest extends BaseSpringTest {
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateBad.xls");
         List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream);
         
-        if (msgList.size() != 26)
+        if (msgList.size() != 28)
             dumpErrors(msgList);
-        assertEquals("expected msg List size" , 26, msgList.size());
+        assertEquals("expected msg List size" , 28, msgList.size());
         
         List<String> rowList = getRowList(msgList, "2");
         assertEquals("row 2 (missing fields- 10 mandatory fields)", 10, rowList.size());  
@@ -210,6 +213,8 @@ public class FileImporterTest extends BaseSpringTest {
         rowList = getRowList(msgList, "7");
         assertEquals("row 7 (invalid data in several columns)", 6, rowList.size());
         
+        rowList = getRowList(msgList, "8");
+        assertEquals("row 8 (invalid rfid barcode)", 1, rowList.size());
         
     }
 
@@ -282,6 +287,18 @@ public class FileImporterTest extends BaseSpringTest {
 
         rowList = getRowList(msgList, "9");
         assertEquals("row 9 (employeeID not found)", 1, rowList.size());
+    }
+    
+    @Test 
+    public void rfidBarcodeCheck()
+    {
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateGoodBarcode.xls");
+        List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream);
+        
+        if (msgList.size() != 28)
+            dumpErrors(msgList);
+        assertEquals("expected msg List size" , 28, msgList.size());
+        
     }
     @Test
     public void vehiclesImport()
