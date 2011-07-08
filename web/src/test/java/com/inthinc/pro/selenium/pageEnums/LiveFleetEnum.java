@@ -44,6 +44,10 @@ public enum LiveFleetEnum implements SeleniumEnums {
 
     HEADER_BOX_FLEET_LEGEND("Fleet Legend", "//div[@id='wrapper']/table/tbody/tr/td[3]/div[3]/div[1]/div/span[1]"),
     LINK_BOX_FLEET_LEGEND_GROUP_NEED_INDEX(null, "liveFleetLegend:_INDEX_:liveFleetsDashboard2"),
+    
+    PAGER(null, "dispatchForm:driverScroller_table"),
+    
+    
 
     ;
 

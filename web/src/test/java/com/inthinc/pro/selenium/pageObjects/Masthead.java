@@ -11,6 +11,7 @@ import com.inthinc.pro.automation.elements.PageScroller;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkNewWindow;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
@@ -35,6 +36,10 @@ public abstract class Masthead extends AbstractPage {
 		public Paging(String page){
 			this.page=page;
 		}
+		
+		public Paging(SeleniumEnums page){
+            this.page=page.getIDs()[0];
+        }
 		
 		public PageScroller backAll(){
 			return new PageScroller(MastheadEnum.BACK_ALL, page);

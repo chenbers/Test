@@ -168,7 +168,7 @@ public class PageLiveFleet extends NavigationBar {
     
     public class LiveFleetPager{
         public Paging pageIndex(){
-            return new Paging();
+            return new Paging(LiveFleetEnum.PAGER);
         }
     }
 
