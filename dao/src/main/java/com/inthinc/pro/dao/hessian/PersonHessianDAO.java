@@ -267,4 +267,9 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
 
         return super.deleteByID(person.getPersonID());
     }
+
+    @Override
+    public List<Person> getPeopleInAccount(Integer acctID) {
+        return getMapper().convertToModelObject(getSiloService().getPersonsByAcctID(acctID), Person.class);
+    }
 }

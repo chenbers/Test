@@ -31,4 +31,6 @@ public interface PersonDAO extends GenericDAO<Person, Integer>
     List<Person> getPeopleInGroupHierarchy(Integer userGroupID, Integer driverGroupID);
 
     Integer delete(Person person);
+
+    List<Person> getPeopleInAccount(Integer acctID);
 }
