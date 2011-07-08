@@ -8,7 +8,7 @@ public class PageScroller extends ClickableObject implements Clickable {
 	public PageScroller(SeleniumEnums anEnum, String pageID){
 		super(anEnum);
 		if (pageID!=null){
-			if (pageID.endsWith("_table")){
+			if (!pageID.endsWith("_table")){
 				pageID+="_table";
 			}
 			String id = myEnum.getIDs()[0].replaceFirst("/", "");
