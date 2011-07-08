@@ -1141,4 +1141,11 @@ public class SiloServiceImpl implements SiloService {
     public List<Map<String, Object>> getVehicleNamesByGroupIDDeep(Integer groupID) throws ProDAOException {
         return null;
     }
+
+    @Override
+    @MethodDescription(description = "Gets a list of persons in account.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Person.class )
+    public List<Map<String, Object>> getPersonsByAcctID(@DaoParam(name = "accountID", isAccountID=true) Integer acctID) throws ProDAOException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
