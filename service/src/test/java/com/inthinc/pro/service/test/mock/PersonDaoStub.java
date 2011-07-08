@@ -112,4 +112,10 @@ public class PersonDaoStub implements PersonDAO {
         this.expectedPerson = expectedPerson;
     }
 
+    @Override
+    public List<Person> getPeopleInAccount(Integer acctID) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
