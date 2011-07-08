@@ -273,8 +273,8 @@ public class TiwiProDevice extends Base {
         getHessian = new CreateHessian();
         logger.info("MCM Server is " + server);
         mcmProxy = getHessian.getMcmProxy(server);
-        Settings.put(TiwiProps.PROPERTY_SERVER_PORT, getHessian.getPort(false).toString());
-        Settings.put(TiwiProps.PROPERTY_SERVER_URL, getHessian.getUrl(false));
+        Settings.put(TiwiProps.PROPERTY_SERVER_PORT, server.getMCMPort().toString());
+        Settings.put(TiwiProps.PROPERTY_SERVER_URL, server.getMCMUrl());
         return this;
     }
 

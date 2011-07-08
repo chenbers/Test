@@ -96,9 +96,11 @@ public class WaysmartDevice extends Base {
 	protected Base set_server(Addresses server) {
 		mcmProxy = hessian.getMcmProxy(server);
 		String url, port;
-		url = hessian.getUrl(false);
-		port = hessian.getPort(false).toString();
+		url = server.getMCMUrl();
+		port = server.getWaysPort().toString();
 		Settings.put(WaysmartProps.SERVER_IP, url+":"+port);
+		Settings.put(WaysmartProps.MAP_SERVER_URL, url);
+		Settings.put(WaysmartProps.MAP_SERVER_PORT, server.getMCMPort().toString());
         return this;
 	}
 
