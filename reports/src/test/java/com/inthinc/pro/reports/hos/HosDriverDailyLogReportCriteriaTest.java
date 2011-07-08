@@ -257,7 +257,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     public void gainTestCases() {
 
             for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-//int testCaseCnt = 12; {
+//int testCaseCnt = 0; {
 //System.out.println("TestCase: " + testCaseCnt);            
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
@@ -378,10 +378,10 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         for (HOSRecord hosRecord : hosRecords) {
             String editedLocation = hosRecord.getLocation() + "xx"; 
             hosRecord.setLocation(editedLocation);
-            expectedRemarkLogs[cnt].setLocationEdited(true);
+            hosRecord.setEdited(true);
             expectedRemarkLogs[cnt].setLocation(editedLocation);
-            RemarkLog remarkLog = ddlCriteria.populateRemarkLog(hosRecord);
             expectedRemarkLogs[cnt].setLocationEdited(true);
+            RemarkLog remarkLog = ddlCriteria.populateRemarkLog(hosRecord);
             compareRemarkLog(cnt, expectedRemarkLogs[cnt], remarkLog);
             cnt++;
         }
