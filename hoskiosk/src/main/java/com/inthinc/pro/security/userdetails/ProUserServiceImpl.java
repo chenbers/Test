@@ -75,7 +75,7 @@ public class ProUserServiceImpl implements UserDetailsService
     {
         logger.debug("lookup: " + employeeID);
         
-        if (hosDriverLogin == null)
+        if (hosDriverLogin == null || hosDriverLogin.getDriverID() == null || hosDriverLogin.getDriverID().equals(0))
             return null;
 
         Driver driver = driverDAO.findByID(hosDriverLogin.getDriverID());
