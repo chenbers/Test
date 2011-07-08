@@ -324,11 +324,48 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         
         DateTime logTime = new DateTime().minusDays(1);
         
-//        item.setLogTime(logTime.toDate());
         UIComponent component = new HtmlCalendar();
         ValueChangeEvent event = new ValueChangeEvent(component, item.getLogTime(), logTime.toDate());
-        fuelStopsBean.updateDate(event);
+        fuelStopsBean.updateDateAndLocation(event);
 
         assertTrue(item.getLocation().equals("Mountain View, CA"));
+    }
+    @Test
+    public void locationOfVehicleByTimeNullVehicle(){
+        String result = fuelStopsBean.add();
+        
+        assertEquals("pretty:fuelStopEdit",result);
+        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+        item.setVehicleID(null);
+        
+        DateTime logTime = new DateTime().minusDays(1);
+        
+        UIComponent component = new HtmlCalendar();
+        ValueChangeEvent event = new ValueChangeEvent(component, item.getLogTime(), logTime.toDate());
+        fuelStopsBean.updateDateAndLocation(event);
+
+        assertTrue(item.getLocation().equals(""));
+    }
+    @Test
+    public void changeJustTheItemLogDatetest(){
+        
+        String result = fuelStopsBean.add();
+        
+        assertEquals("pretty:fuelStopEdit",result);
+        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+        
+        assertEquals(new Integer(130), item.getVehicleID());
+        item.setLocation("Sandy, UT");
+        LocalDate localDate = new LocalDate(new DateMidnight(new Date(), DateTimeZone.forID("America/Denver")));
+        DateTime logTime = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(2).plusHours(6);
+        
+        item.setLogTime(logTime.toDate());
+        
+        assertEquals(logTime.toDate(),fuelStopsBean.item.getLogTime());
+        DateTime newDate = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(1);
+        DateTime expectedDate = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(1).plusHours(6);
+        
+        fuelStopsBean.changeJustTheItemLogDate(newDate.toDate());
+        assertEquals(expectedDate.toDate().getTime(),fuelStopsBean.item.getLogTime().getTime());
     }
 }

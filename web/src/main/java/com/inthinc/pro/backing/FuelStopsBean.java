@@ -272,13 +272,17 @@ public class FuelStopsBean extends BaseBean {
     public void setLocateVehicleByTime(LocateVehicleByTime locateVehicleByTime) {
         this.locateVehicleByTime = locateVehicleByTime;
     }    
-    public void updateDate(ValueChangeEvent event){
-        item.setLogTime((Date)event.getNewValue());
+    public void updateDateAndLocation(ValueChangeEvent event){
+        changeJustTheItemLogDate((Date)event.getNewValue());
         locateVehicleByTime();
     }
+    public void changeJustTheItemLogDate(Date date){
+        DateTime currentDate = new DateTime(item.getLogTime());
+        DateTime newDateTime = new DateTime(date).plusSeconds(currentDate.getSecondOfDay());
+        item.setLogTime(newDateTime.toDate());
+    }
     public String locateVehicleByTime(){
-        String location = locateVehicleByTime.getNearestCity(vehicleID, item.getLogTime());
-//        if (location == null) location = "";
+        String location = locateVehicleByTime.getNearestCity(item.getVehicleID(), item.getLogTime());
         item.setLocation(location);
         return null;
     }
@@ -385,7 +389,7 @@ public class FuelStopsBean extends BaseBean {
         fuelStopRecord.setVehicleID(vehicleID);
         fuelStopRecord.setVehicleName(getVehicleName());
         fuelStopRecord.setStatus(HOSStatus.FUEL_STOP);
-        fuelStopRecord.setDriverID(getVehicle().getDriverID());
+        fuelStopRecord.setDriverID(getVehicle()==null?null:getVehicle().getDriverID());
         fuelStopRecord.setLocation(locateVehicleByTime.getNearestCity(vehicleID, fuelStopRecord.getLogTime()));
         
         return createFuelStopView(fuelStopRecord);
@@ -489,6 +493,7 @@ public class FuelStopsBean extends BaseBean {
                 setEditingUser();
                 RuleSetType dotType = getDotTypeFromDriver(item.getDriverID());
                 item.setDriverDotType(dotType);
+                
                 dao();
 
                 itemsGetter.reset();
