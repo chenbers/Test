@@ -79,29 +79,29 @@
                                 <td width="450">
                                   <rich:message for="editfuelStop_dateTime" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             	  <rich:calendar value="#{fuelStopsBean.item.logTime}" id="editfuelStop_dateTime" valueChangeListener="#{fuelStopsBean.updateDate}"  immediate="true"
-                            	  		todayControlMode="hidden" enableManualInput="false"  datePattern="MMM d, yyyy hh:mm a"
+                            	  		todayControlMode="hidden" enableManualInput="false"  datePattern="MMM d, yyyy"
                             	  		timeZone="#{fuelStopsBean.item.timeZone}" inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;width:120px;">
                             	  		<a4j:support event="onchanged"  reRender="editfuelStop_location" limitToList="true" immediate="true"/>
                             	  </rich:calendar>
-                            	  <rich:spacer width="5px"/><h:outputText value="#{fuelStopsBean.item.timezoneName}"/>
 <!--                             	  <h:outputText value="#{messages.fuelStop_earliest}" />		 -->
                                 </td>
                               </tr>
                               <tr><td></td><td><h:outputText value="#{messages.fuelStop_earliest}" style="color:#FF0000;"/></td></tr>
-<!--                               <tr> -->
-<!--                                 <td width="100" valign="top"> -->
-<!--                                   <h:outputText value="#{messages.fuelStop_time}" /> -->
-<!--                                   <span class="required">*</span> -->
-<!--                                 </td> -->
-<!--                                 <td> -->
-<!-- 						          <ui:include src="/includes/component/hhmmssTimePicker.xhtml"> -->
-<!--             						<ui:param name="value" value="#{fuelStopsBean.item.timeInSec}" /> -->
-<!--             						<ui:param name="formName" value="edit-form"/> -->
-<!--             						<ui:param name="timezoneName" value="#{fuelStopsBean.item.timezoneName}"/> -->
-<!--             						<ui:param name="context" value="fuelStopEdit"/> -->
-<!--           						  </ui:include> -->
-<!--                                 </td> -->
-<!--                               </tr> -->
+                              <tr>
+                                <td width="100" valign="top">
+                                  <h:outputText value="#{messages.fuelStop_time}" />
+                                  <span class="required">*</span>
+                                </td>
+                                <td>
+						          <ui:include src="/includes/component/hhmmssTimePicker.xhtml">
+            						<ui:param name="value" value="#{fuelStopsBean.item.timeInSec}" />
+            						<ui:param name="formName" value="edit-form"/>
+            						<ui:param name="timezoneName" value="#{fuelStopsBean.item.timezoneName}"/>
+            						<ui:param name="context" value="fuelStopEdit"/>
+            						<ui:param name="ajaxCallOnTimeChange" value="getLocation"/>
+          						  </ui:include>
+                                </td>
+                              </tr>
                               <tr>
                                 <td width="100" valign="top">
 		                              <ui:include src="../../includes/admin/inputLabel.xhtml">
@@ -235,7 +235,12 @@
               </div>
 
             </div>
-            
+           <a4j:queue name="timeChangeQueue" requestDelay="5000" ignoreDupResponses="true" />
+           <a4j:jsFunction  ajaxSingle="true" name="getLocation" action="#{fuelStopsBean.locateVehicleByTime}" 
+           					reRender="editfuelStop_location" limitToList="true" immediate="true"
+           					eventsQueue="timeChangeQueue">
+           		<a4j:actionparam name="timeInSeconds" assignTo="#{fuelStopsBean.item.timeInSec}"/>
+           </a4j:jsFunction> 
           </a4j:form>
 
           <!-- END PANEL -->

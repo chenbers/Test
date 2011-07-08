@@ -276,10 +276,11 @@ public class FuelStopsBean extends BaseBean {
         item.setLogTime((Date)event.getNewValue());
         locateVehicleByTime();
     }
-    private void locateVehicleByTime(){
+    public String locateVehicleByTime(){
         String location = locateVehicleByTime.getNearestCity(vehicleID, item.getLogTime());
-        if (location == null) location = "Mountain View, CA";
+//        if (location == null) location = "";
         item.setLocation(location);
+        return null;
     }
     public  class FuelStopView extends HOSRecord implements EditItem
     {

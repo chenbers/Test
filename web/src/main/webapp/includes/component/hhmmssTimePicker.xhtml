@@ -22,13 +22,16 @@
       <ui:param name="context" value="mypagename"/> 
       <ui:param name="formName" value="form"/> 
       <ui:param name="timezoneName" value="timezoneName"/> 
+      <ui:param name="ajaxCallOnTimeChange" value="ajaxCallOnTimeChange"/> 
   </ui:include>
   
 -->
+    <c:if test="#{empty ajaxCallOnTimeChange}">
+      <c:set var="ajaxCallOnTimeChange" value="doNothing" />
+    </c:if>
 
 <ui:composition>
 		<h:inputHidden id="#{context}_timeValue" value="#{value}" />
-		
 		<div>
 		<rich:inputNumberSpinner id="#{context}_hh"  minValue="1" maxValue="12" inputSize="1" onchange="updateValue()" style="float:left"
 				inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;" required="false" immediate="true"  label="Hours">
@@ -75,8 +78,11 @@
                 var s = Number(jQuery("input[name='#{formName}:#{context}_ss']")[0].value);
                 var am_pm = jQuery("select[name='#{formName}:#{context}_am_pm']")[0].value;
 				jQuery("input[name='#{formName}:#{context}_timeValue']")[0].value = (((h == 12 ? 0 : h)+(am_pm == 'am' ? 0 : 12))*3600)+(m*60)+s;
+				
+				var timeSeconds = (((h == 12 ? 0 : h)+(am_pm == 'am' ? 0 : 12))*3600)+(m*60)+s;
+				#{ajaxCallOnTimeChange}(timeSeconds);
 			}
-			
+			function doNothing(timeSeconds){}
 		//]]>
 		</script>
 		
