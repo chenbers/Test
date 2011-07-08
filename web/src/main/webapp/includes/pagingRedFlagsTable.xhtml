@@ -199,7 +199,7 @@
                            <security:authorize ifAnyGranted="ROLE_ADMIN, ROLE_FORGIVEACCESS">
  				<a4j:commandLink id="redFlags-clear" rendered="#{redFlag.event.forgiven == 0}" 
 						title="#{messages.notes_redflags_clear}" 
-						oncomplete="javascript:Richfaces.showModalPanel('clearRedFlagsPanel');" 
+						oncomplete="javascript:Richfaces.showModalPanel('clear#{context}Panel');" 
 						reRender="RedFlags_clearItemForm:clearItem" >
 					<h:outputText value="#{messages.notes_redflags_clear}" />
 					<f:setPropertyActionListener target="#{bean.clearItem}" value="#{redFlag.event}" />
