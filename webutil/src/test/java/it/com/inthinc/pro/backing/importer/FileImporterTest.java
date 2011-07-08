@@ -244,7 +244,7 @@ public class FileImporterTest extends BaseSpringTest {
         
         dumpErrors(msgList);
         System.out.println("size " + msgList.size()) ;
-        assertTrue(msgList.size() == 34);
+        assertTrue(msgList.size() == 36);
         
         int warningCnt = 0;
         for (String msg : msgList)
@@ -289,17 +289,6 @@ public class FileImporterTest extends BaseSpringTest {
         assertEquals("row 9 (employeeID not found)", 1, rowList.size());
     }
     
-    @Test 
-    public void rfidBarcodeCheck()
-    {
-        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateGoodBarcode.xls");
-        List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream);
-        
-        if (msgList.size() != 28)
-            dumpErrors(msgList);
-        assertEquals("expected msg List size" , 28, msgList.size());
-        
-    }
     @Test
     public void vehiclesImport()
     {
