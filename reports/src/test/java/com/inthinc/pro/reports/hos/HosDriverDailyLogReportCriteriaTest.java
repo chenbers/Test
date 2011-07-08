@@ -237,6 +237,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         null, 
             //8 test8_06202010_06302010_rule6
         new ExpectedRecap(RecapType.CANADA,RuleSetType.CANADA_HOME_OFFICE,14,"01.50","119.25","01.75","01.75","117.75","02.25","",0),
+//        new ExpectedRecap(RecapType.CANADA,RuleSetType.CANADA_HOME_OFFICE,14,"01.50","120.00","00.50","00.50","119.50","00.50","",0),
             //9 test9_06202010_06302010_rule8
         null, 
             //10 test10_06052010_06152010_rule9
@@ -245,6 +246,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_60_DEGREES_CYCLE_1,1,"00.00","80.00","","","80.00","","00.00",1),
             //12 test12_07132010_07172010_personalTime
         new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_CYCLE_1,3,"11.75","48.00","","","36.25","","33.75",1),
+//        new ExpectedRecap(RecapType.CANADA_2007,RuleSetType.CANADA_2007_CYCLE_1,1,"11.75","70.00","","","70.00","","00.00",1),
             //13 test13_06062010_06102010_travelTimeOccupant
         new ExpectedRecap(RecapType.US,RuleSetType.US_OIL,1,"00.00","70.00","-","00.00","70.00","","",0),
             // 14 test14_01242010_01312010_rule16
@@ -255,7 +257,7 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     public void gainTestCases() {
 
             for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-//int testCaseCnt = 14; {
+//int testCaseCnt = 12; {
 //System.out.println("TestCase: " + testCaseCnt);            
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
@@ -337,15 +339,27 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     }
     
     HOSRecord[] hosRecords = {
+//            public HOSRecord(Long hosLogID, Integer driverID,
+//                    RuleSetType driverDotType, Integer vehicleID, String vehicleName, Boolean vehicleIsDOT,
+//                    Long vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Float lat, Float lng, Long distance,
+//                    String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted) {
             new HOSRecord(1l, 1, RuleSetType.US, null, null, false, 
                     0l, new Date(), new Date(), TimeZone.getDefault(), HOSStatus.DRIVING,
                     HOSOrigin.KIOSK, "slc", 0.0f, 0.0f, 0l, null, null, true, true, "", false, 0f,0f),
+             new HOSRecord(1l, 1, RuleSetType.US, null, null, false, 
+                            0l, new Date(), new Date(), TimeZone.getDefault(), HOSStatus.ON_DUTY,
+                            HOSOrigin.PORTAL, "slc", 0.0f, 0.0f, 0l, null, null, true, true, "", false, 0f, 0f),
+             new HOSRecord(1l, 1, RuleSetType.US, null, null, false, 
+                                    0l, new Date(), new Date(), TimeZone.getDefault(), HOSStatus.ON_DUTY,
+                                    HOSOrigin.DEVICE, "slc", 0.0f, 0.0f, 0l, null, null, true, false, "", false, 0f, 0f),
     };
 
     RemarkLog[] expectedRemarkLogs = {
 //            public RemarkLog(HOSStatus status, Date logTimeDate, TimeZone logTimeZone, Boolean edited, String location, String originalLocation, Boolean deleted, Number startOdometer,
 //                    String statusDescription, Boolean locationEdited, String editor) {
             new RemarkLog(HOSStatus.DRIVING, new Date(), TimeZone.getDefault(), true, "slc", "slc", false, 0l, "Driving", false, "Driver Kiosk"), 
+            new RemarkLog(HOSStatus.ON_DUTY, new Date(), TimeZone.getDefault(), true, "slc", "slc", false, 0l, "On Duty - Not Driving", false, ""), 
+            new RemarkLog(HOSStatus.ON_DUTY, new Date(), TimeZone.getDefault(), true, "slc", "slc", false, 0l, "On Duty - Not Driving", false, ""), 
             
     };
     
@@ -358,7 +372,18 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             hosRecord.setOriginalLocation(hosRecord.getLocation());
             RemarkLog remarkLog = ddlCriteria.populateRemarkLog(hosRecord);
             compareRemarkLog(cnt, expectedRemarkLogs[cnt], remarkLog);
-            cnt ++;
+            cnt++;
+        }
+        cnt = 0;
+        for (HOSRecord hosRecord : hosRecords) {
+            String editedLocation = hosRecord.getLocation() + "xx"; 
+            hosRecord.setLocation(editedLocation);
+            expectedRemarkLogs[cnt].setLocationEdited(true);
+            expectedRemarkLogs[cnt].setLocation(editedLocation);
+            RemarkLog remarkLog = ddlCriteria.populateRemarkLog(hosRecord);
+            expectedRemarkLogs[cnt].setLocationEdited(true);
+            compareRemarkLog(cnt, expectedRemarkLogs[cnt], remarkLog);
+            cnt++;
         }
     }
 

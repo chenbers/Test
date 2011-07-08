@@ -517,21 +517,20 @@ public class HosDailyDriverLogReportCriteria {
     
     RemarkLog populateRemarkLog(HOSRecord hosRecord) {
         RemarkLog remarkLog = new RemarkLog();
-        remarkLog.setEdited(hosRecord.getEdited() || hosRecord.getOrigin().equals(HOSOrigin.PORTAL));
+        remarkLog.setLocation(hosRecord.getLocation());
+        remarkLog.setOriginalLocation(hosRecord.getOriginalLocation());
+        if (((remarkLog.getLocation() == null && remarkLog.getOriginalLocation() != null) ||
+                 (remarkLog.getOriginalLocation() == null && remarkLog.getLocation() != null) ||
+                 !remarkLog.getLocation().equals(remarkLog.getOriginalLocation())))
+                 remarkLog.setLocationEdited(true);
+            else remarkLog.setLocationEdited(false);
+        remarkLog.setEdited(hosRecord.getEdited() || remarkLog.getLocationEdited() || hosRecord.getOrigin().equals(HOSOrigin.PORTAL));
         remarkLog.setDeleted(hosRecord.getDeleted());
         remarkLog.setLogTimeDate(hosRecord.getLogTime());
         remarkLog.setLogTimeZone(hosRecord.getTimeZone());
-        remarkLog.setLocation(hosRecord.getLocation());
-        remarkLog.setOriginalLocation(hosRecord.getOriginalLocation());
         remarkLog.setStartOdometer(hosRecord.getVehicleOdometer()); 
         remarkLog.setStatusDescription(getStatusDescription(hosRecord));
         remarkLog.setStatus(hosRecord.getStatus());
-        if (remarkLog.getEdited() && 
-            ((remarkLog.getLocation() == null && remarkLog.getOriginalLocation() != null) ||
-             (remarkLog.getOriginalLocation() == null && remarkLog.getLocation() != null) ||
-             !remarkLog.getLocation().equals(remarkLog.getOriginalLocation())))
-             remarkLog.setLocationEdited(true);
-        else remarkLog.setLocationEdited(false);
         remarkLog.setEditor("");
         if (remarkLog.getEdited()) {
             if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.KIOSK)) 
