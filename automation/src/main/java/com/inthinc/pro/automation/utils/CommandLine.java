@@ -1,5 +1,5 @@
-//package com.inthinc.pro.automation.utils;
-//
+package com.inthinc.pro.automation.utils;
+
 //import java.io.BufferedReader;
 //import java.io.File;
 //import java.io.IOException;
@@ -43,7 +43,7 @@
 // * 
 // * </P>
 // */
-//public class CommandLine {
+public class CommandLine {
 //
 //    private final static Logger logger = Logger.getLogger(CommandLine.class);
 //
@@ -259,4 +259,4 @@
 //    public interface ILogDevice {
 //        public void log(String str);
 //    }
-//}
+}
