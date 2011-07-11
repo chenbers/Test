@@ -28,6 +28,10 @@ public class TextTable extends TextObject implements TextTableBased {
         myEnum.replaceOldWithNew("*column*", column.getText());
     }
 
+    public TextTable(SeleniumEnums anEnum, TextEnum replaceWord) {
+        super(anEnum, replaceWord);
+    }
+
     @Override
     public Boolean assertEquals(Integer row, String compareAgainst) {
         replaceNumber(row);

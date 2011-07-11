@@ -30,8 +30,8 @@ public class PageVehiclePerformanceSeatBelt extends NavigationBar {
 			return new TextLink(VehiclePerformanceEnum.VEHICLE_NAME_LINK);
 		}
 		
-		public TextLink breadcrumbItem(Integer position){
-			return new TextLink(VehiclePerformanceEnum.EXPANDED_BREADCRUMB, page, position);
+		public TextTableLink breadcrumbItem(){
+			return new TextTableLink(VehiclePerformanceEnum.EXPANDED_BREADCRUMB, page);
 		}
 		
 		public TextLink duration(TimeDuration duration){

@@ -40,7 +40,7 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
 		}
 		
 		public TextLink duration(TimeDuration duration){
-			return new TextLink(DriverPerformanceSeatBeltEnum.OVERALL_TIME_FRAME_SELECTOR);
+			return new TextLink(DriverPerformanceSeatBeltEnum.OVERALL_TIME_FRAME_SELECTOR, duration);
 		}
 		
 		public TextTableLink location(){
