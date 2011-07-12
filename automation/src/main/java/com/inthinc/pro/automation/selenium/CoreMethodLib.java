@@ -370,7 +370,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
     
     private String getClickable(String element){
-        WebElement item = getWrappedDriver().findElement(getLocator(element));
+        WebElement item;
+        try{
+            item = getWrappedDriver().findElement(getLocator(element));
+        } catch (NullPointerException e ){
+            return element;
+        }
         String tag = item.getTagName();
         if (element.startsWith("//")) {
             if (isElementPresent(element + "/a")){
