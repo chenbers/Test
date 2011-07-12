@@ -48,8 +48,8 @@ public class PageAdminUsers extends AdminBar {
 	    return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, column);
 	}
 
-	public TextTableLink sortByColumn(AdminUsersEntries column) {
-	    return new TextTableLink(AdminBarEnum.TABLE_HEADERS, page, column);
+	public TextLink sortByColumn(AdminUsersEntries column) {
+	    return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
 	}
 
 	public TextTableLink edit() {
