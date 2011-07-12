@@ -12,6 +12,7 @@
          	
     <a4j:region id="fuelStops-table-region">
     	<a4j:form id="fuelStops-table-form">
+          <a4j:queue name="itemSelectQueue" ignoreDupResponses="false" />
      
           <ul id="grid_nav" style="margin: 0;">
 			<li class="l select">
@@ -58,8 +59,8 @@
 				</h:commandButton>
 			</li>
             <li class="l">
-            	<a4j:commandButton id="#{context}-fuelStopsTableDelete" styleClass="left" 
-            		onclick="Richfaces.showModalPanel('confirmDelete'); return false;">
+            	<a4j:commandButton id="#{context}-fuelStopsTableDelete" styleClass="left" action="#{fuelStopsBean.waitForSelects}"
+            						eventsQueue="itemSelectQueue" oncomplete="Richfaces.showModalPanel('confirmDelete'); return false;">
             		<span class="delete">
             			<h:outputText value="#{messages.button_delete}" />
             		</span>
@@ -99,11 +100,12 @@
 			<rich:column>
                 <f:facet name="header">
                   <h:selectBooleanCheckbox value="#{fuelStopsBean.allSelected}" id="selectAll">
-                    <a4j:support event="onclick" action="#{fuelStopsBean.selectAllDependingOnAllSelected}" ajaxSingle="true" reRender="#{context},confirmDelete" limitToList="true" />
+                    <a4j:support event="onclick" action="#{fuelStopsBean.selectAllDependingOnAllSelected}" 
+                    ajaxSingle="true" reRender="#{context},confirmDelete" limitToList="true"/>
                   </h:selectBooleanCheckbox>
                 </f:facet>
                 <h:selectBooleanCheckbox id="select" value="#{item.selected}" rendered="#{item.editable}">
-                  <a4j:support event="onclick" reRender="select,selectAll,confirmDelete" limitToList="true" />
+                  <a4j:support event="onclick" reRender="select,selectAll,confirmDelete" limitToList="true" eventsQueue="itemSelectQueue"/>
                 </h:selectBooleanCheckbox>
 			</rich:column>
 			<rich:column id="datetime" rendered="#{fuelStopsTableColumns.tableColumns['datetime'].visible}" sortBy="#{item.logTime}" sortOrder="DESCENDING">

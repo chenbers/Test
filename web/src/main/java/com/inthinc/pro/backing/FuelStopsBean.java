@@ -23,7 +23,6 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
-import com.inthinc.pro.backing.model.ItemsGetter;
 import com.inthinc.pro.backing.model.LocateVehicleByTime;
 import com.inthinc.pro.backing.ui.DateRange;
 import com.inthinc.pro.dao.DriverDAO;
@@ -48,7 +47,9 @@ public class FuelStopsBean extends BaseBean {
     
     protected FuelStopView item;
     protected List<FuelStopView> items;
-    protected ItemsGetter<FuelStopView> itemsGetter;
+    protected FuelStopGetter itemsGetter;
+    protected FuelStopGetter fuelStopGetter;
+    protected FuelStopLoaderAndGetter fuelStopLoaderAndGetter;
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private HOSDAO hosDAO;
@@ -74,13 +75,18 @@ public class FuelStopsBean extends BaseBean {
         super();
     }
     public void init(){
-        itemsGetter = new NullFuelStopGetter();
-        initPageData(0);
+        initDataGetters();
+        initPageData();
         initDateRange();
     }
-    private void initPageData(int dataSize){
+    private void initDataGetters(){
+        fuelStopLoaderAndGetter = new FuelStopLoaderAndGetter();
+        fuelStopGetter = new FuelStopGetter();
+        itemsGetter = fuelStopLoaderAndGetter;
+    }
+    private void initPageData(){
         pageData = new PageData();
-        pageData.initPage(dataSize);
+        pageData.initPage(0);
     }
     private void initDateRange(){
         dateRange = new DateRange(getLocale(), getDateTimeZone().toTimeZone());
@@ -163,7 +169,9 @@ public class FuelStopsBean extends BaseBean {
         }
     }
     // end date range stuff
-
+    public String waitForSelects(){
+        return null;
+    }
     public String unselectAll(){
         if (items != null)
             for (FuelStopView item : itemsGetter.getItems())
@@ -223,19 +231,18 @@ public class FuelStopsBean extends BaseBean {
     }
     
     public String getCrudMessageKey(){
-        if(crudStrategy == null){
-            add();
-        }
+        defaultToAdd();
         return crudStrategy.getMessageKey();
     }
     public Boolean getAdd(){
+        defaultToAdd();
+        return crudStrategy.isAdd();
+    }
+    private void defaultToAdd(){
         if(crudStrategy == null){
             add();
         }
-        return crudStrategy.isAdd();
-        
     }
-
     public boolean isBatchEdit() {
         return false;
     }
@@ -382,18 +389,6 @@ public class FuelStopsBean extends BaseBean {
         itemsGetter.reset();
         return VIEW_REDIRECT;
     }
-    private FuelStopView createAddItem() {
-        HOSRecord fuelStopRecord = new HOSRecord();
-        fuelStopRecord.setTimeZone(TimeZone.getDefault());
-        fuelStopRecord.setLogTime(new Date());
-        fuelStopRecord.setVehicleID(vehicleID);
-        fuelStopRecord.setVehicleName(getVehicleName());
-        fuelStopRecord.setStatus(HOSStatus.FUEL_STOP);
-        fuelStopRecord.setDriverID(getVehicle()==null?null:getVehicle().getDriverID());
-        fuelStopRecord.setLocation(locateVehicleByTime.getNearestCity(vehicleID, fuelStopRecord.getLogTime()));
-        
-        return createFuelStopView(fuelStopRecord);
-    }
 
     public List<FuelStopView> getSelectedItems()
     {
@@ -413,7 +408,7 @@ public class FuelStopsBean extends BaseBean {
         boolean valid = true;
         for (final FuelStopView saveItem : saveItems)
         {
-            valid = crudStrategy.validate(saveItem);
+            valid = crudStrategy.isValid(saveItem);
             if(!valid)
                 break;
         }
@@ -477,14 +472,14 @@ public class FuelStopsBean extends BaseBean {
     private abstract class CRUDStrategy {
         
         protected abstract String init();
-        protected abstract void dao();
+        protected abstract void databaseAction();
         protected abstract void cancel();
         protected abstract String getMessageKey();
         protected abstract Boolean isAdd();
 
         protected String save() {
             
-            if (!validate(item)) {
+            if (!isValid(item)) {
                 return null;
             }
 
@@ -494,7 +489,7 @@ public class FuelStopsBean extends BaseBean {
                 RuleSetType dotType = getDotTypeFromDriver(item.getDriverID());
                 item.setDriverDotType(dotType);
                 
-                dao();
+                databaseAction();
 
                 itemsGetter.reset();
 
@@ -515,32 +510,32 @@ public class FuelStopsBean extends BaseBean {
             item.setEditUserID(editUserID);
             item.setEdited(true);
         }
-        protected Boolean validate(FuelStopView fuelStopView) {
+        protected boolean isValid(FuelStopView fuelStopView) {
             boolean valid = true;
-            if (!validateFuel(fuelStopView)) valid = false;
-            if (!validateDateTime(fuelStopView)) valid = false;
+            if (invalidFuel(fuelStopView)) valid = false;
+            if (invalidDateTime(fuelStopView)) valid = false;
             
             return valid;
         }
-        private Boolean validateFuel(FuelStopView fuelStopView){
+        private boolean invalidFuel(FuelStopView fuelStopView){
             if(bothTruckAndTrailerGallonsEmpty(fuelStopView.getTruckGallons(),fuelStopView.getTrailerGallons())){
                 addMessageForField("fuelStop_truckAndTrailerFuelInvalid","edit-form:editfuelStop_truckGallons", FacesMessage.SEVERITY_ERROR); 
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
-        private Boolean bothTruckAndTrailerGallonsEmpty(Float truckGallons, Float trailerGallons){
+        private boolean bothTruckAndTrailerGallonsEmpty(Float truckGallons, Float trailerGallons){
             return ((truckGallons == null)||(truckGallons <= 0.0f)) && ((trailerGallons == null)||(trailerGallons <= 0.0f));
         }
-        private Boolean validateDateTime(FuelStopView fuelStopView){
+        private boolean invalidDateTime(FuelStopView fuelStopView){
             
             if (dateInFuture(fuelStopView.getLogTime())) {
                 addMessageForField("fuelStop_future_date_not_allowed","edit-form:editfuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
-        private Boolean dateInFuture(Date date){
+        private boolean dateInFuture(Date date){
             return date.after(new Date());
         }
         private void addMessageForField(String messageKey, String messageField, FacesMessage.Severity severity){
@@ -563,13 +558,22 @@ public class FuelStopsBean extends BaseBean {
         
         @Override
         protected String init(){
-            
             item = createAddItem();
-
             return EDIT_REDIRECT;
-
         }
-        protected void dao(){
+        private FuelStopView createAddItem() {
+            HOSRecord fuelStopRecord = new HOSRecord();
+            fuelStopRecord.setTimeZone(TimeZone.getDefault());
+            fuelStopRecord.setLogTime(new Date());
+            fuelStopRecord.setVehicleID(vehicleID);
+            fuelStopRecord.setVehicleName(getVehicleName());
+            fuelStopRecord.setStatus(HOSStatus.FUEL_STOP);
+            fuelStopRecord.setDriverID(getVehicle()==null?null:getVehicle().getDriverID());
+            fuelStopRecord.setLocation(locateVehicleByTime.getNearestCity(vehicleID, fuelStopRecord.getLogTime()));
+            
+            return createFuelStopView(fuelStopRecord);
+        }
+        protected void databaseAction(){
             hosDAO.create(0l, item);
             addMessageForPage("fuelStop_added", FacesMessage.SEVERITY_INFO);
         }
@@ -592,7 +596,7 @@ public class FuelStopsBean extends BaseBean {
         protected String init() {
             return EDIT_REDIRECT;
         }
-        protected void dao(){
+        protected void databaseAction(){
             hosDAO.update(item);
             addMessageForPage("fuelStop_updated", FacesMessage.SEVERITY_INFO);
         }
@@ -610,39 +614,41 @@ public class FuelStopsBean extends BaseBean {
         }
 
     }
-    public class FuelStopGetter implements ItemsGetter<FuelStopView>{
+    public class FuelStopGetter {
 
-        @Override
         public List<FuelStopView> getItems() {
             return items;
         }
 
-        @Override
         public void reset() {
             items = null;
             item = null;
-            itemsGetter = new NullFuelStopGetter();
+            reloadNextTime();
         }
-
-        @Override
+        private void reloadNextTime(){
+            itemsGetter = fuelStopLoaderAndGetter;
+        }
         public boolean isEmpty() {
-            return items.isEmpty();
+            return getItems().isEmpty();
         }
 
-        @Override
         public int getSize() {
-            return items.size();
+            return getItems().size();
         }
     }
-    public class NullFuelStopGetter implements ItemsGetter<FuelStopView>{
+    public class FuelStopLoaderAndGetter extends FuelStopGetter{
+        
       @Override
       public List<FuelStopView> getItems() {
           loadItems();
-          initPageData(items.size());
-          itemsGetter = new FuelStopGetter();
+          updatePageData();
+          noNeedToReloadNextTime();
           return items;
       }
-      protected void loadItems() {
+      private void noNeedToReloadNextTime(){
+          itemsGetter = fuelStopGetter;
+      }
+      private void loadItems() {
 
           items = new ArrayList<FuelStopView>();
 
@@ -655,22 +661,8 @@ public class FuelStopsBean extends BaseBean {
               items.add(createFuelStopView(rec));
           }
       }
-    @Override
-    public void reset() {
-        item = null;
-        items = null;
-    }
-    @Override
-    public boolean isEmpty() {
-        getItems();
-        return items.isEmpty();
-    }
-    @Override
-    public int getSize() {
-        getItems();
-        return items.size();
-    }
+      private void updatePageData(){
+          pageData.updatePage(items.size());
+      }
   }
-
-
 }
