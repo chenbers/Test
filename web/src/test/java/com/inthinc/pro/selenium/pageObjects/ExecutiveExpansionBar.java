@@ -5,6 +5,8 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.ExecutiveExpansionBarEnum;
 
 public class ExecutiveExpansionBar extends NavigationBar {
+    
+    protected String page = "details";
 
     public ExecutiveExpansionBar() {
         // TODO Auto-generated constructor stub
@@ -42,26 +44,5 @@ public class ExecutiveExpansionBar extends NavigationBar {
     public class ExpansionBarTextFields extends NavigationBarTextFields{}
     public class ExpansionBarButtons extends NavigationBarButtons{}
     public class ExpansionBarDropDowns extends NavigationBarDropDowns{}
-    
-    public ExpansionBarLinks _link(){
-        return new ExpansionBarLinks();
-    }
-    
-    public ExpansionBarTexts _text(){
-        return new ExpansionBarTexts();
-    }
-        
-    public ExpansionBarButtons _button(){
-        return new ExpansionBarButtons();
-    }
-    
-    public ExpansionBarTextFields _textField(){
-        return new ExpansionBarTextFields();
-    }
-    
-    public ExpansionBarDropDowns _dropDown(){
-        return new ExpansionBarDropDowns();
-    }
-    
 
 }
