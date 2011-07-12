@@ -69,7 +69,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib click(SeleniumEnumWrapper myEnum) {
-        String element = getLocator(myEnum);
+        String element = getClickable(getLocator(myEnum));
         click(element);
         pause(2, "click(" + myEnum + ")");
         return this;
@@ -79,6 +79,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib clickAt(SeleniumEnumWrapper anEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public boolean compareLocation(String expected) {
+        return expected.equals(getLocation());
     }
 
     @Override
@@ -130,31 +135,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         item.findElement(By.xpath("..")).click();
 
         return this;
-    }
-
-    @Override
-    public boolean hasFocus(SeleniumEnumWrapper myEnum) {
-        String element = getLocator(myEnum);
-        WebElement item = null;
-        if (element.startsWith("//")) {
-            item = getWrappedDriver().findElement(By.xpath(element));
-            focus(element);
-        } else if (!element.contains("=")) {
-            item = getWrappedDriver().findElement(By.id(element));
-            element = "//" + item.getTagName() + "[@id='" + element + "']";
-            focus(element);
-        } else {
-            return false;
-        }
-
-        WebElement hasFocus = getWrappedDriver().switchTo().activeElement();
-
-        Point one = item.getLocation();
-        Point two = hasFocus.getLocation();
-        Boolean same = one.equals(two);
-        // Boolean sameElement = hasFocus.equals(item);
-        return same;
-
     }
 
     @Deprecated
@@ -236,6 +216,16 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             last = s;
         }
         return last;
+    }
+
+    private By getLocator(String locator) {
+        if (locator.startsWith("//")) {
+            return By.xpath(locator);
+        } else if (!locator.contains("=")) {
+            return By.id(locator);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -326,6 +316,31 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return null;
     }
 
+    @Override
+    public boolean hasFocus(SeleniumEnumWrapper myEnum) {
+        String element = getLocator(myEnum);
+        WebElement item = null;
+        if (element.startsWith("//")) {
+            item = getWrappedDriver().findElement(By.xpath(element));
+            focus(element);
+        } else if (!element.contains("=")) {
+            item = getWrappedDriver().findElement(By.id(element));
+            element = "//" + item.getTagName() + "[@id='" + element + "']";
+            focus(element);
+        } else {
+            return false;
+        }
+
+        WebElement hasFocus = getWrappedDriver().switchTo().activeElement();
+
+        Point one = item.getLocation();
+        Point two = hasFocus.getLocation();
+        Boolean same = one.equals(two);
+        // Boolean sameElement = hasFocus.equals(item);
+        return same;
+
+    }
+
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#isChecked(String)}
      * @param myEnum
@@ -336,6 +351,37 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public boolean isChecked(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         return isChecked(element);
+    }
+
+    @Override
+    public Boolean isClickable(SeleniumEnumWrapper myEnum) {
+        String element = getLocator(myEnum);
+        WebElement item = getWrappedDriver().findElement(getLocator(element));
+        String tag = item.getTagName();
+        boolean results = false;
+        if (tag.equals("button") || tag.equals("a")) {
+            results = true;
+        } else if (element.startsWith("//")) {
+            results = isElementPresent(element + "/a");
+        } else if (!element.contains("=")) {
+            results = isElementPresent("//" + tag + "[@id='" + element + "']/a");
+        }
+        return results;
+    }
+    
+    private String getClickable(String element){
+        WebElement item = getWrappedDriver().findElement(getLocator(element));
+        String tag = item.getTagName();
+        if (element.startsWith("//")) {
+            if (isElementPresent(element + "/a")){
+                element += "/a";
+            }
+        } else if (!element.contains("=")) {
+            if (isElementPresent("//" + tag + "[@id='" + element + "']/a")){
+                element = "//" + tag + "[@id='" + element + "']/a";
+            }
+        }
+        return element;
     }
 
     @Override
@@ -608,11 +654,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
 
     @Override
-    public boolean compareLocation(String expected) {
-        return expected.equals(getLocation());
-    }
-
-    @Override
     public CoreMethodLib waitForElementPresent(Object element, Integer secondsToWait) {
         Integer x = 0;
         boolean found = false;
@@ -649,32 +690,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib waitForPageToLoad(Integer timeout) {
         waitForPageToLoad(timeout.toString());
         return this;
-    }
-
-    @Override
-    public Boolean isClickable(SeleniumEnumWrapper myEnum) {
-        String element = getLocator(myEnum);
-        WebElement item = getWrappedDriver().findElement(getLocator(element));
-        String tag = item.getTagName();
-        boolean results = false;
-        if (tag.equals("button") || tag.equals("a")) {
-            results = true;
-        } else if (element.startsWith("//")) {
-            results = isElementPresent(element + "/a");
-        } else if (!element.contains("=")) {
-            results = isElementPresent("//" + tag + "[@id='" + element + "']/a");
-        }
-        return results;
-    }
-
-    private By getLocator(String locator) {
-        if (locator.startsWith("//")) {
-            return By.xpath(locator);
-        } else if (!locator.contains("=")) {
-            return By.id(locator);
-        } else {
-            return null;
-        }
     }
 
 }
