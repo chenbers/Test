@@ -101,8 +101,8 @@ public class PageVehicleReport extends ReportsBar {
 			return new TextLink(VehicleReportEnum.SPEED_SCORE_SORT);
 		}
 
-		public TextTableLink speedValue() {
-			return new TextTableLink(VehicleReportEnum.SPEED_SCORE_VALUE);
+		public TextLinkScoreTable speedValue() {
+			return new TextLinkScoreTable(VehicleReportEnum.SPEED_SCORE_VALUE);
 		}
 
 		public TextLink styleSort() {
