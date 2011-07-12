@@ -5,9 +5,8 @@ import com.inthinc.pro.selenium.pageEnums.NotificationsSafetyEnum;
 
 public class PageNotificationsSafety extends NotificationsBar {
 
-    private static String page = "safety";
-
     public PageNotificationsSafety() {
+        page = "safety";
         url = NotificationsSafetyEnum.DEFAULT_URL;
         checkMe.add(NotificationsSafetyEnum.MAIN_TITLE);
         checkMe.add(NotificationsSafetyEnum.MAIN_TITLE_COMMENT);

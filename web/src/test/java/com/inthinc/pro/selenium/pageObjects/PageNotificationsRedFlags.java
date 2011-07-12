@@ -10,8 +10,6 @@ import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
 
 public class PageNotificationsRedFlags extends NotificationsBar {
 
-    private static String page = "redFlags";
-
     public PageNotificationsRedFlags() {
         url = NotificationsRedFlagsEnum.DEFAULT_URL;
         

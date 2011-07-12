@@ -7,9 +7,8 @@ import com.inthinc.pro.selenium.pageEnums.NotificationsEmergencyEnum;
 public class PageNotificationsEmergency extends NotificationsBar {
 
 
-    private static String page = "safety";
-
     public PageNotificationsEmergency() {
+        page = "safety";
         url = NotificationsEmergencyEnum.DEFAULT_URL;
         checkMe.add(NotificationsEmergencyEnum.MAIN_TITLE);
     }
