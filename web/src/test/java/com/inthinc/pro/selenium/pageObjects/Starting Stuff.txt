@@ -12,6 +12,11 @@
     		return new Paging();
     	}
     }
+    
+    
+    public ***Pager _page(){
+    	return new ***Pager();
+    }
 	
 	public ***Links _link(){
         return new ***Links();

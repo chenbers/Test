@@ -206,5 +206,16 @@ public class PageDriverReport extends ReportsBar {
     public DriverReportTextFields _textField() {
         return new DriverReportTextFields();
     }
+    
+    public class DriverReportPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public DriverReportPager _page(){
+        return new DriverReportPager();
+    }
 
 }

@@ -156,4 +156,15 @@ public class PageReportsDevices extends ReportsBar {
 			return new TextField(DeviceReportEnum.PHONE_SEARCH);
 		}		
 	}
+	
+	public class DeviceReportsPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public DeviceReportsPager _page(){
+        return new DeviceReportsPager();
+    }
 }

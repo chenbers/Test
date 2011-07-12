@@ -12,6 +12,8 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
+import com.inthinc.pro.selenium.pageObjects.Masthead.Paging;
+import com.inthinc.pro.selenium.pageObjects.PageNotificationsEmergency.NotificationsEmergencyPager;
 
 public class PageVehicleReport extends ReportsBar {
 	
@@ -209,4 +211,15 @@ public class PageVehicleReport extends ReportsBar {
 	public VehicleReportTextFields _textField() {
 		return new VehicleReportTextFields();
 	}
+	
+	public VehicleReportPager _page() {
+        return new VehicleReportPager();
+    }
+
+    public class VehicleReportPager {
+
+        public Paging pageIndex() {
+            return new Paging();
+        }
+    }
 }
