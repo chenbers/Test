@@ -57,7 +57,10 @@ public enum EventSubCategory implements BaseEnum
             
     TEXTMESSAGE(11,
             EnumSet.of(EventType.TEXT_MESSAGE),
-            EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED));
+            EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED)),
+    DRIVER(12,
+    		EnumSet.of(EventType.NEW_DRIVER, EventType.NEW_OCCUPANT, EventType.INVALID_DRIVER, EventType.INVALID_OCCUPANT),
+    		EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED)); //TODO: jwimmer: not sure null is the right answer here?
     
     private int code;
     

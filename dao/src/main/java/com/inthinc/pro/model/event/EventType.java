@@ -52,7 +52,11 @@ public enum EventType implements BaseEnum {
     TEXT_MESSAGE(36, EnumSet.of(EventAccountFilter.WAYSMART)),
     OFF_HOURS(37, EnumSet.of(EventAccountFilter.WAYSMART)),
     IGNITION_OFF(38),
-    TRAILER_DATA(39, EnumSet.of(EventAccountFilter.HOS) );
+    TRAILER_DATA(39, EnumSet.of(EventAccountFilter.HOS) ),
+    NEW_DRIVER(40, EnumSet.of(EventAccountFilter.WAYSMART)),
+    NEW_OCCUPANT(41, EnumSet.of(EventAccountFilter.WAYSMART)),
+    INVALID_DRIVER(42,  EnumSet.of(EventAccountFilter.WAYSMART)),
+    INVALID_OCCUPANT(43,  EnumSet.of(EventAccountFilter.WAYSMART));
     
     private int code;
     private AggressiveDrivingEventType noteSubType;
