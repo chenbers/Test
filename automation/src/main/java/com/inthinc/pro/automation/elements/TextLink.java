@@ -27,5 +27,9 @@ public class TextLink extends ClickableText implements TextBased, Clickable {
 	    Integer replaceNumber) {
 	super(anEnum, replaceWord, replaceNumber);
     }
+    public TextLink(SeleniumEnums anEnum, String replaceWord, TextEnum column) {
+        super(anEnum, replaceWord);
+        myEnum.replaceOldWithNew("*column*", column.getText());
+    }
 
 }
