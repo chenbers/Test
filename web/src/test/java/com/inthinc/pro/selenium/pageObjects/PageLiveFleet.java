@@ -57,19 +57,19 @@ public class PageLiveFleet extends NavigationBar {
         }
 
         public TextLink driverByName(String driverName) {
-            return new TextLink(GenericWebEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, driverName, null);
+            return new TextLink(GenericWebEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, driverName);
         }
 
         public TextLink driverByListPosition(Integer position) {
-            return new TextLink(LiveFleetEnum.LINK_DISPATCH_DRIVER_NEED_INDEX, null, position);
+            return new TextLink(LiveFleetEnum.LINK_DISPATCH_DRIVER_NEED_INDEX, position);
         }
 
         public TextLink vehicleByName(String vehicleName) {
-            return new TextLink(GenericWebEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, vehicleName, null);
+            return new TextLink(GenericWebEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, vehicleName);
         }
 
         public TextLink vehicleByListPosition(Integer position) {
-            return new TextLink(LiveFleetEnum.LINK_DISPATCH_VEHICLE_NEED_INDEX, null, position);
+            return new TextLink(LiveFleetEnum.LINK_DISPATCH_VEHICLE_NEED_INDEX, position);
         }
 
         public TextLink mapBubbleDefaultChangeView() {
