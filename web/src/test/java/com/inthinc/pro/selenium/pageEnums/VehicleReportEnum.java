@@ -14,7 +14,7 @@ public enum VehicleReportEnum implements SeleniumEnums {
     
 
     GROUP_VALUE(null,"vehicles-form:vehicles:###:group"),
-    VEHICLE_VALUE(null,"vehicles-form:vehicles:###:vehicle"),
+    VEHICLE_VALUE(null,"vehicles-form:vehicles:###:name"),
     YEAR_MAKE_MODEL_VALUE(null, "vehicles-form:vehicles:###:makeModelYear"),
     DRIVER_VALUE(null,"vehicles-form:vehicles:###:fullName"),
     DISTANCE_DRIVEN_VALUE(null, "vehicles-form:vehicles:###:distance"),
