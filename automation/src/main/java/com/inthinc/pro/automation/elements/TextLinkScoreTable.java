@@ -13,12 +13,6 @@ public class TextLinkScoreTable extends TextTableLink implements Clickable,
     }
 
     @Override
-    public TextLinkScoreTable replaceNumber(Integer row) {
-	super.replaceNumber(row--);
-	return this;
-    }
-
-    @Override
     public void setMyEnum(SeleniumEnums anEnum) {
 	myEnum = new SeleniumEnumWrapper(anEnum);
 	String[] newIds = new String[myEnum.getIDs().length];

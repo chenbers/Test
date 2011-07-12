@@ -9,33 +9,22 @@ public class TextScoreTable extends TextTable implements TextTableBased {
 
     public TextScoreTable(SeleniumEnums anEnum) {
         super(anEnum);
-        // TODO Auto-generated constructor stub
     }
 
     public TextScoreTable(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
-        // TODO Auto-generated constructor stub
     }
 
     public TextScoreTable(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
-        // TODO Auto-generated constructor stub
     }
 
     public TextScoreTable(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
-        // TODO Auto-generated constructor stub
     }
 
     public TextScoreTable(SeleniumEnums anEnum, TextEnum replaceWord) {
         super(anEnum, replaceWord);
-        // TODO Auto-generated constructor stub
-    }
-
-    @Override
-    public TextScoreTable replaceNumber(Integer row) {
-        super.replaceNumber(--row);
-        return this;
     }
 
     @Override

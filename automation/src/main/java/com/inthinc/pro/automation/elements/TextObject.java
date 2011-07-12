@@ -68,17 +68,17 @@ public class TextObject extends ElementBase implements TextBased {
 
     @Override
     public Boolean validate(String expected) {
-        return compare(expected);
+        return validateEquals(expected, getText());
     }
 
     @Override
     public Boolean validate(TextEnum expected) {
-        return compare(expected.getText());
+        return validate(expected.getText());
     }
 
     @Override
     public Boolean validate(TextEnum expected, String replaceOld, String withNew) {
-        return compare(expected.getText().replace(replaceOld, withNew));
+        return validate(expected.getText().replace(replaceOld, withNew));
     }
 
     @Override

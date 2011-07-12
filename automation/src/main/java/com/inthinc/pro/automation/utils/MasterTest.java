@@ -232,8 +232,8 @@ public class MasterTest {
 	    if (areObjectsEqual) {
 		match = "should match";
 	    }
-	    addError("your expected: '" + actual + "'" + " and actual is: '"
-		    + expected + "' they " + match, ErrorLevel.ERROR);
+	    addError("your expected: '" + expected + "'" + " and actual is: '"
+		    + actual + "' they " + match, ErrorLevel.ERROR);
 	}
 	return result;
     }
