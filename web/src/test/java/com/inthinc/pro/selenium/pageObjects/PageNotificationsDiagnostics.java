@@ -12,70 +12,50 @@ import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
-import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
+import com.inthinc.pro.selenium.pageEnums.NotificationsDiagnosticsEnum;
 
-public class PageNotificationsRedFlags extends NotificationsBar {
 
-    private static String page = "redFlags";
+public class PageNotificationsDiagnostics extends NotificationsBar {
+    
+    private String page = "diagnostics";
 
-    public PageNotificationsRedFlags() {
-        super.setPage(page);
-        url = NotificationsRedFlagsEnum.DEFAULT_URL;
+    public PageNotificationsDiagnostics() {
+        // TODO Auto-generated constructor stub
     }
-
-    public class RedFlagsLinks extends NotificationsBarLinks {
-
-        public TextLink editColumns() {
+    
+    
+    public class DiagnosticsLinks extends NotificationsBarLinks{
+        
+        public TextLink editColumns(){
             return new TextLink(NotificationsBarEnum.EDIT_COLUMNS, page);
         }
-
-        public TextTableLink alertDetailsEntry() {
-            return new TextTableLink(NotificationsBarEnum.DETAILS_ENTRY, page);
-        }
-
-        public TextTableLink groupEntry() {
+        
+        public TextTableLink entryGroup(){
             return new TextTableLink(NotificationsBarEnum.GROUP_ENTRY, page);
         }
-
-        public TextTableLink driverEntry() {
+        
+        public TextTableLink entryDriver(){
             return new TextTableLink(NotificationsBarEnum.DRIVER_ENTRY, page);
         }
-
-        public TextTableLink vehicleEntry() {
+        
+        public TextTableLink entryVehicle(){
             return new TextTableLink(NotificationsBarEnum.VEHICLE_ENTRY, page);
         }
-
-        public TextTableLink statusEntry() {
+        
+        public TextTableLink entryStatus(){
             return new TextTableLink(NotificationsBarEnum.STATUS_ENTRY, page);
         }
-
-        public TextLink sortByGroup() {
-            return new TextLink(NotificationsBarEnum.SORT_GROUP, page);
-        }
-
-        public TextLink sortByDriver() {
-            return new TextLink(NotificationsBarEnum.SORT_DRIVER, page);
-        }
-
-        public TextLink sortByVehicle() {
-            return new TextLink(NotificationsBarEnum.SORT_VEHICLE, page);
-        }
-
-        public TextLink sortByDateTime() {
-            return new TextLink(NotificationsBarEnum.SORT_DATE_TIME, page);
-        }
-
     }
-
-    public class RedFlagsTexts extends NotificationsBarTexts {
-
-        public Text headerLevel() {
-            return new Text(NotificationsBarEnum.HEADER_LEVEL, page);
+    public class DiagnosticsTexts extends NotificationsBarTexts{
+        
+        public Text title(){
+            return new Text(NotificationsDiagnosticsEnum.TITLE);
         }
-
-        public Text headerAlertDetails() {
-            return new Text(NotificationsBarEnum.HEADER_DETAILS, page);
+        
+        public Text note(){
+            return new Text(NotificationsDiagnosticsEnum.MESSAGE);
         }
+        
 
         public Text headerDetail() {
             return new Text(NotificationsBarEnum.HEADER_DETAIL, page);
@@ -87,10 +67,6 @@ public class PageNotificationsRedFlags extends NotificationsBar {
 
         public Text headerCategory() {
             return new Text(NotificationsBarEnum.HEADER_CATEGORY, page);
-        }
-
-        public TextTable levelEntry() {
-            return new TextTable(NotificationsBarEnum.LEVEL_ENTRY, page);
         }
 
         public TextTable dateTimeEntry() {
@@ -109,17 +85,10 @@ public class PageNotificationsRedFlags extends NotificationsBar {
             return new Text(NotificationsBarEnum.COUNTER, page);
         }
 
-        public Text title() {
-            return new Text(NotificationsRedFlagsEnum.MAIN_TITLE);
-        }
 
-        public Text note() {
-            return new Text(NotificationsRedFlagsEnum.MAIN_TITLE_COMMENT);
-        }
     }
-
-    public class RedFlagsTextFields extends NotificationsBarTextFields {
-
+    public class DiagnosticsTextFields extends NotificationsBarTextFields{
+        
         public TextField group() {
             return new TextField(NotificationsBarEnum.GROUP_FILTER, page);
         }
@@ -132,9 +101,8 @@ public class PageNotificationsRedFlags extends NotificationsBar {
             return new TextField(NotificationsBarEnum.VEHICLE_FILTER, page);
         }
     }
-
-    public class RedFlagsButtons extends NotificationsBarButtons {
-
+    public class DiagnosticsButtons extends NotificationsBarButtons{
+        
         public TextButton refresh() {
             return new TextButton(NotificationsBarEnum.REFRESH, page);
         }
@@ -158,12 +126,10 @@ public class PageNotificationsRedFlags extends NotificationsBar {
         public ButtonTable eventLocation() {
             return new ButtonTable(NotificationsBarEnum.LOCATION, page);
         }
-
     }
-
-    public class RedFlagsDropDowns extends NotificationsBarDropDowns {
+    public class DiagnosticsDropDowns extends NotificationsBarDropDowns{
         
-        private SeleniumEnums[] enums = { NotificationsBarEnum.LEVEL_FILTER_DHX, NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
+        private SeleniumEnums[] enums = { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
 
         public DhxDropDown team() {
             return new DhxDropDown(NotificationsBarEnum.TEAM_SELECTION_DHX, page, enums);
@@ -173,9 +139,6 @@ public class PageNotificationsRedFlags extends NotificationsBar {
             return new DhxDropDown(NotificationsBarEnum.TIME_FRAME_DHX, page, enums);
         }
 
-        public DhxDropDown levelFilter() {
-            return new DhxDropDown(NotificationsBarEnum.LEVEL_FILTER_DHX, page, enums);
-        }
 
         public DropDown category() {
             return new DropDown(NotificationsBarEnum.CATEGORY_FILTER, page);
@@ -185,10 +148,9 @@ public class PageNotificationsRedFlags extends NotificationsBar {
             return new DropDown(NotificationsBarEnum.STATUS_FILTER, page);
         }
     }
-
-    public class RedFlagsPopUps extends MastheadPopUps {
-
-        public RedFlagsPopUps() {
+    public class DiagnosticsPopUps extends MastheadPopUps{
+        
+        public DiagnosticsPopUps() {
             super(page, Types.REPORT, 3);
         }
 
@@ -204,44 +166,40 @@ public class PageNotificationsRedFlags extends NotificationsBar {
             return new ExcludeEvent(true);
         }
     }
-
-    public RedFlagsLinks _link() {
-        return new RedFlagsLinks();
-    }
-
-    public RedFlagsTexts _text() {
-        return new RedFlagsTexts();
-    }
-
-    public RedFlagsButtons _button() {
-        return new RedFlagsButtons();
-    }
-
-    public RedFlagsTextFields _textField() {
-        return new RedFlagsTextFields();
-    }
-
-    public RedFlagsDropDowns _dropDown() {
-        return new RedFlagsDropDowns();
-    }
-
-    public RedFlagsPopUps _popUp() {
-        return new RedFlagsPopUps();
-    }
-
-    @Override
-    public String getExpectedPath() {
-        return NotificationsRedFlagsEnum.DEFAULT_URL.getURL();
-    }
     
-    public class RedFlagsPager{
+    
+    public class DiagnosticsPager{
         public Paging pageIndex(){
             return new Paging();
         }
     }
     
-
-    public RedFlagsPager _page(){
-        return new RedFlagsPager();
+    public DiagnosticsLinks _link(){
+        return new DiagnosticsLinks();
     }
+    
+    public DiagnosticsTexts _text(){
+        return new DiagnosticsTexts();
+    }
+        
+    public DiagnosticsButtons _button(){
+        return new DiagnosticsButtons();
+    }
+    
+    public DiagnosticsTextFields _textField(){
+        return new DiagnosticsTextFields();
+    }
+    
+    public DiagnosticsDropDowns _dropDown(){
+        return new DiagnosticsDropDowns();
+    }
+    
+    public DiagnosticsPopUps _popUp(){
+        return new DiagnosticsPopUps();
+    }
+    
+    public DiagnosticsPager _page(){
+        return new DiagnosticsPager();
+    }
+    
 }
