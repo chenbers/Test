@@ -13,10 +13,10 @@ public enum PopUpEnum implements SeleniumEnums {
     TITLE("E-mail this report to the following e-mail addresses.", "//table[@id='***ContentTable']/tbody/tr/td/div[@class='popupsubtitle']"),
 
     EDIT_HEADER("Edit Columns", "editColumnsHeader"),
-    EDIT_LABEL(null, "editColumnsForm:***-editColumnsGrid:###"),
-    EDIT_CHECKBOX(null, "editColumnsForm:***-editColumnsGrid:###:***-col"),
-    EDIT_SAVE(save, "editColumnsForm:***-editColumnsPopupSave"),
-    EDIT_CANCEL(cancel, "editColumnsForm:***-editColumnsPopupCancel"),
+    EDIT_LABEL(null,    "editColumnsForm:***Table-editColumnsGrid:###"),
+    EDIT_CHECKBOX(null, "editColumnsForm:***Table-editColumnsGrid:###:***Table-col"),
+    EDIT_SAVE(save, "editColumnsForm:***Table-editColumnsPopupSave"),
+    EDIT_CANCEL(cancel, "editColumnsForm:***Table-editColumnsPopupCancel"),
 
     EDIT_COLUMNS("Edit Columns", "***-form:***EditColumns"),
     TOOL_BUTTON(null, "***-form:***_reportToolImageId"),
