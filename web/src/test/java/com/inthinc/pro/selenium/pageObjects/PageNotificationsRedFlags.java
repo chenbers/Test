@@ -16,7 +16,7 @@ public class PageNotificationsRedFlags extends NotificationsEventsBar {
         enums = new SeleniumEnums[] { NotificationsBarEnum.LEVEL_FILTER_DHX, NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX };
     }
 
-    public class RedFlagsLinks extends NotificationsBarLinks {
+    public class RedFlagsLinks extends EventsBarLinks {
 
         public TextTableLink alertDetailsEntry() {
             return new TextTableLink(NotificationsBarEnum.DETAILS_ENTRY, page);
@@ -24,7 +24,7 @@ public class PageNotificationsRedFlags extends NotificationsEventsBar {
 
     }
 
-    public class RedFlagsTexts extends NotificationsBarTexts {
+    public class RedFlagsTexts extends EventsBarTexts {
 
         public Text headerLevel() {
             return new Text(NotificationsBarEnum.HEADER_LEVEL, page);
@@ -49,16 +49,16 @@ public class PageNotificationsRedFlags extends NotificationsEventsBar {
         }
     }
 
-    public class RedFlagsTextFields extends NotificationsBarTextFields {
+    public class RedFlagsTextFields extends EventsBarTextFields {
 
     }
 
-    public class RedFlagsButtons extends NotificationsBarButtons {
+    public class RedFlagsButtons extends EventsBarButtons {
 
 
     }
 
-    public class RedFlagsDropDowns extends NotificationsBarDropDowns {
+    public class RedFlagsDropDowns extends EventsBarDropDowns {
         
 
         public DhxDropDown levelFilter() {
