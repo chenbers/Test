@@ -7,6 +7,7 @@ import com.inthinc.pro.model.Device;
 import com.inthinc.pro.model.ForwardCommandSpool;
 
 public class FwdCmdSpoolWS implements Serializable {
+
     private static final long serialVersionUID = 1L;
     private FwdCmdSpoolWSIridiumJDBCDAO fwdCmdSpoolWSIridiumJDBCDAO; 
     private FwdCmdSpoolWSHttpJDBCDAO fwdCmdSpoolWSHttpJDBCDAO;
