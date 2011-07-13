@@ -18,7 +18,7 @@ public enum AdminAddEditUserEnum implements SeleniumEnums {
     SAVE(save, "edit-form:editPersonSave***"),
     
     LOCALE("Locale:", "edit-form:editPerson-user_locale"),
-    TIME_ZONE("Time Zone:", "edit-form:editPerson-user_locale"),
+    TIME_ZONE("Time Zone:", "edit-form:editPerson-timeZone"),
     MEASUREMENT("Measurement:", "edit-form:editPerson-user_person_measurementType"),
     FUEL_EFFICIENCY("Fuel Efficiency Ratio:", "edit-form:editPerson-user_person_fuelEfficiencyType"),
     DOT("DOT:", "edit-form:editPerson-driver_dot"),
