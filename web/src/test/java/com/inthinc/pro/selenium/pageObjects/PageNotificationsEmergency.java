@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsEmergencyEnum;
 
-public class PageNotificationsEmergency extends NotificationsBar {
+public class PageNotificationsEmergency extends NotificationsEventsBar {
 
 
     public PageNotificationsEmergency() {

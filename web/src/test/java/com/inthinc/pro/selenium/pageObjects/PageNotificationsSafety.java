@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.selenium.pageEnums.NotificationsSafetyEnum;
 
-public class PageNotificationsSafety extends NotificationsBar {
+public class PageNotificationsSafety extends NotificationsEventsBar {
 
     public PageNotificationsSafety() {
         page = "safety";

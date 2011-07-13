@@ -14,7 +14,7 @@ import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 
-public abstract class NotificationsBar extends NavigationBar {
+public abstract class NotificationsEventsBar extends NavigationBar {
 	
 	protected String page="redFlags";
     protected SeleniumEnums[] enums = { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX, NotificationsBarEnum.LEVEL_FILTER_DHX };

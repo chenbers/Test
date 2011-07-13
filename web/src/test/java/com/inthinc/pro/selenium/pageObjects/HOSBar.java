@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.HosBarEnum;
 
-public class HOSBar extends NotificationsBar {
+public class HOSBar extends NotificationsEventsBar {
 
     public class HOSBarLinks extends NotificationsBarLinks {
 	public TextLink hosDriverLogs(){

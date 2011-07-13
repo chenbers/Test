@@ -8,7 +8,7 @@ import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
 
-public class PageNotificationsRedFlags extends NotificationsBar {
+public class PageNotificationsRedFlags extends NotificationsEventsBar {
 
     public PageNotificationsRedFlags() {
         url = NotificationsRedFlagsEnum.DEFAULT_URL;

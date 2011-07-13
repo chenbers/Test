@@ -6,7 +6,7 @@ import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsDiagnosticsEnum;
 
 
-public class PageNotificationsDiagnostics extends NotificationsBar {
+public class PageNotificationsDiagnostics extends NotificationsEventsBar {
     
     public PageNotificationsDiagnostics() {
         page = "diagnostics";

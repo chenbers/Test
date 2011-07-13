@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.selenium.pageEnums.NotificationsZonesEnum;
 
-public class PageNotificationsZones extends NotificationsBar {
+public class PageNotificationsZones extends NotificationsEventsBar {
 
     public PageNotificationsZones() {
         page = "zone";
