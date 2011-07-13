@@ -15,10 +15,10 @@ public class PageNotificationsDiagnostics extends NotificationsEventsBar {
     }
     
     
-    public class DiagnosticsLinks extends NotificationsBarLinks{
+    public class DiagnosticsLinks extends EventsBarLinks{
         
     }
-    public class DiagnosticsTexts extends NotificationsBarTexts{
+    public class DiagnosticsTexts extends EventsBarTexts{
         
         public Text title(){
             return new Text(NotificationsDiagnosticsEnum.TITLE);
@@ -29,11 +29,11 @@ public class PageNotificationsDiagnostics extends NotificationsEventsBar {
         }
         
     }
-    public class DiagnosticsTextFields extends NotificationsBarTextFields{
+    public class DiagnosticsTextFields extends EventsBarTextFields{
     }
-    public class DiagnosticsButtons extends NotificationsBarButtons{
+    public class DiagnosticsButtons extends EventsBarButtons{
     }
-    public class DiagnosticsDropDowns extends NotificationsBarDropDowns{
+    public class DiagnosticsDropDowns extends EventsBarDropDowns{
         
     }
     public class DiagnosticsPopUps extends MastheadPopUps{

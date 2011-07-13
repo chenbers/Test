@@ -12,11 +12,11 @@ public class PageNotificationsSafety extends NotificationsEventsBar {
         checkMe.add(NotificationsSafetyEnum.MAIN_TITLE_COMMENT);
     }
 
-    public class NotificationsSafetyLinks extends NotificationsBarLinks {
+    public class NotificationsSafetyLinks extends EventsBarLinks {
 
     }
 
-    public class NotificationsSafetyTexts extends NotificationsBarTexts {
+    public class NotificationsSafetyTexts extends EventsBarTexts {
 
 
         public Text title() {
@@ -29,16 +29,16 @@ public class PageNotificationsSafety extends NotificationsEventsBar {
 
     }
 
-    public class NotificationsSafetyTextFields extends NotificationsBarTextFields {
+    public class NotificationsSafetyTextFields extends EventsBarTextFields {
 
     }
 
-    public class NotificationsSafetyButtons extends NotificationsBarButtons {
+    public class NotificationsSafetyButtons extends EventsBarButtons {
 
 
     }
 
-    public class NotificationsSafetyDropDowns extends NotificationsBarDropDowns {
+    public class NotificationsSafetyDropDowns extends EventsBarDropDowns {
 
     }
 

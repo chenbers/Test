@@ -13,10 +13,10 @@ public class PageNotificationsZones extends NotificationsEventsBar {
     }
     
     
-    public class ZonesLinks extends NotificationsBarLinks{
+    public class ZonesLinks extends EventsBarLinks{
         
     }
-    public class ZonesTexts extends NotificationsBarTexts{
+    public class ZonesTexts extends EventsBarTexts{
         
         public Text title(){
             return new Text(NotificationsZonesEnum.TITLE);
@@ -30,13 +30,13 @@ public class PageNotificationsZones extends NotificationsEventsBar {
 
 
     }
-    public class ZonesTextFields extends NotificationsBarTextFields{
+    public class ZonesTextFields extends EventsBarTextFields{
         
     }
-    public class ZonesButtons extends NotificationsBarButtons{
+    public class ZonesButtons extends EventsBarButtons{
         
     }
-    public class ZonesDropDowns extends NotificationsBarDropDowns{
+    public class ZonesDropDowns extends EventsBarDropDowns{
         
     }
     public class ZonesPopUps extends MastheadPopUps{
