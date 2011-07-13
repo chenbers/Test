@@ -68,14 +68,15 @@
     <c:set var="firstRecord" value="#{rows * (page - 1)}" />
     <a4j:region id="admin-table-region">
     <a4j:form id="admin-table-form">
-     
+      <a4j:queue name="itemSelectQueue" ignoreDupResponses="false" />
       <div class="panel_w">
         <div class="panel_content">
           <ul id="grid_nav" style="margin: 0;">
             <li class="l">
             <!-- this rendered check should probably be re-factored? -->
             	<a4j:commandButton id="#{context}-adminTableDelete" styleClass="left" rendered="#{editorBean.tableType != 'ADMIN_DEVICES'}"
-            		onclick="Richfaces.showModalPanel('confirmDelete'); return false;">
+            		action="#{editorBean['waitForSelects']}"
+            		eventsQueue="itemSelectQueue" oncomplete="Richfaces.showModalPanel('confirmDelete'); return false;">
             		<span class="delete">
             			<h:outputText value="#{messages.button_delete}" />
             		</span>
@@ -141,7 +142,7 @@
                   </h:selectBooleanCheckbox>
                 </f:facet>
                 <h:selectBooleanCheckbox id="select" value="#{item.selected}">
-                  <a4j:support event="onclick" reRender="select,confirmDelete" limitToList="true" />
+                  <a4j:support event="onclick" eventsQueue="itemSelectQueue" reRender="select,confirmDelete" limitToList="true" />
                 </h:selectBooleanCheckbox>
               </rich:column>
               <ui:insert name="columns" />

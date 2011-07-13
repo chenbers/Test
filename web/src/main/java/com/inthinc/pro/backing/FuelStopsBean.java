@@ -618,10 +618,13 @@ public class FuelStopsBean extends BaseBean {
         private List<FuelStopView> items;
     
         public List<FuelStopView> getItems() {
-            if(items == null){
+            if(dataNeedsLoading()){
                 loadItems();
             }
             return items;
+        }
+        private boolean dataNeedsLoading(){
+            return items==null;
         }
         private void loadItems() {
             

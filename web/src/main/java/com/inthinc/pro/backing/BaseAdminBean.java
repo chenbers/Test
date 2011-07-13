@@ -392,6 +392,11 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
    
     
     
+    public String waitForSelects(){
+        //action to complete to stop delete popup from displaying until all the
+        //select actions are complete
+        return null;
+    }
 
 
     /**
