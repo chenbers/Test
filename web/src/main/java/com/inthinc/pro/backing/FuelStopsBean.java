@@ -45,11 +45,9 @@ public class FuelStopsBean extends BaseBean {
     private Integer vehicleID;
     private Vehicle vehicle;
     
-    protected FuelStopView item;
-    protected List<FuelStopView> items;
-    protected FuelStopGetter itemsGetter;
-    protected FuelStopGetter fuelStopGetter;
-    protected FuelStopLoaderAndGetter fuelStopLoaderAndGetter;
+    private FuelStopView item;
+    private ItemLoader itemLoader;
+    
     private DriverDAO driverDAO;
     private VehicleDAO vehicleDAO;
     private HOSDAO hosDAO;
@@ -75,20 +73,11 @@ public class FuelStopsBean extends BaseBean {
         super();
     }
     public void init(){
-        initDataGetters();
-        initPageData();
-        initDateRange();
-    }
-    private void initDataGetters(){
-        fuelStopLoaderAndGetter = new FuelStopLoaderAndGetter();
-        fuelStopGetter = new FuelStopGetter();
-        itemsGetter = fuelStopLoaderAndGetter;
-    }
-    private void initPageData(){
+        itemLoader = new ItemLoader();
+ 
         pageData = new PageData();
         pageData.initPage(0);
-    }
-    private void initDateRange(){
+
         dateRange = new DateRange(getLocale(), getDateTimeZone().toTimeZone());
     }
     public List<SelectItem> getDriversSelectItems() {
@@ -165,16 +154,25 @@ public class FuelStopsBean extends BaseBean {
     public void refresh() {
         
         if (dateRange.getInterval() != null) {
-            itemsGetter.reset();
+            dropData();
         }
     }
+    
+    public void dropData(){
+        itemLoader.reset();
+        item = null;
+        allSelected = false;
+    }
     // end date range stuff
+    
     public String waitForSelects(){
+        //action to complete to stop delete popup from displaying until all the
+        //select actions are complete
         return null;
     }
     public String unselectAll(){
-        if (items != null)
-            for (FuelStopView item : itemsGetter.getItems())
+        if (itemLoader.hasItems())
+            for (FuelStopView item : itemLoader.getItems())
                 item.setSelected(false);
         return null;
     }
@@ -190,7 +188,8 @@ public class FuelStopsBean extends BaseBean {
     }
     public String fetchFuelStopsForVehicle(){
        vehicle = vehicleDAO.findByID(vehicleID);
-       itemsGetter.reset();
+       dropData();
+
        return null; 
     }
     public void setVehicleID(Integer vehicleID) {
@@ -219,7 +218,7 @@ public class FuelStopsBean extends BaseBean {
     }
 
     public List<FuelStopView> getItems() {
-        return itemsGetter.getItems();
+        return itemLoader.getItems();
     }
     
     public PageData getPageData() {
@@ -248,8 +247,8 @@ public class FuelStopsBean extends BaseBean {
     }
 
     public boolean isAllSelected() {
-        if(itemsGetter.isEmpty()) return false;
-        for (FuelStopView fsv : itemsGetter.getItems())
+        if(itemLoader.isEmpty()) return false;
+        for (FuelStopView fsv : itemLoader.getItems())
             if(!fsv.isSelected() && fsv.getEditable()) return false;
 
         return true;
@@ -260,15 +259,6 @@ public class FuelStopsBean extends BaseBean {
     }
     
 
-    private FuelStopView createFuelStopView(HOSRecord fuelStopRecord)
-    {
-        final FuelStopView fuelStopView = new FuelStopView();
-        String[] ignoreProperties = {"timeInSec"};
-        BeanUtils.copyProperties(fuelStopRecord, fuelStopView, ignoreProperties);
-        fuelStopView.setSelected(false);
-        
-        return fuelStopView;
-    }
 
     public FuelStopView getItem() {
         return item;
@@ -295,7 +285,6 @@ public class FuelStopsBean extends BaseBean {
     }
     public  class FuelStopView extends HOSRecord implements EditItem
     {
-        
         @Column(updateable = false)
         private static final long serialVersionUID = 8372507838051791866L;
         @Column(updateable = false)
@@ -305,6 +294,13 @@ public class FuelStopsBean extends BaseBean {
 
         private Driver driver;
         
+        public  FuelStopView(HOSRecord fuelStopRecord)
+        {
+            String[] ignoreProperties = {"timeInSec"};
+            BeanUtils.copyProperties(fuelStopRecord, this, ignoreProperties);
+            this.setSelected(false);
+        }
+
         public FuelStopView()
         {
             super();
@@ -378,7 +374,8 @@ public class FuelStopsBean extends BaseBean {
     public String deleteSingle()
     {
         hosDAO.deleteByID(item.getHosLogID());
-        itemsGetter.reset();
+        dropData();
+
         return VIEW_REDIRECT;
     }
     //Batch delete - standard name to use the confirmDelete.xhtml
@@ -386,14 +383,15 @@ public class FuelStopsBean extends BaseBean {
         for(FuelStopView fsv : getSelectedItems()){
             hosDAO.deleteByID(fsv.getHosLogID());
         }
-        itemsGetter.reset();
+        dropData();
+
         return VIEW_REDIRECT;
     }
 
     public List<FuelStopView> getSelectedItems()
     {
         List<FuelStopView> selectedItems = new ArrayList<FuelStopView>();
-        for (FuelStopView t : itemsGetter.getItems())
+        for (FuelStopView t : itemLoader.getItems())
             if (t.isSelected())
                 selectedItems.add(t);
         return selectedItems;
@@ -426,7 +424,7 @@ public class FuelStopsBean extends BaseBean {
     
     public void selectAllDependingOnAllSelected()
     {
-        for (FuelStopView fsv : itemsGetter.getItems())
+        for (FuelStopView fsv : itemLoader.getItems())
             fsv.setSelected(allSelected);
     }
 
@@ -440,7 +438,7 @@ public class FuelStopsBean extends BaseBean {
     }
 
     public void setPage(int page) {
-        pageData.initPage(page, itemsGetter.getSize());
+        pageData.initPage(page, itemLoader.getSize());
     }
     
 
@@ -475,7 +473,10 @@ public class FuelStopsBean extends BaseBean {
         protected abstract void databaseAction();
         protected abstract void cancel();
         protected abstract String getMessageKey();
-        protected abstract Boolean isAdd();
+        
+        protected Boolean isAdd(){
+            return false;
+        }
 
         protected String save() {
             
@@ -491,7 +492,7 @@ public class FuelStopsBean extends BaseBean {
                 
                 databaseAction();
 
-                itemsGetter.reset();
+                dropData();
 
                 return VIEW_REDIRECT;
             }
@@ -571,8 +572,9 @@ public class FuelStopsBean extends BaseBean {
             fuelStopRecord.setDriverID(getVehicle()==null?null:getVehicle().getDriverID());
             fuelStopRecord.setLocation(locateVehicleByTime.getNearestCity(vehicleID, fuelStopRecord.getLogTime()));
             
-            return createFuelStopView(fuelStopRecord);
+            return  new FuelStopView(fuelStopRecord);
         }
+        @Override
         protected void databaseAction(){
             hosDAO.create(0l, item);
             addMessageForPage("fuelStop_added", FacesMessage.SEVERITY_INFO);
@@ -585,6 +587,7 @@ public class FuelStopsBean extends BaseBean {
         protected String getMessageKey() {
             return "createFuelStop";
         }
+        @Override
         protected Boolean isAdd(){
             return true;
         }
@@ -609,60 +612,42 @@ public class FuelStopsBean extends BaseBean {
         protected String getMessageKey() {
             return "updateFuelStop";
         }
-        protected Boolean isAdd(){
-            return false;
-        }
-
     }
-    public class FuelStopGetter {
-
+    public class ItemLoader {
+        
+        private List<FuelStopView> items;
+    
         public List<FuelStopView> getItems() {
+            if(items == null){
+                loadItems();
+            }
             return items;
         }
-
+        private void loadItems() {
+            
+            items = new ArrayList<FuelStopView>();
+  
+            if (getVehicleID() == null) return;
+            
+            List<HOSRecord> plainRecords = hosDAO.getFuelStopRecordsForVehicle(getVehicleID(), dateRange.getInterval());
+            if (plainRecords == null) return;
+  
+            for (final HOSRecord rec : plainRecords) {
+                items.add(new FuelStopView(rec));
+            }
+            pageData.updatePage(items.size());
+        }
         public void reset() {
             items = null;
-            item = null;
-            reloadNextTime();
-        }
-        private void reloadNextTime(){
-            itemsGetter = fuelStopLoaderAndGetter;
         }
         public boolean isEmpty() {
             return getItems().isEmpty();
         }
-
         public int getSize() {
             return getItems().size();
         }
+        public boolean hasItems(){
+            return items != null;
+        }
     }
-    public class FuelStopLoaderAndGetter extends FuelStopGetter{
-        
-      @Override
-      public List<FuelStopView> getItems() {
-          loadItems();
-          updatePageData();
-          noNeedToReloadNextTime();
-          return items;
-      }
-      private void noNeedToReloadNextTime(){
-          itemsGetter = fuelStopGetter;
-      }
-      private void loadItems() {
-
-          items = new ArrayList<FuelStopView>();
-
-          if (getVehicleID() == null) return;
-          
-          List<HOSRecord> plainRecords = hosDAO.getFuelStopRecordsForVehicle(getVehicleID(), dateRange.getInterval());
-          if (plainRecords == null) return;
-
-          for (final HOSRecord rec : plainRecords) {
-              items.add(createFuelStopView(rec));
-          }
-      }
-      private void updatePageData(){
-          pageData.updatePage(items.size());
-      }
-  }
 }

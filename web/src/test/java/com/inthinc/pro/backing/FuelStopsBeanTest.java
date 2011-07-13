@@ -361,11 +361,11 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         
         item.setLogTime(logTime.toDate());
         
-        assertEquals(logTime.toDate(),fuelStopsBean.item.getLogTime());
+        assertEquals(logTime.toDate(),fuelStopsBean.getItem().getLogTime());
         DateTime newDate = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(1);
         DateTime expectedDate = localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("America/Denver")).minusDays(1).plusHours(6);
         
         fuelStopsBean.changeJustTheItemLogDate(newDate.toDate());
-        assertEquals(expectedDate.toDate().getTime(),fuelStopsBean.item.getLogTime().getTime());
+        assertEquals(expectedDate.toDate().getTime(),fuelStopsBean.getItem().getLogTime().getTime());
     }
 }
