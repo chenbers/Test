@@ -8,18 +8,16 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.automation.elements.TextLinkContextSense;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 
-public abstract class NotificationsEventsBar extends NavigationBar {
+public abstract class NotificationsEventsBar extends NotificationsBar {
 	
-	protected String page="redFlags";
     protected SeleniumEnums[] enums = { NotificationsBarEnum.TIME_FRAME_DHX, NotificationsBarEnum.TEAM_SELECTION_DHX, NotificationsBarEnum.LEVEL_FILTER_DHX };
 	
-	protected class NotificationsBarButtons extends NavigationBarButtons{
+	protected class EventsBarButtons extends NotificationsBarButtons{
 	    
         public TextButton refresh() {
             return new TextButton(NotificationsBarEnum.REFRESH, page);
@@ -45,7 +43,7 @@ public abstract class NotificationsEventsBar extends NavigationBar {
             return new ButtonTable(NotificationsBarEnum.LOCATION, page);
         }
 	}
-	protected class NotificationsBarTextFields extends NavigationBarTextFields{
+	protected class EventsBarTextFields extends NotificationsBarTextFields{
 	    
         public TextField group() {
             return new TextField(NotificationsBarEnum.GROUP_FILTER, page);
@@ -59,7 +57,7 @@ public abstract class NotificationsEventsBar extends NavigationBar {
             return new TextField(NotificationsBarEnum.VEHICLE_FILTER, page);
         }
 	}
-	protected class NotificationsBarTexts extends NavigationBarTexts{
+	protected class EventsBarTexts extends NotificationsBarTexts{
 
         public Text headerDetail() {
             return new Text(NotificationsBarEnum.HEADER_DETAIL, page);
@@ -89,7 +87,7 @@ public abstract class NotificationsEventsBar extends NavigationBar {
             return new Text(NotificationsBarEnum.COUNTER, page);
         }
 	}
-	protected class NotificationsBarDropDowns extends NavigationBarDropDowns{
+	protected class EventsBarDropDowns extends NotificationsBarDropDowns{
 	    
 	    
 	    public DhxDropDown team() {
@@ -111,7 +109,7 @@ public abstract class NotificationsEventsBar extends NavigationBar {
 	}
 	
 
-	protected class NotificationsBarLinks extends NavigationBarLinks{
+	protected class EventsBarLinks extends NotificationsBarLinks{
 	    
 
         public TextLink editColumns(){
@@ -150,32 +148,5 @@ public abstract class NotificationsEventsBar extends NavigationBar {
             return new TextLink(NotificationsBarEnum.SORT_DATE_TIME, page);
         }
 		
-		public TextLinkContextSense redFlags(){
-			return new TextLinkContextSense(NotificationsBarEnum.RED_FLAGS, page);
-		}
-	
-	    public TextLinkContextSense safety() {
-	    	return new TextLinkContextSense(NotificationsBarEnum.SAFETY, page);
-	    }
-	
-	    public TextLinkContextSense diagnostics() {
-	    	return new TextLinkContextSense(NotificationsBarEnum.DIAGNOSTICS, page);
-	    }
-	
-	    public TextLinkContextSense zones() {
-	    	return new TextLinkContextSense(NotificationsBarEnum.ZONES, page);
-	    }
-	
-	    public TextLinkContextSense hosExceptions() {
-	    	return new TextLinkContextSense(NotificationsBarEnum.HOS_EXCEPTIONS, page);
-	    }
-	
-	    public TextLinkContextSense emergency() {
-	    	return new TextLinkContextSense(NotificationsBarEnum.SAFETY, page);
-	    }
-	
-	    public TextLinkContextSense crashHistory() {
-	    	return new TextLinkContextSense(NotificationsBarEnum.SAFETY);
-	    }
 	}
 }
