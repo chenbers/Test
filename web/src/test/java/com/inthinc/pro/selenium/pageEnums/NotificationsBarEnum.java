@@ -50,7 +50,7 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     VEHICLE_ENTRY(null, "***-form:***:###:***_vehiclePerformance"),
     CATEGORY_ENTRY(null, "***-form:***:###:category"),
     DETAIL_ENTRY(null, "***-form:***:###:detail"),
-    STATUS_ENTRY("exclude", "***-form:***:###:clear"),
+    STATUS_ENTRY("exclude", "***-form:***:###:exclude"),
     
 
     HEADER_LEVEL("Level", "***-form:***:levelheader"),
