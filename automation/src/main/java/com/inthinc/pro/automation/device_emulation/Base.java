@@ -97,7 +97,7 @@ public abstract class Base {
 
     protected abstract Base add_location();
 
-    protected abstract Base add_note(Package_tiwiPro_Note note);
+    protected abstract Base add_note(NoteBuilder note);
 
     private Boolean check_error(Object reply) {
         if (reply == null)

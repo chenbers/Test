@@ -2,38 +2,48 @@ package com.inthinc.pro.automation.device_emulation;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note.Direction;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DeviceProperties;
+import com.inthinc.pro.automation.enums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.enums.WaysmartProps;
 import com.inthinc.pro.automation.utils.CreateHessian;
 
 
 
 public class WaysmartDevice extends Base {
+    private String mcm;
+    private Addresses server;
+    private Queue<NoteBuilder> notes;
 	
 	private final static Logger logger = Logger.getLogger(WaysmartDevice.class);
 	
+		
 	protected final static Integer productVersion = 2;
 	private CreateHessian hessian;
 
-	public WaysmartDevice(String IMEI, Addresses server, HashMap<WaysmartProps, String> settings) {
+	public WaysmartDevice(String IMEI, String MCM, Addresses server, HashMap<WaysmartProps, String> settings) {
 		super(IMEI, server, settings, productVersion);
+		this.mcm = MCM;
+		notes = new LinkedList<NoteBuilder>();
 	}
 	
-	public WaysmartDevice(String IMEI, Addresses server){
-		this(IMEI, server, WaysmartProps.STATIC.getDefaultProps());
+	public WaysmartDevice(String IMEI, String MCM, Addresses server){
+		this(IMEI, MCM, server, WaysmartProps.STATIC.getDefaultProps());
 	}
 	
-	public WaysmartDevice(String IMEI){
-		this(IMEI, Addresses.QA);
+	public WaysmartDevice(String IMEI, String MCM){
+		this(IMEI, MCM, Addresses.QA);
 	}
 
 	@Override
-	public Base add_location() {
+	public WaysmartDevice add_location() {
 		// TODO Auto-generated method stub
         return this;
 		
@@ -41,14 +51,16 @@ public class WaysmartDevice extends Base {
 
 
 	@Override
-	protected Base construct_note() {
-		// TODO Auto-generated method stub
+	protected WaysmartDevice construct_note() {
         return this;
-		
+	}
+	
+	protected Package_Waysmart_Note construct_note( Ways_SAT_EVENT type, Direction method){
+	    return new Package_Waysmart_Note(type, method, server, mcm, imei);
 	}
 
 	@Override
-	protected Base createAckNote(Map<String, Object> reply) {
+	protected WaysmartDevice createAckNote(Map<String, Object> reply) {
 		// TODO Auto-generated method stub
         return this;
 		
@@ -69,14 +81,15 @@ public class WaysmartDevice extends Base {
 	}
 
 	@Override
-	public Base set_ignition(Integer timeDelta) {
+	public WaysmartDevice set_ignition(Integer timeDelta) {
 		// TODO Auto-generated method stub
         return this;
 		
 	}
 	
-	protected Base set_IMEI( String imei, Addresses server, HashMap<Integer, String> settings ){
+	protected WaysmartDevice set_IMEI( String imei, Addresses server, HashMap<Integer, String> settings ){
 		logger.debug("IMEI: "+imei+", Server: " + server);
+		this.server = server;
 		hessian = new CreateHessian();
         super.set_IMEI(imei, server, settings, productVersion);
         Settings.put(WaysmartProps.MCM_ID, imei);
@@ -86,14 +99,14 @@ public class WaysmartDevice extends Base {
     }
 
 	@Override
-	protected Base set_power() {
+	protected WaysmartDevice set_power() {
 		// TODO Auto-generated method stub
         return this;
 		
 	}
 
 	@Override
-	protected Base set_server(Addresses server) {
+	protected WaysmartDevice set_server(Addresses server) {
 		mcmProxy = hessian.getMcmProxy(server);
 		String url, port;
 		url = server.getMCMUrl();
@@ -105,7 +118,7 @@ public class WaysmartDevice extends Base {
 	}
 
 	@Override
-	public Base set_speed_limit(Integer limit) {
+	public WaysmartDevice set_speed_limit(Integer limit) {
 		// TODO Auto-generated method stub
         return this;
 		
@@ -113,7 +126,7 @@ public class WaysmartDevice extends Base {
 
 
 	@Override
-	protected Base was_speeding() {
+	protected WaysmartDevice was_speeding() {
 		// TODO Auto-generated method stub
         return this;
 		
@@ -131,8 +144,8 @@ public class WaysmartDevice extends Base {
     }
 
     @Override
-    public Base add_note(Package_tiwiPro_Note note) {
-        // TODO Auto-generated method stub
+    public WaysmartDevice add_note(NoteBuilder note) {
+        notes.add(note);
         return null;
     }
 }
