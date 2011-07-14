@@ -80,7 +80,7 @@ public class TextTable extends TextObject implements TextTableBased {
 
     @Override
     public Boolean compare(Integer row) {
-        return this.compare(row, getText(row));
+        return compare(row, myEnum.getText());
     }
 
     public Boolean compare(Integer row, String compareAgainst) {
@@ -164,20 +164,17 @@ public class TextTable extends TextObject implements TextTableBased {
 
     @Override
     public Boolean validate(Integer row) {
-        replaceNumber(row);
-        return super.validate();
+        return validateEquals(myEnum.getText(), getText(row));
     }
 
     @Override
     public Boolean validate(Integer row, String expected) {
-        replaceNumber(row);
-        return super.validate(expected);
+        return validateEquals(expected, getText(row));
     }
 
     @Override
     public Boolean validate(Integer row, TextEnum expected) {
-        replaceNumber(row);
-        return super.validate(expected);
+        return validateEquals(expected.getText(), getText(row));
     }
 
     @Override
@@ -209,8 +206,7 @@ public class TextTable extends TextObject implements TextTableBased {
 
     @Override
     public Boolean validateContains(Integer row, String expectedPart) {
-        replaceNumber(row);
-        return validateStringContains(expectedPart, super.getText());
+        return validateStringContains(expectedPart, getText(row));
     }
 
     @Override
@@ -222,25 +218,21 @@ public class TextTable extends TextObject implements TextTableBased {
 
     @Override
     public Boolean validateVisibility(Integer row, Boolean visible) {
-        replaceNumber(row);
-        return super.validateVisibility(visible);
+        return validateEquals(visible, isVisible(row));
     }
 
     @Override
     public Boolean validatePresence(Integer row, Boolean present) {
-        replaceNumber(row);
-        return super.validatePresence(present);
+        return validateEquals(present, isPresent(row));
     }
 
     @Override
     public Boolean assertPresence(Integer row, Boolean present) {
-        replaceNumber(row);
-        return super.assertPresence(present);
+        return assertEquals(present, isPresent(row));
     }
 
     @Override
     public Boolean assertEquals(Integer row) {
-        replaceNumber(row);
         return super.assertEquals();
     }
 }
