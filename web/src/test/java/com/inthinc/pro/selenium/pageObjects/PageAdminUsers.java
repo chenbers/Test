@@ -52,7 +52,7 @@ public class PageAdminUsers extends AdminBar {
         }
 
         public TextTableLink edit() {
-            return new TextTableLink(AdminBarEnum.EDIT_ITEM);
+            return new TextTableLink(AdminBarEnum.EDIT_ITEM, page);
         }
     }
 
