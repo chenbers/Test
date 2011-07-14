@@ -213,6 +213,10 @@
   <converter-id>SecondsToHoursConverter</converter-id>
   <converter-class>com.inthinc.pro.convert.SecondsToHoursConverter</converter-class>
  </converter>
+ <converter>
+  <converter-id>ForceUpperCaseConverter</converter-id>
+  <converter-class>com.inthinc.pro.convert.ForceUpperCaseConverter</converter-class>
+ </converter>
  <!-- managed beans 
  navigation -->
  <navigation-rule>
