@@ -116,7 +116,6 @@ public class AddEditUser extends WebRallyTest {
         logger.debug("2: "+myAddEditUser._text().masterError().getText());
         logger.debug("3: "+myAddEditUser._text().personError(AdminUsersEntries.EMPLOYEE_ID).getText());
         //myAddEditUser._text().
-        myAddEditUser._text().
         myAddEditUser._textField().userFields(AdminUsersEntries.EMPLOYEE_ID).validate ("Employee ID is already in use");
         
         //.4 Cancel Changes
