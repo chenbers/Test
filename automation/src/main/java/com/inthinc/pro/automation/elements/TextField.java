@@ -36,8 +36,6 @@ public class TextField extends TextObject implements Typeable {
     }
     @Override
     public String getText(){
-        logger.warn("myEnum.locators: "+myEnum.getLocatorsAsString());
-        logger.warn("value : "+selenium.getValue(myEnum));
         return selenium.getValue(myEnum);
     }
     @Override
