@@ -34,4 +34,24 @@ public class TextField extends TextObject implements Typeable {
         selenium.type(myEnum, inputText);
         return this;
     }
+    @Override
+    public String getText(){
+        logger.warn("myEnum.locators: "+myEnum.getLocatorsAsString());
+        logger.warn("value : "+selenium.getValue(myEnum));
+        return selenium.getValue(myEnum);
+    }
+    @Override
+    public Boolean assertEquals() {
+        return assertEquals(myEnum, getText(), myEnum);
+    }
+
+    @Override
+    public Boolean assertEquals(String compareAgainst) {
+        return assertEquals(compareAgainst, getText());
+    }
+
+    @Override
+    public Boolean assertNotEquals(String compareAgainst) {
+        return assertNotEquals(compareAgainst, getText());
+    }
 }

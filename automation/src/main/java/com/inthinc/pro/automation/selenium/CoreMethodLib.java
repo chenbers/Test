@@ -286,7 +286,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         logger.debug(" getText(" + myEnum.toString() + "\n" + myEnum.getLocatorsAsString() + ")");
         String element = getLocator(myEnum);
         String text = "";
-        text = getText(element);
+        text = super.getText(element);
         return text;
     }
 
@@ -312,8 +312,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
     @Override
     public String getValue(SeleniumEnumWrapper anEnum) {
-        // TODO Auto-generated method stub
-        return null;
+        logger.debug(" getValue(" + anEnum.toString() + "\n" + anEnum.getLocatorsAsString() + ")");
+        return super.getValue(getLocator(anEnum));
     }
 
     @Override
