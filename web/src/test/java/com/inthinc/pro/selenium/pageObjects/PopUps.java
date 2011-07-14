@@ -233,15 +233,15 @@ public class PopUps extends MasterTest {
         
         public class ExcludeEventTexts{
             public Text title(){
-                return new Text(enums.get(title));
+                return new Text(enums.get(title), page);
             }
             
             public Text header(){
-                return new Text(enums.get(header));
+                return new Text(enums.get(header), page);
             }
             
             public Text message(){
-                return new Text(enums.get(message));
+                return new Text(enums.get(message), page);
             }
         }
         
@@ -252,15 +252,15 @@ public class PopUps extends MasterTest {
         
         public class ExcludeEventButtons{
             public TextButton yes(){
-                return new TextButton(enums.get(confirm));
+                return new TextButton(enums.get(confirm), page);
             }
             
             public TextButton no(){
-                return new TextButton(enums.get(cancel));
+                return new TextButton(enums.get(cancel), page);
             }
             
             public TextButton close(){
-                return new TextButton(enums.get(close));
+                return new TextButton(enums.get(close), page);
             }
             
         }
