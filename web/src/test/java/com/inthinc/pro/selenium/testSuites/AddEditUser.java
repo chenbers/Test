@@ -6,12 +6,11 @@ import org.junit.Test;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeZones;
+import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
-import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 
 
 
@@ -45,13 +44,21 @@ public class AddEditUser extends WebRallyTest {
 		//.1 Search for USERNAME in table and click the USERNAME link.
 		
 		myAdminUsers._link().adminUsers().click();
-		myAdminUsers._textField().search().type("Tina");
+		myAdminUsers._link().editColumns().click();
+	    myAdminUsers._popUp().editColumns()._checkBox().check(12);
+	    myAdminUsers._popUp().editColumns()._button().save().click();
+	    
+	    
+		String Name = myAdminUsers._text().tableEntry(AdminUsersEntries.FULL_NAME).getText(1);		
+		myAdminUsers._textField().search().type(Name);
 		myAdminUsers._button().search().click(); 
-		myAdminUsers.getLinkByText("Tina Automated").click();
-		myAdminUserDetails._button().edit().click();
+		myAdminUsers._link().edit().click(1);
 		String original = myAddEditUser._textField().personFields(AdminUsersEntries.EMPLOYEE_ID).getText();
 				
-		String[] emp_id = {random.getCharString(10).toLowerCase(), random.getCharString(10).toUpperCase(),random.getCharString(5).toLowerCase()+ random.getCharString(5).toUpperCase(), original};
+		String[] emp_id = {random.getCharString(10).toLowerCase()
+						, random.getCharString(10).toUpperCase()
+						, random.getCharString(5).toLowerCase()+ random.getCharString(5).toUpperCase()
+						, original};
 		//.2 Edit User's Employee ID
 		for (String string: emp_id){
 			myAddEditUser._textField().personFields(AdminUsersEntries.EMPLOYEE_ID).clear();
@@ -62,9 +69,10 @@ public class AddEditUser extends WebRallyTest {
 			myAccount._link().myAccount().click();
 			myAccount._link().admin().click();
 			myAdminUsers._link().adminUsers().click();
-			myAdminUsers._textField().search().type("Tina");
+			myAdminUsers._textField().search().type(Name);
 			myAdminUsers._button().search().click(); 
-			myAdminUsers.getLinkByText("Tina Automated").click();
+			myAdminUsers._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).validate(1,string.toUpperCase());
+			myAdminUsers._link().tableEntry(AdminUsersEntries.FIRST_NAME).click(1);
 			
 			//.2b Validate employee id displays in Upper case.		
 			myAdminUserDetails._text().values(AdminUserDetailsEnum.EMP_ID).validate(string.toUpperCase());
@@ -80,73 +88,45 @@ public class AddEditUser extends WebRallyTest {
         set_test_case("TC5704");
         
         //.0 Login
-        myAccount.loginProcess(USERNAME, PASSWORD);
-        myAccount._link().admin().click();
+        	myAccount.loginProcess(USERNAME, PASSWORD);
+        	myAccount._link().admin().click();
 	
         //.1 Search for Employee ID in column and save the id to be used while creating a new user.
-           
-              
-        myAdminUsers._link().adminUsers().click();
-        //myAdminUsers._link().editColumns().click();
-       // myAdminUsers._popUp().editColumns()._checkBox().check(12);
-       // myAdminUsers._popUp().editColumns()._button().save().click();
-        myAdminUsers._textField().search().type("Tina");
-        myAdminUsers._button().search().click();
-        //myAdminUsers._link().sortByColumn(AdminUsersEntries.EMPLOYEE_ID).click();
-        //myAdminUsers._link().sortByColumn(AdminUsersEntries.EMPLOYEE_ID).click();
-        String myString = myAdminUsers._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).getText(1);
+                         
+        	myAdminUsers._link().adminUsers().click();
+        	myAdminUsers._link().editColumns().click();
+        	myAdminUsers._popUp().editColumns()._checkBox().check(12);
+        	myAdminUsers._popUp().editColumns()._button().save().click();
+        	myAdminUsers._link().sortByColumn(AdminUsersEntries.EMPLOYEE_ID).click();
+        	myAdminUsers._link().sortByColumn(AdminUsersEntries.EMPLOYEE_ID).click();
+        	String myString = myAdminUsers._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).getText(1);
         
         //.2 Create a new user with duplicate employee id.
+               
+        	myAdminUsers._link().adminAddUser().click();
+        	myAddEditUser._textField().personFields(AdminUsersEntries.FIRST_NAME).type("testing");
+        	myAddEditUser._textField().personFields(AdminUsersEntries.LAST_NAME).type("testing");
+        	myAddEditUser._dropDown().driverTeam().select(1);
         
-       
-        myAdminUsers._link().adminAddUser().click();
-        myAddEditUser._textField().userFields(AdminUsersEntries.FIRST_NAME).type("testing");
-        myAddEditUser._textField().userFields(AdminUsersEntries.LAST_NAME).type("testing");
-        myAddEditUser._checkBox().driverInformation().check();
-        myAddEditUser._dropDown().driverTeam().select("Top - Test Group RW");
-        myAddEditUser._checkBox().userInformation().uncheck();
-        myAddEditUser._dropDown().timeZone().select(TimeZones.US_SAMOA);
-        myAddEditUser._textField().userFields(AdminUsersEntries.EMPLOYEE_ID).type(myString);
-        myAddEditUser._button().saveTop().click();
-        
-        
+        	myAddEditUser._checkBox().userInformation().uncheck();
+        	myAddEditUser._dropDown().timeZone().select(TimeZones.US_SAMOA);
+        	myAddEditUser._textField().personFields(AdminUsersEntries.EMPLOYEE_ID).type(myString);
+        	myAddEditUser._button().saveTop().click();
+                
         //.3 Verify error messages display 
-        //TODO: fix errors 
-        logger.debug("1: "+myAddEditUser._text().driverError(AdminUsersEntries.EMPLOYEE_ID).getText());
-        logger.debug("2: "+myAddEditUser._text().masterError().getText());
-        logger.debug("3: "+myAddEditUser._text().personError(AdminUsersEntries.EMPLOYEE_ID).getText());
-        //myAddEditUser._text().
-        myAddEditUser._textField().userFields(AdminUsersEntries.EMPLOYEE_ID).validate ("Employee ID is already in use");
-        
-        //.4 Cancel Changes
-        
-        myAddEditUser._button().cancelTop().click();
-        
-        
+
+        	myAddEditUser._text().masterError().validate("1 error(s) occurred. Please verify all the data entered is correct.");
+        	myAddEditUser._text().personError(AdminUsersEntries.EMPLOYEE_ID).validate("Employee ID is already in use" );
+              
+        //.4 delete or cancel new user
+        boolean isDeleteBtnPresent = myAdminUserDetails._button().delete().isPresent();
+		if (isDeleteBtnPresent) {
+			myAdminUserDetails._button().delete().click();
+		} else {
+			myAddEditUser._button().cancelTop().click();
+		}
 	}
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+	
 }
+            
+
