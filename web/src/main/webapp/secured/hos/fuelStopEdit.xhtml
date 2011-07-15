@@ -128,14 +128,21 @@
                                 </td>
                                 <td>
                                   <rich:message for="editfuelStop_trailer" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <a4j:region id="onlyme">
                                   <h:inputText value="#{fuelStopsBean.item.trailerID}" id="editfuelStop_trailer" onchange="checkMultiple(this)" styleClass="text" size="30"
-                                    maxlength="50"/>
+                                    maxlength="50">
+                                    <a4j:support event="onblur" ajaxSingle="true" reRender="hasTrailer,truckGallons" />
+                                    </h:inputText>
+                                    </a4j:region>
                                 </td>
                               </tr>
-                              <tr>
-                                <td width="100" valign="top">
+                              <tr><td colspan="3">
+                              <a4j:outputPanel id="truckGallons" ajaxRendered="true">
+                              <ui:fragment rendered="#{true}">
+                              <table><tr>
+                                <td width="99" valign="top">
 	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
-		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="required" value="#{(fuelStopsBean.item.trailerID eq null) or (empty fuelStopsBean.item.trailerID)}"/>
 		                                 <ui:param name="for" value="editfuelStop_truckGallons"/>
 		                                 <ui:param name="fieldName" value="truckGallons"/>
 		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
@@ -145,14 +152,21 @@
                               <td>
                             <rich:message for="editfuelStop_truckGallons" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{fuelStopsBean.item.truckGallons}" converter="GallonsToLitersConverter" id="editfuelStop_truckGallons" onchange="checkMultiple(this)" 
-                                  			styleClass="text" size="10"/><rich:spacer width="5px"/>
+                                  			styleClass="text" size="10" required="#{(fuelStopsBean.item.trailerID eq null) or (empty fuelStopsBean.item.trailerID)}" requiredMessage="#{messages.fuelStop_truckGallons_required}"/><rich:spacer width="5px"/>
 	                              <h:outputText value="editFuelStop_truckGallons" converter="MeasurementTextConverter"/>
                               </td>
                               </tr>
-                              <tr>
-                                <td width="100" valign="top">
+                              </table>
+                              </ui:fragment>
+                             </a4j:outputPanel>
+                              </td></tr>
+                              <tr><td colspan="3">
+                              <a4j:outputPanel id="hasTrailer" ajaxRendered="true">
+                              <ui:fragment rendered="#{(fuelStopsBean.item.trailerID ne null) and (not empty fuelStopsBean.item.trailerID) }">
+                              <table><tr>
+                                <td width="99" valign="top">
 	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
-		                                 <ui:param name="required" value="TRUE"/>
+		                                 <ui:param name="required" value="FALSE"/>
 		                                 <ui:param name="for" value="editfuelStop_trailerGallons"/>
 		                                 <ui:param name="fieldName" value="trailerGallons"/>
 		                                 <ui:param name="editBean" value="#{fuelStopsBean}"/>
@@ -167,9 +181,12 @@
 	                              <h:outputText value="editFuelStop_trailerGallons" converter="MeasurementTextConverter"/>
                               </td>
                               </tr>
-                              
-                              <tr>
-                                <td width="100" valign="top">
+                              </table>
+                              </ui:fragment>
+                              </a4j:outputPanel>
+                              </td></tr>                              
+                               <tr>
+                                 <td width="100" valign="top">
 	                              <ui:include src="../../includes/admin/inputLabel.xhtml">
 		                                 <ui:param name="required" value="TRUE"/>
 		                                 <ui:param name="for" value="editfuelStop_driver"/>
