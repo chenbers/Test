@@ -39,15 +39,15 @@ public enum NotificationsBarEnum implements SeleniumEnums {
     COUNTER(null, "***-form:header"),
     
 
-    LOCATION(null, "***-form:***:###:mapIcon"),
+    LOCATION(null, "***-form:***:###:mapColumn"),
     
     
     LEVEL_ENTRY(null, "***-form:***:###:level"),
     DETAILS_ENTRY(null, "***-form:***:###:alerts"),
     DATE_TIME_ENTRY(null, "***-form:***:###:date"),
-    GROUP_ENTRY(null, "***-form:***:###:***_dashboard"),
-    DRIVER_ENTRY(null, "***-form:***:###:***-driverPerformance"), //TODO: jwimmer: to dTanner: will you check the rest of these to make sure they work when used as a TextTableLink?
-    VEHICLE_ENTRY(null, "***-form:***:###:***_vehiclePerformance"),
+    GROUP_ENTRY(null, "***-form:***:###:goup"),
+    DRIVER_ENTRY(null, "***-form:***:###:driver"),
+    VEHICLE_ENTRY(null, "***-form:***:###:vehicle"),
     CATEGORY_ENTRY(null, "***-form:***:###:category"),
     DETAIL_ENTRY(null, "***-form:***:###:detail"),
     STATUS_ENTRY("exclude", "***-form:***:###:exclude"),
