@@ -28,13 +28,17 @@ public class AdminUsers extends WebRallyTest {
 		users._link().admin().click();
 		
 		//3- Take note of the top user's name
-		String firstname = users._link().tableEntry(AdminUsersEntries.FIRST_NAME).getText(1);
+		String fullname = users._link().tableEntry(AdminUsersEntries.FULL_NAME).getText(1);
 		
 		//4- Click on the top name
 		users._link().tableEntry(AdminUsersEntries.FULL_NAME).click(1);
 		
 		//5- Verify the page is the correct page
-		details._text().labels(AdminUserDetailsEnum.FIRST_NAME).assertEquals(firstname);
+		  String firstName = details._text().values(AdminUserDetailsEnum.FIRST_NAME).getText();
+		  String middleName =details._text().values(AdminUserDetailsEnum.MIDDLE_NAME).getText();
+		  String lastName = details._text().values(AdminUserDetailsEnum.LAST_NAME).getText();
+		  String suffix = details._text().values(AdminUserDetailsEnum.SUFFIX).getText();
+		  assertEquals(fullname, (firstName +" "+middleName +" "+lastName +" "+suffix).replace("  ", " ").trim());
 		
 	}
 	
