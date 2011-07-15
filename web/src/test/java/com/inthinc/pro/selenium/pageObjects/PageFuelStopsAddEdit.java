@@ -3,7 +3,9 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
+import com.inthinc.pro.automation.elements.TextDropDownError;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
@@ -14,6 +16,22 @@ public class PageFuelStopsAddEdit extends HOSBar {
     public class FuelStopsAddEditLinks extends HOSBarLinks{}
     public class FuelStopsAddEditTexts extends HOSBarTexts{
         
+        public Text labelVehicle(){
+            return new TextLabel(FuelStopsEditEnum.VEHICLE);
+        }
+        
+        public Text valueVehicle(){
+            return new Text(FuelStopsEditEnum.VEHICLE);
+        }
+        
+        public Text errorVehicleFuel(){
+            return new TextFieldError(FuelStopsEditEnum.VEHICLE_FUEL_FIELD);
+        }
+        
+        public Text errorDriver(){
+            return new TextDropDownError(FuelStopsEditEnum.DRIVER_DROP_DOWN);
+        }
+        
         public Text title(){
             return new Text(FuelStopsEditEnum.TITLE);
         }
@@ -22,29 +40,26 @@ public class PageFuelStopsAddEdit extends HOSBar {
             return new Text(FuelStopsEditEnum.HEADER);
         }
         
-        public TextFieldLabel labelDate(){
+        public Text labelDate(){
             return new TextFieldLabel(FuelStopsEditEnum.DATE_BOX);
         }
         
-        public TextFieldLabel labelTrailer(){
+        public Text labelTrailer(){
             return new TextFieldLabel(FuelStopsEditEnum.TRAILER_FIELD);
         }
         
-        public TextFieldLabel labelVehicleFuel(){
+        public Text labelVehicleFuel(){
             return new TextFieldLabel(FuelStopsEditEnum.VEHICLE_FUEL_FIELD);
         }
         
-        public TextFieldLabel labelTrailerFuel(){
+        public Text labelTrailerFuel(){
             return new TextFieldLabel(FuelStopsEditEnum.TRAILER_FUEL_FIELD);
         }
         
-        public TextLabelDropDown labelDriver(){
+        public Text labelDriver(){
             return new TextLabelDropDown(FuelStopsEditEnum.DRIVER_DROP_DOWN);
         }
         
-        public TextLabelDropDown labelVehicle(){
-            return new TextLabelDropDown(FuelStopsEditEnum.VEHICLE_DROP_DOWN);
-        }
         
         public Text labelLocation(){
             return new Text(FuelStopsEditEnum.LOCATION_LABEL);
@@ -94,9 +109,6 @@ public class PageFuelStopsAddEdit extends HOSBar {
             return new DropDown(FuelStopsEditEnum.DRIVER_DROP_DOWN);
         }
         
-        public DropDown vehicle(){
-            return new DropDown(FuelStopsEditEnum.VEHICLE_DROP_DOWN);
-        }
     }
     public class FuelStopsAddEditPopUps extends MastheadPopUps{}
     

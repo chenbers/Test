@@ -1,35 +1,58 @@
 package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextTableBased;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
 public class TextTable extends TextObject implements TextTableBased {
+    
+    private SeleniumEnumWrapper baseTable;
+    private Integer currentRow;
 
     // TODO: jwimmer: to dtanner: shouldn't textTables have a size? or number of rows?
     public TextTable(SeleniumEnums anEnum) {
         super(anEnum);
+        baseTable = new SeleniumEnumWrapper(anEnum);
     }
 
     public TextTable(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
+        baseTable = new SeleniumEnumWrapper(anEnum);
     }
 
     public TextTable(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
+        baseTable = new SeleniumEnumWrapper(anEnum);
     }
 
     public TextTable(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
+        baseTable = new SeleniumEnumWrapper(anEnum);
     }
 
     public TextTable(SeleniumEnums anEnum, String replaceWord, TextEnum column) {
         super(anEnum, replaceWord);
         myEnum.replaceOldWithNew("*column*", column.getText());
+        baseTable = new SeleniumEnumWrapper(anEnum);
+        baseTable.replaceOldWithNew("*column*", column.getText());
     }
+    
+    @Override
+    public ElementBase replaceNumber(Integer row){
+        currentRow = row;
+        return super.replaceNumber(row);
+    }
+    
 
     public TextTable(SeleniumEnums anEnum, TextEnum replaceWord) {
         super(anEnum, replaceWord);
+        baseTable = new SeleniumEnumWrapper(anEnum);
+    }
+
+    @Override
+    public Boolean assertEquals(Integer row) {
+        return super.assertEquals();
     }
 
     @Override
@@ -56,6 +79,11 @@ public class TextTable extends TextObject implements TextTableBased {
     public Boolean assertNotEquals(String compareAgainst) {
         addError(".assertNotEquals()", "please supply an Integer number for the row on the table)", ErrorLevel.FAIL);
         return null;
+    }
+
+    @Override
+    public Boolean assertPresence(Integer row, Boolean present) {
+        return assertEquals(present, isPresent(row));
     }
 
     @Override
@@ -217,22 +245,12 @@ public class TextTable extends TextObject implements TextTableBased {
     }
 
     @Override
-    public Boolean validateVisibility(Integer row, Boolean visible) {
-        return validateEquals(visible, isVisible(row));
-    }
-
-    @Override
     public Boolean validatePresence(Integer row, Boolean present) {
         return validateEquals(present, isPresent(row));
     }
 
     @Override
-    public Boolean assertPresence(Integer row, Boolean present) {
-        return assertEquals(present, isPresent(row));
-    }
-
-    @Override
-    public Boolean assertEquals(Integer row) {
-        return super.assertEquals();
+    public Boolean validateVisibility(Integer row, Boolean visible) {
+        return validateEquals(visible, isVisible(row));
     }
 }
