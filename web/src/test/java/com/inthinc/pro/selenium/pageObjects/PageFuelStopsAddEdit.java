@@ -16,6 +16,10 @@ public class PageFuelStopsAddEdit extends HOSBar {
     public class FuelStopsAddEditLinks extends HOSBarLinks{}
     public class FuelStopsAddEditTexts extends HOSBarTexts{
         
+        public Text errorMaster(){
+            return new Text(FuelStopsEditEnum.MASTER_ERROR);
+        }
+        
         public Text labelVehicle(){
             return new TextLabel(FuelStopsEditEnum.VEHICLE);
         }
