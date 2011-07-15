@@ -18,7 +18,7 @@ public class PageAdminUsers extends AdminBar {
         checkMe.add(AdminUsersEnum.SEARCH_BUTTON);
     }
 
-    private String page = "person";
+    private String page = "personTable";
 
     public class AdminUsersButtons extends AdminBarButtons {
 

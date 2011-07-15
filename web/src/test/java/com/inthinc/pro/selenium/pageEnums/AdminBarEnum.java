@@ -49,11 +49,11 @@ public enum AdminBarEnum implements SeleniumEnums {
 
     
     /* Buttons and Strings */
-    SEARCH_BUTTON("Search", "admin-table-form:***Table-adminTableSearch" ),
+    SEARCH_BUTTON("Search", "admin-table-form:***-adminTableSearch" ),
     SEARCH_LABEL("Search", "//table[@id='grid_nav_search_box']/tbody/tr/td[1]" ),
-    SEARCH_TEXTFIELD(null, "admin-table-form:***Table-filterTable" ),
-    DELETE("Delete", "admin-table-form:***Table-adminTableDelete"),
-    BATCH_EDIT("Batch Edit", "admin-table-form:***Table-adminTableEdit" ),
+    SEARCH_TEXTFIELD(null, "admin-table-form:***-filterTable" ),
+    DELETE("Delete", "admin-table-form:***-adminTableDelete"),
+    BATCH_EDIT("Batch Edit", "admin-table-form:***-adminTableEdit" ),
     
     COUNTER("Showing XXX to YYY of ZZZ records","admin-table-form:recordCounts"),
 
@@ -61,16 +61,16 @@ public enum AdminBarEnum implements SeleniumEnums {
     TITLE(null, Xpath.start().span(Id.clazz("admin")).toString()),
 
     
-    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:personTable-adminTableEditColumns"),
+    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:personTable-adminTableEditColumns"),//TODO: jwimmer: to dTanner: just a question? SHOULD this one have ***Table instead of personTable?
 
-    TABLE_HEADERS(null, "admin-table-form:***Table:*column*header:sortDiv"),
-    TABLE_ENTRIES(null, "admin-table-form:***Table:###:*column*"),
+    TABLE_HEADERS(null, "admin-table-form:***:*column*header:sortDiv"),
+    TABLE_ENTRIES(null, "admin-table-form:***:###:*column*"),
     
 
-    SELECT_ALL(null, "admin-table-form:***Table:selectAll"),
-    SELECT_ROW(null, "admin-table-form:***Table:###:select"),
+    SELECT_ALL(null, "admin-table-form:***:selectAll"),
+    SELECT_ROW(null, "admin-table-form:***:###:select"),
 
-    EDIT_ITEM("edit", "admin-table-form:***Table:###:edit"),
+    EDIT_ITEM("edit", "admin-table-form:***:###:edit"),
     
     
     /* Multi Selector */

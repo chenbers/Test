@@ -13,10 +13,10 @@ public enum PopUpEnum implements SeleniumEnums {
     TITLE("E-mail this report to the following e-mail addresses.", "//table[@id='***ContentTable']/tbody/tr/td/div[@class='popupsubtitle']"),
 
     EDIT_HEADER("Edit Columns", "editColumnsHeader"),
-    EDIT_LABEL(null,    "editColumnsForm:***Table-editColumnsGrid:###"),
-    EDIT_CHECKBOX(null, "editColumnsForm:***Table-editColumnsGrid:###:***Table-col"),
-    EDIT_SAVE(save, "editColumnsForm:***Table-editColumnsPopupSave"),
-    EDIT_CANCEL(cancel, "editColumnsForm:***Table-editColumnsPopupCancel"),
+    EDIT_LABEL(null,    "editColumnsForm:***-editColumnsGrid:###"),
+    EDIT_CHECKBOX(null, "editColumnsForm:***-editColumnsGrid:###:***-col"),
+    EDIT_SAVE(save, "editColumnsForm:***-editColumnsPopupSave"),
+    EDIT_CANCEL(cancel, "editColumnsForm:***-editColumnsPopupCancel"),
 
     EDIT_COLUMNS("Edit Columns", "***-form:***EditColumns"),
     TOOL_BUTTON(null, "***-form:***_reportToolImageId"),
@@ -72,8 +72,8 @@ public enum PopUpEnum implements SeleniumEnums {
     MY_CONFIRM_TEXTFIELD(null, "changePasswordForm:confirmPassword", "//input[@name='changePasswordForm:confirmPassword", "//input[@type='password'][3]"),
 
     /* Admin Delete PopUp */
-    DELETE_CONFIRM("Delete", "confirmDeleteForm:***Table-deleteButton"),
-    DELETE_CANCEL("Cancel", "***Table-confirmDeleteCancel"),
+    DELETE_CONFIRM("Delete", "confirmDeleteForm:***-deleteButton"),
+    DELETE_CANCEL("Cancel", "***-confirmDeleteCancel"),
     DELETE_HEADER(null, "confirmDeleteHeader"),
     DELETE_MESSAGE("Delete the following items? This action is irreversible.", "//table[@id='confirmDeleteContentTable']/tbody/tr[2]/td/div[@class='popupsubtitle']"),
     DELETE_CLOSE(null, "//div[@id='confirmDeleteContentDiv']/div/img"),
