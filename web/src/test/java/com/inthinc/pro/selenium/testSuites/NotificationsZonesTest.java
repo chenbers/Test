@@ -6,9 +6,9 @@ import org.junit.Test;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
-import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsZones;
+import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
 
 public class NotificationsZonesTest extends WebRallyTest {
@@ -39,10 +39,11 @@ public class NotificationsZonesTest extends WebRallyTest {
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         savePageLink();
+        String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
         openSavedPage();
         pnrf.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
-        assertStringContains("notifications/zoneEvents", ptds.getCurrentLocation());
+        assertStringContains(correctURL, ptds.getCurrentLocation());
     }
     
     @Test
@@ -54,10 +55,14 @@ public class NotificationsZonesTest extends WebRallyTest {
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         savePageLink();
+        String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
-        pnrf.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
+        pnrf.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        String team2 = ptds._text().teamName().getText();
         openSavedPage();
-        assertStringContains("notifications/zoneEvents", ptds.getCurrentLocation());
+        assertStringContains(correctURL, ptds.getCurrentLocation());
+        assertStringContains(team2, pnz._dropDown().team().getText(2));
+        
     }
     
     @Test
@@ -73,8 +78,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
         int i = 1;
-        //TODO Update to isClickable when Unknown Driver fix is online.
-        while(!pnz._link().entryDriver().isPresent(i)){
+        while(!pnz._link().entryDriver().isClickable(i)){
             i++;
         }
         pnz._link().entryDriver().click(i);
@@ -289,6 +293,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         pnz._dropDown().team().selectPartMatch(DATA_GROUP);
         pnz._button().refresh().click();
+        pause(5, "Wait for refresh.");
         
         currentText = "";
         if(pnz._text().dateTimeEntry().isPresent(1)){
@@ -310,6 +315,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         }
         
         pnz._link().sortByDateTime().click();
+        pause(5, "Wait for refresh.");
         currentText = "";
         if(pnz._text().dateTimeEntry().isPresent(1)){
             currentText = pnz._text().dateTimeEntry().getText(1);
@@ -328,7 +334,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         }
         
         pnz._link().sortByDriver().click();
-        
+        pause(5, "Wait for refresh.");
         currentText = "";
         if(pnz._link().entryDriver().isPresent(1)){
             currentText = pnz._link().entryDriver().getText(1);
@@ -347,7 +353,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         }
         
         pnz._link().sortByDriver().click();
-        
+        pause(5, "Wait for refresh.");
         currentText = "";
         if(pnz._link().entryDriver().isPresent(1)){
             currentText = pnz._link().entryDriver().getText(1);
@@ -366,7 +372,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         }
         
         pnz._link().sortByGroup().click();
-        
+        pause(5, "Wait for refresh.");
         currentText = "";
         if(pnz._link().entryGroup().isPresent(1)){
             currentText = pnz._link().entryGroup().getText(1);
@@ -385,7 +391,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         }
         
         pnz._link().sortByGroup().click();
-        
+        pause(5, "Wait for refresh.");
         currentText = "";
         if(pnz._link().entryGroup().isPresent(1)){
             currentText = pnz._link().entryGroup().getText(1);
@@ -405,7 +411,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         
         
         pnz._link().sortByVehicle().click();
-        
+        pause(5, "Wait for refresh.");
         currentText = "";
         if(pnz._link().entryVehicle().isPresent(1)){
             currentText = pnz._link().entryVehicle().getText(1);
@@ -424,7 +430,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         }
         
         pnz._link().sortByVehicle().click();
-        
+        pause(5, "Wait for refresh.");
         currentText = "";
         if(pnz._link().entryVehicle().isPresent(1)){
             currentText = pnz._link().entryVehicle().getText(1);
@@ -836,7 +842,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     
     public String searchText(int i){
         int firstDriver = 1;
-        while(!pnz._link().entryDriver().isPresent(firstDriver)){
+        while(!pnz._link().entryDriver().isClickable(firstDriver)){
             firstDriver++;
         }
         String[] searchStrings = {(String) pnz._link().entryGroup().getText(1).substring(0, 3),
