@@ -9,7 +9,7 @@ public enum LiveFleetExpansionEnum implements SeleniumEnums {
     RESTORE(null, "refresh:details-liveFleetMapRestore"),
     
     LEGEND_TITLE("Fleet Legend", "//form[@id='bubbleForm']/../div/div/div/span[@class='legend']"),
-    LEGENT_ENTRY(null, "icos2:###"),
+    LEGEND_ENTRY(null, "icos2:###"),
     
     ;
 

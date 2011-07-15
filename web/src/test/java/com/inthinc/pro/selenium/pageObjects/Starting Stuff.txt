@@ -42,9 +42,4 @@
         return new ***PopUps();
     }
     
-    public ***Pager _page(){
-    	return new ***Pager();
-    }
-    
-    
     

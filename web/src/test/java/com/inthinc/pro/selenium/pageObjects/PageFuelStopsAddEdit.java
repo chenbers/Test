@@ -100,13 +100,7 @@ public class PageFuelStopsAddEdit extends HOSBar {
     }
     public class FuelStopsAddEditPopUps extends MastheadPopUps{}
     
-    
-    public class FuelStopsAddEditPager{
-        public Paging pageIndex(){
-            return new Paging();
-        }
-    }
-    
+
     public FuelStopsAddEditLinks _link(){
         return new FuelStopsAddEditLinks();
     }
@@ -130,12 +124,6 @@ public class PageFuelStopsAddEdit extends HOSBar {
     public FuelStopsAddEditPopUps _popUp(){
         return new FuelStopsAddEditPopUps();
     }
-    
-    public FuelStopsAddEditPager _page(){
-        return new FuelStopsAddEditPager();
-    }
-    
-    
     
 
 }

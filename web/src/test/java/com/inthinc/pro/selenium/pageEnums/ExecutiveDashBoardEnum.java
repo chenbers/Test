@@ -44,12 +44,12 @@ public enum ExecutiveDashBoardEnum implements SeleniumEnums {
 
     SPEEDING_TITLE("Speeding % (mi) ", Xpath.start().div(Id.id("speedPercentageOutputPanel_body")).div().div().span(Id.clazz("line")).toString()),
 
-    TOTAL_DRIVEN_TEXT("Total Distance Driven:", Xpath.start().div(Id.id("speedPercentagePanel_body")).table().tbody().tr("1").td("1").toString()),
-    TOTAL_DRIVEN_NUMBER(null, "totalDistance", Xpath.start().div(Id.id("speedPercentagePanel_body")).table().tbody().tr("1").td("2").span().toString()),
-    TOTAL_SPEEDING_TEXT("Total Distance Speeding:", Xpath.start().div(Id.id("speedPercentagePanel_body")).table().tbody().tr("2").td("1").toString()),
-    TOTAL_SPEEDING_NUMBER(null, "totalSpeeding", Xpath.start().div(Id.id("speedPercentagePanel_body")).table().tbody().tr("2").td("2").toString()),
+    TOTAL_DRIVEN_TEXT("Total Distance Driven:", "//span[@id='totalDistance']/../td[1]"),
+    TOTAL_DRIVEN_NUMBER(null, "totalDistance"),
+    TOTAL_SPEEDING_TEXT("Total Distance Speeding:", "//span[@id='totalSpeeding']/../td[1]"),
+    TOTAL_SPEEDING_NUMBER(null, "totalSpeeding"),
 
-    TREND_TITLE("Speeding % (mi) ", Xpath.start().div(Id.id("trendDurationPanel_body")).div().div().span(Id.clazz("line")).toString()),
+    TREND_TITLE("Trend", Xpath.start().div(Id.id("trendDurationPanel_body")).div().div().span(Id.clazz("line")).toString()),
     TREND_SUPER_TITLE(null, Xpath.start().tbody(Id.id("trendTable:summaryitems:tb")).td("2").toString()),
     TREND_GROUP_SORT("Division/Team"/* , "trendTable:executive:***header:sortDiv" */, Xpath.start().th("2").div().toString()),
     TREND_SCORE_SORT("Score"/* , "trendTable:executive:***header:sortDiv" */, Xpath.start().th("3").div().toString()),
@@ -59,13 +59,25 @@ public enum ExecutiveDashBoardEnum implements SeleniumEnums {
     TREND_GROUP_SCORE(null, Xpath.start().tbody(Id.id("trendTable:executive:tb")).tr("###").td("3").toString()),
     TREND_GROUP_CRASH_NUMBER(null, Xpath.start().td(Id.id("trendTable:executive:###:crashes")).span("2").toString()),
 
-    IDLING_TITLE("Speeding % (mi) ", Xpath.start().div(Id.id("idlePercentageOutputPanel_body")).div().div().span(Id.clazz("line")).toString()),
+    IDLING_TITLE("Idling Percentage", Xpath.start().div(Id.id("idlePercentageOutputPanel_body")).div().div().span(Id.clazz("line")).toString()),
     IDLING_STAT_TEXT(null, "idlingPercentageStatsMessage"),
 
     FUEL_EFFICIENCY_TITLE("Fuel Efficiency", Xpath.start().span(Id.clazz("gas")).toString()),
     LIVE_FLEET_TITLE("Live Fleet", Xpath.start().span(Id.clazz("map")).toString()),
     FLEET_LEGEND_TITLE("Fleet Legend", Xpath.start().span(Id.clazz("legend")).toString()),
     FLEET_LEGEND_GROUP(null, "icos2:###", Xpath.start().tr(Id.clazz("rich-table-row carlegend"), "###").td("###").toString()),
+    
+    OVERALL_SCORE(null, "//div[@class='overall_score_panel']/div/table/tbody/tr/td"),
+    OVERALL_SCORE_LABEL("OVERALL SCORE", "//div[@class='overall_score_panel']/div/text()"),
+    
+    
+    IDLING_STATS_NOTE("*Statistics reflect XXX out of YYY vehicles that are reporting idling statistics.", "idlingPercentageStatsMessage"),
+    
+    TOTAL_DURATION_TEXT("Total Duration:", "//span[@id='totalDriving']/../td[1]"),
+    TOTAL_DURATION_VALUE(null, "totalDriving"),
+    TOTAL_TIME_IDLING_TEXT("Total Time Idling:", "//span[@id='totalIdling']/../td[1]"),
+    TOTAL_TIME_IDLING_VALUE(null, "totalIdling"),
+    
 
     ;
 

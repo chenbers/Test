@@ -21,6 +21,8 @@ public enum FuelStopsEditEnum implements SeleniumEnums {
     LOCATION_LABEL("Location:", "//span[@id='edit-form:editfuelStop_location']/../../td[1]"),
     TIME_MESSAGE("Fuel stops more than 25 days old will not be included in the IFTA aggregation", "//div[@class='add_section_title']/../table/tbody/tr[2]/td[2]/span"),
 
+    DELETE_TOP(delete, "edit-form:editfuelStopDelete1"),
+    DELETE_BOTTOM(delete, "edit-form:editfuelStopDelete2"),
     ;
     private String text, url;
     private String[] IDs;
