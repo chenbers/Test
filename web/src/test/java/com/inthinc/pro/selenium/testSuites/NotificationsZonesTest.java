@@ -54,7 +54,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         savePageLink();
-        pnrf._link().logout();
+        pnrf._link().logout().click();
         pnrf.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
         openSavedPage();
         assertStringContains("notifications/zoneEvents", ptds.getCurrentLocation());
@@ -868,7 +868,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._popUp().editColumns()._checkBox().check(5);
         pnz._popUp().editColumns()._checkBox().check(6);
         pnz._popUp().editColumns()._button().save().click();
-        pnz._link().logout();
+        pnz._link().logout().click();
     }
     
     public void someCheckedHelper(){
@@ -885,7 +885,7 @@ public class NotificationsZonesTest extends WebRallyTest {
           pnz._popUp().editColumns()._checkBox().uncheck(5);
           pnz._popUp().editColumns()._checkBox().uncheck(6);
           pnz._popUp().editColumns()._button().save().click();
-          pnz._link().logout();
+          pnz._link().logout().click();
       }
     
     public int monthToInt(String month){
