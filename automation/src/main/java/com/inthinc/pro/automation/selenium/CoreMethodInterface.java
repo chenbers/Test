@@ -72,4 +72,9 @@ public interface CoreMethodInterface extends Selenium {
 	public CoreMethodLib waitForPageToLoad(Integer timeout);
 
 	public Boolean isClickable(SeleniumEnumWrapper myEnum);
+
+    public String[] getSelectOptions(SeleniumEnumWrapper myEnum);
+
+    public String getDHXText(SeleniumEnumWrapper myEnum, String option);
+    
 }

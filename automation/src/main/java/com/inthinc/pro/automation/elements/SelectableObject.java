@@ -42,6 +42,11 @@ public class SelectableObject extends Text implements Selectable {
 	    	}
 	    	return select(value.getText());
 	    }
+	    
+	    @Override
+	    public String getText(Integer optionNumber){
+	        return selenium.getSelectOptions(myEnum)[--optionNumber];
+	    }
 
 	    @Override
 	    public SelectableObject select(Integer optionNumber) {

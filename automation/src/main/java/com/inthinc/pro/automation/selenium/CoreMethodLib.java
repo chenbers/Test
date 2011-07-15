@@ -579,6 +579,13 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         pause(3, "Pause so the browser has a chance to catch up");
         return this;
     }
+    
+    @Override
+    public String getDHXText(SeleniumEnumWrapper myEnum, String option){
+        String element = getLocator(myEnum);
+        String xpath = Xpath.start().body().div(Id.id(element)).div(option).toString();
+        return getText(xpath);
+    }
 
     /**
      * @see {@link com.thoughtworks.selenium.DefaultSelenium#selectWindow(String)}
@@ -695,6 +702,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib waitForPageToLoad(Integer timeout) {
         waitForPageToLoad(timeout.toString());
         return this;
+    }
+
+    @Override
+    public String[] getSelectOptions(SeleniumEnumWrapper myEnum) {
+        String element = getLocator(myEnum);
+        return getSelectOptions(element);
     }
 
 }

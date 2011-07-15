@@ -106,6 +106,12 @@ public interface ElementInterface {
          */
         public ElementInterface selectPartMatch(String partialMatch, Integer matchNumber);
         
+        /**
+         * Returns the <code>entryNumber</code> text
+         * @param entryNumber
+         * @return
+         */
+        public String getText(Integer optionNumber);
     }
     public interface TableBased extends ElementInterface {
         public Boolean assertPresence(Integer row, Boolean present);

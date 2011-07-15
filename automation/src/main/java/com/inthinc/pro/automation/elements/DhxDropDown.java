@@ -172,6 +172,12 @@ public class DhxDropDown extends DropDown implements Selectable {
         selenium.pause(pause, "Wait for elements to refresh");
         return this;
     }
+    
+    @Override
+    public String getText(Integer optionNumber){
+        assignIDs();
+        return selenium.getDHXText(myEnum, optionNumber.toString());
+    }
 
     private String makeXpath(String secondDiv) {
         String xpath = Xpath.start().div(Id.id(myEnum.getIDs()[0])).div(secondDiv).toString();
