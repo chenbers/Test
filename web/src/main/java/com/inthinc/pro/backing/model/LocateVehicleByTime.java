@@ -28,7 +28,7 @@ public class LocateVehicleByTime {
         
         if(vehicleID==null) return "";
         
-        Interval interval = new Interval(new DateTime(date).minusHours(1),new DateTime(date).plusHours(1));
+        Interval interval = new Interval(new DateTime(date).minusDays(1),new DateTime(date).plusDays(1));
         List<HOSRecord> hosRecords  = getLatLngs(vehicleID, date, interval);
         
         if(hosRecords==null) return "";
