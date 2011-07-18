@@ -5,6 +5,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class InvalidOccupantEvent extends LoginEvent {
     public EventType getEventType() {
-        return EventType.NEW_OCCUPANT;
+        return EventType.INVALID_OCCUPANT;
     }
 }
