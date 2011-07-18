@@ -17,6 +17,7 @@ public class EventCategoryTest {
             11,
             2,
             3,
+            4,
             4
     };
     
