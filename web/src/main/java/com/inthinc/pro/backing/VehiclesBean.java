@@ -584,7 +584,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 valid = false;
                 final String summary = MessageUtil.getMessageString("editVehicle_uniqueVIN");
                 final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-                context.addMessage("edit-form:editVehicle-VIN", message);
+                context.addMessage("edit-form:editVehicle-vin", message);
             }
          }
         

@@ -77,7 +77,7 @@ public enum AdminVehicleViewEnum implements SeleniumEnums {
     TXTFIELD_UNSAFE_TURN("", "edit-form:editVehicle-hardTurnInput"),
     TXTFIELD_IDLING_THRESHOLD("", "edit-form:editVehicle-idlingThresholdInput"),
     
-    TXTFIELD_VIN(""            ,"edit-form:editVehicle-VIN"),
+    TXTFIELD_VIN(""            ,"edit-form:editVehicle-vin "),
     TXTFIELD_MAKE(""           ,"edit-form:editVehicle-make"),
     TXTFIELD_MODEL(""          ,"edit-form:editVehicle-model"),
     DROPDOWN_YEAR(""           ,"edit-form:editVehicle-year"),
