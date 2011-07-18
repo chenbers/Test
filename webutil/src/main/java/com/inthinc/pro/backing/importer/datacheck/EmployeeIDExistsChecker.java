@@ -13,11 +13,11 @@ public class EmployeeIDExistsChecker extends DataChecker {
         if (accountName == null || employeeID == null)
             return null;
 
-        Account account = DataCache.getAccount(accountName);
+        Account account = dataCache.getAccount(accountName);
         if (account == null)
             return null;
         
-        Person person = DataCache.getPersonForEmployeeID(account.getAccountID(), employeeID);
+        Person person = dataCache.getPersonForEmployeeID(account.getAccountID(), employeeID);
         
         if (person == null) {
             return "ERROR: A person does not exist with employeeID: " + employeeID;

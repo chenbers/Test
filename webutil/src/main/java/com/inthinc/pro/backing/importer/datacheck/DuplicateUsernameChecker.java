@@ -15,13 +15,13 @@ public class DuplicateUsernameChecker extends DataChecker {
         if (accountName == null || employeeID == null || username == null)
             return "ERROR: No account name or username or employeeID specified.";
 
-        Account account = DataCache.getAccount(accountName);
+        Account account = dataCache.getAccount(accountName);
         if (account == null)
             return null;
 
         
-        Person person = DataCache.getPersonForEmployeeID(account.getAccountID(), employeeID);
-        User user = DataCache.getUserForUsername(username);
+        Person person = dataCache.getPersonForEmployeeID(account.getAccountID(), employeeID);
+        User user = dataCache.getUserForUsername(username);
         if (user != null) {
             if (person == null || !user.getPerson().getPersonID().equals(person.getPersonID())) {
                 return "ERROR: The employeeID " + employeeID + " and the username " + username + " refer to 2 different Person records.  This is not allowed.";

@@ -17,15 +17,27 @@ import org.richfaces.event.UploadEvent;
 import org.richfaces.model.UploadItem;
 
 import com.inthinc.pro.backing.BaseBean;
+import com.inthinc.pro.backing.importer.datacheck.DataCache;
 
 public class BulkImportBean extends BaseBean {
 
     private static final Logger logger = Logger.getLogger(BulkImportBean.class);
 
+    private DataCache dataCache;
     private ImportType importType;
     private String feedback;
     private List<String> errorList;
     private UploadFile uploadFile;
+    private ProgressBarBean progressBarBean;
+
+
+    public ProgressBarBean getProgressBarBean() {
+        return progressBarBean;
+    }
+
+    public void setProgressBarBean(ProgressBarBean progressBarBean) {
+        this.progressBarBean = progressBarBean;
+    }
 
     public String getFeedback() {
         return feedback;
@@ -74,6 +86,7 @@ public class BulkImportBean extends BaseBean {
         try {
             setFeedback(null);
             setErrorList(null);
+            dataCache.init();
             List<String> msgList = new FileChecker().checkFile(importType, new FileInputStream(uploadFile.getFile()), true);
             if (msgList.size() == 0)
                 setFeedback("The file check was SUCCESSFUL.  No issues were found.");
@@ -103,18 +116,23 @@ public class BulkImportBean extends BaseBean {
         try {
             setFeedback(null);
             setErrorList(null);
+            progressBarBean.startProcess();
+            dataCache.init();
             logger.info("Import File: " + uploadFile.getFile().getName());
-            List<String> msgList = new FileImporter().importFile(importType, new FileInputStream(uploadFile.getFile()));
+            List<String> msgList = new FileImporter().importFile(importType, new FileInputStream(uploadFile.getFile()), progressBarBean);
             if (msgList.size() == 0) {
                 setFeedback("The file import was SUCCESSFUL.");
+                progressBarBean.stopProcess();
                 logger.info("Import File: " + uploadFile.getName() + " SUCCESSFUL");
             }
             else {
                 setFeedback("The file import was NOT SUCCESSFUL.  The following errors were found:");
+                progressBarBean.stopProcess();
                 setErrorList(msgList);
                 logger.info("Import File: " + uploadFile.getName() + " ERRORS");
             }
         } catch (FileNotFoundException e) {
+            progressBarBean.stopProcess();
             setFeedback("File upload failed.  File not found. " + e.getMessage());
         }
     }
@@ -159,6 +177,7 @@ public class BulkImportBean extends BaseBean {
     {
         uploadFile = null;
         feedback = null;
+        progressBarBean.reset();
     }
     
     public void fileUploadListener(UploadEvent event) throws Exception{
@@ -167,4 +186,12 @@ public class BulkImportBean extends BaseBean {
         uploadFile.setName(item.getFileName());
         uploadFile.setFile(item.getFile());
     }  
+    public DataCache getDataCache() {
+        return dataCache;
+    }
+
+    public void setDataCache(DataCache dataCache) {
+        this.dataCache = dataCache;
+    }
+
 }

@@ -32,6 +32,7 @@
 	<bean id="zonePublishBean" class="com.inthinc.pro.backing.ZonePublishBean" init-method="init" scope="session"/>
 	<bean id="tripViewerBean" class="com.inthinc.pro.backing.tripviewer.TripViewerBean" scope="session"/>
 	<bean id="bulkImportBean" class="com.inthinc.pro.backing.importer.BulkImportBean" scope="session"/>
+	<bean id="progressBarBean" class="com.inthinc.pro.backing.importer.ProgressBarBean" scope="session"/>
 	<bean id="hosBean" class="com.inthinc.pro.backing.hos.HOSBean" scope="session"/>
 	
 	<!--  UI beans -->
@@ -79,6 +80,18 @@
 	<bean id="templateFormat" class="com.inthinc.pro.backing.importer.TemplateFormat" abstract="true"/>
 	<bean id="driverTemplateFormat" class="com.inthinc.pro.backing.importer.DriverTemplateFormat" parent="templateFormat"/>
 	<bean id="vehicleTemplateFormat" class="com.inthinc.pro.backing.importer.VehicleTemplateFormat" parent="templateFormat"/>
+
+   	<bean id="dataChecker" class="com.inthinc.pro.backing.importer.datacheck.DataChecker"/>
+	<bean id="duplicateVINChecker" class="com.inthinc.pro.backing.importer.datacheck.DuplicateVINChecker" parent="dataChecker"/>
+	<bean id="deviceSerialorIMEIChecker" class="com.inthinc.pro.backing.importer.datacheck.DeviceSerialorIMEIChecker" parent="dataChecker"/>
+    <bean id="employeeIDExistsChecker" class="com.inthinc.pro.backing.importer.datacheck.EmployeeIDExistsChecker" parent="dataChecker"/>
+    <bean id="accountNameChecker" class="com.inthinc.pro.backing.importer.datacheck.AccountNameChecker" parent="dataChecker"/>
+    <bean id="groupPathChecker" class="com.inthinc.pro.backing.importer.datacheck.GroupPathChecker" parent="dataChecker"/>
+    <bean id="duplicateEmailChecker" class="com.inthinc.pro.backing.importer.datacheck.DuplicateEmailChecker" parent="dataChecker"/>
+    <bean id="duplicateEmployeeIDChecker" class="com.inthinc.pro.backing.importer.datacheck.DuplicateEmployeeIDChecker" parent="dataChecker"/>
+    <bean id="duplicateUsernameChecker" class="com.inthinc.pro.backing.importer.datacheck.DuplicateUsernameChecker" parent="dataChecker"/>
+    <bean id="validRFIDBarcodeChecker" class="com.inthinc.pro.backing.importer.datacheck.ValidRFIDBarcodeChecker" parent="dataChecker"/>
+
 
 	<bean id="dataCache" class="com.inthinc.pro.backing.importer.datacheck.DataCache" init-method="init"/>
 	

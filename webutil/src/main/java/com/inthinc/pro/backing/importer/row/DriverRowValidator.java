@@ -16,7 +16,13 @@ import com.inthinc.pro.backing.importer.datacheck.ValidRFIDBarcodeChecker;
 
 public class DriverRowValidator extends RowValidator {
 
-    
+    private DuplicateEmailChecker duplicateEmailChecker;
+    private DuplicateEmployeeIDChecker duplicateEmployeeIDChecker;
+    private ValidRFIDBarcodeChecker validRFIDBarcodeChecker;
+    private DuplicateUsernameChecker duplicateUsernameChecker;
+    private AccountNameChecker accountNameChecker;
+    private GroupPathChecker groupPathChecker;
+
     DriverTemplateFormat driverTemplateFormat;
 
     @Override
@@ -26,19 +32,19 @@ public class DriverRowValidator extends RowValidator {
         
         if (errorList.isEmpty()) {
             // check the actual data in the row
-            addToList(new AccountNameChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX)), errorList);
-            addToList(new GroupPathChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.TEAM_PATH_IDX)), errorList);
+            addToList(accountNameChecker.checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX)), errorList);
+            addToList(groupPathChecker.checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.TEAM_PATH_IDX)), errorList);
 
             if (rowData.size() > DriverTemplateFormat.EMPLOYEE_ID_IDX) {
-                String error = new DuplicateEmployeeIDChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));
+                String error = duplicateEmployeeIDChecker.checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX));
                 addToList(error, errorList);
                 if (includeWarnings && error == null)
-                    addToList(new DuplicateEmployeeIDChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX)), errorList);
+                    addToList(duplicateEmployeeIDChecker.checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX)), errorList);
             }
             
 
             if (rowData.size() > DriverTemplateFormat.BARCODE_IDX) {
-                String error = new ValidRFIDBarcodeChecker().checkForErrors(rowData.get(DriverTemplateFormat.BARCODE_IDX));
+                String error = validRFIDBarcodeChecker.checkForErrors(rowData.get(DriverTemplateFormat.BARCODE_IDX));
                 addToList(error, errorList);
             }
 
@@ -46,20 +52,20 @@ public class DriverRowValidator extends RowValidator {
             if (rowData.size() > DriverTemplateFormat.USERNAME_IDX ) {
                 String username = rowData.get(DriverTemplateFormat.USERNAME_IDX);
                 if (username != null && !username.isEmpty()) { 
-                    String error = new DuplicateUsernameChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX),  rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX), username);
+                    String error = duplicateUsernameChecker.checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX),  rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX), username);
                     addToList(error, errorList);
                     if (includeWarnings && error == null) {
-                        addToList(new DuplicateUsernameChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), username), errorList);
+                        addToList(duplicateUsernameChecker.checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), username), errorList);
                     }
                 }
             }
             if (rowData.size() > DriverTemplateFormat.EMAIL_IDX) {
                 String email = rowData.get(DriverTemplateFormat.EMAIL_IDX);
                 if (email != null && !email.isEmpty()) {
-                    String error = new DuplicateEmailChecker().checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX), email);
+                    String error = duplicateEmailChecker.checkForErrors(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(DriverTemplateFormat.EMPLOYEE_ID_IDX), email);
                     addToList(error, errorList);
                     if (includeWarnings && error == null) {
-                        addToList(new DuplicateEmailChecker().checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), email), errorList);
+                        addToList(duplicateEmailChecker.checkForWarnings(rowData.get(DriverTemplateFormat.ACCOUNT_NAME_IDX), email), errorList);
                     }
                 }
             }
@@ -107,4 +113,52 @@ public class DriverRowValidator extends RowValidator {
         return warningList;
         
     }
+    public DuplicateEmailChecker getDuplicateEmailChecker() {
+        return duplicateEmailChecker;
+    }
+
+    public void setDuplicateEmailChecker(DuplicateEmailChecker duplicateEmailChecker) {
+        this.duplicateEmailChecker = duplicateEmailChecker;
+    }
+
+    public DuplicateEmployeeIDChecker getDuplicateEmployeeIDChecker() {
+        return duplicateEmployeeIDChecker;
+    }
+
+    public void setDuplicateEmployeeIDChecker(DuplicateEmployeeIDChecker duplicateEmployeeIDChecker) {
+        this.duplicateEmployeeIDChecker = duplicateEmployeeIDChecker;
+    }
+
+    public ValidRFIDBarcodeChecker getValidRFIDBarcodeChecker() {
+        return validRFIDBarcodeChecker;
+    }
+
+    public void setValidRFIDBarcodeChecker(ValidRFIDBarcodeChecker validRFIDBarcodeChecker) {
+        this.validRFIDBarcodeChecker = validRFIDBarcodeChecker;
+    }
+
+    public DuplicateUsernameChecker getDuplicateUsernameChecker() {
+        return duplicateUsernameChecker;
+    }
+
+    public void setDuplicateUsernameChecker(DuplicateUsernameChecker duplicateUsernameChecker) {
+        this.duplicateUsernameChecker = duplicateUsernameChecker;
+    }
+
+    public AccountNameChecker getAccountNameChecker() {
+        return accountNameChecker;
+    }
+
+    public void setAccountNameChecker(AccountNameChecker accountNameChecker) {
+        this.accountNameChecker = accountNameChecker;
+    }
+
+    public GroupPathChecker getGroupPathChecker() {
+        return groupPathChecker;
+    }
+
+    public void setGroupPathChecker(GroupPathChecker groupPathChecker) {
+        this.groupPathChecker = groupPathChecker;
+    }
+
 }

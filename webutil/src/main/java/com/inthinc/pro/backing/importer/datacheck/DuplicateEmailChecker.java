@@ -13,12 +13,12 @@ public class DuplicateEmailChecker extends DataChecker {
         if (accountName == null || email == null)
             return "ERROR: No account name or email specified.";
 
-        Account account = DataCache.getAccount(accountName);
+        Account account = dataCache.getAccount(accountName);
         if (account == null)
             return null;
         
-        Person personFromEmpID = DataCache.getPersonForEmployeeID(account.getAccountID(), employeeID);
-        Person person = DataCache.getPersonForEmail(email);
+        Person personFromEmpID = dataCache.getPersonForEmployeeID(account.getAccountID(), employeeID);
+        Person person = dataCache.getPersonForEmail(email);
         if (personFromEmpID != null && person != null) {
             if (!personFromEmpID.getPersonID().equals(person.getPersonID())) {
                 return "ERROR: The employeeID " + employeeID + " and the e-mail address " + email + " refer to 2 different Person records.  This is not allowed.";

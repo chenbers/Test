@@ -23,16 +23,16 @@ import com.inthinc.pro.model.Vehicle;
 
 public class DataCache {
     
-    private static Map<String, Account> accountMap;
-    private static Map<Integer, List<Group>> groupMap;
-    private static Map<Integer, List<Person>> personMap;
-    private static AccountDAO accountDAO;
-    private static GroupDAO groupDAO;
-    private static PersonDAO personDAO;
-    private static UserDAO userDAO;
-    private static DriverDAO driverDAO;
-    private static VehicleDAO vehicleDAO;
-    private static DeviceDAO deviceDAO;
+    private Map<String, Account> accountMap;
+    private Map<Integer, List<Group>> groupMap;
+    private Map<Integer, List<Person>> personMap;
+    private AccountDAO accountDAO;
+    private GroupDAO groupDAO;
+    private PersonDAO personDAO;
+    private UserDAO userDAO;
+    private DriverDAO driverDAO;
+    private VehicleDAO vehicleDAO;
+    private DeviceDAO deviceDAO;
     
     public void init()
     {
@@ -45,20 +45,8 @@ public class DataCache {
         return groupMap;
     }
     
-    // TODO: Ask David Story for a getAcctByName method
-    public static Account getAccount(String accountName) {
-        Account account = accountMap.get(accountName);
-        if (account == null) {
-            List<Account> accountList = accountDAO.getAllAcctIDs();
-            for (Account acc : accountList) {
-                if (acc.getAcctName().equals(accountName)) {
-                    accountMap.put(acc.getAcctName(), acc);
-                    return acc;
-                }
-            }
-        }
-        
-        return account;
+    public  Account getAccount(String accountName) {
+        return accountMap.get(accountName);
     }
 
     private void initAccountMap() {
@@ -75,7 +63,7 @@ public class DataCache {
         personMap = new HashMap<Integer, List<Person>>();
     }
     
-    public static List<Group> getGroupList(Integer accountID)
+    public  List<Group> getGroupList(Integer accountID)
     {
         
         List<Group> groups = groupMap.get(accountID);
@@ -86,7 +74,7 @@ public class DataCache {
         
         return groups;
     }
-    public static Group getFleetGroup(Integer accountID)
+    public  Group getFleetGroup(Integer accountID)
     {
         
         List<Group> groups = getGroupList(accountID);
@@ -96,7 +84,7 @@ public class DataCache {
         return null;
     }
     
-    public static Person getPersonForEmployeeID(Integer accountID, String employeeID) {
+    public  Person getPersonForEmployeeID(Integer accountID, String employeeID) {
 
         List<Person> persons = personMap.get(accountID);
 
@@ -117,7 +105,7 @@ public class DataCache {
 
     }
     
-    public static Account getAccountForGroupID(Integer groupID) {
+    public  Account getAccountForGroupID(Integer groupID) {
         Group group = groupDAO.findByID(groupID);
         if (group != null) {
             return getAccountForAccountID(group.getAccountID());
@@ -125,19 +113,19 @@ public class DataCache {
         return null;
     }
 
-    public static User getUserForUsername(String username) {
+    public  User getUserForUsername(String username) {
         return userDAO.findByUserName(username);
     }
 
-    public static Person getPersonForEmail(String email) {
+    public  Person getPersonForEmail(String email) {
         return personDAO.findByEmail(email);
     }
 
-    public static Account getAccountForAccountID(Integer accountID) {
+    public  Account getAccountForAccountID(Integer accountID) {
         return accountDAO.findByID(accountID);
     }
 
-    public static Driver getDriverForBarCode(String barcode) {
+    public  Driver getDriverForBarCode(String barcode) {
         Integer driverID = driverDAO.getDriverIDByBarcode(barcode);
         if (driverID == null)
             return null;
@@ -145,21 +133,21 @@ public class DataCache {
         return driverDAO.findByID(driverID);
     }
 
-    public static Vehicle getVehicleForVIN(String vin) {
+    public  Vehicle getVehicleForVIN(String vin) {
         return vehicleDAO.findByVIN(vin);
     }
     
-    public static Device getDeviceForSerialNumber(String serialNumber) {
+    public Device getDeviceForSerialNumber(String serialNumber) {
         
         return deviceDAO.findBySerialNum(serialNumber);
     }
 
-    public static Device getDeviceForIMEI(String imei) {
+    public Device getDeviceForIMEI(String imei) {
         
         return deviceDAO.findByIMEI(imei);
     }
     
-    public static boolean isValidRFIDBarcode(String barcode)
+    public  boolean isValidRFIDBarcode(String barcode)
     {
         List<Long> rfidList = driverDAO.getRfidsByBarcode(barcode);
         
@@ -171,14 +159,14 @@ public class DataCache {
     }
 
     public void setPersonDAO(PersonDAO personDAO) {
-        DataCache.personDAO = personDAO;
+        this.personDAO = personDAO;
     }
     public UserDAO getUserDAO() {
         return userDAO;
     }
 
     public void setUserDAO(UserDAO userDAO) {
-        DataCache.userDAO = userDAO;
+        this.userDAO = userDAO;
     }
 
     public DriverDAO getDriverDAO() {
@@ -186,34 +174,34 @@ public class DataCache {
     }
 
     public void setDriverDAO(DriverDAO driverDAO) {
-        DataCache.driverDAO = driverDAO;
+        this.driverDAO = driverDAO;
     }
 
     public AccountDAO getAccountDAO() {
         return accountDAO;
     }
     public void setAccountDAO(AccountDAO accountDAO) {
-        DataCache.accountDAO = accountDAO;
+        this.accountDAO = accountDAO;
     }
     public GroupDAO getGroupDAO() {
         return groupDAO;
     }
     public void setGroupDAO(GroupDAO groupDAO) {
-        DataCache.groupDAO = groupDAO;
+        this.groupDAO = groupDAO;
     }
     public VehicleDAO getVehicleDAO() {
         return vehicleDAO;
     }
 
     public void setVehicleDAO(VehicleDAO vehicleDAO) {
-        DataCache.vehicleDAO = vehicleDAO;
+        this.vehicleDAO = vehicleDAO;
     }
     public DeviceDAO getDeviceDAO() {
         return deviceDAO;
     }
 
     public void setDeviceDAO(DeviceDAO deviceDAO) {
-        DataCache.deviceDAO = deviceDAO;
+        this.deviceDAO = deviceDAO;
     }
 
 

@@ -13,20 +13,20 @@ public class DeviceSerialorIMEIChecker extends DataChecker {
         if (accountName == null || serialOrIMEI == null)
             return null;
 
-        Account account = DataCache.getAccount(accountName);
+        Account account = dataCache.getAccount(accountName);
         if (account == null)
             return null;
         
-        Device device = DataCache.getDeviceForSerialNumber(serialOrIMEI);
+        Device device = dataCache.getDeviceForSerialNumber(serialOrIMEI);
         if (device == null)
-            device = DataCache.getDeviceForIMEI(serialOrIMEI);
+            device = dataCache.getDeviceForIMEI(serialOrIMEI);
         
         if (device == null) {
             return "ERROR: The device with Serial Number or IMEI " + serialOrIMEI + " does not exist.";
         }
         
         if (!device.getAccountID().equals(account.getAccountID())) {
-            Account otherAccount = DataCache.getAccountForAccountID(device.getAccountID());
+            Account otherAccount = dataCache.getAccountForAccountID(device.getAccountID());
             return "ERROR: The device with Serial Number or IMEI " + serialOrIMEI + " exists in a different account: " + otherAccount.toString() + " This is not allowed.";
         }
         

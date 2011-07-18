@@ -8,8 +8,6 @@ import com.inthinc.pro.ProDAOException;
 import com.inthinc.pro.backing.importer.BulkImportBean;
 import com.inthinc.pro.backing.importer.VehicleTemplateFormat;
 import com.inthinc.pro.backing.importer.datacheck.DataCache;
-import com.inthinc.pro.backing.importer.datacheck.DeviceSerialorIMEIChecker;
-import com.inthinc.pro.backing.importer.datacheck.EmployeeIDExistsChecker;
 import com.inthinc.pro.dao.VehicleDAO;
 import com.inthinc.pro.model.Account;
 import com.inthinc.pro.model.Device;
@@ -24,6 +22,8 @@ public class VehicleRowImporter extends RowImporter {
     private static final Logger logger = Logger.getLogger(BulkImportBean.class);
     private VehicleDAO vehicleDAO;
     
+    private DataCache dataCache;
+    
 
     @Override
     public String importRow(List<String> rowData) {
@@ -37,7 +37,7 @@ public class VehicleRowImporter extends RowImporter {
             
             
             String vin = rowData.get(VehicleTemplateFormat.VIN_IDX);
-            Vehicle vehicle = DataCache.getVehicleForVIN(vin);
+            Vehicle vehicle = dataCache.getVehicleForVIN(vin);
             
             vehicle = createOrUpdateVehicle(vehicle, vin, account.getAccountID(), groupID,
                     rowData.get(VehicleTemplateFormat.MAKE_IDX),
@@ -52,9 +52,9 @@ public class VehicleRowImporter extends RowImporter {
             if (rowData.size() > VehicleTemplateFormat.DEVICE_SERIAL_NUMBER_IDX) {
                 String deviceSerialorIMEI = rowData.get(VehicleTemplateFormat.DEVICE_SERIAL_NUMBER_IDX);
                 if (deviceSerialorIMEI != null && !deviceSerialorIMEI.isEmpty()) {
-                    Device device = DataCache.getDeviceForSerialNumber(deviceSerialorIMEI);
+                    Device device = dataCache.getDeviceForSerialNumber(deviceSerialorIMEI);
                     if (device == null)
-                        device = DataCache.getDeviceForIMEI(deviceSerialorIMEI);
+                        device = dataCache.getDeviceForIMEI(deviceSerialorIMEI);
                     if (device == null) {
                         logger.info("Vehicle/Device assignment failed.  Device not found for " + deviceSerialorIMEI);
                     }
@@ -68,7 +68,7 @@ public class VehicleRowImporter extends RowImporter {
             if (rowData.size() > VehicleTemplateFormat.DRIVER_EMPLOYEE_ID_IDX) {
                 String employeeID = rowData.get(VehicleTemplateFormat.DRIVER_EMPLOYEE_ID_IDX);
                 if (employeeID != null && !employeeID.isEmpty()) {
-                    Person person = DataCache.getPersonForEmployeeID(account.getAccountID(), employeeID);
+                    Person person = dataCache.getPersonForEmployeeID(account.getAccountID(), employeeID);
                     if (person == null || person.getDriverID() == null){
                         logger.info("Vehicle/Driver assignment failed.  Driver not found for " + employeeID);
                     }
@@ -138,4 +138,12 @@ public class VehicleRowImporter extends RowImporter {
     public void setVehicleDAO(VehicleDAO vehicleDAO) {
         this.vehicleDAO = vehicleDAO;
     }
+    public DataCache getDataCache() {
+        return dataCache;
+    }
+
+    public void setDataCache(DataCache dataCache) {
+        this.dataCache = dataCache;
+    }
+
 }

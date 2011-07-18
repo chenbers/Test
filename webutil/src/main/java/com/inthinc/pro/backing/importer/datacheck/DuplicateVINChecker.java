@@ -15,11 +15,11 @@ public class DuplicateVINChecker extends DataChecker {
         if (accountName == null || VIN == null)
             return null;
 
-        Account account = DataCache.getAccount(accountName);
+        Account account = dataCache.getAccount(accountName);
         if (account == null)
             return null;
         
-        Vehicle vehicle = DataCache.getVehicleForVIN(VIN);
+        Vehicle vehicle = dataCache.getVehicleForVIN(VIN);
         if (vehicle != null)
             return "WARNING: A Vehicle ( " + vehicle.getFullName() + ") already exists with vin " + VIN + ".  On import the vehicle will be updated.";
         
@@ -34,19 +34,19 @@ public class DuplicateVINChecker extends DataChecker {
         if (accountName == null || VIN == null)
             return null;
 
-        Account account = DataCache.getAccount(accountName);
+        Account account = dataCache.getAccount(accountName);
         if (account == null)
             return null;
         
-        List<Group> accountGroupList = DataCache.getGroupList(account.getAccountID());
+        List<Group> accountGroupList = dataCache.getGroupList(account.getAccountID());
 
-        Vehicle vehicle = DataCache.getVehicleForVIN(VIN);
+        Vehicle vehicle = dataCache.getVehicleForVIN(VIN);
         if (vehicle != null) {
             for (Group group : accountGroupList)
                 if (group.getGroupID().equals(vehicle.getGroupID()))
                     return null;
             
-            Account otherAccount = DataCache.getAccountForGroupID(vehicle.getGroupID());
+            Account otherAccount = dataCache.getAccountForGroupID(vehicle.getGroupID());
             return "ERROR: The vin " + VIN + " is currently used by a vehicle in account " + otherAccount + ".  The VIN cannot be used by vehicles in 2 different accounts.";
         }
         

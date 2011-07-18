@@ -10,7 +10,7 @@ public class ValidRFIDBarcodeChecker extends DataChecker {
         if (barcode == null || barcode.isEmpty())
             return null;
 
-        if (!DataCache.isValidRFIDBarcode(barcode))
+        if (!dataCache.isValidRFIDBarcode(barcode))
             return "ERROR: RFID Barcode not found in database.";
         
         return null;

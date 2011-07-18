@@ -8,7 +8,7 @@ public class AccountNameChecker extends DataChecker {
         
         String accountName = data[0];
         
-        if (accountName == null || DataCache.getAccount(accountName) == null) {
+        if (accountName == null || dataCache.getAccount(accountName) == null) {
             return "ERROR: Account " + accountName + " does not exist.";
         }
 

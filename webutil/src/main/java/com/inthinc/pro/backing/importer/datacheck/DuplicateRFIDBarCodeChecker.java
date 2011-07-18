@@ -14,11 +14,11 @@ public class DuplicateRFIDBarCodeChecker extends DataChecker {
         if (accountName == null || barCode == null)
             return "ERROR: No account name or barCode specified.";
 
-        Account account = DataCache.getAccount(accountName);
+        Account account = dataCache.getAccount(accountName);
         if (account == null)
             return null;
 
-        Driver driver = DataCache.getDriverForBarCode(barCode);
+        Driver driver = dataCache.getDriverForBarCode(barCode);
         if (driver != null && driver.getPerson().getAccountID().equals(account.getAccountID()))
             return "WARNING: A Driver ( " + driver.getPerson().getFullName() + ") already exists with RFID bar code " + barCode + ".  On import the driver will be updated.";
         
@@ -33,13 +33,13 @@ public class DuplicateRFIDBarCodeChecker extends DataChecker {
         if (accountName == null || barCode == null)
             return "ERROR: No account name or barCode specified.";
 
-        Account account = DataCache.getAccount(accountName);
+        Account account = dataCache.getAccount(accountName);
         if (account == null)
             return null;
         
-        Driver driver = DataCache.getDriverForBarCode(barCode);
+        Driver driver = dataCache.getDriverForBarCode(barCode);
         if (driver != null && !driver.getPerson().getAccountID().equals(account.getAccountID())) {
-            Account otherAccount = DataCache.getAccountForAccountID(driver.getPerson().getAccountID());
+            Account otherAccount = dataCache.getAccountForAccountID(driver.getPerson().getAccountID());
             return "ERROR: The barcode " + barCode + " is not available for use because it already exists in a different account (" + otherAccount.getAcctName() + ").";
         }
         return null;

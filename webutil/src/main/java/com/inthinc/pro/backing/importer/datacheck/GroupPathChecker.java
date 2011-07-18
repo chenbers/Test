@@ -15,13 +15,13 @@ public class GroupPathChecker extends DataChecker {
         if (accountName == null || groupPath == null)
             return null;
 
-        Account account = DataCache.getAccount(accountName);
+        Account account = dataCache.getAccount(accountName);
         if (account == null)
             return null;
 
         boolean foundFleet = false;
         String[] groupName = groupPath.split("/");
-        List<Group> groupList = DataCache.getGroupList(account.getAccountID());
+        List<Group> groupList = dataCache.getGroupList(account.getAccountID());
         for (Group group : groupList) {
             if (group.getName().equals(groupName[0]))
                 foundFleet = true;

@@ -16,29 +16,13 @@ import com.inthinc.pro.backing.importer.datacheck.GroupPathChecker;
 public class VehicleRowValidator extends RowValidator {
 
     private VehicleTemplateFormat vehicleTemplateFormat;
-/*
- *             new ColumnFormat("Account Name", true, 30),
-            new ColumnFormat("Team (full path)", true, 255),
-            new ColumnFormat("Make", false, 22),
-            new ColumnFormat("Model", false, 22),
-            new ColumnFormat("Year", false, 4),
-            new ColumnFormat("Vehicle Name", true, 30),
-            new ColumnFormat("VIN", true, 17),
-            new ColumnFormat("State", false, new StateValidator()),
-            new ColumnFormat("License", false, 10),
-            new ColumnFormat("Device Serial Number", false, 10),
-            new ColumnFormat("E-call number", false, 22),
-            new ColumnFormat("Employee ID", false, 30),
     
- */
-    
-    public VehicleTemplateFormat getVehicleTemplateFormat() {
-        return vehicleTemplateFormat;
-    }
+    private DuplicateVINChecker duplicateVINChecker;
+    private DeviceSerialorIMEIChecker deviceSerialorIMEIChecker;
+    private EmployeeIDExistsChecker employeeIDExistsChecker;
+    private AccountNameChecker accountNameChecker;
+    private GroupPathChecker groupPathChecker;
 
-    public void setVehicleTemplateFormat(VehicleTemplateFormat vehicleTemplateFormat) {
-        this.vehicleTemplateFormat = vehicleTemplateFormat;
-    }
 
     @Override
     public List<String> validateRow(List<String> rowData, boolean includeWarnings) {
@@ -47,19 +31,19 @@ public class VehicleRowValidator extends RowValidator {
         
         if (errorList.isEmpty()) {
             // check the actual data in the row
-            addToList(new AccountNameChecker().checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX)), errorList);
-            addToList(new GroupPathChecker().checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(VehicleTemplateFormat.TEAM_PATH_IDX)), errorList);
+            addToList(accountNameChecker.checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX)), errorList);
+            addToList(groupPathChecker.checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX), rowData.get(VehicleTemplateFormat.TEAM_PATH_IDX)), errorList);
             
-            String error = new DuplicateVINChecker().checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX),  rowData.get(VehicleTemplateFormat.VIN_IDX));
+            String error = duplicateVINChecker.checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX),  rowData.get(VehicleTemplateFormat.VIN_IDX));
             addToList(error, errorList);
             if (includeWarnings && error == null) {
-                addToList(new DuplicateVINChecker().checkForWarnings(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX),  rowData.get(VehicleTemplateFormat.VIN_IDX)), errorList);
+                addToList(duplicateVINChecker.checkForWarnings(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX),  rowData.get(VehicleTemplateFormat.VIN_IDX)), errorList);
             }
             
             if (rowData.size() > VehicleTemplateFormat.DEVICE_SERIAL_NUMBER_IDX) {
                 String deviceSerialorIMEI = rowData.get(VehicleTemplateFormat.DEVICE_SERIAL_NUMBER_IDX);
                 if (deviceSerialorIMEI != null && !deviceSerialorIMEI.isEmpty()) {
-                    error = new DeviceSerialorIMEIChecker().checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX),  deviceSerialorIMEI);
+                    error = deviceSerialorIMEIChecker.checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX),  deviceSerialorIMEI);
                     addToList(error, errorList);
                 }
             }
@@ -67,7 +51,7 @@ public class VehicleRowValidator extends RowValidator {
             if (rowData.size() > VehicleTemplateFormat.DRIVER_EMPLOYEE_ID_IDX) {
                 String employeeID = rowData.get(VehicleTemplateFormat.DRIVER_EMPLOYEE_ID_IDX);
                 if (employeeID != null && !employeeID.isEmpty()) {
-                    error = new EmployeeIDExistsChecker().checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX),  employeeID);
+                    error = employeeIDExistsChecker.checkForErrors(rowData.get(VehicleTemplateFormat.ACCOUNT_NAME_IDX),  employeeID);
                     addToList(error, errorList);
                 }
             }
@@ -105,5 +89,52 @@ public class VehicleRowValidator extends RowValidator {
         
         return warningList;
         
+    }
+
+    public VehicleTemplateFormat getVehicleTemplateFormat() {
+        return vehicleTemplateFormat;
+    }
+
+    public void setVehicleTemplateFormat(VehicleTemplateFormat vehicleTemplateFormat) {
+        this.vehicleTemplateFormat = vehicleTemplateFormat;
+    }
+    public DuplicateVINChecker getDuplicateVINChecker() {
+        return duplicateVINChecker;
+    }
+
+    public void setDuplicateVINChecker(DuplicateVINChecker duplicateVINChecker) {
+        this.duplicateVINChecker = duplicateVINChecker;
+    }
+
+    public DeviceSerialorIMEIChecker getDeviceSerialorIMEIChecker() {
+        return deviceSerialorIMEIChecker;
+    }
+
+    public void setDeviceSerialorIMEIChecker(DeviceSerialorIMEIChecker deviceSerialorIMEIChecker) {
+        this.deviceSerialorIMEIChecker = deviceSerialorIMEIChecker;
+    }
+
+    public EmployeeIDExistsChecker getEmployeeIDExistsChecker() {
+        return employeeIDExistsChecker;
+    }
+
+    public void setEmployeeIDExistsChecker(EmployeeIDExistsChecker employeeIDExistsChecker) {
+        this.employeeIDExistsChecker = employeeIDExistsChecker;
+    }
+
+    public AccountNameChecker getAccountNameChecker() {
+        return accountNameChecker;
+    }
+
+    public void setAccountNameChecker(AccountNameChecker accountNameChecker) {
+        this.accountNameChecker = accountNameChecker;
+    }
+
+    public GroupPathChecker getGroupPathChecker() {
+        return groupPathChecker;
+    }
+
+    public void setGroupPathChecker(GroupPathChecker groupPathChecker) {
+        this.groupPathChecker = groupPathChecker;
     }
 }
