@@ -277,6 +277,11 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
     }
 
     @Override
+    public Long createFromNote(Long id, HOSRecord hosRecord) {
+        return new Long(0);
+    }
+        
+    @Override
     public Integer deleteByID(Long id) {
         System.out.println("delete called with id = " + id);
         for(HOSRecord hr:plainRecords){
