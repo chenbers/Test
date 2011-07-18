@@ -265,9 +265,13 @@ public class NotificationsSafetyTest extends WebRallyTest {
         
         //Compare hours.
         if(hour1 > hour2){
+            if(hour1 == 12)
+                return -1;
             return 1;
         }
         if(hour2 > hour1){
+            if(hour2 == 12)
+                return 1;
             return -1;
         }
         
