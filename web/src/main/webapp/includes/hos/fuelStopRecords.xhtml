@@ -8,6 +8,12 @@
   xmlns:rich="http://richfaces.org/rich"
   xmlns:security="http://www.springframework.org/security/tags">
 
+	<script type="text/javascript" >
+		function processObjectsChange(){
+			var	vehicle = document.getElementById("fuelStops-table-form:vehicleName").value;
+			updateData(vehicle);
+		};
+	</script>
 	<c:set var="context" value="fuelStopsTable"/>		
          	
     <a4j:region id="fuelStops-table-region">
@@ -24,7 +30,9 @@
                 <rich:suggestionbox id="vehicleSuggestionBoxId" for="vehicleName"
                     suggestionAction="#{fuelStopsBean.autocomplete}" var="result"
                     fetchValue="#{result.vehicleName}" 
-                    usingSuggestObjects="true">
+                    usingSuggestObjects="true"
+                    onobjectchange="processObjectsChange()"
+                    nothingLabel="#{messages.fuelStops_noVehiclesFound}">
                       <h:column>
                         <h:outputText id="vehicleSelected" value="#{result.vehicleName}" />
                     </h:column>
@@ -162,6 +170,11 @@
           
     	</a4j:region>
 		</a4j:outputPanel>
+		<a4j:jsFunction  ajaxSingle="true" name="updateData" action="#{fuelStopsBean.checkData}" 
+           					limitToList="true" immediate="true" reRender="#{context}">
+           	<a4j:actionparam name="vehicle" assignTo="#{fuelStopsBean.vehicleNameNow}"/>		
+        </a4j:jsFunction> 
+		
     </a4j:form>
 
     <ui:include src="../confirmDelete.xhtml">

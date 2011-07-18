@@ -44,8 +44,9 @@ public class FuelStopsBean extends BaseBean {
     
     private Integer vehicleID;
     private Vehicle vehicle;
-    
-    private FuelStopView item;
+    private String vehicleName;
+    private String vehicleNameNow;
+	private FuelStopView item;
     private ItemLoader itemLoader;
     
     private DriverDAO driverDAO;
@@ -59,8 +60,7 @@ public class FuelStopsBean extends BaseBean {
     
     private DateRange dateRange;
     
-    private boolean               allSelected;
-    private List<VehicleName> vehicleNameList;
+    private boolean   allSelected;
     
     private CRUDStrategy crudStrategy;
     
@@ -108,19 +108,6 @@ public class FuelStopsBean extends BaseBean {
             vehiclesSelectItems.add(new SelectItem(v.getVehicleID(), v.getName()));
         }
     }
-    private List<Vehicle> getEligibleVehicles(){
-        Set<VehicleDOTType> dotTypes = VehicleDOTType.getDOTTypes();
-
-        List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(this.getUser().getGroupID());
-        Iterator<Vehicle> it = vehicles.iterator();
-        while (it.hasNext()){
-            Vehicle vehicle = it.next();
-            if (!dotTypes.contains(vehicle.getDot())){
-                it.remove();
-            }
-        }
-        return vehicles;
-    }
     private List<SelectItem> initSelectItems(){
         
         final String BLANK_SELECTION = "&#160;";
@@ -163,6 +150,15 @@ public class FuelStopsBean extends BaseBean {
         item = null;
         allSelected = false;
     }
+    public void checkData(){
+    	
+    	if ((vehicle!= null) && !vehicleNameNow.equalsIgnoreCase(vehicle.getName())){
+    		vehicle = null;
+    		vehicleID = null;
+    		dropData();
+    	}
+    }
+    
     // end date range stuff
     
     public String waitForSelects(){
@@ -181,16 +177,18 @@ public class FuelStopsBean extends BaseBean {
         return null;
     }
     public void setVehicleName(String vehicleName) {
+    	this.vehicleName = vehicleName;
     }
 
     public Integer getVehicleID() {
         return vehicleID;
     }
     public String fetchFuelStopsForVehicle(){
-       vehicle = vehicleDAO.findByID(vehicleID);
-       dropData();
-
-       return null; 
+    	if (vehicleID != null) {
+    		vehicle = vehicleDAO.findByID(vehicleID);
+    	}
+    	dropData();
+    	return null; 
     }
     public void setVehicleID(Integer vehicleID) {
         this.vehicleID = vehicleID;
@@ -257,8 +255,6 @@ public class FuelStopsBean extends BaseBean {
     public void setAllSelected(boolean allSelected) {
         this.allSelected = allSelected;
     }
-    
-
 
     public FuelStopView getItem() {
         return item;
@@ -283,6 +279,126 @@ public class FuelStopsBean extends BaseBean {
         item.setLocation(location);
         return null;
     }
+    public String add()
+    {
+        if (vehicleID == null)
+            return VIEW_REDIRECT;
+        
+        crudStrategy = new CreateStrategy();
+        return crudStrategy.init();
+    }
+    public String deleteSingle()
+    {
+        hosDAO.deleteByID(item.getHosLogID());
+        dropData();
+
+        return VIEW_REDIRECT;
+    }
+    //Batch delete - standard name to use the confirmDelete.xhtml
+    public String delete(){
+        for(FuelStopView fsv : getSelectedItems()){
+            hosDAO.deleteByID(fsv.getHosLogID());
+        }
+        dropData();
+
+        return VIEW_REDIRECT;
+    }
+
+    public List<FuelStopView> getSelectedItems()
+    {
+        List<FuelStopView> selectedItems = new ArrayList<FuelStopView>();
+        for (FuelStopView t : itemLoader.getItems())
+            if (t.isSelected())
+                selectedItems.add(t);
+        return selectedItems;
+    }
+    
+    public String save()
+    {
+        return crudStrategy.save();
+    }
+    protected boolean validate(List<FuelStopView> saveItems)
+    {
+        boolean valid = true;
+        for (final FuelStopView saveItem : saveItems)
+        {
+            valid = crudStrategy.isValid(saveItem);
+            if(!valid)
+                break;
+        }
+        return valid;
+    }
+
+    
+    public String cancel()
+    {
+       crudStrategy.cancel();
+       crudStrategy = null;
+       
+       return VIEW_REDIRECT;
+    }
+    
+    public void selectAllDependingOnAllSelected()
+    {
+        for (FuelStopView fsv : itemLoader.getItems())
+            fsv.setSelected(allSelected);
+    }
+
+    public String edit()
+    {
+        crudStrategy = new UpdateStrategy();
+        return crudStrategy.init();
+    }
+    public int getPage() {
+        return pageData.getCurrentPage();
+    }
+
+    public void setPage(int page) {
+        pageData.initPage(page, itemLoader.getSize());
+    }
+    
+
+    private List<Vehicle> getEligibleVehicles(){
+        Set<VehicleDOTType> dotTypes = VehicleDOTType.getDOTTypes();
+
+        List<Vehicle> vehicles = vehicleDAO.getVehiclesInGroupHierarchy(this.getUser().getGroupID());
+        Iterator<Vehicle> it = vehicles.iterator();
+        while (it.hasNext()){
+            Vehicle vehicle = it.next();
+            if (!dotTypes.contains(vehicle.getDot())){
+                it.remove();
+            }
+        }
+        return vehicles;
+    }
+
+    public List<VehicleName> autocomplete(Object suggest) {
+        String pref = (String)suggest;
+        ArrayList<VehicleName> result = new ArrayList<VehicleName>();
+        for(Vehicle vehicle :getEligibleVehicles()){
+            String name =vehicle.getName();
+            if (name != null && name.toLowerCase().contains(pref.toLowerCase()) || "".equals(pref))
+            {
+                result.add(new VehicleName(vehicle.getVehicleID(),vehicle.getName()));
+            }
+        }
+        Collections.sort(result);
+        return result;
+    }
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+    public String getVehicleNameNow() {
+		return vehicleNameNow;
+	}
+	public void setVehicleNameNow(String vehicleNameNow) {
+		this.vehicleNameNow = vehicleNameNow;
+	}
+
+    
     public  class FuelStopView extends HOSRecord implements EditItem
     {
         @Column(updateable = false)
@@ -363,109 +479,6 @@ public class FuelStopsBean extends BaseBean {
         }
     }
     
-    public String add()
-    {
-        if (vehicleID == null)
-            return "";
-        
-        crudStrategy = new CreateStrategy();
-        return crudStrategy.init();
-    }
-    public String deleteSingle()
-    {
-        hosDAO.deleteByID(item.getHosLogID());
-        dropData();
-
-        return VIEW_REDIRECT;
-    }
-    //Batch delete - standard name to use the confirmDelete.xhtml
-    public String delete(){
-        for(FuelStopView fsv : getSelectedItems()){
-            hosDAO.deleteByID(fsv.getHosLogID());
-        }
-        dropData();
-
-        return VIEW_REDIRECT;
-    }
-
-    public List<FuelStopView> getSelectedItems()
-    {
-        List<FuelStopView> selectedItems = new ArrayList<FuelStopView>();
-        for (FuelStopView t : itemLoader.getItems())
-            if (t.isSelected())
-                selectedItems.add(t);
-        return selectedItems;
-    }
-    
-    public String save()
-    {
-        return crudStrategy.save();
-    }
-    protected boolean validate(List<FuelStopView> saveItems)
-    {
-        boolean valid = true;
-        for (final FuelStopView saveItem : saveItems)
-        {
-            valid = crudStrategy.isValid(saveItem);
-            if(!valid)
-                break;
-        }
-        return valid;
-    }
-
-    
-    public String cancel()
-    {
-       crudStrategy.cancel();
-       crudStrategy = null;
-       
-       return VIEW_REDIRECT;
-    }
-    
-    public void selectAllDependingOnAllSelected()
-    {
-        for (FuelStopView fsv : itemLoader.getItems())
-            fsv.setSelected(allSelected);
-    }
-
-    public String edit()
-    {
-        crudStrategy = new UpdateStrategy();
-        return crudStrategy.init();
-    }
-    public int getPage() {
-        return pageData.getCurrentPage();
-    }
-
-    public void setPage(int page) {
-        pageData.initPage(page, itemLoader.getSize());
-    }
-    
-
-    public void getVehiclesForSuggestionBox(){
-        vehicleNameList = vehicleDAO.getVehicleNames(this.getUser().getGroupID());
-    }
-
-    public List<VehicleName> autocomplete(Object suggest) {
-        String pref = (String)suggest;
-        ArrayList<VehicleName> result = new ArrayList<VehicleName>();
-        getVehiclesForSuggestionBox();
-        for(VehicleName vehicle :vehicleNameList){
-            String name =vehicle.getVehicleName();
-            if (name != null && name.toLowerCase().contains(pref.toLowerCase()) || "".equals(pref))
-            {
-                result.add(vehicle);
-            }
-        }
-        Collections.sort(result);
-        return result;
-    }
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
     
     private abstract class CRUDStrategy {
         
