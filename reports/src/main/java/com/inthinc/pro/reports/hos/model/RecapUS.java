@@ -32,8 +32,6 @@ public class RecapUS extends Recap {
     public int getRecapDay(DateTime day)
     {
         DateTime resetDay = new DateTime(cummulativeData.getStartTime(), dateTimeZone);
-//System.out.println("resetDay: " + dateTimeFormatter.print(resetDay) + " report day: " + dateTimeFormatter.print(day));        
-//System.out.println("resetDay: " + resetDay.getDayOfYear() + " report day: " + day.getDayOfYear());     
         int daysDiff = day.getDayOfYear() - resetDay.getDayOfYear();
         int recapDay = daysDiff+1;
         if (recapDay > maxRecapDay)

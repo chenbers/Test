@@ -224,9 +224,9 @@ public class HosDailyDriverLogReportCriteria {
         Date endDate = interval.getEnd().toDate();
         HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
         HOSAdjustedList originalAdjustedList = HOSUtil.getOriginalAdjustedListFromLogList(hosRecordList);
-        List<HOSRec> hosRecapList = getRecapList(adjustedList, endDate);
         adjustForOccupantTravelTime(hosRecordList, adjustedList, endDate);
         adjustForOccupantTravelTime(hosRecordList, originalAdjustedList, endDate);
+        List<HOSRec> hosRecapList = getRecapList(adjustedList, endDate);
         Collections.reverse(hosRecordList);
 
         Date currentTime = new Date();
@@ -759,6 +759,7 @@ public class HosDailyDriverLogReportCriteria {
         for (HOSRecAdjusted rec : adjustedRecapList) {
             hosRecapList.add(new HOSRec(rec.getId(), rec.getStatus(), rec.getTotalAdjustedMinutes(), rec.getAdjustedTime(), rec.getLogTimeZone(), rec.getRuleType(), null, true, false));
         }
+
 
         return hosRecapList;
     }

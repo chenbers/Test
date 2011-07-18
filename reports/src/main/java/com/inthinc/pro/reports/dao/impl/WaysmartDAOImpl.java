@@ -1,29 +1,15 @@
 package com.inthinc.pro.reports.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
-import com.inthinc.hos.adjusted.HOSAdjustedList;
-import com.inthinc.hos.model.HOSRecAdjusted;
-import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.dao.DriveTimeDAO;
 import com.inthinc.pro.dao.HOSDAO;
-import com.inthinc.pro.dao.util.DateUtil;
-import com.inthinc.pro.dao.util.HOSUtil;
-import com.inthinc.pro.model.Driver;
-import com.inthinc.pro.model.aggregation.DriveTimeRecord;
 import com.inthinc.pro.model.assets.AssetWarrantyRecord;
-import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.performance.DriverHoursRecord;
-import com.inthinc.pro.model.performance.TenHoursViolationRecord;
 import com.inthinc.pro.model.performance.VehicleUsageRecord;
 import com.inthinc.pro.reports.dao.WaysmartDAO;
 import com.inthinc.pro.reports.dao.mock.MockWaysmartDAO;
-import com.inthinc.pro.reports.util.DateTimeUtil;
 
 public class WaysmartDAOImpl implements WaysmartDAO {
 

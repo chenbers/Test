@@ -65,6 +65,7 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
         
         List<PayrollData> dataList = new ArrayList<PayrollData>();
         
+        
         HOSAdjustedList adjustedList = HOSUtil.getAdjustedListFromLogList(hosRecordList);
         Group group = groupHierarchy.getGroup(driver.getGroupID());
         String groupName = getFullGroupName(groupHierarchy, group.getGroupID());
@@ -72,7 +73,6 @@ public class PayrollReportCriteria extends GroupListReportCriteria implements Ta
         
         String driverName = driver.getPerson().getFullNameLastFirst();
         String employeeID = driver.getPerson().getEmpid();
-        
         List<DateTime> dayList = DateTimeUtil.getDayList(interval, DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
         
         for (DateTime day : dayList) {

@@ -19,7 +19,6 @@ import org.joda.time.format.DateTimeFormatter;
 import com.inthinc.hos.adjusted.HOSAdjustedList;
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSRecAdjusted;
-import com.inthinc.hos.model.HOSStats;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.MinutesRemainingData;
 import com.inthinc.hos.model.RuleSetType;
