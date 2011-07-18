@@ -624,6 +624,58 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     }
 
     @Override
+    public Long createFromNote(Long id, HOSRecord hosRecord) {
+        Connection conn = null;
+        CallableStatement statement = null;
+        ResultSet resultSet = null;
+        
+        
+        try
+        {
+            conn = getConnection();
+            statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            statement.setInt(1, hosRecord.getDeviceID());
+            statement.setInt(2, hosRecord.getVehicleID());
+            statement.setLong(3, 0); //Note ID
+            statement.setInt(4, hosRecord.getStatus().getCode());
+            statement.setLong(5, hosRecord.getLogTime().getTime());
+            statement.setLong(6, hosRecord.getVehicleOdometer());
+            statement.setFloat(7, hosRecord.getLat());
+            statement.setFloat(8, hosRecord.getLng());
+            statement.setString(9, hosRecord.getLocation());
+            statement.setBoolean(10, hosRecord.getUserEnteredLocationFlag());
+            statement.setLong(11, hosRecord.getNoteFlags());
+            statement.setString(12, hosRecord.getTrailerID());
+            statement.setString(13, hosRecord.getServiceID());
+            statement.setFloat(14, (hosRecord.getTruckGallons()== null) ? 0f : hosRecord.getTruckGallons());
+            statement.setFloat(15, (hosRecord.getTrailerGallons() == null) ? 0f : hosRecord.getTrailerGallons());
+            statement.setString(16, hosRecord.getEmployeeID());
+            statement.setInt(17, hosRecord.getStateID());
+            
+            if(logger.isDebugEnabled())
+                logger.debug(statement.toString());
+            
+
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next())
+                id = resultSet.getLong(1);
+        }   // end try
+        catch (SQLException e)
+        { // handle database hosLogs in the usual manner
+            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
+        }   // end catch
+        finally
+        { // clean up and release the connection
+            close(resultSet);
+            close(statement);
+            close(conn);
+        } // end finally
+        
+        return id;
+    }
+
+    @Override
     public Integer deleteByID(Long id) {
         Connection conn = null;
         CallableStatement statement = null;
@@ -845,10 +897,11 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 driverLogin.setAcctID(resultSet.getInt(1));
                 driverLogin.setDeviceID(resultSet.getInt(2));
                 driverLogin.setDriverID(resultSet.getInt(3));
-                driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(4)));
-                driverLogin.setTimezoneID(resultSet.getString(5));
-                driverLogin.setMeasurementType(MeasurementType.valueOf(resultSet.getInt(6)));
-                driverLogin.setFuelEfficiencyType(FuelEfficiencyType.valueOf(resultSet.getInt(7)));
+                driverLogin.setVehicleID(resultSet.getInt(4));
+                driverLogin.setDriverDotType(RuleSetType.valueOf(resultSet.getInt(5)));
+                driverLogin.setTimezoneID(resultSet.getString(6));
+                driverLogin.setMeasurementType(MeasurementType.valueOf(resultSet.getInt(7)));
+                driverLogin.setFuelEfficiencyType(FuelEfficiencyType.valueOf(resultSet.getInt(8)));
             }
 
         }   // end try

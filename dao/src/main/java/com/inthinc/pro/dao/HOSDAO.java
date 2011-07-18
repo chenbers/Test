@@ -36,4 +36,6 @@ public interface HOSDAO extends GenericDAO<HOSRecord, Long> {
     
     List<HOSRecord> getRecordsForVehicle(Integer vehicleID, Interval interval, Boolean driverStatusOnly);
     List<HOSRecord> getFuelStopRecordsForVehicle(Integer vehicleID, Interval interval);
+    
+    Long createFromNote(Long id, HOSRecord hosRecord);
 }

@@ -17,7 +17,8 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     
     private Long hosLogID;
     private Integer driverID;
-    private Integer noteID;
+    private Long noteID;
+    private Integer deviceID;
     private RuleSetType driverDotType;
     private Integer vehicleID;
     private String vehicleName;
@@ -50,6 +51,9 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     private Boolean tripReportFlag;
     private Boolean tripInspectionFlag;
     private Date dateLastUpdated;
+    private Boolean userEnteredLocationFlag;
+    private Long noteFlags;
+    private Integer stateID;
     
     public HOSRecord()
     {
@@ -115,18 +119,56 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
 //        return data;
 //        
 //    }
+    
+    
+    public Integer getStateID() {
+        return stateID;
+    }
+
+    public void setStateID(Integer stateID) {
+        this.stateID = stateID;
+    }
+
+    public Boolean getUserEnteredLocationFlag() {
+        return userEnteredLocationFlag;
+    }
+
+    public void setUserEnteredLocationFlag(Boolean userEnteredLocationFlag) {
+        this.userEnteredLocationFlag = userEnteredLocationFlag;
+    }
+
+    public Long getNoteFlags() {
+        return noteFlags;
+    }
+
+    public void setNoteFlags(Long noteFlags) {
+        this.noteFlags = noteFlags;
+    }
+
+    public Integer getDeviceID() {
+        return deviceID;
+    }
+
+    public void setDeviceID(Integer deviceID) {
+        this.deviceID = deviceID;
+    }
+
     public Integer getDriverID() {
         return driverID;
     }
+
     public void setDriverID(Integer driverID) {
         this.driverID = driverID;
     }
+    
     public Integer getVehicleID() {
         return vehicleID;
     }
+    
     public void setVehicleID(Integer vehicleID) {
         this.vehicleID = vehicleID;
     }
+    
     public String getVehicleName() {
         return vehicleName;
     }
@@ -271,10 +313,10 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
         this.trailerGallons = trailerGallons;
     }
 
-    public Integer getNoteID() {
+    public Long getNoteID() {
         return noteID;
     }
-    public void setNoteID(Integer noteID) {
+    public void setNoteID(Long noteID) {
         this.noteID = noteID;
     }
     

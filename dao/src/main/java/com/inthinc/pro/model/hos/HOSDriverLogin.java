@@ -9,6 +9,7 @@ public class HOSDriverLogin extends BaseEntity {
     
     private Integer driverID;
     private Integer deviceID;
+    private Integer vehicleID;
     private Integer acctID;
     private RuleSetType driverDotType;
     private String timezoneID;
@@ -47,6 +48,15 @@ public class HOSDriverLogin extends BaseEntity {
 
     public void setDeviceID(Integer deviceID) {
         this.deviceID = deviceID;
+    }
+
+    
+    public Integer getVehicleID() {
+        return vehicleID;
+    }
+
+    public void setVehicleID(Integer vehicleID) {
+        this.vehicleID = vehicleID;
     }
 
     public Integer getAcctID() {
