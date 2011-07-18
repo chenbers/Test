@@ -342,7 +342,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         for(int index = 2; index < 20; index++){
             if(pnz._link().entryDriver().isPresent(index)){
                 String newText = pnz._link().entryDriver().getText(index);
-                if(currentText.compareTo(newText) > 0){
+                if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
                 currentText = newText;
@@ -361,7 +361,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         for(int index = 2; index < 20; index++){
             if(pnz._link().entryDriver().isPresent(index)){
                 String newText = pnz._link().entryDriver().getText(index);
-                if(currentText.compareTo(newText) < 0){
+                if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
                 currentText = newText;
@@ -380,7 +380,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         for(int index = 2; index < 20; index++){
             if(pnz._link().entryGroup().isPresent(index)){
                 String newText = pnz._link().entryGroup().getText(index);
-                if(currentText.compareTo(newText) > 0){
+                if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
                 currentText = newText;
@@ -399,7 +399,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         for(int index = 2; index < 20; index++){
             if(pnz._link().entryGroup().isPresent(index)){
                 String newText = pnz._link().entryGroup().getText(index);
-                if(currentText.compareTo(newText) < 0){
+                if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
                 currentText = newText;
@@ -419,7 +419,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         for(int index = 2; index < 20; index++){
             if(pnz._link().entryVehicle().isPresent(index)){
                 String newText = pnz._link().entryVehicle().getText(index);
-                if(currentText.compareTo(newText) > 0){
+                if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
                 currentText = newText;
@@ -438,7 +438,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         for(int index = 2; index < 20; index++){
             if(pnz._link().entryVehicle().isPresent(index)){
                 String newText = pnz._link().entryVehicle().getText(index);
-                if(currentText.compareTo(newText) < 0){
+                if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
                 currentText = newText;
