@@ -159,6 +159,11 @@ public class ElementBase extends MasterTest implements ElementInterface {
     public Boolean validateVisibility(Boolean visible) {
         return validateEquals(visible, isVisible());
     }
+    
+    @Override
+    public void waitForElement(){
+        selenium.waitForElementPresent(myEnum, 60);
+    }
 
     @Override
     public Boolean validatePresence(Boolean present) {

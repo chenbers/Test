@@ -1,16 +1,23 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.selenium.pageEnums.GenericWebEnum;
+import com.inthinc.pro.automation.elements.TextTable;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.LiveFleetEnum;
 
 public class PageLiveFleet extends NavigationBar {
     public PageLiveFleet() {
         url = LiveFleetEnum.DEFAULT_URL;
+        checkMe.add(LiveFleetEnum.HEADER_BOX_DISPATCH);
+        checkMe.add(LiveFleetEnum.HEADER_BOX_FLEET_LEGEND);
+        checkMe.add(LiveFleetEnum.HEADER_BOX_LIVE_FLEET);
     }
 
     public LiveFleetPopUps _popUp() {
@@ -35,107 +42,127 @@ public class PageLiveFleet extends NavigationBar {
         return new LiveFleetButtons();
     }
 
-    public LiveFleetSelects _select() {
-        return new LiveFleetSelects();
+    public LiveFleetDropDowns _dropDown() {
+        return new LiveFleetDropDowns();
     }
 
     public class LiveFleetLinks extends NavigationBarLinks {
-        public TextLink sortDispatchByNumber() {
+        
+        public TextLink sortByNumber() {
             return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_NUMBER);
         }
 
-        public TextLink sortDispatchByDriver() {
+        public TextLink sortByDriver() {
             return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_DRIVER);
         }
 
-        public TextLink sortDispatchByVehicle() {
+        public TextLink sortByVehicle() {
             return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_VEHICLE);
         }
 
-        public TextLink sortDispatchByGroup() {
+        public TextLink sortByGroup() {
             return new TextLink(LiveFleetEnum.LINK_SORT_DISPATCH_BY_GROUP);
         }
 
-        public TextLink driverByName(String driverName) {
-            return new TextLink(GenericWebEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, driverName);
+        public TextTableLink entryDriverByPosition() {
+            return new TextTableLink(LiveFleetEnum.LINK_DISPATCH_DRIVER_NEED_INDEX);
         }
 
-        public TextLink driverByListPosition(Integer position) {
-            return new TextLink(LiveFleetEnum.LINK_DISPATCH_DRIVER_NEED_INDEX, position);
+        public TextTableLink entryVehicleByPosition() {
+            return new TextTableLink(LiveFleetEnum.LINK_DISPATCH_VEHICLE_NEED_INDEX);
         }
-
-        public TextLink vehicleByName(String vehicleName) {
-            return new TextLink(GenericWebEnum.FIND_ANCHOR_BY_CONTAINS_TEXT, vehicleName);
-        }
-
-        public TextLink vehicleByListPosition(Integer position) {
-            return new TextLink(LiveFleetEnum.LINK_DISPATCH_VEHICLE_NEED_INDEX, position);
-        }
-
-        public TextLink mapBubbleDefaultChangeView() {
+        
+        public TextLink mapBubbleChangeDefaultView() {
             return new TextLink(LiveFleetEnum.LINK_MAP_BUBBLE_DEFAULT_CHANGE_VIEW);
+        }
+        
+        public TextTableLink entryFleetLegend(){
+            return new TextTableLink(LiveFleetEnum.LINK_BOX_FLEET_LEGEND_GROUP_NEED_INDEX);
+        }
+        
+        public TextTableLink entryGroupIconByPosition(){
+            return new TextTableLink(LiveFleetEnum.LINK_DISPATCH_GROUP_ICON_NEED_INDEX);
         }
     }
 
     public class LiveFleetTexts extends NavigationBarTexts {
-        public Text liveFleetHeader() {
+        
+        
+        
+        public Text headerLiveFleet() {
+            return new Text(LiveFleetEnum.HEADER_BOX_LIVE_FLEET);
+        }
+        
+        public Text headerDispatch(){
             return new Text(LiveFleetEnum.HEADER_BOX_DISPATCH);
         }
-
-        public Text labelVehiclePhone1() {
-            return new Text(LiveFleetEnum.LABEL_MAP_BUBBLE_VEHICLE_PHONE1);
+        
+        public Text headerFleetLegend(){
+            return new Text(LiveFleetEnum.HEADER_BOX_FLEET_LEGEND);
+        }
+        
+        public TextTable entryPositionByPosition(){
+            return new TextTable(LiveFleetEnum.TEXT_POSITION_NEED_INDEX);
         }
 
-        public Text labelVehiclePhone2() {
-            return new Text(LiveFleetEnum.LABEL_MAP_BUBBLE_VEHICLE_PHONE2);
+        public Text labelMapBubblePhone1() {
+            return new TextLabel(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_PHONE1);
         }
 
-        public Text labelVehicleDriver() {
-            return new Text(LiveFleetEnum.LABEL_MAP_BUBBLE_VEHICLE_DRIVER);
+        public Text labelMapBubblePhone2() {
+            return new TextLabel(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_PHONE2);
         }
 
-        public Text labelVehicleDevice() {
-            return new Text(LiveFleetEnum.LABEL_MAP_BUBBLE_VEHICLE_DEVICE);
+        public Text labelMapBubbleDriver() {
+            return new TextLabel(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DRIVER);
         }
 
-        public Text labelVehicleUpdated() {
-            return new Text(LiveFleetEnum.LABEL_MAP_BUBBLE_VEHICLE_UPDATED);
+        public Text labelMapBubbleDevice() {
+            return new TextLabel(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DEVICE);
         }
 
-        public Text labelVehicleLocation() {
-            return new Text(LiveFleetEnum.LABEL_MAP_BUBBLE_VEHICLE_LOCATION);
+        public Text labelMapBubbleUpdated() {
+            return new TextLabel(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_UPDATED);
         }
 
-        public Text labelVehicleDistToAddress() {
-            return new Text(LiveFleetEnum.LABEL_MAP_BUBBLE_VEHICLE_DISTANCE_TO_ADDRESS);
+        public Text labelMapBubbleLocation() {
+            return new TextLabel(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_LOCATION);
         }
 
-        public Text valueVehiclePhone1() {
+        public Text labelMapBubbleDistToAddress() {
+            return new TextLabel(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DISTANCE_TO_ADDRESS);
+        }
+
+        public Text valueMapBubblePhone1() {
             return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_PHONE1);
         }
 
-        public Text valueVehiclePhone2() {
+        public Text valueMapBubblePhone2() {
             return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_PHONE2);
         }
 
-        public Text valueVehicleDriver() {
+        public Text valueMapBubbleDriver() {
             return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DRIVER);
         }
 
-        public Text valueVehicleDevice() {
+        public Text valueMapBubbleDevice() {
             return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DEVICE);
         }
 
-        public Text valueVehicleUpdated() {
+        public Text valueMapBubbleUpdated() {
             return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_UPDATED);
         }
 
-        public Text valueVehicleLocation() {
+        public Text valueMapBubbleLocation() {
             return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_LOCATION);
         }
 
-        public Text valueVehicleDistToAddress() {
+        public Text valueMapBubbleDistToAddress() {
             return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DISTANCE_TO_ADDRESS);
+        }
+        
+        public Text labelFindAddress(){
+            return new TextFieldLabel(LiveFleetEnum.TEXTFIELD_LIVE_FLEET_FIND_ADDRESS);
         }
     }
 
@@ -149,17 +176,16 @@ public class PageLiveFleet extends NavigationBar {
         public TextButton locate() {
             return new TextButton(LiveFleetEnum.BUTTON_LIVE_FLEET_LOCATE);
         }
-    }
-
-    public class LiveFleetSelects {
-        public DropDown numNearestVehicles() {
-            return new DropDown(LiveFleetEnum.DROPDOWN_LIVE_FLEET_NUM_NEAREST_VEHICLES);
+        
+        public Button refresh(){
+            return new Button(LiveFleetEnum.BUTTON_REFRESH);
         }
     }
 
-    @Override
-    public String getExpectedPath() {
-        return LiveFleetEnum.DEFAULT_URL.getURL();
+    public class LiveFleetDropDowns {
+        public DropDown numNearestVehicles() {
+            return new DropDown(LiveFleetEnum.DROPDOWN_LIVE_FLEET_NUM_NEAREST_VEHICLES);
+        }
     }
 
     public LiveFleetPager _page() {

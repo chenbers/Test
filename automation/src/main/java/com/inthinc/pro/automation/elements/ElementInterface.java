@@ -20,6 +20,7 @@ public interface ElementInterface {
     public Boolean validateElementsPresent(Object ...enums);
     public Boolean validatePresence(Boolean present);
     public Boolean validateVisibility(Boolean visible);
+    public void waitForElement();
 
     public interface Checkable extends ElementInterface {
 	public Boolean assertChecked(Boolean checked);

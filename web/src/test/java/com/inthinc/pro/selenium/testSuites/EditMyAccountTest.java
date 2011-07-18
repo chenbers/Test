@@ -75,7 +75,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	// 3. Navigate to other pages throughout the UI.
 	myAccountPage._link().liveFleet().click();
 	PageLiveFleet liveFleet = new PageLiveFleet();
-	liveFleet._link().vehicleByListPosition(1).click();
+	liveFleet._link().entryVehicleByPosition().click(1);
 	PageVehiclePerformance vPerform = new PageVehiclePerformance();
 
 	// 1. VERIFY - The display of distance (miles or kilometeres) throughout
@@ -135,7 +135,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	// 3. Navigate to other pages throughout the UI.
 	myAccountPage._link().liveFleet().click();
 	PageLiveFleet liveFleet = new PageLiveFleet();
-	liveFleet._link().vehicleByListPosition(1).click(); // brittle...
+	liveFleet._link().entryVehicleByPosition().click(1); // brittle...
 							    // assumes that
 							    // there is a
 							    // vehicle in
