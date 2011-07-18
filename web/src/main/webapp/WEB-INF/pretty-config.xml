@@ -234,7 +234,11 @@
     <url-mapping id="crashHistory">
         <pattern>/app/notifications/crashHistory</pattern>
         <view-id>/secured/notifications/crashHistory.faces</view-id>         
-    </url-mapping>    
+    </url-mapping> 
+   	<url-mapping id="driverLogins">
+        <pattern>/app/notifications/driverLogins</pattern>
+        <view-id>/secured/notifications/driverLogins.faces</view-id>         
+    </url-mapping>   
     <url-mapping id="crashReport">
         <pattern>/app/notifications/crashReport/#{crashReportBean.crashReportID}</pattern>
         <view-id>/secured/notifications/crashReport.faces</view-id>         

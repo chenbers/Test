@@ -22,7 +22,8 @@ public enum EventCategory implements BaseEnum
     ZONE(6,"ZONE", EnumSet.of(EventSubCategory.ZONES)),
 //    NO_DRIVER(7,"NO_DRIVER"),
     HOS(8, "HOS", EnumSet.of(EventSubCategory.HOS)),
-    TEXT(9,"TEXT", EnumSet.of(EventSubCategory.TEXTMESSAGE));
+    TEXT(9,"TEXT", EnumSet.of(EventSubCategory.TEXTMESSAGE)),
+    DRIVER_LOGIN(10, "DRIVER_LOGIN", EnumSet.of(EventSubCategory.DRIVER));
 
     private String description;
     private int code;

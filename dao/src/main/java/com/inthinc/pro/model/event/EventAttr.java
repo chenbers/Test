@@ -76,6 +76,7 @@ public class EventAttr
         mapping.put(8273, "xcatEvent");
         mapping.put(8279, "hazMatFlag");
         mapping.put(24577, "TextMsg");
+        mapping.put(24578, "empId");
         mapping.put(24584, "serviceId");
         mapping.put(24587, "trailerId");
         
