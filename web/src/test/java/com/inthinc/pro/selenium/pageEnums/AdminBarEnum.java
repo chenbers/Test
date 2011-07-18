@@ -61,7 +61,7 @@ public enum AdminBarEnum implements SeleniumEnums {
     TITLE(null, Xpath.start().span(Id.clazz("admin")).toString()),
 
     
-    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:personTable-adminTableEditColumns"),//TODO: jwimmer: to dTanner: just a question? SHOULD this one have ***Table instead of personTable?
+    EDIT_COLUMNS_LINK(editColumns, "admin-table-form:***Table-adminTableEditColumns"),
 
     TABLE_HEADERS(null, "admin-table-form:***:*column*header:sortDiv"),
     TABLE_ENTRIES(null, "admin-table-form:***:###:*column*"),

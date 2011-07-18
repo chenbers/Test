@@ -41,7 +41,6 @@ public class PageAdminVehicleView extends AdminBar {
 	}
 
 	public class AdminVehicleViewTextFields extends AdminBarTextFields {
-		public TextField tableSearch() {return new TextField(AdminVehiclesEnum.SEARCH_TEXT_FIELD);}
 		public TextField notifyWhenExceedingBy(Integer limit) {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, (limit/5)-1);}
 		public TextField notifyWhenExceeding05MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 0);}
 		public TextField notifyWhenExceeding10MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 1);}
