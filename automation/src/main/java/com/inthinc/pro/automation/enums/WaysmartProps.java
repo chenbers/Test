@@ -321,7 +321,6 @@ public enum WaysmartProps implements DeviceProperties {
     
     private WaysmartProps(Integer value){
         this.value=value;
-        this.setting="NO SETTING FOR THIS PROPERTY";
     }
     
     private WaysmartProps(Integer value, String setting) {
@@ -353,7 +352,9 @@ public enum WaysmartProps implements DeviceProperties {
 
     static {
         for (WaysmartProps p : EnumSet.allOf(WaysmartProps.class)) {
-            propertiesFile.put(p, p.getDefaultSetting());
+            if (p.getDefaultSetting() != null){
+                propertiesFile.put(p, p.getDefaultSetting());
+            }
         }
     }
 

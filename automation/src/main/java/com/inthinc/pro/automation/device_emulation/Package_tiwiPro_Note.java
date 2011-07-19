@@ -221,6 +221,12 @@ public class Package_tiwiPro_Note implements NoteBuilder{
         }
         
         return bos.toByteArray();   
+    }
+
+
+    @Override
+    public String sendNote() {
+        throw new IllegalAccessError("This method is only for Waysmart Notes");
     }   
 }
     

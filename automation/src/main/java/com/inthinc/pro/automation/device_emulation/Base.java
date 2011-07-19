@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,14 +19,15 @@ import com.inthinc.pro.automation.enums.DeviceProperties;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
+import com.inthinc.pro.model.configurator.ProductType;
 
 @SuppressWarnings("unchecked")
 public abstract class Base {
 
     private final static Logger logger = Logger.getLogger(Base.class);
 
-    private ArrayList<byte[]> sendingQueue = new ArrayList<byte[]>();
-    protected ArrayList<byte[]> note_queue = new ArrayList<byte[]>();
+    private LinkedList<byte[]> sendingQueue = new LinkedList<byte[]>();
+    protected LinkedList<byte[]> note_queue = new LinkedList<byte[]>();
     protected ArrayList<Integer> speed_points = new ArrayList<Integer>();
     protected ArrayList<Double[]> speed_loc = new ArrayList<Double[]>();
 
@@ -68,7 +70,7 @@ public abstract class Base {
     
     protected Addresses portal;
 
-    public Base(String IMEI, Addresses server, Map<?, String> map, Integer version) {
+    public Base(String IMEI, Addresses server, Map<?, String> map, ProductType version) {
     	portal = server;
         Settings = new HashMap<DeviceProperties, String>();
         set_IMEI(IMEI, server, map, version);
@@ -115,8 +117,7 @@ public abstract class Base {
     }
 
     protected Base check_queue() {
-        note_count = get_note_count();
-        if (note_queue.size() >= note_count) {
+        if (note_queue.size() >= get_note_count()) {
             send_note();
         }
         return this;
@@ -236,7 +237,7 @@ public abstract class Base {
     private Base initiate_device(Addresses server) {
         ignition_state = false;
 
-        note_queue = new ArrayList<byte[]>();
+        note_queue = new LinkedList<byte[]>();
         speed_points = new ArrayList<Integer>();
         speed_loc = new ArrayList<Double[]>();
         clear_internal_settings();
@@ -311,14 +312,10 @@ public abstract class Base {
     protected abstract Integer processCommand(Map<String, Object> reply);
 
     protected Base send_note() {
-        assert (note_queue instanceof ArrayList<?>);
-        assert (imei instanceof String);
         while (!note_queue.isEmpty()) {
-            sendingQueue = new ArrayList<byte[]>();
-            for (int i = 0; i < note_count; i++) {
-                if (note_queue.isEmpty())
-                    break;
-                sendingQueue.add(note_queue.remove(0));
+            sendingQueue = new LinkedList<byte[]>();
+            for (int i = 0; i < note_count && !note_queue.isEmpty(); i++) {
+                sendingQueue.offer(note_queue.poll());
             }
             reply = dbErrors[0];
             while (check_error(reply)) {
@@ -371,11 +368,11 @@ public abstract class Base {
 
     protected abstract Base set_ignition(Integer time_delta);//
 
-    protected Base set_IMEI(String imei, Addresses server, Map<?, String> map, Integer version) {
+    protected Base set_IMEI(String imei, Addresses server, Map<?, String> map, ProductType version) {
 
         this.imei = imei;
         this.Settings = (Map<DeviceProperties, String>) map;
-        set_version(version);
+        set_version(version.getVersion());
         initiate_device(server);
         return this;
     }
@@ -429,6 +426,10 @@ public abstract class Base {
         change.put(key, value);
         set_settings(change);
         return this;
+    }
+    
+    public Base set_settings(DeviceProperties key, Integer value){
+        return set_settings(key, value.toString());
     }
 
     public abstract Base set_speed_limit(Integer limit);

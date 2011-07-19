@@ -17,12 +17,13 @@ import com.inthinc.pro.automation.enums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.enums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.utils.CreateHessian;
 import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.model.configurator.ProductType;
 
 public class TiwiProDevice extends Base {
 
     private final static Logger logger = Logger.getLogger(TiwiProDevice.class);
 
-    private final static Integer productVersion = 5;
+    private final static ProductType productVersion = ProductType.TIWIPRO_R74;
     private HashMap<TiwiAttrs, Integer> attrs;
     private Long trip_start, trip_stop;
     private CreateHessian getHessian;
@@ -60,8 +61,7 @@ public class TiwiProDevice extends Base {
     }
     
     public TiwiProDevice add_note(NoteBuilder note) {
-        byte[] packaged = note.Package();
-        note_queue.add(packaged);
+        note_queue.offer(note.Package());
         check_queue();
         return this;
     }
@@ -118,7 +118,7 @@ public class TiwiProDevice extends Base {
     }
 
     public TiwiProDevice construct_note(TiwiNoteTypes type) {
-        if (productVersion == 5) {
+        if (productVersion == ProductType.TIWIPRO_R74) {
             attrs = new HashMap<TiwiAttrs, Integer>();
             construct_note(type, attrs);
         }

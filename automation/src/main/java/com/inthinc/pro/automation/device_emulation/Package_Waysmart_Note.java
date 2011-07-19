@@ -14,7 +14,7 @@ public class Package_Waysmart_Note implements NoteBuilder {
 
     private final static Logger logger = Logger.getLogger(Package_Waysmart_Note.class);
 
-    private CommandLine sendNote;
+    private final CommandLine sendNote;
 
     public static enum Direction {
         wifi,
@@ -62,6 +62,10 @@ public class Package_Waysmart_Note implements NoteBuilder {
         sendNote.setArgs("odometer", odometer);
     }
     
+    public void setOdometer(long odometer) {
+        sendNote.setArgs("odometer", odometer);
+    }
+    
     public void setSpeed(int speed){
         sendNote.setArgs("speed", speed);
     }
@@ -93,21 +97,20 @@ public class Package_Waysmart_Note implements NoteBuilder {
     
     
 
-    public void sendNote() {
+    public String sendNote() {
         try {
-
             sendNote.runCommandWithArgs("send_note.exe");
-            logger.info(sendNote.getCommandOutput());
             logger.error(sendNote.getCommandError());
+            return sendNote.getCommandOutput();
         } catch (IOException e) {
-            logger.info(StackToString.toString(e));
-        }
+            logger.fatal(StackToString.toString(e));
+        } 
+        return sendNote.getCommandError();
     }
 
     @Override
     public byte[] Package() {
-        // TODO Auto-generated method stub
-        return null;
+        throw new IllegalAccessError("This method is only for TiwiPro devices");
     }
 
 }
