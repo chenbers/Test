@@ -83,11 +83,17 @@ public class PageLiveFleet extends NavigationBar {
         public TextTableLink entryGroupIconByPosition(){
             return new TextTableLink(LiveFleetEnum.LINK_DISPATCH_GROUP_ICON_NEED_INDEX);
         }
+        
+        public TextLink valueMapBubbleVehicleName(){
+            return new TextLink(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_NAME);
+        }
+        
+        public TextLink valueMapBubbleDriver(){
+            return new TextLink(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DRIVER);
+        }
     }
 
     public class LiveFleetTexts extends NavigationBarTexts {
-        
-        
         
         public Text headerLiveFleet() {
             return new Text(LiveFleetEnum.HEADER_BOX_LIVE_FLEET);
@@ -129,20 +135,12 @@ public class PageLiveFleet extends NavigationBar {
             return new TextLabel(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_LOCATION);
         }
 
-        public Text labelMapBubbleDistToAddress() {
-            return new TextLabel(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DISTANCE_TO_ADDRESS);
-        }
-
         public Text valueMapBubblePhone1() {
             return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_PHONE1);
         }
 
         public Text valueMapBubblePhone2() {
             return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_PHONE2);
-        }
-
-        public Text valueMapBubbleDriver() {
-            return new Text(LiveFleetEnum.VALUE_MAP_BUBBLE_VEHICLE_DRIVER);
         }
 
         public Text valueMapBubbleDevice() {

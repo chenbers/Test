@@ -31,19 +31,22 @@ public enum LiveFleetEnum implements SeleniumEnums {
     TEXT_MAP_BUBBLE_HEADER("Live Fleet", "//div[@id='defaultMessage']/h2"),
     
     // MAP_BUBBLE_VEHICLE_HEADER(null),
-    VALUE_MAP_BUBBLE_VEHICLE_PHONE1("Phone 1:", "//div[10]/div/div[1]/div/div/table/tbody/tr[1]/td[2]"),
-    VALUE_MAP_BUBBLE_VEHICLE_PHONE2("Phone 2:", "//div[10]/div/div[1]/div/div/table/tbody/tr[2]/td[2]"),
-    VALUE_MAP_BUBBLE_VEHICLE_DRIVER("Driver:", "//div[10]/div/div[1]/div/div/table/tbody/tr[3]/td[2]"),
-    VALUE_MAP_BUBBLE_VEHICLE_DEVICE("Device:", "//div[10]/div/div[1]/div/div/table/tbody/tr[4]/td[2]"),
-    VALUE_MAP_BUBBLE_VEHICLE_UPDATED("Updated:", "//div[10]/div/div[1]/div/div/table/tbody/tr[5]/td[2]"),
-    VALUE_MAP_BUBBLE_VEHICLE_LOCATION("Location", "//div[10]/div/div[1]/div/div/table/tbody/tr[6]/td[2]"),
-    VALUE_MAP_BUBBLE_VEHICLE_DISTANCE_TO_ADDRESS("Distance to address:", "//div[10]/div/div[1]/div/div/table/tbody/tr[7]/td[2]"),
+    VALUE_MAP_BUBBLE_VEHICLE_PHONE1("Phone 1:", "//div[@id='vehicleBubble']/table/tbody/tr[1]/td[2]"),
+    VALUE_MAP_BUBBLE_VEHICLE_PHONE2("Phone 2:", "//div[@id='vehicleBubble']/table/tbody/tr[2]/td[2]"),
+    VALUE_MAP_BUBBLE_VEHICLE_DRIVER("Driver:", "//div[@id='vehicleBubble']/table/tbody/tr[3]/td[2]"),
+    VALUE_MAP_BUBBLE_VEHICLE_DEVICE("Device:", "//div[@id='vehicleBubble']/table/tbody/tr[4]/td[2]"),
+    VALUE_MAP_BUBBLE_VEHICLE_UPDATED("Updated:", "//div[@id='vehicleBubble']/table/tbody/tr[5]/td[2]"),
+    VALUE_MAP_BUBBLE_VEHICLE_LOCATION("Location", "//div[@id='vehicleBubble']/table/tbody/tr[6]/td[2]"),
+    VALUE_MAP_BUBBLE_VEHICLE_DISTANCE_TO_ADDRESS("Distance to address: XXX.YYY UNITS", "//div[@id='vehicleBubble']/table/tfoot/tr/td"),
     IMG_LINK_MAP_ICONS_NEED_INDEX(null, "mtgt_unnamed_###"),
 
     HEADER_BOX_FLEET_LEGEND("Fleet Legend", "//div[@id='wrapper']/table/tbody/tr/td[3]/div[3]/div[1]/div/span[1]"),
     LINK_BOX_FLEET_LEGEND_GROUP_NEED_INDEX(null, "liveFleetLegend:###:liveFleetsDashboard2"),
     
-    PAGER(null, "dispatchForm:driverScroller_table"),
+    PAGER(null, "dispatchForm:driverScroller_table"), 
+    
+    VALUE_MAP_BUBBLE_VEHICLE_NAME(null, "liveFleetVehicleBubbles:liveFleet-vehiclePerformance"),
+    
     
     ;
 
