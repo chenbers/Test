@@ -162,7 +162,12 @@ public class ElementBase extends MasterTest implements ElementInterface {
     
     @Override
     public void waitForElement(){
-        selenium.waitForElementPresent(myEnum, 60);
+        waitForElement(60);
+    }
+    
+    @Override
+    public void waitForElement(int i){
+        selenium.waitForElementPresent(myEnum, i);
     }
 
     @Override

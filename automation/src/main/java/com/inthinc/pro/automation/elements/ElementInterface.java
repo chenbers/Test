@@ -21,6 +21,7 @@ public interface ElementInterface {
     public Boolean validatePresence(Boolean present);
     public Boolean validateVisibility(Boolean visible);
     public void waitForElement();
+    public void waitForElement(int i);
 
     public interface Checkable extends ElementInterface {
 	public Boolean assertChecked(Boolean checked);
