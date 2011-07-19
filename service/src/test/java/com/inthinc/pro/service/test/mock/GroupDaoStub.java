@@ -212,4 +212,10 @@ public class GroupDaoStub implements GroupDAO, GroupReportDAO {
         return Collections.emptyList();
     }
 
+	@Override
+	public Integer delete(Group group) {
+		// TODO Auto-generated method stub
+		return group.getGroupID();
+	}
+
 }

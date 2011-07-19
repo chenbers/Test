@@ -323,5 +323,10 @@ public class ReportCriteriaServiceImplTest extends BaseUnitTest {
             return null;
         }
 
+		@Override
+		public Integer delete(Group group) {
+			return null;
+		}
+
     }
 }

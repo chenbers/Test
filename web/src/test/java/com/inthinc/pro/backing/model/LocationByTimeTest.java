@@ -1,21 +1,17 @@
 package com.inthinc.pro.backing.model;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
-import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.dao.HOSDAO;
 import com.inthinc.pro.dao.mock.MockHOSDAO;
 import com.inthinc.pro.map.GoogleAddressLookup;
-import com.inthinc.pro.model.LatLng;
 
 public class LocationByTimeTest {
 

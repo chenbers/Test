@@ -43,6 +43,7 @@ import com.inthinc.pro.model.app.States;
 import com.inthinc.pro.util.MessageUtil;
 
 @KeepAlive
+@SuppressWarnings("rawtypes")
 public class OrganizationBean extends BaseBean
 {
 
@@ -75,7 +76,7 @@ public class OrganizationBean extends BaseBean
 
     private GroupHierarchy organizationHierarchy;
 
-    private BaseTreeNodeImpl selectedTreeNode;
+	private BaseTreeNodeImpl selectedTreeNode;
 
     private GroupTreeNodeImpl selectedGroupNode;
     private DriverTreeNodeImpl selectedDriverTreeNode;
@@ -125,13 +126,9 @@ public class OrganizationBean extends BaseBean
     {
         if (rootGroupNode == null)
         {
-//            organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getTopGroup().getGroupID()));
             organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getUser().getGroupID()));
             final Group topLevelGroup = organizationHierarchy.getGroup(getUser().getGroupID());
             rootGroupNode = createNewGroupNode(topLevelGroup);
-            // UnassignedDevicesTreeNodeImpl devicesTreeNodeImpl = new UnassignedDevicesTreeNodeImpl(getAccountID());
-            // devicesTreeNodeImpl.setDeviceDAO(deviceDAO);
-            // topLevelNode.addChildNode(devicesTreeNodeImpl);
             if (selectedGroupNode == null)
             {
                 setSelectedTreeNode(rootGroupNode);
@@ -352,7 +349,7 @@ public class OrganizationBean extends BaseBean
         if (validate((GroupTreeNodeImpl) tempGroupTreeNode))
         {
             copyGroupTreeNode((GroupTreeNodeImpl) tempGroupTreeNode, (GroupTreeNodeImpl) selectedGroupNode, true);
-            selectedGroupNode.getBaseEntity().setAddressID(updateAddress(selectedGroupNode.getBaseEntity()));
+//            selectedGroupNode.getBaseEntity().setAddressID(updateAddress(selectedGroupNode.getBaseEntity()));
             groupDAO.update((Group) selectedGroupNode.getBaseEntity());
             if (selectedParentGroup != null)
             {
@@ -380,7 +377,6 @@ public class OrganizationBean extends BaseBean
         tempGroupTreeNode.setLabel(((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity().getName());
         if (validate((GroupTreeNodeImpl) tempGroupTreeNode))
         {
-            ((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity().setAddressID(updateAddress(((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity()));
             Integer id = groupDAO.create(getAccountID(), ((GroupTreeNodeImpl) tempGroupTreeNode).getBaseEntity());
             if (id > 0)
             {
@@ -424,11 +420,10 @@ public class OrganizationBean extends BaseBean
             }
             else
             {
-                groupDAO.deleteByID(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity().getGroupID());
+                groupDAO.delete(((GroupTreeNodeImpl) selectedGroupNode).getBaseEntity());
                 BaseTreeNodeImpl parentNode = selectedGroupNode.getParent();
                 selectedGroupNode.setParent(null);
                 setSelectedGroupNode((GroupTreeNodeImpl) parentNode);
-                //selectedGroupNode = (GroupTreeNodeImpl) parentNode;
                 selectedTreeNode = parentNode;
                 // Make sure when the page refreshed that we pull a new list in
                 rootGroupNode = null;
@@ -441,7 +436,6 @@ public class OrganizationBean extends BaseBean
 
     private void updateUsersGroupHeirarchy()
     {
-//        organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getGroupHierarchy().getTopGroup().getGroupID()));
         organizationHierarchy = new GroupHierarchy(groupDAO.getGroupHierarchy(getAccountID(), getUser().getGroupID()));
         getProUser().setGroupHierarchy(organizationHierarchy);
         treeNavigationBean.refresh();
@@ -619,7 +613,8 @@ public class OrganizationBean extends BaseBean
         return selectItemList;
     }
 
-    private List<SelectItem> getChildNodesAsSelectItems(BaseTreeNodeImpl node)
+    @SuppressWarnings("unchecked")
+	private List<SelectItem> getChildNodesAsSelectItems(BaseTreeNodeImpl node)
     {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         if (node.getChildCount() > 0)
@@ -637,35 +632,16 @@ public class OrganizationBean extends BaseBean
 
         return selectItemList;
     }
-    private Integer updateAddress(Group group) {
-        Address address = group.getAddress();
-        if (group.getAddressID() == null) {
-            // if any fields are filled in then save it
-            if ((address.getAddr1() != null  && !address.getAddr1().isEmpty()) ||
-                (address.getAddr2() != null  && !address.getAddr2().isEmpty()) ||
-                (address.getCity() != null  && !address.getCity().isEmpty()) ||
-                address.getState() != null ||
-                (address.getZip() != null  && !address.getZip().isEmpty())) {
-                address.setAccountID(group.getAccountID());
-                return getAddressDAO().create(address.getAccountID(), address);
-            }
-            return null;
-        } else {
-            if ( address.getAddrID() == null ) {
-                address.setAddrID(group.getAddressID());
-            }
-        }
-
-        // must return a valid address id, not a count of updated things....
-        getAddressDAO().update(address);
-        return address.getAddrID();
-    }
-    
     private void fetchGroupAddress(Group g) {
-        if (g.getAddressID() == null)
+        if (g.getAddressID() == null){
             g.setAddress(new Address());
+            g.getAddress().setAccountID(g.getAccountID());
+        }
         else if (g.getAddress() == null ){
-            g.setAddress(getAddressDAO().findByID(g.getAddressID()));
+        	Address address = getAddressDAO().findByID(g.getAddressID());
+        	if((address.getAccountID() == null) || (address.getAccountID().equals(g.getAccountID()))){
+        		g.setAddress(getAddressDAO().findByID(g.getAddressID()));
+        	}
         }
     }
     
@@ -694,10 +670,6 @@ public class OrganizationBean extends BaseBean
         TreeNodeType type = selectedGroupNode.getTreeNodeType();
         if (type == TreeNodeType.TEAM || type == TreeNodeType.DIVISION || type == TreeNodeType.FLEET)
         {
-//            selectedGroupDriverCount = driverDAO.getAllDrivers(selectedGroupNode.getId()).size();
-//            selectedGroupVehicleCount = vehicleDAO.getVehiclesInGroupHierarchy(selectedGroupNode.getId()).size();
-//System.out.println("selectedGroupDriverCount = " + selectedGroupDriverCount);
-//System.out.println("selectedGroupVehicleCount = " + selectedGroupVehicleCount);
             selectedGroupDriverCount = reportDAO.getDriverReportCount(selectedGroupNode.getId(), null);
             selectedGroupVehicleCount = reportDAO.getVehicleReportCount(selectedGroupNode.getId(), null);
             fetchGroupAddress(selectedGroupNode.getGroup());

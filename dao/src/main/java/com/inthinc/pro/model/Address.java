@@ -113,5 +113,11 @@ public class Address extends BaseEntity implements HasAccountId {
         return buffer.toString();
         
     }
-
+    public Boolean isEmpty(){
+        return (addr1 == null || addr1.isEmpty()) && 
+        	   (addr2 == null || addr2.isEmpty()) && 
+        	   (city == null || city.isEmpty()) && 
+        	   (state == null ) && 
+        	   (zip == null || zip.isEmpty());
+    }
 }

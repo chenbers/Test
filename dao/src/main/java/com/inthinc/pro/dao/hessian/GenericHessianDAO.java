@@ -25,7 +25,7 @@ import com.inthinc.pro.dao.hessian.exceptions.HessianException;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
 import com.inthinc.pro.dao.hessian.mapper.SimpleMapper;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
-
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Serializable {
     /**
      * 
@@ -46,7 +46,6 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
     private Map<String, Method> convertToColumnMap = new HashMap<String, Method>();
     private Map<String, String> columnMap = new HashMap<String, String>();
 
-    @SuppressWarnings("unchecked")
     public GenericHessianDAO() {
         this.modelClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
         this.idClass = (Class<ID>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
@@ -144,7 +143,6 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Integer deleteByID(ID id) {
         if (deleteMethod == null)
             throw new NotImplementedException();
@@ -168,7 +166,6 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public T findByID(ID id) {
         if (findMethod == null)
             throw new NotImplementedException();
@@ -207,7 +204,6 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public ID create(ID id, T entity) {
         if (createMethod == null)
             throw new NotImplementedException();
@@ -229,7 +225,6 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Integer update(T entity) {
         if (updateMethod == null)
             throw new NotImplementedException();
@@ -253,7 +248,6 @@ public abstract class GenericHessianDAO<T, ID> implements GenericDAO<T, ID>, Ser
         }
     }
 
-    @SuppressWarnings("unchecked")
     protected ID getID(T entity) throws IllegalArgumentException, IntrospectionException, IllegalAccessException, InvocationTargetException {
         ID id = null;
         for (Field f : modelClass.getDeclaredFields()) {
