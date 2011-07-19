@@ -328,7 +328,7 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         ValueChangeEvent event = new ValueChangeEvent(component, item.getLogTime(), logTime.toDate());
         fuelStopsBean.updateDateAndLocation(event);
 
-        assertTrue(item.getLocation().equals("Mountain View, CA"));
+        assertTrue(item.getLocation().equals("Grand Junction, Colorado"));
     }
     @Test
     public void locationOfVehicleByTimeNullVehicle(){
