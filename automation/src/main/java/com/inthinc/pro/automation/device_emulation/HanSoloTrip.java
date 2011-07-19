@@ -35,7 +35,7 @@ public class HanSoloTrip extends Thread{
         tiwi.set_WMP(17116);
         tiwi.set_location(33.0104, -117.111);
         tiwi.power_on_device();
-        tiwi.set_ignition(15);
+        tiwi.turn_key_on(15);
         tiwi.update_location(33.0104, -117.111, 15);
         tiwi.update_location(33.0104, -117.113, 15);
         tiwi.add_noDriver();
@@ -79,7 +79,7 @@ public class HanSoloTrip extends Thread{
         
         tiwi.add_stats();
         tiwi.logout_driver(null, 890, 204, 200);
-        tiwi.set_ignition(30);
+        tiwi.turn_key_off(30);
         tiwi.add_lowBattery();
         tiwi.power_off_device(900);
     }
@@ -89,9 +89,11 @@ public class HanSoloTrip extends Thread{
         waySmart.set_time(initialTime);
         waySmart.set_location(33.0104, -117.111);
         waySmart.setBaseOdometer(5000);
-//        waySmart.power_on_device();
-//        waySmart.set_ignition(15);
+        waySmart.power_on_device();
+        waySmart.turn_key_on(15);
         waySmart.installEvent(vehicleID, accountID, companyID);
+        waySmart.turn_key_off(15);
+        waySmart.power_off_device(100);
         
     }
     
@@ -123,7 +125,7 @@ public class HanSoloTrip extends Thread{
         String mcmID;
         int vehicleID, companyID, accountID;
         
-        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=Addresses.QA; initialTime = initialTime; vehicleID=7284; companyID=1; accountID=3;//deviceID=3763
+        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=Addresses.QA; initialTime = 1311114913; vehicleID=7284; companyID=1; accountID=3;//deviceID=3763
         
         trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, companyID, address, initialTime);
     }
