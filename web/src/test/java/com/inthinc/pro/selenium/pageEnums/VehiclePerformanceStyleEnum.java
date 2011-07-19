@@ -22,11 +22,11 @@ public enum VehiclePerformanceStyleEnum implements SeleniumEnums {
     RETURN(null, "styleForm:vehicleStyle-dateLinksToolsDetailShow"),
 
     /* Breakdown by Driving Style */
-    BREAKDOWN_OVERALL_LINK("Overall"),
-    BREAKDOWN_HARD_BRAKE_LINK("Hard Brake"),
-    BREAKDOWN_HARD_ACCEL_LINK("Hard Acceleration"),
-    BREAKDOWN_UNSAFE_TURN_LINK("Unsafe Turn"),
-    BREAKDOWN_HARD_BUMP_LINK("Hard Bump"),
+    BREAKDOWN_OVERALL_LINK("Overall", "vehicleChartOverallStyleForm:vehicleStyleOverall"),
+    BREAKDOWN_HARD_BRAKE_LINK("Hard Brake", "vehicleChartBrakeForm:vehicleStyleBrake"),
+    BREAKDOWN_HARD_ACCEL_LINK("Hard Acceleration", "vehicleChartAccelerateForm:vehicleStyleAccelerate"),
+    BREAKDOWN_UNSAFE_TURN_LINK("Unsafe Turn", "vehicleChartTurnForm:vehicleStyleTurn"),
+    BREAKDOWN_HARD_BUMP_LINK("Hard Bump", "vehicleChartBumpForm:vehicleStyleBump"),
 
     BREAKDOWN_OVERALL_SCORE(null, Xpath.start().td(Id.id("OVERALL")).table().tbody().tr().td("2").table().tbody().tr().toString()),
     BREAKDOWN_HARD_BRAKE_SCORE(null, Xpath.start().td(Id.id("BRAKE")).table().tbody().tr().td("2").table().tbody().tr().toString()),
