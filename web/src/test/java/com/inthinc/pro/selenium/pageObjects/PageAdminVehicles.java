@@ -1,13 +1,8 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.CheckBox;
-import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.DhxDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
-import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
-import com.inthinc.pro.automation.elements.TextField;
-import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
@@ -15,13 +10,13 @@ import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminVehiclesEntries;
 import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
 
-public class PageAdminVehicles extends AdminBar {
+public class PageAdminVehicles extends AdminTables {
 
-    private static final String page = "vehicles";
 
     private static final AdminVehiclesEnum[] enums = { AdminVehiclesEnum.STATUS_DHX, AdminVehiclesEnum.ZONE_TYPE_DHX, AdminVehiclesEnum.PRODUCT_DHX };
 
     public PageAdminVehicles() {
+        page = "vehicles";
         url = AdminVehiclesEnum.DEFAULT_URL;
         checkMe.add(AdminVehiclesEnum.TITLE);
     }
@@ -30,37 +25,21 @@ public class PageAdminVehicles extends AdminBar {
         return new AdminVehiclesPopUps();
     }
 
-    public class AdminVehiclesPopUps extends AdminBarPopUps {
-
-        public AdminVehiclesPopUps() {
-            super(page);
-        }
-
-        public AdminDelete delete() {
+    public class AdminVehiclesPopUps extends AdminTablesPopUps {
+        public AdminDelete delete(){
             return new AdminDelete(true);
-        }
-        
-        public EditColumns editColumns(){
-            return new EditColumns();
         }
     }
 
-    public class AdminVehiclesButtons extends AdminBarButtons {
+    public class AdminVehiclesButtons extends AdminTablesButtons {
 
-        public TextButton tableSearch() {
-            return new TextButton(AdminBarEnum.SEARCH_BUTTON, page);
-        }
-
-        public TextButton batchEdit() {
-            return new TextButton(AdminBarEnum.BATCH_EDIT, page);
-        }
 
         public TextButton delete() {
             return new TextButton(AdminBarEnum.DELETE, page);
         }
     }
 
-    public class AdminVehiclesDropDowns extends AdminBarDropDowns {
+    public class AdminVehiclesDropDowns extends AdminTablesDropDowns {
 
         public DropDown filterByProductType() {
             return new DhxDropDown(AdminVehiclesEnum.PRODUCT_DHX, enums);
@@ -76,18 +55,10 @@ public class PageAdminVehicles extends AdminBar {
 
     }
 
-    public class AdminVehiclesLinks extends AdminBarLinks {
+    public class AdminVehiclesLinks extends AdminTablesLinks {
 
         public TextTableLink entryVehicleId() {
             return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, AdminVehiclesEntries.VEHICLE_ID);
-        }
-
-        public TextTableLink entryEditVehicle() {
-            return new TextTableLink(AdminVehiclesEnum.EDIT_VEHICLE);
-        }
-
-        public TextLink editColumns() {
-            return new TextLink(AdminBarEnum.EDIT_COLUMNS_LINK, page);
         }
 
         public TextLink sortBy(AdminVehiclesEntries column) {
@@ -95,35 +66,13 @@ public class PageAdminVehicles extends AdminBar {
         }
     }
 
-    public class AdminVehiclesTextFields extends AdminBarTextFields {
-        public TextField tableSearch() {
-            return new TextField(AdminBarEnum.SEARCH_TEXTFIELD, page);
-        }
+    public class AdminVehiclesTextFields extends AdminTablesTextFields {
     }
 
-    public class AdminVehiclesTexts extends AdminBarTexts {
-
-        public Text counter() {
-            return new Text(AdminBarEnum.COUNTER);
-        }
+    public class AdminVehiclesTexts extends AdminTablesTexts {
 
         public TextTable entryTableValue(AdminVehiclesEntries column) {
             return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
-        }
-
-        public TextFieldLabel labelSearchBox() {
-            return new TextFieldLabel(AdminBarEnum.SEARCH_TEXTFIELD, page);
-        }
-
-    }
-
-    public class AdminVehiclesCheckBoxs {
-        public CheckBox checkAll() {
-            return new CheckBox(AdminBarEnum.SELECT_ALL, page);
-        }
-
-        public CheckBoxTable entryCheckRow() {
-            return new CheckBoxTable(AdminBarEnum.SELECT_ROW, page);
         }
     }
 
@@ -145,10 +94,6 @@ public class PageAdminVehicles extends AdminBar {
 
     public AdminVehiclesTextFields _textField() {
         return new AdminVehiclesTextFields();
-    }
-
-    public AdminVehiclesCheckBoxs _checkBox() {
-        return new AdminVehiclesCheckBoxs();
     }
 
     public class AdminVehiclesPager {

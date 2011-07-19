@@ -3,6 +3,32 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
 public class AdminTables {
+    
+    public enum AdminDevicesEntries implements TextEnum {
+        DEVICE_ID("name"),
+        VEHICLE_ID("vehicle"),
+        IMEI("imei"),
+        SIM_CARD("sim"),
+        SERIAL_NUMBER("serialNumber"),
+        DEVICE_PHONE("phone"),
+        STATUS("status"),
+        MCM_ID("mcmid"),
+        ALTERNATE_IMEI("altimei"),
+        PRODUCT("productVersion"),
+
+        ;
+
+        private String text;
+
+        private AdminDevicesEntries(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String getText() {
+            return text;
+        }
+    }
 
     public enum AdminVehiclesEntries implements TextEnum {
         VEHICLE_ID("name"),

@@ -9,66 +9,52 @@ import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
 
-public class PageAdminUsers extends AdminBar {
+public class PageAdminUsers extends AdminTables {
 
     public PageAdminUsers() {
+        page = "personTable";
         url = AdminUsersEnum.DEFAULT_URL;
         checkMe.add(AdminUsersEnum.BATCH_EDIT);
         checkMe.add(AdminUsersEnum.EDIT_COLUMNS_LINK);
         checkMe.add(AdminUsersEnum.SEARCH_BUTTON);
     }
 
-    private String page = "personTable";
-
-    public class AdminUsersButtons extends AdminBarButtons {
+    public class AdminUsersButtons extends AdminTablesButtons {
 
         public TextButton delete() {
             return new TextButton(AdminBarEnum.DELETE, page);
         }
 
-        public TextButton batchEdit() {
-            return new TextButton(AdminBarEnum.BATCH_EDIT, page);
-        }
-
-        public TextButton search() {
-            return new TextButton(AdminBarEnum.SEARCH_BUTTON, page);
-        }
     }
 
-    public class AdminUsersDropDowns extends AdminBarDropDowns {}
+    public class AdminUsersDropDowns extends AdminTablesDropDowns {}
 
-    public class AdminUsersLinks extends AdminBarLinks {
+    public class AdminUsersLinks extends AdminTablesLinks {
 
-        public TextLink editColumns() {
-            return new TextLink(AdminBarEnum.EDIT_COLUMNS_LINK, page);
-        }
-
-        public TextTableLink tableEntry(AdminUsersEntries column) {
-            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, column);
+        public TextTableLink tableEntryUserName() {
+            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, AdminUsersEntries.FULL_NAME);
         }
 
         public TextLink sortByColumn(AdminUsersEntries column) {
             return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
         }
 
-        public TextTableLink edit() {
-            return new TextTableLink(AdminBarEnum.EDIT_ITEM, page);
-        }
     }
 
-    public class AdminUsersTextFields extends AdminBarTextFields {
+    public class AdminUsersTextFields extends AdminTablesTextFields {
 
         public TextField search() {
             return new TextField(AdminBarEnum.SEARCH_TEXTFIELD, page);
         }
 
     }
-
-    public class AdminUsersTexts extends AdminBarTexts {
+    
+    public class AdminUsersTexts extends AdminTablesTexts {
 
         public TextTable tableEntry(AdminUsersEntries column) {
             return new TextTable(AdminBarEnum.TABLE_ENTRIES, page, column);
         }
+        
     }
 
     public AdminUsersButtons _button() {
@@ -90,28 +76,14 @@ public class PageAdminUsers extends AdminBar {
     public AdminUsersTextFields _textField() {
         return new AdminUsersTextFields();
     }
-
-    public class AdminUsersPopUps extends AdminBarPopUps {
-
-        public AdminUsersPopUps() {
-            super(page);
-        }
-
-        public EditColumns editColumns() {
-            return new EditColumns();
-        }
-
-        public AdminDelete deleteUsers() {
-            return new AdminDelete(true);
-        }
-    }
-
-    public AdminUsersPopUps _popUp() {
+    
+    public AdminUsersPopUps _popUp(){
         return new AdminUsersPopUps();
     }
 
-    @Override
-    public String getExpectedPath() {
-        return AdminUsersEnum.DEFAULT_URL.getURL();
+    public class AdminUsersPopUps extends AdminTablesPopUps {
+        public AdminDelete delete(){
+            return new AdminDelete(true);
+        }
     }
 }

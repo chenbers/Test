@@ -11,8 +11,6 @@ public enum AdminVehiclesEnum implements SeleniumEnums {
     TITLE("Admin - Vehicles", Xpath.start().span(Id.clazz("admin")).toString()),
     
     
-    EDIT_VEHICLE("edit", "admin-table-form:vehiclesTable:###:edit"),
-    
     PRODUCT_DHX(null, "admin-table-form:vehiclesTable:editVehicle-productChoice"),
 
     ZONE_TYPE_DHX(null, "admin-table-form:vehiclesTable:editVehicle-vehicleTypeChoice"),

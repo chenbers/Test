@@ -72,7 +72,7 @@ public class AddEditUser extends WebRallyTest {
 			myAdminUsers._textField().search().type(Name);
 			myAdminUsers._button().search().click(); 
 			myAdminUsers._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).validate(1,string.toUpperCase());
-			myAdminUsers._link().tableEntry(AdminUsersEntries.FIRST_NAME).click(1);
+			myAdminUsers._link().tableEntryUserName().click(1);
 			
 			//.2b Validate employee id displays in Upper case.		
 			myAdminUserDetails._text().values(AdminUserDetailsEnum.EMP_ID).validate(string.toUpperCase());
