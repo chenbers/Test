@@ -112,7 +112,7 @@
                                   <h:outputText value="#{messages.editDevice_sim}" />
                                 </td>
                                 <td>
-								  <h:outputText value="#{devicesBean.item.sim}" />
+								  <h:outputText value="#{devicesBean.item.sim}" id="edit-form:editDevice-sim"/>
                                 </td>
                               </tr>
                               <tr>
@@ -121,33 +121,33 @@
                                   <h:outputText value="#{messages.editDevice_phone}" />
                                 </td>
                                 <td>
-                                  <h:outputText value="#{devicesBean.item.phone}" />
+                                  <h:outputText value="#{devicesBean.item.phone}" id="edit-form:editDevice-phone" />
                                 </td>
                               </tr>
                               </ui:fragment>
                               <ui:fragment rendered="#{devicesBean.item.waySmart}">
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editDevice_mcmid}" /></td>
-                                <td><h:outputText value="#{devicesBean.item.mcmid}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.mcmid}"  id="edit-form:editDevice-mcmid" /></td>
  							  </tr> 
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editDevice_altimei}" /></td>
-                                <td><h:outputText value="#{devicesBean.item.altimei}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.altimei}"  id="edit-form:editDevice-altimei"/></td>
  							  </tr> 
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editDevice_witnessVersion}" /></td>
-                                <td><h:outputText value="#{devicesBean.item.witnessVersion}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.witnessVersion}" id="edit-form:editDevice-witnessVersion" /></td>
  							  </tr> 
                               <tr>
                                 <td width="100" valign="top"><h:outputText value="#{messages.editDevice_firmwareVersion}" /></td>
-                                <td><h:outputText value="#{devicesBean.item.firmwareVersionDate}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.firmwareVersionDate}" id="edit-form:editDevice-firmwareVersionDate" /></td>
  							  </tr> 
                
                                <tr>
                                 <td width="100" valign="top">
                                   <h:outputText value="#{messages.editDevice_iridiumImei}" />
 								</td>
-                                <td><h:outputText value="#{devicesBean.item.imei}" /></td>
+                                <td><h:outputText value="#{devicesBean.item.imei}" id="edit-form:editDevice-imei" /></td>
                               </tr>
                               </ui:fragment>
                               </ui:fragment>
