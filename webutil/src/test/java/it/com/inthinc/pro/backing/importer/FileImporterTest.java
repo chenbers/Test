@@ -18,6 +18,7 @@ import org.junit.Test;
 import com.inthinc.pro.backing.importer.FileChecker;
 import com.inthinc.pro.backing.importer.FileImporter;
 import com.inthinc.pro.backing.importer.ImportType;
+import com.inthinc.pro.backing.importer.ProgressBarBean;
 import com.inthinc.pro.dao.hessian.AccountHessianDAO;
 import com.inthinc.pro.dao.hessian.DeviceHessianDAO;
 import com.inthinc.pro.dao.hessian.GroupHessianDAO;
@@ -175,12 +176,29 @@ public class FileImporterTest extends BaseSpringTest {
     {
         
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateGood.xls");
-        List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream);
         
-        dumpErrors(msgList);
+        ProgressBarBean progressBarBean = new ProgressBarBean();
+        progressBarBean.startProcess();
+        List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream, progressBarBean);
+        assertTrue(msgList == null);
         
+        boolean completed = false;
+        for (int i = 0; i < 100; i++) {
+            if (progressBarBean.getCurrentValue() != null && progressBarBean.getCurrentValue() > 100l) {
+                completed = true;
+                break;
+            }
+            
+            try {
+                Thread.sleep(1000l);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+                
+        }
         
-        assertTrue(msgList.size() == 0);
+        assertTrue("import process completed", completed);
         
     }
 
@@ -294,12 +312,28 @@ public class FileImporterTest extends BaseSpringTest {
     {
         
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/VehicleTemplateGood.xls");
-        List<String> msgList = new FileImporter().importFile(ImportType.VEHICLES, stream);
+        ProgressBarBean progressBarBean = new ProgressBarBean();
+        progressBarBean.startProcess();
+        List<String> msgList = new FileImporter().importFile(ImportType.VEHICLES, stream, progressBarBean);
+        assertTrue(msgList == null);
         
-        dumpErrors(msgList);
+        boolean completed = false;
+        for (int i = 0; i < 100; i++) {
+            if (progressBarBean.getCurrentValue() != null && progressBarBean.getCurrentValue() > 100l) {
+                completed = true;
+                break;
+            }
+            
+            try {
+                Thread.sleep(1000l);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+                
+        }
         
-        
-        assertTrue(msgList.size() == 0);
+        assertTrue("import process completed", completed);
         
     }
     

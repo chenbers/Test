@@ -26,7 +26,6 @@ public class BulkImportBean extends BaseBean {
     private DataCache dataCache;
     private ImportType importType;
     private String feedback;
-    private List<String> errorList;
     private UploadFile uploadFile;
     private ProgressBarBean progressBarBean;
 
@@ -56,14 +55,6 @@ public class BulkImportBean extends BaseBean {
         this.uploadFile = uploadFile;
     }
 
-    public List<String> getErrorList() {
-        return errorList;
-    }
-
-    public void setErrorList(List<String> errorList) {
-        this.errorList = errorList;
-    }
-
     public ImportType getImportType() {
         return importType;
     }
@@ -85,7 +76,7 @@ public class BulkImportBean extends BaseBean {
     public void checkAction() {
         try {
             setFeedback(null);
-            setErrorList(null);
+            progressBarBean.setErrorList(null);
             dataCache.init();
             List<String> msgList = new FileChecker().checkFile(importType, new FileInputStream(uploadFile.getFile()), true);
             if (msgList.size() == 0)
@@ -94,7 +85,7 @@ public class BulkImportBean extends BaseBean {
                 if (warningsOnly(msgList))
                     setFeedback("The file check was SUCCESSFUL but please note the following warnings:");
                 else setFeedback("The file check was NOT SUCCESSFUL.  Please correct the following errors and try again:");
-                setErrorList(msgList);
+                progressBarBean.setErrorList(msgList);
             }
         } catch (FileNotFoundException e) {
             setFeedback("File upload failed.  File not found. " + e.getMessage());
@@ -115,20 +106,18 @@ public class BulkImportBean extends BaseBean {
     public void importAction() {
         try {
             setFeedback(null);
-            setErrorList(null);
+            progressBarBean.setErrorList(null);
             progressBarBean.startProcess();
             dataCache.init();
             logger.info("Import File: " + uploadFile.getFile().getName());
             List<String> msgList = new FileImporter().importFile(importType, new FileInputStream(uploadFile.getFile()), progressBarBean);
-            if (msgList.size() == 0) {
-                setFeedback("The file import was SUCCESSFUL.");
-                progressBarBean.stopProcess();
-                logger.info("Import File: " + uploadFile.getName() + " SUCCESSFUL");
+            if (msgList == null) {
+                logger.info("Import File: " + uploadFile.getName() + " IN PROGRESS");
             }
             else {
-                setFeedback("The file import was NOT SUCCESSFUL.  The following errors were found:");
-                progressBarBean.stopProcess();
-                setErrorList(msgList);
+                setFeedback("The file check prior to import was NOT SUCCESSFUL.  The following errors were found:");
+                progressBarBean.reset();
+                progressBarBean.setErrorList(msgList);
                 logger.info("Import File: " + uploadFile.getName() + " ERRORS");
             }
         } catch (FileNotFoundException e) {

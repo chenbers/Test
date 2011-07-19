@@ -1,9 +1,12 @@
 package com.inthinc.pro.backing.importer;
 
+import java.util.List;
+
 public class ProgressBarBean {
     private boolean buttonRendered = true;
     private boolean enabled=false;
     private Long currentValue;
+    private List<String> errorList;
     
     public ProgressBarBean() {
     }
@@ -16,13 +19,24 @@ public class ProgressBarBean {
     public void startProcess() {
         setEnabled(true);
         setButtonRendered(false);
-        setCurrentValue(1l);
+        setCurrentValue(0l);
     }
     public void stopProcess() {
-//        setEnabled(false);
-//        setButtonRendered(true);
-////        setCurrentValue(null);
+        setEnabled(false);
+        setButtonRendered(true);
         setCurrentValue(101l);
+    }
+    public void stopProcess(List<String> errorList) {
+        this.errorList = errorList;
+        stopProcess();
+    }
+
+    public List<String> getErrorList() {
+        return errorList;
+    }
+
+    public void setErrorList(List<String> errorList) {
+        this.errorList = errorList;
     }
 
     public Long getCurrentValue(){

@@ -158,12 +158,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             new HOSRecAdjusted("37",HOSStatus.OFF_DUTY,new Date(1277060400000l),TimeZone.getTimeZone("UTC"),new Date(1277060400000l),1155l,52,44,false,"","",1155l,RuleSetType.CANADA_2007_60_DEGREES_OIL, 2),
         },
         {   // test8_06202010_06302010_rule6
-//                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277006400000l),TimeZone.getTimeZone("UTC"),new Date(1277006400000l),495l,0,33,false,"","",496l,RuleSetType.CANADA_HOME_OFFICE, 51),
-//                new HOSRecAdjusted("50",HOSStatus.ON_DUTY_OCCUPANT,new Date(1277036100000l),TimeZone.getTimeZone("UTC"),new Date(1277036100000l),30l,33,2,false,"0","",21l,RuleSetType.CANADA_HOME_OFFICE, 50),
-//                new HOSRecAdjusted("49",HOSStatus.OFF_DUTY,new Date(1277037900000l),TimeZone.getTimeZone("UTC"),new Date(1277037900000l),225l,35,15,false,"","",232l,RuleSetType.CANADA_HOME_OFFICE, 49),
-//                new HOSRecAdjusted("48",HOSStatus.ON_DUTY_OCCUPANT,new Date(1277051400000l),TimeZone.getTimeZone("UTC"),new Date(1277051400000l),60l,50,4,false,"","",61l,RuleSetType.CANADA_HOME_OFFICE, 48),
-//                new HOSRecAdjusted("47",HOSStatus.OFF_DUTY,new Date(1277055000000l),TimeZone.getTimeZone("UTC"),new Date(1277055000000l),1260l,54,42,false,"","",1254l,RuleSetType.CANADA_HOME_OFFICE, 47),
-
                 
                 new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277006400000l),TimeZone.getTimeZone("UTC"),new Date(1277006400000l),495l,0,33,false,"","",495l,RuleSetType.CANADA_HOME_OFFICE, 3),
                 new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1277036100000l),TimeZone.getTimeZone("UTC"),new Date(1277036100000l),0l,33,0,false,"","",1l,RuleSetType.CANADA_HOME_OFFICE, 3),
@@ -218,12 +212,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
                 new HOSRecAdjusted("9",HOSStatus.OFF_DUTY,new Date(1279159200000l),TimeZone.getTimeZone("UTC"),new Date(1279159200000l),660l,80,16,false,"","",660l,RuleSetType.CANADA_2007_CYCLE_1, 1),
         },
         {   // test13_06062010_06102010_travelTimeOccupant
-//                new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1020l,0,68,true,"","",1021l,RuleSetType.US_OIL, 56),
-//                new HOSRecAdjusted("55",HOSStatus.ON_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),0l,68,0,true,"","",1l,RuleSetType.US_OIL, 55),
-//                new HOSRecAdjusted("54",HOSStatus.TRAVELTIME_OCCUPANT,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),180l,68,12,true,"","",174l,RuleSetType.US_OIL, 54),
-//                new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL, 53),
-                
-                
                 new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1020l,0,68,true,"","",1020l,RuleSetType.US_OIL, 1),
                 new HOSRecAdjusted("generated",HOSStatus.OFF_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),15l,68,1,true,"","",1l,RuleSetType.US_OIL, 1),
                 new HOSRecAdjusted("55",HOSStatus.ON_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),0l,69,0,true,"","",1l,RuleSetType.US_OIL, 1),
@@ -266,10 +254,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             {     // test12_07132010_07172010_personalTime
             },
             {     // test13_06062010_06102010_travelTimeOccupant
-//                new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1020l,0,68,false,"","",1022l,RuleSetType.US_OIL, 1),
-//                new HOSRecAdjusted("54",HOSStatus.ON_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),180l,68,12,false,"","",174l,RuleSetType.US_OIL, 5),
-//                new HOSRecAdjusted("53",HOSStatus.OFF_DUTY,new Date(1275876000000l),TimeZone.getTimeZone("UTC"),new Date(1275876000000l),615l,80,16,false,"","",624l,RuleSetType.US_OIL, 5),
-                
                 new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1275804000000l),TimeZone.getTimeZone("UTC"),new Date(1275804000000l),1020l,0,68,false,"","",1020l,RuleSetType.US_OIL, 1),
                 new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),0l,68,0,false,"","",2l,RuleSetType.US_OIL, 1),
                 new HOSRecAdjusted("generated",HOSStatus.ON_DUTY,new Date(1275865200000l),TimeZone.getTimeZone("UTC"),new Date(1275865200000l),15l,68,1,false,"","",12l,RuleSetType.US_OIL, 5),
@@ -337,15 +321,9 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     
     @Test
     public void gainTestCases() {
-// testcase 7 slight rounding issue on 6/21 9:45
             for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
-//int testCaseCnt = 14; {
-//System.out.println("TestCase: " + testCaseCnt);            
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
-//for (HOSRecord record : ddlTestData.hosRecordList)   
-//    record.dump2();
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
-//System.out.println("interval: " + ddlTestData.interval);            
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
                 ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group);
             
@@ -360,25 +338,18 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             dump("DDL", testCaseCnt, hosDailyDriverLogReportCriteria.getCriteriaList(), FormatType.HTML);
             
             List<HOSRecAdjusted> correctedList =  hosDailyDriverLog.getCorrectedGraphList();
-//for (HOSRecAdjusted adjustedRec : correctedList) {
-//    adjustedRec.dump();
-//}
-//System.out.println("---");
             assertEquals("corrected list size ", expectedAdjustedList[testCaseCnt].length, correctedList.size());
             int recCnt = 0;
             for (HOSRecAdjusted adjustedRec : correctedList) {
-//adjustedRec.dump2();                
                 compareHOSRecAdjusted(expectedAdjustedList[testCaseCnt][recCnt], adjustedRec, recCnt, testCaseCnt);
                 recCnt++;
             }
             assertEquals("day edited testcase " + testCaseCnt + " " +testCaseName[testCaseCnt], expectedEdited[testCaseCnt], hosDailyDriverLog.getEdited());
-//System.out.println("------------------");            
             List<HOSRecAdjusted> originalList = hosDailyDriverLog.getOriginalGraphList();
             if (hosDailyDriverLog.getEdited()) {
                 recCnt = 0;
                 for (HOSRecAdjusted originalRec : originalList) {
                     compareHOSRecAdjusted(expectedOriginalList[testCaseCnt][recCnt], originalRec, recCnt, testCaseCnt);
-//originalRec.dump();
                     recCnt++;
                 }
             }
@@ -429,10 +400,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     }
     
     HOSRecord[] hosRecords = {
-//            public HOSRecord(Long hosLogID, Integer driverID,
-//                    RuleSetType driverDotType, Integer vehicleID, String vehicleName, Boolean vehicleIsDOT,
-//                    Long vehicleOdometer, Date logTime, Date addedTime, TimeZone timeZone, HOSStatus status, HOSOrigin origin, String location, Float lat, Float lng, Long distance,
-//                    String trailerID, String serviceID, Boolean singleDriver, Boolean edited, String editUserName, Boolean deleted) {
             new HOSRecord(1l, 1, RuleSetType.US, null, null, false, 
                     0l, new Date(), new Date(), TimeZone.getDefault(), HOSStatus.DRIVING,
                     HOSOrigin.KIOSK, "slc", 0.0f, 0.0f, 0l, null, null, true, true, "", false, 0f,0f),
@@ -445,8 +412,6 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
     };
 
     RemarkLog[] expectedRemarkLogs = {
-//            public RemarkLog(HOSStatus status, Date logTimeDate, TimeZone logTimeZone, Boolean edited, String location, String originalLocation, Boolean deleted, Number startOdometer,
-//                    String statusDescription, Boolean locationEdited, String editor) {
             new RemarkLog(HOSStatus.DRIVING, new Date(), TimeZone.getDefault(), true, "slc", "slc", false, 0l, "Driving", false, "Driver Kiosk"), 
             new RemarkLog(HOSStatus.ON_DUTY, new Date(), TimeZone.getDefault(), true, "slc", "slc", false, 0l, "On Duty - Not Driving", false, ""), 
             new RemarkLog(HOSStatus.ON_DUTY, new Date(), TimeZone.getDefault(), true, "slc", "slc", false, 0l, "On Duty - Not Driving", false, ""), 
