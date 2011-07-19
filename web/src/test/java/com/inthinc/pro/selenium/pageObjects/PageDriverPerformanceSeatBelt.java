@@ -147,4 +147,16 @@ public class PageDriverPerformanceSeatBelt extends NavigationBar {
 	public DriverSeatBeltPopUps _popUp(){
 		return new DriverSeatBeltPopUps();
 	}
+	
+	public class DriverSeatBeltPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public DriverSeatBeltPager _page(){
+        return new DriverSeatBeltPager();
+    }
+    
 }

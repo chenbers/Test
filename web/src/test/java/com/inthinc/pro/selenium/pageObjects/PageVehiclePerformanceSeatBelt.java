@@ -143,4 +143,16 @@ public class PageVehiclePerformanceSeatBelt extends NavigationBar {
 		return new VehicleSeatBeltPopUps();
 	}
 
+	
+	public class VehicleSeatBeltPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public VehicleSeatBeltPager _page(){
+        return new VehicleSeatBeltPager();
+    }
+    
 }

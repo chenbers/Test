@@ -204,4 +204,16 @@ public class PageVehiclePerformanceStyle extends NavigationBar {
 	public VehicleStyleTextFields _textField() {
 		return new VehicleStyleTextFields();
 	}
+	
+	public class VehicleStylePager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public VehicleStylePager _page(){
+        return new VehicleStylePager();
+    }
+    
 }

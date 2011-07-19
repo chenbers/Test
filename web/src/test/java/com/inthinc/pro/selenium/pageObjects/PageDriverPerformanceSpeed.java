@@ -245,4 +245,15 @@ public class PageDriverPerformanceSpeed extends NavigationBar {
 		return new DriverSpeedPopUp();
 	}
 
+	public class DriverSpeedPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public DriverSpeedPager _page(){
+        return new DriverSpeedPager();
+    }
+    
 }

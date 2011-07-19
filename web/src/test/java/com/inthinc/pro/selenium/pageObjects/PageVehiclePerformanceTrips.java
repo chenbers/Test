@@ -177,4 +177,16 @@ public class PageVehiclePerformanceTrips extends NavigationBar {
 	public VehicleTripsCheckbox _checkBox() {
 		return new VehicleTripsCheckbox();
 	}
+	
+	public class VehicleTripsPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public VehicleTripsPager _page(){
+        return new VehicleTripsPager();
+    }
+    
 }

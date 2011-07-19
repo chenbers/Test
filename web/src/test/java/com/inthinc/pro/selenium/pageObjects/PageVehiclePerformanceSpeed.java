@@ -239,5 +239,16 @@ public class PageVehiclePerformanceSpeed extends NavigationBar {
 		return new VehicleSpeedPopUp();
 	}
 
+	public class VehicleSpeedPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public VehicleSpeedPager _page(){
+        return new VehicleSpeedPager();
+    }
+    
 
 }

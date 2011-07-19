@@ -230,4 +230,16 @@ public class PageDriverPerformanceStyle extends NavigationBar {
     	open(AdminVehicleViewEnum.DEFAULT_URL, vehicleID);
     	return this;
     }
+    
+    public class DriverStylePager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public DriverStylePager _page(){
+        return new DriverStylePager();
+    }
+    
 }

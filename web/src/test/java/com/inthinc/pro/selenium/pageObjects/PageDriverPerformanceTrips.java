@@ -185,5 +185,17 @@ public class PageDriverPerformanceTrips extends NavigationBar {
 	public DriverTripsCheckbox _checkBox() {
 		return new DriverTripsCheckbox();
 	}
+	
+	public class DriverTripsPager{
+        public Paging pageIndex(){
+            return new Paging();
+        }
+    }
+    
+    
+    public DriverTripsPager _page(){
+        return new DriverTripsPager();
+    }
+    
 
 }
