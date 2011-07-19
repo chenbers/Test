@@ -19,7 +19,18 @@ public abstract class BaseEmbeddedServerITCase {
 
     protected static final String url = "http://" + DOMAIN + ":" + port + "/service/api";
 
-    protected ApplicationContext applicationContext;
+    private static final String adminUser="jhoward";
+    private static final String adminPassword="password";
+
+    public static String getAdminuser() {
+		return adminUser;
+	}
+
+	public static String getAdminpassword() {
+		return adminPassword;
+	}
+
+	protected ApplicationContext applicationContext;
     protected HttpClient httpClient;
     protected ClientExecutor clientExecutor;
     protected ServiceClient client;

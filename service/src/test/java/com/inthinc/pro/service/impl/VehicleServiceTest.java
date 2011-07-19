@@ -1,8 +1,9 @@
-package com.inthinc.pro.service.it;
+package com.inthinc.pro.service.impl;
 
 import org.junit.Test;
 
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.service.it.BaseTest;
 
 
 public class VehicleServiceTest extends BaseTest {
