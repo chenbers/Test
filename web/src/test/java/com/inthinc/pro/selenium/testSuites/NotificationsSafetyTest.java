@@ -129,7 +129,8 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pnrf._link().safety().click();
         pns._dropDown().team().selectPartMatch(DATA_GROUP);
         pns._button().refresh().click();
-        
+        pause(5, "Wait for page to load.");
+
         for (int i=0;i<length;i++){
             String currentSearch = searchText(i);
             searchHeader(i).type(currentSearch);
@@ -792,9 +793,10 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pause(10, "Wait for page to load.");
         if(pns._link().entryStatus().isPresent(1)){
             pns._link().entryStatus().click(1);
+            pause(5, "Wait for pop-up to become visible.");
             pns._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            //TODO Verify option is greyed out.
+            assertStringContains("inc", pns._link().entryStatus().getText(1));
             pns._link().entryStatus().click(1);
         }
         else{
@@ -817,9 +819,10 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pause(10, "Wait for page to load.");
         if(pns._link().entryStatus().isPresent(1)){
             pns._link().entryStatus().click(1);
+            pause(5, "Wait for pop-up to become visible.");
             pns._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            //TODO Verify option is greyed out.
+            assertStringContains("inc", pns._link().entryStatus().getText(1));
             pns._link().entryStatus().click(1);
         }
         else{
@@ -841,9 +844,10 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pause(10, "Wait for page to load.");
         if(pns._link().entryStatus().isPresent(1)){
             pns._link().entryStatus().click(1);
+            pause(5, "Wait for pop-up to become visible.");
             pns._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            //TODO Verify option is greyed out.
+            assertStringContains("inc", pns._link().entryStatus().getText(1));
             pns._link().entryStatus().click(1);
         }
         else{
@@ -866,10 +870,31 @@ public class NotificationsSafetyTest extends WebRallyTest {
         String date = pns._text().dateTimeEntry().getText(1);
         String detail = pns._text().detailEntry().getText(1);
         pns._link().entryStatus().click(1);
+        pause(5, "Wait for pop-up to become visible.");
         assertStringContains(date, pns._popUp().excludeEvent()._text().message().getText());
         assertStringContains(detail, pns._popUp().excludeEvent()._text().message().getText());
         pns._popUp().excludeEvent()._button().yes().assertVisibility(true);
         pns._popUp().excludeEvent()._button().no().assertVisibility(true);
+    }
+    
+    @Test
+    public void includeLinkTest5738(){
+        set_test_case("TC5738");
+        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        ptds._link().notifications().click();
+        pnrf._link().safety().click();
+        
+        pns._dropDown().team().selectPartMatch(DATA_GROUP);
+        pns._button().refresh().click();
+        pause(10, "Wait for page to load.");
+        pns._link().entryStatus().click(1);
+        pause(5, "Wait for pop-up to become visible.");
+        pns._popUp().excludeEvent()._button().yes().click();
+        pause(10, "Wait for page to load.");
+        pns._link().entryStatus().click(1);
+        pause(5, "Wait for event to re-include.");
+        assertStringContains("exc", pns._link().entryStatus().getText(1));
     }
     
     public TextField searchHeader(int i){

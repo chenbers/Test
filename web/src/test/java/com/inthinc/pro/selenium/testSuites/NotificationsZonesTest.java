@@ -129,6 +129,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         pnz._dropDown().team().selectPartMatch(DATA_GROUP);
         pnz._button().refresh().click();
+        pause(5, "Wait for page to load.");
         
         for (int i=0;i<length;i++){
             String currentSearch = searchText(i);
@@ -788,13 +789,14 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         
         pnz._dropDown().team().selectPartMatch(DATA_GROUP);
-        pnz._button().refresh().click();
         pnz._dropDown().category().select(2);
+        pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
         pnz._link().entryStatus().click(1);
+        pause(5, "Wait for pop-up to become visible.");
         pnz._popUp().excludeEvent()._button().yes().click();
         pause(10, "Wait for page to load.");
-        //TODO Verify option is greyed out.
+        assertStringContains("inc", pnz._link().entryStatus().getText(1));
         pnz._link().entryStatus().click(1);
     }
     
@@ -807,13 +809,14 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         
         pnz._dropDown().team().selectPartMatch(DATA_GROUP);
-        pnz._button().refresh().click();
         pnz._dropDown().category().select(3);
+        pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
         pnz._link().entryStatus().click(1);
+        pause(5, "Wait for pop-up to become visible.");
         pnz._popUp().excludeEvent()._button().yes().click();
         pause(10, "Wait for page to load.");
-        //TODO Verify option is greyed out.
+        assertStringContains("inc", pnz._link().entryStatus().getText(1));
         pnz._link().entryStatus().click(1);
     }
     
@@ -832,10 +835,31 @@ public class NotificationsZonesTest extends WebRallyTest {
         String date = pnz._text().dateTimeEntry().getText(1);
         String detail = pnz._text().detailEntry().getText(1);
         pnz._link().entryStatus().click(1);
+        pause(5, "Wait for pop-up to become visible.");
         assertStringContains(date, pnz._popUp().excludeEvent()._text().message().getText());
         assertStringContains(detail, pnz._popUp().excludeEvent()._text().message().getText());
         pnz._popUp().excludeEvent()._button().yes().assertVisibility(true);
         pnz._popUp().excludeEvent()._button().no().assertVisibility(true);
+    }
+    
+    @Test
+    public void includeLinkTest5736(){
+        set_test_case("TC5736");
+        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        ptds._link().notifications().click();
+        pnrf._link().zones().click();
+        
+        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._button().refresh().click();
+        pause(10, "Wait for page to load.");
+        pnz._link().entryStatus().click(1);
+        pause(5, "Wait for pop-up to become visible.");
+        pnz._popUp().excludeEvent()._button().yes().click();
+        pause(10, "Wait for page to load.");
+        pnz._link().entryStatus().click(1);
+        pause(5, "Wait for event to re-include.");
+        assertStringContains("exc", pnz._link().entryStatus().getText(1));
     }
     
     public TextField searchHeader(int i){

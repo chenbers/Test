@@ -129,6 +129,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnrf._link().diagnostics().click();
         pnd._dropDown().team().selectPartMatch(DATA_GROUP);
         pnd._button().refresh().click();
+        pause(5, "Wait for page to load.");
         
         for (int i=0;i<length;i++){
             String currentSearch = searchText(i);
@@ -792,9 +793,10 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pause(10, "Wait for page to load.");
         if(pnd._link().entryStatus().isPresent(1)){
             pnd._link().entryStatus().click(1);
+            pause(5, "Wait for pop-up to become visible.");
             pnd._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            //TODO Verify option is greyed out.
+            assertStringContains("inc", pnd._link().entryStatus().getText(1));
             pnd._link().entryStatus().click(1);
         }
         else{
@@ -817,9 +819,10 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pause(10, "Wait for page to load.");
         if(pnd._link().entryStatus().isPresent(1)){
             pnd._link().entryStatus().click(1);
+            pause(5, "Wait for pop-up to become visible.");
             pnd._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            //TODO Verify option is greyed out.
+            assertStringContains("inc", pnd._link().entryStatus().getText(1));
             pnd._link().entryStatus().click(1);
         }
         else{
@@ -842,10 +845,32 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         String date = pnd._text().dateTimeEntry().getText(1);
         String detail = pnd._text().detailEntry().getText(1);
         pnd._link().entryStatus().click(1);
+        pause(5, "Wait for pop-up to become visible.");
+
         assertStringContains(date, pnd._popUp().excludeEvent()._text().message().getText());
         assertStringContains(detail, pnd._popUp().excludeEvent()._text().message().getText());
         pnd._popUp().excludeEvent()._button().yes().assertVisibility(true);
         pnd._popUp().excludeEvent()._button().no().assertVisibility(true);
+    }
+    
+    @Test
+    public void includeLinkTest5737(){
+        set_test_case("TC5737");
+        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        ptds._link().notifications().click();
+        pnrf._link().diagnostics().click();
+        
+        pnd._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnd._button().refresh().click();
+        pause(10, "Wait for page to load.");
+        pnd._link().entryStatus().click(1);
+        pause(5, "Wait for pop-up to become visible.");
+        pnd._popUp().excludeEvent()._button().yes().click();
+        pause(10, "Wait for page to load.");
+        pnd._link().entryStatus().click(1);
+        pause(5, "Wait for event to re-include.");
+        assertStringContains("exc", pnd._link().entryStatus().getText(1));
     }
     
     public TextField searchHeader(int i){
