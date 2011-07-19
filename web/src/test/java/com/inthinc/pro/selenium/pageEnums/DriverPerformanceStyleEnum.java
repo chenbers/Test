@@ -22,11 +22,11 @@ public enum DriverPerformanceStyleEnum implements SeleniumEnums {
     RETURN(null, "styleForm:driverStyle-dateLinksToolsDetailShow"),
 
     /* Breakdown by Driving Style */
-    BREAKDOWN_OVERALL_LINK("Overall"),
-    BREAKDOWN_HARD_BRAKE_LINK("Hard Brake"),
-    BREAKDOWN_HARD_ACCEL_LINK("Hard Acceleration"),
-    BREAKDOWN_UNSAFE_TURN_LINK("Unsafe Turn"),
-    BREAKDOWN_HARD_BUMP_LINK("Hard Bump"),
+    BREAKDOWN_OVERALL_LINK("Overall", "driverStyleOverallForm:driverStyleOverall"),
+    BREAKDOWN_HARD_BRAKE_LINK("Hard Brake", "driverStyleBrakeForm:driverStyleBrake"),
+    BREAKDOWN_HARD_ACCEL_LINK("Hard Acceleration", "driverStyleAccelerateForm:driverStyleAccelerate"),
+    BREAKDOWN_UNSAFE_TURN_LINK("Unsafe Turn", "driverStyleTurnForm:driverStyleTurn"),
+    BREAKDOWN_HARD_BUMP_LINK("Hard Bump", "driverStyleBumpForm:driverStyleBump"),
 
     BREAKDOWN_OVERALL_SCORE(null, Xpath.start().td(Id.id("OVERALL")).table().tbody().tr().td("2").table().tbody().tr().toString()),
     BREAKDOWN_HARD_BRAKE_SCORE(null, Xpath.start().td(Id.id("BRAKE")).table().tbody().tr().td("2").table().tbody().tr().toString()),
