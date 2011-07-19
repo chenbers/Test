@@ -31,22 +31,22 @@ import com.inthinc.pro.model.Vehicle;
 @Ignore
 public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(VehicleServiceITCaseTest.class);
-    private static int VEHICLE_ID = 3151;
+    private static int VEHICLE_ID = 1; //Mach5
     private static int VEHICLE_ID_WITH_NO_DATA = 777;
     private static int VEHICLE_ID_WITH_NO_LOCATION = 1234;
     private static final String TOO_EARLY_DATE = "20090101";
-
+    
     @Before
     public void before() {
 
         HttpClientParams params = new HttpClientParams();
         params.setAuthenticationPreemptive(true);
         httpClient = new HttpClient(params);
-        Credentials defaultcreds = new UsernamePasswordCredentials(/*TiwiproPrincipal.ADMIN_BACKDOOR_USERNAME*/ "jhoward", "password");
+        Credentials defaultcreds = new UsernamePasswordCredentials(getAdminuser(), getAdminpassword());
         httpClient.getState().setCredentials(new AuthScope(DOMAIN, getPort(), AuthScope.ANY_REALM), defaultcreds);
         clientExecutor = new ApacheHttpClientExecutor(httpClient);
 
-        client = ProxyFactory.create(ServiceClient.class, "http://localhost:" + getPort(), clientExecutor);
+        client = ProxyFactory.create(ServiceClient.class, "http://"+DOMAIN+":" + getPort(), clientExecutor);
     }
 
     /*
@@ -56,7 +56,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     @Test
     public void getVehicleDefaultXmlTest() throws Exception {
 
-       ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID);
+       ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID);
        ClientResponse<Vehicle> response = request.get();
        Vehicle vehicle = response.getEntity(Vehicle.class);
 
@@ -72,7 +72,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     @Test
     public void getVehicleXmlTest() throws Exception {
 
-       ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+".xml");
+       ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID+".xml");
        ClientResponse<Vehicle> response = request.get();
        Vehicle vehicle = response.getEntity(Vehicle.class);
 
@@ -89,7 +89,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     @Test
     public void getVehicleJSONTest() throws Exception {
 
-       ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+".json");
+       ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID+".json");
        ClientResponse<Vehicle> response = request.get();
        Vehicle vehicle = response.getEntity(Vehicle.class);
 
@@ -105,7 +105,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     @Test
     public void getVehicleFastInfoSetTest() throws Exception {
 
-       ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+".fastinfoset");
+       ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID+".fastinfoset");
        ClientResponse<Vehicle> response = request.get();
 
        assertEquals(Response.Status.OK, response.getResponseStatus());
@@ -123,7 +123,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
 
         // Getting vehicle last trip
 //        ClientResponse<Trip> trip = client.getLastVehicleTrip(VEHICLE_ID);
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+"/trips");
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID+"/trips");
         ClientResponse<List<Trip>> response = request.get();
 
         assertEquals(Response.Status.OK, response.getResponseStatus());
@@ -146,7 +146,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
 
         // Getting vehicle last trip
 //        ClientResponse<Trip> trip = client.getLastTrip(VEHICLE_ID);
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+"/trips.json");
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID+"/trips.json");
         ClientResponse<List<Trip>> response = request.get();
         List<Trip> list = response.getEntity(new GenericType<List<Trip>>() {});
 
@@ -167,7 +167,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     // throws UnsupportedOperationException when I try to unmarshal the fastinfoset response, but it works ok when requested from a browser
         // Getting vehicle last trip
 //        ClientResponse<Trip> trip = client.getLastTrip(VEHICLE_ID);
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+"/trips.fastinfoset");
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID+"/trips.fastinfoset");
         ClientResponse<List<Trip>> response = request.get();
 //        List<Trip> list = response.getEntity(new GenericType<List<Trip>>() {});
 
@@ -187,7 +187,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     public void getLastLocationTest() throws Exception {
 
 //        ClientResponse<LastLocation> location = client.getLastVehicleLocation(VEHICLE_ID);
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+"/lastlocation");
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID+"/lastlocation");
 
         ClientResponse<LastLocation> response = request.get();
         LastLocation lastLocation = response.getEntity(LastLocation.class);
@@ -208,7 +208,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
 
         // Getting vehicle last location
         //        ClientResponse<LastLocation> location = client.getLastLocation(VEHICLE_ID);
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+"/lastlocation.json");
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID+"/lastlocation.json");
         ClientResponse<LastLocation> response = request.get();
         LastLocation lastLocation = response.getEntity(LastLocation.class);
 
@@ -227,7 +227,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
 
         // Getting vehicle last location
         //        ClientResponse<LastLocation> location = client.getLastLocation(VEHICLE_ID);
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/"+VEHICLE_ID+"/lastlocation.fastinfoset");
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/"+VEHICLE_ID+"/lastlocation.fastinfoset");
         ClientResponse<LastLocation> response = request.get();
         LastLocation lastLocation = response.getEntity(LastLocation.class);
 
@@ -273,13 +273,19 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
 
     @Test 
     public void createVehicleTest() throws Exception{
-        ClientRequest request = clientExecutor.createRequest("http://localhost:8080/service/api/vehicle/");
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/");
 
-        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137712</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137713</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
 
         request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlText);
 
         String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
         System.out.println(response);
+    }
+    @Test 
+    public void deleteVehicleTest() throws Exception{
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/10410");
+        ClientResponse<String> response = request.delete( String.class); //get response and automatically unmarshall to a string.
+        System.out.println(response.getStatus());
     }
 }
