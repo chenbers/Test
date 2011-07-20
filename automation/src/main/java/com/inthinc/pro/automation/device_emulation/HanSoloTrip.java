@@ -91,7 +91,7 @@ public class HanSoloTrip extends Thread{
         waySmart.setBaseOdometer(5000);
         waySmart.power_on_device();
         waySmart.turn_key_on(15);
-        waySmart.installEvent(vehicleID, accountID, companyID);
+        waySmart.addInstallEvent(vehicleID, accountID, companyID);
         waySmart.turn_key_off(15);
         waySmart.power_off_device(100);
         

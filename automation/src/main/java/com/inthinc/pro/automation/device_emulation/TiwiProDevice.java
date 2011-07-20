@@ -296,7 +296,7 @@ public class TiwiProDevice extends Base {
         return 1;
     }
 
-    public TiwiProDevice set_ignition(Integer time_delta) {
+    protected TiwiProDevice set_ignition(Integer time_delta) {
         ignition_state = !ignition_state;
         Long newTime = (Long) (time + time_delta);
         set_time(newTime);

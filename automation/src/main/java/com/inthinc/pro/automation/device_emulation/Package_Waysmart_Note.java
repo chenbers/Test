@@ -54,7 +54,7 @@ public class Package_Waysmart_Note implements NoteBuilder {
         sendNote.setArgs("vehicle_id", vehicleID);
     }
 
-    public void setDriverID(int driverID) {
+    public void setDriverID(String driverID) {
         sendNote.setArgs("driver_id", driverID);
     }
 
