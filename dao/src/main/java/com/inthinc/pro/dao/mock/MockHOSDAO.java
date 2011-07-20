@@ -277,7 +277,7 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
     }
 
     @Override
-    public Long createFromNote(Long id, HOSRecord hosRecord) {
+    public Long createFromNote(HOSRecord hosRecord) {
         return new Long(0);
     }
         
