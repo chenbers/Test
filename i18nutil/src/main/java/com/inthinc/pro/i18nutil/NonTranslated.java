@@ -820,6 +820,14 @@ public class NonTranslated {
         nonTranslated_fr.put("/hoskiosk/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
         
         nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("dateFormat");
+        nonTranslatedList.add("dateTimeFormat");
+        nonTranslatedList.add("timeFormat");
+        nonTranslatedList.add("longTimeFormat");
+        nonTranslatedList.add("simpleDateFormat");
+        nonTranslatedList.add("shortDateFormat");
+        nonTranslatedList.add("justDay");
+        nonTranslatedList.add("monthDay");
         nonTranslatedList.add("NONE");
         nonTranslatedList.add("RedFlagLevel.INFO");
         nonTranslatedList.add("ScoreType.SCORE_DRIVING_STYLE");
@@ -954,6 +962,20 @@ public class NonTranslated {
         nonTranslated_fr.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/performance/i18n/vehicleUsageReport", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
+    
+        
+        nonTranslatedList.add("phoneFormat");
+        nonTranslatedList.add("dateFormat");
+        nonTranslatedList.add("dateTimeFormat");
+        nonTranslatedList.add("stopsDateTime");
+        nonTranslatedList.add("timeFormat");
+        nonTranslatedList.add("longTimeFormat");
+        nonTranslatedList.add("simpleDateFormat");
+        nonTranslatedList.add("shortDateFormat");
+        nonTranslatedList.add("justDay");
+        nonTranslatedList.add("monthDay");
+        nonTranslatedList.add("longDateTimeFormat");
+
         nonTranslatedList.add("AlertMessageDeliveryType.EMAIL");
         nonTranslatedList.add("AlertMessageType.ALERT_TYPE_FATIGUE");
         nonTranslatedList.add("AlertMessageType.ALERT_TYPE_HOS");
