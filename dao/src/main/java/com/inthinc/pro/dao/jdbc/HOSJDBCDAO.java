@@ -625,7 +625,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
 
     @Override
     public Long createFromNote(HOSRecord hosRecord) {
-        Long id;
+        Long id = null;
         Connection conn = null;
         CallableStatement statement = null;
         ResultSet resultSet = null;
