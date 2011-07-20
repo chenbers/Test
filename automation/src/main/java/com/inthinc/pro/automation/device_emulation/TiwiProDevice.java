@@ -122,6 +122,7 @@ public class TiwiProDevice extends Base {
             attrs = new HashMap<TiwiAttrs, Integer>();
             construct_note(type, attrs);
         }
+        check_queue();
         return this;
     }
 
@@ -237,12 +238,20 @@ public class TiwiProDevice extends Base {
         } else if (!ignition_state) {
             trip_stop = newTime;
             Long tripTime = trip_stop - trip_start;
-            attrs = new HashMap<TiwiAttrs, Integer>();
-            attrs.put(TiwiAttrs.ATTR_TYPE_TRIP_DURATION, tripTime.intValue());
-            attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 980);
-            construct_note(TiwiNoteTypes.NOTE_TYPE_IGNITION_OFF, attrs);
+            addIgnitionOffNote(tripTime.intValue(), 980);
         }
         return this;
+    }
+    
+    public void addIgnitionOnNote(){
+        construct_note(TiwiNoteTypes.NOTE_TYPE_IGNITION_ON);
+    }
+    
+    public void addIgnitionOffNote(int tripDuration, int percentPointsPassedFilter){
+        attrs = new HashMap<TiwiAttrs, Integer>();
+        attrs.put(TiwiAttrs.ATTR_TYPE_TRIP_DURATION, tripDuration);
+        attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, percentPointsPassedFilter);
+        construct_note(TiwiNoteTypes.NOTE_TYPE_IGNITION_OFF, attrs);
     }
 
     @Override
@@ -252,19 +261,32 @@ public class TiwiProDevice extends Base {
 
         power_state = !power_state; // Change the power state between on and off
         if (power_state) {
-            attrs.put(TiwiAttrs.ATTR_TYPE_FIRMWARE_VERSION, WMP);
-            attrs.put(TiwiAttrs.ATTR_TYPE_DMM_VERSION, MSP);
-            attrs.put(TiwiAttrs.ATTR_TYPE_GPS_LOCK_TIME, 10);
-            construct_note(TiwiNoteTypes.NOTE_TYPE_POWER_ON, attrs);
-            check_queue();
+            addPowerOnNote(WMP, MSP, 10);
 
         } else if (!power_state) {
-            attrs.put(TiwiAttrs.ATTR_TYPE_LOW_POWER_MODE_TIMEOUT, get_setting_int(TiwiProps.PROPERTY_LOW_POWER_MODE_SECONDS));
-            construct_note(TiwiNoteTypes.NOTE_TYPE_LOW_POWER_MODE, attrs);
+            addPowerOffNote(get_setting_int(TiwiProps.PROPERTY_LOW_POWER_MODE_SECONDS));
+            
             check_queue();
-            if (!note_queue.isEmpty())
-                send_note();
         }
+        return this;
+    }
+    
+    public void addPowerOffNote(int lowPowerModeSeconds){
+        attrs.put(TiwiAttrs.ATTR_TYPE_LOW_POWER_MODE_TIMEOUT, lowPowerModeSeconds);
+        construct_note(TiwiNoteTypes.NOTE_TYPE_LOW_POWER_MODE, attrs);
+        flushNotes();
+    }
+
+    public void flushNotes(){
+        if (!note_queue.isEmpty())
+            send_note();
+    }
+    
+    public TiwiProDevice addPowerOnNote(int WMP, int MSP, int gpsLockTime){
+        attrs.put(TiwiAttrs.ATTR_TYPE_FIRMWARE_VERSION, WMP);
+        attrs.put(TiwiAttrs.ATTR_TYPE_DMM_VERSION, MSP);
+        attrs.put(TiwiAttrs.ATTR_TYPE_GPS_LOCK_TIME, gpsLockTime);
+        construct_note(TiwiNoteTypes.NOTE_TYPE_POWER_ON, attrs);
         return this;
     }
 
@@ -321,6 +343,55 @@ public class TiwiProDevice extends Base {
             speeding_distance += Math.abs(calculator.calc_distance(last[0], last[1], loc[0], loc[1]));
         }
         Integer distance = (int) (speeding_distance * 100);
+        addSpeedingNote(distance, topSpeed, avgSpeed);
+        return this;
+    }
+    
+    public TiwiProDevice addIdlingNote(int lowIdleTime, int highIdleTime){
+        attrs = new HashMap<TiwiAttrs, Integer>();
+        attrs.put(TiwiAttrs.ATTR_TYPE_LOW_IDLE, lowIdleTime);
+        attrs.put(TiwiAttrs.ATTR_TYPE_HIGH_IDLE, highIdleTime);
+        
+        construct_note(TiwiNoteTypes.NOTE_TYPE_IDLING, attrs);
+        return this;
+    }
+
+    public TiwiProDevice tampering(Integer timeDelta) {
+        power_state=false;
+        ignition_state=false;
+        increment_time(timeDelta);
+        
+        addTamperingNote(850);
+
+        power_on_device(time);
+        turn_key_on(10);
+        return this;
+    }
+    
+    public void addTamperingNote(int percentPassedFilter){
+        attrs = new HashMap<TiwiAttrs, Integer>();
+        attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, percentPassedFilter);
+        attrs.put(TiwiAttrs.ATTR_TYPE_BACKUP_BATTERY, 6748);
+        
+        construct_note(TiwiNoteTypes.NOTE_TYPE_UNPLUGGED, attrs);
+    }
+    
+    public void setLogLevel(Level level){
+        logger.setLevel(level);
+    }
+    
+    public TiwiProDevice nonTripNote(long time, int sats, int heading, Double latitude, Double longitude, int speed, int odometer){
+        this.time = time;
+        this.sats = sats;
+        this.heading = heading;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.speed = speed;
+        this.odometer = odometer;
+        return this;
+    }
+    
+    public TiwiProDevice addSpeedingNote(Integer distance, Integer topSpeed, Integer avgSpeed){
         attrs = new HashMap<TiwiAttrs, Integer>();
         attrs.put(TiwiAttrs.ATTR_TYPE_DISTANCE, distance);
         attrs.put(TiwiAttrs.ATTR_TYPE_TOP_SPEED, topSpeed);
@@ -330,25 +401,6 @@ public class TiwiProDevice extends Base {
 
         construct_note(TiwiNoteTypes.NOTE_TYPE_SPEEDING_EX3, attrs);
         return this;
-    }
-
-    public TiwiProDevice tampering(Integer timeDelta) {
-        power_state=false;
-        ignition_state=false;
-        increment_time(timeDelta);
-        attrs = new HashMap<TiwiAttrs, Integer>();
-        attrs.put(TiwiAttrs.ATTR_TYPE_PERCENTAGE_OF_POINTS_THAT_PASSED_THE_FILTER_, 850);
-        attrs.put(TiwiAttrs.ATTR_TYPE_BACKUP_BATTERY, 6748);
-        
-        construct_note(TiwiNoteTypes.NOTE_TYPE_UNPLUGGED, attrs);
-        
-        power_on_device(time);
-        turn_key_on(10);
-        return this;
-    }
-    
-    public void setLogLevel(Level level){
-        logger.setLevel(level);
     }
 
 }
