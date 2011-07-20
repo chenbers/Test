@@ -5,20 +5,19 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsZones;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
-
+import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
 public class NotificationsZonesTest extends WebRallyTest {
-    String CORRECT_USERNAME = "dastardly";
-    String CORRECT_USERNAME_TOP = "pitstop";
-    String CORRECT_PASSWORD = "Muttley";
-    //TODO Add data accessible by the automation accounts.
-    String DATA_USERNAME = "skumer1";
-    String DATA_PASSWORD = "ROBOT_ROCK";
-    String DATA_GROUP = "Skip";
+    String USERNAME = "dastardly";
+    String USERNAME_2 = "CaptainNemo";
+    String USERNAME_TOP = "pitstop";
+    String PASSWORD = "Muttley";
+    String GROUP = "Test Group WR";
     PageLogin pl;
     PageNotificationsRedFlags pnrf;
     PageNotificationsZones pnz;
@@ -34,7 +33,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void bookmarkEntryTest5710(){
         set_test_case("TC5710");
 
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -42,7 +41,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
         openSavedPage();
-        pnrf.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pnrf.loginProcess(USERNAME, PASSWORD);
         assertStringContains(correctURL, ptds.getCurrentLocation());
     }
     
@@ -50,14 +49,14 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void bookmarkEntryDifferentAccountTest5711(){
         set_test_case("TC5711");
         
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         savePageLink();
         String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
-        pnrf.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        pnrf.loginProcess(USERNAME_2, PASSWORD);
         String team2 = ptds._text().teamName().getText();
         openSavedPage();
         assertStringContains(correctURL, ptds.getCurrentLocation());
@@ -67,28 +66,31 @@ public class NotificationsZonesTest extends WebRallyTest {
     
     @Test
     public void driverLinkTest5712(){
-      set_test_case("TC5712");
+        set_test_case("TC5712");
         allCheckedHelper();
-        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         
-        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
         int i = 1;
         while(!pnz._link().entryDriver().isClickable(i)){
             i++;
         }
+        String driver = pnz._link().entryDriver().getText(i);
         pnz._link().entryDriver().click(i);
         assertStringContains("app/driver", pnz.getCurrentLocation());
+        PageDriverPerformance pdp = new PageDriverPerformance();
+        assertStringContains(driver, pdp._link().driverName().getText());
     }
     
     @Test
     public void emailTest5713(){
         //set_test_case("TC5713");
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -105,12 +107,12 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void locationMapLinkTest5717(){
       //set_test_case("TC5717");
         allCheckedHelper();
-        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         
-        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
         pnz._button().eventLocation().click(1);
@@ -121,13 +123,14 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void searchTest5718(){
         set_test_case("TC5718");
+        allCheckedHelper();
         int length = 3;
         
-        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
-        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(5, "Wait for page to load.");
         
@@ -291,12 +294,13 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void tablePropertiesTest5719(){
         
         set_test_case("TC5719");
+        allCheckedHelper();
         String currentText;
-        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
-        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(5, "Wait for refresh.");
         
@@ -457,7 +461,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void toolsButtonTest5720(){
         set_test_case("TC5720");
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -472,7 +476,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void zonesUITest5721(){
         set_test_case("TC5721");
         allCheckedHelper();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -498,22 +502,25 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void vehicleLinkTest5722(){
         set_test_case("TC5722");
         allCheckedHelper();
-        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         
-        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
+        String vehicle = pnz._link().entryVehicle().getText(1);
         pnz._link().entryVehicle().click(1);
         assertStringContains("app/vehicle", pnz.getCurrentLocation());
+        PageVehiclePerformance pvp = new PageVehiclePerformance();
+        assertStringContains(vehicle, pvp._link().vehicleName().getText());
     }
     
     @Test
     public void cancelChangesTest5723(){
         set_test_case("TC5723");
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -542,7 +549,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void cancelNoChangesTest5724(){
         set_test_case("TC5724");
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -570,7 +577,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void mouseCheckBoxSelectionTest5725(){
         set_test_case("TC5725");
         someCheckedHelper();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -593,7 +600,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void spacebarCheckBoxSelectionTest5726(){
         set_test_case("TC5726");
         someCheckedHelper();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -613,7 +620,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void currentSessionRetentionTest5727(){
         set_test_case("TC5727");
         someCheckedHelper();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -639,7 +646,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void enterKeyTest5728(){
         set_test_case("TC5728");
         someCheckedHelper();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -662,7 +669,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void saveButtonTest5729(){
         set_test_case("TC5729");
         someCheckedHelper();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -683,7 +690,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     public void subsequentSessionRetentionTest5730(){
         set_test_case("TC5730");
         someCheckedHelper();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -693,7 +700,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._popUp().editColumns()._checkBox().check(4);
         pnz._popUp().editColumns()._button().save().click();
         pnz._link().logout().click();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         
@@ -708,7 +715,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void tabbingOrderTest5731(){
         set_test_case("TC5731");
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -748,7 +755,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void editColumnsUITest5732(){
         set_test_case("TC5732");
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -783,12 +790,13 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void excludeLinkArrivalTest5733(){
         set_test_case("TC5733");
-        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        allCheckedHelper();
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         
-        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._dropDown().category().select(2);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
@@ -803,12 +811,13 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void excludeLinkDepartureTest5734(){
         set_test_case("TC5734");
-        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        allCheckedHelper();
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         
-        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._dropDown().category().select(3);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
@@ -823,12 +832,13 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void excludeLinkUITest5735(){
         set_test_case("TC5735");
-        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        allCheckedHelper();
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         
-        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._dropDown().statusFilter().select("included");
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
@@ -845,12 +855,13 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void includeLinkTest5736(){
         set_test_case("TC5736");
-        pl.loginProcess(DATA_USERNAME, DATA_PASSWORD);
+        allCheckedHelper();
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
         
-        pnz._dropDown().team().selectPartMatch(DATA_GROUP);
+        pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
         pnz._link().entryStatus().click(1);
@@ -889,7 +900,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     }
     
     public void allCheckedHelper(){
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().zones().click();
@@ -906,7 +917,7 @@ public class NotificationsZonesTest extends WebRallyTest {
     }
     
     public void someCheckedHelper(){
-          pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+          pl.loginProcess(USERNAME, PASSWORD);
           PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
           ptds._link().notifications().click();
           pnrf._link().zones().click();
