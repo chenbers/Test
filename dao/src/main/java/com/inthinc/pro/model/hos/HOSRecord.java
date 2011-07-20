@@ -52,7 +52,7 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     private Boolean tripInspectionFlag;
     private Date dateLastUpdated;
     private Boolean userEnteredLocationFlag;
-    private Long noteFlags;
+    private Byte noteFlags;
     private Integer stateID;
     
     public HOSRecord()
@@ -137,11 +137,11 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
         this.userEnteredLocationFlag = userEnteredLocationFlag;
     }
 
-    public Long getNoteFlags() {
+    public Byte getNoteFlags() {
         return noteFlags;
     }
 
-    public void setNoteFlags(Long noteFlags) {
+    public void setNoteFlags(Byte noteFlags) {
         this.noteFlags = noteFlags;
     }
 

@@ -644,7 +644,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setFloat(8, hosRecord.getLng());
             statement.setString(9, hosRecord.getLocation());
             statement.setBoolean(10, hosRecord.getUserEnteredLocationFlag());
-            statement.setLong(11, hosRecord.getNoteFlags());
+            statement.setByte(11, hosRecord.getNoteFlags());
             statement.setString(12, hosRecord.getTrailerID());
             statement.setString(13, hosRecord.getServiceID());
             statement.setFloat(14, (hosRecord.getTruckGallons()== null) ? 0f : hosRecord.getTruckGallons());
