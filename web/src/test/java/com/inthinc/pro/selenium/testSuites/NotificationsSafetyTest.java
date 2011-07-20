@@ -902,6 +902,89 @@ public class NotificationsSafetyTest extends WebRallyTest {
         assertStringContains("exc", pns._link().entryStatus().getText(1));
     }
     
+    @Test
+    public void timeFrameTest5743(){
+        set_test_case("TC5743");
+        
+        allCheckedHelper();
+        pl.loginProcess(USERNAME, PASSWORD);
+        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
+        ptds._link().notifications().click();
+        pnrf._link().safety().click();
+        pns._dropDown().team().selectPartMatch(GROUP);
+        pns._button().refresh().click();
+        pause(5, "Wait for refresh.");
+        String currentDate = pns._text().dateTimeEntry().getText(1);
+        
+        int month1 = monthToInt(currentDate.substring(0,3));
+        int targetMonth;
+        int day1;
+        int targetDay;
+        int year1;
+        int targetYear;
+        
+        if(currentDate.charAt(6) == ','){
+            day1 = Integer.parseInt(currentDate.substring(4,6));
+            year1 = Integer.parseInt(currentDate.substring(8,12));
+        }
+        else{
+            day1 = Integer.parseInt(currentDate.substring(4,5));
+            year1 = Integer.parseInt(currentDate.substring(7,11));
+        }
+        if(day1 != 1){
+            targetMonth = month1;
+            targetYear = year1;
+            targetDay = day1 - 1;
+        }
+        else{
+            if(month1 == 1){
+                targetMonth = 12;
+                targetDay = 31;
+                targetYear = year1 - 1;
+            }
+            else{
+                targetMonth = month1 - 1;
+                targetYear = year1;
+                if(targetMonth == 1 || targetMonth == 3 || targetMonth == 5 || targetMonth == 7
+                        || targetMonth == 8 || targetMonth == 10 || targetMonth == 12){
+                    targetDay = 31;
+                }
+                else if(targetMonth != 2){
+                    targetDay = 30;
+                }
+                else{
+                    if(targetYear%4 == 0 && (targetYear%100 != 0 || targetYear%400 == 0)){
+                        targetDay = 29;
+                    }
+                    else{
+                        targetDay = 28;
+                    }
+                }
+            }
+        }
+        
+        pns._dropDown().timeFrame().selectPartMatch("Yesterday");
+        pause(5, "Wait for refresh.");
+        
+        String yesterday = pns._text().dateTimeEntry().getText(1);
+        
+        int month2 = monthToInt(yesterday.substring(0,3));
+        int day2;
+        int year2;
+        
+        if(yesterday.charAt(6) == ','){
+            day2 = Integer.parseInt(currentDate.substring(4,6));
+            year2 = Integer.parseInt(currentDate.substring(8,12));
+        }
+        else{
+            day2 = Integer.parseInt(currentDate.substring(4,5));
+            year2 = Integer.parseInt(currentDate.substring(7,11));
+        }
+        if(month2 != targetMonth || day2 != targetDay || year2 != targetYear){
+            addError("Incorrect date for yesterday.", ErrorLevel.FAIL);
+        }
+    }
+    
     public TextField searchHeader(int i){
         TextField[] searchHeaders = {pns._textField().group(), pns._textField().driver(), pns._textField().vehicle()};
 
