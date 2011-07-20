@@ -390,13 +390,13 @@ public class LiveFleetTest extends WebRallyTest {
         
         tiwi.set_location(60, 0);
         tiwi.power_on_device();
-        tiwi.set_ignition(15);
+        tiwi.turn_key_on(15);
         tiwi.set_time(initialTime + 60);
         tiwi.update_location(60, 0, 15);
         tiwi.last_location(60, 0, 15);
         
         tiwi.add_stats();
-        tiwi.set_ignition(30);
+        tiwi.turn_key_off(30);
         tiwi.power_off_device(900);
         
         
@@ -407,13 +407,13 @@ public class LiveFleetTest extends WebRallyTest {
         
         tiwi.set_location(40.7097, -111.9925);
         tiwi.power_on_device();
-        tiwi.set_ignition(15);
+        tiwi.turn_key_on(15);
         tiwi.set_time(initialTime + 120);
         tiwi.update_location(40.7097, -111.9925, 15);
         tiwi.last_location(40.7097, -111.9925, 15);
         
         tiwi.add_stats();
-        tiwi.set_ignition(30);
+        tiwi.turn_key_off(30);
         tiwi.power_off_device(900);
         
         
