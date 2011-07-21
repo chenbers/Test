@@ -320,11 +320,11 @@
                                  <tr class="tableOdd">
                                  	<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                      	            	<ui:param name="messageKey" value="editDevice_idling"/>
-                                      	<h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-idling2" value="#{updateField['editableVehicleSettings.idlingSeconds']}" />
+                                      	<h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-idling" value="#{updateField['editableVehicleSettings.idlingSeconds']}" />
                                       	<h:outputText value="#{messages[messageKey]}" />
                                    	</td>
                                    	<td style="padding: 0px 0px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     	<rich:spacer width="1"/>
+                                     	<h:outputText value="#{messages.editDevice_sensitivity1}" />
                                    	</td>
                                  	<td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
                                     	<rich:inputNumberSlider id="#{context}-idlingThreshold" 
@@ -344,6 +344,22 @@
 									<td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;">
                                           <h:outputText value="#{messages.editDevice_sensitivity5}" />
                                     </td>
+                                 </tr>
+                                 <tr class="tableEven">
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                     	               <ui:param name="messageKey" value="editDevice_idleBuzzer"/>
+                                       <h:selectBooleanCheckbox rendered="#{batchEdit}" id="update_#{context}-idleBuzzer" value="#{updateField['editableVehicleSettings.idleBuzzer']}" />
+                                       <h:outputText value="#{messages[messageKey]}" />
+                                     </td>
+                                     <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
+                                     	<h:selectBooleanCheckbox value="#{vehiclesBean.item.editableVehicleSettings.idleBuzzer}" disabled="#{disabled}" />
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;" align="right">
+                                       <h:outputText value="#{messages.editDevice_currentSensitivity}" />
+                                       <span id="idleBuzzer" style="font-weight:bold">#{vehiclesBean.item.editableVehicleSettings.idleBuzzer}
+                                       </span>
+                                    </td>
+                                    <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><rich:spacer height="1"/></td>
                                  </tr>
                             </table>
 

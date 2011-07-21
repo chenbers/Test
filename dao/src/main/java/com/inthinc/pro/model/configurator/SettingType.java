@@ -72,7 +72,9 @@ public enum SettingType implements BaseEnum
     PARENT_MODE(44, 59, 0, 0, "parent_mode"),
     DOT_VEHICLE_TYPE(45, 1261, 0, 0, "hos_vehicle_type"),
     EVENT_IDLING(46, 105, 2, 1, "idlingEvent"),
-    IDLING_TIMEOUT(47,106, 64, 60, "idleThreshold");
+    IDLING_TIMEOUT(47,106, 64, 60, "idleThreshold"),
+    BUZZER_IDLE(48, 184, 2, 0, "idleBuzzer");
+    
     private Integer       settingsCount; //This is how many possible values there are for this device setting
     private Integer       settingID; //SettingID in settingDefs table
     private Integer       defaultSetting;  //This is the index of the default value for this setting.

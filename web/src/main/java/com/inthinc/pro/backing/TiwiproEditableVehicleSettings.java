@@ -22,7 +22,8 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 //    private String ephone;
     private Integer autologoffSeconds;
     private Integer idlingSeconds;
-	private Integer[] speedSettings;
+    private boolean idleBuzzer;
+    private Integer[] speedSettings;
 	private Integer hardAcceleration; //SensitivitySlider value
 	private Integer hardBrake; //SensitivitySlider value
 	private Integer hardTurn; //SensitivitySlider value
@@ -34,12 +35,13 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 
     public TiwiproEditableVehicleSettings(Integer vehicleID, String ephone, Integer autoLogoffSeconds, Integer[] speedSettings,
                                  Integer hardAcceleration, Integer hardBrake, Integer hardTurn,
-                                 Integer hardVertical, Integer idlingThreshold) {
+                                 Integer hardVertical, Integer idlingThreshold, boolean idleBuzzer) {
        
         super(vehicleID, ProductType.TIWIPRO_R74, ephone);
 
         this.autologoffSeconds = autoLogoffSeconds;
         this.idlingSeconds = idlingThreshold;
+        this.idleBuzzer = idleBuzzer;
         setSpeedSettings(speedSettings);
         setHardAcceleration(hardAcceleration);
         setHardBrake(hardBrake);
@@ -129,24 +131,23 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
     	
     	setAutologoffSeconds(AutologoffSetting.valueOf((Integer)autoLogoffSlider).getSeconds());
     }
-    public Integer getAutoLogoffSlider(){
-    	
+    public Integer getAutoLogoffSlider(){	
         if (autologoffSeconds == null) return AutologoffSetting.OFF.getSlider();
         return AutologoffSetting.findBySeconds(autologoffSeconds).getSlider();
     }
+    public Integer getIdlingEvent() {
+        return (idlingSeconds == null || idlingSeconds == 0)?0:1;
+    }
     public void setIdlingSlider(Integer idlingSlider){
-    	
     	setIdlingSeconds(IdlingSetting.valueOf((Integer)idlingSlider).getSeconds());
     }
-    public Integer getIdlingSlider(){
-    	
+    public Integer getIdlingSlider(){	
         if (idlingSeconds == null) return IdlingSetting.OFF.getSlider();
         return IdlingSetting.findBySeconds(idlingSeconds).getSlider();
     }
 	public Integer getIdlingSeconds() {
 		return idlingSeconds;
 	}
-
 	public void setIdlingSeconds(Integer idlingSeconds) {
 		this.idlingSeconds = idlingSeconds;
 	}
@@ -162,6 +163,12 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 	public Integer getIdlingSecondsMax() {
 	    return IdlingSetting.MAX.getSlider();
 	}
+	public boolean isIdleBuzzer() {
+        return idleBuzzer;
+    }
+    public void setIdleBuzzer(boolean idleBuzzer) {
+        this.idleBuzzer = idleBuzzer;
+    }
     public String getAutologoffDisplayString(){
         
         if (autologoffSeconds == null || autologoffSeconds == 0){
