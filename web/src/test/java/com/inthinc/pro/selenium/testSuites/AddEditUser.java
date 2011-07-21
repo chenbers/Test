@@ -45,14 +45,14 @@ public class AddEditUser extends WebRallyTest {
 		
 		myAdminUsers._link().adminUsers().click();
 		myAdminUsers._link().editColumns().click();
-	    myAdminUsers._popUp().editColumns()._checkBox().check(12);
+	    myAdminUsers._popUp().editColumns()._checkBox().row(12).check();
 	    myAdminUsers._popUp().editColumns()._button().save().click();
 	    
 	    
-		String Name = myAdminUsers._text().tableEntry(AdminUsersEntries.FULL_NAME).getText(1);		
+		String Name = myAdminUsers._text().tableEntry(AdminUsersEntries.FULL_NAME).row(1).getText();		
 		myAdminUsers._textField().search().type(Name);
 		myAdminUsers._button().search().click(); 
-		myAdminUsers._link().edit().click(1);
+		myAdminUsers._link().edit().row(1).click();
 		String original = myAddEditUser._textField().personFields(AdminUsersEntries.EMPLOYEE_ID).getText();
 				
 		String[] emp_id = {random.getCharString(10).toLowerCase()
@@ -71,8 +71,8 @@ public class AddEditUser extends WebRallyTest {
 			myAdminUsers._link().adminUsers().click();
 			myAdminUsers._textField().search().type(Name);
 			myAdminUsers._button().search().click(); 
-			myAdminUsers._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).validate(1,string.toUpperCase());
-			myAdminUsers._link().tableEntryUserName().click(1);
+			myAdminUsers._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).validate(string.toUpperCase());
+			myAdminUsers._link().tableEntryUserName().row(1).click();
 			
 			//.2b Validate employee id displays in Upper case.		
 			myAdminUserDetails._text().values(AdminUserDetailsEnum.EMP_ID).validate(string.toUpperCase());
@@ -95,11 +95,11 @@ public class AddEditUser extends WebRallyTest {
                          
         	myAdminUsers._link().adminUsers().click();
         	myAdminUsers._link().editColumns().click();
-        	myAdminUsers._popUp().editColumns()._checkBox().check(12);
+        	myAdminUsers._popUp().editColumns()._checkBox().row(12).check();
         	myAdminUsers._popUp().editColumns()._button().save().click();
         	myAdminUsers._link().sortByColumn(AdminUsersEntries.EMPLOYEE_ID).click();
         	myAdminUsers._link().sortByColumn(AdminUsersEntries.EMPLOYEE_ID).click();
-        	String myString = myAdminUsers._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).getText(1);
+        	String myString = myAdminUsers._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).getText();
         
         //.2 Create a new user with duplicate employee id.
                

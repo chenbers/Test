@@ -1,78 +1,67 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
-import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import java.util.Iterator;
 
-public class LinkTable extends ClickableTableObject implements Clickable, TableBased {
+import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTableBased;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.enums.TextEnum;
+
+public class LinkTable implements ClickableTableBased {
+    
+    private SeleniumEnumWrapper myEnum;
+    private int rowNumber;
 	
-	 public LinkTable(SeleniumEnums anEnum) {
-	        super(anEnum);
-	    }
-	    public LinkTable(SeleniumEnums anEnum, Integer replaceNumber) {
-	        super(anEnum, replaceNumber);
-	    }
-	    public LinkTable(SeleniumEnums anEnum, String replaceWord) {
-	        super(anEnum, replaceWord);
-	    }
-	    public LinkTable(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-	        super(anEnum, replaceWord, replaceNumber);
-	    }
-	    
-	    @Override
-		public Boolean isVisible(Integer row) {
-			return super.isVisible(row);
-		}
-		@Override
-		public Boolean isPresent(Integer row) {
-			return super.isPresent(row);
-		}
-		@Override
-		public ElementInterface focus(Integer row) {
-			return super.focus(row);
-		}
-		@Override
-		public Boolean assertVisibility(Integer row, Boolean visible) {
-			return super.assertVisibility(row, visible);
-		}
-		
-		
-		
-		
-		@Override
-		@Deprecated
-		public Boolean isVisible() {
-	    	addError(
-					"TextTableLink.getText()",
-					"please supply an Integer number for the row on the table)",
-					ErrorLevel.FAIL);
-			return null;
-		}
-		@Override
-		@Deprecated
-		public Boolean isPresent() {
-	    	addError(
-					"TextTable.isPresent()",
-					"please supply an Integer number for the row on the table)",
-					ErrorLevel.FAIL);
-			return null;
-		}
-		@Override
-		@Deprecated
-		public ElementInterface focus() {
-	    	addError(
-					"TextTable.focus()",
-					"please supply an Integer number for the row on the table)",
-					ErrorLevel.FAIL);
-			return null;
-		}
-		@Override
-		@Deprecated
-		public Boolean assertVisibility(Boolean visible) {
-	    	addError(
-					"TextTable.assertVisibility()",
-					"please supply an Integer number for the row on the table)",
-					ErrorLevel.FAIL);
-			return null;
-		}
+    public LinkTable(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+        myEnum = new SeleniumEnumWrapper(anEnum);
+        myEnum.replaceNumber(replaceNumber);
+        myEnum.replaceWord(replaceWord);
+    }
+
+    public LinkTable(SeleniumEnums anEnum) {
+        myEnum = new SeleniumEnumWrapper(anEnum);
+    }
+
+    public LinkTable(SeleniumEnums anEnum, Integer replaceNumber) {
+        myEnum = new SeleniumEnumWrapper(anEnum);
+        myEnum.replaceNumber(replaceNumber);
+    }
+
+    public LinkTable(SeleniumEnums anEnum, String replaceWord) {
+        myEnum = new SeleniumEnumWrapper(anEnum);
+        myEnum.replaceWord(replaceWord);
+    }
+
+    public LinkTable(SeleniumEnums anEnum, TextEnum replaceWord) {
+        myEnum = new SeleniumEnumWrapper(anEnum);
+        myEnum.replaceWord(replaceWord.getText());
+    }
+
+    @Override
+    public boolean hasNext() {
+        return row(rowNumber).isPresent();
+    }
+
+    @Override
+    public Clickable next() {
+        return row(rowNumber++);
+    }
+
+    @Override
+    @Deprecated
+    public void remove() {
+        throw new UnsupportedOperationException("There is nothing to remove");
+    }
+
+    @Override
+    public Iterator<Clickable> iterator() {
+        rowNumber = 0;
+        return this;
+    }
+
+    @Override
+    public Clickable row(int rowNumber) {
+        return new ClickableObject(myEnum, rowNumber);
+    }
 }

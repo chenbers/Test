@@ -36,8 +36,8 @@ public class ReportsDriver extends WebRallyTest {
 		driver._link().reports().click();
 		
 		//3- Select a driver name to click on
-		String drivername = driver._link().driverValue().getText(1);
-		driver._link().driverValue().click(1);
+		String drivername = driver._link().driverValue().row(1).getText();
+		driver._link().driverValue().row(1).click();
 		
 		//4- Compare to validate the correct page is pulled
 		performance._link().driverName().assertEquals(drivername);
@@ -56,10 +56,10 @@ public class ReportsDriver extends WebRallyTest {
 		driver._link().reports().click();
 		
 		//3- Take note of the top score in the Driving Style column.
-		String driverstyle = driver._link().styleValue().getText(1);
+		String driverstyle = driver._link().styleValue().row(1).getText();
 				
 		//4- Click on the Driving Style score box for that driver.
-		driver._link().styleValue().click(1);
+		driver._link().styleValue().row(1).click();
 				
 		//5- Click on the 12 months link
 		style._link().duration(TimeDuration.MONTHS_12).click();
@@ -137,10 +137,10 @@ public class ReportsDriver extends WebRallyTest {
 		driver._link().reports().click();
 		
 		//3- Take note of the top score in the Overall Score column.
-		String overallscore = driver._link().overallValue().getText(1);
+		String overallscore = driver._link().overallValue().row(1).getText();
 				
 		//4- Click on the Driving Style score box for that driver.
-		driver._link().overallValue().click(1);
+		driver._link().overallValue().row(1).click();
 				
 		//5- Click on the 12 months link
 		performance._link().overallDuration(TimeDuration.MONTHS_12).click();
@@ -176,9 +176,9 @@ public class ReportsDriver extends WebRallyTest {
 	  boolean hasOnlyExpectedDrivernames = true;
 	  boolean hasThisRow = true;
 	  for (int i = 1; i < 10 && hasOnlyExpectedDrivernames && hasThisRow; i++) {
-	   hasThisRow = driver._link().driverValue().isPresent(i);
+	   hasThisRow = driver._link().driverValue().row(i).isPresent();
 	   if(hasThisRow) {
-	    hasOnlyExpectedDrivernames &= driver._link().driverValue().validateContains(i, name);
+	    hasOnlyExpectedDrivernames &= driver._link().driverValue().row(i).validateContains(name);
 	   }
 	   }
 	 }
@@ -193,14 +193,14 @@ public class ReportsDriver extends WebRallyTest {
 		//2- Click on Reports link
 		driver._link().reports().click();
 		driver._button().editColumns().click();
-		driver._popUp().editColumns()._checkBox().check(9);
+		driver._popUp().editColumns()._checkBox().row(9).check();
 		driver._popUp().editColumns()._button().save().click();
 		
 		//3- Take note of the top score in the Seat Belt column.
-		String seatbelt = driver._link().seatbeltValue().getText(1);
+		String seatbelt = driver._link().seatbeltValue().row(1).getText();
 				
 		//4- Click on the Seat Belt score box for that driver.
-		driver._link().seatbeltValue().click(1);
+		driver._link().seatbeltValue().row(1).click();
 				
 		//5- Click on the 12 months link
 		belt._link().duration(TimeDuration.MONTHS_12);
@@ -220,14 +220,14 @@ public class ReportsDriver extends WebRallyTest {
 		//2- Click on Reports link
 		driver._link().reports().click();
 		driver._button().editColumns().click();
-		driver._popUp().editColumns()._checkBox().check(7);
+		driver._popUp().editColumns()._checkBox().row(7).check();
 		driver._popUp().editColumns()._button().save().click();
 		
 		//3- Take note of the top score in the Speed column.
-		String speed = driver._link().speedValue().getText(1);
+		String speed = driver._link().speedValue().row(1).getText();
 		
 		//4- Click on the Speed score box for that driver.
-		driver._link().speedValue().click(1);
+		driver._link().speedValue().row(1).click();
 		
 		//5- Click on the 12 months link
 		speeding._link().duration(TimeDuration.MONTHS_12);
@@ -250,10 +250,10 @@ public class ReportsDriver extends WebRallyTest {
 		//3- Select a vehicle to click on
 		driver._link().vehicleSort().click();
 		driver._link().vehicleSort().click();
-		String vehiclename = driver._link().vehicleValue().getText(1);
+		String vehiclename = driver._link().vehicleValue().row(1).getText();
 		
 		//4- Click on Vehicle
-		driver._link().vehicleValue().click(1);
+		driver._link().vehicleValue().row(1).click();
 		
 		//5- Compare to validate the correct page is pulled
 		vehicle._link().vehicleName().assertEquals(vehiclename);
@@ -283,9 +283,9 @@ public class ReportsDriver extends WebRallyTest {
 		driver._button().editColumns().click();
 		
 		//5- Check one or more of the boxes in the pop up
-		driver._popUp().editColumns()._checkBox().click(3);
-		driver._popUp().editColumns()._checkBox().click(1);
-		driver._popUp().editColumns()._checkBox().click(5);
+		driver._popUp().editColumns()._checkBox().row(3).click();
+		driver._popUp().editColumns()._checkBox().row(1).click();
+		driver._popUp().editColumns()._checkBox().row(5).click();
 		
 		//6- Click Cancel
 		driver._popUp().editColumns()._button().cancel().click();
@@ -364,7 +364,7 @@ public class ReportsDriver extends WebRallyTest {
 		driver._button().editColumns().click();
 		
 		//4- Using the mouse, click on a check box
-		driver._popUp().editColumns()._checkBox().click(1);
+		driver._popUp().editColumns()._checkBox().row(1).click();
 		
 	}
 	
@@ -391,9 +391,9 @@ public class ReportsDriver extends WebRallyTest {
 		driver._button().editColumns().click();
 		
 		//5- Check one or more of the boxes in the pop up
-		driver._popUp().editColumns()._checkBox().click(3);
-		driver._popUp().editColumns()._checkBox().click(1);
-		driver._popUp().editColumns()._checkBox().click(5);
+		driver._popUp().editColumns()._checkBox().row(3).click();
+		driver._popUp().editColumns()._checkBox().row(1).click();
+		driver._popUp().editColumns()._checkBox().row(5).click();
 		
 		//6- Click Save
 		driver._popUp().editColumns()._button().save().click();
@@ -440,9 +440,9 @@ public class ReportsDriver extends WebRallyTest {
 		driver._button().editColumns().click();
 		
 		//12- Change back to original settings
-		driver._popUp().editColumns()._checkBox().click(3);
-		driver._popUp().editColumns()._checkBox().click(1);
-		driver._popUp().editColumns()._checkBox().click(5);
+		driver._popUp().editColumns()._checkBox().row(3).click();
+		driver._popUp().editColumns()._checkBox().row(1).click();
+		driver._popUp().editColumns()._checkBox().row(5).click();
 		
 		//13- Click Save
 		driver._popUp().editColumns()._button().save().click();
@@ -472,7 +472,7 @@ public class ReportsDriver extends WebRallyTest {
 		driver._button().editColumns().click();
 		
 		//5- Check one or more of the boxes in the pop up
-		driver._popUp().editColumns()._checkBox().click(3);
+		driver._popUp().editColumns()._checkBox().row(3).click();
 		
 		//6- Click Save
 		driver._popUp().editColumns()._button().save().click();
@@ -497,7 +497,7 @@ public class ReportsDriver extends WebRallyTest {
 		driver._button().editColumns().click();
 		
 		//9- Change back to original settings
-		driver._popUp().editColumns()._checkBox().click(3);
+		driver._popUp().editColumns()._checkBox().row(3).click();
 		
 		//10- Click Save
 		driver._popUp().editColumns()._button().save().click();
@@ -526,7 +526,7 @@ public class ReportsDriver extends WebRallyTest {
 		driver._button().editColumns().click();
 		
 		//5- Check one or more of the boxes in the pop up
-		driver._popUp().editColumns()._checkBox().click(3);
+		driver._popUp().editColumns()._checkBox().row(3).click();
 		
 		//6- Click Save
 		driver._popUp().editColumns()._button().save().click();
@@ -576,7 +576,7 @@ public class ReportsDriver extends WebRallyTest {
 		driver._button().editColumns().click();
 		
 		//13- Change back to original settings
-		driver._popUp().editColumns()._checkBox().click(3);
+		driver._popUp().editColumns()._checkBox().row(3).click();
 		
 		//14- Click Save
 		driver._popUp().editColumns()._button().save().click();
@@ -607,15 +607,15 @@ public class ReportsDriver extends WebRallyTest {
 		Integer speed = 7;
 		Integer style = 8;
 		Integer belt = 9;
-		driver._popUp().editColumns()._checkBox().assertVisibility(group, true);
-		driver._popUp().editColumns()._checkBox().assertVisibility(employee, true);
-		driver._popUp().editColumns()._checkBox().assertVisibility(drive, true);
-		driver._popUp().editColumns()._checkBox().assertVisibility(vehicle, true);
-		driver._popUp().editColumns()._checkBox().assertVisibility(distance, true);
-		driver._popUp().editColumns()._checkBox().assertVisibility(overall, true);
-		driver._popUp().editColumns()._checkBox().assertVisibility(speed, true);
-		driver._popUp().editColumns()._checkBox().assertVisibility(style, true);
-		driver._popUp().editColumns()._checkBox().assertVisibility(belt, true);
+		driver._popUp().editColumns()._checkBox().row(group).assertVisibility(true);
+		driver._popUp().editColumns()._checkBox().row(employee).assertVisibility(true);
+		driver._popUp().editColumns()._checkBox().row(drive).assertVisibility(true);
+		driver._popUp().editColumns()._checkBox().row(vehicle).assertVisibility(true);
+		driver._popUp().editColumns()._checkBox().row(distance).assertVisibility(true);
+		driver._popUp().editColumns()._checkBox().row(overall).assertVisibility(true);
+		driver._popUp().editColumns()._checkBox().row(speed).assertVisibility(true);
+		driver._popUp().editColumns()._checkBox().row(style).assertVisibility(true);
+		driver._popUp().editColumns()._checkBox().row(belt).assertVisibility(true);
 		
 	}
 	

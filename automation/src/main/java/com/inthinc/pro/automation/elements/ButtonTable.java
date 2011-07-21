@@ -1,10 +1,10 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
-public class ButtonTable extends ClickableTableObject implements Clickable {
+public class ButtonTable extends ClickableTableObject implements ClickableTableBased {
 
 	
 	public ButtonTable(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {

@@ -1,12 +1,10 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
-import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
-public class ClickableText extends ClickableObject implements TextBased,
-	Clickable {
+public class ClickableText extends ClickableObject implements ClickableTextBased {
 
     private TextObject textStuff;
 

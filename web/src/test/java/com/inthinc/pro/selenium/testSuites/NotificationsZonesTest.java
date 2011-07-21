@@ -77,11 +77,11 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
         int i = 1;
-        while(!pnz._link().entryDriver().isClickable(i)){
+        while(!pnz._link().entryDriver().row(i).isClickable()){
             i++;
         }
-        String driver = pnz._link().entryDriver().getText(i);
-        pnz._link().entryDriver().click(i);
+        String driver = pnz._link().entryDriver().row(i).getText();
+        pnz._link().entryDriver().row(i).click();
         assertStringContains("app/driver", pnz.getCurrentLocation());
         PageDriverPerformance pdp = new PageDriverPerformance();
         assertStringContains(driver, pdp._link().driverName().getText());
@@ -115,7 +115,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnz._button().eventLocation().click(1);
+        pnz._button().eventLocation().row(1).click();
         //TODO Location map pop-up verify.
         //pnz._popUp().
     }
@@ -140,8 +140,8 @@ public class NotificationsZonesTest extends WebRallyTest {
             pause(10,"");
             for (int j=1;j<=20;j++){
                 TextTableLink currentColumn = searchValues(i);
-                if (currentColumn.isPresent(j)){
-                    currentColumn.validateContains(j,currentSearch);
+                if (currentColumn.row(j).isPresent()){
+                    currentColumn.row(j).validateContains(currentSearch);
                 } else {
                     break;
                 }
@@ -155,8 +155,8 @@ public class NotificationsZonesTest extends WebRallyTest {
             pause(10,"");
             for (int j=1;j<=20;j++){
                 TextTableLink currentColumn = searchValues(i);
-                if (currentColumn.isPresent(j)){
-                    currentColumn.validateContains(j,currentSearch);
+                if (currentColumn.row(j).isPresent()){
+                    currentColumn.row(j).validateContains(currentSearch);
                 } else {
                     break;
                 }
@@ -305,12 +305,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pause(5, "Wait for refresh.");
         
         currentText = "";
-        if(pnz._text().dateTimeEntry().isPresent(1)){
-            currentText = pnz._text().dateTimeEntry().getText(1);
+        if(pnz._text().dateTimeEntry().row(1).isPresent()){
+            currentText = pnz._text().dateTimeEntry().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnz._text().dateTimeEntry().isPresent(index)){
-                String newText = pnz._text().dateTimeEntry().getText(index);
+            if(pnz._text().dateTimeEntry().row(index).isPresent()){
+                String newText = pnz._text().dateTimeEntry().row(index).getText();
                 if(compareDates(currentText, newText) < 0){
                     print(currentText);
                     print(newText);
@@ -326,12 +326,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._link().sortByDateTime().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnz._text().dateTimeEntry().isPresent(1)){
-            currentText = pnz._text().dateTimeEntry().getText(1);
+        if(pnz._text().dateTimeEntry().row(1).isPresent()){
+            currentText = pnz._text().dateTimeEntry().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnz._text().dateTimeEntry().isPresent(index)){
-                String newText = pnz._text().dateTimeEntry().getText(index);
+            if(pnz._text().dateTimeEntry().row(index).isPresent()){
+                String newText = pnz._text().dateTimeEntry().row(index).getText();
                 if(compareDates(currentText, newText) > 0){
                     addError("Dates out of order", ErrorLevel.ERROR);
                 }
@@ -345,12 +345,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnz._link().entryDriver().isPresent(1)){
-            currentText = pnz._link().entryDriver().getText(1);
+        if(pnz._link().entryDriver().row(1).isPresent()){
+            currentText = pnz._link().entryDriver().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnz._link().entryDriver().isPresent(index)){
-                String newText = pnz._link().entryDriver().getText(index);
+            if(pnz._link().entryDriver().row(index).isPresent()){
+                String newText = pnz._link().entryDriver().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
@@ -364,12 +364,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnz._link().entryDriver().isPresent(1)){
-            currentText = pnz._link().entryDriver().getText(1);
+        if(pnz._link().entryDriver().row(1).isPresent()){
+            currentText = pnz._link().entryDriver().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnz._link().entryDriver().isPresent(index)){
-                String newText = pnz._link().entryDriver().getText(index);
+            if(pnz._link().entryDriver().row(index).isPresent()){
+                String newText = pnz._link().entryDriver().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
@@ -383,12 +383,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnz._link().entryGroup().isPresent(1)){
-            currentText = pnz._link().entryGroup().getText(1);
+        if(pnz._link().entryGroup().row(1).isPresent()){
+            currentText = pnz._link().entryGroup().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnz._link().entryGroup().isPresent(index)){
-                String newText = pnz._link().entryGroup().getText(index);
+            if(pnz._link().entryGroup().row(index).isPresent()){
+                String newText = pnz._link().entryGroup().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
@@ -402,12 +402,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnz._link().entryGroup().isPresent(1)){
-            currentText = pnz._link().entryGroup().getText(1);
+        if(pnz._link().entryGroup().row(1).isPresent()){
+            currentText = pnz._link().entryGroup().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnz._link().entryGroup().isPresent(index)){
-                String newText = pnz._link().entryGroup().getText(index);
+            if(pnz._link().entryGroup().row(index).isPresent()){
+                String newText = pnz._link().entryGroup().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
@@ -422,12 +422,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnz._link().entryVehicle().isPresent(1)){
-            currentText = pnz._link().entryVehicle().getText(1);
+        if(pnz._link().entryVehicle().row(1).isPresent()){
+            currentText = pnz._link().entryVehicle().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnz._link().entryVehicle().isPresent(index)){
-                String newText = pnz._link().entryVehicle().getText(index);
+            if(pnz._link().entryVehicle().row(index).isPresent()){
+                String newText = pnz._link().entryVehicle().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
@@ -441,12 +441,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnz._link().entryVehicle().isPresent(1)){
-            currentText = pnz._link().entryVehicle().getText(1);
+        if(pnz._link().entryVehicle().row(1).isPresent()){
+            currentText = pnz._link().entryVehicle().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnz._link().entryVehicle().isPresent(index)){
-                String newText = pnz._link().entryVehicle().getText(index);
+            if(pnz._link().entryVehicle().row(index).isPresent()){
+                String newText = pnz._link().entryVehicle().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
@@ -510,8 +510,8 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
-        String vehicle = pnz._link().entryVehicle().getText(1);
-        pnz._link().entryVehicle().click(1);
+        String vehicle = pnz._link().entryVehicle().row(1).getText();
+        pnz._link().entryVehicle().row(1).click();
         assertStringContains("app/vehicle", pnz.getCurrentLocation());
         PageVehiclePerformance pvp = new PageVehiclePerformance();
         assertStringContains(vehicle, pvp._link().vehicleName().getText());
@@ -534,7 +534,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         boolean b6 = pnz._text().headerDetail().isPresent();
         
         pnz._link().editColumns().click();
-        pnz._popUp().editColumns()._checkBox().click(1);
+        pnz._popUp().editColumns()._checkBox().row(1).click();
         pnz._popUp().editColumns()._button().cancel().click();
         
         pnz._link().sortByDateTime().assertPresence(b1);
@@ -584,15 +584,15 @@ public class NotificationsZonesTest extends WebRallyTest {
         
         pnz._link().editColumns().click();
         
-        pnz._popUp().editColumns()._checkBox().click(1);
-        pnz._popUp().editColumns()._checkBox().assertChecked(1, false);
-        pnz._popUp().editColumns()._checkBox().click(1);
-        pnz._popUp().editColumns()._checkBox().assertChecked(1, true);
+        pnz._popUp().editColumns()._checkBox().row(1).click();
+        pnz._popUp().editColumns()._checkBox().row(1).assertChecked(false);
+        pnz._popUp().editColumns()._checkBox().row(1).click();
+        pnz._popUp().editColumns()._checkBox().row(1).assertChecked(true);
         
-        pnz._popUp().editColumns()._link().entry().click(1);
-        pnz._popUp().editColumns()._checkBox().assertChecked(1, false);
-        pnz._popUp().editColumns()._link().entry().click(1);
-        pnz._popUp().editColumns()._checkBox().assertChecked(1, true);
+        pnz._popUp().editColumns()._link().entry().row(1).click();
+        pnz._popUp().editColumns()._checkBox().row(1).assertChecked(false);
+        pnz._popUp().editColumns()._link().entry().row(1).click();
+        pnz._popUp().editColumns()._checkBox().row(1).assertChecked(true);
        
     }
     
@@ -606,12 +606,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         
         pnz._link().editColumns().click();
-        pnz._popUp().editColumns()._checkBox().focus(1);
-        pnz._popUp().editColumns()._checkBox().click(1);//focus toggles checkboxes currently.
+        pnz._popUp().editColumns()._checkBox().row(1).focus();
+        pnz._popUp().editColumns()._checkBox().row(1).click();//focus toggles checkboxes currently.
         spaceBar();
-        pnz._popUp().editColumns()._checkBox().assertChecked(1, false);
+        pnz._popUp().editColumns()._checkBox().row(1).assertChecked(false);
         spaceBar();
-        pnz._popUp().editColumns()._checkBox().assertChecked(1, true);
+        pnz._popUp().editColumns()._checkBox().row(1).assertChecked(true);
         
     }
     
@@ -626,8 +626,8 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         
         pnz._link().editColumns().click();
-        pnz._popUp().editColumns()._checkBox().uncheck(1);
-        pnz._popUp().editColumns()._checkBox().check(4);
+        pnz._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnz._popUp().editColumns()._checkBox().row(4).check();
         pnz._popUp().editColumns()._button().save().click();
         pnz._link().reports().click();
         pnz._link().notifications().click();
@@ -652,9 +652,9 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         
         pnz._link().editColumns().click();
-        pnz._popUp().editColumns()._checkBox().focus(1);
-        pnz._popUp().editColumns()._checkBox().uncheck(1);
-        pnz._popUp().editColumns()._checkBox().check(4);
+        pnz._popUp().editColumns()._checkBox().row(1).focus();
+        pnz._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnz._popUp().editColumns()._checkBox().row(4).check();
         enterKey();
         pause(2, "Waiting for columns to update.");
         pnz._link().sortByDateTime().assertPresence(false);
@@ -675,8 +675,8 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         
         pnz._link().editColumns().click();
-        pnz._popUp().editColumns()._checkBox().uncheck(1);
-        pnz._popUp().editColumns()._checkBox().check(4);
+        pnz._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnz._popUp().editColumns()._checkBox().row(4).check();
         pnz._popUp().editColumns()._button().save().click();
         pnz._link().sortByDateTime().assertPresence(false);
         pnz._link().sortByGroup().assertPresence(true);
@@ -696,8 +696,8 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         
         pnz._link().editColumns().click();
-        pnz._popUp().editColumns()._checkBox().uncheck(1);
-        pnz._popUp().editColumns()._checkBox().check(4);
+        pnz._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnz._popUp().editColumns()._checkBox().row(4).check();
         pnz._popUp().editColumns()._button().save().click();
         pnz._link().logout().click();
         pl.loginProcess(USERNAME, PASSWORD);
@@ -721,25 +721,25 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         
         pnz._link().editColumns().click();
-        pnz._popUp().editColumns()._checkBox().focus(1);
+        pnz._popUp().editColumns()._checkBox().row(1).focus();
         tabKey();
-        if(!pnz._popUp().editColumns()._checkBox().hasFocus(2)){
+        if(!pnz._popUp().editColumns()._checkBox().row(2).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on second check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnz._popUp().editColumns()._checkBox().hasFocus(3)){
+        if(!pnz._popUp().editColumns()._checkBox().row(3).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on third check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnz._popUp().editColumns()._checkBox().hasFocus(4)){
+        if(!pnz._popUp().editColumns()._checkBox().row(4).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on fourth check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnz._popUp().editColumns()._checkBox().hasFocus(5)){
+        if(!pnz._popUp().editColumns()._checkBox().row(5).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on fifth check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnz._popUp().editColumns()._checkBox().hasFocus(6)){
+        if(!pnz._popUp().editColumns()._checkBox().row(6).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on sixth check box.", ErrorLevel.FAIL);
         }
         tabKey();
@@ -769,19 +769,19 @@ public class NotificationsZonesTest extends WebRallyTest {
         boolean b6 = pnz._text().headerDetail().isPresent();
         
         pnz._link().editColumns().click();
-        pnz._popUp().editColumns()._checkBox().assertVisibility(1, true);
-        pnz._popUp().editColumns()._checkBox().assertVisibility(2, true);
-        pnz._popUp().editColumns()._checkBox().assertVisibility(3, true);
-        pnz._popUp().editColumns()._checkBox().assertVisibility(4, true);
-        pnz._popUp().editColumns()._checkBox().assertVisibility(5, true);
-        pnz._popUp().editColumns()._checkBox().assertVisibility(6, true);
+        pnz._popUp().editColumns()._checkBox().row(1).assertVisibility(true);
+        pnz._popUp().editColumns()._checkBox().row(2).assertVisibility(true);
+        pnz._popUp().editColumns()._checkBox().row(3).assertVisibility(true);
+        pnz._popUp().editColumns()._checkBox().row(4).assertVisibility(true);
+        pnz._popUp().editColumns()._checkBox().row(5).assertVisibility(true);
+        pnz._popUp().editColumns()._checkBox().row(6).assertVisibility(true);
         
-        pnz._popUp().editColumns()._checkBox().assertChecked(1, b1);
-        pnz._popUp().editColumns()._checkBox().assertChecked(2, b2);
-        pnz._popUp().editColumns()._checkBox().assertChecked(3, b3);
-        pnz._popUp().editColumns()._checkBox().assertChecked(4, b4);
-        pnz._popUp().editColumns()._checkBox().assertChecked(5, b5);
-        pnz._popUp().editColumns()._checkBox().assertChecked(6, b6);
+        pnz._popUp().editColumns()._checkBox().row(1).assertChecked(b1);
+        pnz._popUp().editColumns()._checkBox().row(2).assertChecked(b2);
+        pnz._popUp().editColumns()._checkBox().row(3).assertChecked(b3);
+        pnz._popUp().editColumns()._checkBox().row(4).assertChecked(b4);
+        pnz._popUp().editColumns()._checkBox().row(5).assertChecked(b5);
+        pnz._popUp().editColumns()._checkBox().row(6).assertChecked(b6);
         
         pnz._popUp().editColumns()._button().save().assertVisibility(true);
         pnz._popUp().editColumns()._button().cancel().assertVisibility(true);
@@ -800,12 +800,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().category().select(2);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnz._link().entryStatus().click(1);
+        pnz._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         pnz._popUp().excludeEvent()._button().yes().click();
         pause(10, "Wait for page to load.");
-        assertStringContains("inc", pnz._link().entryStatus().getText(1));
-        pnz._link().entryStatus().click(1);
+        assertStringContains("inc", pnz._link().entryStatus().row(1).getText());
+        pnz._link().entryStatus().row(1).click();
     }
     
     @Test
@@ -821,12 +821,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().category().select(3);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnz._link().entryStatus().click(1);
+        pnz._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         pnz._popUp().excludeEvent()._button().yes().click();
         pause(10, "Wait for page to load.");
-        assertStringContains("inc", pnz._link().entryStatus().getText(1));
-        pnz._link().entryStatus().click(1);
+        assertStringContains("inc", pnz._link().entryStatus().row(1).getText());
+        pnz._link().entryStatus().row(1).click();
     }
     
     @Test
@@ -842,9 +842,9 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().statusFilter().select("included");
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
-        String date = pnz._text().dateTimeEntry().getText(1);
-        String detail = pnz._text().detailEntry().getText(1);
-        pnz._link().entryStatus().click(1);
+        String date = pnz._text().dateTimeEntry().row(1).getText();
+        String detail = pnz._text().detailEntry().row(1).getText();
+        pnz._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         assertStringContains(date, pnz._popUp().excludeEvent()._text().message().getText());
         assertStringContains(detail, pnz._popUp().excludeEvent()._text().message().getText());
@@ -864,13 +864,13 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnz._link().entryStatus().click(1);
+        pnz._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         pnz._popUp().excludeEvent()._button().yes().click();
         pause(10, "Wait for page to load.");
-        pnz._link().entryStatus().click(1);
+        pnz._link().entryStatus().row(1).click();
         pause(5, "Wait for event to re-include.");
-        assertStringContains("exc", pnz._link().entryStatus().getText(1));
+        assertStringContains("exc", pnz._link().entryStatus().row(1).getText());
     }
     
     @Test
@@ -885,7 +885,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(5, "Wait for refresh.");
-        String currentDate = pnz._text().dateTimeEntry().getText(1);
+        String currentDate = pnz._text().dateTimeEntry().row(1).getText();
         
         int month1 = monthToInt(currentDate.substring(0,3));
         int targetMonth;
@@ -937,7 +937,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().timeFrame().selectPartMatch("Yesterday");
         pause(5, "Wait for refresh.");
         
-        String yesterday = pnz._text().dateTimeEntry().getText(1);
+        String yesterday = pnz._text().dateTimeEntry().row(1).getText();
         
         int month2 = monthToInt(yesterday.substring(0,3));
         int day2;
@@ -964,12 +964,12 @@ public class NotificationsZonesTest extends WebRallyTest {
     
     public String searchText(int i){
         int firstDriver = 1;
-        while(!pnz._link().entryDriver().isClickable(firstDriver)){
+        while(!pnz._link().entryDriver().row(firstDriver).isClickable()){
             firstDriver++;
         }
-        String[] searchStrings = {(String) pnz._link().entryGroup().getText(1).substring(0, 3),
-                (String) pnz._link().entryDriver().getText(firstDriver).substring(0, 3), 
-                (String) pnz._link().entryVehicle().getText(1).substring(0, 3)};
+        String[] searchStrings = {(String) pnz._link().entryGroup().row(1).getText().substring(0, 3),
+                (String) pnz._link().entryDriver().row(firstDriver).getText().substring(0, 3), 
+                (String) pnz._link().entryVehicle().row(1).getText().substring(0, 3)};
         return searchStrings[i];
     }
     
@@ -989,12 +989,12 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         
         pnz._link().editColumns().click();
-        pnz._popUp().editColumns()._checkBox().check(1);
-        pnz._popUp().editColumns()._checkBox().check(2);
-        pnz._popUp().editColumns()._checkBox().check(3);
-        pnz._popUp().editColumns()._checkBox().check(4);
-        pnz._popUp().editColumns()._checkBox().check(5);
-        pnz._popUp().editColumns()._checkBox().check(6);
+        pnz._popUp().editColumns()._checkBox().row(1).check();
+        pnz._popUp().editColumns()._checkBox().row(2).check();
+        pnz._popUp().editColumns()._checkBox().row(3).check();
+        pnz._popUp().editColumns()._checkBox().row(4).check();
+        pnz._popUp().editColumns()._checkBox().row(5).check();
+        pnz._popUp().editColumns()._checkBox().row(6).check();
         pnz._popUp().editColumns()._button().save().click();
         pnz._link().logout().click();
     }
@@ -1006,12 +1006,12 @@ public class NotificationsZonesTest extends WebRallyTest {
           pnrf._link().zones().click();
           
           pnz._link().editColumns().click();
-          pnz._popUp().editColumns()._checkBox().check(1);
-          pnz._popUp().editColumns()._checkBox().check(2);
-          pnz._popUp().editColumns()._checkBox().check(3);
-          pnz._popUp().editColumns()._checkBox().uncheck(4);
-          pnz._popUp().editColumns()._checkBox().uncheck(5);
-          pnz._popUp().editColumns()._checkBox().uncheck(6);
+          pnz._popUp().editColumns()._checkBox().row(1).check();
+          pnz._popUp().editColumns()._checkBox().row(2).check();
+          pnz._popUp().editColumns()._checkBox().row(3).check();
+          pnz._popUp().editColumns()._checkBox().row(4).uncheck();
+          pnz._popUp().editColumns()._checkBox().row(5).uncheck();
+          pnz._popUp().editColumns()._checkBox().row(6).uncheck();
           pnz._popUp().editColumns()._button().save().click();
           pnz._link().logout().click();
       }

@@ -1,27 +1,28 @@
 package com.inthinc.pro.automation.elements;
 
-import com.inthinc.pro.automation.elements.ElementInterface.TextTableBased;
-import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextTableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
-public class TextCheckboxLabel extends TextTableLink implements TextTableBased{
+public class TextCheckboxLabel extends TextTableLink implements ClickableTextTableBased {
 	
 	public TextCheckboxLabel(SeleniumEnums anEnum) {
         super(anEnum);
+        setMyEnum();
     }
     public TextCheckboxLabel(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
+        setMyEnum();
     }
     public TextCheckboxLabel(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
+        setMyEnum();
     }
     public TextCheckboxLabel(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
+        setMyEnum();
     }
     
-    @Override
-    public void setMyEnum(SeleniumEnums anEnum){
-    	myEnum = new SeleniumEnumWrapper(anEnum);
+    private void setMyEnum(){
     	String[] newIds = new String[myEnum.getIDs().length];
     	String downLable = "/label";
     	for (int i=0;i<myEnum.getIDs().length;i++){

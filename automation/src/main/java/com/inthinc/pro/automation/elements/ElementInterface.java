@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.elements;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
@@ -23,7 +24,7 @@ public interface ElementInterface {
     public void waitForElement();
     public void waitForElement(int i);
 
-    public interface Checkable extends ElementInterface {
+    public interface Checkable extends Clickable {
 	public Boolean assertChecked(Boolean checked);
     	public ElementInterface check();
     	public Boolean isChecked();
@@ -31,35 +32,24 @@ public interface ElementInterface {
     	public Boolean validateChecked(Boolean checked);
     }
     
-    public interface CheckableTable extends ElementInterface {
-    	public Boolean assertChecked(Integer number, Boolean checked);
-    	public Boolean assertPresence(Integer number,Boolean present);
-    	public Boolean assertVisibility(Integer number,Boolean visibile);
-    	public ElementInterface check(Integer number);
-    	public ElementInterface click(Integer number);
-    	public ElementInterface focus(Integer number);
-    	
-        public Boolean hasFocus(Integer number);
-        public Boolean isChecked(Integer number);
-        public Boolean isPresent(Integer number);
-        public Boolean isVisible(Integer number);
-        public ElementInterface uncheck(Integer number);
-        public Boolean validateChecked(Integer number, Boolean checked);
-        public Boolean validatePresence(Integer number,Boolean present);
-        public Boolean validateVisibility(Integer number,Boolean visible);
+    public interface CheckableTable extends Iterator<Checkable>, Iterable<Checkable>, TableBased  {
+    	public Checkable row(int rowNumber);
     }
     
-    public interface ClickableTableBased extends TableBased {
-	public ClickableTableBased click(Integer row);
-        public Boolean isClickable(Integer row);
-        public Boolean validateClickable(Integer row, Boolean clickable);
-        public Boolean assertClickable(Integer row, Boolean clickable);
+    public interface ClickableTableBased extends Iterator<Clickable>, Iterable<Clickable>, TableBased  {
+        public Clickable row(int rowNumber);
+    }
+    
+    public interface ClickableTextTableBased extends Iterator<ClickableTextBased>, Iterable<ClickableTextBased>, TableBasedWithText {
+        public TextLink row(int rowNumber);
+    }
+    
+    public interface TableBasedWithText extends TableBased {
+        public TextBased row(int rowNumber);
+    }
+    
+    public interface ClickableTextBased extends Clickable, TextBased {
         
-
-        public Clickable click();
-        public Boolean isClickable();
-        public Boolean validateClickable(Boolean clickable);
-        public Boolean assertClickable(Boolean clickable);
     }
     
     public interface Clickable extends ElementInterface {
@@ -115,17 +105,7 @@ public interface ElementInterface {
          */
         public String getText(Integer optionNumber);
     }
-    public interface TableBased extends ElementInterface {
-        public Boolean assertPresence(Integer row, Boolean present);
-
-    	public Boolean assertVisibility(Integer row, Boolean visible);
-        public ElementInterface focus(Integer row);
-        public Boolean isPresent(Integer row);
-
-        public Boolean isVisible(Integer row);
-        public Boolean validatePresence(Integer row, Boolean present);
-        public Boolean validateVisibility(Integer row, Boolean visible);
-        
+    public interface TableBased {
         
     }
     public interface TextBased extends ElementInterface {
@@ -163,33 +143,8 @@ public interface ElementInterface {
 	public TextLink getSuggestion(String fullName);
     }
     
-    public interface TextTableBased extends TableBased{
-    	public Boolean assertEquals(Integer row);
-        public Boolean assertEquals(Integer row, String compareAgainst);
-        public Boolean assertNotEquals(Integer row, String compareAgainst);
-        
-        /**
-         * Compares the value of this Element to the expected value stored in the Elements enum.
-         * @return this Element
-         */
-        public Boolean compare(Integer row);
-        
-        /**
-         * Compares the value of this Element to the expected value provided as a parameter.
-         * @param expected
-         * @return this Element
-         */
-        public Boolean compare(Integer row, String expected);
-        
-        /**
-         * @return the actual (in browser at test runtime) value of this Element.
-         */
-        public String getText(Integer row);
-        public Boolean validate(Integer row);
-        public Boolean validate(Integer row, String expected);
-        public Boolean validate(Integer row, TextEnum expected);
-        public Boolean validate(Integer row, TextEnum expected, String replaceOld, String withNew);
-        public Boolean validateContains(Integer row, String expectedPart);
+    public interface TextTableBased extends Iterator<TextBased>, Iterable<TextBased>, TableBasedWithText  {
+        public TextBased row(int rowNumber);
     }
     public interface Typeable extends TextBased {
         public ElementInterface type(String inputText);

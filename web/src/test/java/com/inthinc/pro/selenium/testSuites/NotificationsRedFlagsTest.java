@@ -73,10 +73,10 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
         int i = 1;
-        while(!pnrf._link().entryDriver().isClickable(i)){
+        while(!pnrf._link().entryDriver().row(i).isClickable()){
             i++;
         }
-        pnrf._link().entryDriver().click(i);
+        pnrf._link().entryDriver().row(i).click();
         assertStringContains("app/driver", pnrf.getCurrentLocation());
     }
     
@@ -108,7 +108,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().team().selectPartMatch(GROUP);
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnrf._button().eventLocation().click(1);
+        pnrf._button().eventLocation().row(1).click();
         //TODO Location map pop-up verify.
         //pnrf._popUp().
     }
@@ -147,8 +147,8 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
             pause(10,"");
             for (int j=1;j<=20;j++){
                 TextTableLink currentColumn = searchValues(i);
-                if (currentColumn.isPresent(j)){
-                    currentColumn.validateContains(j,currentSearch);
+                if (currentColumn.row(j).isPresent()){
+                    currentColumn.row(j).validateContains(currentSearch);
                 } else {
                     break;
                 }
@@ -162,8 +162,8 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
             pause(10,"");
             for (int j=1;j<=20;j++){
                 TextTableLink currentColumn = searchValues(i);
-                if (currentColumn.isPresent(j)){
-                    currentColumn.validateContains(j,currentSearch);
+                if (currentColumn.row(j).isPresent()){
+                    currentColumn.row(j).validateContains(currentSearch);
                 } else {
                     break;
                 }
@@ -311,12 +311,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._button().refresh().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnrf._text().dateTimeEntry().isPresent(1)){
-            currentText = pnrf._text().dateTimeEntry().getText(1);
+        if(pnrf._text().dateTimeEntry().row(1).isPresent()){
+            currentText = pnrf._text().dateTimeEntry().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnrf._text().dateTimeEntry().isPresent(index)){
-                String newText = pnrf._text().dateTimeEntry().getText(index);
+            if(pnrf._text().dateTimeEntry().row(index).isPresent()){
+                String newText = pnrf._text().dateTimeEntry().row(index).getText();
                 if(compareDates(currentText, newText) < 0){
                     print(currentText);
                     print(newText);
@@ -332,12 +332,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._link().sortByDateTime().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnrf._text().dateTimeEntry().isPresent(1)){
-            currentText = pnrf._text().dateTimeEntry().getText(1);
+        if(pnrf._text().dateTimeEntry().row(1).isPresent()){
+            currentText = pnrf._text().dateTimeEntry().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnrf._text().dateTimeEntry().isPresent(index)){
-                String newText = pnrf._text().dateTimeEntry().getText(index);
+            if(pnrf._text().dateTimeEntry().row(index).isPresent()){
+                String newText = pnrf._text().dateTimeEntry().row(index).getText();
                 if(compareDates(currentText, newText) > 0){
                     addError("Dates out of order", ErrorLevel.ERROR);
                 }
@@ -351,12 +351,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnrf._link().entryDriver().isPresent(1)){
-            currentText = pnrf._link().entryDriver().getText(1);
+        if(pnrf._link().entryDriver().row(1).isPresent()){
+            currentText = pnrf._link().entryDriver().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnrf._link().entryDriver().isPresent(index)){
-                String newText = pnrf._link().entryDriver().getText(index);
+            if(pnrf._link().entryDriver().row(index).isPresent()){
+                String newText = pnrf._link().entryDriver().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
@@ -370,12 +370,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnrf._link().entryDriver().isPresent(1)){
-            currentText = pnrf._link().entryDriver().getText(1);
+        if(pnrf._link().entryDriver().row(1).isPresent()){
+            currentText = pnrf._link().entryDriver().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnrf._link().entryDriver().isPresent(index)){
-                String newText = pnrf._link().entryDriver().getText(index);
+            if(pnrf._link().entryDriver().row(index).isPresent()){
+                String newText = pnrf._link().entryDriver().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
@@ -389,12 +389,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnrf._link().entryGroup().isPresent(1)){
-            currentText = pnrf._link().entryGroup().getText(1);
+        if(pnrf._link().entryGroup().row(1).isPresent()){
+            currentText = pnrf._link().entryGroup().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnrf._link().entryGroup().isPresent(index)){
-                String newText = pnrf._link().entryGroup().getText(index);
+            if(pnrf._link().entryGroup().row(index).isPresent()){
+                String newText = pnrf._link().entryGroup().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
@@ -408,12 +408,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnrf._link().entryGroup().isPresent(1)){
-            currentText = pnrf._link().entryGroup().getText(1);
+        if(pnrf._link().entryGroup().row(1).isPresent()){
+            currentText = pnrf._link().entryGroup().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnrf._link().entryGroup().isPresent(index)){
-                String newText = pnrf._link().entryGroup().getText(index);
+            if(pnrf._link().entryGroup().row(index).isPresent()){
+                String newText = pnrf._link().entryGroup().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
@@ -428,12 +428,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnrf._link().entryVehicle().isPresent(1)){
-            currentText = pnrf._link().entryVehicle().getText(1);
+        if(pnrf._link().entryVehicle().row(1).isPresent()){
+            currentText = pnrf._link().entryVehicle().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnrf._link().entryVehicle().isPresent(index)){
-                String newText = pnrf._link().entryVehicle().getText(index);
+            if(pnrf._link().entryVehicle().row(index).isPresent()){
+                String newText = pnrf._link().entryVehicle().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
@@ -447,12 +447,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnrf._link().entryVehicle().isPresent(1)){
-            currentText = pnrf._link().entryVehicle().getText(1);
+        if(pnrf._link().entryVehicle().row(1).isPresent()){
+            currentText = pnrf._link().entryVehicle().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnrf._link().entryVehicle().isPresent(index)){
-                String newText = pnrf._link().entryVehicle().getText(index);
+            if(pnrf._link().entryVehicle().row(index).isPresent()){
+                String newText = pnrf._link().entryVehicle().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
@@ -518,7 +518,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().team().selectPartMatch(GROUP);
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnrf._link().entryVehicle().click(1);
+        pnrf._link().entryVehicle().row(1).click();
         assertStringContains("app/vehicle", pnrf.getCurrentLocation());
     }
     
@@ -540,7 +540,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         boolean b8 = pnrf._text().headerDetail().isPresent();
         
         pnrf._link().editColumns().click();
-        pnrf._popUp().editColumns()._checkBox().click(1);
+        pnrf._popUp().editColumns()._checkBox().row(1).click();
         pnrf._popUp().editColumns()._button().cancel().click();
         
         pnrf._text().headerLevel().assertPresence(b1);
@@ -593,16 +593,17 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
         pnrf._link().editColumns().click();
+        pnrf._popUp().editColumns()._checkBox().row(1).check();
         
-        pnrf._popUp().editColumns()._checkBox().click(1);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(1, false);
-        pnrf._popUp().editColumns()._checkBox().click(1);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(1, true);
+        pnrf._popUp().editColumns()._checkBox().row(1).click();
+        pnrf._popUp().editColumns()._checkBox().row(1).assertChecked(false);
+        pnrf._popUp().editColumns()._checkBox().row(1).click();
+        pnrf._popUp().editColumns()._checkBox().row(1).assertChecked(true);
         
-        pnrf._popUp().editColumns()._link().entry().click(1);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(1, false);
-        pnrf._popUp().editColumns()._link().entry().click(1);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(1, true);
+        pnrf._popUp().editColumns()._link().entry().row(1).click();
+        pnrf._popUp().editColumns()._checkBox().row(1).assertChecked(false);
+        pnrf._popUp().editColumns()._link().entry().row(1).click();
+        pnrf._popUp().editColumns()._checkBox().row(1).assertChecked(true);
        
     }
     
@@ -615,12 +616,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
         pnrf._link().editColumns().click();
-        pnrf._popUp().editColumns()._checkBox().focus(1);
-        pnrf._popUp().editColumns()._checkBox().click(1);//focus tooggles checkboxes currently.
+        pnrf._popUp().editColumns()._checkBox().row(1).focus();
+        pnrf._popUp().editColumns()._checkBox().row(1).click();//focus tooggles checkboxes currently.
         spaceBar();
-        pnrf._popUp().editColumns()._checkBox().assertChecked(1, false);
+        pnrf._popUp().editColumns()._checkBox().row(1).assertChecked(false);
         spaceBar();
-        pnrf._popUp().editColumns()._checkBox().assertChecked(1, true);
+        pnrf._popUp().editColumns()._checkBox().row(1).assertChecked(true);
         
     }
     
@@ -634,8 +635,8 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
         pnrf._link().editColumns().click();
-        pnrf._popUp().editColumns()._checkBox().uncheck(1);
-        pnrf._popUp().editColumns()._checkBox().check(5);
+        pnrf._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnrf._popUp().editColumns()._checkBox().row(5).check();
         pnrf._popUp().editColumns()._button().save().click();
         pnrf._link().reports().click();
         pnrf._link().notifications().click();
@@ -660,9 +661,9 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
         pnrf._link().editColumns().click();
-        pnrf._popUp().editColumns()._checkBox().focus(1);
-        pnrf._popUp().editColumns()._checkBox().uncheck(1);
-        pnrf._popUp().editColumns()._checkBox().check(5);
+        pnrf._popUp().editColumns()._checkBox().row(1).focus();
+        pnrf._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnrf._popUp().editColumns()._checkBox().row(5).check();
         enterKey();
         pause(2, "Waiting for columns to update.");
         pnrf._text().headerLevel().assertPresence(false);
@@ -684,8 +685,8 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
         pnrf._link().editColumns().click();
-        pnrf._popUp().editColumns()._checkBox().uncheck(1);
-        pnrf._popUp().editColumns()._checkBox().check(5);
+        pnrf._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnrf._popUp().editColumns()._checkBox().row(5).check();
         pnrf._popUp().editColumns()._button().save().click();
         pnrf._text().headerLevel().assertPresence(false);
         pnrf._text().headerAlertDetails().assertPresence(true);
@@ -706,8 +707,8 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
         pnrf._link().editColumns().click();
-        pnrf._popUp().editColumns()._checkBox().uncheck(1);
-        pnrf._popUp().editColumns()._checkBox().check(5);
+        pnrf._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnrf._popUp().editColumns()._checkBox().row(5).check();
         pnrf._popUp().editColumns()._button().save().click();
         pnrf._link().logout().click();
         pl.loginProcess(USERNAME, PASSWORD);
@@ -731,33 +732,33 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
         pnrf._link().editColumns().click();
-        pnrf._popUp().editColumns()._checkBox().focus(1);
+        pnrf._popUp().editColumns()._checkBox().row(1).focus();
         tabKey();
-        if(!pnrf._popUp().editColumns()._checkBox().hasFocus(2)){
+        if(!pnrf._popUp().editColumns()._checkBox().row(2).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on second check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnrf._popUp().editColumns()._checkBox().hasFocus(3)){
+        if(!pnrf._popUp().editColumns()._checkBox().row(3).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on third check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnrf._popUp().editColumns()._checkBox().hasFocus(4)){
+        if(!pnrf._popUp().editColumns()._checkBox().row(4).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on fourth check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnrf._popUp().editColumns()._checkBox().hasFocus(5)){
+        if(!pnrf._popUp().editColumns()._checkBox().row(5).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on fifth check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnrf._popUp().editColumns()._checkBox().hasFocus(6)){
+        if(!pnrf._popUp().editColumns()._checkBox().row(6).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on sixth check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnrf._popUp().editColumns()._checkBox().hasFocus(7)){
+        if(!pnrf._popUp().editColumns()._checkBox().row(7).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on seventh check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnrf._popUp().editColumns()._checkBox().hasFocus(8)){
+        if(!pnrf._popUp().editColumns()._checkBox().row(8).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on eigth check box.", ErrorLevel.FAIL);
         }
         tabKey();
@@ -788,23 +789,23 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         boolean b8 = pnrf._text().headerDetail().isPresent();
         
         pnrf._link().editColumns().click();
-        pnrf._popUp().editColumns()._checkBox().assertVisibility(1, true);
-        pnrf._popUp().editColumns()._checkBox().assertVisibility(2, true);
-        pnrf._popUp().editColumns()._checkBox().assertVisibility(3, true);
-        pnrf._popUp().editColumns()._checkBox().assertVisibility(4, true);
-        pnrf._popUp().editColumns()._checkBox().assertVisibility(5, true);
-        pnrf._popUp().editColumns()._checkBox().assertVisibility(6, true);
-        pnrf._popUp().editColumns()._checkBox().assertVisibility(7, true);
-        pnrf._popUp().editColumns()._checkBox().assertVisibility(8, true);
+        pnrf._popUp().editColumns()._checkBox().row(1).assertVisibility(true);
+        pnrf._popUp().editColumns()._checkBox().row(2).assertVisibility(true);
+        pnrf._popUp().editColumns()._checkBox().row(3).assertVisibility(true);
+        pnrf._popUp().editColumns()._checkBox().row(4).assertVisibility(true);
+        pnrf._popUp().editColumns()._checkBox().row(5).assertVisibility(true);
+        pnrf._popUp().editColumns()._checkBox().row(6).assertVisibility(true);
+        pnrf._popUp().editColumns()._checkBox().row(7).assertVisibility(true);
+        pnrf._popUp().editColumns()._checkBox().row(8).assertVisibility(true);
         
-        pnrf._popUp().editColumns()._checkBox().assertChecked(1, b1);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(2, b2);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(3, b3);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(4, b4);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(5, b5);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(6, b6);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(7, b7);
-        pnrf._popUp().editColumns()._checkBox().assertChecked(8, b8);
+        pnrf._popUp().editColumns()._checkBox().row(1).assertChecked(b1);
+        pnrf._popUp().editColumns()._checkBox().row(2).assertChecked(b2);
+        pnrf._popUp().editColumns()._checkBox().row(3).assertChecked(b3);
+        pnrf._popUp().editColumns()._checkBox().row(4).assertChecked(b4);
+        pnrf._popUp().editColumns()._checkBox().row(5).assertChecked(b5);
+        pnrf._popUp().editColumns()._checkBox().row(6).assertChecked(b6);
+        pnrf._popUp().editColumns()._checkBox().row(7).assertChecked(b7);
+        pnrf._popUp().editColumns()._checkBox().row(8).assertChecked(b8);
         
         pnrf._popUp().editColumns()._button().save().assertVisibility(true);
         pnrf._popUp().editColumns()._button().cancel().assertVisibility(true);
@@ -823,13 +824,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().statusFilter().select("included");
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
-        String date = pnrf._text().dateTimeEntry().getText(1);
-        String detail = pnrf._text().detailEntry().getText(1);
-        pnrf._link().entryStatus().click(1);
+        String date = pnrf._text().dateTimeEntry().row(1).getText();
+        String detail = pnrf._text().detailEntry().row(1).getText();
+        pnrf._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         pnrf._popUp().excludeEvent()._button().no().click();
-        assertStringContains(date, pnrf._text().dateTimeEntry().getText(1));
-        assertStringContains(detail, pnrf._text().detailEntry().getText(1));
+        assertStringContains(date, pnrf._text().dateTimeEntry().row(1).getText());
+        assertStringContains(detail, pnrf._text().detailEntry().row(1).getText());
     }
     
     @Test
@@ -844,13 +845,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._button().refresh().click();
         pnrf._dropDown().category().select(11);
         pause(10, "Wait for page to load.");
-        if(pnrf._link().entryStatus().isPresent(1)){
-            pnrf._link().entryStatus().click(1);
+        if(pnrf._link().entryStatus().row(1).isPresent()){
+            pnrf._link().entryStatus().row(1).click();
             pause(5, "Wait for pop-up to become visible.");
             pnrf._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            assertStringContains("inc", pnrf._link().entryStatus().getText(1));
-            pnrf._link().entryStatus().click(1);
+            assertStringContains("inc", pnrf._link().entryStatus().row(1).getText());
+            pnrf._link().entryStatus().row(1).click();
         }
         else{
             //TODO Make the test result Inconclusive instead of Fail.
@@ -871,13 +872,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().statusFilter().select("included");
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnrf._link().entryStatus().click(1);
+        pnrf._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         pnrf._popUp().excludeEvent()._text().header().focus();
         enterKey();
         pause(10, "Wait for page to load.");
-        assertStringContains("inc", pnrf._link().entryStatus().getText(1));
-        pnrf._link().entryStatus().click(1);
+        assertStringContains("inc", pnrf._link().entryStatus().row(1).getText());
+        pnrf._link().entryStatus().row(1).click();
     }
     
     @Test
@@ -893,13 +894,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._button().refresh().click();
         pnrf._dropDown().category().select(2);
         pause(10, "Wait for page to load.");
-        if(pnrf._link().entryStatus().isPresent(1)){
-            pnrf._link().entryStatus().click(1);
+        if(pnrf._link().entryStatus().row(1).isPresent()){
+            pnrf._link().entryStatus().row(1).click();
             pause(5, "Wait for pop-up to become visible.");
             pnrf._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            assertStringContains("inc", pnrf._link().entryStatus().getText(1));
-            pnrf._link().entryStatus().click(1);
+            assertStringContains("inc", pnrf._link().entryStatus().row(1).getText());
+            pnrf._link().entryStatus().row(1).click();
         }
         else{
             addError("Driving style event not present to test with.", ErrorLevel.WARN);
@@ -918,12 +919,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().statusFilter().select("included");
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnrf._link().entryStatus().click(1);
+        pnrf._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         pnrf._popUp().excludeEvent()._button().yes().click();
         pause(10, "Wait for page to load.");
-        assertStringContains("inc", pnrf._link().entryStatus().getText(1));
-        pnrf._link().entryStatus().click(1);
+        assertStringContains("inc", pnrf._link().entryStatus().row(1).getText());
+        pnrf._link().entryStatus().row(1).click();
     }
     
     @Test
@@ -939,13 +940,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._button().refresh().click();
         pnrf._dropDown().category().select(7);
         pause(10, "Wait for page to load.");
-        if(pnrf._link().entryStatus().isPresent(1)){
-            pnrf._link().entryStatus().click(1);
+        if(pnrf._link().entryStatus().row(1).isPresent()){
+            pnrf._link().entryStatus().row(1).click();
             pause(5, "Wait for pop-up to become visible.");
             pnrf._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            assertStringContains("inc", pnrf._link().entryStatus().getText(1));
-            pnrf._link().entryStatus().click(1);
+            assertStringContains("inc", pnrf._link().entryStatus().row(1).getText());
+            pnrf._link().entryStatus().row(1).click();
         }
         else{
             addError("Seat belt event not present to test with.", ErrorLevel.WARN);
@@ -965,13 +966,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._button().refresh().click();
         pnrf._dropDown().category().select(6);
         pause(10, "Wait for page to load.");
-        if(pnrf._link().entryStatus().isPresent(1)){
-            pnrf._link().entryStatus().click(1);
+        if(pnrf._link().entryStatus().row(1).isPresent()){
+            pnrf._link().entryStatus().row(1).click();
             pause(5, "Wait for pop-up to become visible.");
             pnrf._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            assertStringContains("inc", pnrf._link().entryStatus().getText(1));
-            pnrf._link().entryStatus().click(1);
+            assertStringContains("inc", pnrf._link().entryStatus().row(1).getText());
+            pnrf._link().entryStatus().row(1).click();
         }
         else{
             addError("Speeding event not present to test with.", ErrorLevel.WARN);
@@ -991,9 +992,9 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().statusFilter().select("included");
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
-        String date = pnrf._text().dateTimeEntry().getText(1);
-        String detail = pnrf._text().detailEntry().getText(1);
-        pnrf._link().entryStatus().click(1);
+        String date = pnrf._text().dateTimeEntry().row(1).getText();
+        String detail = pnrf._text().detailEntry().row(1).getText();
+        pnrf._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         assertStringContains(date, pnrf._popUp().excludeEvent()._text().message().getText());
         assertStringContains(detail, pnrf._popUp().excludeEvent()._text().message().getText());
@@ -1012,13 +1013,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().team().selectPartMatch(GROUP);
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnrf._link().entryStatus().click(1);
+        pnrf._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         pnrf._popUp().excludeEvent()._button().yes().click();
         pause(10, "Wait for page to load.");
-        pnrf._link().entryStatus().click(1);
+        pnrf._link().entryStatus().row(1).click();
         pause(5, "Wait for event to re-include.");
-        assertStringContains("exc", pnrf._link().entryStatus().getText(1));
+        assertStringContains("exc", pnrf._link().entryStatus().row(1).getText());
     }
     
     @Test
@@ -1032,7 +1033,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().team().selectPartMatch(GROUP);
         pnrf._button().refresh().click();
         pause(5, "Wait for refresh.");
-        String currentDate = pnrf._text().dateTimeEntry().getText(1);
+        String currentDate = pnrf._text().dateTimeEntry().row(1).getText();
         
         int month1 = monthToInt(currentDate.substring(0,3));
         int targetMonth;
@@ -1084,7 +1085,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().timeFrame().selectPartMatch("Yesterday");
         pause(5, "Wait for refresh.");
         
-        String yesterday = pnrf._text().dateTimeEntry().getText(1);
+        String yesterday = pnrf._text().dateTimeEntry().row(1).getText();
         
         int month2 = monthToInt(yesterday.substring(0,3));
         int day2;
@@ -1111,12 +1112,12 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     
     public String searchText(int i){
         int firstDriver = 1;
-        while(!pnrf._link().entryDriver().isClickable(firstDriver)){
+        while(!pnrf._link().entryDriver().row(firstDriver).isClickable()){
             firstDriver++;
         }
-        String[] searchStrings = {(String) pnrf._link().entryGroup().getText(1).substring(0, 3),
-                (String) pnrf._link().entryDriver().getText(firstDriver).substring(0, 3), 
-                (String) pnrf._link().entryVehicle().getText(1).substring(0, 3)};
+        String[] searchStrings = {(String) pnrf._link().entryGroup().row(1).getText().substring(0, 3),
+                (String) pnrf._link().entryDriver().row(firstDriver).getText().substring(0, 3), 
+                (String) pnrf._link().entryVehicle().row(1).getText().substring(0, 3)};
         return searchStrings[i];
     }
     
@@ -1165,14 +1166,14 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
         pnrf._link().editColumns().click();
-        pnrf._popUp().editColumns()._checkBox().check(1);
-        pnrf._popUp().editColumns()._checkBox().check(2);
-        pnrf._popUp().editColumns()._checkBox().check(3);
-        pnrf._popUp().editColumns()._checkBox().check(4);
-        pnrf._popUp().editColumns()._checkBox().check(5);
-        pnrf._popUp().editColumns()._checkBox().check(6);
-        pnrf._popUp().editColumns()._checkBox().check(7);
-        pnrf._popUp().editColumns()._checkBox().check(8);
+        pnrf._popUp().editColumns()._checkBox().row(1).check();
+        pnrf._popUp().editColumns()._checkBox().row(2).check();
+        pnrf._popUp().editColumns()._checkBox().row(3).check();
+        pnrf._popUp().editColumns()._checkBox().row(4).check();
+        pnrf._popUp().editColumns()._checkBox().row(5).check();
+        pnrf._popUp().editColumns()._checkBox().row(6).check();
+        pnrf._popUp().editColumns()._checkBox().row(7).check();
+        pnrf._popUp().editColumns()._checkBox().row(8).check();
         pnrf._popUp().editColumns()._button().save().click();
         pnrf._link().logout();
     }
@@ -1183,14 +1184,14 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
           ptds._link().notifications().click();
           PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
           pnrf._link().editColumns().click();
-          pnrf._popUp().editColumns()._checkBox().check(1);
-          pnrf._popUp().editColumns()._checkBox().check(2);
-          pnrf._popUp().editColumns()._checkBox().check(3);
-          pnrf._popUp().editColumns()._checkBox().check(4);
-          pnrf._popUp().editColumns()._checkBox().uncheck(5);
-          pnrf._popUp().editColumns()._checkBox().uncheck(6);
-          pnrf._popUp().editColumns()._checkBox().uncheck(7);
-          pnrf._popUp().editColumns()._checkBox().uncheck(8);
+          pnrf._popUp().editColumns()._checkBox().row(1).check();
+          pnrf._popUp().editColumns()._checkBox().row(2).check();
+          pnrf._popUp().editColumns()._checkBox().row(3).check();
+          pnrf._popUp().editColumns()._checkBox().row(4).check();
+          pnrf._popUp().editColumns()._checkBox().row(5).uncheck();
+          pnrf._popUp().editColumns()._checkBox().row(6).uncheck();
+          pnrf._popUp().editColumns()._checkBox().row(7).uncheck();
+          pnrf._popUp().editColumns()._checkBox().row(8).uncheck();
           pnrf._popUp().editColumns()._button().save().click();
           pnrf._link().logout();
     }

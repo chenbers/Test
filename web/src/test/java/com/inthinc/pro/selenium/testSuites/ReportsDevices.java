@@ -103,9 +103,9 @@ public class ReportsDevices extends WebRallyTest {
 		device._button().editColumns().click();
 		
 		//6- Check one or more of the boxes in the pop up
-		device._popUp().editColumns()._checkBox().click(3);
-		device._popUp().editColumns()._checkBox().click(1);
-		device._popUp().editColumns()._checkBox().click(5);
+		device._popUp().editColumns()._checkBox().row(3).click();
+		device._popUp().editColumns()._checkBox().row(1).click();
+		device._popUp().editColumns()._checkBox().row(5).click();
 		
 		//7- Click Cancel
 		device._popUp().editColumns()._button().cancel().click();
@@ -182,7 +182,7 @@ public class ReportsDevices extends WebRallyTest {
 		device._button().editColumns().click();
 		
 		//5- Check one or more of the boxes in the pop up with mouse
-		device._popUp().editColumns()._checkBox().click(1);
+		device._popUp().editColumns()._checkBox().row(1).click();
 		
 	}
 	
@@ -211,9 +211,9 @@ public class ReportsDevices extends WebRallyTest {
 		device._button().editColumns().click();
 		
 		//6- Check one or more of the boxes in the pop up
-		device._popUp().editColumns()._checkBox().click(3);
-		device._popUp().editColumns()._checkBox().click(1);
-		device._popUp().editColumns()._checkBox().click(5);
+		device._popUp().editColumns()._checkBox().row(3).click();
+		device._popUp().editColumns()._checkBox().row(1).click();
+		device._popUp().editColumns()._checkBox().row(5).click();
 		
 		//7- Click Save
 		device._popUp().editColumns()._button().save().click();
@@ -255,9 +255,9 @@ public class ReportsDevices extends WebRallyTest {
 		device._button().editColumns().click();
 		
 		//14- Change back to original settings
-		device._popUp().editColumns()._checkBox().click(3);
-		device._popUp().editColumns()._checkBox().click(1);
-		device._popUp().editColumns()._checkBox().click(5);
+		device._popUp().editColumns()._checkBox().row(3).click();
+		device._popUp().editColumns()._checkBox().row(1).click();
+		device._popUp().editColumns()._checkBox().row(5).click();
 		
 		//15- Click Save
 		device._popUp().editColumns()._button().save().click();
@@ -278,7 +278,7 @@ public class ReportsDevices extends WebRallyTest {
 		//3- Click on Devices
 		device._link().devices().click();
 		device._button().editColumns().click();
-		device._popUp().editColumns()._checkBox().check(3);
+		device._popUp().editColumns()._checkBox().row(3).check();
 		device._popUp().editColumns()._button().save().click();
 		
 		//4- Take note of one column being present
@@ -288,7 +288,7 @@ public class ReportsDevices extends WebRallyTest {
 		device._button().editColumns().click();
 		
 		//6- Check one or more of the boxes in the pop up
-		device._popUp().editColumns()._checkBox().click(3);
+		device._popUp().editColumns()._checkBox().row(3).click();
 		
 		//7- Click Save
 		device._popUp().editColumns()._button().save().click();
@@ -301,7 +301,7 @@ public class ReportsDevices extends WebRallyTest {
 		device._button().editColumns().click();
 		
 		//10- Change back to original settings
-		device._popUp().editColumns()._checkBox().click(3);
+		device._popUp().editColumns()._checkBox().row(3).click();
 		
 		//11- Click save
 		device._popUp().editColumns()._button().save().click();
@@ -332,7 +332,7 @@ public class ReportsDevices extends WebRallyTest {
 		device._button().editColumns().click();
 		
 		//6- Check one or more of the boxes in the pop up
-		device._popUp().editColumns()._checkBox().click(3);
+		device._popUp().editColumns()._checkBox().row(3).click();
 		
 		//7- Click Save
 		device._popUp().editColumns()._button().save().click();
@@ -377,7 +377,7 @@ public class ReportsDevices extends WebRallyTest {
 		device._button().editColumns().click();
 		
 		//15- Change back to original settings
-		device._popUp().editColumns()._checkBox().click(3);
+		device._popUp().editColumns()._checkBox().row(3).click();
 		
 		//16- Click Save
 		device._popUp().editColumns()._button().save().click();
@@ -407,10 +407,10 @@ public class ReportsDevices extends WebRallyTest {
 		Integer imeicolumn = 3;
 		Integer phonecolumn = 4;
 		Integer statuscolumn = 5;
-		device._popUp().editColumns()._checkBox().assertVisibility(devicecolumn, true);
-		device._popUp().editColumns()._checkBox().assertVisibility(vehiclecolumn, true);
-		device._popUp().editColumns()._checkBox().assertVisibility(imeicolumn, true);
-		device._popUp().editColumns()._checkBox().assertVisibility(phonecolumn, true);
-		device._popUp().editColumns()._checkBox().assertVisibility(statuscolumn, true);
+		device._popUp().editColumns()._checkBox().row(devicecolumn).assertVisibility(true);
+		device._popUp().editColumns()._checkBox().row(vehiclecolumn).assertVisibility(true);
+		device._popUp().editColumns()._checkBox().row(imeicolumn).assertVisibility(true);
+		device._popUp().editColumns()._checkBox().row(phonecolumn).assertVisibility(true);
+		device._popUp().editColumns()._checkBox().row(statuscolumn).assertVisibility(true);
 	}
 }

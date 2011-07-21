@@ -9,27 +9,30 @@ public class TextScoreTable extends TextTable implements TextTableBased {
 
     public TextScoreTable(SeleniumEnums anEnum) {
         super(anEnum);
+        setMyEnum();
     }
 
     public TextScoreTable(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, replaceNumber);
+        setMyEnum();
     }
 
     public TextScoreTable(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord);
+        setMyEnum();
     }
 
     public TextScoreTable(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
+        setMyEnum();
     }
 
     public TextScoreTable(SeleniumEnums anEnum, TextEnum replaceWord) {
         super(anEnum, replaceWord);
+        setMyEnum();
     }
 
-    @Override
-    public void setMyEnum(SeleniumEnums anEnum) {
-        myEnum = new SeleniumEnumWrapper(anEnum);
+    private void setMyEnum() {
         String[] newIds = new String[myEnum.getIDs().length];
         String scoreBox = "/table/tbody/tr/td";
         for (int i = 0; i < myEnum.getIDs().length; i++) {

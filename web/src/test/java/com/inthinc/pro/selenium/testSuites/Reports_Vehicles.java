@@ -7,6 +7,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ClickableObject;
+import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TableBasedWithText;
+import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -126,22 +129,22 @@ public class Reports_Vehicles extends WebRallyTest {
             pause(10,"");
             print(row);
             String driverID;
-            if (reports_vehicles._link().driverValue().isClickable(row)){
-                driverID = reports_vehicles._link().driverValue().getText(row);
-                reports_vehicles._link().driverValue().click(row);
+            if (reports_vehicles._link().driverValue().row(row).isClickable()){
+                driverID = reports_vehicles._link().driverValue().row(row).getText();
+                reports_vehicles._link().driverValue().row(row).click();
                 pause(10,"");
                 driver_performance.verifyOnPage();
                 driver_performance._link().driverName().assertEquals(driverID);
                 driver_performance._link().reports().click();
                 reports_vehicles._link().vehicles().click();
                 pause(10,"");
-            }else if(!reports_vehicles._link().driverValue().isPresent(row)){
+            }else if(!reports_vehicles._link().driverValue().row(row).isPresent()){
                 break;
             }
         }
 
 //        //Get search criteria from selected row.
-//        String vehicleID = reports_vehicles._link().vehicleValue().getText(row);
+//        String vehicleID = reports_vehicles._link().vehicleValue().row(row).getText();
 //        //Extract first four characters
 //        if (vehicleID.length() > 4){
 //            vehicle = vehicleID.substring(0,3);
@@ -155,9 +158,9 @@ public class Reports_Vehicles extends WebRallyTest {
 //        for (int j=1;j<=20;j++){
 //            pause(10,"");
 //            String driverID;
-//            if(reports_vehicles._link().driverValue().isPresent(j)){
-//                driverID = reports_vehicles._link().driverValue().getText(j);
-//                reports_vehicles._link().driverValue().click(j);
+//            if(reports_vehicles._link().driverValue().row(j).isPresent()){
+//                driverID = reports_vehicles._link().driverValue().row(j).getText();
+//                reports_vehicles._link().driverValue().row(j).click();
 //                driver_performance.verifyOnPage();
 //                driver_performance._text().overallTitle().validateContains(driverID);
 //                break;
@@ -187,9 +190,9 @@ public class Reports_Vehicles extends WebRallyTest {
         for ( row=1;row<=20;row++){
             pause(10,"");
             print(row);
-            if (reports_vehicles._link().styleValue().isPresent(row)){
-                style_value =reports_vehicles._link().styleValue().getText(row);
-                reports_vehicles._link().styleValue().click(row);
+            if (reports_vehicles._link().styleValue().row(row).isPresent()){
+                style_value =reports_vehicles._link().styleValue().row(row).getText();
+                reports_vehicles._link().styleValue().row(row).click();
                 pause(10,"");
                 
                 //Verify location, driver performance page.
@@ -266,16 +269,16 @@ public class Reports_Vehicles extends WebRallyTest {
         String tema;
         for ( row=1;row<=20;row++){
             print(row);
-            if (reports_vehicles._link().groupValue().isPresent(row)){
-                groupname = reports_vehicles._link().groupValue().getText(row);
-                reports_vehicles._link().groupValue().click(row);
+            if (reports_vehicles._link().groupValue().row(row).isPresent()){
+                groupname = reports_vehicles._link().groupValue().row(row).getText();
+                reports_vehicles._link().groupValue().row(row).click();
                 pause(10,"");
                 team_dashboard.verifyOnPage();
                 tema = team_dashboard._text().teamName().getText();                
                 print(tema);
                 team_dashboard._text().teamName().assertEquals(groupname);
                 print(groupname);
-            }else if(!reports_vehicles._link().groupValue().isPresent(row)){
+            }else if(!reports_vehicles._link().groupValue().row(row).isPresent()){
                 break;
             }
         }
@@ -311,10 +314,10 @@ public class Reports_Vehicles extends WebRallyTest {
         String overall;
         for ( row=1;row<=20;row++){
             print(row);
-            if (reports_vehicles._link().overallValue().isPresent(row)){
+            if (reports_vehicles._link().overallValue().row(row).isPresent()){
                 //Compare score from vehicle reports page to score on vehicle performance page.
-                overall = reports_vehicles._link().overallValue().getText(row);
-                reports_vehicles._link().overallValue().click(row);
+                overall = reports_vehicles._link().overallValue().row(row).getText();
+                reports_vehicles._link().overallValue().row(row).click();
                 pause(10,"");
                 vehicle_performance.verifyOnPage();
                 vehicle_performance._link().overallDuration(TimeDuration.MONTHS_12).click();
@@ -323,7 +326,7 @@ public class Reports_Vehicles extends WebRallyTest {
                 vehicle_performance._link().reports().click();
                 reports_vehicles._link().vehicles().click();
                 pause(10,"");
-            }else if(!reports_vehicles._link().overallValue().isPresent(row)){
+            }else if(!reports_vehicles._link().overallValue().row(row).isPresent()){
                 break;
             }
         }
@@ -342,7 +345,7 @@ public class Reports_Vehicles extends WebRallyTest {
         
         //click on next page of vehicles
         String sample;
-        sample = reports_vehicles._link().vehicleValue().getText(1);
+        sample = reports_vehicles._link().vehicleValue().row(1).getText();
         reports_vehicles._page().pageIndex().forwardOne().click();
         if(reports_vehicles._link().vehicleValue().equals(sample)){
             addError("Page did not change or contains same data as previous", ErrorLevel.FAIL );
@@ -360,7 +363,7 @@ public class Reports_Vehicles extends WebRallyTest {
         reports_vehicles._link().reports().click();
         reports_vehicles._link().vehicles().click();
         
-        Map<TextField, TextTable> values = new HashMap<TextField, TextTable>();
+        Map<TextField, TableBasedWithText> values = new HashMap<TextField, TableBasedWithText>();
         Map<TextField, String[]> strings = new HashMap<TextField, String[]>();
         
         TextField[] columns = { reports_vehicles._textField().groupSearch(),
@@ -369,7 +372,7 @@ public class Reports_Vehicles extends WebRallyTest {
                 reports_vehicles._textField().driverSearch() };
         
         //Get search criteria for group from selected row.
-        String groupID = reports_vehicles._link().groupValue().getText(1);
+        String groupID = reports_vehicles._link().groupValue().row(1).getText();
         //Extract first four characters
         String group;
         if (groupID.length() > 4){
@@ -379,7 +382,7 @@ public class Reports_Vehicles extends WebRallyTest {
           }
         
         //Get search criteria for vehicles from selected row.
-        String vehicleID = reports_vehicles._link().vehicleValue().getText(1);
+        String vehicleID = reports_vehicles._link().vehicleValue().row(1).getText();
         //Extract first four characters
         String vehicle;
         if (vehicleID.length() > 4){
@@ -389,7 +392,7 @@ public class Reports_Vehicles extends WebRallyTest {
             }
         
         //Get search criteria for yearmakemodel from selected row.
-        String yearmakemodelID = reports_vehicles._text().yearMakeModelValue().getText(1);
+        String yearmakemodelID = reports_vehicles._text().yearMakeModelValue().row(1).getText();
         //Extract first four characters
         String yearmakemodel;
         if (yearmakemodelID.length() > 4){
@@ -399,7 +402,7 @@ public class Reports_Vehicles extends WebRallyTest {
             }
         
         //Get search criteria for driverID from selected row.
-        String driverID = reports_vehicles._link().driverValue().getText(1);
+        String driverID = reports_vehicles._link().driverValue().row(1).getText();
         //Extract first four characters
         String driver;
         if (driverID.length() > 4){
@@ -421,13 +424,13 @@ public class Reports_Vehicles extends WebRallyTest {
 
         for (int i=0;i<columns.length;i++){
             String[] myStrings = strings.get(columns[i]);
-            TextTable value = values.get(columns[i]);
+            TableBasedWithText value = values.get(columns[i]);
             for (String searchString: myStrings){
                 // Do some loop through all available rows
                 for (int j=1;j<=20;j++){
                     pause(10,"");
-                    if (value.isPresent(j)){
-                        value.validateContains(j,searchString);
+                    if (value.row(j).isPresent()){
+                        value.row(j).validateContains(searchString);
                     } else {
                         break;
                     }
@@ -450,10 +453,10 @@ public class Reports_Vehicles extends WebRallyTest {
         int row;
         String speed_value;
         for ( row=1;row<=20;row++){
-            if (reports_vehicles._link().speedValue().isPresent(row)){
-                speed_value = reports_vehicles._link().speedValue().getText(row);   
+            if (reports_vehicles._link().speedValue().row(row).isPresent()){
+                speed_value = reports_vehicles._link().speedValue().row(row).getText();   
                 print(speed_value);
-                reports_vehicles._link().speedValue().click(row);
+                reports_vehicles._link().speedValue().row(row).click();
                 pause(10,"");
                 
                 vehicle_performance_speed.verifyOnPage();
@@ -461,7 +464,7 @@ public class Reports_Vehicles extends WebRallyTest {
                 vehicle_performance_speed._link().duration(TimeDuration.MONTHS_12).click();
                 vehicle_performance_speed._text().mainOverall().assertEquals(speed_value);
 
-            }else if(!reports_vehicles._link().speedValue().isPresent(row)){
+            }else if(!reports_vehicles._link().speedValue().row(row).isPresent()){
                 break;
             }
         }
@@ -485,7 +488,7 @@ public class Reports_Vehicles extends WebRallyTest {
         //Click columns once to sort by ascending order.
         reports_vehicles._link().groupSort().click();
 
-        Map<ClickableObject, TextTable> values = new HashMap<ClickableObject, TextTable>();
+        Map<ClickableObject, TableBasedWithText> values = new HashMap<ClickableObject, TableBasedWithText>();
         
         TextLink[] columns = { reports_vehicles._link().groupSort(),
                 reports_vehicles._link().vehicleIDSort(),
@@ -518,13 +521,13 @@ public class Reports_Vehicles extends WebRallyTest {
         for (int i=0;i<columns.length;i++){
             columns[i].click();
             pause(5,"");
-            TextTable value = values.get(columns[i]);
-            TextTable value2 = values.get(columns[i+1]);
+            TableBasedWithText value = values.get(columns[i]);
+            TableBasedWithText value2 = values.get(columns[i+1]);
             // Do some loop through all available rows
             for (int j=1;j<=20;j++){
                 pause(10,"");
-                if (value.isPresent(j) && value.isPresent(j+1)){
-                    int sorted = value.getText(j).compareToIgnoreCase(value2.getText(j+1));
+                if (value.row(j).isPresent() && value.row(j+1).isPresent()){
+                    int sorted = value.row(j).getText().compareToIgnoreCase(value2.row(j+1).getText());
                     assertTrue(sorted >= 0,"List not in alphabetical order for column: "+ columns[i].getMyEnum().toString());
                 } else {
                     break;
@@ -534,8 +537,8 @@ public class Reports_Vehicles extends WebRallyTest {
             pause(5,"");
             for (int j=1;j<=20;j++){
                 pause(10,"");
-                if (value.isPresent(j) && value.isPresent(j+1)){
-                    int sorted = value.getText(j).compareToIgnoreCase(value2.getText(j+1));
+                if (value.row(j).isPresent() && value.row(j+1).isPresent()){
+                    int sorted = value.row(j).getText().compareToIgnoreCase(value2.row(j+1).getText());
                     assertTrue(sorted <= 0,"List not in alphabetical order for column: "+ columns[i].getMyEnum().toString());
                 } else {
                     break;
@@ -611,9 +614,9 @@ public class Reports_Vehicles extends WebRallyTest {
         String vehicle;
         String actual;
         for ( row=1;row<=20;row++){
-            if(reports_vehicles._link().vehicleValue().isPresent(row)){
-                vehicle = reports_vehicles._link().vehicleValue().getText(row);
-                reports_vehicles._link().vehicleValue().click(row);
+            if(reports_vehicles._link().vehicleValue().row(row).isPresent()){
+                vehicle = reports_vehicles._link().vehicleValue().row(row).getText();
+                reports_vehicles._link().vehicleValue().row(row).click();
                 vehicle_performance.verifyOnPage();
                 print(vehicle);
                 actual = vehicle_performance._link().vehicleName().getText();
@@ -622,7 +625,7 @@ public class Reports_Vehicles extends WebRallyTest {
                 vehicle_performance._link().reports().click();
                 reports_vehicles._link().vehicles().click();
                 pause(10,"");
-            }else if(!reports_vehicles._link().vehicleValue().isPresent(row)){
+            }else if(!reports_vehicles._link().vehicleValue().row(row).isPresent()){
                 break;
             }
         }
@@ -644,11 +647,11 @@ public class Reports_Vehicles extends WebRallyTest {
  
         //Click edit columns and cancel edits
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().check(1);
-        reports_vehicles._popUp().editColumns()._checkBox().check(2);
-        reports_vehicles._popUp().editColumns()._checkBox().check(3);
-        reports_vehicles._popUp().editColumns()._checkBox().check(4);
-        reports_vehicles._popUp().editColumns()._checkBox().check(5);
+        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(4).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(5).check();
         reports_vehicles._popUp().editColumns()._button().cancel().click();
 
         //Check that all columns are still visible.
@@ -698,15 +701,15 @@ public class Reports_Vehicles extends WebRallyTest {
  
         //Click edit columns and cancel edits
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().check(1);
-        reports_vehicles._popUp().editColumns()._checkBox().check(2);
-        reports_vehicles._popUp().editColumns()._checkBox().check(3);
-        reports_vehicles._popUp().editColumns()._checkBox().check(4);
-        reports_vehicles._popUp().editColumns()._checkBox().check(5);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(6);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(7);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(8);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(9);
+        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(4).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(5).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(6).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(7).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(8).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(9).uncheck();
         reports_vehicles._popUp().editColumns()._button().save().click();
 
         //Check that all columns are still visible.
@@ -753,15 +756,15 @@ pause(10,"");
         
         //check different columns to show in edit columns, save.
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().check(1);
-        reports_vehicles._popUp().editColumns()._checkBox().check(2);
-        reports_vehicles._popUp().editColumns()._checkBox().check(3);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(4);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(5);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(6);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(7);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(8);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(9);
+        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(4).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(5).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(6).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(7).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(8).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(9).uncheck();
         reports_vehicles._popUp().editColumns()._button().save().click();
 
         //Check that correct columns are shown.
@@ -777,15 +780,15 @@ pause(10,"");
 
         //Check that the correct boxes are still check in edit columns pop-up.
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().assertChecked(1,true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertChecked(2,true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertChecked(3,true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertChecked(4,false);
-        reports_vehicles._popUp().editColumns()._checkBox().assertChecked(5,false);
-        reports_vehicles._popUp().editColumns()._checkBox().assertChecked(6,false);
-        reports_vehicles._popUp().editColumns()._checkBox().assertChecked(7,false);
-        reports_vehicles._popUp().editColumns()._checkBox().assertChecked(8,false);
-        reports_vehicles._popUp().editColumns()._checkBox().assertChecked(9,false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(1).assertChecked(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(2).assertChecked(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(3).assertChecked(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(4).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(5).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(6).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(7).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(8).assertChecked(false);
+        reports_vehicles._popUp().editColumns()._checkBox().row(9).assertChecked(false);
 
     }
     
@@ -803,15 +806,15 @@ pause(10,"");
         //Check random boxes in the edit columns pop-up.
         //check different columns to show in edit columns, save.
         reports_vehicles._button().editColumns().click();
-        reports_vehicles._popUp().editColumns()._checkBox().check(1);
-        reports_vehicles._popUp().editColumns()._checkBox().check(2);
-        reports_vehicles._popUp().editColumns()._checkBox().check(3);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(4);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(5);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(6);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(7);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(8);
-        reports_vehicles._popUp().editColumns()._checkBox().uncheck(9);
+        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(4).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(5).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(6).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(7).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(8).uncheck();
+        reports_vehicles._popUp().editColumns()._checkBox().row(9).uncheck();
         reports_vehicles._popUp().editColumns()._button().save().click();
 
         //Check that correct columns are shown.
@@ -862,15 +865,15 @@ pause(10,"");
         //Verify contents of edit columns pop-up.
         reports_vehicles._button().editColumns().click();
 
-        reports_vehicles._popUp().editColumns()._checkBox().assertVisibility(1, true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertVisibility(2, true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertVisibility(3, true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertVisibility(4, true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertVisibility(5, true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertVisibility(6, true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertVisibility(7, true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertVisibility(8, true);
-        reports_vehicles._popUp().editColumns()._checkBox().assertVisibility(9, true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(1).assertVisibility(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(2).assertVisibility(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(3).assertVisibility(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(4).assertVisibility(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(5).assertVisibility(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(6).assertVisibility(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(7).assertVisibility(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(8).assertVisibility(true);
+        reports_vehicles._popUp().editColumns()._checkBox().row(9).assertVisibility(true);
 
     }
     
@@ -878,15 +881,15 @@ pause(10,"");
         reports_vehicles._button().editColumns().click();
         
         //Check all options in edit columns pop up.
-        reports_vehicles._popUp().editColumns()._checkBox().check(1);
-        reports_vehicles._popUp().editColumns()._checkBox().check(2);
-        reports_vehicles._popUp().editColumns()._checkBox().check(3);
-        reports_vehicles._popUp().editColumns()._checkBox().check(4);
-        reports_vehicles._popUp().editColumns()._checkBox().check(5);
-        reports_vehicles._popUp().editColumns()._checkBox().check(6);
-        reports_vehicles._popUp().editColumns()._checkBox().check(7);
-        reports_vehicles._popUp().editColumns()._checkBox().check(8);
-        reports_vehicles._popUp().editColumns()._checkBox().check(9);
+        reports_vehicles._popUp().editColumns()._checkBox().row(1).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(2).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(3).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(4).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(5).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(6).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(7).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(8).check();
+        reports_vehicles._popUp().editColumns()._checkBox().row(9).check();
         reports_vehicles._popUp().editColumns()._button().save().click();
         
         reports_vehicles._link().groupSort().assertPresence(true);

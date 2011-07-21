@@ -56,7 +56,7 @@ public class LiveFleetTest extends WebRallyTest {
         plf.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
         openSavedPage();
         assertStringContains("app/liveFleet", ptds.getCurrentLocation());
-        plf._link().entryFleetLegend().assertPresence(2, true);
+        plf._link().entryFleetLegend().row(2).assertPresence(true);
     }
     
     @Test
@@ -68,12 +68,12 @@ public class LiveFleetTest extends WebRallyTest {
         
         currentText = "";
         currentPosition = 0;
-        if(plf._text().entryPositionByPosition().isPresent(1)){
-            currentPosition = Integer.parseInt(plf._text().entryPositionByPosition().getText(1));
+        if(plf._text().entryPositionByPosition().row(1).isPresent()){
+            currentPosition = Integer.parseInt(plf._text().entryPositionByPosition().row(1).getText());
         }
         for(int index = 2; index < 10; index++){
-            if(plf._text().entryPositionByPosition().isPresent(index)){
-                int newPosition = Integer.parseInt(plf._text().entryPositionByPosition().getText(index));
+            if(plf._text().entryPositionByPosition().row(index).isPresent()){
+                int newPosition = Integer.parseInt(plf._text().entryPositionByPosition().row(index).getText());
                 if(currentPosition > newPosition){
                     addError("Positions out of order", ErrorLevel.ERROR);
                 }
@@ -89,12 +89,12 @@ public class LiveFleetTest extends WebRallyTest {
         pause(5, "Wait for refresh.");
         currentText = "";
         currentPosition = 0;
-        if(plf._text().entryPositionByPosition().isPresent(1)){
-            currentPosition = Integer.parseInt(plf._text().entryPositionByPosition().getText(1));
+        if(plf._text().entryPositionByPosition().row(1).isPresent()){
+            currentPosition = Integer.parseInt(plf._text().entryPositionByPosition().row(1).getText());
         }
         for(int index = 2; index < 10; index++){
-            if(plf._text().entryPositionByPosition().isPresent(index)){
-                int newPosition = Integer.parseInt(plf._text().entryPositionByPosition().getText(index));
+            if(plf._text().entryPositionByPosition().row(index).isPresent()){
+                int newPosition = Integer.parseInt(plf._text().entryPositionByPosition().row(index).getText());
                 if(currentPosition < newPosition){
                     addError("Positions out of order", ErrorLevel.ERROR);
                 }
@@ -108,12 +108,12 @@ public class LiveFleetTest extends WebRallyTest {
         plf._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(plf._link().entryDriverByPosition().isPresent(1)){
-            currentText = plf._link().entryDriverByPosition().getText(1);
+        if(plf._link().entryDriverByPosition().row(1).isPresent()){
+            currentText = plf._link().entryDriverByPosition().row(1).getText();
         }
         for(int index = 2; index < 10; index++){
-            if(plf._link().entryDriverByPosition().isPresent(index)){
-                String newText = plf._link().entryDriverByPosition().getText(index);
+            if(plf._link().entryDriverByPosition().row(index).isPresent()){
+                String newText = plf._link().entryDriverByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
@@ -127,12 +127,12 @@ public class LiveFleetTest extends WebRallyTest {
         plf._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(plf._link().entryDriverByPosition().isPresent(1)){
-            currentText = plf._link().entryDriverByPosition().getText(1);
+        if(plf._link().entryDriverByPosition().row(1).isPresent()){
+            currentText = plf._link().entryDriverByPosition().row(1).getText();
         }
         for(int index = 2; index < 10; index++){
-            if(plf._link().entryDriverByPosition().isPresent(index)){
-                String newText = plf._link().entryDriverByPosition().getText(index);
+            if(plf._link().entryDriverByPosition().row(index).isPresent()){
+                String newText = plf._link().entryDriverByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
@@ -146,12 +146,12 @@ public class LiveFleetTest extends WebRallyTest {
         plf._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(plf._link().entryGroupIconByPosition().isPresent(1)){
-            currentText = plf._link().entryGroupIconByPosition().getText(1);
+        if(plf._link().entryGroupIconByPosition().row(1).isPresent()){
+            currentText = plf._link().entryGroupIconByPosition().row(1).getText();
         }
         for(int index = 2; index < 10; index++){
-            if(plf._link().entryGroupIconByPosition().isPresent(index)){
-                String newText = plf._link().entryGroupIconByPosition().getText(index);
+            if(plf._link().entryGroupIconByPosition().row(index).isPresent()){
+                String newText = plf._link().entryGroupIconByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
@@ -165,12 +165,12 @@ public class LiveFleetTest extends WebRallyTest {
         plf._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(plf._link().entryGroupIconByPosition().isPresent(1)){
-            currentText = plf._link().entryGroupIconByPosition().getText(1);
+        if(plf._link().entryGroupIconByPosition().row(1).isPresent()){
+            currentText = plf._link().entryGroupIconByPosition().row(1).getText();
         }
         for(int index = 2; index < 10; index++){
-            if(plf._link().entryGroupIconByPosition().isPresent(index)){
-                String newText = plf._link().entryGroupIconByPosition().getText(index);
+            if(plf._link().entryGroupIconByPosition().row(index).isPresent()){
+                String newText = plf._link().entryGroupIconByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
@@ -185,12 +185,12 @@ public class LiveFleetTest extends WebRallyTest {
         plf._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(plf._link().entryVehicleByPosition().isPresent(1)){
-            currentText = plf._link().entryVehicleByPosition().getText(1);
+        if(plf._link().entryVehicleByPosition().row(1).isPresent()){
+            currentText = plf._link().entryVehicleByPosition().row(1).getText();
         }
         for(int index = 2; index < 10; index++){
-            if(plf._link().entryVehicleByPosition().isPresent(index)){
-                String newText = plf._link().entryVehicleByPosition().getText(index);
+            if(plf._link().entryVehicleByPosition().row(index).isPresent()){
+                String newText = plf._link().entryVehicleByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
@@ -204,12 +204,12 @@ public class LiveFleetTest extends WebRallyTest {
         plf._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(plf._link().entryVehicleByPosition().isPresent(1)){
-            currentText = plf._link().entryVehicleByPosition().getText(1);
+        if(plf._link().entryVehicleByPosition().row(1).isPresent()){
+            currentText = plf._link().entryVehicleByPosition().row(1).getText();
         }
         for(int index = 2; index < 10; index++){
-            if(plf._link().entryVehicleByPosition().isPresent(index)){
-                String newText = plf._link().entryVehicleByPosition().getText(index);
+            if(plf._link().entryVehicleByPosition().row(index).isPresent()){
+                String newText = plf._link().entryVehicleByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
@@ -226,30 +226,30 @@ public class LiveFleetTest extends WebRallyTest {
         set_test_case("TC1231");
         String goal;
         
-        goal = plf._link().entryVehicleByPosition().getText(1);
-        plf._link().entryGroupIconByPosition().click(1);
+        goal = plf._link().entryVehicleByPosition().row(1).getText();
+        plf._link().entryGroupIconByPosition().row(1).click();
         assertStringContains(goal, plf._link().valueMapBubbleVehicleName().getText());
         
         plf._dropDown().numNearestVehicles().select("5");
         plf._button().locate().click();
         
-        plf._text().entryPositionByPosition().assertPresence(5, true);
-        plf._text().entryPositionByPosition().assertEquals(5, "5");
-        plf._text().entryPositionByPosition().assertPresence(6, false);
+        plf._text().entryPositionByPosition().row(5).assertPresence(true);
+        plf._text().entryPositionByPosition().row(5).assertEquals("5");
+        plf._text().entryPositionByPosition().row(6).assertPresence(false);
 
-        goal = plf._link().entryVehicleByPosition().getText(5);
-        plf._link().entryGroupIconByPosition().click(5);
+        goal = plf._link().entryVehicleByPosition().row(5).getText();
+        plf._link().entryGroupIconByPosition().row(5).click();
         pause(5, "Wait for bubble to load.");
         assertStringContains(goal, plf._link().valueMapBubbleVehicleName().getText());
         
         plf._dropDown().numNearestVehicles().select("10");
         plf._button().locate().click();
-        plf._text().entryPositionByPosition().assertPresence(10, true);
-        plf._text().entryPositionByPosition().assertEquals(10, "10");
+        plf._text().entryPositionByPosition().row(10).assertPresence(true);
+        plf._text().entryPositionByPosition().row(10).assertEquals("10");
         plf._page().pageIndex().selectPageNumber(2).assertPresence(false);
 
-        goal = plf._link().entryVehicleByPosition().getText(10);
-        plf._link().entryGroupIconByPosition().click(10);
+        goal = plf._link().entryVehicleByPosition().row(10).getText();
+        plf._link().entryGroupIconByPosition().row(10).click();
         pause(5, "Wait for bubble to load.");
         assertStringContains(goal, plf._link().valueMapBubbleVehicleName().getText());
         
@@ -259,11 +259,11 @@ public class LiveFleetTest extends WebRallyTest {
         plf._page().pageIndex().selectPageNumber(4).assertPresence(false);
         plf._page().pageIndex().selectPageNumber(3).assertPresence(true);
         plf._page().pageIndex().selectPageNumber(3).click();
-        plf._text().entryPositionByPosition().assertPresence(25, true);
-        plf._text().entryPositionByPosition().assertPresence(26, false);
+        plf._text().entryPositionByPosition().row(25).assertPresence(true);
+        plf._text().entryPositionByPosition().row(26).assertPresence(false);
 
-        goal = plf._link().entryVehicleByPosition().getText(25);
-        plf._link().entryGroupIconByPosition().click(25);
+        goal = plf._link().entryVehicleByPosition().row(25).getText();
+        plf._link().entryGroupIconByPosition().row(25).click();
         pause(5, "Wait for bubble to load.");
         assertStringContains(goal, plf._link().valueMapBubbleVehicleName().getText());
         
@@ -273,10 +273,10 @@ public class LiveFleetTest extends WebRallyTest {
         plf._page().pageIndex().selectPageNumber(5).assertPresence(true);
         plf._page().pageIndex().selectPageNumber(6).assertPresence(false);
         plf._page().pageIndex().forwardAll().click();
-        plf._text().entryPositionByPosition().assertEquals(50, "50");
+        plf._text().entryPositionByPosition().row(50).assertEquals("50");
         
-        goal = plf._link().entryVehicleByPosition().getText(50);
-        plf._link().entryGroupIconByPosition().click(50);
+        goal = plf._link().entryVehicleByPosition().row(50).getText();
+        plf._link().entryGroupIconByPosition().row(50).click();
         pause(5, "Wait for bubble to load.");
         assertStringContains(goal, plf._link().valueMapBubbleVehicleName().getText());
         
@@ -286,10 +286,10 @@ public class LiveFleetTest extends WebRallyTest {
         plf._page().pageIndex().selectPageNumber(10).assertPresence(true);
         plf._page().pageIndex().selectPageNumber(11).assertPresence(false);
         plf._page().pageIndex().forwardAll().click();
-        plf._text().entryPositionByPosition().assertEquals(100, "100");
+        plf._text().entryPositionByPosition().row(100).assertEquals("100");
 
-        goal = plf._link().entryVehicleByPosition().getText(100);
-        plf._link().entryGroupIconByPosition().click(100);
+        goal = plf._link().entryVehicleByPosition().row(100).getText();
+        plf._link().entryGroupIconByPosition().row(100).click();
         pause(5, "Wait for bubble to load.");
         assertStringContains(goal, plf._link().valueMapBubbleVehicleName().getText());
     }
@@ -297,8 +297,8 @@ public class LiveFleetTest extends WebRallyTest {
     @Test
     public void driverLinkTest1232(){
         set_test_case("TC1232");
-        String driverName = plf._link().entryDriverByPosition().getText(1);
-        plf._link().entryDriverByPosition().click(1);
+        String driverName = plf._link().entryDriverByPosition().row(1).getText();
+        plf._link().entryDriverByPosition().row(1).click();
         assertStringContains("/app/driver/", ptds.getCurrentLocation());
         PageDriverPerformance pdp = new PageDriverPerformance();
         assertStringContains(driverName, pdp._link().driverName().getText());
@@ -315,14 +315,14 @@ public class LiveFleetTest extends WebRallyTest {
         plf._textField().findAddress().type(targetLocation);
         plf._button().locate().click();
         pause(5, "Wait for map to load.");
-        assertStringContains(targetVehicle, plf._link().entryVehicleByPosition().getText(1));
+        assertStringContains(targetVehicle, plf._link().entryVehicleByPosition().row(1).getText());
     }
     
     @Test
     public void teamLinkTest1236(){
         set_test_case("TC1236");
-        String teamName = plf._link().entryFleetLegend().getText(1);
-        plf._link().entryFleetLegend().click(1);
+        String teamName = plf._link().entryFleetLegend().row(1).getText();
+        plf._link().entryFleetLegend().row(1).click();
         assertStringContains("/app/dashboard/", ptds.getCurrentLocation());
         assertStringContains(teamName, ptds._text().teamName().getText());
         
@@ -337,11 +337,11 @@ public class LiveFleetTest extends WebRallyTest {
         plf._link().sortByVehicle().assertPresence(true);
         plf._link().sortByGroup().assertPresence(true);
         plf._text().headerFleetLegend().assertPresence(true);
-        plf._link().entryFleetLegend().assertPresence(1, true);
+        plf._link().entryFleetLegend().row(1).assertPresence( true);
         plf._textField().findAddress().assertPresence(true);
         plf._dropDown().numNearestVehicles().assertPresence(true);
         plf._button().locate().assertPresence(true);
-        plf._link().entryGroupIconByPosition().click(1);
+        plf._link().entryGroupIconByPosition().row(1).click();
         pause(5, "Wait for pop-up to load.");
         plf._link().valueMapBubbleVehicleName().assertPresence(true);
     }
@@ -350,7 +350,7 @@ public class LiveFleetTest extends WebRallyTest {
     public void vehicleImageLinkTest1238(){
         set_test_case("TC1238");
         
-        plf._link().entryGroupIconByPosition().click(1);
+        plf._link().entryGroupIconByPosition().row(1).click();
         pause(5, "Wait for pop-up to load.");
         plf._link().valueMapBubbleVehicleName().assertPresence(true);
         plf._text().labelMapBubbleDevice().assertPresence(true);
@@ -369,8 +369,8 @@ public class LiveFleetTest extends WebRallyTest {
     @Test
     public void vehicleLinkTest1239(){
         set_test_case("TC1239");
-        String vehicleName = plf._link().entryVehicleByPosition().getText(1);
-        plf._link().entryVehicleByPosition().click(1);
+        String vehicleName = plf._link().entryVehicleByPosition().row(1).getText();
+        plf._link().entryVehicleByPosition().row(1).click();
         assertStringContains("/app/vehicle/", ptds.getCurrentLocation());
         PageVehiclePerformance pvp = new PageVehiclePerformance();
         assertStringContains(vehicleName, pvp._link().vehicleName().getText());

@@ -1,160 +1,68 @@
 package com.inthinc.pro.automation.elements;
 
+import java.util.Iterator;
+
+import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTableBased;
-import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
-public class ClickableTableObject extends ClickableObject implements ClickableTableBased, TableBased {
+public class ClickableTableObject implements ClickableTableBased {
+    private SeleniumEnumWrapper myEnum;
+    private int rowNumber=1;
 
     public ClickableTableObject(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
-        super(anEnum, replaceWord, replaceNumber);
+        myEnum = new SeleniumEnumWrapper(anEnum);
+        myEnum.replaceNumber(replaceNumber);
+        myEnum.replaceWord(replaceWord);
     }
 
     public ClickableTableObject(SeleniumEnums anEnum) {
-        super(anEnum);
+        myEnum = new SeleniumEnumWrapper(anEnum);
     }
 
     public ClickableTableObject(SeleniumEnums anEnum, Integer replaceNumber) {
-        super(anEnum, replaceNumber);
+        myEnum = new SeleniumEnumWrapper(anEnum);
+        myEnum.replaceNumber(replaceNumber);
     }
 
     public ClickableTableObject(SeleniumEnums anEnum, String replaceWord) {
-        super(anEnum, replaceWord);
+        myEnum = new SeleniumEnumWrapper(anEnum);
+        myEnum.replaceWord(replaceWord);
     }
 
     public ClickableTableObject(SeleniumEnums anEnum, TextEnum replaceWord) {
-        super(anEnum, replaceWord);
+        myEnum = new SeleniumEnumWrapper(anEnum);
+        myEnum.replaceWord(replaceWord.getText());
+    }
+
+    @Override
+    public boolean hasNext() {
+        return row(rowNumber).isPresent();
+    }
+
+    @Override
+    public Clickable next() {
+        return row(rowNumber++);
     }
 
     @Override
     @Deprecated
-    public ClickableTableObject click() {
-        addError(".click()", "please supply an Integer number for the row on the table)", ErrorLevel.FAIL);
-        return null;
+    public void remove() {
+        throw new UnsupportedOperationException("There is nothing to remove");
     }
 
-    /**
-     * Choose the row, or Item number, that you want to click.<br />
-     * If you are selecting the item from a 2D table<br />
-     * then you want to count row by row left to right.<br />
-     * 
-     * @param row
-     * @return
-     */
-    public ClickableTableObject click(Integer row) {
-        replaceNumber(row);
-        super.click();
+    @Override
+    public Iterator<Clickable> iterator() {
+        rowNumber = 1;
         return this;
     }
 
     @Override
-    public Boolean isVisible(Integer row) {
-        replaceNumber(row);
-        return super.isVisible();
+    public Clickable row(int rowNumber) {
+        return new ClickableObject(myEnum, rowNumber);
     }
 
-    @Override
-    public Boolean isPresent(Integer row) {
-        replaceNumber(row);
-        return super.isPresent();
-    }
-
-    @Override
-    public ElementInterface focus(Integer row) {
-        replaceNumber(row);
-        return super.focus();
-    }
-
-    @Override
-    public Boolean assertVisibility(Integer row, Boolean visible) {
-        replaceNumber(row);
-        return super.assertVisibility(visible);
-    }
-
-    @Override
-    @Deprecated
-    public Boolean isVisible() {
-        addError(".isVisible()", "please supply an Integer number for the row on the table)", ErrorLevel.FAIL);
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public Boolean isPresent() {
-        addError(".isPresent()", "please supply an Integer number for the row on the table)", ErrorLevel.FAIL);
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public ElementInterface focus() {
-        addError(".focus()", "please supply an Integer number for the row on the table)", ErrorLevel.FAIL);
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public Boolean assertVisibility(Boolean visible) {
-        addError(".assertVisibility()", "please supply an Integer number for the row on the table)", ErrorLevel.FAIL);
-        return null;
-    }
-
-    @Override
-    public Boolean validateVisibility(Integer row, Boolean visible) {
-        replaceNumber(row);
-        return super.validateVisibility(visible);
-    }
-
-    @Override
-    public Boolean validatePresence(Integer row, Boolean present) {
-        replaceNumber(row);
-        return super.validatePresence(present);
-    }
-
-    @Override
-    public Boolean assertPresence(Integer row, Boolean present) {
-        replaceNumber(row);
-        return super.assertPresence(present);
-    }
-
-    @Override
-    public Boolean isClickable(Integer row) {
-        replaceNumber(row);
-        return super.isClickable();
-    }
-
-    @Override
-    public Boolean validateClickable(Integer row, Boolean clickable) {
-        replaceNumber(row);
-        return super.validateClickable(clickable);
-    }
-
-    @Override
-    public Boolean assertClickable(Integer row, Boolean clickable) {
-        replaceNumber(row);
-        return assertEquals(clickable, isClickable(row));
-    }
-
-    @Override
-    @Deprecated
-    public Boolean isClickable() {
-        addError(".isClickable()", "please supply an Integer number for the row on the table)", ErrorLevel.FAIL);
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public Boolean validateClickable(Boolean clickable) {
-        addError(".validateClickable()", "please supply an Integer number for the row on the table)", ErrorLevel.FAIL);
-        return null;
-    }
-
-    @Override
-    @Deprecated
-    public Boolean assertClickable(Boolean clickable) {
-        addError(".assertClickable()", "please supply an Integer number for the row on the table)", ErrorLevel.FAIL);
-        return null;
-    }
 
 }

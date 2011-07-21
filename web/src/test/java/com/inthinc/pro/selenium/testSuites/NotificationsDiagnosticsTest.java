@@ -76,10 +76,10 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._button().refresh().click();
         pause(10, "Wait for page to load.");
         int i = 1;
-        while(!pnd._link().entryDriver().isClickable(i)){
+        while(!pnd._link().entryDriver().row(i).isClickable()){
             i++;
         }
-        pnd._link().entryDriver().click(i);
+        pnd._link().entryDriver().row(i).click();
         assertStringContains("app/driver", pnd.getCurrentLocation());
     }
     
@@ -111,7 +111,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._dropDown().team().selectPartMatch(GROUP);
         pnd._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnd._button().eventLocation().click(1);
+        pnd._button().eventLocation().row(1).click();
         //TODO Location map pop-up verify.
         //pnd._popUp().
     }
@@ -136,8 +136,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             pause(10,"");
             for (int j=1;j<=20;j++){
                 TextTableLink currentColumn = searchValues(i);
-                if (currentColumn.isPresent(j)){
-                    currentColumn.validateContains(j,currentSearch);
+                if (currentColumn.row(j).isPresent()){
+                    currentColumn.row(j).validateContains(currentSearch);
                 } else {
                     break;
                 }
@@ -151,8 +151,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             pause(10,"");
             for (int j=1;j<=20;j++){
                 TextTableLink currentColumn = searchValues(i);
-                if (currentColumn.isPresent(j)){
-                    currentColumn.validateContains(j,currentSearch);
+                if (currentColumn.row(j).isPresent()){
+                    currentColumn.row(j).validateContains(currentSearch);
                 } else {
                     break;
                 }
@@ -300,12 +300,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._button().refresh().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._text().dateTimeEntry().isPresent(1)){
-            currentText = pnd._text().dateTimeEntry().getText(1);
+        if(pnd._text().dateTimeEntry().row(1).isPresent()){
+            currentText = pnd._text().dateTimeEntry().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnd._text().dateTimeEntry().isPresent(index)){
-                String newText = pnd._text().dateTimeEntry().getText(index);
+            if(pnd._text().dateTimeEntry().row(index).isPresent()){
+                String newText = pnd._text().dateTimeEntry().row(index).getText();
                 if(compareDates(currentText, newText) < 0){
                     print(currentText);
                     print(newText);
@@ -321,12 +321,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().sortByDateTime().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._text().dateTimeEntry().isPresent(1)){
-            currentText = pnd._text().dateTimeEntry().getText(1);
+        if(pnd._text().dateTimeEntry().row(1).isPresent()){
+            currentText = pnd._text().dateTimeEntry().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnd._text().dateTimeEntry().isPresent(index)){
-                String newText = pnd._text().dateTimeEntry().getText(index);
+            if(pnd._text().dateTimeEntry().row(index).isPresent()){
+                String newText = pnd._text().dateTimeEntry().row(index).getText();
                 if(compareDates(currentText, newText) > 0){
                     addError("Dates out of order", ErrorLevel.ERROR);
                 }
@@ -340,12 +340,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryDriver().isPresent(1)){
-            currentText = pnd._link().entryDriver().getText(1);
+        if(pnd._link().entryDriver().row(1).isPresent()){
+            currentText = pnd._link().entryDriver().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnd._link().entryDriver().isPresent(index)){
-                String newText = pnd._link().entryDriver().getText(index);
+            if(pnd._link().entryDriver().row(index).isPresent()){
+                String newText = pnd._link().entryDriver().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
@@ -359,12 +359,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryDriver().isPresent(1)){
-            currentText = pnd._link().entryDriver().getText(1);
+        if(pnd._link().entryDriver().row(1).isPresent()){
+            currentText = pnd._link().entryDriver().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnd._link().entryDriver().isPresent(index)){
-                String newText = pnd._link().entryDriver().getText(index);
+            if(pnd._link().entryDriver().row(index).isPresent()){
+                String newText = pnd._link().entryDriver().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Drivers out of order", ErrorLevel.ERROR);
                 }
@@ -378,12 +378,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryGroup().isPresent(1)){
-            currentText = pnd._link().entryGroup().getText(1);
+        if(pnd._link().entryGroup().row(1).isPresent()){
+            currentText = pnd._link().entryGroup().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnd._link().entryGroup().isPresent(index)){
-                String newText = pnd._link().entryGroup().getText(index);
+            if(pnd._link().entryGroup().row(index).isPresent()){
+                String newText = pnd._link().entryGroup().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
@@ -397,12 +397,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryGroup().isPresent(1)){
-            currentText = pnd._link().entryGroup().getText(1);
+        if(pnd._link().entryGroup().row(1).isPresent()){
+            currentText = pnd._link().entryGroup().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnd._link().entryGroup().isPresent(index)){
-                String newText = pnd._link().entryGroup().getText(index);
+            if(pnd._link().entryGroup().row(index).isPresent()){
+                String newText = pnd._link().entryGroup().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Groups out of order", ErrorLevel.ERROR);
                 }
@@ -417,12 +417,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryVehicle().isPresent(1)){
-            currentText = pnd._link().entryVehicle().getText(1);
+        if(pnd._link().entryVehicle().row(1).isPresent()){
+            currentText = pnd._link().entryVehicle().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnd._link().entryVehicle().isPresent(index)){
-                String newText = pnd._link().entryVehicle().getText(index);
+            if(pnd._link().entryVehicle().row(index).isPresent()){
+                String newText = pnd._link().entryVehicle().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
@@ -436,12 +436,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryVehicle().isPresent(1)){
-            currentText = pnd._link().entryVehicle().getText(1);
+        if(pnd._link().entryVehicle().row(1).isPresent()){
+            currentText = pnd._link().entryVehicle().row(1).getText();
         }
         for(int index = 2; index < 20; index++){
-            if(pnd._link().entryVehicle().isPresent(index)){
-                String newText = pnd._link().entryVehicle().getText(index);
+            if(pnd._link().entryVehicle().row(index).isPresent()){
+                String newText = pnd._link().entryVehicle().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
                     addError("Vehicles out of order", ErrorLevel.ERROR);
                 }
@@ -505,7 +505,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._dropDown().team().selectPartMatch(GROUP);
         pnd._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnd._link().entryVehicle().click(1);
+        pnd._link().entryVehicle().row(1).click();
         assertStringContains("app/vehicle", pnd.getCurrentLocation());
     }
     
@@ -526,7 +526,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         boolean b6 = pnd._text().headerDetail().isPresent();
         
         pnd._link().editColumns().click();
-        pnd._popUp().editColumns()._checkBox().click(1);
+        pnd._popUp().editColumns()._checkBox().row(1).click();
         pnd._popUp().editColumns()._button().cancel().click();
         
         pnd._link().sortByDateTime().assertPresence(b1);
@@ -576,15 +576,15 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         
         pnd._link().editColumns().click();
         
-        pnd._popUp().editColumns()._checkBox().click(1);
-        pnd._popUp().editColumns()._checkBox().assertChecked(1, false);
-        pnd._popUp().editColumns()._checkBox().click(1);
-        pnd._popUp().editColumns()._checkBox().assertChecked(1, true);
+        pnd._popUp().editColumns()._checkBox().row(1).click();
+        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(false);
+        pnd._popUp().editColumns()._checkBox().row(1).click();
+        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(true);
         
-        pnd._popUp().editColumns()._link().entry().click(1);
-        pnd._popUp().editColumns()._checkBox().assertChecked(1, false);
-        pnd._popUp().editColumns()._link().entry().click(1);
-        pnd._popUp().editColumns()._checkBox().assertChecked(1, true);
+        pnd._popUp().editColumns()._link().entry().row(1).click();
+        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(false);
+        pnd._popUp().editColumns()._link().entry().row(1).click();
+        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(true);
        
     }
     
@@ -598,12 +598,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnrf._link().diagnostics().click();
         
         pnd._link().editColumns().click();
-        pnd._popUp().editColumns()._checkBox().focus(1);
-        pnd._popUp().editColumns()._checkBox().click(1);//focus toggles checkboxes currently.
+        pnd._popUp().editColumns()._checkBox().row(1).focus();
+        pnd._popUp().editColumns()._checkBox().row(1).click();//focus toggles checkboxes currently.
         spaceBar();
-        pnd._popUp().editColumns()._checkBox().assertChecked(1, false);
+        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(false);
         spaceBar();
-        pnd._popUp().editColumns()._checkBox().assertChecked(1, true);
+        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(true);
         
     }
     
@@ -618,8 +618,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnrf._link().diagnostics().click();
         
         pnd._link().editColumns().click();
-        pnd._popUp().editColumns()._checkBox().uncheck(1);
-        pnd._popUp().editColumns()._checkBox().check(4);
+        pnd._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnd._popUp().editColumns()._checkBox().row(4).check();
         pnd._popUp().editColumns()._button().save().click();
         pnd._link().reports().click();
         pnd._link().notifications().click();
@@ -644,9 +644,9 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnrf._link().diagnostics().click();
         
         pnd._link().editColumns().click();
-        pnd._popUp().editColumns()._checkBox().focus(1);
-        pnd._popUp().editColumns()._checkBox().uncheck(1);
-        pnd._popUp().editColumns()._checkBox().check(4);
+        pnd._popUp().editColumns()._checkBox().row(1).focus();
+        pnd._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnd._popUp().editColumns()._checkBox().row(4).check();
         enterKey();
         pause(2, "Waiting for columns to update.");
         pnd._link().sortByDateTime().assertPresence(false);
@@ -667,8 +667,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnrf._link().diagnostics().click();
         
         pnd._link().editColumns().click();
-        pnd._popUp().editColumns()._checkBox().uncheck(1);
-        pnd._popUp().editColumns()._checkBox().check(4);
+        pnd._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnd._popUp().editColumns()._checkBox().row(4).check();
         pnd._popUp().editColumns()._button().save().click();
         pnd._link().sortByDateTime().assertPresence(false);
         pnd._link().sortByGroup().assertPresence(true);
@@ -688,8 +688,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnrf._link().diagnostics().click();
         
         pnd._link().editColumns().click();
-        pnd._popUp().editColumns()._checkBox().uncheck(1);
-        pnd._popUp().editColumns()._checkBox().check(4);
+        pnd._popUp().editColumns()._checkBox().row(1).uncheck();
+        pnd._popUp().editColumns()._checkBox().row(4).check();
         pnd._popUp().editColumns()._button().save().click();
         pnd._link().logout().click();
         pl.loginProcess(USERNAME, PASSWORD);
@@ -714,25 +714,25 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnrf._link().diagnostics().click();
         
         pnd._link().editColumns().click();
-        pnd._popUp().editColumns()._checkBox().focus(1);
+        pnd._popUp().editColumns()._checkBox().row(1).focus();
         tabKey();
-        if(!pnd._popUp().editColumns()._checkBox().hasFocus(2)){
+        if(!pnd._popUp().editColumns()._checkBox().row(2).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on second check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnd._popUp().editColumns()._checkBox().hasFocus(3)){
+        if(!pnd._popUp().editColumns()._checkBox().row(3).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on third check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnd._popUp().editColumns()._checkBox().hasFocus(4)){
+        if(!pnd._popUp().editColumns()._checkBox().row(4).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on fourth check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnd._popUp().editColumns()._checkBox().hasFocus(5)){
+        if(!pnd._popUp().editColumns()._checkBox().row(5).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on fifth check box.", ErrorLevel.FAIL);
         }
         tabKey();
-        if(!pnd._popUp().editColumns()._checkBox().hasFocus(6)){
+        if(!pnd._popUp().editColumns()._checkBox().row(6).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on sixth check box.", ErrorLevel.FAIL);
         }
         tabKey();
@@ -762,19 +762,19 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         boolean b6 = pnd._text().headerDetail().isPresent();
         
         pnd._link().editColumns().click();
-        pnd._popUp().editColumns()._checkBox().assertVisibility(1, true);
-        pnd._popUp().editColumns()._checkBox().assertVisibility(2, true);
-        pnd._popUp().editColumns()._checkBox().assertVisibility(3, true);
-        pnd._popUp().editColumns()._checkBox().assertVisibility(4, true);
-        pnd._popUp().editColumns()._checkBox().assertVisibility(5, true);
-        pnd._popUp().editColumns()._checkBox().assertVisibility(6, true);
+        pnd._popUp().editColumns()._checkBox().row(1).assertVisibility(true);
+        pnd._popUp().editColumns()._checkBox().row(2).assertVisibility(true);
+        pnd._popUp().editColumns()._checkBox().row(3).assertVisibility(true);
+        pnd._popUp().editColumns()._checkBox().row(4).assertVisibility(true);
+        pnd._popUp().editColumns()._checkBox().row(5).assertVisibility(true);
+        pnd._popUp().editColumns()._checkBox().row(6).assertVisibility(true);
         
-        pnd._popUp().editColumns()._checkBox().assertChecked(1, b1);
-        pnd._popUp().editColumns()._checkBox().assertChecked(2, b2);
-        pnd._popUp().editColumns()._checkBox().assertChecked(3, b3);
-        pnd._popUp().editColumns()._checkBox().assertChecked(4, b4);
-        pnd._popUp().editColumns()._checkBox().assertChecked(5, b5);
-        pnd._popUp().editColumns()._checkBox().assertChecked(6, b6);
+        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(b1);
+        pnd._popUp().editColumns()._checkBox().row(2).assertChecked(b2);
+        pnd._popUp().editColumns()._checkBox().row(3).assertChecked(b3);
+        pnd._popUp().editColumns()._checkBox().row(4).assertChecked(b4);
+        pnd._popUp().editColumns()._checkBox().row(5).assertChecked(b5);
+        pnd._popUp().editColumns()._checkBox().row(6).assertChecked(b6);
         
         pnd._popUp().editColumns()._button().save().assertVisibility(true);
         pnd._popUp().editColumns()._button().cancel().assertVisibility(true);
@@ -793,13 +793,13 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._button().refresh().click();
         pnd._dropDown().category().select(5);
         pause(10, "Wait for page to load.");
-        if(pnd._link().entryStatus().isPresent(1)){
-            pnd._link().entryStatus().click(1);
+        if(pnd._link().entryStatus().row(1).isPresent()){
+            pnd._link().entryStatus().row(1).click();
             pause(5, "Wait for pop-up to become visible.");
             pnd._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            assertStringContains("inc", pnd._link().entryStatus().getText(1));
-            pnd._link().entryStatus().click(1);
+            assertStringContains("inc", pnd._link().entryStatus().row(1).getText());
+            pnd._link().entryStatus().row(1).click();
         }
         else{
             //TODO Make the test result Inconclusive instead of Fail.
@@ -820,13 +820,13 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._button().refresh().click();
         pnd._dropDown().category().select(2);
         pause(10, "Wait for page to load.");
-        if(pnd._link().entryStatus().isPresent(1)){
-            pnd._link().entryStatus().click(1);
+        if(pnd._link().entryStatus().row(1).isPresent()){
+            pnd._link().entryStatus().row(1).click();
             pause(5, "Wait for pop-up to become visible.");
             pnd._popUp().excludeEvent()._button().yes().click();
             pause(10, "Wait for page to load.");
-            assertStringContains("inc", pnd._link().entryStatus().getText(1));
-            pnd._link().entryStatus().click(1);
+            assertStringContains("inc", pnd._link().entryStatus().row(1).getText());
+            pnd._link().entryStatus().row(1).click();
         }
         else{
             addError("Tampering event not present to test with.", ErrorLevel.WARN);
@@ -846,9 +846,9 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._dropDown().statusFilter().select("included");
         pnd._button().refresh().click();
         pause(10, "Wait for page to load.");
-        String date = pnd._text().dateTimeEntry().getText(1);
-        String detail = pnd._text().detailEntry().getText(1);
-        pnd._link().entryStatus().click(1);
+        String date = pnd._text().dateTimeEntry().row(1).getText();
+        String detail = pnd._text().detailEntry().row(1).getText();
+        pnd._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
 
         assertStringContains(date, pnd._popUp().excludeEvent()._text().message().getText());
@@ -869,13 +869,13 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._dropDown().team().selectPartMatch(GROUP);
         pnd._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pnd._link().entryStatus().click(1);
+        pnd._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         pnd._popUp().excludeEvent()._button().yes().click();
         pause(10, "Wait for page to load.");
-        pnd._link().entryStatus().click(1);
+        pnd._link().entryStatus().row(1).click();
         pause(5, "Wait for event to re-include.");
-        assertStringContains("exc", pnd._link().entryStatus().getText(1));
+        assertStringContains("exc", pnd._link().entryStatus().row(1).getText());
     }
     
     @Test
@@ -890,7 +890,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._dropDown().team().selectPartMatch(GROUP);
         pnd._button().refresh().click();
         pause(5, "Wait for refresh.");
-        String currentDate = pnd._text().dateTimeEntry().getText(1);
+        String currentDate = pnd._text().dateTimeEntry().row(1).getText();
         
         int month1 = monthToInt(currentDate.substring(0,3));
         int targetMonth;
@@ -942,7 +942,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._dropDown().timeFrame().selectPartMatch("Yesterday");
         pause(5, "Wait for refresh.");
         
-        String yesterday = pnd._text().dateTimeEntry().getText(1);
+        String yesterday = pnd._text().dateTimeEntry().row(1).getText();
         
         int month2 = monthToInt(yesterday.substring(0,3));
         int day2;
@@ -969,12 +969,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     
     public String searchText(int i){
         int firstDriver = 1;
-        while(!pnd._link().entryDriver().isClickable(firstDriver)){
+        while(!pnd._link().entryDriver().row(firstDriver).isClickable()){
             firstDriver++;
         }
-        String[] searchStrings = {(String) pnd._link().entryGroup().getText(1).substring(0, 3),
-                (String) pnd._link().entryDriver().getText(firstDriver).substring(0, 3), 
-                (String) pnd._link().entryVehicle().getText(1).substring(0, 3)};
+        String[] searchStrings = {(String) pnd._link().entryGroup().row(1).getText().substring(0, 3),
+                (String) pnd._link().entryDriver().row(firstDriver).getText().substring(0, 3), 
+                (String) pnd._link().entryVehicle().row(1).getText().substring(0, 3)};
         return searchStrings[i];
     }
     
@@ -994,12 +994,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnrf._link().diagnostics().click();
         
         pnd._link().editColumns().click();
-        pnd._popUp().editColumns()._checkBox().check(1);
-        pnd._popUp().editColumns()._checkBox().check(2);
-        pnd._popUp().editColumns()._checkBox().check(3);
-        pnd._popUp().editColumns()._checkBox().check(4);
-        pnd._popUp().editColumns()._checkBox().check(5);
-        pnd._popUp().editColumns()._checkBox().check(6);
+        pnd._popUp().editColumns()._checkBox().row(1).check();
+        pnd._popUp().editColumns()._checkBox().row(2).check();
+        pnd._popUp().editColumns()._checkBox().row(3).check();
+        pnd._popUp().editColumns()._checkBox().row(4).check();
+        pnd._popUp().editColumns()._checkBox().row(5).check();
+        pnd._popUp().editColumns()._checkBox().row(6).check();
         pnd._popUp().editColumns()._button().save().click();
         pnd._link().logout().click();
     }
@@ -1011,12 +1011,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
           pnrf._link().diagnostics().click();
           
           pnd._link().editColumns().click();
-          pnd._popUp().editColumns()._checkBox().check(1);
-          pnd._popUp().editColumns()._checkBox().check(2);
-          pnd._popUp().editColumns()._checkBox().check(3);
-          pnd._popUp().editColumns()._checkBox().uncheck(4);
-          pnd._popUp().editColumns()._checkBox().uncheck(5);
-          pnd._popUp().editColumns()._checkBox().uncheck(6);
+          pnd._popUp().editColumns()._checkBox().row(1).check();
+          pnd._popUp().editColumns()._checkBox().row(2).check();
+          pnd._popUp().editColumns()._checkBox().row(3).check();
+          pnd._popUp().editColumns()._checkBox().row(4).uncheck();
+          pnd._popUp().editColumns()._checkBox().row(5).uncheck();
+          pnd._popUp().editColumns()._checkBox().row(6).uncheck();
           pnd._popUp().editColumns()._button().save().click();
           pnd._link().logout().click();
       }

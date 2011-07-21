@@ -1,87 +1,51 @@
 package com.inthinc.pro.automation.elements;
 
+import java.util.Iterator;
+
+import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
 import com.inthinc.pro.automation.elements.ElementInterface.CheckableTable;
-import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
-import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
+import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.utils.Id;
-import com.inthinc.pro.automation.utils.Xpath;
 
-public class CheckBoxTable extends LinkTable implements CheckableTable,
-	TableBased, Clickable {
+public class CheckBoxTable implements CheckableTable {
 
-    private CheckBox checkBox;
+    private final SeleniumEnumWrapper myEnum;
+    private int rowNumber = 1;
     
     public CheckBoxTable(SeleniumEnums anEnum) {
-	super(anEnum);
-	checkBox = new CheckBox(anEnum);
+        myEnum = new SeleniumEnumWrapper(anEnum);
     }
 
     public CheckBoxTable(SeleniumEnums anEnum, String replaceWord) {
-	super(anEnum, replaceWord);
-	checkBox = new CheckBox(anEnum, replaceWord);
+        myEnum = new SeleniumEnumWrapper(anEnum);
+        myEnum.replaceWord(replaceWord);
     }
 
     @Override
-    public CheckableTable check(Integer number) {
-	checkBox.replaceNumber(number);
-	checkBox.check();
-	return null;
+    public Iterator<Checkable> iterator() {
+        rowNumber = 1;
+        return this;
     }
 
     @Override
-    public CheckableTable uncheck(Integer number) {
-	checkBox.replaceNumber(number);
-	checkBox.uncheck();
-	return null;
+    public boolean hasNext() {
+        return row(rowNumber).isPresent();
     }
 
     @Override
-    public Boolean isChecked(Integer number) {
-	checkBox.replaceNumber(number);
-	return checkBox.isChecked();
+    public Checkable next() {
+        return row(rowNumber++);
     }
 
     @Override
     @Deprecated
-    /**
-     * Use click(Integer number) to specify which item you are clicking
-     * 
-     * @deprecated use {@link com.inthinc.pro.automation.elements.CheckableObject#click(Integer)}
-     */
-    public ClickableTableObject click() {
-	addError(
-				".click()",
-				"please supply an Integer number for the row on the table)",
-				ErrorLevel.FAIL);
-	return null;
-    }
-
-    public ClickableTableObject click(Integer row) {
-	super.click(row);
-	return this;
-    }
-
-    public CheckableTable click(String label) {
-	String xpath = Xpath.start().label(Id.text(label)).input().toString();
-	myEnum.setID(xpath);
-	super.click(1);
-	return this;
+    public void remove() {
+        throw new UnsupportedOperationException("There is nothing to remove");
     }
 
     @Override
-    public Boolean validateChecked(Integer number, Boolean checked) {
-	return validateEquals(checked, isChecked(number));
+    public Checkable row(int rowNumber) {
+        return new CheckBox(myEnum, rowNumber);
     }
 
-    @Override
-    public Boolean assertChecked(Integer number, Boolean checked) {
-	return assertEquals(checked, isChecked(number));
-    }
-
-    @Override
-    public Boolean hasFocus(Integer number) {
-	replaceNumber(number);
-	return super.hasFocus();
-    }
 }
