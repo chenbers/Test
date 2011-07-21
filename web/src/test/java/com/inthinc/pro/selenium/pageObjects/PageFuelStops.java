@@ -1,5 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.CheckBox;
+import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
@@ -174,6 +176,20 @@ public class PageFuelStops extends HOSBar {
 
     public FuelStopsTextFields _textField() {
         return new FuelStopsTextFields();
+    }
+    
+    public FuelStopsCheckBoxs _checkBox() {
+        return new FuelStopsCheckBoxs();
+    }
+    
+    public class FuelStopsCheckBoxs {
+        public CheckBoxTable entryCheckBox(){
+            return new CheckBoxTable(FuelStopsEnum.VALUE_CHECK);
+        }
+        
+        public CheckBox checkAll(){
+            return new CheckBox(FuelStopsEnum.CHECK_ALL);
+        }
     }
 
 }
