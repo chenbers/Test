@@ -8,6 +8,7 @@ public enum FuelStopsEnum implements SeleniumEnums {
     REFRESH("Refresh", "fuelStops-table-form:fuelStopsTable_refresh"),
     ADD("Add", "fuelStops-table-form:fuelStopsTable-fuelStopsTableAdd"),
     EDIT_COLUMNS(null, "fuelStops-table-form:fuelStopsTable-fuelStopsTableEditColumns"),
+    DELETE_BUTTON(delete, "fuelStops-table-form:fuelStopsTable-fuelStopsTableDelete"),
     
     /* TextFields */
     VEHICLE_TEXT_FIELD(null, "fuelStops-table-form:vehicleName"),

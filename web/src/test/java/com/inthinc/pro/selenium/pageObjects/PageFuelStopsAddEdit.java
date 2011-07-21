@@ -10,6 +10,7 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.selenium.pageEnums.FuelStopsEditEnum;
+import com.inthinc.pro.selenium.pageEnums.FuelStopsEnum;
 
 public class PageFuelStopsAddEdit extends HOSBar {
     
@@ -67,6 +68,14 @@ public class PageFuelStopsAddEdit extends HOSBar {
         
         public Text labelLocation(){
             return new Text(FuelStopsEditEnum.LOCATION_LABEL);
+        }
+        
+        public Text valueLocation(){
+            return new Text(FuelStopsEditEnum.LOCATION);
+        }
+        
+        public Text timeMessage(){
+            return new Text(FuelStopsEditEnum.TIME_MESSAGE);
         }
         
         

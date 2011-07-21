@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
+import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextFieldSuggestions;
 import com.inthinc.pro.automation.elements.TextLink;
@@ -21,6 +22,10 @@ public class PageFuelStops extends HOSBar {
 
         public TextButton refresh() {
             return new TextButton(FuelStopsEnum.REFRESH);
+        }
+        
+        public TextButton delete(){
+            return new TextButton(FuelStopsEnum.DELETE_BUTTON);
         }
     }
 
@@ -90,6 +95,14 @@ public class PageFuelStops extends HOSBar {
 
         public TextFieldSuggestions vehicle() {
             return new TextFieldSuggestions(FuelStopsEnum.VEHICLE_TEXT_FIELD, FuelStopsEnum.VEHICLE_SUGGESTION_BOX);
+        }
+        
+        public TextField dateStart(){
+            return new TextField(FuelStopsEnum.DATE_START_BOX);
+        }
+        
+        public TextField dateStop(){
+            return new TextField(FuelStopsEnum.DATE_STOP_BOX);
         }
     }
 
