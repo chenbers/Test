@@ -817,6 +817,7 @@ public class NonTranslated {
     static {
         List<String> nonTranslatedList = new ArrayList<String>();
         nonTranslatedList.add("button_ok");
+        nonTranslatedList.add("dateFormat");
         nonTranslated_fr.put("/hoskiosk/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
         
         nonTranslatedList = new ArrayList<String>();
