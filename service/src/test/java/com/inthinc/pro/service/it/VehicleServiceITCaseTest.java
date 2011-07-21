@@ -35,7 +35,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static int VEHICLE_ID_WITH_NO_DATA = 777;
     private static int VEHICLE_ID_WITH_NO_LOCATION = 1234;
     private static final String TOO_EARLY_DATE = "20090101";
-    
+    private Vehicle createdVehicle;
     @Before
     public void before() {
 
@@ -43,10 +43,10 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
         params.setAuthenticationPreemptive(true);
         httpClient = new HttpClient(params);
         Credentials defaultcreds = new UsernamePasswordCredentials(getAdminuser(), getAdminpassword());
-        httpClient.getState().setCredentials(new AuthScope(DOMAIN, getPort(), AuthScope.ANY_REALM), defaultcreds);
+        httpClient.getState().setCredentials(new AuthScope(getDomain(), getPort(), AuthScope.ANY_REALM), defaultcreds);
         clientExecutor = new ApacheHttpClientExecutor(httpClient);
 
-        client = ProxyFactory.create(ServiceClient.class, "http://"+DOMAIN+":" + getPort(), clientExecutor);
+        client = ProxyFactory.create(ServiceClient.class, "http://"+getDomain()+":" + getPort(), clientExecutor);
     }
 
     /*
@@ -272,20 +272,21 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     }
 
     @Test 
-    public void createVehicleTest() throws Exception{
+    public void createAndDeleteVehicleTest() throws Exception{
         ClientRequest request = clientExecutor.createRequest(url+"/vehicle/");
 
-        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137713</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137717</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+//        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>8</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137717</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+
+        //Test for lds church
+//        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>317</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137717</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
 
         request.accept("application/xml").body( MediaType.APPLICATION_XML, xmlText);
-
-        String response = request.postTarget( String.class); //get response and automatically unmarshall to a string.
-        System.out.println(response);
-    }
-    @Test 
-    public void deleteVehicleTest() throws Exception{
-        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/10410");
-        ClientResponse<String> response = request.delete( String.class); //get response and automatically unmarshall to a string.
-        System.out.println(response.getStatus());
+        createdVehicle = request.postTarget( Vehicle.class); //get response and automatically unmarshall to a string.
+        System.out.println(createdVehicle.toString());
+        
+        ClientRequest deleteRequest = clientExecutor.createRequest(url+"/vehicle/"+createdVehicle.getVehicleID());
+        ClientResponse<String> deleteResponse = deleteRequest.delete( String.class); //get response and automatically unmarshall to a string.
+        System.out.println(deleteResponse.getStatus());
     }
 }

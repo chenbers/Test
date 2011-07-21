@@ -42,7 +42,7 @@ public class DriverServiceITCaseTest extends BaseEmbeddedServerITCase {
         params.setAuthenticationPreemptive(true);
         httpClient = new HttpClient(params);
         Credentials defaultcreds = new UsernamePasswordCredentials(/*TiwiproPrincipal.ADMIN_BACKDOOR_USERNAME*/ "mraby", "password");
-        httpClient.getState().setCredentials(new AuthScope(DOMAIN, getPort(), AuthScope.ANY_REALM), defaultcreds);
+        httpClient.getState().setCredentials(new AuthScope(getDomain(), getPort(), AuthScope.ANY_REALM), defaultcreds);
         clientExecutor = new ApacheHttpClientExecutor(httpClient);
 
         client = ProxyFactory.create(ServiceClient.class, "http://localhost:" + getPort(), clientExecutor);
