@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Locale;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -94,7 +95,7 @@ public class ReportRendererImpl implements ReportRenderer
               else report.exportReportToStream(formatType, out);
               out.flush();
               out.close();
-              return out.toString();
+              return ((ByteArrayOutputStream)out).toString("UTF-8");
         } catch (IOException e) {
             logger.error(e);
         } catch (JRException e) {
