@@ -73,12 +73,12 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         assertEquals(TimeZone.getTimeZone("America/Denver"),fuelStopsBean.getDateRange().getTimeZone());
         assertEquals("US",fuelStopsBean.getDateRange().getLocale().getCountry());
         assertEquals("en",fuelStopsBean.getDateRange().getLocale().getLanguage());
+        assertTrue("Should be some fuel stops",fuelStops.size() > 0);
     }
     
     @Test
     public void beanAdd(){
         
-        assertTrue("Should be some fuel stops",fuelStops.size() > 0);
         
         String result = fuelStopsBean.add();
         
@@ -86,6 +86,7 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
         
         assertEquals(new Integer(130), item.getVehicleID());
+        
         item.setTruckGallons(20.0f);
         item.setTrailerGallons(34.5f);
         item.setLocation("Sandy, UT");
@@ -98,15 +99,17 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         assertEquals(countBefore+1,fuelStops.size());
         assertEquals(null, fuelStopsBean.getItem());
     }
+    
+    private void setupItemsAndItem(){
+        fuelStopsViews = fuelStopsBean.getItems();
+        fuelStopsViews.get(fuelStops.size()-1);
+        fuelStopsBean.setItem(fuelStopsViews.get(fuelStops.size()-1));    	
+    }
     @Test
     public void beanEdit(){
         
-        assertTrue("Should be some fuel stops",fuelStops.size() > 0);
-        fuelStopsViews = fuelStopsBean.getItems();
-
-        fuelStopsViews.get(fuelStops.size()-1);
-        fuelStopsBean.setItem(fuelStopsViews.get(fuelStops.size()-1));
-        
+    	setupItemsAndItem();
+    	
         String result = fuelStopsBean.edit();
         
         assertEquals("pretty:fuelStopEdit",result);
@@ -128,17 +131,13 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     @Test
     public void beanEditInvalid(){
         
-        assertTrue("Should be some fuel stops",fuelStops.size() > 0);
-        fuelStopsViews = fuelStopsBean.getItems();
-
-        fuelStopsViews.get(fuelStops.size()-1);
-        fuelStopsBean.setItem(fuelStopsViews.get(fuelStops.size()-1));
+    	setupItemsAndItem();
         
         String result = fuelStopsBean.edit();
         
         assertEquals("pretty:fuelStopEdit",result);
         FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
-//        Long hosLogID = item.getHosLogID();
+
         assertEquals(new Integer(130), item.getVehicleID());
         item.setTruckGallons(null);
         item.setTrailerGallons(-0.1f);
@@ -153,11 +152,7 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     }
     @Test
     public void beanDelete(){
-        assertTrue("Should be some fuel stops",fuelStops.size() > 0);
-        fuelStopsViews = fuelStopsBean.getItems();
-
-        fuelStopsViews.get(fuelStops.size()-1);
-        fuelStopsBean.setItem(fuelStopsViews.get(fuelStopsViews.size()-1));
+    	setupItemsAndItem();
 
         String result = fuelStopsBean.deleteSingle();
         
@@ -169,8 +164,6 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     }
     @Test
     public void beanCancelAdd(){
-        
-        assertTrue("Should be some fuel stops",fuelStops.size() > 0);
         
         String result = fuelStopsBean.add();
         assertEquals("pretty:fuelStopEdit",result);
@@ -192,7 +185,6 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     }
     @Test
     public void beanCancelEdit(){
-        assertTrue("Should be some fuel stops",fuelStops.size() > 0);
         fuelStopsViews = fuelStopsBean.getItems();
         fuelStopsBean.setItem(fuelStopsViews.get(fuelStopsViews.size()-1));
         String result = fuelStopsBean.edit();

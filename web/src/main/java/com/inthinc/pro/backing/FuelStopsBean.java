@@ -44,7 +44,8 @@ public class FuelStopsBean extends BaseBean {
     
     private Integer vehicleID;
     private Vehicle vehicle;
-    private String vehicleName;
+    @SuppressWarnings("unused")
+	private String vehicleName;
     private String vehicleNameNow;
 	private FuelStopView item;
     private ItemLoader itemLoader;

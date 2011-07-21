@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -26,60 +27,62 @@ public class LocateVehicleByTime {
     
     public String getNearestCity(Integer vehicleID, Date date){
         
-        if(vehicleID==null) return "";
+    	if(vehicleID==null) return "";
+    	
+        List<HOSRecord> hosRecordsByDuration  = getHOSRecordsSortedByDurationFromDate(vehicleID, date);
         
-        Interval interval = new Interval(new DateTime(date).minusDays(1),new DateTime(date).plusDays(1));
-        Map<Duration,List<HOSRecord>> hosRecordsByDuration  = getHOSRecords(vehicleID, date, interval);
+        if(hosRecordsByDuration==null) return "";
         
-        if(hosRecordsByDuration.isEmpty()) return "";
-        
-        String nearestCity = getAddress(hosRecordsByDuration, date);
+        String nearestCity = lookupAddress(hosRecordsByDuration);
         
         return nearestCity;
     }
-    public Map<Duration,List<HOSRecord>> getHOSRecords(Integer vehicleID, Date date, Interval interval) {
-        
+    private List<HOSRecord> getHOSRecordsSortedByDurationFromDate(Integer vehicleID, Date date) {
+    	
+        Interval interval = new Interval(new DateTime(date).minusDays(1),new DateTime(date).plusDays(1));
         List<HOSRecord> hosRecords = hosDAO.getRecordsForVehicle(vehicleID, interval, false);
         if(hosRecords.isEmpty()) return null;
         
         hosRecords = removeNullLatLngs(hosRecords);
         if(hosRecords.isEmpty()) return null;
 
-        Map<Duration,List<HOSRecord>> hosRecordsByDuration = mapHosRecords(hosRecords, date);
-
-        return hosRecordsByDuration;
+        return sortHOSRecordsByDurationFromDate(hosRecords, date);
     }
     private List<HOSRecord> removeNullLatLngs(List<HOSRecord> hosRecords){
         Iterator<HOSRecord> it = hosRecords.iterator();
         while (it.hasNext()){
             HOSRecord hos = it.next();
-            if (nullLatLng(hos.getLat(), hos.getLng())){
+            if ((hos.getLat() == null) || (hos.getLng() == null)){
                 it.remove();
             }
         }
-        
         return hosRecords;
     }
-    private boolean nullLatLng(Float lat, Float lng){
-        return (lat == null) || (lng == null);
+    private List<HOSRecord> sortHOSRecordsByDurationFromDate(List<HOSRecord> hosRecords,  Date date){
+    	
+    	 Map<Duration,List<HOSRecord>> hosRecordsByDuration = calculateDurations(hosRecords, date);
+         List<Duration> sortedDurations= getSortedDurations(hosRecordsByDuration.keySet());
+         List<HOSRecord> sortedHOSRecords = getHOSRecordsInDurationOrder(hosRecordsByDuration,sortedDurations);
+         
+         return sortedHOSRecords;
+    }
+    private List<HOSRecord> getHOSRecordsInDurationOrder( Map<Duration,List<HOSRecord>> hosRecordsByDuration,List<Duration> sortedDurationKeys){
+    	List<HOSRecord> sortedList = new ArrayList<HOSRecord>();
+        for(Duration duration : sortedDurationKeys){
+            sortedList.addAll(hosRecordsByDuration.get(duration));
+        }
+        return sortedList;
     }
     
-    private String getAddress(Map<Duration,List<HOSRecord>> hosRecordsByDuration, Date date){
-        List<Duration> durationKeys= getSortedHosRecords(hosRecordsByDuration);
-        String address = lookupAddress(hosRecordsByDuration,durationKeys);
-
-        return address;
-    }
-    
-    private Map<Duration,List<HOSRecord>> mapHosRecords(List<HOSRecord> hosRecords,Date date){
+    private Map<Duration,List<HOSRecord>> calculateDurations(List<HOSRecord> hosRecords,Date date){
         Map<Duration,List<HOSRecord>> hosRecordsByDuration = new HashMap<Duration,List<HOSRecord>>();
         for(HOSRecord hosRecord : hosRecords){
             Duration duration = getAbsoluteDuration(hosRecord.getLogTime(), date);
-            addMapRecord(hosRecordsByDuration,duration,hosRecord);
+            addHOSRecord(hosRecordsByDuration,duration,hosRecord);
         }
         return hosRecordsByDuration;
     }
-    private void addMapRecord(Map<Duration,List<HOSRecord>> hosRecordsByDuration,Duration duration, HOSRecord hosRecord){
+    private void addHOSRecord(Map<Duration,List<HOSRecord>> hosRecordsByDuration,Duration duration, HOSRecord hosRecord){
         List<HOSRecord> hosRecords = hosRecordsByDuration.get(duration);
         if (hosRecords == null){
             hosRecords = new ArrayList<HOSRecord>();
@@ -94,29 +97,24 @@ public class LocateVehicleByTime {
         else{
             return new Duration(new DateTime(date),new DateTime(hosLogTime));
         }
-        
     }
     @SuppressWarnings("unchecked")
-    private List<Duration> getSortedHosRecords(Map<Duration,List<HOSRecord>> latLngsByDuration){
-        List<Duration> durations = new ArrayList<Duration>(latLngsByDuration.keySet());
+    private List<Duration> getSortedDurations(Set<Duration> durationSet){
+        List<Duration> durations = new ArrayList<Duration>(durationSet);
         Collections.sort(durations);
         return durations;
     }
-    private String lookupAddress(Map<Duration,List<HOSRecord>> hosRecordsByDuration,List<Duration> sortedDurationKeys){
-        for(Duration duration : sortedDurationKeys){
-            List<HOSRecord> hosRecords = hosRecordsByDuration.get(duration);
-            for(HOSRecord hosRecord : hosRecords){
-            	if (hosRecord.getLocation() != null){
-            		return hosRecord.getLocation();
-            	}
-                try {
-                	LatLng latLng = new LatLng(hosRecord.getLat(),hosRecord.getLng());
-                    String address = googleAddressLookupBean.getClosestTownString(latLng, MeasurementType.ENGLISH);
-                    return address;
-                } 
-                catch (NoAddressFoundException e) {
-                    // try again
-                }
+    private String lookupAddress(List<HOSRecord> hosRecordsByDuration){
+        for(HOSRecord hosRecord : hosRecordsByDuration){
+        	if (hosRecord.getLocation() != null){
+        		return hosRecord.getLocation();
+        	}
+            try {
+                String address = googleAddressLookupBean.getClosestTownString(new LatLng(hosRecord.getLat(),hosRecord.getLng()), MeasurementType.ENGLISH);
+                return address;
+            } 
+            catch (NoAddressFoundException e) {
+                // try again
             }
         }
         return null;
