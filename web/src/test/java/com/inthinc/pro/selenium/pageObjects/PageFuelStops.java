@@ -12,7 +12,6 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.FuelStopsEnum;
-import com.inthinc.pro.selenium.pageObjects.PopUps.FuelStopsDelete.FuelStopsDeleteButtons;
 
 public class PageFuelStops extends HOSBar {
 
@@ -22,16 +21,26 @@ public class PageFuelStops extends HOSBar {
             return new TextButton(FuelStopsEnum.ADD);
         }
 
+        public TextButton delete() {
+            return new TextButton(FuelStopsEnum.DELETE_BUTTON);
+        }
+
+        public Button editColumns() {
+            return new Button(FuelStopsEnum.EDIT_COLUMNS);
+        }
+
         public TextButton refresh() {
             return new TextButton(FuelStopsEnum.REFRESH);
         }
-        
-        public TextButton delete(){
-            return new TextButton(FuelStopsEnum.DELETE_BUTTON);
+    }
+
+    public class FuelStopsCheckBoxs {
+        public CheckBox checkAll() {
+            return new CheckBox(FuelStopsEnum.CHECK_ALL);
         }
-        
-        public Button editColumns(){
-            return new Button(FuelStopsEnum.EDIT_COLUMNS);
+
+        public CheckBoxTable entryCheckBox() {
+            return new CheckBoxTable(FuelStopsEnum.VALUE_CHECK);
         }
     }
 
@@ -78,8 +87,7 @@ public class PageFuelStops extends HOSBar {
         public TextTableLink valueEdit() {
             return new TextTableLink(FuelStopsEnum.VALUE_EDIT);
         }
-        
-        
+
     }
 
     public class FuelStopsPager {
@@ -94,27 +102,27 @@ public class PageFuelStops extends HOSBar {
             super(page);
         }
 
+        public FuelStopsDelete delete() {
+            return new FuelStopsDelete();
+        }
+
         public EditColumns editColumns() {
             return new EditColumns();
-        }
-        
-        public FuelStopsDelete delete(){
-            return new FuelStopsDelete();
         }
     }
 
     public class FuelStopsTextFields extends HOSBarTextFields {
 
-        public TextFieldSuggestions vehicle() {
-            return new TextFieldSuggestions(FuelStopsEnum.VEHICLE_TEXT_FIELD, FuelStopsEnum.VEHICLE_SUGGESTION_BOX);
-        }
-        
-        public TextField dateStart(){
+        public TextField dateStart() {
             return new TextField(FuelStopsEnum.DATE_START_BOX);
         }
-        
-        public TextField dateStop(){
+
+        public TextField dateStop() {
             return new TextField(FuelStopsEnum.DATE_STOP_BOX);
+        }
+
+        public TextFieldSuggestions vehicle() {
+            return new TextFieldSuggestions(FuelStopsEnum.VEHICLE_TEXT_FIELD, FuelStopsEnum.VEHICLE_SUGGESTION_BOX);
         }
     }
 
@@ -179,6 +187,10 @@ public class PageFuelStops extends HOSBar {
         return new FuelStopsButtons();
     }
 
+    public FuelStopsCheckBoxs _checkBox() {
+        return new FuelStopsCheckBoxs();
+    }
+
     public FuelStopsDropDowns _dropDown() {
         return new FuelStopsDropDowns();
     }
@@ -201,20 +213,6 @@ public class PageFuelStops extends HOSBar {
 
     public FuelStopsTextFields _textField() {
         return new FuelStopsTextFields();
-    }
-    
-    public FuelStopsCheckBoxs _checkBox() {
-        return new FuelStopsCheckBoxs();
-    }
-    
-    public class FuelStopsCheckBoxs {
-        public CheckBoxTable entryCheckBox(){
-            return new CheckBoxTable(FuelStopsEnum.VALUE_CHECK);
-        }
-        
-        public CheckBox checkAll(){
-            return new CheckBox(FuelStopsEnum.CHECK_ALL);
-        }
     }
 
 }
