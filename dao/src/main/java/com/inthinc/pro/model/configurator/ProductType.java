@@ -1,9 +1,7 @@
 package com.inthinc.pro.model.configurator;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.inthinc.pro.model.BaseEnum;
@@ -25,26 +23,13 @@ public enum ProductType implements BaseEnum
         {
             lookupByCode.put(p.code, p);
             lookupByVersion.put(p.version, p);
-//            addProductTypeToLookupByName(p);
         }
     }
-//    private static void addProductTypeToLookupByName(ProductType productType){
-//        List<ProductType> names = lookupByName.get(productType.getDescription());
-//        if(names == null){
-//            names = new ArrayList<ProductType>();
-//            lookupByName.put(productType.getDescription(), names);
-//        }
-//        names.add(productType);
-//    }
     public static ProductType valueOf(Integer code)
     {
         return lookupByCode.get(code);
     }
    
-//    public static List<ProductType> valueOfByName(String name)
-//    {
-//        return lookupByName.get(name);
-//    }
     public static ProductType valueOfByCode(Integer code)
     {
         return lookupByCode.get(code);
