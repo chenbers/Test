@@ -1,5 +1,6 @@
 package com.inthinc.pro.scheduler.i18n;
 
+import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -22,7 +23,6 @@ public class LocalizedMessage
             currentLocale = Locale.getDefault();
             
         ResourceBundle myResources = ResourceBundle.getBundle(BUNDLE_NAME, currentLocale);
-        
         String message = null;
         if (myResources.containsKey(key))
             message =  myResources.getString(key);
@@ -30,9 +30,14 @@ public class LocalizedMessage
             message = key;
         
         if(parameters != null)
-            message = MessageFormat.format(message, currentLocale, parameters);
+            message = MessageFormat.format(message, parameters);
         
-        return message;
+        try {
+            return message.getBytes("UTF-8").toString();
+        } catch (UnsupportedEncodingException e) {
+            
+            return message;
+        }
     }
     
     
