@@ -821,6 +821,7 @@ public class NonTranslated {
         nonTranslated_fr.put("/hoskiosk/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
         
         nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("report.hos.dateTimeFormat"); 
         nonTranslatedList.add("dateFormat");
         nonTranslatedList.add("dateTimeFormat");
         nonTranslatedList.add("timeFormat");
@@ -969,6 +970,7 @@ public class NonTranslated {
         nonTranslatedList.add("dateFormat");
         nonTranslatedList.add("dateTimeFormat");
         nonTranslatedList.add("stopsDateTime");
+        nonTranslatedList.add("stopsDateTimeFormat");
         nonTranslatedList.add("timeFormat");
         nonTranslatedList.add("longTimeFormat");
         nonTranslatedList.add("simpleDateFormat");

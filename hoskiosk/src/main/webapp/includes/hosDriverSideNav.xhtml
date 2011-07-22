@@ -30,7 +30,7 @@
                 <ui:include src="verticalLeftTab.xhtml">
                   <ui:param name="mappingId" value="current"/>
                   <ui:param name="tabSelected" value="#{(selectedAction == 'go_current') ? 'true' : 'false'}"/>
-                  <ui:param name="value" value="Current Status"/>
+                  <ui:param name="value" value="#{messages.tab_currentStatus}"/>
                   <ui:param name="context" value="#{context}-currentStatus"/>
                </ui:include>
           </td>
@@ -40,7 +40,7 @@
             <ui:include src="verticalLeftTab.xhtml">
                <ui:param name="mappingId" value="print"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_print') ? 'true' : 'false'}"/>
-               <ui:param name="value" value="Print Logs"/>
+               <ui:param name="value" value="#{messages.tab_printLogs}"/>
                <ui:param name="context" value="#{context}-printReport"/>
            </ui:include>
           </td>
@@ -50,7 +50,7 @@
             <ui:include src="verticalLeftTab.xhtml">
                <ui:param name="mappingId" value="export"/>
                <ui:param name="tabSelected" value="#{(selectedAction == 'go_export') ? 'true' : 'false'}"/>
-               <ui:param name="value" value="Export Logs"/>
+               <ui:param name="value" value="#{messages.tab_exportLogs}"/>
                <ui:param name="context" value="#{context}-exportLogs"/>
            </ui:include>
           </td>

@@ -20,6 +20,7 @@
 
 	<!-- Backing Beans -->
 	<bean id="errorBean" class="com.inthinc.pro.backing.ErrorBean"></bean>
+	<bean id="localeBean" class="com.inthinc.pro.backing.LocaleBean" scope="request"></bean>
 	<bean id="hosDriverKioskBean" class="com.inthinc.pro.backing.HOSDriverKioskBean" scope="session"/>
 	
 </beans>
