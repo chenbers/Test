@@ -58,10 +58,10 @@
          	geocoder.getLocations(latlng, 
         			function(response){    			
     			        if (!response || response.Status.code != 200) {
-  			         	  	addressElement.innerHTML = "No address found.";
+  			         	  	addressElement.innerHTML = "#{messages.teamStopsNoAddressFound}";
     			        } 
     			        else {						
-			             	addressElement.innerHTML = response.Placemark[0].address;
+			            	addressElement.innerHTML = response.Placemark[0].address;
     			        }     			       
     		});
 	    }   	 
