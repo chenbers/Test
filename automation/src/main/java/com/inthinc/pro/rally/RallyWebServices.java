@@ -17,7 +17,7 @@ public enum RallyWebServices {
 	
 	private String value, get, name;
 	private Integer id;
-	private static final int major = 1, minor = 23;
+	private static final int major = 1, minor = 25;
 	public static final String address = "rally1.rallydev.com";
 	public static final String host = "https://"+address+"/slm/webservice/"+major+"."+minor+"/";
 	
