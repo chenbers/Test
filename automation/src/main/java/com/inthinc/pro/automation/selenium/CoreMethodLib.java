@@ -1,9 +1,5 @@
 package com.inthinc.pro.automation.selenium;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
@@ -149,13 +145,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return null;
     }
 
-    @Override
-    public String getCurrentMonth() {
-        Calendar today = GregorianCalendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMMM");
-        String month = sdf.format(today.getTime());
-        return month;
-    }
 
     @Override
     public SeleniumEnumWrapper getEnum() {
@@ -167,35 +156,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return errors;
     }
 
-    @Override
-    public String[] getFiveDayPeriodLong() {
-        String[] timeFrame = new String[5];
-        Calendar today = GregorianCalendar.getInstance();
-        today.add(Calendar.DATE, -2);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE");
-
-        for (int i = 0; i < 5; i++) {
-            timeFrame[i] = sdf.format(today.getTime());
-            today.add(Calendar.DATE, -1);
-        }
-
-        return timeFrame;
-    }
-
-    @Override
-    public String[] getFiveDayPeriodShort() {
-        String[] timeFrame = new String[5];
-        Calendar today = GregorianCalendar.getInstance();
-        today.add(Calendar.DATE, -2);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE");
-
-        for (int i = 0; i < 5; i++) {
-            timeFrame[i] = sdf.format(today.getTime());
-            today.add(Calendar.DATE, -1);
-        }
-
-        return timeFrame;
-    }
 
     /**
      * Returns the best locator string to use for this element.
@@ -290,25 +250,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return text;
     }
 
-    @Override
-    public String[] getTimeFrameOptions() {
-        String[] timeFrame = new String[11];
-        String[] fiveDays = getFiveDayPeriodLong();
-
-        timeFrame[0] = "Today";
-        timeFrame[1] = "Yesterday";
-
-        for (int i = 2; i < 7; i++) {
-            timeFrame[i] = fiveDays[i - 2];
-        }
-
-        timeFrame[7] = "Past Week";
-        timeFrame[8] = getCurrentMonth();
-        timeFrame[9] = "Past 30 Days";
-        timeFrame[10] = "Past Year";
-
-        return timeFrame;
-    }
 
     @Override
     public String getValue(SeleniumEnumWrapper anEnum) {

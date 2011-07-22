@@ -19,18 +19,14 @@ public interface CoreMethodInterface extends Selenium {
 	public CoreMethodLib doubleClickAt(SeleniumEnumWrapper myEnum,String coordString);
 	public CoreMethodLib fireEvent(SeleniumEnumWrapper myEnum,String eventName);
 	public CoreMethodLib focus(SeleniumEnumWrapper myEnum);
-	public String getCurrentMonth();
 	public SeleniumEnumWrapper getEnum();
 	public ErrorCatcher getErrors();
-	public String[] getFiveDayPeriodLong();
-	public String[] getFiveDayPeriodShort();
 	public String getLocator(SeleniumEnumWrapper myEnum);
 	public String getSelectedIndex(SeleniumEnumWrapper myEnum);
 	public String getSelectedLabel(SeleniumEnumWrapper myEnum);
 	public String getTable(SeleniumEnumWrapper myEnum);
 	public String getTable(SeleniumEnumWrapper myEnum, Integer row, Integer col);
 	public String getText(SeleniumEnumWrapper myEnum);
-	public String[] getTimeFrameOptions();
 	public String getValue(SeleniumEnumWrapper myEnum);
 	public WebDriver getWrappedDriver();
 	public boolean hasFocus(SeleniumEnumWrapper myEnum);
