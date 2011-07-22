@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.faces.context.FacesContext;
 
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.util.MessageUtil;
 
 public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed this extends because it breaks the batch editing
 
@@ -58,5 +59,14 @@ public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed
     	
     	return true;
     }
-        
+    public String getProductDisplayName(){
+        if(getProductType() == null) {
+        	return MessageUtil.getMessageString(ProductType.UNKNOWN.getDescription().getMessageKey());
+        }
+        if(getProductType().getDescription().getMessageKey() != null){
+        	return MessageUtil.getMessageString(getProductType().getDescription().getMessageKey());
+        }
+        return getProductType().getDescription().getProductName();
+
+    }
 }

@@ -530,7 +530,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     public void resetList()
     {
         super.resetList();
-//        vehiclesBean.resetList();
     }
     public static class DeviceView extends Device implements EditItem
     {
@@ -538,8 +537,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         private static final long serialVersionUID = 8372507838051791866L;
         @Column(updateable = false)
         private DevicesBean      bean;
-//        @Column(updateable = false)
-//        private VehicleDAO vehicleDAO;
         @Column(updateable = false)
         private Integer oldVehicleID;
         @Column(updateable = false)
@@ -553,11 +550,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         {
             return getDeviceID();
         }
-
-//        public void setVehicleDAO(VehicleDAO vehicleDAO)
-//        {
-//            this.vehicleDAO = vehicleDAO;
-//        }
 
         Integer getOldVehicleID()
         {
@@ -591,7 +583,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         {
             if (vehicle == null && getVehicleID() != null)
                 vehicle = (Vehicle)bean.adminCacheBean.getAsset("vehicles", getVehicleID());
-//                vehicle = vehicleDAO.findByID(getVehicleID());
             return vehicle;
         }
 
@@ -628,6 +619,17 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         public void setBean(DevicesBean bean) {
             this.bean = bean;
         }
+        public String getProductDisplayName(){
+            if(getProductVersion() == null) {
+            	return MessageUtil.getMessageString(ProductType.UNKNOWN.getDescription().getMessageKey());
+            }
+            if(getProductVersion().getDescription().getMessageKey() != null){
+            	return MessageUtil.getMessageString(getProductVersion().getDescription().getMessageKey());
+            }
+            return getProductVersion().getDescription().getProductName();
+
+        }
+
     }
     public boolean isBatchProductChoice(ProductType productType){
         
