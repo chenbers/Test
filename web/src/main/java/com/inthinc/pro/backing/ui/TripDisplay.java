@@ -2,6 +2,7 @@ package com.inthinc.pro.backing.ui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -15,7 +16,6 @@ import com.inthinc.pro.util.MessageUtil;
 
 public class TripDisplay implements Comparable<TripDisplay>
 {
-    String dateShort;       // Jul 01
     String timeStartShort;  // 1:32 PM
     String timeEndShort;    // 1:55 PM
     Number distance;        // 3.2mi
@@ -38,9 +38,6 @@ public class TripDisplay implements Comparable<TripDisplay>
         this.timeZone = timeZone;
         
         route = trip.getRoute();
-        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat"));
-        dateFormatter.setTimeZone(timeZone);
-        setDateShort(dateFormatter.format(trip.getEndTime()));
         
         dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("timeFormat"));
         dateFormatter.setTimeZone(timeZone);
@@ -81,14 +78,9 @@ public class TripDisplay implements Comparable<TripDisplay>
         return dateFormatter.format(trip.getEndTime());
     }
 
-    public String getDateShort()
+    public Date getEndTime()
     {
-        return dateShort;
-    }
-
-    public void setDateShort(String dateShort)
-    {
-        this.dateShort = dateShort;
+        return trip.getEndTime();
     }
 
     public String getTimeStartShort()

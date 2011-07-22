@@ -748,7 +748,9 @@
                                     <f:facet name="header">
                                         <h:outputText value="#{messages.drivertrip_date}" />
                                     </f:facet>
-                                    <h:outputText value="#{item.dateShort}" />
+                                    <h:outputText value="#{item.endTime}" >
+                                    	<f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{driverTripsBean.timeZone}" />
+                                    </h:outputText>
                                 </rich:column>
     
                                 <rich:column id="time_column" sortBy="#{item.trip.startTime}" label="#{messages.drivertrip_time}" style="white-space:nowrap; cursor: pointer;padding: 8px 8px 4px;">

@@ -363,11 +363,11 @@
 								<ui:include src="/includes/eventBubble.xhtml">
 										<ui:param name="hiddenDivID" value="#{violation.noteID}" />
 										<ui:param name="eventType" value="#{violation.eventType}" />
-										<ui:param name="eventDateTime" value="#{violation.formattedTime}" />
+										<ui:param name="eventDateTime" value="#{violation.time}" />
 										<ui:param name="eventLocation" value="#{violation.addressStr}" />
 										<ui:param name="addressLookupAddressFormat" value="#{vehicleTripsBean.addressFormat}" />
 										<ui:param name="timeZoneObject" value="#{vehicleTripsBean.timeZone}" />
-										<ui:param name="datePattern" value="null" />
+										<ui:param name="datePattern" value="#{messages.dateTimeFormat}" />
 										<ui:param name="eventSpeedLimit" value="#{violation.speedLimit}" />
 										<ui:param name="eventAvgSpeed" value="#{violation.avgSpeed}" />
 										<ui:param name="eventTopSpeed" value="#{violation.topSpeed}" />
@@ -573,8 +573,9 @@
 																		<h:outputText value="#{messages.vehicletrip_event_datetime}" />
 																</f:facet>
 
-																<h:outputText value="#{item.formattedTime}" />
-
+								                                <h:outputText value="#{item.time}">
+                                								    <f:convertDateTime pattern="#{messages.dateTimeFormat}" timeZone="#{driverTripsBean.timeZone}" />
+                                								</h:outputText>
 														</rich:column>
 												</rich:dataTable>
 
@@ -710,7 +711,10 @@
 																		<f:facet name="header">
 																				<h:outputText value="#{messages.vehicletrip_date}" />
 																		</f:facet>
-																		<h:outputText value="#{item.dateShort}" />
+																		<h:outputText value="#{item.endTime}" >
+                                    										<f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
+                                    									</h:outputText>
+																		
 																</rich:column>
 
 																<rich:column id="time_column" sortBy="#{item.trip.startTime}" label="#{messages.vehicletrip_time}" style="white-space:nowrap; cursor: pointer;padding: 8px 8px 4px;">
