@@ -37,7 +37,8 @@ import com.inthinc.pro.validators.TextMessageValidator;
 
 public class MessagesBean extends BaseBean {
 
-    protected static final Logger logger        = LogManager.getLogger(MessagesBean.class);
+	private static final long serialVersionUID = 1L;
+	protected static final Logger logger        = LogManager.getLogger(MessagesBean.class);
     protected final static String BLANK_SELECTION = "&#160;";
 
     private List<MessageItem> messageList;

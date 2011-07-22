@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -148,7 +149,14 @@ public class HosBean extends BaseBean {
     }
     // end date range stuff
     public List<SelectItem> getStatuses() {
-        return SelectItemUtil.toList(HOSStatus.class, false);
+//        return SelectItemUtil.toList(HOSStatus.class, false);
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+        for (HOSStatus e : EnumSet.allOf(HOSStatus.class))
+        {
+             selectItemList.add(new SelectItem(e,MessageUtil.getMessageString(e.getName())));
+        }
+        
+        return selectItemList;
     }
 
     public List<SelectItem> getDots() {

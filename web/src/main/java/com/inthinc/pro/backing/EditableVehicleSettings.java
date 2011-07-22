@@ -58,6 +58,5 @@ public abstract class EditableVehicleSettings {// extends BaseBean{  cj: removed
     	
     	return true;
     }
-    
-    
+        
 }

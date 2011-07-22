@@ -331,7 +331,7 @@
 		                			<h:panelGroup id="crashDatePanel">
 		                				<rich:message for="editCrashReport-dateCalendar" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
 										<a4j:region>
-											<rich:calendar readonly="#{not empty crashReportBean.crashReport.crashDataPoints}" id="editCrashReport-dateCalendar" datePattern="MMM dd yyyy hh:mm a" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}" timeZone="#{crashReportBean.person.timeZone}">
+											<rich:calendar readonly="#{not empty crashReportBean.crashReport.crashDataPoints}" id="editCrashReport-dateCalendar" datePattern="#{messages.dateFormatNoTimezone}" value="#{crashReportBean.crashReport.date}" required="true" requiredMessage="#{messages.required}" timeZone="#{crashReportBean.person.timeZone}">
 												<a4j:support event="onchanged" reRender="tripsListPanel" ajaxSingle="true" limitToList="true" action="#{crashReportBean.loadTrips}"/>
 											</rich:calendar>
 										</a4j:region>

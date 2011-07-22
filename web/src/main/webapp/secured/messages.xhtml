@@ -69,16 +69,16 @@
 										</li>
 										<li class="l vcentered" style="padding:7px">#{messages.drivertrip_legend_start}:
 										<a4j:outputPanel id="calendarStart" layout="inline">
-											<rich:calendar value="#{messagesBean.startDate}"
-												locale="en/US" popup="true" immediate="true"
+											<rich:calendar value="#{messagesBean.startDate}" locale="#{messagesBean.locale}"
+												popup="true" immediate="true"
 												datePattern="#{messages.dateFormat}" timeZone=""
 												showApplyButton="false" cellWidth="24px" cellHeight="22px"
 												inputSize="12" />
 										</a4j:outputPanel></li>
 										<li class="l vcentered" style="padding:7px">#{messages.drivertrip_legend_end}:
 										<a4j:outputPanel id="calendarEnd" layout="inline">
-											<rich:calendar value="#{messagesBean.endDate}" locale="en/US"
-												popup="true" immediate="true"
+											<rich:calendar value="#{messagesBean.endDate}" 
+												popup="true" immediate="true" locale="#{messagesBean.locale}"
 												datePattern="#{messages.dateFormat}" timeZone=""
 												showApplyButton="false" cellWidth="24px" cellHeight="22px"
 												inputSize="12" />

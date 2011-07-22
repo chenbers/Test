@@ -131,7 +131,9 @@ public class BaseBean implements Serializable {
         else
             return Locale.US;
     }
-    
+    public String getLocaleDisplayName(){
+    	return getLocale().getDisplayName(getLocale());
+    }
     public DateTimeZone getDateTimeZone() {
         return DateTimeZone.forTimeZone(getPerson().getTimeZone());
     }

@@ -54,54 +54,6 @@
 							<table width="800" align="center" style="margin: 0 auto 0 auto;">
 								<tr>
 									<td valign="top">
-<!--									<ul id="grid_nav" style="margin: 0;">-->
-<!--										<li class="l panel_title vcentered" style="background-image: none;">#{messages.txtMsg_filterTitle}</li>-->
-<!--										<li class="l vcentered">-->
-<!--											<h:selectOneMenu value="#{messagesBean.selectedGroupID}" id="#{context}_groupID" style="width:75px;size:auto;margin-top:7px;float:right;">-->
-<!--												<f:selectItems value="#{messagesBean.teams}" />-->
-<!--											</h:selectOneMenu>-->
-<!--											<ui:include src="/includes/dhtmlSelectBox.xhtml">	-->
-<!--     			 								<ui:param name="selectBoxID" value="display-form:#{context}_groupID" />-->
-<!--											</ui:include>-->
-<!--										</li>-->
-<!--										<li class="l vcentered">#{messages.drivertrip_legend_start}:-->
-<!--											<a4j:outputPanel id="calendarStart" layout="inline">-->
-<!--												<rich:calendar value="#{messagesBean.startDate}"-->
-<!--													locale="en/US" popup="true" immediate="true"-->
-<!--													datePattern="#{messages.dateFormat}" timeZone=""-->
-<!--													showApplyButton="false" cellWidth="24px" cellHeight="22px"-->
-<!--													inputSize="12" />-->
-<!--											</a4j:outputPanel>-->
-<!--										</li>-->
-<!--										<li class="l vcentered">#{messages.drivertrip_legend_end}:-->
-<!--											<a4j:outputPanel id="calendarEnd" layout="inline">-->
-<!--												<rich:calendar value="#{messagesBean.endDate}" locale="en/US"-->
-<!--													popup="true" immediate="true"-->
-<!--													datePattern="#{messages.dateFormat}" timeZone=""-->
-<!--													showApplyButton="false" cellWidth="24px" cellHeight="22px"-->
-<!--													inputSize="12" />-->
-<!--											</a4j:outputPanel>-->
-<!--										</li>-->
-<!--										<li class="l vcentered">-->
-<!--											<a4j:commandButton id="refresh"-->
-<!--												styleClass="left"-->
-<!--												action="#{messagesBean.refreshSent}"-->
-<!--												reRender="display-form:#{context},display-form:#{context}-bottomScroller,display-form:messageCount">-->
-<!--												<span class="filter"> #{messages.txtMsg_applyFilter}-->
-<!--												</span>-->
-<!--											</a4j:commandButton> &#160;-->
-<!--										</li>-->
-<!--										<li class="l vcentered"></li>-->
-<!--										<li class="l vcentered">-->
-<!--											<a4j:commandButton id="remove"-->
-<!--												styleClass="left"-->
-<!--												action="#{messagesBean.removeFilter}"-->
-<!--												reRender="display-form:#{context},display-form:#{context}-bottomScroller,display-form:messageCount">-->
-<!--												<span class="remove"> #{messages.txtMsg_remove} </span>-->
-<!--											</a4j:commandButton> &#160;-->
-<!--										</li>-->
-<!--										<li class="l vcentered"></li>-->
-<!--									</ul>-->
 									<ul id="grid_nav" style="margin: 0;">
 										<li class="l vcentered"
 											style="padding:7px;background-image: none;">#{messages.myAccount_team}</li>
@@ -117,14 +69,14 @@
 										<li class="l vcentered" style="padding:7px">#{messages.drivertrip_legend_start}:
 										<a4j:outputPanel id="calendarStart" layout="inline">
 											<rich:calendar value="#{messagesBean.startDate}"
-												locale="en/US" popup="true" immediate="true"
+												locale="#{messagesBean.locale}" popup="true" immediate="true"
 												datePattern="#{messages.dateFormat}" timeZone=""
 												showApplyButton="false" cellWidth="24px" cellHeight="22px"
 												inputSize="12" />
 										</a4j:outputPanel></li>
 										<li class="l vcentered" style="padding:7px">#{messages.drivertrip_legend_end}:
 										<a4j:outputPanel id="calendarEnd" layout="inline">
-											<rich:calendar value="#{messagesBean.endDate}" locale="en/US"
+											<rich:calendar value="#{messagesBean.endDate}" locale="#{messagesBean.locale}"
 												popup="true" immediate="true"
 												datePattern="#{messages.dateFormat}" timeZone=""
 												showApplyButton="false" cellWidth="24px" cellHeight="22px"

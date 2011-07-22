@@ -445,7 +445,7 @@
                                     <tr>
                                         <td width="120">#{messages.drivertrip_start_date}</td>
                                         <td width="200"><a4j:outputPanel id="calendarStart" layout="block">
-                                            <rich:calendar value="#{driverTripsBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+                                            <rich:calendar value="#{driverTripsBean.startDate}" locale="#{driverTripsBean.locale}" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
                                             	timeZone="#{driverTripsBean.timeZone}"
                                                 showApplyButton="false" cellWidth="24px" cellHeight="22px" />
                                         </a4j:outputPanel></td>                                        
@@ -453,7 +453,7 @@
                                     <tr>
                                         <td>#{messages.drivertrip_end_date}</td>
                                         <td><a4j:outputPanel id="calendarEnd" layout="block">
-                                            <rich:calendar value="#{driverTripsBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+                                            <rich:calendar value="#{driverTripsBean.endDate}" locale="#{driverTripsBean.locale}" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
                                             	timeZone="#{driverTripsBean.timeZone}"
                                                 showApplyButton="false" cellWidth="24px" cellHeight="22px" />
                                         </a4j:outputPanel></td>                                        

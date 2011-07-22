@@ -431,14 +431,14 @@
 																		<tr>
 																				<td width="120">#{messages.vehicletrip_start_date}</td>
 																				<td width="200"><a4j:outputPanel id="calendarStart" layout="block">
-																						<rich:calendar value="#{vehicleTripsBean.startDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}" 
+																						<rich:calendar value="#{vehicleTripsBean.startDate}" locale="#{vehicleTripsBean.locale}" popup="true" immediate="true" datePattern="#{messages.dateFormat}" 
 																								showApplyButton="false" cellWidth="24px" cellHeight="22px" />
 																				</a4j:outputPanel></td>
 																		</tr>
 																		<tr>
 																				<td>#{messages.vehicletrip_end_date}</td>
 																				<td><a4j:outputPanel id="calendarEnd" layout="block">
-																						<rich:calendar value="#{vehicleTripsBean.endDate}" locale="en/US" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
+																						<rich:calendar value="#{vehicleTripsBean.endDate}" locale="#{vehicleTripsBean.locale}" popup="true" immediate="true" datePattern="#{messages.dateFormat}"
 																								showApplyButton="false" cellWidth="24px" cellHeight="22px" />
 																				</a4j:outputPanel></td>
 																		</tr>

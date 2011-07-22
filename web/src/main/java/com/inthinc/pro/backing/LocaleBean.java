@@ -66,4 +66,8 @@ public class LocaleBean extends BaseBean {
     public Locale[] getAllLocales() {
         return Locale.getAvailableLocales();
     }
+    
+    public String getDisplayName(){
+    	return currentLocale.getDisplayName(currentLocale);
+    }
 }

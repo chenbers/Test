@@ -93,11 +93,10 @@
                                 <td width="450">
                                   <rich:message for="editfuelStop_dateTime" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             	  <rich:calendar value="#{fuelStopsBean.item.logTime}" id="editfuelStop_dateTime" valueChangeListener="#{fuelStopsBean.updateDateAndLocation}"  immediate="true"
-                            	  		todayControlMode="hidden" enableManualInput="false"  datePattern="MMM d, yyyy"
+                            	  		todayControlMode="hidden" enableManualInput="false"  datePattern="#{messages.dateFormat}"
                             	  		timeZone="#{fuelStopsBean.item.timeZone}" inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;width:100px;">
                             	  		<a4j:support event="onchanged"  reRender="editfuelStop_location" limitToList="true" immediate="true"/>
                             	  </rich:calendar>
-<!--                             	  <h:outputText value="#{messages.fuelStop_earliest}" />		 -->
                                 </td>
                               </tr>
                               <tr><td></td><td><h:outputText value="#{messages.fuelStop_earliest}" style="color:#FF0000;"/></td></tr>
