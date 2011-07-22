@@ -30,7 +30,7 @@ public class LocalizedMessage
             message = key;
         
         if(parameters != null)
-            message = MessageFormat.format(message, parameters);
+            message = MessageFormat.format(message, currentLocale, parameters);
         
         return message;
     }
