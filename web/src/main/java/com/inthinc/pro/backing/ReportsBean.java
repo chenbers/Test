@@ -426,7 +426,7 @@ public abstract class ReportsBean extends BaseBean {
         if(reportGroupMap != null){
             ReportGroup reportGroup = reportGroupMap.get(getSelected());
             if(reportGroup != null){
-                ResourceBundle rb = reportGroup.getReports()[0].getResourceBundle(Locale.US);
+                ResourceBundle rb = reportGroup.getReports()[0].getResourceBundle(getLocale());
                 try {
                     res = rb.getString("description." + reportGroup.getReports()[0].toString().toLowerCase().replaceAll("_","."));
                 }
