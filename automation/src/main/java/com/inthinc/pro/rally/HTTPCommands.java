@@ -197,6 +197,7 @@ public class HTTPCommands {
 			httpRequest(postRequest);
 
 			JSONObject reply = new JSONObject(response);
+			logger.debug(PrettyJSON.toString(reply));
 			try {
 				setOperationResult(reply.getJSONObject("QueryResult"));
 			} catch (JSONException e) {
@@ -256,6 +257,7 @@ public class HTTPCommands {
 	}
 
 	private void setOperationResult(JSONObject queryResult) {
+	    logger.info(PrettyJSON.toString(queryResult));
 		this.queryResults = queryResult;
 	}
 
