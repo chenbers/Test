@@ -28,7 +28,7 @@ public enum ProductTypeSelectItems {
         for (ProductName e : EnumSet.allOf(ProductName.class))
         {
         	String displayName = e.getMessageKey()!=null?MessageUtil.getMessageString(e.getMessageKey()):e.getProductName();
-            productTypesSelectItems.add(new SelectItem(e.getProductName(),displayName));
+            productTypesSelectItems.add(new SelectItem(e,displayName));
         }
         selectItems = productTypesSelectItems;
     }

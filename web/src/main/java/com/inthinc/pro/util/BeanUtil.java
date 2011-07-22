@@ -397,7 +397,7 @@ public class BeanUtil
             Object [] nullArgs = {};
             Object property = propertyDescriptor.getReadMethod().invoke(object, nullArgs);
             if (property instanceof ProductType){
-                return ((ProductType)property).getDescription().getProductName();
+                return ((ProductType)property).getDescription().name();
             }
             else
             if (property instanceof Enum){

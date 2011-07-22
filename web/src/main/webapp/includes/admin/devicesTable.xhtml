@@ -26,7 +26,7 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
-    <rich:column id="productVersion" sortBy="#{item.productDisplayName}" custFilterBy="#{item.productDisplayName}" filterValue="#{devicesBean.filterValues['productVersion']}">
+    <rich:column id="productVersion" sortBy="#{item.productDisplayName}" custFilterBy="#{item.productVersion.description}" filterValue="#{devicesBean.filterValues['productVersion']}">
       <f:facet name="header">
         <h:panelGroup>
 			<h:outputText value="#{messages.devicesHeader_productVer}" />
