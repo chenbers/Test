@@ -80,7 +80,7 @@ public class HosDailyDriverLogReportCriteria {
     private UserDAO userDAO;
     private VehicleDAO vehicleDAO;
     
-    private static final String BASE_LOG_GRAPH_IMAGE_PATH = "hos/hosLog.jpg";
+    private static final String BASE_LOG_GRAPH_IMAGE_PATH = "hos/hosLog";
     
     // each item in list is data for one day
     private List<ReportCriteria> criteriaList;
@@ -735,7 +735,8 @@ public class HosDailyDriverLogReportCriteria {
         
         BufferedImage img = null;
         try {
-            img = ImageIO.read(ReportUtils.loadFile(BASE_LOG_GRAPH_IMAGE_PATH));
+            String imageFile = BASE_LOG_GRAPH_IMAGE_PATH + (!locale.getLanguage().equals("en") ? ("_" + locale.getLanguage() + ".jpg") : ".jpg");
+            img = ImageIO.read(ReportUtils.loadFile(imageFile));
         } catch (IOException e) {
             logger.error(e);
         }
