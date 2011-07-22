@@ -4,6 +4,7 @@ import com.inthinc.pro.automation.elements.ElementInterface.TextFieldWithSuggest
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.utils.Id;
 
 public class TextFieldSuggestions extends TextField implements TextFieldWithSuggestions {
 
@@ -36,33 +37,38 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
 
     @Override
     public TextFieldSuggestions type(String toType) {
+        selenium.type(myEnum, "");
         selenium.typeKeys(myEnum, toType);
         return this;
     }
 
     @Override
     public TextLink getSuggestion(Integer row) {
-        return new TextLink(suggestionBox, row);
+        return new TextLink(setIds("["+row+"]/td/span"));
     }
-
-    @Override
-    public TextLink getSuggestion(String fullName) {
+    
+    private SeleniumEnumWrapper setIds(String qualifier){
         SeleniumEnumWrapper temp = new SeleniumEnumWrapper(suggestionBox);
-        temp.replaceNumber(1);
         String[] newIds = new String[temp.getIDs().length];
-        String threeUpTrTdSpanText = parentXpath + parentXpath + "/tr/td/span[text()='" + fullName + "']";
+        String downToTr = "/tbody/tr" + qualifier;
         for (int i = 0; i < temp.getIDs().length; i++) {
             String newId = "";
             String id = temp.getIDs()[i];
             if (id.startsWith("//")) {
-                newId = id + threeUpTrTdSpanText;
+                newId = id + downToTr;
             } else if (!id.contains("=")) {
-                newId = "//span[@id='" + id + "']" + threeUpTrTdSpanText;
+                newId = "//table[@id='" + id + "']" + downToTr;
             }
+            print(newId);
             newIds[i] = newId;
         }
         temp.setID(newIds);
-        return new TextLink(temp);
+        return temp;
+    }
+
+    @Override
+    public TextLink getSuggestion(String fullName) {
+        return new TextLink(setIds("/td[2]/span["+Id.text(fullName)+"]"));
     }
 
 }

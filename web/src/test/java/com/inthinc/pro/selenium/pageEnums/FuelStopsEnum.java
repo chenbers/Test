@@ -12,7 +12,7 @@ public enum FuelStopsEnum implements SeleniumEnums {
     
     /* TextFields */
     VEHICLE_TEXT_FIELD(null, "fuelStops-table-form:vehicleName"),
-    VEHICLE_SUGGESTION_BOX(null, "fuelStops-table-form:vehicleSuggestionBoxId:###:vehicleSelected"),
+    VEHICLE_SUGGESTION_BOX(null, "fuelStops-table-form:vehicleSuggestionBoxId:suggest"),
     DATE_START_BOX(null, "fuelStops-table-form:fuelStopsTable_startCalendarInputDate"),
     DATE_STOP_BOX(null, "fuelStops-table-form:fuelStopsTable_endCalendarInputDate"),
     

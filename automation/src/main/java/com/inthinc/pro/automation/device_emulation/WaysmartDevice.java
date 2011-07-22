@@ -86,14 +86,14 @@ public class WaysmartDevice extends Base {
 	    logger.debug(sendNote(construct_note(Ways_SAT_EVENT.SAT_EVENT_IGNITION_ON, direction)));
 	}
 	
-	public WaysmartDevice addInstallEvent(int vehicleID, int accountID, int companyID){
+	public WaysmartDevice addInstallEvent(int vehicleID, int accountID){
 	    this.setVehicleID(vehicleID);
 	    this.setAccountID(accountID);
-	    this.setCompanyID(companyID);
+	    this.setCompanyID(accountID);
 	    
 	    Package_Waysmart_Note note = construct_note(Ways_SAT_EVENT.SAT_EVENT_INSTALL, Direction.sat);
 	    note.setVehicleID(vehicleID);
-	    note.setCompanyID(companyID);
+	    note.setCompanyID(accountID);
 	    note.setAccountID(accountID);
 	    logger.info(sendNote(note));
 	    return this;

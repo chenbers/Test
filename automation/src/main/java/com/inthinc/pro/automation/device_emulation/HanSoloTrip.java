@@ -84,14 +84,14 @@ public class HanSoloTrip extends Thread{
         tiwi.power_off_device(900);
     }
     
-    public void chewiesTurn(String mcmID, String satImei, int vehicleID, int accountID, int companyID, Addresses server, Integer initialTime){
+    public void chewiesTurn(String mcmID, String satImei, int vehicleID, int accountID, Addresses server, Integer initialTime){
         waySmart = new WaysmartDevice(satImei, mcmID, server);
         waySmart.set_time(initialTime);
         waySmart.set_location(33.0104, -117.111);
         waySmart.setBaseOdometer(5000);
         waySmart.power_on_device();
         waySmart.turn_key_on(15);
-        waySmart.addInstallEvent(vehicleID, accountID, companyID);
+        waySmart.addInstallEvent(vehicleID, accountID);
         waySmart.turn_key_off(15);
         waySmart.power_off_device(100);
         
@@ -127,7 +127,7 @@ public class HanSoloTrip extends Thread{
         
         satIMEI = "626546911105880"; mcmID = "MCM39731"; address=Addresses.QA; initialTime = 1311114913; vehicleID=7284; companyID=1; accountID=3;//deviceID=3763
         
-        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, companyID, address, initialTime);
+        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
     }
 
 
