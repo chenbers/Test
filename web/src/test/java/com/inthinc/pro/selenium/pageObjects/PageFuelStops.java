@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.Text;
@@ -11,6 +12,7 @@ import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.selenium.pageEnums.FuelStopsEnum;
+import com.inthinc.pro.selenium.pageObjects.PopUps.FuelStopsDelete.FuelStopsDeleteButtons;
 
 public class PageFuelStops extends HOSBar {
 
@@ -26,6 +28,10 @@ public class PageFuelStops extends HOSBar {
         
         public TextButton delete(){
             return new TextButton(FuelStopsEnum.DELETE_BUTTON);
+        }
+        
+        public Button editColumns(){
+            return new Button(FuelStopsEnum.EDIT_COLUMNS);
         }
     }
 
@@ -72,6 +78,8 @@ public class PageFuelStops extends HOSBar {
         public TextTableLink valueEdit() {
             return new TextTableLink(FuelStopsEnum.VALUE_EDIT);
         }
+        
+        
     }
 
     public class FuelStopsPager {
@@ -88,6 +96,10 @@ public class PageFuelStops extends HOSBar {
 
         public EditColumns editColumns() {
             return new EditColumns();
+        }
+        
+        public FuelStopsDelete delete(){
+            return new FuelStopsDelete();
         }
     }
 

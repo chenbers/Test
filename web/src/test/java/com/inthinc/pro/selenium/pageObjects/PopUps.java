@@ -580,6 +580,45 @@ public class PopUps extends MasterTest {
             }
         }
     }
+    
+    public class FuelStopsDelete {
+        
+        public FuelStopsDeleteButtons _button(){
+            return new FuelStopsDeleteButtons();
+        }
+        
+        public class FuelStopsDeleteButtons {
+            public TextButton delete(){
+                return new TextButton(PopUpEnum.HOS_FUEL_STOPS_DELETE_DELETE);
+            }
+            
+            public TextButton cancel(){
+                return new TextButton(PopUpEnum.HOS_FUEL_STOPS_DELETE_CANCEL);
+            }
+            
+            public Button close(){
+                return new Button(PopUpEnum.HOS_FUEL_STOPS_DELETE_CLOSE);
+            }
+        }
+        
+        public FuelStopsDeleteTexts _text(){
+            return new FuelStopsDeleteTexts();
+        }
+        
+        public class FuelStopsDeleteTexts {
+            public Text title(){
+                return new Text(PopUpEnum.HOS_FUEL_STOPS_DELETE_TITLE);
+            }
+            
+            public Text header(){
+                return new Text(PopUpEnum.HOS_FUEL_STOPS_DELETE_HEADER);
+            }
+            
+            public Text entry(){
+                return new Text(PopUpEnum.HOS_FUEL_STOPS_DELETE_DETAILS);
+            }
+        }
+    }
 
     public class AdminDelete {
 

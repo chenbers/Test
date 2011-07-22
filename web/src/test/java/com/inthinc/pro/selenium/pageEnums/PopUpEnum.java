@@ -127,7 +127,16 @@ public enum PopUpEnum implements SeleniumEnums {
     EXCLUDE_PERFORMANCE_CLOSE(null, "closeExcludePopup"),
     
     
-
+    
+    /* HOS Fuel Stops Delete */
+    HOS_FUEL_STOPS_DELETE_TITLE("HOS - Fuel Stops","confirmDeleteHeader"),
+    HOS_FUEL_STOPS_DELETE_HEADER("Delete the following items? This action is irreversible.","//div[@class='popupsubtitle']"),
+    HOS_FUEL_STOPS_DELETE_CLOSE(null,"//div[@id='confirmDeleteContentDiv']/div[1]/img"),
+    HOS_FUEL_STOPS_DELETE_DETAILS(null,"//table[@id='confirmDeleteContentTable']/tbody/tr[2]/td/table/tbody/tr/td[contains(@id,':###')]"),
+    HOS_FUEL_STOPS_DELETE_DELETE(delete,"confirmDeleteForm:fuelStopsTable-deleteButton"),
+    HOS_FUEL_STOPS_DELETE_CANCEL(cancel,"fuelStopsTable-confirmDeleteCancel"),
+    
+    
     ;
 
     private String text, url;
