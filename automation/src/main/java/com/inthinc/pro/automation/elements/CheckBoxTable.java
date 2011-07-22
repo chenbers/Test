@@ -10,7 +10,6 @@ import com.inthinc.pro.automation.enums.SeleniumEnums;
 public class CheckBoxTable implements CheckableTable {
 
     private final SeleniumEnumWrapper myEnum;
-    private int rowNumber = 1;
     
     public CheckBoxTable(SeleniumEnums anEnum) {
         myEnum = new SeleniumEnumWrapper(anEnum);
@@ -23,25 +22,9 @@ public class CheckBoxTable implements CheckableTable {
 
     @Override
     public Iterator<Checkable> iterator() {
-        rowNumber = 1;
-        return this;
+        return new TableIterator<Checkable>(new CheckBoxTable(myEnum));
     }
 
-    @Override
-    public boolean hasNext() {
-        return row(rowNumber).isPresent();
-    }
-
-    @Override
-    public Checkable next() {
-        return row(rowNumber++);
-    }
-
-    @Override
-    @Deprecated
-    public void remove() {
-        throw new UnsupportedOperationException("There is nothing to remove");
-    }
 
     @Override
     public Checkable row(int rowNumber) {

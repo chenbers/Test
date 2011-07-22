@@ -59,7 +59,6 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
             } else if (!id.contains("=")) {
                 newId = "//table[@id='" + id + "']" + downToTr;
             }
-            print(newId);
             newIds[i] = newId;
         }
         temp.setID(newIds);

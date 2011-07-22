@@ -9,11 +9,11 @@ import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
 public class LinkTable implements ClickableTableBased {
-    
+
     private SeleniumEnumWrapper myEnum;
-    private int rowNumber;
-	
-    public LinkTable(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+
+    public LinkTable(SeleniumEnums anEnum, String replaceWord,
+            Integer replaceNumber) {
         myEnum = new SeleniumEnumWrapper(anEnum);
         myEnum.replaceNumber(replaceNumber);
         myEnum.replaceWord(replaceWord);
@@ -38,26 +38,10 @@ public class LinkTable implements ClickableTableBased {
         myEnum.replaceWord(replaceWord.getText());
     }
 
-    @Override
-    public boolean hasNext() {
-        return row(rowNumber).isPresent();
-    }
-
-    @Override
-    public Clickable next() {
-        return row(rowNumber++);
-    }
-
-    @Override
-    @Deprecated
-    public void remove() {
-        throw new UnsupportedOperationException("There is nothing to remove");
-    }
 
     @Override
     public Iterator<Clickable> iterator() {
-        rowNumber = 0;
-        return this;
+        return new TableIterator<Clickable>(this);
     }
 
     @Override

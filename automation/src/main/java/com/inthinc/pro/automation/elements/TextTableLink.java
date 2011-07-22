@@ -11,9 +11,9 @@ import com.inthinc.pro.automation.enums.TextEnum;
 public class TextTableLink implements ClickableTextTableBased {
 
     protected SeleniumEnumWrapper myEnum;
-    private int rowNumber;
-    
-    public TextTableLink(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+
+    public TextTableLink(SeleniumEnums anEnum, String replaceWord,
+            Integer replaceNumber) {
         myEnum = new SeleniumEnumWrapper(anEnum);
         myEnum.replaceNumber(replaceNumber);
         myEnum.replaceWord(replaceWord);
@@ -45,31 +45,13 @@ public class TextTableLink implements ClickableTextTableBased {
     }
 
     @Override
-    public boolean hasNext() {
-        return row(rowNumber).isPresent();
-    }
-
-    @Override
-    public TextLink next() {
-        return row(rowNumber++);
-    }
-
-    @Override
-    @Deprecated
-    public void remove() {
-        throw new UnsupportedOperationException("There is nothing to remove");
-    }
-
-    @Override
     public Iterator<ClickableTextBased> iterator() {
-        rowNumber = 0;
-        return this;
+        return new TableIterator<ClickableTextBased>(this);
     }
 
     @Override
     public TextLink row(int rowNumber) {
         return new TextLink(myEnum, rowNumber);
     }
-
 
 }
