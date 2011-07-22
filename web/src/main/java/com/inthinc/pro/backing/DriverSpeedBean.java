@@ -40,7 +40,7 @@ public class DriverSpeedBean extends BasePerformanceEventsBean
 		
 		selectedBreakdown="SCORE_SPEEDING";
 		
-		scoreTitle = MessageUtil.getMessageString("driver_speed_overall");
+		scoreTitle = MessageUtil.getMessageString("driver_speed_overall", getLocale());
 	}
 
     @Override

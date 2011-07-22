@@ -38,7 +38,7 @@ public class DriverStyleBean extends BasePerformanceEventsBean
 		
 		selectedBreakdown="SCORE_DRIVING_STYLE";
 		
-		scoreTitle = MessageUtil.getMessageString("SCORE_DRIVING_STYLE") + ": " + MessageUtil.getMessageString("SCORE_OVERALL");
+		scoreTitle = MessageUtil.getMessageString("SCORE_DRIVING_STYLE", getLocale()) + ": " + MessageUtil.getMessageString("SCORE_OVERALL", getLocale());
 	}
 
     @Override
