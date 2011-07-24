@@ -1,5 +1,6 @@
 package com.inthinc.pro.scheduler.i18n;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -19,11 +20,21 @@ public class LocalizedMessage
             currentLocale = locale;
         else
             currentLocale = Locale.getDefault();
-            
+        
         ResourceBundle myResources = ResourceBundle.getBundle(BUNDLE_NAME, currentLocale);
+        
+        String message = null;
         if (myResources.containsKey(key))
-            return myResources.getString(key);
-        return key;
+            message =  myResources.getString(key);
+        else 
+            message = key;
+        
+        if(parameters != null)
+            message = MessageFormat.format(message, parameters);
+
+            
+        return message;
+            
     }
     
     
