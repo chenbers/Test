@@ -22,7 +22,7 @@ public enum FuelStopsEditEnum implements SeleniumEnums {
     TIME_MESSAGE("Fuel stops more than 25 days old will not be included in the IFTA aggregation", "//div[@class='add_section_title']/../table/tbody/tr[2]/td[2]/span"),
 
     
-    VEHICLE("Vehicle:", "//button[@id='edit-form:editfuelStopDelete1']/../../../table/tbody/tr/td/table/tbody/tr[1]/td[2]"),
+    VEHICLE("Vehicle:", "//button[@id='edit-form:editfuelStopCancel1']/../../../table/tbody/tr/td/table/tbody/tr[1]/td[2]"),
     
     
     MASTER_ERROR(null, "//ul[@id='grid_nav']/../dl/dt[@class='error']"),
