@@ -3,9 +3,12 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.HosBarEnum;
 
-public class HOSBar extends NotificationsBar {
+public class HOSBar extends NavigationBar {
+    
 
-    public class HOSBarLinks extends NotificationsBarLinks {
+    protected static final String page = "hosReports";
+
+    public class HOSBarLinks extends NavigationBarLinks {
 	public TextLink hosDriverLogs(){
 	    return new TextLink(HosBarEnum.DRIVER_LOGS);
 	}
@@ -19,16 +22,16 @@ public class HOSBar extends NotificationsBar {
 	}
     }
 
-    public class HOSBarTexts extends NotificationsBarTexts {
+    public class HOSBarTexts extends NavigationBarTexts {
     }
 
-    public class HOSBarTextFields extends NotificationsBarTextFields {
+    public class HOSBarTextFields extends NavigationBarTextFields {
     }
 
-    public class HOSBarButtons extends NotificationsBarButtons {
+    public class HOSBarButtons extends NavigationBarButtons {
     }
 
-    public class HOSBarDropDowns extends NotificationsBarDropDowns {
+    public class HOSBarDropDowns extends NavigationBarDropDowns {
     }
 
 

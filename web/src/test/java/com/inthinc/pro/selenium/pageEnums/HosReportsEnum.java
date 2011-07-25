@@ -23,6 +23,8 @@ public enum HosReportsEnum implements SeleniumEnums {
     REPORT_ON_DROP_DOWN("Report On:", "hosReports_form:grouporDriverSelection"),
     REPORT_ON_DRIVER_DROP_DOWN(null, "hosReports_form:hosReports-groupDriverParam"),
     
+    GROUP_LABEL("Group(s)", "//span[@id='hosReports_form:groupListSelect']/../td[1]"),
+    
     GROUP_SELECTOR("Group(s)", "hosReports_form:hosReportsgroupListParam"),
     GROUP_ARROW(null, "//span[@id='hosReports_form:groupListSelect']/span[1]/span/div"),
     
