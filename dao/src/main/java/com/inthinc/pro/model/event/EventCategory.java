@@ -15,7 +15,7 @@ import com.inthinc.pro.model.BaseEnum;
 public enum EventCategory implements BaseEnum
 {
     VIOLATION(1, "VIOLATION", EnumSet.of(EventSubCategory.DRIVING_STYLE, EventSubCategory.SPEED, EventSubCategory.COMPLIANCE, EventSubCategory.FATIGUE)),
-    WARNING(2, "WARNING", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION, EventSubCategory.DRIVER)),
+    WARNING(2, "WARNING", EnumSet.of(EventSubCategory.VEHICLE, EventSubCategory.WIRELINE, EventSubCategory.INSTALLATION)),
 //    DRIVER(3, "DRIVER"),
     NONE(4, "NONE"),
     EMERGENCY(5, "EMERGENCY", EnumSet.of(EventSubCategory.EMERGENCY)),
@@ -23,7 +23,7 @@ public enum EventCategory implements BaseEnum
 //    NO_DRIVER(7,"NO_DRIVER"),
     HOS(8, "HOS", EnumSet.of(EventSubCategory.HOS)),
     TEXT(9,"TEXT", EnumSet.of(EventSubCategory.TEXTMESSAGE)),
-    DRIVER_LOGIN(10, "DRIVER_LOGIN", EnumSet.of(EventSubCategory.DRIVER));
+    DRIVER_LOGIN(10, "DRIVER", EnumSet.of(EventSubCategory.DRIVER));
 
     private String description;
     private int code;
