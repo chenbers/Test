@@ -221,6 +221,7 @@
 
   <!-- Forgot username/password Beans -->
   <bean id="mailSenderBean" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<property name="defaultEncoding" value="UTF-8"/>
     <property name="host" value="${mailserver}" />
     <property name="javaMailProperties">
       <props>
