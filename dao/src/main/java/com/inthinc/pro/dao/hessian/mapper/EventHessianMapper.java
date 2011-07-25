@@ -32,16 +32,12 @@ public class EventHessianMapper extends AbstractMapper
             {
                 String propertyName = EventAttr.getFieldName(attrEntry.getKey());
                 Object propertyData = attrEntry.getValue();
-                if(propertyName != null && propertyName.equalsIgnoreCase("empId"))
-                    System.out.println("propertyData:"+propertyData);
                 if (propertyName == null || propertyData == null)
                     continue;
                 attrValueMap.put(propertyName, propertyData.toString());
                 try
                 {
                     PropertyUtils.setProperty(event, "attrMap", attrValueMap);
-                    if(propertyName != null && propertyName.equalsIgnoreCase("empId"))
-                        System.out.println("EventHessianMapper 44: "+PropertyUtils.getPropertyType(event, propertyName));
                     PropertyUtils.setProperty(event, propertyName, propertyData);
                 }
                 catch (IllegalAccessException e)
