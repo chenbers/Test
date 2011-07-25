@@ -44,7 +44,7 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
 
     @Override
     public TextLink getSuggestion(Integer row) {
-        return new TextLink(setIds("["+row+"]/td/span"));
+        return new TextLink(setIds("["+row+"]/td"));
     }
     
     private SeleniumEnumWrapper setIds(String qualifier){
