@@ -160,7 +160,7 @@
       <f:facet name="header">
 		<h:outputText value="#{messages.vehiclesHeader_IFTA}" />      
       </f:facet>
-      <h:outputText value="#{item.ifta eq null?'':item.ifta}" />
+      <h:outputText value="#{item.ifta eq null?'':messages[item.ifta]}" />
     </rich:column>
   </ui:define>
 
