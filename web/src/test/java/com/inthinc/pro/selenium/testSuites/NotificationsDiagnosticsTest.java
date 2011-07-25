@@ -1,10 +1,15 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import java.util.Iterator;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
@@ -169,7 +174,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
      * @param date2
      * @return 0 if date1 = date2, -1 if date1 is BEFORE date2, 1 if date1 is AFTER date2.
      */
-    public int compareDates(String date1, String date2){
+    public int cruddyCompareDates(String date1, String date2){
         //Set up comparison values.
         int month1 = monthToInt(date1.substring(0,3));
         int month2 = monthToInt(date2.substring(0,3));
@@ -298,158 +303,146 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnrf._link().diagnostics().click();
         pnd._dropDown().team().selectPartMatch(GROUP);
         pnd._button().refresh().click();
-        pause(5, "Wait for refresh.");
+        pnd._text().dateTimeEntry().row(1).waitForElement();
+        
         currentText = "";
-        if(pnd._text().dateTimeEntry().row(1).isPresent()){
-            currentText = pnd._text().dateTimeEntry().row(1).getText();
+        
+        Iterator<TextBased> itr = pnd._text().dateTimeEntry().iterator();
+        if(itr.hasNext()){
+            currentText = itr.next().getText();
         }
-        for(int index = 2; index < 20; index++){
-            if(pnd._text().dateTimeEntry().row(index).isPresent()){
-                String newText = pnd._text().dateTimeEntry().row(index).getText();
-                if(compareDates(currentText, newText) < 0){
+        while(itr.hasNext()){
+            String newText = itr.next().getText();
+            if(cruddyCompareDates(currentText, newText) < 0){
                     print(currentText);
                     print(newText);
                     addError("Dates out of order", ErrorLevel.ERROR);
-                }
-                currentText = newText;
             }
-            else{
-                break;
-            }
+            currentText = newText;
         }
         
         pnd._link().sortByDateTime().click();
         pause(5, "Wait for refresh.");
+        
         currentText = "";
-        if(pnd._text().dateTimeEntry().row(1).isPresent()){
-            currentText = pnd._text().dateTimeEntry().row(1).getText();
+        
+        itr = pnd._text().dateTimeEntry().iterator();
+        if(itr.hasNext()){
+            currentText = itr.next().getText();
         }
-        for(int index = 2; index < 20; index++){
-            if(pnd._text().dateTimeEntry().row(index).isPresent()){
-                String newText = pnd._text().dateTimeEntry().row(index).getText();
-                if(compareDates(currentText, newText) > 0){
+        while(itr.hasNext()){
+            String newText = itr.next().getText();
+            if(cruddyCompareDates(currentText, newText) > 0){
+                    print(currentText);
+                    print(newText);
                     addError("Dates out of order", ErrorLevel.ERROR);
-                }
-                currentText = newText;
             }
-            else{
-                break;
+            currentText = newText;
+        }
+        
+        pnd._link().sortByDriver().click();
+        pause(5, "Wait for refresh.");
+
+        currentText = "";
+        
+        Iterator<ClickableTextBased> citr = pnd._link().entryDriver().iterator();
+        if(citr.hasNext()){
+            currentText = citr.next().getText();
+        }
+        while(citr.hasNext()){
+            String newText = citr.next().getText();
+            if(currentText.compareToIgnoreCase(newText) > 0){
+                    print(currentText);
+                    print(newText);
+                    addError("Drivers out of order", ErrorLevel.ERROR);
             }
+            currentText = newText;
         }
         
         pnd._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryDriver().row(1).isPresent()){
-            currentText = pnd._link().entryDriver().row(1).getText();
+        citr = pnd._link().entryDriver().iterator();
+        if(citr.hasNext()){
+            currentText = citr.next().getText();
         }
-        for(int index = 2; index < 20; index++){
-            if(pnd._link().entryDriver().row(index).isPresent()){
-                String newText = pnd._link().entryDriver().row(index).getText();
-                if(currentText.compareToIgnoreCase(newText) > 0){
+        while(citr.hasNext()){
+            String newText = citr.next().getText();
+            if(currentText.compareToIgnoreCase(newText) < 0){
+                    print(currentText);
+                    print(newText);
                     addError("Drivers out of order", ErrorLevel.ERROR);
-                }
-                currentText = newText;
             }
-            else{
-                break;
-            }
-        }
-        
-        pnd._link().sortByDriver().click();
-        pause(5, "Wait for refresh.");
-        currentText = "";
-        if(pnd._link().entryDriver().row(1).isPresent()){
-            currentText = pnd._link().entryDriver().row(1).getText();
-        }
-        for(int index = 2; index < 20; index++){
-            if(pnd._link().entryDriver().row(index).isPresent()){
-                String newText = pnd._link().entryDriver().row(index).getText();
-                if(currentText.compareToIgnoreCase(newText) < 0){
-                    addError("Drivers out of order", ErrorLevel.ERROR);
-                }
-                currentText = newText;
-            }
-            else{
-                break;
-            }
+            currentText = newText;
         }
         
         pnd._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryGroup().row(1).isPresent()){
-            currentText = pnd._link().entryGroup().row(1).getText();
+        citr = pnd._link().entryGroup().iterator();
+        if(citr.hasNext()){
+            currentText = citr.next().getText();
         }
-        for(int index = 2; index < 20; index++){
-            if(pnd._link().entryGroup().row(index).isPresent()){
-                String newText = pnd._link().entryGroup().row(index).getText();
-                if(currentText.compareToIgnoreCase(newText) > 0){
-                    addError("Groups out of order", ErrorLevel.ERROR);
-                }
-                currentText = newText;
+        while(citr.hasNext()){
+            String newText = citr.next().getText();
+            if(currentText.compareToIgnoreCase(newText) > 0){
+                    print(currentText);
+                    print(newText);
+                    addError("Drivers out of order", ErrorLevel.ERROR);
             }
-            else{
-                break;
-            }
+            currentText = newText;
         }
         
         pnd._link().sortByGroup().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryGroup().row(1).isPresent()){
-            currentText = pnd._link().entryGroup().row(1).getText();
+        citr = pnd._link().entryGroup().iterator();
+        if(citr.hasNext()){
+            currentText = citr.next().getText();
         }
-        for(int index = 2; index < 20; index++){
-            if(pnd._link().entryGroup().row(index).isPresent()){
-                String newText = pnd._link().entryGroup().row(index).getText();
-                if(currentText.compareToIgnoreCase(newText) < 0){
-                    addError("Groups out of order", ErrorLevel.ERROR);
-                }
-                currentText = newText;
+        while(citr.hasNext()){
+            String newText = citr.next().getText();
+            if(currentText.compareToIgnoreCase(newText) < 0){
+                    print(currentText);
+                    print(newText);
+                    addError("Drivers out of order", ErrorLevel.ERROR);
             }
-            else{
-                break;
-            }
+            currentText = newText;
         }
         
         
         pnd._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryVehicle().row(1).isPresent()){
-            currentText = pnd._link().entryVehicle().row(1).getText();
+        citr = pnd._link().entryVehicle().iterator();
+        if(citr.hasNext()){
+            currentText = citr.next().getText();
         }
-        for(int index = 2; index < 20; index++){
-            if(pnd._link().entryVehicle().row(index).isPresent()){
-                String newText = pnd._link().entryVehicle().row(index).getText();
-                if(currentText.compareToIgnoreCase(newText) > 0){
-                    addError("Vehicles out of order", ErrorLevel.ERROR);
-                }
-                currentText = newText;
+        while(citr.hasNext()){
+            String newText = citr.next().getText();
+            if(currentText.compareToIgnoreCase(newText) > 0){
+                    print(currentText);
+                    print(newText);
+                    addError("Drivers out of order", ErrorLevel.ERROR);
             }
-            else{
-                break;
-            }
+            currentText = newText;
         }
         
         pnd._link().sortByVehicle().click();
         pause(5, "Wait for refresh.");
         currentText = "";
-        if(pnd._link().entryVehicle().row(1).isPresent()){
-            currentText = pnd._link().entryVehicle().row(1).getText();
+        citr = pnd._link().entryVehicle().iterator();
+        if(citr.hasNext()){
+            currentText = citr.next().getText();
         }
-        for(int index = 2; index < 20; index++){
-            if(pnd._link().entryVehicle().row(index).isPresent()){
-                String newText = pnd._link().entryVehicle().row(index).getText();
-                if(currentText.compareToIgnoreCase(newText) < 0){
-                    addError("Vehicles out of order", ErrorLevel.ERROR);
-                }
-                currentText = newText;
+        while(citr.hasNext()){
+            String newText = citr.next().getText();
+            if(currentText.compareToIgnoreCase(newText) < 0){
+                    print(currentText);
+                    print(newText);
+                    addError("Drivers out of order", ErrorLevel.ERROR);
             }
-            else{
-                break;
-            }
+            currentText = newText;
         }
     }
     
