@@ -173,7 +173,7 @@
 	                          </td>
 	                          <td>
 	                            <h:selectOneMenu value="#{zonesBean.item.optionsMap[option]}" id="vehicleType" 
-	                            	rendered="#{option.optionType eq 'VEHICLE_TYPE'}">
+	                            	rendered="#{option.optionType eq 'VEHICLE_TYPE'}"  style="width: 140px">
     	                    		<f:selectItems value="#{zonesBean.vehicleTypeSelectItems}"/>
                             	</h:selectOneMenu>    
                             	<rich:inputNumberSpinner value="#{zonesBean.item.optionsMap[option].value}" id="int" step="5"
@@ -182,11 +182,11 @@
                             				rendered="#{option.optionType eq 'SPEED'}"/> 
 	
 	                            <h:selectOneMenu value="#{zonesBean.item.optionsMap[option]}" id="onOff" 
-	                            	rendered="#{option.optionType eq 'OFF_ON'}">
+	                            	rendered="#{option.optionType eq 'OFF_ON'}"  style="width: 140px">
     	                    		<f:selectItems value="#{zonesBean.offOnSelectItems}"/>
                             	</h:selectOneMenu>                              	                           	
 	                            <h:selectOneMenu value="#{zonesBean.item.optionsMap[option]}" id="onOffDevice" 
-	                            	rendered="#{option.optionType eq 'OFF_ON_DEVICE'}">
+	                            	rendered="#{option.optionType eq 'OFF_ON_DEVICE'}"  style="width: 140px">
     	                    		<f:selectItems value="#{zonesBean.offOnDeviceSelectItems}"/>
                             	</h:selectOneMenu>   
 	                          </td>

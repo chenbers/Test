@@ -89,7 +89,7 @@
             </div>
 
             <div class="panel_w">
-       		  <a4j:outputPanel styleClass="download_nav" id="downloadNav" layout="block">
+       		  <a4j:outputPanel styleClass="download_nav" id="downloadNav" layout="block"> 
        		  	<div class="download_nav_msg">
 					<p id="info">
 						<h:outputText  id="publishMessage" value="#{zonesBean.publishInfo}" escape="false" />
@@ -138,7 +138,7 @@
                                 <strong><h:outputText value="#{messages.zones_zone}" /></strong>
                               </td>
                               <td>
-                                <h:selectOneMenu value="#{zonesBean.itemID}" id="zone" style="width: 200px">
+                                <h:selectOneMenu value="#{zonesBean.itemID}" id="zone" style="width: 140px">
                                   <f:selectItems value="#{zonesBean.zoneIDs}" />
                                   <a4j:support event="onchange" reRender="points,address,displayZone,displayZoneOptions" oncomplete="showZone(false)" />
                                 </h:selectOneMenu>
