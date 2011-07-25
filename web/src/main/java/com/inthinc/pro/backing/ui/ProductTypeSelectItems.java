@@ -9,14 +9,11 @@ import javax.faces.model.SelectItem;
 import com.inthinc.pro.model.configurator.ProductName;
 import com.inthinc.pro.util.MessageUtil;
 
-public enum ProductTypeSelectItems {
+public class ProductTypeSelectItems {
     
-    INSTANCE();
-
-    private final static String BLANK_SELECTION = "&#160;";
-    private List<SelectItem> selectItems;
+    private static final String BLANK_SELECTION = "&#160;";
     
-    private ProductTypeSelectItems() {
+    public static List<SelectItem> getSelectItems() {
    
         
         List<SelectItem> productTypesSelectItems = new ArrayList<SelectItem>();
@@ -30,11 +27,6 @@ public enum ProductTypeSelectItems {
         	String displayName = e.getMessageKey()!=null?MessageUtil.getMessageString(e.getMessageKey()):e.getProductName();
             productTypesSelectItems.add(new SelectItem(e,displayName));
         }
-        selectItems = productTypesSelectItems;
+        return productTypesSelectItems;
     }
-
-    public List<SelectItem> getSelectItems() {
-        return selectItems;
-    }
-
 }

@@ -917,48 +917,6 @@ public abstract class BaseAdminBean<T extends EditItem> extends BaseBean impleme
         }
         return false;
     }
-//    protected List<T> getInViewItems(){
-//        List<T> viewedItems = new ArrayList<T>(filteredItems);
-//        Iterator<T> it = viewedItems.iterator();
-//        while(it.hasNext()){
-//            T itemView = it.next();
-//            for (String filterField :filterValues.keySet()){
-//                Object filterValue = filterValues.get(filterField);
-//                if (filterValue != null){
-//                    //check if the value for that column matches the selection
-//                    Object field = BeanUtil.getFieldValue(itemView,filterField);
-//                    if (field != null && !field.equals(filterValue)){
-//                       it.remove();
-//                       break;
-//                    }
-//                }
-//            }
-//        }
-//        return viewedItems;
-//    }
-//    @SuppressWarnings("unchecked")
-//    private Object getFieldValue(Object object, String propertyName){
-//        Class clazz = object.getClass();
-//        try{
-//            PropertyDescriptor propertyDescriptor = BeanUtils.getPropertyDescriptor(clazz, propertyName);
-//            Object [] nullArgs = {};
-//            Object property = propertyDescriptor.getReadMethod().invoke(object, nullArgs);
-//            if (property instanceof ProductType){
-//                return ((ProductType)property).getDescription().getProductName();
-//            }
-//            else
-//            if (property instanceof Enum){
-//                return ((Enum)property).name();
-//            }
-//            else{
-//                return property;
-//            }
-//        }
-//        catch(Exception e){
-//            return null;
-//        }
-//        
-//    }
     public boolean isSelectAll() {
         List<T> viewedItems = columnFiltering.getInViewItems(filteredItems);
         selectAll = viewedItems.size() > 0;

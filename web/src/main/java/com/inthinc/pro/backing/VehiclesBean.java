@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -294,9 +294,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         else if (column.equals("status"))
         {
             if (vehicle.getStatus() != null)
-                return MessageUtil.getMessageString(vehicle.getStatus().getDescription().toLowerCase());
+                return MessageUtil.getMessageString(vehicle.getStatus().toString());
             return null;
         }
+//        else if (column.equals("vtype"))
+//        {
+//            if (vehicle.getVtype() != null)
+//                return MessageUtil.getMessageString(vehicle.getVtype().toString());
+//            return null;
+//        }
         else if (column.equals("deviceID"))
         {
             if(vehicle.getDevice() != null)
@@ -699,15 +705,15 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
 
     public List<SelectItem> getProductTypesSelectItems() {
 
-        return ProductTypeSelectItems.INSTANCE.getSelectItems();
+        return ProductTypeSelectItems.getSelectItems();
     }
 
     public List<SelectItem> getVehicleTypesSelectItems() {
-        return VehicleTypeSelectItems.INSTANCE.getSelectItems();
+        return VehicleTypeSelectItems.getSelectItems();
     }
 
     public List<SelectItem> getStatusSelectItems() {
-        return DeviceStatusSelectItems.INSTANCE.getSelectItems();
+        return DeviceStatusSelectItems.getSelectItems();
     }
 
     public Map<String, State> getStates()
@@ -715,10 +721,10 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return STATES;
     }
 
-    public List<SelectItem> getStatuses()
-    {
-        return SelectItemUtil.toList(Status.class, false, Status.DELETED);
-    }
+//    public List<SelectItem> getStatuses()
+//    {
+//        return SelectItemUtil.toList(Status.class, false, Status.DELETED);
+//    }
 
     public TreeMap<String, Integer> getTeams(){
         return getGroupHierarchy().getTeams();
@@ -926,6 +932,13 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             
             return null;
         }
+        public String getVehicleTypeString(){
+        	return MessageUtil.getMessageString(getVtype().toString(),bean.getLocale());
+        }
+        public String getStatusName(){
+        	return MessageUtil.getMessageString(getStatus().toString());
+        }
+
     }
 
 }

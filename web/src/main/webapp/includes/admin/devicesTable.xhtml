@@ -26,7 +26,9 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_vehicleID}" /></f:facet>
       <h:outputText value="#{item.vehicle.name}" />
     </rich:column>
-    <rich:column id="productVersion" sortBy="#{item.productDisplayName}" custFilterBy="#{item.productVersion.description}" filterValue="#{devicesBean.filterValues['productVersion']}">
+    <rich:column id="productVersion" sortBy="#{item.productDisplayName}" 
+								    custFilterBy="#{item.productVersion.description}" 
+								    filterValue="#{devicesBean.filterValues['productVersion']}">
       <f:facet name="header">
         <h:panelGroup>
 			<h:outputText value="#{messages.devicesHeader_productVer}" />
@@ -69,7 +71,10 @@
       <f:facet name="header"><h:outputText value="#{messages.devicesHeader_activated}" /></f:facet>
       <h:outputText value="#{item.activated}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{devicesBean.user.person.timeZone}" /></h:outputText>
     </rich:column>
-	<rich:column id="status" rendered="#{devicesBean.tableColumns['status'].visible}" custFilterBy="#{item.status.description}" filterValue="#{devicesBean.filterValues['status']}" sortBy="#{item.status.description}">
+	<rich:column id="status" rendered="#{devicesBean.tableColumns['status'].visible}" 
+								custFilterBy="#{item.status.description}" 
+								filterValue="#{devicesBean.filterValues['status']}" 
+								sortBy="#{item.statusName}">
       <f:facet name="header">
       	<h:panelGroup>
 			<h:outputText value="#{messages.devicesHeader_status}" />

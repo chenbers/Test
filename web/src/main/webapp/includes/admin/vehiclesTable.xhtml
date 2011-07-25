@@ -66,7 +66,10 @@
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_color}" /></f:facet>
       <h:outputText value="#{item.color}" />
     </rich:column>
-    <rich:column id="vtype" rendered="#{vehiclesBean.tableColumns['vtype'].visible}" custFilterBy="#{item.vtype.description}" filterValue="#{vehiclesBean.filterValues['vtype']}" sortBy="#{item.vtype.description}">
+    <rich:column id="vtype" rendered="#{vehiclesBean.tableColumns['vtype'].visible}" 
+						    custFilterBy="#{item.vtype.name}" 
+						    filterValue="#{vehiclesBean.filterValues['vtype']}" 
+						    sortBy="#{item.vehicleTypeString}">
       <f:facet name="header">
 	      <h:panelGroup>
 			<h:outputText value="#{messages.vehiclesHeader_vtype}" />
@@ -84,7 +87,7 @@
 			</h:panelGroup>
 		  </h:panelGroup>
       </f:facet>
-      <h:outputText value="#{item.vtype.description}" />
+      <h:outputText value="#{item.vehicleTypeString}" />
     </rich:column>
     <rich:column id="device" rendered="#{vehiclesBean.tableColumns['deviceID'].visible}" sortBy="#{item.device.name}">
       <f:facet name="header"><h:outputText value="#{messages.vehiclesHeader_deviceID}" /></f:facet>
@@ -111,7 +114,10 @@
       </f:facet>
       <h:outputText value="#{item.state.name}" />
     </rich:column>
-    <rich:column id="status" rendered="#{vehiclesBean.tableColumns['status'].visible}" custFilterBy="#{item.status.description}" filterValue="#{vehiclesBean.filterValues['status']}" sortBy="#{item.status.description}">
+    <rich:column id="status" rendered="#{vehiclesBean.tableColumns['status'].visible}" 
+    						custFilterBy="#{item.status.description}" 
+    						filterValue="#{vehiclesBean.filterValues['status']}" 
+    						sortBy="#{item.statusName}">
       <f:facet name="header">
       	<h:panelGroup>
 			<h:outputText value="#{messages.vehiclesHeader_status}" />

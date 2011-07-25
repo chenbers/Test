@@ -43,12 +43,15 @@ public enum VehicleType implements BaseEnum
     {
         return lookup.get(code);
     }
-    
+    public String getName(){
+    	return name();
+    }
     @Override
     public String toString()
     {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.name());
-        return sb.toString();
+    	return this.getClass().getSimpleName()+"."+super.toString();
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(this.name());
+//        return sb.toString();
     }
 }

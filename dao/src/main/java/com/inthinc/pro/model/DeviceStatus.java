@@ -44,4 +44,8 @@ public enum DeviceStatus implements BaseEnum
     {
         return lookup.get(code);
     }
+    @Override 
+    public String toString(){
+    	return this.getClass().getSimpleName()+"."+name();
+    }
 }

@@ -9,25 +9,19 @@ import javax.faces.model.SelectItem;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.MessageUtil;
 
-public enum VehicleTypeSelectItems {
+public class VehicleTypeSelectItems {
 
-    INSTANCE();
-    private List<SelectItem> selectItems;
-
-    private VehicleTypeSelectItems() {
+    public static List<SelectItem> getSelectItems() {
         List<SelectItem> vehicleTypesSelectItems = new ArrayList<SelectItem>();
 
-        SelectItem blankItem = new SelectItem("", MessageUtil.getMessageString("vehiclesHeader_vtype"));
+        SelectItem blankItem = new SelectItem(null, MessageUtil.getMessageString("vehiclesHeader_vtype"));
         blankItem.setEscape(false);
         vehicleTypesSelectItems.add(blankItem);
 
         for (VehicleType e : EnumSet.allOf(VehicleType.class)) {
-            vehicleTypesSelectItems.add(new SelectItem(e, e.getDescription()));
+            vehicleTypesSelectItems.add(new SelectItem(e.name(), MessageUtil.getMessageString(e.toString())));
         }
-        selectItems = vehicleTypesSelectItems;
+        return vehicleTypesSelectItems;
     }
 
-    public List<SelectItem> getSelectItems() {
-        return selectItems;
-    }
 }

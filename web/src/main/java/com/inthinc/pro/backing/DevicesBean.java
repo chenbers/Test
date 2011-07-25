@@ -127,7 +127,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     
     public List<SelectItem> getProductTypesSelectItems(){
         
-        return ProductTypeSelectItems.INSTANCE.getSelectItems();
+        return ProductTypeSelectItems.getSelectItems();
     }
     public String getViewPath() {
         if(isAdd()){
@@ -240,7 +240,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         else if (columnName.equals("status"))
         {
             if (device.getStatus() != null)
-                return MessageUtil.getMessageString(device.getStatus().getDescription().toLowerCase());
+                return MessageUtil.getMessageString(device.getStatus().toString());
             return null;
         }
         return super.fieldValue(device, columnName);
@@ -523,7 +523,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         return SelectItemUtil.toList(DeviceStatus.class, false, DeviceStatus.DELETED);
     }
     public List<SelectItem> getStatusSelectItems() {
-        return DeviceStatusSelectItems.INSTANCE.getSelectItems();
+        return DeviceStatusSelectItems.getSelectItems();
     }
 
     @Override
@@ -629,7 +629,9 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
             return getProductVersion().getDescription().getProductName();
 
         }
-
+        public String getStatusName(){
+        	return MessageUtil.getMessageString(getStatus().toString());
+        }
     }
     public boolean isBatchProductChoice(ProductType productType){
         
