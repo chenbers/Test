@@ -1,5 +1,8 @@
 package com.inthinc.pro.automation.elements;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.inthinc.pro.automation.elements.ElementInterface.TextFieldWithSuggestions;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
@@ -49,7 +52,7 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
     
     private SeleniumEnumWrapper setIds(String qualifier){
         SeleniumEnumWrapper temp = new SeleniumEnumWrapper(suggestionBox);
-        String[] newIds = new String[temp.getIDs().length];
+        List<String> newIds = new ArrayList<String>();
         String downToTr = "/tbody/tr" + qualifier;
         for (int i = 0; i < temp.getIDs().length; i++) {
             String newId = "";
@@ -59,9 +62,12 @@ public class TextFieldSuggestions extends TextField implements TextFieldWithSugg
             } else if (!id.contains("=")) {
                 newId = "//table[@id='" + id + "']" + downToTr;
             }
-            newIds[i] = newId;
+            if (!newId.contains("/span")){
+                newIds.add(newId + "/span");
+            }
+            newIds.add(newId);
         }
-        temp.setID(newIds);
+        temp.setID(newIds.toArray(new String[]{}));
         return temp;
     }
 
