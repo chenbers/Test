@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsEmergencyEnum;
+import com.inthinc.pro.selenium.pageObjects.PopUps.LocationPopUp;
 
 public class PageNotificationsEmergency extends NotificationsEventsBar {
 
@@ -60,6 +61,10 @@ public class PageNotificationsEmergency extends NotificationsEventsBar {
         
         public ExcludeEvent excludeEvent(){
             return new ExcludeEvent(true);
+        }
+        
+        public LocationPopUp location(){
+            return new LocationPopUp();
         }
     }
 

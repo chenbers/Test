@@ -137,6 +137,17 @@ public enum PopUpEnum implements SeleniumEnums {
     HOS_FUEL_STOPS_DELETE_CANCEL(cancel,"fuelStopsTable-confirmDeleteCancel"),
     
     
+    /* Location PopUp */
+    LOCATION_HEADER("Event Location", "mapModalHeader"),
+    LOCATION_CLOSE(null, "***-eventLocation"),
+    LOCATION_CLOSE_BUTTON("Close", "***-close"),
+    
+    LOCATION_BUBBLE_NAME(null, "//div[@id='address-canvas']/div[1]/div/div[10]/div/div[1]/div/div/table/thead/tr/th"),
+    LOCATION_BUBBLE_DATE_TIME(null, "//div[@id='address-canvas']/div[1]/div/div[10]/div/div[1]/div/div/table/tbody/tr[1]/td[2]"),
+    LOCATION_BUBBLE_DETAIL(null, "//div[@id='address-canvas']/div[1]/div/div[10]/div/div[1]/div/div/table/tbody/tr[2]/td[2]"),
+    LOCATION_BUBBLE_CLOSE(null, "//div[@id='address-canvas']/div[1]/div/div[10]/div/div[1]/img[1]"),
+    
+    
     ;
 
     private String text, url;

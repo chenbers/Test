@@ -2,6 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.selenium.pageEnums.NotificationsZonesEnum;
+import com.inthinc.pro.selenium.pageObjects.PopUps.LocationPopUp;
 
 public class PageNotificationsZones extends NotificationsEventsBar {
 
@@ -55,6 +56,10 @@ public class PageNotificationsZones extends NotificationsEventsBar {
         
         public ExcludeEvent excludeEvent(){
             return new ExcludeEvent(true);
+        }
+        
+        public LocationPopUp location(){
+            return new LocationPopUp();
         }
     }
     

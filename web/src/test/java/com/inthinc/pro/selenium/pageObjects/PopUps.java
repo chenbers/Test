@@ -12,6 +12,7 @@ import com.inthinc.pro.automation.elements.TextCheckboxLabel;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
@@ -860,6 +861,61 @@ public class PopUps extends MasterTest {
             public Button close() {
                 return new Button(PopUpEnum.CHANGE_PASSWORD_FORM_CHANGE_X);
             }
+        }
+    }
+    
+    public class LocationPopUp {
+        public class LocationTexts {
+            public Text title(){
+                return new Text(PopUpEnum.LOCATION_HEADER);
+            }
+            
+            public Text bubbleValueName(){
+                return new Text(PopUpEnum.LOCATION_BUBBLE_NAME);
+            }
+            
+            public Text bubbleValueDateTime(){
+                return new Text(PopUpEnum.LOCATION_BUBBLE_DATE_TIME);
+            }
+            
+            public Text bubbleValueDetail(){
+                return new Text(PopUpEnum.LOCATION_BUBBLE_DETAIL);
+            }
+            
+            public TextLabel bubbleLabelName(){
+                return new TextLabel(PopUpEnum.LOCATION_BUBBLE_NAME);
+            }
+            
+            public TextLabel bubbleLabelDateTime(){
+                return new TextLabel(PopUpEnum.LOCATION_BUBBLE_DATE_TIME);
+            }
+            
+            public TextLabel bubbleLabelDetail(){
+                return new TextLabel(PopUpEnum.LOCATION_BUBBLE_DETAIL);
+            }
+            
+            
+        }
+        public class LocationButtons {
+            public Button xLocationPopUp(){
+                return new Button(PopUpEnum.LOCATION_CLOSE, page);
+            }
+            
+            public TextButton closeLocationPopUp(){
+                return new TextButton(PopUpEnum.LOCATION_CLOSE_BUTTON, page);
+            }
+            
+            public Button closeLocationBubble(){
+                return new Button(PopUpEnum.LOCATION_BUBBLE_CLOSE);
+            }
+        }
+        
+        public LocationTexts _text(){
+            return new LocationTexts();
+        }
+        
+        public LocationButtons _button(){
+            return new LocationButtons();
         }
     }
 }

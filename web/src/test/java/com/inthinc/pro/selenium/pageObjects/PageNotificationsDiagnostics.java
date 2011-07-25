@@ -53,6 +53,10 @@ public class PageNotificationsDiagnostics extends NotificationsEventsBar {
         public ExcludeEvent excludeEvent(){
             return new ExcludeEvent(true);
         }
+        
+        public LocationPopUp location(){
+            return new LocationPopUp();
+        }
     }
     
     
