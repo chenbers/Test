@@ -258,9 +258,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="31">
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-1" x="4" y="3" width="124" height="25"/>
+		<band height="21">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="4" y="3" width="124" height="17"/>
 				<textElement rotation="None">
 					<font size="8"/>
 				</textElement>

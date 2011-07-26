@@ -1,6 +1,7 @@
 package com.inthinc.pro.map;
 
 import java.util.List;
+import java.util.Locale;
 
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.NoAddressFoundException;
@@ -22,6 +23,14 @@ public abstract class  AddressLookup {
 	}
 	
 	private AddressFormat addressFormat;
+	private Locale locale;
+	
+    public Locale getLocale() {
+        return locale;
+    }
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
     protected void setAddressFormat(AddressFormat addressFormat) {
         this.addressFormat = addressFormat;
     }

@@ -230,7 +230,8 @@ public abstract class BasePerformanceEventsBean extends BasePerformanceBean {
 	protected List<EventReportItem> populateAddresses(List<EventReportItem> events) {
         
         List<EventReportItem> eventReportItems = new ArrayList<EventReportItem>();
-        AddressLookup reportAddressLookup = enableGoogleMapsInReports?reportAddressLookupBean:disabledGoogleMapsInReportsAddressLookupBean; 
+        AddressLookup reportAddressLookup = enableGoogleMapsInReports?reportAddressLookupBean:disabledGoogleMapsInReportsAddressLookupBean;
+        reportAddressLookup.setLocale(getLocale());
         for ( EventReportItem eri: events) {
             String addr = reportAddressLookup.getAddressOrLatLng(eri.getEvent().getLatLng());
             eri.getEvent().setAddressStr(addr);
