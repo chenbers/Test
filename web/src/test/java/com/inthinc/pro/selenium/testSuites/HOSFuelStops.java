@@ -3,14 +3,16 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.utils.RandomValues;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageFuelStopsAddEdit;
 
 
 public class HOSFuelStops extends WebRallyTest {
-
-    private RandomValues random;
+    
+    private PageMyAccount myAccount;
     private PageFuelStops myFuelStops;
     private PageFuelStopsAddEdit myFuelStopsAddEdit;
     private String USERNAME = "tnilson";
@@ -18,27 +20,63 @@ public class HOSFuelStops extends WebRallyTest {
 
     @Before
     public void setupPage() {
-        random = new RandomValues();
+        myAccount = new PageMyAccount();
         myFuelStops = new PageFuelStops();
         myFuelStopsAddEdit = new PageFuelStopsAddEdit();
     }
 
     @Test
-    public void FuelStopsAddError() {
+    public void FuelStopErrors() {
         set_test_case("TC5627");
 
-        // .0 Login
+        // 0.Login
         myFuelStops.loginProcess(USERNAME, PASSWORD);
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
+        
+        //1.Selected vehicle id and click on Add        
         myFuelStops._textField().vehicle().type("108406");
         myFuelStops._textField().vehicle().getSuggestion("108406").click();
         myFuelStops._button().add().click();
+        myFuelStopsAddEdit._dropDown().driver().select(1);
+        
+        //2.Generate Driver and Vehicle Fuel Errors
+        myFuelStopsAddEdit._button().bottomSave().click();
+        myFuelStopsAddEdit._text().errorMaster().validate("2 error(s) occurred. Please verify all the data entered is correct.");
+        myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle fuel is required.");
+        myFuelStopsAddEdit._text().errorDriver().validate("Driver is required");
+        pause(5,"");
+        myFuelStopsAddEdit._button().bottomCancel().click();
+        
+        //3. Generate Trailer Fuel Errors
+        myFuelStops._button().add().click();
+        myFuelStopsAddEdit._textField().trailer().type("123");
+        pause(10,"");
+        myFuelStopsAddEdit._dropDown().driver().select(2);
+        myFuelStopsAddEdit._button().bottomSave().click();
+        
+        myFuelStopsAddEdit._text().errorMaster().validate("1 error(s) occurred. Please verify all the data entered is correct.");
+        myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle or Trailer fuel is required.");
+        pause(5,"");
+        myFuelStopsAddEdit._button().bottomCancel().click();
+        
+        //4. Generate Date/Time in Future error
+      
+        myFuelStops._button().add().click();
+        
+        AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
+        calendar.addToDay(1);
+        String tomorrow = calendar.toString();
+        print(tomorrow);
+        
+        myFuelStopsAddEdit._textField().vehicleFuel().type("123");
+        myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._button().bottomSave().click();
         myFuelStopsAddEdit._text().errorMaster().validate("1 error(s) occurred. Please verify all the data entered is correct.");
-        myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle fuel is required.");
+        myFuelStopsAddEdit._text().errorDate().validate("Date/Time in the future is not valid.");
         myFuelStopsAddEdit._button().bottomCancel().click();
-
+         
+   
     }
 
     @Test
@@ -55,6 +93,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._text().timeMessage().validatePresence(true);
         myFuelStopsAddEdit._textField().trailer().type("123");
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
+        myFuelStopsAddEdit._textField().trailerFuel().type("456");
         myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._text().valueLocation().validatePresence(true);
         myFuelStopsAddEdit._button().topCancel().click();
@@ -73,9 +112,12 @@ public class HOSFuelStops extends WebRallyTest {
         // myFuelStopsAddEdit._textField().date().
         myFuelStopsAddEdit._textField().trailer().type("123");
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
+        myFuelStopsAddEdit._textField().trailerFuel().type("123");
         myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._button().bottomSave().click();
-        //TODO: verify the new fuel entry displays
+        myFuelStops._text().valueVehicleFuel().row(1).validate("123Gallons");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("123Gallons");
+        myFuelStops._text().valueTrailer().row(1).validate("123");
     }
 
     @Test
@@ -94,7 +136,11 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._textField().vehicleFuel().type("456");
         myFuelStopsAddEdit._textField().trailerFuel().type("456");
         myFuelStopsAddEdit._button().bottomCancel().click();
-        //TODO: verify the edits were not saved.
+        
+        //Verify Edits were not saved.
+        myFuelStops._text().valueVehicleFuel().row(1).validate("123Gallons");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("123Gallons");
+        myFuelStops._text().valueTrailer().row(1).validate("123");
     }
 
     @Test
@@ -111,7 +157,11 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._textField().vehicleFuel().type("456");
         myFuelStopsAddEdit._textField().trailerFuel().type("456");
         myFuelStopsAddEdit._button().bottomSave().click();
-        //TODO: verify edits to fuel stop entry
+        
+        //Verify Edits were saved.
+        myFuelStops._text().valueVehicleFuel().row(1).validate("456Gallons");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("456Gallons");
+        myFuelStops._text().valueTrailer().row(1).validate("456");
     }
 
     @Test
@@ -125,7 +175,9 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._checkBox().entryCheckBox().row(1).check();
         myFuelStops._button().delete().click();
         myFuelStops._popUp().delete()._button().cancel().click();
-        //TODO: verify fuel stop entry was not deleted.
+        myFuelStops._text().valueVehicleFuel().row(1).validate("456Gallons");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("456Gallons");
+        myFuelStops._text().valueTrailer().row(1).validate("456");
     }
 
     @Test
@@ -210,12 +262,15 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._button().add().click();
         
         //2. Enter Alpha char and save.
+        myFuelStopsAddEdit._textField().trailer().type("123ABC");
         myFuelStopsAddEdit._textField().vehicleFuel().type("abcdefg");
+        myFuelStopsAddEdit._textField().trailerFuel().type("abcdefg");
         myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._button().topSave().click();
         
         //3. validate error message.
         myFuelStopsAddEdit._text().errorVehicleFuel().validate("Must be a number greater than zero");
+        myFuelStopsAddEdit._text().errorTrailerFuel().validate("Must be a number greater than zero");
         myFuelStopsAddEdit._button().bottomCancel().click();
         
         //4. Enter special char and save
@@ -238,22 +293,88 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle or Trailer fuel required.");
         myFuelStopsAddEdit._button().bottomCancel().click();
         
-        //8. Enter fractions and save
+        //8. Enter maximum characters and save
+        myFuelStops._button().add().click();
+        
+        myFuelStopsAddEdit._textField().vehicleFuel().type("1234567891");
+        myFuelStopsAddEdit._dropDown().driver().select(2);
+        myFuelStopsAddEdit._button().topSave().click();
+        
+        //9. Validate fraction fuel entry was saved
+        myFuelStops._text().valueVehicleFuel().row(1).validate("1234567891Gallons");
+                
+        //10. Delete newly added fuel entry
+        myFuelStops._checkBox().entryCheckBox().row(1).check();
+        myFuelStops._button().delete().click();
+        myFuelStops._popUp().delete()._button().delete().click();
+        
+        //11. Enter more than maximum characters and save
+        myFuelStops._button().add().click();
+        
+        myFuelStopsAddEdit._textField().vehicleFuel().type("12345678912");
+        myFuelStopsAddEdit._dropDown().driver().select(2);
+        myFuelStopsAddEdit._button().topSave().click();
+        
+        //12. Validate only 10 characters were saved
+        myFuelStops._text().valueVehicleFuel().row(1).validate("1234567891Gallons");
+                
+        //13. Delete newly added fuel entry
+        myFuelStops._checkBox().entryCheckBox().row(1).check();
+        myFuelStops._button().delete().click();
+        myFuelStops._popUp().delete()._button().delete().click();
+                             
+        //14. Enter fractions and save
         myFuelStops._button().add().click();
         
         myFuelStopsAddEdit._textField().vehicleFuel().type("1.5");
         myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._button().topSave().click();
         
-        //9. Validate fraction fuel entry was saved
+        //15. Validate fraction fuel entry was saved
         myFuelStops._text().valueVehicleFuel().row(1).validate("1.5Gallons");
         
-        //10. Delete fraction fuel entry. 
+        //16. Delete fraction fuel entry. 
         myFuelStops._checkBox().entryCheckBox().row(1).check();
         myFuelStops._button().delete().click();
         myFuelStops._popUp().delete()._button().delete().click();
-               
-    
+        
+        //17. Switch to Metric and Save
+        myAccount._link().admin().click();
+        myAccount._button().edit().click();
+        myAccount._select().measurement().select("Metric");
+        myAccount._button().save().click();
+        
+        //18. Verify fields for Gallons now displays as Liters
+        myFuelStops._link().hos().click();
+        myFuelStops._link().hosFuelStops().click();
+        myFuelStops._textField().vehicle().type("108406");
+        myFuelStops._textField().vehicle().getSuggestion("108406").click();
+        myFuelStops._button().add().click();
+        
+        myFuelStopsAddEdit._textField().trailer().type("125");
+        myFuelStopsAddEdit._textField().vehicleFuel().type("125");
+        
+        myFuelStopsAddEdit._textField().trailerFuel().type("125");
+        myFuelStopsAddEdit._dropDown().driver().select(2);
+        myFuelStopsAddEdit._button().bottomSave().click();
+        myFuelStops._text().valueVehicleFuel().row(1).validate("125liters");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("125liters");
+        myFuelStops._text().valueTrailer().row(1).validate("125");
+        
+        //19. Switch back to Gallons
+        myAccount._link().admin().click();
+        myAccount._button().edit().click();
+        myAccount._select().measurement().select("English");
+        myAccount._button().save().click();
+       
+        myFuelStops._link().hos().click();
+        myFuelStops._link().hosFuelStops().click();
+        myFuelStops._text().valueVehicleFuel().row(1).validate("33Gallons");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("33Gallons");
+        myFuelStops._text().valueTrailer().row(1).validate("125");
+        myFuelStops._popUp().delete()._button().delete().click();
+              
     } 
     
+        
 }
