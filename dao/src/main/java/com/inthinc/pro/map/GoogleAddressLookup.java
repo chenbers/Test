@@ -74,7 +74,6 @@ public class GoogleAddressLookup extends AddressLookup {
 		    .append("&output=xml");
 		if (getLocale() != null && getLocale().getLanguage() != null)
 		    request.append("&hl=" + getLocale().getLanguage());
-System.out.println("request: " + request.toString());		
 		
 		String address = null;
 		try{
