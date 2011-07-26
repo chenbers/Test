@@ -25,14 +25,21 @@ public class TextField extends TextObject implements Typeable {
         super(anEnum, replaceWord, replaceNumber);
     }
     
+    @Override
     public TextField clear() {
         type("");
         return this;
     }
-    
+
+    @Override
     public TextField type(String inputText) {
         selenium.type(myEnum, inputText);
         return this;
+    }
+
+    @Override
+    public TextField type(Integer inputText){
+        return type(inputText.toString());
     }
     @Override
     public String getText(){

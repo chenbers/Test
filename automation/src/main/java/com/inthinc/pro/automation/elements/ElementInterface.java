@@ -1,7 +1,6 @@
 package com.inthinc.pro.automation.elements;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
@@ -25,32 +24,30 @@ public interface ElementInterface {
     public void waitForElement(int i);
 
     public interface Checkable extends Clickable {
-	public Boolean assertChecked(Boolean checked);
-    	public ElementInterface check();
+        public Boolean assertChecked(Boolean checked);
+    	public Checkable check();
     	public Boolean isChecked();
     	public ElementInterface uncheck();
     	public Boolean validateChecked(Boolean checked);
     }
     
-    public interface CheckableTable extends Iterable<Checkable>, TableBased  {
+    public interface CheckableTable extends Iterable<Checkable>, TableBased<Checkable>  {
     	public Checkable row(int rowNumber);
     }
     
-    public interface ClickableTableBased extends Iterable<Clickable>, TableBased  {
+    public interface ClickableTableBased extends Iterable<Clickable>, TableBased<Clickable>  {
         public Clickable row(int rowNumber);
     }
     
-    public interface ClickableTextTableBased extends Iterable<ClickableTextBased>, TableBasedWithText {
+    public interface ClickableTextTableBased extends Iterable<ClickableTextBased>, TableBased<ClickableTextBased>{
         public TextLink row(int rowNumber);
     }
     
-    public interface TableBasedWithText extends TableBased {
+    public interface TableBasedWithText extends TableBased<TextBased> {
         public TextBased row(int rowNumber);
     }
     
-    public interface ClickableTextBased extends Clickable, TextBased {
-        
-    }
+    public interface ClickableTextBased extends Clickable, TextBased {}
     
     public interface Clickable extends ElementInterface {
         public Clickable click();
@@ -66,14 +63,14 @@ public interface ElementInterface {
          * @param optionNumber
          * @return this Element
          */
-        public ElementInterface select(Integer matchNumber);
+        public Selectable select(Integer matchNumber);
         
         /**
          * Selects the FIRST fullMatch in this Element.
          * @param fullMatch
          * @return this Element
          */
-        public ElementInterface select(String fullMatch);
+        public Selectable select(String fullMatch);
         
         /**
          * Selects the <code>matchNumber</code>th fullMatch 
@@ -81,14 +78,14 @@ public interface ElementInterface {
          * @param matchNumber
          * @return this Element
          */
-        public ElementInterface select(String fullMatch, Integer matchNumber);
+        public Selectable select(String fullMatch, Integer matchNumber);
         
         /**
          * Selects the FIRST partialMatch
          * @param partialMatch
          * @return this Element
          */
-        public ElementInterface selectPartMatch(String partialMatch);
+        public Selectable selectPartMatch(String partialMatch);
         
         /**
          * Selects the <code>matchNumber</code>th partialMatch 
@@ -96,7 +93,7 @@ public interface ElementInterface {
          * @param matchNumber
          * @return this Element
          */
-        public ElementInterface selectPartMatch(String partialMatch, Integer matchNumber);
+        public Selectable selectPartMatch(String partialMatch, Integer matchNumber);
         
         /**
          * Returns the <code>entryNumber</code> text
@@ -147,7 +144,9 @@ public interface ElementInterface {
         public TextBased row(int rowNumber);
     }
     public interface Typeable extends TextBased {
-        public ElementInterface type(String inputText);
+        public Typeable type(String inputText);
+        public Typeable type(Integer inputText);
+        public TextField clear();
     }
 
     public interface URLBased extends ElementInterface {

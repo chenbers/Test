@@ -72,7 +72,7 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
 
     @Override
-    public ElementInterface focus() {
+    public ElementBase focus() {
         selenium.focus(myEnum);
         return this;
     }

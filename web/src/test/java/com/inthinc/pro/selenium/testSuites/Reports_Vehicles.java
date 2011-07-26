@@ -8,11 +8,9 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ClickableObject;
 import com.inthinc.pro.automation.elements.ElementInterface.TableBased;
-import com.inthinc.pro.automation.elements.ElementInterface.TableBasedWithText;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
@@ -363,7 +361,7 @@ public class Reports_Vehicles extends WebRallyTest {
         reports_vehicles._link().reports().click();
         reports_vehicles._link().vehicles().click();
         
-        Map<TextField, TableBasedWithText> values = new HashMap<TextField, TableBasedWithText>();
+        Map<TextField, TableBased<? extends TextBased>> values = new HashMap<TextField, TableBased<? extends TextBased>>();
         Map<TextField, String[]> strings = new HashMap<TextField, String[]>();
         
         TextField[] columns = { reports_vehicles._textField().groupSearch(),
@@ -424,7 +422,7 @@ public class Reports_Vehicles extends WebRallyTest {
 
         for (int i=0;i<columns.length;i++){
             String[] myStrings = strings.get(columns[i]);
-            TableBasedWithText value = values.get(columns[i]);
+            TableBased<? extends TextBased> value = values.get(columns[i]);
             for (String searchString: myStrings){
                 // Do some loop through all available rows
                 for (int j=1;j<=20;j++){
@@ -488,7 +486,7 @@ public class Reports_Vehicles extends WebRallyTest {
         //Click columns once to sort by ascending order.
         reports_vehicles._link().groupSort().click();
 
-        Map<ClickableObject, TableBasedWithText> values = new HashMap<ClickableObject, TableBasedWithText>();
+        Map<ClickableObject, TableBased<? extends TextBased>> values = new HashMap<ClickableObject, TableBased<? extends TextBased>>();
         
         TextLink[] columns = { reports_vehicles._link().groupSort(),
                 reports_vehicles._link().vehicleIDSort(),
@@ -521,8 +519,8 @@ public class Reports_Vehicles extends WebRallyTest {
         for (int i=0;i<columns.length;i++){
             columns[i].click();
             pause(5,"");
-            TableBasedWithText value = values.get(columns[i]);
-            TableBasedWithText value2 = values.get(columns[i+1]);
+            TableBased<? extends TextBased> value = values.get(columns[i]);
+            TableBased<? extends TextBased> value2 = values.get(columns[i+1]);
             // Do some loop through all available rows
             for (int j=1;j<=20;j++){
                 pause(10,"");
