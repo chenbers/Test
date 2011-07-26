@@ -1,8 +1,5 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 import org.junit.Before;
@@ -12,6 +9,8 @@ import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
@@ -113,7 +112,8 @@ public class NotificationsZonesTest extends WebRallyTest {
     @Test
     public void locationMapLinkTest5717(){
       //set_test_case("TC5717");
-        allCheckedHelper();
+        //allCheckedHelper();
+        //TODO Look into the close button.
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -123,8 +123,9 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
         pnz._button().eventLocation().row(1).click();
-        //TODO Location map pop-up verify.
-        //pnz._popUp().
+        pause(10, "Wait for bubble to load.");
+        pnz._popUp().location()._text().title().assertPresence(true);
+        pnz._popUp().location()._button().closeLocationPopUp().assertPresence(true);
     }
     
     @Test
@@ -166,136 +167,13 @@ public class NotificationsZonesTest extends WebRallyTest {
         
     }
     
-    /*
-     * Compares the dates.
-     * 
-     * @param date1
-     * @param date2
-     * @return 0 if date1 = date2, -1 if date1 is BEFORE date2, 1 if date1 is AFTER date2.
-     */
-    public int cruddyCompareDates(String date1, String date2){
-        //Set up comparison values.
-        int month1 = monthToInt(date1.substring(0,3));
-        int month2 = monthToInt(date2.substring(0,3));
-        int day1;
-        int day2;
-        int year1;
-        int year2;
-        String dateStripped1;
-        String dateStripped2;
-        
-        if(date1.charAt(6) == ','){
-            day1 = Integer.parseInt(date1.substring(4,6));
-            year1 = Integer.parseInt(date1.substring(8,12));
-            dateStripped1 = date1.substring(13);
-        }
-        else{
-            day1 = Integer.parseInt(date1.substring(4,5));
-            year1 = Integer.parseInt(date1.substring(7,11));
-            dateStripped1 = date1.substring(12);
-        }
-        if(date2.charAt(6) == ','){
-            day2 = Integer.parseInt(date2.substring(4,6));
-            year2 = Integer.parseInt(date2.substring(8,12));
-            dateStripped2 = date2.substring(13);
-        }
-        else{
-            day2 = Integer.parseInt(date2.substring(4,5));
-            year2 = Integer.parseInt(date2.substring(7,11));
-            dateStripped2 = date2.substring(12);
-        }
-        
-        int hour1;
-        int hour2;
-        int minute1;
-        int minute2;
-        String meridian1;
-        String meridian2;
-        
-        if(dateStripped1.charAt(1) == ':'){
-            hour1 = Integer.parseInt(dateStripped1.substring(0,1));
-            minute1 = Integer.parseInt(dateStripped1.substring(2,4));
-            meridian1 = dateStripped1.substring(5,7);
-        }
-        else{
-            hour1 = Integer.parseInt(dateStripped1.substring(0,2));
-            minute1 = Integer.parseInt(dateStripped1.substring(3,5));
-            meridian1 = dateStripped1.substring(6,8);
-        }
-        if(dateStripped2.charAt(1) == ':'){
-            hour2 = Integer.parseInt(dateStripped2.substring(0,1));
-            minute2 = Integer.parseInt(dateStripped2.substring(2,4));
-            meridian2 = dateStripped2.substring(5,7);
-        }
-        else{
-            hour2 = Integer.parseInt(dateStripped2.substring(0,2));
-            minute2 = Integer.parseInt(dateStripped2.substring(3,5));
-            meridian2 = dateStripped2.substring(6,8);
-        }
-        
-        //Compare years.
-        if(year1 != year2){
-            if(year1 > year2)
-                return 1;
-            return -1;
-        }
-        
-        //Compare months.
-        if(month1 > month2){
-            return 1;
-        }
-        if(month2 > month1){
-            return -1;
-        }
-        
-        //Compare days.
-        if(day1 > day2){
-            return 1;
-        }
-        if(day2 > day1){
-            return -1;
-        }
-        
-        //Compare meridians.
-        if(meridian1.equals(meridian2)){}
-        else{
-            if(meridian1.equals("PM")){
-                return 1;
-            }
-            else{
-                return -1;
-            }
-        }
-        
-        //Compare hours.
-        if(hour1 > hour2){
-            if(hour1 == 12)
-                return -1;
-            return 1;
-        }
-        if(hour2 > hour1){
-            if(hour2 == 12)
-                return 1;
-            return -1;
-        }
-        
-        //Compare minutes.
-        if(minute1 > minute2){
-            return 1;
-        }
-        if(minute2 > minute1){
-            return -1;
-        }
-        
-        return 0;
-    }
-    
     @Test
     public void tablePropertiesTest5719(){
         
         set_test_case("TC5719");
         allCheckedHelper();
-        String currentText;
+        String currentText = "";
+        AutomationCalendar currentDate = null;
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -304,45 +182,39 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._button().refresh().click();
         pnz._text().dateTimeEntry().row(1).waitForElement();
         
-        currentText = "";
-        
         Iterator<TextBased> itr = pnz._text().dateTimeEntry().iterator();
         if(itr.hasNext()){
-            currentText = itr.next().getText();
+            currentDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
         }
         while(itr.hasNext()){
-            String newText = itr.next().getText();
-            if(cruddyCompareDates(currentText, newText) < 0){
-                    print(currentText);
-                    print(newText);
+            AutomationCalendar newDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
+            if(currentDate.compareTo(newDate) < 0){
+                    print(currentDate.toString());
+                    print(newDate.toString());
                     addError("Dates out of order", ErrorLevel.ERROR);
             }
-            currentText = newText;
+            currentDate = newDate;
         }
         
         pnz._link().sortByDateTime().click();
         pause(5, "Wait for refresh.");
         
-        currentText = "";
-        
         itr = pnz._text().dateTimeEntry().iterator();
         if(itr.hasNext()){
-            currentText = itr.next().getText();
+            currentDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
         }
         while(itr.hasNext()){
-            String newText = itr.next().getText();
-            if(cruddyCompareDates(currentText, newText) > 0){
-                    print(currentText);
-                    print(newText);
+            AutomationCalendar newDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
+            if(currentDate.compareTo(newDate) > 0){
+                    print(currentDate.toString());
+                    print(newDate.toString());
                     addError("Dates out of order", ErrorLevel.ERROR);
             }
-            currentText = newText;
+            currentDate = newDate;
         }
         
         pnz._link().sortByDriver().click();
         pause(5, "Wait for refresh.");
-
-        currentText = "";
         
         Iterator<ClickableTextBased> citr = pnz._link().entryDriver().iterator();
         if(citr.hasNext()){
@@ -872,16 +744,18 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
         pause(5, "Wait for refresh.");
-        String currentDate = pnz._text().dateTimeEntry().row(1).getText();
-        
-        Calendar today = GregorianCalendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM d, YYYY HH:mm a (z)");
-        
+        AutomationCalendar todayCal = new AutomationCalendar(WebDateFormat.NOTE_DATE_TIME);
+        if(!todayCal.compareDays(pnz._text().dateTimeEntry().row(1).getText())){
+            addError("Today's date does not match today's date on the portal.", ErrorLevel.FAIL);
+        }
+        todayCal.addToDay(-1);
         pnz._dropDown().timeFrame().selectPartMatch("Yesterday");
         pnz._button().refresh().click();
         pause(10, "Wait for refresh.");
         
-        String yesterday = pnz._text().dateTimeEntry().row(1).getText();
+        if(!todayCal.compareDays(pnz._text().dateTimeEntry().row(1).getText())){
+            addError("Yesterday's date does not match yesterday's date on the portal.", ErrorLevel.FAIL);
+        }
         
     }
     
@@ -944,34 +818,4 @@ public class NotificationsZonesTest extends WebRallyTest {
           pnz._popUp().editColumns()._button().save().click();
           pnz._link().logout().click();
       }
-    
-    public int monthToInt(String month){
-        if(month.equals("Jan"))
-            return 1;
-        if(month.equals("Feb"))
-            return 2;
-        if(month.equals("Mar"))
-            return 3;
-        if(month.equals("Apr"))
-            return 4;
-        if(month.equals("May"))
-            return 5;
-        if(month.equals("Jun"))
-            return 6;
-        if(month.equals("Jul"))
-            return 7;
-        if(month.equals("Aug"))
-            return 8;
-        if(month.equals("Sep"))
-            return 9;
-        if(month.equals("Oct"))
-            return 10;
-        if(month.equals("Nov"))
-            return 11;
-        if(month.equals("Dec"))
-            return 12;
-        
-        addError("Invalid month data:" + month, ErrorLevel.FAIL);
-        return 0;
-    }
 }
