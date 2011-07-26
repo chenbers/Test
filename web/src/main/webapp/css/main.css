@@ -2033,7 +2033,7 @@ ul#pagination {
 .maplink {
 	background: url(../images/ico_map.png) top left no-repeat;
 	padding: 0 0 0 20px;
-	height: 20px;
+/*	height: 20px; */
 }
 
 /* MODAL WINDOW */
@@ -3105,16 +3105,6 @@ ul.legend {
 
 .trendTableScore {
 	text-align: center;
-}
-
-.eventTableOdd {
-	background: #ffffff;
-	height: 60px;
-}
-
-.eventTableEven {
-	background: #EBFFCA;
-	height: 60px;
 }
 
 /* Regular table definitions */

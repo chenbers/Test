@@ -557,7 +557,7 @@ var firstLoad = new Boolean(true);
 <!--							id="scrollerTop" reRender="notificationsTable,scrollerBottom,tableStats" scrollerListener="#{vehicleStyleBean.tableStatsBean.scrollerListener}" />-->
 						<rich:dataTable value="#{vehicleStyleBean.filteredEvents}" 
 						id="notificationsTable" var="item" styleClass="datagrid"
-						rowClasses="eventTableOdd,eventTableEven" cellspacing="1"  rowKeyVar="index"
+						rowClasses="tableOdd,tableEven" cellspacing="1"  rowKeyVar="index"
 						rows="#{vehicleStyleBean.tableStatsBean.tableRowCount}" width="100%">
 						
 							<rich:column id="address_column">
