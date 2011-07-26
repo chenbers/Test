@@ -627,7 +627,7 @@ var firstLoad = new Boolean(true);
 						<rich:dataTable 
 						value="#{driverSpeedBean.filteredEvents}" rowKeyVar="index"
 						id="notificationsTable" var="item" styleClass="datagrid"
-						rowClasses="tableOdd,tableEven" cellspacing="1" rows="#{driverSpeedBean.tableStatsBean.tableRowCount}" width="100%">			
+						rowClasses="eventTableOdd,eventTableEven" cellspacing="1" rows="#{driverSpeedBean.tableStatsBean.tableRowCount}" width="100%">			
 
 							<rich:column id="address_column">
 								<f:facet name="header">

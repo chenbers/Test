@@ -357,6 +357,7 @@ public class NonTranslated {
         
         
         nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("dateFormatNoTimezone");
         nonTranslatedList.add("FuelEfficiencyType.KMPL_MPG");
         nonTranslatedList.add("FuelEfficiencyType.KMPL_mpg");
         nonTranslatedList.add("FuelEfficiencyType.LP100KM_MPG");
@@ -673,6 +674,7 @@ public class NonTranslated {
         nonTranslated_es.put("/webutil/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
+        nonTranslatedList.add("dateFormatNoTimezone");
         nonTranslatedList.add("AlertMessageType.ALERT_TYPE_HOS");
         nonTranslatedList.add("FuelEfficiencyType.KMPL_MPG");
         nonTranslatedList.add("FuelEfficiencyType.KMPL_mpg");
@@ -978,7 +980,8 @@ public class NonTranslated {
         nonTranslatedList.add("justDay");
         nonTranslatedList.add("monthDay");
         nonTranslatedList.add("longDateTimeFormat");
-
+        nonTranslatedList.add("dateFormatNoTimezone");
+        
         nonTranslatedList.add("AlertMessageDeliveryType.EMAIL");
         nonTranslatedList.add("AlertMessageType.ALERT_TYPE_FATIGUE");
         nonTranslatedList.add("AlertMessageType.ALERT_TYPE_HOS");

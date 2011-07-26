@@ -3107,6 +3107,16 @@ ul.legend {
 	text-align: center;
 }
 
+.eventTableOdd {
+	background: #ffffff;
+	height: 60px;
+}
+
+.eventTableEven {
+	background: #EBFFCA;
+	height: 60px;
+}
+
 /* Regular table definitions */
 .tableOdd {
 	background: #ffffff;
