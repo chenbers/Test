@@ -125,6 +125,10 @@ public class AutomationCalendar implements Comparable<Calendar> {
         date.add(Calendar.DAY_OF_YEAR, amount);
     }
 
+    public void addToHours(int i){
+        date.add(Calendar.HOUR_OF_DAY, i);
+    }
+
     public void addToMilliseconds(int amount) {
         date.add(Calendar.MILLISECOND, amount);
     }
@@ -156,6 +160,10 @@ public class AutomationCalendar implements Comparable<Calendar> {
     public void changeDayOfYearTo(int amount) {
         date.set(Calendar.DAY_OF_YEAR, amount);
     }
+    
+    public void changeHourseTo(int i) {
+        date.set(Calendar.HOUR_OF_DAY, i);
+    }
 
     public void changeMillisecondsTo(int amount) {
         date.set(Calendar.MILLISECOND, amount);
@@ -181,10 +189,12 @@ public class AutomationCalendar implements Comparable<Calendar> {
         compareAgainst.changeMillisecondsTo(0);
         compareAgainst.changeMinutesTo(0);
         compareAgainst.changeSecondsTo(0);
+        compareAgainst.changeHourseTo(0);
         AutomationCalendar original = new AutomationCalendar(date, rawEnum);
         original.changeMillisecondsTo(0);
         original.changeMinutesTo(0);
         original.changeSecondsTo(0);
+        original.changeHourseTo(0);
         return compareAgainst.equals(original);
     }
 
