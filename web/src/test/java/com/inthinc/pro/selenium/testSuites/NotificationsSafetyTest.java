@@ -9,7 +9,6 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
@@ -897,7 +896,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
     
     @Test
     public void timeFrameTest5743(){
-        set_test_case("TC5743");
+        //set_test_case("TC5743");
         
         allCheckedHelper();
         pl.loginProcess(USERNAME, PASSWORD);

@@ -9,7 +9,6 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
@@ -103,19 +102,23 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     
     @Test
     public void locationMapLinkTest1445(){
-      //set_test_case("TC1445");
+        set_test_case("TC1445");
         allCheckedHelper();
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
-        
-        
         pnrf._dropDown().team().selectPartMatch(GROUP);
         pnrf._button().refresh().click();
-        pause(10, "Wait for page to load.");
+        pnrf._text().dateTimeEntry().row(1).waitForElement();
+        String dateTime = pnrf._text().dateTimeEntry().row(1).getText();
+        String driver = pnrf._link().entryDriver().row(1).getText();
+        String detail = pnrf._text().detailEntry().row(1).getText();
         pnrf._button().eventLocation().row(1).click();
-        //TODO Location map pop-up verify.
-        //pnrf._popUp().
+        pnrf._popUp().location()._text().title().assertVisibility(true);
+        pnrf._popUp().location()._text().bubbleValueName().assertEquals(driver);
+        pnrf._popUp().location()._text().bubbleValueDateTime().assertEquals(dateTime);
+        pnrf._popUp().location()._text().bubbleValueDetail().assertEquals(detail);
+        pnrf._popUp().location()._button().closeLocationPopUp().assertVisibility(true);
     }
     
     @Test
@@ -1016,7 +1019,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     
     @Test
     public void timeFrameTest5744(){
-        set_test_case("TC5744");
+        //set_test_case("TC5744");
         
         allCheckedHelper();
         pl.loginProcess(USERNAME, PASSWORD);
