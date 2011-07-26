@@ -7,10 +7,11 @@ import com.inthinc.pro.automation.elements.TextDropDownError;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldError;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextFieldValue;
 import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
+import com.inthinc.pro.automation.elements.TimeOfDay;
 import com.inthinc.pro.selenium.pageEnums.FuelStopsEditEnum;
-import com.inthinc.pro.selenium.pageEnums.FuelStopsEnum;
 
 public class PageFuelStopsAddEdit extends HOSBar {
     
@@ -49,6 +50,10 @@ public class PageFuelStopsAddEdit extends HOSBar {
             return new TextFieldLabel(FuelStopsEditEnum.DATE_BOX);
         }
         
+        public Text errorDate(){
+            return new Text(FuelStopsEditEnum.DATE_ERROR);
+        }
+        
         public Text labelTrailer(){
             return new TextFieldLabel(FuelStopsEditEnum.TRAILER_FIELD);
         }
@@ -57,8 +62,20 @@ public class PageFuelStopsAddEdit extends HOSBar {
             return new TextFieldLabel(FuelStopsEditEnum.VEHICLE_FUEL_FIELD);
         }
         
+        public Text unitsVehicleFuel(){
+            return new TextFieldValue(FuelStopsEditEnum.VEHICLE_FUEL_FIELD);
+        }
+        
         public Text labelTrailerFuel(){
             return new TextFieldLabel(FuelStopsEditEnum.TRAILER_FUEL_FIELD);
+        }
+        
+        public Text errorTrailerFuel(){
+            return new TextFieldError(FuelStopsEditEnum.TRAILER_FUEL_FIELD);
+        }
+        
+        public Text unitsTrailerFuel(){
+            return new TextFieldValue(FuelStopsEditEnum.TRAILER_FUEL_FIELD);
         }
         
         public Text labelDriver(){
@@ -148,6 +165,10 @@ public class PageFuelStopsAddEdit extends HOSBar {
     
     public FuelStopsAddEditPopUps _popUp(){
         return new FuelStopsAddEditPopUps();
+    }
+    
+    public TimeOfDay _timeSelector(){
+        return new TimeOfDay(FuelStopsEditEnum.TIME_CHANGER);
     }
     
 

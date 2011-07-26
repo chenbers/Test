@@ -10,11 +10,15 @@ public enum FuelStopsEditEnum implements SeleniumEnums {
     CANCEL_BOTTOM(cancel, "edit-form:editfuelStopCancel2"),
     TITLE("ADD/EDIT Fuel Stop", "//span[@class='admin']"),
     HEADER("Fuel Stop Information", "//div[@class='add_section_title']"),
-    DATE_BOX(null, "edit-form:editfuelStop_dateTimeInputDate"),
-    DATE_BOX_AFTER(null, "//span[@id='edit-form:editfuelStop_dateTimePopup']/../../td[2]/text()"),
+    DATE_BOX("Date:", "edit-form:editfuelStop_dateTimeInputDate"),
+    DATE_ERROR(null, "//input[@id='edit-form:editfuelStop_dateTimeInputDate']/../../span[1]/span"),
+    
     TRAILER_FIELD("Trailer:", "edit-form:editfuelStop_trailer"),
+    
     VEHICLE_FUEL_FIELD("Vehicle Fuel:", "edit-form:editfuelStop_truckGallons"),
     TRAILER_FUEL_FIELD("Trailer Fuel:", "edit-form:editfuelStop_trailerGallons"),
+    
+    
     DRIVER_DROP_DOWN("Driver:", "edit-form:editfuelStop_driver"),
     
     LOCATION(null, "edit-form:editfuelStop_location"),
@@ -29,6 +33,8 @@ public enum FuelStopsEditEnum implements SeleniumEnums {
     
     DELETE_TOP(delete, "edit-form:editfuelStopDelete1"),
     DELETE_BOTTOM(delete, "edit-form:editfuelStopDelete2"),
+    
+    TIME_CHANGER(null, "edit-form:fuelStopEdit_***")
     ;
     private String text, url;
     private String[] IDs;
