@@ -145,8 +145,17 @@ public class PageHOSReports extends HOSBar {
     }
     
     public class HOSReportsReports {
+        
         public HOSRecordOfDutyStatus _recordOfDutyStatusReport(){
             return new HOSRecordOfDutyStatus();
         }    
+        
+        public ViolationsSummaryReportHTML _violationsSummaryReportHTML(){
+            return new ViolationsSummaryReportHTML();
+        }
+        
+        public ViolationsSummaryReportTable _violationsSummaryReportTable(){
+            return new ViolationsSummaryReportTable();
+        }
     }
 }
