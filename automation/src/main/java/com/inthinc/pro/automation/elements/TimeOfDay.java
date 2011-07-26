@@ -3,19 +3,27 @@ package com.inthinc.pro.automation.elements;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.utils.Id;
+import com.inthinc.pro.automation.utils.MasterTest;
 import com.inthinc.pro.automation.utils.Xpath;
 
-public class TimeOfDay {
+public class TimeOfDay extends MasterTest{
 
     private SeleniumEnumWrapper myEnum;
     
     public TimeOfDay(SeleniumEnums anEnum){
         myEnum = new SeleniumEnumWrapper(anEnum);
     }
+    
+    private SeleniumEnumWrapper setID(){
+        String[] newIDs = myEnum.getIDs();
+        int last = newIDs.length - 1;
+        newIDs[last] = Xpath.start().table(Id.id(newIDs[last])).tbody().tr().td(Id.id(newIDs[last]+"Edit")).input().toString();
+        return myEnum;
+    }
 
     
     public TextField hours(){
-        return new TextField(myEnum, "hh");
+        return new TextField(setID(), "hh");
     }
     
     public Spinner hourSpinner(){
@@ -23,7 +31,7 @@ public class TimeOfDay {
     }
     
     public TextField minutes(){
-        return new TextField(myEnum, "mm");
+        return new TextField(setID(), "mm");
     }
     
     public Spinner minutesSpinner(){
@@ -31,7 +39,7 @@ public class TimeOfDay {
     }
     
     public TextField seconds(){
-        return new TextField(myEnum, "ss");
+        return new TextField(setID(), "ss");
     }
     
     public Spinner secondsSpinner(){
@@ -47,12 +55,13 @@ public class TimeOfDay {
         
         public Spinner(String type){
             spinnerEnum = new SeleniumEnumWrapper(myEnum);
-            spinnerEnum.replaceWord(type+"buttons");
+            spinnerEnum.replaceWord(type+"Buttons");
         }
         
         private void setIds(Integer upOrDown){
             String[] newIDs = spinnerEnum.getIDs();
-            newIDs[1] = Xpath.start().table(Id.id(newIDs[1])).tr(upOrDown.toString()).td().input().toString();
+            int last = newIDs.length - 1;
+            newIDs[last] = Xpath.start().table(Id.id(newIDs[last])).tbody().tr(upOrDown.toString()).td().input().toString();
         }
         
         public Button up(){
@@ -60,8 +69,8 @@ public class TimeOfDay {
             return new Button(spinnerEnum){
                 @Override
                 public Button click(){
-                    selenium.mouseDown(myEnum);
-                    selenium.mouseUp(myEnum);
+                    selenium.mouseDown(spinnerEnum);
+                    selenium.mouseUp(spinnerEnum);
                     return this;
                 }
             };
@@ -72,8 +81,8 @@ public class TimeOfDay {
             return new Button(spinnerEnum){
                 @Override
                 public Button click(){
-                    selenium.mouseDown(myEnum);
-                    selenium.mouseUp(myEnum);
+                    selenium.mouseDown(spinnerEnum);
+                    selenium.mouseUp(spinnerEnum);
                     return this;
                 }
             };
