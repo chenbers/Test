@@ -10,12 +10,17 @@
 		&#160;
 	</h:panelGroup>
 	<h:panelGroup>
-		<h:panelGrid width="120" border="0" cellspacing="0" cellpadding="2" style="padding-left:25px;">
-			<h:graphicImage value="/images/lgnd_5.png" width="90" height="20"/>
-	        <h:graphicImage value="/images/lgnd_4.png" width="90" height="20" />
-	        <h:graphicImage value="/images/lgnd_3.png" width="90" height="20" />
-	        <h:graphicImage value="/images/lgnd_2.png" width="90" height="20" />
-	        <h:graphicImage value="/images/lgnd_1.png" width="90" height="20" />
+		<h:panelGrid width="120" border="0" cellspacing="0" cellpadding="2" style="padding-left:25px;" columns="2">
+			<h:graphicImage value="/images/score_xxsm_5.png" width="20" height="20"/>
+			<h:outputText value="#{messages.teamOverallfourtofive}"/>
+	        <h:graphicImage value="/images/score_xxsm_4.png" width="20" height="20" />
+			<h:outputText value="#{messages.teamOverallthreetofour}"/>
+	        <h:graphicImage value="/images/score_xxsm_3.png" width="20" height="20" />
+			<h:outputText value="#{messages.teamOveralltwotothree}"/>
+	        <h:graphicImage value="/images/score_xxsm_2.png" width="20" height="20" />
+			<h:outputText value="#{messages.teamOverallonetotwo}"/>
+	        <h:graphicImage value="/images/score_xxsm_1.png" width="20" height="20" />
+			<h:outputText value="#{messages.teamOverallzerotoone}"/>
 	    </h:panelGrid>    
 	</h:panelGroup>
 	<h:panelGroup>
