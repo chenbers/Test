@@ -23,15 +23,4 @@ public class DeviceStatusSelectItems {
         }
         return deviceStatusSelectItems;
     }
-
-    //TODO: jwimmer: there must be a better way to do this.  up against a deadline. 
-//    public static String initCap(String s) {
-//        StringBuilder results = new StringBuilder();
-//        String[] words = s.split(" ");
-//        for(String word: words) {
-//            results.append(Character.toUpperCase(word.charAt(0)));
-//            results.append(word.substring(1).toLowerCase());
-//        }
-//        return results.toString();
-//    }
 }

@@ -278,7 +278,7 @@
 								  </ui:include>
                                 </td>
                                 <td>
-                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="editVehicle-status" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
+                                  <h:selectOneMenu value="#{vehiclesBean.item.status}" id="editVehicle-status" onchange="checkMultiple(this)">
                                     <f:selectItems value="#{vehiclesBean.statuses}"/>
                                   </h:selectOneMenu>
                                 </td>

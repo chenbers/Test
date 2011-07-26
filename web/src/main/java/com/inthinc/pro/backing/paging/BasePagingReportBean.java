@@ -1,5 +1,6 @@
 package com.inthinc.pro.backing.paging;
 
+import java.text.DecimalFormatSymbols;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +17,6 @@ import com.inthinc.pro.backing.SearchCoordinationBean;
 import com.inthinc.pro.model.Duration;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.pagination.Range;
-import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.reports.ReportCriteria;
 import com.inthinc.pro.reports.ReportRenderer;
@@ -71,8 +71,10 @@ public abstract class BasePagingReportBean<T> extends BaseBean
 			SelectItem blankItem = new SelectItem(Integer.valueOf(cnt++).toString(), BLANK_SELECTION);
 			blankItem.setEscape(false);
 			scoreRanges.add(blankItem);
+			DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance(getLocale());
+			char decimalSeparator = dfs.getDecimalSeparator();
 			for (Range range : ranges) {
-				String label = MessageFormat.format("{0}.{1} - {2}.{3}", new Object[] {range.getMin().intValue()/10, range.getMin().intValue()%10, range.getMax().intValue()/10, (range.getMax().intValue()-1)%10});
+				String label = MessageFormat.format("{0}{1}{2} - {3}{4}{5}", new Object[] {range.getMin().intValue()/10, decimalSeparator,range.getMin().intValue()%10, range.getMax().intValue()/10, decimalSeparator, (range.getMax().intValue()-1)%10});
 				scoreRanges.add(new SelectItem(Integer.valueOf(cnt).toString(), label));
 				scoreRangeMap.put(Integer.valueOf(cnt++).toString(), range);
 			}

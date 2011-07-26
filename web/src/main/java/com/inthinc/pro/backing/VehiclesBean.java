@@ -712,7 +712,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return VehicleTypeSelectItems.getSelectItems();
     }
 
-    public List<SelectItem> getStatusSelectItems() {
+    public List<SelectItem> getStatuses() {
         return DeviceStatusSelectItems.getSelectItems();
     }
 

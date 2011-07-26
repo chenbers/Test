@@ -125,7 +125,7 @@
 		       	<rich:spacer style="display:block" height="2"/>
 		       	<h:selectOneMenu value="#{vehiclesBean.filterValues['status']}" style="width:120px;size:auto;margin-top:3px;"
 		      		id="editVehicle-statusChoice" >
-		           	<f:selectItems value="#{vehiclesBean.statusSelectItems}" />
+		           	<f:selectItems value="#{vehiclesBean.statuses}" />
 		           	<a4j:support event="onchange" 
 		           		reRender="recordCounts,vehiclesTable,admin-table-form:header, vehiclesTable_pageHeader,admin-table-form:vehiclesTable-dataTableScroller" />
 		       	</h:selectOneMenu>
