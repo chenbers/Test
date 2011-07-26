@@ -190,11 +190,13 @@ public class AutomationCalendar implements Comparable<Calendar> {
         compareAgainst.changeMinutesTo(0);
         compareAgainst.changeSecondsTo(0);
         compareAgainst.changeHourseTo(0);
+        System.out.println(compareAgainst.getEpochTime());
         AutomationCalendar original = new AutomationCalendar(date, rawEnum);
         original.changeMillisecondsTo(0);
         original.changeMinutesTo(0);
         original.changeSecondsTo(0);
         original.changeHourseTo(0);
+        System.out.println(original.getEpochTime());
         return compareAgainst.equals(original);
     }
 
@@ -253,7 +255,14 @@ public class AutomationCalendar implements Comparable<Calendar> {
 
     @Override
     public boolean equals(Object obj) {
-        return date.equals(obj);
+        if (obj instanceof AutomationCalendar){
+            return getEpochTime() == ((AutomationCalendar) obj).getEpochTime();
+        } else if (obj instanceof Calendar){
+            return date.equals(obj);
+        } else if (obj instanceof Date){
+            return date.getTime().equals(obj);
+        }
+        return false;
     }
 
     public Calendar getCalendar() {
