@@ -72,7 +72,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
 
     @Override
-    public CoreMethodLib clickAt(SeleniumEnumWrapper anEnum, String coordString) {
+    public CoreMethodLib clickAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -83,25 +83,25 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
 
     @Override
-    public CoreMethodLib contextMenu(SeleniumEnumWrapper anEnum) {
+    public CoreMethodLib contextMenu(SeleniumEnumWrapper myEnum) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib contextMenuAt(SeleniumEnumWrapper anEnum, String coordString) {
+    public CoreMethodLib contextMenuAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib doubleClick(SeleniumEnumWrapper anEnum) {
+    public CoreMethodLib doubleClick(SeleniumEnumWrapper myEnum) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib doubleClickAt(SeleniumEnumWrapper anEnum, String coordString) {
+    public CoreMethodLib doubleClickAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -252,9 +252,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
 
     @Override
-    public String getValue(SeleniumEnumWrapper anEnum) {
-        logger.debug(" getValue(" + anEnum.toString() + "\n" + anEnum.getLocatorsAsString() + ")");
-        return super.getValue(getLocator(anEnum));
+    public String getValue(SeleniumEnumWrapper myEnum) {
+        logger.debug(" getValue(" + myEnum.toString() + "\n" + myEnum.getLocatorsAsString() + ")");
+        return super.getValue(getLocator(myEnum));
     }
 
     @Override
@@ -363,61 +363,62 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
 
     @Override
-    public CoreMethodLib keyDown(SeleniumEnumWrapper anEnum, String keySequence) {
+    public CoreMethodLib keyDown(SeleniumEnumWrapper myEnum, String keySequence) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib keyPress(SeleniumEnumWrapper anEnum, String keySequence) {
+    public CoreMethodLib keyPress(SeleniumEnumWrapper myEnum, String keySequence) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib keyUp(SeleniumEnumWrapper anEnum, String keySequence) {
+    public CoreMethodLib keyUp(SeleniumEnumWrapper myEnum, String keySequence) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib mouseDown(SeleniumEnumWrapper anEnum) {
+    public CoreMethodLib mouseDown(SeleniumEnumWrapper myEnum) {
+        String element = getLocator(myEnum);
+        mouseDown(element);
+        return this;
+    }
+
+    @Override
+    public CoreMethodLib mouseDownAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib mouseDownAt(SeleniumEnumWrapper anEnum, String coordString) {
+    public CoreMethodLib mouseDownRight(SeleniumEnumWrapper myEnum) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib mouseDownRight(SeleniumEnumWrapper anEnum) {
+    public CoreMethodLib mouseDownRightAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib mouseDownRightAt(SeleniumEnumWrapper anEnum, String coordString) {
+    public CoreMethodLib mouseMove(SeleniumEnumWrapper myEnum) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib mouseMove(SeleniumEnumWrapper anEnum) {
+    public CoreMethodLib mouseMoveAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib mouseMoveAt(SeleniumEnumWrapper anEnum, String coordString) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public CoreMethodLib mouseOut(SeleniumEnumWrapper anEnum) {
+    public CoreMethodLib mouseOut(SeleniumEnumWrapper myEnum) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -434,25 +435,26 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
 
     @Override
-    public CoreMethodLib mouseUp(SeleniumEnumWrapper anEnum) {
+    public CoreMethodLib mouseUp(SeleniumEnumWrapper myEnum) {
+        String element = getLocator(myEnum);
+        mouseUp(element);
+        return this;
+    }
+
+    @Override
+    public CoreMethodLib mouseUpAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib mouseUpAt(SeleniumEnumWrapper anEnum, String coordString) {
+    public CoreMethodLib mouseUpRight(SeleniumEnumWrapper myEnum) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public CoreMethodLib mouseUpRight(SeleniumEnumWrapper anEnum) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public CoreMethodLib mouseUpRightAt(SeleniumEnumWrapper anEnum, String coordString) {
+    public CoreMethodLib mouseUpRightAt(SeleniumEnumWrapper myEnum, String coordString) {
         // TODO Auto-generated method stub
         return null;
     }
