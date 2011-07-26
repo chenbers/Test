@@ -190,13 +190,11 @@ public class AutomationCalendar implements Comparable<Calendar> {
         compareAgainst.changeMinutesTo(0);
         compareAgainst.changeSecondsTo(0);
         compareAgainst.changeHourseTo(0);
-        System.out.println(compareAgainst.getEpochTime());
         AutomationCalendar original = new AutomationCalendar(date, rawEnum);
         original.changeMillisecondsTo(0);
         original.changeMinutesTo(0);
         original.changeSecondsTo(0);
         original.changeHourseTo(0);
-        System.out.println(original.getEpochTime());
         return compareAgainst.equals(original);
     }
 
