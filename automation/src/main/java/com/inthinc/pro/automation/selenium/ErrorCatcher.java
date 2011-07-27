@@ -260,6 +260,7 @@ public class ErrorCatcher implements InvocationHandler {
             ErrorLevel level = itrs.next();
             Iterator<String> itr = severity.get(level).keySet().iterator();
             logger.debug(severity.get(level));
+            errors = severity.get(level);
             if (severity.get(level).isEmpty()){
                 continue;
             }
