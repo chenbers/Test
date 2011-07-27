@@ -162,4 +162,10 @@ public class MeasurementConversionUtil
     public static Number fromLitersToGallons(Number liters) {
         return liters == null ? null : Math.round(liters.doubleValue() / LITERS_PER_GALLON);
     }
+    public static Number fromGallonsToLitersExact(Number gallons) {
+        return gallons == null ? null : Math.round(gallons.doubleValue() * LITERS_PER_GALLON*100)/100;
+    }
+    public static Number fromLitersToGallonsExact(Number liters) {
+        return liters == null ? null : Math.round((liters.doubleValue()*100) / LITERS_PER_GALLON)/100;
+    }
 }

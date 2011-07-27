@@ -1,6 +1,11 @@
 package com.inthinc.pro.convert;
 
+import javax.faces.component.UIInput;
+import javax.faces.context.FacesContext;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.richfaces.component.html.HtmlInputText;
 
 import com.inthinc.pro.backing.BaseBeanTest;
 import com.inthinc.pro.backing.LocaleBean;
@@ -8,7 +13,15 @@ import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.security.userdetails.ProUser;
 
 public class GallonsToLitersConvertTest extends BaseBeanTest {
-    
+	
+	private FacesContext context;
+	private UIInput uiInput;
+	
+    @Before
+	public void setup(){
+    	context = FacesContext.getCurrentInstance();
+    	uiInput = new HtmlInputText();
+    }
     public GallonsToLitersConvertTest() {
         super();
     }
@@ -28,12 +41,12 @@ public class GallonsToLitersConvertTest extends BaseBeanTest {
 
         Integer gallons = 0;
         GallonsToLitersConverter converter = new GallonsToLitersConverter();
-        String liters = converter.getAsString(null, null, gallons);
+        String liters = converter.getAsString(context, uiInput, gallons);
         assertEquals(0.0,Double.parseDouble(liters));
     }
 
     @Test
-    public void milesToKilometersToMilesTest() {
+    public void gallonsToLitersToGallonsTest() {
         
         ProUser user = loginUser("custom101");
         LocaleBean localeBean = new LocaleBean();
@@ -41,22 +54,22 @@ public class GallonsToLitersConvertTest extends BaseBeanTest {
         
         user.getUser().getPerson().setMeasurementType(MeasurementType.METRIC);
 
-        Float gallons = (float) 1000.0;
+        Float gallons = 1000.0f;
         GallonsToLitersConverter converter = new GallonsToLitersConverter();
-        String liters = converter.getAsString(null, null, gallons);
-        Object convertedGallons = converter.getAsObject(null, null, liters);
+        String liters = converter.getAsString(context, uiInput, gallons);
+        Object convertedGallons = converter.getAsObject(context, uiInput, liters);
         assertEquals(gallons,(Float)convertedGallons);
         
-        gallons = (float) 55555;
+        gallons = 55555f;
         converter = new GallonsToLitersConverter();
-        liters = converter.getAsString(null, null, gallons);
-        convertedGallons = converter.getAsObject(null, null, liters);
+        liters = converter.getAsString(context, uiInput, gallons);
+        convertedGallons = converter.getAsObject(context, uiInput, liters);
         assertEquals(gallons,(Float)convertedGallons);
 
-        gallons = (float) 100;
+        gallons = 100f;
         converter = new GallonsToLitersConverter();
-        liters = converter.getAsString(null, null, gallons);
-        convertedGallons = converter.getAsObject(null, null, liters);
+        liters = converter.getAsString(context, uiInput, gallons);
+        convertedGallons = converter.getAsObject(context, uiInput, liters);
         assertEquals(gallons,(Float)convertedGallons);
     }
 

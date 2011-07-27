@@ -105,7 +105,7 @@
 
 		<rich:dataTable id="#{context}" value="#{fuelStopsBean.items}" var="item" rowKeyVar="index" styleClass="datagrid"
               rows="#{fuelStopsBean.pageData.rowsPerPage}" rowClasses="tableOdd,tableEven"  width="100%" >
-			<rich:column>
+			<rich:column id="selectItem">
                 <f:facet name="header">
                   <h:selectBooleanCheckbox value="#{fuelStopsBean.allSelected}" id="selectAll">
                     <a4j:support event="onclick" action="#{fuelStopsBean.selectAllDependingOnAllSelected}" 
@@ -154,7 +154,7 @@
       			<f:facet name="header"><h:outputText value="#{messages.fuelStops_edited}" /></f:facet>
       			<h:outputText value="#{messages[item.edited]}" />
     		</rich:column>
-            <rich:column>
+            <rich:column id="editItem">
                 <f:facet name="header">
                   <h:outputText value=" " />
                 </f:facet>

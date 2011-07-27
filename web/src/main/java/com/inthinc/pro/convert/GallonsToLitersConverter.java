@@ -1,5 +1,8 @@
 package com.inthinc.pro.convert;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
@@ -19,23 +22,24 @@ public class GallonsToLitersConverter extends BaseConverter {
         {
             if (value != null && !value.equals(""))
             {
-                Float volume = Float.valueOf(value);
-            	if(volume <= 0.0f) {
+            	NumberFormat nf = NumberFormat.getInstance(getLocale());
+            	Float volume = nf.parse(value).floatValue();
+            	if((Float)volume <= 0) {
             		setErrorMessage(context,component);
             		return null;
             	}
                 if (getMeasurementType().equals(MeasurementType.METRIC))
                 {
-                    volume++;
-                    return MeasurementConversionUtil.fromLitersToGallons(volume).floatValue();                    
+                	volume++;
+                    return MeasurementConversionUtil.fromLitersToGallonsExact(volume).floatValue();                    
                 }
                 else
                 {
-                    return Float.valueOf(value);
+                    return volume;
                 }
             }
         }
-        catch (NumberFormatException e)
+        catch (ParseException e)
         {
         	setErrorMessage(context,component);
         }
@@ -55,13 +59,24 @@ public class GallonsToLitersConverter extends BaseConverter {
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {
         if (value==null) return null;
-        if (Float.class.isInstance(value))
+        Number volume = 0.0f;
+        if (Number.class.isInstance(value))
         {
             if (getMeasurementType().equals(MeasurementType.METRIC)){
-                return MeasurementConversionUtil.fromGallonsToLiters((Float)value).toString();
+            	volume = MeasurementConversionUtil.fromGallonsToLitersExact((Number)value);
             }
+            else {
+            	volume = (Number)value;
+            }
+            return formatValue(volume);
         }
         return value.toString();
     }
+    private String formatValue(Number value){
+        NumberFormat format = NumberFormat.getNumberInstance(getLocale());
+        format.setMaximumFractionDigits(2);
+        format.setMinimumFractionDigits(2);
 
+        return format.format(value);
+    }
 }
