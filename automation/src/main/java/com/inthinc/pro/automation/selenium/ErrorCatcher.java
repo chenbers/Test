@@ -214,19 +214,19 @@ public class ErrorCatcher implements InvocationHandler {
 //    }
     
     public Boolean hasFail(){
-        return severity.get(ErrorLevel.FAIL).isEmpty();
+        return !severity.get(ErrorLevel.FAIL).isEmpty();
     }
     
     public Boolean hasCompare(){
-        return severity.get(ErrorLevel.COMPARE).isEmpty();
+        return !severity.get(ErrorLevel.COMPARE).isEmpty();
     }
     
     public Boolean hasWarn(){
-        return severity.get(ErrorLevel.WARN).isEmpty();
+        return !severity.get(ErrorLevel.WARN).isEmpty();
     }
     
     public Boolean hasError(){
-        return severity.get(ErrorLevel.ERROR).isEmpty();
+        return !severity.get(ErrorLevel.ERROR).isEmpty();
     }
     
     public Verdicts getHighestLevel(){
