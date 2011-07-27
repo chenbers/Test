@@ -32,15 +32,11 @@ public class TextField extends TextObject implements Typeable {
     }
 
     @Override
-    public TextField type(String inputText) {
-        selenium.type(myEnum, inputText);
+    public TextField type(Object inputText) {
+        selenium.type(myEnum, inputText.toString());
         return this;
     }
 
-    @Override
-    public TextField type(Integer inputText){
-        return type(inputText.toString());
-    }
     @Override
     public String getText(){
         return selenium.getValue(myEnum);

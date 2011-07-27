@@ -1,7 +1,5 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import java.util.EnumSet;
-
 import com.inthinc.pro.automation.elements.SortHeader;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextTable;

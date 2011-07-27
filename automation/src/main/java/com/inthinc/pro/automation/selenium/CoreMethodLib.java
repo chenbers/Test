@@ -585,6 +585,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         fireEvent(element, "keydown");
         type(element, text);
         fireEvent(element, "keyup");
+        fireEvent(element, "blur");
         return this;
     }
 

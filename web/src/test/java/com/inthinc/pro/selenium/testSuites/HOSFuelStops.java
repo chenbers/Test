@@ -51,13 +51,11 @@ public class HOSFuelStops extends WebRallyTest {
         //3. Generate Trailer Fuel Errors
         myFuelStops._button().add().click();
         myFuelStopsAddEdit._textField().trailer().type("123");
-        pause(10,"");
         myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._button().bottomSave().click();
         
         myFuelStopsAddEdit._text().errorMaster().validate("1 error(s) occurred. Please verify all the data entered is correct.");
-        myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle or Trailer fuel is required.");
-        pause(5,"");
+        myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle or Trailer fuel required.");  //TODO tina: should this be "is required"?  currently it is not.
         myFuelStopsAddEdit._button().bottomCancel().click();
         
         //4. Generate Date/Time in Future error
@@ -67,8 +65,8 @@ public class HOSFuelStops extends WebRallyTest {
         AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
         calendar.addToDay(1);
         String tomorrow = calendar.toString();
-        print(tomorrow);
         
+        myFuelStopsAddEdit._textField().date().type(tomorrow);
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
         myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._button().bottomSave().click();

@@ -144,8 +144,7 @@ public interface ElementInterface {
         public TextBased row(int rowNumber);
     }
     public interface Typeable extends TextBased {
-        public Typeable type(String inputText);
-        public Typeable type(Integer inputText);
+        public Typeable type(Object inputText);
         public TextField clear();
     }
 
