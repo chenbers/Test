@@ -92,10 +92,11 @@
                                 </td>
                                 <td width="450">
                                   <rich:message for="editfuelStop_dateTime" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
-                            	  <rich:calendar value="#{fuelStopsBean.item.logTime}" id="editfuelStop_dateTime" valueChangeListener="#{fuelStopsBean.updateDateAndLocation}"  immediate="true"
+                            	  <rich:calendar value="#{fuelStopsBean.item.logTime}" id="editfuelStop_dateTime" valueChangeListener="#{fuelStopsBean.updateDateAndLocation}" 
                             	  		todayControlMode="hidden" enableManualInput="false"  datePattern="#{messages.dateFormat}"
-                            	  		timeZone="#{fuelStopsBean.item.timeZone}" inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;width:100px;">
-                            	  		<a4j:support event="onchanged"  reRender="editfuelStop_location" limitToList="true" immediate="true"/>
+                            	  		timeZone="#{fuelStopsBean.item.timeZone}" inputStyle="font: 10px Verdana,Arial,Helvetica,sans-serif;width:100px;"
+                            	  		validator="#{fuelStopsBean.validateDate}" >
+                            	  		<a4j:support event="onchanged"  reRender="editfuelStop_location" limitToList="true" ajaxSingle="true"/>
                             	  </rich:calendar>
                                 </td>
                               </tr>
@@ -151,8 +152,11 @@
                               <td>
                             <rich:message for="editfuelStop_truckGallons" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{fuelStopsBean.item.truckGallons}" converter="GallonsToLitersConverter" id="editfuelStop_truckGallons" onchange="checkMultiple(this)" 
-                                  			styleClass="text" size="10" required="#{(fuelStopsBean.item.trailerID eq null) or (empty fuelStopsBean.item.trailerID)}" requiredMessage="#{messages.fuelStop_truckGallons_required}"/><rich:spacer width="5px"/>
+                                  			styleClass="text" size="10" required="#{(fuelStopsBean.item.trailerID eq null) or (empty fuelStopsBean.item.trailerID)}" 
+                                  			requiredMessage="#{messages.fuelStop_truckGallons_required}" binding="#{fuelStopsBean.truckGallonsUI}"/>
+                                  			<rich:spacer width="5px"/>
 	                              <h:outputText value="editFuelStop_truckGallons" converter="MeasurementTextConverter"/>
+	                              <h:inputHidden id="fuelCheck" validator="#{fuelStopsBean.validateFuel}" value="validator"/>
                               </td>
                               </tr>
                               </table>
@@ -176,7 +180,8 @@
                               <td>
                             <rich:message for="editfuelStop_trailerGallons" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{fuelStopsBean.item.trailerGallons}" converter="GallonsToLitersConverter" id="editfuelStop_trailerGallons" onchange="checkMultiple(this)" 
-                                  			styleClass="text" size="10"/><rich:spacer width="5px"/>
+                                  			styleClass="text" size="10"
+                                  			binding="#{fuelStopsBean.trailerGallonsUI}"/><rich:spacer width="5px"/>
 	                              <h:outputText value="editFuelStop_trailerGallons" converter="MeasurementTextConverter"/>
                               </td>
                               </tr>

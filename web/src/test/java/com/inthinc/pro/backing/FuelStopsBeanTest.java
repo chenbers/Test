@@ -9,6 +9,7 @@ import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
@@ -20,6 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.richfaces.component.html.HtmlCalendar;
+import org.richfaces.component.html.HtmlInputText;
 
 import com.inthinc.pro.backing.FuelStopsBean.FuelStopView;
 import com.inthinc.pro.backing.model.LocateVehicleByTime;
@@ -128,28 +130,28 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         assertEquals(50.0f, hosLog.getTruckGallons());
         assertEquals("pretty:fuelStops",result);
     }
-    @Test
-    public void beanEditInvalid(){
-        
-    	setupItemsAndItem();
-        
-        String result = fuelStopsBean.edit();
-        
-        assertEquals("pretty:fuelStopEdit",result);
-        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
-
-        assertEquals(new Integer(130), item.getVehicleID());
-        item.setTruckGallons(null);
-        item.setTrailerGallons(-0.1f);
-        item.setLocation("Sandy, UT");
-        item.setLogTime(new DateTime().plusDays(1).toDate());
-        
-        result = fuelStopsBean.save();
-        Iterator<FacesMessage> messages = FacesContext.getCurrentInstance().getMessages();
-        assertTrue(messages.hasNext());
-        
-        assertEquals(null,result);
-    }
+//    @Test
+//    public void beanEditInvalid(){
+//        
+//    	setupItemsAndItem();
+//        
+//        String result = fuelStopsBean.edit();
+//        
+//        assertEquals("pretty:fuelStopEdit",result);
+//        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+//
+//        assertEquals(new Integer(130), item.getVehicleID());
+//        item.setTruckGallons(null);
+//        item.setTrailerGallons(-0.1f);
+//        item.setLocation("Sandy, UT");
+//        item.setLogTime(new DateTime().plusDays(1).toDate());
+//        
+//        result = fuelStopsBean.save();
+//        Iterator<FacesMessage> messages = FacesContext.getCurrentInstance().getMessages();
+//        assertTrue(messages.hasNext());
+//        
+//        assertEquals(null,result);
+//    }
     @Test
     public void beanDelete(){
     	setupItemsAndItem();
@@ -359,5 +361,98 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         
         fuelStopsBean.changeJustTheItemLogDate(newDate.toDate());
         assertEquals(expectedDate.toDate().getTime(),fuelStopsBean.getItem().getLogTime().getTime());
+    }
+    @Test
+    public void fuelInvalidValidationTest(){
+        String result = fuelStopsBean.add();
+        
+        assertEquals("pretty:fuelStopEdit",result);
+        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+
+        UIInput truckGallonsUI = new HtmlInputText();
+        UIInput trailerGallonsUI = new HtmlInputText();
+        truckGallonsUI.setValue(null);
+        trailerGallonsUI.setValue(new Float(-0.0f));
+        fuelStopsBean.setTruckGallonsUI(truckGallonsUI);
+        fuelStopsBean.setTrailerGallonsUI(trailerGallonsUI);
+        item.setTrailerID("trailer");
+    	FacesContext facesContext = FacesContext.getCurrentInstance();//Mock instance
+    	UIInput hidden = new HtmlInputText();
+    	String value="hidden";
+        fuelStopsBean.validateFuel(facesContext, hidden, value);
+        assertFalse(truckGallonsUI.isValid());
+        Iterator<FacesMessage> messages = facesContext.getMessages();
+        assertTrue(messages.hasNext()); 
+        FacesMessage message = (FacesMessage)messages.next();
+        assertEquals("Vehicle or Trailer fuel required.",message.getSummary());
+        assertEquals(FacesMessage.SEVERITY_ERROR,message.getSeverity());
+    }
+    @Test
+    public void fuelValidNoTrailerValidationTest(){
+        String result = fuelStopsBean.add();
+        
+        assertEquals("pretty:fuelStopEdit",result);
+        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+
+        UIInput truckGallonsUI = new HtmlInputText();
+        UIInput trailerGallonsUI = new HtmlInputText();
+        truckGallonsUI.setValue(new Float(10.0f));
+        fuelStopsBean.setTruckGallonsUI(truckGallonsUI);
+        fuelStopsBean.setTrailerGallonsUI(trailerGallonsUI);
+        item.setTrailerID(null);
+    	FacesContext facesContext = FacesContext.getCurrentInstance();//Mock instance
+    	UIInput hidden = new HtmlInputText();
+    	String value="hidden";
+        fuelStopsBean.validateFuel(facesContext, hidden, value);
+        assertTrue(truckGallonsUI.isValid());
+        Iterator<FacesMessage> messages = facesContext.getMessages();
+        assertFalse(messages.hasNext()); 
+//        FacesMessage message = (FacesMessage)messages.next();
+//        assertEquals("Vehicle or Trailer fuel required.",message.getSummary());
+//        assertEquals(FacesMessage.SEVERITY_ERROR,message.getSeverity());
+    }
+    @Test
+    public void fuelValidWithTrailerValidationTest(){
+        String result = fuelStopsBean.add();
+        
+        assertEquals("pretty:fuelStopEdit",result);
+        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+
+        UIInput truckGallonsUI = new HtmlInputText();
+        UIInput trailerGallonsUI = new HtmlInputText();
+        truckGallonsUI.setValue(null);
+        trailerGallonsUI.setValue(new Float(10.0f));
+        fuelStopsBean.setTruckGallonsUI(truckGallonsUI);
+        fuelStopsBean.setTrailerGallonsUI(trailerGallonsUI);
+        item.setTrailerID("trailer");
+    	FacesContext facesContext = FacesContext.getCurrentInstance();//Mock instance
+    	UIInput hidden = new HtmlInputText();
+    	String value="hidden";
+        fuelStopsBean.validateFuel(facesContext, hidden, value);
+        assertTrue(truckGallonsUI.isValid());
+        Iterator<FacesMessage> messages = facesContext.getMessages();
+        assertFalse(messages.hasNext()); 
+    }
+    @Test
+    public void fuelValidWithGoodTruckBadTrailerValidationTest(){
+        String result = fuelStopsBean.add();
+        
+        assertEquals("pretty:fuelStopEdit",result);
+        FuelStopsBean.FuelStopView item = fuelStopsBean.getItem();
+
+        UIInput truckGallonsUI = new HtmlInputText();
+        UIInput trailerGallonsUI = new HtmlInputText();
+        truckGallonsUI.setValue(new Float(10.0f));
+        trailerGallonsUI.setValue(new Float(-10.0f));
+        fuelStopsBean.setTruckGallonsUI(truckGallonsUI);
+        fuelStopsBean.setTrailerGallonsUI(trailerGallonsUI);
+        item.setTrailerID("trailer");
+    	FacesContext facesContext = FacesContext.getCurrentInstance();//Mock instance
+    	UIInput hidden = new HtmlInputText();
+    	String value="hidden";
+        fuelStopsBean.validateFuel(facesContext, hidden, value);
+        assertTrue(truckGallonsUI.isValid());
+        Iterator<FacesMessage> messages = facesContext.getMessages();
+        assertFalse(messages.hasNext()); 
     }
 }

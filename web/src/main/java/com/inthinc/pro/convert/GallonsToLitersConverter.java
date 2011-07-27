@@ -19,9 +19,13 @@ public class GallonsToLitersConverter extends BaseConverter {
         {
             if (value != null && !value.equals(""))
             {
+                Float volume = Float.valueOf(value);
+            	if(volume <= 0.0f) {
+            		setErrorMessage(context,component);
+            		return null;
+            	}
                 if (getMeasurementType().equals(MeasurementType.METRIC))
                 {
-                    Float volume = Float.valueOf(value);
                     volume++;
                     return MeasurementConversionUtil.fromLitersToGallons(volume).floatValue();                    
                 }
@@ -33,17 +37,20 @@ public class GallonsToLitersConverter extends BaseConverter {
         }
         catch (NumberFormatException e)
         {
-            final String summary = MessageUtil.getMessageString("error_float_format");
-            final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
-            context.addMessage(component.getClientId(context), message);
-            if(component instanceof UIInput){
-                ((UIInput)component).setValid(false);
-            }
+        	setErrorMessage(context,component);
         }
 
         return null;
     }
-
+    private void setErrorMessage(FacesContext context, UIComponent component){
+        final String summary = MessageUtil.getMessageString("error_float_format");
+        final FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, summary, null);
+        context.addMessage(component.getClientId(context), message);
+        if(component instanceof UIInput){
+            ((UIInput)component).setValid(false);
+        }
+    	
+    }
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) throws ConverterException
     {

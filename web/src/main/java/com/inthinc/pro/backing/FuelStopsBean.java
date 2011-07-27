@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
@@ -48,6 +50,9 @@ public class FuelStopsBean extends BaseBean {
 	private String vehicleName;
     private String vehicleNameNow;
 	private FuelStopView item;
+    UIInput truckGallonsUI;
+    UIInput trailerGallonsUI;
+
     private ItemLoader itemLoader;
     
     private DriverDAO driverDAO;
@@ -318,18 +323,6 @@ public class FuelStopsBean extends BaseBean {
     {
         return crudStrategy.save();
     }
-    protected boolean validate(List<FuelStopView> saveItems)
-    {
-        boolean valid = true;
-        for (final FuelStopView saveItem : saveItems)
-        {
-            valid = crudStrategy.isValid(saveItem);
-            if(!valid)
-                break;
-        }
-        return valid;
-    }
-
     
     public String cancel()
     {
@@ -399,7 +392,58 @@ public class FuelStopsBean extends BaseBean {
 		this.vehicleNameNow = vehicleNameNow;
 	}
 
-    
+	public void validateDate(FacesContext context, 
+            			 UIComponent dateUI,
+            			 Object value) {
+		String invalidDateMessageKey = "fuelStop_future_date_not_allowed";
+
+		if (dateInFuture((Date) value))	{
+		    ((UIInput)dateUI).setValid(false);
+            addMessageForField(invalidDateMessageKey,dateUI.getClientId(context), FacesMessage.SEVERITY_ERROR);
+		}
+	}
+    private boolean dateInFuture(Date date){
+        return date.after(new Date());
+    }
+	public void validateFuel(FacesContext context, UIComponent toValidate, Object value) {
+		String invalidTruckAndTrailerFuelCombinationMessageKey = "fuelStop_truckAndTrailerFuelInvalid";
+		if(trailerSet() && bothTruckAndTrailerGallonsInvalid()){
+			((UIInput)truckGallonsUI).setValid(false);
+            addMessageForField(invalidTruckAndTrailerFuelCombinationMessageKey,getTruckGallonsUI().getClientId(context), FacesMessage.SEVERITY_ERROR); 
+		}
+	}
+	private boolean trailerSet(){
+		return (item.getTrailerID() != null) && !item.getTrailerID().isEmpty();
+	}
+    private boolean bothTruckAndTrailerGallonsInvalid(){
+        return truckGallonsInvalid() && trailerGallonsInvalid();
+    }
+    private boolean truckGallonsInvalid(){
+    	return (getTruckGallonsUI().getLocalValue() == null)||((Float)getTruckGallonsUI().getLocalValue() <= 0.0f);
+    }
+    private boolean trailerGallonsInvalid(){
+    	return (getTrailerGallonsUI().getLocalValue() == null)||((Float)getTrailerGallonsUI().getLocalValue() <= 0.0f);
+    }
+    private void addMessageForField(String messageKey, String messageField, FacesMessage.Severity severity){
+        FacesMessage message = new FacesMessage(severity, MessageUtil.getMessageString(messageKey), null);
+        FacesContext.getCurrentInstance().addMessage(messageField, message);
+    }
+	public UIInput getTruckGallonsUI() {
+		return truckGallonsUI;
+	}
+
+	public void setTruckGallonsUI(UIInput truckGallonsUI) {
+		this.truckGallonsUI = truckGallonsUI;
+	}
+
+	public UIInput getTrailerGallonsUI() {
+		return trailerGallonsUI;
+	}
+
+	public void setTrailerGallonsUI(UIInput trailerGallonsUI) {
+		this.trailerGallonsUI = trailerGallonsUI;
+	}
+		
     public  class FuelStopView extends HOSRecord implements EditItem
     {
         @Column(updateable = false)
@@ -408,8 +452,8 @@ public class FuelStopsBean extends BaseBean {
         private static final int iftaAggregationDays = 25;
         @Column(updateable = false)
         private boolean selected;
-
         private Driver driver;
+        
         
         public  FuelStopView(HOSRecord fuelStopRecord)
         {
@@ -478,8 +522,8 @@ public class FuelStopsBean extends BaseBean {
             
             return this.getLogTime().after(dateTooManyDaysAgo);
         }
+
     }
-    
     
     private abstract class CRUDStrategy {
         
@@ -494,10 +538,6 @@ public class FuelStopsBean extends BaseBean {
 
         protected String save() {
             
-            if (!isValid(item)) {
-                return null;
-            }
-
             try
             {
                 setEditingUser();
@@ -524,38 +564,6 @@ public class FuelStopsBean extends BaseBean {
 
             item.setEditUserID(editUserID);
             item.setEdited(true);
-        }
-        protected boolean isValid(FuelStopView fuelStopView) {
-            boolean valid = true;
-            if (invalidFuel(fuelStopView)) valid = false;
-            if (invalidDateTime(fuelStopView)) valid = false;
-            
-            return valid;
-        }
-        private boolean invalidFuel(FuelStopView fuelStopView){
-            if(bothTruckAndTrailerGallonsEmpty(fuelStopView.getTruckGallons(),fuelStopView.getTrailerGallons())){
-                addMessageForField("fuelStop_truckAndTrailerFuelInvalid","edit-form:editfuelStop_truckGallons", FacesMessage.SEVERITY_ERROR); 
-                return true;
-            }
-            return false;
-        }
-        private boolean bothTruckAndTrailerGallonsEmpty(Float truckGallons, Float trailerGallons){
-            return ((truckGallons == null)||(truckGallons <= 0.0f)) && ((trailerGallons == null)||(trailerGallons <= 0.0f));
-        }
-        private boolean invalidDateTime(FuelStopView fuelStopView){
-            
-            if (dateInFuture(fuelStopView.getLogTime())) {
-                addMessageForField("fuelStop_future_date_not_allowed","edit-form:editfuelStop_dateTime", FacesMessage.SEVERITY_ERROR);
-                return true;
-            }
-            return false;
-        }
-        private boolean dateInFuture(Date date){
-            return date.after(new Date());
-        }
-        private void addMessageForField(String messageKey, String messageField, FacesMessage.Severity severity){
-            FacesMessage message = new FacesMessage(severity, MessageUtil.getMessageString(messageKey), null);
-            FacesContext.getCurrentInstance().addMessage(messageField, message);
         }
 
         protected void addMessageForPage(String messageKey, FacesMessage.Severity severity){
