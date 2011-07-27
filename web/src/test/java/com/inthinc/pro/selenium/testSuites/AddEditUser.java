@@ -21,7 +21,7 @@ public class AddEditUser extends WebRallyTest {
 	private PageAdminUserDetails myAdminUserDetails;
 	private PageAdminUsers myAdminUsers;
 	private RandomValues random;
-	private String USERNAME = "TinaAuto";
+	private String USERNAME = "tinaauto";
 	private String PASSWORD = "password";
 	 
 	@Before
