@@ -150,7 +150,7 @@ public class PageAdminVehicleEdit extends AdminBar {
 	 * @deprecated 
 	 */
     public AbstractPage load(){
-    	addError("PageAdminVehicleView.load()", "This page cannot be loaded without more information.  Please supply an (Integer vehicleID)", ErrorLevel.FAIL);
+    	addError("PageAdminVehicleView.load()", "This page cannot be loaded without more information.  Please supply an (Integer vehicleID)", ErrorLevel.FATAL);
 		return null;
     }
 }

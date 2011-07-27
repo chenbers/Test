@@ -1,6 +1,5 @@
 package com.inthinc.pro.automation.selenium;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -8,9 +7,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,27 +19,33 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 import com.thoughtworks.selenium.SeleniumException;
 
 /****************************************************************************************
- * Purpose: To catch the errors raised by Selenium, and format them into a nice HashMap<br />
+ * Purpose: To catch the errors raised by Selenium, and format them into a nice <code>Map</code><br />
  * <p>
  * The idea is to take a stack trace, or string, and tie it to an error name.<br />
- * Then associate that error with a name for easy reading to see what broke.<br * * />
+ * Then associate that error with a name for easy reading to see what broke.<br />
  * 
  * @author dtanner
- * @see HashMap
+ * @see Map
  */
 public class ErrorCatcher implements InvocationHandler {
 
     private final static Logger logger = Logger.getLogger(ErrorCatcher.class);
-    private HashMap<String, HashMap<String, String>> errors = new HashMap<String, HashMap<String, String>>();
-    private HashMap<String, String> errorList;
+    private Map<ErrorLevel, Map<String, Map<String, String>>> severity;
+    private Map<String, Map<String, String>> errors;
+    private Map<String, String> errorList;
     private final CoreMethodLib delegate;
 
     public ErrorCatcher(CoreMethodLib delegate) {
         this.delegate = delegate;
+        severity = new HashMap<ErrorLevel, Map<String, Map<String, String>>>();
+        for (ErrorLevel level: EnumSet.allOf(ErrorLevel.class)){
+            errors = new HashMap<String, Map<String, String>>();
+            severity.put(level, errors);
+        }
     }
 
     public CoreMethodInterface newInstance() {
@@ -85,32 +92,36 @@ public class ErrorCatcher implements InvocationHandler {
     }
 
     private void sortErrors(Throwable e, Method method, Object[] args) {
-        StringWriter string = new StringWriter();
-        string.write(method.getName() + "( ");
+        StringWriter writer = new StringWriter();
+        ErrorLevel level = ErrorLevel.ERROR;
+        if (method.getName().equals("waitForPageToLoad")){
+            level = ErrorLevel.WARN;
+        }
+        writer.write(method.getName() + "( ");
         if (args != null) {
             int length = args.length;
             for (Object arg : args) {
                 if (arg instanceof String) {
-                    string.write("\"" + arg.toString() + "\"");
+                    writer.write("\"" + arg.toString() + "\"");
                 } else {
-                    string.write(arg.toString());
+                    writer.write(arg.toString());
                 }
                 if (--length != 0) {
-                    string.write(", ");
+                    writer.write(", ");
                 }
             }
         }
-        string.write(" );\n");
+        writer.write(" );\n");
         for (Object arg : args) {
             if (arg instanceof SeleniumEnumWrapper) {
-                string.write(arg.toString() + ": " + ((SeleniumEnumWrapper) arg).getLocatorsAsString() + "\n");
+                writer.write(arg.toString() + ": " + ((SeleniumEnumWrapper) arg).getLocatorsAsString() + "\n");
             }
         }
 
         if (e instanceof SeleniumException) {
-            addError(string.toString(), e);
+            addError(writer.toString(), e, level);
         } else {
-            addError(string.toString(), e);
+            addError(writer.toString(), e, level);
         }
     }
 
@@ -130,9 +141,9 @@ public class ErrorCatcher implements InvocationHandler {
      * @param name
      * @param error
      */
-    public void addError(String name, Object error) {
-        addError(name, error, ErrorLevel.ERROR);
-    }
+//    public void addError(String name, Object error) {
+//        addError(name, error, ErrorLevel.ERROR);
+//    }
 
     /**
      * Adds the error to the error list<br />
@@ -148,7 +159,7 @@ public class ErrorCatcher implements InvocationHandler {
             errorStr = addStackTrace((String) error);
             type = "Warning";
         } else if (error instanceof Throwable) {
-            // type = "Framework Thrown Exception";
+//            type = "Framework Thrown Exception";
             errorStr = RallyStrings.toString((Throwable) error);
         } else if (error instanceof StackTraceElement[]) {
             type = "Tester Thrown Error";
@@ -174,73 +185,104 @@ public class ErrorCatcher implements InvocationHandler {
      *            text
      */
     private void addError(String name, String type, String error, ErrorLevel level) {
-        logger.info("\n\n" + name + "\n\t" + type + " :\n" + error + "\n\n");
+        logger.debug("\n" + level + ": " +name + "\n\t" + type + " :\n" + error + "\n");
+        ErrorLevel temp = level;
+        if (level.equals(ErrorLevel.FATAL)){
+            level = ErrorLevel.FAIL;
+        }
+        errors = severity.get(level);
+        logger.debug(errors);
         if (!errors.containsKey(name)) {
             add_error(name);
         }
         errors.get(name).put(type, error);
-        if (level == ErrorLevel.FAIL) {
+        if (temp.equals(ErrorLevel.FATAL)) {
             throw new AssertionError(error);
         }
     }
 
     /**
-     * Take the expected string for comparison against the actual<br />
-     * 
-     * @param errorName
-     * @param expected
-     */
-    public void addExpected(String name, String expected) {
-
-        if (!errors.containsKey(name)) {
-            add_error(name);
-        }
-
-        errors.get(name).put("Expected", expected);
-    }
-
-    /**
-     * @return the errors we have stored in a double HashMap
+     * @return the errors we have stored in a triple HashMap
      * @see HashMap
      */
-    public HashMap<String, HashMap<String, String>> get_errors() {
-        return errors;
+    public Map<ErrorLevel, Map<String, Map<String, String>>> get_errors() {
+        return severity;
     }
 
-    public Boolean isEmpty() {
-        return errors.isEmpty();
+//    public Boolean isEmpty() {
+//        return errors.isEmpty();
+//    }
+    
+    public Boolean hasFail(){
+        return severity.get(ErrorLevel.FAIL).isEmpty();
     }
-
+    
+    public Boolean hasCompare(){
+        return severity.get(ErrorLevel.COMPARE).isEmpty();
+    }
+    
+    public Boolean hasWarn(){
+        return severity.get(ErrorLevel.WARN).isEmpty();
+    }
+    
+    public Boolean hasError(){
+        return severity.get(ErrorLevel.ERROR).isEmpty();
+    }
+    
+    public Verdicts getHighestLevel(){
+        ErrorLevel temp = ErrorLevel.COMPARE;
+        if (hasFail()){
+            temp = ErrorLevel.FAIL;
+        } else if (hasError()){
+            temp = ErrorLevel.ERROR;
+        } else if (hasWarn()){
+            temp = ErrorLevel.WARN;
+        }
+        return temp.getVerdict();
+    }
+    
     public String toString() {
         StringWriter stringWriter = new StringWriter();
-        Iterator<String> itr = errors.keySet().iterator();
+        Iterator<ErrorLevel> itrs = severity.keySet().iterator();
         String newLine = "\n", tab = "\t";
-
-        while (itr.hasNext()) {
-            String next = itr.next();
-            stringWriter.write(next + newLine);
-            Set<String> itr2 = errors.get(next).keySet();
-            Iterator<String> innerItr = itr2.iterator();
-            while (innerItr.hasNext()) {
-                String insideNext = innerItr.next();
-                String callIt = errors.get(next).get(insideNext);
-
-                stringWriter.write(tab);
-                stringWriter.write(insideNext);
-                stringWriter.write(newLine);
-                if (!callIt.startsWith(StringUtils.repeat(tab, 2))) {
-                    stringWriter.write(StringUtils.repeat(tab, 2));
-                }
-                stringWriter.write(callIt);
-                stringWriter.write(StringUtils.repeat(newLine, 2));
+        int tabLevel = 0;
+        
+        while (itrs.hasNext()){
+            ErrorLevel level = itrs.next();
+            Iterator<String> itr = severity.get(level).keySet().iterator();
+            logger.debug(severity.get(level));
+            if (severity.get(level).isEmpty()){
+                continue;
             }
+            stringWriter.write(level.name() + " {" + newLine);
+            while (itr.hasNext()) {
+                String next = itr.next();
+                stringWriter.write(StringUtils.repeat(tab, ++tabLevel));
+                stringWriter.write(next + " {" + newLine);
+                Set<String> itr2 = errors.get(next).keySet();
+                Iterator<String> innerItr = itr2.iterator();
+                while (innerItr.hasNext()) {
+                    String insideNext = innerItr.next();
+                    String callIt = errors.get(next).get(insideNext);
+                    stringWriter.write(StringUtils.repeat(tab, ++tabLevel));
+                    stringWriter.write(insideNext + "[" + newLine);
+
+                    if (!callIt.startsWith(StringUtils.repeat(tab, ++tabLevel))) {
+                        stringWriter.write(StringUtils.repeat(tab, tabLevel--));
+                    }
+                    stringWriter.write(callIt);
+                    
+                    stringWriter.write(StringUtils.repeat(tab, tabLevel));
+                    stringWriter.write("]" + newLine);
+                }
+                stringWriter.write(StringUtils.repeat(tab, --tabLevel));
+                stringWriter.write("}");
+                stringWriter.write(StringUtils.repeat(newLine, 1));
+                --tabLevel;
+            }
+            stringWriter.write("}");
+            stringWriter.write(StringUtils.repeat(newLine, 1));
         }
-        String sendMeOut = stringWriter.toString();
-        try {
-            stringWriter.close();
-        } catch (IOException e) {
-            logger.fatal(StackToString.toString(e));
-        }
-        return sendMeOut;
+        return stringWriter.toString();
     }
 }

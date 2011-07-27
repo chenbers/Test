@@ -11,6 +11,7 @@ import com.google.common.base.Supplier;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
+import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.thoughtworks.selenium.DefaultSelenium;
 
 /****************************************************************************************
@@ -623,7 +624,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             doneWaiting = x > secondsToWait;
         }
         if (!found)
-            errors.addError("waitForElementPresent TIMEOUT", "while waiting for " + element);
+            errors.addError("waitForElementPresent TIMEOUT", "while waiting for " + element, ErrorLevel.WARN);
         return this;
     }
 

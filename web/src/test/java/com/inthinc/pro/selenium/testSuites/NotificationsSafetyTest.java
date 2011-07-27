@@ -706,31 +706,31 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pns._popUp().editColumns()._checkBox().row(1).focus();
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(2).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on second check box.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on second check box.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(3).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on third check box.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on third check box.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(4).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on fourth check box.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on fourth check box.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(5).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on fifth check box.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on fifth check box.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(6).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on sixth check box.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on sixth check box.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._button().save().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on save button.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on save button.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._button().cancel().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on cancel button.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on cancel button.", ErrorLevel.FATAL);
         }
     }
     
@@ -906,7 +906,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pause(5, "Wait for refresh.");
         AutomationCalendar todayCal = new AutomationCalendar(WebDateFormat.NOTE_DATE_TIME);
         if(!todayCal.compareDays(pns._text().dateTimeEntry().row(1).getText())){
-            addError("Today's date does not match today's date on the portal.", ErrorLevel.FAIL);
+            addError("Today's date does not match today's date on the portal.", ErrorLevel.FATAL);
         }
         todayCal.addToDay(-1);
         pns._dropDown().timeFrame().selectPartMatch("Yesterday");
@@ -914,7 +914,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pause(10, "Wait for refresh.");
         
         if(!todayCal.compareDays(pns._text().dateTimeEntry().row(1).getText())){
-            addError("Yesterday's date does not match yesterday's date on the portal.", ErrorLevel.FAIL);
+            addError("Yesterday's date does not match yesterday's date on the portal.", ErrorLevel.FATAL);
         }
     }
     
@@ -1004,7 +1004,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         if(month.equals("Dec"))
             return 12;
         
-        addError("Invalid month data:" + month, ErrorLevel.FAIL);
+        addError("Invalid month data:" + month, ErrorLevel.FATAL);
         return 0;
     }
 }

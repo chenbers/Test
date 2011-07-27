@@ -223,7 +223,7 @@ public class PageDriverPerformanceStyle extends NavigationBar {
 	 * @deprecated use {@link com.inthinc.pro.selenium.pageObjects.PageAdminVehicleView#load(Integer)}
 	 */
     public AbstractPage load(){
-    	addError("PageDriverPerformanceStyle.load()", "This page cannot be loaded without more information.  Please supply an (Integer vehicleID)", ErrorLevel.FAIL);
+    	addError("PageDriverPerformanceStyle.load()", "This page cannot be loaded without more information.  Please supply an (Integer vehicleID)", ErrorLevel.FATAL);
 		return null;
     }
     public PageDriverPerformanceStyle load(Integer vehicleID) {

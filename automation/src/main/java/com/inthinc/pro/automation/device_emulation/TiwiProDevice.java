@@ -118,6 +118,8 @@ public class TiwiProDevice extends Base {
         attrs.put(TiwiAttrs.ATTR_TYPE_HIGH_IDLE, highIdleTime);
 
         construct_note(TiwiNoteTypes.NOTE_TYPE_IDLING, attrs);
+        time += lowIdleTime + highIdleTime;
+        time_last = time;
         return this;
     }
 

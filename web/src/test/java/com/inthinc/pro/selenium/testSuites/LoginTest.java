@@ -151,27 +151,27 @@ public class LoginTest extends WebRallyTest {
         pl._textField().userName().focus();
         tabKey();
         if(!pl._textField().password().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on password text field.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on password text field.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pl._button().logIn().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on log-in button.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on log-in button.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pl._link().forgotUsernamePassword().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on forgot username/password link.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on forgot username/password link.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pl._link().privacyPolicy().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on privacy policy link.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on privacy policy link.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pl._link().legalNotice().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on legal notice link.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on legal notice link.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pl._link().support().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on support link.", ErrorLevel.FAIL);
+            addError("Incorrect Focus", "Focus is expected to be on support link.", ErrorLevel.FATAL);
         }
     }
 

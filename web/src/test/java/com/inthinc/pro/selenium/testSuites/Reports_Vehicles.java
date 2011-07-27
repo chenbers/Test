@@ -346,7 +346,7 @@ public class Reports_Vehicles extends WebRallyTest {
         sample = reports_vehicles._link().vehicleValue().row(1).getText();
         reports_vehicles._page().pageIndex().forwardOne().click();
         if(reports_vehicles._link().vehicleValue().equals(sample)){
-            addError("Page did not change or contains same data as previous", ErrorLevel.FAIL );
+            addError("Page did not change or contains same data as previous", ErrorLevel.FATAL );
         }
     }
     

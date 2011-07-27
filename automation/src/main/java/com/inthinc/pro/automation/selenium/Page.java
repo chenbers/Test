@@ -19,7 +19,7 @@ public interface Page {
      * Check to make sure the browser has loaded the correct URL.
      * @return this, fail test if URL is not correct
      */
-    public Page validateURL();
+    public Page assertURL();
     
     /**
      * Return the EXPECTED path for this Page object.

@@ -63,7 +63,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	} else {
 	    addError("Measurement",
 		    "Original Measurement has unexpected value of: "
-			    + originalMeasurement, ErrorLevel.FAIL);
+			    + originalMeasurement, ErrorLevel.FATAL);
 	}
 	myAccountPage._select().measurement().select(newMeasure);
 	myAccountPage._select().fuelEfficiency().select(newFuel);
@@ -122,7 +122,7 @@ public class EditMyAccountTest extends WebRallyTest {
 	} else {
 	    addError("Fuel Ratio",
 		    "Original Fuel Ratio has unexpected value of: "
-			    + originalFuelRatio, ErrorLevel.FAIL);
+			    + originalFuelRatio, ErrorLevel.FATAL);
 	}
 	myAccountPage._select().measurement().select(newMeasure);
 	myAccountPage._select().fuelEfficiency().select(newFuel);

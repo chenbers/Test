@@ -13,14 +13,31 @@ import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.GlobalSelenium;
+import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 public class MasterTest {
 
     public static enum ErrorLevel {
-        FAIL,
-        ERROR,
+        FATAL(Verdicts.FAIL),
+        FAIL(Verdicts.FAIL),
+        ERROR(Verdicts.ERROR),
         WARN,
-        COMPARE;
+        COMPARE,
+        ;
+        
+        private Verdicts verdict;
+        
+        private ErrorLevel(){
+            verdict = Verdicts.PASS;
+        }
+        
+        private ErrorLevel(Verdicts verdict){
+            this.verdict = verdict;
+        }
+        
+        public Verdicts getVerdict(){
+            return verdict;
+        }
     }
 
     protected static void enterKey() {
@@ -67,18 +84,13 @@ public class MasterTest {
         getErrors().addError(errorName, stackTrace, level);
     }
 
-    protected void addErrorWithExpected(String errorName, String error, String expected, ErrorLevel level) {
-        getErrors().addExpected(errorName, expected);
-        getErrors().addError(errorName, error, level);
-    }
-
     protected Boolean assertEquals(Object expected, Object actual) {
         return assertEquals(expected, actual, true);
     }
 
     private Boolean assertEquals(Object expected, Object actual, Boolean areObjectsEqual) {
         if (compare(expected, actual) != areObjectsEqual) {
-            addError("your expected: '" + expected + "'" + " does not equal: '" + actual + "'", ErrorLevel.FAIL);
+            addError("your expected: '" + expected + "'" + " does not equal: '" + actual + "'", ErrorLevel.FATAL);
             return false;
         }
         return true;
@@ -86,7 +98,7 @@ public class MasterTest {
 
     protected Boolean assertEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
         if (!compare(expected, actual)) {
-            addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FAIL);
+            addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FATAL);
             return false;
         }
         return true;
@@ -102,7 +114,7 @@ public class MasterTest {
 
     protected Boolean assertFalse(Boolean test, String error) {
         if (test) {
-            addError(error, ErrorLevel.FAIL);
+            addError(error, ErrorLevel.FATAL);
             return false;
         }
         return true;
@@ -114,7 +126,7 @@ public class MasterTest {
 
     protected Boolean assertNotEquals(Object expected, Object actual, SeleniumEnumWrapper myEnum) {
         if (compare(expected, actual)) {
-            addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FAIL);
+            addError(myEnum.toString() + "\n" + myEnum.getLocatorsAsString(), "\t\tExpected = " + expected + "\n\t\tActual = " + actual, ErrorLevel.FATAL);
             return false;
         }
         return true;
@@ -126,7 +138,7 @@ public class MasterTest {
 
     protected Boolean assertStringContains(String partialString, String fullString) {
         if (!fullString.contains(partialString)) {
-            addError(partialString + " not in " + fullString, ErrorLevel.FAIL);
+            addError(partialString + " not in " + fullString, ErrorLevel.FATAL);
             return false;
         }
         return true;
@@ -134,7 +146,7 @@ public class MasterTest {
 
     protected Boolean assertTrue(Boolean test, String error) {
         if (!test) {
-            addError(error, ErrorLevel.FAIL);
+            addError(error, ErrorLevel.FATAL);
             return false;
         }
         return true;

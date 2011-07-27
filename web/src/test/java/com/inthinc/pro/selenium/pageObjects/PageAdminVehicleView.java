@@ -121,7 +121,7 @@ public class PageAdminVehicleView extends AdminBar {
 	 * @deprecated use {@link com.inthinc.pro.selenium.pageObjects.PageAdminVehicleView#load(Integer)}
 	 */
     public AbstractPage load(){
-    	addError("PageAdminVehicleView.load()", "This page cannot be loaded without more information.  Please supply an (Integer vehicleID)", ErrorLevel.FAIL);
+    	addError("PageAdminVehicleView.load()", "This page cannot be loaded without more information.  Please supply an (Integer vehicleID)", ErrorLevel.FATAL);
 		return null;
     }
     public PageAdminVehicleView load(Integer vehicleID) {

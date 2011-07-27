@@ -46,11 +46,7 @@ public class AutomatedTest extends MasterTest{
             try {
                 errors = selenium.getErrors();
                 // check error var for entries
-                if (errors.isEmpty() || errors==null) {
-                    setTestVerdict(Verdicts.PASS); // no errors = pass
-                } else if (!errors.isEmpty()) {
-                    setTestVerdict(Verdicts.FAIL); // errors = fail
-                }
+                setTestVerdict(errors.getHighestLevel());
                 setBuildNumber(selenium.getText(webVersionID));
             } catch (Exception e) {
                 logger.fatal(StackToString.toString(e));

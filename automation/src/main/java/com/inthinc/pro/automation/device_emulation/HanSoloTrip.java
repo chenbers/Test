@@ -36,6 +36,7 @@ public class HanSoloTrip extends Thread{
         tiwi.set_location(33.0104, -117.111);
         tiwi.power_on_device();
         tiwi.turn_key_on(15);
+        tiwi.addIdlingNote(300, 300);
         tiwi.update_location(33.0104, -117.111, 15);
         tiwi.update_location(33.0104, -117.113, 15);
         tiwi.add_noDriver();
@@ -111,7 +112,7 @@ public class HanSoloTrip extends Thread{
         String imei;
         imei = "DEVICEDOESNTEXIST"; address=Addresses.QA;//         initialTime = initialTime; // NO VEHICLE            NO DEVICE
 //        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1310333776;  // vehicleID=37706       deviceID=34506
-//        imei = "444444444444444";   address=Addresses.QA;           initialTime = 1310333776;  // vehicleID=7293        deviceID=3753
+        imei = "444444444444444";   address=Addresses.QA;           initialTime = 1310335845;  // vehicleID=7293        deviceID=3753
 //        imei = "111111111111111";   address=Addresses.PROD;         initialTime = 1310333776;  // vehicleID=1           deviceID=1
 //        imei = "thisisajavadevice"; address=Addresses.CHEVRON;      initialTime = 1310333776;  // vehicleID=117441441   deviceID=117441936 
 //        imei = "999456789012345";   address=Addresses.SCHLUMBERGER; initialTime = 1310333776;  // vehicleID=150994955   deviceID=150994955
@@ -119,15 +120,15 @@ public class HanSoloTrip extends Thread{
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
         
         
-//        trip.hanSolosFirstTrip( imei, address, initialTime);
+        trip.hanSolosFirstTrip( imei, address, initialTime);
         
-        String satIMEI;
-        String mcmID;
-        int vehicleID, companyID, accountID;
-        
-        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=Addresses.QA; initialTime = 1311114913; vehicleID=7284; companyID=1; accountID=3;//deviceID=3763
-        
-        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
+//        String satIMEI;
+//        String mcmID;
+//        int vehicleID, companyID, accountID;
+//        
+//        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=Addresses.QA; initialTime = 1311114913; vehicleID=7284; companyID=1; accountID=3;//deviceID=3763
+//        
+//        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
     }
 
 
