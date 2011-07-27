@@ -291,19 +291,19 @@ public class ReportsDriver extends WebRallyTest {
 		driver._popUp().editColumns()._button().cancel().click();
 		
 		//7- Verify nothing has changed
-		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDriver !=driver._link().driverSort().isPresent()){addError("expected Driver column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDriver !=driver._link().driverSort().isPresent()){addError("expected Driver column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.FAIL);
 		}
 		
 	}
@@ -334,19 +334,19 @@ public class ReportsDriver extends WebRallyTest {
 		driver._popUp().editColumns()._button().cancel().click();
 		
 		//5- Verify nothing has changed
-		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDriver !=driver._link().driverSort().isPresent()){addError("expected Driver column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDriver !=driver._link().driverSort().isPresent()){addError("expected Driver column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.FAIL);
 		}
 	}
 	
@@ -399,19 +399,19 @@ public class ReportsDriver extends WebRallyTest {
 		driver._popUp().editColumns()._button().save().click();
 		
 		//7- Verify changes are there
-		if(originallyHadGroupColumnGroup ==driver._link().groupSort().isPresent()){addError("expected Group Column to be different", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnGroup ==driver._link().groupSort().isPresent()){addError("expected Group Column to be different", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDistance ==driver._link().distanceDrivenSort().isPresent()){addError("expected Distance Column to be different", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDistance ==driver._link().distanceDrivenSort().isPresent()){addError("expected Distance Column to be different", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.FAIL);
 		}
 		
 		//8- Click on any other link on the page
@@ -421,19 +421,19 @@ public class ReportsDriver extends WebRallyTest {
 		admin._link().reports().click();
 		
 		//10- Verify changes are still there
-		if(originallyHadGroupColumnGroup ==driver._link().groupSort().isPresent()){addError("expected Group Column to be different", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnGroup ==driver._link().groupSort().isPresent()){addError("expected Group Column to be different", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDistance ==driver._link().distanceDrivenSort().isPresent()){addError("expected Distance Column to be different", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDistance ==driver._link().distanceDrivenSort().isPresent()){addError("expected Distance Column to be different", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.FAIL);
 		}
 		
 		//11- Click Edit Columns again
@@ -478,19 +478,19 @@ public class ReportsDriver extends WebRallyTest {
 		driver._popUp().editColumns()._button().save().click();
 		
 		//7- Verify changes are there
-		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.FAIL);
 		}
 		
 		//8- Click Edit Columns again
@@ -532,19 +532,19 @@ public class ReportsDriver extends WebRallyTest {
 		driver._popUp().editColumns()._button().save().click();
 		
 		//7- Verify changes and make note
-		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.FAIL);
 		}
 		
 		//8- Log out
@@ -557,19 +557,19 @@ public class ReportsDriver extends WebRallyTest {
 		driver._link().reports().click();
 		
 		//11- Verify changes are still there
-		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnGroup !=driver._link().groupSort().isPresent()){addError("expected Group column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDriver ==driver._link().driverSort().isPresent()){addError("expected Driver Column to be different", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnVehicle !=driver._link().vehicleSort().isPresent()){addError("expected Vehicle column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnDistance !=driver._link().distanceDrivenSort().isPresent()){addError("expected Distance column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnOverall !=driver._link().overallSort().isPresent()){addError("expected Overall column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnStyle !=driver._link().styleSort().isPresent()){addError("expected Style column to remain the same", ErrorLevel.FAIL);
 		}
-		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.ERROR);
+		if(originallyHadGroupColumnSeatbelt !=driver._link().seatBeltSort().isPresent()){addError("expected Seat Belt column to remain the same", ErrorLevel.FAIL);
 		}
 		
 		//12- Click Edit Columns again

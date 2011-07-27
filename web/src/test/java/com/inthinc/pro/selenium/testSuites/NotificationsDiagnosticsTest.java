@@ -318,7 +318,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             if(currentDate.compareTo(newDate) < 0){
                     print(currentDate.toString());
                     print(newDate.toString());
-                    addError("Dates out of order", ErrorLevel.ERROR);
+                    addError("Dates out of order", ErrorLevel.FAIL);
             }
             currentDate = newDate;
         }
@@ -335,7 +335,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             if(currentDate.compareTo(newDate) > 0){
                     print(currentDate.toString());
                     print(newDate.toString());
-                    addError("Dates out of order", ErrorLevel.ERROR);
+                    addError("Dates out of order", ErrorLevel.FAIL);
             }
             currentDate = newDate;
         }
@@ -354,7 +354,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             if(currentText.compareToIgnoreCase(newText) > 0){
                     print(currentText);
                     print(newText);
-                    addError("Drivers out of order", ErrorLevel.ERROR);
+                    addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
         }
@@ -371,7 +371,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             if(currentText.compareToIgnoreCase(newText) < 0){
                     print(currentText);
                     print(newText);
-                    addError("Drivers out of order", ErrorLevel.ERROR);
+                    addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
         }
@@ -388,7 +388,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             if(currentText.compareToIgnoreCase(newText) > 0){
                     print(currentText);
                     print(newText);
-                    addError("Drivers out of order", ErrorLevel.ERROR);
+                    addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
         }
@@ -405,7 +405,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             if(currentText.compareToIgnoreCase(newText) < 0){
                     print(currentText);
                     print(newText);
-                    addError("Drivers out of order", ErrorLevel.ERROR);
+                    addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
         }
@@ -423,7 +423,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             if(currentText.compareToIgnoreCase(newText) > 0){
                     print(currentText);
                     print(newText);
-                    addError("Drivers out of order", ErrorLevel.ERROR);
+                    addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
         }
@@ -440,7 +440,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             if(currentText.compareToIgnoreCase(newText) < 0){
                     print(currentText);
                     print(newText);
-                    addError("Drivers out of order", ErrorLevel.ERROR);
+                    addError("Drivers out of order", ErrorLevel.FAIL);
             }
             currentText = newText;
         }

@@ -23,6 +23,7 @@ public class MasterTest {
         ERROR(Verdicts.ERROR),
         WARN,
         COMPARE,
+        PASS,
         ;
         
         private Verdicts verdict;
@@ -226,7 +227,7 @@ public class MasterTest {
             if (areObjectsEqual) {
                 match = "should match";
             }
-            addError("your expected: '" + expected + "'" + " and actual is: '" + actual + "' they " + match, ErrorLevel.ERROR);
+            addError("your expected: '" + expected + "'" + " and actual is: '" + actual + "' they " + match, ErrorLevel.FAIL);
         }
         return result;
     }
@@ -237,7 +238,7 @@ public class MasterTest {
 
     protected Boolean validateStringContains(String partialString, String fullString) {
         if (!fullString.contains(partialString)) {
-            addError(partialString + " not in " + fullString, ErrorLevel.ERROR);
+            addError(partialString + " not in " + fullString, ErrorLevel.FAIL);
             return false;
         }
         return true;

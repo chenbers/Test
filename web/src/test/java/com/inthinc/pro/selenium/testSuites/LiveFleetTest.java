@@ -75,7 +75,7 @@ public class LiveFleetTest extends WebRallyTest {
             if(plf._text().entryPositionByPosition().row(index).isPresent()){
                 int newPosition = Integer.parseInt(plf._text().entryPositionByPosition().row(index).getText());
                 if(currentPosition > newPosition){
-                    addError("Positions out of order", ErrorLevel.ERROR);
+                    addError("Positions out of order", ErrorLevel.FAIL);
                 }
                 currentPosition = newPosition;
             }
@@ -96,7 +96,7 @@ public class LiveFleetTest extends WebRallyTest {
             if(plf._text().entryPositionByPosition().row(index).isPresent()){
                 int newPosition = Integer.parseInt(plf._text().entryPositionByPosition().row(index).getText());
                 if(currentPosition < newPosition){
-                    addError("Positions out of order", ErrorLevel.ERROR);
+                    addError("Positions out of order", ErrorLevel.FAIL);
                 }
                 currentPosition = newPosition;
             }
@@ -115,7 +115,7 @@ public class LiveFleetTest extends WebRallyTest {
             if(plf._link().entryDriverByPosition().row(index).isPresent()){
                 String newText = plf._link().entryDriverByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
-                    addError("Drivers out of order", ErrorLevel.ERROR);
+                    addError("Drivers out of order", ErrorLevel.FAIL);
                 }
                 currentText = newText;
             }
@@ -134,7 +134,7 @@ public class LiveFleetTest extends WebRallyTest {
             if(plf._link().entryDriverByPosition().row(index).isPresent()){
                 String newText = plf._link().entryDriverByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
-                    addError("Drivers out of order", ErrorLevel.ERROR);
+                    addError("Drivers out of order", ErrorLevel.FAIL);
                 }
                 currentText = newText;
             }
@@ -153,7 +153,7 @@ public class LiveFleetTest extends WebRallyTest {
             if(plf._link().entryGroupIconByPosition().row(index).isPresent()){
                 String newText = plf._link().entryGroupIconByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
-                    addError("Groups out of order", ErrorLevel.ERROR);
+                    addError("Groups out of order", ErrorLevel.FAIL);
                 }
                 currentText = newText;
             }
@@ -172,7 +172,7 @@ public class LiveFleetTest extends WebRallyTest {
             if(plf._link().entryGroupIconByPosition().row(index).isPresent()){
                 String newText = plf._link().entryGroupIconByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
-                    addError("Groups out of order", ErrorLevel.ERROR);
+                    addError("Groups out of order", ErrorLevel.FAIL);
                 }
                 currentText = newText;
             }
@@ -192,7 +192,7 @@ public class LiveFleetTest extends WebRallyTest {
             if(plf._link().entryVehicleByPosition().row(index).isPresent()){
                 String newText = plf._link().entryVehicleByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) > 0){
-                    addError("Vehicles out of order", ErrorLevel.ERROR);
+                    addError("Vehicles out of order", ErrorLevel.FAIL);
                 }
                 currentText = newText;
             }
@@ -211,7 +211,7 @@ public class LiveFleetTest extends WebRallyTest {
             if(plf._link().entryVehicleByPosition().row(index).isPresent()){
                 String newText = plf._link().entryVehicleByPosition().row(index).getText();
                 if(currentText.compareToIgnoreCase(newText) < 0){
-                    addError("Vehicles out of order", ErrorLevel.ERROR);
+                    addError("Vehicles out of order", ErrorLevel.FAIL);
                 }
                 currentText = newText;
             }

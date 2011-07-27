@@ -43,6 +43,9 @@ public class ErrorCatcher implements InvocationHandler {
         this.delegate = delegate;
         severity = new HashMap<ErrorLevel, Map<String, Map<String, String>>>();
         for (ErrorLevel level: EnumSet.allOf(ErrorLevel.class)){
+            if (level.equals(ErrorLevel.FATAL) || level.equals(ErrorLevel.PASS)){
+                continue;
+            }
             errors = new HashMap<String, Map<String, String>>();
             severity.put(level, errors);
         }
@@ -192,6 +195,7 @@ public class ErrorCatcher implements InvocationHandler {
         if (level.equals(ErrorLevel.FATAL)){
             level = ErrorLevel.FAIL;
         }
+        assert(!level.equals(ErrorLevel.PASS) || !level.equals(ErrorLevel.FATAL));
         errors = severity.get(level);
         if (!errors.containsKey(name)) {
             add_error(name);
@@ -231,15 +235,18 @@ public class ErrorCatcher implements InvocationHandler {
     }
     
     public Verdicts getHighestLevel(){
-        ErrorLevel temp = ErrorLevel.COMPARE;
+        ErrorLevel temp;
         if (hasFail()){
             temp = ErrorLevel.FAIL;
         } else if (hasError()){
             temp = ErrorLevel.ERROR;
         } else if (hasWarn()){
             temp = ErrorLevel.WARN;
+        } else if (hasCompare()){
+            temp = ErrorLevel.COMPARE;
+        } else {
+            temp = ErrorLevel.PASS;
         }
-        System.out.println(temp.name() + " : " + temp.getVerdict());
         return temp.getVerdict();
     }
     

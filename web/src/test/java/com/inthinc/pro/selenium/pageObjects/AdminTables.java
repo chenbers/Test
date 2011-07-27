@@ -76,7 +76,7 @@ public abstract class AdminTables extends AdminBar {
     public class AdminTablesPopUps extends AdminBarPopUps {
 
         public AdminTablesPopUps() {
-            super(page);
+            super(page + "Table");
         }
 
         public EditColumns editColumns() {
