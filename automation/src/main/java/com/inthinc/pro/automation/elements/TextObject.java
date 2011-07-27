@@ -83,7 +83,7 @@ public class TextObject extends ElementBase implements TextBased {
 
     @Override
     public Boolean validateContains(String expectedPart) {
-        String actual = getText();
-        return validateStringContains(actual, expectedPart);
+        String actualFullString = getText();
+        return validateStringContains(expectedPart, actualFullString);
     }
 }
