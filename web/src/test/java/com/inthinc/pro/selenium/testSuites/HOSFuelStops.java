@@ -13,7 +13,7 @@ import com.inthinc.pro.selenium.pageObjects.PageFuelStopsAddEdit;
 public class HOSFuelStops extends WebRallyTest {
     
     private PageMyAccount myAccount;
-    private PageFuelStops myFuelStops;
+    private PageFuelStops myFuelStops; 
     private PageFuelStopsAddEdit myFuelStopsAddEdit;
     private String USERNAME = "tnilson";
     private String PASSWORD = "password123";
@@ -45,7 +45,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._text().errorMaster().validate("2 error(s) occurred. Please verify all the data entered is correct.");
         myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle fuel is required.");
         myFuelStopsAddEdit._text().errorDriver().validate("Driver is required");
-        pause(5,"");
+        pause(2,"");
         myFuelStopsAddEdit._button().bottomCancel().click();
         
         //3. Generate Trailer Fuel Errors
@@ -89,9 +89,10 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._text().valueVehicle().validatePresence(true);
         // myFuelStopsAddEdit._textField().date();
         myFuelStopsAddEdit._text().timeMessage().validatePresence(true);
-        myFuelStopsAddEdit._textField().trailer().type("123");
-        myFuelStopsAddEdit._textField().vehicleFuel().type("123");
-        myFuelStopsAddEdit._textField().trailerFuel().type("456");
+        myFuelStopsAddEdit._textField().trailer().type("789");
+        pause(2,"");
+        myFuelStopsAddEdit._textField().vehicleFuel().type("789");
+        myFuelStopsAddEdit._textField().trailerFuel().type("789");
         myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._text().valueLocation().validatePresence(true);
         myFuelStopsAddEdit._button().topCancel().click();
@@ -109,12 +110,13 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._button().add().click();
         // myFuelStopsAddEdit._textField().date().
         myFuelStopsAddEdit._textField().trailer().type("123");
+        pause(2,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
         myFuelStopsAddEdit._textField().trailerFuel().type("123");
         myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._button().bottomSave().click();
-        myFuelStops._text().valueVehicleFuel().row(1).validate("123Gallons");
-        myFuelStops._text().valueTrailerFuel().row(1).validate("123Gallons");
+        myFuelStops._text().valueVehicleFuel().row(1).validate("123.0Gallons");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("123.0Gallons");
         myFuelStops._text().valueTrailer().row(1).validate("123");
     }
 
@@ -130,6 +132,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._textField().date().type("");
         myFuelStopsAddEdit._textField().trailer().clear();
         myFuelStopsAddEdit._textField().trailer().type("456");
+        pause(2,"");
         myFuelStopsAddEdit._textField().vehicleFuel().clear();
         myFuelStopsAddEdit._textField().vehicleFuel().type("456");
         myFuelStopsAddEdit._textField().trailerFuel().type("456");
@@ -152,13 +155,14 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._link().valueEdit().row(1).click();
         myFuelStopsAddEdit._textField().date().type("");
         myFuelStopsAddEdit._textField().trailer().type("456");
+        pause(2,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("456");
         myFuelStopsAddEdit._textField().trailerFuel().type("456");
         myFuelStopsAddEdit._button().bottomSave().click();
         
         //Verify Edits were saved.
-        myFuelStops._text().valueVehicleFuel().row(1).validate("456Gallons");
-        myFuelStops._text().valueTrailerFuel().row(1).validate("456Gallons");
+        myFuelStops._text().valueVehicleFuel().row(1).validate("456.0Gallons");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("456.0Gallons");
         myFuelStops._text().valueTrailer().row(1).validate("456");
     }
 
@@ -261,6 +265,7 @@ public class HOSFuelStops extends WebRallyTest {
         
         //2. Enter Alpha char and save.
         myFuelStopsAddEdit._textField().trailer().type("123ABC");
+        pause(2,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("abcdefg");
         myFuelStopsAddEdit._textField().trailerFuel().type("abcdefg");
         myFuelStopsAddEdit._dropDown().driver().select(2);
@@ -350,6 +355,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._button().add().click();
         
         myFuelStopsAddEdit._textField().trailer().type("125");
+        pause(2,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("125");
         
         myFuelStopsAddEdit._textField().trailerFuel().type("125");
@@ -373,6 +379,36 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._popUp().delete()._button().delete().click();
               
     } 
+    @Test
+    public void IftaDateRange() {
+        set_test_case("TC5701");
+        //0. Login
+        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops._link().hos().click();
+        myFuelStops._link().hosFuelStops().click();
     
+        //1. Get vehicle and click on Add
+        myFuelStops._textField().vehicle().type("108406");
+        myFuelStops._textField().vehicle().getSuggestion("108406").click();
+        myFuelStops._button().add().click();
         
+        //2. Verify Edit Link is available for current date range
+        myFuelStops._link().valueEdit().row(1).validateClickable(true);
+        
+        //3. Change date range to be outside the IFTA Aggregation
+        AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
+        calendar.addToDay(-25);
+                
+        myFuelStops._textField().dateStop().type(calendar);
+        
+        calendar.addToDay(-10);
+        
+        myFuelStops._textField().dateStart().type(calendar);
+        
+        
+        //4. Verify Edit Link is not clickable
+        myFuelStops._link().valueEdit().row(1).validateClickable(false);
+        
+              
+    }
 }
