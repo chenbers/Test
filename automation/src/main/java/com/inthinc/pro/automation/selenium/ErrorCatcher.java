@@ -94,9 +94,6 @@ public class ErrorCatcher implements InvocationHandler {
     private void sortErrors(Throwable e, Method method, Object[] args) {
         StringWriter writer = new StringWriter();
         ErrorLevel level = ErrorLevel.ERROR;
-        if (method.getName().equals("waitForPageToLoad")){
-            level = ErrorLevel.WARN;
-        }
         writer.write(method.getName() + "( ");
         if (args != null) {
             int length = args.length;
@@ -112,9 +109,11 @@ public class ErrorCatcher implements InvocationHandler {
             }
         }
         writer.write(" );\n");
-        for (Object arg : args) {
-            if (arg instanceof SeleniumEnumWrapper) {
-                writer.write(arg.toString() + ": " + ((SeleniumEnumWrapper) arg).getLocatorsAsString() + "\n");
+        if (args != null){
+            for (Object arg : args) {
+                if (arg instanceof SeleniumEnumWrapper) {
+                    writer.write(arg.toString() + ": " + ((SeleniumEnumWrapper) arg).getLocatorsAsString() + "\n");
+                }
             }
         }
 
@@ -165,6 +164,9 @@ public class ErrorCatcher implements InvocationHandler {
             type = "Tester Thrown Error";
             errorStr = RallyStrings.toString((StackTraceElement[]) error);
         }
+        if (errorStr.contains("Timed out")){
+            level = ErrorLevel.WARN;
+        }
         addError(name, type, errorStr, level);
     }
 
@@ -185,13 +187,12 @@ public class ErrorCatcher implements InvocationHandler {
      *            text
      */
     private void addError(String name, String type, String error, ErrorLevel level) {
-        logger.debug("\n" + level + ": " +name + "\n\t" + type + " :\n" + error + "\n");
+        logger.info("\n" + level + ": " +name + "\n\t" + type + " :\n" + error + "\n");
         ErrorLevel temp = level;
         if (level.equals(ErrorLevel.FATAL)){
             level = ErrorLevel.FAIL;
         }
         errors = severity.get(level);
-        logger.debug(errors);
         if (!errors.containsKey(name)) {
             add_error(name);
         }
@@ -238,6 +239,7 @@ public class ErrorCatcher implements InvocationHandler {
         } else if (hasWarn()){
             temp = ErrorLevel.WARN;
         }
+        System.out.println(temp.name() + " : " + temp.getVerdict());
         return temp.getVerdict();
     }
     
@@ -254,18 +256,18 @@ public class ErrorCatcher implements InvocationHandler {
             if (severity.get(level).isEmpty()){
                 continue;
             }
-            stringWriter.write(level.name() + " {" + newLine);
+            stringWriter.write(level.name() + " <" + newLine);
             while (itr.hasNext()) {
                 String next = itr.next();
                 stringWriter.write(StringUtils.repeat(tab, ++tabLevel));
-                stringWriter.write(next + " {" + newLine);
+                stringWriter.write(next + " <" + newLine);
                 Set<String> itr2 = errors.get(next).keySet();
                 Iterator<String> innerItr = itr2.iterator();
                 while (innerItr.hasNext()) {
                     String insideNext = innerItr.next();
                     String callIt = errors.get(next).get(insideNext);
                     stringWriter.write(StringUtils.repeat(tab, ++tabLevel));
-                    stringWriter.write(insideNext + "[" + newLine);
+                    stringWriter.write(insideNext + "<" + newLine);
 
                     if (!callIt.startsWith(StringUtils.repeat(tab, ++tabLevel))) {
                         stringWriter.write(StringUtils.repeat(tab, tabLevel--));
@@ -273,14 +275,14 @@ public class ErrorCatcher implements InvocationHandler {
                     stringWriter.write(callIt);
                     
                     stringWriter.write(StringUtils.repeat(tab, tabLevel));
-                    stringWriter.write("]" + newLine);
+                    stringWriter.write(">" + newLine);
                 }
                 stringWriter.write(StringUtils.repeat(tab, --tabLevel));
-                stringWriter.write("}");
+                stringWriter.write(">");
                 stringWriter.write(StringUtils.repeat(newLine, 1));
                 --tabLevel;
             }
-            stringWriter.write("}");
+            stringWriter.write(">");
             stringWriter.write(StringUtils.repeat(newLine, 1));
         }
         return stringWriter.toString();
