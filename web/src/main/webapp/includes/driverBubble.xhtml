@@ -68,7 +68,7 @@
                      <h:outputText value="#{vehicle.name}"/>
                      <f:param value="#{vehicle.vehicleID}"/>
                 </pretty:link>
-			<ui:param name="vehicleType" value="VehicleType.#{vehicle.vtype}"/>		
+			<ui:param name="vehicleType" value="#{vehicle.vtype}"/>		
 			<h:outputText value="#{messageVehicleType}:"/>
 			<h:outputText value="#{messages[vehicleType]}" />
 			<h:outputText value="#{messageLastUpdated}:" />
