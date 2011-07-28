@@ -1,7 +1,10 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import java.util.Iterator;
+
 import org.junit.Test;
 
+import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
@@ -294,6 +297,7 @@ public class AdminUsers extends WebRallyTest {
 		users._popUp().editColumns()._checkBox().row(1).click();
 		users._popUp().editColumns()._checkBox().row(3).click();
 		users._popUp().editColumns()._checkBox().row(5).click();
+	
 		
 		//10- Click Save to return to default
 		users._popUp().editColumns()._button().save().click();
@@ -377,4 +381,146 @@ public class AdminUsers extends WebRallyTest {
 	}
 	
 	
+	
+   @Test
+    public void sevenDayRuleSet(){
+        set_test_case("TC5676");
+        rulesetTestHelper("US 7 Day");
+        
+    }
+	@Test
+    public void sevenDayUSOilRuleSet(){
+        set_test_case("TC5677");
+        rulesetTestHelper("US Oil 7 Day");
+        
+	}
+	
+	@Test
+    public void eightDayRuleSet(){
+        set_test_case("TC5678");
+        rulesetTestHelper("US 8 Day");
+        
+    }
+	
+	@Test
+    public void eightDayUSOilRuleSet(){
+        set_test_case("TC5679");
+        rulesetTestHelper("US Oil 8 Day");
+        
+    }
+	
+	@Test
+    public void canadaRuleSet(){
+        set_test_case("TC5680");
+        rulesetTestHelper("Canada");
+        
+    }
+	
+	@Test
+    public void canadaSixtyDegrees(){
+        set_test_case("TC5681");
+        rulesetTestHelper("Canada 60 Degrees");
+        
+    }
+	
+	@Test
+    public void usHomeOffice(){
+        set_test_case("TC5682");
+        rulesetTestHelper("US Home Office");
+        
+    }
+	
+	@Test
+    public void canadaHomeOffice(){
+        set_test_case("TC5683");
+        rulesetTestHelper("Canada Home Office");
+        
+    }
+	@Test
+    public void texasRuleSet(){
+        set_test_case("TC5684");
+        rulesetTestHelper("Texas");
+        
+    }
+	
+	@Test
+    public void canadaAlberta(){
+        set_test_case("TC5685");
+        rulesetTestHelper("Canada Alberta");
+        
+	} 
+	
+	@Test
+    public void canada2007CycleOne(){
+        set_test_case("TC5686");
+        rulesetTestHelper("Canada 2007 Cycle 1");
+        
+    }    
+	
+	@Test
+    public void canada2007CycleTwo(){
+        set_test_case("TC5687");
+        rulesetTestHelper("Canada 2007 Cycle 2");
+        
+    }    
+	
+	@Test
+    public void canada2007SixtyDegreesCycleOne(){
+        set_test_case("TC5688");
+        rulesetTestHelper("Canada 2007 60 Degrees Cycle 1");
+              
+    }    
+	
+	@Test
+    public void canada2007SixtyDegreesCycleTwo(){
+        set_test_case("TC5689");
+        rulesetTestHelper("Canada 2007 60 Degrees Cycle 2");
+                 
+    }    
+	
+	@Test
+    public void canada2007OilFieldPermit(){
+        set_test_case("TC5690");
+        rulesetTestHelper("Canada 2007 Oil Field Permit");
+                 
+    }    
+	
+	@Test
+    public void canada2007SixtyDegreesOilFieldPermit(){
+        set_test_case("TC5691");
+        rulesetTestHelper("Canada 2007 60 Degrees Oil Field Permit");
+                 
+    }    
+	
+	private void rulesetTestHelper(String hosRuleset) {
+	    
+
+        //1- Login
+        users.loginProcess(username, password);
+        
+        //2- Click on Admin
+        users._link().admin().click();
+        users._link().editColumns().click();
+        users._popUp().editColumns()._checkBox().row(1).check();
+        users._popUp().editColumns()._button().save().click();
+        
+        //3. Search and select driver
+        users._textField().search().type("tina");
+        users._button().search().click();
+        
+        Iterator<ClickableTextBased> itr = users._link().tableEntryUserName().iterator();
+        while (itr.hasNext()){
+            ClickableTextBased nextRow = itr.next();
+            if (nextRow.getText().equals("Testing Tina Nilson")){
+                nextRow.click();
+                break;
+            }
+        }
+        //4. Select DOT rule set
+        details._button().edit().click();
+        edituser._dropDown().dot().select(hosRuleset);
+        edituser._button().saveBottom().click();
+        details._text().values(AdminUserDetailsEnum.DOT).assertEquals(hosRuleset);
+               
+	}
 }
