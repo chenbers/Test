@@ -135,6 +135,11 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
         if (autologoffSeconds == null) return AutologoffSetting.OFF.getSlider();
         return AutologoffSetting.findBySeconds(autologoffSeconds).getSlider();
     }
+    /**
+     * Returns an Integer value representing the idleEvent setting.
+     * @return 1 if event should be true
+     *         0 if event should be false
+     */
     public Integer getIdlingEvent() {
         return (idlingSeconds == null || idlingSeconds == 0)?0:1;
     }
@@ -166,6 +171,14 @@ public class TiwiproEditableVehicleSettings extends EditableVehicleSettings{
 	public boolean isIdleBuzzer() {
         return idleBuzzer;
     }
+	/**
+	 * Returns an Integer value representing the idleBuzzer setting.
+	 * @return 1 if idleBuzzer set to true
+	 *         0 if idleBuzzer set to false
+	 */
+	public Integer getIdleBuzzer() {
+	    return idleBuzzer?1:0;
+	}
     public void setIdleBuzzer(boolean idleBuzzer) {
         this.idleBuzzer = idleBuzzer;
     }

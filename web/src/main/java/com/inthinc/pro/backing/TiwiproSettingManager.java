@@ -190,7 +190,7 @@ public class TiwiproSettingManager extends VehicleSettingManager{
 	       System.out.println("getCombined: "+vehicleSetting.getCombined(SettingType.IDLING_TIMEOUT.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.IDLING_TIMEOUT, ""+tiwiproEditableVehicleSettings.getIdlingSeconds(), vehicleSetting.getCombined(SettingType.IDLING_TIMEOUT.getSettingID()));
 	       changedSettings.addSliderIfNeeded(SettingType.EVENT_IDLING, ""+tiwiproEditableVehicleSettings.getIdlingEvent(), vehicleSetting.getCombined(SettingType.EVENT_IDLING.getSettingID()));
-	       changedSettings.addSettingIfNeeded(SettingType.BUZZER_IDLE, ""+tiwiproEditableVehicleSettings.isIdleBuzzer(), vehicleSetting.getCombined(SettingType.BUZZER_IDLE.getSettingID()));
+	       changedSettings.addSettingIfNeeded(SettingType.BUZZER_IDLE, ""+tiwiproEditableVehicleSettings.getIdleBuzzer(), vehicleSetting.getCombined(SettingType.BUZZER_IDLE.getSettingID()));
 	       return changedSettings.getDesiredSettings();
        }
        catch(IllegalArgumentException iae){
