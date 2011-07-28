@@ -28,7 +28,7 @@ public enum FuelStopsEnum implements SeleniumEnums {
     SORT_LOCATION(null, "fuelStops-table-form:fuelStopsTable:locationheader:sortDiv"),
     SORT_EDITED(null, "fuelStops-table-form:fuelStopsTable:editedheader:sortDiv"),
  
-    VALUE_EDIT(null, "fuelStops-table-form:fuelStopsTable:###:edit"),
+    VALUE_EDIT(null, "fuelStops-table-form:fuelStopsTable:###:editItem"),
     
     /* Text */
     VALUE_DATE_TIME(null, "fuelStops-table-form:fuelStopsTable:###:datetime"),
@@ -48,7 +48,7 @@ public enum FuelStopsEnum implements SeleniumEnums {
     
     /* CheckBoxes */
     CHECK_ALL(null, "fuelStops-table-form:fuelStopsTable:selectAll"),
-    VALUE_CHECK(null, "fuelStops-table-form:fuelStopsTable:###:select"),
+    VALUE_CHECK(null, "fuelStops-table-form:fuelStopsTable:###:selectItem"),
     
     ;
     private String text, url;
