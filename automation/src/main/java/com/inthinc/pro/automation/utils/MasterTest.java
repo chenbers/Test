@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
@@ -16,6 +18,7 @@ import com.inthinc.pro.automation.selenium.GlobalSelenium;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 public class MasterTest {
+    private final static Logger logger = Logger.getLogger(MasterTest.class);
 
     public static enum ErrorLevel {
         FATAL(Verdicts.FAIL),
@@ -54,7 +57,7 @@ public class MasterTest {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String time = sdf.format(GregorianCalendar.getInstance().getTime());
         String className = element.getFileName().replace(".java", "");
-        System.out.printf("%s, %s.%s:%3d - %s\n", time, className, element.getMethodName(), element.getLineNumber(), printToScreen.toString());
+        System.out.printf("%s, %s.%s:%3d - %s\n", time, className, element.getMethodName(), element.getLineNumber(), printToScreen.toString());//TODO: better to utilize log4j
     }
 
     protected static void tabKey() {

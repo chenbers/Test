@@ -72,10 +72,12 @@ public abstract class RallyTest extends AutomatedTest {
 	}
 	
 	private void setTestSet(String name){
+	    logger.info("setTestSet("+name+")");
 		rally.setTestSet(new NameValuePair("Name", name));
 	}
 
 	public void set_test_case(String formattedID) {
+	    logger.info("set_test_case("+formattedID+")");
 		rally.setTestCase(new NameValuePair("FormattedID", formattedID));
 	}
 	
