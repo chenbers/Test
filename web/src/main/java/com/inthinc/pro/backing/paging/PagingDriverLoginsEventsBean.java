@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.apache.log4j.Logger;
 import org.joda.time.DateTimeZone;
 
 import com.inthinc.pro.backing.LocaleBean;
@@ -22,6 +23,7 @@ import com.inthinc.pro.util.MessageUtil;
 @KeepAlive
 public class PagingDriverLoginsEventsBean  extends BasePagingNotificationsBean<Event> {
 
+    private static final Logger logger = Logger.getLogger(PagingDriverLoginsEventsBean.class);
     private static final long serialVersionUID = -958772233812785016L;
     private DriverLoginsPaginationTableDataProvider tableDataProvider;
     private BasePaginationTable<Event> table;
@@ -75,6 +77,7 @@ public class PagingDriverLoginsEventsBean  extends BasePagingNotificationsBean<E
     @Override
     protected List<EventReportItem> getReportTableData()
     {
+        logger.warn("PagingDriverLoginsEventsBean.getReportTableData was pulled wholesale from PagingEventsBean");
         //TODO: this was pulled wholesale from PagingEventsBean
         List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
         
@@ -103,6 +106,7 @@ public class PagingDriverLoginsEventsBean  extends BasePagingNotificationsBean<E
     }
 
     public void refreshAction(){
+        tableDataProvider.setRefreshNeeded(true);
         table.reset();
     }
     

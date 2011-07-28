@@ -1,7 +1,6 @@
 package com.inthinc.pro.model.pagination;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.inthinc.pro.model.event.EventType;
@@ -12,7 +11,29 @@ public class EventCategoryFilter implements TableFilterFactory{
 	private EventType key;
 	private List<NoteType> typeList;
 	private List<Integer> aggTypeList;
-	
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(this.getClass().getSimpleName());
+        sb.append(" [key=" + key + ", typeList=[");
+        if(typeList != null) {
+            for (NoteType noteType : typeList)
+                sb.append(" " + noteType + ",");
+        }
+        if (sb.charAt(sb.length() - 1) == ',')
+            sb.delete(sb.length() - 1, sb.length());
+        sb.append(" ]");// close typeList
+        sb.append(", aggTypeList[");
+        if (aggTypeList != null) {
+            for (Integer i : aggTypeList)
+                sb.append(" " + i + ",");
+            if (sb.charAt(sb.length() - 1) == ',')
+                sb.delete(sb.length() - 1, sb.length());
+        }
+        sb.append(" ]");// close aggTypeList
+        sb.append(" ]");
+        return sb.toString();
+    }
 	
 	public EventCategoryFilter() {
 		

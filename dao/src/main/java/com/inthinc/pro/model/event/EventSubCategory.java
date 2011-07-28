@@ -1,6 +1,7 @@
 package com.inthinc.pro.model.event;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +61,7 @@ public enum EventSubCategory implements BaseEnum
             EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED)),
     DRIVER(12,
     		EnumSet.of(EventType.NEW_DRIVER, EventType.NEW_OCCUPANT, EventType.INVALID_DRIVER, EventType.INVALID_OCCUPANT),
-    		EnumSet.of(AlertMessageType.ALERT_TYPE_TEXT_MESSAGE_RECEIVED)); //TODO: jwimmer: something isn't right with this line?
+    		null);
     
     private int code;
     
@@ -79,6 +80,8 @@ public enum EventSubCategory implements BaseEnum
         this.code = code;
         this.eventTypeSet = eventTypeSet;
         this.alertMessageTypeSet = alertMessageTypeSet;
+        if(this.alertMessageTypeSet == null)
+            this.alertMessageTypeSet = Collections.emptySet();
     }
 
     private static final Map<Integer, EventSubCategory> lookup = new HashMap<Integer, EventSubCategory>();
