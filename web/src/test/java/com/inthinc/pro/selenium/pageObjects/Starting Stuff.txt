@@ -43,3 +43,14 @@
     }
     
     
+    public static void main(String[] args) {
+        System.out.println("public class CLASS_TO_RETURN {");
+        for (ENUM_TO_USE method : EnumSet
+                .allOf(ENUM_TO_USE.class)) {
+            System.out.println("public ClassToReturn replaceMe(){");
+            System.out.println("return new ClassToReturn(ENUM_TO_USE." + method.name() + ");\n}");
+        }
+        System.out.println("}");
+    }
+    
+    
