@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
-public enum HOSZeroMiles implements SeleniumEnums {
+public enum HOSZeroMilesEnum implements SeleniumEnums {
     
     LOCATION("Location", "hosReports_tableForm:hosReports_viewTable:###:column0"),
     VEHICLE("Vehicle", "hosReports_tableForm:hosReports_viewTable:###:column1"),
@@ -13,10 +13,10 @@ public enum HOSZeroMiles implements SeleniumEnums {
     private String text, url;
     private String[] IDs;
     
-    private HOSZeroMiles(String url){
+    private HOSZeroMilesEnum(String url){
         this.url = url;
     }
-    private HOSZeroMiles(String text, String ...IDs){
+    private HOSZeroMilesEnum(String text, String ...IDs){
         this.text=text;
         this.IDs = IDs;
     }

@@ -178,6 +178,8 @@ public class PageHOSReports extends HOSBar {
             return new DOTTimeRemainingTable();
         }
         
-        
+        public HOSZeroMiles _zeroMilesTable(){
+            return new HOSZeroMiles();
+        }
     }
 }
