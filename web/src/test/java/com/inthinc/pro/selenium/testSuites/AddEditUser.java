@@ -106,7 +106,7 @@ public class AddEditUser extends WebRallyTest {
         	myAdminUsers._link().adminAddUser().click();
         	myAddEditUser._textField().personFields(AdminUsersEntries.FIRST_NAME).type("testing");
         	myAddEditUser._textField().personFields(AdminUsersEntries.LAST_NAME).type("testing");
-        	myAddEditUser._dropDown().driverTeam().select(1);
+        	myAddEditUser._dropDown().driverTeam().select(2);//TODO: dTanner: DHX selects (at least this one) seem to need to +1 to the index ?  in this case Tina wants to click the top choice which is 2 (not 1)?
         
         	myAddEditUser._checkBox().userInformation().uncheck();
         	myAddEditUser._dropDown().timeZone().select(TimeZones.US_SAMOA);
