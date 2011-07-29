@@ -47,10 +47,79 @@
         System.out.println("public class CLASS_TO_RETURN {");
         for (ENUM_TO_USE method : EnumSet
                 .allOf(ENUM_TO_USE.class)) {
-            System.out.println("public ClassToReturn replaceMe(){");
+            System.out.println("public ClassToReturn "+ method.name().toLowerCase().replace("_", "") + "(){");
             System.out.println("return new ClassToReturn(ENUM_TO_USE." + method.name() + ");\n}");
         }
         System.out.println("}");
     }
+    
+    public static void main(String[] args) {
+        System.out.println("public class DriverDOTLogReportHTMLTexts {");
+        for (DriverDOTLogReportHTMLEnum method : EnumSet
+                .allOf(DriverDOTLogReportHTMLEnum.class)) {
+            if (method.name().contains("ENTRY")){
+                continue;
+            }
+            System.out.println("public Text "+ method.name().toLowerCase().replace("_", "") + "(Integer pageNumber){");
+            System.out.println("return new Text(DriverDOTLogReportHTMLEnum." + method.name() + ", pageNumber.toString());\n}");
+        }
+        
+        for (DriverDOTLogReportHTMLEnum method : EnumSet
+                .allOf(DriverDOTLogReportHTMLEnum.class)) {
+            if (!method.name().contains("ENTRY")){
+                continue;
+            }
+            System.out.println("public TextTable "+ method.name().toLowerCase().replace("_", "") + "(Integer pageNumber, int rowNumber){");
+            System.out.println("return new TextTable(DriverDOTLogReportHTMLEnum." + method.name() + ", pageNumber.toString(), 18 + 2 * rowNumber);\n}");
+        }
+        System.out.println("}");
+    }
+    
+    
+    
+    
+    
+    public static void main(String[] args) {
+        System.out.println("public class DriverDOTLogReportTableTexts {");
+        for (DriverDOTLogReportTableEnum method : EnumSet
+                .allOf(DriverDOTLogReportTableEnum.class)) {
+            System.out.println("public TextTable entry"+ method.name().toLowerCase().replace("_", "") + "(){");
+            System.out.println("return new TextTable(DriverDOTLogReportTableEnum." + method.name() + ");\n}");
+        }
+        
+        System.out.println("}\npublic class DriverDOTLogReportTableLinks {");
+        for (DriverDOTLogReportTableEnum method : EnumSet
+                .allOf(DriverDOTLogReportTableEnum.class)) {
+            System.out.println("public SortHeader sort"+ method.name().toLowerCase().replace("_", "") + "(){");
+            System.out.println("return new SortHeader(DriverDOTLogReportTableEnum." + method.name() + ");\n}");
+        }
+        System.out.println("}");
+    }
+    
+    
+    
+    public static void main(String[] args) {
+        System.out.println("public class DriverDOTLogReportHTMLTexts {");
+        for (DOTTimeRemainingTableEnum method : EnumSet
+                .allOf(DOTTimeRemainingTableEnum.class)) {
+            System.out.println("public TextTable entry"
+                    + method.name().toLowerCase().replace("_", "") + "(){");
+            System.out.println("return new TextTable(DOTTimeRemainingTableEnum."
+                    + method.name() + ");\n}");
+        }
+        
+        System.out.println("}\npublic class DriverDOTLogReportHTMLLinks {");
+
+        for (DOTTimeRemainingTableEnum method : EnumSet
+                .allOf(DOTTimeRemainingTableEnum.class)) {
+            System.out.println("public SortHeader sort"
+                    + method.name().toLowerCase().replace("_", "") + "(){");
+            System.out
+                    .println("return new SortHeader(DOTTimeRemainingTableEnum."
+                            + method.name() + ");\n}");
+        }
+        System.out.println("}");
+    }
+    
     
     

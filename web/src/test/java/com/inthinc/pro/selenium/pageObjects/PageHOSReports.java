@@ -157,5 +157,27 @@ public class PageHOSReports extends HOSBar {
         public ViolationsSummaryReportTable _violationsSummaryReportTable(){
             return new ViolationsSummaryReportTable();
         }
+        
+        public DriverDOTLogReportHTML _driverDOTLogReportHTML(){
+            return new DriverDOTLogReportHTML();
+        }
+        
+        public DriverDOTLogReportTable _driverDOTLogReportTable(){
+            return new DriverDOTLogReportTable();
+        }
+        
+        public ViolationsDetailReportHTML _violationsDetailReportHTML(){
+            return new ViolationsDetailReportHTML();
+        }
+        
+        public ViolationsDetailReportTable _violationsDetailReportTable(){
+            return new ViolationsDetailReportTable();
+        }
+        
+        public DOTTimeRemainingTable _DOTTimeRemainingTable(){
+            return new DOTTimeRemainingTable();
+        }
+        
+        
     }
 }

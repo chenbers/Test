@@ -1,7 +1,13 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.TextButton;
+import com.inthinc.pro.selenium.pageEnums.AdminBarEnum;
+
 
 public class PageUserDetails extends AdminBar {
+    
+    private static final String page = "person";
+    
 	//TODO: naming review this pageObject is clearly not complete?  what is it's status in Rally
 	public UserDetailsLinks _link(){
 		return new UserDetailsLinks();
@@ -21,7 +27,16 @@ public class PageUserDetails extends AdminBar {
 	public UserDetailsButtons _button(){
 		return new UserDetailsButtons();
 	}
-	public class UserDetailsButtons extends AdminBarButtons{}
+	public class UserDetailsButtons extends AdminBarButtons{
+	    
+	    public TextButton delete(){
+	        return new TextButton(AdminBarEnum.DETAILS_DELETE, page);
+	    }
+	    
+	    public TextButton edit(){
+	        return new TextButton(AdminBarEnum.EDIT, page);
+	    }
+	}
 	
 	public UserDetailsDropDowns _dropDown(){
 		return new UserDetailsDropDowns();

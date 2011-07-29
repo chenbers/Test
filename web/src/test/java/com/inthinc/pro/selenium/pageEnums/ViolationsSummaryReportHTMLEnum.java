@@ -74,6 +74,46 @@ public enum ViolationsSummaryReportHTMLEnum implements SeleniumEnums {
     ENTRY_VIOLATIONS_PERCENT(null, "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[###]/td[18]/span"),
     
     
+    
+    DRIVING_0_14_TOTAL("0-14", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[2]/span"),
+    DRIVING_15_29_TOTAL("15-29", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[3]/span"),
+    DRIVING_30_TOTAL("30+", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[4]/span"),
+    
+    ON_DUTY_0_14_TOTAL("0-14", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[5]/span"),
+    ON_DUTY_15_29_TOTAL("15-29", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[6]/span"),
+    ON_DUTY_30_TOTAL("30+", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[7]/span"),
+    
+    CUMULATIVE_0_14_TOTAL("0-14", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[8]/span"),
+    CUMULATIVE_15_29_TOTAL("15-29", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[9]/span"),
+    CUMULATIVE_30_TOTAL("30+", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[10]/span"),
+    
+    OFF_DUTY_0_14_TOTAL("0-14", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[11]/span"),
+    OFF_DUTY_15_29_TOTAL("15-29", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[12]/span"),
+    OFF_DUTY_30_TOTAL("30+", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[13]/span"),
+    
+    DRIVERS_TOTAL("Drivers", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[14]/span"),
+    MILES_TOTAL("Miles", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[15]/span"),
+    
+    ENTRY_ZERO_MILES_TOTAL(null, "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[35]/td[16]/span"),
+    
+    VIOLATIONS_TITLE("Violations %", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[36]/td[3]/span"),
+    
+    DRIVING_VIOLATION_TOTAL_LABEL("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[39]/td[2]/span"),
+    ON_DUTY_VIOLATION_TOTAL_LABEL("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[40]/td[2]/span"),
+    CUMULATIVE_VIOLATION_TOTAL_LABEL("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[41]/td[2]/span"),
+    OFF_DUTY_TOTAL_LABEL("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[42]/td[2]/span"),
+    
+    
+    DRIVING_VIOLATION_TOTAL_NUMBER("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[39]/td[3]/span"),
+    ON_DUTY_VIOLATION_TOTAL_NUMBER("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[40]/td[3]/span"),
+    CUMULATIVE_VIOLATION_TOTAL_NUMBER("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[41]/td[3]/span"),
+    OFF_DUTY_TOTAL_NUMBER("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[42]/td[3]/span"),
+    
+    
+    DRIVING_VIOLATION_TOTAL_PERCENT("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[39]/td[5]/span"),
+    ON_DUTY_VIOLATION_TOTAL_PERCENT("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[40]/td[5]/span"),
+    CUMULATIVE_VIOLATION_TOTAL_PERCENT("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[41]/td[5]/span"),
+    OFF_DUTY_TOTAL_PERCENT("Driving Violation Total:", "//span[@id='hosReports_htmlText']/table[***]/tbody/tr[42]/td[5]/span"),
     ;
 
     private String text, url;
