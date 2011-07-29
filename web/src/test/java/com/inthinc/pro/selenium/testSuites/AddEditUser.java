@@ -89,7 +89,7 @@ public class AddEditUser extends WebRallyTest {
         
         //.0 Login
         	myAccount.loginProcess(USERNAME, PASSWORD);
-        	myAccount._link().admin().click();
+        	myAccount._link().admin ().click();
 	
         //.1 Search for Employee ID in column and save the id to be used while creating a new user.
                          
