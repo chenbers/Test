@@ -40,6 +40,7 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class CreateVehiclesITTestSSL {
 
     private String scheme = "https";
@@ -48,19 +49,41 @@ public class CreateVehiclesITTestSSL {
     private String password = "w7tness"; 
 
     private int port = 443;
-    private String uri = "/service/api/vehicles";
     private TrustManager trustManager;
     private DefaultHttpClient httpclient;
     private BasicHttpContext localcontext;
 
 	@Test
-	@Ignore
-	public void weatherfordSSLTest(){
+	public void weatherfordSSLCreateVehiclesTest(){
 		//Hardcoded to run against the qa account in the Weatherford
 		try {
 			setUpRequest();
 			
-	        sendRequest();
+	        sendCreateVehiclesRequest();
+		}
+		catch(Exception e){
+			
+		}
+	}
+	@Test
+	public void weatherfordSSLCreateVehicleTest(){
+		//Hardcoded to run against the qa account in the Weatherford
+		try {
+			setUpRequest();
+			
+	        sendCreateVehicleRequest();
+		}
+		catch(Exception e){
+			
+		}
+	}
+	@Test
+	public void weatherfordSSLCreateVehicleBadVINTest(){
+		//Hardcoded to run against the qa account in the Weatherford
+		try {
+			setUpRequest();
+			
+	        sendCreateVehicleRequestBadVIN();
 		}
 		catch(Exception e){
 			
@@ -74,7 +97,6 @@ public class CreateVehiclesITTestSSL {
         password = "w7tness"; 
 
         port = 443;
-        uri = "/service/api/vehicles";
         
         trustManager = new X509TrustManager() {
 
@@ -120,16 +142,73 @@ public class CreateVehiclesITTestSSL {
 
 
     }
-    private void sendRequest() throws ClientProtocolException, IOException{
+    private void sendCreateVehiclesRequest() throws ClientProtocolException, IOException{
         HttpHost targetHost = new HttpHost(host, port, scheme);
-
+        String uri = "/service/api/vehicles";
         HttpPost httpPost = new HttpPost(uri);
         String vehicle1 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>184549725</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137726</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
         String vehicle2 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>184549725</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137727</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
         String vehicle3 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>184549725</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137728</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
 
-//        request.accept("application/xml").body( MediaType.APPLICATION_XML, "<vehicles>"+vehicle1+vehicle2+vehicle3+"</vehicles>");
         StringEntity entity = new StringEntity( "<vehicles>"+vehicle1+vehicle2+vehicle3+"</vehicles>",HTTP.UTF_8);
+        entity.setContentType("application/xml");
+        httpPost.setEntity(entity);
+        System.out.println("executing request: " + httpPost.getRequestLine());
+        System.out.println("to target: " + targetHost);
+        
+        HttpResponse response = httpclient.execute(targetHost, httpPost, localcontext);
+        HttpEntity responseEntity = response.getEntity();
+
+        System.out.println("----------------------------------------");
+        System.out.println(response.getStatusLine());
+        if (responseEntity != null) {
+            System.out.println("Response content length: " + responseEntity.getContentLength());
+            System.out.println(EntityUtils.toString(responseEntity));
+            responseEntity.consumeContent();
+        }
+
+        // When HttpClient instance is no longer needed,
+        // shut down the connection manager to ensure
+        // immediate deallocation of all system resources
+        httpclient.getConnectionManager().shutdown();
+    }
+    private void sendCreateVehicleRequest() throws ClientProtocolException, IOException{
+        HttpHost targetHost = new HttpHost(host, port, scheme);
+        String uri = "/service/api/vehicle";
+
+        HttpPost httpPost = new HttpPost(uri);
+        String vehicle1 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>184549725</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137729</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+
+        StringEntity entity = new StringEntity( vehicle1,HTTP.UTF_8);
+        entity.setContentType("application/xml");
+        httpPost.setEntity(entity);
+        System.out.println("executing request: " + httpPost.getRequestLine());
+        System.out.println("to target: " + targetHost);
+        
+        HttpResponse response = httpclient.execute(targetHost, httpPost, localcontext);
+        HttpEntity responseEntity = response.getEntity();
+
+        System.out.println("----------------------------------------");
+        System.out.println(response.getStatusLine());
+        if (responseEntity != null) {
+            System.out.println("Response content length: " + responseEntity.getContentLength());
+            System.out.println(EntityUtils.toString(responseEntity));
+            responseEntity.consumeContent();
+        }
+
+        // When HttpClient instance is no longer needed,
+        // shut down the connection manager to ensure
+        // immediate deallocation of all system resources
+        httpclient.getConnectionManager().shutdown();
+    }
+    private void sendCreateVehicleRequestBadVIN() throws ClientProtocolException, IOException{
+        HttpHost targetHost = new HttpHost(host, port, scheme);
+        String uri = "/service/api/vehicle";
+
+        HttpPost httpPost = new HttpPost(uri);
+        String vehicle1 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>184549725</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137730x</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+
+        StringEntity entity = new StringEntity( vehicle1,HTTP.UTF_8);
         entity.setContentType("application/xml");
         httpPost.setEntity(entity);
         System.out.println("executing request: " + httpPost.getRequestLine());
