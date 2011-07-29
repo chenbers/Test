@@ -658,10 +658,10 @@ var firstLoad = new Boolean(true);
 				
 
  <!-- START FORGIVE MODAL -->
-<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="180" resizeable="false">
+<rich:modalPanel id="clearEventPanel" headerClass="popupHeader" controlsClass="popupControls" width="500" height="200" resizeable="false">
 <t:saveState value="#{driverStyleBean.clearItem}" />
       <f:facet name="header">
-        <h:outputText value="Clear Event" />
+        <h:outputText value="#{messages.button_forgive}" />
       </f:facet>
       <f:facet name="controls">
         <h:graphicImage value="/images/modal_close.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('clearEventPanel')" />

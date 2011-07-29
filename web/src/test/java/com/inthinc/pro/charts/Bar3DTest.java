@@ -7,7 +7,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.inthinc.pro.backing.ui.ScoreCategory;
 
 public class Bar3DTest
 {

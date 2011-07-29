@@ -670,21 +670,21 @@
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($P{units}.contains( "metric" )) ? "Power Fuel Purchases (Litres)" : "Power Fuel Purchases (Gallons)"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($P{units}.contains( "metric" )) ? $R{powerFuelMetric} : $R{powerFuelEnglish}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-15" x="404" y="28" width="138" height="20"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($P{units}.contains( "metric" )) ? "Non-Power (Litres)" : "Non-Power (Gallons)"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($P{units}.contains( "metric" )) ? $R{nonPowerMetric} : $R{nonPowerEnglish}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField-14" x="545" y="28" width="255" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[($P{units}.contains( "metric" )) ? "KM Information" : "Mileage Information"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[($P{units}.contains( "metric" )) ? $R{infoMetric} : $R{infoEnglish}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

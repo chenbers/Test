@@ -143,7 +143,7 @@ $V{SUM_drivingHours}.intValue())]]></variableExpression>
 		</groupHeader>
 		<groupFooter>
 			<band height="28" splitType="Stretch">
-				<textField pattern="" isBlankWhenNull="false">
+				<textField pattern="" isBlankWhenNull="true">
 					<reportElement key="textField-30" x="3" y="4" width="103" height="23" forecolor="#000000"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

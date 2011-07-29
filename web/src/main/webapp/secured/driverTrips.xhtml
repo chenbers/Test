@@ -515,12 +515,12 @@
                     <table id="" cellpadding="4" cellspacing="0" class="">
                         <tbody>
                             <tr>
-                                <td>#{messages.drivertrip_total_drive_time}:</td>
+                                <td width="140">#{messages.drivertrip_total_drive_time}:</td>
                                 <td><rich:spacer width="4" /></td>
                                 <td><h:outputText>#{driverTripsBean.totalDriveTime}</h:outputText></td>
                             </tr>
                             <tr>
-                                <td>
+                                <td width="140">
                                     <h:outputFormat value="#{messages.drivertrip_total_miles_driven}">
                                         <a4j:actionparam value="Miles" converter="MeasurementTextConverter"/>
                                     </h:outputFormat>
@@ -529,17 +529,17 @@
                                 <td><h:outputText value="#{driverTripsBean.milesDriven}" converter="DistanceConverter" /></td>
                             </tr>
                             <tr>
-                                <td>#{messages.drivertrip_total_idle_time}:</td>
+                                <td width="140">#{messages.drivertrip_total_idle_time}:</td>
                                 <td></td>
                                 <td><h:outputText>#{driverTripsBean.idleTime}</h:outputText></td>
                             </tr>
                             <tr>
-                                <td>#{messages.drivertrip_total_trips}:</td>
+                                <td width="140">#{messages.drivertrip_total_trips}:</td>
                                 <td></td>
                                 <td><h:outputText>#{driverTripsBean.numTrips}</h:outputText></td>
                             </tr>
                             <tr>
-                                <td valign="top">#{messages.drivertrip_driver_timezone}:</td>
+                                <td width="140" valign="top">#{messages.drivertrip_driver_timezone}:</td>
                                 <td></td>
                                 <td><h:outputText>#{driverTripsBean.timeZoneDisplay}</h:outputText></td>
                             </tr>

@@ -88,6 +88,7 @@ public class NonTranslated {
         nonTranslatedList.add("column.7.raw");
         nonTranslatedList.add("column.8.raw");
         nonTranslatedList.add("column.9.raw");
+        nonTranslatedList.add("column.10.raw");
         nonTranslatedList.add("dot.1");
         nonTranslatedList.add("dot.10");
         nonTranslatedList.add("dot.11");
@@ -142,6 +143,7 @@ public class NonTranslated {
         nonTranslatedList.add("report.ddl.graph.legend.original");
         nonTranslatedList.add("report.ddl.header.startOdometer");
         nonTranslatedList.add("report.ddl.header.vehicle");
+        nonTranslatedList.add("report.ddl.header.vehicleName");
         nonTranslatedList.add("report.ddl.none");
         nonTranslatedList.add("report.ddl.recap");
         nonTranslatedList.add("report.ddl.recap.hrsAvailTomorrow");
@@ -249,6 +251,8 @@ public class NonTranslated {
         nonTranslatedList.add("column.8.raw");
         nonTranslatedList.add("column.9.raw");
         nonTranslatedList.add("footer.confidential");
+        nonTranslatedList.add("column.6.tabular");
+        nonTranslatedList.add("column.6a");
         nonTranslated_ro.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/hos/i18n/violationsDetail", nonTranslatedList);
         
         nonTranslatedList = new ArrayList<String>();
@@ -553,7 +557,6 @@ public class NonTranslated {
         nonTranslatedList.add("reports_exportPDFLink");
         nonTranslatedList.add("reports_renderHTMLLink");
         nonTranslatedList.add("subNavigation_waysmart");
-//        nonTranslatedList.add("txtMsg_inbox");
         nonTranslatedList.add("txtMsg_startDate");
         nonTranslatedList.add("vehiclesHeader_DOT");
         nonTranslatedList.add("vehiclesHeader_IFTA");
@@ -563,6 +566,14 @@ public class NonTranslated {
         nonTranslatedList.add("zoneOption");
         nonTranslatedList.add("zones_download");
         nonTranslatedList.add("zones_reset");
+        nonTranslatedList.add("VehicleDOTType.DOT");
+        nonTranslatedList.add("VehicleDOTType.NON_DOT");
+        nonTranslatedList.add("alertTypeHighIdleLimit");
+        nonTranslatedList.add("alertTypeLowIdleLimit");
+        nonTranslatedList.add("fuelStop_dot");
+        nonTranslatedList.add("fuelStop_service");
+        nonTranslatedList.add("fuelStops_service");
+        nonTranslatedList.add("txtMsg_inbox");
         nonTranslated_ro.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
     }    
 
@@ -571,6 +582,7 @@ public class NonTranslated {
         List<String> nonTranslatedList = new ArrayList<String>();
         nonTranslatedList.add("button_ok");
         nonTranslatedList.add("error_title");
+        nonTranslatedList.add("dateFormat");
         nonTranslated_es.put("/hoskiosk/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
 
         nonTranslatedList = new ArrayList<String>();
@@ -616,6 +628,7 @@ public class NonTranslated {
         nonTranslatedList = new ArrayList<String>();
         nonTranslatedList.add("column.6.raw");
         nonTranslatedList.add("column.8.raw");
+        nonTranslatedList.add("column.9.raw");
         nonTranslatedList.add("dot.7");
         nonTranslatedList.add("dot.8");
         nonTranslatedList.add("dot.9");
@@ -624,6 +637,7 @@ public class NonTranslated {
         nonTranslatedList = new ArrayList<String>();
         nonTranslatedList.add("report.ddl.graph.legend.original");
         nonTranslatedList.add("report.ddl.header.vehicle");
+        nonTranslatedList.add("report.ddl.header.vehicleName");
         nonTranslatedList.add("report.ddl.recap");
         nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/hos/i18n/HOSDriverDailyLog", nonTranslatedList);
 
@@ -645,6 +659,8 @@ public class NonTranslated {
 
         nonTranslatedList = new ArrayList<String>();
         nonTranslatedList.add("TEXAS");
+        nonTranslatedList.add("column.6.tabular");
+        nonTranslatedList.add("column.6a");
         nonTranslated_es.put("/reports/src/main/resources/com/inthinc/pro/reports/jasper/hos/i18n/violationsDetail", nonTranslatedList);
         
         nonTranslatedList = new ArrayList<String>();
@@ -802,16 +818,10 @@ public class NonTranslated {
         nonTranslatedList.add("vehiclesHeader_color");
         nonTranslatedList.add("vehicletrip_quality");
         nonTranslatedList.add("waySmartAccess");
-
-//temp
-//        nonTranslatedList.add("personHeader_driver_provider");
-//        nonTranslatedList.add("personHeader_driver_providerCellPhone");
-//        nonTranslatedList.add("ReportGroup.DRIVER_PERFORMANCE_RYG_INDIVIDUAL");
-//        nonTranslatedList.add("ReportGroup.DRIVER_PERFORMANCE_RYG_TEAM");
-//        
-//temp - END
-
-        
+        nonTranslatedList.add("VehicleDOTType.DOT");
+        nonTranslatedList.add("alertTypeHighIdleLimit");
+        nonTranslatedList.add("alertTypeLowIdleLimit");
+        nonTranslatedList.add("fuelStop_dot");
         nonTranslated_es.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
         
     }    
@@ -1176,6 +1186,15 @@ public class NonTranslated {
         nonTranslatedList.add("zonesAccess");
         nonTranslatedList.add("zones_clone");
         nonTranslatedList.add("zones_msg_title");
+        nonTranslatedList.add("IdlingSetting_minutes");
+        nonTranslatedList.add("MeasurementType.ENGLISH_editFuelStop_odometer");
+        nonTranslatedList.add("MeasurementType.ENGLISH_editFuelStop_trailerGallons");
+        nonTranslatedList.add("MeasurementType.ENGLISH_editFuelStop_truckGallons");
+        nonTranslatedList.add("fuelStop_date");
+        nonTranslatedList.add("fuelStop_dot");
+        nonTranslatedList.add("fuelStop_service");
+        nonTranslatedList.add("fuelStops_service");
+        
         
         nonTranslated_fr.put("/web/src/main/resources/com/inthinc/pro/resources/Messages", nonTranslatedList);
 

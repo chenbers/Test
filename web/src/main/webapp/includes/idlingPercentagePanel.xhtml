@@ -20,7 +20,7 @@
 			var idlingChartXML = "<chart adjustDiv='0' numDivLines='4' yAxisValueDecimals='2' bgColor='#ffffff' showBorder='0' showToolTips='1' showValues='0' showLabels='1' rotateLabels='1' slantLabels='1' connectNullData='1' SYAxisMinValue='0' SYAxisMaxValue='100' SNumberSuffix='%' showLegend='1' legendPosition='BOTTOM' legendMarkerCircle='0' legendBorderThickness='0' legendShadow='0' decimals='2' forcedecimals='1' chartLeftMargin='3' chartRightMargin='3' areaOverColumns='0' decimalSeparator='"+
 									"#{idlePercentageBean.decimalSeparator}"+
 									"' thousandSeparator='"+ "#{idlePercentageBean.thousandSeparator}"+
-									"'> <categories> <category label='   '/></categories><dataset><dataset seriesName='Idle Time' color='6b9d1b' showValues='0'> <set value='0'/></dataset><dataset seriesName='Driving Time' color='cccccc' showValues='0'><set value='0'/></dataset></dataset><lineset seriesName='% Idle' color='006600' showValues='0' ></lineset></chart>"
+									"'> <categories> <category label='   '/></categories><dataset><dataset seriesName='#{messages.idling_percentage_idling_bar_label}' color='6b9d1b' showValues='0'> <set value='0'/></dataset><dataset seriesName='#{messages.idling_percentage_driving_bar_label}' color='cccccc' showValues='0'><set value='0'/></dataset></dataset><lineset seriesName='#{messages.idling_percentage_idling_line_label}' color='006600' showValues='0' ></lineset></chart>"
 	//]]>
 			idlingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListIP}", "IdlingChartId", "#{xywidth}", "#{xyheight}", "0", "1");
 			idlingChart.setDataXML(idlingChartXML);

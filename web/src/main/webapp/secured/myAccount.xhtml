@@ -125,19 +125,19 @@
                   <tbody>
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
-                      <td width="76"><h:outputText value="#{messages.myAccount_information}" /></td>
+                      <td width="90"><h:outputText value="#{messages.myAccount_information}" /></td>
                       <c:set var="alertText" value="myAccount_alertText#{myAccountBean.info}" />
                       <td><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16"/></td>
-                      <td width="76"><h:outputText value="#{messages.myAccount_warning}" /></td>
+                      <td width="90"><h:outputText value="#{messages.myAccount_warning}" /></td>
                       <c:set var="alertText" value="myAccount_alertText#{myAccountBean.warn}" />
                       <td><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16"/></td>
-                      <td width="76"><h:outputText value="#{messages.myAccount_critical}" /></td>
+                      <td width="90"><h:outputText value="#{messages.myAccount_critical}" /></td>
                       <c:set var="alertText" value="myAccount_alertText#{myAccountBean.crit}" />
                       <td><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
@@ -170,11 +170,11 @@
                   <table width="100%" border="0" cellpadding="4" cellspacing="0">
                     <tbody>
                       <tr>
-                        <td width="100"><h:outputText value="#{messages.myAccount_priEmail}" /></td>
+                        <td width="120"><h:outputText value="#{messages.myAccount_priEmail}" /></td>
                         <td><h:outputText value="#{myAccountBean.user.person.priEmail}" /></td>
                       </tr>
                       <tr>
-                        <td width="100"><h:outputText value="#{messages.myAccount_secEmail}" /></td>
+                        <td width="120"><h:outputText value="#{messages.myAccount_secEmail}" /></td>
                         <td><h:outputText value="#{myAccountBean.user.person.secEmail}"/></td>
                       </tr>
                     </tbody>
@@ -184,11 +184,11 @@
                   <table width="100%" border="0" cellpadding="4" cellspacing="0">
                     <tbody>
                       <tr>
-                        <td width="100"><h:outputText value="#{messages.myAccount_priPhone}" /></td>
+                        <td width="120"><h:outputText value="#{messages.myAccount_priPhone}" /></td>
                         <td><h:outputText value="#{myAccountBean.user.person.priPhone}" converter="PhoneNumberConverter" /></td>
                       </tr>
                       <tr>
-                        <td width="100"><h:outputText value="#{messages.myAccount_secPhone}" /></td>
+                        <td width="120"><h:outputText value="#{messages.myAccount_secPhone}" /></td>
                         <td><h:outputText value="#{myAccountBean.user.person.secPhone}" converter="PhoneNumberConverter" /></td>
                       </tr>
                     </tbody>
@@ -198,11 +198,11 @@
                   <table width="100%" border="0" cellpadding="4" cellspacing="0">
                     <tbody>
                       <tr>
-                        <td width="100"><h:outputText value="#{messages.myAccount_priText}" /></td>
+                        <td width="120"><h:outputText value="#{messages.myAccount_priText}" /></td>
                         <td><h:outputText value="#{myAccountBean.user.person.priText}"/></td>
                       </tr>
                       <tr>
-                        <td width="100"><h:outputText value="#{messages.myAccount_secText}" /></td>
+                        <td width="120"><h:outputText value="#{messages.myAccount_secText}" /></td>
                         <td><h:outputText value="#{myAccountBean.user.person.secText}"/></td>
                       </tr>
                     </tbody>

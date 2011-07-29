@@ -7,27 +7,23 @@ import java.util.Map;
 
 public enum ScoreCategory
 {
-    CAT_1(1, "0mi", 0, 10, "FF0101", "0 - 1.0"),
-    CAT_2(2, "500mi", 11, 20, "FF6601", "1.1 - 2.0"),
-    CAT_3(3, "1,000mi", 21, 30, "F6B305", "2.1 - 3.0"),
-    CAT_4(4, "5,000mi", 31, 40, "1E88C8", "3.1 - 4.0"),
-    CAT_5(5, "10,000mi", 41, 50, "6B9D1B", "4.1 - 5.0");
+    CAT_1(1, 0, 10, "FF0101"),
+    CAT_2(2, 11, 20, "FF6601"),
+    CAT_3(3, 21, 30, "F6B305"),
+    CAT_4(4, 31, 40, "1E88C8"),
+    CAT_5(5, 41, 50, "6B9D1B");
     
-    private String description;
     private int code;
     private int min;
     private int max;
     private String color;
-    private String range;
     
-    private ScoreCategory(int code, String description, int min, int max, String color, String range)
+    private ScoreCategory(int code, int min, int max, String color)
     {
         this.code = code;
-        this.description = description;
         this.min = min;
         this.max = max;
         this.color = color;
-        this.range = range;
     }
 
     private static final Map<Integer, ScoreCategory> lookup = new HashMap<Integer, ScoreCategory>();
@@ -64,7 +60,8 @@ public enum ScoreCategory
     @Override
     public String toString()
     {
-        return this.description;
+        return this.getClass().getSimpleName()+"."+super.toString();
+
     }
 
     public int getMin()
@@ -97,14 +94,5 @@ public enum ScoreCategory
         this.color = color;
     }
 
-    public String getRange()
-    {
-        return range;
-    }
-
-    public void setRange(String range)
-    {
-        this.range = range;
-    }
 }
 

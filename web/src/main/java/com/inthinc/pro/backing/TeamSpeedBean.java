@@ -225,6 +225,7 @@ public class TeamSpeedBean extends BaseBean {
         
         // Close string
         sb.append("</chart>");
+System.out.println("bar char: " + sb.toString());        
         return sb.toString();
     }    
 

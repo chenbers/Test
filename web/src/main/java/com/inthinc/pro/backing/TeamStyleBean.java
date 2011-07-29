@@ -101,7 +101,7 @@ public class TeamStyleBean extends BaseBean {
                     else
                         valueList.add(0);
                 }
-                sb.append(bar3d.getChartDataSet(category.getRange(), category.getColor(), valueList.toArray(new Object[0])));
+                sb.append(bar3d.getChartDataSet(MessageUtil.getMessageString(category.toString(), getLocale()), category.getColor(), valueList.toArray(new Object[0])));
             }
         }
         sb.append(bar3d.getClose());

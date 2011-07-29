@@ -260,45 +260,45 @@
 
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_priEmail}" /></td>
+                            <td width="120"><h:outputText value="#{messages.editPerson_priEmail}" /></td>
                             <td><a href="mailto:#{personBean.item.priEmail}"><h:outputText value="#{personBean.item.priEmail}" /></a></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
+                            <td width="120"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
                             <td><a href="mailto:#{personBean.item.secEmail}"><h:outputText value="#{personBean.item.secEmail}" /></a></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_priText}" /></td>
+                            <td width="120"><h:outputText value="#{messages.editPerson_priText}" /></td>
                             <td><h:outputText value="#{personBean.item.priText}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_secText}" /></td>
+                            <td width="120"><h:outputText value="#{messages.editPerson_secText}" /></td>
                             <td><h:outputText value="#{personBean.item.secText}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
+                            <td width="120"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
                             <td><h:outputText value="#{personBean.item.priPhone}" converter="PhoneNumberConverter" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
+                            <td width="120"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
                             <td><h:outputText value="#{personBean.item.secPhone}" converter="PhoneNumberConverter" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:graphicImage value="/images/ico_info.png" width="16" height="16" />
+                            <td width="120"><h:graphicImage value="/images/ico_info.png" width="16" height="16" />
                             <rich:spacer width="5px"></rich:spacer>
                             <h:outputText value="#{messages.myAccount_information}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.info}" />
                             <td><h:outputText value="#{messages[alertText]}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" />
+                            <td width="120"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" />
                             <rich:spacer width="5px"></rich:spacer>
                             <h:outputText value="#{messages.myAccount_warning}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.warn}" />
                             <td><h:outputText value="#{messages[alertText]}" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" />
+                            <td width="120"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" />
                             <rich:spacer width="5px"></rich:spacer>
                             <h:outputText value="#{messages.myAccount_critical}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.crit}" />

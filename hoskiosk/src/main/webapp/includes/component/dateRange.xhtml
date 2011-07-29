@@ -31,10 +31,10 @@
 <table border="0" cellspacing="0" cellpadding="4">
 	<tr>
 		<td>								
-			<h:outputText value="#{messages.dateRange_label} " />
+			<h:outputText value="#{messages.dateRange_label}" />
 		</td>
 		<td>            									
-			<rich:calendar id="#{context}_startCalendar" inputSize="10" value="#{dateRange.startDate}" 
+			<rich:calendar id="#{context}_startCalendar" inputSize="10" value="#{dateRange.startDate}" locale="#{dateRange.locale}"
 						datePattern="#{messages.dateFormat}" timeZone="#{dateRange.timeZone}" showFooter="false">  
 				<a4j:support event="onchanged" reRender="#{reRenderList}" 
 						ajaxSingle="true" limitToList="true" 
@@ -44,7 +44,7 @@
 				
 		</td>
 		<td>
-			<rich:calendar id="#{context}_endCalendar" inputSize="10" value="#{dateRange.endDate}" 
+			<rich:calendar id="#{context}_endCalendar" inputSize="10" value="#{dateRange.endDate}" locale="#{dateRange.locale}"
 						datePattern="#{messages.dateFormat}" timeZone="#{dateRange.timeZone}" showFooter="false">
 				<a4j:support event="onchanged" reRender="#{reRenderList}" 
 						ajaxSingle="true" limitToList="true" 

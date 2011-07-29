@@ -2,6 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Score Report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -49,18 +52,18 @@
 			<rectangle radius="3">
 				<reportElement key="rectangle-2" x="0" y="465" width="535" height="171" forecolor="#999999" backcolor="#F9F6F6"/>
 			</rectangle>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-1" x="337" y="1" width="198" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{ENTITY_NAME}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-1" x="54" y="4" width="122" height="16"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["tiwiPRO - Portal"]]></textFieldExpression>
 			</textField>
 			<pieChart>
-				<chart isShowLegend="false" hyperlinkType="None" customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer">
+				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer">
 					<reportElement key="element-1" x="0" y="83" width="535" height="345"/>
 					<chartTitle/>
 					<chartSubtitle/>
@@ -75,7 +78,6 @@
 					<keyExpression><![CDATA[$F{key}]]></keyExpression>
 					<valueExpression><![CDATA[$F{value}]]></valueExpression>
 					<labelExpression><![CDATA[$F{value}.toString() + "%"]]></labelExpression>
-					<sectionHyperlink hyperlinkType="None"/>
 				</pieDataset>
 				<piePlot isCircular="true">
 					<plot backcolor="#FFFFFF" backgroundAlpha="0.0">
@@ -85,9 +87,10 @@
 						<seriesColor seriesOrder="3" color="#1E88C8"/>
 						<seriesColor seriesOrder="4" color="#6B9D1B"/>
 					</plot>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
 				</piePlot>
 			</pieChart>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-2" x="337" y="29" width="198" height="18"/>
 				<textElement textAlignment="Right">
 					<font size="10"/>
@@ -95,7 +98,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.overall.score} + " " + $P{OVERALL_SCORE}]]></textFieldExpression>
 			</textField>
 			<pieChart>
-				<chart isShowLegend="false" hyperlinkType="None" customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer">
+				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer">
 					<reportElement key="element-2" x="0" y="490" width="176" height="129"/>
 					<chartTitle/>
 					<chartSubtitle/>
@@ -110,7 +113,6 @@
 					<keyExpression><![CDATA[$F{key}]]></keyExpression>
 					<valueExpression><![CDATA[$F{value}]]></valueExpression>
 					<labelExpression><![CDATA[$F{value}.toString() + "%"]]></labelExpression>
-					<sectionHyperlink hyperlinkType="None"/>
 				</pieDataset>
 				<piePlot isCircular="true">
 					<plot backcolor="#FFFFFF" backgroundAlpha="0.0">
@@ -120,10 +122,11 @@
 						<seriesColor seriesOrder="3" color="#1E88C8"/>
 						<seriesColor seriesOrder="4" color="#6B9D1B"/>
 					</plot>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
 				</piePlot>
 			</pieChart>
 			<pieChart>
-				<chart isShowLegend="false" hyperlinkType="None" customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer">
+				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer">
 					<reportElement key="element-3" x="170" y="490" width="180" height="129"/>
 					<chartTitle/>
 					<chartSubtitle/>
@@ -138,7 +141,6 @@
 					<keyExpression><![CDATA[$F{key}]]></keyExpression>
 					<valueExpression><![CDATA[$F{value}]]></valueExpression>
 					<labelExpression><![CDATA[$F{value}.toString() + "%"]]></labelExpression>
-					<sectionHyperlink hyperlinkType="None"/>
 				</pieDataset>
 				<piePlot isCircular="true">
 					<plot backcolor="#FFFFFF" backgroundAlpha="0.0">
@@ -148,10 +150,11 @@
 						<seriesColor seriesOrder="3" color="#1E88C8"/>
 						<seriesColor seriesOrder="4" color="#6B9D1B"/>
 					</plot>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
 				</piePlot>
 			</pieChart>
 			<pieChart>
-				<chart isShowLegend="false" hyperlinkType="None" customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer">
+				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.PieChartCustomizer">
 					<reportElement key="element-4" x="350" y="490" width="185" height="129"/>
 					<chartTitle/>
 					<chartSubtitle/>
@@ -166,7 +169,6 @@
 					<keyExpression><![CDATA[$F{key}]]></keyExpression>
 					<valueExpression><![CDATA[$F{value}]]></valueExpression>
 					<labelExpression><![CDATA[$F{value}.toString() + "%"]]></labelExpression>
-					<sectionHyperlink hyperlinkType="None"/>
 				</pieDataset>
 				<piePlot isCircular="true">
 					<plot backcolor="#FFFFFF" backgroundAlpha="0.0">
@@ -176,19 +178,20 @@
 						<seriesColor seriesOrder="3" color="#1E88C8"/>
 						<seriesColor seriesOrder="4" color="#6B9D1B"/>
 					</plot>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
 				</piePlot>
 			</pieChart>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-4" x="5" y="474" width="145" height="12"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.overall.score.driving.style}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-5" x="177" y="474" width="145" height="12"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.overall.score.seatbelt}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-6" x="362" y="474" width="145" height="12"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.overall.score.speed}]]></textFieldExpression>
@@ -199,16 +202,16 @@
 			<line>
 				<reportElement key="line-2" x="350" y="465" width="1" height="171" forecolor="#999999"/>
 			</line>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-3" x="337" y="15" width="198" height="14"/>
 				<textElement textAlignment="Right" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{report.header.duration} + " " + str($P{DURATION})]]></textFieldExpression>
 			</textField>
-			<image scaleImage="RetainShape" vAlign="Top" hyperlinkType="None">
+			<image scaleImage="RetainShape" vAlign="Top">
 				<reportElement key="image-1" x="0" y="1" width="51" height="47"/>
 				<imageExpression class="java.io.InputStream"><![CDATA[$P{REPORT_LOGO}]]></imageExpression>
 			</image>
-			<textField isBlankWhenNull="false" hyperlinkType="None">
+			<textField isBlankWhenNull="false">
 				<reportElement key="textField-7" x="54" y="17" width="276" height="26"/>
 				<textElement>
 					<font size="16"/>
@@ -236,35 +239,35 @@
 			<rectangle>
 				<reportElement key="rectangle-8" x="359" y="421" width="20" height="14" forecolor="#FFFFFF" backcolor="#6B9D1B"/>
 			</rectangle>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement key="legendText-1" x="101" y="422" width="49" height="12" forecolor="#666666"/>
 				<textElement markup="styled">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.util.ReportUtil.getScoreLegendString(new Double(0.0d),new Double(1.0d),$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement key="staticText-2" x="169" y="422" width="50" height="12" forecolor="#666666"/>
 				<textElement markup="styled">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.util.ReportUtil.getScoreLegendString(new Double(1.1d),new Double(2.0d),$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement key="staticText-3" x="241" y="422" width="54" height="13" forecolor="#666666"/>
 				<textElement markup="styled">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.util.ReportUtil.getScoreLegendString(new Double(2.1d),new Double(3.0d),$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement key="staticText-4" x="309" y="422" width="55" height="12" forecolor="#666666"/>
 				<textElement markup="styled">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.util.ReportUtil.getScoreLegendString(new Double(3.1d),new Double(4.0d),$P{REPORT_LOCALE})]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement key="staticText-5" x="381" y="422" width="61" height="12" forecolor="#666666"/>
 				<textElement markup="styled">
 					<font size="10"/>
@@ -287,7 +290,7 @@
 			<line>
 				<reportElement key="line-3" x="0" y="5" width="535" height="1"/>
 			</line>
-			<textField isBlankWhenNull="true" hyperlinkType="None">
+			<textField isBlankWhenNull="true">
 				<reportElement key="textField-4" x="0" y="6" width="198" height="14"/>
 				<textElement textAlignment="Left" verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{REPORT_DATE_AS_STRING}]]></textFieldExpression>

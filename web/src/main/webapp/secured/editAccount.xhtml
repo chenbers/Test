@@ -139,7 +139,7 @@
                       </tr>
                       <tr>
                         <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
-                        <td width="76"><h:outputText value="#{messages.myAccount_information}" /></td>
+                        <td width="90"><h:outputText value="#{messages.myAccount_information}" /></td>
                         <td>
                           <h:selectOneMenu value="#{myAccountBean.user.person.info}" id="editAccount-info" style="width:250px">
                             <f:selectItems value="#{myAccountBean.alertOptions}" />
@@ -148,7 +148,7 @@
                       </tr>
                       <tr>
                         <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" /></td>
-                        <td width="76"><h:outputText value="#{messages.myAccount_warning}" /></td>
+                        <td width="90"><h:outputText value="#{messages.myAccount_warning}" /></td>
                         <td>
                           <h:selectOneMenu value="#{myAccountBean.user.person.warn}" id="editAccount-warn" style="width:250px">
                             <f:selectItems value="#{myAccountBean.alertOptions}" />
@@ -157,7 +157,7 @@
                       </tr>
                       <tr>
                         <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" /></td>
-                        <td width="76"><h:outputText value="#{messages.myAccount_critical}" /></td>
+                        <td width="90"><h:outputText value="#{messages.myAccount_critical}" /></td>
                         <td>
                           <h:selectOneMenu value="#{myAccountBean.user.person.crit}" id="editAccount-crit" style="width:250px">
                             <f:selectItems value="#{myAccountBean.alertOptions}" />
@@ -193,7 +193,7 @@
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
                       <tbody>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_priEmail}" /> <span class="required">*</span></td>
+                          <td width="120"><h:outputText value="#{messages.myAccount_priEmail}" /> <span class="required">*</span></td>
                           <td>
                             <rich:message for="editAccount-priEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-priEmail" value="#{myAccountBean.user.person.priEmail}" size="40" maxlength="62"
@@ -201,7 +201,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_secEmail}" /></td>
+                          <td width="120"><h:outputText value="#{messages.myAccount_secEmail}" /></td>
                           <td>
                             <rich:message for="editAccount-secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-secEmail" value="#{myAccountBean.user.person.secEmail}" 
@@ -215,7 +215,7 @@
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
                       <tbody>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_priPhone}" /></td>
+                          <td width="120"><h:outputText value="#{messages.myAccount_priPhone}" /></td>
                           <td>
                             <rich:message for="editAccount-priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-priPhone" value="#{myAccountBean.user.person.priPhone}" size="40" maxlength="22" onblur="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
@@ -227,7 +227,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_secPhone}" /></td>
+                          <td width="120"><h:outputText value="#{messages.myAccount_secPhone}" /></td>
                           <td>
                             <rich:message for="editAccount-secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-secPhone" value="#{myAccountBean.user.person.secPhone}" size="40" maxlength="22" onblur="populateAlertText()" validatorMessage="#{messages.myAccount_phoneFormat}" converter="PhoneNumberConverter">
@@ -245,7 +245,7 @@
                     <table width="100%" border="0" cellpadding="4" cellspacing="0">
                       <tbody>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_priText}" /></td>
+                          <td width="120"><h:outputText value="#{messages.myAccount_priText}" /></td>
                           <td>
                             <rich:message for="editAccount-priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-priText" value="#{myAccountBean.user.person.priText}" size="40" maxlength="62" onblur="populateAlertText()" >
@@ -256,7 +256,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100"><h:outputText value="#{messages.myAccount_secText}" /></td>
+                          <td width="120"><h:outputText value="#{messages.myAccount_secText}" /></td>
                           <td>
                             <rich:message for="editAccount-secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText id="editAccount-secText" value="#{myAccountBean.user.person.secText}" size="40" maxlength="62" onblur="populateAlertText()" validator="#{myAccountBean.validateEmail}">

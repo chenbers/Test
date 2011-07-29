@@ -696,7 +696,7 @@
                       <table width="380" border="0" cellspacing="2" cellpadding="4" align="center">
                         <ui:fragment rendered="#{not personBean.batchEdit}">
                         <tr>
-                          <td width="100" valign="top">
+                          <td width="120" valign="top">
                             <h:outputText value="#{messages.editPerson_priEmail}" />
                             <a4j:outputPanel id="emailRequired">
                              
@@ -712,7 +712,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
+                          <td width="120" valign="top"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
                           <td>
                             <rich:message for="editPerson-secEmail" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.secEmail}" id="editPerson-secEmail" disabled="#{!personBean.item.userEditable}" onblur="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
@@ -722,7 +722,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priText}" /></td>
+                          <td width="120" valign="top"><h:outputText value="#{messages.editPerson_priText}" /></td>
                           <td>
                             <rich:message for="editPerson-priText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.priText}" id="editPerson-priText" disabled="#{!personBean.item.userEditable}" onblur="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
@@ -735,7 +735,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secText}" /></td>
+                          <td width="120" valign="top"><h:outputText value="#{messages.editPerson_secText}" /></td>
                           <td>
                             <rich:message for="editPerson-secText" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.secText}" id="editPerson-secText" disabled="#{!personBean.item.userEditable}" onblur="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30"
@@ -747,7 +747,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_priPhone}" /></td>
+                          <td width="120" valign="top"><h:outputText value="#{messages.editPerson_priPhone}" /></td>
                           <td>
                             <rich:message for="editPerson-priPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.priPhone}" id="editPerson-priPhone" disabled="#{!personBean.item.userEditable}" onblur="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
@@ -759,7 +759,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100" valign="top"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
+                          <td width="120" valign="top"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
                           <td>
                             <rich:message for="editPerson-secPhone" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                             <h:inputText value="#{personBean.item.secPhone}" id="editPerson-secPhone" disabled="#{!personBean.item.userEditable}" onblur="populateAlertText()" onchange="checkMultiple(this)" styleClass="text" size="30" maxlength="22" validatorMessage="#{messages.editPerson_phoneFormat}" converter="PhoneNumberConverter">
@@ -775,7 +775,7 @@
                         	<td colspan="2"><rich:message for="editPerson-info" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" /></td>
                         </tr>
                         <tr>
-                          <td width="100">
+                          <td width="120">
                             <ui:include src="../../includes/admin/inputLabel.xhtml">
                                  <ui:param name="required" value="FALSE"/>
                                  <ui:param name="fieldName" value="info"/>
@@ -792,7 +792,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100">
+                          <td width="120">
                             <ui:include src="../../includes/admin/inputLabel.xhtml">
                                  <ui:param name="required" value="FALSE"/>
                                  <ui:param name="fieldName" value="warn"/>
@@ -810,7 +810,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="100">
+                          <td width="120">
                             <ui:include src="../../includes/admin/inputLabel.xhtml">
                                  <ui:param name="required" value="FALSE"/>
                                  <ui:param name="fieldName" value="crit"/>

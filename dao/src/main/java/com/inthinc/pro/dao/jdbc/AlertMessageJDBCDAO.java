@@ -40,6 +40,7 @@ import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
+import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 
 public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessageDAO{
@@ -549,6 +550,20 @@ public class AlertMessageJDBCDAO  extends GenericJDBCDAO  implements AlertMessag
                     break;
                 case ALERT_TYPE_TAMPERING:
                 case ALERT_TYPE_LOW_BATTERY:
+                    break;
+                case ALERT_TYPE_IDLING:
+                    if (!(event instanceof IdleEvent))
+                        break;
+                    int totalIdling = 0;
+                    
+                    if ( ((IdleEvent)event).getHighIdle() != null ) {
+                        totalIdling += ((IdleEvent)event).getHighIdle();
+                    }
+                    if ( ((IdleEvent)event).getLowIdle() != null ) {
+                        totalIdling += ((IdleEvent)event).getLowIdle();
+                    }
+                    parameterList.add(String.valueOf(totalIdling/60));
+                    parameterList.add(addressLookup.getAddressOrLatLng(new LatLng(event.getLatitude(), event.getLongitude())));
                     break;
                 default:
                     addAddress(event);

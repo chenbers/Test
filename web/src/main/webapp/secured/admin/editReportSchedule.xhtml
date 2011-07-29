@@ -73,7 +73,7 @@
 						<table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
 							<ui:fragment rendered="#{not reportScheduleBean.batchEdit}">
 								<tr>
-									<td width="115" valign="top"><h:outputText
+									<td width="135" valign="top"><h:outputText
 										value="#{messages.reportSchedule_name}" />
 										<h:outputText rendered="#{not reportScheduleBean.batchEdit}" styleClass="required" value=" *" />
 									</td>
@@ -84,7 +84,7 @@
 								</tr>
 							</ui:fragment>
 							<tr>
-								<td width="115" valign="top">
+								<td width="135" valign="top">
 									<ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="status"/>
@@ -103,7 +103,7 @@
 							</tr>
 							
 							<tr>
-								<td width="115" valign="top">
+								<td width="135" valign="top">
 									<ui:include src="../../includes/admin/inputLabel.xhtml">
 										<ui:param name="required" value="TRUE"/>
 										<ui:param name="reRender" value="timeOfDay"/>

@@ -19,7 +19,7 @@
 			var speedingChartXML = "<chart adjustDiv='0' numDivLines='4' yAxisValueDecimals='2' bgColor='#ffffff' showBorder='0' showToolTips='1' showValues='0' showLabels='1' rotateLabels='1' slantLabels='1' connectNullData='1' SYAxisMinValue='0' SYAxisMaxValue='100' SNumberSuffix='%' showLegend='1' legendPosition='BOTTOM' legendMarkerCircle='0' legendBorderThickness='0' legendShadow='0' decimals='2' forcedecimals='1' chartLeftMargin='3' chartRightMargin='3' areaOverColumns='0' decimalSeparator='"+
 			"#{speedPercentageBean.decimalSeparator}"+
 			"' thousandSeparator='"+ "#{speedPercentageBean.thousandSeparator}"+
-			"'> <categories> <category label='   '/> </categories><dataset><dataset seriesName='Speeding Distance' color='1e88c8' showValues='0'> <set value='0'/></dataset><dataset seriesName='Driving Distance' color='cccccc' showValues='0'> <set value='0'/></dataset></dataset><lineset seriesName='% Distance Speeding' color='000066' showValues='0' ></lineset></chart>"
+			"'> <categories> <category label='   '/> </categories><dataset><dataset seriesName='#{messages.speeding_percentage_speeding_bar_label}' color='1e88c8' showValues='0'> <set value='0'/></dataset><dataset seriesName='#{messages.speeding_percentage_distance_bar_label}' color='cccccc' showValues='0'> <set value='0'/></dataset></dataset><lineset seriesName='#{messages.speeding_percentage_speeding_line_label}' color='000066' showValues='0' ></lineset></chart>"
 //]]>
 			speedingChart = new FusionCharts("#{request.contextPath}/fusioncharts/MSStackedColumn2DLineDY.swf#{errorMessageListSP}", "SpeedChartID", "#{xywidth}", "#{xyheight}", "0", "1");
 			
