@@ -27,6 +27,7 @@ import org.junit.Test;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.service.model.BatchResponse;
 //Run locally with your localhost service running on port 8080
 @Ignore
 public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
@@ -288,5 +289,28 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
         ClientRequest deleteRequest = clientExecutor.createRequest(url+"/vehicle/"+createdVehicle.getVehicleID());
         ClientResponse<String> deleteResponse = deleteRequest.delete( String.class); //get response and automatically unmarshall to a string.
         System.out.println(deleteResponse.getStatus());
+    }
+    @Test 
+    public void createVehiclesTest() throws Exception{
+
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicles/");
+
+        String vehicle1 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137730</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+        String vehicle2 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137731</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+        String vehicle3 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137732</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+
+        request.accept("application/xml").body( MediaType.APPLICATION_XML, "<vehicles>"+vehicle1+vehicle2+vehicle3+"</vehicles>");
+        //TODO work out the generic type thing
+        ClientResponse<List<Vehicle>> response = request.post(new GenericType<List<Vehicle>>() {});
+        List<BatchResponse> vehicles = (List<BatchResponse>) response.getEntity(new GenericType<List<BatchResponse>>() {});
+        for(BatchResponse batchResponse : vehicles){
+        	//run request in the response to get vehicle ok then delete it
+        	System.out.println(batchResponse.toString());
+        	String uri = batchResponse.getUri();
+	        ClientRequest deleteRequest = clientExecutor.createRequest(uri);
+	        ClientResponse<String> deleteResponse = deleteRequest.delete( String.class); //get response and automatically unmarshall to a string.
+
+	        System.out.println(deleteResponse.getStatus());
+        }
     }
 }
