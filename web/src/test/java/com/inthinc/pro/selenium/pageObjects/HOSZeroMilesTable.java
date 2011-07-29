@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.HOSZeroMilesEnum;
 
-public class HOSZeroMiles {
+public class HOSZeroMilesTable {
     
     public HOSZeroMilesTexts _text(){
         return new HOSZeroMilesTexts();

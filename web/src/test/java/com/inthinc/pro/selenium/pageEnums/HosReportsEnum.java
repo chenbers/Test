@@ -3,6 +3,8 @@ package com.inthinc.pro.selenium.pageEnums;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 
 public enum HosReportsEnum implements SeleniumEnums {
+    
+    DEFAULT_URL("hosReports"),
 
     TITLE("HOS Reports", "//span[@class='hos']"),
     ERROR_REQUIRED_MESSAGE(null, "hosReports_form:paramsError"),

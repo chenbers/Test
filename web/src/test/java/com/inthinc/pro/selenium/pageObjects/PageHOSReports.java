@@ -14,7 +14,9 @@ public class PageHOSReports extends HOSBar {
     
 
     public PageHOSReports() {
-        // TODO Auto-generated constructor stub
+        url = HosReportsEnum.DEFAULT_URL;
+        checkMe.add(HosReportsEnum.REPORT_DROP_DOWN);
+        checkMe.add(HosReportsEnum.TITLE);
     }
     
     
@@ -178,8 +180,16 @@ public class PageHOSReports extends HOSBar {
             return new DOTTimeRemainingTable();
         }
         
-        public HOSZeroMiles _zeroMilesTable(){
-            return new HOSZeroMiles();
+        public HOSZeroMilesTable _zeroMilesTable(){
+            return new HOSZeroMilesTable();
+        }
+        
+        public HOSEditsTable _HOSEditsTable(){
+            return new HOSEditsTable();
+        }
+        
+        public NonDOTViolationsSummaryReportHTML _nonDOTViolationsSummaryReportHTML(){
+            return new NonDOTViolationsSummaryReportHTML();
         }
     }
 }
