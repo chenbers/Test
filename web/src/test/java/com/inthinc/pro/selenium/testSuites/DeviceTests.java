@@ -20,20 +20,23 @@ public class DeviceTests extends WebRallyTest {
         int vehicleID=5096;
         int deviceID=364;
         Addresses server = Addresses.QA;
-        
-        for (int i=0; i<20; i++) {
-            Map<String, Object> fwdMap = new HashMap<String, Object>();
-            fwdMap.put("cmd", 2011);
-            fwdMap.put("data", 900+i);
-            fwdMap.put("status", 1);
-            fwdMap.put("cmd", System.currentTimeMillis()/1000);
-            SiloService portalProxy = new CreateHessian().getPortalProxy(server);
-            portalProxy.queueFwdCmd(deviceID, fwdMap);
+        try{
+            for (int i=0; i<20; i++) {
+                Map<String, Object> fwdMap = new HashMap<String, Object>();
+                fwdMap.put("cmd", 2011);
+                fwdMap.put("data", 900+i);
+                fwdMap.put("status", 1);
+                fwdMap.put("cmd", System.currentTimeMillis()/1000);
+                SiloService portalProxy = new CreateHessian().getPortalProxy(server);
+                portalProxy.queueFwdCmd(deviceID, fwdMap);
+            }
+            TiwiProDevice tiwi = new TiwiProDevice(imei, server);
+            tiwi.nonTripNote(System.currentTimeMillis()/1000, 9, 8, 55.0, 55.0, 5, 5);
+            tiwi.add_location();
+            tiwi.flushNotes();
+        } catch (Exception e){
+            
         }
-        TiwiProDevice tiwi = new TiwiProDevice(imei, server);
-        tiwi.nonTripNote(System.currentTimeMillis()/1000, 9, 8, 55.0, 55.0, 5, 5);
-        tiwi.add_location();
-        tiwi.flushNotes();
     }
 
 }
