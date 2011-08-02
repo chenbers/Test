@@ -26,10 +26,6 @@ public class AutomatedTest extends MasterTest{
     
     private final SeleniumEnumWrapper webVersionID;
 
-    public static void afterClass() {
-        GlobalSelenium.dieSeleniumDie();
-    }// tear down
-    
     public AutomatedTest(){
 	webVersionID=null;
     }

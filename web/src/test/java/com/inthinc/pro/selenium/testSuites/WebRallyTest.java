@@ -1,7 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 
 import com.inthinc.pro.automation.selenium.RallyTest;
@@ -25,8 +24,4 @@ public abstract class WebRallyTest extends RallyTest{
         didTestFail();
     }
     
-    @AfterClass
-    public static void afterClass(){
-        RallyTest.afterClass();
-    }
 }
