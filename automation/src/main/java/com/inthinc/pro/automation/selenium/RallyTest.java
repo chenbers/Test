@@ -1,12 +1,11 @@
 package com.inthinc.pro.automation.selenium;
 
 import org.apache.commons.httpclient.NameValuePair;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.rally.RallyWebServices;
+import com.inthinc.pro.rally.TestCase;
 import com.inthinc.pro.rally.TestCaseResult;
 
 /****************************************************************************************
@@ -21,37 +20,23 @@ import com.inthinc.pro.rally.TestCaseResult;
  * @author larringt , dtanner
  */
 public abstract class RallyTest extends AutomatedTest {
-	private static TestCaseResult rally;
-
-	private final static String username = "dtanner@inthinc.com";
-	private final static String password = "aOURh7PL5v";
-	private final static RallyWebServices workspace = RallyWebServices.INTHINC;
+	private TestCaseResult rally;
 	
 	public RallyTest(SeleniumEnums version){
 		super(version);
 	}
 
-	public static void beforeClass() {
-		try {
-			rally = new TestCaseResult(username, password, workspace);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new NullPointerException();
-		}
-
-	}// end setup
-
 	@Override
 	public void before() {
 		super.before();
 		try {
-			rally.new_results();
+            rally = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
+			rally.newResults();
 		} catch (Exception e) {
 			e.printStackTrace();
 			skip = true;
 			throw new NullPointerException();
 		}
-
 	}
 
 	@Override
@@ -62,7 +47,7 @@ public abstract class RallyTest extends AutomatedTest {
 				//setTestSet(determineTestSet());//TODO: jwimmer: re-add this once we have created the appropriate test sets in Rally
 				rally.setBuildNumber(getBuildNumber());
 				rally.setVerdict(getTestVerdict());
-                rally.setNotes(errors);
+                rally.setNotes(determineTestSet(), errors);
                 rally.setDuration(stopTime - startTime);
 				rally.send_test_case_results();
 			} catch (Exception e) {
@@ -78,14 +63,11 @@ public abstract class RallyTest extends AutomatedTest {
 
 	public void set_test_case(String formattedID) {
 	    logger.info("set_test_case("+formattedID+")");
-		rally.setTestCase(new NameValuePair("FormattedID", formattedID));
+		rally.setTestCase(new NameValuePair(TestCase.Fields.FORMATTED_ID.toString(), formattedID));
 	}
 	
 	public String determineTestSet() {
-	    String[] configFiles = new String[] { "classpath:spring/applicationContext-automation.xml" };
-        BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
-        AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
-        
+        AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
         return "automation_"+apb.getOperatingSystem()+"_"+apb.getDefaultWebDriverName();
 	}
 }

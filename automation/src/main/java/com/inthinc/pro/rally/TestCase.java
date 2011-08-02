@@ -17,6 +17,57 @@ import org.json.JSONObject;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class TestCase {
+    
+    public static enum Fields{
+        
+        ATTACHMENTS("Attachments"),
+        AUTHOR("Author"),
+        CREATION_DATE("CreationDate"),
+        DESCRIPTION("Description"),
+        FORMATTED_ID("FormattedID"),
+        METHOD("Method"),
+        NAME("Name"),
+        NOTES("Notes"),
+        OBJECTIVE("Objective"),
+        OWNER("Owner"),
+        POST_CONDITIONS("PostConditions"),
+        PRE_CONDITIONS("PreConditions"),
+        PRIORITY("Priority"),
+        PROJECT("Project"),
+        RISK("Risk"),
+        TAGS("Tags"),
+        TEST_FOLDER("TestFolder"),
+        TYPE("Type"),
+        VALIDATION_EXPECTED_RESULTS("ValidationExpectedResults"),
+        VALIDATION_INPUT("ValidationInput"),
+        WORK_PRODUCT("WorkProduct"),
+        
+        CUSTOM(),
+        
+        ;
+
+        private String string;
+        
+        private Fields(){}
+
+        private Fields(String string) {
+            this.string = string;
+        }
+
+        public String toString() {
+            return string;
+        }
+        
+        public Fields setCustom(String fieldName){
+            if (!this.equals(Fields.CUSTOM)){
+                return this;
+            }
+            
+            string = fieldName;
+            return this;
+        }
+        
+    }
 
 	private final static Logger logger = Logger
 			.getLogger(TestCase.class);
@@ -71,9 +122,13 @@ public class TestCase {
 	}
 
 	public JSONObject getTestCase(String testCaseFormattedID) {
-		return getTestCase(
-				new NameValuePair("FormattedID", testCaseFormattedID), false);
+		return getTestCase(testCaseFormattedID, false);
 	}
+	
+	public JSONObject getTestCase(String testCaseFormattedID, boolean fullItem) {
+        return getTestCase(
+                new NameValuePair("FormattedID", testCaseFormattedID), fullItem);
+    }
 
 	public JSONObject getTestCase(NameValuePair searchParams) {
 		return getTestCase(searchParams, false);

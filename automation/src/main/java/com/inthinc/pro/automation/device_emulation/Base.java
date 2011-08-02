@@ -12,14 +12,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DeviceProperties;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.model.configurator.ProductType;
+import com.inthinc.pro.rally.RallyWebServices;
+import com.inthinc.pro.rally.TestCase;
+import com.inthinc.pro.rally.TestCaseResult;
+import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 @SuppressWarnings("unchecked")
 public abstract class Base {
@@ -77,11 +87,40 @@ public abstract class Base {
     }
     
     private Base ackFwdCmds(List<HashMap<String, Object>> reply) {
-        try {
-            assert (reply.size() <= 5);
-        } catch (AssertionError e) {
-            e.printStackTrace();
-            logger.info("The server is sending more than the 5 fwdCmd limit!!!");
+        
+        String testCase = "TC875";
+        String testSet = "TS96";
+        String byID = "FormattedID";
+        
+        TestCaseResult rally = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
+        TestCase tc = new TestCase(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
+        if (reply.size() > 5 ){
+            rally.setBuildNumber("Backend needs a build number");
+            rally.setTestCase(new NameValuePair(byID, testCase));
+            rally.setTestSet(new NameValuePair(byID, testSet));
+            rally.setVerdict(Verdicts.FAIL);
+            rally.send_test_case_results();
+        } else if (reply.size() == 5){
+            try {
+                JSONObject tca = tc.getTestCase(testCase, true);
+                String date = tca.getString("LastRun");
+                String lastVerdict = tca.getString("LastVerdict");
+                if (lastVerdict == null){
+                    lastVerdict = "";
+                }
+                AutomationCalendar today = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
+                if (date == null || !today.compareDays(date) || lastVerdict != Verdicts.PASS.toString()){
+                    logger.info("Last Test Case result: " + date);
+                    logger.info("Today is: " + today);
+                    rally.setBuildNumber("Backend needs a build number");
+                    rally.setTestCase(new NameValuePair(byID, testCase));
+                    rally.setTestSet(new NameValuePair(byID, testSet));
+                    rally.setVerdict(Verdicts.PASS);
+                    rally.send_test_case_results();
+                }
+            } catch (JSONException e) {
+                logger.fatal(StackToString.toString(e));
+            }
         }
         HashMap<String, Object> fwd = new HashMap<String, Object>();
 

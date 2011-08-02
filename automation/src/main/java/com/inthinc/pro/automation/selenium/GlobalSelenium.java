@@ -5,8 +5,6 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.utils.StackToString;
@@ -34,9 +32,7 @@ public class GlobalSelenium {
         }
         
 	    try {
-            String[] configFiles = new String[] { "classpath:spring/applicationContext-automation.xml" };
-            BeanFactory factory = new ClassPathXmlApplicationContext(configFiles);
-            AutomationPropertiesBean apb = (AutomationPropertiesBean) factory.getBean("automationPropertiesBean");
+            AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
             logger.debug(apb.getDefaultWebDriverName() + " on portal @" + apb.getBaseURL() + " with Thread: " + currentThread);
             selenium = new CoreMethodLib(apb.getDefaultWebDriver(), apb.getBaseURL());
         } catch (BeansException e) {

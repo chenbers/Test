@@ -28,7 +28,7 @@ public class HanSoloTrip extends Thread{
 		hanSolosFirstTrip();
 	}
 
-    public void hanSolosFirstTrip() {
+    private void hanSolosFirstTrip() {
         tiwi = new TiwiProDevice(IMEI, server);
 
         tiwi.set_time( initialTime +60);

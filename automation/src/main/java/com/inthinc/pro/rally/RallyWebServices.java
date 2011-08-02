@@ -17,9 +17,13 @@ public enum RallyWebServices {
 	
 	private String value, get, name;
 	private Integer id;
-	private static final int major = 1, minor = 25;
+	private static final int major = 1, minor = 26;
 	public static final String address = "rally1.rallydev.com";
 	public static final String host = "https://"+address+"/slm/webservice/"+major+"."+minor+"/";
+	
+
+    public static final String username = "dtanner@inthinc.com";
+    public static final String password = "aOURh7PL5v";
 	
 	private RallyWebServices(String value) {
 		this.name = value;

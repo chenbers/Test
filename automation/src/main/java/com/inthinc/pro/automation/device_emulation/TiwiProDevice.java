@@ -72,7 +72,7 @@ public class TiwiProDevice extends Base {
         return this;
     }
 
-    public TiwiProDevice add_note(NoteBuilder note) {
+    protected TiwiProDevice add_note(NoteBuilder note) {
         note_queue.offer(note.Package());
         check_queue();
         return this;

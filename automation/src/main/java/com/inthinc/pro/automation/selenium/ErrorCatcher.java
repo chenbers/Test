@@ -250,6 +250,7 @@ public class ErrorCatcher implements InvocationHandler {
         return temp.getVerdict();
     }
     
+    @Override
     public String toString() {
         StringWriter stringWriter = new StringWriter();
         Iterator<ErrorLevel> itrs = severity.keySet().iterator();

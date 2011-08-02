@@ -27,6 +27,26 @@ import org.json.JSONObject;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class HTTPCommands {
+    
+    public interface RallyFields{
+        
+    }
+    
+    public static enum Fields implements RallyFields{
+        WORKSPACE("Workspace"),
+        
+        ;
+
+        private String string;
+
+        private Fields(String string) {
+            this.string = string;
+        }
+
+        public String toString() {
+            return string;
+        }
+    }
 
     private final static Logger logger = Logger.getLogger(HTTPCommands.class);
 
@@ -180,14 +200,14 @@ public class HTTPCommands {
             else {
                 url = item.getString("_ref");
             }
-            logger.debug(PrettyJSON.toString(item));
-            logger.debug(url);
             JSONObject postJSON = new JSONObject();
             postJSON.put(request.getName(), item);
-
+            String content = postJSON.toString();
+            logger.debug(PrettyJSON.toString(postJSON));
+            
             PostMethod postRequest = new PostMethod(url);
             RequestEntity requestEntity = new StringRequestEntity(
-                    postJSON.toString(), "application/json", "UTF-8");
+                    content, "application/json", "UTF-8");
             postRequest.setRequestEntity(requestEntity);
 
             httpRequest(postRequest);

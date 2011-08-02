@@ -1,7 +1,5 @@
 package com.inthinc.pro.rally;
 
-import java.util.GregorianCalendar;
-
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -9,7 +7,10 @@ import org.json.JSONObject;
 
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
 import com.inthinc.pro.automation.selenium.RallyStrings;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
+import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.rally.HTTPCommands.RallyFields;
 
 /**
  * 
@@ -42,11 +43,37 @@ public class TestCaseResult {
         ERROR("Error"),
         FAIL("Fail"),
         INCONCLUSIVE("Inconclusive"),
-        PASS("Pass"), ;
+        PASS("Pass"), 
+        ;
 
         private String string;
 
         private Verdicts(String string) {
+            this.string = string;
+        }
+
+        @Override
+        public String toString() {
+            return string;
+        }
+    }
+    
+    public static enum Fields implements RallyFields{
+        ATTACHMENTS("Attachments"),
+        BUILD("Build"),
+        DATE("Date"),
+        DURATION("Duration"),
+        NOTES("Notes"),
+        TEST_CASE("TestCase"),
+        TEST_SET("TestSet"),
+        TESTER("Tester"),
+        VERDICT("Verdict"),
+        
+        ;
+
+        private String string;
+
+        private Fields(String string) {
             this.string = string;
         }
 
@@ -63,61 +90,24 @@ public class TestCaseResult {
     public TestCaseResult(String username, String password, RallyWebServices space) {
         http = new HTTPCommands(username, password);
         http.setWorkspace(space);
+        newResults();
     }
 
-    public String getBuildNumber() {
+    
+    public String getField(Fields field){
         try {
-            return testCaseResults.getString("Build");
+            return testCaseResults.getString(field.toString());
         } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-            return null;
+            logger.info(StackToString.toString(e));
         }
+        return null;
     }
 
-    public String getDate() {
-        try {
-            return testCaseResults.getString("Date");
-        } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-            return null;
-        }
-    }
 
-    public String getDuration() {
-        try {
-            return testCaseResults.getString("Duration");
-        } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-            return null;
-        }
-    }
-
-    public JSONObject getTestCase() {
-        try {
-            return testCaseResults.getJSONObject("TestCase");
-        } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-            return null;
-        }
-    }
-
-    public String getVerdict() {
-        try {
-            return testCaseResults.getString("Verdict");
-        } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-            return null;
-        }
-    }
-
-    public void new_results() {
+    public void newResults() {
         testCaseResults = new JSONObject();
-        try {
-            testCaseResults.put("WorkSpace", http.getWorkspace());
-            setDate();
-        } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-        }
+        setField(HTTPCommands.Fields.WORKSPACE, http.getWorkspace());
+        setDate();
     }
 
     /**
@@ -129,79 +119,57 @@ public class TestCaseResult {
     }
 
     public void setBuildNumber(String build) {
+        setField(Fields.BUILD, build);
+    }
+    
+    public <T> void setField(RallyFields field, T value){
         try {
-            testCaseResults.put("Build", build);
+            testCaseResults.put(field.toString(), value);
         } catch (JSONException e) {
             logger.fatal(StackToString.toString(e));
         }
     }
 
     /**
-     * Method setDate<br />
-     * <br />
-     * add the time we executed the test. This has to be an xml string, so we will convert it from a <br />
-     * date object<br />
+     * Method setDate add the time we executed the test. <br />
+     * We will grab and format the current time.
      * 
      * @param date
      */
     public void setDate() {
-        GregorianCalendar date = (GregorianCalendar) GregorianCalendar.getInstance();
-        XsdDatetimeFormat xdf = new XsdDatetimeFormat();
-        xdf.setTimeZone("MST");
-        setDate(xdf.format(date.getTime()));
+        setDate(new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT));
     }
 
-    public void setDate(String date) {
-        try {
-            testCaseResults.put("Date", date);
-        } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-        }
+    public void setDate(AutomationCalendar automationCalendar) {
+        setField(Fields.DATE, automationCalendar.toString());
     }
 
     public void setDuration(Long time) {
-        try {
-            testCaseResults.put("Duration", time);
-        } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-        }
+        setField(Fields.DURATION, time.toString());
     }
 
     public void setNotes(ErrorCatcher notes) {
         setNotes(RallyStrings.toString(notes.toString()));
     }
+    
+    public void setNotes(String box, ErrorCatcher notes) {
+        setNotes(RallyStrings.toString(box + "\n"+notes.toString()));
+    }
 
     public void setNotes(String notes) {
-        try {
-            testCaseResults.put("Notes", notes);
-        } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-        }
+        setField(Fields.NOTES, notes);
     }
 
     public void setTestCase(NameValuePair searchParams) {
         TestCase testcase = new TestCase(http);
-        try {
-            testCaseResults.put("TestCase", testcase.getTestCase(searchParams));
-        } catch (JSONException e) {
-        	logger.info("No TestCase with " + searchParams.getName() +" = " + searchParams.getValue());
-            logger.debug(StackToString.toString(e));
-        }
+        setField(Fields.TEST_CASE, testcase.getTestCase(searchParams));
     }
     
     public void setTestSet(NameValuePair searchParams){
     	TestSet testSet = new TestSet(http);
-    	try{
-    		testCaseResults.put("TestSet", testSet.getTestSet(searchParams));
-    	} catch (JSONException e) {
-    		logger.info("No TestSet with " + searchParams.getName() +" = " + searchParams.getValue());
-            logger.debug(StackToString.toString(e));
-        }
-    	
-    	
-    	
+        setField(Fields.TEST_SET, testSet.getTestSet(searchParams));
     }
-
+    
     /**
      * Method setVerdict<br />
      * <br />
@@ -211,11 +179,7 @@ public class TestCaseResult {
      * @param verdict
      */
     public void setVerdict(Verdicts verdict) {
-        try {
-            testCaseResults.put("Verdict", verdict.toString());
-        } catch (JSONException e) {
-            logger.fatal(StackToString.toString(e));
-        }
+        setField(Fields.VERDICT, verdict.toString());
     }
 
     public String toString() {
