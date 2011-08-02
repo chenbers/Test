@@ -164,6 +164,7 @@ public class EventHessianDAO extends GenericHessianDAO<Event, Integer> implement
             for (Event event : vehicleEvents)
             {
                 event.setVehicle(vehicle);
+                event.setVehicleName(vehicle.getName());
                 eventList.add(event);
             }
         }

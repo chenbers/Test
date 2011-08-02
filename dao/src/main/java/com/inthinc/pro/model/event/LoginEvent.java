@@ -3,6 +3,7 @@ package com.inthinc.pro.model.event;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
@@ -12,11 +13,9 @@ import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.model.MeasurementType;
 
-public abstract class LoginEvent extends Event implements MultipleEventTypes {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -4531758494432316834L;
+public class LoginEvent extends Event implements MultipleEventTypes {
+
+    private static final long serialVersionUID = 3218106684884060943L;
 
     private String empId;
 
@@ -30,22 +29,38 @@ public abstract class LoginEvent extends Event implements MultipleEventTypes {
         super(noteID, vehicleID, type, time, speed, odometer, latitude, longitude);
         this.setEmpId(empId);
     }
-    
-    public boolean matches(Event event) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-        for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(event.getClass())){
-            //skip class since it the events need not be the same class, skip latLng because it chokes because the filter Event does not have lat or lng values
-            if(descriptor.getName().equals("class") || descriptor.getName().equals("latLng"))
-                continue;
-            Object eventPropValue = descriptor.getReadMethod().invoke(event);
-            Object thisPropValue = descriptor.getReadMethod().invoke(this); 
-            if(eventPropValue != null && !eventPropValue.equals(thisPropValue)){
-                return false;
+    private boolean canFilterOn(String descriptorName){
+        ArrayList<String> filters = new ArrayList<String>();
+        filters.add("groupName");
+        filters.add("vehicleName");
+        filters.add("eventType");
+        return filters.contains(descriptorName);
+    }
+    public boolean matches(LoginEvent event) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+        for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(event.getClass())) {
+            if (canFilterOn(descriptor.getName())) {
+                Object eventPropValue = descriptor.getReadMethod().invoke(event);
+                Object thisPropValue = descriptor.getReadMethod().invoke(this);
+                if(eventPropValue.equals(EventType.UNKNOWN))
+                    continue;
+                if (eventPropValue != null && !eventPropValue.equals("")) {
+                    if (eventPropValue instanceof String && thisPropValue instanceof String) {
+                        if (!((String) thisPropValue).toLowerCase().startsWith(((String) eventPropValue).toLowerCase()))
+                            return false;
+                    } else {
+                        if (!eventPropValue.equals(thisPropValue))
+                            return false;
+                    }
+                }
             }
-            
         }
         return true;
     }
-
+    @Override
+    public String toString() {
+        return "LoginEvent [vehicleName=" + super.getVehicleName() + ", groupName=" + super.getGroupName() + ", eventCategory="+getEventCategory()+"]";
+    }
+    
     @Override
     public String getDetails(String formatStr, MeasurementType measurementType, String... mString) {
         String empId = "?";
