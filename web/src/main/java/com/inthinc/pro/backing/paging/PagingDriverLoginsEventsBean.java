@@ -72,14 +72,12 @@ public class PagingDriverLoginsEventsBean  extends BasePagingNotificationsBean<E
         if (totalCount == 0)
             return new ArrayList<Event>();
         
-        return getTableDataProvider().getItemsByRange(0, totalCount);
+        return getTableDataProvider().getItemsByRange(0, totalCount-1);
     }
     @Override
     protected List<EventReportItem> getReportTableData()
     {
-        logger.warn("PagingDriverLoginsEventsBean.getReportTableData was pulled wholesale from PagingEventsBean");
-        //TODO: this was pulled wholesale from PagingEventsBean
-        List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
+       List<EventReportItem> eventReportItemList = new ArrayList<EventReportItem>();
         
         List<Event> eventList = new ArrayList<Event>();
         eventList = getReportEvents();
@@ -102,6 +100,7 @@ public class PagingDriverLoginsEventsBean  extends BasePagingNotificationsBean<E
             eventReportItemList.add(new EventReportItem(event, getMeasurementType(), dateFormatStr, detailsFormatStr, (statusString == null) ? mphString : statusString, miString, LocaleBean.getCurrentLocale()));
             
         }
+        
         return eventReportItemList;
     }
 

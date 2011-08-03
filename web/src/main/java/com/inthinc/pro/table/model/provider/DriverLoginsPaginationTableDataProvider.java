@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
@@ -30,7 +32,7 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
     private GroupDAO groupDAO;
     private EventCategory eventCategory;
 
-    private List<Event> data;
+    private Set<Event> data;
     private List<Event> results;
     private boolean refreshNeeded = true;
 
@@ -38,14 +40,15 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
 
     public void loadData() {
         initStartEndDates();
-        data = eventDAO.getEventsForGroupFromVehicles(groupID, eventCategory.getNoteTypesInCategory(), startDate, endDate);
         HashMap<Integer,Group> groups = new HashMap<Integer, Group>();
+        data = new TreeSet<Event>();
         //TODO: seems like it would be better if vehicle's group name was returned via eventDAO.getEventsForGroupFromVehicles
-        for(Event e: data) {
+        for(Event e: eventDAO.getEventsForGroupFromVehicles(groupID, eventCategory.getNoteTypesInCategory(), startDate, endDate)) {
             if(!groups.containsKey(e.getVehicle().getGroupID())){
                 groups.put(e.getVehicle().getGroupID(), groupDAO.findByID(e.getVehicle().getGroupID()));
             }
             e.setGroupName(groups.get(e.getVehicle().getGroupID()).getName());
+            data.add(e);
         }
         setRefreshNeeded(false);
     }
@@ -74,32 +77,39 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
         return results.subList(firstRow, endRow+1);
     }
 
-    private List<Event> doFilter(List<Event> list, List<TableFilterField> filter) {
-        if (!hasFilter(filter))
-            return list;
+    private LoginEvent createFilterEvent(List<TableFilterField> filter) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
         LoginEvent filterEvent = new LoginEvent();
+        for (TableFilterField field : filter) {
+            for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(filterEvent.getClass())) {
+                if (field.getField().equals(descriptor.getName())) {
+
+                    Class type = descriptor.getPropertyType();
+                    Object value = null;
+                    if (field.getFilter() instanceof List<?>) {
+                        for (Object o : (List<?>) field.getFilter()) {
+                            if (o.getClass().equals(type)) {
+                                value = o;
+                            }
+                        }
+                    } else if(field.getFilter() instanceof String){
+                        value = field.getFilter();
+                    }
+                    descriptor.getWriteMethod().invoke(filterEvent, value);
+                }
+            }
+        }
+        return filterEvent;
+    }
+    private List<Event> doFilter(Set<Event> list, List<TableFilterField> filter) {
+        if(list == null)
+            return new ArrayList<Event>();
+        if (!hasFilter(filter))
+            return new ArrayList<Event>(list);
+        
         ArrayList<Event> filteredResults = new ArrayList<Event>();
         try {
             //translate TableFilterFields into the filterEvent
-            for (TableFilterField field : filter) {
-                for (final PropertyDescriptor descriptor : BeanUtils.getPropertyDescriptors(filterEvent.getClass())) {
-                    if (field.getField().equals(descriptor.getName())) {
-
-                        Class type = descriptor.getPropertyType();
-                        Object value = null;
-                        if (field.getFilter() instanceof List<?>) {
-                            for (Object o : (List<?>) field.getFilter()) {
-                                if (o.getClass().equals(type)) {
-                                    value = o;
-                                }
-                            }
-                        } else if(field.getFilter() instanceof String){
-                            value = field.getFilter();
-                        }
-                        descriptor.getWriteMethod().invoke(filterEvent, value);
-                    }
-                }
-            }
+            LoginEvent filterEvent = createFilterEvent(filter);
             //filter list to only those that match the filterEvent
             for (Event e : list) {
                 if (e instanceof LoginEvent) {

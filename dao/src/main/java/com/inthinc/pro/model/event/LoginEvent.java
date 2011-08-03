@@ -41,15 +41,17 @@ public class LoginEvent extends Event implements MultipleEventTypes {
             if (canFilterOn(descriptor.getName())) {
                 Object eventPropValue = descriptor.getReadMethod().invoke(event);
                 Object thisPropValue = descriptor.getReadMethod().invoke(this);
-                if(eventPropValue.equals(EventType.UNKNOWN))
+                if(eventPropValue != null && eventPropValue.equals(EventType.UNKNOWN)){
                     continue;
-                if (eventPropValue != null && !eventPropValue.equals("")) {
-                    if (eventPropValue instanceof String && thisPropValue instanceof String) {
-                        if (!((String) thisPropValue).toLowerCase().startsWith(((String) eventPropValue).toLowerCase()))
-                            return false;
-                    } else {
-                        if (!eventPropValue.equals(thisPropValue))
-                            return false;
+                } else {
+                    if (eventPropValue != null && !eventPropValue.equals("")) {
+                        if (eventPropValue instanceof String && thisPropValue instanceof String) {
+                            if (!((String) thisPropValue).toLowerCase().startsWith(((String) eventPropValue).toLowerCase()))
+                                return false;
+                        } else {
+                            if (!eventPropValue.equals(thisPropValue))
+                                return false;
+                        }
                     }
                 }
             }
