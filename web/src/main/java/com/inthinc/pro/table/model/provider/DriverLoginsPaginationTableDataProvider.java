@@ -19,6 +19,8 @@ import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.InvalidDriverEvent;
+import com.inthinc.pro.model.event.InvalidOccupantEvent;
 import com.inthinc.pro.model.event.LoginEvent;
 import com.inthinc.pro.model.event.ValidDriverEvent;
 import com.inthinc.pro.model.pagination.SortOrder;
@@ -52,14 +54,13 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
                 groups.put(e.getVehicle().getGroupID(), groupDAO.findByID(e.getVehicle().getGroupID()));
             }
             e.setGroupName(groups.get(e.getVehicle().getGroupID()).getName());
-            e.setDriver(driverDAO.findByID(e.getDriverID()));
+            e.setDriver(driverDAO.findByID(e.getDriverID())); 
             if(e.getDriver() != null && e.getDriver().getPerson() != null)
                 e.setDriverName(e.getDriver().getPerson().getFullName());
-            //TODO: jwimmer: populate driver with NEW driver...  if(e instanceof ValidDriverEvent) e.setDriverName(???fromidSTRING???);
-                
-            if (e.getDriverName() == null || e.getDriverName().isEmpty()) {
+            if (e instanceof InvalidOccupantEvent || e instanceof InvalidDriverEvent )               
+                e.setDriverName(MessageUtil.getMessageString("notes_general_unknown"));
+            if (e.getDriverName() == null || e.getDriverName().isEmpty()) 
                 e.setDriverName(MessageUtil.getMessageString("unknown_driver"));
-            }
             data.add(e);
         }
         setRefreshNeeded(false);
