@@ -171,7 +171,7 @@
     	</a4j:region>
 		</a4j:outputPanel>
 		<a4j:jsFunction  ajaxSingle="true" name="updateData" action="#{fuelStopsBean.checkData}" 
-           					limitToList="true" immediate="true" reRender="#{context}">
+           					limitToList="true" immediate="true" reRender="#{context},#{context}-dataTableScroller,fuelStops-table-form:header">
            	<a4j:actionparam name="vehicle" assignTo="#{fuelStopsBean.vehicleNameNow}"/>		
         </a4j:jsFunction> 
 		
