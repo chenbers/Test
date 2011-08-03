@@ -50,6 +50,8 @@ public class FuelStopsBean extends BaseBean {
 	private String vehicleName;
     private String vehicleNameNow;
 	private FuelStopView item;
+	private FuelStopView editCandidate;
+	
     UIInput truckGallonsUI;
     UIInput trailerGallonsUI;
 
@@ -524,6 +526,12 @@ public class FuelStopsBean extends BaseBean {
         }
 
     }
+	public FuelStopView getEditCandidate() {
+		return editCandidate;
+	}
+	public void setEditCandidate(FuelStopView editCandidate) {
+		this.editCandidate = editCandidate;
+	}
     
     private abstract class CRUDStrategy {
         
@@ -628,6 +636,7 @@ public class FuelStopsBean extends BaseBean {
 
         @Override
         protected void cancel() {
+        	dropData();
             item = null;
         }
         @Override
