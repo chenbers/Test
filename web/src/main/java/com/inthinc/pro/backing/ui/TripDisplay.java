@@ -77,7 +77,11 @@ public class TripDisplay implements Comparable<TripDisplay>
         dateFormatter.setTimeZone(timeZone);
         return dateFormatter.format(trip.getEndTime());
     }
-
+    public String getDateString(){
+        dateFormatter = new SimpleDateFormat(MessageUtil.getMessageString("dateFormat"));
+        dateFormatter.setTimeZone(timeZone);
+        return dateFormatter.format(trip.getEndTime());    	
+    }
     public Date getEndTime()
     {
         return trip.getEndTime();

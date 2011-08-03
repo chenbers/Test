@@ -708,9 +708,8 @@
 																		<f:facet name="header">
 																				<h:outputText value="#{messages.vehicletrip_date}" />
 																		</f:facet>
-																		<h:outputText value="#{item.endTime}" >
-                                    										<f:convertDateTime pattern="#{messages.dateFormat}" timeZone="#{vehicleTripsBean.timeZone}" />
-                                    									</h:outputText>
+																		<h:outputText value="#{item.dateString}" >
+                                     									</h:outputText>
 																		
 																</rich:column>
 
