@@ -54,6 +54,7 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     private Boolean userEnteredLocationFlag;
     private Byte noteFlags;
     private Integer stateID;
+    private Integer statusCode;
     
     public HOSRecord()
     {
@@ -367,6 +368,14 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
     public void setOriginalStatus(HOSStatus originalStatus) {
         this.originalStatus = originalStatus;
     }
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
+    }
+
     public void dump () {
         System.out.println("new HOSRecord(" +
         hosLogID + "," + 
