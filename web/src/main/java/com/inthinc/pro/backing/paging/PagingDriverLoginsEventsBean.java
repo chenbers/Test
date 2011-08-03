@@ -12,6 +12,8 @@ import com.inthinc.pro.model.EventReportItem;
 import com.inthinc.pro.model.MeasurementType;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
+import com.inthinc.pro.model.event.EventType;
+import com.inthinc.pro.model.event.LoginEvent;
 import com.inthinc.pro.model.event.StatusEvent;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableSortField;

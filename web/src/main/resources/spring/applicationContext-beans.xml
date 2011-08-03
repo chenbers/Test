@@ -604,6 +604,7 @@
   <bean id="driverLoginsPaginationTableDataProvider" class="com.inthinc.pro.table.model.provider.DriverLoginsPaginationTableDataProvider" scope="request">
     <property name="eventDAO" ref="eventDAO"></property>
     <property name="groupDAO" ref="groupDAO"></property>
+    <property name="driverDAO" ref="driverDAO"></property>
     <property name="timeFrameBean" ref="timeFrameBean" />
   </bean>
   

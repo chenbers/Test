@@ -13,15 +13,18 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 
+import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.LoginEvent;
+import com.inthinc.pro.model.event.ValidDriverEvent;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
+import com.inthinc.pro.util.MessageUtil;
 
 public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPaginationDataProvider<Event> {
 
@@ -30,6 +33,7 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
     private EventDAO eventDAO;
     private Integer groupID;
     private GroupDAO groupDAO;
+    private DriverDAO driverDAO;
     private EventCategory eventCategory;
 
     private Set<Event> data;
@@ -48,6 +52,14 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
                 groups.put(e.getVehicle().getGroupID(), groupDAO.findByID(e.getVehicle().getGroupID()));
             }
             e.setGroupName(groups.get(e.getVehicle().getGroupID()).getName());
+            e.setDriver(driverDAO.findByID(e.getDriverID()));
+            if(e.getDriver() != null && e.getDriver().getPerson() != null)
+                e.setDriverName(e.getDriver().getPerson().getFullName());
+            //TODO: jwimmer: populate driver with NEW driver...  if(e instanceof ValidDriverEvent) e.setDriverName(???fromidSTRING???);
+                
+            if (e.getDriverName() == null || e.getDriverName().isEmpty()) {
+                e.setDriverName(MessageUtil.getMessageString("unknown_driver"));
+            }
             data.add(e);
         }
         setRefreshNeeded(false);
@@ -225,6 +237,14 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
 
     public void setGroupDAO(GroupDAO groupDAO) {
         this.groupDAO = groupDAO;
+    }
+
+    public DriverDAO getDriverDAO() {
+        return driverDAO;
+    }
+
+    public void setDriverDAO(DriverDAO driverDAO) {
+        this.driverDAO = driverDAO;
     }
 
 }

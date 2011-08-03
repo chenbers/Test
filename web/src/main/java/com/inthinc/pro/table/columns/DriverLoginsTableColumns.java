@@ -12,7 +12,7 @@ public class DriverLoginsTableColumns extends EventsTableColumns {
     @Override
     public List<String> getAvailableColumns() {
         List<String> results = new ArrayList<String>(AVAILABLE_COLUMNS);
-        results.remove("driver");
+        //results.remove("driver");
         results.remove("clear");
         return results;
     }
