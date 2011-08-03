@@ -237,22 +237,20 @@
 		<ui:include src="/includes/tripBubble.xhtml">
 			<ui:param name="hiddenDivID" value="#{trip.trip.startTime}_START" />
 			<ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-			<ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
+			<ui:param name="eventDateTime" value="#{trip.startDateString}" />
 			<ui:param name="eventLocation" value="#{trip.startAddress}" />
- 	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
+ 	        <ui:param name="addressLookupAddressFormat" value="#{crashReportBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
     	 	<ui:param name="context" value="crashReportStart" />
-            <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
 		</ui:include>
 		<ui:include src="/includes/tripBubble.xhtml">
 			<ui:param name="hiddenDivID" value="#{trip.trip.endTime}_END" />
 			<ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
-			<ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
+			<ui:param name="eventDateTime" value="#{trip.endDateString}" />
 			<ui:param name="eventLocation" value="#{trip.endAddress}" />
- 	        <ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
+ 	        <ui:param name="addressLookupAddressFormat" value="#{crashReportBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
     	 	<ui:param name="context" value="crashReportEnd" />
-            <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
 		</ui:include>
 
 

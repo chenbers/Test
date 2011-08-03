@@ -29,9 +29,7 @@
 		<f:facet name="header">
 			<h:outputText value="#{bubbleTitle}" />
 		</f:facet>
-		<h:outputText value="#{eventDateTime}">
-			<f:convertDateTime timeZone="#{timeZoneObject}" pattern="#{messages.dateTimeFormat}"/>
-		</h:outputText>
+		<h:outputText value="#{eventDateTime}"/>
 		
 		<!--
 		 Format DateTime with TimeZone in bean if this include is used in ui:repeater.

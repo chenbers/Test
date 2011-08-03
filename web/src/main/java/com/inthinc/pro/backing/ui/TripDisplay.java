@@ -25,7 +25,7 @@ public class TripDisplay implements Comparable<TripDisplay>
     List<LatLng> route;
     LatLng routeLastStep;
     LatLng beginningPoint;
-    Long durationMiliSeconds;
+    Long durationMilliSeconds;
     Trip trip;
     TimeZone timeZone;
     boolean inProgress = false;
@@ -44,8 +44,8 @@ public class TripDisplay implements Comparable<TripDisplay>
         setTimeStartShort(dateFormatter.format(trip.getStartTime() ));
         setTimeEndShort(dateFormatter.format(trip.getEndTime() ));
         
-        durationMiliSeconds = trip.getEndTime().getTime() - trip.getStartTime().getTime();
-        setDuration(DateUtil.getDurationFromMilliseconds(durationMiliSeconds));
+        durationMilliSeconds = trip.getEndTime().getTime() - trip.getStartTime().getTime();
+        setDuration(DateUtil.getDurationFromMilliseconds(durationMilliSeconds));
         
         setDistance(trip.getMileage() / 100D);
         
@@ -180,20 +180,25 @@ public class TripDisplay implements Comparable<TripDisplay>
         this.routeLastStep = routeLastStep;
     }
     
-    public Long getDurationMiliSeconds()
+    public Long getDurationMilliSeconds()
     {
-        return durationMiliSeconds;
+        return durationMilliSeconds;
     }
 
-    public void setDurationMiliSeconds(Long durationMiliSeconds)
+    public void setDurationMilliSeconds(Long durationMilliSeconds)
     {
-        this.durationMiliSeconds = durationMiliSeconds;
+        this.durationMilliSeconds = durationMilliSeconds;
     }
 
+    public String getTimeZoneID()
+    {
+        return timeZone.getID();
+    }
     public TimeZone getTimeZone()
     {
         return timeZone;
     }
+
 
     public void setTimeZone(TimeZone timeZone)
     {

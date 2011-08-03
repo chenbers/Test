@@ -329,32 +329,29 @@
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="tripStartBubble" />
                     <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-                    <ui:param name="eventDateTime" value="#{trip.trip.startTime}" />
+                    <ui:param name="eventDateTime" value="#{trip.startDateString}" />
                     <ui:param name="eventLocation" value="#{trip.startAddress}" />
         			<ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
            			<ui:param name="tripBubbleAddress" value="tripStartAddress"/>
  					<ui:param name="context" value="driverTripsStart" />
-                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="tripEndBubble" />
                     <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
-                    <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
+                    <ui:param name="eventDateTime" value="#{trip.endDateString}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
          			<ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
            			<ui:param name="tripBubbleAddress" value="tripEndAddress"/>
   					<ui:param name="context" value="driverTripsEnd" />
-                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
                 </ui:include>
                 <ui:include src="/includes/tripBubble.xhtml">
                     <ui:param name="hiddenDivID" value="tripInProgressBubble" />
                     <ui:param name="bubbleTitle" value="#{messages.TRIP_INPROGRESS}" />
-                    <ui:param name="eventDateTime" value="#{trip.trip.endTime}" />
+                    <ui:param name="eventDateTime" value="#{trip.endDateString}" />
                     <ui:param name="eventLocation" value="#{trip.endAddress}" />
         			<ui:param name="addressLookupAddressFormat" value="#{driverTripsBean.addressFormat}"/>
           			<ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
  					<ui:param name="context" value="driverTripsInProgress" />
-                    <ui:param name="timeZoneObject" value="#{driverTripsBean.timeZone}" />
                 </ui:include>
 		</rich:panel>
 		</rich:panel>

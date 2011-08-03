@@ -134,28 +134,26 @@
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripStartBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_START}" />
-            <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.startTime}" />
+            <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.startDateString}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.startAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripStartAddress"/>
  			<ui:param name="context" value="driverPerformanceStart" />
-            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
 	</ui:include>
 	
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripEndBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_END}" />
-            <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.endTime}" />
+            <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.endDateString}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.endAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripEndAddress"/>
  			<ui:param name="context" value="driverPerformanceEnd" />
-            <ui:param name="timeZoneObject" value="#{driverPerformanceBean.driver.person.timeZone}" />
 	</ui:include>
 	<ui:include src="/includes/tripBubble.xhtml">
             <ui:param name="hiddenDivID" value="tripInProgessBubble" />
             <ui:param name="bubbleTitle" value="#{messages.TRIP_INPROGRESS}" />
-            <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.trip.endTime}" />
+            <ui:param name="eventDateTime" value="#{driverPerformanceBean.lastTrip.endDateString}" />
             <ui:param name="eventLocation" value="#{driverPerformanceBean.lastTrip.endAddress}" />
  	        <ui:param name="addressLookupAddressFormat" value="#{driverPerformanceBean.addressFormat}"/>
             <ui:param name="tripBubbleAddress" value="tripInProgressAddress"/>
