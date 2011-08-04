@@ -15,6 +15,8 @@ public enum FuelStopsEditEnum implements SeleniumEnums {
     
     TRAILER_FIELD("Trailer:", "edit-form:editfuelStop_trailer"),
     
+    
+    BOTH_FUEL_FIELD(null, "edit-form:editFuelStop_bothFuelFields"),
     VEHICLE_FUEL_FIELD("Vehicle Fuel:", "edit-form:editfuelStop_truckGallons"),
     TRAILER_FUEL_FIELD("Trailer Fuel:", "edit-form:editfuelStop_trailerGallons"),
     

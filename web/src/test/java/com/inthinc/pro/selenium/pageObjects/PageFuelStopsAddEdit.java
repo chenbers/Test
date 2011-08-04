@@ -30,6 +30,10 @@ public class PageFuelStopsAddEdit extends HOSBar {
             return new Text(FuelStopsEditEnum.VEHICLE);
         }
         
+        public Text errorBothVehicleAndTrailerFuel(){
+            return new TextFieldError(FuelStopsEditEnum.BOTH_FUEL_FIELD);
+        }
+        
         public Text errorVehicleFuel(){
             return new TextFieldError(FuelStopsEditEnum.VEHICLE_FUEL_FIELD);
         }
