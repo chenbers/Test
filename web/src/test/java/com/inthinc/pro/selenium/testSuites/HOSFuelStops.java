@@ -261,7 +261,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._link().hosFuelStops().click();
     
         //1. Get vehicle and click on Add
-        myFuelStops._textField().vehicle().type("108406");
+        myFuelStops._textField().vehicle().type("10840");
         myFuelStops._textField().vehicle().getSuggestion("108406").click();
         pause(5,"");
         myFuelStops._button().add().click();
@@ -275,6 +275,8 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._button().topSave().click();
         
         //3. validate error message.
+        myFuelStopsAddEdit._text().errorMaster().validate("3 error(s) occurred. Please verify all the data entered is correct.");
+        myFuelStopsAddEdit._text().errorBothVehicleAndTrailerFuel().validate("Vehicle or Trailer fuel required.");
         myFuelStopsAddEdit._text().errorVehicleFuel().validate("Must be a number greater than zero");
         myFuelStopsAddEdit._text().errorTrailerFuel().validate("Must be a number greater than zero");
         myFuelStopsAddEdit._button().bottomCancel().click();
@@ -290,6 +292,8 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._button().topSave().click();
                      
         //5. validate error message.
+        myFuelStopsAddEdit._text().errorMaster().validate("3 error(s) occurred. Please verify all the data entered is correct.");
+        myFuelStopsAddEdit._text().errorBothVehicleAndTrailerFuel().validate("Vehicle or Trailer fuel required.");
         myFuelStopsAddEdit._text().errorVehicleFuel().validate("Must be a number greater than zero");
         myFuelStopsAddEdit._text().errorTrailerFuel().validate("Must be a number greater than zero");
         myFuelStopsAddEdit._button().bottomCancel().click();
@@ -305,6 +309,8 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._button().topSave().click();
         
         //7. validate error message.
+        myFuelStopsAddEdit._text().errorMaster().validate("3 error(s) occurred. Please verify all the data entered is correct.");
+        myFuelStopsAddEdit._text().errorBothVehicleAndTrailerFuel().validate("Vehicle or Trailer fuel required.");
         myFuelStopsAddEdit._text().errorVehicleFuel().validate("Must be a number greater than zero");
         myFuelStopsAddEdit._text().errorTrailerFuel().validate("Must be a number greater than zero");
         myFuelStopsAddEdit._button().bottomCancel().click();
@@ -321,6 +327,8 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._button().topSave().click();
         
         //8. validate error message.
+        myFuelStopsAddEdit._text().errorMaster().validate("3 error(s) occurred. Please verify all the data entered is correct.");
+        myFuelStopsAddEdit._text().errorBothVehicleAndTrailerFuel().validate("Vehicle or Trailer fuel required.");
         myFuelStopsAddEdit._text().errorVehicleFuel().validate("Must be a number greater than zero");
         myFuelStopsAddEdit._text().errorTrailerFuel().validate("Must be a number greater than zero");
         myFuelStopsAddEdit._button().bottomCancel().click();
