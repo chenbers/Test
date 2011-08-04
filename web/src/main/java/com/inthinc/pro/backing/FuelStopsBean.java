@@ -410,7 +410,7 @@ public class FuelStopsBean extends BaseBean {
 		String invalidTruckAndTrailerFuelCombinationMessageKey = "fuelStop_truckAndTrailerFuelInvalid";
 		if(trailerSet() && bothTruckAndTrailerGallonsInvalid()){
 			((UIInput)truckGallonsUI).setValid(false);
-            addMessageForField(invalidTruckAndTrailerFuelCombinationMessageKey,getTruckGallonsUI().getClientId(context), FacesMessage.SEVERITY_ERROR); 
+            addMessageForField(invalidTruckAndTrailerFuelCombinationMessageKey,"edit-form:editFuelStop_bothFuelFields", FacesMessage.SEVERITY_ERROR); 
 		}
 	}
 	private boolean trailerSet(){
