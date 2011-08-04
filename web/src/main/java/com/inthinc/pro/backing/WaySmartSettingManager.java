@@ -11,6 +11,7 @@ import com.inthinc.pro.model.app.SensitivitySliders;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.configurator.SettingType;
 import com.inthinc.pro.model.configurator.VehicleSetting;
+import com.inthinc.pro.util.Encrypt;
 
 public class WaySmartSettingManager extends VehicleSettingManager {
 
@@ -21,7 +22,8 @@ public class WaySmartSettingManager extends VehicleSettingManager {
     private static final double DEFAULT_SPEED_LIMIT = 75.0;
     private static final double DEFAULT_SPEED_BUFFER = 2.0;
     private static final double DEFAULT_SEVERE_SPEED = 20.0;
-    
+    private static final String WIRELINE_KILL_MOTOR_PASSCODE_PREFIX = "90";
+    private static final String WIRELINE_DOOR_ALARM_PASSCODE_PREFIX = "75";
 
     public WaySmartSettingManager(ConfiguratorDAO configuratorDAO, SensitivitySliders sensitivitySliders,
             ProductType productType, VehicleSetting vehicleSetting) {
@@ -66,8 +68,8 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 
         adjustCountsForCustomValues(hardAcceleration, hardBrake, hardTurn, hardVertical);
         
-        String  doorAlarmPasscode = vs.getCombined(SettingType.WIRELINE_DOOR_ALARM_PASSCODE.getSettingID());
-        String  killMotorPasscode = vs.getCombined(SettingType.WIRELINE_KILL_MOTOR_PASSCODE.getSettingID());
+        String  doorAlarmPasscode = decryptPasscode(vs.getCombined(SettingType.WIRELINE_DOOR_ALARM_PASSCODE.getSettingID()));
+        String  killMotorPasscode = decryptPasscode(vs.getCombined(SettingType.WIRELINE_KILL_MOTOR_PASSCODE.getSettingID()));
         Integer autoArmTime = NumberUtil.convertString(vs.getCombined(SettingType.WIRELINE_AUTO_ARM_TIME.getSettingID()));
         Integer dotVehicleType = NumberUtil.convertString(vs.getCombined(SettingType.DOT_VEHICLE_TYPE.getSettingID()));
 
@@ -76,7 +78,15 @@ public class WaySmartSettingManager extends VehicleSettingManager {
                                           hardAcceleration, hardBrake, hardTurn,hardVertical,
                                           doorAlarmPasscode, killMotorPasscode, autoArmTime, dotVehicleType);
     }
-    
+    private String decryptPasscode(String passcode){
+    	if ((passcode != null) && (passcode.length()>=2)){
+	    	String decryptedPasscode = Encrypt.decrypt(passcode);
+	    	//Strip prepended characters
+	    	decryptedPasscode = decryptedPasscode.substring(2);
+	    	return decryptedPasscode;
+    	}
+    	return passcode;
+    }
     
     // TODO: is there a difference between evaluateChangedSettings and evaluateSettings() ??
     
@@ -111,10 +121,10 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 
 	        
             changedSettings.addSettingIfNeeded(SettingType.WIRELINE_KILL_MOTOR_PASSCODE,
-                    ""+waySmartEditableVehicleSettings.getKillMotorPasscode(), 
+                    encryptPasscode(waySmartEditableVehicleSettings.getKillMotorPasscode(),WIRELINE_KILL_MOTOR_PASSCODE_PREFIX), 
                     vehicleSetting.getCombined(SettingType.WIRELINE_KILL_MOTOR_PASSCODE.getSettingID()));
             changedSettings.addSettingIfNeeded(SettingType.WIRELINE_DOOR_ALARM_PASSCODE,
-                    ""+waySmartEditableVehicleSettings.getDoorAlarmPasscode(), 
+            		encryptPasscode(waySmartEditableVehicleSettings.getDoorAlarmPasscode(),WIRELINE_DOOR_ALARM_PASSCODE_PREFIX), 
                     vehicleSetting.getCombined(SettingType.WIRELINE_DOOR_ALARM_PASSCODE.getSettingID()));
             changedSettings.addSettingIfNeeded(SettingType.WIRELINE_AUTO_ARM_TIME,
                     ""+waySmartEditableVehicleSettings.getAutoArmTime(), 
@@ -162,10 +172,10 @@ public class WaySmartSettingManager extends VehicleSettingManager {
 	        getSliderValuesForHardTurn(newSettings,waySmartEditableVehicleSettings);
 	        
 	        newSettings.addSettingIfNeeded(SettingType.WIRELINE_KILL_MOTOR_PASSCODE,
-                    ""+waySmartEditableVehicleSettings.getKillMotorPasscode(), 
+                    encryptPasscode(waySmartEditableVehicleSettings.getKillMotorPasscode(),WIRELINE_KILL_MOTOR_PASSCODE_PREFIX), 
                     vehicleSetting.getCombined(SettingType.WIRELINE_KILL_MOTOR_PASSCODE.getSettingID()));
 	        newSettings.addSettingIfNeeded(SettingType.WIRELINE_DOOR_ALARM_PASSCODE,
-                    ""+waySmartEditableVehicleSettings.getDoorAlarmPasscode(), 
+            		encryptPasscode(waySmartEditableVehicleSettings.getDoorAlarmPasscode(),WIRELINE_DOOR_ALARM_PASSCODE_PREFIX), 
                     vehicleSetting.getCombined(SettingType.WIRELINE_DOOR_ALARM_PASSCODE.getSettingID()));
 	        newSettings.addSettingIfNeeded(SettingType.WIRELINE_AUTO_ARM_TIME,
                     ""+waySmartEditableVehicleSettings.getAutoArmTime(), 
@@ -229,7 +239,13 @@ public class WaySmartSettingManager extends VehicleSettingManager {
         desiredSettings.addSettingIfNeeded(SettingType.DVX, 
 	                                       hardBrake.get(SettingType.DVX.getSettingID()), 
 	                                       vehicleSetting.getCombined(SettingType.DVX.getSettingID()));
-     }
+    }
+    private String encryptPasscode(String passcode, String prepend){
+    	if (passcode != null) {
+    		return Encrypt.encrypt(prepend + passcode);
+    	}
+    	return passcode;
+    }
     private VehicleSetting createVehicleSetting(Integer vehicleID){
         
         VehicleSetting vehicleSetting = new VehicleSetting();
