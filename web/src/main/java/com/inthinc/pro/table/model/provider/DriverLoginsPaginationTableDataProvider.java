@@ -57,10 +57,15 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
             e.setDriver(driverDAO.findByID(e.getDriverID())); 
             if(e.getDriver() != null && e.getDriver().getPerson() != null)
                 e.setDriverName(e.getDriver().getPerson().getFullName());
-            if (e instanceof InvalidOccupantEvent || e instanceof InvalidDriverEvent )               
+            if (e instanceof InvalidOccupantEvent || e instanceof InvalidDriverEvent )   {
+                //ignore driver(Name/ID) from note, the OCCUPANT is "Unknown"
                 e.setDriverName(MessageUtil.getMessageString("notes_general_unknown"));
-            if (e.getDriverName() == null || e.getDriverName().isEmpty()) 
+                e.setDriverID(null);
+            }
+            if (e.getDriverName() == null || e.getDriverName().isEmpty()) {
                 e.setDriverName(MessageUtil.getMessageString("unknown_driver"));
+                e.setDriverID(null);
+            }
             data.add(e);
         }
         setRefreshNeeded(false);
