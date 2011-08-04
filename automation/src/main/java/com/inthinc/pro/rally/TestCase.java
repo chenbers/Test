@@ -20,44 +20,50 @@ public class TestCase {
     
     public static enum Fields{
         
-        ATTACHMENTS("Attachments"),
-        AUTHOR("Author"),
-        CREATION_DATE("CreationDate"),
-        DESCRIPTION("Description"),
-        FORMATTED_ID("FormattedID"),
-        METHOD("Method"),
-        NAME("Name"),
-        NOTES("Notes"),
-        OBJECTIVE("Objective"),
-        OWNER("Owner"),
-        POST_CONDITIONS("PostConditions"),
-        PRE_CONDITIONS("PreConditions"),
-        PRIORITY("Priority"),
-        PROJECT("Project"),
-        RISK("Risk"),
-        TAGS("Tags"),
-        TEST_FOLDER("TestFolder"),
-        TYPE("Type"),
-        VALIDATION_EXPECTED_RESULTS("ValidationExpectedResults"),
-        VALIDATION_INPUT("ValidationInput"),
-        WORK_PRODUCT("WorkProduct"),
+        ATTACHMENTS("Attachments", false),
+        AUTHOR("Author", true), /* Required */
+        CREATION_DATE("CreationDate", false),
+        DESCRIPTION("Description", false),
+        FORMATTED_ID("FormattedID", true), /* Required */
+        METHOD("Method", true), /* Required */
+        NAME("Name", true), /* Required */
+        NOTES("Notes", false),
+        OBJECTIVE("Objective", false),
+        OWNER("Owner", false),
+        POST_CONDITIONS("PostConditions", false),
+        PRE_CONDITIONS("PreConditions", false),
+        PRIORITY("Priority", false),
+        PROJECT("Project", true), /* Required */
+        RISK("Risk", false),
+        TAGS("Tags", false),
+        TEST_FOLDER("TestFolder", false),
+        TYPE("Type", true), /* Required */
+        VALIDATION_EXPECTED_RESULTS("ValidationExpectedResults", false),
+        VALIDATION_INPUT("ValidationInput", false),
+        WORK_PRODUCT("WorkProduct", false),
+        WORKSPACE("Workspace", true),
         
         CUSTOM(),
         
         ;
 
         private String string;
+        private boolean required;
         
         private Fields(){}
 
-        private Fields(String string) {
+        private Fields(String string, boolean required) {
             this.string = string;
+            this.required = required;
+        }
+        
+        public boolean required(){
+            return required;
         }
 
         public String toString() {
             return string;
         }
-        
         public Fields setCustom(String fieldName){
             if (!this.equals(Fields.CUSTOM)){
                 return this;

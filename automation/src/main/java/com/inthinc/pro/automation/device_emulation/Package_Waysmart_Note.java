@@ -50,7 +50,7 @@ public class Package_Waysmart_Note implements NoteBuilder {
         sendNote.setArgs("longitude", lng);
     }
 
-    public void setVehicleID(int vehicleID) {
+    public void setVehicleID(String vehicleID) {
         sendNote.setArgs("vehicle_id", vehicleID);
     }
 

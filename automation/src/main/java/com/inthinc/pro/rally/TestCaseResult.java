@@ -1,5 +1,7 @@
 package com.inthinc.pro.rally;
 
+import java.util.EnumSet;
+
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
@@ -39,11 +41,11 @@ import com.inthinc.pro.rally.HTTPCommands.RallyFields;
 public class TestCaseResult {
 
     public static enum Verdicts {
-        BLOCKED("Blocked"),
-        ERROR("Error"),
-        FAIL("Fail"),
-        INCONCLUSIVE("Inconclusive"),
-        PASS("Pass"), 
+    BLOCKED("Blocked"),
+    ERROR("Error"),
+    FAIL("Fail"),
+    INCONCLUSIVE("Inconclusive"),
+    PASS("Pass"), 
         ;
 
         private String string;
@@ -59,22 +61,29 @@ public class TestCaseResult {
     }
     
     public static enum Fields implements RallyFields{
-        ATTACHMENTS("Attachments"),
-        BUILD("Build"),
-        DATE("Date"),
-        DURATION("Duration"),
-        NOTES("Notes"),
-        TEST_CASE("TestCase"),
-        TEST_SET("TestSet"),
-        TESTER("Tester"),
-        VERDICT("Verdict"),
+        ATTACHMENTS("Attachments", false),
+        BUILD("Build", true), /* Required */
+        DATE("Date", true), /* Required */
+        DURATION("Duration", false),
+        NOTES("Notes", false),
+        TEST_CASE("TestCase", true), /* Required */
+        TEST_SET("TestSet", false),
+        TESTER("Tester", false),
+        VERDICT("Verdict", true), /* Required */
+        WORKSPACE("Workspace", true), /* Required */
         
         ;
 
         private String string;
+        private boolean required;
 
-        private Fields(String string) {
+        private Fields(String string, boolean required) {
             this.string = string;
+            this.required = required;
+        }
+        
+        public boolean required(){
+            return required;
         }
 
         public String toString() {
@@ -106,7 +115,7 @@ public class TestCaseResult {
 
     public void newResults() {
         testCaseResults = new JSONObject();
-        setField(HTTPCommands.Fields.WORKSPACE, http.getWorkspace());
+        setField(Fields.WORKSPACE, http.getWorkspace());
         setDate();
     }
 
@@ -115,7 +124,22 @@ public class TestCaseResult {
      * Send the created testCaseResults to Rally
      */
     public void send_test_case_results() {
-        http.postObjects(RallyWebServices.TEST_CASE_RESULTS, testCaseResults, true);
+        Fields fieldFailed = null;
+        try{
+            for (Fields field : EnumSet.allOf(Fields.class)){
+                fieldFailed = field;
+                if (field.required()){
+                    testCaseResults.get(field.toString());
+                }
+            }
+            http.postObjects(RallyWebServices.TEST_CASE_RESULTS, testCaseResults, true);    
+        } catch(JSONException e){
+            logger.debug("The " + fieldFailed + " is missing from the test case results.");
+            logger.debug(PrettyJSON.toString(testCaseResults));
+            logger.debug(StackToString.toString(e));
+            
+        }
+        
     }
 
     public void setBuildNumber(String build) {

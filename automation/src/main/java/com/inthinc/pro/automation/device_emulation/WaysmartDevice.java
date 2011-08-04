@@ -28,7 +28,7 @@ public class WaysmartDevice extends Base {
 
     private int companyID;
 
-    private int vehicleID;
+    private String vehicleID;
     private long waysOdometer;
     private int state;
     
@@ -86,7 +86,7 @@ public class WaysmartDevice extends Base {
 	    logger.debug(sendNote(construct_note(Ways_SAT_EVENT.SAT_EVENT_IGNITION_ON, direction)));
 	}
 	
-	public WaysmartDevice addInstallEvent(int vehicleID, int accountID){
+	public WaysmartDevice addInstallEvent(String vehicleID, int accountID){
 	    this.setVehicleID(vehicleID);
 	    this.setAccountID(accountID);
 	    this.setCompanyID(accountID);
@@ -147,7 +147,7 @@ public class WaysmartDevice extends Base {
         return state;
     }
 	
-	public int getVehicleID() {
+	public String getVehicleID() {
         return vehicleID;
     }
 	
@@ -262,7 +262,7 @@ public class WaysmartDevice extends Base {
         this.state = state;
     }
 
-    public void setVehicleID(int vehicleID) {
+    public void setVehicleID(String vehicleID) {
         this.vehicleID = vehicleID;
     }
 

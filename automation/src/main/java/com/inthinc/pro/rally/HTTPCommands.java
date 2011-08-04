@@ -32,22 +32,6 @@ public class HTTPCommands {
         
     }
     
-    public static enum Fields implements RallyFields{
-        WORKSPACE("Workspace"),
-        
-        ;
-
-        private String string;
-
-        private Fields(String string) {
-            this.string = string;
-        }
-
-        public String toString() {
-            return string;
-        }
-    }
-
     private final static Logger logger = Logger.getLogger(HTTPCommands.class);
 
     private HttpClient httpClient;
