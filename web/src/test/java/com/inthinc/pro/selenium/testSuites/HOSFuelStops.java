@@ -427,22 +427,21 @@ public class HOSFuelStops extends WebRallyTest {
         //1. Get vehicle and click on Add
         myFuelStops._textField().vehicle().type("108406");
         myFuelStops._textField().vehicle().getSuggestion("108406").click();
-        myFuelStops._button().add().click();
-        
+              
         //2. Verify Edit Link is available for current date range
         myFuelStops._link().valueEdit().row(1).validateClickable(true);
         
         //3. Change date range to be outside the IFTA Aggregation
         AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
         calendar.addToDay(-25);
-                
         myFuelStops._textField().dateStop().type(calendar);
+        myFuelStops._button().refresh().click();                
         
         calendar.addToDay(-10);
-        
         myFuelStops._textField().dateStart().type(calendar);
+        myFuelStops._button().refresh().click();
         
-        
+              
         //4. Verify Edit Link is not clickable
         myFuelStops._link().valueEdit().row(1).validateClickable(false);
         
