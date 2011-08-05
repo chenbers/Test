@@ -51,6 +51,9 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     private Driver driver;
 
     private Integer driverID;
+    
+    //The driverID that the device has and sent back in the attrMap as {227 = {deviceDriverID}}
+    private Integer deviceDriverID;
 
     @Column(updateable = false)
     private String addressStr;
@@ -246,8 +249,16 @@ public class Event extends BaseEntity implements Comparable<Event>, Serializable
     public void setDriverID(Integer driverID) {
         this.driverID = driverID;
     }
+        
+    public Integer getDeviceDriverID() {
+		return deviceDriverID;
+	}
 
-    @XmlElement
+	public void setDeviceDriverID(Integer deviceDriverID) {
+		this.deviceDriverID = deviceDriverID;
+	}
+
+	@XmlElement
     public EventCategory getEventCategory() {
         return EventCategory.getCategoryForEventType(getEventType());
     }

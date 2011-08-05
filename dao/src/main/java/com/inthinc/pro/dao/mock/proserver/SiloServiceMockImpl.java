@@ -1503,4 +1503,11 @@ public class SiloServiceMockImpl extends AbstractServiceMockImpl implements Silo
         return null;
     }
 
+	@Override
+	public Map<String, Object> getPersonByEmpid(Integer empID)
+			throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

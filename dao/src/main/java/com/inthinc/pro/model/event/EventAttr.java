@@ -67,7 +67,8 @@ public class EventAttr
         mapping.put(223, "RFID1");
         mapping.put(224, "MPGOdometer");
         mapping.put(225, "tripDuration");
-        mapping.put(227, "driverID");
+//        mapping.put(227, "driverID");
+        mapping.put(227, "deviceDriverID");
         mapping.put(228, "totalAGPSBytes");
 
         // Attribute Id (255) has a stringId byte,  followed by a null terminate string.

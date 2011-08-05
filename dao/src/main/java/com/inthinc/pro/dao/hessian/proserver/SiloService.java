@@ -105,6 +105,8 @@ public interface SiloService extends HessianService
     Map<String, Object> getDriver(Integer driverID) throws ProDAOException;
 
     Map<String, Object> getDriverByPersonID(Integer personID) throws ProDAOException;
+    
+    Map<String, Object> getPersonByEmpid(Integer empID) throws ProDAOException;
 
     Map<String, Object> updateDriver(Integer driverID, Map<String, Object> driverMap) throws ProDAOException;
 

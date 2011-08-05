@@ -593,7 +593,7 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
 
-    @Override
+	@Override
     @MethodDescription(description = "Fetch a user by its associated personID.", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.User.class)
     public Map<String, Object> getUserByPersonID(@DaoParam(name = "personID", validator=ValidatorType.PERSON) Integer personID) throws ProDAOException {
         return null;
@@ -1148,4 +1148,10 @@ public class SiloServiceImpl implements SiloService {
         // TODO Auto-generated method stub
         return null;
     }
+    @Override
+    @MethodDescription(description = "Fetch a driver by its associated empID", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Driver.class)
+	public Map<String, Object> getPersonByEmpid(@DaoParam(name = "empID") Integer empID) throws ProDAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
