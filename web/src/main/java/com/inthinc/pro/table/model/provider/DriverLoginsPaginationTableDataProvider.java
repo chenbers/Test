@@ -16,17 +16,21 @@ import org.springframework.beans.BeanUtils;
 import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
+import com.inthinc.pro.dao.PersonDAO;
 import com.inthinc.pro.model.Group;
+import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.event.Event;
 import com.inthinc.pro.model.event.EventCategory;
 import com.inthinc.pro.model.event.InvalidDriverEvent;
 import com.inthinc.pro.model.event.InvalidOccupantEvent;
 import com.inthinc.pro.model.event.LoginEvent;
 import com.inthinc.pro.model.event.ValidDriverEvent;
+import com.inthinc.pro.model.event.ValidOccupantEvent;
 import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.util.MessageUtil;
+import com.sun.mail.mbox.NewlineOutputStream;
 
 public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPaginationDataProvider<Event> {
 
@@ -36,6 +40,7 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
     private Integer groupID;
     private GroupDAO groupDAO;
     private DriverDAO driverDAO;
+    private PersonDAO personDAO;
     private EventCategory eventCategory;
 
     private Set<Event> data;
@@ -54,14 +59,22 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
                 groups.put(e.getVehicle().getGroupID(), groupDAO.findByID(e.getVehicle().getGroupID()));
             }
             e.setGroupName(groups.get(e.getVehicle().getGroupID()).getName());
-            e.setDriver(driverDAO.findByID(e.getDriverID())); 
-            if(e.getDriver() != null && e.getDriver().getPerson() != null)
-                e.setDriverName(e.getDriver().getPerson().getFullName());
-            if (e instanceof InvalidOccupantEvent || e instanceof InvalidDriverEvent )   {
-                //ignore driver(Name/ID) from note, the OCCUPANT is "Unknown"
+            
+            if(e instanceof ValidDriverEvent) {
+                e.setDriver(driverDAO.findByID(e.getDriverID())); 
+            } else if(e instanceof ValidOccupantEvent) {
+                Person occupant = personDAO.findByEmpID(((ValidOccupantEvent) e).getEmpId());
+                e.setDriverID(occupant.getDriverID());
+                e.setDriverName(occupant.getFullName());
+            } else if (e instanceof InvalidOccupantEvent || e instanceof InvalidDriverEvent )   {
+                //ignore driver(Name/ID) from note, the OCCUPANT/DRIVER is "Unknown"
                 e.setDriverName(MessageUtil.getMessageString("notes_general_unknown"));
                 e.setDriverID(null);
-            }
+            } 
+            
+            if(e.getDriver() != null && e.getDriver().getPerson() != null)
+                e.setDriverName(e.getDriver().getPerson().getFullName());
+            
             if (e.getDriverName() == null || e.getDriverName().isEmpty()) {
                 e.setDriverName(MessageUtil.getMessageString("unknown_driver"));
                 e.setDriverID(null);
@@ -251,6 +264,14 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
 
     public void setDriverDAO(DriverDAO driverDAO) {
         this.driverDAO = driverDAO;
+    }
+
+    public PersonDAO getPersonDAO() {
+        return personDAO;
+    }
+
+    public void setPersonDAO(PersonDAO personDAO) {
+        this.personDAO = personDAO;
     }
 
 }

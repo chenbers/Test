@@ -118,4 +118,10 @@ public class PersonDaoStub implements PersonDAO {
         return null;
     }
 
+    @Override
+    public Person findByEmpID(String empID) {
+        // TODO Auto-generated method stub
+        return expectedPerson;
+    }
+
 }

@@ -33,4 +33,6 @@ public interface PersonDAO extends GenericDAO<Person, Integer>
     Integer delete(Person person);
 
     List<Person> getPeopleInAccount(Integer acctID);
+    
+    Person findByEmpID(String empID);
 }

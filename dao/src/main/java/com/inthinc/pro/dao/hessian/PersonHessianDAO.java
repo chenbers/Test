@@ -230,6 +230,10 @@ public class PersonHessianDAO extends GenericHessianDAO<Person, Integer> impleme
     }
 
     @Override
+    public Person findByEmpID(String empID) {
+        return getMapper().convertToModelObject(getSiloService().getPersonByEmpid(empID), Person.class);
+    }
+    @Override
     public Person findByEmail(String email)
     {
         // TODO: it can take up to 5 minutes from when a person record is added until
