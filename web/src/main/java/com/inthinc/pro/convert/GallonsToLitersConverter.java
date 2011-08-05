@@ -30,7 +30,7 @@ public class GallonsToLitersConverter extends BaseConverter {
             	}
                 if (getMeasurementType().equals(MeasurementType.METRIC))
                 {
-                	volume++;
+//                	volume++;
                     return MeasurementConversionUtil.fromLitersToGallonsExact(volume).floatValue();                    
                 }
                 else

@@ -21,7 +21,7 @@ public class MeasurementConversionUtil
 	private static final Double LBTOKG = .45359237;
 	private static final Double INCHESTOCM = 2.54;
     private static final Double LITERS_PER_GALLON = 3.7854;
-
+    private static final Float LITERS_PER_GALLON_FLOAT = 3.7854f;
 	/**
      * 
      * @param miles
@@ -163,9 +163,9 @@ public class MeasurementConversionUtil
         return liters == null ? null : Math.round(liters.doubleValue() / LITERS_PER_GALLON);
     }
     public static Number fromGallonsToLitersExact(Number gallons) {
-        return gallons == null ? null : Math.round(gallons.doubleValue() * LITERS_PER_GALLON*100)/100;
+        return gallons == null ? null : new Float(Math.round(((Float)gallons*100.00f) * LITERS_PER_GALLON_FLOAT)/100.00f).floatValue();
     }
     public static Number fromLitersToGallonsExact(Number liters) {
-        return liters == null ? null : Math.round((liters.doubleValue()*100) / LITERS_PER_GALLON)/100;
+        return liters == null ? null : new Float(Math.round(((Float)liters*100.00f) / LITERS_PER_GALLON_FLOAT)/100.00f).floatValue();
     }
 }
