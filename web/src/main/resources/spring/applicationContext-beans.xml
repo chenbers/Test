@@ -605,6 +605,7 @@
     <property name="eventDAO" ref="eventDAO"></property>
     <property name="groupDAO" ref="groupDAO"></property>
     <property name="driverDAO" ref="driverDAO"></property>
+	<property name="personDAO" ref="personDAO"></property>
     <property name="timeFrameBean" ref="timeFrameBean" />
   </bean>
   
