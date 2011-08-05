@@ -1149,7 +1149,7 @@ public class SiloServiceImpl implements SiloService {
         return null;
     }
     @Override
-    @MethodDescription(description = "Fetch a driver by its associated empID", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Driver.class)
+    @MethodDescription(description = "Fetch a driver by its associated empID", crudType=CrudType.READ, modelClass=com.inthinc.pro.model.Person.class)
 	public Map<String, Object> getPersonByEmpid(@DaoParam(name = "empID") String empID) throws ProDAOException {
 		// TODO Auto-generated method stub
 		return null;
