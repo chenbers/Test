@@ -352,12 +352,12 @@
                                        <h:outputText value="#{messages[messageKey]}" />
                                      </td>
                                      <td style="padding: 0px 12px 6px 12px; border-bottom: 1px solid #8BAD37;">
-                                     	<h:selectBooleanCheckbox value="#{vehiclesBean.item.editableVehicleSettings.idleBuzzer}" disabled="#{disabled}" />
+                                     	<h:selectBooleanCheckbox id="#{context}-idleBuzzer" 
+                                     		value="#{vehiclesBean.item.editableVehicleSettings.idleBuzzer}" disabled="#{disabled}"
+                                     		onchange="if (checkMultiple) checkMultiple(this); adminSetCheckbox(this,'style','idleBuzzer','#{context}-update_','');" ></h:selectBooleanCheckbox>
                                     </td>
                                     <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;" align="right">
-                                       <h:outputText value="#{messages.editDevice_currentSensitivity}" />
-                                       <span id="idleBuzzer" style="font-weight:bold">#{vehiclesBean.item.editableVehicleSettings.idleBuzzer}
-                                       </span>
+                                       <rich:spacer height="1"/>
                                     </td>
                                     <td style="padding: 0px 12px 6px 0px; border-bottom: 1px solid #8BAD37;"><rich:spacer height="1"/></td>
                                  </tr>

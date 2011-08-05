@@ -49,12 +49,11 @@ public class TiwiproSettingManager extends VehicleSettingManager{
     }
     
     protected EditableVehicleSettings createFromExistingValues(Integer vehicleID, VehicleSetting vs){
-        
         String ephone = vs.getCombined(SettingType.EPHONE_SETTING.getSettingID());
         Integer autoLogoffSeconds = NumberUtil.convertString(vs.getCombined(SettingType.AUTOLOGOFF_SETTING.getSettingID()));
         Integer idlingThresholdSeconds = NumberUtil.convertString(vs.getCombined(SettingType.IDLING_TIMEOUT.getSettingID()));
         String idleBuzzerValue = vs.getCombined(SettingType.BUZZER_IDLE.getSettingID());
-        boolean idleBuzzer = (idleBuzzerValue!=null && idleBuzzerValue.equalsIgnoreCase("true"));            
+        boolean idleBuzzer = (idleBuzzerValue!=null && idleBuzzerValue.equalsIgnoreCase("1"));            
         Integer hardVertical = hardVerticalSlider.getSliderValueFromSettings(vs);
         Integer hardTurn = hardTurnSlider.getSliderValueFromSettings(vs);
         Integer hardAcceleration = hardAccelerationSlider.getSliderValueFromSettings(vs);
