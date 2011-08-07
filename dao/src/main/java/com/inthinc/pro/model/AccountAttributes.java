@@ -36,6 +36,7 @@ public class AccountAttributes extends BaseEntity {
     private String  phoneControlProvider1;
     private String  phoneControlProvider2;
     private String  phoneControlProvider3;
+    private String 	multipleCompanies;
     
     @Column(updateable = false)
     private String supportContacts[];
@@ -227,4 +228,11 @@ public class AccountAttributes extends BaseEntity {
         phoneControlProvider2=null;
         phoneControlProvider3=null;
     }
+	public Boolean getMultipleCompanies() {
+		return true;
+//		return multipleCompanies.equals("true");
+	}
+	public void setMultipleCompanies(String multipleCompanies) {
+		this.multipleCompanies = multipleCompanies;
+	}
 }
