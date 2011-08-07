@@ -229,8 +229,7 @@ public class AccountAttributes extends BaseEntity {
         phoneControlProvider3=null;
     }
 	public Boolean getMultipleCompanies() {
-		return true;
-//		return multipleCompanies.equals("true");
+		return multipleCompanies.equals("true");
 	}
 	public void setMultipleCompanies(String multipleCompanies) {
 		this.multipleCompanies = multipleCompanies;
