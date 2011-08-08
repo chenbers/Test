@@ -251,7 +251,7 @@ public class GroupHierarchy implements Serializable
     	if (groupID.equals(topGroupID)){
     		return getTopGroup();
     	}
-    	if (thisGroup.getParentID().equals(topGroupID)){
+    	if ((thisGroup.getParentID() == null) || thisGroup.getParentID().equals(topGroupID)){
     		return thisGroup;
     	}
     	Group grandparentGroup = getGroup(getGroup(thisGroup.getParentID()).getParentID());
