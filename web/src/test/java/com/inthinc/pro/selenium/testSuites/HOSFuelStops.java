@@ -416,8 +416,8 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._textField().vehicle().type("108406");
         myFuelStops._textField().vehicle().getSuggestion("108406").click();
        
-        myFuelStops._text().valueVehicleFuel().row(1).validate("33.00Gallons");
-        myFuelStops._text().valueTrailerFuel().row(1).validate("33.00Gallons");
+        myFuelStops._text().valueVehicleFuel().row(1).validate("33.02Gallons");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("33.02Gallons");
         myFuelStops._text().valueTrailer().row(1).validate("125");
         myFuelStops._checkBox().entryCheckBox().row(1).check();
         myFuelStops._button().delete().click();
