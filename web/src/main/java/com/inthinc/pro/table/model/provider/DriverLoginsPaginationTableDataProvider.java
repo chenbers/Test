@@ -17,6 +17,7 @@ import com.inthinc.pro.dao.DriverDAO;
 import com.inthinc.pro.dao.EventDAO;
 import com.inthinc.pro.dao.GroupDAO;
 import com.inthinc.pro.dao.PersonDAO;
+import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.event.Event;
@@ -51,30 +52,31 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
 
     public void loadData() {
         initStartEndDates();
-        HashMap<Integer,Group> groups = new HashMap<Integer, Group>();
+        HashMap<Integer, Group> groups = new HashMap<Integer, Group>();
         data = new TreeSet<Event>();
-        //TODO: seems like it would be better if vehicle's group name was returned via eventDAO.getEventsForGroupFromVehicles
-        for(Event e: eventDAO.getEventsForGroupFromVehicles(groupID, eventCategory.getNoteTypesInCategory(), startDate, endDate)) {
-            if(!groups.containsKey(e.getVehicle().getGroupID())){
+        // TODO: seems like it would be better if vehicle's group name was returned via eventDAO.getEventsForGroupFromVehicles
+        for (Event e : eventDAO.getEventsForGroupFromVehicles(groupID, eventCategory.getNoteTypesInCategory(), startDate, endDate)) {
+            if (!groups.containsKey(e.getVehicle().getGroupID())) {
                 groups.put(e.getVehicle().getGroupID(), groupDAO.findByID(e.getVehicle().getGroupID()));
             }
             e.setGroupName(groups.get(e.getVehicle().getGroupID()).getName());
-            
-            if(e instanceof ValidDriverEvent) {
-                e.setDriver(driverDAO.findByID(e.getDriverID())); 
-            } else if(e instanceof ValidOccupantEvent) {
+
+            if (e instanceof ValidDriverEvent) {
+                e.setDriver(driverDAO.findByID(e.getDriverID()));
+            } else if (e instanceof ValidOccupantEvent) {
                 Person occupant = personDAO.findByEmpID(((ValidOccupantEvent) e).getEmpId());
-                e.setDriverID(occupant.getDriverID());
+                Driver occAsDriver = driverDAO.findByPersonID(occupant.getPersonID());
+                e.setDriverID(occAsDriver.getDriverID());
                 e.setDriverName(occupant.getFullName());
-            } else if (e instanceof InvalidOccupantEvent || e instanceof InvalidDriverEvent )   {
-                //ignore driver(Name/ID) from note, the OCCUPANT/DRIVER is "Unknown"
+            } else if (e instanceof InvalidOccupantEvent || e instanceof InvalidDriverEvent) {
+                // ignore driver(Name/ID) from note, the OCCUPANT/DRIVER is "Unknown"
                 e.setDriverName(MessageUtil.getMessageString("notes_general_unknown"));
                 e.setDriverID(null);
-            } 
-            
-            if(e.getDriver() != null && e.getDriver().getPerson() != null)
+            }
+
+            if (e.getDriver() != null && e.getDriver().getPerson() != null)
                 e.setDriverName(e.getDriver().getPerson().getFullName());
-            
+
             if (e.getDriverName() == null || e.getDriverName().isEmpty()) {
                 e.setDriverName(MessageUtil.getMessageString("unknown_driver"));
                 e.setDriverID(null);
@@ -105,7 +107,7 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
             loadData();
 
         Collections.sort(results, getComparator(getSort()));
-        return results.subList(firstRow, endRow+1);
+        return results.subList(firstRow, endRow + 1);
     }
 
     private LoginEvent createFilterEvent(List<TableFilterField> filter) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
@@ -122,7 +124,7 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
                                 value = o;
                             }
                         }
-                    } else if(field.getFilter() instanceof String){
+                    } else if (field.getFilter() instanceof String) {
                         value = field.getFilter();
                     }
                     descriptor.getWriteMethod().invoke(filterEvent, value);
@@ -131,20 +133,21 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
         }
         return filterEvent;
     }
+
     private List<Event> doFilter(Set<Event> list, List<TableFilterField> filter) {
-        if(list == null)
+        if (list == null)
             return new ArrayList<Event>();
         if (!hasFilter(filter))
             return new ArrayList<Event>(list);
-        
+
         ArrayList<Event> filteredResults = new ArrayList<Event>();
         try {
-            //translate TableFilterFields into the filterEvent
+            // translate TableFilterFields into the filterEvent
             LoginEvent filterEvent = createFilterEvent(filter);
-            //filter list to only those that match the filterEvent
+            // filter list to only those that match the filterEvent
             for (Event e : list) {
                 if (e instanceof LoginEvent) {
-                    if (((LoginEvent) e).matches(filterEvent)){
+                    if (((LoginEvent) e).matches(filterEvent)) {
                         filteredResults.add(e);
                     }
                 }
