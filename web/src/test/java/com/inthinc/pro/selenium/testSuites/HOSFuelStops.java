@@ -401,8 +401,8 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._dropDown().driver().select(2);
         myFuelStopsAddEdit._button().bottomSave().click();
         
-        myFuelStops._text().valueVehicleFuel().row(1).validate("124.00Liters");
-        myFuelStops._text().valueTrailerFuel().row(1).validate("124.00Liters");
+        myFuelStops._text().valueVehicleFuel().row(1).validate("124.99Liters");
+        myFuelStops._text().valueTrailerFuel().row(1).validate("124.99Liters");
         myFuelStops._text().valueTrailer().row(1).validate("125");
         
         //21. Switch back to Gallons
