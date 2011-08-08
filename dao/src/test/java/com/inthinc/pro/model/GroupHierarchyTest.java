@@ -160,23 +160,23 @@ public class GroupHierarchyTest{
 	@Test
 	public void testCompanyGroup(){
 		//the company groups are the 2nd level groups when the account settings have multipleCompanies set to true.
-		Group companyGroup = groupHierarchy.getCompanyGroup(63);
+		Group companyGroup = groupHierarchy.getCompanyGroup(63, null);
 		Integer companyGroupID = companyGroup.getGroupID();
 		assertEquals("companyGroupID should be 33",33,companyGroupID.intValue());
 
-		companyGroup = groupHierarchy.getCompanyGroup(18);
+		companyGroup = groupHierarchy.getCompanyGroup(18, null);
 		companyGroupID = companyGroup.getGroupID();
 		assertEquals("companyGroupID should be 2",2,companyGroupID.intValue());
 
-		companyGroup = groupHierarchy.getCompanyGroup(8);
+		companyGroup = groupHierarchy.getCompanyGroup(8, null);
 		companyGroupID = companyGroup.getGroupID();
 		assertEquals("companyGroupID should be 2",2,companyGroupID.intValue());
 
-		companyGroup = groupHierarchy.getCompanyGroup(2);
+		companyGroup = groupHierarchy.getCompanyGroup(2, null);
 		companyGroupID = companyGroup.getGroupID();
 		assertEquals("companyGroupID should be 2",2,companyGroupID.intValue());
 
-		companyGroup = groupHierarchy.getCompanyGroup(1);
+		companyGroup = groupHierarchy.getCompanyGroup(1, null);
 		companyGroupID = companyGroup.getGroupID();
 		assertEquals("companyGroupID should be 1",1,companyGroupID.intValue());
 }
