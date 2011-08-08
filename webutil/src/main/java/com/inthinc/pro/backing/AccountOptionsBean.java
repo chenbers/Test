@@ -44,6 +44,11 @@ public class AccountOptionsBean extends BaseBean {
             }
         });
     }
+    public List<SelectItem> getGroupIDSelectItems(){
+        List<SelectItem> selectItemList = new ArrayList<SelectItem>();
+    	
+        return selectItemList;
+    }
     public List<SelectItem> getPasswordChangeOptions() {
         List<SelectItem> selectItemList = new ArrayList<SelectItem>();
         selectItemList.add(new SelectItem(PreferenceLevelOption.NONE.getCode().toString(), "None"));
@@ -98,6 +103,7 @@ public class AccountOptionsBean extends BaseBean {
             setSaveActionMsg("Success: HOS is " + (account.getHos() == AccountHOSType.NONE ? "Disabled" : "Enabled") +
                                 " , Waysmart is " + (account.hasWaySmartSupport() ? "Enabled" : "Disabled") + 
                                 " , Multiple Companies is " + (account.getProps().isMultipleCompanies() ? "Enabled" : "Disabled") + 
+                                " , Fleet GroupID is " + account.getProps().getFleetGroupID() + 
                                 " , Login Expire is " +(account.getProps().getLoginExpire()) + 
                                 " , Password Expire is "+(account.getProps().getPasswordExpire()) +
                                 " , Password Strength is "+(account.getProps().getPasswordStrength()) +

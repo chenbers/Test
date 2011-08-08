@@ -155,7 +155,8 @@ public class HosDailyDriverLogReportCriteria {
     private String getCompanyName(GroupHierarchy accountGroupHierarchy, Account account,Driver driver){
     	
         if (account.getProps().isMultipleCompanies()){
-        	Group companyGroup = accountGroupHierarchy.getCompanyGroup(driver.getGroupID());
+        	Integer accountTopGroupID = account.getProps().getFleetGroupIDValue();
+        	Group companyGroup = accountGroupHierarchy.getCompanyGroup(driver.getGroupID(), accountTopGroupID);
         	return companyGroup.getName();
         }
         else{
@@ -165,7 +166,8 @@ public class HosDailyDriverLogReportCriteria {
     }
     private Address  getCompanyAddress(GroupHierarchy accountGroupHierarchy, Account account, Driver driver){
         if (account.getProps().isMultipleCompanies()){
-        	Group companyGroup = accountGroupHierarchy.getCompanyGroup(driver.getGroupID());
+        	Integer accountTopGroupID = account.getProps().getFleetGroupIDValue();
+        	Group companyGroup = accountGroupHierarchy.getCompanyGroup(driver.getGroupID(),accountTopGroupID);
         	return fetchCompanyAddress(companyGroup.getAddressID(), account);
         }
         else {

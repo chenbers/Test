@@ -242,8 +242,11 @@ public class GroupHierarchy implements Serializable
         return teams;
         
     }
-    public Group getCompanyGroup(Integer groupID){
+    public Group getCompanyGroup(Integer groupID, Integer accountTopGroup){
     	Integer topGroupID = getTopGroup().getGroupID();
+    	if (accountTopGroup != null){
+    		topGroupID = accountTopGroup;
+    	}
     	Group thisGroup = getGroup(groupID);
     	if (groupID.equals(topGroupID)){
     		return getTopGroup();
