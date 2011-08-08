@@ -15,6 +15,8 @@ import com.inthinc.hos.model.HOSOrigin;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
+import com.inthinc.pro.model.Address;
+import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.reports.BaseUnitTest;
 import com.inthinc.pro.reports.FormatType;
@@ -324,8 +326,12 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
             for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             DDLDataSet ddlTestData = new DDLDataSet(testCaseName[testCaseCnt]);
             HosDailyDriverLogReportCriteria hosDailyDriverLogReportCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+            Address address = new Address();
+            address.setAddr1("address 1");
+            address.setCity("city");
+            address.setZip("84120");
             hosDailyDriverLogReportCriteria.initCriteriaList(ddlTestData.interval, ddlTestData.hosRecordList, ddlTestData.hosVehicleDayDataList,
-                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group);
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group, "Company name", address);
             
             // check the data
             List<ReportCriteria> criteriaList = hosDailyDriverLogReportCriteria.getCriteriaList();

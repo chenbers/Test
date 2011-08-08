@@ -86,6 +86,8 @@ public class HosDailyDriverLogReportCriteria {
     private List<ReportCriteria> criteriaList;
     private Locale locale;
     private Boolean defaultUseMetric;
+    private Address companyAddress;
+    private String companyName;
     
     private DateTimeFormatter dateTimeFormatter;
     
@@ -131,8 +133,10 @@ public class HosDailyDriverLogReportCriteria {
                         account.setAddress(addressDAO.findByID(account.getAddressID()));
                     }
                 }
+                String companyName = getCompanyName(accountGroupHierarchy,account, driver);
+                Address companyAddress = getCompanyAddress(accountGroupHierarchy,account, driver);
                 Integer driverID = driver.getDriverID();
-                initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account);
+                initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, companyName, companyAddress);
                 groupCriteriaList.addAll(criteriaList);
         }
         
@@ -143,21 +147,58 @@ public class HosDailyDriverLogReportCriteria {
     {
         Driver driver = driverDAO.findByID(driverID);
         Account account = accountDAO.findByID(driver.getPerson().getAcctID());
-        if (account.getAddress() == null && account.getAddressID() != null && account.getAddressID().intValue() != 0) {
-            account.setAddress(addressDAO.findByID(account.getAddressID()));
-        }
+        String companyName = getCompanyName(accountGroupHierarchy,account, driver);
+        Address companyAddress = getCompanyAddress(accountGroupHierarchy,account, driver);
         Interval expandedInterval = DateTimeUtil.getExpandedInterval(interval, DateTimeZone.UTC, MAX_RULESET_DAYSBACK, 1); 
-        initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account);
+        initDriverCriteria(accountGroupHierarchy, driverID, interval, expandedInterval, driver, account, companyName, companyAddress);
     }
-
-    private void initDriverCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, Interval interval, Interval expandedInterval, Driver driver, Account account) {
+    private String getCompanyName(GroupHierarchy accountGroupHierarchy, Account account,Driver driver){
+    	
+        if (account.getProps().isMultipleCompanies()){
+        	Group companyGroup = accountGroupHierarchy.getCompanyGroup(driver.getGroupID());
+        	return companyGroup.getName();
+        }
+        else{
+        	return account.getAcctName();
+        }
+    	
+    }
+    private Address  getCompanyAddress(GroupHierarchy accountGroupHierarchy, Account account, Driver driver){
+        if (account.getProps().isMultipleCompanies()){
+        	Group companyGroup = accountGroupHierarchy.getCompanyGroup(driver.getGroupID());
+        	return fetchCompanyAddress(companyGroup.getAddressID(), account);
+        }
+        else {
+        	if (account.getAddress() == null && account.getAddressID() != null && account.getAddressID().intValue() != 0) {
+        		account.setAddress(addressDAO.findByID(account.getAddressID()));
+        	}
+        	return account.getAddress();
+        }
+    }
+    private Address fetchCompanyAddress(Integer companyAddressID, Account account){
+		if(companyAddressID == null){
+			return useAccountAddress(account);
+		}
+		else{
+			return addressDAO.findByID(companyAddressID);
+		}
+    }
+    private Address useAccountAddress(Account account){
+    	if (account.getAddress() == null && account.getAddressID() != null && account.getAddressID().intValue() != 0) {
+    		account.setAddress(addressDAO.findByID(account.getAddressID()));
+    	}
+    	return account.getAddress();
+    }
+    private void initDriverCriteria(GroupHierarchy accountGroupHierarchy, Integer driverID, 
+    		Interval interval, Interval expandedInterval, 
+    		Driver driver, Account account,
+    		String companyName, Address companyAddress) {
         Group group = groupDAO.findByID(driver.getGroupID());
         group.setAddress(getTerminalAddress(group, accountGroupHierarchy)); 
 
-
         List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driverID, expandedInterval, false);
         List<HOSOccupantLog> hosOccupantLogList = hosDAO.getHOSOccupantLogs(driverID, expandedInterval);
-        initCriteriaList(interval, hosRecordList, null, hosOccupantLogList, driver, account, group);
+        initCriteriaList(interval, hosRecordList, null, hosOccupantLogList, driver, account, group, companyName, companyAddress);
     }
     
 
@@ -215,7 +256,11 @@ public class HosDailyDriverLogReportCriteria {
         reportCriteria.addParameter("REPORT_DATE_TIME", sdf.format(date));
     }
 
-    void initCriteriaList(Interval interval, List<HOSRecord> hosRecordList, List<HOSVehicleDayData> hosVehicleDayData, List<HOSOccupantLog> hosOccupantLogList, Driver driver, Account account, Group group) 
+    void initCriteriaList(Interval interval, List<HOSRecord> hosRecordList, 
+    		List<HOSVehicleDayData> hosVehicleDayData, 
+    		List<HOSOccupantLog> hosOccupantLogList, 
+    		Driver driver, Account account, Group group,
+    		String companyName, Address companyAddress) 
     {
         boolean initVehicleDayData = (hosVehicleDayData == null);
         
@@ -251,8 +296,10 @@ public class HosDailyDriverLogReportCriteria {
             HosDailyDriverLog dayData= new HosDailyDriverLog();
             dayData.setDay(dateTimeFormatter.print(day));
             dayData.setRemarksList(getRemarksListForDay(day, hosRecordList));
-            dayData.setCarrierName(account.getAcctName());
-            dayData.setMainAddress(account.getAddress() == null ? "" : account.getAddress().getDisplayString());
+//            dayData.setCarrierName(account.getAcctName());
+//            dayData.setMainAddress(account.getAddress() == null ? "" : account.getAddress().getDisplayString());
+            dayData.setCarrierName(companyName);
+            dayData.setMainAddress(companyAddress == null ? "" : companyAddress.getDisplayString());
             dayData.setTerminalAddress(group.getAddress() == null ? "" : group.getAddress().getDisplayString());
             dayData.setDriverName(driver.getPerson().getFullName());
             dayData.setEdited(isListEdited(logListForDay));
@@ -813,5 +860,13 @@ public class HosDailyDriverLogReportCriteria {
     public void setVehicleDAO(VehicleDAO vehicleDAO) {
         this.vehicleDAO = vehicleDAO;
     }
+
+	public Address getCompanyAddress() {
+		return companyAddress;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
 
 }

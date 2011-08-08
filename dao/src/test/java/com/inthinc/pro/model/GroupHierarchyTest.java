@@ -32,7 +32,7 @@ public class GroupHierarchyTest{
     	if (level < 5 ){
     		
     		
-    		level+=1;
+    		level++;
     		for (int j=0; j<2; j++){
     			
     			groupID+=1;
@@ -150,10 +150,34 @@ public class GroupHierarchyTest{
         
         //test 3: without continuation prefix and many nodes
         shortGroupName =  groupHierarchy.getShortGroupName(2, groupHierarchy.GROUP_SEPERATOR);
-        assertEquals("Group_1"+groupHierarchy.GROUP_SEPERATOR+"Group_2",shortGroupName);
+        assertEquals("Group_1"+GroupHierarchy.GROUP_SEPERATOR+"Group_2",shortGroupName);
    
       //test 4: missing group
         shortGroupName =  groupHierarchy.getShortGroupName(0, groupHierarchy.GROUP_SEPERATOR);
         assertTrue(shortGroupName.isEmpty());
     }
+	
+	@Test
+	public void testCompanyGroup(){
+		//the company groups are the 2nd level groups when the account settings have multipleCompanies set to true.
+		Group companyGroup = groupHierarchy.getCompanyGroup(63);
+		Integer companyGroupID = companyGroup.getGroupID();
+		assertEquals("companyGroupID should be 33",33,companyGroupID.intValue());
+
+		companyGroup = groupHierarchy.getCompanyGroup(18);
+		companyGroupID = companyGroup.getGroupID();
+		assertEquals("companyGroupID should be 2",2,companyGroupID.intValue());
+
+		companyGroup = groupHierarchy.getCompanyGroup(8);
+		companyGroupID = companyGroup.getGroupID();
+		assertEquals("companyGroupID should be 2",2,companyGroupID.intValue());
+
+		companyGroup = groupHierarchy.getCompanyGroup(2);
+		companyGroupID = companyGroup.getGroupID();
+		assertEquals("companyGroupID should be 2",2,companyGroupID.intValue());
+
+		companyGroup = groupHierarchy.getCompanyGroup(1);
+		companyGroupID = companyGroup.getGroupID();
+		assertEquals("companyGroupID should be 1",1,companyGroupID.intValue());
+}
  }
