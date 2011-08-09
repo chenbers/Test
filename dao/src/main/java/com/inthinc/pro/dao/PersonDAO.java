@@ -34,5 +34,5 @@ public interface PersonDAO extends GenericDAO<Person, Integer>
 
     List<Person> getPeopleInAccount(Integer acctID);
     
-    Person findByEmpID(String empID);
+    Person findByEmpID(Integer acctID, String empID);
 }

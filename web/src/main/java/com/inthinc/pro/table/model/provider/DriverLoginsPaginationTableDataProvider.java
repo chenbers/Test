@@ -31,7 +31,6 @@ import com.inthinc.pro.model.pagination.SortOrder;
 import com.inthinc.pro.model.pagination.TableFilterField;
 import com.inthinc.pro.model.pagination.TableSortField;
 import com.inthinc.pro.util.MessageUtil;
-import com.sun.mail.mbox.NewlineOutputStream;
 
 public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPaginationDataProvider<Event> {
 
@@ -47,6 +46,7 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
     private Set<Event> data;
     private List<Event> results;
     private boolean refreshNeeded = true;
+    private Integer acctID;
 
     public DriverLoginsPaginationTableDataProvider() {}
 
@@ -64,7 +64,7 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
             if (e instanceof ValidDriverEvent) {
                 e.setDriver(driverDAO.findByID(e.getDriverID()));
             } else if (e instanceof ValidOccupantEvent) {
-                Person occupant = personDAO.findByEmpID(((ValidOccupantEvent) e).getEmpId());
+                Person occupant = personDAO.findByEmpID(this.getAcctID(),((ValidOccupantEvent) e).getEmpId());
                 Driver occAsDriver = driverDAO.findByPersonID(occupant.getPersonID());
                 e.setDriverID(occAsDriver.getDriverID());
                 e.setDriverName(occupant.getFullName());
@@ -275,6 +275,14 @@ public class DriverLoginsPaginationTableDataProvider extends BaseNotificationPag
 
     public void setPersonDAO(PersonDAO personDAO) {
         this.personDAO = personDAO;
+    }
+
+    public Integer getAcctID() {
+        return acctID;
+    }
+
+    public void setAcctID(Integer acctID) {
+        this.acctID = acctID;
     }
 
 }

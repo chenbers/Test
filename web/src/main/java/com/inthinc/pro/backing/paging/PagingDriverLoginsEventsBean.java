@@ -62,6 +62,7 @@ public class PagingDriverLoginsEventsBean  extends BasePagingNotificationsBean<E
         return getReportCriteriaService().getEventsReportCriteria(getUser().getGroupID(), getLocale());
     }
     public DriverLoginsPaginationTableDataProvider getTableDataProvider() {
+        tableDataProvider.setAcctID(getProUser().getUser().getPerson().getAcctID());
         return tableDataProvider;
     }
 
