@@ -114,26 +114,49 @@
 		</a4j:form>
 		<a4j:form id="minutesRemainingForm">
 			<h:panelGroup rendered="#{hosBean.selectedOperation == '2'}">
-			<table>
-				<tr>
-					<td>Cumulative Minutes Remaining: </td>
-					<td>
-					    <h:outputText value="#{hosBean.minutesRemainingData.cumulativeDOTMinutesRemaining}"/>
-					</td>
-				</tr>
-				<tr>
-					<td>Driving Minutes Remaining: </td>
-					<td>
-					    <h:outputText value="#{hosBean.minutesRemainingData.drivingDOTMinutesRemaining}"/>
-					</td>
-				</tr>
-				<tr>
-					<td>On Duty Minutes Remaining: </td>
-					<td>
-					    <h:outputText value="#{hosBean.minutesRemainingData.onDutyDOTMinutesRemaining}"/>
-					</td>
-				</tr>
-			</table>
+		    <rich:panel id="minutesRemainingPanel">
+      			<f:facet name="header">
+        			<h:outputText value="Minutes Remaining" />
+      			</f:facet>
+				<table>
+					<tr>
+						<td>Driving Minutes Remaining: </td>
+						<td>
+						    <h:outputText value="#{hosBean.minutesRemainingData.drivingDOTMinutesRemaining}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>On Duty Minutes Remaining: </td>
+						<td>
+						    <h:outputText value="#{hosBean.minutesRemainingData.onDutyDOTMinutesRemaining}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Cumulative Minutes Remaining: </td>
+						<td>
+						    <h:outputText value="#{hosBean.minutesRemainingData.cumulativeDOTMinutesRemaining}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Total Driving Minutes: </td>
+						<td>
+						    <h:outputText value="#{hosBean.minutesRemainingData.minutesData.onDutyDrivingMinutes}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Total On Duty Minutes: </td>
+						<td>
+						    <h:outputText value="#{hosBean.minutesRemainingData.minutesData.onDutyMinutes}"/>
+						</td>
+					</tr>
+					<tr>
+						<td>Total Off Duty Minutes: </td>
+						<td>
+						    <h:outputText value="#{hosBean.minutesRemainingData.minutesData.offDutyMinutes}"/>
+						</td>
+					</tr>
+				</table>
+			</rich:panel>
 			</h:panelGroup>
 		</a4j:form>
 		<a4j:form id="logsForm">

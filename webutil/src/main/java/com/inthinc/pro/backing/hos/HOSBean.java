@@ -176,7 +176,6 @@ public class HOSBean extends BaseBean {
             errorMessage = "Unable to find a driver for ID.";
             return;
         }
-//        dateRange.setTimeZone(driver.getPerson().getTimeZone());
         Interval interval = new Interval(new DateTime(currentDate).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot())), new DateTime(currentDate));
         driverName = driver.getPerson().getFullName();
         
@@ -186,23 +185,16 @@ public class HOSBean extends BaseBean {
         Collections.sort(hosRecordList);
 
         List<HOSRecord> filteredhosRecordList = getFilteredList(hosRecordList, getHOSStatusFilterList());
-//
         RuleSetType driverDOTType = driver.getDot();
         if (driverDOTType == null)
             driverDOTType = RuleSetType.NON_DOT;
-//        DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
-//        if (reportEndDate.isAfterNow())
-//            reportEndDate = new DateTime();
         
         List<HOSRec> recList = HOSUtil.getRecListFromLogList(filteredhosRecordList, currentDate, !(driverDOTType.equals(RuleSetType.NON_DOT)));
 
         
         HOSRules rules = RuleSetFactory.getRulesForRuleSetType(driverDOTType);
-//for (HOSRec rec :recList) {
-//    System.out.println(dateFormatter.print(rec.getLogTimeDate().getTime()) + " " + rec.getStatus() + " " + rec.getTotalRealMinutes());                    
-//}
-//System.out.println("getDOTMinutesRemaining driverID: " + driver.getDriverID() + " endDate: " + dateFormatter.print(currentDate.getTime()));        
         minutesRemainingData = rules.getDOTMinutesRemaining(recList, currentDate);
+        
     }
     public void displayLogsAction() {
         recordCount = 0;
@@ -225,8 +217,7 @@ public class HOSBean extends BaseBean {
             driverDOTType = RuleSetType.NON_DOT;
         
         driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
-        Interval queryInterval = getExpandedInterval(interval, driverTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
-        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
+        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), interval, false);
         Collections.sort(hosRecordList);
 
         List<HOSRec> recList = HOSUtil.getRecListFromLogList(hosRecordList, dateRange.getEndDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
