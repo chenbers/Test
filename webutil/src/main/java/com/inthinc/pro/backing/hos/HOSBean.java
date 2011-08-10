@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -20,6 +21,7 @@ import org.richfaces.model.Ordering;
 import com.inthinc.hos.model.DebugInfo;
 import com.inthinc.hos.model.HOSRec;
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.hos.model.MinutesRemainingData;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.hos.model.RuleViolationTypes;
 import com.inthinc.hos.rules.HOSRules;
@@ -53,10 +55,57 @@ public class HOSBean extends BaseBean {
     List<String> logsColumnHeaders;
     List<List<Result>> logsRecords;
     Map<String, Object> logsSortOrder;
+
+    MinutesRemainingData minutesRemainingData ;
     
+    String selectedOperation;
+    Date endDate;
+    
+    TimeZone timeZone;
+
+    public TimeZone getTimeZone() {
+        if (timeZone == null)
+            timeZone = TimeZone.getDefault();
+        return timeZone;
+    }
+
+    public void setTimeZone(TimeZone timeZone) {
+        this.timeZone = timeZone;
+    }
+
+    public Date getEndDate() {
+        if (endDate == null)
+            endDate = new Date();
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getSelectedOperation() {
+        return selectedOperation;
+    }
+
+    public void setSelectedOperation(String selectedOperation) {
+        this.selectedOperation = selectedOperation;
+    }
+
     private static DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("MM/dd/yy HH:mm:ss (z)");
     
     public void evaluateAction() {
+        if (selectedOperation.equals("0")) {
+            errorMessage = "Select an opertion.";
+            return;
+        }
+        if (selectedOperation.equals("1")) 
+            violationsAction();
+        else if (selectedOperation.equals("2"))
+            minutesRemainingAction();
+        else displayLogsAction();
+    }
+        
+     public void violationsAction() {
         recordCount = 0;
         errorMessage = null;
         selected = null;
@@ -116,6 +165,98 @@ public class HOSBean extends BaseBean {
         }
         recordCount = records.size();
     }
+    
+    public void minutesRemainingAction() {
+        recordCount = 0;
+        errorMessage = null;
+        selected = null;
+        Date currentDate = endDate;
+        Driver driver = driverDAO.findByID(driverID);
+        if (driver == null || driver.getPerson() == null) {
+            errorMessage = "Unable to find a driver for ID.";
+            return;
+        }
+//        dateRange.setTimeZone(driver.getPerson().getTimeZone());
+        Interval interval = new Interval(new DateTime(currentDate).minusDays(RuleSetFactory.getDaysBackForRuleSetType(driver.getDot())), new DateTime(currentDate));
+        driverName = driver.getPerson().getFullName();
+        
+        driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+        Interval queryInterval = getExpandedInterval(interval, driverTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
+        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
+        Collections.sort(hosRecordList);
+
+        List<HOSRecord> filteredhosRecordList = getFilteredList(hosRecordList, getHOSStatusFilterList());
+//
+        RuleSetType driverDOTType = driver.getDot();
+        if (driverDOTType == null)
+            driverDOTType = RuleSetType.NON_DOT;
+//        DateTime reportEndDate = new LocalDate(interval.getEnd()).toDateTimeAtStartOfDay(driverTimeZone).plusDays(1).minusSeconds(1);
+//        if (reportEndDate.isAfterNow())
+//            reportEndDate = new DateTime();
+        
+        List<HOSRec> recList = HOSUtil.getRecListFromLogList(filteredhosRecordList, currentDate, !(driverDOTType.equals(RuleSetType.NON_DOT)));
+
+        
+        HOSRules rules = RuleSetFactory.getRulesForRuleSetType(driverDOTType);
+//for (HOSRec rec :recList) {
+//    System.out.println(dateFormatter.print(rec.getLogTimeDate().getTime()) + " " + rec.getStatus() + " " + rec.getTotalRealMinutes());                    
+//}
+//System.out.println("getDOTMinutesRemaining driverID: " + driver.getDriverID() + " endDate: " + dateFormatter.print(currentDate.getTime()));        
+        minutesRemainingData = rules.getDOTMinutesRemaining(recList, currentDate);
+    }
+    public void displayLogsAction() {
+        recordCount = 0;
+        errorMessage = null;
+        selected = null;
+        if (dateRange.getBadDates() != null) {
+            errorMessage = dateRange.getBadDates();
+            return;
+        }
+        Driver driver = driverDAO.findByID(driverID);
+        if (driver == null || driver.getPerson() == null) {
+            errorMessage = "Unable to find a driver for ID.";
+            return;
+        }
+        dateRange.setTimeZone(driver.getPerson().getTimeZone());
+        Interval interval = dateRange.getInterval();
+        driverName = driver.getPerson().getFullName();
+        RuleSetType driverDOTType = driver.getDot();
+        if (driverDOTType == null)
+            driverDOTType = RuleSetType.NON_DOT;
+        
+        driverTimeZone = DateTimeZone.forTimeZone(driver.getPerson().getTimeZone());
+        Interval queryInterval = getExpandedInterval(interval, driverTimeZone, RuleSetFactory.getDaysBackForRuleSetType(driver.getDot()), RuleSetFactory.getDaysForwardForRuleSetType(driver.getDot()));
+        List<HOSRecord> hosRecordList = hosDAO.getHOSRecords(driver.getDriverID(), queryInterval, false);
+        Collections.sort(hosRecordList);
+
+        List<HOSRec> recList = HOSUtil.getRecListFromLogList(hosRecordList, dateRange.getEndDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
+        logsRecords = getLogDisplayList(recList);
+        
+        
+    }
+    public List<List<Result>> getLogDisplayList(List<HOSRec> recList) {
+        logsRecords = new ArrayList<List<Result>> ();
+        for (HOSRec rec : recList) {
+            logsRecords.add(getLogDisplayRow(rec));
+        }
+        return logsRecords;
+    }
+
+
+    private List<Result> getLogDisplayRow(HOSRec rec) {
+        List<Result> row = new ArrayList<Result>();
+        DateTime dateTime = new DateTime(rec.getLogTimeDate(), driverTimeZone);
+        row.add(new Result(dateFormatter.print(dateTime), rec.getLogTimeDate()));
+        row.add(new Result(rec.getRuleType().getName(), rec.getRuleType().getName()));
+        row.add(new Result(rec.getStatus().getName(), rec.getStatus().getName()));
+        row.add(new Result(formattedMinutes(rec.getTotalRealMinutes()), Long.valueOf(rec.getTotalRealMinutes())));
+        row.add(new Result("ID: " + rec.getId(), rec.getId()));
+        return row;
+    }
+
+    public String getTimeZoneName() {
+      return getTimeZone().getID();
+  }
 
     public void logDetailsAction() {
         System.out.println("selected: " + selected);
@@ -460,6 +601,14 @@ public class HOSBean extends BaseBean {
             return logsRecords;
         }
 
+        public List<List<Result>> getLogDisplayList(List<HOSRec> recList) {
+            logsRecords = new ArrayList<List<Result>> ();
+            for (HOSRec rec : recList) {
+                logsRecords.add(getLogDisplayRow(rec, false));
+            }
+            return logsRecords;
+        }
+
 
         private List<Result> getLogDisplayRow(HOSRec rec, boolean isViolation) {
             List<Result> row = new ArrayList<Result>();
@@ -489,4 +638,12 @@ public class HOSBean extends BaseBean {
         }
 
     }
+    public MinutesRemainingData getMinutesRemainingData() {
+        return minutesRemainingData;
+    }
+
+    public void setMinutesRemainingData(MinutesRemainingData minutesRemainingData) {
+        this.minutesRemainingData = minutesRemainingData;
+    }
+
 }

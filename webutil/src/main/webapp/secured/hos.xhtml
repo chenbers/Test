@@ -20,19 +20,39 @@
 	<h:form>
 	<h:outputText id="inst" value="Enter a driver ID and date range to evaluate HOS data." />
 	<h:panelGrid columns="3">
-    
 		<h:outputText value="Driver ID:" />
 		<h:inputText  id="id" value="#{hosBean.driverID}" required="true" requiredMessage="DriverID is required."/>
         <rich:message for="id"/>
 	</h:panelGrid>        
-	<ui:include src="/includes/dateRange.xhtml" >
-       	<ui:param name="dateRange" value="#{hosBean.dateRange}"/> 
-       	<ui:param name="dateFormat" value="MM/dd/yy"/> 
-           <ui:param name="reRenderList" value=""/> 
-    </ui:include>
-		
-		
-	<a4j:commandButton value="Evaluate HOS Violations" action="#{hosBean.evaluateAction}" reRender="resultsForm"/>
+	<h:panelGrid columns="3">
+		<h:outputText value="Operation:" />
+		<h:selectOneMenu id="operation" value="#{hosBean.selectedOperation}">
+				<f:selectItem itemLabel="--Select---" itemValue="0"/>
+				<f:selectItem itemLabel="Evaluate HOS Violations" itemValue="1"/>
+				<f:selectItem itemLabel="DOT Minutes Remaining" itemValue="2"/>
+				<f:selectItem itemLabel="View Logs" itemValue="3"/>
+				<a4j:support event="onchange" action="submit()" ajaxSingle="true" reRender="optionsPanel" />
+		</h:selectOneMenu>
+	</h:panelGrid>
+	<a4j:region id="optionsRegion">
+		<a4j:outputPanel id="optionsPanel">
+			<h:panelGroup rendered="#{hosBean.selectedOperation == '1' || hosBean.selectedOperation == '3' }">
+				<ui:include src="/includes/dateRange.xhtml"  >
+       				<ui:param name="dateRange" value="#{hosBean.dateRange}"/> 
+       				<ui:param name="dateFormat" value="MM/dd/yy"/> 
+           			<ui:param name="reRenderList" value=""/> 
+    			</ui:include>
+    		</h:panelGroup>
+			<h:panelGrid columns="3" rendered="#{hosBean.selectedOperation == '2'}">
+				<h:outputText value="End Date: " />
+				<rich:calendar id="endDate" inputSize="20" value="#{hosBean.endDate}" 
+						datePattern="MM/dd/yy HH:mm" timeZone="#{hosBean.timeZone}">
+				</rich:calendar>	
+				<h:outputText value="#{hosBean.timeZoneName}" />				
+    		</h:panelGrid>
+		</a4j:outputPanel>
+	</a4j:region>		
+	<a4j:commandButton value="Submit" action="#{hosBean.evaluateAction}" reRender="resultsForm, minutesRemainingForm, logsForm"/>
 	<a4j:status for="paramsRegion">
 		<f:facet name="start">
         	<h:outputText><img src="#{facesContext.externalContext.request.contextPath}/images/progress2.gif" align="top" />&#160;</h:outputText>
@@ -44,7 +64,8 @@
 	</a4j:region>
 	
 	<a4j:region id="resultsRegion">
-		<a4j:form id="resultsForm">
+		<a4j:form id="resultsForm" >
+		<h:panelGroup rendered="#{hosBean.selectedOperation == '1'}">
 			<rich:dataTable rows="5" value="#{hosBean.records}" var="record" id="resultTable" align="left" width="49%"
 							rendered="#{hosBean.errorMessage == null and hosBean.recordCount > 0}">
 			 	<f:facet name="header">
@@ -89,7 +110,51 @@
             	</f:facet>
             	<h:outputText value="#{hosBean.errorMessage}" style="color:red;"/>
             </rich:panel>
-            </a4j:form>
+            </h:panelGroup>
+		</a4j:form>
+		<a4j:form id="minutesRemainingForm">
+			<h:panelGroup rendered="#{hosBean.selectedOperation == '2'}">
+			<table>
+				<tr>
+					<td>Cumulative Minutes Remaining: </td>
+					<td>
+					    <h:outputText value="#{hosBean.minutesRemainingData.cumulativeDOTMinutesRemaining}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>Driving Minutes Remaining: </td>
+					<td>
+					    <h:outputText value="#{hosBean.minutesRemainingData.drivingDOTMinutesRemaining}"/>
+					</td>
+				</tr>
+				<tr>
+					<td>On Duty Minutes Remaining: </td>
+					<td>
+					    <h:outputText value="#{hosBean.minutesRemainingData.onDutyDOTMinutesRemaining}"/>
+					</td>
+				</tr>
+			</table>
+			</h:panelGroup>
+		</a4j:form>
+		<a4j:form id="logsForm">
+			<h:panelGroup rendered="#{hosBean.selectedOperation == '3'}">
+			<rich:dataTable rows="25" value="#{hosBean.logsRecords}" var="record" id="logResultTable" align="left" width="100%">
+			 	<f:facet name="header">
+			 		<h:outputText value="#{hosBean.driverName} - HOS LOGS" />
+            	</f:facet>
+            	<rich:columns value="#{hosBean.logsColumnHeaders}" var="col" index="index" id="column#{index}" 
+	             			sortBy="#{record[index].sort}" sortOrder="#{hosBean.logsSortOrder[col]}"> 
+                	<f:facet name="header">
+						<h:outputText value="#{col}" />
+					</f:facet>
+					<h:outputText value="#{record[index].display}" escape="false"/>
+                </rich:columns>
+			 	<f:facet name="footer">
+				 	<rich:datascroller id="resultScrollBottom" renderIfSinglePage="false"/>
+			 	</f:facet>
+            </rich:dataTable>
+			</h:panelGroup>
+		</a4j:form>
 	</a4j:region>
 	
 </div><!-- end page -->
