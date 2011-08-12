@@ -21,6 +21,8 @@ import com.inthinc.pro.rally.TestCaseResult;
  */
 public abstract class RallyTest extends AutomatedTest {
 	private TestCaseResult rally;
+	private AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
+	private String testCase;
 	
 	public RallyTest(SeleniumEnums version){
 		super(version);
@@ -29,22 +31,25 @@ public abstract class RallyTest extends AutomatedTest {
 	@Override
 	public void before() {
 		super.before();
-		try {
-            rally = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
-			rally.newResults();
-		} catch (Exception e) {
-			e.printStackTrace();
-			skip = true;
-			throw new NullPointerException();
+		if(apb.getSendToRally())
+		{
+    		try {
+                rally = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
+    			rally.newResults();
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    			skip = true;
+    			throw new NullPointerException();
+    		}
 		}
 	}
 
 	@Override
 	public void after() {
 	    super.after();
-		if (!skip) {
+		if (!skip && apb.getSendToRally()) {
 			try {
-				//setTestSet(determineTestSet());//TODO: jwimmer: re-add this once we have created the appropriate test sets in Rally
+				setTestSet(determineTestSet());
 				rally.setBuildNumber(getBuildNumber());
 				rally.setVerdict(getTestVerdict());
                 rally.setNotes(determineTestSet(), errors);
@@ -63,11 +68,14 @@ public abstract class RallyTest extends AutomatedTest {
 
 	public void set_test_case(String formattedID) {
 	    logger.info("set_test_case("+formattedID+")");
+	    testCase = formattedID;
 		rally.setTestCase(new NameValuePair(TestCase.Fields.FORMATTED_ID.toString(), formattedID));
+	}
+	public String get_test_case(){
+	    return testCase;
 	}
 	
 	public String determineTestSet() {
-        AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
-        return "automation_"+apb.getOperatingSystem()+"_"+apb.getDefaultWebDriverName();
+        return "automation_"+apb.getOperatingSystem()+"_"+apb.getDefaultWebDriverName()+apb.getDefaultWebDriverVersion();
 	}
 }

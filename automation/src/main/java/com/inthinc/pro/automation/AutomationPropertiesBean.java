@@ -1,12 +1,16 @@
 package com.inthinc.pro.automation;
 
-import java.util.ArrayList;
+import java.lang.reflect.Constructor;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.List;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-
+import org.openqa.selenium.iphone.IPhoneDriver;
 
 public class AutomationPropertiesBean {
     private String serverProtocol;
@@ -14,32 +18,14 @@ public class AutomationPropertiesBean {
     private String serverPort;
     private String appPath;
     private String defaultWebDriverName;
-    private String hasFirefox;
-    private String hasIE;
-    private String hasChrome;
+    private String defaultWebDriverVersion;
     private String operatingSystem;
-
-    public WebDriver getDefaultWebDriver() {
-        //TODO: jwimmer: I'd rather pull these from some .properties file
-        if(getDefaultWebDriverName().startsWith("ie"))
-            return new InternetExplorerDriver();
-        else if(getDefaultWebDriverName().startsWith("chrome"))
-            return new ChromeDriver();
-        else if(getDefaultWebDriverName().startsWith("ff"))
-            return new FirefoxDriver();
-        else
-            return new FirefoxDriver(); 
-    }
-    public ArrayList<WebDriver> getAvailableWebDrivers() {
-       ArrayList<WebDriver> results = new ArrayList<WebDriver>();
-       if(getHasIE().equalsIgnoreCase("true"))
-           results.add( new InternetExplorerDriver());
-       else if(getHasChrome().equalsIgnoreCase("true"))
-           results.add( new ChromeDriver());
-       else if(getHasFirefox().equalsIgnoreCase("true"))
-           results.add( new FirefoxDriver());
-       
-       return results;
+    private Boolean sendToRally;
+    private List<String> browsers;
+    
+    
+    public WebDriver getDefaultWebDriver() {        
+        return Browser.findByName(defaultWebDriverName);
     }
     public String getBaseURL() {
         return serverProtocol+"://"+serverName+":"+serverPort+"/"+appPath+"/";
@@ -68,23 +54,12 @@ public class AutomationPropertiesBean {
     public void setDefaultWebDriverName(String defaultWebDriverName) {
         this.defaultWebDriverName = defaultWebDriverName;
     }
-    public String getHasFirefox() {
-        return hasFirefox;
-    }
-    public void setHasFirefox(String hasFirefox) {
-        this.hasFirefox = hasFirefox;
-    }
-    public String getHasIE() {
-        return hasIE;
-    }
-    public void setHasIE(String hasIE) {
-        this.hasIE = hasIE;
-    }
-    public String getHasChrome() {
-        return hasChrome;
-    }
-    public void setHasChrome(String hasChrome) {
-        this.hasChrome = hasChrome;
+    private boolean hasBrowser(String test) {
+        for(String browser: browsers){
+            if(browser.startsWith(test))
+                return true;
+        }
+        return false;
     }
     public String getServerProtocol() {
         return serverProtocol;
@@ -97,5 +72,81 @@ public class AutomationPropertiesBean {
     }
     public void setOperatingSystem(String operatingSystem) {
         this.operatingSystem = operatingSystem;
+    }
+    public Boolean getSendToRally() {
+        return sendToRally;
+    }
+    public void setSendToRally(Boolean sendToRally) {
+        this.sendToRally = sendToRally;
+    }
+    public List<String> getBrowsers() {
+        return browsers;
+    }
+    public void setBrowsers(List<String> browsers) {
+        this.browsers = browsers;
+    }
+    public String getDefaultWebDriverVersion() {
+        return defaultWebDriverVersion;
+    }
+    public void setDefaultWebDriverVersion(String defaultWebDriverVersion) {
+        this.defaultWebDriverVersion = defaultWebDriverVersion;
+    }
+    
+    public enum Browser {
+
+        ANDROID("android", AndroidDriver.class),
+        CHROME("chrome", ChromeDriver.class),
+        FIREFOX("ff", FirefoxDriver.class),
+        INTERNET_EXPLORER("ie", InternetExplorerDriver.class),
+        IPHONE("iphone", IPhoneDriver.class),
+        ;
+
+        private String name;
+        private WebDriver webDriver;
+        private Class<? extends WebDriver> webDriverClass;
+        
+        private Browser(String name, Class<? extends WebDriver> clazz){
+            this.name=name;
+            this.webDriverClass = clazz;
+        }
+        private Browser(String name, WebDriver webDriver){
+            this.name=name;
+            this.webDriver = webDriver;
+        }
+        private static HashMap<String, Browser> lookupByName = new HashMap<String, Browser>();
+
+        static {
+            for (Browser b : EnumSet.allOf(Browser.class)) {
+                lookupByName.put(b.getName(), b);
+            }
+        }
+
+        public String getName(){
+            return name;
+        }
+        public WebDriver getWebDriver() {
+            return webDriver;
+        }
+        public Class<? extends WebDriver> getWebDriverClass() {
+            return webDriverClass;
+        }
+        public static WebDriver findByName(String name) {
+            String nameWithoutVersion = name.replaceAll("[0-9._]", "");
+            Class[] paramTypes = new Class[] {};
+            Object[] params = new Object[] {}; 
+            Class clazz = lookupByName.get(nameWithoutVersion).getWebDriverClass();
+            Constructor con;
+            try {
+                con = clazz.getConstructor(paramTypes);
+                return (WebDriver)con.newInstance(params);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                System.out.println("defaulting to FirefoxDriver... name: "+name);//TODO: jwimmer: replace with logger or remove?
+                return new FirefoxDriver();
+            }
+            
+            
+            //return lookupByName.get(nameWithoutVersion);
+        }
     }
 }

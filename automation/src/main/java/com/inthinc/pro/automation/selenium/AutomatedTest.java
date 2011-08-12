@@ -102,6 +102,8 @@ public class AutomatedTest extends MasterTest{
     }
     
     public void pause(Integer timeToPauseInSeconds, String reasonForPause){
+        if(selenium == null)
+           selenium = super.getSelenium();
         selenium.pause(timeToPauseInSeconds, reasonForPause);
     }
 }
