@@ -229,22 +229,4 @@ public class PageAdminEditAccount extends AdminBar {
         return new PageAdminEditAccountPopUps();
     }
 
-    public static void main(String[] args) {
-        for (AdminAccountDetailsEnum method : EnumSet
-                .allOf(AdminAccountDetailsEnum.class)) {
-            System.out.println("public Text value"
-                    + method.name().toLowerCase().replace("_", "") + "(){");
-            System.out.println("return new Text(AdminAccountDetailsEnum."
-                    + method.name() + ");\n}");
-        }
-
-        for (AdminAccountDetailsEnum method : EnumSet
-                .allOf(AdminAccountDetailsEnum.class)) {
-            System.out.println("public Text label"
-                    + method.name().toLowerCase().replace("_", "") + "(){");
-            System.out.println("return new TextLabel(AdminAccountDetailsEnum."
-                    + method.name() + ");\n}");
-        }
-
-    }
 }
