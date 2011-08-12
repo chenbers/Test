@@ -259,6 +259,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         final VehicleView vehicleView = new VehicleView();
         vehicleView.bean = this;
         BeanUtils.copyProperties(vehicle, vehicleView);
+        vehicleView.setDot(vehicle.getDot());
         vehicleView.setOldGroupID(vehicle.getGroupID());
         vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
@@ -721,11 +722,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         return STATES;
     }
 
-//    public List<SelectItem> getStatuses()
-//    {
-//        return SelectItemUtil.toList(Status.class, false, Status.DELETED);
-//    }
-
     public TreeMap<String, Integer> getTeams(){
         return getGroupHierarchy().getTeams();
     }
@@ -811,19 +807,20 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         @Override
         public VehicleDOTType getDot() {
             if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null || editableVehicleSettings.getProductType() != ProductType.WAYSMART)
-                return null;
+                return super.getDot();
             
             return VehicleDOTType.getFromSetting(((WaySmartEditableVehicleSettings)editableVehicleSettings).getDotVehicleType());
         }
 
         @Override
         public void setDot(VehicleDOTType dot) {
+            super.setDot(dot);
+
             if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null || editableVehicleSettings.getProductType() != ProductType.WAYSMART)
                 return;
             
             int settingValue  = dot.getConfiguratorSetting();
             ((WaySmartEditableVehicleSettings)editableVehicleSettings).setDotVehicleType(settingValue);
-            super.setDot(dot);
         }
 
 
