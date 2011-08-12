@@ -76,6 +76,6 @@ public abstract class RallyTest extends AutomatedTest {
 	}
 	
 	public String determineTestSet() {
-        return "automation_"+apb.getOperatingSystem()+"_"+apb.getDefaultWebDriverName()+apb.getDefaultWebDriverVersion();
+        return "automation_"+apb.getOperatingSystem()+"_"+apb.getDefaultWebDriverName();
 	}
 }
