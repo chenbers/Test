@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
@@ -28,9 +29,10 @@ public class DriverStatisticsTest extends WebRallyTest {
         pl = new PageLogin();
     }
     
+    @Ignore
     @Test
     public void emailTest1695(){
-        //set_test_case("TC1695");
+        //set_test_case("TC1695");//TODO: when test is complete uncomment this line and remove @Ignore
         pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         
@@ -42,9 +44,10 @@ public class DriverStatisticsTest extends WebRallyTest {
         //TODO Update when email can be checked.
     }
     
+    @Ignore
     @Test
     public void createTest4506(){
-        //set_test_case("TC4506");
+        //set_test_case("TC4506");//TODO: when test is complete uncomment this line and remove @Ignore
         pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();
@@ -65,9 +68,10 @@ public class DriverStatisticsTest extends WebRallyTest {
         //TODO test creation of vehicle, zone, zone alert, and red flag.
     }
     
+    @Ignore
     @Test
     public void editTest4507(){
-        //set_test_case("TC4507");
+        //set_test_case("TC4507");//TODO: when test is complete uncomment this line and remove @Ignore
         pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
         createDriver("Alma", "Mater", "Top - Test Group WR");
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
@@ -92,9 +96,10 @@ public class DriverStatisticsTest extends WebRallyTest {
         deleteUser("Blooregard Kazoo");
     }
     
+    @Ignore
     @Test
     public void deleteTest4519(){
-        //set_test_case("TC4519");
+        //set_test_case("TC4519");//TODO: when test is complete uncomment this line and remove @Ignore
         
         pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
         createDriver("Alto", "Soprano", "Top - Test Group WR");
@@ -131,6 +136,10 @@ public class DriverStatisticsTest extends WebRallyTest {
     
     @Test
     public void switchTeamTest4582(){
+        
+        //TODO: this test appears to be failing because it cannot see "Swappy McGee" because Swappy is NOT on the first page of results. re-work this test so that it doesn't fail... suggestion: search for Swappy using the search box
+        //TODO: additionally, there are MANY Swappy McGee's (as well as Alpha Betical's) meaning that we are generating a lot of data that we are not cleaning up...
+
         set_test_case("TC4582");
     
         pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
@@ -152,27 +161,31 @@ public class DriverStatisticsTest extends WebRallyTest {
         deleteUser("Swappy McGee");
     }
     
-    //@Test
+    @Ignore
+    @Test
     public void switchDriverTest4586(){
-        //set_test_case("TC4586");
+        //set_test_case("TC4586");//TODO: when test is complete uncomment this line and remove @Ignore
         //TODO create method, requires vehicle
     }
     
-    //@Test
+    @Ignore
+    @Test
     public void seatBeltTest4625(){
-        //set_test_case("TC4625");
+        //set_test_case("TC4625");//TODO: when test is complete uncomment this line and remove @Ignore
         //TODO create method
     }
     
-    //@Test
+    @Ignore
+    @Test
     public void totalTripsTest5515(){
-        //set_test_case("TC5515");
+        //set_test_case("TC5515");//TODO: when test is complete uncomment this line and remove @Ignore
         //TODO create method
     }
     
-    //@Test
+    @Ignore
+    @Test
     public void totalTripDurationTest5516(){
-        //set_test_case("TC5516");
+        //set_test_case("TC5516");//TODO: when test is complete uncomment this line and remove @Ignore
         //TODO create method
     }
     
@@ -193,6 +206,7 @@ public class DriverStatisticsTest extends WebRallyTest {
     }
     
     public void deleteUser(String fullName){
+        //TODO: related to another task on this page;  this method doesn't appear work ALL the time.  suggestion:search for fullName before deleting 
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();
         PageAdminUsers pau = new PageAdminUsers();
