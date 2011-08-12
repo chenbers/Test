@@ -7,7 +7,7 @@ public enum Addresses implements AddressInterface{
     PROD("my.inthinc.com"),
 
     CHEVRON("chevron.inthinc.com"),
-
+    
     SCHLUMBERGER("schlumberger.inthinc.com"),
 
     WEATHORFORD("weatherford.inthinc.com"),
@@ -17,12 +17,14 @@ public enum Addresses implements AddressInterface{
     BARRICK("barrick.inthinc.com"),
 
     TECK("teck.inthinc.com"),
+    
+    STAGE("stage.inthinc.com"),
 
     DEV("dev-pro.inthinc.com", 8888),
 
     EC2("204.236.172.41", prodPortalPort, "stage.inthinc.com", prodMCMPort, prodWaysPort, prodSatPort),
 
-    QA("qa.tiwipro.com", 8199, "qa.tiwipro.com", 8190, 8988, 7880),
+    QA("qa.tiwipro.com", 8199, "qa.tiwipro.com", 8090, 8988, 7880),
 
     QA2("qa2.tiwipro.com", 8299, "qa2.tiwipro.com", 8290, 8988, 7980),
 

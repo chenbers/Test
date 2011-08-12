@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.scoring;
 
+import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -7,6 +8,7 @@ import java.util.TreeMap;
 import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.inthinc.pro.automation.utils.HessianRequests;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
@@ -46,16 +48,16 @@ public class Processor {
 		scores = new TreeMap<String, Double>();
 	}
 	
-	public Processor(String server){
-		hessian = new HessianRequests(Addresses.QA);
+	public Processor(Addresses server){
+		hessian = new HessianRequests(server);
 		scores = new TreeMap<String, Double>();
 	}
 	
 	
-	public void scoreMe(UnitType type, Integer ID, Long start, Long stop, ProductType deviceType) {
+	public void scoreMe(UnitType type, Integer ID, AutomationCalendar start, AutomationCalendar stop, ProductType deviceType) {
 		this.deviceType = deviceType;
-		if (type == UnitType.DRIVER)getDriverNotes(ID, start, stop);
-		else getVehicleNotes(ID, start, stop);
+		if (type == UnitType.DRIVER)getDriverNotes(ID, start.getEpochTime(), stop.getEpochTime());
+		else getVehicleNotes(ID, start.getEpochTime(), stop.getEpochTime());
 		scores.put("Overall", Formulas.overallScore(speedingScore(), drivingStyleScore(), seatBeltScore()));		
 	}
 	
@@ -174,6 +176,18 @@ public class Processor {
 		scores.put("65-80",    Formulas.p2s(1.0,0.2,cats[4],categories[4].doubleValue()));
 		scores.put("Speeding", Formulas.p2s(1.0,0.2,Formulas.speedingPenalty(speeding),mileage));
 		return scores.get("Speeding");
+	}
+	
+	@Override
+	public String toString(){
+	    StringWriter writer = new StringWriter();
+	    Iterator<String> itr = scores.keySet().iterator();
+	    while (itr.hasNext()){
+	        String key = itr.next();
+	        double value = scores.get(key);
+	        writer.write(key + " = " + value + "\n");
+	    }
+	    return writer.toString();
 	}
 	
 }

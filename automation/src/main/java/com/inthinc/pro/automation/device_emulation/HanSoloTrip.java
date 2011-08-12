@@ -1,6 +1,10 @@
 package com.inthinc.pro.automation.device_emulation;
 
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.utils.HessianRequests;
+import com.inthinc.pro.model.Device;
+import com.inthinc.pro.model.DeviceStatus;
+import com.inthinc.pro.model.Vehicle;
 
 public class HanSoloTrip extends Thread{
     private TiwiProDevice tiwi;
@@ -31,7 +35,7 @@ public class HanSoloTrip extends Thread{
     private void hanSolosFirstTrip() {
         tiwi = new TiwiProDevice(IMEI, server);
 
-        tiwi.set_time( initialTime +60);
+        tiwi.set_time( initialTime + 60);
         tiwi.set_WMP(17116);
         tiwi.set_location(33.0104, -117.111);
         tiwi.power_on_device();
@@ -98,6 +102,30 @@ public class HanSoloTrip extends Thread{
         
     }
     
+    public int createVehicle(Addresses server){
+        Vehicle vehicle = new Vehicle();
+        vehicle.setFullName("fakevehicleon"+server.name());
+        HessianRequests create = new HessianRequests(server);
+        vehicle.setGroupID(create.getGroupByName("Automated Team", create.getQAAccount().getAccountID()).getGroupID());
+        
+        return 0;
+    }
+    
+    public int createDevice(Addresses server){
+        Device device = new Device();
+        device.setFirmwareVersion(17207);
+        device.setImei("fakeimeion"+server.name());
+        device.setName("fakedeviceon"+server.name());
+        device.setPhone("8015559876");
+        device.setSim("9989898989998989");
+        device.setSerialNum("TP"+server.name());
+        device.setStatus(DeviceStatus.ACTIVE);
+        device.setWitnessVersion(51);
+        HessianRequests create = new HessianRequests(server);
+        device.setAccountID(create.getQAAccount().getAccountID());
+        return create.createDevice(device).getDeviceID();
+    }
+    
 
 	public void run() {
 		hanSolosFirstTrip();
@@ -109,19 +137,24 @@ public class HanSoloTrip extends Thread{
         Long currentTime = System.currentTimeMillis()/1000;
         Integer initialTime = currentTime.intValue();
         Addresses address;
-        String imei;
-        imei = "DEVICEDOESNTEXIST"; address=Addresses.QA;//         initialTime = initialTime; // NO VEHICLE            NO DEVICE
-//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1310333776;  // vehicleID=37706       deviceID=34506
-        imei = "444444444444444";   address=Addresses.QA;           initialTime = 1310335845;  // vehicleID=7293        deviceID=3753
-//        imei = "111111111111111";   address=Addresses.PROD;         initialTime = 1310333776;  // vehicleID=1           deviceID=1
-//        imei = "thisisajavadevice"; address=Addresses.CHEVRON;      initialTime = 1310333776;  // vehicleID=117441441   deviceID=117441936 
-//        imei = "999456789012345";   address=Addresses.SCHLUMBERGER; initialTime = 1310333776;  // vehicleID=150994955   deviceID=150994955
-//        imei = "FAKEIMEIFORTINA";   address=Addresses.WEATHORFORD;  initialTime = 1310333776;  // vehicleID=184549575   deviceID=184549735
+        String imei = "FAKEIMEIDEVICE"; address=Addresses.QA;
+        imei = "DEVICEDOESNTEXIST";
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
-        
+//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1313104210;  // vehicleID=37706       deviceID=34506
+//        address=Addresses.QA;           initialTime = 1313104210;  // vehicleID=7293        deviceID=3753
+//        address=Addresses.STAGE;        initialTime = 1313104210;  // vehicleID=117441441   deviceID=117441936 
+//        address=Addresses.PROD;         initialTime = 1313104210;  // vehicleID=1           deviceID=1
+//        address=Addresses.CHEVRON;      initialTime = 1313104210;  // vehicleID=117441441   deviceID=117441936
+//        address=Addresses.SCHLUMBERGER; initialTime = 1313104210;  // vehicleID=150994955   deviceID=150994955
+//        address=Addresses.WEATHORFORD;  initialTime = 1313104210;  // vehicleID=184549575   deviceID=184549735
+//        address=Addresses.TECK;         initialTime = 1313104210;  // vehicleID=251658249   deviceID=251658248
+//        address=Addresses.BARRICK;      initialTime = 1313104210;  // vehicleID=83886085    deviceID=83886086
+//        address=Addresses.CINTAS;       initialTime = 1313104210;  // vehicleID=234881465   deviceID=234881624
         
         trip.hanSolosFirstTrip( imei, address, initialTime);
         
+        
+//        011596000074009
 //        String satIMEI;
 //        String mcmID;
 //        int vehicleID, companyID, accountID;

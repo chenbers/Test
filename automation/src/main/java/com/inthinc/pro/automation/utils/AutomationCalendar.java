@@ -434,6 +434,10 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         formatter = new SimpleDateFormat(this.format);
         date = GregorianCalendar.getInstance();
     }
+    
+    public AutomationCalendar(){
+        this(WebDateFormat.NOTE_DATE_TIME);
+    }
 
     public void addToDay(int amount) {
         date.add(Calendar.DAY_OF_YEAR, amount);
@@ -500,17 +504,9 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
     }
 
     public boolean compareDays(AutomationCalendar compareAgainst) {
-        compareAgainst.changeMillisecondsTo(0);
-        compareAgainst.changeMinutesTo(0);
-        compareAgainst.changeSecondsTo(0);
-        compareAgainst.changeHourseTo(0);
-        compareAgainst.setTimeZone(TimeZones.US_MOUNTAIN);
+        compareAgainst.zeroTimeOfDay();
         AutomationCalendar original = new AutomationCalendar(date, rawEnum);
-        original.changeMillisecondsTo(0);
-        original.changeMinutesTo(0);
-        original.changeSecondsTo(0);
-        original.changeHourseTo(0);
-        original.setTimeZone(TimeZones.US_MOUNTAIN);
+        original.zeroTimeOfDay();
         return compareAgainst.equals(original);
     }
 
@@ -589,7 +585,7 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
     }
 
     public long getEpochTime() {
-        return date.getTimeInMillis();
+        return date.getTimeInMillis()/1000;
     }
 
     public void setDate(String dateTime) {
@@ -618,6 +614,14 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
     public String toString(Calendar date) {
         SimpleDateFormat yesterday = new SimpleDateFormat(format);
         return yesterday.format(date);
+    }
+    
+    public void zeroTimeOfDay(){
+        setTimeZone(TimeZones.UTC);
+        changeMillisecondsTo(0);
+        changeMinutesTo(0);
+        changeSecondsTo(0);
+        changeHourseTo(0);
     }
 
 }

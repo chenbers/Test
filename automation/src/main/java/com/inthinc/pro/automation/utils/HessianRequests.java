@@ -260,5 +260,25 @@ public class HessianRequests {
 		return mapper.convertToModelObject(
 				portalProxy.getUser(user.getUserID()), User.class);
 	}
+	
+	public Account getQAAccount(){
+	    List<Account> accts = getAccounts();
+	    for (Account account : accts){
+	        if (account.getAcctName().equalsIgnoreCase("QA")){
+	            return account;
+	        }
+	    }
+	    return null;
+	}
+	
+	public Group getGroupByName(String name, int acctID){
+	    List<Group> groups = getGroups(acctID);
+	    for (Group group : groups){
+	        if (group.getName().equals(name)){
+	            return group;
+	        }
+	    }
+	    return null;
+	}
 
 }
