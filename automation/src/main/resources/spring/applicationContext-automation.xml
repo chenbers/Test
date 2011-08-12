@@ -34,7 +34,7 @@
 		<property name="defaultWebDriverName" value="${automation.browser.default}" />
 		<property name="defaultWebDriverVersion" value="${automation.browserVersion.default}" />
 		<property name="operatingSystem" value="${automation.operatingSystem}" />
-		<property name="sendToRally" value="${automation.sendToRally}" />
+		<property name="addTestSet" value="${automation.addTestSet}" />
 		<property name="browsers" >
 			<list>
 				<value >${automation.browser.one}</value>

@@ -28,28 +28,26 @@ public abstract class RallyTest extends AutomatedTest {
 		super(version);
 	}
 
-	@Override
-	public void before() {
-		super.before();
-		if(apb.getSendToRally())
-		{
-    		try {
-                rally = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
-    			rally.newResults();
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    			skip = true;
-    			throw new NullPointerException();
-    		}
-		}
-	}
+    @Override
+    public void before() {
+        super.before();
+        try {
+            rally = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
+            rally.newResults();
+        } catch (Exception e) {
+            e.printStackTrace();
+            skip = true;
+            throw new NullPointerException();
+        }
+    }
 
 	@Override
 	public void after() {
 	    super.after();
-		if (!skip && apb.getSendToRally()) {
+		if (!skip) {
 			try {
-				setTestSet(determineTestSet());
+			    if(apb.getAddTestSet())
+				    setTestSet(determineTestSet());
 				rally.setBuildNumber(getBuildNumber());
 				rally.setVerdict(getTestVerdict());
                 rally.setNotes(determineTestSet(), errors);

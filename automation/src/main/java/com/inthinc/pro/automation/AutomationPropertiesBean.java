@@ -20,7 +20,7 @@ public class AutomationPropertiesBean {
     private String defaultWebDriverName;
     private String defaultWebDriverVersion;
     private String operatingSystem;
-    private Boolean sendToRally;
+    private Boolean addTestSet;
     private List<String> browsers;
     
     
@@ -73,11 +73,11 @@ public class AutomationPropertiesBean {
     public void setOperatingSystem(String operatingSystem) {
         this.operatingSystem = operatingSystem;
     }
-    public Boolean getSendToRally() {
-        return sendToRally;
+    public Boolean getAddTestSet() {
+        return addTestSet;
     }
-    public void setSendToRally(Boolean sendToRally) {
-        this.sendToRally = sendToRally;
+    public void setAddTestSet(Boolean addTestSet) {
+        this.addTestSet = addTestSet;
     }
     public List<String> getBrowsers() {
         return browsers;
