@@ -180,9 +180,9 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnrf._link().zones().click();
         pnz._dropDown().team().selectPartMatch(GROUP);
         pnz._button().refresh().click();
-        pnz._text().dateTimeEntry().row(1).waitForElement();
+        pnz._text().entryDateTime().row(1).waitForElement();
         
-        Iterator<TextBased> itr = pnz._text().dateTimeEntry().iterator();
+        Iterator<TextBased> itr = pnz._text().entryDateTime().iterator();
         if(itr.hasNext()){
             currentDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
         }
@@ -199,7 +199,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._link().sortByDateTime().click();
         pause(5, "Wait for refresh.");
         
-        itr = pnz._text().dateTimeEntry().iterator();
+        itr = pnz._text().entryDateTime().iterator();
         if(itr.hasNext()){
             currentDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
         }
@@ -701,8 +701,8 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._dropDown().statusFilter().select("included");
         pnz._button().refresh().click();
         pause(10, "Wait for page to load.");
-        String date = pnz._text().dateTimeEntry().row(1).getText();
-        String detail = pnz._text().detailEntry().row(1).getText();
+        String date = pnz._text().entryDateTime().row(1).getText();
+        String detail = pnz._text().entryDetail().row(1).getText();
         pnz._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         assertStringContains(date, pnz._popUp().excludeEvent()._text().message().getText());
@@ -745,7 +745,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._button().refresh().click();
         pause(5, "Wait for refresh.");
         AutomationCalendar todayCal = new AutomationCalendar(WebDateFormat.NOTE_DATE_TIME);
-        if(!todayCal.compareDays(pnz._text().dateTimeEntry().row(1).getText())){
+        if(!todayCal.compareDays(pnz._text().entryDateTime().row(1).getText())){
             addError("Today's date does not match today's date on the portal.", ErrorLevel.FATAL);
         }
         todayCal.addToDay(-1);
@@ -753,7 +753,7 @@ public class NotificationsZonesTest extends WebRallyTest {
         pnz._button().refresh().click();
         pause(10, "Wait for refresh.");
         
-        if(!todayCal.compareDays(pnz._text().dateTimeEntry().row(1).getText())){
+        if(!todayCal.compareDays(pnz._text().entryDateTime().row(1).getText())){
             addError("Yesterday's date does not match yesterday's date on the portal.", ErrorLevel.FATAL);
         }
         

@@ -111,10 +111,10 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         pnrf._dropDown().team().selectPartMatch(GROUP);
         pnrf._button().refresh().click();
-        pnrf._text().dateTimeEntry().row(1).waitForElement();
-        String dateTime = pnrf._text().dateTimeEntry().row(1).getText();
+        pnrf._text().entryDateTime().row(1).waitForElement();
+        String dateTime = pnrf._text().entryDateTime().row(1).getText();
         String driver = pnrf._link().entryDriver().row(1).getText();
-        String detail = pnrf._text().detailEntry().row(1).getText();
+        String detail = pnrf._text().entryDetail().row(1).getText();
         pnrf._button().eventLocation().row(1).click();
         pnrf._popUp().location()._text().title().assertVisibility(true);
         pnrf._popUp().location()._text().bubbleValueName().assertEquals(driver);
@@ -319,11 +319,11 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         ptds._link().notifications().click();
         pnrf._dropDown().team().selectPartMatch(GROUP);
         pnrf._button().refresh().click();
-        pnrf._text().dateTimeEntry().row(1).waitForElement();
+        pnrf._text().entryDateTime().row(1).waitForElement();
         
         currentText = "";
         
-        Iterator<TextBased> itr = pnrf._text().dateTimeEntry().iterator();
+        Iterator<TextBased> itr = pnrf._text().entryDateTime().iterator();
         if(itr.hasNext()){
             currentDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
         }
@@ -340,7 +340,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._link().sortByDateTime().click();
         pause(5, "Wait for refresh.");
         
-        itr = pnrf._text().dateTimeEntry().iterator();
+        itr = pnrf._text().entryDateTime().iterator();
         if(itr.hasNext()){
             currentDate = new AutomationCalendar(itr.next().getText(), WebDateFormat.NOTE_DATE_TIME);
         }
@@ -820,13 +820,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().statusFilter().select("included");
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
-        String date = pnrf._text().dateTimeEntry().row(1).getText();
-        String detail = pnrf._text().detailEntry().row(1).getText();
+        String date = pnrf._text().entryDateTime().row(1).getText();
+        String detail = pnrf._text().entryDetail().row(1).getText();
         pnrf._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         pnrf._popUp().excludeEvent()._button().no().click();
-        assertStringContains(date, pnrf._text().dateTimeEntry().row(1).getText());
-        assertStringContains(detail, pnrf._text().detailEntry().row(1).getText());
+        assertStringContains(date, pnrf._text().entryDateTime().row(1).getText());
+        assertStringContains(detail, pnrf._text().entryDetail().row(1).getText());
     }
     
     @Test
@@ -988,8 +988,8 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._dropDown().statusFilter().select("included");
         pnrf._button().refresh().click();
         pause(10, "Wait for page to load.");
-        String date = pnrf._text().dateTimeEntry().row(1).getText();
-        String detail = pnrf._text().detailEntry().row(1).getText();
+        String date = pnrf._text().entryDateTime().row(1).getText();
+        String detail = pnrf._text().entryDetail().row(1).getText();
         pnrf._link().entryStatus().row(1).click();
         pause(5, "Wait for pop-up to become visible.");
         assertStringContains(date, pnrf._popUp().excludeEvent()._text().message().getText());
@@ -1030,7 +1030,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._button().refresh().click();
         pause(5, "Wait for refresh.");
         AutomationCalendar todayCal = new AutomationCalendar(WebDateFormat.NOTE_DATE_TIME);
-        if(!todayCal.compareDays(pnrf._text().dateTimeEntry().row(1).getText())){
+        if(!todayCal.compareDays(pnrf._text().entryDateTime().row(1).getText())){
             addError("Today's date does not match today's date on the portal.", ErrorLevel.FATAL);
         }
         todayCal.addToDay(-1);
@@ -1038,7 +1038,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._button().refresh().click();
         pause(10, "Wait for refresh.");
         
-        if(!todayCal.compareDays(pnrf._text().dateTimeEntry().row(1).getText())){
+        if(!todayCal.compareDays(pnrf._text().entryDateTime().row(1).getText())){
             addError("Yesterday's date does not match yesterday's date on the portal.", ErrorLevel.FATAL);
         }
     }

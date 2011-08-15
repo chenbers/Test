@@ -71,15 +71,15 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
             return new Text(NotificationsBarEnum.HEADER_CATEGORY, page);
         }
 
-        public TextTable dateTimeEntry() {
+        public TextTable entryDateTime() {
             return new TextTable(NotificationsBarEnum.DATE_TIME_ENTRY, page);
         }
 
-        public TextTable categoryEntry() {
+        public TextTable entryCategory() {
             return new TextTable(NotificationsBarEnum.CATEGORY_ENTRY, page);
         }
 
-        public TextTable detailEntry() {
+        public TextTable entryDetail() {
             return new TextTable(NotificationsBarEnum.DETAIL_ENTRY, page);
         }
 
@@ -87,6 +87,7 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
             return new Text(NotificationsBarEnum.COUNTER, page);
         }
 	}
+	
 	protected class EventsBarDropDowns extends NotificationsBarDropDowns{
 	    
 	    
