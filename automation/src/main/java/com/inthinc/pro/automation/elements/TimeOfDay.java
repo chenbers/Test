@@ -50,6 +50,32 @@ public class TimeOfDay extends MasterTest{
         return new DropDown(myEnum, "am_pm");
     }
     
+    public Text label(){
+        return new TextFieldLabel(myEnum, "timeValue");
+    }
+    
+    public Text timeZone(){
+        return new Text(setTimeZoneEnum());
+    }
+    
+    private SeleniumEnumWrapper setTimeZoneEnum(){
+        SeleniumEnumWrapper temp = new SeleniumEnumWrapper(myEnum);
+        temp.replaceWord("timeValue");
+        String[] newIds = new String[myEnum.getIDs().length];
+        String oneUpFirstTd = ElementBase.parentXpath+"/div/span[5]";
+        for (int i=0;i<myEnum.getIDs().length;i++){
+            String newId = "";
+            String id = myEnum.getIDs()[i];
+            if(id.startsWith("//")){
+                newId = id + oneUpFirstTd;
+            }else if( !id.contains("=")){
+                newId = "//input[@id='"+id+"']"+oneUpFirstTd;
+            }
+            newIds[i]=newId;
+        }
+        return temp;
+    }
+    
     public class Spinner {
         private SeleniumEnumWrapper spinnerEnum;
         
