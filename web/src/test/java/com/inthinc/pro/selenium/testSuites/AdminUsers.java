@@ -22,7 +22,7 @@ public class AdminUsers extends WebRallyTest {
 	
 	@Test
 	public void usersNameLink(){
-		//set_test_case("TC764");
+		//set_test_case("TC764");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
 		
 		//1- Login
 		users.loginProcess(username, password);
@@ -47,7 +47,7 @@ public class AdminUsers extends WebRallyTest {
 	
 	@Test
 	public void usersEditLink(){
-		//set_test_case("TC762");
+		//set_test_case("TC762");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore  
 		
 		//1- Login
 		users.loginProcess(username, password);
@@ -56,7 +56,7 @@ public class AdminUsers extends WebRallyTest {
 		users._link().admin().click();
 		
 		//3- Take note of the top user's employee ID
-		String employeeID = users._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).getText();
+		String employeeID = users._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).getText();//TODO: this test needs to ensure that the EMPLOYEE_ID line is visible before trying to getText on it
 		
 		//4- Click on the Edit link for the top name
 		users._link().edit().row(1).click();
@@ -69,7 +69,7 @@ public class AdminUsers extends WebRallyTest {
 	
 	@Test
 	public void usersSearch(){
-		//set_test_case("TC766");
+		//set_test_case("TC766");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
 		
 		//1- Login
 		users.loginProcess(username, password);
@@ -78,15 +78,16 @@ public class AdminUsers extends WebRallyTest {
 		users._link().admin().click();
 		
 		//3- Enter a user name into the search field
-		users._textField().search().type("Danni");
+		String name = "Danni";
+		users._textField().search().type(name);
 		
 		//4- Click Search
 		users._button().search().click();
 		
 		//5- Verify only that name shows on the list
-		String name = "Danni";
 		boolean hasOnlyExpectedUsernames = true;
 		boolean hasThisRow = true;
+		//TODO: this test might benefit from users._link().tableEntryUserName().iterator()
 		for (int i = 1; i < 10 && hasOnlyExpectedUsernames && hasThisRow; i++){
 			hasThisRow = users._link().tableEntryUserName().row(i).isPresent();
 			if(hasThisRow){
@@ -98,7 +99,7 @@ public class AdminUsers extends WebRallyTest {
 	
 	@Test
 	public void usersEditColumnsCancel(){
-		//set_test_case("TC769");
+		//set_test_case("TC769");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
 		
 		//1- Login
 		users.loginProcess(username, password);
@@ -140,7 +141,7 @@ public class AdminUsers extends WebRallyTest {
 	
 	@Test
 	public void usersEditColumnsCancelNoChange(){
-		//set_test_case("TC770");
+		//set_test_case("TC770");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
 		
 		//1- Login
 		users.loginProcess(username, password);
@@ -177,7 +178,7 @@ public class AdminUsers extends WebRallyTest {
 	
 	@Test
 	public void usersEditColumnsRetention(){
-		//set_test_case("TC773");
+		//set_test_case("TC773");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
 		
 		//1- Login
 		users.loginProcess(username, password);
@@ -251,7 +252,7 @@ public class AdminUsers extends WebRallyTest {
 	
 	@Test
 	public void usersEditColumnsSave(){
-		//set_test_case("TC775");
+		//set_test_case("TC775");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
 		
 		//1- Login
 		users.loginProcess(username, password);
@@ -305,7 +306,7 @@ public class AdminUsers extends WebRallyTest {
 	
 	@Test
 	public void usersEditColumnsNewSession(){
-		//set_test_case("TC776");
+		//set_test_case("TC776");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
 		
 		//1- Login
 		users.loginProcess(username, password);
