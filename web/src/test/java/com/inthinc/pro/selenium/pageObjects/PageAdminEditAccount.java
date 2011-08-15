@@ -196,7 +196,7 @@ public class PageAdminEditAccount extends AdminBar {
 
     public class PageAdminEditAccountButtons extends AdminBarButtons {
 
-        public TextButton valueeditbutton() {
+        public TextButton valueEditButton() {
             return new TextButton(AdminAccountDetailsEnum.EDIT_BUTTON);
         }
     }

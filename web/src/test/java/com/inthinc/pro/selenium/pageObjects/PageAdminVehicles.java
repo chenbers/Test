@@ -50,7 +50,7 @@ public class PageAdminVehicles extends AdminTables {
         }
 
         public DropDown filterByStatus() {
-            return new DhxDropDown(AdminVehiclesEnum.STATUS_DHX);
+            return new DhxDropDown(AdminVehiclesEnum.STATUS_DHX, enums);
         }
 
     }
