@@ -122,4 +122,26 @@
     }
     
     
+    public static void main(String[] args) {
+        System.out.println("public class CLASS_TO_RETURN {");
+        for (ENUM_TO_USE method : EnumSet
+                .allOf(ENUM_TO_USE.class)) {
+            String paramaters = "Integer pageNumber";
+            String additionalParams = ", pageNumber.toString()";
+            if (method.name().contains("VALUE")) {
+                paramaters += ", int rowNumber";
+                additionalParams += ", 13 + 3 * rowNumber";
+            }
+
+            System.out.println("public CLASS_TO_RETURN "
+                    + method.name().toLowerCase().replace("_", "") + "("
+                    + paramaters + "){");
+            System.out
+                    .println("\treturn new Text(ENUM_TO_USE."
+                            + method.name() + additionalParams + ");\n}");
+
+        }
+        System.out.println("}");
+    }
+    
     

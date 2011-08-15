@@ -9,6 +9,7 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.HosReportsEnum;
+import com.inthinc.pro.selenium.pageObjects.NonDOTViolationsDetailReport.NonDOTViolationsDetailReportText;
 
 public class PageHOSReports extends HOSBar {
     
@@ -190,6 +191,10 @@ public class PageHOSReports extends HOSBar {
         
         public NonDOTViolationsSummaryReportHTML _nonDOTViolationsSummaryReportHTML(){
             return new NonDOTViolationsSummaryReportHTML();
+        }
+        
+        public NonDOTViolationsDetailReport _nonDOTViolationsDetailReportHTML(){
+            return new NonDOTViolationsDetailReport();
         }
     }
 }
