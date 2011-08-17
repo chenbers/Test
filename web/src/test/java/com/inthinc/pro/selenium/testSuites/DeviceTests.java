@@ -1,5 +1,8 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +10,10 @@ import org.junit.Test;
 
 import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.utils.CreateHessian;
+import com.inthinc.pro.automation.utils.DownloadFile;
+import com.inthinc.pro.automation.utils.MD5Checksum;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
 
@@ -36,6 +42,42 @@ public class DeviceTests extends WebRallyTest {
             tiwi.flushNotes();
         } catch (Exception e){
             
+        }
+    }
+    
+    
+    @Test
+    public void audioFilesFromHessianMatchSVN(){
+        set_test_case("TC5798");
+        File svnFolder = new File("src/main/resources/svnVersion/");
+        svnFolder.mkdir();
+        
+        File hessianFolder = new File("src/main/resources/hessianVersion/");
+        hessianFolder.mkdir();
+        
+        TiwiProDevice tiwi = new TiwiProDevice("javadeviceindavidsaccount", Addresses.QA);
+        tiwi.set_WMP(17207);
+        
+        for (int i=1;i<=33;i++){
+            for (Locales locale: EnumSet.allOf(Locales.class)){
+                int fileNumber = i;
+                
+                String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
+                String path = "src/main/resources/svnVersion/";
+                String fileName = String.format("%02d.pcm", fileNumber);
+                File dest = new File(path + fileName);
+                
+                if (!DownloadFile.downloadSvnDirectory(url, fileName, dest)){
+                    addError("SVN File not found", ErrorLevel.FATAL_ERROR);
+                }
+                
+                tiwi.getAudioFile(fileNumber, locale);
+        
+                String svn = MD5Checksum.getMD5Checksum(path + fileName);
+                String hessian = MD5Checksum.getMD5Checksum(path.replace("svn", "hessian") + fileName);
+                validateEquals(svn, hessian);
+                
+            }
         }
     }
 

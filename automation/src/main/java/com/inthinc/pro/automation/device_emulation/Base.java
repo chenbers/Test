@@ -1,5 +1,8 @@
 package com.inthinc.pro.automation.device_emulation;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,9 +22,11 @@ import org.json.JSONObject;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DeviceProperties;
+import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.utils.MD5Checksum;
+import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
@@ -224,6 +229,33 @@ public abstract class Base {
         }
         
         return map;
+    }
+    
+    public boolean getAudioFile(int fileVersion, Locales locale){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("hardwareVersion", this.WMP);
+        map.put("fileVersion", fileVersion);
+        map.put("locale", locale);
+        map.put("productVersion", this.productVersion);
+        
+        String fileName = String.format("src/main/resources/hessianVersion/%02d.pcm", fileVersion);
+        
+        Map<String, Object> reply = mcmProxy.audioUpdate(this.imei, map);
+        logger.debug(reply);
+        try {
+            FileOutputStream fos = new FileOutputStream(fileName);
+            fos.write((byte[]) reply.get("f"));
+            fos.close();
+            logger.debug("MD5 Hash is: " + MD5Checksum.getMD5Checksum(fileName));
+        } catch (FileNotFoundException e) {
+            logger.debug(StackToString.toString(e));
+        } catch (IOException e) {
+            logger.debug(StackToString.toString(e));
+        } catch (Exception e) {
+            logger.debug(StackToString.toString(e));
+        }
+        
+        return false;
     }
 
     protected Base get_changes() {

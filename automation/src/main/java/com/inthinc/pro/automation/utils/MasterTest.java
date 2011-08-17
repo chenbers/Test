@@ -21,6 +21,7 @@ public class MasterTest {
     private final static Logger logger = Logger.getLogger(MasterTest.class);
 
     public static enum ErrorLevel {
+        FATAL_ERROR(Verdicts.INCONCLUSIVE),
         FATAL(Verdicts.FAIL),
         FAIL(Verdicts.FAIL),
         ERROR(Verdicts.ERROR),

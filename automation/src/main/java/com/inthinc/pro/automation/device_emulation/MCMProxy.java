@@ -22,4 +22,5 @@ public interface MCMProxy{
 		ArrayList<Map<String, Object>> note(String mcmID, List<byte[]> noteList);
 		ArrayList<Map<String, Object>> dumpSet(String mcmID, Integer version, Map<Integer, String> settings);
 		ArrayList<Map<Integer, String>> reqSet(String imei);
+		Map<String, Object> audioUpdate(String mcmID, Map<String, Object> map);
 }
