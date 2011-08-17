@@ -235,7 +235,7 @@ public abstract class Base {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("hardwareVersion", this.WMP);
         map.put("fileVersion", fileVersion);
-        map.put("locale", locale);
+        map.put("locale", locale.toString());
         map.put("productVersion", this.productVersion);
         
         String fileName = String.format("src/main/resources/hessianVersion/%02d.pcm", fileVersion);
