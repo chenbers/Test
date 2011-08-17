@@ -35,25 +35,22 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._link().hosFuelStops().click();
         
         //1.Selected vehicle id and click on Add        
-        myFuelStops._textField().vehicle().type("108406");
+        myFuelStops._textField().vehicle().type("10840");
         myFuelStops._textField().vehicle().getSuggestion("108406").click();
         myFuelStops._button().add().click();
-        pause(5,"");
-        
+               
         //2.Generate Driver and Vehicle Fuel Errors
         myFuelStopsAddEdit._dropDown().driver().select(1);
-        pause(5,"");
         myFuelStopsAddEdit._button().bottomSave().click();
         myFuelStopsAddEdit._text().errorMaster().validate("2 error(s) occurred. Please verify all the data entered is correct.");
         myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle fuel is required.");
         myFuelStopsAddEdit._text().errorDriver().validate("Driver is required");
-        pause(5,"");
         myFuelStopsAddEdit._button().bottomCancel().click();
         
+        myFuelStops._button().add().click();
         //3. Generate Trailer Fuel Errors
         myFuelStopsAddEdit._textField().trailer().type("123");
-        myFuelStopsAddEdit._dropDown().driver().select(3);
-        pause(5,"");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
         myFuelStopsAddEdit._button().bottomSave().click();
         
         myFuelStopsAddEdit._text().errorMaster().validate("1 error(s) occurred. Please verify all the data entered is correct.");
@@ -70,8 +67,7 @@ public class HOSFuelStops extends WebRallyTest {
         
         myFuelStopsAddEdit._textField().date().type(tomorrow);
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
-        myFuelStopsAddEdit._dropDown().driver().select(3);
-        pause(5,"");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
         myFuelStopsAddEdit._button().bottomSave().click();
         myFuelStopsAddEdit._text().errorMaster().validate("1 error(s) occurred. Please verify all the data entered is correct.");
         myFuelStopsAddEdit._text().errorDate().validate("Date/Time in the future is not valid.");
@@ -93,7 +89,6 @@ public class HOSFuelStops extends WebRallyTest {
         // myFuelStopsAddEdit._textField().date();
         myFuelStopsAddEdit._text().timeMessage().validatePresence(true);
         myFuelStopsAddEdit._textField().trailer().type("789");
-        pause(5,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("789");
         myFuelStopsAddEdit._textField().trailerFuel().type("789");
         myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
@@ -113,7 +108,6 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._button().add().click();
         // myFuelStopsAddEdit._textField().date().
         myFuelStopsAddEdit._textField().trailer().type("123");
-        pause(5,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
         myFuelStopsAddEdit._textField().trailerFuel().type("123");
         myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
@@ -131,11 +125,21 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._link().hosFuelStops().click();
         myFuelStops._textField().vehicle().type("10840");
         myFuelStops._textField().vehicle().getSuggestion("108406").click();
+        
+        //Add Fuel Stop
+        myFuelStops._button().add().click();
+        myFuelStopsAddEdit._textField().trailer().type("123");
+        myFuelStopsAddEdit._textField().vehicleFuel().type("123");
+        myFuelStopsAddEdit._textField().trailerFuel().type("123");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._button().bottomSave().click();
+        pause(5,"wait to save new fuel stop");
+        
+        //Edit row one
         myFuelStops._link().valueEdit().row(1).click();
         myFuelStopsAddEdit._textField().date().type("");
         myFuelStopsAddEdit._textField().trailer().clear();
         myFuelStopsAddEdit._textField().trailer().type("456");
-        pause(2,"");
         myFuelStopsAddEdit._textField().vehicleFuel().clear();
         myFuelStopsAddEdit._textField().vehicleFuel().type("456");
         myFuelStopsAddEdit._textField().trailerFuel().type("456");
