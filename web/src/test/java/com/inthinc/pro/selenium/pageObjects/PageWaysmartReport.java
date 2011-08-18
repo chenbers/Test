@@ -1,11 +1,24 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.WaysmartReportEnum;
+import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
+import com.inthinc.pro.selenium.pageObjects.Masthead.Paging;
+import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportButtons;
+import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportDropDowns;
+import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportLinks;
+import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportPager;
+import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportPopUps;
+import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportTextFields;
+import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportTexts;
+import com.inthinc.pro.selenium.pageObjects.PopUps.EditColumns;
+import com.inthinc.pro.selenium.pageObjects.PopUps.Email;
+import com.inthinc.pro.selenium.pageObjects.PopUps.Types;
 
 public class PageWaysmartReport extends ReportsBar {
     
@@ -36,10 +49,6 @@ public class PageWaysmartReport extends ReportsBar {
 
     public class WaysmartReportTexts extends NavigationBarTexts{
     
-        public Text labelReport(){
-            return new TextLabelDropDown(WaysmartReportEnum.REPORT_DROP_DOWN);
-        }
-    
         public TextFieldLabel labelDateRange(){
             return new TextFieldLabel(WaysmartReportEnum.START_DATE);
         }
@@ -60,5 +69,28 @@ public class PageWaysmartReport extends ReportsBar {
         public TextField stopDate(){
             return new TextField(WaysmartReportEnum.STOP_DATE);
         }
+    }
+    
+    public class WaysmartReportDropDowns extends NavigationBarDropDowns{
+        
+        public DropDown reportDropDown(){
+            return new DropDown(WaysmartReportEnum.REPORT_DROP_DOWN);
+        }
+    }
+
+    public WaysmartReportLinks _link() {
+        return new WaysmartReportLinks();
+    }
+
+    public WaysmartReportTexts _text() {
+        return new WaysmartReportTexts();
+    }
+
+    public WaysmartReportTextFields _textField() {
+        return new WaysmartReportTextFields();
+    }
+    
+    public WaysmartReportDropDowns _dropDown() {
+        return new WaysmartReportDropDowns();
     }
 }
