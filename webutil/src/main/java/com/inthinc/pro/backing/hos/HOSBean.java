@@ -20,6 +20,7 @@ import org.richfaces.model.Ordering;
 
 import com.inthinc.hos.model.DebugInfo;
 import com.inthinc.hos.model.HOSRec;
+import com.inthinc.hos.model.HOSStats;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.MinutesRemainingData;
 import com.inthinc.hos.model.RuleSetType;
@@ -194,6 +195,10 @@ public class HOSBean extends BaseBean {
         
         HOSRules rules = RuleSetFactory.getRulesForRuleSetType(driverDOTType);
         minutesRemainingData = rules.getDOTMinutesRemaining(recList, currentDate);
+        
+        HOSStats stats = rules.getHOSStats(recList, currentDate);
+        System.out.println("driving remaining: " + stats.getDrivingDOTMinutesRemaining());
+        System.out.println("on duty remaining: " + stats.getOnDutyDOTMinutesRemaining());
         
     }
     public void displayLogsAction() {

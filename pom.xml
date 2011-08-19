@@ -81,7 +81,7 @@
 		<geotools.version>2.6.5</geotools.version>
 		<log4j.version>1.2.12</log4j.version>
 		<jmockit.version>0.999.4</jmockit.version>
-		<hos.version>0.0.6</hos.version>
+		<hos.version>0.0.7-SNAPSHOT</hos.version>
 		<selenium.version>2.0rc3</selenium.version>
 	</properties>
 	<build>

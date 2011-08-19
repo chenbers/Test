@@ -256,7 +256,7 @@ public class GroupHierarchy implements Serializable
     	}
     	Group grandparentGroup = getGroup(getGroup(thisGroup.getParentID()).getParentID());
     	Group companyGroup = getGroup(thisGroup.getParentID());
-    	while (!grandparentGroup.getGroupID().equals(topGroupID)){
+    	while ((grandparentGroup != null) && !grandparentGroup.getGroupID().equals(topGroupID)){
     		grandparentGroup = getGroup(grandparentGroup.getParentID());
     		companyGroup = getGroup(companyGroup.getParentID());
     	}

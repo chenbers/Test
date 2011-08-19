@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 
@@ -284,11 +285,11 @@ public class HosDailyDriverLogReportCriteria {
         {
             
             LocalDate localDate = new LocalDate(intervalDay);
-            DateTimeZone dateTimeZone = getBestTimeZone(intervalDay.toDate(), hosRecordList);
+            DateTimeZone dateTimeZone = getBestTimeZone(intervalDay.toDate(), hosRecordList, driver.getPerson().getTimeZone());
             DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
             if (day.toDate().after(currentTime)) 
                 break;
-            
+
             List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true); 
             List<HOSOccupantLog> occupantLogListForDay = getOccupantLogsForDay(logListForDay, hosOccupantLogList);
             HOSRec firstHosRecForDay = getFirstRecordForDay(intervalDay.toDate(), hosRecapList);
@@ -428,7 +429,7 @@ public class HosDailyDriverLogReportCriteria {
         }
     }
     
-    private DateTimeZone getBestTimeZone(Date date, List<HOSRecord> hosRecordList) {
+    private DateTimeZone getBestTimeZone(Date date, List<HOSRecord> hosRecordList, TimeZone driverTimeZone) {
         
         HOSRecord priorRec = null; 
         for (HOSRecord logRec : hosRecordList)
@@ -442,7 +443,7 @@ public class HosDailyDriverLogReportCriteria {
             priorRec = logRec;
         }
         if (priorRec == null)
-            return DateTimeZone.getDefault();
+            return DateTimeZone.forTimeZone(driverTimeZone);
         
         return DateTimeZone.forTimeZone(priorRec.getTimeZone());
         
@@ -526,7 +527,8 @@ public class HosDailyDriverLogReportCriteria {
             if (deferralDay2Record != null) 
                 remarkLogList.add(0, deferralDay2Record);
         }
-        if (remarkLogList.size() == 0 && hosRecordList.size() != 0) {
+        if (remarkLogList.size() == 0 && hosRecordList.size() != 0 && !hosRecordList.get(0).getLogTime().after(dayEnd.toDate())) {
+            
             remarkLogList.add(populateRemarkLog(hosRecordList.get(0)));
             if (hosRecordList.size() != 1)
                 remarkLogList.add(populateRemarkLog(hosRecordList.get(hosRecordList.size() - 1)));
@@ -582,10 +584,10 @@ public class HosDailyDriverLogReportCriteria {
              remarkLog.setLocationEdited(true);
         else remarkLog.setLocationEdited(false);
         remarkLog.setEditor("");
+        if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.KIOSK)) 
+            remarkLog.setEditor(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.kiosk"));
         if (remarkLog.getEdited()) {
-            if (hosRecord.getOrigin() != null && hosRecord.getOrigin().equals(HOSOrigin.KIOSK)) 
-                remarkLog.setEditor(MessageUtil.getBundleString(getResourceBundle(),"report.ddl.kiosk"));
-            else if (hosRecord.getEditUserID() != null && hosRecord.getEditUserID() != 0)
+            if (hosRecord.getEditUserID() != null && hosRecord.getEditUserID() != 0)
                 remarkLog.setEditor(getEditUserFullName(hosRecord.getEditUserID()));
         }
         return remarkLog;
