@@ -1,0 +1,4575 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+<title>Service API</title>
+<link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+<body class="all">
+<h1><img src="logo.png" alt="inthinc"/>&nbsp;REST Service API Resources</h1>
+<h2>Contents</h2>
+<ul>
+<li><a href="#resources">Resources</a></li>
+<li><a href="#authentication">Authentication</a></li>
+<li><a href="#uris">Service API URIs</a></li>
+<li>
+	<ul>
+	<li><a href="#uris-account">Account</a></li>
+	<li><a href="#uris-vehicle">Vehicle</a></li>
+	<li><a href="#uris-driver">Driver</a></li>
+	<li><a href="#uris-device">Device</a></li>
+	<li><a href="#uris-groups">Group</a></li>
+	<li><a href="#uris-event">Event</a></li>
+	<li><a href="#uris-person">Person</a></li>
+	<li><a href="#uris-user">User</a></li>
+	</ul>
+</li>
+<li><a href="#status_codes">Status Codes</a></li>
+<li><ul>
+<li><a href="#success_codes">Success Codes</a></li>
+<li><a href="#error_codes">Error Codes</a></li>
+</ul></li>
+<li><a href="#data-dictionary">Data Dictionary</a></li>
+<li>
+	<ul>
+	<li><a href="#data-account">Account</a></li>
+	<li><a href="#data-vehicle">Vehicle</a></li>
+	<li><a href="#data-driver">Driver</a></li>
+	<li><a href="#data-device">Device</a></li>
+	<li><a href="#data-states">States</a></li>
+	<li><a href="#data-groups">Groups</a></li>
+	<li><a href="#data-events">Events</a></li>
+	<li><a href="#data-person">Person</a></li>
+	<li><a href="#data-user">User</a></li>
+	<li><a href="#data-trip">Trip</a></li>
+	<li><a href="#data-location">Location</a></li>
+	<li><a href="#data-score">Score</a></li>
+	<li><a href="#data-trend">Trend</a></li>
+	<li><a href="#data-rels">Rels</a></li>
+	</ul>
+</li>
+
+</ul>
+<h1><a name="resources">Resources</a></h1>
+<table><tbody>
+<tr>
+<th>Resource</th>
+<th>Methods</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>Account</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete an account to manage your fleet. Media types: application/xml</td>
+</tr>
+<tr>
+<td>Driver</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a driver. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>Driver collection</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a collection of drivers. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>Vehicle</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a vehicle. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>Vehicle collection</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a collection of vehicles. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>Device</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a device. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>Device collection</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a collection of devices. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>Group</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a group, an organizational unit in your company hierarchy. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>Event</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>View events. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>Person</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a person. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>User</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a user of the system. Media types: application/xml, application/JSON</td>
+</tr>
+</tbody>
+</table>
+<h1><a name="authentication">Authentication and Permissions</a></h1>
+<p>To use any request a user must be a registered user in the system and must have "Admin" role.</p>
+<h1><a name="uris">Service API URIs</a></h1>
+
+<p>Use http:// or https:// and the host and port that was supplied to you and add the path and parameters as specified below.  An example is: http://my.inthinc.com/service/api/vehicles</p>
+<p>See <a href="#xml-schemas">XML Schemas</a> and <a href="#data-dictionary">Data Dictionary</a> for the formats for data in request bodies and response entities.</p>
+<h2><a name="uris-account">Account</a></h2>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create account</td>
+<td>
+/service/api/account
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Account</td><td>Account</td>
+
+<td>http://my.inthinc.com/service/api/account</td>
+</tr>
+<tr>
+<td>Update account</td>
+<td>
+/service/api/account/{id}
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Account</td><td>Account</td>
+
+<td>http://my.inthinc.com/service/api/account/1</td>
+</tr>
+<tr>
+<td>Delete account</td>
+<td>
+/service/api/account/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td></td>
+
+<td>http://my.inthinc.com/service/api/account/1</td>
+</tr>
+<tr>
+<td>Get account</td>
+<td>
+/service/api/account/{id}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Account</td>
+
+<td>http://my.inthinc.com/service/api/account/1</td>
+</tr>
+<tr>
+<td>Get all accounts</td>
+<td>
+/service/api/accounts
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Accounts</td>
+
+<td>http://my.inthinc.com/service/api/accounts</td>
+</tr>
+</tbody>
+</table>
+<h2><a name="uris-vehicle">Vehicle</a></h2>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create vehicle</td>
+<td>
+/service/api/vehicle
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Vehicle</td><td>Vehicle</td>
+
+<td>http://my.inthinc.com/service/api/vehicle</td>
+</tr>
+<tr>
+<td>Update vehicle</td>
+<td>
+/service/api/vehicle
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Vehicle - include only properties to be updated, must include the vehicleID</td><td>Vehicle</td>
+
+<td>http://my.inthinc.com/service/api/vehicle</td>
+</tr>
+<tr>
+<td>Delete vehicle</td>
+<td>
+/service/api/vehicle/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Vehicle</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/1</td>
+</tr>
+<tr>
+<td>Get vehicle</td>
+<td>
+/service/api/vehicle/{id}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Vehicle</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/1</td>
+</tr>
+<tr>
+<td>Get vehicle by VIN</td>
+<td>
+/service/api/vehicle/vin/{vin}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Vehicle</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/vin/12345678901234567</td>
+</tr>
+<tr>
+<td>Get all vehicles</td>
+<td>
+/service/api/vehicles
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Vehicles</td>
+
+<td>http://my.inthinc.com/service/api/vehicles</td>
+</tr>
+<tr>
+<td>Create vehicles</td>
+<td>
+/service/api/vehicles
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Vehicles</td><td>Collection of requests for vehicles</td>
+
+<td>http://my.inthinc.com/service/api/vehicles</td>
+</tr>
+<tr>
+<td>Update vehicles</td>
+<td>
+/service/api/vehicles
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Vehicles</td><td>Collection of requests for vehicles</td>
+
+<td>http://my.inthinc.com/service/api/vehicles</td>
+</tr>
+<tr>
+<td>Delete vehicles</td>
+<td>
+/service/api/vehicles
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Vehicles</td><td></td>
+
+<td>http://my.inthinc.com/service/api/vehicles</td>
+</tr>
+<tr>
+<td>Get vehicle's last location</td>
+<td>
+/service/api/vehicle/{id}/lastlocation
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Location</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/1/lastlocation</td>
+</tr>
+<tr>
+<td>Get vehicle's last trip</td>
+<td>
+/service/api/vehicle/{id}/trip
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Trip</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/1/trip</td>
+</tr>
+<tr>
+<td>Get vehicle's trips</td>
+<td>
+/service/api/vehicle/{id}/trips/{date}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Trips</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/1/trips/2011-08-01</td>
+</tr>
+<tr>
+<td>Get vehicle's score</td>
+<td>
+/service/api/vehicle/{id}/score/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Score</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/1/score/30</td>
+</tr>
+<tr>
+<td>Get vehicle's trend</td>
+<td>
+/service/api/vehicle/{id}/trend/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Trend</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/1/trend/30</td>
+</tr>
+<tr>
+<td>Assign device</td>
+<td>
+/service/api/vehicle/{id}/deviceid/{deviceid}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Vehicle</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/1/deviceid/30</td>
+</tr>
+<tr>
+<td>Assign driver</td>
+<td>
+/service/api/vehicle/{id}/driverid/{driverid}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Vehicle</td>
+
+<td>http://my.inthinc.com/service/api/vehicle/1/driverid/30</td>
+</tr>
+</tbody>
+</table>
+<h2><a name="uris-driver">Driver</a></h2>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create driver</td>
+<td>
+/service/api/driver
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Driver</td><td>Driver</td>
+
+<td>http://my.inthinc.com/service/api/driver</td>
+</tr>
+<tr>
+<td>Update driver</td>
+<td>
+/service/api/driver
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Driver  - include only properties to be updated, must include the driverID</td><td>Driver</td>
+
+<td>http://my.inthinc.com/service/api/driver</td>
+</tr>
+<tr>
+<td>Delete driver</td>
+<td>
+/service/api/driver/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Driver</td><td>Driver</td>
+
+<td>http://my.inthinc.com/service/api/driver/1</td>
+</tr>
+<tr>
+<td>Get driver</td>
+<td>
+/service/api/driver/{id}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Driver</td>
+
+<td>http://my.inthinc.com/service/api/driver/1</td>
+</tr>
+<tr>
+<td>Get all drivers</td>
+<td>
+/service/api/drivers
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Drivers</td>
+
+<td>http://my.inthinc.com/service/api/drivers</td>
+</tr>
+<tr>
+<td>Create drivers</td>
+<td>
+/service/api/drivers
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Drivers</td><td>Collection of requests for Drivers</td>
+
+<td>http://my.inthinc.com/service/api/drivers</td>
+</tr>
+<tr>
+<td>Update drivers</td>
+<td>
+/service/api/drivers
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Drivers</td><td>Collection of requests for Drivers</td>
+
+<td>http://my.inthinc.com/service/api/drivers</td>
+</tr>
+<tr>
+<td>Delete drivers</td>
+<td>
+/service/api/drivers
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Drivers</td><td></td>
+
+<td>http://my.inthinc.com/service/api/drivers</td>
+</tr>
+<tr>
+<td>Get driver's last location</td>
+<td>
+/service/api/driver/{id}/lastlocation
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Location</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/lastlocation</td>
+</tr>
+<tr>
+<td>Get driver's last trip</td>
+<td>
+/service/api/driver/{id}/trip
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Trip</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/trip</td>
+</tr>
+<tr>
+<td>Get driver's trips</td>
+<td>
+/service/api/driver/{id}/trips/{date}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Trips</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/trips/2011-08-01</td>
+</tr>
+<tr>
+<td>Get driver's score</td>
+<td>
+/service/api/driver/{id}/score/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Score</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/score/30</td>
+</tr>
+<tr>
+<td>Get driver's trend</td>
+<td>
+/service/api/driver/{id}/trend/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Trend</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/trend/30</td>
+</tr>
+</tbody>
+</table>
+<h2><a name="uris-device">Device</a></h2>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create device</td>
+<td>
+/service/api/device
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Device</td><td>Device</td>
+
+<td>http://my.inthinc.com/service/api/device</td>
+</tr>
+<tr>
+<td>Update device</td>
+<td>
+/service/api/device
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Device - include only properties to be updated, must include the deviceID</td><td>Device</td>
+
+<td>http://my.inthinc.com/service/api/device</td>
+</tr>
+<tr>
+<td>Delete device</td>
+<td>
+/service/api/device/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Device</td><td></td>
+
+<td>http://my.inthinc.com/service/api/device/1</td>
+</tr>
+<tr>
+<td>Get device</td>
+<td>
+/service/api/device/{id}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Device</td>
+
+<td>http://my.inthinc.com/service/api/device/1</td>
+</tr>
+<tr>
+<td>Get all devices</td>
+<td>
+/service/api/devices
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Devices</td>
+
+<td>http://my.inthinc.com/service/api/devices</td>
+</tr>
+<tr>
+<td>Create devices</td>
+<td>
+/service/api/devices
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Devices</td><td>Collection of requests for Devices</td>
+
+<td>http://my.inthinc.com/service/api/devices</td>
+</tr>
+<tr>
+<td>Update devices</td>
+<td>
+/service/api/devices
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Devices</td><td>Collection of requests for Devices</td>
+
+<td>http://my.inthinc.com/service/api/devices</td>
+</tr>
+<tr>
+<td>Delete devices</td>
+<td>
+/service/api/devices
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Devices</td><td></td>
+
+<td>http://my.inthinc.com/service/api/devices</td>
+</tr>
+<tr>
+<td>Get device by imei</td>
+<td>
+/service/api/device/imei/{imei}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Device</td>
+
+<td>http://my.inthinc.com/service/api/device/imei/{123456788}</td>
+</tr>
+<tr>
+<td>Get device by serial number</td>
+<td>
+/service/api/device/serialnum/{serialnum}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Device</td>
+
+<td>http://my.inthinc.com/service/api/device/serialnum/{123456788}</td>
+</tr>
+</tbody>
+</table>
+<h2><a name="uris-groups">Groups</a></h2>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create group</td>
+<td>
+/service/api/group
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Group</td><td>Group</td>
+
+<td>http://my.inthinc.com/service/api/group</td>
+</tr>
+<tr>
+<td>Update group</td>
+<td>
+/service/api/group
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Group - include only properties to be updated, must include the groupID</td><td>Group</td>
+
+<td>http://my.inthinc.com/service/api/group</td>
+</tr>
+<tr>
+<td>Delete group</td>
+<td>
+/service/api/group/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Group</td><td></td>
+
+<td>http://my.inthinc.com/service/api/group/1</td>
+</tr>
+<tr>
+<td>Get group</td>
+<td>
+/service/api/group/{id}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Group</td>
+
+<td>http://my.inthinc.com/service/api/group/1</td>
+</tr>
+<tr>
+<td>Get all groups</td>
+<td>
+/service/api/groups
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Groups</td>
+
+<td>http://my.inthinc.com/service/api/groups</td>
+</tr>
+<tr>
+<td>Get driver scores for group</td>
+<td>
+/service/api/group/{groupID}/scores/drivers/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Scores</td>
+
+<td>http://my.inthinc.com/service/api/group/1/scores/drivers/30</td>
+</tr>
+<tr>
+<td>Get vehicle scores for group</td>
+<td>
+/service/api/group/{groupID}/scores/vehicles/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Scores</td>
+
+<td>http://my.inthinc.com/service/api/group1/scores/vehicles/30</td>
+</tr>
+<tr>
+<td>Get drivers' names for group</td>
+<td>
+/service/api/group/{groupID}/drivernames
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of names</td>
+
+<td>http://my.inthinc.com/service/api/group/1/drivernames</td>
+</tr>
+<tr>
+<td>Get vehicles' names for group</td>
+<td>
+/service/api/group/{groupID}/vehiclenames
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of names</td>
+
+<td>http://my.inthinc.com/service/api/group/1/vehiclenames</td>
+</tr>
+<tr>
+<td>Get trends for subgroups</td>
+<td>
+/service/api/group/{groupID}/subgroups/trends/driver/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of trends</td>
+
+<td>http://my.inthinc.com/service/api/group/1/subgroups/trends/driver/30</td>
+</tr>
+<tr>
+<td>Get scores for subgroups</td>
+<td>
+/service/api/group/{groupID}/subgroups/scores/driver/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of scores</td>
+
+
+<td>http://my.inthinc.com/service/api/group/1/subgroups/scores/driver/30</td>
+</tr>
+</tbody>
+</table>
+<h2><a name="uris-event">Events</a></h2>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Get event counts</td>
+<td>
+/service/api/group/{groupID}/events/{noteTypes:all|.*}/{startDate}/{endDate}/count
+</td>
+<td>GET</td>
+<td><dl><dt>text/*</dt></dl></td>
+<td></td><td>Integer</td>
+
+<td>http://my.inthinc.com/service/api/group/1/events/all/2011-07-17/2011-08-15/count</td>
+</tr>
+<tr>
+<td>Get events</td>
+<td>
+/service/api/{entity:driver|vehicle|group}/{entityID}/events/{eventTypes:all|.*}/{startDate}/{endDate}/{page}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Events, rels to previous and next page</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/events/all/2011-07-17/2011-08-15</td>
+</tr>
+</tbody>
+</table>
+<h2><a name="uris-person">Person</a></h2>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create person</td>
+<td>
+/service/api/person
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Person</td><td>Person</td>
+
+<td>http://my.inthinc.com/service/api/person</td>
+</tr>
+<tr>
+<td>Update person</td>
+<td>
+/service/api/person
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Person - include only properties to be updated, must include the personID</td><td>Person</td>
+
+
+<td>http://my.inthinc.com/service/api/person</td>
+</tr>
+<tr>
+<td>Delete person</td>
+<td>
+/service/api/person/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Person</td><td></td>
+
+<td>http://my.inthinc.com/service/api/person/1</td>
+</tr>
+<tr>
+<td>Get person</td>
+<td>
+/service/api/person/{id}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Person</td>
+
+<td>http://my.inthinc.com/service/api/person/1</td>
+</tr>
+<tr>
+<td>Get all persons</td>
+<td>
+/service/api/persons
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Persons</td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
+</tr>
+<tr>
+<td>Create persons</td>
+<td>
+/service/api/persons
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Persons</td><td>Collection of requests for Persons</td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
+</tr>
+<tr>
+<td>Update persons</td>
+<td>
+/service/api/persons
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Persons</td><td>Collection of requests for Persons</td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
+</tr>
+<tr>
+<td>Delete persons</td>
+<td>
+/service/api/persons
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Persons</td><td></td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
+</tr>
+</tbody>
+</table>
+<h2><a name="uris-user">User</a></h2>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create user</td>
+<td>
+/service/api/user
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>User</td><td>User</td>
+
+<td>http://my.inthinc.com/service/api/user</td>
+</tr>
+<tr>
+<td>Update user</td>
+<td>
+/service/api/user
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>User - include only properties to be updated, must include the userID</td><td>User</td>
+
+<td>http://my.inthinc.com/service/api/user</td>
+</tr>
+<tr>
+<td>Delete user</td>
+<td>
+/service/api/user/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>User</td><td></td>
+
+<td>http://my.inthinc.com/service/api/user/1</td>
+</tr>
+<tr>
+<td>Get user</td>
+<td>
+/service/api/user/{id}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>User</td>
+
+<td>http://my.inthinc.com/service/api/user/1</td>
+</tr>
+<tr>
+<td>Get all users</td>
+<td>
+/service/api/users
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Users</td>
+
+<td>http://my.inthinc.com/service/api/users</td>
+</tr>
+<tr>
+<td>Create users</td>
+<td>
+/service/api/users
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Users</td><td>Collection of requests for Users</td>
+
+<td>http://my.inthinc.com/service/api/users</td>
+</tr>
+<tr>
+<td>Update users</td>
+<td>
+/service/api/users
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Users</td><td>Collection of requests for Users</td>
+
+<td>http://my.inthinc.com/service/api/users</td>
+</tr>
+<tr>
+<td>Delete users</td>
+<td>
+/service/api/users
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Users</td><td></td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
+</tr>
+<tr>
+<td>Log in</td>
+<td>
+/service/api/login/{userName}/{password}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>User</td>
+
+<td>http://my.inthinc.com/service/api/login/myusername/mypassword</td>
+</tr>
+</tbody>
+</table>
+<h2><a name="status_codes">Status Codes</a></h2>
+<h3><a name="success_codes">Success Codes</a></h3>
+<h4>200 OK</h4>
+<p>
+The request was successful.
+</p>
+<h4>201 Created</h4>
+<p>
+The request was successful and a new resource has been created.  The response entity should contain either the created resource or a link to the created resource or resources.
+</p>
+<h4>304 Not Modified</h4>
+<p>
+The request was successful but nothing was changed.  Results from an update where no records are actually changed.
+</p>
+<h3><a name="error_codes">Error Codes</a></h3>
+<h4>400 Bad Request</h4>
+<p>
+The request was not formatted correctly.
+</p>
+<h4>401 Unauthorized</h4>
+<p>
+Users must log in, or include valid authorization credentials in the request.
+</p>
+<h4>403 Forbidden</h4>
+<p>
+The user is forbidden from using this request.  Users must have Admin role (set up in the portal) to use this API
+</p>
+<h4>404 Not Found</h4>
+<p>
+The server can't find anything matching the request URI.
+</p>
+<h4>500 Internal Server Error</h4>
+<p>
+The server encountered an unexpected condition which prevented it from fulfilling the request. 
+</p>
+<h4>501 Not Implemented</h4>
+<p>
+The server does not support the functionality required to fulfill the request. 
+</p>
+<h1><a name="data-dictionary">Data Dictionary</a></h1>
+<h2><a name="data-account">Account</a></h2>
+<h2><a name="data-vehicle">Vehicle</a></h2>
+<div id="vehicle-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+
+<pre>
+&lt;vehicle&gt;
+	&lt;vehicleID&gt;1&lt;/vehicleID&gt;
+	&lt;modified&gt;2011-05-05T10:40:38-06:00&lt;/modified&gt;
+	&lt;color&gt;red&lt;/color&gt;
+	&lt;dot&gt;PROMPT_FOR_DOT_TRIP&lt;/dot&gt;
+	&lt;groupID&gt;2227&lt;/groupID&gt;
+	&lt;license&gt;123456&lt;/license/&gt;
+	&lt;make&gt;Ford&lt;/make&gt;
+	&lt;model&gt;Explorer&lt;/model&gt;
+	&lt;name&gt;Ford Exp Transistor&lt;/name&gt;
+	&lt;state&gt;
+		&lt;abbrev&gt;UT&lt;/abbrev&gt;
+		&lt;name&gt;Utah&lt;/name&gt;
+		&lt;stateID&gt;45&lt;/stateID&gt;
+	&lt;/state&gt;
+	&lt;status&gt;ACTIVE&lt;/status&gt;
+	&lt;VIN&gt;21111111111137730&lt;/VIN&gt;
+	&lt;vtype&gt;HEAVY&lt;/vtype&gt;
+	&lt;year&gt;2012&lt;/year&gt;
+	&lt;weight&gt;3600&lt;/weight&gt;
+	&lt;odometer&gt;121823&lt;/odometer&gt;
+&lt;/vehicle&gt;
+</pre>
+</div>
+<div id="vehicle-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+"vehicle":{
+	"modified":"2011-05-05T10:40:38-06:00",	
+	"color":"",
+	"deviceID":13301,
+	"dot":"NON_DOT",
+	"driverID":342,
+	"groupID":8,
+	"license":"",
+	"make":"fake",
+	"model":"make",
+	"name":"testing",
+	"odometer":121823,
+	"status":"ACTIVE",
+	"VIN":"985465198165191DD",
+	"vehicleID":8043,
+	"vtype":"LIGHT",
+	"year":2012
+}
+</pre>
+</div>
+
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Date and time record was last modified</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Request Response</td>
+<td><dl>
+<dt>String</dt>
+<dd>must be unique</dd>
+</dl></td>
+<td>Required</td>
+<td>The name of the vehicle.  There is no restriction on the format of this, but will be used for searching, sorting, and filtering purposes.</td>
+</tr>
+<tr>
+<td>dot</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>NON_DOT (default)</dd>
+<dd>DOT</dd>
+<dd>PROMPT_FOR_DOT_TRIP</dd>
+</dl></td>
+<td></td>
+<td>Determines when the vehicle is under DOT HOS rules - waySmart only</td>
+</tr>
+<tr>
+<td>ifta</td>
+<td>Request Response</td>
+<td><dl>
+<dt>Boolean</dt>
+<dd>false (default)</dd>
+<dd>true</dd>
+</dl></td>
+<td></td>
+<td>If the vehicle is subject to IFTA - waySmart only</td>
+</tr>
+<tr>
+<td>deviceID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>The device currently assigned to this vehicle.  Can be used to retrieve the device record</td>
+</tr>
+<tr>
+<td>driverID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>The driver currently assigned to this vehicle.  Can be used to retrieve the driver record</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>The fleet/division/team this vehicle is assigned to.  Discover groupIDs using the group service</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>ACTIVE (default)</dd>
+<dd>INACTIVE</dd>
+</dl></td>
+<td></td>
+<td>Vehicle is in active service</td>
+</tr>
+<tr>
+<td>VIN</td>
+<td>Request Response</td>
+<td><dl>
+<dt>String</dt>
+<dd>must be 17 characters</dd>
+<dd>must be unique</dd>
+</dl></td>
+<td>Required</td>
+<td>The vehicle's VIN</td>
+</tr>
+<tr>
+<td>vtype</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>LIGHT</dd>
+<dd>MEDIUM</dd>
+<dd>HEAVY</dd>
+</dl></td>
+<td>Required</td>
+<td>Vehicle HOS type</td>
+</tr>
+<tr>
+<td>odometer</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>Vehicle's odometer</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Request Response</td>
+<td style="padding:0;">
+	<table style="width:100%;height:100%" class="noborder"><tbody>
+	<tr>
+	<td class="noborder"><dl>
+<dt>abbrev</dt>
+<dd>String (see <a href="#data-states">States</a>)</dd>
+<dd></dd>
+</dl></td>
+	</tr>
+	<tr>
+	<td class="noborder"><dl>
+<dt>name</dt>
+<dd>String (see <a href="#data-states">States</a>)</dd>
+</dl></td>
+	</tr>
+	<tr>
+	<td class="noborder"><dl>
+<dt>stateID</dt>
+<dd>Integer (see <a href="#data-states">States</a>)</dd>
+</dl></td>
+	</tr>
+	</tbody></table>
+</td>
+<td>stateID is Required</td>
+<td>State vehicle is registered in.</td>
+</tr>
+<tr>
+<td>make</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>The make of the vehicle.  There is no restriction on the format of this, but for searching, sorting, and filtering purposes be consistent.</td>
+</tr>
+<tr>
+<td>model</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>The model of the vehicle.  There is no restriction on the format of this, but for searching, sorting, and filtering purposes be consistent.</td>
+</tr>
+<tr>
+<td>year</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>The year of the vehicle</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>The weight of the vehicle in the units defined for the user.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="data-driver">Driver</a></h2>
+<div id="driver-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+
+<pre>
+&lt;driver&gt;
+	&lt;modified&gt;2011-07-12T12:10:26-06:00&lt;/modified&gt;
+	&lt;certifications&gt;&lt;/certifications&gt;
+	&lt;dot&gt;NON_DOT&lt;/dot&gt;
+	&lt;driverID&gt;13895&lt;/driverID&gt;
+	&lt;expiration&gt;1969-12-31T17:00:00-07:00&lt;/expiration&gt;
+	&lt;groupID&gt;1260&lt;/groupID&gt;
+	&lt;personID&gt;14844&lt;/personID&gt;
+	&lt;status&gt;ACTIVE&lt;/status&gt;
+&lt;/driver&gt;
+</pre>
+</div>
+<div id="vehicle-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+"driver":{
+	"state":null,
+	"expiration":0,
+	"status":"ACTIVE",
+	"driverID":13895,
+	"status":"ACTIVE",
+	"personID":14844,
+	"groupID":1260,
+	"barcode":null,
+	"rfid1":null,
+	"rfid2":null,
+	"licenseClass":null,
+	"dot":"NON_DOT",
+	"license":null,
+	"certifications":"",
+	"created":null,
+	"modified":1310494226000
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>driverID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique driverID, allocated by the system on creation.  Used to reference drivers in requests and other records</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Date and time record was last modified</td>
+</tr>
+<tr>
+<td>dot</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>see <a href="#dotRuleSets">DOT HOS Rule Sets</a></dd>
+</dl></td>
+<td></td>
+<td>Determines which DOT HOS rule set the driver is under - waySmart only</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>ACTIVE (default)</dd>
+<dd>INACTIVE</dd>
+</dl></td>
+<td></td>
+<td>Driver is in active service</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Request Response</td>
+<td style="padding:0;">
+	<table style="width:100%;height:100%" class="noborder"><tbody>
+	<tr>
+	<td class="noborder"><dl>
+<dt>abbrev</dt>
+<dd>String (see <a href="#data-states">States</a>)</dd>
+<dd></dd>
+</dl></td>
+	</tr>
+	<tr>
+	<td class="noborder"><dl>
+<dt>name</dt>
+<dd>String (see <a href="#data-states">States</a>)</dd>
+</dl></td>
+	</tr>
+	<tr>
+	<td class="noborder"><dl>
+<dt>stateID</dt>
+<dd>Integer (see <a href="#data-states">States</a>)</dd>
+</dl></td>
+	</tr>
+	</tbody></table>
+</td>
+<td>stateID is Required</td>
+<td>State diver is licensed in.</td>
+</tr>
+<tr>
+<td>license</td>
+<td>Request Response</td>
+<td>String max of 10 characters</td>
+<td>Required</td>
+<td>Driver's license number</td>
+</tr>
+<tr>
+<td>licenseClass</td>
+<td>Request Response</td>
+<td>String max 4 characters</td>
+<td>Required</td>
+<td>Driver's license class</td>
+</tr>
+<tr>
+<td>expiration</td>
+<td>Request Response</td>
+<td>Date String</td>
+<td>Required</td>
+<td>Driver's license expiration date.</td>
+</tr>
+<tr>
+<td>personID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>ID for matching person record, use to request person record</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>ID for Fleet, Division, or Team.  Get from requests for group data</td>
+</tr>
+<tr>
+<td>barcode</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>Barcode</td>
+</tr>
+<tr>
+<td>rfid1</td>
+<td>Request Response</td>
+<td>Long</td>
+<td>Required</td>
+<td>RFID</td>
+</tr>
+<tr>
+<td>rfid2</td>
+<td>Request Response</td>
+<td>Long</td>
+<td>Required</td>
+<td>RFID</td>
+</tr>
+<tr>
+<td>certifications</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Driver's Certifications</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="data-device">Device</a></h2>
+<div id="device-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+
+<pre>
+&lt;device&gt;
+	&lt;modified&gt;2009-03-06T18:50:02-07:00&lt;/modified&gt;
+	&lt;accountID&gt;12&lt;/accountID&gt;
+	&lt;baseID&gt;3&lt;/baseID&gt;
+	&lt;deviceID&gt;140&lt;/deviceID&gt;
+	&lt;imei&gt;011596000064018&lt;/imei&gt;
+	&lt;name&gt;011596000064018&lt;/name&gt;
+	&lt;phone&gt;4697336557&lt;/phone&gt;
+	&lt;productVersion&gt;TIWIPRO_R74&lt;/productVersion&gt;
+	&lt;serialNum&gt;unk140&lt;/serialNum&gt;
+	&lt;sim&gt;8901260760000852678&lt;/sim&gt;
+	&lt;status&gt;INACTIVE&lt;/status&gt;
+&lt;/device&gt;
+</pre>
+</div>
+<div id="device-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+"device":{
+	"name":"011596000064018",
+	"status":"INACTIVE",
+	"vehicleID":null,
+	"accountID":12,
+	"deviceID":140,
+	"phone":"4697336557",
+	"waySmart":false,
+	"imei":"011596000064018",
+	"sim":"8901260760000852678",
+	"productVersion":"TIWIPRO_R74",
+	"textMsgReceiveCapable":false,
+	"firmwareVersion":null,
+	"gprsonly":false,
+	"mcmid":null,
+	"activated":null,
+	"serialNum":"unk140",
+	"baseID":3,
+	"witnessVersion":null,
+	"emuMd5":null,
+	"crashTraceAppletCapable":false,
+	"altimei":null,
+	"created":null,
+	"modified":1236390602000
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>deviceID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique deviceID, allocated by the system on creation.  Used to reference deviceID in requests and other records</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>User's unique name for this device </td>
+</tr>
+<tr>
+<td>phone number</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Phone number associated with this device</td>
+</tr>
+<tr>
+<td>imei</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>imei associated with this device</td>
+</tr>
+<tr>
+<td>sim</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>sim card associated with this device</td>
+</tr>
+<tr>
+<td>productVer</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>UNKNOWN (default)</dd>
+<dd>TEEN</dd>
+<dd>WAYSMART</dd>
+<dd>TIWIPRO_R71</dd>
+<dd>TIWIPRO_R74 (use this for tiwipro)</dd>
+</dl></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>textMsgReceiveCapable</td>
+<td>Request Response</td>
+<td>Boolean</td>
+<td></td>
+<td>sim card associated with this device</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>NEW (default)</dd>
+<dd>ACTIVE</dd>
+<dd>INACTIVE</dd>
+</dl></td>
+<td></td>
+<td>Device is in active service</td>
+</tr>
+<tr>
+<td>vehicleID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>Vehicle assigned to this device</td>
+</tr>
+<tr>
+<td>firmwareVersion</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>gprsonly</td>
+<td>Request Response</td>
+<td>Boolean</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>mcmid</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>mcmid card associated with this device</td>
+</tr>
+<tr>
+<td>activated</td>
+<td>Request Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date device was activated</td>
+</tr>
+<tr>
+<td>serialNum</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>baseID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>witnessVersion</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>emuMd5</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Check sum for emu data</td>
+</tr>
+<tr>
+<td>crashTraceAppletCapable</td>
+<td>Request Response</td>
+<td>Boolean</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>altimei</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>created</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date device record was created in the system.</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Date and time record was last modified</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="data-groups">Groups</a></h2>
+<div id="groups-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+<pre>
+&lt;group&gt;
+	&lt;accountID&gt;12&lt;/accountID&gt;
+	&lt;description&gt;Initial top level group&lt;/description&gt;
+	&lt;groupID&gt;41&lt;/groupID&gt;
+	&lt;managerID&gt;242&lt;/managerID&gt;
+	&lt;mapCenter&gt;
+		&lt;lat&gt;41.1678&lt;/lat&gt;
+		&lt;lng&gt;-112.015&lt;/lng&gt;
+	&lt;mapZoom&gt;11&lt;/mapZoom&gt;
+	&lt;name&gt;inthinc, inc.&lt;/name&gt;
+	&lt;parentID&gt;0&lt;/parentID&gt;
+	&lt;status&gt;GROUP_ACTIVE&lt;/status&gt;
+	&lt;type&gt;FLEET&lt;/type&gt;
+	&lt;zoneRev&gt;62&lt;/zoneRev&gt;
+&lt;/group&gt;
+</pre>
+</div>
+<div id="groups-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+"group":{
+	"address":null,
+	"name":"inthinc, inc.",
+	"type":"FLEET",
+	"description":"Initial top level group",
+	"status":"GROUP_ACTIVE",
+	"mapCenter":{
+		"lat":41.1678,
+		"lng":-112.015},
+	"accountID":12,
+	"addressID":null,
+	"groupID":41,
+	"parentID":0,
+	"mapZoom":11,
+	"managerID":242,
+	"mapLat":41.1678,
+	"mapLng":-112.015,
+	"zoneRev":62,
+	"created":null,
+	"modified":null
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>created</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date device record was created in the system.</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Date and time record was last modified</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique id, allocated by the system on creation.  Used to reference groups in requests and other records</td>
+</tr>
+<tr>
+<td>address</td>
+<td>Request Response</td>
+<td>Address</td>
+<td></td>
+<td>Address for group</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>User's unique name for the group.</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>FLEET </dd>
+<dd>DIVISION</dd>
+<dd>TEAM</dd>
+</dl></td>
+<td>Required</td>
+<td>Type of group in the hierarchy.</td>
+</tr>
+<tr>
+<td>description</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Any text to describe the group</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>GROUP_NEW (default)</dd>
+<dd>GROUP_ACTIVE</dd>
+<dd>GROUP_DISABLED</dd>
+</dl></td>
+<td></td>
+<td>Group is active</td>
+</tr>
+<tr>
+<td>mapCenter</td>
+<td>Request Response</td>
+<td>LatLng</td>
+<td></td>
+<td>Coordinates for group on the map.</td>
+</tr>
+<tr>
+<td>accountID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>ID of account this group belongs to.</td>
+</tr>
+<tr>
+<td>parentID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>ID of group's parent in the hierarchy</td>
+</tr>
+<tr>
+<td>mapZoom</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>Default zoom value for Google maps</td>
+</tr>
+<tr>
+<td>managerID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>ID of person who is the designated manager</td>
+</tr>
+<tr>
+<td>zoneRev</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="data-events">Events</a></h2>
+<div id="events-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+<pre>
+&lt;eventPage start="20" pageCount="20" totalCount="404"&gt;
+	&lt;event&gt;
+		&lt;driverID&gt;11922&lt;/driverID&gt;
+		&lt;driverName&gt;Bizzaro Corey Catten&lt;/driverName&gt;
+		&lt;driverTimeZone&gt;US/Mountain&lt;/driverTimeZone&gt;
+		&lt;eventCategory&gt;WARNING&lt;/eventCategory&gt;
+		&lt;eventType&gt;IGNITION_ON&lt;/eventType&gt;
+		&lt;eventTypeString&gt;EventType.IGNITION_ON&lt;/eventTypeString&gt;
+		&lt;forgiven&gt;0&lt;/forgiven&gt;
+		&lt;groupID&gt;43&lt;/groupID&gt;
+		&lt;groupName&gt;Executives&lt;/groupName&gt;
+		&lt;latitude&gt;40.662575&lt;/latitude&gt;
+		&lt;longitude&gt;-111.824814&lt;/longitude&gt;
+		&lt;noteID&gt;9288674233162685&lt;/noteID&gt;
+		&lt;speed&gt;0&lt;/speed&gt;
+		&lt;speedLimit&gt;78&lt;/speedLimit&gt;
+		&lt;time&gt;2011-08-10T08:07:18-06:00&lt;/time&gt;
+		&lt;type&gt;IGNITION_ON&lt;/type&gt;
+		&lt;vehicleID&gt;186&lt;/vehicleID&gt;
+		&lt;vehicleName&gt;Coreys Truck&lt;/vehicleName&gt;
+	&lt;/event&gt;
+		...
+		
+		&lt;link type="application/xml" 
+			  rel="next" 
+			  href="https://my.inthinc.com/service/api/group/41/events/all/20110810/20110815/page;start=40;pageCount=20"/&gt;
+		&lt;link type="application/xml" 
+		      rel="previous" 
+		      href="https://my.inthinc.com/service/api/group/41/events/all/20110810/20110815/page;start=0;pageCount=20"/&gt;
+	&lt;/eventPage&gt;
+	</pre>
+</div>
+<div id="events-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>driverID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID of driver </td>
+</tr>
+<tr>
+<td>driverName</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Driver's name</td>
+</tr>
+<tr>
+<td>driverTimeZone</td>
+<td>Response</td>
+<td><a href="#timezones">TimeZone</a></td>
+<td></td>
+<td>Driver's time zone when the event occurred</td>
+</tr>
+<tr>
+<td>eventCategory</td>
+<td>Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>VIOLATION </dd>
+<dd>WARNING</dd>
+<dd>NONE</dd>
+<dd>EMERGENCY</dd>
+<dd>ZONE</dd>
+<dd>HOS</dd>
+<dd>TEXT</dd>
+<dd>DRIVER_LOGIN</dd>
+</dl></td>
+<td></td>
+<td>See <a href="#eventByCategory">Events By Category</a></td>
+</tr>
+<tr>
+<td>eventType</td>
+<td>Response</td>
+<td><a href="#eventType">Event Types</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>eventTypeString</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>forgiven</td>
+<td>Response</td>
+<td>Boolean</td>
+<td></td>
+<td>Event is forgiven.</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Group driver belonged to at the time of the event.</td>
+</tr>
+<tr>
+<td>groupName</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>latitude</td>
+<td>Response</td>
+<td>Double</td>
+<td></td>
+<td>Location of the event</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td>Response</td>
+<td>Double</td>
+<td></td>
+<td>Location of the event</td>
+</tr>
+<tr>
+<td>noteID</td>
+<td>Response</td>
+<td>Long</td>
+<td></td>
+<td>unique ID of the note from the device recording the event.</td>
+</tr>
+<tr>
+<td>speed</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Speed at the time of the event in the units chosen for the driver.</td>
+</tr>
+<tr>
+<td>speedLimit</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Speed limit at the location of the event.</td>
+</tr>
+<tr>
+<td>time</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Time the event occurred.</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID assigned by the system on creation</td>
+</tr>
+<tr>
+<td>vehicleID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID of the vehicle in the event</td>
+</tr>
+<tr>
+<td>personID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID of the person record associated with the driver.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="data-person">Person</a></h2>
+<div id="person-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+<pre>
+&lt;person&gt;
+	&lt;modified&gt;2011-05-02T21:26:05-06:00&lt;/modified&gt;
+	&lt;acctID&gt;12&lt;/acctID&gt;
+	&lt;addressID&gt;226&lt;/addressID&gt;
+	&lt;crit&gt;0&lt;/crit&gt;
+	&lt;driver&gt;
+		&lt;modified&gt;2011-05-02T21:26:05-06:00&lt;/modified&gt;
+		&lt;certifications/&gt;
+		&lt;dot&gt;NON_DOT&lt;/dot&gt;
+		&lt;driverID&gt;280&lt;/driverID&gt;
+		&lt;expiration&gt;1969-12-31T17:00:00-07:00&lt;/expiration&gt;
+		&lt;groupID&gt;48&lt;/groupID
+		&gt;&lt;personID&gt;294&lt;/personID&gt;
+		&lt;status&gt;ACTIVE&lt;/status&gt;
+		&lt;/driver&gt;
+	&lt;empid&gt;jhoward&lt;/empid&gt;
+	&lt;first&gt;Jacqueline&lt;/first&gt;
+	&lt;fuelEfficiencyType&gt;MPG_US&lt;/fuelEfficiencyType&gt;
+	&lt;height&gt;0&lt;/height&gt;
+	&lt;info&gt;0&lt;/info&gt;
+	&lt;last&gt;Howard&lt;/last&gt;
+	&lt;locale&gt;en_US&lt;/locale&gt;
+	&lt;measurementType&gt;ENGLISH&lt;/measurementType&gt;
+	&lt;middle/&gt;
+	&lt;personID&gt;294&lt;/personID&gt;
+	&lt;priEmail&gt;jhoward@inthinc.com&lt;/priEmail&gt;
+	&lt;priPhone&gt;8017127234&lt;/priPhone&gt;
+	&lt;priText/&gt;
+	&lt;reportsTo/&gt;
+	&lt;secEmail/&gt;
+	&lt;secPhone/&gt;
+	&lt;secText/&gt;
+	&lt;status&gt;ACTIVE&lt;/status&gt;
+	&lt;suffix/&gt;
+	&lt;timeZone&gt;US/Mountain&lt;/timeZone&gt;
+	&lt;title/&gt;
+	&lt;user&gt;
+		&lt;modified&gt;2011-06-28T14:57:29-06:00&lt;/modified&gt;
+		&lt;groupID&gt;41&lt;/groupID&gt;
+		&lt;lastLogin&gt;2011-06-28T14:57:29-06:00&lt;/lastLogin&gt;
+		&lt;password&gt;encrypted password&lt;/password&gt;
+		&lt;personID&gt;294&lt;/personID&gt;
+		&lt;roles&gt;23&lt;/roles&gt;
+		&lt;roles&gt;24&lt;/roles&gt;
+		&lt;status&gt;ACTIVE&lt;/status&gt;
+		&lt;userID&gt;111&lt;/userID&gt;
+		&lt;username&gt;jhoward&lt;/username&gt;
+	&lt;/user&gt;
+	&lt;warn&gt;0&lt;/warn&gt;
+	&lt;weight&gt;0&lt;/weight&gt;
+&lt;/person&gt;
+</pre>
+</div>
+<div id="person-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+{
+	"address":null,
+	"first":"Jacqueline",
+	"timeZone":{
+		"rawOffset":-25200000,
+		"dstsavings":3600000,
+		"lastRuleInstance":{
+			"rawOffset":-25200000,
+			"dstsavings":3600000,
+			"displayName":"Mountain Standard Time",
+			"id":"US/Mountain"},
+		"dirty":false,
+		"displayName":"Mountain Standard Time",
+		"id":"US/Mountain"},
+	"last":"Howard",
+	"info":0,
+	"locale":{
+		"language":"en",
+		"country":"US",
+		"displayCountry":"United States",
+		"displayLanguage":"English",
+		"displayName":"English (United States)",
+		"displayVariant":"",
+		"iso3Country":"USA",
+		"iso3Language":"eng",
+		"variant":""},
+	"status":"ACTIVE",
+	"suffix":"",
+	"fullName":"Jacqueline  Howard ",
+	"driver":{
+		"state":null,
+		"expiration":0,
+		"status":"ACTIVE",
+		"driverID":280,
+		"person":null,
+		"personID":294,
+		"groupID":48,
+		"barcode":null,
+		"rfid1":null,
+		"rfid2":null,
+		"licenseClass":null,
+		"dot":"NON_DOT",
+		"license":null,
+		"certifications":"",
+		"created":null,
+		"modified":1304393165000},
+	"height":0,
+	"title":"",
+	"user":{
+		"roles":[23,24],
+		"username":"jhoward",
+		"status":"ACTIVE",
+		"password":"encrypted password",
+		"userID":111,
+		"person":null,
+		"personID":294,
+		"groupID":41,
+		"accessPoints":null,
+		"lastLogin":1309294649000,
+		"passwordDT":null,
+		"created":null,
+		"modified":1309294649000},
+	"driverID":280,
+	"acctID":12,
+	"userID":111,
+	"accountID":12,
+	"measurementType":"ENGLISH",
+	"fuelEfficiencyType":"MPG_US",
+	"priEmail":"jhoward@inthinc.com",
+	"addressID":226,
+	"personID":294,
+	"empid":"jhoward",
+	"warn":0,
+	"crit":0,
+	"secEmail":"",
+	"priPhone":"8017127234",
+	"secPhone":"",
+	"priText":"",
+	"secText":"",
+	"dob":null,
+	"weight":0,
+	"fullNameWithPriEmail":"Jacqueline  Howard  [ jhoward@inthinc.com ]",
+	"fullNameWithPriPhone":"Jacqueline  Howard  [ 8017127234 ]",
+	"displayTimeZone":"Mountain Daylight Time",
+	"reportsTo":"",
+	"dept":null,
+	"fullNameLastFirst":"Howard,Jacqueline  ",
+	"fullNameWithId":"Jacqueline  Howard  (jhoward)",
+	"fullNameWithSecPhone":"Jacqueline  Howard ",
+	"middle":"",
+	"gender":null,
+	"created":null,
+	"modified":1304393165000}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>personID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID assigned by the system on creation</td>
+</tr>
+<tr>
+<td>address</td>
+<td>Request Response</td>
+<td><a href="#address">Address</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>first</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>First name</td>
+</tr>
+<tr>
+<td>last</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>Last name</td>
+</tr>
+<tr>
+<td>suffix</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>eg jr, sr, MBA</td>
+</tr>
+<tr>
+<td>timeZone</td>
+<td>Request Response</td>
+<td>Timezone String</td>
+<td>Required</td>
+<td>See <a href="#timezone">Timezones</a> for all supported timezones</td>
+</tr>
+<tr>
+<td>info</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>locale</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>See <a href="#locale">Locales</a> for all supported locales</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>ACTIVE (default)</dd>
+<dd>INACTIVE</dd>
+</dl></td>
+<td></td>
+<td>Person is active in the system.</td>
+</tr>
+<tr>
+<td>driverID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>ID of driver record associated with this person.  Person must have a driver and/or a user record.</td>
+</tr>
+<tr>
+<td>userID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>ID of user record associated with this person.  Person must have a driver and/or a user record.</td>
+</tr>
+<tr>
+<td>accountID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>ID of account record associated with this person</td>
+</tr>
+<tr>
+<td>measurementType</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>ENGLISH (default)</dd>
+<dd>METRIC</dd>
+</dl></td>
+<td></td>
+<td>Measurement system all amounts will be expressed in.</td>
+</tr>
+<tr>
+<td>fuelEfficiencyType</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>MPG_US (default with ENGLISH) miles per American gallon</dd>
+<dd>MPG_UK miles per UK gallon</dd>
+<dd>KMPL kilometers per liter (Default with METRIC)</dd>
+<dd>LP100KM liters per 100 kilometers</dd>
+</dl></td>
+<td></td>
+<td>Units for fuel usage</td>
+</tr>
+<tr>
+<td>priEmail</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>Primary email address</td>
+</tr>
+<tr>
+<td>empid</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Must be unique.  Will be forced to upper case</td>
+</tr>
+<tr>
+<td>warn</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>crit</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>secEmail</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>secondary email address</td>
+</tr>
+<tr>
+<td>priPhone</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>Primary phone number</td>
+</tr>
+<tr>
+<td>secPhone</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Secondary phone number</td>
+</tr>
+<tr>
+<td>priText</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Primary number for text messages</td>
+</tr>
+<tr>
+<td>secText</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Secondary number for text messages</td>
+</tr>
+<tr>
+<td>dob</td>
+<td>Request Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date of birth</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>in units as defined by the measurement property</td>
+</tr>
+<tr>
+<td>reportsTo</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Name of supervisor</td>
+</tr>
+<tr>
+<td>dept</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>department in company</td>
+</tr>
+<tr>
+<td>middle</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Middle name</td>
+</tr>
+<tr>
+<td>gender</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>MALE</dd>
+<dd>FEMALE</dd>
+</dl></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>created</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date person was created in the system</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date this record was last modified.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="data-user">User</a></h2>
+<div id="user-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+<pre>
+&lt;user&gt;
+	&lt;modified&gt;2011-06-28T14:57:29-06:00&lt;/modified&gt;
+	&lt;groupID&gt;41&lt;/groupID&gt;
+	&lt;lastLogin&gt;2011-06-28T14:57:29-06:00&lt;/lastLogin&gt;
+	&lt;password&gt;encrypted password&lt;/password&gt;
+	&lt;personID&gt;294&lt;/personID&gt;
+	&lt;roles&gt;23&lt;/roles&gt;
+	&lt;roles&gt;24&lt;/roles&gt;
+	&lt;status&gt;ACTIVE&lt;/status&gt;
+	&lt;userID&gt;111&lt;/userID&gt;
+	&lt;username&gt;jhoward&lt;/username&gt;
+&lt;/user&gt;
+</pre>
+</div>
+<div id="user-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+{"roles":[23,24],
+"username":"jhoward",
+"status":"ACTIVE",
+"password":"encrypted password",
+"userID":111,
+"person":{
+	"address":null,
+	"first":"Jacqueline",
+	"timeZone":{
+		"rawOffset":-25200000,
+		"dstsavings":3600000,
+		"lastRuleInstance":{
+			"rawOffset":-25200000,
+			"dstsavings":3600000,
+			"displayName":"Mountain Standard Time",
+			"id":"US/Mountain"},
+		"dirty":false,
+		"displayName":"Mountain Standard Time",
+		"id":"US/Mountain"},
+	"last":"Howard",
+	"info":0,
+	"locale":{
+		"language":"en",
+		"country":"US",
+		"displayCountry":"United States",
+		"displayLanguage":"English",
+		"displayName":"English (United States)",
+		"displayVariant":"",
+		"iso3Country":"USA",
+		"iso3Language":"eng",
+		"variant":""},
+	"status":"ACTIVE",
+	"suffix":"",
+	"fullName":"Jacqueline  Howard ",
+	"driver":null,
+	"height":0,
+	"title":"",
+	"user":null,
+	"driverID":null,
+	"acctID":12,
+	"userID":null,
+	"accountID":12,
+	"measurementType":"ENGLISH",
+	"fuelEfficiencyType":"MPG_US",
+	"priEmail":"jhoward@inthinc.com",
+	"addressID":226,
+	"personID":294,
+	"empid":"jhoward",
+	"warn":0,
+	"crit":0,
+	"secEmail":"",
+	"priPhone":"8017127234",
+	"secPhone":"",
+	"priText":"",
+	"secText":"",
+	"dob":null,
+	"weight":0,
+	"fullNameWithPriEmail":"Jacqueline  Howard  [ jhoward@inthinc.com ]",
+	"fullNameWithPriPhone":"Jacqueline  Howard  [ 8017127234 ]",
+	"displayTimeZone":"Mountain Daylight Time",
+	"reportsTo":"",
+	"dept":null,
+	"fullNameLastFirst":"Howard, Jacqueline  ",
+	"fullNameWithId":"Jacqueline  Howard  (jhoward)",
+	"fullNameWithSecPhone":"Jacqueline  Howard ",
+	"middle":"",
+	"gender":null,
+	"created":null,
+	"modified":1304393165000},
+"personID":294,
+"groupID":41,
+"accessPoints":null,
+"lastLogin":1309294649000,
+"passwordDT":null,
+"created":null,
+"modified":1309294649000
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>created</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Date user record was created</td>
+</tr>
+<tr>
+<td>roles</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>List of role IDs that define permissions for the user</td>
+</tr>
+<tr>
+<td>username</td>
+<td>Request Response</td>
+<td><dl>
+<dt>String</dt>
+<dd>must be unique</dd>
+</dl></td>
+<td>Required</td>
+<td>user name user uses to log in</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>ACTIVE (default)</dd>
+<dd>INACTIVE</dd>
+</dl></td>
+<td></td>
+<td>User is active and can log into the system.</td>
+</tr>
+<tr>
+<td>password</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required for POST</td>
+<td>send as plain text in the create/update request.  It is encrypted and will be displayed encrypted in responses</td>
+</tr>
+<tr>
+<td>userID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID assigned by the system on create.  Used to reference the user in other records and in requests</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>Unique ID of the group the user belongs to.  Use the Group services to discover groupIDs</td>
+</tr>
+<tr>
+<td>personID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>Unique ID of the person record this user is to be associated with.  Use the Person services to discover personIDs</td>
+</tr>
+<tr>
+<td>lastLogin</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date when the user last logged in.</td>
+</tr>
+<tr>
+<td>passwordDT</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date when the user's password was last updated.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="data-trip">Trip</a></h2>
+<div id="trip-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+<pre>
+&lt;trip&gt;
+&lt;driverID&gt;13&lt;/driverID&gt;
+&lt;endLoc&gt;
+	&lt;lat&gt;40.71014&lt;/lat&gt;
+	&lt;lng&gt;-111.992523&lt;/lng&gt;
+&lt;/endLoc&gt;
+&lt;endTime&gt;2011-07-20T17:11:24-06:00&lt;/endTime&gt;
+&lt;mileage&gt;4758&lt;/mileage&gt;
+&lt;quality&gt;WAYSMART&lt;/quality&gt;
+&lt;route&gt;
+	&lt;lat&gt;40.71014&lt;/lat&gt;
+	&lt;lng&gt;-111.992523&lt;/lng&gt;
+&lt;/route&gt;
+&lt;route&gt;
+	&lt;lat&gt;40.71014&lt;/lat&gt;
+	&lt;lng&gt;-111.992523&lt;/lng&gt;
+&lt;/route&gt;
+.
+.
+.
+&lt;startLoc&gt;
+	&lt;lat&gt;40.709816&lt;/lat&gt;
+	&lt;lng&gt;-111.992279&lt;/lng&gt;
+&lt;/startLoc&gt;
+&lt;startTime&gt;2011-07-28T19:46:15-06:00&lt;/startTime&gt;
+&lt;status&gt;TRIP_COMPLETED&lt;/status&gt;
+&lt;tripID&gt;1311903975000&lt;/tripID&gt;
+&lt;vehicleID&gt;2&lt;/vehicleID&gt;
+&lt;/trip&gt;
+
+</pre>
+</div>
+<div id="trip-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+{
+"startTime":1311201033000,
+"status":"TRIP_COMPLETED"
+"driverID":13,
+"vehicleID":37703,
+"endTime":1311203484000,
+"events":null,
+"mileage":4758,
+"route":[{
+	"lat":40.71014,
+	"lng":-111.992523
+	},
+	{
+	"lat":40.71014,
+	"lng":-111.992523
+	},
+	{"lat":40.710144,
+	"lng":-111.992523},
+	],
+"endAddressStr":null,
+"startAddressStr":null,
+"startLoc":{
+	"lat":40.71014,
+	"lng":-111.992523},
+"endLoc":{
+	"lat":40.71014,
+	"lng":-111.992523},
+"tripID":1311201033000,
+"quality":"WAYSMART",
+"modified":null,
+"created":null
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>startTime</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date and time when the trip started.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>TRIP_IN_PROGRESS</dd>
+<dd>TRIP_COMPLETED</dd>
+</dl></td>
+<td></td>
+<td>Trip status.</td>
+</tr>
+<tr>
+<td>driverID</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>System assigned ID of the driver.</td>
+</tr>
+<tr>
+<td>vehicleID</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>System assigned ID of the vehicle.</td>
+</tr>
+<tr>
+<td>endTime</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date when the trip ended.</td>
+</tr>
+<tr>
+<td>events</td>
+<td>Response</td>
+<td>Collection of events.</td>
+<td></td>
+<td>Events that occurred on the trip.</td>
+</tr>
+<tr>
+<td>mileage</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Length of the trip.</td>
+</tr>
+<tr>
+<td>route</td>
+<td>Response</td>
+<td>Collection of LatLng</td>
+<td></td>
+<td>LatLngs plotting the route of the trip.</td>
+</tr>
+<tr>
+<td>endAddressStr</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Address of the end of the trip.</td>
+</tr>
+<tr>
+<td>startAddressStr</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Address of the start of the trip.</td>
+</tr>
+<tr>
+<td>startLoc</td>
+<td>Response</td>
+<td>LatLng</td>
+<td></td>
+<td>Location of the start of the trip.</td>
+</tr>
+<tr>
+<td>endLoc</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Location of the end of the trip.</td>
+</tr>
+<tr>
+<td>tripID</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>System assigned ID of the trip.</td>
+</tr>
+<tr>
+<td>quality</td>
+<td>Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>GOOD</dd>
+<dd>BAD</dd>
+<dd>UNKNOWN</dd>
+<dd>WAYSMART</dd>
+</dl></td>
+<td></td>
+<td>Quality of GPS.  waySmart doesn't support this feature yet.</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date when the trip record was last modified.</td>
+</tr>
+<tr>
+<td>created</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date when the trip record was created.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2><a name="data-location">Location</a></h2>
+<div id="location-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+
+<pre>
+&lt;lastLocation&gt;
+	&lt;driverID&gt;353&lt;/driverID&gt;
+	&lt;location&gt;
+		&lt;lat&gt;40.709995&lt;/lat&gt;
+		&lt;lng&gt;-111.992508&lt;/lng&gt;
+	&lt;/location&gt;
+	&lt;time&gt;2011-06-08T14:39:27-06:00&lt;/time&gt;
+	&lt;vehicleID&gt;319&lt;/vehicleID&gt;
+&lt;/lastLocation&gt;
+</pre>
+</div>
+<div id="location-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+{
+	"time":1307565567000,
+	"driverID":353,
+	"vehicleID":319,
+	"loc":{
+		"lat":40.709995,
+		"lng":-111.992508}
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>time</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Time at location in timezone of the asset</td>
+</tr>
+<tr>
+<td>driverID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Driver's unique system assigned ID</td>
+</tr>
+<tr>
+<td>vehicleID</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Vehicle's unique system assigned ID</td>
+</tr>
+<tr>
+<td>loc</td>
+<td>Response</td>
+<td><a href="#latlng">LatLng</a></td>
+<td></td>
+<td>Coordinates of the location</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2><a name="data-score">Score</a></h2>
+<div id="score-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+<pre>
+&lt;score&gt;
+	&lt;aggressiveAccel xsi:type="xs:int"&gt;50&lt;/aggressiveAccel&gt;
+	&lt;aggressiveAccelEvents xsi:type="xs:int"&gt;0&lt;/aggressiveAccelEvents&gt;
+	&lt;aggressiveBrake xsi:type="xs:int"&gt;50&lt;/aggressiveBrake&gt;
+	&lt;aggressiveBrakeEvents xsi:type="xs:int"&gt;0&lt;/aggressiveBrakeEvents&gt;
+	&lt;aggressiveBump xsi:type="xs:int"&gt;1&lt;/aggressiveBump&gt;
+	&lt;aggressiveBumpEvents xsi:type="xs:int"&gt;0&lt;/aggressiveBumpEvents&gt;
+	&lt;aggressiveLeftEvents xsi:type="xs:int"&gt;0&lt;/aggressiveLeftEvents&gt;
+	&lt;aggressiveRightEvents xsi:type="xs:int"&gt;0&lt;/aggressiveRightEvents&gt;
+	&lt;aggressiveTurn xsi:type="xs:int"&gt;30&lt;/aggressiveTurn&gt;
+	&lt;avgSpeed xsi:type="xs:int"&gt;0&lt;/avgSpeed&gt;
+	&lt;coaching xsi:type="xs:int"&gt;0&lt;/coaching&gt;
+	&lt;crashDays xsi:type="xs:int"&gt;55&lt;/crashDays&gt;
+	&lt;crashEvents xsi:type="xs:int"&gt;0&lt;/crashEvents&gt;
+	&lt;crashOdometer xsi:type="xs:long"&gt;0&lt;/crashOdometer&gt;
+	&lt;crashTotal xsi:type="xs:int"&gt;4&lt;/crashTotal&gt;
+	&lt;driveTime xsi:type="xs:long"&gt;0&lt;/driveTime&gt;
+	&lt;drivingStyle xsi:type="xs:int"&gt;12&lt;/drivingStyle&gt;
+	&lt;emuRpmDriveTime xsi:type="xs:long"&gt;0&lt;/emuRpmDriveTime&gt;
+	&lt;endingDate&gt;2011-08-15T18:00:00-06:00&lt;/endingDate&gt;
+	&lt;endingOdometer xsi:type="xs:long"&gt;10093&lt;/endingOdometer&gt;
+	&lt;idleHi xsi:type="xs:long"&gt;0&lt;/idleHi&gt;
+	&lt;idleHiEvents xsi:type="xs:int"&gt;0&lt;/idleHiEvents&gt;
+	&lt;idleLo xsi:type="xs:long"&gt;0&lt;/idleLo&gt;
+	&lt;idleLoEvents xsi:type="xs:int"&gt;0&lt;/idleLoEvents&gt;
+	&lt;idlePercent xsi:type="xs:double"&gt;0.0&lt;/idlePercent&gt;
+	&lt;idleTotal xsi:type="xs:long"&gt;0&lt;/idleTotal&gt;
+	&lt;milesDriven xsi:type="xs:long"&gt;0&lt;/milesDriven&gt;
+	&lt;odometer xsi:type="xs:long"&gt;0&lt;/odometer&gt;
+	&lt;odometer1 xsi:type="xs:long"&gt;0&lt;/odometer1&gt;
+	&lt;odometer2 xsi:type="xs:long"&gt;0&lt;/odometer2&gt;
+	&lt;odometer3 xsi:type="xs:long"&gt;0&lt;/odometer3&gt;
+	&lt;odometer4 xsi:type="xs:long"&gt;0&lt;/odometer4&gt;
+	&lt;odometer5 xsi:type="xs:long"&gt;0&lt;/odometer5&gt;
+	&lt;odometerHeavy xsi:type="xs:long"&gt;0&lt;/odometerHeavy&gt;
+	&lt;odometerLight xsi:type="xs:long"&gt;0&lt;/odometerLight&gt;
+	&lt;odometerMedium xsi:type="xs:long"&gt;0&lt;/odometerMedium&gt;
+	&lt;overall xsi:type="xs:int"&gt;25&lt;/overall&gt;
+	&lt;rpmEvents xsi:type="xs:int"&gt;0&lt;/rpmEvents&gt;
+	&lt;safetyTotal xsi:type="xs:long"&gt;0&lt;/safetyTotal&gt;
+	&lt;seatbelt xsi:type="xs:int"&gt;50&lt;/seatbelt&gt;
+	&lt;seatbeltCoaching xsi:type="xs:int"&gt;0&lt;/seatbeltCoaching&gt;
+	&lt;seatbeltEvents xsi:type="xs:int"&gt;0&lt;/seatbeltEvents&gt;
+	&lt;speedCoaching1 xsi:type="xs:int"&gt;0&lt;/speedCoaching1&gt;
+	&lt;speedCoaching2 xsi:type="xs:int"&gt;0&lt;/speedCoaching2&gt;
+	&lt;speedCoaching3 xsi:type="xs:int"&gt;0&lt;/speedCoaching3&gt;
+	&lt;speedCoaching4 xsi:type="xs:int"&gt;0&lt;/speedCoaching4&gt;
+	&lt;speedCoaching5 xsi:type="xs:int"&gt;0&lt;/speedCoaching5&gt;
+	&lt;speedEvents1 xsi:type="xs:int"&gt;0&lt;/speedEvents1&gt;
+	&lt;speedEvents15PlusMphOver xsi:type="xs:int"&gt;0&lt;/speedEvents15PlusMphOver&gt;
+	&lt;speedEvents1To7MphOver xsi:type="xs:int"&gt;0&lt;/speedEvents1To7MphOver&gt;
+	&lt;speedEvents2 xsi:type="xs:int"&gt;0&lt;/speedEvents2&gt;
+	&lt;speedEvents3 xsi:type="xs:int"&gt;0&lt;/speedEvents3&gt;
+	&lt;speedEvents4 xsi:type="xs:int"&gt;0&lt;/speedEvents4&gt;
+	&lt;speedEvents5 xsi:type="xs:int"&gt;0&lt;/speedEvents5&gt;
+	&lt;speedEvents8To14MphOver xsi:type="xs:int"&gt;0&lt;/speedEvents8To14MphOver&gt;
+	&lt;speedEventsOver80Mph xsi:type="xs:int"&gt;0&lt;/speedEventsOver80Mph&gt;
+	&lt;speedOdometer1 xsi:type="xs:long"&gt;0&lt;/speedOdometer1&gt;
+	&lt;speedOdometer2 xsi:type="xs:long"&gt;0&lt;/speedOdometer2&gt;
+	&lt;speedOdometer3 xsi:type="xs:long"&gt;0&lt;/speedOdometer3&gt;
+	&lt;speedOdometer4 xsi:type="xs:long"&gt;0&lt;/speedOdometer4&gt;
+	&lt;speedOdometer5 xsi:type="xs:long"&gt;0&lt;/speedOdometer5&gt;
+	&lt;speeding xsi:type="xs:int"&gt;40&lt;/speeding&gt;
+	&lt;speeding1 xsi:type="xs:int"&gt;50&lt;/speeding1&gt;
+	&lt;speeding2 xsi:type="xs:int"&gt;50&lt;/speeding2&gt;
+	&lt;speeding3 xsi:type="xs:int"&gt;35&lt;/speeding3&gt;
+	&lt;speeding4 xsi:type="xs:int"&gt;50&lt;/speeding4&gt;
+	&lt;speeding5 xsi:type="xs:int"&gt;50&lt;/speeding5&gt;
+	&lt;startingDate&gt;2011-07-17T18:00:00-06:00&lt;/startingDate&gt;
+	&lt;startingOdometer xsi:type="xs:long"&gt;10093&lt;/startingOdometer&gt;
+	&lt;trips xsi:type="xs:int"&gt;0&lt;/trips&gt;
+	&lt;weightedMpg xsi:type="xs:double"&gt;0.0&lt;/weightedMpg&gt;
+&lt;/score&gt;
+</pre>
+</div>
+<div id="score-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+{
+	"trips":0,
+	"endingOdometer":10093,
+	"overall":25,
+	"endingDate":1313452800000,
+	"odometer1":0,
+	"odometer2":0,
+	"odometer3":0,
+	"odometer4":0,
+	"odometer5":0,
+	"odometer":0,
+	"speeding":40,
+	"drivingStyle":12,
+	"seatbelt":50,
+	"crashEvents":0,
+	"crashTotal":4,
+	"crashDays":55,
+	"crashOdometer":0,
+	"speedOdometer":null,
+	"emuRpmDriveTime":0,
+	"idleHi":0,
+	"idleLo":0,
+	"nVehicles":null,
+	"emuRpmVehicles":null,
+	"mpgHeavy":null,
+	"mpgLight":null,
+	"mpgMedium":null,
+	"aggressiveAccelEvents":0,
+	"aggressiveBrakeEvents":0,
+	"aggressiveLeftEvents":0,
+	"aggressiveRightEvents":0,
+	"aggressiveBumpEvents":0,
+	"seatbeltEvents":0,
+	"startingOdometer":10093,
+	"speedEvents1To7MphOver":0,
+	"speedEvents8To14MphOver":0,
+	"speedEvents15PlusMphOver":0,
+	"milesDriven":0,
+	"aggressiveAccel":50,
+	"aggressiveBrake":50,
+	"aggressiveBump":1,
+	"aggressiveTurn":30,
+	"speedEvents":null,
+	"speedEvents1":0,
+	"speedEvents2":0,
+	"speedEvents3":0,
+	"speedEvents4":0,
+	"speedEvents5":0,
+	"speedOdometer1":0,
+	"speedOdometer2":0,
+	"speedOdometer3":0,
+	"speedOdometer4":0,
+	"speedOdometer5":0,
+	"startingDate":1310947200000,
+	"aggressiveEvents":null,
+	"avgSpeed":0,
+	"coaching":0,
+	"driveTime":0,
+	"idleHiEvents":0,
+	"idleLoEvents":0,
+	"rpmEvents":0,
+	"seatbeltCoaching":0,
+	"speedCoaching":null,
+	"speedCoaching1":0,
+	"speedCoaching2":0,
+	"speedCoaching3":0,
+	"speedCoaching4":0,
+	"speedCoaching5":0,
+	"speeding1":50,
+	"speeding2":50,
+	"speeding3":35,
+	"speeding4":50,
+	"speeding5":50,
+	"speedOver":null,
+	"speedOver1":null,
+	"speedOver2":null,
+	"speedOver3":null,
+	"speedOver4":null,
+	"speedOver5":null,
+	"odometerLight":0,
+	"odometerMedium":0,
+	"odometerHeavy":0,
+	"safetyTotal":0,
+	"weightedMpg":0.0,
+	"idleTotal":0,
+	"idlePercent":0.0,
+	"speedEventsOver80Mph":0
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>trips</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of trips</td>
+</tr>
+<tr>
+<td>endingOdometer</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>odometer at the end of the time period</td>
+</tr>
+<tr>
+<td>overall</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Overall score x 10</td>
+</tr>
+<tr>
+<td>endingDate</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>End date and time</td>
+</tr>
+<tr>
+<td>odometer1-5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Vehicle's unique system assigned ID</td>
+</tr>
+<tr>
+<td>speeding</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Speeding score x 10</td>
+</tr>
+<tr>
+<td>drivingStyle</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Driving style score x 10</td>
+</tr>
+<tr>
+<td>seatbelt</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Seatbelt score x 10</td>
+</tr>
+<tr>
+<td>crashEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of crashes in the time period</td>
+</tr>
+<tr>
+<td>crashTotal</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of crashes since start of recording</td>
+</tr>
+<tr>
+<td>crashDays</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of days since the last crash</td>
+</tr>
+<tr>
+<td>crashOdometer</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>speedOdometer</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>emuRpmDriveTime</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>idleHi</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total time idling in seconds</td>
+</tr>
+<tr>
+<td>idleLo</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>nVehicles</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>emuRpmVehicles</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>mpgHeavy,mpgLight,mpgMedium</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Fuel efficiency for heavy vehicles</td>
+</tr>
+<tr>
+<td>mpgLight</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Fuel efficiency for light vehicles</td>
+</tr>
+<tr>
+<td>mpgMedium</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Fuel efficiency for medium vehicles</td>
+</tr>
+<tr>
+<td>aggressiveAccelEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive acceleration events</td>
+</tr>
+<tr>
+<td>aggressiveBrakeEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive braking events</td>
+</tr>
+<tr>
+<td>aggressiveLeftEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive left turn events</td>
+</tr>
+<tr>
+<td>aggressiveRightEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive right turn events</td>
+</tr>
+<tr>
+<td>aggressiveBumpEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive vertical bump events</td>
+</tr>
+<tr>
+<td>seatbeltEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of seatbelt events</td>
+</tr>
+<tr>
+<td>startingOdometer</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Odometer at the start of the time period.</td>
+</tr>
+<tr>
+<td>speedEvents1To7MphOver</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speeding was between 1 and 7 mph (or kph equivalent) over the speed limit.</td>
+</tr>
+<tr>
+<td>speedEvents8To14MphOver</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speeding was between 8 and 14 mph (or kph equivalent) over the speed limit.</td>
+</tr>
+<tr>
+<td>speedEvents15PlusMphOver</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speeding was 15 or more mph (or kph equivalent) over the speed limit.</td>
+</tr>
+<tr>
+<td>milesDriven</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total miles driven in the time period</td>
+</tr>
+<tr>
+<td>aggressiveAccel</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Aggressive acceleration score x 10</td>
+</tr>
+<tr>
+<td>aggressiveBrake</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Aggressive braking score x 10</td>
+</tr>
+<tr>
+<td>aggressiveBump</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Aggressive vertical bump score x 10</td>
+</tr>
+<tr>
+<td>aggressiveTurn</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Aggressive turns score x 10</td>
+</tr>
+<tr>
+<td>speedEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total speeding events in the time period</td>
+</tr>
+<tr>
+<td>speedEvents1</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 1 and 30 mph (1 and 48 kph)</td>
+</tr>
+<tr>
+<td>speedEvents2</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 31 and 40 mph (49 and 64 kph)</td>
+</tr>
+<tr>
+<td>speedEvents3</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 41 and 54 mph (65 and 86 kph)</td>
+</tr>
+<tr>
+<td>speedEvents4</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 55 and 64 mph (87 and 102 kph)</td>
+</tr>
+<tr>
+<td>speedEvents5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 65 and 80 mph (103 and 128 kph)</td>
+</tr>
+<tr>
+<td>speedOdometer1-5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Vehicle's unique system assigned ID</td>
+</tr>
+<tr>
+<td>startingDate</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date and time of start of time period.</td>
+</tr>
+<tr>
+<td>aggressiveEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total number of aggressive events.</td>
+</tr>
+<tr>
+<td>avgSpeed</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Vehicle's unique system assigned ID</td>
+</tr>
+<tr>
+<td>coaching</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of coaching events</td>
+</tr>
+<tr>
+<td>driveTime</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total drive time in the time period.</td>
+</tr>
+<tr>
+<td>idleHiEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of high idling events.</td>
+</tr>
+<tr>
+<td>idleLoEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of low idling events.</td>
+</tr>
+<tr>
+<td>rpmEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>seatbeltCoaching</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of seatbelt coaching events.</td>
+</tr>
+<tr>
+<td>speedCoaching</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total number of speeding coaching events.</td>
+</tr>
+<tr>
+<td>speedCoaching1</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 1 (1 to 30 mph or 1 to 48 kph).</td>
+</tr>
+<tr>
+<td>speedCoaching2</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 2 (31 to 40 mph or 49 to 64 kph).</td>
+</tr>
+<tr>
+<td>speedCoaching3</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 3 (41 to 54 mph or 65 to 86 kph).</td>
+</tr>
+<tr>
+<td>speedCoaching4</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 4 (55 to 64 mph or 87 to 102 kph).</td>
+</tr>
+<tr>
+<td>speedCoaching5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 5 (65 to 80 mph or 103 to 128 kph).</td>
+</tr>
+<tr>
+<td>speeding</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Overall speeding score x 10</td>
+</tr>
+<tr>
+<td>speeding1</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 1 (1 to 30 mph or 1 to 48 kph).</td>
+</tr>
+<tr>
+<td>speeding2</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 2 (31 to 40 mph or 49 to 64 kph).</td>
+</tr>
+<tr>
+<td>speeding3</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 3 (41 to 54 mph or 65 to 86 kph).</td>
+</tr>
+<tr>
+<td>speeding4</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 4 (55 to 64 mph or 87 to 102 kph).</td>
+</tr>
+<tr>
+<td>speeding5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 5 (65 to 80 mph or 103 to 128 kph).</td>
+</tr>
+<tr>
+<td>speedOver,1-5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>odometerLight,odometerMedium,odometerHeavy</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>safetyTotal</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total number of safety events, includes aggressive acceleration, braking, turns and bumps.</td>
+</tr>
+<tr>
+<td>weightedMpg</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>idleTotal</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total amount of time idling.</td>
+</tr>
+<tr>
+<td>idlePercent</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Percentage of total drive time spent idling</td>
+</tr>
+<tr>
+<td>speedEventsOver80Mph</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed was over 80mph (128kph)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2><a name="data-trend">Trend</a></h2>
+<div id="trend-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+<pre>
+&lt;trend&gt;
+	&lt;aggressiveAccel xsi:type="xs:int"&gt;50&lt;/aggressiveAccel&gt;
+	&lt;aggressiveAccelEvents xsi:type="xs:int"&gt;0&lt;/aggressiveAccelEvents&gt;
+	&lt;aggressiveBrake xsi:type="xs:int"&gt;50&lt;/aggressiveBrake&gt;
+	&lt;aggressiveBrakeEvents xsi:type="xs:int"&gt;0&lt;/aggressiveBrakeEvents&gt;
+	&lt;aggressiveBump xsi:type="xs:int"&gt;1&lt;/aggressiveBump&gt;
+	&lt;aggressiveBumpEvents xsi:type="xs:int"&gt;0&lt;/aggressiveBumpEvents&gt;
+	&lt;aggressiveLeftEvents xsi:type="xs:int"&gt;0&lt;/aggressiveLeftEvents&gt;
+	&lt;aggressiveRightEvents xsi:type="xs:int"&gt;0&lt;/aggressiveRightEvents&gt;
+	&lt;aggressiveTurn xsi:type="xs:int"&gt;50&lt;/aggressiveTurn&gt;
+	&lt;avgSpeed xsi:type="xs:int"&gt;0&lt;/avgSpeed&gt;
+	&lt;coaching xsi:type="xs:int"&gt;0&lt;/coaching&gt;
+	&lt;crashDays xsi:type="xs:int"&gt;26&lt;/crashDays&gt;
+	&lt;crashEvents xsi:type="xs:int"&gt;0&lt;/crashEvents&gt;
+	&lt;crashOdometer xsi:type="xs:long"&gt;0&lt;/crashOdometer&gt;
+	&lt;crashTotal xsi:type="xs:int"&gt;4&lt;/crashTotal&gt;
+	&lt;driveTime xsi:type="xs:long"&gt;0&lt;/driveTime&gt;
+	&lt;drivingStyle xsi:type="xs:int"&gt;13&lt;/drivingStyle&gt;
+	&lt;emuRpmDriveTime xsi:type="xs:long"&gt;0&lt;/emuRpmDriveTime&gt;
+	&lt;endingDate&gt;2011-07-17T18:00:00-06:00&lt;/endingDate&gt;
+	&lt;endingOdometer xsi:type="xs:long"&gt;10093&lt;/endingOdometer&gt;
+	&lt;idleHi xsi:type="xs:long"&gt;0&lt;/idleHi&gt;
+	&lt;idleHiEvents xsi:type="xs:int"&gt;0&lt;/idleHiEvents&gt;
+	&lt;idleLo xsi:type="xs:long"&gt;0&lt;/idleLo&gt;
+	&lt;idleLoEvents xsi:type="xs:int"&gt;0&lt;/idleLoEvents&gt;
+	&lt;odometer xsi:type="xs:long"&gt;0&lt;/odometer&gt;
+	&lt;odometer1 xsi:type="xs:long"&gt;0&lt;/odometer1&gt;
+	&lt;odometer2 xsi:type="xs:long"&gt;0&lt;/odometer2&gt;
+	&lt;odometer3 xsi:type="xs:long"&gt;0&lt;/odometer3&gt;
+	&lt;odometer4 xsi:type="xs:long"&gt;0&lt;/odometer4&gt;
+	&lt;odometer5 xsi:type="xs:long"&gt;0&lt;/odometer5&gt;
+	&lt;overall xsi:type="xs:int"&gt;26&lt;/overall&gt;
+	&lt;rpmEvents xsi:type="xs:int"&gt;0&lt;/rpmEvents&gt;
+	&lt;seatbelt xsi:type="xs:int"&gt;50&lt;/seatbelt&gt;
+	&lt;seatbeltCoaching xsi:type="xs:int"&gt;0&lt;/seatbeltCoaching&gt;
+	&lt;seatbeltEvents xsi:type="xs:int"&gt;0&lt;/seatbeltEvents&gt;
+	&lt;speedCoaching1 xsi:type="xs:int"&gt;0&lt;/speedCoaching1&gt;
+	&lt;speedCoaching2 xsi:type="xs:int"&gt;0&lt;/speedCoaching2&gt;
+	&lt;speedCoaching3 xsi:type="xs:int"&gt;0&lt;/speedCoaching3&gt;
+	&lt;speedCoaching4 xsi:type="xs:int"&gt;0&lt;/speedCoaching4&gt;
+	&lt;speedCoaching5 xsi:type="xs:int"&gt;0&lt;/speedCoaching5&gt;
+	&lt;speedEvents1 xsi:type="xs:int"&gt;0&lt;/speedEvents1&gt;
+	&lt;speedEvents2 xsi:type="xs:int"&gt;0&lt;/speedEvents2&gt;
+	&lt;speedEvents3 xsi:type="xs:int"&gt;0&lt;/speedEvents3&gt;
+	&lt;speedEvents4 xsi:type="xs:int"&gt;0&lt;/speedEvents4&gt;
+	&lt;speedEvents5 xsi:type="xs:int"&gt;0&lt;/speedEvents5&gt;
+	&lt;speedOdometer1 xsi:type="xs:long"&gt;0&lt;/speedOdometer1&gt;
+	&lt;speedOdometer2 xsi:type="xs:long"&gt;0&lt;/speedOdometer2&gt;
+	&lt;speedOdometer3 xsi:type="xs:long"&gt;0&lt;/speedOdometer3&gt;
+	&lt;speedOdometer4 xsi:type="xs:long"&gt;0&lt;/speedOdometer4&gt;
+	&lt;speedOdometer5 xsi:type="xs:long"&gt;0&lt;/speedOdometer5&gt;
+	&lt;speeding xsi:type="xs:int"&gt;40&lt;/speeding&gt;
+	&lt;speeding1 xsi:type="xs:int"&gt;50&lt;/speeding1&gt;
+	&lt;speeding2 xsi:type="xs:int"&gt;50&lt;/speeding2&gt;
+	&lt;speeding3 xsi:type="xs:int"&gt;35&lt;/speeding3&gt;
+	&lt;speeding4 xsi:type="xs:int"&gt;50&lt;/speeding4&gt;
+	&lt;speeding5 xsi:type="xs:int"&gt;50&lt;/speeding5&gt;
+	&lt;startingDate&gt;2011-07-11T18:00:00-06:00&lt;/startingDate&gt;
+	&lt;startingOdometer xsi:type="xs:long"&gt;10093&lt;/startingOdometer&gt;
+	&lt;trips xsi:type="xs:int"&gt;0&lt;/trips&gt;
+&lt;/trend&gt;
+</pre>
+</div>
+<div id="trend-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+{
+	"trips":0,
+	"endingOdometer":10093,
+	"overall":26,
+	"endingDate":1310947200000,
+	"odometer1":0,
+	"odometer2":0,
+	"odometer3":0,
+	"odometer4":0,
+	"odometer5":0,
+	"odometer":0,
+	"speeding":40,
+	"drivingStyle":13,
+	"seatbelt":50,
+	"crashEvents":0,
+	"crashTotal":4,
+	"crashDays":26,
+	"crashOdometer":0,
+	"speedOdometer":null,
+	"emuRpmDriveTime":0,
+	"idleHi":0,
+	"idleLo":0,
+	"nVehicles":null,
+	"emuRpmVehicles":null,
+	"mpgHeavy":null,
+	"mpgLight":null,
+	"mpgMedium":null,
+	"aggressiveAccelEvents":0,
+	"aggressiveBrakeEvents":0,
+	"aggressiveLeftEvents":0,
+	"aggressiveRightEvents":0,
+	"aggressiveBumpEvents":0,
+	"seatbeltEvents":0,
+	"startingOdometer":10093,
+	"aggressiveAccel":50,
+	"aggressiveBrake":50,
+	"aggressiveBump":1,
+	"aggressiveTurn":50,
+	"speedEvents":null,
+	"speedEvents1":0,
+	"speedEvents2":0,
+	"speedEvents3":0,
+	"speedEvents4":0,
+	"speedEvents5":0,
+	"speedOdometer1":0,
+	"speedOdometer2":0,
+	"speedOdometer3":0,
+	"speedOdometer4":0,
+	"speedOdometer5":0,
+	"startingDate":1310428800000,
+	"aggressiveEvents":null,
+	"avgSpeed":0,
+	"coaching":0,
+	"driveTime":0,
+	"idleHiEvents":0,
+	"idleLoEvents":0,
+	"rpmEvents":0,
+	"seatbeltCoaching":0,
+	"speedCoaching":null,
+	"speedCoaching1":0,
+	"speedCoaching2":0,
+	"speedCoaching3":0,
+	"speedCoaching4":0,
+	"speedCoaching5":0,
+	"speeding1":50,
+	"speeding2":50,
+	"speeding3":35,
+	"speeding4":50,
+	"speeding5":50,
+	"speedOver":null,
+	"speedOver1":null,
+	"speedOver2":null,
+	"speedOver3":null,
+	"speedOver4":null,
+	"speedOver5":null
+}
+	</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>trips</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of trips</td>
+</tr>
+<tr>
+<td>endingOdometer</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>odometer at the end of the time period</td>
+</tr>
+<tr>
+<td>overall</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Overall score x 10</td>
+</tr>
+<tr>
+<td>endingDate</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>End date and time</td>
+</tr>
+<tr>
+<td>odometer1-5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Vehicle's unique system assigned ID</td>
+</tr>
+<tr>
+<td>speeding</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Speeding score x 10</td>
+</tr>
+<tr>
+<td>drivingStyle</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Driving style score x 10</td>
+</tr>
+<tr>
+<td>seatbelt</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Seatbelt score x 10</td>
+</tr>
+<tr>
+<td>crashEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of crashes in the time period</td>
+</tr>
+<tr>
+<td>crashTotal</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of crashes since start of recording</td>
+</tr>
+<tr>
+<td>crashDays</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of days since the last crash</td>
+</tr>
+<tr>
+<td>crashOdometer</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>speedOdometer</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>emuRpmDriveTime</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>idleHi</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total time idling in seconds</td>
+</tr>
+<tr>
+<td>idleLo</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>nVehicles</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>emuRpmVehicles</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>mpgHeavy,mpgLight,mpgMedium</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Fuel efficiency for heavy vehicles</td>
+</tr>
+<tr>
+<td>mpgLight</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Fuel efficiency for light vehicles</td>
+</tr>
+<tr>
+<td>mpgMedium</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Fuel efficiency for medium vehicles</td>
+</tr>
+<tr>
+<td>aggressiveAccelEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive acceleration events</td>
+</tr>
+<tr>
+<td>aggressiveBrakeEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive braking events</td>
+</tr>
+<tr>
+<td>aggressiveLeftEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive left turn events</td>
+</tr>
+<tr>
+<td>aggressiveRightEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive right turn events</td>
+</tr>
+<tr>
+<td>aggressiveBumpEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of aggressive vertical bump events</td>
+</tr>
+<tr>
+<td>seatbeltEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of seatbelt events</td>
+</tr>
+<tr>
+<td>startingOdometer</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Odometer at the start of the time period.</td>
+</tr>
+<tr>
+<td>milesDriven</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total miles driven in the time period</td>
+</tr>
+<tr>
+<td>aggressiveAccel</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Aggressive acceleration score x 10</td>
+</tr>
+<tr>
+<td>aggressiveBrake</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Aggressive braking score x 10</td>
+</tr>
+<tr>
+<td>aggressiveBump</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Aggressive vertical bump score x 10</td>
+</tr>
+<tr>
+<td>aggressiveTurn</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Aggressive turns score x 10</td>
+</tr>
+<tr>
+<td>speedEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total speeding events in the time period</td>
+</tr>
+<tr>
+<td>speedEvents1</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 1 and 30 mph (1 and 48 kph)</td>
+</tr>
+<tr>
+<td>speedEvents2</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 31 and 40 mph (49 and 64 kph)</td>
+</tr>
+<tr>
+<td>speedEvents3</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 41 and 54 mph (65 and 86 kph)</td>
+</tr>
+<tr>
+<td>speedEvents4</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 55 and 64 mph (87 and 102 kph)</td>
+</tr>
+<tr>
+<td>speedEvents5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding events where the speed limit is between 65 and 80 mph (103 and 128 kph)</td>
+</tr>
+<tr>
+<td>speedOdometer1-5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Vehicle's unique system assigned ID</td>
+</tr>
+<tr>
+<td>startingDate</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date and time of start of time period.</td>
+</tr>
+<tr>
+<td>aggressiveEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total number of aggressive events.</td>
+</tr>
+<tr>
+<td>avgSpeed</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Vehicle's unique system assigned ID</td>
+</tr>
+<tr>
+<td>coaching</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of coaching events</td>
+</tr>
+<tr>
+<td>driveTime</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total drive time in the time period.</td>
+</tr>
+<tr>
+<td>idleHiEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of high idling events.</td>
+</tr>
+<tr>
+<td>idleLoEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of low idling events.</td>
+</tr>
+<tr>
+<td>rpmEvents</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>seatbeltCoaching</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of seatbelt coaching events.</td>
+</tr>
+<tr>
+<td>speedCoaching</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total number of speeding coaching events.</td>
+</tr>
+<tr>
+<td>speedCoaching1</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 1 (1 to 30 mph or 1 to 48 kph).</td>
+</tr>
+<tr>
+<td>speedCoaching2</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 2 (31 to 40 mph or 49 to 64 kph).</td>
+</tr>
+<tr>
+<td>speedCoaching3</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 3 (41 to 54 mph or 65 to 86 kph).</td>
+</tr>
+<tr>
+<td>speedCoaching4</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 4 (55 to 64 mph or 87 to 102 kph).</td>
+</tr>
+<tr>
+<td>speedCoaching5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Number of speeding coaching events in speeding category 5 (65 to 80 mph or 103 to 128 kph).</td>
+</tr>
+<tr>
+<td>speeding</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Overall speeding score x 10</td>
+</tr>
+<tr>
+<td>speeding1</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 1 (1 to 30 mph or 1 to 48 kph).</td>
+</tr>
+<tr>
+<td>speeding2</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 2 (31 to 40 mph or 49 to 64 kph).</td>
+</tr>
+<tr>
+<td>speeding3</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 3 (41 to 54 mph or 65 to 86 kph).</td>
+</tr>
+<tr>
+<td>speeding4</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 4 (55 to 64 mph or 87 to 102 kph).</td>
+</tr>
+<tr>
+<td>speeding5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Score x 10 for speeding in speed category 5 (65 to 80 mph or 103 to 128 kph).</td>
+</tr>
+<tr>
+<td>speedOver,1-5</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>safetyTotal</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total number of safety events, includes aggressive acceleration, braking, turns and bumps.</td>
+</tr>
+<tr>
+<td>weightedMpg</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>idleTotal</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Total amount of time idling.</td>
+</tr>
+<tr>
+<td>idlePercent</td>
+<td>Response</td>
+<td>Number</td>
+<td></td>
+<td>Percentage of total drive time spent idling</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="latlng">LatLng</a></h2>
+<div id="latlng-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+<pre>
+    &lt;lat&gt;41.1678&lt;/lat&gt;
+    &lt;lng&gt;-112.015&lt;/lng&gt;
+</pre>
+</div>
+<div id="latlng-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+{
+	"lat":41.1678,
+	"lng":-112.015
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>lat</td>
+<td>Response</td>
+<td><dl>
+<dt>Double</dt>
+<dd>0 - 90</dd>
+</dl></td>
+<td>Required</td>
+<td>Latitude</td>
+</tr>
+<tr>
+<td>lng</td>
+<td>Response</td>
+<td><dl>
+<dt>Double</dt>
+<dd>-180 - 180</dd>
+</dl></td>
+<td>Required</td>
+<td>Longitude</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="address">Address</a></h2>
+<div id="address-xml" style="width:50%;float:left;">
+<h3>XML</h3>
+<pre>
+   &lt;addr1&gt;Suite 1A&lt;/addr1&gt;
+   &lt;addr2&gt;123 Made Up Street&lt;/addr2&gt;
+   &lt;city&gt;Somewhere City&lt;/city&gt;
+   &lt;state&gt;District of Imagination&lt;/state&gt;
+   &lt;zip&gt;12345&lt;/zip&gt;
+ </pre>
+</div>
+<div id="address-json" style="width:50%;float:left;">
+<h3>JSON</h3>
+<pre>
+{
+	"addr1":"Suite 1A",
+	"addr2":"123 Made Up Street",
+	"city":"Somewhere City",
+	"state":"District of Imagination",
+	"zip":"12345"
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h3>Properties</h3>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>addr1</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>First line of address</td>
+</tr>
+<tr>
+<td>addr2</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Street address</td>
+</tr>
+<tr>
+<td>city</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>state</td>
+<td>Request Response</td>
+<td><a href="#states">State</a></td>
+<td></td>
+<td>State or province</td>
+</tr>
+<tr>
+<td>zip</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>zip code or post code</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2><a name="states">States</a></h2>
+<pre>
+stateID	abbrev	name	
+1	AL	Alabama	
+2	AK	Alaska	
+3	AZ	Arizona	
+4	AR	Arkansas	
+5	CA	California	
+6	CO	Colorado	
+7	CT	Connecticut	
+8	DE	Delaware	
+9	DC	District of Columbia	
+10	FL	Florida	
+11	GA	Georgia	
+12	HI	Hawaii	
+13	ID	Idaho	
+14	IL	Illinois	
+15	IN	Indiana	
+16	IA	Iowa	
+17	KS	Kansas	
+18	KY	Kentucky	
+19	LA	Louisiana	
+20	ME	Maine	
+21	MD	Maryland	
+22	MA	Massachusetts	
+23	MI	Michigan	
+24	MN	Minnesota	
+25	MS	Mississippi	
+26	MO	Missouri	
+27	MT	Montana	
+28	NE	Nebraska	
+29	NV	Nevada	
+30	NH	New Hampshire	
+31	NJ	New Jersey	
+32	NM	New Mexico	
+33	NY	New York	
+34	NC	North Carolina	
+35	ND	North Dakota	
+36	OH	Ohio	
+37	OK	Oklahoma	
+38	OR	Oregon	
+39	PA	Pennsylvania	
+40	RI	Rhode Island	
+41	SC	South Carolina	
+42	SD	South Dakota	
+43	TN	Tennessee	
+44	TX	Texas	
+45	UT	Utah	
+46	VT	Vermont	
+47	VA	Virginia	
+48	WA	Washington	
+49	WV	West Virginia	
+50	WI	Wisconsin	
+51	WY	Wyoming	
+52	AS	American Samoa	
+53	FM	Federated States of Micronesia	
+54	GU	Guam	
+55	MH	Marshall Islands	
+56	MP	Northern Mariana Islands	
+57	PW	Palau	
+58	PR	Puerto Rico	
+59	VI	Virgin Islands	
+60	UM	U.S. Minor Outlying Islands	
+61	AE	Armed Forces Africa	
+62	AA	Armed Forces Americas	
+63	AE	Armed Forces Canada	
+64	AE	Armed Forces Europe	
+65	AE	Armed Forces Middle East	
+66	AP	Armed Forces Pacific	
+67	AB	Alberta	
+68	BC	British Columbia	
+69	MB	Manitoba	
+70	NB	New Brunswick	
+71	NL	Newfoundland and Labrador	
+72	NT	Northwest Territories	
+73	NS	Nova Scotia	
+74	NU	Nunavut	
+75	ON	Ontario	
+76	PE	Prince Edward Island	
+77	QC	Quebec	
+78	SK	Saskatchewan	
+79	YT	Yukon	
+</pre>
+<h2><a name="dotRuleSets">DOT HOS Rule Sets</a></h2>
+<pre>
+    NON_DOT (default)
+    US
+    US_OIL
+    CANADA
+    CANADA_60_DEGREES
+    US_HOME_OFFICE
+    CANADA_HOME_OFFICE
+    TEXAS
+    CANADA_ALBERTA
+    CANADA_2007_CYCLE_1
+    CANADA_2007_CYCLE_2
+    CANADA_2007_60_DEGREES_CYCLE_1
+    CANADA_2007_60_DEGREES_CYCLE_2
+    CANADA_2007_OIL
+    CANADA_2007_60_DEGREES_OIL
+    SLB_INTERNAL
+    US_7DAY
+    US_OIL_7DAY
+</pre>
+<h2><a name="timezones">Time Zones</a></h2>
+<p>We use the Olsen Time Zone Database (tz database) as used by Java.</p>
+<p>Time zone representation is described at the W3C Working Group site <a href="http://www.w3.org/TR/timezone/">Working with Time Zones</a></p>
+<p>Examples of valid time zone representations in the timeZone properties are:</p>
+<pre>&lt;timeZone&gt;US/Mountain&lt;/timeZone&gt;</pre>
+<pre>&lt;timeZone&gt;Africa/Johannesburg&lt;/timeZone&gt;</pre>
+<p>The short codes, such as MDT and SAST are not valid in requests (they are deprecated in Java because they are not unique) though they may appear in response entities.</p>
+<h2><a name="locales">Locales</a></h2>
+<p>Locales are represented by the language code and optional variant code.</p>
+<p>We currently support:</p>
+<pre>
+&lt;locale&gt;en_US&lt;/locale&gt; (American English)
+&lt;locale&gt;ro&lt;/locale&gt; (Romanian)
+&lt;locale&gt;es&lt;/locale&gt; (Spanish)
+&lt;locale&gt;fr&lt;/locale&gt; (French)
+</pre>
+<h2><a name="eventType">Event Types</a></h2>
+<pre>
+    TAMPERING
+    SEATBELT
+    SPEEDING
+    HARD_ACCEL
+    HARD_BRAKE
+    HARD_TURN
+    HARD_VERT
+    ZONES_ARRIVAL
+    ZONES_DEPARTURE
+    LOW_BATTERY
+    DEVICE_LOW_BATTERY
+    IDLING
+    CRASH
+    UNKNOWN
+    NO_DRIVER
+    PARKING_BRAKE
+    IGNITION_ON
+    MICRO_SLEEP
+    POTENTIAL_TAMPERING
+    WIRELINE_ALARM
+    INSTALL
+    FIRMWARE_CURRENT
+    LOCATION_DEBUG
+    QSI_UPDATED
+    WITNESS_UPDATED
+    ZONES_CURRENT
+    NO_INTERNAL_THUMB_DRIVE
+    WITNESS_HEARTBEAT_VIOLATION
+    PANIC
+    MAN_DOWN
+    MAN_DOWN_CANCELED
+    DOT_STOPPED
+    HOS_NO_HOURS
+    TEXT_MESSAGE
+    OFF_HOURS
+    IGNITION_OFF
+    TRAILER_DATA
+    NEW_DRIVER
+    NEW_OCCUPANT
+    INVALID_DRIVER
+    INVALID_OCCUPANT
+</pre>
+<h2><a name="eventByCategory">Events By Category</a></h2>
+<table class="small"><tbody>
+<tr><th>Event Category</th>
+<th>Events</th>
+</tr>
+<tr>
+<td>VIOLATION</td><td>HARD_ACCEL, HARD_BRAKE, HARD_TURN, HARD_VERT, SPEEDING, 
+					SEATBELT, NO_DRIVER, PARKING_BRAKE, MICRO_SLEEP</td>
+</tr>
+<tr>
+<td>WARNING</td><td>LOW_BATTERY, DEVICE_LOW_BATTERY, TAMPERING, IDLING, 
+					IGNITION_ON, POTENTIAL_TAMPERING, WIRELINE_ALARM, 
+					INSTALL, FIRMWARE_CURRENT, LOCATION_DEBUG, QSI_UPDATED,
+				 	WITNESS_UPDATED, NO_INTERNAL_THUMB_DRIVE, WITNESS_HEARTBEAT_VIOLATION</td>
+</tr>
+<tr>
+<td>
+NONE</td><td>NONE</td>
+</tr>
+<tr>
+<td>
+EMERGENCY</td><td>CRASH, PANIC, MAN_DOWN, MAN_DOWN_CANCELED</td>
+</tr>
+<tr>
+<td>
+ZONE</td><td>ZONES_ARRIVAL, ZONES_DEPARTURE</td>
+</tr>
+<tr>
+<td>
+HOS</td><td>DOT_STOPPED, HOS_NO_HOURS, TRAILER_DATA</td>
+</tr>
+<tr>
+<td>
+TEXT</td><td>TEXT_MESSAGE</td>
+</tr>
+<tr>
+<td>
+DRIVER_LOGIN</td><td>NEW_DRIVER, NEW_OCCUPANT, INVALID_DRIVER, INVALID_OCCUPANT</td>
+</tr>
+</tbody></table>
+</body>
+</html>

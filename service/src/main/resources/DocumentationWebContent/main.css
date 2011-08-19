@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+
+.all{
+	font-family:"Verdana", sans-serif;
+}
+table
+{
+border-collapse:collapse;
+}
+th{
+	background-color:#9FCF67;
+}
+table,th, td
+{
+border: 1px solid black;
+padding:10px;
+valign:top;
+}
+table.noborder{
+	border-collapse:separate;
+	border-width: 0px;
+}      		
+td.noborder{
+	border-width: 0px;	
+}
+ul{
+	list-style:none;
+}
+.small{
+	font-size:small;
+}
