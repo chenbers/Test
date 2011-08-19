@@ -285,8 +285,14 @@ public class HosDailyDriverLogReportCriteria {
         {
             
             LocalDate localDate = new LocalDate(intervalDay);
-            DateTimeZone dateTimeZone = getBestTimeZone(intervalDay.toDate(), hosRecordList, driver.getPerson().getTimeZone());
+            DateTime driverDay = localDate.toDateTimeAtStartOfDay(DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
+//            DateTimeZone dateTimeZone = getBestTimeZone(intervalDay.toDate(), hosRecordList, driver.getPerson().getTimeZone());
+            DateTimeZone dateTimeZone = getBestTimeZone(driverDay.toDate(), hosRecordList, driver.getPerson().getTimeZone());
+//System.out.println("bestTimeZone: " + dateTimeZone);
+//System.out.println("driverDay: " + driverDay);
+
             DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
+//System.out.println("graphDay: " + day);
             if (day.toDate().after(currentTime)) 
                 break;
 
