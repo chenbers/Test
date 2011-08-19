@@ -1068,7 +1068,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return occupantInfo;
     }
 
-    private static final String FETCH_MILEAGE = "select odometer5 from agg where driverID = ? and vehicleID = ? and aggDate = ?";
+    private static final String FETCH_MILEAGE = "select odometer6 from agg where driverID = ? and vehicleID = ? and aggDate = ?";
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
     
     @Override
