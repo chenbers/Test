@@ -10,48 +10,56 @@
 <h1><img src="logo.png" alt="inthinc"/>&nbsp;REST Service API Resources</h1>
 <h2>Contents</h2>
 <ul>
-<li><a href="#resources">Resources</a></li>
-<li><a href="#authentication">Authentication</a></li>
-<li><a href="#uris">Service API URIs</a></li>
+<li>1 <a href="#resources">Resources</a></li>
+<li>2 <a href="#authentication">Authentication</a></li>
+<li>3 <a href="#uris">Service API URIs</a></li>
 <li>
 	<ul>
-	<li><a href="#uris-account">Account</a></li>
-	<li><a href="#uris-vehicle">Vehicle</a></li>
-	<li><a href="#uris-driver">Driver</a></li>
-	<li><a href="#uris-device">Device</a></li>
-	<li><a href="#uris-groups">Group</a></li>
-	<li><a href="#uris-event">Event</a></li>
-	<li><a href="#uris-person">Person</a></li>
-	<li><a href="#uris-user">User</a></li>
+	<li>3.1 <a href="#uris-account">Account</a></li>
+	<li>3.2 <a href="#uris-person">Person</a></li>
+	<li>3.3 <a href="#uris-user">User</a></li>
+	<li>3.4 <a href="#uris-driver">Driver</a></li>
+	<li>3.5 <a href="#uris-vehicle">Vehicle</a></li>
+	<li>3.6 <a href="#uris-device">Device</a></li>
+	<li>3.7 <a href="#uris-groups">Group</a></li>
+	<li>3.8 <a href="#uris-event">Event</a></li>
 	</ul>
 </li>
-<li><a href="#status_codes">Status Codes</a></li>
+<li>4 <a href="#status_codes">Status Codes</a></li>
 <li><ul>
-<li><a href="#success_codes">Success Codes</a></li>
-<li><a href="#error_codes">Error Codes</a></li>
+<li>4.1 <a href="#success_codes">Success Codes</a></li>
+<li>4.2 <a href="#error_codes">Error Codes</a></li>
 </ul></li>
-<li><a href="#data-dictionary">Data Dictionary</a></li>
+<li>5 <a href="#data-dictionary">Data Dictionary</a></li>
 <li>
 	<ul>
-	<li><a href="#data-account">Account</a></li>
-	<li><a href="#data-vehicle">Vehicle</a></li>
-	<li><a href="#data-driver">Driver</a></li>
-	<li><a href="#data-device">Device</a></li>
-	<li><a href="#data-states">States</a></li>
-	<li><a href="#data-groups">Groups</a></li>
-	<li><a href="#data-events">Events</a></li>
-	<li><a href="#data-person">Person</a></li>
-	<li><a href="#data-user">User</a></li>
-	<li><a href="#data-trip">Trip</a></li>
-	<li><a href="#data-location">Location</a></li>
-	<li><a href="#data-score">Score</a></li>
-	<li><a href="#data-trend">Trend</a></li>
-	<li><a href="#data-rels">Rels</a></li>
+	<li>5.1 <a href="#data-account">Account</a></li>
+	<li>5.2 <a href="#data-person">Person</a></li>
+	<li>5.3 <a href="#data-user">User</a></li>
+	<li>5.4 <a href="#data-driver">Driver</a></li>
+	<li>5.5 <a href="#data-vehicle">Vehicle</a></li>
+	<li>5.6 <a href="#data-device">Device</a></li>
+	<li>5.7 <a href="#data-groups">Groups</a></li>
+	<li>5.8 <a href="#data-events">Events</a></li>
+	<li>5.9 <a href="#data-trip">Trip</a></li>
+	<li>5.10 <a href="#data-location">Location</a></li>
+	<li>5.11 <a href="#data-score">Score</a></li>
+	<li>5.12 <a href="#data-trend">Trend</a></li>
+	<li>5.13 <a href="#data-latlng">LatLng</a></li>
+	<li>5.14 <a href="#data-accountAttributes">Account Attributes</a></li>
+	<li>5.15 <a href="#data-address">Address</a></li>	
+	<li>5.16 <a href="#data-states">States</a></li>	
+	<li>5.17 <a href="#data-dotRuleSets">DOT HOS Rule Sets</a></li>	
+	<li>5.18 <a href="#data-timezones">Time Zones</a></li>	
+	<li>5.19 <a href="#data-locales">Locales</a></li>
+	<li>5.20 <a href="#data-eventType">Event Types</a></li>	
+	<li>5.21 <a href="#data-eventByCategory">Events By Category</a></li>
+	<li>5.22 <a href="#data-rels">Rels</a></li>
 	</ul>
 </li>
 
 </ul>
-<h1><a name="resources">Resources</a></h1>
+<h2>1 <a name="resources">Resources</a></h2>
 <table><tbody>
 <tr>
 <th>Resource</th>
@@ -60,8 +68,18 @@
 </tr>
 <tr>
 <td>Account</td>
+<td>GET</td>
+<td>View an account to manage your fleet. Media types: application/xml</td>
+</tr>
+<tr>
+<td>Person</td>
 <td>GET,PUT,POST,DELETE</td>
-<td>Create, view, update, or delete an account to manage your fleet. Media types: application/xml</td>
+<td>Create, view, update, or delete a person. Media types: application/xml, application/JSON</td>
+</tr>
+<tr>
+<td>User</td>
+<td>GET,PUT,POST,DELETE</td>
+<td>Create, view, update, or delete a user of the system. Media types: application/xml, application/JSON</td>
 </tr>
 <tr>
 <td>Driver</td>
@@ -99,29 +117,19 @@
 <td>Create, view, update, or delete a group, an organizational unit in your company hierarchy. Media types: application/xml, application/JSON</td>
 </tr>
 <tr>
-<td>Event</td>
-<td>GET,PUT,POST,DELETE</td>
+<td>Event collection</td>
+<td>GET</td>
 <td>View events. Media types: application/xml, application/JSON</td>
-</tr>
-<tr>
-<td>Person</td>
-<td>GET,PUT,POST,DELETE</td>
-<td>Create, view, update, or delete a person. Media types: application/xml, application/JSON</td>
-</tr>
-<tr>
-<td>User</td>
-<td>GET,PUT,POST,DELETE</td>
-<td>Create, view, update, or delete a user of the system. Media types: application/xml, application/JSON</td>
 </tr>
 </tbody>
 </table>
-<h1><a name="authentication">Authentication and Permissions</a></h1>
+<h2>2 <a name="authentication">Authentication and Permissions</a></h2>
 <p>To use any request a user must be a registered user in the system and must have "Admin" role.</p>
-<h1><a name="uris">Service API URIs</a></h1>
+<h2>3 <a name="uris">Service API URIs</a></h2>
 
 <p>Use http:// or https:// and the host and port that was supplied to you and add the path and parameters as specified below.  An example is: http://my.inthinc.com/service/api/vehicles</p>
-<p>See <a href="#xml-schemas">XML Schemas</a> and <a href="#data-dictionary">Data Dictionary</a> for the formats for data in request bodies and response entities.</p>
-<h2><a name="uris-account">Account</a></h2>
+<p>See <a href="#data-dictionary">Data Dictionary</a> for the formats for data in request bodies and response entities.</p>
+<h3>3.1 <a name="uris-account">Account</a></h3>
 <table><tbody>
 <tr>
 <th>Operation</th>
@@ -131,39 +139,6 @@
 <th>Request Body</th>
 <th>Response Entity</th>
 <th>Example</th>
-</tr>
-<tr>
-<td>Create account</td>
-<td>
-/service/api/account
-</td>
-<td>POST</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Account</td><td>Account</td>
-
-<td>http://my.inthinc.com/service/api/account</td>
-</tr>
-<tr>
-<td>Update account</td>
-<td>
-/service/api/account/{id}
-</td>
-<td>PUT</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Account</td><td>Account</td>
-
-<td>http://my.inthinc.com/service/api/account/1</td>
-</tr>
-<tr>
-<td>Delete account</td>
-<td>
-/service/api/account/{id}
-</td>
-<td>DELETE</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td></td>
-
-<td>http://my.inthinc.com/service/api/account/1</td>
 </tr>
 <tr>
 <td>Get account</td>
@@ -176,20 +151,379 @@
 
 <td>http://my.inthinc.com/service/api/account/1</td>
 </tr>
+</tbody>
+</table>
+<h3>3.2 <a name="uris-person">Person</a></h3>
+<table><tbody>
 <tr>
-<td>Get all accounts</td>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create person</td>
 <td>
-/service/api/accounts
+/service/api/person
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Person</td><td>Person</td>
+
+<td>http://my.inthinc.com/service/api/person</td>
+</tr>
+<tr>
+<td>Update person</td>
+<td>
+/service/api/person
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Person - include only properties to be updated, must include the personID</td><td>Person</td>
+
+
+<td>http://my.inthinc.com/service/api/person</td>
+</tr>
+<tr>
+<td>Delete person</td>
+<td>
+/service/api/person/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Person</td><td></td>
+
+<td>http://my.inthinc.com/service/api/person/1</td>
+</tr>
+<tr>
+<td>Get person</td>
+<td>
+/service/api/person/{id}
 </td>
 <td>GET</td>
 <td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Collection of Accounts</td>
+<td></td><td>Person</td>
 
-<td>http://my.inthinc.com/service/api/accounts</td>
+<td>http://my.inthinc.com/service/api/person/1</td>
+</tr>
+<tr>
+<td>Get all persons</td>
+<td>
+/service/api/persons
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Persons</td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
+</tr>
+<tr>
+<td>Create persons</td>
+<td>
+/service/api/persons
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Persons</td><td>Collection of requests for Persons</td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
+</tr>
+<tr>
+<td>Update persons</td>
+<td>
+/service/api/persons
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Persons</td><td>Collection of requests for Persons</td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
+</tr>
+<tr>
+<td>Delete persons</td>
+<td>
+/service/api/persons
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Persons</td><td></td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
 </tr>
 </tbody>
 </table>
-<h2><a name="uris-vehicle">Vehicle</a></h2>
+<h3>3.3 <a name="uris-user">User</a></h3>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create user</td>
+<td>
+/service/api/user
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>User</td><td>User</td>
+
+<td>http://my.inthinc.com/service/api/user</td>
+</tr>
+<tr>
+<td>Update user</td>
+<td>
+/service/api/user
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>User - include only properties to be updated, must include the userID</td><td>User</td>
+
+<td>http://my.inthinc.com/service/api/user</td>
+</tr>
+<tr>
+<td>Delete user</td>
+<td>
+/service/api/user/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>User</td><td></td>
+
+<td>http://my.inthinc.com/service/api/user/1</td>
+</tr>
+<tr>
+<td>Get user</td>
+<td>
+/service/api/user/{id}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>User</td>
+
+<td>http://my.inthinc.com/service/api/user/1</td>
+</tr>
+<tr>
+<td>Get all users</td>
+<td>
+/service/api/users
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Users</td>
+
+<td>http://my.inthinc.com/service/api/users</td>
+</tr>
+<tr>
+<td>Create users</td>
+<td>
+/service/api/users
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Users</td><td>Collection of requests for Users</td>
+
+<td>http://my.inthinc.com/service/api/users</td>
+</tr>
+<tr>
+<td>Update users</td>
+<td>
+/service/api/users
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Users</td><td>Collection of requests for Users</td>
+
+<td>http://my.inthinc.com/service/api/users</td>
+</tr>
+<tr>
+<td>Delete users</td>
+<td>
+/service/api/users
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Users</td><td></td>
+
+<td>http://my.inthinc.com/service/api/persons</td>
+</tr>
+<tr>
+<td>Log in</td>
+<td>
+/service/api/login/{userName}/{password}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>User</td>
+
+<td>http://my.inthinc.com/service/api/login/myusername/mypassword</td>
+</tr>
+</tbody>
+</table>
+<h3>3.4 <a name="uris-driver">Driver</a></h3>
+<table><tbody>
+<tr>
+<th>Operation</th>
+<th>Request Path</th>
+<th>Method</th>
+<th>Media Type</th>
+<th>Request Body</th>
+<th>Response Entity</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>Create driver</td>
+<td>
+/service/api/driver
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Driver</td><td>Driver</td>
+
+<td>http://my.inthinc.com/service/api/driver</td>
+</tr>
+<tr>
+<td>Update driver</td>
+<td>
+/service/api/driver
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Driver  - include only properties to be updated, must include the driverID</td><td>Driver</td>
+
+<td>http://my.inthinc.com/service/api/driver</td>
+</tr>
+<tr>
+<td>Delete driver</td>
+<td>
+/service/api/driver/{id}
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Driver</td><td>Driver</td>
+
+<td>http://my.inthinc.com/service/api/driver/1</td>
+</tr>
+<tr>
+<td>Get driver</td>
+<td>
+/service/api/driver/{id}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Driver</td>
+
+<td>http://my.inthinc.com/service/api/driver/1</td>
+</tr>
+<tr>
+<td>Get all drivers</td>
+<td>
+/service/api/drivers
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Drivers</td>
+
+<td>http://my.inthinc.com/service/api/drivers</td>
+</tr>
+<tr>
+<td>Create drivers</td>
+<td>
+/service/api/drivers
+</td>
+<td>POST</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Drivers</td><td>Collection of requests for Drivers</td>
+
+<td>http://my.inthinc.com/service/api/drivers</td>
+</tr>
+<tr>
+<td>Update drivers</td>
+<td>
+/service/api/drivers
+</td>
+<td>PUT</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Drivers</td><td>Collection of requests for Drivers</td>
+
+<td>http://my.inthinc.com/service/api/drivers</td>
+</tr>
+<tr>
+<td>Delete drivers</td>
+<td>
+/service/api/drivers
+</td>
+<td>DELETE</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td>Collection of Drivers</td><td></td>
+
+<td>http://my.inthinc.com/service/api/drivers</td>
+</tr>
+<tr>
+<td>Get driver's last location</td>
+<td>
+/service/api/driver/{id}/lastlocation
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Location</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/lastlocation</td>
+</tr>
+<tr>
+<td>Get driver's last trip</td>
+<td>
+/service/api/driver/{id}/trip
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Trip</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/trip</td>
+</tr>
+<tr>
+<td>Get driver's trips</td>
+<td>
+/service/api/driver/{id}/trips/{date}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Collection of Trips</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/trips/2011-08-01</td>
+</tr>
+<tr>
+<td>Get driver's score</td>
+<td>
+/service/api/driver/{id}/score/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Score</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/score/30</td>
+</tr>
+<tr>
+<td>Get driver's trend</td>
+<td>
+/service/api/driver/{id}/trend/{numberOfDays}
+</td>
+<td>GET</td>
+<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
+<td></td><td>Trend</td>
+
+<td>http://my.inthinc.com/service/api/driver/1/trend/30</td>
+</tr>
+</tbody>
+</table>
+<h3>3.5 <a name="uris-vehicle">Vehicle</a></h3>
 <table><tbody>
 <tr>
 <th>Operation</th>
@@ -378,163 +712,7 @@
 </tr>
 </tbody>
 </table>
-<h2><a name="uris-driver">Driver</a></h2>
-<table><tbody>
-<tr>
-<th>Operation</th>
-<th>Request Path</th>
-<th>Method</th>
-<th>Media Type</th>
-<th>Request Body</th>
-<th>Response Entity</th>
-<th>Example</th>
-</tr>
-<tr>
-<td>Create driver</td>
-<td>
-/service/api/driver
-</td>
-<td>POST</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Driver</td><td>Driver</td>
-
-<td>http://my.inthinc.com/service/api/driver</td>
-</tr>
-<tr>
-<td>Update driver</td>
-<td>
-/service/api/driver
-</td>
-<td>PUT</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Driver  - include only properties to be updated, must include the driverID</td><td>Driver</td>
-
-<td>http://my.inthinc.com/service/api/driver</td>
-</tr>
-<tr>
-<td>Delete driver</td>
-<td>
-/service/api/driver/{id}
-</td>
-<td>DELETE</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Driver</td><td>Driver</td>
-
-<td>http://my.inthinc.com/service/api/driver/1</td>
-</tr>
-<tr>
-<td>Get driver</td>
-<td>
-/service/api/driver/{id}
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Driver</td>
-
-<td>http://my.inthinc.com/service/api/driver/1</td>
-</tr>
-<tr>
-<td>Get all drivers</td>
-<td>
-/service/api/drivers
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Collection of Drivers</td>
-
-<td>http://my.inthinc.com/service/api/drivers</td>
-</tr>
-<tr>
-<td>Create drivers</td>
-<td>
-/service/api/drivers
-</td>
-<td>POST</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Collection of Drivers</td><td>Collection of requests for Drivers</td>
-
-<td>http://my.inthinc.com/service/api/drivers</td>
-</tr>
-<tr>
-<td>Update drivers</td>
-<td>
-/service/api/drivers
-</td>
-<td>PUT</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Collection of Drivers</td><td>Collection of requests for Drivers</td>
-
-<td>http://my.inthinc.com/service/api/drivers</td>
-</tr>
-<tr>
-<td>Delete drivers</td>
-<td>
-/service/api/drivers
-</td>
-<td>DELETE</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Collection of Drivers</td><td></td>
-
-<td>http://my.inthinc.com/service/api/drivers</td>
-</tr>
-<tr>
-<td>Get driver's last location</td>
-<td>
-/service/api/driver/{id}/lastlocation
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Location</td>
-
-<td>http://my.inthinc.com/service/api/driver/1/lastlocation</td>
-</tr>
-<tr>
-<td>Get driver's last trip</td>
-<td>
-/service/api/driver/{id}/trip
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Trip</td>
-
-<td>http://my.inthinc.com/service/api/driver/1/trip</td>
-</tr>
-<tr>
-<td>Get driver's trips</td>
-<td>
-/service/api/driver/{id}/trips/{date}
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Collection of Trips</td>
-
-<td>http://my.inthinc.com/service/api/driver/1/trips/2011-08-01</td>
-</tr>
-<tr>
-<td>Get driver's score</td>
-<td>
-/service/api/driver/{id}/score/{numberOfDays}
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Score</td>
-
-<td>http://my.inthinc.com/service/api/driver/1/score/30</td>
-</tr>
-<tr>
-<td>Get driver's trend</td>
-<td>
-/service/api/driver/{id}/trend/{numberOfDays}
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Trend</td>
-
-<td>http://my.inthinc.com/service/api/driver/1/trend/30</td>
-</tr>
-</tbody>
-</table>
-<h2><a name="uris-device">Device</a></h2>
+<h3>3.6 <a name="uris-device">Device</a></h3>
 <table><tbody>
 <tr>
 <th>Operation</th>
@@ -657,7 +835,7 @@
 </tr>
 </tbody>
 </table>
-<h2><a name="uris-groups">Groups</a></h2>
+<h3>3.7 <a name="uris-groups">Group</a></h3>
 <table><tbody>
 <tr>
 <th>Operation</th>
@@ -792,7 +970,7 @@
 </tr>
 </tbody>
 </table>
-<h2><a name="uris-event">Events</a></h2>
+<h3>3.8 <a name="uris-event">Event</a></h3>
 <table><tbody>
 <tr>
 <th>Operation</th>
@@ -827,316 +1005,92 @@
 </tr>
 </tbody>
 </table>
-<h2><a name="uris-person">Person</a></h2>
-<table><tbody>
-<tr>
-<th>Operation</th>
-<th>Request Path</th>
-<th>Method</th>
-<th>Media Type</th>
-<th>Request Body</th>
-<th>Response Entity</th>
-<th>Example</th>
-</tr>
-<tr>
-<td>Create person</td>
-<td>
-/service/api/person
-</td>
-<td>POST</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Person</td><td>Person</td>
 
-<td>http://my.inthinc.com/service/api/person</td>
-</tr>
-<tr>
-<td>Update person</td>
-<td>
-/service/api/person
-</td>
-<td>PUT</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Person - include only properties to be updated, must include the personID</td><td>Person</td>
-
-
-<td>http://my.inthinc.com/service/api/person</td>
-</tr>
-<tr>
-<td>Delete person</td>
-<td>
-/service/api/person/{id}
-</td>
-<td>DELETE</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Person</td><td></td>
-
-<td>http://my.inthinc.com/service/api/person/1</td>
-</tr>
-<tr>
-<td>Get person</td>
-<td>
-/service/api/person/{id}
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Person</td>
-
-<td>http://my.inthinc.com/service/api/person/1</td>
-</tr>
-<tr>
-<td>Get all persons</td>
-<td>
-/service/api/persons
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Collection of Persons</td>
-
-<td>http://my.inthinc.com/service/api/persons</td>
-</tr>
-<tr>
-<td>Create persons</td>
-<td>
-/service/api/persons
-</td>
-<td>POST</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Collection of Persons</td><td>Collection of requests for Persons</td>
-
-<td>http://my.inthinc.com/service/api/persons</td>
-</tr>
-<tr>
-<td>Update persons</td>
-<td>
-/service/api/persons
-</td>
-<td>PUT</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Collection of Persons</td><td>Collection of requests for Persons</td>
-
-<td>http://my.inthinc.com/service/api/persons</td>
-</tr>
-<tr>
-<td>Delete persons</td>
-<td>
-/service/api/persons
-</td>
-<td>DELETE</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Collection of Persons</td><td></td>
-
-<td>http://my.inthinc.com/service/api/persons</td>
-</tr>
-</tbody>
-</table>
-<h2><a name="uris-user">User</a></h2>
-<table><tbody>
-<tr>
-<th>Operation</th>
-<th>Request Path</th>
-<th>Method</th>
-<th>Media Type</th>
-<th>Request Body</th>
-<th>Response Entity</th>
-<th>Example</th>
-</tr>
-<tr>
-<td>Create user</td>
-<td>
-/service/api/user
-</td>
-<td>POST</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>User</td><td>User</td>
-
-<td>http://my.inthinc.com/service/api/user</td>
-</tr>
-<tr>
-<td>Update user</td>
-<td>
-/service/api/user
-</td>
-<td>PUT</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>User - include only properties to be updated, must include the userID</td><td>User</td>
-
-<td>http://my.inthinc.com/service/api/user</td>
-</tr>
-<tr>
-<td>Delete user</td>
-<td>
-/service/api/user/{id}
-</td>
-<td>DELETE</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>User</td><td></td>
-
-<td>http://my.inthinc.com/service/api/user/1</td>
-</tr>
-<tr>
-<td>Get user</td>
-<td>
-/service/api/user/{id}
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>User</td>
-
-<td>http://my.inthinc.com/service/api/user/1</td>
-</tr>
-<tr>
-<td>Get all users</td>
-<td>
-/service/api/users
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>Collection of Users</td>
-
-<td>http://my.inthinc.com/service/api/users</td>
-</tr>
-<tr>
-<td>Create users</td>
-<td>
-/service/api/users
-</td>
-<td>POST</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Collection of Users</td><td>Collection of requests for Users</td>
-
-<td>http://my.inthinc.com/service/api/users</td>
-</tr>
-<tr>
-<td>Update users</td>
-<td>
-/service/api/users
-</td>
-<td>PUT</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Collection of Users</td><td>Collection of requests for Users</td>
-
-<td>http://my.inthinc.com/service/api/users</td>
-</tr>
-<tr>
-<td>Delete users</td>
-<td>
-/service/api/users
-</td>
-<td>DELETE</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td>Collection of Users</td><td></td>
-
-<td>http://my.inthinc.com/service/api/persons</td>
-</tr>
-<tr>
-<td>Log in</td>
-<td>
-/service/api/login/{userName}/{password}
-</td>
-<td>GET</td>
-<td><dl><dt>application/xml</dt><dt>application/json</dt></dl></td>
-<td></td><td>User</td>
-
-<td>http://my.inthinc.com/service/api/login/myusername/mypassword</td>
-</tr>
-</tbody>
-</table>
-<h2><a name="status_codes">Status Codes</a></h2>
-<h3><a name="success_codes">Success Codes</a></h3>
-<h4>200 OK</h4>
+<h2>4 <a name="status_codes">Status Codes</a></h2>
+<h3>4.1 <a name="success_codes">Success Codes</a></h3>
+<h4>4.1.1 200 OK</h4>
 <p>
 The request was successful.
 </p>
-<h4>201 Created</h4>
+<h4>4.1.2 Created</h4>
 <p>
 The request was successful and a new resource has been created.  The response entity should contain either the created resource or a link to the created resource or resources.
 </p>
-<h4>304 Not Modified</h4>
+<h4>4.1.3 304 Not Modified</h4>
 <p>
 The request was successful but nothing was changed.  Results from an update where no records are actually changed.
 </p>
-<h3><a name="error_codes">Error Codes</a></h3>
-<h4>400 Bad Request</h4>
+<h3>4.2 <a name="error_codes">Error Codes</a></h3>
+<h4>4.2.1 400 Bad Request</h4>
 <p>
 The request was not formatted correctly.
 </p>
-<h4>401 Unauthorized</h4>
+<h4>4.2.2 401 Unauthorized</h4>
 <p>
 Users must log in, or include valid authorization credentials in the request.
 </p>
-<h4>403 Forbidden</h4>
+<h4>4.2.3 403 Forbidden</h4>
 <p>
 The user is forbidden from using this request.  Users must have Admin role (set up in the portal) to use this API
 </p>
-<h4>404 Not Found</h4>
+<h4>4.2.4 404 Not Found</h4>
 <p>
 The server can't find anything matching the request URI.
 </p>
-<h4>500 Internal Server Error</h4>
+<h4>4.2.5 500 Internal Server Error</h4>
 <p>
 The server encountered an unexpected condition which prevented it from fulfilling the request. 
 </p>
-<h4>501 Not Implemented</h4>
+<h4>4.2.6 501 Not Implemented</h4>
 <p>
 The server does not support the functionality required to fulfill the request. 
 </p>
-<h1><a name="data-dictionary">Data Dictionary</a></h1>
-<h2><a name="data-account">Account</a></h2>
-<h2><a name="data-vehicle">Vehicle</a></h2>
-<div id="vehicle-xml" style="width:50%;float:left;">
-<h3>XML</h3>
+<h2>5 <a name="data-dictionary">Data Dictionary</a></h2>
+<h3>5.1 <a name="data-account">Account</a></h3>
+<div id="account-xml" style="width:50%;float:left;">
+<h4>XML</h4>
 
 <pre>
-&lt;vehicle&gt;
-	&lt;vehicleID&gt;1&lt;/vehicleID&gt;
-	&lt;modified&gt;2011-05-05T10:40:38-06:00&lt;/modified&gt;
-	&lt;color&gt;red&lt;/color&gt;
-	&lt;dot&gt;PROMPT_FOR_DOT_TRIP&lt;/dot&gt;
-	&lt;groupID&gt;2227&lt;/groupID&gt;
-	&lt;license&gt;123456&lt;/license/&gt;
-	&lt;make&gt;Ford&lt;/make&gt;
-	&lt;model&gt;Explorer&lt;/model&gt;
-	&lt;name&gt;Ford Exp Transistor&lt;/name&gt;
-	&lt;state&gt;
-		&lt;abbrev&gt;UT&lt;/abbrev&gt;
-		&lt;name&gt;Utah&lt;/name&gt;
-		&lt;stateID&gt;45&lt;/stateID&gt;
-	&lt;/state&gt;
+&lt;account&gt;
+	&lt;modified&gt;2011-08-05T14:26:10-06:00&lt;/modified&gt;
+	&lt;accountID&gt;123456&lt;/accountID&gt;
+	&lt;acctName&gt;inthinc&lt;/acctName&gt;
+	&lt;addressID&gt;184550301&lt;/addressID&gt;
+	&lt;hos&gt;HOS_SUPPORT&lt;/hos&gt;
+	&lt;props&gt;
+		&lt;noReplyEmail/&gt;
+		&lt;passwordChange&gt;0&lt;/passwordChange&gt;
+		&lt;passwordStrength&gt;0&lt;/passwordStrength&gt;
+		&lt;phoneAlertsActive&gt;1&lt;/phoneAlertsActive&gt;
+		&lt;supportContact1/&gt;
+		&lt;supportContact2/&gt;
+		&lt;supportContact3/&gt;
+		&lt;supportContact4/&gt;
+		&lt;supportContact5/&gt;
+		&lt;supportContacts/&gt;
+		&lt;supportContacts/&gt;
+		&lt;supportContacts/&gt;
+		&lt;supportContacts/&gt;
+		&lt;supportContacts/&gt;
+		&lt;waySmart&gt;true&lt;/waySmart&gt;
+		&lt;wmsLayerQueryParam/&gt;
+		&lt;wmsLayers/&gt;
+		&lt;wmsQuery/&gt;
+		&lt;wmsURL/&gt;
+	&lt;/props&gt;
 	&lt;status&gt;ACTIVE&lt;/status&gt;
-	&lt;VIN&gt;21111111111137730&lt;/VIN&gt;
-	&lt;vtype&gt;HEAVY&lt;/vtype&gt;
-	&lt;year&gt;2012&lt;/year&gt;
-	&lt;weight&gt;3600&lt;/weight&gt;
-	&lt;odometer&gt;121823&lt;/odometer&gt;
-&lt;/vehicle&gt;
+	&lt;unkDriverID&gt;1111111&lt;/unkDriverID&gt;
+	&lt;zonePublishDate&gt;2011-07-22T00:00:00-06:00&lt;/zonePublishDate&gt;
+&lt;/account&gt;
 </pre>
 </div>
-<div id="vehicle-json" style="width:50%;float:left;">
-<h3>JSON</h3>
+<div id="account-json" style="width:50%;float:left;">
+<h4>JSON</h4>
 <pre>
-"vehicle":{
-	"modified":"2011-05-05T10:40:38-06:00",	
-	"color":"",
-	"deviceID":13301,
-	"dot":"NON_DOT",
-	"driverID":342,
-	"groupID":8,
-	"license":"",
-	"make":"fake",
-	"model":"make",
-	"name":"testing",
-	"odometer":121823,
-	"status":"ACTIVE",
-	"VIN":"985465198165191DD",
-	"vehicleID":8043,
-	"vtype":"LIGHT",
-	"year":2012
-}
 </pre>
 </div>
-
 <div style="clear:both;">
-<h3>Properties</h3>
+<h4>Properties</h4>
 <table class="small"><tbody>
 <tr>
 <th>Property</th>
@@ -1148,928 +1102,81 @@ The server does not support the functionality required to fulfill the request.
 <tr>
 <td>modified</td>
 <td>Response</td>
-<td>String</td>
-<td></td>
-<td>Date and time record was last modified</td>
-</tr>
-<tr>
-<td>name</td>
-<td>Request Response</td>
-<td><dl>
-<dt>String</dt>
-<dd>must be unique</dd>
-</dl></td>
-<td>Required</td>
-<td>The name of the vehicle.  There is no restriction on the format of this, but will be used for searching, sorting, and filtering purposes.</td>
-</tr>
-<tr>
-<td>dot</td>
-<td>Request Response</td>
-<td><dl>
-<dt>enum</dt>
-<dd>NON_DOT (default)</dd>
-<dd>DOT</dd>
-<dd>PROMPT_FOR_DOT_TRIP</dd>
-</dl></td>
-<td></td>
-<td>Determines when the vehicle is under DOT HOS rules - waySmart only</td>
-</tr>
-<tr>
-<td>ifta</td>
-<td>Request Response</td>
-<td><dl>
-<dt>Boolean</dt>
-<dd>false (default)</dd>
-<dd>true</dd>
-</dl></td>
-<td></td>
-<td>If the vehicle is subject to IFTA - waySmart only</td>
-</tr>
-<tr>
-<td>deviceID</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>The device currently assigned to this vehicle.  Can be used to retrieve the device record</td>
-</tr>
-<tr>
-<td>driverID</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>The driver currently assigned to this vehicle.  Can be used to retrieve the driver record</td>
-</tr>
-<tr>
-<td>groupID</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td>Required</td>
-<td>The fleet/division/team this vehicle is assigned to.  Discover groupIDs using the group service</td>
-</tr>
-<tr>
-<td>status</td>
-<td>Request Response</td>
-<td><dl>
-<dt>enum</dt>
-<dd>ACTIVE (default)</dd>
-<dd>INACTIVE</dd>
-</dl></td>
-<td></td>
-<td>Vehicle is in active service</td>
-</tr>
-<tr>
-<td>VIN</td>
-<td>Request Response</td>
-<td><dl>
-<dt>String</dt>
-<dd>must be 17 characters</dd>
-<dd>must be unique</dd>
-</dl></td>
-<td>Required</td>
-<td>The vehicle's VIN</td>
-</tr>
-<tr>
-<td>vtype</td>
-<td>Request Response</td>
-<td><dl>
-<dt>enum</dt>
-<dd>LIGHT</dd>
-<dd>MEDIUM</dd>
-<dd>HEAVY</dd>
-</dl></td>
-<td>Required</td>
-<td>Vehicle HOS type</td>
-</tr>
-<tr>
-<td>odometer</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td>Required</td>
-<td>Vehicle's odometer</td>
-</tr>
-<tr>
-<td>state</td>
-<td>Request Response</td>
-<td style="padding:0;">
-	<table style="width:100%;height:100%" class="noborder"><tbody>
-	<tr>
-	<td class="noborder"><dl>
-<dt>abbrev</dt>
-<dd>String (see <a href="#data-states">States</a>)</dd>
-<dd></dd>
-</dl></td>
-	</tr>
-	<tr>
-	<td class="noborder"><dl>
-<dt>name</dt>
-<dd>String (see <a href="#data-states">States</a>)</dd>
-</dl></td>
-	</tr>
-	<tr>
-	<td class="noborder"><dl>
-<dt>stateID</dt>
-<dd>Integer (see <a href="#data-states">States</a>)</dd>
-</dl></td>
-	</tr>
-	</tbody></table>
-</td>
-<td>stateID is Required</td>
-<td>State vehicle is registered in.</td>
-</tr>
-<tr>
-<td>make</td>
-<td>Request Response</td>
-<td>String</td>
-<td>Required</td>
-<td>The make of the vehicle.  There is no restriction on the format of this, but for searching, sorting, and filtering purposes be consistent.</td>
-</tr>
-<tr>
-<td>model</td>
-<td>Request Response</td>
-<td>String</td>
-<td>Required</td>
-<td>The model of the vehicle.  There is no restriction on the format of this, but for searching, sorting, and filtering purposes be consistent.</td>
-</tr>
-<tr>
-<td>year</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td>Required</td>
-<td>The year of the vehicle</td>
-</tr>
-<tr>
-<td>weight</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td></td>
-<td>The weight of the vehicle in the units defined for the user.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2><a name="data-driver">Driver</a></h2>
-<div id="driver-xml" style="width:50%;float:left;">
-<h3>XML</h3>
-
-<pre>
-&lt;driver&gt;
-	&lt;modified&gt;2011-07-12T12:10:26-06:00&lt;/modified&gt;
-	&lt;certifications&gt;&lt;/certifications&gt;
-	&lt;dot&gt;NON_DOT&lt;/dot&gt;
-	&lt;driverID&gt;13895&lt;/driverID&gt;
-	&lt;expiration&gt;1969-12-31T17:00:00-07:00&lt;/expiration&gt;
-	&lt;groupID&gt;1260&lt;/groupID&gt;
-	&lt;personID&gt;14844&lt;/personID&gt;
-	&lt;status&gt;ACTIVE&lt;/status&gt;
-&lt;/driver&gt;
-</pre>
-</div>
-<div id="vehicle-json" style="width:50%;float:left;">
-<h3>JSON</h3>
-<pre>
-"driver":{
-	"state":null,
-	"expiration":0,
-	"status":"ACTIVE",
-	"driverID":13895,
-	"status":"ACTIVE",
-	"personID":14844,
-	"groupID":1260,
-	"barcode":null,
-	"rfid1":null,
-	"rfid2":null,
-	"licenseClass":null,
-	"dot":"NON_DOT",
-	"license":null,
-	"certifications":"",
-	"created":null,
-	"modified":1310494226000
-}
-</pre>
-</div>
-<div style="clear:both;">
-<h3>Properties</h3>
-<table class="small"><tbody>
-<tr>
-<th>Property</th>
-<th>In/Out</th>
-<th>Type</th>
-<th>Required</th>
-<th width="300px">Description</th>
-</tr>
-<tr>
-<td>driverID</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>Unique driverID, allocated by the system on creation.  Used to reference drivers in requests and other records</td>
-</tr>
-<tr>
-<td>modified</td>
-<td>Response</td>
-<td>String</td>
-<td></td>
-<td>Date and time record was last modified</td>
-</tr>
-<tr>
-<td>dot</td>
-<td>Request Response</td>
-<td><dl>
-<dt>enum</dt>
-<dd>see <a href="#dotRuleSets">DOT HOS Rule Sets</a></dd>
-</dl></td>
-<td></td>
-<td>Determines which DOT HOS rule set the driver is under - waySmart only</td>
-</tr>
-<tr>
-<td>status</td>
-<td>Request Response</td>
-<td><dl>
-<dt>enum</dt>
-<dd>ACTIVE (default)</dd>
-<dd>INACTIVE</dd>
-</dl></td>
-<td></td>
-<td>Driver is in active service</td>
-</tr>
-<tr>
-<td>state</td>
-<td>Request Response</td>
-<td style="padding:0;">
-	<table style="width:100%;height:100%" class="noborder"><tbody>
-	<tr>
-	<td class="noborder"><dl>
-<dt>abbrev</dt>
-<dd>String (see <a href="#data-states">States</a>)</dd>
-<dd></dd>
-</dl></td>
-	</tr>
-	<tr>
-	<td class="noborder"><dl>
-<dt>name</dt>
-<dd>String (see <a href="#data-states">States</a>)</dd>
-</dl></td>
-	</tr>
-	<tr>
-	<td class="noborder"><dl>
-<dt>stateID</dt>
-<dd>Integer (see <a href="#data-states">States</a>)</dd>
-</dl></td>
-	</tr>
-	</tbody></table>
-</td>
-<td>stateID is Required</td>
-<td>State diver is licensed in.</td>
-</tr>
-<tr>
-<td>license</td>
-<td>Request Response</td>
-<td>String max of 10 characters</td>
-<td>Required</td>
-<td>Driver's license number</td>
-</tr>
-<tr>
-<td>licenseClass</td>
-<td>Request Response</td>
-<td>String max 4 characters</td>
-<td>Required</td>
-<td>Driver's license class</td>
-</tr>
-<tr>
-<td>expiration</td>
-<td>Request Response</td>
-<td>Date String</td>
-<td>Required</td>
-<td>Driver's license expiration date.</td>
-</tr>
-<tr>
-<td>personID</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td>Required</td>
-<td>ID for matching person record, use to request person record</td>
-</tr>
-<tr>
-<td>groupID</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td>Required</td>
-<td>ID for Fleet, Division, or Team.  Get from requests for group data</td>
-</tr>
-<tr>
-<td>barcode</td>
-<td>Request Response</td>
-<td>String</td>
-<td>Required</td>
-<td>Barcode</td>
-</tr>
-<tr>
-<td>rfid1</td>
-<td>Request Response</td>
-<td>Long</td>
-<td>Required</td>
-<td>RFID</td>
-</tr>
-<tr>
-<td>rfid2</td>
-<td>Request Response</td>
-<td>Long</td>
-<td>Required</td>
-<td>RFID</td>
-</tr>
-<tr>
-<td>certifications</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td>Driver's Certifications</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2><a name="data-device">Device</a></h2>
-<div id="device-xml" style="width:50%;float:left;">
-<h3>XML</h3>
-
-<pre>
-&lt;device&gt;
-	&lt;modified&gt;2009-03-06T18:50:02-07:00&lt;/modified&gt;
-	&lt;accountID&gt;12&lt;/accountID&gt;
-	&lt;baseID&gt;3&lt;/baseID&gt;
-	&lt;deviceID&gt;140&lt;/deviceID&gt;
-	&lt;imei&gt;011596000064018&lt;/imei&gt;
-	&lt;name&gt;011596000064018&lt;/name&gt;
-	&lt;phone&gt;4697336557&lt;/phone&gt;
-	&lt;productVersion&gt;TIWIPRO_R74&lt;/productVersion&gt;
-	&lt;serialNum&gt;unk140&lt;/serialNum&gt;
-	&lt;sim&gt;8901260760000852678&lt;/sim&gt;
-	&lt;status&gt;INACTIVE&lt;/status&gt;
-&lt;/device&gt;
-</pre>
-</div>
-<div id="device-json" style="width:50%;float:left;">
-<h3>JSON</h3>
-<pre>
-"device":{
-	"name":"011596000064018",
-	"status":"INACTIVE",
-	"vehicleID":null,
-	"accountID":12,
-	"deviceID":140,
-	"phone":"4697336557",
-	"waySmart":false,
-	"imei":"011596000064018",
-	"sim":"8901260760000852678",
-	"productVersion":"TIWIPRO_R74",
-	"textMsgReceiveCapable":false,
-	"firmwareVersion":null,
-	"gprsonly":false,
-	"mcmid":null,
-	"activated":null,
-	"serialNum":"unk140",
-	"baseID":3,
-	"witnessVersion":null,
-	"emuMd5":null,
-	"crashTraceAppletCapable":false,
-	"altimei":null,
-	"created":null,
-	"modified":1236390602000
-}
-</pre>
-</div>
-<div style="clear:both;">
-<h3>Properties</h3>
-<table class="small"><tbody>
-<tr>
-<th>Property</th>
-<th>In/Out</th>
-<th>Type</th>
-<th>Required</th>
-<th width="300px">Description</th>
-</tr>
-<tr>
-<td>deviceID</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>Unique deviceID, allocated by the system on creation.  Used to reference deviceID in requests and other records</td>
-</tr>
-<tr>
-<td>name</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td>User's unique name for this device </td>
-</tr>
-<tr>
-<td>phone number</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td>Phone number associated with this device</td>
-</tr>
-<tr>
-<td>imei</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td>imei associated with this device</td>
-</tr>
-<tr>
-<td>sim</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td>sim card associated with this device</td>
-</tr>
-<tr>
-<td>productVer</td>
-<td>Request Response</td>
-<td><dl>
-<dt>enum</dt>
-<dd>UNKNOWN (default)</dd>
-<dd>TEEN</dd>
-<dd>WAYSMART</dd>
-<dd>TIWIPRO_R71</dd>
-<dd>TIWIPRO_R74 (use this for tiwipro)</dd>
-</dl></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>textMsgReceiveCapable</td>
-<td>Request Response</td>
-<td>Boolean</td>
-<td></td>
-<td>sim card associated with this device</td>
-</tr>
-<tr>
-<td>status</td>
-<td>Request Response</td>
-<td><dl>
-<dt>enum</dt>
-<dd>NEW (default)</dd>
-<dd>ACTIVE</dd>
-<dd>INACTIVE</dd>
-</dl></td>
-<td></td>
-<td>Device is in active service</td>
-</tr>
-<tr>
-<td>vehicleID</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td></td>
-<td>Vehicle assigned to this device</td>
-</tr>
-<tr>
-<td>firmwareVersion</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>gprsonly</td>
-<td>Request Response</td>
-<td>Boolean</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>mcmid</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td>mcmid card associated with this device</td>
-</tr>
-<tr>
-<td>activated</td>
-<td>Request Response</td>
 <td>Date String</td>
 <td></td>
-<td>Date device was activated</td>
-</tr>
-<tr>
-<td>serialNum</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>baseID</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>witnessVersion</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>emuMd5</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td>Check sum for emu data</td>
-</tr>
-<tr>
-<td>crashTraceAppletCapable</td>
-<td>Request Response</td>
-<td>Boolean</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>altimei</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>created</td>
-<td>Response</td>
-<td>Date String</td>
-<td></td>
-<td>Date device record was created in the system.</td>
-</tr>
-<tr>
-<td>modified</td>
-<td>Response</td>
-<td>String</td>
-<td></td>
 <td>Date and time record was last modified</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2><a name="data-groups">Groups</a></h2>
-<div id="groups-xml" style="width:50%;float:left;">
-<h3>XML</h3>
-<pre>
-&lt;group&gt;
-	&lt;accountID&gt;12&lt;/accountID&gt;
-	&lt;description&gt;Initial top level group&lt;/description&gt;
-	&lt;groupID&gt;41&lt;/groupID&gt;
-	&lt;managerID&gt;242&lt;/managerID&gt;
-	&lt;mapCenter&gt;
-		&lt;lat&gt;41.1678&lt;/lat&gt;
-		&lt;lng&gt;-112.015&lt;/lng&gt;
-	&lt;mapZoom&gt;11&lt;/mapZoom&gt;
-	&lt;name&gt;inthinc, inc.&lt;/name&gt;
-	&lt;parentID&gt;0&lt;/parentID&gt;
-	&lt;status&gt;GROUP_ACTIVE&lt;/status&gt;
-	&lt;type&gt;FLEET&lt;/type&gt;
-	&lt;zoneRev&gt;62&lt;/zoneRev&gt;
-&lt;/group&gt;
-</pre>
-</div>
-<div id="groups-json" style="width:50%;float:left;">
-<h3>JSON</h3>
-<pre>
-"group":{
-	"address":null,
-	"name":"inthinc, inc.",
-	"type":"FLEET",
-	"description":"Initial top level group",
-	"status":"GROUP_ACTIVE",
-	"mapCenter":{
-		"lat":41.1678,
-		"lng":-112.015},
-	"accountID":12,
-	"addressID":null,
-	"groupID":41,
-	"parentID":0,
-	"mapZoom":11,
-	"managerID":242,
-	"mapLat":41.1678,
-	"mapLng":-112.015,
-	"zoneRev":62,
-	"created":null,
-	"modified":null
-}
-</pre>
-</div>
-<div style="clear:both;">
-<h3>Properties</h3>
-<table class="small"><tbody>
-<tr>
-<th>Property</th>
-<th>In/Out</th>
-<th>Type</th>
-<th>Required</th>
-<th width="300px">Description</th>
-</tr>
-<tr>
-<td>created</td>
-<td>Response</td>
-<td>Date String</td>
-<td></td>
-<td>Date device record was created in the system.</td>
-</tr>
-<tr>
-<td>modified</td>
-<td>Response</td>
-<td>String</td>
-<td></td>
-<td>Date and time record was last modified</td>
-</tr>
-<tr>
-<td>groupID</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>Unique id, allocated by the system on creation.  Used to reference groups in requests and other records</td>
-</tr>
-<tr>
-<td>address</td>
-<td>Request Response</td>
-<td>Address</td>
-<td></td>
-<td>Address for group</td>
-</tr>
-<tr>
-<td>name</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td>User's unique name for the group.</td>
-</tr>
-<tr>
-<td>type</td>
-<td>Request Response</td>
-<td><dl>
-<dt>enum</dt>
-<dd>FLEET </dd>
-<dd>DIVISION</dd>
-<dd>TEAM</dd>
-</dl></td>
-<td>Required</td>
-<td>Type of group in the hierarchy.</td>
-</tr>
-<tr>
-<td>description</td>
-<td>Request Response</td>
-<td>String</td>
-<td></td>
-<td>Any text to describe the group</td>
-</tr>
-<tr>
-<td>status</td>
-<td>Request Response</td>
-<td><dl>
-<dt>enum</dt>
-<dd>GROUP_NEW (default)</dd>
-<dd>GROUP_ACTIVE</dd>
-<dd>GROUP_DISABLED</dd>
-</dl></td>
-<td></td>
-<td>Group is active</td>
-</tr>
-<tr>
-<td>mapCenter</td>
-<td>Request Response</td>
-<td>LatLng</td>
-<td></td>
-<td>Coordinates for group on the map.</td>
 </tr>
 <tr>
 <td>accountID</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td></td>
-<td>ID of account this group belongs to.</td>
-</tr>
-<tr>
-<td>parentID</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td></td>
-<td>ID of group's parent in the hierarchy</td>
-</tr>
-<tr>
-<td>mapZoom</td>
-<td>Request Response</td>
-<td>Integer</td>
-<td></td>
-<td>Default zoom value for Google maps</td>
-</tr>
-<tr>
-<td>managerID</td>
 <td>Response</td>
 <td>Integer</td>
 <td></td>
-<td>ID of person who is the designated manager</td>
+<td>Unique system assigned ID </td>
 </tr>
 <tr>
-<td>zoneRev</td>
+<td>acctName</td>
 <td>Response</td>
 <td>String</td>
 <td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2><a name="data-events">Events</a></h2>
-<div id="events-xml" style="width:50%;float:left;">
-<h3>XML</h3>
-<pre>
-&lt;eventPage start="20" pageCount="20" totalCount="404"&gt;
-	&lt;event&gt;
-		&lt;driverID&gt;11922&lt;/driverID&gt;
-		&lt;driverName&gt;Bizzaro Corey Catten&lt;/driverName&gt;
-		&lt;driverTimeZone&gt;US/Mountain&lt;/driverTimeZone&gt;
-		&lt;eventCategory&gt;WARNING&lt;/eventCategory&gt;
-		&lt;eventType&gt;IGNITION_ON&lt;/eventType&gt;
-		&lt;eventTypeString&gt;EventType.IGNITION_ON&lt;/eventTypeString&gt;
-		&lt;forgiven&gt;0&lt;/forgiven&gt;
-		&lt;groupID&gt;43&lt;/groupID&gt;
-		&lt;groupName&gt;Executives&lt;/groupName&gt;
-		&lt;latitude&gt;40.662575&lt;/latitude&gt;
-		&lt;longitude&gt;-111.824814&lt;/longitude&gt;
-		&lt;noteID&gt;9288674233162685&lt;/noteID&gt;
-		&lt;speed&gt;0&lt;/speed&gt;
-		&lt;speedLimit&gt;78&lt;/speedLimit&gt;
-		&lt;time&gt;2011-08-10T08:07:18-06:00&lt;/time&gt;
-		&lt;type&gt;IGNITION_ON&lt;/type&gt;
-		&lt;vehicleID&gt;186&lt;/vehicleID&gt;
-		&lt;vehicleName&gt;Coreys Truck&lt;/vehicleName&gt;
-	&lt;/event&gt;
-		...
-		
-		&lt;link type="application/xml" 
-			  rel="next" 
-			  href="https://my.inthinc.com/service/api/group/41/events/all/20110810/20110815/page;start=40;pageCount=20"/&gt;
-		&lt;link type="application/xml" 
-		      rel="previous" 
-		      href="https://my.inthinc.com/service/api/group/41/events/all/20110810/20110815/page;start=0;pageCount=20"/&gt;
-	&lt;/eventPage&gt;
-	</pre>
-</div>
-<div id="events-json" style="width:50%;float:left;">
-<h3>JSON</h3>
-<pre>
-</pre>
-</div>
-<div style="clear:both;">
-<h3>Properties</h3>
-<table class="small"><tbody>
-<tr>
-<th>Property</th>
-<th>In/Out</th>
-<th>Type</th>
-<th>Required</th>
-<th width="300px">Description</th>
+<td>Account name</td>
 </tr>
 <tr>
-<td>driverID</td>
+<td>addressID</td>
 <td>Response</td>
 <td>Integer</td>
 <td></td>
-<td>Unique ID of driver </td>
+<td>Id of address record</td>
 </tr>
 <tr>
-<td>driverName</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>Driver's name</td>
-</tr>
-<tr>
-<td>driverTimeZone</td>
-<td>Response</td>
-<td><a href="#timezones">TimeZone</a></td>
-<td></td>
-<td>Driver's time zone when the event occurred</td>
-</tr>
-<tr>
-<td>eventCategory</td>
+<td>hos</td>
 <td>Response</td>
 <td><dl>
 <dt>enum</dt>
-<dd>VIOLATION </dd>
-<dd>WARNING</dd>
-<dd>NONE</dd>
-<dd>EMERGENCY</dd>
-<dd>ZONE</dd>
-<dd>HOS</dd>
-<dd>TEXT</dd>
-<dd>DRIVER_LOGIN</dd>
+<dd>NONE (default)</dd>
+<dd>HOS_SUPPORT</dd>
+<dd>EUROPEAN_HOS_SUPPORT</dd>
 </dl></td>
 <td></td>
-<td>See <a href="#eventByCategory">Events By Category</a></td>
+<td>Date and time record was last modified</td>
 </tr>
 <tr>
-<td>eventType</td>
+<td>props</td>
 <td>Response</td>
-<td><a href="#eventType">Event Types</a></td>
+<td><a href="#AccountAttributes">Account Attributes</a></td>
 <td></td>
-<td></td>
+<td>Date and time record was last modified</td>
 </tr>
 <tr>
-<td>eventTypeString</td>
+<td>status</td>
 <td>Response</td>
-<td>String</td>
+<td><dl>
+<dt>enum</dt>
+<dd>ACTIVE (default)</dd>
+<dd>INACTIVE</dd>
+</dl></td>
 <td></td>
-<td></td>
+<td>Date and time record was last modified</td>
 </tr>
 <tr>
-<td>forgiven</td>
-<td>Response</td>
-<td>Boolean</td>
-<td></td>
-<td>Event is forgiven.</td>
-</tr>
-<tr>
-<td>groupID</td>
+<td>unkDriverID</td>
 <td>Response</td>
 <td>Integer</td>
 <td></td>
-<td>Group driver belonged to at the time of the event.</td>
+<td>Special ID to use for the Unknown Driver</td>
 </tr>
 <tr>
-<td>groupName</td>
-<td>Response</td>
-<td>String</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>latitude</td>
-<td>Response</td>
-<td>Double</td>
-<td></td>
-<td>Location of the event</td>
-</tr>
-<tr>
-<td>longitude</td>
-<td>Response</td>
-<td>Double</td>
-<td></td>
-<td>Location of the event</td>
-</tr>
-<tr>
-<td>noteID</td>
-<td>Response</td>
-<td>Long</td>
-<td></td>
-<td>unique ID of the note from the device recording the event.</td>
-</tr>
-<tr>
-<td>speed</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>Speed at the time of the event in the units chosen for the driver.</td>
-</tr>
-<tr>
-<td>speedLimit</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>Speed limit at the location of the event.</td>
-</tr>
-<tr>
-<td>time</td>
+<td>zonePublishDate</td>
 <td>Response</td>
 <td>Date String</td>
 <td></td>
-<td>Time the event occurred.</td>
-</tr>
-<tr>
-<td>type</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>Unique ID assigned by the system on creation</td>
-</tr>
-<tr>
-<td>vehicleID</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>Unique ID of the vehicle in the event</td>
-</tr>
-<tr>
-<td>personID</td>
-<td>Response</td>
-<td>Integer</td>
-<td></td>
-<td>Unique ID of the person record associated with the driver.</td>
+<td>Date zones were last published.</td>
 </tr>
 </tbody>
 </table>
 </div>
-<h2><a name="data-person">Person</a></h2>
+<h3>5.2 <a name="data-person">Person</a></h3>
 <div id="person-xml" style="width:50%;float:left;">
-<h3>XML</h3>
+<h4>XML</h4>
 <pre>
 &lt;person&gt;
 	&lt;modified&gt;2011-05-02T21:26:05-06:00&lt;/modified&gt;
@@ -2125,7 +1232,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div id="person-json" style="width:50%;float:left;">
-<h3>JSON</h3>
+<h4>JSON</h4>
 <pre>
 {
 	"address":null,
@@ -2223,7 +1330,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div style="clear:both;">
-<h3>Properties</h3>
+<h4>Properties</h4>
 <table class="small"><tbody>
 <tr>
 <th>Property</th>
@@ -2470,9 +1577,9 @@ The server does not support the functionality required to fulfill the request.
 </tbody>
 </table>
 </div>
-<h2><a name="data-user">User</a></h2>
+<h3>5.3 <a name="data-user">User</a></h3>
 <div id="user-xml" style="width:50%;float:left;">
-<h3>XML</h3>
+<h4>XML</h4>
 <pre>
 &lt;user&gt;
 	&lt;modified&gt;2011-06-28T14:57:29-06:00&lt;/modified&gt;
@@ -2489,7 +1596,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div id="user-json" style="width:50%;float:left;">
-<h3>JSON</h3>
+<h4>JSON</h4>
 <pre>
 {"roles":[23,24],
 "username":"jhoward",
@@ -2571,7 +1678,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div style="clear:both;">
-<h3>Properties</h3>
+<h4>Properties</h4>
 <table class="small"><tbody>
 <tr>
 <th>Property</th>
@@ -2660,9 +1767,994 @@ The server does not support the functionality required to fulfill the request.
 </tbody>
 </table>
 </div>
-<h2><a name="data-trip">Trip</a></h2>
+<h3>5.4 <a name="data-driver">Driver</a></h3>
+<div id="driver-xml" style="width:50%;float:left;">
+<h4>XML</h4>
+
+<pre>
+&lt;driver&gt;
+	&lt;modified&gt;2011-07-12T12:10:26-06:00&lt;/modified&gt;
+	&lt;certifications&gt;&lt;/certifications&gt;
+	&lt;dot&gt;NON_DOT&lt;/dot&gt;
+	&lt;driverID&gt;13895&lt;/driverID&gt;
+	&lt;expiration&gt;1969-12-31T17:00:00-07:00&lt;/expiration&gt;
+	&lt;groupID&gt;1260&lt;/groupID&gt;
+	&lt;personID&gt;14844&lt;/personID&gt;
+	&lt;status&gt;ACTIVE&lt;/status&gt;
+&lt;/driver&gt;
+</pre>
+</div>
+<div id="vehicle-json" style="width:50%;float:left;">
+<h4>JSON</h4>
+<pre>
+"driver":{
+	"state":null,
+	"expiration":0,
+	"status":"ACTIVE",
+	"driverID":13895,
+	"status":"ACTIVE",
+	"personID":14844,
+	"groupID":1260,
+	"barcode":null,
+	"rfid1":null,
+	"rfid2":null,
+	"licenseClass":null,
+	"dot":"NON_DOT",
+	"license":null,
+	"certifications":"",
+	"created":null,
+	"modified":1310494226000
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h4>Properties</h4>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>driverID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique driverID, allocated by the system on creation.  Used to reference drivers in requests and other records</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Date and time record was last modified</td>
+</tr>
+<tr>
+<td>dot</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>see <a href="#dotRuleSets">DOT HOS Rule Sets</a></dd>
+</dl></td>
+<td></td>
+<td>Determines which DOT HOS rule set the driver is under - waySmart only</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>ACTIVE (default)</dd>
+<dd>INACTIVE</dd>
+</dl></td>
+<td></td>
+<td>Driver is in active service</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Request Response</td>
+<td style="padding:0;">
+	<table style="width:100%;height:100%" class="noborder"><tbody>
+	<tr>
+	<td class="noborder"><dl>
+<dt>abbrev</dt>
+<dd>String (see <a href="#data-states">States</a>)</dd>
+<dd></dd>
+</dl></td>
+	</tr>
+	<tr>
+	<td class="noborder"><dl>
+<dt>name</dt>
+<dd>String (see <a href="#data-states">States</a>)</dd>
+</dl></td>
+	</tr>
+	<tr>
+	<td class="noborder"><dl>
+<dt>stateID</dt>
+<dd>Integer (see <a href="#data-states">States</a>)</dd>
+</dl></td>
+	</tr>
+	</tbody></table>
+</td>
+<td>stateID is Required</td>
+<td>State diver is licensed in.</td>
+</tr>
+<tr>
+<td>license</td>
+<td>Request Response</td>
+<td>String max of 10 characters</td>
+<td>Required</td>
+<td>Driver's license number</td>
+</tr>
+<tr>
+<td>licenseClass</td>
+<td>Request Response</td>
+<td>String max 4 characters</td>
+<td>Required</td>
+<td>Driver's license class</td>
+</tr>
+<tr>
+<td>expiration</td>
+<td>Request Response</td>
+<td>Date String</td>
+<td>Required</td>
+<td>Driver's license expiration date.</td>
+</tr>
+<tr>
+<td>personID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>ID for matching person record, use to request person record</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>ID for Fleet, Division, or Team.  Get from requests for group data</td>
+</tr>
+<tr>
+<td>barcode</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>Barcode</td>
+</tr>
+<tr>
+<td>rfid1</td>
+<td>Request Response</td>
+<td>Long</td>
+<td>Required</td>
+<td>RFID</td>
+</tr>
+<tr>
+<td>rfid2</td>
+<td>Request Response</td>
+<td>Long</td>
+<td>Required</td>
+<td>RFID</td>
+</tr>
+<tr>
+<td>certifications</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Driver's Certifications</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3>5.5 <a name="data-vehicle">Vehicle</a></h3>
+<div id="vehicle-xml" style="width:50%;float:left;">
+<h4>XML</h4>
+
+<pre>
+&lt;vehicle&gt;
+	&lt;vehicleID&gt;1&lt;/vehicleID&gt;
+	&lt;modified&gt;2011-05-05T10:40:38-06:00&lt;/modified&gt;
+	&lt;color&gt;red&lt;/color&gt;
+	&lt;dot&gt;PROMPT_FOR_DOT_TRIP&lt;/dot&gt;
+	&lt;groupID&gt;2227&lt;/groupID&gt;
+	&lt;license&gt;123456&lt;/license/&gt;
+	&lt;make&gt;Ford&lt;/make&gt;
+	&lt;model&gt;Explorer&lt;/model&gt;
+	&lt;name&gt;Ford Exp Transistor&lt;/name&gt;
+	&lt;state&gt;
+		&lt;abbrev&gt;UT&lt;/abbrev&gt;
+		&lt;name&gt;Utah&lt;/name&gt;
+		&lt;stateID&gt;45&lt;/stateID&gt;
+	&lt;/state&gt;
+	&lt;status&gt;ACTIVE&lt;/status&gt;
+	&lt;VIN&gt;21111111111137730&lt;/VIN&gt;
+	&lt;vtype&gt;HEAVY&lt;/vtype&gt;
+	&lt;year&gt;2012&lt;/year&gt;
+	&lt;weight&gt;3600&lt;/weight&gt;
+	&lt;odometer&gt;121823&lt;/odometer&gt;
+&lt;/vehicle&gt;
+</pre>
+</div>
+<div id="vehicle-json" style="width:50%;float:left;">
+<h4>JSON</h4>
+<pre>
+"vehicle":{
+	"modified":"2011-05-05T10:40:38-06:00",	
+	"color":"",
+	"deviceID":13301,
+	"dot":"NON_DOT",
+	"driverID":342,
+	"groupID":8,
+	"license":"",
+	"make":"fake",
+	"model":"make",
+	"name":"testing",
+	"odometer":121823,
+	"status":"ACTIVE",
+	"VIN":"985465198165191DD",
+	"vehicleID":8043,
+	"vtype":"LIGHT",
+	"year":2012
+}
+</pre>
+</div>
+
+<div style="clear:both;">
+<h4>Properties</h4>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Date and time record was last modified</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Request Response</td>
+<td><dl>
+<dt>String</dt>
+<dd>must be unique</dd>
+</dl></td>
+<td>Required</td>
+<td>The name of the vehicle.  There is no restriction on the format of this, but will be used for searching, sorting, and filtering purposes.</td>
+</tr>
+<tr>
+<td>dot</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>NON_DOT (default)</dd>
+<dd>DOT</dd>
+<dd>PROMPT_FOR_DOT_TRIP</dd>
+</dl></td>
+<td></td>
+<td>Determines when the vehicle is under DOT HOS rules - waySmart only</td>
+</tr>
+<tr>
+<td>ifta</td>
+<td>Request Response</td>
+<td><dl>
+<dt>Boolean</dt>
+<dd>false (default)</dd>
+<dd>true</dd>
+</dl></td>
+<td></td>
+<td>If the vehicle is subject to IFTA - waySmart only</td>
+</tr>
+<tr>
+<td>deviceID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>The device currently assigned to this vehicle.  Can be used to retrieve the device record</td>
+</tr>
+<tr>
+<td>driverID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>The driver currently assigned to this vehicle.  Can be used to retrieve the driver record</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>The fleet/division/team this vehicle is assigned to.  Discover groupIDs using the group service</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>ACTIVE (default)</dd>
+<dd>INACTIVE</dd>
+</dl></td>
+<td></td>
+<td>Vehicle is in active service</td>
+</tr>
+<tr>
+<td>VIN</td>
+<td>Request Response</td>
+<td><dl>
+<dt>String</dt>
+<dd>must be 17 characters</dd>
+<dd>must be unique</dd>
+</dl></td>
+<td>Required</td>
+<td>The vehicle's VIN</td>
+</tr>
+<tr>
+<td>vtype</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>LIGHT</dd>
+<dd>MEDIUM</dd>
+<dd>HEAVY</dd>
+</dl></td>
+<td>Required</td>
+<td>Vehicle HOS type</td>
+</tr>
+<tr>
+<td>odometer</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>Vehicle's odometer</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Request Response</td>
+<td style="padding:0;">
+	<table style="width:100%;height:100%" class="noborder"><tbody>
+	<tr>
+	<td class="noborder"><dl>
+<dt>abbrev</dt>
+<dd>String (see <a href="#data-states">States</a>)</dd>
+<dd></dd>
+</dl></td>
+	</tr>
+	<tr>
+	<td class="noborder"><dl>
+<dt>name</dt>
+<dd>String (see <a href="#data-states">States</a>)</dd>
+</dl></td>
+	</tr>
+	<tr>
+	<td class="noborder"><dl>
+<dt>stateID</dt>
+<dd>Integer (see <a href="#data-states">States</a>)</dd>
+</dl></td>
+	</tr>
+	</tbody></table>
+</td>
+<td>stateID is Required</td>
+<td>State vehicle is registered in.</td>
+</tr>
+<tr>
+<td>make</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>The make of the vehicle.  There is no restriction on the format of this, but for searching, sorting, and filtering purposes be consistent.</td>
+</tr>
+<tr>
+<td>model</td>
+<td>Request Response</td>
+<td>String</td>
+<td>Required</td>
+<td>The model of the vehicle.  There is no restriction on the format of this, but for searching, sorting, and filtering purposes be consistent.</td>
+</tr>
+<tr>
+<td>year</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td>Required</td>
+<td>The year of the vehicle</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>The weight of the vehicle in the units defined for the user.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3>5.6 <a name="data-device">Device</a></h3>
+<div id="device-xml" style="width:50%;float:left;">
+<h4>XML</h4>
+
+<pre>
+&lt;device&gt;
+	&lt;modified&gt;2009-03-06T18:50:02-07:00&lt;/modified&gt;
+	&lt;accountID&gt;12&lt;/accountID&gt;
+	&lt;baseID&gt;3&lt;/baseID&gt;
+	&lt;deviceID&gt;140&lt;/deviceID&gt;
+	&lt;imei&gt;011596000064018&lt;/imei&gt;
+	&lt;name&gt;011596000064018&lt;/name&gt;
+	&lt;phone&gt;4697336557&lt;/phone&gt;
+	&lt;productVersion&gt;TIWIPRO_R74&lt;/productVersion&gt;
+	&lt;serialNum&gt;unk140&lt;/serialNum&gt;
+	&lt;sim&gt;8901260760000852678&lt;/sim&gt;
+	&lt;status&gt;INACTIVE&lt;/status&gt;
+&lt;/device&gt;
+</pre>
+</div>
+<div id="device-json" style="width:50%;float:left;">
+<h4>JSON</h4>
+<pre>
+"device":{
+	"name":"011596000064018",
+	"status":"INACTIVE",
+	"vehicleID":null,
+	"accountID":12,
+	"deviceID":140,
+	"phone":"4697336557",
+	"waySmart":false,
+	"imei":"011596000064018",
+	"sim":"8901260760000852678",
+	"productVersion":"TIWIPRO_R74",
+	"textMsgReceiveCapable":false,
+	"firmwareVersion":null,
+	"gprsonly":false,
+	"mcmid":null,
+	"activated":null,
+	"serialNum":"unk140",
+	"baseID":3,
+	"witnessVersion":null,
+	"emuMd5":null,
+	"crashTraceAppletCapable":false,
+	"altimei":null,
+	"created":null,
+	"modified":1236390602000
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h4>Properties</h4>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>deviceID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique deviceID, allocated by the system on creation.  Used to reference deviceID in requests and other records</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>User's unique name for this device </td>
+</tr>
+<tr>
+<td>phone number</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Phone number associated with this device</td>
+</tr>
+<tr>
+<td>imei</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>imei associated with this device</td>
+</tr>
+<tr>
+<td>sim</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>sim card associated with this device</td>
+</tr>
+<tr>
+<td>productVer</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>UNKNOWN (default)</dd>
+<dd>TEEN</dd>
+<dd>WAYSMART</dd>
+<dd>TIWIPRO_R71</dd>
+<dd>TIWIPRO_R74 (use this for tiwipro)</dd>
+</dl></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>textMsgReceiveCapable</td>
+<td>Request Response</td>
+<td>Boolean</td>
+<td></td>
+<td>sim card associated with this device</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>NEW (default)</dd>
+<dd>ACTIVE</dd>
+<dd>INACTIVE</dd>
+</dl></td>
+<td></td>
+<td>Device is in active service</td>
+</tr>
+<tr>
+<td>vehicleID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>Vehicle assigned to this device</td>
+</tr>
+<tr>
+<td>firmwareVersion</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>gprsonly</td>
+<td>Request Response</td>
+<td>Boolean</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>mcmid</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>mcmid card associated with this device</td>
+</tr>
+<tr>
+<td>activated</td>
+<td>Request Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date device was activated</td>
+</tr>
+<tr>
+<td>serialNum</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>baseID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>witnessVersion</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>emuMd5</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Check sum for emu data</td>
+</tr>
+<tr>
+<td>crashTraceAppletCapable</td>
+<td>Request Response</td>
+<td>Boolean</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>altimei</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>created</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date device record was created in the system.</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Date and time record was last modified</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3>5.7 <a name="data-groups">Groups</a></h3>
+<div id="groups-xml" style="width:50%;float:left;">
+<h4>XML</h4>
+<pre>
+&lt;group&gt;
+	&lt;accountID&gt;12&lt;/accountID&gt;
+	&lt;description&gt;Initial top level group&lt;/description&gt;
+	&lt;groupID&gt;41&lt;/groupID&gt;
+	&lt;managerID&gt;242&lt;/managerID&gt;
+	&lt;mapCenter&gt;
+		&lt;lat&gt;41.1678&lt;/lat&gt;
+		&lt;lng&gt;-112.015&lt;/lng&gt;
+	&lt;mapZoom&gt;11&lt;/mapZoom&gt;
+	&lt;name&gt;inthinc, inc.&lt;/name&gt;
+	&lt;parentID&gt;0&lt;/parentID&gt;
+	&lt;status&gt;GROUP_ACTIVE&lt;/status&gt;
+	&lt;type&gt;FLEET&lt;/type&gt;
+	&lt;zoneRev&gt;62&lt;/zoneRev&gt;
+&lt;/group&gt;
+</pre>
+</div>
+<div id="groups-json" style="width:50%;float:left;">
+<h4>JSON</h4>
+<pre>
+"group":{
+	"address":null,
+	"name":"inthinc, inc.",
+	"type":"FLEET",
+	"description":"Initial top level group",
+	"status":"GROUP_ACTIVE",
+	"mapCenter":{
+		"lat":41.1678,
+		"lng":-112.015},
+	"accountID":12,
+	"addressID":null,
+	"groupID":41,
+	"parentID":0,
+	"mapZoom":11,
+	"managerID":242,
+	"mapLat":41.1678,
+	"mapLng":-112.015,
+	"zoneRev":62,
+	"created":null,
+	"modified":null
+}
+</pre>
+</div>
+<div style="clear:both;">
+<h4>Properties</h4>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>created</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Date device record was created in the system.</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Date and time record was last modified</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique id, allocated by the system on creation.  Used to reference groups in requests and other records</td>
+</tr>
+<tr>
+<td>address</td>
+<td>Request Response</td>
+<td>Address</td>
+<td></td>
+<td>Address for group</td>
+</tr>
+<tr>
+<td>name</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>User's unique name for the group.</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>FLEET </dd>
+<dd>DIVISION</dd>
+<dd>TEAM</dd>
+</dl></td>
+<td>Required</td>
+<td>Type of group in the hierarchy.</td>
+</tr>
+<tr>
+<td>description</td>
+<td>Request Response</td>
+<td>String</td>
+<td></td>
+<td>Any text to describe the group</td>
+</tr>
+<tr>
+<td>status</td>
+<td>Request Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>GROUP_NEW (default)</dd>
+<dd>GROUP_ACTIVE</dd>
+<dd>GROUP_DISABLED</dd>
+</dl></td>
+<td></td>
+<td>Group is active</td>
+</tr>
+<tr>
+<td>mapCenter</td>
+<td>Request Response</td>
+<td><a href="#data-latlng">LatLng</a></td>
+<td></td>
+<td>Coordinates for group on the map.</td>
+</tr>
+<tr>
+<td>accountID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>ID of account this group belongs to.</td>
+</tr>
+<tr>
+<td>parentID</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>ID of group's parent in the hierarchy</td>
+</tr>
+<tr>
+<td>mapZoom</td>
+<td>Request Response</td>
+<td>Integer</td>
+<td></td>
+<td>Default zoom value for Google maps</td>
+</tr>
+<tr>
+<td>managerID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>ID of person who is the designated manager</td>
+</tr>
+<tr>
+<td>zoneRev</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3>5.8 <a name="data-events">Events</a></h3>
+<div id="events-xml" style="width:50%;float:left;">
+<h4>XML</h4>
+<pre>
+&lt;eventPage start="20" pageCount="20" totalCount="404"&gt;
+	&lt;event&gt;
+		&lt;driverID&gt;11922&lt;/driverID&gt;
+		&lt;driverName&gt;Bizzaro Corey Catten&lt;/driverName&gt;
+		&lt;driverTimeZone&gt;US/Mountain&lt;/driverTimeZone&gt;
+		&lt;eventCategory&gt;WARNING&lt;/eventCategory&gt;
+		&lt;eventType&gt;IGNITION_ON&lt;/eventType&gt;
+		&lt;eventTypeString&gt;EventType.IGNITION_ON&lt;/eventTypeString&gt;
+		&lt;forgiven&gt;0&lt;/forgiven&gt;
+		&lt;groupID&gt;43&lt;/groupID&gt;
+		&lt;groupName&gt;Executives&lt;/groupName&gt;
+		&lt;latitude&gt;40.662575&lt;/latitude&gt;
+		&lt;longitude&gt;-111.824814&lt;/longitude&gt;
+		&lt;noteID&gt;9288674233162685&lt;/noteID&gt;
+		&lt;speed&gt;0&lt;/speed&gt;
+		&lt;speedLimit&gt;78&lt;/speedLimit&gt;
+		&lt;time&gt;2011-08-10T08:07:18-06:00&lt;/time&gt;
+		&lt;type&gt;IGNITION_ON&lt;/type&gt;
+		&lt;vehicleID&gt;186&lt;/vehicleID&gt;
+		&lt;vehicleName&gt;Coreys Truck&lt;/vehicleName&gt;
+	&lt;/event&gt;
+		...
+		
+		&lt;link type="application/xml" 
+			  rel="next" 
+			  href="https://my.inthinc.com/service/api/group/41/events/all/20110810/20110815/page;start=40;pageCount=20"/&gt;
+		&lt;link type="application/xml" 
+		      rel="previous" 
+		      href="https://my.inthinc.com/service/api/group/41/events/all/20110810/20110815/page;start=0;pageCount=20"/&gt;
+	&lt;/eventPage&gt;
+	</pre>
+</div>
+<div id="events-json" style="width:50%;float:left;">
+<h4>JSON</h4>
+<pre>
+</pre>
+</div>
+<div style="clear:both;">
+<h4>Properties</h4>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>driverID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID of driver </td>
+</tr>
+<tr>
+<td>driverName</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Driver's name</td>
+</tr>
+<tr>
+<td>driverTimeZone</td>
+<td>Response</td>
+<td><a href="#timezones">TimeZone</a></td>
+<td></td>
+<td>Driver's time zone when the event occurred</td>
+</tr>
+<tr>
+<td>eventCategory</td>
+<td>Response</td>
+<td><dl>
+<dt>enum</dt>
+<dd>VIOLATION </dd>
+<dd>WARNING</dd>
+<dd>NONE</dd>
+<dd>EMERGENCY</dd>
+<dd>ZONE</dd>
+<dd>HOS</dd>
+<dd>TEXT</dd>
+<dd>DRIVER_LOGIN</dd>
+</dl></td>
+<td></td>
+<td>See <a href="#eventByCategory">Events By Category</a></td>
+</tr>
+<tr>
+<td>eventType</td>
+<td>Response</td>
+<td><a href="#eventType">Event Types</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>eventTypeString</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>forgiven</td>
+<td>Response</td>
+<td>Boolean</td>
+<td></td>
+<td>Event is forgiven.</td>
+</tr>
+<tr>
+<td>groupID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Group driver belonged to at the time of the event.</td>
+</tr>
+<tr>
+<td>groupName</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>latitude</td>
+<td>Response</td>
+<td>Double</td>
+<td></td>
+<td>Location of the event</td>
+</tr>
+<tr>
+<td>longitude</td>
+<td>Response</td>
+<td>Double</td>
+<td></td>
+<td>Location of the event</td>
+</tr>
+<tr>
+<td>noteID</td>
+<td>Response</td>
+<td>Long</td>
+<td></td>
+<td>unique ID of the note from the device recording the event.</td>
+</tr>
+<tr>
+<td>speed</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Speed at the time of the event in the units chosen for the driver.</td>
+</tr>
+<tr>
+<td>speedLimit</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Speed limit at the location of the event.</td>
+</tr>
+<tr>
+<td>time</td>
+<td>Response</td>
+<td>Date String</td>
+<td></td>
+<td>Time the event occurred.</td>
+</tr>
+<tr>
+<td>type</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID assigned by the system on creation</td>
+</tr>
+<tr>
+<td>vehicleID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID of the vehicle in the event</td>
+</tr>
+<tr>
+<td>personID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>Unique ID of the person record associated with the driver.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3>5.9 <a name="data-trip">Trip</a></h3>
 <div id="trip-xml" style="width:50%;float:left;">
-<h3>XML</h3>
+<h4>XML</h4>
 <pre>
 &lt;trip&gt;
 &lt;driverID&gt;13&lt;/driverID&gt;
@@ -2697,7 +2789,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div id="trip-json" style="width:50%;float:left;">
-<h3>JSON</h3>
+<h4>JSON</h4>
 <pre>
 {
 "startTime":1311201033000,
@@ -2734,7 +2826,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div style="clear:both;">
-<h3>Properties</h3>
+<h4>Properties</h4>
 <table class="small"><tbody>
 <tr>
 <th>Property</th>
@@ -2799,7 +2891,7 @@ The server does not support the functionality required to fulfill the request.
 <tr>
 <td>route</td>
 <td>Response</td>
-<td>Collection of LatLng</td>
+<td>Collection of <a href="#latlng">LatLng</a></td>
 <td></td>
 <td>LatLngs plotting the route of the trip.</td>
 </tr>
@@ -2820,7 +2912,7 @@ The server does not support the functionality required to fulfill the request.
 <tr>
 <td>startLoc</td>
 <td>Response</td>
-<td>LatLng</td>
+<td><a href="#latlng">LatLng</a></td>
 <td></td>
 <td>Location of the start of the trip.</td>
 </tr>
@@ -2869,9 +2961,9 @@ The server does not support the functionality required to fulfill the request.
 </table>
 </div>
 
-<h2><a name="data-location">Location</a></h2>
+<h3>5.10 <a name="data-location">Location</a></h3>
 <div id="location-xml" style="width:50%;float:left;">
-<h3>XML</h3>
+<h4>XML</h4>
 
 <pre>
 &lt;lastLocation&gt;
@@ -2886,7 +2978,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div id="location-json" style="width:50%;float:left;">
-<h3>JSON</h3>
+<h4>JSON</h4>
 <pre>
 {
 	"time":1307565567000,
@@ -2899,7 +2991,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div style="clear:both;">
-<h3>Properties</h3>
+<h4>Properties</h4>
 <table class="small"><tbody>
 <tr>
 <th>Property</th>
@@ -2925,7 +3017,7 @@ The server does not support the functionality required to fulfill the request.
 <tr>
 <td>vehicleID</td>
 <td>Response</td>
-<td>String</td>
+<td>Integer</td>
 <td></td>
 <td>Vehicle's unique system assigned ID</td>
 </tr>
@@ -2940,9 +3032,9 @@ The server does not support the functionality required to fulfill the request.
 </table>
 </div>
 
-<h2><a name="data-score">Score</a></h2>
+<h3>5.11 <a name="data-score">Score</a></h3>
 <div id="score-xml" style="width:50%;float:left;">
-<h3>XML</h3>
+<h4>XML</h4>
 <pre>
 &lt;score&gt;
 	&lt;aggressiveAccel xsi:type="xs:int"&gt;50&lt;/aggressiveAccel&gt;
@@ -3020,7 +3112,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div id="score-json" style="width:50%;float:left;">
-<h3>JSON</h3>
+<h4>JSON</h4>
 <pre>
 {
 	"trips":0,
@@ -3113,7 +3205,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div style="clear:both;">
-<h3>Properties</h3>
+<h4>Properties</h4>
 <table class="small"><tbody>
 <tr>
 <th>Property</th>
@@ -3623,9 +3715,9 @@ The server does not support the functionality required to fulfill the request.
 </table>
 </div>
 
-<h2><a name="data-trend">Trend</a></h2>
+<h3>5.12 <a name="data-trend">Trend</a></h3>
 <div id="trend-xml" style="width:50%;float:left;">
-<h3>XML</h3>
+<h4>XML</h4>
 <pre>
 &lt;trend&gt;
 	&lt;aggressiveAccel xsi:type="xs:int"&gt;50&lt;/aggressiveAccel&gt;
@@ -3691,7 +3783,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div id="trend-json" style="width:50%;float:left;">
-<h3>JSON</h3>
+<h4>JSON</h4>
 <pre>
 {
 	"trips":0,
@@ -3772,7 +3864,7 @@ The server does not support the functionality required to fulfill the request.
 	</pre>
 </div>
 <div style="clear:both;">
-<h3>Properties</h3>
+<h4>Properties</h4>
 <table class="small"><tbody>
 <tr>
 <th>Property</th>
@@ -4246,16 +4338,16 @@ The server does not support the functionality required to fulfill the request.
 </tbody>
 </table>
 </div>
-<h2><a name="latlng">LatLng</a></h2>
+<h3>5.13 <a name="data-latlng">LatLng</a></h3>
 <div id="latlng-xml" style="width:50%;float:left;">
-<h3>XML</h3>
+<h4>XML</h4>
 <pre>
     &lt;lat&gt;41.1678&lt;/lat&gt;
     &lt;lng&gt;-112.015&lt;/lng&gt;
 </pre>
 </div>
 <div id="latlng-json" style="width:50%;float:left;">
-<h3>JSON</h3>
+<h4>JSON</h4>
 <pre>
 {
 	"lat":41.1678,
@@ -4264,7 +4356,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div style="clear:both;">
-<h3>Properties</h3>
+<h4>Properties</h4>
 <table class="small"><tbody>
 <tr>
 <th>Property</th>
@@ -4296,9 +4388,152 @@ The server does not support the functionality required to fulfill the request.
 </tbody>
 </table>
 </div>
-<h2><a name="address">Address</a></h2>
+<h3>5.14 <a name="data-accountAttributes">Account Attributes</a></h3>
+<div id="accountAttributes-xml" style="width:50%;float:left;">
+<h4>XML</h4>
+<pre>
+	&lt;props&gt;
+		&lt;noReplyEmail/&gt;
+		&lt;passwordChange&gt;0&lt;/passwordChange&gt;
+		&lt;passwordStrength&gt;0&lt;/passwordStrength&gt;
+		&lt;phoneAlertsActive&gt;1&lt;/phoneAlertsActive&gt;
+		&lt;supportContact1/&gt;
+		&lt;supportContact2/&gt;
+		&lt;supportContact3/&gt;
+		&lt;supportContact4/&gt;
+		&lt;supportContact5/&gt;
+		&lt;waySmart&gt;true&lt;/waySmart&gt;
+		&lt;wmsLayerQueryParam/&gt;
+		&lt;wmsLayers/&gt;
+		&lt;wmsQuery/&gt;
+		&lt;wmsURL/&gt;
+ 	&lt;/props&gt;
+ </pre>
+</div>
+<div id="accountAttributes-json" style="width:50%;float:left;">
+<h4>JSON</h4>
+<pre>
+</pre>
+</div>
+<div style="clear:both;">
+<h4>Properties</h4>
+<table class="small"><tbody>
+<tr>
+<th>Property</th>
+<th>In/Out</th>
+<th>Type</th>
+<th>Required</th>
+<th width="300px">Description</th>
+</tr>
+<tr>
+<td>wmsURL</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Web Map Service - custom URL.</td>
+</tr>
+<tr>
+<td>wmsQuery</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Web Map Service - custom query params.</td>
+</tr>
+<tr>
+<td>wmsLayers</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Web Map Service - custom layers.</td>
+</tr>
+<tr>
+<td>wmsLayerQueryParam</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Web Map Service - custom layer query params.</td>
+</tr>
+<tr>
+<td>phoneAlertsActive</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Phone alerts are active.</td>
+</tr>
+<tr>
+<td>noReplyEmail</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>No reply email for alerts.</td>
+</tr>
+<tr>
+<td>supportContact1-5</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Contacts for Technical Support.</td>
+</tr>
+<tr>
+<td>waySmart</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Account supports waySmart.</td>
+</tr>
+<tr>
+<td>passwordExpire</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Number of days paswwords are valid for</td>
+</tr>
+<tr>
+<td>passwordStrength</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Minimum password strength.</td>
+</tr>
+<tr>
+<td>loginExpire</td>
+<td>Response</td>
+<td>String</td>
+<td></td>
+<td>Number of days</td>
+</tr>
+<tr>
+<td>passwordChange</td>
+<td>Response</td>
+<td><dl>
+<dt>String</dt>
+<dd>none</dd>
+<dd>warn</dd>
+<dd>require</dd>
+</dl></td>
+<td></td>
+<td>Initial password change level</td>
+</tr>
+<tr>
+<td>multipleCompanies</td>
+<td>Response</td>
+<td>Boolean</td>
+<td></td>
+<td>Fleet represents multiple companies.</td>
+</tr>
+<tr>
+<td>fleetGroupID</td>
+<td>Response</td>
+<td>Integer</td>
+<td></td>
+<td>System assigned ID of the group at the level above the level representing the individual companies.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3>5.15 <a name="data-address">Address</a></h3>
 <div id="address-xml" style="width:50%;float:left;">
-<h3>XML</h3>
+<h4>XML</h4>
 <pre>
    &lt;addr1&gt;Suite 1A&lt;/addr1&gt;
    &lt;addr2&gt;123 Made Up Street&lt;/addr2&gt;
@@ -4308,7 +4543,7 @@ The server does not support the functionality required to fulfill the request.
  </pre>
 </div>
 <div id="address-json" style="width:50%;float:left;">
-<h3>JSON</h3>
+<h4>JSON</h4>
 <pre>
 {
 	"addr1":"Suite 1A",
@@ -4320,7 +4555,7 @@ The server does not support the functionality required to fulfill the request.
 </pre>
 </div>
 <div style="clear:both;">
-<h3>Properties</h3>
+<h4>Properties</h4>
 <table class="small"><tbody>
 <tr>
 <th>Property</th>
@@ -4367,7 +4602,7 @@ The server does not support the functionality required to fulfill the request.
 </tbody>
 </table>
 </div>
-<h2><a name="states">States</a></h2>
+<h3>5.16 <a name="data-states">States</a></h3>
 <pre>
 stateID	abbrev	name	
 1	AL	Alabama	
@@ -4450,7 +4685,7 @@ stateID	abbrev	name
 78	SK	Saskatchewan	
 79	YT	Yukon	
 </pre>
-<h2><a name="dotRuleSets">DOT HOS Rule Sets</a></h2>
+<h3>5.17 <a name="data-dotRuleSets">DOT HOS Rule Sets</a></h3>
 <pre>
     NON_DOT (default)
     US
@@ -4471,14 +4706,14 @@ stateID	abbrev	name
     US_7DAY
     US_OIL_7DAY
 </pre>
-<h2><a name="timezones">Time Zones</a></h2>
+<h3>5.18 <a name="data-timezones">Time Zones</a></h3>
 <p>We use the Olsen Time Zone Database (tz database) as used by Java.</p>
 <p>Time zone representation is described at the W3C Working Group site <a href="http://www.w3.org/TR/timezone/">Working with Time Zones</a></p>
 <p>Examples of valid time zone representations in the timeZone properties are:</p>
 <pre>&lt;timeZone&gt;US/Mountain&lt;/timeZone&gt;</pre>
 <pre>&lt;timeZone&gt;Africa/Johannesburg&lt;/timeZone&gt;</pre>
 <p>The short codes, such as MDT and SAST are not valid in requests (they are deprecated in Java because they are not unique) though they may appear in response entities.</p>
-<h2><a name="locales">Locales</a></h2>
+<h3>5.19 <a name="data-locales">Locales</a></h3>
 <p>Locales are represented by the language code and optional variant code.</p>
 <p>We currently support:</p>
 <pre>
@@ -4487,7 +4722,7 @@ stateID	abbrev	name
 &lt;locale&gt;es&lt;/locale&gt; (Spanish)
 &lt;locale&gt;fr&lt;/locale&gt; (French)
 </pre>
-<h2><a name="eventType">Event Types</a></h2>
+<h3>5.20 <a name="data-eventType">Event Types</a></h3>
 <pre>
     TAMPERING
     SEATBELT
@@ -4531,7 +4766,7 @@ stateID	abbrev	name
     INVALID_DRIVER
     INVALID_OCCUPANT
 </pre>
-<h2><a name="eventByCategory">Events By Category</a></h2>
+<h3>5.21 <a name="data-eventByCategory">Events By Category</a></h3>
 <table class="small"><tbody>
 <tr><th>Event Category</th>
 <th>Events</th>
