@@ -29,7 +29,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.service.model.BatchResponse;
 //Run locally with your localhost service running on port 8080
-//@Ignore
+@Ignore
 public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(VehicleServiceITCaseTest.class);
     private static int VEHICLE_ID = 1; //Mach5
