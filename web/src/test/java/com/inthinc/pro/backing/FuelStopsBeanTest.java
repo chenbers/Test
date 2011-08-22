@@ -52,6 +52,8 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         // get the bean from the applicationContext (initialized by Spring injection)
         fuelStopsBean = (FuelStopsBean)applicationContext.getBean("fuelStopsBean");        
         fuelStopsBean.setVehicleID(130);
+    	fuelStopsBean.setVehicleNameNow("vehicle130");
+
         fuelStopsBean.setVehicle(new Vehicle(130,0,Status.ACTIVE,"vehicle130","Subaru","Impreza",2011,
         		"blue",VehicleType.LIGHT,"12345678901234567", null,"123abc",State.valueOf(45),VehicleDOTType.NON_DOT));
         fuelStops = fuelStopsBean.getHosDAO().getFuelStopRecordsForVehicle(130, new DateRange(new Locale("en_US"),TimeZone.getTimeZone("America/Denver")).getInterval());
@@ -83,7 +85,6 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     
     @Test
     public void beanAdd(){
-        
         
         String result = fuelStopsBean.add();
         
@@ -169,6 +170,7 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     }
     @Test
     public void beanCancelAdd(){
+    	fuelStopsBean.setVehicleNameNow("vehicle130");
         
         String result = fuelStopsBean.add();
         assertEquals("pretty:fuelStopEdit",result);
@@ -286,6 +288,8 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     }
     @Test
     public void cantEditBeforeDate(){
+    	fuelStopsBean.setVehicleNameNow("vehicle130");
+
         String result = fuelStopsBean.add();
         
         assertEquals("pretty:fuelStopEdit",result);

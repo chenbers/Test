@@ -165,14 +165,17 @@ public class FuelStopsBean extends BaseBean {
     	}
     }
     private boolean validateVehicleName(){
-        for(Vehicle vehicle :getEligibleVehicles()){
-            String name = vehicle.getName();
-            if (name != null && name.toLowerCase().equals(vehicleNameNow.toLowerCase())){
-                return true;
-            }
-        }
-    	return false;
-    }
+    	if ((vehicle!= null) && !vehicleNameNow.equalsIgnoreCase(vehicle.getName())){
+	        for(Vehicle vehicle :getEligibleVehicles()){
+	            String name = vehicle.getName();
+	            if (name != null && name.toLowerCase().equals(vehicleNameNow.toLowerCase())){
+	                return true;
+	            }
+	        }
+	       	return false;
+    	}
+    	return true;
+     }
     // end date range stuff
     
     public String waitForSelects(){
