@@ -158,14 +158,21 @@ public class FuelStopsBean extends BaseBean {
         allSelected = false;
     }
     public void checkData(){
-    	
     	if ((vehicle!= null) && !vehicleNameNow.equalsIgnoreCase(vehicle.getName())){
     		vehicle = null;
     		vehicleID = null;
     		dropData();
     	}
     }
-    
+    private boolean validateVehicleName(){
+        for(Vehicle vehicle :getEligibleVehicles()){
+            String name = vehicle.getName();
+            if (name != null && name.toLowerCase().equals(vehicleNameNow.toLowerCase())){
+                return true;
+            }
+        }
+    	return false;
+    }
     // end date range stuff
     
     public String waitForSelects(){
@@ -288,7 +295,7 @@ public class FuelStopsBean extends BaseBean {
     }
     public String add()
     {
-        if (vehicleID == null)
+        if (!validateVehicleName() || vehicleID == null)
             return VIEW_REDIRECT;
         
         crudStrategy = new CreateStrategy();

@@ -462,4 +462,8 @@ public class FuelStopsBeanTest extends BaseBeanTest {
     public void autocompleteTest(){
     	List<VehicleName> suggestions = fuelStopsBean.autocomplete("1");
     }
+    @Test
+    public void checkDataTest(){
+    	fuelStopsBean.checkData();
+    }
 }
