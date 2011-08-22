@@ -20,6 +20,7 @@ import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanInitializationException;
 
 import com.inthinc.pro.backing.BaseBean;
+import com.inthinc.pro.dao.util.SimpleType;
 import com.inthinc.pro.model.ReferenceEntity;
 import com.inthinc.pro.model.configurator.ProductType;
 
@@ -412,5 +413,4 @@ public class BeanUtil
         }
         
     }
-
 }

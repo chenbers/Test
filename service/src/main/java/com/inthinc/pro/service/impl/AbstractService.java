@@ -6,10 +6,12 @@ import java.util.List;
 
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.core.Response.Status;
 
+import com.inthinc.pro.dao.util.IdExtractor;
+import com.inthinc.pro.dao.util.ModelPropertyReplacer;
 import com.inthinc.pro.service.GenericService;
 import com.inthinc.pro.service.adapters.BaseDAOAdapter;
 import com.inthinc.pro.service.model.BatchResponse;
@@ -76,7 +78,17 @@ public abstract class AbstractService<T, DAO extends BaseDAOAdapter<T>> implemen
 
     @Override
     public Response update(T object) {
-        T t = dao.update(object);
+    	
+    	//Get the original
+    	Integer id = IdExtractor.getID(object);
+    	if(id == null) {
+            return Response.status(Status.NOT_FOUND).build();
+    	}
+        T original = dao.findByID(id);
+    	//swap in the changed fields from the object
+    	ModelPropertyReplacer.compareAndReplace(original, object);
+    	//update all the values
+        T t = dao.update(original);
         if (t != null) { 
             return Response.ok(t).build();
         }
@@ -109,7 +121,14 @@ public abstract class AbstractService<T, DAO extends BaseDAOAdapter<T>> implemen
         List<BatchResponse> responseList = new ArrayList<BatchResponse>();
         for (T t : list) {
             BatchResponse batchResponse = new BatchResponse();
-            T tUpdate = dao.update(t);
+        	//Get the original
+        	Integer id = IdExtractor.getID(t);
+        	if(id == null) {
+                return Response.status(Status.NOT_FOUND).build();
+        	}
+            T original = dao.findByID(id);
+        	ModelPropertyReplacer.compareAndReplace(original, t);
+            T tUpdate = dao.update(original);
             if (tUpdate == null) {
                 batchResponse.setStatus(Status.NOT_MODIFIED.getStatusCode());
             } else {

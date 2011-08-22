@@ -43,6 +43,7 @@ import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.security.Role;
@@ -151,7 +152,7 @@ public class FileImporterTest extends BaseSpringTest {
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloServiceCreator.getService());
         String vin = accountName;
-        Vehicle vehicle = new Vehicle(0, teamGroup.getGroupID(), Status.ACTIVE, accountName, "MAKE", "MODEL", 2011, "RED", VehicleType.LIGHT, vin, 2000, "ut1111", null);
+        Vehicle vehicle = new Vehicle(0, teamGroup.getGroupID(), Status.ACTIVE, accountName, "MAKE", "MODEL", 2011, "RED", VehicleType.LIGHT, vin, 2000, "ut1111", null, VehicleDOTType.NON_DOT);
         vehicleDAO.create(acctID, vehicle);
 
         

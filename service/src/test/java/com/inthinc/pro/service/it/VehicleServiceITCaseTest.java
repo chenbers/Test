@@ -29,7 +29,7 @@ import com.inthinc.pro.model.Trip;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.service.model.BatchResponse;
 //Run locally with your localhost service running on port 8080
-@Ignore
+//@Ignore
 public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     private static Logger logger = Logger.getLogger(VehicleServiceITCaseTest.class);
     private static int VEHICLE_ID = 1; //Mach5
@@ -276,7 +276,7 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
     public void createAndDeleteVehicleTest() throws Exception{
         ClientRequest request = clientExecutor.createRequest(url+"/vehicle/");
 
-        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137717</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137742</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
 //        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>8</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137717</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
 
         //Test for lds church
@@ -312,5 +312,29 @@ public class VehicleServiceITCaseTest extends BaseEmbeddedServerITCase {
 
 	        System.out.println(deleteResponse.getStatus());
         }
+    }
+    @Test 
+    public void updateVehicleTest() throws Exception{
+        ClientRequest request = clientExecutor.createRequest(url+"/vehicle/");
+
+        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>2227</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137749</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+//        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>8</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137717</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+
+        //Test for lds church
+//        String xmlText = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>317</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137717</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+
+        request.accept( MediaType.APPLICATION_XML).body( MediaType.APPLICATION_XML, xmlText);
+        createdVehicle = request.postTarget( Vehicle.class); //get response and automatically unmarshall to a string.
+        System.out.println(createdVehicle.toString());
+        String updateText = "<vehicle><vehicleID>"+createdVehicle.getVehicleID()+"</vehicleID><color>red</color></vehicle>";
+        ClientRequest updateRequest = clientExecutor.createRequest(url+"/vehicle");
+        updateRequest.accept("application/xml").body( MediaType.APPLICATION_XML, updateText);
+        ClientResponse<Vehicle> updatedVehicle = updateRequest.put(Vehicle.class); //get response.
+        Vehicle vehicle = updatedVehicle.getEntity();
+        System.out.println(vehicle.toString());
+        
+        ClientRequest deleteRequest = clientExecutor.createRequest(url+"/vehicle/"+createdVehicle.getVehicleID());
+        ClientResponse<String> deleteResponse = deleteRequest.delete( String.class); //get response and automatically unmarshall to a string.
+        System.out.println(deleteResponse.getStatus());
     }
 }

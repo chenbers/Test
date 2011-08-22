@@ -49,6 +49,7 @@ import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.States;
@@ -372,7 +373,7 @@ public class DataGenForHelpScreenShots {
         VehicleType vtype = VehicleType.valueOf(Util.randomInt(0, 2));
         Vehicle vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, make + "_" + model+"_"+deviceID , make, model, Util.randomInt(1995, 2009), "Red", 
                     vtype, "VIN_" + deviceID, 1000, "UT " +deviceID, 
-                    States.getStateByAbbrev("UT"));
+                    States.getStateByAbbrev("UT"), VehicleDOTType.NON_DOT);
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
         vehicle.setVehicleID(vehicleID);
         

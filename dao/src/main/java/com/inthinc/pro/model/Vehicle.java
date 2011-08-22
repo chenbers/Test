@@ -45,8 +45,8 @@ public class Vehicle extends BaseEntity
     }
 
     public VehicleDOTType getDot() {
-        if (dot == null)
-            return VehicleDOTType.NON_DOT;
+//        if (dot == null)
+//            return VehicleDOTType.NON_DOT;
         return dot;
     }
 
@@ -214,7 +214,7 @@ public class Vehicle extends BaseEntity
 
     public Vehicle(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, 
             Integer year, String color,
-            VehicleType vtype, String vin, Integer weight, String license, State state)
+            VehicleType vtype, String vin, Integer weight, String license, State state, VehicleDOTType dot)
     {
         super();
         this.vehicleID = vehicleID;
@@ -230,6 +230,7 @@ public class Vehicle extends BaseEntity
         this.weight = weight;
         this.license = license;
         this.state = state;
+        this.dot = dot;
     }
 
     public Status getStatus()

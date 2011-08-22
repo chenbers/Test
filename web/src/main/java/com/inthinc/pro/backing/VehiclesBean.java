@@ -777,7 +777,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
         public VehicleView(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, Integer year, String color, VehicleType vtype, String vin, Integer weight,
                 String license, State state) {
-            super(vehicleID, groupID, status, name, make, model, year, color, vtype, vin, weight, license, state);
+            super(vehicleID, groupID, status, name, make, model, year, color, vtype, vin, weight, license, state, VehicleDOTType.NON_DOT);
         }
         
         public void initForwardCommandDefs() {
@@ -806,9 +806,12 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         
         @Override
         public VehicleDOTType getDot() {
-            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null || editableVehicleSettings.getProductType() != ProductType.WAYSMART)
-                return super.getDot();
-            
+            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null || 
+            			editableVehicleSettings.getProductType() != ProductType.WAYSMART){
+        		VehicleDOTType dot = super.getDot();
+        		if(dot==null) return VehicleDOTType.NON_DOT;
+        		return dot;
+            }
             return VehicleDOTType.getFromSetting(((WaySmartEditableVehicleSettings)editableVehicleSettings).getDotVehicleType());
         }
 

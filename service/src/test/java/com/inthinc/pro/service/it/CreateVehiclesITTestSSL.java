@@ -40,13 +40,19 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 
-@Ignore
+//@Ignore
 public class CreateVehiclesITTestSSL {
 
     private String scheme = "https";
     private String host = "weatherford.inthinc.com"; 
-    private String username = "sclavell"; 
-    private String password = "w7tness"; 
+//    private String username = "sclavell"; 
+//    private String password = "w7tness"; 
+
+//    private String username = "weatherfordinternationalltd"; 
+//    private String password = "NrsryjpqCfpx"; 
+
+    private String username = "testweatherford"; 
+    private String password = "password"; 
 
     private int port = 443;
     private TrustManager trustManager;
@@ -93,8 +99,12 @@ public class CreateVehiclesITTestSSL {
         scheme = "https";
         
         host = "weatherford.inthinc.com"; 
-        username = "sclavell"; 
-        password = "w7tness"; 
+//        username = "sclavell"; 
+//        password = "w7tness"; 
+//        username = "weatherfordinternationalltd"; 
+//        password = "NrsryjpqCfpx"; 
+        username = "testweatherford"; 
+        password = "password"; 
 
         port = 443;
         
@@ -177,7 +187,8 @@ public class CreateVehiclesITTestSSL {
         String uri = "/service/api/vehicle";
 
         HttpPost httpPost = new HttpPost(uri);
-        String vehicle1 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>184549725</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137729</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+//        String vehicle1 = "<vehicle><color/><dot>PROMPT_FOR_DOT_TRIP</dot><groupID>184549725</groupID><license/><make>Ford</make><model>Explorer</model><name>Ford Exp Transistor</name><state><stateID>45</stateID></state><status>ACTIVE</status><VIN>21111111111137729</VIN><vtype>HEAVY</vtype><year>2012</year></vehicle>";
+    	String vehicle1 = "<?xml version=\"1.0\" standalone=\"yes\"?><vehicle><groupID>184549724</groupID><name>20558</name><make>Inter'l</make><model>4700 LP</model><color></color><status>ACTIVE</status><VIN>1HTSLAAM0WH520459</VIN><year>1997</year><license>R38 050</license><state><stateID>44</stateID></state></vehicle>";
 
         StringEntity entity = new StringEntity( vehicle1,HTTP.UTF_8);
         entity.setContentType("application/xml");

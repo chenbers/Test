@@ -30,6 +30,8 @@ import com.inthinc.pro.map.GoogleAddressLookup;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleDOTType;
+import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.hos.HOSRecord;
 import com.inthinc.pro.table.PageData;
@@ -50,7 +52,8 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         // get the bean from the applicationContext (initialized by Spring injection)
         fuelStopsBean = (FuelStopsBean)applicationContext.getBean("fuelStopsBean");        
         fuelStopsBean.setVehicleID(130);
-        fuelStopsBean.setVehicle(new Vehicle(130,0,Status.ACTIVE,"vehicle130","Subaru","Impreza",2011,"blue",VehicleType.LIGHT,"12345678901234567", null,"123abc",State.valueOf(45)));
+        fuelStopsBean.setVehicle(new Vehicle(130,0,Status.ACTIVE,"vehicle130","Subaru","Impreza",2011,
+        		"blue",VehicleType.LIGHT,"12345678901234567", null,"123abc",State.valueOf(45),VehicleDOTType.NON_DOT));
         fuelStops = fuelStopsBean.getHosDAO().getFuelStopRecordsForVehicle(130, new DateRange(new Locale("en_US"),TimeZone.getTimeZone("America/Denver")).getInterval());
         countBefore = fuelStops.size();
         
@@ -454,5 +457,9 @@ public class FuelStopsBeanTest extends BaseBeanTest {
         assertTrue(truckGallonsUI.isValid());
         Iterator<FacesMessage> messages = facesContext.getMessages();
         assertFalse(messages.hasNext()); 
+    }
+    @Test
+    public void autocompleteTest(){
+    	List<VehicleName> suggestions = fuelStopsBean.autocomplete("1");
     }
 }

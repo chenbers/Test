@@ -45,6 +45,7 @@ import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.app.SiteAccessPoints;
@@ -162,7 +163,7 @@ public abstract class BaseITData {
         String name = ((idx == null) ? "" : idx) + "Vehicle" + (driverID == null ? "NO_DRIVER" : group.getName());
         Vehicle vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, name, "Make", "Model", 2000, "Red", 
                     VehicleType.LIGHT, "VIN_" + deviceID, 1000, "UT " + group.getGroupID(), 
-                    States.getStateByAbbrev("UT"));
+                    States.getStateByAbbrev("UT"), VehicleDOTType.NON_DOT);
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
         vehicle.setVehicleID(vehicleID);
         

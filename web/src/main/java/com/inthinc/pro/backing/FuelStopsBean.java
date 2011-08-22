@@ -360,7 +360,8 @@ public class FuelStopsBean extends BaseBean {
         Iterator<Vehicle> it = vehicles.iterator();
         while (it.hasNext()){
             Vehicle vehicle = it.next();
-            if (!dotTypes.contains(vehicle.getDot())){
+            VehicleDOTType dot = vehicle.getDot();
+            if ((dot == null) || !dotTypes.contains(dot)){
                 it.remove();
             }
         }
