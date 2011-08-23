@@ -48,11 +48,12 @@ public class DeviceTests extends WebRallyTest {
     
     @Test
     public void audioFilesFromHessianMatchSVN(){
+        StringBuilder destPath = new StringBuilder("target/test/resources/audioFiles/");
         set_test_case("TC5798");
-        File svnFolder = new File("src/main/resources/svnVersion/");
+        File svnFolder = new File(destPath.append("svnVersion/").toString());
         svnFolder.mkdir();
         
-        File hessianFolder = new File("src/main/resources/hessianVersion/");
+        File hessianFolder = new File(destPath.append("hessianVersion/").toString());
         hessianFolder.mkdir();
         
         TiwiProDevice tiwi = new TiwiProDevice("javadeviceindavidsaccount", Addresses.QA);
@@ -63,18 +64,16 @@ public class DeviceTests extends WebRallyTest {
                 int fileNumber = i;
                 
                 String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
-                String path = "src/main/resources/svnVersion/";
                 String fileName = String.format("%02d.pcm", fileNumber);
-                File dest = new File(path + fileName);
+                File dest = new File(destPath.append("svnVersion/").append(fileName).toString());
                 
                 if (!DownloadFile.downloadSvnDirectory(url, fileName, dest)){
                     addError("SVN File not found", ErrorLevel.FATAL_ERROR);
                 }
-                
-                tiwi.getAudioFile(fileNumber, locale);
+                tiwi.getAudioFile(destPath.append("hessianVersion/").append(fileName).toString(),fileNumber, locale);
         
-                String svn = MD5Checksum.getMD5Checksum(path + fileName);
-                String hessian = MD5Checksum.getMD5Checksum(path.replace("svn", "hessian") + fileName);
+                String svn = MD5Checksum.getMD5Checksum(destPath.append("svnVersion").append(fileName).toString());
+                String hessian = MD5Checksum.getMD5Checksum(destPath.append("hessianVersion").append(fileName).toString());
                 validateEquals(svn, hessian);
                 
             }
