@@ -1,10 +1,8 @@
 package com.inthinc.pro.backing;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -22,7 +20,6 @@ import com.inthinc.pro.model.RedFlagAlert;
 import com.inthinc.pro.model.RedFlagLevel;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.User;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleName;
 import com.inthinc.pro.model.VehicleType;
 import com.inthinc.pro.util.BeanUtil;
@@ -240,13 +237,15 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 //        return field.toLowerCase().contains(keyword.toLowerCase());
 //    }
    public List<Person> getPeopleInGroupHierarchy() {
-        
-        if( peopleInGroupHierarchy.size() == 0 ) {
-            peopleInGroupHierarchy = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());            
-        }
-        
-        return peopleInGroupHierarchy;
+       return getPeopleInGroupHierarchy(false);
     }
+   public List<Person> getPeopleInGroupHierarchy(boolean forceUpdate) {
+       if( peopleInGroupHierarchy.size() == 0 || forceUpdate ) {
+           peopleInGroupHierarchy = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());            
+       }
+       
+       return peopleInGroupHierarchy;
+   }
  
     private List<SelectItem> getAssignPicked()
     {
@@ -279,7 +278,8 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         if (peoplePicker == null || (peoplePicker.size() < 1) || peoplePicker.isOutdated())
         {
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
-            for (final Person person : getPeopleInGroupHierarchy()) {
+            boolean forceUpdate = peoplePicker == null || peoplePicker.isOutdated();
+            for (final Person person : getPeopleInGroupHierarchy(forceUpdate)) {
                 //only add users if they have values for the severity level of this alert
                 if(   (RedFlagLevel.INFO.equals(severityLevel)     && person.getInfo() != null && person.getInfo()>0)
                    || (RedFlagLevel.WARNING.equals(severityLevel)  && person.getWarn() != null && person.getWarn()>0)
