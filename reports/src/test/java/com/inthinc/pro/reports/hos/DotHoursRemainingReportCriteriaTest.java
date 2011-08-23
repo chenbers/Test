@@ -1,6 +1,6 @@
 package com.inthinc.pro.reports.hos;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 import java.util.List;
@@ -62,7 +62,7 @@ public class DotHoursRemainingReportCriteriaTest extends BaseUnitTest {
         new DotHoursRemaining("Open Hole",0,"Davis,  Rod",RuleSetType.US_OIL,212l,563l,"07/23/10",new Date(1279864800000l),HOSStatus.DRIVING,645l),
         new DotHoursRemaining("Open Hole",0,"Davis,  Rod",RuleSetType.US_OIL,212l,563l,"07/23/10",new Date(1279864800000l),HOSStatus.ON_DUTY,255l),
         new DotHoursRemaining("Open Hole",0,"Ehlers,  Neal",RuleSetType.US_OIL,407l,3768l,"08/06/10",new Date(1281074400000l),HOSStatus.DRIVING,0l),
-        new DotHoursRemaining("Open Hole",0,"Ehlers,  Neal",RuleSetType.US_OIL,407l,3768l,"08/06/10",new Date(1281074400000l),HOSStatus.ON_DUTY,435l),
+        new DotHoursRemaining("Open Hole",0,"Ehlers,  Neal",RuleSetType.US_OIL,407l,3768l,"08/06/10",new Date(1281074400000l),HOSStatus.ON_DUTY,420l),//435l),
         new DotHoursRemaining("Open Hole",0,"Ehlers,  Neal",RuleSetType.US_OIL,407l,3768l,"08/05/10",new Date(1280988000000l),HOSStatus.DRIVING,0l),
         new DotHoursRemaining("Open Hole",0,"Ehlers,  Neal",RuleSetType.US_OIL,407l,3768l,"08/05/10",new Date(1280988000000l),HOSStatus.ON_DUTY,0l),
         new DotHoursRemaining("Open Hole",0,"Ehlers,  Neal",RuleSetType.US_OIL,407l,3768l,"08/04/10",new Date(1280901600000l),HOSStatus.DRIVING,0l),

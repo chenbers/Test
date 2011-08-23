@@ -3,6 +3,7 @@ package com.inthinc.pro.reports.hos.model;
 import java.awt.Image;
 import java.util.List;
 
+import com.inthinc.hos.model.DayTotals;
 import com.inthinc.hos.model.HOSRecAdjusted;
 import com.inthinc.hos.model.RuleSetType;
 
@@ -28,6 +29,9 @@ public class HosDailyDriverLog {
     private List<RemarkLog> remarksList;
     private RecapType recapType;
     private List<Recap> recap;
+    private DayTotals correctedDayTotals;
+    private DayTotals originalDayTotals;
+    
     
     
     public List<Recap> getRecap() {
@@ -180,6 +184,22 @@ public class HosDailyDriverLog {
 
     public void setTerminalAddress(String terminalAddress) {
         this.terminalAddress = terminalAddress;
+    }
+
+    public DayTotals getCorrectedDayTotals() {
+        return correctedDayTotals;
+    }
+
+    public void setCorrectedDayTotals(DayTotals correctedDayTotals) {
+        this.correctedDayTotals = correctedDayTotals;
+    }
+
+    public DayTotals getOriginalDayTotals() {
+        return originalDayTotals;
+    }
+
+    public void setOriginalDayTotals(DayTotals originalDayTotals) {
+        this.originalDayTotals = originalDayTotals;
     }
 
 }

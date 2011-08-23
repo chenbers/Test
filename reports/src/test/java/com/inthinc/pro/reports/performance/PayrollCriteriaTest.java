@@ -9,7 +9,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.hos.model.HOSStatus;
@@ -21,7 +20,6 @@ import com.inthinc.pro.reports.hos.testData.HosRecordDataSet;
 import com.inthinc.pro.reports.performance.model.PayrollData;
 import com.inthinc.pro.reports.tabular.Result;
 
-@Ignore
 public class PayrollCriteriaTest extends BaseUnitTest {
 
     public static final String DATA_PATH = "violations/";
@@ -464,7 +462,7 @@ public class PayrollCriteriaTest extends BaseUnitTest {
     };    
     String tabularPayrollSummaryExpectedData[][] = {
             {"Elias,  Calvin", "168:00", "00:00", "00:00", "00:00", "00:00", "00:00",   },
-            {"Francey,  David ", "124:15", "00:00", "00:00", "09:45", "34:15", "44:00",   },
+            {"Francey,  David ", "124:00", "00:00", "00:00", "09:45", "34:15", "44:00",   },
             {"Giem,  Scott", "99:30", "00:00", "00:00", "07:00", "61:30", "68:30",   },
             {"Harris,  Eugene", "134:45", "00:00", "00:00", "01:45", "31:30", "33:15",   },
             {"Johnson,  Jack ", "167:15", "00:00", "00:00", "00:15", "00:30", "00:45",   },

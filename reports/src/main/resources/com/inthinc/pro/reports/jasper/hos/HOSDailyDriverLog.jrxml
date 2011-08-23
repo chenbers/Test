@@ -406,7 +406,7 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="22" splitType="Prevent">
+		<band height="22">
 			<componentElement>
 				<reportElement positionType="Float" x="0" y="0" width="555" height="22" isRemoveLineWhenBlank="true"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Horizontal">
@@ -509,7 +509,7 @@
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement mode="Transparent" x="465" y="0" width="90" height="12" backcolor="#FFFFFF">
-								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
+								<printWhenExpression><![CDATA[Boolean.valueOf($F{editor} != null && !$F{editor}.isEmpty())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{editor}]]></textFieldExpression>
