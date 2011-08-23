@@ -138,31 +138,38 @@ public class DownloadFile {
     }
     
     public static void main(String[] args){
-        
-        
+        int numTested = 0;
+        int numFailed = 0;
+        String destPath = new String("target/test/resources/audioFiles/");
         TiwiProDevice tiwi = new TiwiProDevice("javadeviceindavidsaccount", Addresses.QA);
         tiwi.set_WMP(17207);
         
-        for (int i=1;i<=33;i++){
-            for (Locales locale: EnumSet.allOf(Locales.class)){
+        for (Locales locale: EnumSet.allOf(Locales.class)){
+            String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
+            for (int i=1;i<=33;i++){
                 int fileNumber = i;
-                
-                String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
-                String path = "src/main/resources/svnVersion/";
                 String fileName = String.format("%02d.pcm", fileNumber);
-                File dest = new File(path + fileName);
+                String svnFileName = destPath+"svnVersion/"+locale+fileName;
+                String hessianFileName = destPath+"hessianVersion/"+locale+fileName;
+                File svnFile = new File(svnFileName);
                 
-                DownloadFile.downloadSvnDirectory(url, fileName, dest);
+                DownloadFile.downloadSvnDirectory(url, fileName, svnFile);
                 
-                tiwi.getAudioFile(fileNumber, locale);
+                tiwi.getAudioFile(hessianFileName, fileNumber, locale);
         
-                String svn = MD5Checksum.getMD5Checksum(path + fileName);
-                String hessian = MD5Checksum.getMD5Checksum(path.replace("svn", "hessian") + fileName);
-                System.out.println(fileName + " " + locale + " "+ hessian.equals(svn));
-                System.out.println("svn: " + svn + "  hessian: " + hessian);
-                
+                String svn = MD5Checksum.getMD5Checksum(svnFileName);
+                String hessian = MD5Checksum.getMD5Checksum(hessianFileName);
+                if(!hessian.equals(svn)){
+                    numFailed++;
+                    System.out.println("FAIL:"+"svn: " + svn + "  hessian: " + hessian);
+                } 
+                numTested++;
             }
         }
+        if(numFailed > 0)
+            System.out.println(numFailed+"/"+numTested+" files FAILED MD5Checksum comparison.");
+        else
+            System.out.println(numTested+"/"+numTested+" files PASSED MD5Checksum comparison.");
         
         
         

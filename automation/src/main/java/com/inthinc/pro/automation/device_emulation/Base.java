@@ -231,14 +231,12 @@ public abstract class Base {
         return map;
     }
     
-    public boolean getAudioFile(int fileVersion, Locales locale){
+    public boolean getAudioFile(String fileName, int fileVersion, Locales locale){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("hardwareVersion", this.WMP);
         map.put("fileVersion", fileVersion);
         map.put("locale", locale.toString());
         map.put("productVersion", this.productVersion);
-        
-        String fileName = String.format("src/main/resources/hessianVersion/%02d.pcm", fileVersion);
         
         Map<String, Object> reply = mcmProxy.audioUpdate(this.imei, map);
         logger.debug(reply);
