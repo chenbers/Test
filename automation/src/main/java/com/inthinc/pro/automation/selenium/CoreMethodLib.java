@@ -619,7 +619,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             boolean foundByString = ((element instanceof String) && (isElementPresent((String) element)));
             boolean foundByEnum = ((element instanceof SeleniumEnumWrapper) && (isElementPresent((SeleniumEnumWrapper) element)));
             found = foundByString || foundByEnum;
-            pause(1, "waitForElementPresent: " + element); // second
+            pause(5, "waitForElementPresent: " + element); // 5 seconds
             x++;
             doneWaiting = x > secondsToWait;
         }
