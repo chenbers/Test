@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
+import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.CreateHessian;
 import com.inthinc.pro.automation.utils.DownloadFile;
 import com.inthinc.pro.automation.utils.MD5Checksum;
@@ -49,33 +50,44 @@ public class DeviceTests extends WebRallyTest {
     @Test
     public void audioFilesFromHessianMatchSVN(){
         StringBuilder destPath = new StringBuilder("target/test/resources/audioFiles/");
+        String svnPath = destPath.append("svnVersion/").toString();
+        String hessianPath = destPath.append("hessianVersion/").toString();
+        
         set_test_case("TC5798");
-        File svnFolder = new File(destPath.append("svnVersion/").toString());
+        setBuildNumber(new AutomationCalendar().toString());
+        File svnFolder = new File(svnPath);
+        svnFolder.mkdirs();
         svnFolder.mkdir();
         
-        File hessianFolder = new File(destPath.append("hessianVersion/").toString());
+        File hessianFolder = new File(hessianPath);
+        hessianFolder.mkdirs();
         hessianFolder.mkdir();
         
-        TiwiProDevice tiwi = new TiwiProDevice("javadeviceindavidsaccount", Addresses.QA);
-        tiwi.set_WMP(17207);
-        
-        for (int i=1;i<=33;i++){
-            for (Locales locale: EnumSet.allOf(Locales.class)){
-                int fileNumber = i;
+        TiwiProDevice tiwi;
+        for (Addresses silo: new Addresses[]{Addresses.QA, Addresses.DEV, Addresses.PROD}){
+            
+            tiwi = new TiwiProDevice("FAKEIMEIDEVICE", silo);
+            tiwi.set_WMP(17207);
+            for (int i=1;i<=33;i++){
+
+                String fileName = String.format("%02d.pcm", i);
+                String svnFile = svnPath + "/" + fileName;
+                String hessianFile = hessianPath + "/" + fileName;
                 
-                String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
-                String fileName = String.format("%02d.pcm", fileNumber);
-                File dest = new File(destPath.append("svnVersion/").append(fileName).toString());
-                
-                if (!DownloadFile.downloadSvnDirectory(url, fileName, dest)){
-                    addError("SVN File not found", ErrorLevel.FATAL_ERROR);
-                }
-                tiwi.getAudioFile(destPath.append("hessianVersion/").append(fileName).toString(),fileNumber, locale);
-        
-                String svn = MD5Checksum.getMD5Checksum(destPath.append("svnVersion").append(fileName).toString());
-                String hessian = MD5Checksum.getMD5Checksum(destPath.append("hessianVersion").append(fileName).toString());
-                validateEquals(svn, hessian);
-                
+                for (Locales locale: EnumSet.allOf(Locales.class)){
+                    
+                    String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
+                    File dest = new File(svnFile);
+                    
+                    if (!DownloadFile.downloadSvnDirectory(url, fileName, dest)){
+                        addError("SVN File not found", ErrorLevel.FATAL_ERROR);
+                    }
+                    tiwi.getAudioFile(hessianFile,i, locale);
+            
+                    String svn = MD5Checksum.getMD5Checksum(svnFile);
+                    String hessian = MD5Checksum.getMD5Checksum(hessianFile);
+                    validateEquals(svn, hessian);
+                }        
             }
         }
     }
