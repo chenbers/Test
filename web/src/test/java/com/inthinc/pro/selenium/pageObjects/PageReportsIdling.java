@@ -10,10 +10,10 @@ import com.inthinc.pro.selenium.pageEnums.IdlingReportEnum;
 import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
-public class PageIdlingReport extends ReportsBar {
+public class PageReportsIdling extends ReportsBar {
 	private String page = "idling";
 	
-	public PageIdlingReport(){
+	public PageReportsIdling(){
 		url = IdlingReportEnum.DEFAULT_URL;
 		checkMe.add(IdlingReportEnum.IDLING_COUNTER);
 		checkMe.add(IdlingReportEnum.START_DATE);

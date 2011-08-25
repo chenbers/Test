@@ -23,9 +23,9 @@ import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceTrips;
-import com.inthinc.pro.selenium.pageObjects.PageDriverReport;
+import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
-import com.inthinc.pro.selenium.pageObjects.PageIdlingReport;
+import com.inthinc.pro.selenium.pageObjects.PageReportsIdling;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
@@ -43,7 +43,7 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceTrips;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport;
+import com.inthinc.pro.selenium.pageObjects.PageReportsVehicles;
 import com.thoughtworks.selenium.SeleniumException;
 
 public class JwimmerSandboxTest extends WebTest {

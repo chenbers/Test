@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.AdminUsersEnum;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport;
+import com.inthinc.pro.selenium.pageObjects.PageReportsVehicles;
 
 public class ChangePassword extends WebRallyTest {
 

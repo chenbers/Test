@@ -1,28 +1,17 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.DropDown;
+import com.inthinc.pro.automation.elements.Selector;
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextDateFieldLabel;
 import com.inthinc.pro.automation.elements.TextField;
-import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.WaysmartReportEnum;
-import com.inthinc.pro.selenium.pageObjects.Masthead.MastheadPopUps;
-import com.inthinc.pro.selenium.pageObjects.Masthead.Paging;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportButtons;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportDropDowns;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportLinks;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportPager;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportPopUps;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportTextFields;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport.VehicleReportTexts;
-import com.inthinc.pro.selenium.pageObjects.PopUps.EditColumns;
-import com.inthinc.pro.selenium.pageObjects.PopUps.Email;
-import com.inthinc.pro.selenium.pageObjects.PopUps.Types;
 
-public class PageWaysmartReport extends ReportsBar {
+public class PageReportsWaysmart extends ReportsBar {
     
-    public PageWaysmartReport() {
+    public PageReportsWaysmart() {
         url = WaysmartReportEnum.DEFAULT_URL;
         checkMe.add(WaysmartReportEnum.REPORT_DROP_DOWN);
         checkMe.add(WaysmartReportEnum.TITLE);
@@ -49,8 +38,8 @@ public class PageWaysmartReport extends ReportsBar {
 
     public class WaysmartReportTexts extends NavigationBarTexts{
     
-        public TextFieldLabel labelDateRange(){
-            return new TextFieldLabel(WaysmartReportEnum.START_DATE);
+        public TextDateFieldLabel labelDateRange(){
+            return new TextDateFieldLabel(WaysmartReportEnum.START_DATE);
         }
     
         public Text labelReportOn(){
@@ -60,6 +49,7 @@ public class PageWaysmartReport extends ReportsBar {
         public Text labelGroups(){
             return new Text(WaysmartReportEnum.GROUP_LABEL);
         }
+        
     }
     public class WaysmartReportTextFields extends NavigationBarTextFields{
         public TextField startDate(){
@@ -73,8 +63,24 @@ public class PageWaysmartReport extends ReportsBar {
     
     public class WaysmartReportDropDowns extends NavigationBarDropDowns{
         
-        public DropDown reportDropDown(){
+        public DropDown report(){
             return new DropDown(WaysmartReportEnum.REPORT_DROP_DOWN);
+        }
+        
+        public Selector group(){
+            return new Selector(WaysmartReportEnum.GROUP_SELECTOR);
+        }
+        
+        public DropDown reportOnDriver(){
+            return new DropDown(WaysmartReportEnum.REPORT_ON_DRIVER_DROP_DOWN);
+        }
+        
+        public DropDown driver(){
+            return new DropDown(WaysmartReportEnum.DRIVER_DROP_DOWN);
+        }
+        
+        public DropDown reportOn(){
+            return new DropDown(WaysmartReportEnum.REPORT_ON_DROP_DOWN);
         }
     }
 

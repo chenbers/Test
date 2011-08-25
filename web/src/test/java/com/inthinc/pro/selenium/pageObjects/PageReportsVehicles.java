@@ -15,9 +15,9 @@ import com.inthinc.pro.selenium.pageEnums.VehicleReportEnum;
 import com.inthinc.pro.selenium.pageObjects.Masthead.Paging;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsEmergency.NotificationsEmergencyPager;
 
-public class PageVehicleReport extends ReportsBar {
+public class PageReportsVehicles extends ReportsBar {
 	
-	public PageVehicleReport(){
+	public PageReportsVehicles(){
 		url = VehicleReportEnum.DEFAULT_URL;
 		checkMe.add(VehicleReportEnum.TITLE);
 	}

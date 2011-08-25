@@ -19,12 +19,12 @@ import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceStyle;
-import com.inthinc.pro.selenium.pageObjects.PageVehicleReport;
+import com.inthinc.pro.selenium.pageObjects.PageReportsVehicles;
 
 public class Reports_Vehicles extends WebRallyTest {
     private String username = "prime";
     private String password = "password";
-    private PageVehicleReport reports_vehicles;
+    private PageReportsVehicles reports_vehicles;
     private PageLogin login_page;
     private PageDriverPerformance driver_performance;
     private PageTeamDashboardStatistics team_dashboard;
@@ -35,7 +35,7 @@ public class Reports_Vehicles extends WebRallyTest {
     
     @Before
     public void setuppage() {
-        reports_vehicles = new PageVehicleReport();
+        reports_vehicles = new PageReportsVehicles();
         login_page = new PageLogin();
         driver_performance = new PageDriverPerformance();
         team_dashboard = new PageTeamDashboardStatistics();

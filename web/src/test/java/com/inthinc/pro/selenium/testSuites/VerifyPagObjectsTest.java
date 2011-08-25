@@ -8,10 +8,10 @@ import org.junit.Test;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
-import com.inthinc.pro.selenium.pageObjects.PageDriverReport;
+import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
-import com.inthinc.pro.selenium.pageObjects.PageWaysmartReport;
+import com.inthinc.pro.selenium.pageObjects.PageReportsWaysmart;
 
 public class VerifyPagObjectsTest extends WebRallyTest {
 
@@ -53,9 +53,9 @@ public class VerifyPagObjectsTest extends WebRallyTest {
 		
 		//Click waySmart.
 		my._link().reports().click();
-		PageDriverReport driverReport = new PageDriverReport();
+		PageReportsDrivers driverReport = new PageReportsDrivers();
 		driverReport._link().waySmart().click();
-        PageWaysmartReport waysmartReport = new PageWaysmartReport();
+        PageReportsWaysmart waysmartReport = new PageReportsWaysmart();
         waysmartReport.validate();		
         
         ArrayList<String> desiredOptions = new ArrayList<String>();
@@ -77,8 +77,8 @@ public class VerifyPagObjectsTest extends WebRallyTest {
         desiredOptions.add("State Mileage By Month");
         desiredOptions.add("Group Comparison By State/Province");
         for(String desiredOption: desiredOptions){
-            waysmartReport._dropDown().reportDropDown().select(desiredOption);
-            waysmartReport._dropDown().reportDropDown().assertEquals(desiredOption);
+            waysmartReport._dropDown().report().select(desiredOption);
+            waysmartReport._dropDown().report().assertEquals(desiredOption);
             pause(5, "just pausing to manually inspect test");
         }
 //		Click Notifications.

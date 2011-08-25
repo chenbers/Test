@@ -95,6 +95,10 @@ public class PageHOSReports extends HOSBar {
         public Selector group(){
             return new Selector(HosReportsEnum.GROUP_SELECTOR);
         }
+        
+        public DropDown driver(){
+            return new DropDown(HosReportsEnum.DRIVER_DROP_DOWN);
+        }
     }
     public class HOSReportsPopUps extends MastheadPopUps{
         

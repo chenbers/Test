@@ -8,14 +8,14 @@ import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceStyle;
-import com.inthinc.pro.selenium.pageObjects.PageDriverReport;
+import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
 public class ReportsDriver extends WebRallyTest {
 
 	private String username = "danniauto";
 	private String password = "password";
-	private PageDriverReport driver = new PageDriverReport();
+	private PageReportsDrivers driver = new PageReportsDrivers();
 	private PageDriverPerformance performance = new PageDriverPerformance();
 	private PageDriverPerformanceStyle style = new PageDriverPerformanceStyle();
 	private PageDriverPerformanceSeatBelt belt = new PageDriverPerformanceSeatBelt();
@@ -154,7 +154,7 @@ public class ReportsDriver extends WebRallyTest {
 	 public void DriverReportSearch() {
 	  set_test_case("TC1560");
 	  
-	  PageDriverReport driver = new PageDriverReport();
+	  PageReportsDrivers driver = new PageReportsDrivers();
 	  // 1- Login
 	  driver.loginProcess(username, password);
 

@@ -13,9 +13,9 @@ import com.inthinc.pro.selenium.pageEnums.PopUpEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.ReportsDriversEnum;
 
-public class PageDriverReport extends ReportsBar {
+public class PageReportsDrivers extends ReportsBar {
 
-    public PageDriverReport() {
+    public PageReportsDrivers() {
         url = null;
         checkMe.add(ReportsDriversEnum.TITLE);
         checkMe.add(ReportsDriversEnum.EDIT_COLUMNS);
