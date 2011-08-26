@@ -2,7 +2,9 @@ package com.inthinc.pro.dao.mock;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
@@ -13,18 +15,23 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.GenericDAO;
 import com.inthinc.pro.dao.HOSDAO;
-import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantHistory;
 import com.inthinc.pro.model.hos.HOSOccupantInfo;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 
 public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
     List<HOSRecord> plainRecords;
+    public static final Integer MOCK_DRIVER_ID1 = 130;
+    public static final Integer MOCK_DRIVER_ID2 = 131;
+    public static final Integer MOCK_VEHICLE_ID1 = 130;
+    public static final Integer MOCK_VEHICLE_ID2 = 131;
+    
+    public static final Long VEHICLE1_MILEAGE = 1000L;
+    public static final Long VEHICLE2_MILEAGE = 2000L;
     
     private List<HOSRecord> getMockHOSRecords() {
         if (plainRecords != null)
@@ -256,13 +263,6 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
         return filteredList;
     }
 
-
-    @Override
-    public List<HOSVehicleDayData> getHOSVehicleDataByDay(Integer driverID, Interval interval) {
-        // TODO Auto-generated method stub
-        return new ArrayList<HOSVehicleDayData>();
-    }
-
     @Override
     public List<HOSVehicleMileage> getHOSVehicleMileage(Integer groupID, Interval interval, Boolean noDriver) {
         // TODO Auto-generated method stub
@@ -338,10 +338,6 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
         return hosFilteredRecordList;
     }
 
-    @Override
-    public Number fetchMileageForDayDriverVehicle(DateTime day, Integer driverID, Integer vehicleID) {
-        return 0;
-    }
 
     @Override
     public HOSDriverLogin getDriverForEmpid(String commAddress, String employeeId) {
@@ -415,5 +411,15 @@ public class MockHOSDAO implements HOSDAO, GenericDAO<HOSRecord, Long> {
         }
         return hosRecords;
         
+    }
+
+    @Override
+    public Map<Integer, Long> fetchMileageForDayVehicle(DateTime day, Integer vehicleID) {
+        Map<Integer, Long> mileageMap = new HashMap<Integer, Long>();
+        if (vehicleID.equals(MOCK_VEHICLE_ID1))
+            mileageMap.put(MOCK_DRIVER_ID1, VEHICLE1_MILEAGE);
+        if (vehicleID.equals(MOCK_VEHICLE_ID2))
+            mileageMap.put(MOCK_DRIVER_ID2, VEHICLE2_MILEAGE);
+        return mileageMap;
     }
 }

@@ -152,7 +152,7 @@ public class DDLDataSet {
                         data.setDay(day.toDate());
                         data.setVehicleID(rec.getVehicleID());
                         data.setVehicleName(values[unitIdIdx]);
-                        data.setMilesDriven(1000l);
+                        data.setVehicleMiles(1000l);
                         data.setStartOdometer(150000l);
                         
                         hosVehicleDayDataList.add(data);
@@ -162,7 +162,7 @@ public class DDLDataSet {
                         data.setDay(day.toDate());
                         data.setVehicleID(rec.getVehicleID()*100);
                         data.setVehicleName(values[unitIdIdx]+ " TEST");
-                        data.setMilesDriven(100l);
+                        data.setVehicleMiles(100l);
                         data.setStartOdometer(15000l);
                         
                         hosVehicleDayDataList.add(data);

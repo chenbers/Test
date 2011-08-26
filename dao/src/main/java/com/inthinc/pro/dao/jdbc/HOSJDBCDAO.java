@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -217,6 +219,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
     @Override
     public List<HOSOccupantLog> getHOSOccupantLogs(Integer driverID, Interval interval) {
         Date currentTime = new Date();
+System.out.println("getHOSOccupantLogs: " + interval);            
         
         Connection conn = null;
         CallableStatement statement = null;
@@ -231,6 +234,8 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             statement.setInt(1, driverID);
             statement.setLong(2, interval.getStartMillis());
             statement.setLong(3, interval.getEndMillis());
+
+System.out.println(statement.toString());            
 			
             if(logger.isDebugEnabled())
                 logger.debug(statement.toString());
@@ -250,6 +255,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
                 occupantLog.setEndTime((ms == null || ms == 0) ? currentTime : new Date(ms));
                 occupantLog.setServiceID(resultSet.getString(6));
                 occupantLog.setTrailerID(resultSet.getString(7));
+System.out.println("adding OccupantLog: driverID" + occupantLog.getDriverID() + " vehicleID: " + occupantLog.getVehicleID() + " time: " + occupantLog.getLogTime() + " to " + occupantLog.getEndTime());                
                 
                 recordList.add(occupantLog);
             }
@@ -518,64 +524,6 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         
         
     }
-
-    @Override
-    public List<HOSVehicleDayData> getHOSVehicleDataByDay(Integer driverID, Interval interval) {
-        Connection conn = null;
-        CallableStatement statement = null;
-        ResultSet resultSet = null;
-
-        ArrayList<HOSVehicleDayData> recordList = new ArrayList<HOSVehicleDayData>();
-        
-        try
-        {
-            conn = getConnection();
-            statement = conn.prepareCall("{call hos_getHOSVehicleRecordsForDriver(?, ?, ?)}");
-            statement.setInt(1, driverID);
-            statement.setLong(2, interval.getStartMillis());
-            statement.setLong(3, interval.getEndMillis());
-			
-            if(logger.isDebugEnabled())
-                logger.debug(statement.toString());
-			
-            resultSet = statement.executeQuery();
-
-            long stopOdometer;
-            long milesDriven;
-            HOSVehicleDayData hosRecord = null;
-            while (resultSet.next())
-            {
-                hosRecord = new HOSVehicleDayData();
-
-                hosRecord.setVehicleID(resultSet.getInt(1));
-                hosRecord.setVehicleName(resultSet.getString(2));
-                long ms = resultSet.getLong(3);
-                hosRecord.setDay(new Date(ms));
-                hosRecord.setStartOdometer(resultSet.getLong(4));
-                stopOdometer = resultSet.getLong(5);
-
-                milesDriven = (stopOdometer > hosRecord.getStartOdometer()) ? (stopOdometer - hosRecord.getStartOdometer()) : 0;
-                
-                hosRecord.setMilesDriven(milesDriven);
-                
-                recordList.add(hosRecord);
-                
-            }
-        }   // end try
-        catch (SQLException e)
-        { // handle database hosLogs in the usual manner
-            throw new ProDAOException((statement != null) ? statement.toString() : "", e);
-        }   // end catch
-        finally
-        { // clean up and release the connection
-            close(resultSet);
-            close(statement);
-            close(conn);
-        } // end finally
-
-        return recordList;
-    }
-
     @Override
     public Long create(Long id, HOSRecord hosRecord) {
         Connection conn = null;
@@ -1068,26 +1016,29 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
         return occupantInfo;
     }
 
-    private static final String FETCH_MILEAGE = "select odometer6 from agg where driverID = ? and vehicleID = ? and aggDate = ?";
     private static final DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private static final String FETCH_MILEAGE_VEHICLE_DAY = "select driverID, odometer6 from agg where vehicleID = ? and aggDate = ?";
     
     @Override
-    public Number fetchMileageForDayDriverVehicle(DateTime day, Integer driverID, Integer vehicleID) {
+    public Map<Integer, Long> fetchMileageForDayVehicle(DateTime day, Integer vehicleID) {
+        
+        Map<Integer, Long> mileageMap = new HashMap<Integer, Long>();
         Connection conn = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try
         {
             conn = getConnection();
-            statement = (PreparedStatement) conn.prepareStatement(FETCH_MILEAGE);
-            statement.setInt(1, driverID);
-            statement.setInt(2, vehicleID);
-            statement.setDate(3, java.sql.Date.valueOf(dateFormatter.print(day)));
+            statement = (PreparedStatement) conn.prepareStatement(FETCH_MILEAGE_VEHICLE_DAY);
+            statement.setInt(1, vehicleID);
+            statement.setDate(2, java.sql.Date.valueOf(dateFormatter.print(day)));
             resultSet = statement.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
+                Integer driverID = resultSet.getInt(1);
+                Long mileage = resultSet.getLong(2);
+                mileageMap.put(driverID, mileage);
                 
-                return resultSet.getLong(1);
             }
                 
 
@@ -1103,7 +1054,7 @@ public class HOSJDBCDAO extends GenericJDBCDAO implements HOSDAO {
             close(conn);
         } // end finally   
         
-        return 0l;
+        return mileageMap;
     }
 
     @Override

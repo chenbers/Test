@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
@@ -95,7 +96,7 @@ public class HosDailyDriverLogReportCriteria {
     private static int MAX_RULESET_DAYSBACK = 24;
 
     private Map<Integer, Vehicle> vehicleMap = new HashMap<Integer, Vehicle>();
-    
+
     private ResourceBundle resourceBundle;
 
     public HosDailyDriverLogReportCriteria(Locale locale, Boolean defaultUseMetric) 
@@ -286,13 +287,9 @@ public class HosDailyDriverLogReportCriteria {
             
             LocalDate localDate = new LocalDate(intervalDay);
             DateTime driverDay = localDate.toDateTimeAtStartOfDay(DateTimeZone.forTimeZone(driver.getPerson().getTimeZone()));
-//            DateTimeZone dateTimeZone = getBestTimeZone(intervalDay.toDate(), hosRecordList, driver.getPerson().getTimeZone());
             DateTimeZone dateTimeZone = getBestTimeZone(driverDay.toDate(), hosRecordList, driver.getPerson().getTimeZone());
-//System.out.println("bestTimeZone: " + dateTimeZone);
-//System.out.println("driverDay: " + driverDay);
 
             DateTime day = localDate.toDateTimeAtStartOfDay(dateTimeZone);
-//System.out.println("graphDay: " + day);
             if (day.toDate().after(currentTime)) 
                 break;
 
@@ -341,10 +338,10 @@ public class HosDailyDriverLogReportCriteria {
         }
     }
     
-    private List<VehicleInfo> initVehicleInfoForDay(DateTime day, Integer driverID, List<HOSRecAdjusted> logListForDay, List<HOSRecord> hosRecordList) {
+    List<VehicleInfo> initVehicleInfoForDay(DateTime day, Integer driverID, List<HOSRecAdjusted> logListForDay, List<HOSRecord> hosRecordList) {
         List<VehicleInfo> vehicleInfoList = new ArrayList<VehicleInfo>();
         for (HOSRecAdjusted rec  : logListForDay) {
-            if (rec.getStatus() == HOSStatus.DRIVING) {
+            if (rec.getVehicleID() != null) {
                 boolean alreadyAdded = false;
                 for (VehicleInfo vehicleInfo : vehicleInfoList) {
                     if (rec.getVehicleID().equals(vehicleInfo.getVehicleID())) {
@@ -354,19 +351,45 @@ public class HosDailyDriverLogReportCriteria {
                 }
                 if (!alreadyAdded) {
                     VehicleInfo vehicleInfo = new VehicleInfo();
-                    for (HOSRecord hosRecord :hosRecordList)
-                        if (hosRecord.getHosLogID().toString().equals(rec.getId())) {
-                            vehicleInfo.setStartOdometer(hosRecord.getVehicleOdometer());
-                            vehicleInfo.setName(getVehicleNameStr(rec.getVehicleID()));
-                            vehicleInfo.setVehicleID(rec.getVehicleID());
-                            vehicleInfo.setMilesDriven(hosDAO.fetchMileageForDayDriverVehicle(day, driverID, rec.getVehicleID()));
-                            vehicleInfoList.add(vehicleInfo);
-                            break;
-                        }
+                    vehicleInfo.setStartOdometer(getVehicleStartOdometer(rec, hosRecordList));
+                    vehicleInfo.setName(getVehicleNameStr(rec.getVehicleID()));
+                    vehicleInfo.setVehicleID(rec.getVehicleID());
+                    Map<Integer, Long> mileageMap = hosDAO.fetchMileageForDayVehicle(day, rec.getVehicleID());
+                    vehicleInfo.setDriverMiles(getDriverMiles(mileageMap, logListForDay, driverID));
+                    vehicleInfo.setVehicleMiles(getVehicleMiles(mileageMap));
+                    vehicleInfoList.add(vehicleInfo);
                 }
             }
         }
         return vehicleInfoList;
+    }
+
+    private Number getDriverMiles(Map<Integer, Long> mileageMap, List<HOSRecAdjusted> logListForDay, Integer driverID) {
+        for (Entry<Integer, Long> entry : mileageMap.entrySet()) { 
+            Integer vehicleDriverID = entry.getKey();
+            for (HOSRecAdjusted dayRec  : logListForDay) {
+                if (dayRec.getStatus()== HOSStatus.DRIVING && vehicleDriverID.equals(driverID)) {
+                    return entry.getValue();
+                }
+            }
+        }
+        return 0l;
+    }
+
+    private Number getVehicleMiles(Map<Integer, Long> mileageMap) {
+        Long vehicleMiles = 0l;
+        for (Entry<Integer, Long> entry : mileageMap.entrySet()) { 
+            vehicleMiles += entry.getValue();
+        }
+        return vehicleMiles;
+    }
+
+    private Number getVehicleStartOdometer(HOSRecAdjusted rec, List<HOSRecord> hosRecordList) {
+        for (HOSRecord hosRecord :hosRecordList)
+            if (hosRecord.getHosLogID().toString().equals(rec.getId())) {
+                return hosRecord.getVehicleOdometer();
+            }
+        return 0;
     }
 
     private String getVehicleNameStr(Integer vehicleID)
@@ -752,7 +775,7 @@ public class HosDailyDriverLogReportCriteria {
     private Number getMilesDrivenOnDay(List<VehicleInfo> vehicles) {
         long total = 0l;
         for (VehicleInfo vehicleInfo : vehicles) {
-            total += vehicleInfo.getMilesDriven().longValue();
+            total += (vehicleInfo.getDriverMiles() != null) ? vehicleInfo.getDriverMiles().longValue() : 0l;
         }
         return total;
     }
@@ -764,7 +787,8 @@ public class HosDailyDriverLogReportCriteria {
                     VehicleInfo vehicleInfo = new VehicleInfo();
                     vehicleInfo.setStartOdometer(hosVehicleDayData.getStartOdometer());
                     vehicleInfo.setName(hosVehicleDayData.getVehicleName());
-                    vehicleInfo.setMilesDriven(hosVehicleDayData.getMilesDriven());
+                    vehicleInfo.setVehicleMiles(hosVehicleDayData.getVehicleMiles());
+                    vehicleInfo.setDriverMiles(hosVehicleDayData.getDriverMiles());
                     vehicleInfoList.add(vehicleInfo);
                 }
             }
@@ -811,6 +835,12 @@ public class HosDailyDriverLogReportCriteria {
             img = ImageIO.read(ReportUtils.loadFile(imageFile));
         } catch (IOException e) {
             logger.error(e);
+            if (img == null)
+                try {
+                    img = ImageIO.read(ReportUtils.loadFile(BASE_LOG_GRAPH_IMAGE_PATH+".jpg"));
+                } catch (IOException e1) {
+                    logger.error(e1);
+                }
         }
         
         
@@ -893,5 +923,11 @@ public class HosDailyDriverLogReportCriteria {
 	public String getCompanyName() {
 		return companyName;
 	}
+
+    
+    public Map<Integer, Vehicle> getVehicleMap() {
+        return vehicleMap;
+    }
+
 
 }

@@ -19,7 +19,7 @@
 		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 		<field name="startOdometer" class="java.lang.Number"/>
 		<field name="name" class="java.lang.String"/>
-		<field name="milesDriven" class="java.lang.Number"/>
+		<field name="vehicleMiles" class="java.lang.Number"/>
 	</subDataset>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:\\develop\\tiwipro\\root\\reports\\src\\main\\resources\\com\\inthinc\\pro\\reports\\jasper\\hos\\"]]></defaultValueExpression>
@@ -105,7 +105,7 @@
 							<textElement textAlignment="Center">
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression class="java.lang.String"><![CDATA[msg("{0} ({1})", $F{name}, com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{milesDriven},$P{USE_METRIC},$P{REPORT_LOCALE}))]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[msg("{0} ({1})", $F{name}, com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{vehicleMiles},$P{USE_METRIC},$P{REPORT_LOCALE}))]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>

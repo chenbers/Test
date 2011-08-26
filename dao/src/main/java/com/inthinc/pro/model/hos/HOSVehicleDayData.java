@@ -6,14 +6,20 @@ import com.inthinc.pro.model.BaseEntity;
 
 public class HOSVehicleDayData extends BaseEntity {
     
+    private static final long serialVersionUID = 1L;
     Integer     vehicleID;
     String      vehicleName;
     Date        day;
     Long        startOdometer;
-    Long        milesDriven;
-    
-    
+    Long        vehicleMiles;
+    Long        driverMiles;
 
+    public Long getDriverMiles() {
+        return driverMiles;
+    }
+    public void setDriverMiles(Long driverMiles) {
+        this.driverMiles = driverMiles;
+    }
     public Integer getVehicleID() {
         return vehicleID;
     }
@@ -38,10 +44,10 @@ public class HOSVehicleDayData extends BaseEntity {
     public void setStartOdometer(Long startOdometer) {
         this.startOdometer = startOdometer;
     }
-    public Long getMilesDriven() {
-        return milesDriven;
+    public Long getVehicleMiles() {
+        return vehicleMiles;
     }
-    public void setMilesDriven(Long milesDriven) {
-        this.milesDriven = milesDriven;
+    public void setVehicleMiles(Long vehicleMiles) {
+        this.vehicleMiles = vehicleMiles;
     }
 }

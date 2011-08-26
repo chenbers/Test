@@ -7,6 +7,7 @@ import it.com.inthinc.pro.dao.model.GroupData;
 import it.com.inthinc.pro.dao.model.ITData;
 import it.config.ITDataSource;
 import it.config.IntegrationConfig;
+import it.config.ReportTestConst;
 import it.util.DataGenForHOSTesting;
 
 import java.io.ByteArrayOutputStream;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -39,10 +41,9 @@ import com.inthinc.pro.model.hos.HOSDriverLogin;
 import com.inthinc.pro.model.hos.HOSGroupMileage;
 import com.inthinc.pro.model.hos.HOSOccupantLog;
 import com.inthinc.pro.model.hos.HOSRecord;
-import com.inthinc.pro.model.hos.HOSVehicleDayData;
 import com.inthinc.pro.model.hos.HOSVehicleMileage;
 
-//@Ignore
+
 public class HOSJDBCDAOTest extends BaseJDBCTest{
     private static ITData itData;
     private static SiloService siloService;
@@ -82,9 +83,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         HOSRecord expectedHosRecord = constructExpectedHosRecord(hosRecord, testDriver, null);
 
         // TODO: fix these, they should not be ignored
-        // vehicleIsDOT is hardcoded in stored proc to 1
         String ignoreFields[] = { "originalLogTime", "vehicleIsDOT" };
-
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
         
     }
@@ -107,10 +106,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
 
         HOSRecord expectedHosRecord = constructExpectedHosRecord(hosRecord, testDriver, testVehicle);
 
-        // TODO: fix these, they should not be ignored
-        // vehicleIsDOT is hardcoded in stored proc to 1
-        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT" };
-
+        String ignoreFields[] = { "originalLogTime"};
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
         
     }
@@ -136,9 +132,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         HOSRecord expectedHosRecord = constructExpectedHosRecord(hosRecord, testDriver, testVehicle);
         expectedHosRecord.setDeleted(true);
 
-        // TODO: fix these, they should not be ignored
-        // vehicleIsDOT is hardcoded in stored proc to 1
-        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT" };
+        String ignoreFields[] = { "originalLogTime"};
 
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
         
@@ -155,15 +149,12 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         Driver testGoodDriver = fetchDriver(testGoodGroupData.driver.getDriverID());
         Vehicle testGoodVehicle = testGoodGroupData.vehicle;
         GroupData testBadGroupData = itData.teamGroupData.get(ITData.BAD);
-        Driver testBadDriver = fetchDriver(testBadGroupData.driver.getDriverID());
         Vehicle testBadVehicle = testBadGroupData.vehicle;
         
         Date hosRecordDate = new Date();
         HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testGoodDriver, hosRecordDate, testGoodVehicle.getVehicleID(), 34.0f,45.0f);
         HOSRecord editHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         
-System.out.println("fleet user " + itData.fleetUser.getUserID());
-System.out.println("district user " + itData.districtUser.getUserID());
         // change some of the fields (just the ones that the UI can change, except driver)
         Date newHosRecordDate = new Date(hosRecordDate.getTime()-60000l);   // one minute earlier
         editHosRecord.setLocation("new location");
@@ -184,12 +175,8 @@ System.out.println("district user " + itData.districtUser.getUserID());
         expectedHosRecord.setOriginalLogTime(hosRecordDate);
         expectedHosRecord.setOriginalLocation(INITIAL_LOCATION);
 
-        // TODO: fix these, they should not be ignored
-        // vehicleIsDOT is hardcoded in stored proc to 1
-        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT" };
-
+        String ignoreFields[] = { "originalLogTime"};
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
-
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
     }
 
@@ -204,7 +191,6 @@ System.out.println("district user " + itData.districtUser.getUserID());
         Vehicle testGoodVehicle = testGoodGroupData.vehicle;
         GroupData testBadGroupData = itData.teamGroupData.get(ITData.BAD);
         Driver testBadDriver = fetchDriver(testBadGroupData.driver.getDriverID());
-        Vehicle testBadVehicle = testBadGroupData.vehicle;
         
         Date hosRecordDate = new Date();
         HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testGoodDriver, hosRecordDate, testGoodVehicle.getVehicleID(), HOSStatus.ON_DUTY_OCCUPANT, 34.0f,45.0f);
@@ -218,9 +204,7 @@ System.out.println("district user " + itData.districtUser.getUserID());
         expectedHosRecord.setDeleted(true);
         expectedHosRecord.setChangedCnt(2);
 
-        // TODO: fix these, they should not be ignored
-        // vehicleIsDOT is hardcoded in stored proc to 1
-        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT", "serviceID", "trailerID" };
+        String ignoreFields[] = { "originalLogTime"};
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
 
@@ -233,6 +217,10 @@ System.out.println("district user " + itData.districtUser.getUserID());
         expectedHosRecord = constructExpectedHosRecord(hosRecord, testBadDriver, testGoodVehicle);
         expectedHosRecord.setHosLogID(transferedHosRecord.getHosLogID());
         foundHosRecord = hosDAO.findByID(badDriverRecords.get(0).getHosLogID());
+        if (foundHosRecord.getServiceID() != null && foundHosRecord.getServiceID().isEmpty())
+            foundHosRecord.setServiceID(null);
+        if (foundHosRecord.getTrailerID() != null && foundHosRecord.getTrailerID().isEmpty())
+            foundHosRecord.setTrailerID(null);
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
     }
 
@@ -248,8 +236,6 @@ System.out.println("district user " + itData.districtUser.getUserID());
         Vehicle testVehicle = testGroupData.vehicle;
         
         long numHosRecords = Util.randomInt(1, 5);
-        
-System.out.println("numHosRecords " + numHosRecords);        
         
         
         Date currentDate = new Date();  
@@ -289,17 +275,14 @@ System.out.println("numHosRecords " + numHosRecords);
         
         long numHosRecords = Util.randomInt(1, 5);
         
-System.out.println("numHosRecords " + numHosRecords);        
-        
-        
         Date currentDate = new Date();  
         Date startDate = new Date(currentDate.getTime()/1000l * 1000l);
         
         try {
             // sleep so that no other records are within the time interval
-            System.out.println("sleeping for " + msDelta*(numHosRecords+1) + " ms");
+//            System.out.println("sleeping for " + msDelta*(numHosRecords+1) + " ms");
             Thread.sleep(msDelta*(numHosRecords+1));
-            System.out.println("sleeping done");
+//            System.out.println("sleeping done");
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -312,7 +295,6 @@ System.out.println("numHosRecords " + numHosRecords);
         }
         
         Interval queryInterval = new Interval(new DateTime(startDate.getTime(), DateTimeZone.UTC), new DateTime(new Date(),DateTimeZone.UTC));
-        System.out.println(" " + queryInterval);
         List<HOSRecord> vehicleRecords = hosDAO.getRecordsForVehicle(testVehicle.getVehicleID(), queryInterval, false);
         
        assertEquals("unexpected record count returned", numHosRecords, vehicleRecords.size()); 
@@ -329,30 +311,25 @@ System.out.println("numHosRecords " + numHosRecords);
         
         long numHosRecords = Util.randomInt(1, 5);
         
-System.out.println("numHosRecords " + numHosRecords);        
-        
-        
         Date currentDate = new Date();  
         Date startDate = new Date(currentDate.getTime()/1000l * 1000l);
         
         try {
             // sleep so that no other records are within the time interval
-            System.out.println("sleeping for " + msDelta*(numHosRecords+1) + " ms");
+//            System.out.println("sleeping for " + msDelta*(numHosRecords+1) + " ms");
             Thread.sleep(msDelta*(numHosRecords+1));
-            System.out.println("sleeping done");
+//            System.out.println("sleeping done");
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         
-        int status = 0;
         for (long i = 0; i < numHosRecords; i++) {
             createMinimalHosRecord(hosDAO, testDriver, new Date(startDate.getTime() + i*msDelta), 
                     testVehicle.getVehicleID(), HOSStatus.FUEL_STOP, 34.0f,45.0f);
         }
         
         Interval queryInterval = new Interval(new DateTime(startDate.getTime()), new DateTime(new Date()));
-        System.out.println(" " + queryInterval);
         List<HOSRecord> driverRecords = hosDAO.getFuelStopRecordsForVehicle(testVehicle.getVehicleID(), queryInterval);
         
         assertEquals("unexpected record count returned", numHosRecords, driverRecords.size());
@@ -360,38 +337,9 @@ System.out.println("numHosRecords " + numHosRecords);
         
         
     }
-    @Ignore
+    
     @Test
-    public void hosVehicleDataByDayTest() {
-        HOSDAO hosDAO = new HOSJDBCDAO();
-        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
-
-        GroupData testGroupData = itData.teamGroupData.get(ITData.INTERMEDIATE);
-        Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
-        Vehicle testVehicle = testGroupData.vehicle;
-        Date genDataStartDate = new Date(itData.startDateInSec*1000l);
-        DateTime dayStartUTC = new DateMidnight(genDataStartDate, DateTimeZone.UTC).toDateTime();
-        
-        Interval queryInterval = new Interval(new DateMidnight(dayStartUTC).minusDays(1), new DateMidnight(dayStartUTC).toDateTime().minusSeconds(1));
-//System.out.println("queryInterval: " + queryInterval);
-        List<HOSVehicleDayData> vehicleDayDataRecords = hosDAO.getHOSVehicleDataByDay(testDriver.getDriverID(), queryInterval);
-        assertTrue("expected 1 record for 1 day/1 driver", vehicleDayDataRecords.size() == 1);
-        HOSVehicleDayData rec = vehicleDayDataRecords.get(0);
-        assertEquals("vehicleName", testVehicle.getName(), rec.getVehicleName());
-        assertEquals("vehicleID", testVehicle.getVehicleID(), rec.getVehicleID());
-//System.out.println("DAY: " + new DateTime(rec.getDay(), DateTimeZone.UTC) + " ms: " + rec.getDay().getTime());
-        assertTrue("returned day day is within interval", queryInterval.contains(rec.getDay().getTime()));
-        assertEquals("odometer ", Long.valueOf(DataGenForHOSTesting.LOGIN_ODOMETER), rec.getStartOdometer());
-        Long expectedMiles = Long.valueOf(DataGenForHOSTesting.LOGOUT_ODOMETER-DataGenForHOSTesting.LOGIN_ODOMETER);
-//TODO: THIS IS NO LONGER WORKING -- NEED TO TALK TO BILL        
-//        assertEquals("miles ", expectedMiles, rec.getMilesDriven());
-        
-    }
-
-    @Test
-    @Ignore
     public void hosMileageTest() {
-        // don't think this is ready yet
         HOSDAO hosDAO = new HOSJDBCDAO();
         ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
 
@@ -399,21 +347,22 @@ System.out.println("numHosRecords " + numHosRecords);
         Date genDataStartDate = new Date(itData.startDateInSec*1000l);
         DateTime dayStartUTC = new DateMidnight(genDataStartDate, DateTimeZone.UTC).toDateTime();
 
-        Interval queryInterval = new Interval(new DateMidnight(dayStartUTC).minusDays(1), new DateMidnight(dayStartUTC).toDateTime().minusSeconds(1));
-        System.out.println("queryInterval: " + queryInterval);
-        List<HOSGroupMileage> groupMileageRecords = hosDAO.getHOSMileage(testGroupData.group.getGroupID(), queryInterval, true);
+        Interval queryInterval = new Interval(new DateMidnight(dayStartUTC), new DateMidnight(dayStartUTC).toDateTime().plusDays(1).minusSeconds(1));
+        boolean noDriver = false;
+        List<HOSGroupMileage> groupMileageRecords = hosDAO.getHOSMileage(testGroupData.group.getGroupID(), queryInterval, noDriver);
         assertTrue("expected 1 record for 1 day/1 group", groupMileageRecords.size() == 1);
         HOSGroupMileage rec = groupMileageRecords.get(0);
         Long expectedMiles = Long.valueOf(DataGenForHOSTesting.LOGOUT_ODOMETER-DataGenForHOSTesting.LOGIN_ODOMETER);
         assertEquals("miles ", expectedMiles, rec.getDistance());
         
-
+        // 'NO DRIVER' MILES 
+        noDriver = true;
+        groupMileageRecords = hosDAO.getHOSMileage(testGroupData.group.getGroupID(), queryInterval, noDriver);
+        assertTrue("expected 0 no driver records for 1 day/1 group", groupMileageRecords.size() == 0);
     }
     
     @Test
-    @Ignore
     public void hosVehicleMileageTest() {
-        // don't think this is ready yet
         HOSDAO hosDAO = new HOSJDBCDAO();
         ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
 
@@ -421,14 +370,18 @@ System.out.println("numHosRecords " + numHosRecords);
         Date genDataStartDate = new Date(itData.startDateInSec*1000l);
         DateTime dayStartUTC = new DateMidnight(genDataStartDate, DateTimeZone.UTC).toDateTime();
 
-        Interval queryInterval = new Interval(new DateMidnight(dayStartUTC).minusDays(1), new DateMidnight(dayStartUTC).toDateTime().minusSeconds(1));
-        System.out.println("queryInterval: " + queryInterval);
-        List<HOSVehicleMileage> vehicleMileageRecords = hosDAO.getHOSVehicleMileage(testGroupData.group.getGroupID(), queryInterval, true);
+        Interval queryInterval = new Interval(new DateMidnight(dayStartUTC), new DateMidnight(dayStartUTC).toDateTime().plusDays(1).minusSeconds(1));
+        boolean noDriver = false;
+        List<HOSVehicleMileage> vehicleMileageRecords = hosDAO.getHOSVehicleMileage(testGroupData.group.getGroupID(), queryInterval, noDriver);
         assertTrue("expected 1 record for 1 day/1 group", vehicleMileageRecords.size() == 1);
         HOSVehicleMileage rec = vehicleMileageRecords.get(0);
         Long expectedMiles = Long.valueOf(DataGenForHOSTesting.LOGOUT_ODOMETER-DataGenForHOSTesting.LOGIN_ODOMETER);
         assertEquals("miles ", expectedMiles, rec.getDistance());
         
+        // 'NO DRIVER' MILES 
+        noDriver = true;
+        vehicleMileageRecords = hosDAO.getHOSVehicleMileage(testGroupData.group.getGroupID(), queryInterval, noDriver);
+        assertTrue("expected 0 no driver records for 1 day/1 group", vehicleMileageRecords.size() == 0);
 
     }
     
@@ -445,7 +398,7 @@ System.out.println("numHosRecords " + numHosRecords);
         assertEquals("driverID", testDriver.getDriverID(), driverLogin.getDriverID());
         
     }
-    @Ignore
+    
     @Test
     public void hosOccupantLogsTest() {
         HOSDAO hosDAO = new HOSJDBCDAO();
@@ -456,12 +409,16 @@ System.out.println("numHosRecords " + numHosRecords);
         Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
         Vehicle testVehicle = testGroupData.vehicle;
         Driver testOccupant = fetchDriver(testOccupantGroupData.driver.getDriverID());
-        Date genDataStartDate = new Date(itData.startDateInSec*1000l);
-        DateTime dayStartUTC = new DateMidnight(genDataStartDate, DateTimeZone.UTC).toDateTime();
         
-        Interval queryInterval = new Interval(new DateMidnight(dayStartUTC).minusDays(1), new DateMidnight(dayStartUTC).toDateTime().minusSeconds(1));
+        DateTimeZone driverTZ = DateTimeZone.forTimeZone(ReportTestConst.timeZone);
+        Date genDataStartDate = new Date(itData.startDateInSec*1000l);
+        DateTime dayStartDriverTZ= new DateMidnight(genDataStartDate, driverTZ).toDateTime();
+        
+        Interval queryInterval = new Interval(new DateMidnight(genDataStartDate, driverTZ), new DateMidnight(dayStartDriverTZ.plusDays(1),  driverTZ));
+
         List<HOSOccupantLog> occupantLogRecords = hosDAO.getHOSOccupantLogs(testDriver.getDriverID(), queryInterval);
         assertTrue("expected 1 occupant record for 1 day/1 driver", occupantLogRecords.size() == 1);
+        
         HOSOccupantLog rec = occupantLogRecords.get(0);
         assertEquals("driverID", testOccupant.getDriverID(), rec.getDriverID());
         assertEquals("driverName", testOccupant.getPerson().getFirst() + " " + testOccupant.getPerson().getLast(), rec.getDriverName());
@@ -485,7 +442,6 @@ System.out.println("numHosRecords " + numHosRecords);
         hosRecord.setTimeZone(driver.getPerson().getTimeZone());
         hosRecord.setEditUserID(itData.fleetUser.getUserID());
         hosRecord.setVehicleID(vehicleID);
-        // TODO: Check what these should be - causing a null pointer exception in the jdbc
         hosRecord.setTruckGallons(truckGallons);
         hosRecord.setTrailerGallons(trailerGallons);
         Long hosLogID = hosDAO.create(0l, hosRecord);
@@ -540,36 +496,50 @@ System.out.println("numHosRecords " + numHosRecords);
 
 
 
-    // TODO: need to make a real test from this
     @Test
-    @Ignore
     public void hosLogShipPackageTest() throws IOException {
         HOSDAO hosDAO = new HOSJDBCDAO();
         ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
 
         GroupData testGroupData = itData.teamGroupData.get(ITData.INTERMEDIATE);
         Driver testDriver = fetchDriver(testGroupData.driver.getDriverID());
-        Vehicle testVehicle = testGroupData.vehicle;
         
         RuleSetType dotType = testDriver.getDot();
         int daysBack = dotType.getLogShipDaysBack();
-        
-        System.out.println("daysBack " + daysBack);
+        Date genDataStartDate = new Date(itData.startDateInSec*1000l);
+        DateTime currentDate  = new DateMidnight(genDataStartDate, DateTimeZone.UTC).toDateTime().plusDays(1);
 
-        DateTime currentDate = new DateTime();
         Interval interval = new Interval(currentDate.minusDays(daysBack), currentDate);
-
-        System.out.println("interval " + interval);
-
         List<HOSRecord> driverRecords = hosDAO.getHOSRecords(testDriver.getDriverID(), interval, true);
-        
-        System.out.println("driverRecords size " + driverRecords.size());
+        assertTrue("test data record count", driverRecords.size() > 0);
         
         
         List<ByteArrayOutputStream> list = HOSUtil.packageLogsToShip(driverRecords, testDriver);
-        
-        System.out.println("list size " + list.size());
+        assertEquals("list size", 1, list.size());
         
     }
+    
+    
+    @Test
+    public void fetchMileageForDayVehicleTest() {
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
+    
+        GroupData testGroupData = itData.teamGroupData.get(ITData.INTERMEDIATE);
+        Vehicle testVehicle = testGroupData.vehicle;
+        Driver testDriver = testGroupData.driver;
+        Date genDataStartDate = new Date(itData.startDateInSec*1000l);
+        DateTime dayStartUTC = new DateMidnight(genDataStartDate, DateTimeZone.forTimeZone(ReportTestConst.timeZone)).toDateTime();
+        DateTime day = dayStartUTC;
+
+        Map<Integer, Long> mileageMap = hosDAO.fetchMileageForDayVehicle(day, testVehicle.getVehicleID());
+        assertTrue("driver Milage exists", mileageMap.containsKey(testDriver.getDriverID()));
+        Long driverMiles = mileageMap.get(testDriver.getDriverID());
+        Long expectedMiles = Long.valueOf((ReportTestConst.MILES_PER_EVENT * (ReportTestConst.EVENTS_PER_DAY+2)));
+        assertEquals("miles ", expectedMiles, driverMiles);
+            
+    }
+
+  
 
 }

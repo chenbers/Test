@@ -25,6 +25,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloServiceCreator;
 import com.inthinc.pro.dao.util.DateUtil;
 import com.inthinc.pro.model.hos.HOSRecord;
@@ -32,8 +33,8 @@ import com.inthinc.pro.model.hos.HOSRecord;
 public class DataGenForHOSTesting extends DataGenForTesting {
     public String xmlPath;
     
-    public static Integer LOGIN_ODOMETER = 1000;
-    public static Integer LOGOUT_ODOMETER = 1100;
+    public static Integer LOGIN_ODOMETER = 0;
+    public static Integer LOGOUT_ODOMETER = 9700;
     
 
     @Override
@@ -41,6 +42,9 @@ public class DataGenForHOSTesting extends DataGenForTesting {
         itData = new ITData();
         Date assignmentDate = DateUtil.convertTimeInSecondsToDate(DateUtil.getDaysBackDate(DateUtil.getTodaysDate(), 2, ReportTestConst.TIMEZONE_STR));
         ((ITData)itData).createTestData(siloService, xml, assignmentDate, false, false);
+        
+        
+
     }
 
     @Override
@@ -63,7 +67,13 @@ public class DataGenForHOSTesting extends DataGenForTesting {
         xmlPath = args[0];
     }
     
-    private void loginDriver(DataSource dataSource, Integer driverID, Integer vehicleID, Date loginDate) throws SQLException {
+    private void loginDriver(DataSource dataSource, String deviceAddress, String empID, Date loginDate) throws SQLException {
+        login(dataSource, deviceAddress, empID, loginDate, false);
+    }
+    private void loginOccupant(DataSource dataSource, String deviceAddress, String empID, Date loginDate) throws SQLException {
+        login(dataSource, deviceAddress, empID, loginDate, true);
+    }
+    private void login(DataSource dataSource, String deviceAddress, String empID, Date loginDate, boolean isOccupant) throws SQLException {
         
         Connection conn = null;
         CallableStatement statement = null;
@@ -72,14 +82,12 @@ public class DataGenForHOSTesting extends DataGenForTesting {
         try
         {
             conn = dataSource.getConnection();
-            statement = conn.prepareCall("{call hos_loginDriver(?, ?, ?, ?, ?, ?)}");
-            statement.setInt(1, driverID);
-            statement.setInt(2, vehicleID);
-            statement.setInt(3, 0); // deviceID
-            statement.setTimestamp(4, new Timestamp(loginDate.getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
-            statement.setBoolean(5, false);
-            statement.setInt(6, LOGIN_ODOMETER);
-
+            statement = conn.prepareCall("{call hos_isValidLogin(?, ?, ?, ?, ?)}");
+            statement.setString(1, deviceAddress);
+            statement.setString(2, empID);
+            statement.setLong(3, loginDate.getTime());
+            statement.setBoolean(4, isOccupant);
+            statement.setInt(5, LOGIN_ODOMETER);
             resultSet = statement.executeQuery();
         }   // end try
         catch (SQLException ex) {
@@ -94,35 +102,6 @@ public class DataGenForHOSTesting extends DataGenForTesting {
         } // end finally
     }
 
-    private void logoutDriver(DataSource dataSource, Integer driverID, Integer vehicleID, Date logoutDate) throws SQLException {
-        
-        Connection conn = null;
-        CallableStatement statement = null;
-        ResultSet resultSet = null;
-        
-        try
-        {
-            conn = dataSource.getConnection();
-            statement = conn.prepareCall("{call hos_logoutDriver(?, ?, ?, ?, ?)}");
-            statement.setInt(1, driverID);
-            statement.setInt(2, vehicleID);
-            statement.setTimestamp(3, new Timestamp(logoutDate.getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
-            statement.setBoolean(4, false);
-            statement.setInt(5, LOGOUT_ODOMETER);
-
-            resultSet = statement.executeQuery();
-        }   // end try
-        catch (SQLException ex) {
-            ex.printStackTrace();
-            throw ex;
-        }
-        finally
-        { // clean up and release the connection
-            resultSet.close();
-            statement.close();
-            conn.close();
-        } // end finally
-    }
 
     private void addHOSLog(DataSource dataSource, HOSRecord hosRecord) throws SQLException {
         
@@ -134,12 +113,12 @@ public class DataGenForHOSTesting extends DataGenForTesting {
         {
             conn = dataSource.getConnection();
             statement = conn.prepareCall("{call hos_createFromNote(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?)}");
-            statement.setInt(1, hosRecord.getDriverID());
+            statement.setInt(1, hosRecord.getDeviceID());
             statement.setInt(2, hosRecord.getVehicleID());
             statement.setLong(3, 0l);
             statement.setInt(4, hosRecord.getStatus().getCode());
-            statement.setTimestamp(5, new Timestamp(hosRecord.getLogTime().getTime()), Calendar.getInstance(TimeZone.getTimeZone("UTC")));
-            statement.setInt(6, hosRecord.getVehicleID().intValue());
+            statement.setLong(5, hosRecord.getLogTime().getTime());
+            statement.setInt(6, hosRecord.getVehicleOdometer().intValue());
             statement.setFloat(7, hosRecord.getLat());
             statement.setFloat(8, hosRecord.getLng());
             statement.setString(9, hosRecord.getLocation());
@@ -172,48 +151,63 @@ System.out.println(statement.toString());
     }
 
 
-    private void genHOSTestData(Date currentDate) throws SQLException {
+    private void genHOSTestData(DateTime startDateTime) throws SQLException {
         
+System.out.println("DATE: " + startDateTime);        
         GroupData testGroupData = ((ITData)itData).teamGroupData.get(ITData.INTERMEDIATE);
+        String testIMEI = testGroupData.device.getImei();
         Integer testDeviceID = testGroupData.device.getDeviceID();
         Integer testDriverID = testGroupData.driver.getDriverID();
         Integer testVehicleID = testGroupData.vehicle.getVehicleID();
         String employeeID = testGroupData.driver.getPerson().getEmpid();
-System.out.println("testDeviceID = " + testDeviceID + " vehicleID = " + testVehicleID + " emp id " + employeeID);        
+System.out.println("testDeviceID = " + testIMEI + " vehicleID = " + testVehicleID + " DriverID: " + testDriverID + " emp id " + employeeID);        
         
-        DateTime dayStartUTC = new DateMidnight(currentDate, DateTimeZone.UTC).toDateTime();
         
         DataSource dataSource = new ITDataSource().getRealDataSource();
         
         // driver (from INTERMEDIATE group)
-        loginDriver(dataSource, testDriverID, testVehicleID, dayStartUTC.toDate());
-        
+        loginDriver(dataSource, testIMEI, employeeID, startDateTime.toDate());
+        int odometer[] = {
+                0,
+                4000,
+                7000,
+                9700
+        };
+        HOSStatus driverStatus[] = {
+                HOSStatus.ON_DUTY,
+                HOSStatus.DRIVING,
+                HOSStatus.SLEEPER,
+                HOSStatus.OFF_DUTY  // logs the driver out
+        };
         for (int i = 0; i < 4; i++) {
-            HOSRecord rec = constructHosRecord(testDeviceID, testVehicleID, HOSStatus.values()[i], dayStartUTC.plusMinutes(i*15).toDate(), employeeID);
+            
+            HOSRecord rec = constructHosRecord(testDeviceID, testDriverID, testVehicleID, driverStatus[i], startDateTime.plusMinutes(i*15).toDate(), employeeID, odometer[i]);
             addHOSLog(dataSource, rec);
         }
         
-        logoutDriver(dataSource, testDriverID, testVehicleID, dayStartUTC.plusHours(1).toDate());
         
         // occupant (from GOOD group)
+        // note: the occupant and driver login time (on duty) cannot be exactly the same as the driver's, hence the 5 second offset
         testGroupData = ((ITData)itData).teamGroupData.get(ITData.GOOD);
         testDriverID = testGroupData.driver.getDriverID();
-        loginDriver(dataSource, testDriverID, testVehicleID, dayStartUTC.toDate());
+        employeeID = testGroupData.driver.getPerson().getEmpid();
+        loginOccupant(dataSource, testIMEI, employeeID, startDateTime.plusSeconds(5).toDate());
         
+        HOSStatus occupantStatus[] = {
+                HOSStatus.ON_DUTY_OCCUPANT,
+                HOSStatus.ON_DUTY_OCCUPANT,
+                HOSStatus.ON_DUTY_OCCUPANT,
+                HOSStatus.OFF_DUTY_OCCUPANT  // logs the OCCUPANT out
+        };
         for (int i = 0; i < 4; i++) {
-            HOSRecord rec = constructHosRecord(testDeviceID, testVehicleID, HOSStatus.ON_DUTY_OCCUPANT, dayStartUTC.plusMinutes(i*15).toDate(), employeeID);
+            HOSRecord rec = constructHosRecord(testDeviceID, testDriverID, testVehicleID, occupantStatus[i], startDateTime.plusMinutes(i*15).plusSeconds(5).toDate(), employeeID, odometer[i]);
             addHOSLog(dataSource, rec);
         }
-        
-        logoutDriver(dataSource, testDriverID, testVehicleID, dayStartUTC.plusHours(1).toDate());
-        
-        
-        
     }
 
-    private HOSRecord constructHosRecord(Integer driverID, Integer vehicleID, HOSStatus status, Date logTime, String employeeID) {
+    private HOSRecord constructHosRecord(Integer deviceID, Integer driverID, Integer vehicleID, HOSStatus status, Date logTime, String employeeID, int odometer) {
         HOSRecord rec = new HOSRecord();
-        rec.setDriverID(driverID);
+        rec.setDeviceID(deviceID);
         rec.setLat(0f);
         rec.setLng(0f);
         rec.setLocation("GENERATED - " + status.getName());
@@ -224,7 +218,7 @@ System.out.println("testDeviceID = " + testDeviceID + " vehicleID = " + testVehi
         rec.setTrailerID("TRAILER - " + driverID);
         rec.setTruckGallons(0f);
         rec.setVehicleID(vehicleID);
-        rec.setVehicleOdometer(0l);
+        rec.setVehicleOdometer(Long.valueOf(odometer));
         rec.setEmployeeID(employeeID);
         rec.setStateID(5);
         return rec;
@@ -240,8 +234,7 @@ System.out.println("testDeviceID = " + testDeviceID + " vehicleID = " + testVehi
         String host = config.get(IntegrationConfig.SILO_HOST).toString();
         Integer port = Integer.valueOf(config.get(IntegrationConfig.SILO_PORT).toString());
         siloService = new SiloServiceCreator(host, port).getService();
-        
-        
+
         
         try
         {
@@ -249,15 +242,32 @@ System.out.println("testDeviceID = " + testDeviceID + " vehicleID = " + testVehi
             xml = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(testData.xmlPath)));
             System.out.println(" saving output to " + testData.xmlPath);
             testData.createTestData();
-            int dateInSec = DateUtil.getTodaysDate();
-            xml.writeObject(dateInSec);
-
             
+            // get start of day today in driver's time zone
+            DateTime startOfDriverDay = new DateMidnight(new Date(), DateTimeZone.forTimeZone(ReportTestConst.timeZone)).toDateTime();
+            int startOfDriverDayInSec = DateUtil.getDaysBackDate(startOfDriverDay.toDate().getTime()/1000l, 1, ReportTestConst.TIMEZONE_STR);
+
+            xml.writeObject(startOfDriverDayInSec);
             if (xml != null)
             {
                 xml.close();
             }
-            testData.genHOSTestData(new Date((long)dateInSec * 1000l));
+            testData.genHOSTestData(startOfDriverDay);
+            
+            // wait for imeis to hit central server
+            // generate data for today (midnight) and 30 previous days
+            HessianTCPProxyFactory factory = new HessianTCPProxyFactory();
+            MCMSimulator mcmSim = (MCMSimulator) factory.create(MCMSimulator.class, config.getProperty(IntegrationConfig.MCM_HOST), config.getIntegerProp(IntegrationConfig.MCM_PORT));
+            
+            
+
+            testData.waitForIMEIs(mcmSim, startOfDriverDayInSec + 60, ((ITData)testData.itData).teamGroupData);
+            // generate some notes so we get mileage data
+            for (int teamType = ITData.GOOD; teamType <= ITData.BAD; teamType++)
+            {
+                testData.generateDayData(mcmSim, startOfDriverDay.toDate(), teamType, ((ITData)testData.itData).teamGroupData);
+            }
+         
             System.out.println(" -- test data generation complete -- ");
         }
         catch (SQLException ex) 
