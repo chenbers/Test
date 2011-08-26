@@ -515,7 +515,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         
         
         List<ByteArrayOutputStream> list = HOSUtil.packageLogsToShip(driverRecords, testDriver);
-        assertEquals("list size", 1, list.size());
+        assertTrue("list size", list.size() > 0);
         
     }
     
