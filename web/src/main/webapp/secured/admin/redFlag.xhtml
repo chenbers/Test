@@ -322,12 +322,14 @@
                         <div class="add_section_title"><h:outputText value="#{messages.editRedFlag_notificationsByPhone}" /></div>
 
                         <div>
-                          <h:outputText rendered="#{(redFlagOrZoneAlertsBean.escalationPeoplePicker.picked[0] ne null)}" 
-                          				value="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.picked[0].label}" styleClass="phoneInput"/>
-                          <ui:repeat value="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.picked}" var="person" offset="1">
-                            <h:outputText value=", " />
-                            <h:outputText value="#{person.label}"/>
-                          </ui:repeat>
+                       		<div id="phoneNumbers">
+	                          <h:outputText rendered="#{(redFlagOrZoneAlertsBean.escalationPeoplePicker.picked[0] ne null)}" 
+	                          				value="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.picked[0].label}" styleClass="phoneInput"/>
+	                          <ui:repeat value="#{redFlagOrZoneAlertsBean.escalationPeoplePicker.picked}" var="person" offset="1">
+	                            <h:outputText value=", " />
+	                            <h:outputText value="#{person.label}"/>
+	                          </ui:repeat>
+                         	</div>
                           <h:outputText value=", " rendered="#{(redFlagOrZoneAlertsBean.escalationPeoplePicker.picked[0] ne null) and (redFlagOrZoneAlertsBean.item.escEmail ne null)}" />
       					  <h:outputText value="#{redFlagOrZoneAlertsBean.item.escEmail}" styleClass="emailInput"/>
                         </div>
