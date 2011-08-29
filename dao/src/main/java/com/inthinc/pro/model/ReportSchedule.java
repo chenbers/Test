@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @SimpleName(simpleName="ReportPref")
-public class ReportSchedule
+public class ReportSchedule implements Cloneable
 {
     @ID
     @Column(name="reportPrefID")
@@ -335,4 +335,14 @@ public class ReportSchedule
     }
 
 	
+    public ReportSchedule clone()
+    {
+        try {
+            return (ReportSchedule)super.clone();
+        } catch (CloneNotSupportedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

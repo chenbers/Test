@@ -2,6 +2,7 @@ package com.inthinc.pro.scheduler.quartz;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -82,9 +84,9 @@ public class EmailReportJob extends QuartzJobBean {
         
         List<Account> accounts = accountDAO.getAllAcctIDs();
         logger.debug("Account Count: " + accounts.size());
+        
+        initTextEncryptor();
 
-        textEncryptor.setPassword(encryptPassword);
-        textEncryptor.setStringOutputType("hexadecimal");
 
         List<ReportSchedule> reportSchedules = new ArrayList<ReportSchedule>();
         for (Account account : accounts) {
@@ -94,6 +96,14 @@ public class EmailReportJob extends QuartzJobBean {
         }
         return reportSchedules;
     }
+    
+    protected void initTextEncryptor() {
+        
+        textEncryptor.setPassword(encryptPassword);
+        textEncryptor.setStringOutputType("hexadecimal");
+        
+    }
+
     private boolean isValidAccount(Account account){
         Account a = accountDAO.findByID(account.getAccountID());
         if (a == null) {
@@ -104,7 +114,8 @@ public class EmailReportJob extends QuartzJobBean {
         }
         return a != null && a.getStatus() != null && !a.getStatus().equals(Status.DELETED);
     }
-    private void dispatchReports(List<ReportSchedule> reportSchedules){
+    protected int dispatchReports(List<ReportSchedule> reportSchedules){
+        int count = 0;
         userMap = new HashMap<Integer,User>();
         for (ReportSchedule reportSchedule : reportSchedules) {
             logger.debug("Begin Validation: " + reportSchedule.getName());
@@ -122,20 +133,23 @@ public class EmailReportJob extends QuartzJobBean {
                                 logger.error("null reportGroup for schedule ID " + reportSchedule.getReportID());
                                 continue;
                             }
+                            count++;                        
                             if (reportGroup.getEntityType() == EntityType.ENTITY_INDIVIDUAL_DRIVER) {
-                                
-                                processIndividualDriverReportSchedule(reportSchedule, user.getPerson());
+
+                                Date lastSuccessDate = reportSchedule.getLastDate();
+                                reportSchedule.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
+                                reportScheduleDAO.update(reportSchedule);
+                                if (!processIndividualDriverReportSchedule(reportSchedule, user.getPerson())) {
+                                    reportSchedule.setLastDate(lastSuccessDate);
+                                    reportScheduleDAO.update(reportSchedule);
+                                }
                                 
                             }
                             else {
                                 List<ReportCriteria> reportCriteriaList = reportCriteriaService.getReportCriteria(reportSchedule, getAccountGroupHierarchy(reportSchedule.getAccountID()),  user.getPerson());
                                 emailReport(reportSchedule, user.getPerson(), reportCriteriaList, null);
-                            }
-                            reportSchedule.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
-                            Integer modified = reportScheduleDAO.update(reportSchedule);
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("UPDATE RESULT " + modified);
-                                logger.debug("-------------END REPORT-------------");
+                                reportSchedule.setLastDate(new DateTime(DateTimeZone.forID(user.getPerson().getTimeZone().getID())).toDate());
+                                reportScheduleDAO.update(reportSchedule);
                             }
                         }
                         catch (Throwable t) {
@@ -146,18 +160,15 @@ public class EmailReportJob extends QuartzJobBean {
                 }
             }
         }
+        return count;
     }
     
-    private void processIndividualDriverReportSchedule(ReportSchedule reportSchedule, Person person) {
-        List<Integer> driverIDList = reportSchedule.getDriverIDList();
-        List<Driver> driverList = driverDAO.getAllDrivers(reportSchedule.getGroupID());
-        ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
-        for (int i = 0; i < reportGroup.getReports().length; i++) {
-            TimeFrame timeFrame = reportSchedule.getReportTimeFrame();
-            if (timeFrame == null) {
-                timeFrame = TimeFrame.TODAY;
-            }
-            
+    private boolean processIndividualDriverReportSchedule(ReportSchedule reportSchedule, Person person) {
+        
+        try {
+            List<Integer> driverIDList = reportSchedule.getDriverIDList();
+            List<Driver> driverList = driverDAO.getAllDrivers(reportSchedule.getGroupID());
+            ReportGroup reportGroup = ReportGroup.valueOf(reportSchedule.getReportID());
             Person owner = null;
             if (reportSchedule.getUserID() != null) {
                 User user = userDAO.findByID(reportSchedule.getUserID());
@@ -165,45 +176,81 @@ public class EmailReportJob extends QuartzJobBean {
                     owner = user.getPerson();
                 
             }
-            switch (reportGroup.getReports()[i]) {
-                case DRIVER_PERFORMANCE_INDIVIDUAL:
-                case DRIVER_PERFORMANCE_RYG_INDIVIDUAL:
-                    Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
-                    
-                    List<ReportCriteria> rcList = getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(
-                            getAccountGroupHierarchy(reportSchedule.getAccountID()), 
-                            reportSchedule.getGroupID(), driverIDList,
-                            timeFrame.getInterval(), person.getLocale(), ryg);
-                    
-                    for (Integer driverID : driverIDList) {
-                        Driver driver = findDriver(driverList, driverID);
-                        if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
-                            logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
-                        else {
-                            List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
-                            for (ReportCriteria rc : rcList) {
-                                if (rc.getMainDataset() == null || rc.getMainDataset().isEmpty())
-                                    continue;
-                                DriverPerformance dp = (DriverPerformance)rc.getMainDataset().get(0);
-                                if (dp.getDriverID().equals(driverID)) {
-                                    driverReportCriteriaList.add(rc);
-                                    break;
+            
+            List<IndividualReportEmail> individualReportEmailList = new ArrayList<IndividualReportEmail>();
+            for (int i = 0; i < reportGroup.getReports().length; i++) {
+                TimeFrame timeFrame = reportSchedule.getReportTimeFrame();
+                if (timeFrame == null) {
+                    timeFrame = TimeFrame.TODAY;
+                }
+                
+                switch (reportGroup.getReports()[i]) {
+                    case DRIVER_PERFORMANCE_INDIVIDUAL:
+                    case DRIVER_PERFORMANCE_RYG_INDIVIDUAL:
+                        Boolean ryg = (reportGroup.getReports()[i] == ReportType.DRIVER_PERFORMANCE_RYG_INDIVIDUAL);
+                        
+                        List<ReportCriteria> rcList = getReportCriteriaService().getDriverPerformanceIndividualReportCriteria(
+                                getAccountGroupHierarchy(reportSchedule.getAccountID()), 
+                                reportSchedule.getGroupID(), driverIDList,
+                                timeFrame.getInterval(), person.getLocale(), ryg);
+                        
+                        for (Integer driverID : driverIDList) {
+                            Driver driver = findDriver(driverList, driverID);
+                            if (driver.getPerson().getPriEmail() == null || driver.getPerson().getPriEmail().isEmpty())
+                                logger.info("Skipping driver with no Primary E-Mail address: " + driver.getPerson().getFullName());
+                            else {
+                                List<ReportCriteria> driverReportCriteriaList = new ArrayList<ReportCriteria>();
+                                for (ReportCriteria rc : rcList) {
+                                    if (rc.getMainDataset() == null || rc.getMainDataset().isEmpty())
+                                        continue;
+                                    DriverPerformance dp = (DriverPerformance)rc.getMainDataset().get(0);
+                                    if (dp.getDriverID().equals(driverID)) {
+                                        driverReportCriteriaList.add(rc);
+                                        break;
+                                    }
+                                }
+                                if (!driverReportCriteriaList.isEmpty()) {
+                                    IndividualReportEmail individualReportEmail = new IndividualReportEmail();
+                                    List<String> emailToList = new ArrayList<String>();
+                                    emailToList.add(driver.getPerson().getPriEmail());
+                                    ReportSchedule driverReportSchedule = reportSchedule.clone();
+                                    
+                                    driverReportSchedule.setDriverID(driver.getDriverID());
+                                    driverReportSchedule.setEmailTo(emailToList);
+                                    individualReportEmail.reportSchedule = driverReportSchedule;
+                                    individualReportEmail.driverPerson = driver.getPerson();
+                                    individualReportEmail.driverReportCriteriaList = driverReportCriteriaList;
+                                    individualReportEmail.owner = owner;
+                                    individualReportEmailList.add(individualReportEmail);
+//                                    emailReport(reportSchedule, driver.getPerson(), driverReportCriteriaList, owner);
                                 }
                             }
-                            if (!driverReportCriteriaList.isEmpty()) {
-                                List<String> emailToList = new ArrayList<String>();
-                                emailToList.add(driver.getPerson().getPriEmail());
-                                reportSchedule.setDriverID(driver.getDriverID());
-                                reportSchedule.setEmailTo(emailToList);
-                                emailReport(reportSchedule, driver.getPerson(), driverReportCriteriaList, owner);
-                            }
                         }
-                    }
-                    break;
+                        break;
+                }
             }
+
+            // send all the e-mails only if we make it though without errors
+            for (IndividualReportEmail individualReportEmail : individualReportEmailList ) {
+                emailReport(individualReportEmail.reportSchedule, individualReportEmail.driverPerson, individualReportEmail.driverReportCriteriaList, individualReportEmail.owner);
+              }
+
         }
-        reportSchedule.setDriverID(null);
-        reportSchedule.setEmailTo(null);
+        catch (Throwable ex) {
+            logger.error(ex);
+            return false;
+            
+        }
+
+      return true;
+    }
+    
+    class IndividualReportEmail {
+        ReportSchedule reportSchedule;
+        Person driverPerson;
+        List<ReportCriteria> driverReportCriteriaList;
+        Person owner;
+        
     }
     
     
@@ -260,9 +307,13 @@ public class EmailReportJob extends QuartzJobBean {
     /*
      * To determine if we should send a report out the following must be met.
      * 
-     * Rule 1: Must be between the start date and end date; Rule 2: OCCURRENCE.Weekly - Must be scheduled to run on the day of week it currently is. Rule 3: The Schduled Time
-     * cannot be greater than the current time. Rule 4: The scheduled time has to be within the last hour from the current time. If not, it will not occurr till the next scheduled
-     * date. Rule 5: Report Schedule must be active. Rule 7: OCCURRENCE.Monthly - Make sure currenty day of month is the same ans the start date day of month.
+     * Rule 1a: Last time report was set is within the same interval.
+     * Rule 1: Must be between the start date and end date; 
+     * Rule 2: OCCURRENCE.Weekly - Must be scheduled to run on the day of week it currently is. 
+     * Rule 3: The Scheduled Time cannot be greater than the current time. 
+     * Rule 4: The scheduled time has to be within the last hour from the current time. If not, it will not occur till the next scheduled date. 
+     * Rule 5: OCCURRENCE.Monthly - Make sure current day of month is the same as the start date day of month.
+     * Rule 6: if the report was sent out within the past 24 hours, don't send again.
      */
     protected boolean isTimeToEmailReport(ReportSchedule reportSchedule, Person person) {
         DateTime currentDateTime = new DateTime(DateTimeZone.forID(person.getTimeZone().getID()));
@@ -273,17 +324,13 @@ public class EmailReportJob extends QuartzJobBean {
             logger.error("Unable to get Person record for userID" + reportSchedule.getUserID());
             return false;
         }
+        
         int dayOfWeek = currentDateTime.getDayOfWeek();
-//        Calendar currentDateTime = Calendar.getInstance(person.getTimeZone());
-//        int dayOfWeek = currentDateTime.get(Calendar.DAY_OF_WEEK);
-//        currentDateTime.setTimeZone(person.getTimeZone());
+        
+        DateTime lastSentDateTime = reportSchedule.getLastDate() == null ? null : new DateTime(reportSchedule.getLastDate(),DateTimeZone.forID(person.getTimeZone().getID()));
 
         DateTime startDateTime = new DateTime(reportSchedule.getStartDate(),DateTimeZone.forID(person.getTimeZone().getID()));
-//        Calendar startCalendar = Calendar.getInstance(person.getTimeZone());
-//        startCalendar.setTime(reportSchedule.getStartDate());
-
         DateTime endDateTime;
-//        Calendar endCalendar = Calendar.getInstance(person.getTimeZone());
         if (reportSchedule.getEndDate() != null && reportSchedule.getEndDate().getTime() != 0l) {
             endDateTime = new DateTime(reportSchedule.getEndDate(),DateTimeZone.forID(person.getTimeZone().getID()));
         }
@@ -296,8 +343,8 @@ public class EmailReportJob extends QuartzJobBean {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy.MM.dd G 'at' HH:mm:ss a z");
         sdf2.setTimeZone(person.getTimeZone());
 
+        
         // Rule 1:
-//        if (compareDates(currentDateTime, startCalendar) < 0) {
         if(currentDateTime.isBefore(startDateTime)){
             if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Current date is before start date");
@@ -332,8 +379,6 @@ public class EmailReportJob extends QuartzJobBean {
         }
 
         // Rule 3:
-//        Integer currentTimeInMinutes = currentDateTime.get(Calendar.HOUR_OF_DAY) * 60;
-//        currentTimeInMinutes += currentDateTime.get(Calendar.MINUTE);
         Integer minutesInDay = currentDateTime.getMinuteOfDay();
         
         if (reportSchedule.getTimeOfDay() == null) {
@@ -362,16 +407,8 @@ public class EmailReportJob extends QuartzJobBean {
             return false;
         }
 
-        // Rule 5: Tested for active status before calling this
-//        if (reportSchedule.getStatus() != null && !reportSchedule.getStatus().equals(Status.ACTIVE)) {
-//            if (logger.isDebugEnabled()) {
-//                logger.debug("Report Not Sent: Report is not active");
-//                logger.debug("Name: " + reportSchedule.getName());
-//            }
-//            return false;
-//        }
 
-        // Rule 7:
+        // Rule 5:
         if (reportSchedule.getOccurrence().equals(Occurrence.MONTHLY) && startDateTime.getDayOfMonth() != currentDateTime.getDayOfMonth()) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Report is not scheduled to run on current day of month");
@@ -380,6 +417,16 @@ public class EmailReportJob extends QuartzJobBean {
             return false;
         }
 
+        // Rule 6:
+        if (lastSentDateTime != null) {
+            Interval interval = new Interval(currentDateTime.minusHours(23), currentDateTime);
+            if(interval.contains(lastSentDateTime)) {
+                logger.debug("Report Not Sent: Last time report sent was within past day (23 hours).");
+                logger.debug("Name: " + reportSchedule.getName() + " ID: " + reportSchedule.getReportScheduleID());
+                return false;
+            }
+            
+        }
         return true;
     }
     
