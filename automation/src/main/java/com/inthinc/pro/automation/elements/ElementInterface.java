@@ -22,6 +22,7 @@ public interface ElementInterface {
     public Boolean validateVisibility(Boolean visible);
     public void waitForElement();
     public void waitForElement(int i);
+    public String getAttribute(String attributeToGet);
 
     public interface Checkable extends Clickable {
         public Boolean assertChecked(Boolean checked);

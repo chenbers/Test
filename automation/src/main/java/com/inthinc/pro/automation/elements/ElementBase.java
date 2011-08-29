@@ -76,6 +76,11 @@ public class ElementBase extends MasterTest implements ElementInterface {
         selenium.focus(myEnum);
         return this;
     }
+    
+    @Override
+    public String getAttribute(String attributeToGet) {
+        return selenium.getAttribute(myEnum, attributeToGet);
+    }
 
     @Override
     public Boolean hasFocus() {
