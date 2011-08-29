@@ -145,6 +145,17 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public String[] getAllWindowNames() {
         return null;
     }
+    
+    @Override
+    public String getAttribute(SeleniumEnumWrapper myEnum, String attributeToGet){
+        String element = getLocator(myEnum);
+        if (element.startsWith("//")){
+            element += "/@" + attributeToGet;
+        }else if (!element.contains("=")){
+            element += "@" + attributeToGet;
+        }
+        return getAttribute(element);
+    }
 
 
     @Override

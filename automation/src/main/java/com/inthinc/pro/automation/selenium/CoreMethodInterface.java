@@ -19,6 +19,7 @@ public interface CoreMethodInterface extends Selenium {
 	public CoreMethodInterface doubleClickAt(SeleniumEnumWrapper myEnum,String coordString);
 	public CoreMethodInterface fireEvent(SeleniumEnumWrapper myEnum,String eventName);
 	public CoreMethodInterface focus(SeleniumEnumWrapper myEnum);
+	public String getAttribute(SeleniumEnumWrapper myEnum, String attributeToGet);
 	public SeleniumEnumWrapper getEnum();
 	public ErrorCatcher getErrors();
 	public String getLocator(SeleniumEnumWrapper myEnum);

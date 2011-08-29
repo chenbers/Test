@@ -27,7 +27,7 @@ public class AutomatedTest extends MasterTest{
     private final SeleniumEnumWrapper webVersionID;
 
     public AutomatedTest(){
-	webVersionID=null;
+        webVersionID=null;
     }
     
     public AutomatedTest(SeleniumEnums version){
