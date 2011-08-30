@@ -134,7 +134,7 @@ public class TestCaseResult extends RallyObject {
      * Method Create Test Case Results<br />
      * Send the created testCaseResults to Rally
      */
-    public void send_test_case_results() {
+    public JSONObject send_test_case_results() {
         Fields fieldFailed = null;
         try {
             for (Fields field : EnumSet.allOf(Fields.class)) {
@@ -145,14 +145,20 @@ public class TestCaseResult extends RallyObject {
             }
             http.postObjects(RallyWebServices.TEST_CASE_RESULTS,
                     testCaseResults, true);
+            return http.getResults().getJSONObject(0);
         } catch (JSONException e) {
             logger.debug("The " + fieldFailed
                     + " is missing from the test case results.");
-            logger.debug(PrettyJSON.toString(testCaseResults));
-            logger.debug(StackToString.toString(e));
+            logger.info(PrettyJSON.toString(testCaseResults));
+            logger.info(StackToString.toString(e));
 
         }
-
+        return testCaseResults;
+    }
+    
+    public boolean deleteTestCaseResult(JSONObject tcr){
+        http.deleteObject(tcr);
+        return true;
     }
 
     public void setBuildNumber(String build) {

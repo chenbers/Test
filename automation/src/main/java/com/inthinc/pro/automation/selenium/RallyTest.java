@@ -1,12 +1,14 @@
 package com.inthinc.pro.automation.selenium;
 
 import org.apache.commons.httpclient.NameValuePair;
+import org.json.JSONObject;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.rally.RallyWebServices;
 import com.inthinc.pro.rally.TestCase;
 import com.inthinc.pro.rally.TestCaseResult;
+import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 /****************************************************************************************
  * Purpose: To standardize the setup and teardown for System Test Automation tests
@@ -23,6 +25,7 @@ public abstract class RallyTest extends AutomatedTest {
 	private TestCaseResult tcr;
 	private AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
 	private String testCase;
+	private JSONObject deletelastResults;
 	
 	public RallyTest(SeleniumEnums version){
 		super(version);
@@ -46,6 +49,9 @@ public abstract class RallyTest extends AutomatedTest {
 	    super.after();
 		if (!skip) {
 			try {
+			    if (deletelastResults != null){
+			        tcr.deleteTestCaseResult(deletelastResults);
+			    }
 			    if(apb.getAddTestSet()){
 			        setTestSet(determineTestSet());
 			    }
@@ -64,6 +70,11 @@ public abstract class RallyTest extends AutomatedTest {
 	    TestCase tc = new TestCase(tcr);
 	    tc.setTestCase(testCase);
 	    skip = tc.wasRunToday();
+	    if (!skip){
+	        tcr.setBuildNumber(getBuildNumber());
+	        tcr.setVerdict(Verdicts.PASS);
+	        deletelastResults = tcr.send_test_case_results();
+	    }
 	    return !skip;
 	}
 	

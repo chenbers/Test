@@ -220,8 +220,10 @@ public class HTTPCommands {
     }
 
     public void deleteObject(RallyWebServices type, String objectID) {
-        String url = type.getValue() + "/" + objectID + ".js";
-        deleteObject(url);
+        if (objectID.endsWith(".js")){
+            objectID = type.getValue() + "/" + objectID + ".js";    
+        }
+        deleteObject(objectID);
     }
 
     public void deleteObject(JSONObject item) {
@@ -296,7 +298,11 @@ public class HTTPCommands {
     }
 
     public JSONArray getResults() throws JSONException {
-        return queryResults.getJSONArray("Results");
+        try {
+            return queryResults.getJSONArray("Results");
+        } catch (JSONException e){
+            return new JSONArray().put(queryResults.getJSONObject("Object"));
+        }
     }
 
     public JSONArray getErrors() throws JSONException {

@@ -68,30 +68,32 @@ public class DeviceTests extends WebRallyTest {
     
     
             TiwiProDevice tiwi;
-            for (Addresses silo : new Addresses[] { Addresses.QA, Addresses.DEV,
-                    Addresses.PROD }) {
-    
-                tiwi = new TiwiProDevice("FAKEIMEIDEVICE", silo);
-                tiwi.set_WMP(17207);
-                for (int i = 1; i <= 33; i++) {
-    
-                    String fileName = String.format("%02d.pcm", i);
-                    String svnFile = svnPath + "/" + fileName;
-                    String hessianFile = hessianPath + "/" + fileName;
-    
-                    for (Locales locale : EnumSet.allOf(Locales.class)) {
-    
-                        String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"
-                                + locale.getFolder();
-                        File dest = new File(svnFile);
-    
-                        if (!DownloadFile.downloadSvnDirectory(url, fileName, dest)) {
-                            addError("SVN File not found", ErrorLevel.FATAL_ERROR);
+            for (Addresses silo : EnumSet.allOf(Addresses.class)) {
+                try{
+                    tiwi = new TiwiProDevice("FAKEIMEIDEVICE", silo);
+                    tiwi.set_WMP(17207);
+                    for (int i = 1; i <= 33; i++) {
+        
+                        String fileName = String.format("%02d.pcm", i);
+                        String svnFile = svnPath + "/" + fileName;
+                        String hessianFile = hessianPath + "/" + fileName;
+        
+                        for (Locales locale : EnumSet.allOf(Locales.class)) {
+        
+                            String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"
+                                    + locale.getFolder();
+                            File dest = new File(svnFile);
+        
+                            if (!DownloadFile.downloadSvnDirectory(url, fileName, dest)) {
+                                addError("SVN File not found", ErrorLevel.FATAL_ERROR);
+                            }
+                            tiwi.getAudioFile(hessianFile, i, locale);
+                            validateTrue(DownloadFile.filesEqual(svnFile, hessianFile),
+                                    "The Downloaded files didn't match:\n" + fileName);
                         }
-                        tiwi.getAudioFile(hessianFile, i, locale);
-                        validateTrue(DownloadFile.filesEqual(svnFile, hessianFile),
-                                "The Downloaded files didn't match:\n" + fileName);
                     }
+                } catch(Exception e){
+                    continue;
                 }
             }
         }
