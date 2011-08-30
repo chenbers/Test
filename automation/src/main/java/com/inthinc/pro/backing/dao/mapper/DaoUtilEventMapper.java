@@ -62,8 +62,7 @@ public class DaoUtilEventMapper extends DaoUtilMapper {
         }
     }
     
-    @SuppressWarnings("unchecked")
-	private Class getEventType(Integer proEventType)
+    private Class<?> getEventType(Integer proEventType)
     {
         NoteType noteType = NoteType.valueOf(proEventType);
         if (noteType.getEventClass() == null)

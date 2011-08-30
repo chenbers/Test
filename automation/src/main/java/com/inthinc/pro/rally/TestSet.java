@@ -14,12 +14,11 @@ import org.json.JSONObject;
 
 import com.inthinc.pro.automation.utils.StackToString;
 
-public class TestSet {
+public class TestSet extends RallyObject {
 
 	private final static Logger logger = Logger
 			.getLogger(TestSet.class);
 
-	private HTTPCommands http;
 
 	public TestSet(String username, String password, RallyWebServices space) {
 		http = new HTTPCommands(username, password);
@@ -29,6 +28,7 @@ public class TestSet {
 	public TestSet(HTTPCommands http) {
 		this.http = http;
 	}
+	
 
 	/**
 	 * Method getTestSet<br />

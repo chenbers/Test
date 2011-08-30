@@ -38,6 +38,18 @@ public class ErrorCatcher implements InvocationHandler {
     private Map<String, Map<String, String>> errors;
     private Map<String, String> errorList;
     private final CoreMethodLib delegate;
+    
+    public ErrorCatcher(){
+        delegate = null;
+        severity = new HashMap<ErrorLevel, Map<String, Map<String, String>>>();
+        for (ErrorLevel level: EnumSet.allOf(ErrorLevel.class)){
+            if (level.equals(ErrorLevel.FATAL) || level.equals(ErrorLevel.PASS)){
+                continue;
+            }
+            errors = new HashMap<String, Map<String, String>>();
+            severity.put(level, errors);
+        }
+    }
 
     public ErrorCatcher(CoreMethodLib delegate) {
         this.delegate = delegate;

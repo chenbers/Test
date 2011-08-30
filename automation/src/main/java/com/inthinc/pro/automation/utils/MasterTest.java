@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
@@ -19,6 +18,9 @@ import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 public class MasterTest {
     private final static Logger logger = Logger.getLogger(MasterTest.class);
+    
+
+    protected static ErrorCatcher errors = GlobalSelenium.getErrorCatcher();
 
     public static enum ErrorLevel {
         FATAL_ERROR(Verdicts.INCONCLUSIVE),
@@ -44,7 +46,7 @@ public class MasterTest {
             return verdict;
         }
     }
-
+    
     protected static void enterKey() {
         KeyCommands.typeKey(KeyEvent.VK_ENTER);
     }
@@ -58,7 +60,8 @@ public class MasterTest {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String time = sdf.format(GregorianCalendar.getInstance().getTime());
         String className = element.getFileName().replace(".java", "");
-        System.out.printf("%s, %s.%s:%3d - %s\n", time, className, element.getMethodName(), element.getLineNumber(), printToScreen.toString());//TODO: better to utilize log4j
+        System.out.printf("%s, %s.%s:%3d - %s\n", time, className, element.getMethodName(), element.getLineNumber(), printToScreen.toString());
+        // Using System.out.printf because Log4J will only print this class, and line number.
     }
 
     protected static void tabKey() {
@@ -78,15 +81,15 @@ public class MasterTest {
     private CoreMethodInterface selenium;
 
     protected void addError(String errorName, ErrorLevel level) {
-        getErrors().addError(errorName, Thread.currentThread().getStackTrace(), level);
+        errors.addError(errorName, Thread.currentThread().getStackTrace(), level);
     }
 
     protected void addError(String errorName, String error, ErrorLevel level) {
-        getErrors().addError(errorName, error, level);
+        errors.addError(errorName, error, level);
     }
 
     protected void addError(String errorName, Throwable stackTrace, ErrorLevel level) {
-        getErrors().addError(errorName, stackTrace, level);
+        errors.addError(errorName, stackTrace, level);
     }
 
     protected Boolean assertEquals(Object expected, Object actual) {
@@ -95,6 +98,7 @@ public class MasterTest {
 
     private Boolean assertEquals(Object expected, Object actual, Boolean areObjectsEqual) {
         if (compare(expected, actual) != areObjectsEqual) {
+            logger.debug("your expected: '" + expected + "'" + " does not equal: '" + actual + "'");
             addError("your expected: '" + expected + "'" + " does not equal: '" + actual + "'", ErrorLevel.FATAL);
             return false;
         }
@@ -166,6 +170,7 @@ public class MasterTest {
         } else {
             results = actual.equals(expected);
         }
+        logger.debug("Expected: " + expected + " == Actual: " + actual + " is " + results);
         return results;
     }
 
@@ -174,13 +179,15 @@ public class MasterTest {
     }
 
     protected ErrorCatcher getErrors() {
-        return selenium.getErrors();
+        errors = GlobalSelenium.getErrorCatcher();
+        return errors;
     }
 
     protected CoreMethodInterface getSelenium() {
         if (selenium == null) {
             selenium = GlobalSelenium.getSelenium();
         }
+        errors = GlobalSelenium.getErrorCatcher();
         return selenium;
     }
 
@@ -205,6 +212,18 @@ public class MasterTest {
 
     protected void openSavedPage() {
         open(savedPage);
+    }
+    
+    public MasterTest pause(Integer timeout_in_secs, String reasonForPause) {
+        try {
+            logger.debug("pausing for " + timeout_in_secs + " seconds because: " + reasonForPause);
+            Thread.sleep((long) (timeout_in_secs * 1000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (RuntimeException e) {
+            throw e;
+        }
+        return this;
     }
 
     protected void savePageLink() {
@@ -235,6 +254,8 @@ public class MasterTest {
         }
         return result;
     }
+    
+    
 
     protected Boolean validateNotEquals(Object expected, Object actual) {
         return validateEquals(expected, actual, false);
@@ -243,6 +264,14 @@ public class MasterTest {
     protected Boolean validateStringContains(String partialString, String fullString) {
         if (!fullString.contains(partialString)) {
             addError(partialString + " not in " + fullString, ErrorLevel.FAIL);
+            return false;
+        }
+        return true;
+    }
+    
+    protected Boolean validateTrue(Boolean test, String error) {
+        if (!test) {
+            addError(error, ErrorLevel.FAIL);
             return false;
         }
         return true;

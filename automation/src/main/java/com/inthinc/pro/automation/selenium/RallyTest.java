@@ -20,7 +20,7 @@ import com.inthinc.pro.rally.TestCaseResult;
  * @author larringt , dtanner
  */
 public abstract class RallyTest extends AutomatedTest {
-	private TestCaseResult rally;
+	private TestCaseResult tcr;
 	private AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
 	private String testCase;
 	
@@ -32,8 +32,8 @@ public abstract class RallyTest extends AutomatedTest {
     public void before() {
         super.before();
         try {
-            rally = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
-            rally.newResults();
+            tcr = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
+            tcr.newResults();
         } catch (Exception e) {
             e.printStackTrace();
             skip = true;
@@ -46,28 +46,36 @@ public abstract class RallyTest extends AutomatedTest {
 	    super.after();
 		if (!skip) {
 			try {
-			    if(apb.getAddTestSet())
-				    setTestSet(determineTestSet());
-				rally.setBuildNumber(getBuildNumber());
-				rally.setVerdict(getTestVerdict());
-                rally.setNotes(determineTestSet(), errors);
-                rally.setDuration(stopTime - startTime);
-				rally.send_test_case_results();
+			    if(apb.getAddTestSet()){
+			        setTestSet(determineTestSet());
+			    }
+				tcr.setBuildNumber(getBuildNumber());
+				tcr.setVerdict(getTestVerdict());
+                tcr.setNotes(determineTestSet(), errors);
+                tcr.setDuration(stopTime - startTime);
+				tcr.send_test_case_results();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
+	public boolean runToday(){
+	    TestCase tc = new TestCase(tcr);
+	    tc.setTestCase(testCase);
+	    skip = tc.wasRunToday();
+	    return !skip;
+	}
+	
 	private void setTestSet(String name){
 	    logger.info("setTestSet("+name+")");
-		rally.setTestSet(new NameValuePair("Name", name));
+		tcr.setTestSet(new NameValuePair("Name", name));
 	}
 
 	public void set_test_case(String formattedID) {
 	    logger.info("set_test_case("+formattedID+")");
 	    testCase = formattedID;
-		rally.setTestCase(new NameValuePair(TestCase.Fields.FORMATTED_ID.toString(), formattedID));
+		tcr.setTestCase(new NameValuePair(TestCase.Fields.FORMATTED_ID.toString(), formattedID));
 	}
 	public String get_test_case(){
 	    return testCase;

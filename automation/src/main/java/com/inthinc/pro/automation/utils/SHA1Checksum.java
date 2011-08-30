@@ -27,14 +27,23 @@ public class SHA1Checksum {
         return complete.digest();
     }
 
-    public static String getSHA1Checksum(String filename)
-            throws NoSuchAlgorithmException, IOException {
-        byte[] b = createChecksum(filename);
-        String result = "";
-        for (int i = 0; i < b.length; i++) {
-            result += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+    public static String getSHA1Checksum(String filename) {
+        byte[] b;
+        try {
+            b = createChecksum(filename);        
+            
+            String result = "";
+            for (int i = 0; i < b.length; i++) {
+                result += Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
+            }
+            return result;
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return result;
+        return "";
     }
 
     public static long getChecksumValue(Checksum checksum, String fname) {

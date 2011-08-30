@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.EnumSet;
 
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNNodeKind;
@@ -22,20 +21,16 @@ import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
-import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
-import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.Locales;
-import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.rally.RallyWebServices;
 
 public class DownloadFile {
     
     private static final int kiloBit = 1024;
     
-    public boolean fileEquals(String firstFile, String secondFile){
-        
-        
-        return false;
+    public static boolean filesEqual(String firstFile, String secondFile){
+        String first = SHA1Checksum.getSHA1Checksum(firstFile);
+        String second = SHA1Checksum.getSHA1Checksum(secondFile);
+        return first.equals(second);
     }
     
     public boolean download(String url, String destinationFileName){
@@ -87,6 +82,8 @@ public class DownloadFile {
         DefaultSVNOptions options = SVNWCUtil.createDefaultOptions(true);
         SVNClientManager clientManager = SVNClientManager.newInstance(options, authManager);
         try {
+            destination.mkdirs();
+            destination.mkdir();
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destination));
             SVNRepository repo = clientManager.createRepository(source, false);
             repo.getFile(fileDir, -1, null, bos);
@@ -137,63 +134,38 @@ public class DownloadFile {
         return false;
     }
     
-    public static void main(String[] args){
-        int numTested = 0;
-        int numFailed = 0;
-        String destPath = new String("target/test/resources/audioFiles/");
-        TiwiProDevice tiwi = new TiwiProDevice("javadeviceindavidsaccount", Addresses.QA);
-        tiwi.set_WMP(17207);
-        
-        for (Locales locale: EnumSet.allOf(Locales.class)){
-            String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
-            for (int i=1;i<=33;i++){
-                int fileNumber = i;
-                String fileName = String.format("%02d.pcm", fileNumber);
-                String svnFileName = destPath+"svnVersion/"+locale+fileName;
-                String hessianFileName = destPath+"hessianVersion/"+locale+fileName;
-                File svnFile = new File(svnFileName);
-                
-                DownloadFile.downloadSvnDirectory(url, fileName, svnFile);
-                
-                tiwi.getAudioFile(hessianFileName, fileNumber, locale);
-        
-                String svn = MD5Checksum.getMD5Checksum(svnFileName);
-                String hessian = MD5Checksum.getMD5Checksum(hessianFileName);
-                if(!hessian.equals(svn)){
-                    numFailed++;
-                    System.out.println("FAIL:"+"svn: " + svn + "  hessian: " + hessian);
-                } 
-                numTested++;
-            }
-        }
-        if(numFailed > 0)
-            System.out.println(numFailed+"/"+numTested+" files FAILED MD5Checksum comparison.");
-        else
-            System.out.println(numTested+"/"+numTested+" files PASSED MD5Checksum comparison.");
-        
-        
-        
-        
-//        int fileNumber = 1;
-//        Locales locale = Locales.ENGLISH_US;
-//        
-//        String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
-//        String path = "src/main/resources/svnVersion/";
-//        String fileName = String.format("%02d.pcm", fileNumber);
-//        File dest = new File(path + fileName);
-//        
-//        System.out.println(downloadSvnDirectory(url, fileName, dest));
-//        
-//
-//        String svn = MD5Checksum.getMD5Checksum(path + fileName);
-//        
+//    public static void main(String[] args){
+//        int numTested = 0;
+//        int numFailed = 0;
+//        String destPath = new String("target/test/resources/audioFiles/");
 //        TiwiProDevice tiwi = new TiwiProDevice("javadeviceindavidsaccount", Addresses.QA);
 //        tiwi.set_WMP(17207);
-//        tiwi.getAudioFile(fileNumber, locale);
-//            
-//        String hessian = MD5Checksum.getMD5Checksum(path.replace("svn", "hessian") + fileName);
-//        System.out.println(svn);
-//        System.out.println(hessian);
-//        System.out.println(svn.equals(hessian));
-    }
+//        
+//        for (Locales locale: EnumSet.allOf(Locales.class)){
+//            String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"+locale.getFolder();
+//            for (int i=1;i<=33;i++){
+//                int fileNumber = i;
+//                String fileName = String.format("%02d.pcm", fileNumber);
+//                String svnFileName = destPath+"svnVersion/"+locale+fileName;
+//                String hessianFileName = destPath+"hessianVersion/"+locale+fileName;
+//                File svnFile = new File(svnFileName);
+//                
+//                DownloadFile.downloadSvnDirectory(url, fileName, svnFile);
+//                
+//                tiwi.getAudioFile(hessianFileName, fileNumber, locale);
+//        
+//                String svn = MD5Checksum.getMD5Checksum(svnFileName);
+//                String hessian = MD5Checksum.getMD5Checksum(hessianFileName);
+//                if(!hessian.equals(svn)){
+//                    numFailed++;
+//                    System.out.println("FAIL:"+"svn: " + svn + "  hessian: " + hessian);
+//                } 
+//                numTested++;
+//            }
+//        }
+//        if(numFailed > 0)
+//            System.out.println(numFailed+"/"+numTested+" files FAILED MD5Checksum comparison.");
+//        else
+//            System.out.println(numTested+"/"+numTested+" files PASSED MD5Checksum comparison.");
+//    }
 }

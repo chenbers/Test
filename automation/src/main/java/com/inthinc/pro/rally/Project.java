@@ -8,12 +8,10 @@ import org.json.JSONObject;
 import com.inthinc.pro.automation.utils.StackToString;
 
 
-public class Project {
+public class Project extends RallyObject{
 	
 private final static Logger logger = Logger.getLogger(Project.class);
 
-	
-	private HTTPCommands http;
 	
 	public Project(String username, String password){
 		http=new HTTPCommands(username, password);

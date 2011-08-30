@@ -7,16 +7,15 @@ import org.json.JSONObject;
 
 import com.inthinc.pro.automation.utils.StackToString;
 
-public class TypeDefinition {
+public class TypeDefinition extends RallyObject {
 	
 	private final static Logger logger = Logger.getLogger(TypeDefinition.class);
 
 		
-		private HTTPCommands http;
-		
 		public TypeDefinition(String username, String password){
 			http=new HTTPCommands(username, password);
 		}
+		
 		
 		public JSONObject getProject(String name, RallyWebServices space) {
 			return getProject(name, space, false);

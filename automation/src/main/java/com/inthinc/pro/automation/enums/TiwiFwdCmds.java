@@ -285,11 +285,15 @@ public enum TiwiFwdCmds implements DeviceTypesUnique{
         }
     }
     
+    @Override
     public TiwiFwdCmds valueOf(Integer code){
     	return lookupByCode.get(code);
     }
     
     public static TiwiFwdCmds valueOf(Object code){
-    	return lookupByCode.get((Integer) code);
+        if (code instanceof Integer){
+            return lookupByCode.get((Integer) code);
+        }
+        throw new IllegalArgumentException("The values in this enum are integers");
     }
 }

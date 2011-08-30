@@ -1,7 +1,5 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import java.util.EnumSet;
-
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLabel;
@@ -16,14 +14,14 @@ public class PageAdminRedFlagDetails extends AdminBar {
         // TODO Auto-generated constructor stub
     }
 
-    public class PageAdminRedFlagDetailsLinks extends AdminBarLinks {
+    public class AdminRedFlagDetailsLinks extends AdminBarLinks {
 
         public TextLink backToRedFlags() {
             return new TextLink(AdminRedFlagsDetailsEnum.BACK_TO_RED_FLAGS);
         }
     }
 
-    public class PageAdminRedFlagDetailsTexts extends AdminBarTexts {
+    public class AdminRedFlagDetailsTexts extends AdminBarTexts {
 
         public Text valueTitle() {
             return new Text(AdminRedFlagsDetailsEnum.TITLE);
@@ -155,8 +153,8 @@ public class PageAdminRedFlagDetails extends AdminBar {
             return new Text(RedFlagGenericDetails.SETTING_HEADER);
         }
 
-        public Text detailsEntrySetting() {
-            return new Text(RedFlagGenericDetails.SETTING_ENTRY);
+        public TextTable detailsEntrySetting() {
+            return new TextTable(RedFlagGenericDetails.SETTING_ENTRY);
         }
 
         public Text detailsVehicleSettingtTampering() {
@@ -270,56 +268,56 @@ public class PageAdminRedFlagDetails extends AdminBar {
 
     }
 
-    public class PageAdminRedFlagDetailsTextFields extends AdminBarTextFields {}
+    public class AdminRedFlagDetailsTextFields extends AdminBarTextFields {}
 
-    public class PageAdminRedFlagDetailsButtons extends AdminBarButtons {}
+    public class AdminRedFlagDetailsButtons extends AdminBarButtons {}
 
-    public class PageAdminRedFlagDetailsDropDowns extends AdminBarDropDowns {}
+    public class AdminRedFlagDetailsDropDowns extends AdminBarDropDowns {}
 
-    public class PageAdminRedFlagDetailsPopUps extends MastheadPopUps {}
+    public class AdminRedFlagDetailsPopUps extends MastheadPopUps {}
 
-    public class PageAdminRedFlagsCheckBoxs {
+    public class AdminRedFlagsCheckBoxs {
 
         public CheckBox whichDaysCheckBox() {
             return new CheckBox(AdminRedFlagsDetailsEnum.WHICH_DAYS_CHECK_BOX);
         }
     }
 
-    public PageAdminRedFlagsCheckBoxs _checkBox() {
-        return new PageAdminRedFlagsCheckBoxs();
+    public AdminRedFlagsCheckBoxs _checkBox() {
+        return new AdminRedFlagsCheckBoxs();
     }
 
-    public class PageAdminRedFlagDetailsPager {
+    public class AdminRedFlagDetailsPager {
         public Paging pageIndex() {
             return new Paging();
         }
     }
 
-    public PageAdminRedFlagDetailsPager _page() {
-        return new PageAdminRedFlagDetailsPager();
+    public AdminRedFlagDetailsPager _page() {
+        return new AdminRedFlagDetailsPager();
     }
 
-    public PageAdminRedFlagDetailsLinks _link() {
-        return new PageAdminRedFlagDetailsLinks();
+    public AdminRedFlagDetailsLinks _link() {
+        return new AdminRedFlagDetailsLinks();
     }
 
-    public PageAdminRedFlagDetailsTexts _text() {
-        return new PageAdminRedFlagDetailsTexts();
+    public AdminRedFlagDetailsTexts _text() {
+        return new AdminRedFlagDetailsTexts();
     }
 
-    public PageAdminRedFlagDetailsButtons _button() {
-        return new PageAdminRedFlagDetailsButtons();
+    public AdminRedFlagDetailsButtons _button() {
+        return new AdminRedFlagDetailsButtons();
     }
 
-    public PageAdminRedFlagDetailsTextFields _textField() {
-        return new PageAdminRedFlagDetailsTextFields();
+    public AdminRedFlagDetailsTextFields _textField() {
+        return new AdminRedFlagDetailsTextFields();
     }
 
-    public PageAdminRedFlagDetailsDropDowns _dropDown() {
-        return new PageAdminRedFlagDetailsDropDowns();
+    public AdminRedFlagDetailsDropDowns _dropDown() {
+        return new AdminRedFlagDetailsDropDowns();
     }
 
-    public PageAdminRedFlagDetailsPopUps _popUp() {
-        return new PageAdminRedFlagDetailsPopUps();
+    public AdminRedFlagDetailsPopUps _popUp() {
+        return new AdminRedFlagDetailsPopUps();
     }
 }

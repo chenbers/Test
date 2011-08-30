@@ -13,7 +13,18 @@ public class GlobalSelenium {
     private final static Logger logger = Logger.getLogger(GlobalSelenium.class);
 
 	private volatile static HashMap<Long, CoreMethodLib> multiplicative = new HashMap<Long, CoreMethodLib>();
+	private volatile static HashMap<Long, ErrorCatcher> errorHolder = new HashMap<Long, ErrorCatcher>();
+	
 	private final static String BASE_URL_DEFAULT = "https://qa.tiwipro.com:8423/tiwipro/";
+	
+	public static ErrorCatcher getErrorCatcher(){
+	    Long currentThread = Thread.currentThread().getId();
+	    if (errorHolder.containsKey(currentThread)){
+	        return errorHolder.get(currentThread);
+	    }
+        errorHolder.put(currentThread, new ErrorCatcher());
+        return getErrorCatcher();
+	}
 	
 	public static CoreMethodInterface getSelenium() {
 		Long currentThread = Thread.currentThread().getId();
@@ -40,6 +51,7 @@ public class GlobalSelenium {
             selenium = new CoreMethodLib(new FirefoxDriver(), BASE_URL_DEFAULT);
         } 
         multiplicative.put(currentThread, selenium);
+        errorHolder.put(currentThread, selenium.getErrors());
 		return multiplicative.get(currentThread).getErrors().newInstance();
 	}
 

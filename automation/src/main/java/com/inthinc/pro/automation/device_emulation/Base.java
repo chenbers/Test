@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.device_emulation;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,8 +18,6 @@ import java.util.Map;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DeviceProperties;
@@ -32,7 +31,6 @@ import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
 import com.inthinc.pro.dao.hessian.exceptions.RemoteServerException;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.rally.RallyWebServices;
-import com.inthinc.pro.rally.TestCase;
 import com.inthinc.pro.rally.TestCaseResult;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
@@ -92,41 +90,9 @@ public abstract class Base {
     }
     
     private Base ackFwdCmds(List<HashMap<String, Object>> reply) {
+
+        testFwdCmdLimit(reply.size());
         
-        String testCase = "TC875";
-        String testSet = "TS96";
-        String byID = "FormattedID";
-        
-        TestCaseResult rally = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
-        TestCase tc = new TestCase(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
-        if (reply.size() > 5 ){
-            rally.setBuildNumber("Backend needs a build number");
-            rally.setTestCase(new NameValuePair(byID, testCase));
-            rally.setTestSet(new NameValuePair(byID, testSet));
-            rally.setVerdict(Verdicts.FAIL);
-            rally.send_test_case_results();
-        } else if (reply.size() == 5){
-            try {
-                JSONObject tca = tc.getTestCase(testCase, true);
-                String date = tca.getString("LastRun");
-                String lastVerdict = tca.getString("LastVerdict");
-                if (lastVerdict == null){
-                    lastVerdict = "";
-                }
-                AutomationCalendar today = new AutomationCalendar(WebDateFormat.RALLY_DATE_FORMAT);
-                if (date == null || !today.compareDays(date) || lastVerdict != Verdicts.PASS.toString()){
-                    logger.info("Last Test Case result: " + date);
-                    logger.info("Today is: " + today);
-                    rally.setBuildNumber("Backend needs a build number");
-                    rally.setTestCase(new NameValuePair(byID, testCase));
-                    rally.setTestSet(new NameValuePair(byID, testSet));
-                    rally.setVerdict(Verdicts.PASS);
-                    rally.send_test_case_results();
-                }
-            } catch (JSONException e) {
-                logger.fatal(StackToString.toString(e));
-            }
-        }
         HashMap<String, Object> fwd = new HashMap<String, Object>();
 
         if (!reply.isEmpty()) {
@@ -140,6 +106,27 @@ public abstract class Base {
         }
         return this;
     }
+
+    private void testFwdCmdLimit(int numOfCommands) {
+        String testCase = "TC875";
+        String testSet = "TS96";
+        String byID = "FormattedID";
+        
+        TestCaseResult tcr = new TestCaseResult(RallyWebServices.username, RallyWebServices.password, RallyWebServices.INTHINC);
+        AutomationCalendar today = AutomationCalendar.now(WebDateFormat.RALLY_DATE_FORMAT);
+        tcr.setBuildNumber(today.toString(WebDateFormat.NOTE_DATE_TIME));
+        tcr.setTestCase(new NameValuePair(byID, testCase));
+        tcr.setTestSet(new NameValuePair(byID, testSet));
+        
+        if (numOfCommands > 5 ){
+            tcr.setVerdict(Verdicts.FAIL);
+            tcr.send_test_case_results();
+        } else if (numOfCommands == 5){
+            tcr.setVerdict(Verdicts.PASS);
+            tcr.updateTestCase(testCase, byID);
+        }
+    }
+
 
     protected abstract Base add_location();
 
@@ -241,9 +228,13 @@ public abstract class Base {
         Map<String, Object> reply = mcmProxy.audioUpdate(this.imei, map);
         logger.debug(reply);
         try {
-            FileOutputStream fos = new FileOutputStream(fileName);
-            fos.write((byte[]) reply.get("f"));
-            fos.close();
+            File destination = new File(fileName);
+            destination.mkdirs();
+            destination.mkdir();
+            
+            FileOutputStream fw = new FileOutputStream(destination);
+            fw.write((byte[]) reply.get("f"));
+            fw.close();
             logger.debug("MD5 Hash is: " + MD5Checksum.getMD5Checksum(fileName));
         } catch (FileNotFoundException e) {
             logger.debug(StackToString.toString(e));

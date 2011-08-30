@@ -24,7 +24,7 @@ public enum Addresses implements AddressInterface{
 
     EC2("204.236.172.41", prodPortalPort, "stage.inthinc.com", prodMCMPort, prodWaysPort, prodSatPort),
 
-    QA("qa.tiwipro.com", 8199, "qa.tiwipro.com", 8090, 8988, 7880),
+    QA("qa.tiwipro.com", 8199, "qa.tiwipro.com", 8190, 8988, 7880),
 
     QA2("qa2.tiwipro.com", 8299, "qa2.tiwipro.com", 8290, 8988, 7980),
 

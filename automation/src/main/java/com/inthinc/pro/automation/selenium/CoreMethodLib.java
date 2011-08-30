@@ -1,17 +1,33 @@
 package com.inthinc.pro.automation.selenium;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.log4j.Logger;
+import org.apache.tools.ant.filters.StringInputStream;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import com.google.common.base.Supplier;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.Id;
-import com.inthinc.pro.automation.utils.Xpath;
+import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
+import com.inthinc.pro.automation.utils.Xpath;
 import com.thoughtworks.selenium.DefaultSelenium;
 
 /****************************************************************************************
@@ -33,15 +49,18 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private final static Logger logger = Logger.getLogger(CoreMethodLib.class);
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
+    private final WebDriver driver;
 
     public CoreMethodLib(Supplier<WebDriver> maker, String baseUrl) {
         super(maker, baseUrl);
         errors = new ErrorCatcher(this);
+        driver = maker.get();
     }
 
     public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
         super(baseDriver, baseUrl);
         errors = new ErrorCatcher(this);
+        driver = baseDriver;
     }
 
     @Override
@@ -257,9 +276,61 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public String getText(SeleniumEnumWrapper myEnum) {
         logger.debug(" getText(" + myEnum.toString() + "\n" + myEnum.getLocatorsAsString() + ")");
         String element = getLocator(myEnum);
-        String text = "";
-        text = super.getText(element);
-        return text;
+        
+        WebElement parent = getWrappedDriver().findElement(By.xpath(idToXpath(element)));
+        String innerHtml = (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].innerHTML;", parent);
+        if (innerHtml.contains("spacer.gif")){
+            innerHtml = closeImgTags("<div>" + innerHtml + "</div>");
+            try{
+                return replaceSpacers(innerHtml);
+            } catch (Exception e){
+                logger.info(StackToString.toString(e));
+            }
+        }
+        return getText(element);
+    }
+    
+    
+    private String replaceSpacers(String html) throws ParserConfigurationException, SAXException, IOException{
+        StringWriter text = new StringWriter();
+        
+        Document doc;
+        
+        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        doc = builder.parse(new StringInputStream(html));
+        Node child = doc.getFirstChild();
+        child = child.getFirstChild();
+        while (child != null){
+            if (child.getNodeName().contains("text")){
+                text.write(child.getTextContent());
+            } else if (child.getNodeName().contains("img")){
+                Element node = (Element) child;
+                if (node.getAttribute("src").contains("spacer.gif")){
+                    text.write(" ");
+                }
+            }
+            child = child.getNextSibling();
+        }
+        return text.toString();
+    }
+    
+    private String closeImgTags(String html){
+        Pattern pat = Pattern.compile("img.*\\\"\\>");
+        Matcher match = pat.matcher(html);
+        while (match.find()){
+            html = html.substring(0, match.end()) + "</img>" + html.substring(match.end());
+        }
+        return html;
+    }
+    
+    private String idToXpath(String element){
+        if (element.startsWith("//") || element.contains("=")){
+            return element;
+        } 
+        
+        WebElement node = getWrappedDriver().findElement(By.id(element));
+        String xpath = "//" + node.getTagName() + "[@id='" + element +"']";
+        return xpath;
     }
 
 

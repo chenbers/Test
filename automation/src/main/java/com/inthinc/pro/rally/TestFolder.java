@@ -13,12 +13,11 @@ import org.json.JSONObject;
 
 import com.inthinc.pro.automation.utils.StackToString;
 
-public class TestFolder {
+public class TestFolder extends RallyObject {
 	
 	private final static Logger logger = Logger.getLogger(TestFolder.class);
 
 	
-	private HTTPCommands http;
 	
 	public TestFolder(String username, String password, RallyWebServices space){
 		http=new HTTPCommands(username, password);

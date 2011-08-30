@@ -12,7 +12,6 @@ import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 public class AutomatedTest extends MasterTest{
 
     protected Long startTime;
-    protected ErrorCatcher errors;
     private AutomationPropertiesBean automationPropertiesBean;
 
     protected final static Logger logger = Logger.getLogger(AutomatedTest.class);
@@ -25,6 +24,7 @@ public class AutomatedTest extends MasterTest{
     protected CoreMethodInterface selenium;
     
     private final SeleniumEnumWrapper webVersionID;
+    private static boolean deviceTest;
 
     public AutomatedTest(){
         webVersionID=null;
@@ -38,9 +38,8 @@ public class AutomatedTest extends MasterTest{
     // public abstract void failTest();
     public void after() {
         stopTime = currentTime();
-        if (!skip) {
+        if (!skip || deviceTest) {
             try {
-                errors = selenium.getErrors();
                 // check error var for entries
                 setTestVerdict(errors.getHighestLevel());
                 if (buildNumber == null){
@@ -49,7 +48,9 @@ public class AutomatedTest extends MasterTest{
             } catch (Exception e) {
                 logger.fatal(StackToString.toString(e));
             }finally{
-                GlobalSelenium.dieSeleniumDie();   
+                if (!deviceTest){
+                    GlobalSelenium.dieSeleniumDie();   
+                }
             }
         } else {
             System.out.print(" skip ");
@@ -58,12 +59,14 @@ public class AutomatedTest extends MasterTest{
 
     public void before() {
         startTime = currentTime();
-        try {
-            selenium = super.getSelenium();
-        } catch (Exception e) {
-            logger.fatal(StackToString.toString(e));
-            skip = true;
-            throw new NullPointerException();
+        if (!deviceTest){
+            try {
+                selenium = super.getSelenium();
+            } catch (Exception e) {
+                logger.fatal(StackToString.toString(e));
+                skip = true;
+                throw new NullPointerException();
+            }
         }
     }
 
@@ -101,9 +104,8 @@ public class AutomatedTest extends MasterTest{
         }
     }
     
-    public void pause(Integer timeToPauseInSeconds, String reasonForPause){
-        if(selenium == null)
-           selenium = super.getSelenium();
-        selenium.pause(timeToPauseInSeconds, reasonForPause);
+    protected static void setAsDeviceTest(){
+        deviceTest = true;
+        errors = new ErrorCatcher();
     }
 }

@@ -435,6 +435,14 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         date = GregorianCalendar.getInstance();
     }
     
+    public static AutomationCalendar now(){
+        return new AutomationCalendar();
+    }
+    
+    public static AutomationCalendar now(WebDateFormat format){
+        return new AutomationCalendar(format);
+    }
+    
     public AutomationCalendar(){
         this(WebDateFormat.NOTE_DATE_TIME);
     }
@@ -614,6 +622,10 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
     public String toString(Calendar date) {
         SimpleDateFormat yesterday = new SimpleDateFormat(format);
         return yesterday.format(date);
+    }
+    
+    public String toString(WebDateFormat format){
+        return new AutomationCalendar(this.getCalendar(), format).toString();
     }
     
     public void zeroTimeOfDay(){

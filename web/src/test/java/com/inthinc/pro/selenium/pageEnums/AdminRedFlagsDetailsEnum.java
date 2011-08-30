@@ -34,7 +34,7 @@ public enum AdminRedFlagsDetailsEnum implements SeleniumEnums {
     
     NOTIFICATIONS_BY_NAME_LIST(null, "//table[3]/tbody/tr/td[1]/div[@class='add_section_title']/../div[2]"),
     
-    PHONE_CALL_ESCALATION_NUMBER_LIST(null, "//span[@class='phoneInput']"),
+    PHONE_CALL_ESCALATION_NUMBER_LIST(null, "phoneNumbers"),
     PHONE_CALL_ESCALATION_EMAIL(null, "//span[@class='emailInput'"),
     CALL_DELAY("Call Delay:", "//table[3]/tbody/tr/td[3]/div[@class='add_section_title']/../table/tbody/tr[1]/td[2]"),
     LIMIT_BY("Limit By:", "//table[3]/tbody/tr/td[3]/div[@class='add_section_title']/../table/tbody/tr[2]/td[2]"),

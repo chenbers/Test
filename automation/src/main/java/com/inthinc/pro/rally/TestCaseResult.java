@@ -1,6 +1,7 @@
 package com.inthinc.pro.rally;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
@@ -38,29 +39,40 @@ import com.inthinc.pro.rally.HTTPCommands.RallyFields;
  * 
  * @author dtanner
  */
-public class TestCaseResult {
+public class TestCaseResult extends RallyObject {
 
     public static enum Verdicts {
-    BLOCKED("Blocked"),
-    ERROR("Error"),
-    FAIL("Fail"),
-    INCONCLUSIVE("Inconclusive"),
-    PASS("Pass"), 
-        ;
+        BLOCKED("Blocked"),
+        ERROR("Error"),
+        FAIL("Fail"),
+        INCONCLUSIVE("Inconclusive"),
+        PASS("Pass"), ;
 
-        private String string;
+        private String verdict;
 
-        private Verdicts(String string) {
-            this.string = string;
+        private Verdicts(String verdict) {
+            this.verdict = verdict;
         }
 
         @Override
         public String toString() {
-            return string;
+            return verdict;
+        }
+
+        private static HashMap<String, Verdicts> lookupByCode = new HashMap<String, Verdicts>();
+
+        static {
+            for (Verdicts p : EnumSet.allOf(Verdicts.class)) {
+                lookupByCode.put(p.toString(), p);
+            }
+        }
+
+        public static Verdicts getEnum(String verdict) {
+            return lookupByCode.get(verdict);
         }
     }
-    
-    public static enum Fields implements RallyFields{
+
+    public static enum Fields implements RallyFields {
         ATTACHMENTS("Attachments", false),
         BUILD("Build", true), /* Required */
         DATE("Date", true), /* Required */
@@ -71,7 +83,7 @@ public class TestCaseResult {
         TESTER("Tester", false),
         VERDICT("Verdict", true), /* Required */
         WORKSPACE("Workspace", true), /* Required */
-        
+
         ;
 
         private String string;
@@ -81,8 +93,8 @@ public class TestCaseResult {
             this.string = string;
             this.required = required;
         }
-        
-        public boolean required(){
+
+        public boolean required() {
             return required;
         }
 
@@ -93,25 +105,24 @@ public class TestCaseResult {
 
     private final static Logger logger = Logger.getLogger(TestCaseResult.class);
 
-    private HTTPCommands http;
     private JSONObject testCaseResults;
+    
 
-    public TestCaseResult(String username, String password, RallyWebServices space) {
+    public TestCaseResult(String username, String password,
+            RallyWebServices space) {
         http = new HTTPCommands(username, password);
         http.setWorkspace(space);
         newResults();
     }
 
-    
-    public String getField(Fields field){
+    public Object getField(Fields field) {
         try {
-            return testCaseResults.getString(field.toString());
+            return testCaseResults.get(field.toString());
         } catch (JSONException e) {
             logger.info(StackToString.toString(e));
         }
         return null;
     }
-
 
     public void newResults() {
         testCaseResults = new JSONObject();
@@ -125,28 +136,30 @@ public class TestCaseResult {
      */
     public void send_test_case_results() {
         Fields fieldFailed = null;
-        try{
-            for (Fields field : EnumSet.allOf(Fields.class)){
+        try {
+            for (Fields field : EnumSet.allOf(Fields.class)) {
                 fieldFailed = field;
-                if (field.required()){
+                if (field.required()) {
                     testCaseResults.get(field.toString());
                 }
             }
-            http.postObjects(RallyWebServices.TEST_CASE_RESULTS, testCaseResults, true);    
-        } catch(JSONException e){
-            logger.debug("The " + fieldFailed + " is missing from the test case results.");
+            http.postObjects(RallyWebServices.TEST_CASE_RESULTS,
+                    testCaseResults, true);
+        } catch (JSONException e) {
+            logger.debug("The " + fieldFailed
+                    + " is missing from the test case results.");
             logger.debug(PrettyJSON.toString(testCaseResults));
             logger.debug(StackToString.toString(e));
-            
+
         }
-        
+
     }
 
     public void setBuildNumber(String build) {
         setField(Fields.BUILD, build);
     }
-    
-    public <T> void setField(RallyFields field, T value){
+
+    public <T> void setField(RallyFields field, T value) {
         try {
             testCaseResults.put(field.toString(), value);
         } catch (JSONException e) {
@@ -175,9 +188,9 @@ public class TestCaseResult {
     public void setNotes(ErrorCatcher notes) {
         setNotes(RallyStrings.toString(notes.toString()));
     }
-    
+
     public void setNotes(String box, ErrorCatcher notes) {
-        setNotes(RallyStrings.toString(box + "\n"+notes.toString()));
+        setNotes(RallyStrings.toString(box + "\n" + notes.toString()));
     }
 
     public void setNotes(String notes) {
@@ -188,12 +201,12 @@ public class TestCaseResult {
         TestCase testcase = new TestCase(http);
         setField(Fields.TEST_CASE, testcase.getTestCase(searchParams));
     }
-    
-    public void setTestSet(NameValuePair searchParams){
-    	TestSet testSet = new TestSet(http);
+
+    public void setTestSet(NameValuePair searchParams) {
+        TestSet testSet = new TestSet(http);
         setField(Fields.TEST_SET, testSet.getTestSet(searchParams));
     }
-    
+
     /**
      * Method setVerdict<br />
      * <br />
@@ -208,5 +221,20 @@ public class TestCaseResult {
 
     public String toString() {
         return PrettyJSON.toString(testCaseResults);
+    }
+
+    public void updateTestCase(String testCase, String byID) {
+        TestCase tc = new TestCase(http);
+        tc.setTestCase(testCase);
+        AutomationCalendar today = AutomationCalendar.now(WebDateFormat.RALLY_DATE_FORMAT);
+
+        Verdicts lastVerdict = tc.getLastVerdict();
+
+        if (!tc.wasRunToday() || lastVerdict != Verdicts.PASS) {
+            logger.info("Last Test Case result: " + tc.getLastRun());
+            logger.info("Today is: " + today);
+            setTestCase(new NameValuePair(byID, testCase));
+            send_test_case_results();
+        }
     }
 }
