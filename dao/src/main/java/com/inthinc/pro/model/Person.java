@@ -239,17 +239,17 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
         StringBuilder result = new StringBuilder();
         if (first != null)
             result.append(first);
-        if (middle != null && !middle.equals("")) {
+        if (middle != null && !middle.isEmpty()) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(middle);
         }
-        if (last != null && !last.equals("")) {
+        if (last != null && !last.isEmpty()) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(last);
         }
-        if (suffix != null && !suffix.equals("")) {
+        if (suffix != null && !suffix.isEmpty()) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(suffix);
@@ -262,17 +262,17 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
             result.append(last);
             result.append(",");
         }
-        if (first != null) {
+        if (first != null && !first.isEmpty()) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(first);
         }
-        if (middle != null) {
+        if (middle != null && !middle.isEmpty()) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(middle);
         }
-        if (suffix != null) {
+        if (suffix != null && !suffix.isEmpty()) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(suffix);
