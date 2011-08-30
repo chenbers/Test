@@ -239,17 +239,17 @@ public class Person extends BaseEntity implements Comparable<Person>, HasAccount
         StringBuilder result = new StringBuilder();
         if (first != null)
             result.append(first);
-        if (middle != null) {
+        if (middle != null && !middle.equals("")) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(middle);
         }
-        if (last != null) {
+        if (last != null && !last.equals("")) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(last);
         }
-        if (suffix != null) {
+        if (suffix != null && !suffix.equals("")) {
             if (result.length() > 0)
                 result.append(' ');
             result.append(suffix);
