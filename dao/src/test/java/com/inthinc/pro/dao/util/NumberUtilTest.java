@@ -44,4 +44,14 @@ public class NumberUtilTest {
         Double result = NumberUtil.convertStringToDouble("3.5656");
         assertTrue(result.equals(3.5656));
     }
+    @Test
+    public void testIntValueNull() {
+        int result = NumberUtil.intValue(null);
+        int expected = 0;
+        assertTrue(expected == result);
+    }
+    @Test
+    public void testIntValueDouble() {
+        assertTrue(1 == NumberUtil.intValue(1.0d));
+    }
 }
