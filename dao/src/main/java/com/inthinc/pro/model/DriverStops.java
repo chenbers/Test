@@ -2,9 +2,8 @@ package com.inthinc.pro.model;
 
 import java.util.List;
 
-import com.inthinc.pro.model.aggregation.DriverVehicleScoreWrapper;
-
 public class DriverStops extends BaseEntity {
+
 
     /**
      * 
@@ -22,8 +21,26 @@ public class DriverStops extends BaseEntity {
     private Integer idleHi;
     private String zoneName;  
     private String address;
-    
     private Boolean summary;
+
+    public DriverStops()
+    {
+        
+    }
+    public DriverStops(Integer driverID, Integer vehicleID, Double lat, Double lng, Long driveTime, Long arriveTime, Long departTime, Integer idleLo, Integer idleHi,
+            String zoneName) {
+        super();
+        this.driverID = driverID;
+        this.vehicleID = vehicleID;
+        this.lat = lat;
+        this.lng = lng;
+        this.driveTime = driveTime;
+        this.arriveTime = arriveTime;
+        this.departTime = departTime;
+        this.idleLo = idleLo;
+        this.idleHi = idleHi;
+        this.zoneName = zoneName;
+    }
 
     public Integer getDriverID() {
         return driverID;
@@ -97,6 +114,21 @@ public class DriverStops extends BaseEntity {
     public void setAddress(String address) {
         this.address = address;
     }
+    
+    public Integer getWaitTime() {
+        
+        Integer waitTime = (int)(departTime - arriveTime) - idleHi - idleLo;
+        if (waitTime < 0)
+            return 0;
+        
+        return waitTime;
+    }
+
+    public Integer getTotalTime() {
+        
+        Integer totalTime = idleHi + idleLo + getWaitTime();
+        return totalTime;
+    }
 
     public static DriverStops summarize(List<DriverStops> driverStops) {
         
@@ -156,5 +188,21 @@ public class DriverStops extends BaseEntity {
         d.setDriveTime(driveTime);
         
         return d;   
+    }
+    
+    
+    public void dump() {
+        
+        System.out.println("new DriverStops("+
+                driverID + ", " +
+                vehicleID + ", " +
+                lat + ", " +
+                lng + ", " +
+                driveTime + ", " +
+                arriveTime + ", " +
+                departTime + ", " +
+                idleLo + ", " +
+                idleHi + ", " +
+                (zoneName == null ? "null" : zoneName) + ");");
     }
 }

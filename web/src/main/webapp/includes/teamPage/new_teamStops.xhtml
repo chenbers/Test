@@ -245,7 +245,7 @@
 	                		
 	                			<rich:column>
                     				<h:outputFormat value="#{messages.reports_time}">
-                    					<a4j:actionparam value="#{stopsSummary.departTime - stopsSummary.arriveTime}" 
+                    					<a4j:actionparam value="#{stopsSummary.totalTime}" 
                     						converter="TimeToStringConverter"/>                    
                     				</h:outputFormat>										
                     			        			                			
@@ -267,7 +267,7 @@
 	                			                
 	                			<rich:column>
                     				<h:outputFormat value="#{messages.reports_time}" >
-                    					<a4j:actionparam value="#{stopsSummary.departTime - stopsSummary.arriveTime - stopsSummary.idleHi - stopsSummary.idleLo}" converter="TimeToStringConverter"/>                    
+                    					<a4j:actionparam value="#{stopsSummary.waitTime}" converter="TimeToStringConverter"/>                    
                     				</h:outputFormat>										
                     			     	                			                			
 	                			</rich:column>	
@@ -334,7 +334,7 @@
 	                		
 	                					<rich:column>
                     						<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.departTime != 0 and stops.arriveTime != 0}">
-                    							<a4j:actionparam value="#{stops.departTime - stops.arriveTime}" 
+                    							<a4j:actionparam value="#{stops.totalTime}" 
                     								converter="TimeToStringConverter"/>                    
                     						</h:outputFormat>										
                     			        	<h:outputText value="---" rendered="#{stops.departTime == 0 or stops.arriveTime == 0}"/>		                			
@@ -358,7 +358,7 @@
 	                			                
 	                					<rich:column>
                     						<h:outputFormat value="#{messages.reports_time}" rendered="#{stops.departTime != 0 and stops.arriveTime != 0}">
-                    							<a4j:actionparam value="#{stops.departTime - stops.arriveTime - stops.idleHi - stops.idleLo}" converter="TimeToStringConverter"/>                    
+                    							<a4j:actionparam value="#{stops.waitTime}" converter="TimeToStringConverter"/>                    
                     						</h:outputFormat>										
 											<h:outputText value="---" rendered="#{stops.departTime == 0 or stops.arriveTime == 0}"/>                    			     	                			                			
 	                					</rich:column>	
