@@ -42,7 +42,7 @@ public class AutomatedTest extends MasterTest{
             try {
                 // check error var for entries
                 setTestVerdict(errors.getHighestLevel());
-                if (buildNumber == null){
+                if (buildNumber == null && selenium !=null){
                     setBuildNumber(selenium.getText(webVersionID));
                 }
             } catch (Exception e) {
