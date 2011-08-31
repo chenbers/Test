@@ -50,7 +50,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
                     new HosViolationsSummary("HOS->Tech", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0.0d, 0.0d),
                     new HosViolationsSummary("HOS->Gun Loader", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0.0d, 0.0d),
                     new HosViolationsSummary("HOS->Temporary Drivers", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0.0d, 0.0d), },
-            { new HosViolationsSummary("Norman Wells->Norman Wells - WS", 0, 0, 0, 4, 1, 0, 0, 0, 0, 3, 1, 1, 7, 26700.0d, 100.0d),
+            { new HosViolationsSummary("Norman Wells->Norman Wells - WS", 0, 0, 0, 4, 1, 0, 0, 0, 0, 3, 1, 0, 7, 26700.0d, 100.0d),
                     new HosViolationsSummary("Norman Wells->REW", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15200.0d, 0.0d), } };
     NonDOTViolationsSummary nonDOTViolationsExpectedData[][] = {
             { new NonDOTViolationsSummary("HOS", 51, 2), new NonDOTViolationsSummary("HOS->Open Hole", 7, 0), new NonDOTViolationsSummary("HOS->Cased Hole", 55, 0),
@@ -124,9 +124,6 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
                 new ViolationsDetail("Norman Wells->Norman Wells - WS",new Date(1278511164000l),"01041730","Harris,  Eugene","2467",RuleSetType.CANADA_2007_60_DEGREES_OIL,Arrays.asList(
                         new Violation(RuleSetType.CANADA_2007_60_DEGREES_OIL,RuleViolationTypes.ON_DUTY_HOUR,6l),
                         new Violation(RuleSetType.CANADA_2007_60_DEGREES_OIL,RuleViolationTypes.OFF_DUTY_HOUR,6l)
-                    )),
-                    new ViolationsDetail("Norman Wells->Norman Wells - WS",new Date(1278482400000l),"01466044","Szpuniarski,  James",null,RuleSetType.CANADA_2007_60_DEGREES_OIL,Arrays.asList(
-                        new Violation(RuleSetType.CANADA_2007_60_DEGREES_OIL,RuleViolationTypes.DAILY_OFF_DUTY,142l)
                     )),
                     new ViolationsDetail("Norman Wells->Norman Wells - WS",new Date(1278514452000l),"01466044","Szpuniarski,  James","2TRA02584",RuleSetType.CANADA_2007_60_DEGREES_OIL,Arrays.asList(
                         new Violation(RuleSetType.CANADA_2007_60_DEGREES_OIL,RuleViolationTypes.ON_DUTY_HOUR,12l)
@@ -291,6 +288,7 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             int eCnt = 0;
             for (HosViolationsSummary s : dataList) {
                 HosViolationsSummary expected = hosViolationsExpectedData[testCaseCnt][eCnt++];
+                System.out.println(expected.getGroupName());
                 assertEquals(testCaseName[testCaseCnt] + " driving_1 " + eCnt, expected.getDriving_1(), s.getDriving_1());
                 assertEquals(testCaseName[testCaseCnt] + " driving_2 " + eCnt, expected.getDriving_2(), s.getDriving_2());
                 assertEquals(testCaseName[testCaseCnt] + " driving_2 " + eCnt, expected.getDriving_3(), s.getDriving_3());
@@ -346,11 +344,13 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
     public void gainDetailsTestCases() {
         for (int testCaseCnt = 0; testCaseCnt < testCaseName.length; testCaseCnt++) {
             HosRecordDataSet violationsTestData = new HosRecordDataSet(DATA_PATH, testCaseName[testCaseCnt], true);
+     
             // HOS VIOLATIONS
             HosViolationsDetailReportCriteria criteria = new HosViolationsDetailReportCriteria(Locale.US);
             criteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(), violationsTestData.driverHOSRecordMap);
             List<ViolationsDetail> dataList = criteria.getMainDataset();
-//System.out.println("testcasecnt: " + testCaseCnt);            
+//dump("hosViolationsDetailTest", testCaseCnt + 1, criteria, FormatType.PDF);
+//dump("hosViolationsDetailTest", testCaseCnt + 1, criteria, FormatType.HTML);
 //             for (ViolationsDetail data : dataList)
 //                 data.dump();
             assertEquals(testCaseName[testCaseCnt] + " number of records", hosViolationsDetailExpectedData[testCaseCnt].length, dataList.size());
@@ -358,8 +358,6 @@ public class ViolationsReportCriteriaTest extends BaseUnitTest {
             for (ViolationsDetail s : dataList) {
                 compareViolationDetails(testCaseCnt, hosViolationsDetailExpectedData[testCaseCnt][eCnt++], s);
             }
-            dump("hosViolationsDetailTest", testCaseCnt + 1, criteria, FormatType.PDF);
-            dump("hosViolationsDetailTest", testCaseCnt + 1, criteria, FormatType.HTML);
             // NON-DOT VIOLATIONS
             NonDOTViolationsDetailReportCriteria nonDOTCriteria = new NonDOTViolationsDetailReportCriteria(Locale.US);
             nonDOTCriteria.initDataSet(violationsTestData.interval, violationsTestData.getGroupHierarchy(), violationsTestData.driverHOSRecordMap);

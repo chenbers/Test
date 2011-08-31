@@ -295,7 +295,7 @@ public class HosDailyDriverLogReportCriteria {
 
             List<HOSRecAdjusted> logListForDay = adjustedList.getAdjustedListForDay(day.toDate(), currentTime, true); 
             List<HOSOccupantLog> occupantLogListForDay = getOccupantLogsForDay(logListForDay, hosOccupantLogList);
-            HOSRec firstHosRecForDay = getFirstRecordForDay(day.toDate(), hosRecapList);
+            HOSRec firstHosRecForDay = getFirstRecordForDay(day.toDate(), hosRecapList, dateTimeZone);
             RuleSetType ruleSetType = getRuleSetTypeForDay(day, driver, firstHosRecForDay);
             
             HosDailyDriverLog dayData= new HosDailyDriverLog();
@@ -810,10 +810,10 @@ public class HosDailyDriverLogReportCriteria {
         return ruleSetType;
     }
     
-    private HOSRec getFirstRecordForDay(Date day, List<HOSRec> hosList)
+    private HOSRec getFirstRecordForDay(Date day, List<HOSRec> hosList, DateTimeZone timeZone)
     {
-        Date dayStart = DateUtil.getStartOfDay(day);
-        Date dayEnd =  DateUtil.getEndOfDay(day);
+        Date dayStart = DateUtil.getStartOfDay(day, timeZone.toTimeZone());
+        Date dayEnd =  DateUtil.getEndOfDay(day, timeZone.toTimeZone());
         
         for (HOSRec logRec : hosList)
         {
