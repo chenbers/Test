@@ -5,6 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.inthinc.pro.dao.annotations.Column;
+import com.inthinc.pro.dao.util.NumberUtil;
 import com.inthinc.pro.model.Driver;
 import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
@@ -96,6 +97,9 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
         int totAggRightEvt = 0;   
         
         float totActiveDrivers = 0;
+        int totHeavyDrivers = 0;
+        int totMediumDrivers = 0;
+        int totLightDrivers = 0;
         int totScoringDrivers = 0;
         
         // Crash related
@@ -136,14 +140,22 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
             if (dvsc.getScore().getMpgHeavy() != null ||
             		dvsc.getScore().getMpgMedium() != null ||
             		dvsc.getScore().getMpgLight() != null) {
-                totActiveDrivers++;
-            
-                totMpgHeavy += (dvsc.getScore().getMpgHeavy() == null) ? 0 : dvsc.getScore().getMpgHeavy().doubleValue();
-                totMpgMedium += (dvsc.getScore().getMpgMedium() == null) ? 0 : dvsc.getScore().getMpgMedium().doubleValue();
-                totMpgLight += (dvsc.getScore().getMpgLight() == null) ? 0 : dvsc.getScore().getMpgLight().doubleValue();
-                totMilesHeavy += (dvsc.getScore().getOdometerHeavy()== null) ? 0d : dvsc.getScore().getOdometerHeavy().doubleValue();
-                totMilesMedium += (dvsc.getScore().getOdometerMedium()== null) ? 0d : dvsc.getScore().getOdometerMedium().doubleValue();
-                totMilesLight += (dvsc.getScore().getOdometerLight()== null) ? 0d : dvsc.getScore().getOdometerLight().doubleValue();
+                
+                if(dvsc.getScore().getMpgHeavy() != null && NumberUtil.intValue(dvsc.getScore().getOdometerHeavy())>0){
+                    totHeavyDrivers++;
+                    totMpgHeavy += (dvsc.getScore().getMpgHeavy() == null) ? 0 : dvsc.getScore().getMpgHeavy().doubleValue();
+                    totMilesHeavy += (dvsc.getScore().getOdometerHeavy()== null) ? 0d : dvsc.getScore().getOdometerHeavy().doubleValue();
+                }
+                if(dvsc.getScore().getMpgMedium() != null && NumberUtil.intValue(dvsc.getScore().getOdometerMedium())>0){
+                    totMediumDrivers++;
+                    totMpgMedium += (dvsc.getScore().getMpgMedium() == null) ? 0 : dvsc.getScore().getMpgMedium().doubleValue();
+                    totMilesMedium += (dvsc.getScore().getOdometerMedium()== null) ? 0d : dvsc.getScore().getOdometerMedium().doubleValue();
+                }
+                if(dvsc.getScore().getMpgLight() != null && NumberUtil.intValue(dvsc.getScore().getOdometerLight())>0){
+                    totLightDrivers++;
+                    totMpgLight += (dvsc.getScore().getMpgLight() == null) ? 0 : dvsc.getScore().getMpgLight().doubleValue();
+                    totMilesLight += (dvsc.getScore().getOdometerLight()== null) ? 0d : dvsc.getScore().getOdometerLight().doubleValue();
+                }
             }
 
             
@@ -201,12 +213,12 @@ public class DriverVehicleScoreWrapper implements Comparable<DriverVehicleScoreW
         tmp.setDriveTime(totDriveTime);
         tmp.setEndingOdometer(totMilesDriven);
         tmp.setStartingOdometer(0); 
-        tmp.setMpgHeavy(totMpgHeavy/totActiveDrivers);
-        tmp.setMpgMedium(totMpgMedium/totActiveDrivers);
-        tmp.setMpgLight(totMpgLight/totActiveDrivers);
-        tmp.setOdometerHeavy(totMilesHeavy/totActiveDrivers);
-        tmp.setOdometerMedium(totMilesMedium/totActiveDrivers);
-        tmp.setOdometerLight(totMilesLight/totActiveDrivers);
+        tmp.setMpgHeavy(totHeavyDrivers>0?(totMpgHeavy/totHeavyDrivers):0);
+        tmp.setMpgMedium(totMediumDrivers>0?(totMpgMedium/totMediumDrivers):0);
+        tmp.setMpgLight(totLightDrivers>0?(totMpgLight/totLightDrivers):0);
+        tmp.setOdometerHeavy(totHeavyDrivers>0?(totMilesHeavy/totHeavyDrivers):0);
+        tmp.setOdometerMedium(totMediumDrivers>0?(totMilesMedium/totMediumDrivers):0);
+        tmp.setOdometerLight(totLightDrivers>0?(totMilesLight/totLightDrivers):0);
         
         tmp.setCrashEvents(totCrash);       
         tmp.setSeatbeltEvents(totSeatBeltEvt);        

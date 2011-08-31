@@ -7,6 +7,7 @@ import it.com.inthinc.pro.dao.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.model.Driver;
@@ -16,6 +17,41 @@ import com.inthinc.pro.model.Status;
 
 public class DriverVehicleScoreWrapperTest {
 	private static final int GROUP_ID = 2;
+	
+	private static double expectedMpg;
+	private static double milesForEachVehicle;
+	private static double roundingMargin = 0.01;
+	private static DriverVehicleScoreWrapper heavyOnlyDriver= makeDriverVehicleScoreWrapper(1);
+	private static DriverVehicleScoreWrapper mediumOnlyDriver= makeDriverVehicleScoreWrapper(2);
+	private static DriverVehicleScoreWrapper lightOnlyDriver= makeDriverVehicleScoreWrapper(3);
+	
+	@BeforeClass
+	public static void setupSumarizeDrivers(){
+	    //
+        expectedMpg = Util.randomInt(500, 4000) / 100;
+        milesForEachVehicle = Util.randomInt(100, 10000) / 100;
+
+        heavyOnlyDriver.getScore().setMpgHeavy(expectedMpg * 100);
+        heavyOnlyDriver.getScore().setMpgMedium(null);
+        heavyOnlyDriver.getScore().setMpgLight(null);
+        heavyOnlyDriver.getScore().setOdometerHeavy(milesForEachVehicle);
+        heavyOnlyDriver.getScore().setOdometerMedium(0);
+        heavyOnlyDriver.getScore().setOdometerLight(0);
+
+        mediumOnlyDriver.getScore().setMpgHeavy(0);
+        mediumOnlyDriver.getScore().setMpgMedium(expectedMpg * 100);
+        mediumOnlyDriver.getScore().setMpgLight(null);
+        mediumOnlyDriver.getScore().setOdometerHeavy(null);
+        mediumOnlyDriver.getScore().setOdometerMedium(milesForEachVehicle);
+        mediumOnlyDriver.getScore().setOdometerLight(0);
+
+        lightOnlyDriver.getScore().setMpgHeavy((expectedMpg * 100)/3);//intentionally UNexpected mpg,
+        lightOnlyDriver.getScore().setOdometerHeavy(null);//but with null miles
+        lightOnlyDriver.getScore().setMpgMedium((expectedMpg * 100)/2);//intentionally UNexpected mpg
+        lightOnlyDriver.getScore().setOdometerMedium(0);//but with zero miles
+        lightOnlyDriver.getScore().setMpgLight(expectedMpg * 100);
+        lightOnlyDriver.getScore().setOdometerLight(milesForEachVehicle);
+	}
 
 	@Test
 	public void testSummarize() {
@@ -51,7 +87,7 @@ public class DriverVehicleScoreWrapperTest {
 		
 	}
 
-	private DriverVehicleScoreWrapper makeDriverVehicleScoreWrapper(int id) {
+	private static DriverVehicleScoreWrapper makeDriverVehicleScoreWrapper(int id) {
 		DriverVehicleScoreWrapper wrapper = new DriverVehicleScoreWrapper();
 		Score score = new Score();
 		
@@ -108,6 +144,80 @@ public class DriverVehicleScoreWrapperTest {
         
         assertEquals("mpg", 0, mpg.longValue());
 
-	}
+    }
 
+    /**
+     * Test summarize when drivers have MPG in different zones. Sets up 3 drivers each of whom drive the same distance, with the same MPG, BUT each in a different zone. After
+     * summarize it is expected that all zones will have the same MPG, as well as Odometer, additionally weighted MPG should be within a rounding margin of the initial MPG that all
+     * vehicles drove.
+     * 
+     */
+    @Test
+    public void testSummarize_MpgInDifferentZones() {
+        ArrayList<DriverVehicleScoreWrapper> listForSummarize = new ArrayList<DriverVehicleScoreWrapper>();
+        listForSummarize.add(heavyOnlyDriver);
+        listForSummarize.add(mediumOnlyDriver);
+        listForSummarize.add(lightOnlyDriver);
+
+        Group group = new Group(GROUP_ID, GROUP_ID, "test", 1);
+        DriverVehicleScoreWrapper summary = DriverVehicleScoreWrapper.summarize(listForSummarize, group);
+
+        assertTrue("weightedMPG was not within rounding margin; expected: <" + expectedMpg + "> but was: <" + summary.getScore().getWeightedMpg().doubleValue() + ">", Math.abs(expectedMpg
+                - summary.getScore().getWeightedMpg().doubleValue()) < roundingMargin);
+        assertEquals(expectedMpg * 100, summary.getScore().getMpgHeavy());
+        assertEquals(expectedMpg * 100, summary.getScore().getMpgMedium());
+        assertEquals(expectedMpg * 100, summary.getScore().getMpgLight());
+
+        assertEquals(milesForEachVehicle, summary.getScore().getOdometerHeavy());
+        assertEquals(milesForEachVehicle, summary.getScore().getOdometerMedium());
+        assertEquals(milesForEachVehicle, summary.getScore().getOdometerLight());
+    }
+    @Test
+    public void testSummarize_notAllZones() {
+        ArrayList<DriverVehicleScoreWrapper> listForSummarize = new ArrayList<DriverVehicleScoreWrapper>();
+        listForSummarize.add(mediumOnlyDriver);
+
+        Group group = new Group(GROUP_ID, GROUP_ID, "test", 1);
+        DriverVehicleScoreWrapper summary = DriverVehicleScoreWrapper.summarize(listForSummarize, group);
+
+        assertTrue("weightedMPG was not within rounding margin; expected: <" + expectedMpg + "> but was: <" + summary.getScore().getWeightedMpg().doubleValue() + ">", Math.abs(expectedMpg
+                - summary.getScore().getWeightedMpg().doubleValue()) < roundingMargin);
+        assertEquals(0, summary.getScore().getMpgHeavy().intValue());
+        assertEquals(expectedMpg * 100, summary.getScore().getMpgMedium());
+        assertEquals(0, summary.getScore().getMpgLight().intValue());
+
+        assertEquals(0, summary.getScore().getOdometerHeavy().intValue());
+        assertEquals(milesForEachVehicle, summary.getScore().getOdometerMedium());
+        assertEquals(0, summary.getScore().getOdometerLight().intValue());
+    }
+    @Test
+    public void testSummarize_singleDriverInDifferentZones() {
+        DriverVehicleScoreWrapper odoDriver = makeDriverVehicleScoreWrapper(4);
+        odoDriver.getScore().setMpgHeavy((expectedMpg * 100));
+        odoDriver.getScore().setOdometerHeavy(milesForEachVehicle);
+        odoDriver.getScore().setMpgMedium((expectedMpg * 100));
+        odoDriver.getScore().setOdometerMedium(milesForEachVehicle);
+        odoDriver.getScore().setMpgLight(expectedMpg * 100);
+        odoDriver.getScore().setOdometerLight(milesForEachVehicle);
+
+        ArrayList<DriverVehicleScoreWrapper> listForSummarize = new ArrayList<DriverVehicleScoreWrapper>();
+
+        listForSummarize.add(lightOnlyDriver); 
+        listForSummarize.add(mediumOnlyDriver); 
+        listForSummarize.add(heavyOnlyDriver); 
+        listForSummarize.add(odoDriver);
+        
+        Group group = new Group(GROUP_ID, GROUP_ID, "test", 1);
+        DriverVehicleScoreWrapper summary = DriverVehicleScoreWrapper.summarize(listForSummarize, group);
+
+        assertTrue("weightedMPG was not within rounding margin; expected: <" + expectedMpg + "> but was: <" + summary.getScore().getWeightedMpg().doubleValue() + "> for distance:"+milesForEachVehicle
+                , Math.abs(expectedMpg - summary.getScore().getWeightedMpg().doubleValue()) < roundingMargin);
+        assertEquals(expectedMpg * 100, summary.getScore().getMpgHeavy());
+        assertEquals(expectedMpg * 100, summary.getScore().getMpgMedium());
+        assertEquals(expectedMpg * 100, summary.getScore().getMpgLight());
+
+        assertEquals(milesForEachVehicle, summary.getScore().getOdometerHeavy());
+        assertEquals(milesForEachVehicle, summary.getScore().getOdometerMedium());
+        assertEquals(milesForEachVehicle, summary.getScore().getOdometerLight());
+    }
 }
