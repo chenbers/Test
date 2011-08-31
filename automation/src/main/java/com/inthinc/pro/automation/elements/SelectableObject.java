@@ -32,7 +32,7 @@ public class SelectableObject extends Text implements Selectable {
 	    	
 	        select(desiredOption, 1);//TODO: if there is no match for desiredOption the whole thing blows up;  preferably selenium error is logged and test TRIES to continue (in case TAE is trying to change multiple selects at one go... then ALL (or at least more) errors can be logged at once)
 	        String selected = selenium.getSelectedLabel(myEnum);
-	        assertEquals(selected, desiredOption);
+	        assertEquals(desiredOption, selected);
 	        return this;
 	    }
 	    
