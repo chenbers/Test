@@ -12,7 +12,7 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.DeviceProperties;
 import com.inthinc.pro.automation.enums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.enums.WaysmartProps;
-import com.inthinc.pro.automation.utils.CreateHessian;
+import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.model.configurator.ProductType;
 
@@ -36,7 +36,7 @@ public class WaysmartDevice extends Base {
     
     protected final static ProductType productVersion = ProductType.WAYSMART;
 	
-	private CreateHessian hessian;
+	private AutomationHessianFactory hessian;
 	
 		
 	private HOSStatus hosStatus;
@@ -198,7 +198,7 @@ public class WaysmartDevice extends Base {
 	protected WaysmartDevice set_IMEI( String imei, Addresses server, HashMap<Integer, String> settings ){
 		logger.debug("IMEI: "+imei+", Server: " + server);
 		this.server = server;
-		hessian = new CreateHessian();
+		hessian = new AutomationHessianFactory();
         super.set_IMEI(imei, server, settings, productVersion);
         Settings.put(WaysmartProps.MCM_ID, imei);
         imei = imei.replaceAll("MCM", "WW");
@@ -223,7 +223,7 @@ public class WaysmartDevice extends Base {
 
     @Override
 	protected WaysmartDevice set_server(Addresses server) {
-        hessian = new CreateHessian();
+        hessian = new AutomationHessianFactory();
 		mcmProxy = hessian.getMcmProxy(server);
 		String url, port;
 		url = server.getMCMUrl();

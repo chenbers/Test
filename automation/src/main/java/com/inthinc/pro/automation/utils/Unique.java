@@ -10,7 +10,7 @@ import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
 public class Unique {
-	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
+	private final static Logger logger = Logger.getLogger(Unique.class);
 	
 	private SiloService portalProxy;
 	private RandomValues random = new RandomValues();
@@ -22,7 +22,7 @@ public class Unique {
 	}
 	
 	public Unique(Addresses getYourOwn){
-		this.portalProxy = new CreateHessian().getPortalProxy(getYourOwn);
+		this.portalProxy = new AutomationHessianFactory().getPortalProxy(getYourOwn);
 	}
 	
 	public String getUniqueValue(Integer length, UniqueValues type){

@@ -8,7 +8,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.utils.CreateHessian;
+import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
@@ -30,7 +30,7 @@ public class ChangePasswordTest extends WebTest {
 	
 	
 	public void updateUser(){
-		SiloService portalProxy = (new CreateHessian()).getPortalProxy(Addresses.QA);
+		SiloService portalProxy = (new AutomationHessianFactory()).getPortalProxy(Addresses.QA);
 		portalProxy.updateUser(userID, user);
 	}
 	

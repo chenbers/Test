@@ -2,9 +2,6 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.SeleniumValueEnums;
@@ -30,7 +27,7 @@ public class SelectableObject extends Text implements Selectable {
 	 @Override
 	    public SelectableObject select(String desiredOption) {
 	    	
-	        select(desiredOption, 1);//TODO: if there is no match for desiredOption the whole thing blows up;  preferably selenium error is logged and test TRIES to continue (in case TAE is trying to change multiple selects at one go... then ALL (or at least more) errors can be logged at once)
+	        select(desiredOption, 1);
 	        String selected = selenium.getSelectedLabel(myEnum);
 	        assertEquals(desiredOption, selected);
 	        return this;
@@ -64,7 +61,7 @@ public class SelectableObject extends Text implements Selectable {
 	        if (xpath==null){
 	        	xpath = getSelectXpath();
 	        }
-	        getMatches(xpath, Id.text(desiredOption), matchNumber).click(); //TODO: related to line 33 issue above
+	        selenium.click(xpath, Id.text(desiredOption), matchNumber);
 	        return this;
 	    }
 
@@ -75,19 +72,10 @@ public class SelectableObject extends Text implements Selectable {
 	        if (xpath==null){
 	        	xpath = getSelectXpath();
 	        }
-	        getMatches(xpath, Id.contains(Id.text(), partialMatch), matchNumber).click();
+	        selenium.click(xpath, Id.contains(Id.text(), partialMatch), matchNumber);
 	        return this;
 	    }
 	    
-	    protected WebElement getMatches(String select, String option, Integer matchNumber){
-	    	String xpath = select+"/option["+option+"]";
-	    	return getMatches(xpath, matchNumber); //TODO: related to line 33 issue above
-	    }
-	    
-	    protected WebElement getMatches(String xpath, Integer matchNumber){
-	    	selenium.waitForElementPresent(xpath, 10);
-	    	return webDriver.findElements(By.xpath(xpath)).get(matchNumber); //TODO: related to line 33 issue above; ultimately this is where the IndexOutOfBoundsException can occur
-	    }
 	    
 	    private String getSelectIDAsXpath(){
 	    	List<String> ids = myEnum.getLocators();

@@ -737,4 +737,27 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return getSelectOptions(element);
     }
 
+    @Override
+    public CoreMethodInterface click(String xpath, Integer matchNumber) {
+        getMatches(xpath, matchNumber).click();
+        pause(3, "Wait for elements to refresh");
+        return this;
+    }
+    
+    private WebElement getMatches(String select, String option, Integer matchNumber){
+        String xpath = select+"/option["+option+"]";
+        return getMatches(xpath, matchNumber);
+    }
+    
+    private WebElement getMatches(String xpath, Integer matchNumber){
+        waitForElementPresent(xpath, 10);
+        return getWrappedDriver().findElements(By.xpath(xpath)).get(matchNumber);
+    }
+
+    @Override
+    public CoreMethodInterface click(String xpath, String desiredOption, Integer matchNumber) {
+        getMatches(xpath, Id.text(desiredOption), matchNumber).click();
+        return null;
+    }
+
 }

@@ -15,7 +15,7 @@ import com.inthinc.pro.automation.enums.TiwiNoteTypes;
 import com.inthinc.pro.automation.enums.TiwiProps;
 import com.inthinc.pro.automation.enums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.enums.TiwiGenerals.ViolationFlags;
-import com.inthinc.pro.automation.utils.CreateHessian;
+import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.model.configurator.ProductType;
 
@@ -26,7 +26,7 @@ public class TiwiProDevice extends Base {
     private final static ProductType productVersion = ProductType.TIWIPRO_R74;
     private HashMap<TiwiAttrs, Integer> attrs;
     private Long trip_start, trip_stop;
-    private CreateHessian getHessian;
+    private AutomationHessianFactory getHessian;
 
     public TiwiProDevice(String IMEI) {
         this(IMEI, Addresses.QA);
@@ -332,7 +332,7 @@ public class TiwiProDevice extends Base {
 
     @Override
     protected TiwiProDevice set_server(Addresses server) {
-        getHessian = new CreateHessian();
+        getHessian = new AutomationHessianFactory();
         logger.info("MCM Server is " + server);
         mcmProxy = getHessian.getMcmProxy(server);
         Settings.put(TiwiProps.PROPERTY_SERVER_PORT, server.getMCMPort().toString());

@@ -17,7 +17,7 @@ import com.inthinc.pro.model.configurator.ProductType;
 public class RandomValues {
 
 	private final static Logger logger = Logger
-			.getLogger(AutomationLogger.class);
+			.getLogger(RandomValues.class);
 
 	
 	private static HashMap<String, HashMap<String, String>> rfid = new HashMap<String, HashMap<String, String>>();

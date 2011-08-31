@@ -12,7 +12,6 @@ public class DhxDropDown extends DropDown implements Selectable {
 
     private SeleniumEnumWrapper makeDropDown;
     private String page;
-    private final int pause = 3;
 
     private SeleniumEnums[] enums;
 
@@ -152,8 +151,7 @@ public class DhxDropDown extends DropDown implements Selectable {
         matchNumber--;
         String xpath = makeXpath(Id.text(fullMatch));
         selenium.click(makeDropDown);
-        getMatches(xpath, matchNumber).click();
-        selenium.pause(pause, "Wait for elements to refresh");
+        selenium.click(xpath, matchNumber);
         return this;
     }
 
@@ -168,8 +166,7 @@ public class DhxDropDown extends DropDown implements Selectable {
         matchNumber--;
         String xpath = makeXpath(Id.contains(Id.text(), partialMatch));
         selenium.click(makeDropDown);
-        getMatches(xpath, matchNumber).click();
-        selenium.pause(pause, "Wait for elements to refresh");
+        selenium.click(xpath, matchNumber);
         return this;
     }
     

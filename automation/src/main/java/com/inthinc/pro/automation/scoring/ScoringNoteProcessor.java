@@ -9,14 +9,13 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.inthinc.pro.automation.utils.HessianRequests;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.model.configurator.ProductType;
 
 
-public class Processor {
-	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
+public class ScoringNoteProcessor {
+	private final static Logger logger = Logger.getLogger(ScoringNoteProcessor.class);
 	
 	public static enum UnitType {DRIVER, VEHICLE}; 
 
@@ -28,7 +27,7 @@ public class Processor {
 	private final Double agg_accel = 0.0593694;
 
 	private HessianRequests hessian;
-	private NoteSorter processor = new NoteSorter();
+	private ScoringNoteSorter processor = new ScoringNoteSorter();
 	
 	private Map<String, Double> scores;
 	
@@ -43,12 +42,12 @@ public class Processor {
 	private double seatbeltscore;
 	private ProductType deviceType;
 	
-	public Processor(SiloService proxy) {
+	public ScoringNoteProcessor(SiloService proxy) {
 		hessian = new HessianRequests(proxy);
 		scores = new TreeMap<String, Double>();
 	}
 	
-	public Processor(Addresses server){
+	public ScoringNoteProcessor(Addresses server){
 		hessian = new HessianRequests(server);
 		scores = new TreeMap<String, Double>();
 	}
@@ -58,7 +57,7 @@ public class Processor {
 		this.deviceType = deviceType;
 		if (type == UnitType.DRIVER)getDriverNotes(ID, start.getEpochTime(), stop.getEpochTime());
 		else getVehicleNotes(ID, start.getEpochTime(), stop.getEpochTime());
-		scores.put("Overall", Formulas.overallScore(speedingScore(), drivingStyleScore(), seatBeltScore()));		
+		scores.put("Overall", ScoringFormulas.overallScore(speedingScore(), drivingStyleScore(), seatBeltScore()));		
 	}
 	
 	public Map<String, Double> getOverall(){
@@ -102,23 +101,23 @@ public class Processor {
 			Double speed = dumbDriver.get("speed").doubleValue();
 			
 			if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > Math.abs(deltaZ)) {
-				if (deltaX>0) accel += Formulas.xSeverity(deltaX, speed);
-				else brake += Formulas.xSeverity(deltaX, speed);
+				if (deltaX>0) accel += ScoringFormulas.xSeverity(deltaX, speed);
+				else brake += ScoringFormulas.xSeverity(deltaX, speed);
 			}
 			
 			else if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > Math.abs(deltaZ)) {
-				turn += Formulas.ySeverity(deltaY, speed);
+				turn += ScoringFormulas.ySeverity(deltaY, speed);
 			}
 			
 			else if (Math.abs(deltaZ) > Math.abs(deltaY) && Math.abs(deltaZ) > Math.abs(deltaX)) {
-				bump += Formulas.zSeverity(deltaZ, speed);
+				bump += ScoringFormulas.zSeverity(deltaZ, speed);
 			}
 		}
-		scores.put("Hard Acceleration", Formulas.ap2s(a,b,accel,mileage,agg_accel));
-		scores.put("Hard Brake", Formulas.ap2s(a,b,brake,mileage,agg_brake));
-		scores.put("Hard Turn", Formulas.ap2s(a,b,turn,mileage,agg_turn));
-		scores.put("Hard Bump", Formulas.ap2s(a,b,bump,mileage,agg_bump));
-		scores.put("Driving Style", Formulas.ap2s(a,b,brake+accel+turn+bump,mileage,1.0));
+		scores.put("Hard Acceleration", ScoringFormulas.ap2s(a,b,accel,mileage,agg_accel));
+		scores.put("Hard Brake", ScoringFormulas.ap2s(a,b,brake,mileage,agg_brake));
+		scores.put("Hard Turn", ScoringFormulas.ap2s(a,b,turn,mileage,agg_turn));
+		scores.put("Hard Bump", ScoringFormulas.ap2s(a,b,bump,mileage,agg_bump));
+		scores.put("Driving Style", ScoringFormulas.ap2s(a,b,brake+accel+turn+bump,mileage,1.0));
 		return scores.get("Driving Style");
 	}
 	
@@ -136,13 +135,13 @@ public class Processor {
 			seatbeltscore += Math.pow(topSpeed, 2.0) * distance;
 		}
 		
-		scores.put("Seat Belt", Formulas.p2s(.3,.2,seatbeltscore,mileage));
+		scores.put("Seat Belt", ScoringFormulas.p2s(.3,.2,seatbeltscore,mileage));
 		return scores.get("Seat Belt");
 	}
 
 	public void testSeatBelt(Double topSpeed, Double distance, Double mileage) {
 		Double penalty = (Math.pow(topSpeed, 2.0)*distance);
-		Double score = Formulas.p2s(.3, .2, penalty, mileage);
+		Double score = ScoringFormulas.p2s(.3, .2, penalty, mileage);
 		System.out.println(score);
 	}
 	
@@ -165,16 +164,16 @@ public class Processor {
 			else if (limit<=64) meow = 3;
 			else meow=4;
 			
-			cats[meow] += Formulas.speedingPenalty(top, limit, distance);
+			cats[meow] += ScoringFormulas.speedingPenalty(top, limit, distance);
 			numbers[meow] ++;
 		}
 
-		scores.put(" 1-30",    Formulas.p2s(1.0,0.2,cats[0],categories[0].doubleValue()));
-		scores.put("31-40",    Formulas.p2s(1.0,0.2,cats[1],categories[1].doubleValue()));
-		scores.put("41-54",    Formulas.p2s(1.0,0.2,cats[2],categories[2].doubleValue()));
-		scores.put("55-64",    Formulas.p2s(1.0,0.2,cats[3],categories[3].doubleValue()));
-		scores.put("65-80",    Formulas.p2s(1.0,0.2,cats[4],categories[4].doubleValue()));
-		scores.put("Speeding", Formulas.p2s(1.0,0.2,Formulas.speedingPenalty(speeding),mileage));
+		scores.put(" 1-30",    ScoringFormulas.p2s(1.0,0.2,cats[0],categories[0].doubleValue()));
+		scores.put("31-40",    ScoringFormulas.p2s(1.0,0.2,cats[1],categories[1].doubleValue()));
+		scores.put("41-54",    ScoringFormulas.p2s(1.0,0.2,cats[2],categories[2].doubleValue()));
+		scores.put("55-64",    ScoringFormulas.p2s(1.0,0.2,cats[3],categories[3].doubleValue()));
+		scores.put("65-80",    ScoringFormulas.p2s(1.0,0.2,cats[4],categories[4].doubleValue()));
+		scores.put("Speeding", ScoringFormulas.p2s(1.0,0.2,ScoringFormulas.speedingPenalty(speeding),mileage));
 		return scores.get("Speeding");
 	}
 	

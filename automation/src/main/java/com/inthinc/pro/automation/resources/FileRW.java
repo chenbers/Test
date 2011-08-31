@@ -14,12 +14,11 @@ import javax.swing.ImageIcon;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.inthinc.pro.automation.utils.StackToString;
 
 public class FileRW {
 	
-	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
+	private final static Logger logger = Logger.getLogger(FileRW.class);
 	private static BufferedImage image;
 	private String fileName;
 	private BufferedReader in;

@@ -12,7 +12,7 @@ import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.CreateHessian;
+import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.DownloadFile;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
@@ -41,7 +41,7 @@ public class DeviceTests extends WebRallyTest {
                     fwdMap.put("data", 900 + i);
                     fwdMap.put("status", 1);
                     fwdMap.put("modified", System.currentTimeMillis() / 1000);
-                    SiloService portalProxy = new CreateHessian()
+                    SiloService portalProxy = new AutomationHessianFactory()
                             .getPortalProxy(server);
                     portalProxy.queueFwdCmd(deviceID, fwdMap);
                 }

@@ -8,38 +8,37 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.TiwiAttrs;
 import com.inthinc.pro.automation.enums.Ways_ATTRS;
-import com.inthinc.pro.automation.utils.AutomationLogger;
-import com.inthinc.pro.automation.utils.IntegersOnlyPlease;
+import com.inthinc.pro.automation.utils.ExtractIntegers;
 
 
 public class ProcessAttrs {
-	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
+	private final static Logger logger = Logger.getLogger(ProcessAttrs.class);
 
-	public static Map<Ways_ATTRS, Object> processThemW(Map<Object, Object> rogerRoger){
-	    if (rogerRoger==null)return null;
-		Map<Ways_ATTRS, Object> jedi = new HashMap<Ways_ATTRS, Object>();
-		Iterator<Object> itr = rogerRoger.keySet().iterator();
+	public static Map<Ways_ATTRS, Object> waysmart(Map<Object, Object> raw){
+	    if (raw==null)return null;
+		Map<Ways_ATTRS, Object> processed = new HashMap<Ways_ATTRS, Object>();
+		Iterator<Object> itr = raw.keySet().iterator();
 		while (itr.hasNext()) {
-			String key = (String) itr.next();
-			Integer realKey = IntegersOnlyPlease.getOnlyInternationals(key);
-			jedi.put(Ways_ATTRS.STATIC.valueOf(realKey), rogerRoger.get(key));
+			String strKey = (String) itr.next();
+			Integer enumKey = ExtractIntegers.extract(strKey);
+			processed.put(Ways_ATTRS.STATIC.valueOf(enumKey), raw.get(strKey));
 		}
-		logger.debug("Enumerated Attributes: "+jedi);
-		return jedi;
+		logger.debug("Enumerated Attributes: "+processed);
+		return processed;
 	}
 	
-	public static Map<TiwiAttrs, Object> processThemT(Map<Object, Object> rogerRoger){
-		if (rogerRoger==null)return null;
-		Map<TiwiAttrs, Object> jedi = new HashMap<TiwiAttrs, Object>();
+	public static Map<TiwiAttrs, Object> tiwiPro(Map<Object, Object> raw){
+		if (raw==null)return null;
+		Map<TiwiAttrs, Object> processed = new HashMap<TiwiAttrs, Object>();
 		
 		Iterator<Object> itr = null;
-		itr = rogerRoger.keySet().iterator();
+		itr = raw.keySet().iterator();
 		while (itr.hasNext()) {
-			String key = (String) itr.next();
-			Integer realKey = IntegersOnlyPlease.getOnlyInternationals(key);
-			jedi.put(TiwiAttrs.STATIC.valueOf(realKey), rogerRoger.get(key));
+			String strKey = (String) itr.next();
+			Integer enumKey = ExtractIntegers.extract(strKey);
+			processed.put(TiwiAttrs.STATIC.valueOf(enumKey), raw.get(strKey));
 		}
-		logger.debug("Enumerated Attributes: "+jedi);
-		return jedi;
+		logger.debug("Enumerated Attributes: "+processed);
+		return processed;
 	}
 }

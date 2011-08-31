@@ -9,9 +9,9 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
-public class CreateHessian {
+public class AutomationHessianFactory {
 
-    private final static Logger logger = Logger.getLogger(AutomationLogger.class);
+    private final static Logger logger = Logger.getLogger(AutomationHessianFactory.class);
 
     private SiloService portalProxy;
     private MCMProxy mcmProxy;

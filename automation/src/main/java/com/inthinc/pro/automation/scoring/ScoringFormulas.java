@@ -5,13 +5,12 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.inthinc.pro.automation.utils.StackToString;
 
 
 
-public class Formulas {
-	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
+public class ScoringFormulas {
+	private final static Logger logger = Logger.getLogger(ScoringFormulas.class);
 	
 	public final static Double xSeverity( Double deltaX, Double speed){
 		Double severity = Math.pow(Math.abs(deltaX), 2.0) * Math.pow(speed+Math.abs(deltaX)/10.0, 2.0);

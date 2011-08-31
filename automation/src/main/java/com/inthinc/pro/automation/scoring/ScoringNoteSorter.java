@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.utils.AutomationLogger;
 import com.inthinc.pro.model.configurator.ProductType;
 import com.inthinc.pro.model.event.AggressiveDrivingEvent;
 import com.inthinc.pro.model.event.Event;
@@ -16,9 +15,9 @@ import com.inthinc.pro.model.event.IdleEvent;
 import com.inthinc.pro.model.event.SeatBeltEvent;
 import com.inthinc.pro.model.event.SpeedingEvent;
 
-public class NoteSorter {
+public class ScoringNoteSorter {
 	
-	private final static Logger logger = Logger.getLogger(AutomationLogger.class);
+	private final static Logger logger = Logger.getLogger(ScoringNoteSorter.class);
 	
 	private HashMap<Long, Map<String, Integer>> aggressive;
 	private HashMap<Long, Map<String, Integer>> idleing;

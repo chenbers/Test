@@ -23,15 +23,15 @@ import com.inthinc.pro.model.event.Event;
 public class HessianRequests {
 
 	private final static Logger logger = Logger
-			.getLogger(AutomationLogger.class);
+			.getLogger(HessianRequests.class);
 
 	private SiloService portalProxy;
 	private Mapper mapper = new DeviceMapper();
 	private DaoUtilEventMapper noteMapper = new DaoUtilEventMapper();
-	private CreateHessian hessian;
+	private AutomationHessianFactory hessian;
 
 	public HessianRequests(Addresses getItYourself) {
-		hessian = new CreateHessian();
+		hessian = new AutomationHessianFactory();
 		this.portalProxy = hessian.getPortalProxy(getItYourself);
 	}
 
