@@ -68,4 +68,14 @@ public class NumberUtil
             return 0.0;
         }
    }
+    /**
+     * Combines null check and intValue for more concise code
+     * @param number
+     * @return the int value for number, or 0 if number is null
+     */
+    public static final int intValue(Number number) {
+        if(number == null) return 0;
+        return number.intValue();
+    }
+    
 }
