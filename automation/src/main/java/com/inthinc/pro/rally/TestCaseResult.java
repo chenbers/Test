@@ -149,9 +149,8 @@ public class TestCaseResult extends RallyObject {
         } catch (JSONException e) {
             logger.debug("The " + fieldFailed
                     + " is missing from the test case results.");
-            logger.info(PrettyJSON.toString(testCaseResults));
-            logger.info(StackToString.toString(e));
-
+            logger.debug(PrettyJSON.toString(testCaseResults));
+            logger.debug(StackToString.toString(e));
         }
         return testCaseResults;
     }
