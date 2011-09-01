@@ -595,7 +595,8 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             flag.setEscalationTimeBetweenRetries(item.getDelay().getCode());
              
             // convert input idling time to seconds, if provided 
-            if ( flag.getSelectedAlertTypes().get(AlertMessageType.ALERT_TYPE_IDLING.name()) ) {
+            boolean convertIdling =( flag.getSelectedAlertTypes().get(AlertMessageType.ALERT_TYPE_IDLING.name()) && flag.getIdlingThreshold()!=null ); 
+            if(convertIdling)  {
                 flag.setIdlingThreshold(flag.getIdlingThreshold()*DateUtil.SECONDS_IN_MINUTE);
             }
               
@@ -608,7 +609,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
             
             // reconvert idlingThreshold back, for view
-            if ( flag.getSelectedAlertTypes().get(AlertMessageType.ALERT_TYPE_IDLING.name()) ) {
+            if (convertIdling) {
                 flag.setIdlingThreshold(flag.getIdlingThreshold()/DateUtil.SECONDS_IN_MINUTE);
             }
             
