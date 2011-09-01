@@ -119,8 +119,6 @@ public class TeamStopsTest {
         int cnt = 0;
         for (DriverStops stop : stopsList) {
             DriverStops expected = expectedDriverStops[cnt++];
-            assertEquals(cnt + " ArriveTime", expected.getArriveTime(), stop.getArriveTime());
-            assertEquals(cnt + " DepartTime", expected.getDepartTime(), stop.getDepartTime());
             assertEquals(cnt + " driverID", expected.getDriverID(), stop.getDriverID());
             assertEquals(cnt + " DriveTime", expected.getDriveTime(), stop.getDriveTime());
             assertEquals(cnt + " IdleHi", expected.getIdleHi(), stop.getIdleHi());
