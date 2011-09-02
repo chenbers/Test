@@ -50,7 +50,7 @@ public class SelectableObject extends Text implements Selectable {
 	        optionNumber--;
 	        selenium.select(myEnum, "index="+optionNumber);
 	        String selected = selenium.getSelectedIndex(myEnum);
-	        assertEquals(selected, optionNumber.toString());
+	        assertEquals(optionNumber.toString(), selected);
 	        return this;
 	    }
 
