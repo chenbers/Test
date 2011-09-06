@@ -51,7 +51,6 @@ public interface CoreMethodInterface extends Selenium {
 	public CoreMethodInterface mouseUpRight(SeleniumEnumWrapper myEnum);
 	public CoreMethodInterface mouseUpRightAt(SeleniumEnumWrapper myEnum,String coordString);
 	public CoreMethodInterface open(SeleniumEnumWrapper myEnum);
-	public CoreMethodInterface pause(Integer timeout_in_secs, String reasonForPause);
 	public CoreMethodInterface removeAllSelections(SeleniumEnumWrapper myEnum);
 	public CoreMethodInterface removeSelection(SeleniumEnumWrapper myEnum,String optionLocator);
 	public CoreMethodInterface select(SeleniumEnumWrapper myEnum,String optionLocator);

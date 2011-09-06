@@ -24,6 +24,7 @@ import org.xml.sax.SAXException;
 
 import com.google.common.base.Supplier;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
+import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
@@ -87,7 +88,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib click(SeleniumEnumWrapper myEnum) {
         String element = getClickable(getLocator(myEnum));
         click(element);
-        pause(2, "click(" + myEnum + ")");
+        AutomationThread.pause(2, "click(" + myEnum + ")");
         return this;
     }
 
@@ -555,19 +556,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
 
     @Override
-    public CoreMethodLib pause(Integer timeout_in_secs, String reasonForPause) {
-        try {
-            logger.debug("pausing for " + timeout_in_secs + " seconds because: " + reasonForPause);
-            Thread.sleep((long) (timeout_in_secs * 1000));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (RuntimeException e) {
-            throw e;
-        }
-        return this;
-    }
-
-    @Override
     public CoreMethodLib removeAllSelections(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
         removeAllSelections(element);
@@ -592,7 +580,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String element = getLocator(myEnum);
 
         select(element, label);
-        pause(5, "Pausing so browser has a chance to catch up");
+        AutomationThread.pause(5, "Pausing so browser has a chance to catch up");
 
         return this;
     }
@@ -602,7 +590,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String element = getLocator(myEnum);
         String xpath = Xpath.start().body().div(Id.id(element)).div(option).toString();
         click(xpath);
-        pause(3, "Pause so the browser has a chance to catch up");
+        AutomationThread.pause(3, "Pause so the browser has a chance to catch up");
         return this;
     }
     
@@ -676,7 +664,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib typeKeys(SeleniumEnumWrapper myEnum, String value) {
         String element = getLocator(myEnum);
         typeKeys(element, value);
-        pause(5, "Let the portal catch up");
+        AutomationThread.pause(5, "Let the portal catch up");
         return this;
     }
 
@@ -701,7 +689,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             boolean foundByString = ((element instanceof String) && (isElementPresent((String) element)));
             boolean foundByEnum = ((element instanceof SeleniumEnumWrapper) && (isElementPresent((SeleniumEnumWrapper) element)));
             found = foundByString || foundByEnum;
-            pause(5, "waitForElementPresent: " + element); // 5 seconds
+            AutomationThread.pause(5, "waitForElementPresent: " + element); // 5 seconds
             x++;
             doneWaiting = x > secondsToWait;
         }
@@ -740,7 +728,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodInterface click(String xpath, Integer matchNumber) {
         getMatches(xpath, matchNumber).click();
-        pause(3, "Wait for elements to refresh");
+        AutomationThread.pause(3, "Wait for elements to refresh");
         return this;
     }
     
