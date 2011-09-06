@@ -7,7 +7,7 @@ import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 
-public class SortHeader extends ClickableText {
+public class SortHeader extends TextButton {
     
     private final static String regex = "@id\\='.*'";
 

@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.Text;
@@ -43,8 +43,8 @@ public class PageReportsDevices extends ReportsBar {
 	}
 	public class DeviceReportDropDowns extends ReportsBarDropDowns{
 		
-		public DhxDropDown status() {
-			return new DhxDropDown(DeviceReportEnum.STATUS_DHX);
+		public DHXDropDown status() {
+			return new DHXDropDown(DeviceReportEnum.STATUS_DHX);
 		}
 	}
 	public DeviceReportsLinks _link(){

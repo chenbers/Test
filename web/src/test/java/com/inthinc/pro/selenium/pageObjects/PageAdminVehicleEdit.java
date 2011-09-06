@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -37,7 +37,7 @@ public class PageAdminVehicleEdit extends AdminBar {
 	}
 
 	public class AdminVehicleEditDropDowns extends AdminBarDropDowns {
-        public DhxDropDown team() { return new DhxDropDown(AdminVehicleViewEnum.DHXDROP_TEAM);}
+        public DHXDropDown team() { return new DHXDropDown(AdminVehicleViewEnum.DHXDROP_TEAM);}
         public DropDown year(){     return new DropDown(AdminVehicleViewEnum.DROPDOWN_YEAR);       }
         public DropDown state(){    return new DropDown(AdminVehicleViewEnum.DROPDOWN_STATE);      }
         public DropDown zone(){     return new DropDown(AdminVehicleViewEnum.DROPDOWN_ZONE);       }

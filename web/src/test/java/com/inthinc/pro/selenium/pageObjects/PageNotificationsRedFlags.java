@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
@@ -62,8 +62,8 @@ public class PageNotificationsRedFlags extends NotificationsEventsBar {
     public class RedFlagsDropDowns extends EventsBarDropDowns {
         
 
-        public DhxDropDown levelFilter() {
-            return new DhxDropDown(NotificationsBarEnum.LEVEL_FILTER_DHX, page, enums);
+        public DHXDropDown levelFilter() {
+            return new DHXDropDown(NotificationsBarEnum.LEVEL_FILTER_DHX, page, enums);
         }
     }
 

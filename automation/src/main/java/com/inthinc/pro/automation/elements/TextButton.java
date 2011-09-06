@@ -24,7 +24,11 @@ public class TextButton extends ClickableText implements TextBased, Clickable {
         super(anEnum, replaceWord, replaceNumber);
         text = new TextObject(anEnum, replaceNumber);
     }
-	@Override
+	public TextButton(SeleniumEnums anEnum, TextEnum replaceWord) {
+        super(anEnum, replaceWord);
+        text = new TextObject(anEnum, replaceWord);
+    }
+    @Override
 	public Boolean validateContains(String expectedPart) {
 		return text.validateContains(expectedPart);
 	}

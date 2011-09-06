@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBox;
-import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Selector;
 import com.inthinc.pro.automation.elements.Text;
@@ -174,12 +174,12 @@ public class PageAddEditUser extends AdminBar {
             return new DropDown(AdminAddEditUserEnum.DROP_DOWNS, dropDown);
         }
 
-        public DhxDropDown driverTeam() {
-            return new DhxDropDown(AdminAddEditUserEnum.DRIVER_TEAM_DHX, enums);
+        public DHXDropDown driverTeam() {
+            return new DHXDropDown(AdminAddEditUserEnum.DRIVER_TEAM_DHX, enums);
         }
 
-        public DhxDropDown userGroup() {
-            return new DhxDropDown(AdminAddEditUserEnum.USER_GROUP_DHX, enums);
+        public DHXDropDown userGroup() {
+            return new DHXDropDown(AdminAddEditUserEnum.USER_GROUP_DHX, enums);
         }
         
         public DropDown locale(){

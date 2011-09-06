@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.ButtonTable;
-import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -91,12 +91,12 @@ public abstract class NotificationsEventsBar extends NotificationsBar {
 	protected class EventsBarDropDowns extends NotificationsBarDropDowns{
 	    
 	    
-	    public DhxDropDown team() {
-            return new DhxDropDown(NotificationsBarEnum.TEAM_SELECTION_DHX, page, enums);
+	    public DHXDropDown team() {
+            return new DHXDropDown(NotificationsBarEnum.TEAM_SELECTION_DHX, page, enums);
         }
 
-        public DhxDropDown timeFrame() {
-            return new DhxDropDown(NotificationsBarEnum.TIME_FRAME_DHX, page, enums);
+        public DHXDropDown timeFrame() {
+            return new DHXDropDown(NotificationsBarEnum.TIME_FRAME_DHX, page, enums);
         }
 
 

@@ -8,7 +8,7 @@ import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 
-public class DhxDropDown extends DropDown implements Selectable {
+public class DHXDropDown extends DropDown implements Selectable {
 
     private SeleniumEnumWrapper makeDropDown;
     private String page;
@@ -16,71 +16,71 @@ public class DhxDropDown extends DropDown implements Selectable {
     private SeleniumEnums[] enums;
 
     /**
-     * Construct a DhxDropDown.
+     * Construct a DHXDropDown.
      * @param anEnum
      * NOTE: SeleniumEnums in <code>anEnum</code> must be in the order they are added to the page. 
      */
-    public DhxDropDown(SeleniumEnums... anEnum) {
+    public DHXDropDown(SeleniumEnums... anEnum) {
         super(anEnum[0], null, null);
         init(anEnum[0], null, anEnum);
     }
 
     /**
-     * Construct a DhxDropDown.
+     * Construct a DHXDropDown.
      * @param anEnum
      * @param enums
      * NOTE: SeleniumEnums in <code>enums</code> must be in the order they are added to the page.
      */
-    public DhxDropDown(SeleniumEnums anEnum, SeleniumEnums[] enums) {
+    public DHXDropDown(SeleniumEnums anEnum, SeleniumEnums[] enums) {
         super(anEnum, null, null);
         init(anEnum, null, enums);
     }
 
     /**
-     * Construct a DhxDropDown.
+     * Construct a DHXDropDown.
      * @param anEnum
      * @param replaceNumber
      */
-    public DhxDropDown(SeleniumEnums anEnum, Integer replaceNumber) {
+    public DHXDropDown(SeleniumEnums anEnum, Integer replaceNumber) {
         super(anEnum, null, replaceNumber);
         init(anEnum, null, null);
     }
 
     /**
-     * Construct a DhxDropDown.
+     * Construct a DHXDropDown.
      * @param anEnum
      * @param replaceWord
      */
-    public DhxDropDown(SeleniumEnums anEnum, String replaceWord) {
+    public DHXDropDown(SeleniumEnums anEnum, String replaceWord) {
         super(anEnum, replaceWord, null);
         init(anEnum, replaceWord, null);
     }
 
     /**
-     * Construct a DhxDropDown.
+     * Construct a DHXDropDown.
      * @param anEnum
      * @param replaceWord
      * @param enums
      * NOTE: the SeleniumEnums in <code>enums</code> must be in the order they are added to the page.
      */
-    public DhxDropDown(SeleniumEnums anEnum, String replaceWord, SeleniumEnums[] enums) {
+    public DHXDropDown(SeleniumEnums anEnum, String replaceWord, SeleniumEnums[] enums) {
         super(anEnum, replaceWord, null);
         init(anEnum, replaceWord, enums);
     }
 
     /**
-     * Construct a DhxDropDown.
+     * Construct a DHXDropDown.
      * @param anEnum
      * @param replaceWord
      * @param replaceNumber
      */
-    public DhxDropDown(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
+    public DHXDropDown(SeleniumEnums anEnum, String replaceWord, Integer replaceNumber) {
         super(anEnum, replaceWord, replaceNumber);
         init(anEnum, replaceWord, null);
     }
 
     /**
-     * Consolidates initialization of new DhxDropDown Objects into a single method.
+     * Consolidates initialization of new DHXDropDown Objects into a single method.
      * @param anEnum
      * @param replaceWord
      * @param enums
@@ -97,11 +97,11 @@ public class DhxDropDown extends DropDown implements Selectable {
     }
 
     /**
-     * Assigns slow/complicated xpaths for DhxDropDown elements on a page to ID's for easy retrieval.
-     * NOTE: if <code>this</code> Object's enums are NOT in the same order that the DhxDropDown's appear on the rendered page they will not be assigned correctly.
-     * @return this DhxDropDown (to allow method chaining)
+     * Assigns slow/complicated xpaths for DHXDropDown elements on a page to ID's for easy retrieval.
+     * NOTE: if <code>this</code> Object's enums are NOT in the same order that the DHXDropDown's appear on the rendered page they will not be assigned correctly.
+     * @return this DHXDropDown (to allow method chaining)
      */
-    private DhxDropDown assignIDs() {
+    private DHXDropDown assignIDs() {
         Integer div = 1;
         if (page == null) {
             page = "";
@@ -127,26 +127,26 @@ public class DhxDropDown extends DropDown implements Selectable {
     }
 
     @Override
-    public DhxDropDown select(Integer optionNumber) {
+    public DHXDropDown select(Integer optionNumber) {
         assignIDs();
         selenium.click(makeDropDown);
         selenium.selectDhx(myEnum, optionNumber.toString());
         return this;
     }
 
-    public DhxDropDown select(SeleniumValueEnums option) {
+    public DHXDropDown select(SeleniumValueEnums option) {
         assignIDs();
         return select(option.getPosition() + 1);
     }
 
     @Override
-    public DhxDropDown select(String fullMatch) {
+    public DHXDropDown select(String fullMatch) {
         select(fullMatch, 1);
         return this;
     }
 
     @Override
-    public DhxDropDown select(String fullMatch, Integer matchNumber) {
+    public DHXDropDown select(String fullMatch, Integer matchNumber) {
         assignIDs();
         matchNumber--;
         String xpath = makeXpath(Id.text(fullMatch));
@@ -156,12 +156,12 @@ public class DhxDropDown extends DropDown implements Selectable {
     }
 
     @Override
-    public DhxDropDown selectPartMatch(String partialMatch) {
+    public DHXDropDown selectPartMatch(String partialMatch) {
         return selectPartMatch(partialMatch, 1);
     }
 
     @Override
-    public DhxDropDown selectPartMatch(String partialMatch, Integer matchNumber) {
+    public DHXDropDown selectPartMatch(String partialMatch, Integer matchNumber) {
         assignIDs();
         matchNumber--;
         String xpath = makeXpath(Id.contains(Id.text(), partialMatch));
@@ -180,4 +180,5 @@ public class DhxDropDown extends DropDown implements Selectable {
         String xpath = Xpath.start().div(Id.id(myEnum.getIDs()[0])).div(secondDiv).toString();
         return xpath;
     }
+
 }

@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
-import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
@@ -47,17 +47,17 @@ public class PageReportsVehicles extends ReportsBar {
 
 	public class VehicleReportDropDowns extends ReportsBarDropDowns {
 
-		public DhxDropDown overallFilter() {
+		public DHXDropDown overallFilter() {
 			return new ReportsBarDropDowns().score(
 					ReportsBarEnum.OVERALL_SCORE_DHX, page);
 		}
 
-		public DhxDropDown speedFilter() {
+		public DHXDropDown speedFilter() {
 			return new ReportsBarDropDowns().score(
 					ReportsBarEnum.SPEED_SCORE_DHX, page);
 		}
 
-		public DhxDropDown styleFilter() {
+		public DHXDropDown styleFilter() {
 			return new ReportsBarDropDowns().score(
 					ReportsBarEnum.STYLE_SCORE_DHX, page);
 		}

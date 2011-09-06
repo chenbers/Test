@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
@@ -22,8 +22,8 @@ public abstract class ReportsBar extends NavigationBar {
 				ReportsBarEnum.STYLE_SCORE_DHX, ReportsBarEnum.SPEED_SCORE_DHX,
 				ReportsBarEnum.OVERALL_SCORE_DHX };
 
-		protected DhxDropDown score(SeleniumEnums DHX, String page) {
-			return new DhxDropDown(DHX, page, enums);
+		protected DHXDropDown score(SeleniumEnums DHX, String page) {
+			return new DHXDropDown(DHX, page, enums);
 		}
 	}
 

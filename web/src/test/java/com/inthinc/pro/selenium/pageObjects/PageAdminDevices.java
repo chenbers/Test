@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
-import com.inthinc.pro.automation.elements.DhxDropDown;
+import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -52,11 +52,11 @@ public class PageAdminDevices extends AdminTables {
     public class AdminDevicesDropDowns extends AdminTablesDropDowns{
         
         public DropDown filterByProductType() {
-            return new DhxDropDown(AdminDevicesEnum.PRODUCT_DHX, enums);
+            return new DHXDropDown(AdminDevicesEnum.PRODUCT_DHX, enums);
         }
 
         public DropDown filterByStatus() {
-            return new DhxDropDown(AdminDevicesEnum.STATUS_DHX);
+            return new DHXDropDown(AdminDevicesEnum.STATUS_DHX);
         }
     }
     public class AdminDevicesPopUps extends MastheadPopUps{
