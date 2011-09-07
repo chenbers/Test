@@ -238,6 +238,10 @@ public class ErrorCatcher implements InvocationHandler {
         return !severity.get(ErrorLevel.COMPARE).isEmpty();
     }
     
+    public Boolean hasInconclusive(){
+        return !severity.get(ErrorLevel.INCONCLUSIVE).isEmpty();
+    }
+    
     public Boolean hasWarn(){
         return !severity.get(ErrorLevel.WARN).isEmpty();
     }
@@ -254,6 +258,8 @@ public class ErrorCatcher implements InvocationHandler {
             temp = ErrorLevel.ERROR;
         } else if (hasWarn()){
             temp = ErrorLevel.WARN;
+        } else if (hasInconclusive()){
+            temp = ErrorLevel.INCONCLUSIVE;
         } else if (hasCompare()){
             temp = ErrorLevel.COMPARE;
         } else {
