@@ -25,6 +25,7 @@ public class MasterTest {
         FATAL(Verdicts.FAIL),
         FAIL(Verdicts.FAIL),
         ERROR(Verdicts.ERROR),
+        INCONCLUSIVE(Verdicts.INCONCLUSIVE),
         WARN,
         COMPARE,
         PASS,
@@ -65,6 +66,9 @@ public class MasterTest {
 
     protected static void spaceBar() {
         KeyCommands.typeKey(KeyEvent.VK_SPACE);
+    }
+    protected static void keyPeriod() {
+        KeyCommands.typeKey(KeyEvent.VK_PERIOD);
     }
 
     protected static String unescapeHtml(String original) {
@@ -186,7 +190,7 @@ public class MasterTest {
         return selenium;
     }
 
-    protected String getTextFromElementWithFocus() {
+    protected String getTextFromElementWithFocus() {//TODO: dtanner: would you give this a second look. I can't get it to return expected values for _link, _text, or _textField
         WebDriver web = selenium.getWrappedDriver();
         return web.switchTo().activeElement().getText();
     }
