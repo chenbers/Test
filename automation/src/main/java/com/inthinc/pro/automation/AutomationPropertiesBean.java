@@ -134,13 +134,17 @@ public class AutomationPropertiesBean {
             String nameWithoutVersion = name.replaceAll("[0-9._]", "");
             Class[] paramTypes = new Class[] {};
             Object[] params = new Object[] {}; 
+            System.out.println("name: "+name);
+            System.out.println("nameWithoutVersion: "+nameWithoutVersion);
+            System.out.println("lookupByName.get("+nameWithoutVersion+"): "+lookupByName.get(nameWithoutVersion));
             Class clazz = lookupByName.get(nameWithoutVersion).getWebDriverClass();
             Constructor con;
             try {
                 con = clazz.getConstructor(paramTypes);
                 return (WebDriver)con.newInstance(params);
             } catch (Exception e) {
-                // TODO Auto-generated catch block
+                e.printStackTrace();
+                System.out.println("lookupByName: "+lookupByName.keySet());
                 System.out.println("defaulting to FirefoxDriver... name: "+name);//TODO: jwimmer: replace with logger or remove?
                 return new FirefoxDriver();
             }
