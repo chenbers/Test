@@ -82,6 +82,7 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
     }
 
     public SeleniumEnumWrapper replaceOldWithNew(String original, String neww) {
+        String use = neww;
         for (int i = 0; i < IDs.length; i++) {
             if (original.equals("###")) {
                 String id = IDs[i];
@@ -97,11 +98,11 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
                         IDs[i] = before + middle + after;
                     }
                 } else {
-                    neww = Integer.parseInt(neww) - 1 + "";
+                    use = Integer.parseInt(neww) - 1 + "";
                 }
 
             }
-            IDs[i] = IDs[i].replace(original, neww);
+            IDs[i] = IDs[i].replace(original, use);
         }
 
         return this;
