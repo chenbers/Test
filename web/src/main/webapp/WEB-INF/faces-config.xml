@@ -708,7 +708,10 @@
   <validator-id>com.inthinc.pro.validators.PasswordStrengthValidator</validator-id>
   <validator-class>com.inthinc.pro.validators.PasswordStrengthValidator</validator-class>
  </validator>
- 
+  <validator>
+  <validator-id>com.inthinc.pro.validators.VINValidator</validator-id>
+  <validator-class>com.inthinc.pro.validators.VINValidator</validator-class>
+ </validator>
  <!-- Facelets support -->
  <application>
   <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>

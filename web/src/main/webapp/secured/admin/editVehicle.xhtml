@@ -91,12 +91,14 @@
                                   <span class="required">*</span>
                                 </td>
                                 <td>
-                                  <rich:message for="editVehicle-vin" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
+                                  <rich:message id="vin-message" for="editVehicle-vin" errorClass="field-error" fatalClass="field-error" warnClass="field-warning" infoClass="field-info" styleClass="field-msg" />
                                   <h:inputText value="#{vehiclesBean.item.VIN}" id="editVehicle-vin" onchange="checkMultiple(this)" styleClass="text" size="30"
                                     maxlength="17" required="#{not vehiclesBean.batchEdit}" requiredMessage="#{messages.required}" validatorMessage="#{messages.editVehicle_VINlength}">
-                                    <f:validateLength minimum="17" maximum="17" />
-                                    <f:validator validatorId="com.inthinc.pro.validators.RegexValidator" />
+                                    <f:validator validatorId="com.inthinc.pro.validators.VINValidator" />
                                     <f:attribute name="regex" value="[A-Za-z0-9]+" />
+                                    <f:attribute name="length" value="17" />
+                                    <f:attribute name="warnMessage" value="#{messages.editVehicle_VINlength}" />
+                                    <a4j:support event="onkeyup" reRender="vin-message" />
                                   </h:inputText>
                                 </td>
                               </tr>
