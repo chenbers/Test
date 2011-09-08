@@ -10,15 +10,15 @@ import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.enums.SeleniumEnums;
 import com.inthinc.pro.automation.enums.TextEnum;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
+import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
-import com.inthinc.pro.automation.selenium.GlobalSelenium;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 public class MasterTest {
     private final static Logger logger = Logger.getLogger(MasterTest.class);
     
 
-    protected static ErrorCatcher errors = GlobalSelenium.getErrorCatcher();
+    protected static ErrorCatcher errors = CoreMethodLib.getErrorCatcherThread();
 
     public static enum ErrorLevel {
         FATAL_ERROR(Verdicts.INCONCLUSIVE),
@@ -178,19 +178,19 @@ public class MasterTest {
     }
 
     protected ErrorCatcher getErrors() {
-        errors = GlobalSelenium.getErrorCatcher();
+        errors = CoreMethodLib.getErrorCatcherThread();
         return errors;
     }
 
     protected CoreMethodInterface getSelenium() {
         if (selenium == null) {
-            selenium = GlobalSelenium.getSelenium();
+            selenium = CoreMethodLib.getSeleniumThread();
         }
-        errors = GlobalSelenium.getErrorCatcher();
+        errors = CoreMethodLib.getErrorCatcherThread();
         return selenium;
     }
 
-    protected String getTextFromElementWithFocus() {//TODO: dtanner: would you give this a second look. I can't get it to return expected values for _link, _text, or _textField
+    protected String getTextFromElementWithFocus() {// TODO: jwimmer please check this again against new code.
         return selenium.getTextFromElementWithFocus();
     }
 
@@ -223,7 +223,7 @@ public class MasterTest {
     }
 
     protected void setSelenium() {
-        this.selenium = GlobalSelenium.getYourOwn();
+        this.selenium = CoreMethodLib.getSeleniumThread();
     }
 
     protected void typeToElementWithFocus(String type) {

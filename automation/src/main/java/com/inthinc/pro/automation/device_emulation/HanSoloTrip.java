@@ -140,34 +140,36 @@ public class HanSoloTrip extends Thread{
         String imei = "FAKEIMEIDEVICE"; address=Addresses.QA;
 //        imei = "DEVICEDOESNTEXIST";
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
-//        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1313104210;  // vehicleID=37706       deviceID=34506
+        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1313106000;  // vehicleID=37706       deviceID=34506
 //        address=Addresses.QA;           initialTime = 1313104210;  // vehicleID=7293        deviceID=3753
 //        address=Addresses.STAGE;        initialTime = 1313104210;  // vehicleID=117441441   deviceID=117441936 
-        address=Addresses.PROD;         initialTime = 1313104210;  // vehicleID=1           deviceID=1
-        trip.hanSolosFirstTrip( imei, address, initialTime);
-        address=Addresses.CHEVRON;      initialTime = 1313104210;  // vehicleID=117441441   deviceID=117441936
-        trip.hanSolosFirstTrip( imei, address, initialTime);
-        address=Addresses.SCHLUMBERGER; initialTime = 1313104210;  // vehicleID=150994955   deviceID=150994955
-        trip.hanSolosFirstTrip( imei, address, initialTime);
-        address=Addresses.WEATHORFORD;  initialTime = 1313104210;  // vehicleID=184549575   deviceID=184549735
-        trip.hanSolosFirstTrip( imei, address, initialTime);
-        address=Addresses.TECK;         initialTime = 1313104210;  // vehicleID=251658249   deviceID=251658248
-        trip.hanSolosFirstTrip( imei, address, initialTime);
-        address=Addresses.BARRICK;      initialTime = 1313104210;  // vehicleID=83886085    deviceID=83886086
-        trip.hanSolosFirstTrip( imei, address, initialTime);
-        address=Addresses.CINTAS;       initialTime = 1313104210;  // vehicleID=234881465   deviceID=234881624
-        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.PROD;         initialTime = 1313104210;  // vehicleID=1           deviceID=1
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.CHEVRON;      initialTime = 1313104210;  // vehicleID=117441441   deviceID=117441936
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.SCHLUMBERGER; initialTime = 1313104210;  // vehicleID=150994955   deviceID=150994955
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.WEATHORFORD;  initialTime = 1313104210;  // vehicleID=184549575   deviceID=184549735
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.TECK;         initialTime = 1313104210;  // vehicleID=251658249   deviceID=251658248
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.BARRICK;      initialTime = 1313104210;  // vehicleID=83886085    deviceID=83886086
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.CINTAS;       initialTime = 1313104210;  // vehicleID=234881465   deviceID=234881624
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
         
         
         
 //        011596000074009
-//        String satIMEI;
-//        String mcmID;
-//        int vehicleID, companyID, accountID;
-//        
-//        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=Addresses.QA; initialTime = 1311114913; vehicleID=7284; companyID=1; accountID=3;//deviceID=3763
-//        
-//        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
+        String satIMEI;
+        String mcmID;
+        String vehicleID;
+        int accountID;
+        
+//        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=Addresses.QA; initialTime = 1311114913; vehicleID=7284; accountID=3;//deviceID=3763
+        satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=Addresses.QA; initialTime = 1314296363; vehicleID="dddd"; accountID=3;//deviceID=3763
+        
+        trip.chewiesTurn(mcmID, satIMEI, vehicleID, accountID, address, initialTime);
     }
 
 

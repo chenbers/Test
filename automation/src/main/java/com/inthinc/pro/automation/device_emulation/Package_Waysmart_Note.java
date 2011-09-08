@@ -5,8 +5,8 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.utils.CommandLine;
 import com.inthinc.pro.automation.utils.StackToString;
 

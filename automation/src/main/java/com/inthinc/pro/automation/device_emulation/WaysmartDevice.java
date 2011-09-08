@@ -7,11 +7,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.inthinc.hos.model.HOSStatus;
+import com.inthinc.pro.automation.deviceEnums.DeviceProperties;
+import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
+import com.inthinc.pro.automation.deviceEnums.WaysmartProps;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note.Direction;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.DeviceProperties;
-import com.inthinc.pro.automation.enums.Ways_SAT_EVENT;
-import com.inthinc.pro.automation.enums.WaysmartProps;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.model.configurator.ProductType;

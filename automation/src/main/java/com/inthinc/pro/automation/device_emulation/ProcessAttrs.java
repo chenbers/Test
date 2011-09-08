@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.enums.TiwiAttrs;
-import com.inthinc.pro.automation.enums.Ways_ATTRS;
+import com.inthinc.pro.automation.deviceEnums.TiwiAttrs;
+import com.inthinc.pro.automation.deviceEnums.Ways_ATTRS;
 import com.inthinc.pro.automation.utils.ExtractIntegers;
 
 

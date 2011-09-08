@@ -49,7 +49,7 @@ public class AutomatedTest extends MasterTest{
                 logger.fatal(StackToString.toString(e));
             }finally{
                 if (!deviceTest){
-                    GlobalSelenium.dieSeleniumDie();   
+                    CoreMethodLib.closeSeleniumThread();   
                 }
             }
         } else {

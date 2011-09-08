@@ -3,6 +3,7 @@ package com.inthinc.pro.automation.selenium;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,12 +19,14 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.beans.BeansException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import com.google.common.base.Supplier;
+import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.Id;
@@ -53,12 +56,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
     private final WebDriver driver;
-
-    public CoreMethodLib(Supplier<WebDriver> maker, String baseUrl) {
-        super(maker, baseUrl);
-        errors = new ErrorCatcher(this);
-        driver = maker.get();
-    }
+    
+    private volatile static HashMap<Long, CoreMethodLib> seleniumByThread = new HashMap<Long, CoreMethodLib>();
+    private volatile static HashMap<Long, ErrorCatcher> errorCatcherByThread = new HashMap<Long, ErrorCatcher>();
+    
+    private final static String BASE_URL_DEFAULT = "https://qa.tiwipro.com:8423/tiwipro/";
+    
 
     public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
         super(baseDriver, baseUrl);
@@ -758,4 +761,54 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         waitForPageToLoad();
         return this;
     }
+    
+    
+    public static CoreMethodInterface getSeleniumThread() {
+        CoreMethodLib selenium;
+        Long currentThread = getThreadID();
+        if (seleniumByThread.containsKey(currentThread)){
+            return seleniumByThread.get(currentThread).getErrors().newInstance();
+        }
+        
+        try {
+            AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
+            logger.debug(apb.getDefaultWebDriverName() + " on portal @" + apb.getBaseURL() + " with Thread: " + currentThread);
+            selenium = new CoreMethodLib(apb.getDefaultWebDriver(), apb.getBaseURL());
+        } catch (BeansException e) {
+            logger.error(StackToString.toString(e));
+            selenium = new CoreMethodLib(new FirefoxDriver(), BASE_URL_DEFAULT);
+        } 
+        seleniumByThread.put(currentThread, selenium);
+        errorCatcherByThread.put(currentThread, selenium.getErrors());
+        return seleniumByThread.get(currentThread).getErrors().newInstance();
+    }
+
+
+    public static void closeSeleniumThread() {
+        Long currentThread = getThreadID();
+        try{
+            seleniumByThread.get(currentThread).close();
+            seleniumByThread.get(currentThread).stop();
+            seleniumByThread.get(currentThread).getWrappedDriver();
+        }catch(NullPointerException e){
+            logger.debug("Selenium already closed.");
+        }catch(Exception e){
+            logger.error(StackToString.toString(e));
+        }
+        seleniumByThread.remove(currentThread);
+    }
+    
+    public static ErrorCatcher getErrorCatcherThread() {
+        Long currentThread = getThreadID();
+        if (errorCatcherByThread.containsKey(currentThread)) {
+            return errorCatcherByThread.get(currentThread);
+        }
+        errorCatcherByThread.put(currentThread, new ErrorCatcher());
+        return getErrorCatcherThread();
+    }
+    
+    private static long getThreadID(){
+        return Thread.currentThread().getId();
+    }
+    
 }

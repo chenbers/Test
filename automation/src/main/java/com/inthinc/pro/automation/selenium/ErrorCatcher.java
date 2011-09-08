@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
+import com.inthinc.pro.rally.RallyStrings;
 import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 import com.thoughtworks.selenium.SeleniumException;
 

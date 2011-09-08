@@ -19,8 +19,8 @@ import java.util.Map;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.deviceEnums.DeviceProperties;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.DeviceProperties;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;

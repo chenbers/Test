@@ -9,9 +9,9 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.enums.TiwiAttrs;
-import com.inthinc.pro.automation.enums.TiwiNoteTypes;
-import com.inthinc.pro.automation.enums.TiwiGenerals.FwdCmdStatus;
+import com.inthinc.pro.automation.deviceEnums.TiwiAttrs;
+import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
+import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.utils.StackToString;
 
 
