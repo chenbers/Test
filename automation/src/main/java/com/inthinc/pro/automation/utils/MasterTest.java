@@ -46,8 +46,8 @@ public class MasterTest {
         }
     }
     
-    protected static void enterKey() {
-        KeyCommands.typeKey(KeyEvent.VK_ENTER);
+    protected void enterKey() {
+        selenium.enterKey();
     }
 
     protected static String escapeHtml(String original) {
@@ -56,12 +56,12 @@ public class MasterTest {
 
     public static void print(Object printToScreen) {
         StackTraceElement element = Thread.currentThread().getStackTrace()[2];
-        String print = String.format("%3d - %s\n", element.getLineNumber(), printToScreen.toString());
+        String print = String.format("line:%3d - %s\n", element.getLineNumber(), printToScreen.toString());
         Logger.getLogger(element.getClassName()).info(print);
     }
 
-    protected static void tabKey() {
-        KeyCommands.typeKey(KeyEvent.VK_TAB);
+    protected void tabKey() {
+        selenium.tabKey();
     }
 
     protected static void spaceBar() {
@@ -191,8 +191,7 @@ public class MasterTest {
     }
 
     protected String getTextFromElementWithFocus() {//TODO: dtanner: would you give this a second look. I can't get it to return expected values for _link, _text, or _textField
-        WebDriver web = selenium.getWrappedDriver();
-        return web.switchTo().activeElement().getText();
+        return selenium.getTextFromElementWithFocus();
     }
 
     protected void open(SeleniumEnums pageToOpen) {

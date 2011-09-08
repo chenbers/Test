@@ -3,17 +3,18 @@ package com.inthinc.pro.selenium.testSuites;
 import java.util.Iterator;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.elements.TextField;
-import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
-import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
+import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
 
@@ -74,8 +75,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
       set_test_case("TC1371");
         allCheckedHelper();
         pl.loginProcess(USERNAME, PASSWORD);
-        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
-        ptds._link().notifications().click();
+        pnrf._link().notifications().click();
         pnrf._link().diagnostics().click();
         
         pnd._dropDown().team().selectPartMatch(GROUP);
@@ -90,11 +90,11 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
+    @Ignore
     public void emailTest1373(){
-        //set_test_case("TC1373");
+        set_test_case("TC1373");
         pl.loginProcess(USERNAME, PASSWORD);
-        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
-        ptds._link().notifications().click();
+        pnrf._link().notifications().click();
         pnrf._link().diagnostics().click();
         
         pnd._button().tools().click();
@@ -106,12 +106,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
+    @Ignore
     public void locationMapLinkTest1377(){
-      //set_test_case("TC1377");
+        set_test_case("TC1377");
         allCheckedHelper();
         pl.loginProcess(USERNAME, PASSWORD);
-        PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
-        ptds._link().notifications().click();
+        pnrf._link().notifications().click();
         pnrf._link().diagnostics().click();
         
         pnd._dropDown().team().selectPartMatch(GROUP);
@@ -168,129 +168,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         
     }
     
-    /*
-     * Compares the dates.
-     * 
-     * @param date1
-     * @param date2
-     * @return 0 if date1 = date2, -1 if date1 is BEFORE date2, 1 if date1 is AFTER date2.
-     */
-    public int cruddyCompareDates(String date1, String date2){
-        //Set up comparison values.
-        int month1 = monthToInt(date1.substring(0,3));
-        int month2 = monthToInt(date2.substring(0,3));
-        int day1;
-        int day2;
-        int year1;
-        int year2;
-        String dateStripped1;
-        String dateStripped2;
-        
-        if(date1.charAt(6) == ','){
-            day1 = Integer.parseInt(date1.substring(4,6));
-            year1 = Integer.parseInt(date1.substring(8,12));
-            dateStripped1 = date1.substring(13);
-        }
-        else{
-            day1 = Integer.parseInt(date1.substring(4,5));
-            year1 = Integer.parseInt(date1.substring(7,11));
-            dateStripped1 = date1.substring(12);
-        }
-        if(date2.charAt(6) == ','){
-            day2 = Integer.parseInt(date2.substring(4,6));
-            year2 = Integer.parseInt(date2.substring(8,12));
-            dateStripped2 = date2.substring(13);
-        }
-        else{
-            day2 = Integer.parseInt(date2.substring(4,5));
-            year2 = Integer.parseInt(date2.substring(7,11));
-            dateStripped2 = date2.substring(12);
-        }
-        
-        int hour1;
-        int hour2;
-        int minute1;
-        int minute2;
-        String meridian1;
-        String meridian2;
-        
-        if(dateStripped1.charAt(1) == ':'){
-            hour1 = Integer.parseInt(dateStripped1.substring(0,1));
-            minute1 = Integer.parseInt(dateStripped1.substring(2,4));
-            meridian1 = dateStripped1.substring(5,7);
-        }
-        else{
-            hour1 = Integer.parseInt(dateStripped1.substring(0,2));
-            minute1 = Integer.parseInt(dateStripped1.substring(3,5));
-            meridian1 = dateStripped1.substring(6,8);
-        }
-        if(dateStripped2.charAt(1) == ':'){
-            hour2 = Integer.parseInt(dateStripped2.substring(0,1));
-            minute2 = Integer.parseInt(dateStripped2.substring(2,4));
-            meridian2 = dateStripped2.substring(5,7);
-        }
-        else{
-            hour2 = Integer.parseInt(dateStripped2.substring(0,2));
-            minute2 = Integer.parseInt(dateStripped2.substring(3,5));
-            meridian2 = dateStripped2.substring(6,8);
-        }
-        
-        //Compare years.
-        if(year1 != year2){
-            if(year1 > year2)
-                return 1;
-            return -1;
-        }
-        
-        //Compare months.
-        if(month1 > month2){
-            return 1;
-        }
-        if(month2 > month1){
-            return -1;
-        }
-        
-        //Compare days.
-        if(day1 > day2){
-            return 1;
-        }
-        if(day2 > day1){
-            return -1;
-        }
-        
-        //Compare meridians.
-        if(meridian1.equals(meridian2)){}
-        else{
-            if(meridian1.equals("PM")){
-                return 1;
-            }
-            else{
-                return -1;
-            }
-        }
-        
-        //Compare hours.
-        if(hour1 > hour2){
-            if(hour1 == 12)
-                return -1;
-            return 1;
-        }
-        if(hour2 > hour1){
-            if(hour2 == 12)
-                return 1;
-            return -1;
-        }
-        
-        //Compare minutes.
-        if(minute1 > minute2){
-            return 1;
-        }
-        if(minute2 > minute1){
-            return -1;
-        }
-        
-        return 0;
-    }
     
     @Test
     public void tablePropertiesTest1381(){
@@ -709,6 +586,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().editColumns().click();
         pnd._popUp().editColumns()._checkBox().row(1).focus();
         tabKey();
+        pause(10, "");
         if(!pnd._popUp().editColumns()._checkBox().row(2).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on second check box.", ErrorLevel.FATAL);
         }

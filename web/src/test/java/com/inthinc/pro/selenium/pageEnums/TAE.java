@@ -119,40 +119,34 @@ public class TAE {
 	}
 
 	public static enum RedFlagPrefs implements SeleniumValueEnums, TextEnum{
-	    EMAIL1(1, MyAccountEnum.EMAIL1_TEXTFIELD, MyAccountEnum.EMAIL1_TITLE),
-	    EMAIL2(2, MyAccountEnum.EMAIL2_TEXTFIELD, MyAccountEnum.EMAIL2_TITLE),
-	    PHONE1(3, MyAccountEnum.PHONE1_TEXTFIELD, MyAccountEnum.PHONE1_TITLE),
-	    PHONE2(4, MyAccountEnum.PHONE2_TEXTFIELD, MyAccountEnum.PHONE2_TITLE),
-	    TEXT1(5, MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES1_TITLE),
-	    TEXT2(6, MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD, MyAccountEnum.TEXT_MESSAGES2_TITLE);
+	    EMAIL1(1, MyAccountEnum.EMAIL1_TEXTFIELD),
+	    EMAIL2(2, MyAccountEnum.EMAIL2_TEXTFIELD),
+	    PHONE1(3, MyAccountEnum.PHONE1_TEXTFIELD),
+	    PHONE2(4, MyAccountEnum.PHONE2_TEXTFIELD),
+	    TEXT1(5, MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD),
+	    TEXT2(6, MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
 	
-	    private String value, text;
-	    private MyAccountEnum ID, prefix;
+	    private String text;
+	    private MyAccountEnum ID;
 	    private Integer position;
 	
-	    private RedFlagPrefs(Integer position, MyAccountEnum ID, MyAccountEnum prefix) {
-	        this.value = position.toString();
+	    private RedFlagPrefs(Integer position, MyAccountEnum ID) {
 	        this.position = position;
             this.ID = ID;
-            this.prefix = prefix;
-            this.text = prefix.getText();
+            this.text = ID.getText();
 	    }
+	    
+	    @Override
 	    public MyAccountEnum getID() {
 	        return ID;
 	    }
  
+	    @Override
 	    public String getText(){
 	    	return text;
 	    }
-	
-	    public MyAccountEnum getPrefix() {
-	        return prefix;
-	    }
-	
-	    public String getValue() {
-	        return value;
-	    }
 	    
+	    @Override
 	    public Integer getPosition() {
 	        return position;
 	    }

@@ -4,6 +4,9 @@ import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
+import com.inthinc.pro.automation.elements.TextFieldError;
+import com.inthinc.pro.automation.elements.TextFieldLabel;
+import com.inthinc.pro.automation.elements.TextLabel;
 import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 
 public class PageMyAccount extends NavigationBar {
@@ -183,116 +186,141 @@ public class PageMyAccount extends NavigationBar {
 		}
 
 		public Text errorEmail1() {
-			return new Text(MyAccountEnum.EMAIL1_ERROR);
+			return new TextFieldError(MyAccountEnum.EMAIL1_TEXTFIELD);
 		}
 
 		public Text errorEmail2() {
-			return new Text(MyAccountEnum.EMAIL2_ERROR);
+			return new TextFieldError(MyAccountEnum.EMAIL2_TEXTFIELD);
 		}
 
 
 		public Text errorPhone1() {
-			return new Text(MyAccountEnum.PHONE1_ERROR);
+			return new TextFieldError(MyAccountEnum.PHONE1_TEXTFIELD);
 		}
 
 		public Text errorPhone2() {
-			return new Text(MyAccountEnum.PHONE2_ERROR);
+			return new TextFieldError(MyAccountEnum.PHONE2_TEXTFIELD);
 		}
 
 		public Text errorText1() {
-			return new Text(MyAccountEnum.TEXT1_ERROR);
+			return new TextFieldError(MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD);
 		}
 
 		public Text errorText2() {
-			return new Text(MyAccountEnum.TEXT2_ERROR);
+			return new TextFieldError(MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
 		}
+		
+		public Text labelTextFieldEmail1() {
+            return new TextFieldLabel(MyAccountEnum.EMAIL1_TEXTFIELD);
+        }
+
+        public Text labelTextFieldEmail2() {
+            return new TextFieldLabel(MyAccountEnum.EMAIL2_TEXTFIELD);
+        }
+
+
+        public Text labelTextFieldPhone1() {
+            return new TextFieldLabel(MyAccountEnum.PHONE1_TEXTFIELD);
+        }
+
+        public Text labelTextFieldPhone2() {
+            return new TextFieldLabel(MyAccountEnum.PHONE2_TEXTFIELD);
+        }
+
+        public Text labelTextFieldText1() {
+            return new TextFieldLabel(MyAccountEnum.TEXT_MESSAGES1_TEXTFIELD);
+        }
+
+        public Text labelTextFieldText2() {
+            return new TextFieldLabel(MyAccountEnum.TEXT_MESSAGES2_TEXTFIELD);
+        }
 
 		public Text labelRedFlagCritical() {
-			return new Text(MyAccountEnum.CRITICAL_TITLE);
+			return new TextLabel(MyAccountEnum.CRITICAL_TEXT);
 		}
 
 		public Text labelRedFlagWarning() {
-			return new Text(MyAccountEnum.WARNING_TITLE);
+			return new TextLabel(MyAccountEnum.WARNING_TEXT);
 		}
 
 		public Text labelRedFlagInfo() {
-			return new Text(MyAccountEnum.INFORMATION_TITLE);
+			return new TextLabel(MyAccountEnum.INFORMATION_TEXT);
 		}
 
 		public Text labelEmail1() {
-			return new Text(MyAccountEnum.EMAIL1_TITLE);
+			return new TextLabel(MyAccountEnum.EMAIL1_TEXT);
 		}
 
 		public Text labelEmail2() {
-			return new Text(MyAccountEnum.EMAIL2_TITLE);
+			return new TextLabel(MyAccountEnum.EMAIL2_TEXT);
 		}
 
 		public Text labelPhone1() {
-			return new Text(MyAccountEnum.PHONE1_TITLE);
+			return new TextLabel(MyAccountEnum.PHONE1_TEXT);
 		}
 
 		public Text labelPhone2() {
-			return new Text(MyAccountEnum.PHONE2_TITLE);
+			return new TextLabel(MyAccountEnum.PHONE2_TEXT);
 		}
 
 		public Text labelTextMessage1() {
-			return new Text(MyAccountEnum.TEXT_MESSAGES1_TITLE);
+			return new TextLabel(MyAccountEnum.TEXT_MESSAGES1_TEXT);
 		}
 
 		public Text labelTextMessage2() {
-			return new Text(MyAccountEnum.TEXT_MESSAGES2_TITLE);
+			return new TextLabel(MyAccountEnum.TEXT_MESSAGES2_TEXT);
 		}
 
 		public Text labelFuelEfficiency() {
-			return new Text(MyAccountEnum.FUEL_EFFICIENCY_RATIO_TITLE);
+			return new TextLabel(MyAccountEnum.FUEL_EFFICIENCY_RATIO_TEXT);
 		}
 
 		public Text labelGroup() {
-			return new Text(MyAccountEnum.GROUP_TITLE);
+			return new TextLabel(MyAccountEnum.GROUP_TEXT);
 		}
 
 		public Text labelLocale() {
-			return new Text(MyAccountEnum.LOCALE_TITLE);
+			return new TextLabel(MyAccountEnum.LOCALE_TEXT);
 		}
 
 		public Text labelMeasurement() {
-			return new Text(MyAccountEnum.MEASUREMENT_TITLE);
+			return new TextLabel(MyAccountEnum.MEASUREMENT_TEXT);
 		}
 
 		public Text labelName() {
-			return new Text(MyAccountEnum.NAME_TITLE);
+			return new TextLabel(MyAccountEnum.NAME_TEXT);
 		}
 
 		public Text labelTeam() {
-			return new Text(MyAccountEnum.TEAM_TITLE);
+			return new TextLabel(MyAccountEnum.TEAM_TEXT);
 		}
 
 		public Text labelUserName() {
-			return new Text(MyAccountEnum.USER_NAME_TITLE);
+			return new TextLabel(MyAccountEnum.USER_NAME_TEXT);
 		}
 
 		public Text titleEmailAddresses() {
-			return new Text(MyAccountEnum.EMAIL_TITLE);
+			return new Text(MyAccountEnum.EMAIL_SUB_HEADER);
 		}
 
 		public Text titleTextMessages() {
-			return new Text(MyAccountEnum.TEXT_TITLE);
+			return new Text(MyAccountEnum.TEXT_SUB_HEADER);
 		}
 
 		public Text titlePhoneNumbers() {
-			return new Text(MyAccountEnum.PHONE_TITLE);
+			return new Text(MyAccountEnum.PHONE_SUB_HEADER);
 		}
 
 		public Text titleAccountInfo() {
-			return new Text(MyAccountEnum.ACCOUNT_TITLE);
+			return new Text(MyAccountEnum.ACCOUNT_HEADER);
 		}
 
 		public Text titleContactInfo() {
-			return new Text(MyAccountEnum.CONTACT_TITLE);
+			return new Text(MyAccountEnum.CONTACT_HEADER);
 		}
 
 		public Text titleLoginInfo() {
-			return new Text(MyAccountEnum.LOGIN_TITLE);
+			return new Text(MyAccountEnum.LOGIN_HEADER);
 		}
 
 		public Text titleAccountMain() {
@@ -300,7 +328,7 @@ public class PageMyAccount extends NavigationBar {
 		}
 
 		public Text titleRedFlags() {
-			return new Text(MyAccountEnum.RED_FLAGS_TITLE);
+			return new Text(MyAccountEnum.RED_FLAGS_HEADER);
 		}
 		
 		public Text infoMessage(){

@@ -76,4 +76,8 @@ public interface CoreMethodInterface extends Selenium {
     public CoreMethodInterface click(String xpath, Integer matchNumber);
     public CoreMethodInterface click(String xpath, String desiredOption, Integer matchNumber);
     
+    public String getTextFromElementWithFocus();
+    public CoreMethodInterface tabKey();
+    public CoreMethodInterface enterKey();
+    
 }

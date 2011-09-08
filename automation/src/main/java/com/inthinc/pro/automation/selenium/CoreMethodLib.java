@@ -1,5 +1,6 @@
 package com.inthinc.pro.automation.selenium;
 
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.regex.Matcher;
@@ -13,7 +14,7 @@ import org.apache.log4j.Logger;
 import org.apache.tools.ant.filters.StringInputStream;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Point;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
@@ -26,8 +27,9 @@ import com.google.common.base.Supplier;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.Id;
-import com.inthinc.pro.automation.utils.StackToString;
+import com.inthinc.pro.automation.utils.KeyCommands;
 import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
+import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.Xpath;
 import com.thoughtworks.selenium.DefaultSelenium;
 
@@ -141,15 +143,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodLib focus(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
-        WebElement item = null;
-        if (element.startsWith("//")) {
-            item = getWrappedDriver().findElement(By.xpath(element));
-        } else if (!element.contains("=")) {
-            item = getWrappedDriver().findElement(By.id(element));
-        } else {
-            return this;
-        }
-        item.findElement(By.xpath("..")).click();
+
+        WebElement parent = getWrappedDriver().findElement(By.xpath(idToXpath(element)));
+        ((JavascriptExecutor) driver).executeScript("return arguments[0].focus();", parent);
 
         return this;
     }
@@ -291,6 +287,18 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return getText(element);
     }
     
+
+    @Override
+    public String getTextFromElementWithFocus() {
+        WebElement activeElement = getActiveElement();
+        String text = (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].value;", activeElement);
+        return text;
+    }
+    
+    private WebElement getActiveElement(){
+        return (WebElement) ((JavascriptExecutor) driver).executeScript("return document.activeElement;");
+    }
+    
     
     private String replaceSpacers(String html) throws ParserConfigurationException, SAXException, IOException{
         StringWriter text = new StringWriter();
@@ -344,26 +352,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public boolean hasFocus(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
-        WebElement item = null;
-        if (element.startsWith("//")) {
-            item = getWrappedDriver().findElement(By.xpath(element));
-            focus(element);
-        } else if (!element.contains("=")) {
-            item = getWrappedDriver().findElement(By.id(element));
-            element = "//" + item.getTagName() + "[@id='" + element + "']";
-            focus(element);
-        } else {
-            return false;
-        }
-
-        WebElement hasFocus = getWrappedDriver().switchTo().activeElement();
-
-        Point one = item.getLocation();
-        Point two = hasFocus.getLocation();
-        Boolean same = one.equals(two);
-        // Boolean sameElement = hasFocus.equals(item);
-        return same;
-
+        WebElement item = driver.findElement(By.xpath(idToXpath(element)));
+        WebElement hasFocus = getActiveElement();
+        
+        return item.equals(hasFocus);
     }
 
     /**
@@ -748,4 +740,22 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return null;
     }
 
+    @Override
+    public CoreMethodInterface tabKey() {
+        WebElement first = getActiveElement();
+        first.sendKeys(Keys.TAB);
+        WebElement second = getActiveElement();
+        if (first.equals(second)){
+            KeyCommands.typeKey(KeyEvent.VK_TAB);
+        }
+        
+        return this;
+    }
+
+    @Override
+    public CoreMethodInterface enterKey() {
+        getActiveElement().sendKeys(Keys.ENTER);
+        waitForPageToLoad();
+        return this;
+    }
 }
