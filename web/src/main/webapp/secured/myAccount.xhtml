@@ -51,15 +51,15 @@
                             <tbody>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.myAccount_name}" /></td>
-                                <td><h:outputText value="#{myAccountBean.user.person.fullName}"/></td>
+                                <td id="myAccountFullName"><h:outputText value="#{myAccountBean.user.person.fullName}"/></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.myAccount_region}" /></td>
-                                <td><h:outputText value="#{myAccountBean.regionName}"/></td>
+                                <td id="myAccountRegionName"><h:outputText value="#{myAccountBean.regionName}"/></td>
                               </tr>
                               <tr>
                                 <td width="100"><h:outputText value="#{messages.myAccount_team}" /></td>
-                                <td><h:outputText value="#{myAccountBean.teamName}"/></td>
+                                <td id="myAccountTeamName"><h:outputText value="#{myAccountBean.teamName}"/></td>
                               </tr>
                           </tbody>
                         </table>
@@ -75,19 +75,19 @@
                           <tbody>
                             <tr>
                               <td width="150"><h:outputText value="#{messages.myAccount_userName}" /></td>
-                              <td><h:outputText value="#{myAccountBean.user.username}"/></td>
+                              <td id="myAccountUsername"><h:outputText value="#{myAccountBean.user.username}"/></td>
                             </tr>
                             <tr>
                               <td width="150"><h:outputText value="#{messages.myAccount_locale}:" /></td>
-                              <td><h:outputText value="#{myAccountBean.localeDisplayName}"/></td>
+                              <td id="myAccountLocale"><h:outputText value="#{myAccountBean.localeDisplayName}"/></td>
                             </tr>
                             <tr>
                               <td width="150"><h:outputText value="#{messages.myAccount_measurement}:" /></td>
-                              <td><h:outputText value="#{messages[measurementBean.person.measurementType]}"/></td>
+                              <td id="myAccountMeasurementType"><h:outputText value="#{messages[measurementBean.person.measurementType]}"/></td>
                             </tr>
                             <tr>
                               <td width="150"><h:outputText value="#{messages.myAccount_fuel_efficiency}:" /></td>
-                              <td><h:outputText value="#{messages[fuelEfficiencyBean.person.fuelEfficiencyType]}"/></td>
+                              <td id="myAccountFuelEfficiency"><h:outputText value="#{messages[fuelEfficiencyBean.person.fuelEfficiencyType]}"/></td>
                             </tr>
                           </tbody>
                         </table>
@@ -127,19 +127,19 @@
                       <td width="16"><h:graphicImage value="/images/ico_info.png" width="16" height="16" /></td>
                       <td width="90"><h:outputText value="#{messages.myAccount_information}" /></td>
                       <c:set var="alertText" value="myAccount_alertText#{myAccountBean.info}" />
-                      <td><h:outputText value="#{messages[alertText]}" /></td>
+                      <td id="myAccountInfo"><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_warning.png" width="16" height="16"/></td>
                       <td width="90"><h:outputText value="#{messages.myAccount_warning}" /></td>
                       <c:set var="alertText" value="myAccount_alertText#{myAccountBean.warn}" />
-                      <td><h:outputText value="#{messages[alertText]}" /></td>
+                      <td id="myAccountWarn"><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                     <tr>
                       <td width="16"><h:graphicImage value="/images/ico_critical.png" width="16" height="16"/></td>
                       <td width="90"><h:outputText value="#{messages.myAccount_critical}" /></td>
                       <c:set var="alertText" value="myAccount_alertText#{myAccountBean.crit}" />
-                      <td><h:outputText value="#{messages[alertText]}" /></td>
+                      <td id="myAccountCrit"><h:outputText value="#{messages[alertText]}" /></td>
                     </tr>
                   </tbody>
                 </table>
@@ -171,11 +171,11 @@
                     <tbody>
                       <tr>
                         <td width="120"><h:outputText value="#{messages.myAccount_priEmail}" /></td>
-                        <td><h:outputText value="#{myAccountBean.user.person.priEmail}" /></td>
+                        <td id="myAccountPriEmail"><h:outputText value="#{myAccountBean.user.person.priEmail}" /></td>
                       </tr>
                       <tr>
                         <td width="120"><h:outputText value="#{messages.myAccount_secEmail}" /></td>
-                        <td><h:outputText value="#{myAccountBean.user.person.secEmail}"/></td>
+                        <td id="myAccountSecEmail"><h:outputText value="#{myAccountBean.user.person.secEmail}"/></td>
                       </tr>
                     </tbody>
                   </table>
@@ -185,11 +185,11 @@
                     <tbody>
                       <tr>
                         <td width="120"><h:outputText value="#{messages.myAccount_priPhone}" /></td>
-                        <td><h:outputText value="#{myAccountBean.user.person.priPhone}" converter="PhoneNumberConverter" /></td>
+                        <td id="myAccountPriPhone"><h:outputText value="#{myAccountBean.user.person.priPhone}" converter="PhoneNumberConverter" /></td>
                       </tr>
                       <tr>
                         <td width="120"><h:outputText value="#{messages.myAccount_secPhone}" /></td>
-                        <td><h:outputText value="#{myAccountBean.user.person.secPhone}" converter="PhoneNumberConverter" /></td>
+                        <td id="myAccountSecPhone"><h:outputText value="#{myAccountBean.user.person.secPhone}" converter="PhoneNumberConverter" /></td>
                       </tr>
                     </tbody>
                   </table>
@@ -199,11 +199,11 @@
                     <tbody>
                       <tr>
                         <td width="120"><h:outputText value="#{messages.myAccount_priText}" /></td>
-                        <td><h:outputText value="#{myAccountBean.user.person.priText}"/></td>
+                        <td id="myAccountPriText"><h:outputText value="#{myAccountBean.user.person.priText}"/></td>
                       </tr>
                       <tr>
                         <td width="120"><h:outputText value="#{messages.myAccount_secText}" /></td>
-                        <td><h:outputText value="#{myAccountBean.user.person.secText}"/></td>
+                        <td id="myAccountSecText"><h:outputText value="#{myAccountBean.user.person.secText}"/></td>
                       </tr>
                     </tbody>
                   </table>
