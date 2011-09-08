@@ -3,6 +3,8 @@ package com.inthinc.pro.automation.deviceEnums;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import com.inthinc.pro.automation.interfaces.DeviceTypesUnique;
+
 public enum Ways_FWD_CMD implements DeviceTypesUnique {
 
     /* Forward commands */

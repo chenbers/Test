@@ -1,8 +1,8 @@
 package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Typeable;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TextField extends TextObject implements Typeable {
     

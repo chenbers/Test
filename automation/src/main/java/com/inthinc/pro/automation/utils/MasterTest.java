@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;

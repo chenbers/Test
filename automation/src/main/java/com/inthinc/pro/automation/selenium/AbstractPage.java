@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import com.inthinc.pro.automation.elements.ElementBase;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.utils.MasterTest;
 
 public abstract class AbstractPage extends MasterTest implements Page {

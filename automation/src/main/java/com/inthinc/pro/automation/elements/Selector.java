@@ -1,7 +1,7 @@
 package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class Selector extends SelectableObject implements Selectable {
 	public Selector(SeleniumEnums anEnum) {

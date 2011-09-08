@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class NavTree extends TextLink implements Clickable, TextBased {
     public NavTree(SeleniumEnums anEnum) {

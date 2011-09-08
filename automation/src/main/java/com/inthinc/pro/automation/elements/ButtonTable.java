@@ -1,8 +1,8 @@
 package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTableBased;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class ButtonTable extends ClickableTableObject implements ClickableTableBased {
 

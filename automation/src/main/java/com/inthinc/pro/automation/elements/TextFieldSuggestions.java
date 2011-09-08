@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.inthinc.pro.automation.elements.ElementInterface.TextFieldWithSuggestions;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.utils.Id;
 
 public class TextFieldSuggestions extends TextField implements TextFieldWithSuggestions {

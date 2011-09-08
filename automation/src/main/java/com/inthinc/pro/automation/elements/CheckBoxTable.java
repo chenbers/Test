@@ -5,7 +5,7 @@ import java.util.Iterator;
 import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
 import com.inthinc.pro.automation.elements.ElementInterface.CheckableTable;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class CheckBoxTable implements CheckableTable {
 

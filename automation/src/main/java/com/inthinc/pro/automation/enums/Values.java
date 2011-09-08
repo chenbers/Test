@@ -2,6 +2,7 @@ package com.inthinc.pro.automation.enums;
 
 import java.util.ArrayList;
 
+import com.inthinc.pro.automation.interfaces.ListEnum;
 import com.inthinc.pro.automation.resources.FileRW;
 
 public enum Values implements ListEnum{

@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.enums;
+package com.inthinc.pro.automation.interfaces;
 
 
 public interface SeleniumEnums extends TextEnum {

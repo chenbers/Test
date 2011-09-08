@@ -1,7 +1,7 @@
 package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class TextFieldValue extends Text {
 

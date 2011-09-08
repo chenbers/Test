@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.deviceEnums;
+package com.inthinc.pro.automation.interfaces;
 
 
 public interface DeviceTypesUnique extends DeviceTypes {

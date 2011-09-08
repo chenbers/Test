@@ -1,5 +1,7 @@
 package com.inthinc.pro.automation.enums;
 
+import com.inthinc.pro.automation.interfaces.AddressInterface;
+
 public enum Addresses implements AddressInterface{
 
     USER_CREATED(),

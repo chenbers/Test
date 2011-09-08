@@ -5,8 +5,8 @@ import java.util.Iterator;
 import com.inthinc.pro.automation.elements.ElementInterface.Clickable;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTableBased;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class LinkTable implements ClickableTableBased {
 

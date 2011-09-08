@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.deviceEnums.DeviceProperties;
 import com.inthinc.pro.automation.deviceEnums.TiwiAttrs;
 import com.inthinc.pro.automation.deviceEnums.TiwiFwdCmds;
 import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
@@ -15,6 +14,7 @@ import com.inthinc.pro.automation.deviceEnums.TiwiProps;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.interfaces.DeviceProperties;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.model.configurator.ProductType;

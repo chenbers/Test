@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+
 public class SeleniumEnumWrapper implements SeleniumEnums {
 
     private final static String regex = "@id\\='.*###.*'";

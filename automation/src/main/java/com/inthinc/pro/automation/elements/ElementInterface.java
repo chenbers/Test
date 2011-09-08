@@ -2,8 +2,8 @@ package com.inthinc.pro.automation.elements;
 
 import java.util.ArrayList;
 
-import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.model.File;
 
 

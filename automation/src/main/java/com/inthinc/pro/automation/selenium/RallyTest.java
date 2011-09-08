@@ -4,7 +4,7 @@ import org.apache.commons.httpclient.NameValuePair;
 import org.json.JSONObject;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.rally.RallyWebServices;
 import com.inthinc.pro.rally.TestCase;
 import com.inthinc.pro.rally.TestCaseResult;

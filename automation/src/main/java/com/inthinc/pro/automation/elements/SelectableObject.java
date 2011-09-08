@@ -3,9 +3,9 @@ package com.inthinc.pro.automation.elements;
 import java.util.List;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
-import com.inthinc.pro.automation.enums.SeleniumValueEnums;
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.utils.Id;
 import com.inthinc.pro.automation.utils.Xpath;
 

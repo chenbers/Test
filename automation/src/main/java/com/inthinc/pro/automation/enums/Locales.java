@@ -1,5 +1,7 @@
 package com.inthinc.pro.automation.enums;
 
+import com.inthinc.pro.automation.interfaces.TextEnum;
+
 public enum Locales implements TextEnum {
     
     ROMANIAN("ro_RO", 1),

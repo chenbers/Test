@@ -4,6 +4,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.inthinc.pro.automation.interfaces.DeviceProperties;
+
 
 public enum TiwiProps implements DeviceProperties {
 
