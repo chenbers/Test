@@ -136,8 +136,8 @@ public class ReportTest {
 	        Integer initialTime = currentTime.intValue();
 	        Addresses address = Addresses.QA;
 	        trips[--i]=new HanSoloTrip();
-	        trips[i].start(drivers.get(driverID).get("device"), address, 1315323585);
-//	        trips[i].start("DEVICEDOESNTEXIST", address, 1308335036);
+	        trips[i].start(drivers.get(driverID).get("device"), address, 1315327860);
+//	        trips[i].start("DEVICEDOESNTEXIST", address, 1315326435);
 	        AutomationThread.pause(500l);
 		}
 	}
