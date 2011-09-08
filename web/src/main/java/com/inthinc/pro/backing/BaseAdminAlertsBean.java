@@ -181,17 +181,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         MiscUtil.sortSelectItems(groupVehicles);
         return groupVehicles;
     }
-//    private List<VehicleName> filterVehicles(List<VehicleName> vehicles){
-//        if (searchKeyword == null || searchKeyword.isEmpty()) return vehicles;
-//        final String[] filterWords = searchKeyword.toLowerCase().split("\\s+");
-//        List<VehicleName> filteredList = new ArrayList<VehicleName>();
-//        for(VehicleName vehicleName : vehicles){
-//            if(match(vehicleName.getVehicleName(),filterWords)){
-//                filteredList.add(vehicleName);
-//            }
-//        }
-//        return filteredList;
-//    }
 
     protected List<SelectItem> getAllDrivers()
     {
@@ -204,7 +193,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     protected List<SelectItem> getAllDrivers(Integer groupID)
     {
         List<DriverName> drivers = driverDAO.getDriverNames(groupID);
-//        drivers = filterDrivers(drivers);
         
         List<SelectItem> groupDrivers = new ArrayList<SelectItem>(drivers.size());
         for (final DriverName driver : drivers)
@@ -213,29 +201,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
         
         return groupDrivers;
     }
-//    private List<DriverName> filterDrivers(List<DriverName> drivers){
-//        if (searchKeyword == null || searchKeyword.isEmpty()) return drivers;
-//        final String[] filterWords = searchKeyword.toLowerCase().split("\\s+");
-//        List<DriverName> filteredList = new ArrayList<DriverName>();
-//        for(DriverName driverName : drivers){
-//            if(match(driverName.getDriverName(),filterWords)){
-//                filteredList.add(driverName);
-//            }
-//        }
-//        return filteredList;
-//    }
-//    public boolean match(String name, String []filterWords){
-//        for (String filterWord : filterWords){
-//            if(!containsKeyword(name,filterWord)){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-//    private boolean containsKeyword(String field, String keyword){
-//        if (field == null) return false;
-//        return field.toLowerCase().contains(keyword.toLowerCase());
-//    }
    public List<Person> getPeopleInGroupHierarchy() {
        return getPeopleInGroupHierarchy(false);
     }
@@ -312,7 +277,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
 
     public AutocompletePicker getEscalationPeoplePicker() {
         if (escalationPeoplePicker == null || escalationPeoplePicker.isOutdated()) {
-//            final List<Person> people = personDAO.getPeopleInGroupHierarchy(getTopGroup().getGroupID());
             final ArrayList<SelectItem> allUsers = new ArrayList<SelectItem>(getPeopleInGroupHierarchy().size());
             for (final Person person : getPeopleInGroupHierarchy()) {
                 if (null != person.getPriPhone() && !"".equals(person.getPriPhone()))
@@ -595,8 +559,6 @@ public abstract class BaseAdminAlertsBean<T extends BaseAdminAlertsBean.BaseAler
     }
     public void setSearchKeyword(String searchKeyword) {
         this.searchKeyword = searchKeyword;
-//        if (assignPicker != null)
-//            assignPicker.setPickFrom(getAssignPickFrom());
     }
     public interface BaseAlertView extends EditItem
     {

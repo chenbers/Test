@@ -2,6 +2,7 @@ package com.inthinc.pro.backing;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -198,6 +199,7 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
 
         List<String> displayedPhNumbers = new ArrayList<String>();
         if(!flag.getEscalationList().isEmpty()){
+        	Collections.sort(flag.getEscalationList());
             for(AlertEscalationItem item: flag.getEscalationList()){
                 if(item.getEscalationOrder().equals(0))
                     alertView.setEscEmail(personDAO.findByID(item.getPersonID()).getFullNameWithPriEmail());
@@ -1091,13 +1093,6 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             this.emailTos = emailTos;
         }
 
-//        private void setEmailTos(){
-//            Iterator<String> it = emailTos.iterator();
-//            while(it.hasNext()){
-//                if (it.next().isEmpty()) it.remove();
-//            }
-//            this.setEmailTo(emailTos);
-//        }
         public Map<String, Boolean> getSelectedAlertTypes() {
             return selectedAlertTypes;
         }
