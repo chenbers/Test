@@ -1,7 +1,7 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.pro.automation.enums.SeleniumValueEnums;
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class TAE {
 	public static enum ScoreSelectEnum implements TextEnum{

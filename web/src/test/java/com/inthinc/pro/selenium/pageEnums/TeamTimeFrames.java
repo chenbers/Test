@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageEnums;
 
 
 
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 
 public enum TeamTimeFrames implements SeleniumEnums {

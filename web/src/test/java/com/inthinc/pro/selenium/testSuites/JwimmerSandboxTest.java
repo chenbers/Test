@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.TextEnum;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;

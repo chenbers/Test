@@ -10,7 +10,7 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 
 public abstract class NotificationsEventsBar extends NotificationsBar {

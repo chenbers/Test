@@ -1,6 +1,6 @@
 package com.inthinc.pro.selenium.pageEnums;
 
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum DriverPerformanceTripsEnum implements SeleniumEnums {
 	DATE_ENTRY(null, "tripsTableForm:tripsTable:###:date_column"),

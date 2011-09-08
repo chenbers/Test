@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.automation.elements.TextTableLink;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.NotificationsBarEnum;
 import com.inthinc.pro.selenium.pageEnums.NotificationsRedFlagsEnum;
 import com.inthinc.pro.selenium.pageObjects.PopUps.LocationPopUp;

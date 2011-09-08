@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageEnums;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public enum AdminRedFlagsDetailsEnum implements SeleniumEnums {
     

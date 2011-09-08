@@ -2,7 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.DHXDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
-import com.inthinc.pro.automation.enums.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.selenium.pageEnums.ReportsBarEnum;
 
 public abstract class ReportsBar extends NavigationBar {
