@@ -13,13 +13,8 @@ import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 /****************************************************************************************
  * Purpose: To standardize the setup and teardown for System Test Automation tests
  * <p>
- * Update:  11/18/Added comments and made changes to adhere to Java Coding Standards<br />
- * Update:  11/19/Changed name to InthincTest and removed previous functionality that<br />
- *              is no longer being used.  Also fixed start_selenium() so if we can't<br />
- *              start the selenium instance we will fail the test, move to <br />
- *              stop_selenium(), and skip the Rally stuff.<br />
  * 
- * @author larringt , dtanner
+ * @author dtanner
  */
 public abstract class RallyTest extends AutomatedTest {
 	private TestCaseResult tcr;
@@ -53,11 +48,11 @@ public abstract class RallyTest extends AutomatedTest {
 			        tcr.deleteTestCaseResult(deletelastResults);
 			    }
 			    if(apb.getAddTestSet()){
-			        setTestSet(determineTestSet());
+			        setTestSet(getTestSet());
 			    }
 				tcr.setBuildNumber(getBuildNumber());
 				tcr.setVerdict(getTestVerdict());
-                tcr.setNotes(determineTestSet(), errors);
+                tcr.setNotes(getTestSet(), errors);
                 tcr.setDuration(stopTime - startTime);
 				tcr.send_test_case_results();
 			} catch (Exception e) {
@@ -92,7 +87,7 @@ public abstract class RallyTest extends AutomatedTest {
 	    return testCase;
 	}
 	
-	public String determineTestSet() {
-        return "automation_"+apb.getOperatingSystem()+"_"+apb.getDefaultWebDriverName();
+	public String getTestSet() {
+        return apb.getRallyName();
 	}
 }

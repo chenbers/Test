@@ -2,6 +2,8 @@ package com.inthinc.pro.automation.selenium;
 
 import org.openqa.selenium.WebDriver;
 
+import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.thoughtworks.selenium.Selenium;
 
@@ -79,5 +81,9 @@ public interface CoreMethodInterface extends Selenium {
     public String getTextFromElementWithFocus();
     public CoreMethodInterface tabKey();
     public CoreMethodInterface enterKey();
+
+    Addresses getSilo();
+
+    Browsers getBrowser();
     
 }

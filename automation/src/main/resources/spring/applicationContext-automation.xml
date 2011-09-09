@@ -27,22 +27,10 @@
 	</bean>
 	<bean id="automationPropertiesBean" class="com.inthinc.pro.automation.AutomationPropertiesBean"
 		scope="singleton">
-		<property name="serverProtocol" value="${automation.testserver.protocol}" />
-		<property name="serverName" value="${automation.testserver.name}" />
-		<property name="serverPort" value="${automation.testserver.port}" />
-		<property name="appPath" value="${automation.testserver.appPath}" />
-		<property name="defaultWebDriverName" value="${automation.browser.default}" />
-		<property name="defaultWebDriverVersion" value="${automation.browserVersion.default}" />
+		<property name="silo" value="${automation.testsilo}" />
+		<property name="browserName" value="${automation.browser}" />
+		<property name="browserVersion" value="${automation.browserVersion}" />
 		<property name="operatingSystem" value="${automation.operatingSystem}" />
 		<property name="addTestSet" value="${automation.addTestSet}" />
-		<property name="browsers" >
-			<list>
-				<value >${automation.browser.one}</value>
-				<value >${automation.browser.two}</value>
-				<value >${automation.browser.three}</value>
-				<value >${automation.browser.four}</value>
-				<value >${automation.browser.five}</value>
-			</list>
-		</property>
 	</bean>
 </beans>

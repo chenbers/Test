@@ -19,7 +19,6 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.BeansException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,6 +26,8 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
+import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.Browsers;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.utils.AutomationThread;
 import com.inthinc.pro.automation.utils.Id;
@@ -56,17 +57,28 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
     private final WebDriver driver;
+    private final Browsers browser;
+    private final Addresses silo;
     
     private volatile static HashMap<Long, CoreMethodLib> seleniumByThread = new HashMap<Long, CoreMethodLib>();
     private volatile static HashMap<Long, ErrorCatcher> errorCatcherByThread = new HashMap<Long, ErrorCatcher>();
     
-    private final static String BASE_URL_DEFAULT = "https://qa.tiwipro.com:8423/tiwipro/";
-    
-
-    public CoreMethodLib(WebDriver baseDriver, String baseUrl) {
-        super(baseDriver, baseUrl);
+    public CoreMethodLib(Browsers browser, Addresses silo) {
+        super(browser.getDriver(), silo.getWebAddress());
         errors = new ErrorCatcher(this);
-        driver = baseDriver;
+        driver = browser.getDriver();
+        this.browser = browser;
+        this.silo = silo;
+    }
+    
+    @Override
+    public Addresses getSilo(){
+        return silo;
+    }
+    
+    @Override
+    public Browsers getBrowser(){
+        return browser;
     }
 
     @Override
@@ -652,6 +664,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         type(element, text);
         fireEvent(element, "keyup");
         fireEvent(element, "blur");
+        AutomationThread.pause(500l, "Give the page a second to catch up if it has some refreshing to do");
         return this;
     }
 
@@ -769,14 +782,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         if (seleniumByThread.containsKey(currentThread)){
             return seleniumByThread.get(currentThread).getErrors().newInstance();
         }
-        
         try {
             AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
-            logger.debug(apb.getDefaultWebDriverName() + " on portal @" + apb.getBaseURL() + " with Thread: " + currentThread);
-            selenium = new CoreMethodLib(apb.getDefaultWebDriver(), apb.getBaseURL());
+            selenium = new CoreMethodLib(Browsers.getBrowserByName(apb.getBrowserName()), Addresses.getSilo(apb.getSilo()));
         } catch (BeansException e) {
             logger.error(StackToString.toString(e));
-            selenium = new CoreMethodLib(new FirefoxDriver(), BASE_URL_DEFAULT);
+            selenium = new CoreMethodLib(Browsers.FIREFOX, Addresses.QA);
         } 
         seleniumByThread.put(currentThread, selenium);
         errorCatcherByThread.put(currentThread, selenium.getErrors());
