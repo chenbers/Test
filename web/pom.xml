@@ -247,6 +247,13 @@
 			<groupId>javax.faces</groupId>
 			<artifactId>jsf-impl</artifactId>
 		</dependency>
+		<dependency>
+			<!--  JMockit MUST appear before JUnit  -->
+			<groupId>mockit</groupId>
+			<artifactId>jmockit</artifactId>
+			<version>${jmockit.version}</version>
+			<scope>test</scope>
+		</dependency>
 <!--		<dependency>-->
 <!--			<groupId>junit</groupId>-->
 <!--			<artifactId>junit</artifactId>-->
