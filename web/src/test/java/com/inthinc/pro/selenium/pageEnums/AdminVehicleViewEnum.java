@@ -13,15 +13,13 @@ public enum AdminVehicleViewEnum implements SeleniumEnums {
     
     BTN_DELETE_TOP("Delete", "vehicleForm:vehicleDelete1", "vehicleForm:vehicleDelete2"),
     BTN_EDIT_TOP("Edit", "vehicleForm:vehicleEdit1", "vehicleForm:vehicleEdit2"),
-    BTN_SAVE_TOP("Save", "edit-form:editVehicleSave1", "edit-form:editVehicleSave3"),
-    BTN_CANCEL_TOP("Cancel", "edit-form:editVehicleCancel1", "edit-form:editVehicleCancel3"),
     
-    BTN_SAVE_BOTTOM("Save", "edit-form:editVehicleSave2", "edit-form:editVehicleSave4"),
-    BTN_CANCEL_BOTTOM("Cancel", "edit-form:editVehicleCancel2", "edit-form:editVehicleCancel4"),
     
     //DETAILS
-    TAB_DETAILS("Details", "id('vehicleForm:details_lbl')"),
-	USER_INFORMATION(null, "//ul[@id='grid_nav']/../table/tbody/tr/td[1]/div[1]"),//TODO: jwimmer: remove!!!
+    TAB_DETAILS("Details", "vehicleForm:details_lbl"),
+    
+    TXT_ZONE_LIMIT_EXPECTSROWNUM(null, "vehicleForm:speed###Input"),
+
     TXT_LABEL_VIN("VIN:"		,"//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[1]/td[1]"),
     TXT_VALUE_VIN(""			,"//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[1]/td[2]"),
     TXT_LABEL_MAKE("Make:"		,"//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[1]/table/tbody/tr[2]/td[1]"),
@@ -60,49 +58,14 @@ public enum AdminVehicleViewEnum implements SeleniumEnums {
     TXT_LABEL_DEVICE("Assigned Device:"	,"//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[3]/table[3]/tbody/tr[2]/td[1]"),
     TXT_VALUE_DEVICE(""					,"//td[@id='vehicleForm:details']/table/tbody/tr/td/table/tbody/tr/td[3]/table[3]/tbody/tr[2]/td[2]"),
     
-    //SPEED AND SENSITIVITY
-    TXT_ZONE_LIMIT_EXPECTSROWNUM(""
-    		,"vehicleForm:speed###Input" //insert 0 to get first row, 14 to get 15th row
-    		//,"id('vehicleForm:speeedSettingsPanel')/table/tbody/tr/td[1]/table/tbody/tr[###]/td[2]/table/tbody/tr/td[3]/input"//insert 2 to get first row, 16 to get 15th row
-    		),
-    TXT_HARD_ACCEL("", "hardAccelerationLevel"),
-    TXT_HARD_BRAKE("", "hardBrakeLevel"),
-    TXT_HARD_BUMP("", "hardVerticalLevel"),
-    TXT_UNSAFE_TURN("", "hardTurnLevel"),
-    TXT_IDLING_THRESHOLD("", "idlingThreshold"),
     
-    TXTFIELD_HARD_ACCEL("", "edit-form:editVehicle-hardAccelerationInput"),
-    TXTFIELD_HARD_BRAKE("", "edit-form:editVehicle-hardBrakeInput"),
-    TXTFIELD_HARD_BUMP("", "edit-form:editVehicle-hardVerticalInput"),
-    TXTFIELD_UNSAFE_TURN("", "edit-form:editVehicle-hardTurnInput"),
-    TXTFIELD_IDLING_THRESHOLD("", "edit-form:editVehicle-idlingThresholdInput"),
+    TAB_SPEED_AND_SENSITIVITY("Speed & Sensitivity", "vehicleForm:speedSensitivity_lbl"),
     
-    TXTFIELD_VIN(""            ,"edit-form:editVehicle-vin "),
-    TXTFIELD_MAKE(""           ,"edit-form:editVehicle-make"),
-    TXTFIELD_MODEL(""          ,"edit-form:editVehicle-model"),
-    DROPDOWN_YEAR(""           ,"edit-form:editVehicle-year"),
-    TXTFIELD_COLOR(""          ,"edit-form:editVehicle-color"),
-    TXTFIELD_WEIGHT(""         ,"edit-form:editVehicle-weight"),
-    TXTFIELD_LICENCE(""        ,"edit-form:editVehicle-license"),
-    DROPDOWN_STATE(""          ,"edit-form:editVehicle-state"),
-    TXTFIELD_ODO(""            ,"edit-form:editVehicle-odometer"),
-    DROPDOWN_ZONE(""           ,"edit-form:editVehicle-type"),
-    TXTFIELD_ECALLPHONE(""     ,"edit-form:editVehicle-ephone"),
-    SLIDER_AUTOLOGOFF(""       ,"edit-form:editVehicle-autoLogoff"),
-    TXTFIELD_AUTOLOGOFF(""     ,"edit-form:editVehicle-autoLogoffInput"),
-    TXTFIELD_VEHICLEID(""      ,"edit-form:editVehicle-name"),
-    DROPDOWN_STATUS(""         ,"edit-form:editVehicle-status"),
-    DHXDROP_TEAM(""            ,"edit-form:editVehicle-groupID"),
-    LINK_ASSIGN_DRIVER(""      ,"editVehicle-chooseDriver"),
-    
-    TAB_SPEED_AND_SENSITIVITY("Speed & Sensitivity", "vehicleForm:speedSensitivity_lbl")
-    
-    
-    
-
-
-    
-    
+    TXT_HARD_ACCEL(null, "hardAccelerationLevel"),
+    TXT_HARD_BRAKE(null, "hardBrakeLevel"),
+    TXT_HARD_BUMP(null, "hardVerticalLevel"),
+    TXT_UNSAFE_TURN(null, "hardTurnLevel"),
+    TXT_IDLING_THRESHOLD(null, "idlingThreshold"),
 
     ;
 

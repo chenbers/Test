@@ -6,16 +6,11 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.AdminVehicleViewEnum;
-import com.inthinc.pro.selenium.pageEnums.AdminVehiclesEnum;
-import com.inthinc.pro.selenium.pageObjects.PopUps.AdminDelete;
 
 public class PageAdminVehicleView extends AdminBar {
 	
 	public PageAdminVehicleView(){
 		url = AdminVehicleViewEnum.DEFAULT_URL;
-//		checkMe.add(AdminVehiclesEnum.BATCH_EDIT);
-//		checkMe.add(AdminVehiclesEnum.DELETE);
-//		checkMe.add(AdminVehiclesEnum.EDIT_COLUMNS_LINK);
 	}
 	
 	public AdminVehicleViewPopUps _popUp(){

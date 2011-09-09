@@ -2,11 +2,12 @@ package com.inthinc.pro.selenium.testSuites;
 
 import java.util.Iterator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
-import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
+import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
@@ -21,8 +22,9 @@ public class AdminUsers extends WebRallyTest {
 	
 	
 	@Test
+	@Ignore
 	public void usersNameLink(){
-		//set_test_case("TC764");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
+		set_test_case("TC764");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
 		
 		//1- Login
 		users.loginProcess(username, password);
