@@ -11,6 +11,7 @@ import mockit.MockUp;
 import mockit.Mocked;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.test.AssertThrows;
 
@@ -54,6 +55,7 @@ public class VINValidatorTest {
 
     }
 
+    @Ignore
     @Test
     public void validate_tooLong_errorMessage() {
         // Record phase: expectations on mocks are recorded; empty if there is nothing to record.
