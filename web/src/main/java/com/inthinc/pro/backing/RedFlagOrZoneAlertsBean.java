@@ -493,7 +493,9 @@ public class RedFlagOrZoneAlertsBean extends BaseAdminAlertsBean<RedFlagOrZoneAl
             }
            
         }
-
+        if (!EventSubCategory.ZONES.equals(saveItem.getEventSubCategory())){
+        	saveItem.setZoneID(null);
+        }
         // validate escalation e-mail matches an existing email address for this user
         boolean isInPicker = this.getEscalationEmailPicker().containsLabel(saveItem.getEscEmail());
         if((saveItem.getEscEmail() != null && saveItem.getEscEmail().trim().length() > 0) && !isInPicker) {
