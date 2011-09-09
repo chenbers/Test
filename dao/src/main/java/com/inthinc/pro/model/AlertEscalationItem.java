@@ -2,7 +2,7 @@ package com.inthinc.pro.model;
 
 import java.io.Serializable;
 
-public class AlertEscalationItem implements Serializable{
+public class AlertEscalationItem implements Serializable, Comparable<AlertEscalationItem>{
     
     /**
      * 
@@ -39,4 +39,9 @@ public class AlertEscalationItem implements Serializable{
     public String toString() {
         return "AlertEscalationItem [personID="+getPersonID()+", escalationOrder="+getEscalationOrder()+", contactType="+contactType+"]";
     }
+	@Override
+	public int compareTo(AlertEscalationItem o) {
+		// reverse order
+		return o.getEscalationOrder().compareTo(escalationOrder);
+	}
 }
