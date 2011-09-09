@@ -14,18 +14,25 @@ public class VINValidator extends RegexValidator {
     protected static final String DEFAULT_REGEX = "[A-Za-z0-9]+";
     private static final String WARN_MESSSAGE_KEY = "warnMessage";
     private static final String LENGTH_KEY = "length";
+    private static final Integer DEFAULT_LENGTH = 17;
     boolean lengthOK = false;
     boolean regexOK = false;
 
     @Override
     public boolean isValid(String value, UIComponent component) {
-        lengthOK = false;
-        Integer expectedLength = Integer.parseInt((String)component.getAttributes().get(LENGTH_KEY));
-        lengthOK = value.length() == expectedLength;
+        lengthOK = value.length() == getExpectedLength(component);
         regexOK = getRegex(component).matcher(value).matches();
         return regexOK && lengthOK;
     }
 
+    private Integer getExpectedLength(UIComponent component){
+        try {
+            return Integer.parseInt((String)component.getAttributes().get(LENGTH_KEY));
+        } catch(RuntimeException re) {
+            //RuntimeException catches NullPointerException as well as NumberFormatException
+            return DEFAULT_LENGTH;
+        } 
+    }
     @Override
     protected Pattern getRegex(UIComponent component)
     {
