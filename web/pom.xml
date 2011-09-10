@@ -251,13 +251,13 @@
 			<!--  JMockit MUST appear before JUnit  -->
 			<groupId>mockit</groupId>
 			<artifactId>jmockit</artifactId>
-			<version>4.5</version>
+			<version>${jmockit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
+			<version>4.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
