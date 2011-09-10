@@ -3,7 +3,6 @@ package com.inthinc.pro.automation;
 public class AutomationPropertiesBean {
     private String silo;
     private String browserName;
-    private String browserVersion;
     private String operatingSystem;
     private Boolean addTestSet;
 
@@ -23,14 +22,6 @@ public class AutomationPropertiesBean {
         this.addTestSet = addTestSet;
     }
 
-    public void setBrowserVersion(String browserVersion) {
-        this.browserVersion = browserVersion;
-    }
-
-    public String getBrowserVersion() {
-        return browserVersion;
-    }
-
     public String getSilo() {
         return silo;
     }
@@ -48,7 +39,6 @@ public class AutomationPropertiesBean {
     }
 
     public String getRallyName() {
-        return "automation_" + operatingSystem + "_" + browserName
-                + browserVersion;
+        return "automation_" + operatingSystem + "_" + browserName;
     }
 }

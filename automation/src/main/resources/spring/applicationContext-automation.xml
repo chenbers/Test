@@ -29,7 +29,6 @@
 		scope="singleton">
 		<property name="silo" value="${automation.testsilo}" />
 		<property name="browserName" value="${automation.browser}" />
-		<property name="browserVersion" value="${automation.browserVersion}" />
 		<property name="operatingSystem" value="${automation.operatingSystem}" />
 		<property name="addTestSet" value="${automation.addTestSet}" />
 	</bean>
