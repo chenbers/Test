@@ -59,4 +59,12 @@ public enum Browsers {
         String nameWithoutVersion = name.replaceAll("[0-9._]", "");
         return lookupByName.get(nameWithoutVersion);
     }
+    
+    public static Browsers getNewBrowserByName(String name){
+        String nameWithoutVersion = name.replaceAll("[0-9._]", "");
+        Browsers result = lookupByName.get(nameWithoutVersion);
+        result.driver = null;
+        result.driver = result.getDriver();
+        return result;
+    }
 }

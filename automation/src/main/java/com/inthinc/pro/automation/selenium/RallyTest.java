@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.selenium;
 
 import org.apache.commons.httpclient.NameValuePair;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
@@ -21,6 +22,7 @@ public abstract class RallyTest extends AutomatedTest {
 	private AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
 	private String testCase;
 	private JSONObject deletelastResults;
+	protected final static Logger logger = Logger.getLogger(RallyTest.class);
 	
 	public RallyTest(SeleniumEnums version){
 		super(version);

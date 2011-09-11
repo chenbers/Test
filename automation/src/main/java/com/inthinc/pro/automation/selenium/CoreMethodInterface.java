@@ -83,7 +83,6 @@ public interface CoreMethodInterface extends Selenium {
     public CoreMethodInterface enterKey();
 
     Addresses getSilo();
-
     Browsers getBrowser();
     
 }
