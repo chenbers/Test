@@ -2,6 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MPGGroupReport" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -31,11 +34,11 @@
 	<title>
 		<band height="422">
 			<barChart>
-				<chart isShowLegend="false" customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgCustomizer">
-					<reportElement key="element-1" x="0" y="80" width="535" height="325"/>
+				<chart isShowLegend="true" customizerClass="com.inthinc.pro.reports.jasper.customizer.MpgCustomizer">
+					<reportElement key="element-1" x="0" y="80" width="535" height="323"/>
 					<chartTitle/>
 					<chartSubtitle/>
-					<chartLegend textColor="#000000" backgroundColor="#FFFFFF"/>
+					<chartLegend textColor="#000000" backgroundColor="#FFFFFF" position="Bottom"/>
 				</chart>
 				<categoryDataset>
 					<dataset>
@@ -65,7 +68,8 @@
 						<seriesColor seriesOrder="1" color="#F6BD0F"/>
 						<seriesColor seriesOrder="2" color="#8BBA00"/>
 					</plot>
-					<categoryAxisFormat>
+					<itemLabel color="#000000" backgroundColor="#FFFFFF"/>
+					<categoryAxisFormat labelRotation="-30.0">
 						<axisFormat>
 							<labelFont/>
 							<tickLabelFont/>
