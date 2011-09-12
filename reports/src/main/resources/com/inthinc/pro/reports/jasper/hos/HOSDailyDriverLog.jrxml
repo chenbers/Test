@@ -415,22 +415,22 @@
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{remarksList})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="22" width="555">
-						<textField>
-							<reportElement x="0" y="0" width="85" height="12">
+						<textField isStretchWithOverflow="true">
+							<reportElement x="0" y="0" width="100" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement isPrintRepeatedValues="false" x="85" y="0" width="100" height="12">
+							<reportElement isPrintRepeatedValues="false" x="100" y="0" width="100" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement positionType="Float" isPrintRepeatedValues="false" x="85" y="12" width="100" height="10" isRemoveLineWhenBlank="true">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" x="100" y="12" width="100" height="10" isRemoveLineWhenBlank="true">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
@@ -439,7 +439,7 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement x="185" y="0" width="240" height="12">
+							<reportElement x="200" y="0" width="235" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
@@ -461,22 +461,22 @@
 							</textElement>
 							<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.deleted}]]></textFieldExpression>
 						</textField>
-						<textField>
-							<reportElement mode="Opaque" x="0" y="0" width="85" height="12" backcolor="#999999">
+						<textField isStretchWithOverflow="true">
+							<reportElement mode="Opaque" x="0" y="0" width="100" height="12" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarksDate($F{logTimeDate}, $F{logTimeZone}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement isPrintRepeatedValues="false" mode="Opaque" x="85" y="0" width="100" height="12" backcolor="#999999">
+							<reportElement isPrintRepeatedValues="false" mode="Opaque" x="100" y="0" width="100" height="12" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
 							<textFieldExpression class="java.lang.String"><![CDATA[$F{location}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="85" y="12" width="100" height="10" isRemoveLineWhenBlank="true" backcolor="#999999">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="100" y="12" width="100" height="10" isRemoveLineWhenBlank="true" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{locationEdited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement>
@@ -485,7 +485,7 @@
 							<textFieldExpression class="java.lang.String"><![CDATA[($F{originalLocation} == null || $F{originalLocation}.isEmpty()) ? "" :  msg($R{report.ddl.originalLocation}, $F{originalLocation})]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-							<reportElement mode="Opaque" x="185" y="0" width="240" height="12" backcolor="#999999">
+							<reportElement mode="Opaque" x="200" y="0" width="235" height="12" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<textElement/>
