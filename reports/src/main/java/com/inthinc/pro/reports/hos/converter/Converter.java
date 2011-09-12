@@ -22,7 +22,7 @@ public class Converter {
         
         
         DateTime dateTime = new DateTime(date.getTime(), DateTimeZone.forTimeZone(timeZone == null ? TimeZone.getDefault() : timeZone));
-        return fmt.print(dateTime);
+        return fmt.print(dateTime).trim();
     }
 
     public static String convertRemarkDistance(Number distance, Boolean convertToMetric, Locale locale) {

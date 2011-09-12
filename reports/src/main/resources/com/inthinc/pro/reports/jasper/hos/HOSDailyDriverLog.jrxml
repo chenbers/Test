@@ -415,7 +415,7 @@
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{remarksList})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="22" width="555">
-						<textField isStretchWithOverflow="true">
+						<textField>
 							<reportElement x="0" y="0" width="85" height="12">
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
@@ -461,7 +461,7 @@
 							</textElement>
 							<textFieldExpression class="java.lang.String"><![CDATA[$R{report.ddl.deleted}]]></textFieldExpression>
 						</textField>
-						<textField isStretchWithOverflow="true">
+						<textField>
 							<reportElement mode="Opaque" x="0" y="0" width="85" height="12" backcolor="#999999">
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue())]]></printWhenExpression>
 							</reportElement>
