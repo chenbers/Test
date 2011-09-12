@@ -281,4 +281,9 @@ public class HessianRequests {
 	    return null;
 	}
 
+    public Driver getDriverByPersonID(int personID) {
+        return mapper.convertToModelObject(portalProxy.getDriverByPersonID(personID),
+                Driver.class);
+    }
+
 }

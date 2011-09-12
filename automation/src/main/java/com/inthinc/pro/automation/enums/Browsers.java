@@ -30,13 +30,15 @@ public enum Browsers {
     }
     
     public WebDriver getDriver(){
-        if (driver == null){
+        try {
+            driver.getCurrentUrl();
+        } catch (Exception e){
             try {
                 driver = baseDriver.newInstance();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            } catch (InstantiationException e1) {
+                e1.printStackTrace();
+            } catch (IllegalAccessException e1) {
+                e1.printStackTrace();
             }
         }
         return driver;
@@ -60,11 +62,4 @@ public enum Browsers {
         return lookupByName.get(nameWithoutVersion);
     }
     
-    public static Browsers getNewBrowserByName(String name){
-        String nameWithoutVersion = name.replaceAll("[0-9._]", "");
-        Browsers result = lookupByName.get(nameWithoutVersion);
-        result.driver = null;
-        result.driver = result.getDriver();
-        return result;
-    }
 }

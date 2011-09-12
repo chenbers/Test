@@ -784,7 +784,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         }
         try {
             AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
-            selenium = new CoreMethodLib(Browsers.getNewBrowserByName(apb.getBrowserName()), Addresses.getSilo(apb.getSilo()));
+            selenium = new CoreMethodLib(Browsers.getBrowserByName(apb.getBrowserName()), Addresses.getSilo(apb.getSilo()));
         } catch (BeansException e) {
             logger.error(StackToString.toString(e));
             selenium = new CoreMethodLib(Browsers.FIREFOX, Addresses.QA);
