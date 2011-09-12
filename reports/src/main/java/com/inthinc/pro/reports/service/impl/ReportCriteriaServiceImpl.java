@@ -490,8 +490,12 @@ public class ReportCriteriaServiceImpl implements ReportCriteriaService
        		barChartList.add(new CategorySeriesData(idlingSeries, monthList.get(index), idling, idlingSeries));
        		barChartList.add(new CategorySeriesData(drivingSeries, monthList.get(index), driving, drivingSeries));
        		lineChartList.add(new CategorySeriesData(percentSeries, monthList.get(index), percent, percentSeries));
-       		totalVehicles = idleItem.getNumVehicles();
-       		totalEMUVehicles = idleItem.getNumEMUVehicles();
+            // this ends up being the last count in the list that is > 0(i.e. last item)
+            if (idleItem.getNumVehicles() != null && idleItem.getNumVehicles() > 0) {
+                totalVehicles = idleItem.getNumVehicles();
+                totalEMUVehicles = idleItem.getNumEMUVehicles();
+            }
+       		
             index++;
         }
 
