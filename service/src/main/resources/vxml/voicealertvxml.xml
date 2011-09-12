@@ -8,6 +8,7 @@
 
     		<menu id="menuselection" dtmf="false"> 
     		
+			<property name="inputmodes" value="dtmf"/>
 			<!-- Do not allow bargein, require message to be fully heard -->
 			<property name="bargein" value="false"/>
 			
@@ -16,12 +17,9 @@
 				<value expr="messageText"/> 
 			</prompt>
 			<property name="bargein" value="true"/>
-
 			<audio expr="pressOneAudio"  fetchhint="prefetch"/>
   		
-    			<choice dtmf="1" expr="ackQuery">
-    				one
-    			</choice>
+    			<choice dtmf="1" expr="ackQuery"/>
 	    		<!-- Message played if any error occured --> 
 				<error count="1"> 
 					An error has occurred. 
