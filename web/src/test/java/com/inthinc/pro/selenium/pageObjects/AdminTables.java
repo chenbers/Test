@@ -63,7 +63,7 @@ public abstract class AdminTables extends AdminBar {
     public class AdminTablesTexts extends AdminBarTexts {
 
         
-        public TextFieldLabel labelSearchBox() {
+        public Text labelSearchBox() {
             return new TextFieldLabel(AdminBarEnum.SEARCH_TEXTFIELD, page);
         }
         

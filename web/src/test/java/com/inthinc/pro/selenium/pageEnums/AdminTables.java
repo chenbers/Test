@@ -129,5 +129,29 @@ public class AdminTables {
         }
 
     }
+    
+    public enum AdminRedFlagsEntries implements TextEnum {
+        
+        RED_FLAG("name"),
+        DESCRIPTION("description"),
+        TYPE("type"),
+        STATUS("status"),
+        ZONE("zoneName"),
+        OWNER("owner"),
+
+        ;
+
+        private String text;
+
+        private AdminRedFlagsEntries(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String getText() {
+            return text;
+        }
+
+    }
 
 }
