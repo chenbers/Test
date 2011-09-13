@@ -275,6 +275,9 @@ public class PersonBean extends BaseAdminBean<PersonBean.PersonView> implements 
     public boolean isPasswordChangeWarn() { 
         return PreferenceLevelOption.WARN.getCode().toString().equalsIgnoreCase(getAccount().getProps().getPasswordChange());
     }
+    public boolean isWaysmartSupported() {
+        return getAccount().hasWaySmartSupport();
+    }
     public Integer getLoginDaysRemaining() {
         return getLoginDaysRemaining(getAccount(), this.getUser());
     }
