@@ -22,8 +22,8 @@ public class EditMyAccountTest extends WebRallyTest {
 
     private PageMyAccount myAccountPage;
     private RandomValues random;
-    private String USERNAME = "tnilson";
-    private String PASSWORD = "password123";
+    private String USERNAME = "tinaauto";
+    private String PASSWORD = "password";
 
     @Before
     public void setupPage() {
@@ -437,7 +437,7 @@ public class EditMyAccountTest extends WebRallyTest {
 
     @Test
     public void EmailFormatError() {
-        set_test_case("TC1271");// TODO: find the actual testcase for this
+        set_test_case("TC1272");
         myAccountPage.loginProcess(USERNAME, PASSWORD);
         myAccountPage._link().myAccount().click();
 
@@ -527,9 +527,9 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._text().fuelEfficiency().validate(originalFuelRatio);
 
         /* Account Info */
-        myAccountPage._text().name().validate("Tina L Nilson");
-        myAccountPage._text().group().validate("Top");
-        myAccountPage._text().team().validate("Skip's Team");
+        myAccountPage._text().name().validate("Tina Automation");
+        myAccountPage._text().group().validate("Tina's Auto Team");
+        myAccountPage._text().team().validate("Tina's Auto Team");
 
         /* Red Flags */
         myAccountPage._text().redFlagInfo().validate(originalInformation);
