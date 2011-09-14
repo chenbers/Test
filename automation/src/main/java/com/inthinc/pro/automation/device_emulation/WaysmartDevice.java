@@ -156,6 +156,14 @@ public class WaysmartDevice extends Base {
 	    return this;
 	}
 	
+	public WaysmartDevice logInOccupant(String occupantsDriverID) {
+        Package_Waysmart_Note note = construct_note(Ways_SAT_EVENT.SAT_EVENT_HOS_CHANGE_STATE_NO_GPS_LOCK, Direction.wifi);
+        note.setDriverID(occupantsDriverID);
+        note.setHosStatus(HOSStatus.ON_DUTY_OCCUPANT);
+        logger.info(sendNote(note));
+        return this;
+	}
+	
 	public WaysmartDevice nonTripNote(Double latitude, Double longitude, int odometer){
         this.latitude = latitude;
         this.longitude = longitude;
