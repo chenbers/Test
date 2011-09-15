@@ -497,7 +497,6 @@ public class AdminUsers extends WebRallyTest {
 	
 	private void rulesetTestHelper(String hosRuleset) {
 	    
-
         //1- Login
         users.loginProcess(username, password);
         
@@ -510,15 +509,18 @@ public class AdminUsers extends WebRallyTest {
         //3. Search and select driver
         users._textField().search().type("tina");
         users._button().search().click();
-        
+        boolean foundWhoIWasLookingFor = false;
         Iterator<ClickableTextBased> itr = users._link().tableEntryUserName().iterator();
         while (itr.hasNext()){
             ClickableTextBased nextRow = itr.next();
             if (nextRow.getText().equals("Testing Tina Nilson")){
                 nextRow.click();
+                foundWhoIWasLookingFor = true;
                 break;
             }
         }
+        if(!foundWhoIWasLookingFor)
+            addError("Test did not find the user it was looking for", ErrorLevel.FAIL);
         //4. Select DOT rule set
         details._button().edit().click();
         edituser._dropDown().dot().select(hosRuleset);
