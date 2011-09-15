@@ -35,5 +35,10 @@ public class AdminAddVehicle extends WebRallyTest {
         
         
     }
+    
+    @Test
+    public void secondaryTestForWebDriver(){
+        editVehicle.loginProcess(username, password);
+    }
 
 }
