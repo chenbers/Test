@@ -118,7 +118,7 @@ public class VehicleRowImporter extends RowImporter {
         vehicle.setLicense(license);
         
         if (isCreate) {
-            Integer vehicleID = vehicleDAO.create(accountID, vehicle);
+            Integer vehicleID = vehicleDAO.create(groupID, vehicle);
             vehicle.setVehicleID(vehicleID);
             logger.info("Created  " + vehicle.toString());
 

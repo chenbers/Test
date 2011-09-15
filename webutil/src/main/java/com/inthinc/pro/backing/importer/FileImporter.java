@@ -54,9 +54,11 @@ public class FileImporter {
             
             for (DataRow row : dataList) {
                 String msg = rowImporter.importRow(row.getData());
-                if (msg != null)
+                if (msg != null) {
                     msgList.add(row.getLabel() + ": " + msg);
-                logger.info("Import: " + row.getLabel());
+                    logger.error("Import: " + row.getLabel() + " ERROR: " + msg);
+                }
+                else logger.info("Import: " + row.getLabel());
                 
                 if (progressBarBean != null) {
                     progressBarBean.setCurrentValue((count++ * 100l) / totalRows);

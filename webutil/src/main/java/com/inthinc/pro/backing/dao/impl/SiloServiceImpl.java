@@ -37,7 +37,7 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Creates a new driver.", crudType=CrudType.CREATE, populateMethod="getDriver")
-    public Map<String, Object> createDriver(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
+    public Map<String, Object> createDriver(@DaoParam(name = "personID") Integer personID,
             @DaoParam(name = "Driver", type = com.inthinc.pro.model.Driver.class) Map<String, Object> driverMap) throws ProDAOException {
         return null;
     }
@@ -72,14 +72,14 @@ public class SiloServiceImpl implements SiloService {
 
     @Override
     @MethodDescription(description = "Creates a new user.", crudType=CrudType.CREATE, populateMethod="getUser")
-    public Map<String, Object> createUser(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
+    public Map<String, Object> createUser(@DaoParam(name = "personID") Integer personID,
             @DaoParam(name = "User", type = com.inthinc.pro.model.User.class) Map<String, Object> userMap) throws ProDAOException {
         return null;
     }
 
     @Override
     @MethodDescription(description = "Creates a new vehicle.", crudType=CrudType.CREATE, populateMethod="getVehicle")
-    public Map<String, Object> createVehicle(@DaoParam(name = "accountID", isAccountID=true) Integer acctID,
+    public Map<String, Object> createVehicle(@DaoParam(name = "groupID") Integer groupID,
             @DaoParam(name = "Vehicle", type = com.inthinc.pro.model.Vehicle.class) Map<String, Object> vehicleMap) throws ProDAOException {
         return null;
     }

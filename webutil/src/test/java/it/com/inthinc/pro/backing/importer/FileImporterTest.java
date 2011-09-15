@@ -210,9 +210,9 @@ public class FileImporterTest extends BaseSpringTest {
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateBad.xls");
         List<String> msgList = new FileImporter().importFile(ImportType.DRIVERS, stream);
         
-        if (msgList.size() != 28)
+        if (msgList.size() != 34)
             dumpErrors(msgList);
-        assertEquals("expected msg List size" , 28, msgList.size());
+        assertEquals("expected msg List size" , 34, msgList.size());
         
         List<String> rowList = getRowList(msgList, "2");
         assertEquals("row 2 (missing fields- 10 mandatory fields)", 10, rowList.size());  
@@ -235,6 +235,15 @@ public class FileImporterTest extends BaseSpringTest {
         rowList = getRowList(msgList, "8");
         assertEquals("row 8 (invalid rfid barcode)", 1, rowList.size());
         
+        rowList = getRowList(msgList, "9");
+        assertEquals("row 9 (no fleet group)", 1, rowList.size());
+
+        rowList = getRowList(msgList, "10");
+        assertEquals("row 10 (need team group)", 1, rowList.size());
+
+        rowList = getRowList(msgList, "11");
+        assertEquals("row 11 (cannot create a team under a team group)", 1, rowList.size());
+
     }
 
     private List<String> getRowList(List<String> msgList, String row) {
@@ -261,9 +270,9 @@ public class FileImporterTest extends BaseSpringTest {
         InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream("importTest/DriverTemplateBad.xls");
         List<String> msgList = new FileChecker().checkFile(ImportType.DRIVERS, stream, true);
         
-        dumpErrors(msgList);
-        System.out.println("size " + msgList.size()) ;
-        assertTrue(msgList.size() == 36);
+//        dumpErrors(msgList);
+//        System.out.println("size " + msgList.size()) ;
+        assertTrue("Unexpected msgList size", msgList.size() == 42);
         
         int warningCnt = 0;
         for (String msg : msgList)

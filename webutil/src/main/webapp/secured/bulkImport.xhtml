@@ -102,7 +102,21 @@
 											    	reRender="progressPanel, feedbackPanel" rendered="#{bulkImportBean.progressBarBean.buttonRendered}" oncomplete="document.getElementById('optionsRegion:status').style.display='none';"/>
 							                </f:facet>
 							                <f:facet name="complete">
-							                	<h:outputText value="Import Completed"/>
+								        	    <ui:fragment rendered="#{empty bulkImportBean.progressBarBean.errorList}">
+								                	<h:outputText value="Import Completed Successfully"/>
+								                </ui:fragment>
+								        	    <ui:fragment rendered="#{not empty bulkImportBean.progressBarBean.errorList}">
+								        	    	<rich:panel style="height:400px;overflow:auto;">
+										            <f:facet name="header">
+														<h:outputText value="Import Completed - Errors" />
+								        		    </f:facet>
+													<ul style="list-style:none;">        	    	
+								        	    		<a4j:repeat value="#{bulkImportBean.progressBarBean.errorList}" var="errorMsg">
+										        	    	<li><h:outputText value="#{errorMsg}" escape="false"/></li>
+								        	    		</a4j:repeat>
+								        	    	</ul>
+								        	    	</rich:panel>
+								        	    </ui:fragment>
 							                </f:facet>
 							            </rich:progressBar>
 									</td>
