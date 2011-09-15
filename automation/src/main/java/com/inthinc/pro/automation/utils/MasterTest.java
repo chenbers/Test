@@ -174,7 +174,7 @@ public class MasterTest {
     }
 
     public String getCurrentLocation() {
-        return selenium.getLocation();
+        return getSelenium().getLocation();
     }
 
     protected ErrorCatcher getErrors() {
