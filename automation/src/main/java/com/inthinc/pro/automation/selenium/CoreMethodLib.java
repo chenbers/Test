@@ -56,7 +56,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private final static Logger logger = Logger.getLogger(CoreMethodLib.class);
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
-    private final WebDriver driver;
+    private final WebDriver driver; 
     private final Browsers browser;
     private final Addresses silo;
     
@@ -213,7 +213,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         this.myEnum = myEnum;
         String last = "";
         for (String s : myEnum.getLocators()) {
-            if (isElementPresent(s)) {
+            if (isElementPresent(s) && isVisible(s)) {
                 return s;
             }
             last = s;
@@ -752,7 +752,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
 
     @Override
     public CoreMethodInterface click(String xpath, String desiredOption, Integer matchNumber) {
-        getMatches(xpath, Id.text(desiredOption), matchNumber).click();
+        getMatches(xpath, desiredOption, matchNumber).click();
         return null;
     }
 
@@ -794,17 +794,24 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return seleniumByThread.get(currentThread).getErrors().newInstance();
     }
 
+    public void closeSelenium() {
+       driver.close();
+       driver.quit();
+       //driver = null;
+    }
 
     public static void closeSeleniumThread() {
         Long currentThread = getThreadID();
         try{
             seleniumByThread.get(currentThread).close();
             seleniumByThread.get(currentThread).stop();
-            seleniumByThread.get(currentThread).getWrappedDriver();
+            seleniumByThread.get(currentThread).getWrappedDriver().quit();
+            seleniumByThread.get(currentThread).closeSelenium();
         }catch(NullPointerException e){
             logger.debug("Selenium already closed.");
         }catch(Exception e){
-            logger.error(StackToString.toString(e));
+            if(!e.getMessage().contains("session") && !e.getMessage().contains("does not exist"))
+                logger.error(StackToString.toString(e));
         }
         seleniumByThread.remove(currentThread);
     }
