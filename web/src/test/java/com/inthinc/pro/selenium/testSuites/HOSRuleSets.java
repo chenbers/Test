@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import com.inthinc.pro.automation.device_emulation.HanSoloTrip;
 import com.inthinc.pro.automation.device_emulation.WaysmartDevice;
@@ -14,7 +15,9 @@ public class HOSRuleSets extends WebRallyTest {
     public void setupPage() {
     }
 
+    @Test
     public void de6587_canadaWaysmartTrip() {
+        logger.info("generating canadaWaysmartTrip");
         WaysmartDevice waySmart;
         String satImei = "virt_ws_de6587";
         String mcmID = "virt_MCM39731";
