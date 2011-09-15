@@ -7,8 +7,8 @@ public enum AdminVehicleEdit implements SeleniumEnums {
 
     TITLE("Admin - *** Details", "//span[@class='admin']"),
     
-    TAB_DETAILS("Details", "vehicleForm:details_lbl"),
-    TAB_SPEED_AND_SENSITIVITY("Speed & Sensitivity", "vehicleForm:speedSensitivity_lbl"),
+    TAB_DETAILS("Details", "edit-form:details_lbl"),
+    TAB_SPEED_AND_SENSITIVITY("Speed & Sensitivity", "edit-form:speedSensitivity_lbl"),
     
     BTN_SAVE_TOP("Save", "edit-form:editVehicleSave1", "edit-form:editVehicleSave3"),
     BTN_CANCEL_TOP("Cancel", "edit-form:editVehicleCancel1", "edit-form:editVehicleCancel3"),
@@ -16,8 +16,7 @@ public enum AdminVehicleEdit implements SeleniumEnums {
     BTN_SAVE_BOTTOM("Save", "edit-form:editVehicleSave2", "edit-form:editVehicleSave4"),
     BTN_CANCEL_BOTTOM("Cancel", "edit-form:editVehicleCancel2", "edit-form:editVehicleCancel4"),
 
-    // SPEED AND SENSITIVITY
-    TXT_ZONE_LIMIT_EXPECTSROWNUM(null, "vehicleForm:speed###Input"),
+    TXT_ZONE_LIMIT_EXPECTSROWNUM(null, "edit-form:speed###Input"),
 
     TXT_HARD_ACCEL(null, "hardAccelerationLevel"),
     TXT_HARD_BRAKE(null, "hardBrakeLevel"),
@@ -59,6 +58,8 @@ public enum AdminVehicleEdit implements SeleniumEnums {
     
     TEXT_VALUE_PRODUCT("Product:", "//div[@class='spacer']/../table[3]/tbody/tr[1]/td[2]"),
     TEXT_VALUE_ASSIGNED_DEVICE("Assigned Device:", "//div[@class='spacer']/../table[3]/tbody/tr[2]/td[2]"),
+    
+    CHECKBOX_IDLE_MENTOR(""    ,"vehicleForm:vehicle-idleBuzzer","edit-form:editVehicle-idleBuzzer"),
 
     ;
     private String text, url;

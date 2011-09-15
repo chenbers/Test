@@ -2,6 +2,7 @@ package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
+import com.inthinc.pro.automation.elements.ClickableObject;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
@@ -21,7 +22,13 @@ public abstract class AdminTables extends AdminBar {
         }
 
         public TextButton search() {
-            return new TextButton(AdminBarEnum.SEARCH_BUTTON, page);
+            return new TextButton(AdminBarEnum.SEARCH_BUTTON, page){
+                public ClickableObject click() {
+                    super.click();
+                    pause(2, "arbitrary 2 second wait for ajax table refresh");
+                    return this;
+                }
+            };
         }
     }
 

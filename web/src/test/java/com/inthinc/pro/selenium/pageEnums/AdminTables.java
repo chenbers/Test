@@ -50,6 +50,7 @@ public class AdminTables {
         DOT("DOT"),
         IFTA("IFTA"),
         PRODUCT("productVersion"),
+        EDIT("edit"),
         
         ;
 

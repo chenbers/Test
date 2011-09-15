@@ -64,6 +64,9 @@ public class PageAdminVehicles extends AdminTables {
         public TextLink sortBy(AdminVehiclesEntries column) {
             return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
         }
+        public TextTableLink editVehicleLink() {
+            return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, AdminVehiclesEntries.EDIT);
+        }
     }
 
     public class AdminVehiclesTextFields extends AdminTablesTextFields {

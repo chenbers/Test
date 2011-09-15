@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
@@ -8,6 +9,8 @@ import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.AdminVehicleViewEnum;
 
 public class PageAdminVehicleView extends AdminBar {
+    String currentPage = "vehicle";
+    String view = "view";
 	
 	public PageAdminVehicleView(){
 		url = AdminVehicleViewEnum.DEFAULT_URL;
@@ -16,14 +19,24 @@ public class PageAdminVehicleView extends AdminBar {
 	public AdminVehicleViewPopUps _popUp(){
         return new AdminVehicleViewPopUps();
     }
+	
+	public AdminVehicleViewCheckBoxes _checkbox() {
+	    return new AdminVehicleViewCheckBoxes();
+	}
     
 	public class AdminVehicleViewPopUps extends AdminBarPopUps{
+	    public AdminVehicleViewPopUps() {
+	        super(currentPage);
+	    }
 	    public AdminDelete delete() {return new AdminDelete(false);}
 	}
 
-	
+	public class AdminVehicleViewCheckBoxes {
+	    public CheckBox idleMentoring() {return new CheckBox(AdminVehicleViewEnum.CHECKBOX_IDLE_MENTOR);}
+	}
+	   
 	public class AdminVehicleViewButtons extends AdminBarButtons {
-		public TextButton delete() {  return new TextButton(AdminVehicleViewEnum.BTN_DELETE_TOP); }
+		public TextButton delete() { return new TextButton(AdminVehicleViewEnum.BTN_DELETE_TOP); }
 		public TextButton edit() {    return new TextButton(AdminVehicleViewEnum.BTN_EDIT_TOP);   }
 	}
 
@@ -32,30 +45,28 @@ public class PageAdminVehicleView extends AdminBar {
 
 	public class AdminVehicleViewLinks extends AdminBarLinks {
 	    public TextLink detailsTab() {return new TextLink(AdminVehicleViewEnum.TAB_DETAILS);}
-	    public TextLink SpeedAndSensitivityTab() {return new TextLink(AdminVehicleViewEnum.TAB_SPEED_AND_SENSITIVITY);}
+	    public TextLink speedAndSensitivityTab() {return new TextLink(AdminVehicleViewEnum.TAB_SPEED_AND_SENSITIVITY);}
 	}
 
 	public class AdminVehicleViewTextFields extends AdminBarTextFields {
-		public TextField notifyWhenExceedingBy(Integer limit) {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, (limit/5)-1);}
-		public TextField notifyWhenExceeding05MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 0);}
-		public TextField notifyWhenExceeding10MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 1);}
-		public TextField notifyWhenExceeding15MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 2);}
-		public TextField notifyWhenExceeding20MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 3);}
-		public TextField notifyWhenExceeding25MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 4);}
-		public TextField notifyWhenExceeding30MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 5);}
-		public TextField notifyWhenExceeding35MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 6);}
-		public TextField notifyWhenExceeding40MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 7);}
-		public TextField notifyWhenExceeding45MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 8);}
-		public TextField notifyWhenExceeding50MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 9);}
-		public TextField notifyWhenExceeding55MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 10);}
-		public TextField notifyWhenExceeding60MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 11);}
-		public TextField notifyWhenExceeding65MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 12);}
-		public TextField notifyWhenExceeding70MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 13);}
-		public TextField notifyWhenExceeding75MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 14);}
+		public TextField notifyWhenExceedingBy(Integer limit) {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, (limit/5));}
+		public TextField notifyWhenExceeding05MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 1);}
+		public TextField notifyWhenExceeding10MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 2);}
+		public TextField notifyWhenExceeding15MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 3);}
+		public TextField notifyWhenExceeding20MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 4);}
+		public TextField notifyWhenExceeding25MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 5);}
+		public TextField notifyWhenExceeding30MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 6);}
+		public TextField notifyWhenExceeding35MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 7);}
+		public TextField notifyWhenExceeding40MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 8);}
+		public TextField notifyWhenExceeding45MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 9);}
+		public TextField notifyWhenExceeding50MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 10);}
+		public TextField notifyWhenExceeding55MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 11);}
+		public TextField notifyWhenExceeding60MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 12);}
+		public TextField notifyWhenExceeding65MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 13);}
+		public TextField notifyWhenExceeding70MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 14);}
+		public TextField notifyWhenExceeding75MPHBy() {return new TextField(AdminVehicleViewEnum.TXT_ZONE_LIMIT_EXPECTSROWNUM, 15);}
 		
-		
-		
-	}
+	} 
 
 	public class AdminVehicleViewTexts extends AdminBarTexts {
 		public Text titleWindow(){	return new Text(AdminVehicleViewEnum.TITLE);				}
@@ -83,6 +94,7 @@ public class PageAdminVehicleView extends AdminBar {
 		public Text hardBrake(){  return new Text(AdminVehicleViewEnum.TXT_HARD_BRAKE);       }
 		public Text hardBump(){   return new Text(AdminVehicleViewEnum.TXT_HARD_BUMP);        }
 		public Text unsafeTurn(){ return new Text(AdminVehicleViewEnum.TXT_UNSAFE_TURN);      }
+		public Text idlingThreshold(){ return new Text(AdminVehicleViewEnum.TXT_IDLING_THRESHOLD);      }
 	}
 
 	public AdminVehicleViewButtons _button() {
