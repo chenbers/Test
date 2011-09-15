@@ -15,11 +15,6 @@ import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
 public class EditMyAccountTest extends WebRallyTest {
-    // TODO: jwimmer: to dTanner: we should have a conversation about test class
-    // naming conventions,
-    // it would be nice to have a standard in place before we turn too many
-    // people loose (if possible)
-
     private PageMyAccount myAccountPage;
     private RandomValues random;
     private String USERNAME = "tinaauto";
