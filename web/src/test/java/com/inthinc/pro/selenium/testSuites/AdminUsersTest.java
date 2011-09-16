@@ -108,7 +108,7 @@ public class AdminUsersTest extends WebRallyTest {
         myAdminUserDetails._text().labels(AdminUserDetailsEnum.GROUP).validate("Group:");
         myAdminUserDetails._text().values(AdminUserDetailsEnum.GROUP).validate("Tina's Auto Team");
         myAdminUserDetails._text().labels(AdminUserDetailsEnum.ROLES).validate("Roles:");
-        myAdminUserDetails._text().values(AdminUserDetailsEnum.ROLES).validate("Normal Admin");
+        myAdminUserDetails._text().values(AdminUserDetailsEnum.ROLES).validate("Normal\nAdmin");
         myAdminUserDetails._text().labels(AdminUserDetailsEnum.USER_STATUS).validate("Status:");
         myAdminUserDetails._text().values(AdminUserDetailsEnum.USER_STATUS).validate("Active");  
         
