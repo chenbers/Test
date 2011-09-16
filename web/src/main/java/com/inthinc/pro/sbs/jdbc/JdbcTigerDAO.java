@@ -65,20 +65,15 @@ public class JdbcTigerDAO extends SimpleJdbcDaoSupport implements TigerDAO {
                 }
             }, point, point);
         } catch (Exception e) {
-            if (logger.isDebugEnabled()) {
 
-                logger.debug("Error accessing Postgres database: " + e.getMessage());
-            }
+            logger.info("Error accessing Postgres database: " + e.getMessage());
             return null;
         }
 		
 		// No match
 		if ( (matches == null) || matches.isEmpty() ) {
 		    
-			if (logger.isDebugEnabled()){
-				
-				logger.debug("No match for: " + lat + " " + lng);
-			}
+			logger.info("No match for: " + lat + " " + lng);
 			return null;
 		}
 		
