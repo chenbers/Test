@@ -351,7 +351,7 @@ public class HosDailyDriverLogReportCriteria {
                 }
                 if (!alreadyAdded) {
                     VehicleInfo vehicleInfo = new VehicleInfo();
-                    vehicleInfo.setStartOdometer(getVehicleStartOdometer(rec, hosRecordList));
+                    vehicleInfo.setStartOdometer(getVehicleStartOdometer(day, rec, hosRecordList));
                     vehicleInfo.setName(getVehicleNameStr(rec.getVehicleID()));
                     vehicleInfo.setVehicleID(rec.getVehicleID());
                     Map<Integer, Long> mileageMap = hosDAO.fetchMileageForDayVehicle(day, rec.getVehicleID());
@@ -384,12 +384,26 @@ public class HosDailyDriverLogReportCriteria {
         return vehicleMiles;
     }
 
-    private Number getVehicleStartOdometer(HOSRecAdjusted rec, List<HOSRecord> hosRecordList) {
+    private Number getVehicleStartOdometer(DateTime day, HOSRecAdjusted rec, List<HOSRecord> hosRecordList) {
+        
+        // find 1st record on day for the vehicle
+        Interval dayInterval = new Interval(day, day.plusDays(1).minusSeconds(1));
         for (HOSRecord hosRecord :hosRecordList)
-//            if (hosRecord.getHosLogID().toString().equals(rec.getId())) {
-            if (hosRecord.getVehicleID() != null && hosRecord.getVehicleID().equals(rec.getVehicleID())) {
+            if (hosRecord.getVehicleID() != null && hosRecord.getVehicleID().equals(rec.getVehicleID()) &&
+                 dayInterval.contains(hosRecord.getLogTime().getTime())) {
                 return hosRecord.getVehicleOdometer();
             }
+        
+        // can't find today look back and use most recent
+        for (int i = hosRecordList.size()-1; i >= 0; i--) {
+            HOSRecord hosRecord = hosRecordList.get(i);
+            if (hosRecord.getVehicleID() != null && hosRecord.getVehicleID().equals(rec.getVehicleID()) &&
+                    hosRecord.getLogTime().before(day.toDate()))
+                  return hosRecord.getVehicleOdometer();
+                            
+            
+        }
+        
         return 0;
     }
 
