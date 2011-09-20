@@ -386,7 +386,8 @@ public class HosDailyDriverLogReportCriteria {
 
     private Number getVehicleStartOdometer(HOSRecAdjusted rec, List<HOSRecord> hosRecordList) {
         for (HOSRecord hosRecord :hosRecordList)
-            if (hosRecord.getHosLogID().toString().equals(rec.getId())) {
+//            if (hosRecord.getHosLogID().toString().equals(rec.getId())) {
+            if (hosRecord.getVehicleID() != null && hosRecord.getVehicleID().equals(rec.getVehicleID())) {
                 return hosRecord.getVehicleOdometer();
             }
         return 0;
