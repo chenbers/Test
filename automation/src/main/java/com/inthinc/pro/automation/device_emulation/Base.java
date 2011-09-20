@@ -22,9 +22,10 @@ import org.apache.log4j.Logger;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
+import com.inthinc.pro.automation.interfaces.MCMProxy;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
-import com.inthinc.pro.automation.utils.MD5Checksum;
+import com.inthinc.pro.automation.utils.SHA1Checksum;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.exceptions.GenericHessianException;
@@ -64,8 +65,9 @@ public abstract class Base {
     protected int WMP = 17013, MSP = 50;
     protected int sats = 9;
     protected int odometer = 0;
+
     protected int note_count = 4;
-    protected int productVersion = 5;
+    protected ProductType productVersion;
     protected int deviceDriverID;
     protected int timeSinceLastLoc = 0;
     protected int timeBetweenNotes = 15;
@@ -80,6 +82,7 @@ public abstract class Base {
     protected Object reply;
 
     protected String imei;
+    protected String lastDownload;
     
     protected Addresses portal;
 
@@ -192,7 +195,7 @@ public abstract class Base {
             while (check_error(reply)) {
                 try {
                     System.out.println("dumping settings");
-                    reply = mcmProxy.dumpSet(imei, productVersion, oursToThiers());
+                    reply = mcmProxy.dumpSet(imei, productVersion.getVersion(), oursToThiers());
                     System.out.println(reply);
                 } catch (GenericHessianException e) {
                     reply = 0;
@@ -224,26 +227,35 @@ public abstract class Base {
         map.put("fileVersion", fileVersion);
         map.put("locale", locale.toString());
         map.put("productVersion", this.productVersion);
-        
-        Map<String, Object> reply = mcmProxy.audioUpdate(this.imei, map);
+        return writeTiwiFile(fileName, mcmProxy.audioUpdate(this.imei, map));
+    }
+    
+    
+    protected boolean writeTiwiFile(String fileName, Map<String, Object> reply){
         logger.debug(reply);
+        if (!fileName.startsWith("target")){
+            String resourceFile = "target/test/resources/" + imei + "/" + "downloads/";
+            lastDownload = resourceFile + fileName;
+            File folder = new File(resourceFile);
+            folder.mkdirs();
+            folder.mkdir();
+        }
         try {
-            File destination = new File(fileName);
-            destination.mkdirs();
-            destination.mkdir();
-            
+            File destination = new File(lastDownload);
+            destination.deleteOnExit();
+            destination.createNewFile();
             FileOutputStream fw = new FileOutputStream(destination);
             fw.write((byte[]) reply.get("f"));
             fw.close();
-            logger.debug("MD5 Hash is: " + MD5Checksum.getMD5Checksum(fileName));
+            logger.debug("SHA1 Hash is: " + SHA1Checksum.getSHA1Checksum(lastDownload));
+            return true;
         } catch (FileNotFoundException e) {
-            logger.debug(StackToString.toString(e));
+            logger.info(StackToString.toString(e));
         } catch (IOException e) {
-            logger.debug(StackToString.toString(e));
+            logger.info(StackToString.toString(e));
         } catch (Exception e) {
-            logger.debug(StackToString.toString(e));
+            logger.info(StackToString.toString(e));
         }
-        
         return false;
     }
 
@@ -267,6 +279,14 @@ public abstract class Base {
             }
         }
         return this;
+    }
+
+    public int getOdometer() {
+        return odometer;
+    }
+
+    public void setOdometer(int odometer) {
+        this.odometer = odometer;
     }
     
     protected abstract HashMap<DeviceProperties, String> theirsToOurs(HashMap<?, ?> reply);
@@ -432,7 +452,7 @@ public abstract class Base {
 
         this.imei = imei;
         this.Settings = (Map<DeviceProperties, String>) map;
-        set_version(version.getVersion());
+        set_version(version);
         initiate_device(server);
         return this;
     }
@@ -542,8 +562,7 @@ public abstract class Base {
         return this;
     }
 
-    public Base set_version(Integer version) {
-        assert (version == 1 || version == 2 || version == 3 || version == 5);
+    public Base set_version(ProductType version) {
         productVersion = version;
         return this;
     }

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import com.inthinc.pro.automation.device_emulation.HanSoloTrip;
+import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
@@ -51,9 +51,18 @@ public class ReportTest {
 			String priEmail = "driver_"+i+"@tiwisucks.com";
 			
 			try{
-			    portalHessian.getPerson(priEmail);
+			    Person person = portalHessian.getPerson(priEmail);
+			    Driver driver = portalHessian.getDriverByPersonID(person.getPersonID());
+			    Vehicle vehicle = portalHessian.getVehicleByDriverID(driver.getDriverID());
+			    Device device = portalHessian.getDevice(vehicle.getDeviceID());
+			    objects.put("driver", driver.getDriverID().toString());
+	            objects.put("person", person.getPersonID().toString());     
+	            objects.put("vehicle", vehicle.getVehicleID().toString());
+	            objects.put("device", device.getImei());
+	            drivers.put(driver.getDriverID(), objects);
 			    continue;
 			} catch (Exception e){
+			    e.printStackTrace();
 			}
 			
 			Person person = new Person();
@@ -138,13 +147,13 @@ public class ReportTest {
 	        trips[--i]=new HanSoloTrip();
 	        trips[i].start(drivers.get(driverID).get("device"), address, 1315327860);
 //	        trips[i].start("DEVICEDOESNTEXIST", address, 1315326435);
-	        AutomationThread.pause(500l);
+	        AutomationThread.pause(1);
 		}
 	}
 		
 	public static void main(String[] args){
 		ReportTest test = new ReportTest();
-//		test.create(1000);
+		test.create(1000);
 		test.readDrivers();
 		test.driveTiwis();
 	}

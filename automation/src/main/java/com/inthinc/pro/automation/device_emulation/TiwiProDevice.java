@@ -1,7 +1,10 @@
 package com.inthinc.pro.automation.device_emulation;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Level;
@@ -9,13 +12,15 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.deviceEnums.TiwiAttrs;
 import com.inthinc.pro.automation.deviceEnums.TiwiFwdCmds;
-import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
-import com.inthinc.pro.automation.deviceEnums.TiwiProps;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
+import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
+import com.inthinc.pro.automation.deviceEnums.TiwiProps;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
+import com.inthinc.pro.automation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
+import com.inthinc.pro.automation.utils.SHA1Checksum;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.model.configurator.ProductType;
 
@@ -23,11 +28,10 @@ public class TiwiProDevice extends Base {
 
     private final static Logger logger = Logger.getLogger(TiwiProDevice.class);
 
-    private final static ProductType productVersion = ProductType.TIWIPRO_R74;
     private HashMap<TiwiAttrs, Integer> attrs;
     private Long trip_start, trip_stop;
     private AutomationHessianFactory getHessian;
-
+    
     public TiwiProDevice(String IMEI) {
         this(IMEI, Addresses.QA);
     }
@@ -37,7 +41,7 @@ public class TiwiProDevice extends Base {
     }
 
     public TiwiProDevice(String IMEI, Addresses server, Map<TiwiProps, String> map) {
-        super(IMEI, server, map, productVersion);
+        super(IMEI, server, map, ProductType.TIWIPRO_R74);
     }
 
     @Override
@@ -402,5 +406,60 @@ public class TiwiProDevice extends Base {
         addSpeedingNote(distance, topSpeed, avgSpeed);
         return this;
     }
+    
+    public boolean updateFirmware(int versionNumber){
+        Map<String, Object> updateMap = new HashMap<String, Object>();
+        updateMap.put("hardwareVersion", WMP);
+        updateMap.put("fileVersion", versionNumber);
+        updateMap.put("productVersion", productVersion.getVersion());
+        Map<String, Object> reply = mcmProxy.tiwiproUpdate(imei, updateMap);
+        String fileName = productVersion.name().toLowerCase().replace("_",".") + "." + versionNumber + "-hessian.dwl";
+        return writeTiwiFile(fileName, reply);
+    }
+    
+    public boolean getFirmwareFromSVN(int versionNumber){
+        try {
+            String svnUrl = "https://svn.iwiglobal.com/iwi/release/tiwi/pro/wmp";
+            if (this.productVersion.equals(ProductType.TIWIPRO_R74)){
+                svnUrl += "R74/";
+            } else {
+                svnUrl += "/";
+            }
+            String directory = "target/test/resources/" + imei + "/downloads/";
+            String fileName = productVersion.name().toLowerCase().replace("_",".") + "." + versionNumber + "-svn.dwl";
+            File file = new File(directory);
+            file.mkdirs();
+            file = new File(lastDownload = directory + fileName);
+            file.createNewFile();
+            return AutomationFileHandler.downloadSvnDirectory(svnUrl, fileName.replace("-svn", ""), file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean firmwareCompare(int versionNumber) {
+        updateFirmware(versionNumber);
+        String hessian = SHA1Checksum.getSHA1Checksum(lastDownload);
+        getFirmwareFromSVN(versionNumber);
+        String svn = SHA1Checksum.getSHA1Checksum(lastDownload);
+        System.out.println(hessian);
+        System.out.println(svn);
+        return hessian.equals(svn);
+    }
+    
+    public boolean getSbs(int mapName, int versionNumber, int currentVersion) {
+        Map<String, Object> map = new HashMap<String, Object>();
+//        map.put("f", mapName+".map");
+//        map.put("nv", versionNumber);
+//        map.put("cv", currentVersion);
+        map.put("b", 6);
+        
+        List<Map<String, Object>> reply = mcmProxy.checkSbsSubscribed(imei, map);
+        System.out.println(reply);
+        return false;
+    }
+    
+    
 
 }

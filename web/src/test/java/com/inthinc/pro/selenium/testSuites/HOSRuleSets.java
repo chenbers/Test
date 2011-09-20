@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.device_emulation.HanSoloTrip;
+import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
 import com.inthinc.pro.automation.device_emulation.WaysmartDevice;
 import com.inthinc.pro.automation.enums.Addresses;
 

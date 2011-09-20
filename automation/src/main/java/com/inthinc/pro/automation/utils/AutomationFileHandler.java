@@ -3,11 +3,13 @@ package com.inthinc.pro.automation.utils;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNNodeKind;
@@ -23,7 +25,7 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import com.inthinc.pro.rally.RallyWebServices;
 
-public class DownloadFile {
+public class AutomationFileHandler {
     
     private static final int kiloBit = 1024;
     
@@ -33,7 +35,7 @@ public class DownloadFile {
         return first.equals(second);
     }
     
-    public boolean download(String url, String destinationFileName){
+    public static boolean download(String url, String destinationFileName){
         
         try {
             BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
@@ -65,6 +67,7 @@ public class DownloadFile {
     }
     
     public static boolean downloadSvnDirectory(String source, String fileDir, File destination){
+        System.out.println(source);
         DAVRepositoryFactory.setup( );
         SVNURL temp;
         try {
@@ -77,6 +80,7 @@ public class DownloadFile {
     }
     
     public static boolean downloadSvnDirectory(SVNURL source, String fileDir, File destination){
+        destination.deleteOnExit();
         ISVNAuthenticationManager authManager = new BasicAuthenticationManager("dtanner", RallyWebServices.password);
         
         DefaultSVNOptions options = SVNWCUtil.createDefaultOptions(true);
@@ -101,37 +105,63 @@ public class DownloadFile {
         return false;
     }
     
-    public static boolean fileMatchesSVN(String svnSource, String fileDir, File localCopy){
-        DAVRepositoryFactory.setup( );
-        SVNURL temp;
-        try {
-            temp = SVNURL.parseURIDecoded(svnSource);
-        } catch (SVNException e) {
-            e.printStackTrace();
-            return false;
-        }    
-        
-        return fileMatchesSVN(temp, fileDir, localCopy);
-    }
     
-    public static boolean fileMatchesSVN(SVNURL svnSource, String fileDir, File localCopy){
-        SVNRepository repository = null;
-        
+    public static boolean chopFile(int start, String fileLocation){
         try {
-            repository = SVNRepositoryFactory.create(svnSource);
-            ISVNAuthenticationManager authManager = new BasicAuthenticationManager(RallyWebServices.username, RallyWebServices.password);
-            repository.setAuthenticationManager(authManager);
-            repository.testConnection();
-            SVNNodeKind nodeKind = repository.checkPath(fileDir, -1);
-            System.out.println(nodeKind);
-            
-            
-        } catch (SVNException e) {
+            File file = new File(fileLocation);
+            byte[] bytes;
+            bytes = readFileToByteArray(file);
+            return writeByteArrayToFile(Arrays.copyOfRange(bytes, start, bytes.length), file);
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        
         return false;
+    }
+    
+    public static boolean chopFile(int start, int stop, String fileLocation){
+
+        try {
+            File file = new File(fileLocation);
+            byte[] bytes;
+            bytes = readFileToByteArray(file);
+            return writeByteArrayToFile(Arrays.copyOfRange(bytes, start, stop), file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public static boolean writeByteArrayToFile(byte[] bytes, File file){
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bytes);
+            fos.flush();
+            fos.close();
+            return true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public static byte[] readFileToByteArray(File file) throws IOException{
+        FileInputStream fis = new FileInputStream(file);
+        Long length = file.length();
+        byte[] bytes = new byte[length.intValue()];
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length && (numRead=fis.read(bytes, offset, bytes.length-offset)) >= 0){
+            offset += numRead;
+        }
+        
+        if (offset < bytes.length){
+            throw new IOException("Could not completely read file " + file.getName());
+        }
+        
+        fis.close();
+        return bytes;
     }
     
 //    public static void main(String[] args){

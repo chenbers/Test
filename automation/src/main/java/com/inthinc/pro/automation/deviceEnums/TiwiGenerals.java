@@ -161,41 +161,6 @@ public class TiwiGenerals {
 	    }
 	}
 	
-	public static enum Heading implements DeviceTypesUnique{
-		/* Heading numbers */
-
-	    HEADING_NORTH(0),
-	    HEADING_NORTH_EAST(1),
-	    HEADING_EAST(2),
-	    HEADING_SOUTH_EAST(3),
-	    HEADING_SOUTH(4),
-	    HEADING_SOUTH_WEST(5),
-	    HEADING_WEST(6),
-	    HEADING_NORTH_WEST(7);
-	    
-	    private int code;
-
-	    private Heading(int c) {
-	    	code = c;
-	    }
-	    public Integer getValue() {
-	    	return code;
-	    } 
-	    
-	    private static HashMap<Integer, Heading> lookupByCode = new HashMap<Integer, Heading>();
-	    
-	    static {
-	        for (Heading p : EnumSet.allOf(Heading.class))
-	        {
-	            lookupByCode.put(p.getValue(), p);
-	        }
-	    }
-	    public Heading valueOf(Integer code){
-	    	return lookupByCode.get(code);
-	    }
-	    
-	}
-	
 	public static enum ViolationFlags implements DeviceTypesUnique{
 		 /* Violation Flags */
 

@@ -13,7 +13,7 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
-import com.inthinc.pro.automation.utils.DownloadFile;
+import com.inthinc.pro.automation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
@@ -84,11 +84,11 @@ public class DeviceTests extends WebRallyTest {
                                     + locale.getFolder();
                             File dest = new File(svnFile);
         
-                            if (!DownloadFile.downloadSvnDirectory(url, fileName, dest)) {
+                            if (!AutomationFileHandler.downloadSvnDirectory(url, fileName, dest)) {
                                 addError("SVN File not found", ErrorLevel.FATAL_ERROR);
                             }
                             tiwi.getAudioFile(hessianFile, i, locale);
-                            validateTrue(DownloadFile.filesEqual(svnFile, hessianFile),
+                            validateTrue(AutomationFileHandler.filesEqual(svnFile, hessianFile),
                                     "The Downloaded files didn't match:\n" + fileName);
                         }
                     }

@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.interfaces;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,4 +23,12 @@ public interface MCMProxy{
 		ArrayList<Map<String, Object>> dumpSet(String mcmID, Integer version, Map<Integer, String> settings);
 		ArrayList<Map<Integer, String>> reqSet(String imei);
 		Map<String, Object> audioUpdate(String mcmID, Map<String, Object> map);
+		Map<String, Object> tiwiproUpdate(String mcmID, Map<String, Object> map);
+		Map<String, Object> witnessUpdate(String mcmID, Map<String, Object> map);
+		Map<String, Object> emuUpdate(String mcmID, Map<String, Object> map);
+		Map<String, Object> zoneUpdate(String mcmID, Map<String, Object> map);
+		Map<String, Object> sbsUpdate(String mcmID, Map<String, Object> map);
+		List<Map<String, Object>> sbsCheck(String mcmID, int baselineID, List<Map<String, Object>> mapList);
+		Map<String, Object> getSbsEdit(String mcmID, Map<String, Object> map);//Obsolete
+		List<Map<String, Object>> checkSbsSubscribed(String mcmID, Map<String, Object> map);
 }

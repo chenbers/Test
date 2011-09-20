@@ -1,5 +1,6 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.deviceTrips;
 
+import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.enums.Addresses;
 
 public class MannyBikeRide extends Thread{
@@ -34,7 +35,7 @@ public class MannyBikeRide extends Thread{
         tiwi.set_WMP(17116);
         tiwi.set_location(40.7097, -111.9925);
         tiwi.power_on_device();
-        tiwi.set_ignition(15);
+        tiwi.turn_key_on(15);
         tiwi.update_location(40.7097, -111.9925, 15);
         tiwi.update_location(40.7097, -111.9927, 15);
         tiwi.update_location(40.7097, -111.9929, 15);
@@ -47,7 +48,7 @@ public class MannyBikeRide extends Thread{
         tiwi.last_location(40.7097, -111.9925, 15);
         
         tiwi.add_stats();
-        tiwi.set_ignition(30);
+        tiwi.turn_key_off(30);
         tiwi.power_off_device(900);
     }
     

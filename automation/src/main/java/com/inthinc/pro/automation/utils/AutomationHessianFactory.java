@@ -4,8 +4,8 @@ import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.device_emulation.MCMProxy;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.interfaces.MCMProxy;
 import com.inthinc.pro.dao.hessian.extension.HessianTCPProxyFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
