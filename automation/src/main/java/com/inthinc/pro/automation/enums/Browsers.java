@@ -23,7 +23,7 @@ public enum Browsers {
     private Class<? extends WebDriver> baseDriver;
     private String name;
 
-    private volatile static HashMap<Long, WebDriver> seleniumByThread = new HashMap<Long, WebDriver>();
+    private volatile static HashMap<Long, WebDriver> webDriverThread = new HashMap<Long, WebDriver>();
     
     private Browsers(String shortName, Class<? extends WebDriver> baseDriver){
         this.baseDriver = baseDriver;
@@ -32,7 +32,7 @@ public enum Browsers {
     
     public WebDriver getDriver(){
         long thread = Thread.currentThread().getId();
-        WebDriver driver = seleniumByThread.get(thread);
+        WebDriver driver = webDriverThread.get(thread);
         
         try {
             if (driver == null){

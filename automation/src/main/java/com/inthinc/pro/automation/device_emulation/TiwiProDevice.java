@@ -448,15 +448,14 @@ public class TiwiProDevice extends Base {
         return hessian.equals(svn);
     }
     
-    public boolean getSbs(int mapName, int versionNumber, int currentVersion) {
+    public boolean checkSbsSubscribed() {
         Map<String, Object> map = new HashMap<String, Object>();
-//        map.put("f", mapName+".map");
-//        map.put("nv", versionNumber);
-//        map.put("cv", currentVersion);
         map.put("b", 6);
         
         List<Map<String, Object>> reply = mcmProxy.checkSbsSubscribed(imei, map);
+        sbsModule.addMaps(reply);
         System.out.println(reply);
+        System.out.println(reply.get(0).get("f").getClass());
         return false;
     }
     

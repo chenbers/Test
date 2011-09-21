@@ -85,11 +85,14 @@ public abstract class Base {
     protected String lastDownload;
     
     protected Addresses portal;
+    protected SpeedByStreet sbsModule;
+    
 
     public Base(String IMEI, Addresses server, Map<?, String> map, ProductType version) {
     	portal = server;
         Settings = new HashMap<DeviceProperties, String>();
         set_IMEI(IMEI, server, map, version);
+        sbsModule = new SpeedByStreet();
     }
     
     private Base ackFwdCmds(List<HashMap<String, Object>> reply) {

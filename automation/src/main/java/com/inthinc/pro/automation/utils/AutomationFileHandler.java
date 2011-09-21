@@ -67,7 +67,6 @@ public class AutomationFileHandler {
     }
     
     public static boolean downloadSvnDirectory(String source, String fileDir, File destination){
-        System.out.println(source);
         DAVRepositoryFactory.setup( );
         SVNURL temp;
         try {
