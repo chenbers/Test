@@ -15,7 +15,7 @@ public enum Addresses implements AddressInterface {
 
     SCHLUMBERGER("schlumberger.inthinc.com"),
 
-    WEATHORFORD("weatherford.inthinc.com"),
+    WEATHERFORD("weatherford.inthinc.com"),
 
     CINTAS("cintas.inthinc.com"),
 
