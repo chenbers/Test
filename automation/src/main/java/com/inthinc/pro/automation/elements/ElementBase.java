@@ -105,7 +105,8 @@ public class ElementBase extends MasterTest implements ElementInterface {
         current.put("protocol", address[0]);
         String[] url = address[2].split(":");
         current.put("url", url[0]);
-        current.put("port", url[1]);
+        if(url.length>1)
+            current.put("port", url[1]);
         current.put("appPath", address[3]);
         current.put("page", address[address.length - 1]);
 
