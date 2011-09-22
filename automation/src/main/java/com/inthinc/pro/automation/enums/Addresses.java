@@ -24,6 +24,8 @@ public enum Addresses implements AddressInterface {
     TECK("teck.inthinc.com"),
 
     STAGE("stage.inthinc.com"),
+    
+    STAGE_DIRECT("ec2-50-18-81-171.us-west-1.compute.amazonaws.com"),
 
     DEV("dev-pro.inthinc.com", 8081, null, null, null, 8888, null),
 

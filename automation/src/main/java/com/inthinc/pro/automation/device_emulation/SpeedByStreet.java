@@ -1,8 +1,11 @@
 package com.inthinc.pro.automation.device_emulation;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import com.inthinc.pro.automation.interfaces.MCMProxy;
 
 public class SpeedByStreet {
     
@@ -23,6 +26,31 @@ public class SpeedByStreet {
             addNewMap(map);
         }
         return this;
+    }
+    
+    private class MapSection{
+        
+        private final String name;
+        private final String firstFolder;
+        private final String secondFolder;
+        private final byte[] file;
+        private final Integer fileNumber;
+        
+        private Integer version;
+        
+        
+        public MapSection(Map<String, Object> mapSegment){
+            name = (String) mapSegment.get("n");
+            firstFolder = (String) mapSegment.get("d1");
+            secondFolder = (String) mapSegment.get("d2");
+            file = (byte[]) mapSegment.get("f");
+            fileNumber = Integer.parseInt(name.split(".")[0]);
+            version = (Integer) mapSegment.get("v");
+        }
+        
+        public MapSection(Integer fileNumber, Integer vesion, MCMProxy proxy){
+            this(proxy.getSbsEdit("", new HashMap<String, Object>()));
+        }
     }
 
 }
