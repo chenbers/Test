@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +37,7 @@ import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.Xpath;
 import com.thoughtworks.selenium.DefaultSelenium;
+import com.thoughtworks.selenium.SeleniumException;
 
 /****************************************************************************************
  * Extend the functionality of DefaultSelenium, but add some error handling around it
@@ -56,7 +58,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private final static Logger logger = Logger.getLogger(CoreMethodLib.class);
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
-    private final WebDriver driver; 
+    //private final WebDriver driver; 
     private final Browsers browser;
     private final Addresses silo;
     
@@ -66,7 +68,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     public CoreMethodLib(Browsers browser, Addresses silo) {
         super(browser.getDriver(), silo.getWebAddress());
         errors = new ErrorCatcher(this);
-        driver = browser.getDriver();
+        //driver = browser.getDriver();//TODO: jwimmer: this is opening the 2nd browser... which causes IE tests to fail
         this.browser = browser;
         this.silo = silo;
     }
@@ -160,7 +162,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String element = getLocator(myEnum);
 
         WebElement parent = getWrappedDriver().findElement(By.xpath(idToXpath(element)));
-        ((JavascriptExecutor) driver).executeScript("return arguments[0].focus();", parent);
+        ((JavascriptExecutor) getWrappedDriver()).executeScript("return arguments[0].focus();", parent);
 
         return this;
     }
@@ -290,7 +292,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         String element = getLocator(myEnum);
         
         WebElement parent = getWrappedDriver().findElement(By.xpath(idToXpath(element)));
-        String innerHtml = (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].innerHTML;", parent);
+        String innerHtml = (String) ((JavascriptExecutor) getWrappedDriver()).executeScript("return arguments[0].innerHTML;", parent);
         if (innerHtml.contains("spacer.gif")){
             innerHtml = closeImgTags("<div>" + innerHtml + "</div>");
             try{
@@ -306,12 +308,12 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public String getTextFromElementWithFocus() {
         WebElement activeElement = getActiveElement();
-        String text = (String) ((JavascriptExecutor) driver).executeScript("return arguments[0].value;", activeElement);
+        String text = (String) ((JavascriptExecutor) getWrappedDriver()).executeScript("return arguments[0].value;", activeElement);
         return text;
     }
     
     private WebElement getActiveElement(){
-        return (WebElement) ((JavascriptExecutor) driver).executeScript("return document.activeElement;");
+        return (WebElement) ((JavascriptExecutor) getWrappedDriver()).executeScript("return document.activeElement;");
     }
     
     
@@ -367,7 +369,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public boolean hasFocus(SeleniumEnumWrapper myEnum) {
         String element = getLocator(myEnum);
-        WebElement item = driver.findElement(By.xpath(idToXpath(element)));
+        WebElement item = getWrappedDriver().findElement(By.xpath(idToXpath(element)));
         WebElement hasFocus = getActiveElement();
         
         return item.equals(hasFocus);
@@ -747,7 +749,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     
     private WebElement getMatches(String xpath, Integer matchNumber){
         waitForElementPresent(xpath, 10);
-        return getWrappedDriver().findElements(By.xpath(xpath)).get(matchNumber);
+        List<WebElement> allMatches= getWrappedDriver().findElements(By.xpath(xpath));
+        if(matchNumber < allMatches.size())
+            return allMatches.get(matchNumber);
+        errors.addError("getMatches insufficient matches found", "There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found", ErrorLevel.WARN);
+        throw new SeleniumException("There is no matchNumber at index "+matchNumber+", there were only "+allMatches.size()+" matches found");
     }
 
     @Override
@@ -794,19 +800,11 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return seleniumByThread.get(currentThread).getErrors().newInstance();
     }
 
-    public void closeSelenium() {
-       driver.close();
-       driver.quit();
-       //driver = null;
-    }
-
     public static void closeSeleniumThread() {
         Long currentThread = getThreadID();
         try{
             seleniumByThread.get(currentThread).close();
             seleniumByThread.get(currentThread).stop();
-            seleniumByThread.get(currentThread).getWrappedDriver().quit();
-            seleniumByThread.get(currentThread).closeSelenium();
         }catch(NullPointerException e){
             logger.debug("Selenium already closed.");
         }catch(Exception e){
