@@ -22,19 +22,19 @@ public enum MyAccountEnum implements SeleniumEnums {
 
     /* Login Information */
     LOGIN_HEADER("Login Information", "//td[1]/div[@class='add_section_title']"),
-    USER_NAME_TEXT("User Name:", "td[@valign='top']/table/tbody/tr[1]/td[2]"),
-    LOCALE_TEXT("Locale:", "td[@valign='top']/table/tbody/tr[2]/td[2]"),
-    MEASUREMENT_TEXT("Measurement:", "td[@valign='top']/table/tbody/tr[3]/td[2]"),
-    FUEL_EFFICIENCY_RATIO_TEXT("Fuel Efficiency Ratio:", "td[@valign='top']/table/tbody/tr[4]/td[2]"),
+    USER_NAME_TEXT("User Name:", "myAccountUsername"),
+    LOCALE_TEXT("Locale:", "myAccountLocale"),
+    MEASUREMENT_TEXT("Measurement:", "myAccountMeasurementType"),
+    FUEL_EFFICIENCY_RATIO_TEXT("Fuel Efficiency Ratio:", "myAccountFuelEfficiency"),
 
     /* Red Flag Preferences */
     RED_FLAGS_HEADER("Red Flag Preferences", "//span[@class='notify']"),
-    INFORMATION_ICON(null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[1]/td[1]"),
-    INFORMATION_TEXT("Information:", "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[1]/td[3]"),
-    WARNING_ICON(null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[2]/td[1]"),
-    WARNING_TEXT("Warning:", "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[2]/td[3]"),
-    CRITICAL_ICON(null, "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[3]/td[1]"),
-    CRITICAL_TEXT("Critical", "//tr[3]/td[1]/div/div[@class='panel_w']/div[@class='panel_content']/table/tbody/tr[3]/td[3]"),
+    INFORMATION_ICON(null, "//td[@id='myAccountInfo']/../td[1]"),
+    INFORMATION_TEXT("Information:", "myAccountInfo"),
+    WARNING_ICON(null, "///td[@id='myAccountInfo']/../td[1]"),
+    WARNING_TEXT("Warning:", "myAccountWarn"),
+    CRITICAL_ICON(null, "//td[@id='myAccountInfo']/../td[1]"),
+    CRITICAL_TEXT("Critical", "myAccountCrit"),
 
     /* Contact Information */
     CONTACT_HEADER("Contact Information", "//span[@class='contact']", "//td[3]/div/div[@class='panel_nw']/div[@class='panel_title']/span"),
@@ -42,14 +42,14 @@ public enum MyAccountEnum implements SeleniumEnums {
     PHONE_SUB_HEADER("Phone Numbers", "//div[@class='panel_content']/div[2]"),
     TEXT_SUB_HEADER("Text Messages", "//div[@class='panel_content']/div[3]"),
 
-    EMAIL1_TEXT(email + " 1:", "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[1]/td[2]"),
-    EMAIL2_TEXT(email + " 2:", "//td[3]/div/div/div[@class='panel_content']/table[1]/tbody/tr[2]/td[2]"),
+    EMAIL1_TEXT(email + " 1:", "myAccountPriEmail"),
+    EMAIL2_TEXT(email + " 2:", "myAccountSecEmail"),
     
-    PHONE1_TEXT("Phone 1:", "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[1]/td[2]"),
-    PHONE2_TEXT("Phone 2:", "//td[3]/div/div/div[@class='panel_content']/table[2]/tbody/tr[2]/td[2]"),
+    PHONE1_TEXT("Phone 1:", "myAccountPriPhone"),
+    PHONE2_TEXT("Phone 2:", "myAccountSecPhone"),
     
-    TEXT_MESSAGES1_TEXT("Text Message 1:", "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[1]/td[2]"),
-    TEXT_MESSAGES2_TEXT("Text Message 2:", "//td[3]/div/div/div[@class='panel_content']/table[3]/tbody/tr[2]/td[2]"),
+    TEXT_MESSAGES1_TEXT("Text Message 1:", "myAccountPriText"),
+    TEXT_MESSAGES2_TEXT("Text Message 2:", "myAccountSecText"),
 
     /* Edit Page Buttons */
     SAVE_BUTTON("Save", "my_form:editAccountSave", "//li/button[@type='submit']", "//li/button[@class='left'][1]"),
