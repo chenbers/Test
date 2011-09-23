@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.DropDown;
+import com.inthinc.pro.automation.elements.Selector;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
@@ -135,6 +136,12 @@ public class PageMyMessages extends NavigationBar {
         }
     }
     
+    public class MyMessagesSelectors {
+        public Selector drivers(){
+            return new Selector(MyMessagesEnum.DRIVER_LEFT);
+        }
+    }
+    
     public class MyMessagesCheckBox {
         
         public CheckBox selectAllCheckBox(){
@@ -168,5 +175,9 @@ public class PageMyMessages extends NavigationBar {
     
     public MyMessagesCheckBox _checkBox() {
         return new MyMessagesCheckBox();
+    }
+
+    public MyMessagesSelectors _selector() {
+        return new MyMessagesSelectors();
     }
 }

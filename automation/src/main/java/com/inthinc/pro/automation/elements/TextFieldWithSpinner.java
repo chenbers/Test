@@ -2,50 +2,48 @@ package com.inthinc.pro.automation.elements;
 
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
-import com.inthinc.pro.automation.utils.Id;
-import com.inthinc.pro.automation.utils.Xpath;
 
 public class TextFieldWithSpinner extends TextField {
-    
+
     private SeleniumEnumWrapper spinnerEnum;
-    
-    public TextFieldWithSpinner(SeleniumEnums anEnum){
+
+    public TextFieldWithSpinner(SeleniumEnums anEnum) {
         super(anEnum, ("Edit"));
         spinnerEnum = new SeleniumEnumWrapper(anEnum);
         spinnerEnum.replaceWord("Buttons");
     }
-    
-    public TextFieldWithSpinner(SeleniumEnums anEnum, String type){
-        super(anEnum, (type+"Edit"));
+
+    public TextFieldWithSpinner(SeleniumEnums anEnum, String type) {
+        super(anEnum, (type + "Edit"));
         spinnerEnum = new SeleniumEnumWrapper(anEnum);
         spinnerEnum.replaceWord(type + "Buttons");
     }
-    
-    private void setIds(Integer upOrDown){
+
+    private SeleniumEnumWrapper setIds(Integer upOrDown) {
         String[] newIDs = spinnerEnum.getIDs();
         int last = newIDs.length - 1;
-        newIDs[last] = Xpath.start().table(Id.id(newIDs[last])).tbody().tr(upOrDown.toString()).td().input().toString();
+        return new SeleniumEnumWrapper(spinnerEnum).setID("//table[@id='"
+                + newIDs[last] + "']/tbody/tr[" + upOrDown.toString()
+                + "]/td/input");
     }
-    
-    public Button up(){
-        setIds(1);
-        return new Button(spinnerEnum){
+
+    public Button up() {
+        return new Button(setIds(1)) {
             @Override
-            public Button click(){
-                selenium.mouseDown(spinnerEnum);
-                selenium.mouseUp(spinnerEnum);
+            public Button click() {
+                selenium.mouseDown(myEnum);
+                selenium.mouseUp(myEnum);
                 return this;
             }
         };
     }
-    
-    public Button down(){
-        setIds(2);
-        return new Button(spinnerEnum){
+
+    public Button down() {
+        return new Button(setIds(2)) {
             @Override
-            public Button click(){
-                selenium.mouseDown(spinnerEnum);
-                selenium.mouseUp(spinnerEnum);
+            public Button click() {
+                selenium.mouseDown(myEnum);
+                selenium.mouseUp(myEnum);
                 return this;
             }
         };

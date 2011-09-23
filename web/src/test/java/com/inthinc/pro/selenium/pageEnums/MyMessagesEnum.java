@@ -52,8 +52,8 @@ public enum MyMessagesEnum implements SeleniumEnums {
     
     //TODO DTANNER TO FILL IN
     DRIVER_HEADER("Drivers", ""),
-    DRIVER_LEFT(null, ""),
-    DRIVER_RIGHT(null, ""),
+    DRIVER_LEFT(null, "display-form:driverListinternal_tab"),
+    DRIVER_RIGHT(null, "display-form:driverListtlcontentBox"),
     VEHICLE_HEADER("Vehicles", ""),
     VEHICLE_LEFT(null, ""),
     VEHICLE_RIGHT(null, ""),

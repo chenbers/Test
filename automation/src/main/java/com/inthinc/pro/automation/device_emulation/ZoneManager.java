@@ -1,14 +1,30 @@
 package com.inthinc.pro.automation.device_emulation;
 
-import java.util.Arrays;
+import java.io.ByteArrayInputStream;
+
+
 
 public class ZoneManager {
+    
+    private int fileFormatVersion;
+    private int fileVersion;
+    private int nZones;
+    
 
     public ZoneManager(byte[] zone) {
-        int test = unsignedShortToInt(Arrays.copyOfRange(zone, 0, 32));
-        System.out.println(test);
-        test = unsignedShortToInt(Arrays.copyOfRange(zone, 32, 64));
-        System.out.println(test);
+//        LinkedList<byte> zoneList = new LinkedList<byte>();
+//        zoneList.addAll(Arrays.asList(zone));
+        
+        ByteArrayInputStream bab = new ByteArrayInputStream(zone);
+        fileFormatVersion |= bab.read();
+        fileFormatVersion <<= 8;
+        fileFormatVersion |= bab.read();
+        fileFormatVersion <<= 8;
+        fileFormatVersion |= bab.read();
+        fileFormatVersion <<= 8;
+        fileFormatVersion |= bab.read();
+        fileFormatVersion <<= 8;
+        System.out.println(fileFormatVersion);
     }
     
     public int nextInt(){
