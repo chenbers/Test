@@ -330,7 +330,7 @@ public class EmailReportJob extends QuartzJobBean {
         DateTime lastSentDateTime = reportSchedule.getLastDate() == null ? null : new DateTime(reportSchedule.getLastDate(),DateTimeZone.forID(person.getTimeZone().getID()));
 
         Integer scheduleDayOfMonth = new DateTime(reportSchedule.getStartDate(),DateTimeZone.forID("UTC")).getDayOfMonth();
-        Integer currentDayOfMonth = currentDateTime.getDayOfMonth();
+        Integer currentDayOfMonth = new DateTime(currentDateTime,DateTimeZone.forID("UTC")).getDayOfMonth();
         DateTime startDateTime = new DateTime(reportSchedule.getStartDate(),DateTimeZone.forID(person.getTimeZone().getID()));
         DateTime endDateTime;
         if (reportSchedule.getEndDate() != null && reportSchedule.getEndDate().getTime() != 0l) {
