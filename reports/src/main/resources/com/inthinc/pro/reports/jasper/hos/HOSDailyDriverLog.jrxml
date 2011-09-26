@@ -4,6 +4,7 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<subDataset name="remarksDataset">
+		<parameter name="USE_METRIC" class="java.lang.Boolean" isForPrompting="false"/>
 		<field name="logTimeDate" class="java.util.Date"/>
 		<field name="logTimeZone" class="java.util.TimeZone"/>
 		<field name="location" class="java.lang.String"/>
@@ -450,7 +451,7 @@
 								<printWhenExpression><![CDATA[Boolean.valueOf(!$F{edited}.booleanValue() && $F{startOdometer} != null && $F{startOdometer}.longValue() != 0l)]]></printWhenExpression>
 							</reportElement>
 							<textElement textAlignment="Right"/>
-							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, Boolean.valueOf(false), $P{REPORT_LOCALE})]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, $P{USE_METRIC}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="false">
 							<reportElement positionType="Float" x="515" y="12" width="40" height="10" isRemoveLineWhenBlank="true">
@@ -496,7 +497,7 @@
 								<printWhenExpression><![CDATA[Boolean.valueOf($F{edited}.booleanValue() && $F{startOdometer} != null && $F{startOdometer}.longValue() != 0l)]]></printWhenExpression>
 							</reportElement>
 							<textElement textAlignment="Right"/>
-							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, Boolean.valueOf(false), $P{REPORT_LOCALE})]]></textFieldExpression>
+							<textFieldExpression class="java.lang.String"><![CDATA[com.inthinc.pro.reports.hos.converter.Converter.convertRemarkDistance($F{startOdometer}, $P{USE_METRIC}, $P{REPORT_LOCALE})]]></textFieldExpression>
 						</textField>
 						<textField>
 							<reportElement positionType="Float" mode="Opaque" x="515" y="12" width="40" height="10" isRemoveLineWhenBlank="true" backcolor="#999999">
