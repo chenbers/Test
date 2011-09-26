@@ -341,7 +341,7 @@ public class HosDailyDriverLogReportCriteria {
     List<VehicleInfo> initVehicleInfoForDay(DateTime day, Integer driverID, List<HOSRecAdjusted> logListForDay, List<HOSRecord> hosRecordList) {
         List<VehicleInfo> vehicleInfoList = new ArrayList<VehicleInfo>();
         for (HOSRecAdjusted rec  : logListForDay) {
-            if (rec.getVehicleID() != null) {
+            if (rec.getVehicleID() != null && rec.getVehicleID().intValue() != 0) {
                 boolean alreadyAdded = false;
                 for (VehicleInfo vehicleInfo : vehicleInfoList) {
                     if (rec.getVehicleID().equals(vehicleInfo.getVehicleID())) {

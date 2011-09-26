@@ -531,8 +531,10 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         logListForDay.add(new HOSRecAdjusted("3",HOSStatus.OFF_DUTY, day.plusHours(3).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(3).toDate(),60l,12,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
         // occupant 1 hour in vehicle 2
         logListForDay.add(new HOSRecAdjusted("4",HOSStatus.ON_DUTY_OCCUPANT, day.plusHours(4).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(4).toDate(),60l,16,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+        // off duty 1 hour from portal
+        logListForDay.add(new HOSRecAdjusted("5",HOSStatus.OFF_DUTY, day.plusHours(5).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(5).toDate(),60l,20,4,false,"","",60l,RuleSetType.US_OIL, 0));
         // off duty rest of day
-        logListForDay.add(new HOSRecAdjusted("5",HOSStatus.OFF_DUTY, day.plusHours(5).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(5).toDate(),1140l,20,76,false,"","",1140l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+        logListForDay.add(new HOSRecAdjusted("6",HOSStatus.OFF_DUTY, day.plusHours(6).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(6).toDate(),1080l,24,72,false,"","",1080l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
         
         // matching hosRecords
         List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
