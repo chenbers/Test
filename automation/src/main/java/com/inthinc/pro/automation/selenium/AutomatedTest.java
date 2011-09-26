@@ -14,7 +14,7 @@ public class AutomatedTest extends MasterTest{
     protected Long startTime;
     private AutomationPropertiesBean automationPropertiesBean;
 
-    protected final static Logger logger = Logger.getLogger(AutomatedTest.class);
+    protected final Logger logger = Logger.getLogger(AutomatedTest.class);
 
     protected Boolean skip = false;
     private Verdicts testVerdict;
@@ -71,6 +71,8 @@ public class AutomatedTest extends MasterTest{
     }
 
     public AutomationPropertiesBean getAutomationPropertiesBean() {
+        if(automationPropertiesBean == null)
+            automationPropertiesBean = AutomationProperties.getPropertyBean();
         return automationPropertiesBean;
     }
 
