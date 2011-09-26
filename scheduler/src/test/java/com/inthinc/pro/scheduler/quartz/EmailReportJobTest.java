@@ -130,6 +130,29 @@ public class EmailReportJobTest
       erj.setUserDAO(userDAO);
       assertTrue(erj.isTimeToEmailReport(reportSchedule,p));
     }
+    
+    @Test
+    public void nullOccurenceTest()
+    {
+      ReportSchedule reportSchedule = buildReportSchedule(Occurrence.MONTHLY, TimeZone.getTimeZone("MST"));
+      reportSchedule.setOccurrence(null);
+      
+      UserDAO userDAO = createMock(UserDAO.class);
+      User user = new User();
+      user.setUserID(1);
+      user.setUsername("Hello");
+      Person p = new Person();
+      p.setTimeZone(TimeZone.getTimeZone("MST"));
+      user.setPerson(p);
+      expect(userDAO.findByID(EasyMock.isA(Integer.class))).andReturn(user).anyTimes();
+      replay(userDAO);
+      
+      EmailReportJob erj = new EmailReportJob();
+      erj.setUserDAO(userDAO);
+      assertTrue(!erj.isTimeToEmailReport(reportSchedule,p));
+    }
+
+    
     @Test
     public void dailyRomaniaTest()
     {
@@ -289,6 +312,23 @@ public class EmailReportJobTest
             
             
             assertTrue(testDayOfWeek + " " + dateStr + " should be scheduled testDayOfWeek= " + testDayOfWeek, erj.isValidDayOfWeek(reportSchedule.getDayOfWeek(), currentDateTime.getDayOfWeek()));
+            currentDateTime = currentDateTime.plusDays(1);
+            dateStr = dateTimeFormatter.print(currentDateTime);
+        }
+
+        for (int testDayOfWeek = SUN; testDayOfWeek <= SAT; testDayOfWeek++) {
+            ReportSchedule reportSchedule = buildReportSchedule(Occurrence.WEEKLY, TimeZone.getTimeZone("US/Mountain"));
+            
+            List<Boolean> booleanList = new ArrayList<Boolean>();
+            for (int scheduledDay = SUN; scheduledDay <= SAT; scheduledDay++) 
+                booleanList.add(scheduledDay != testDayOfWeek);  
+            reportSchedule.setDayOfWeek(booleanList);
+
+            EmailReportJob erj = new EmailReportJob();
+            erj.setUserDAO(userDAO);
+            
+            
+            assertTrue(testDayOfWeek + " " + dateStr + " should not be scheduled testDayOfWeek= " + testDayOfWeek, !erj.isValidDayOfWeek(reportSchedule.getDayOfWeek(), currentDateTime.getDayOfWeek()));
             currentDateTime = currentDateTime.plusDays(1);
             dateStr = dateTimeFormatter.print(currentDateTime);
         }
@@ -529,16 +569,19 @@ public class EmailReportJobTest
         reportSchedule.setReportID(1);
         reportSchedule.setAccountID(MOCK_ACCOUNT_ID);
         
-        DateTime firstOfMonth = new DateTime(new DateMidnight(new DateTime(),DateTimeZone.forID(userTimeZone.getID())));
+        DateTime currentDayOfMonth = null;
+        if (occurrence == Occurrence.MONTHLY) 
+            currentDayOfMonth = new DateTime(new DateMidnight(new DateTime(),DateTimeZone.forID("UTC")));
+        else currentDayOfMonth = new DateTime(new DateMidnight(new DateTime(),DateTimeZone.forID(userTimeZone.getID())));
 
-        MutableDateTime dayOfMonth = new MutableDateTime(firstOfMonth);
+        MutableDateTime dayOfMonth = new MutableDateTime(currentDayOfMonth);
         dayOfMonth.addDays(1);
         DateTime endDate = new DateTime(dayOfMonth);
         
 //        reportSchedule.setLastDate(firstOfMonth.toDate());
         reportSchedule.setLastDate(new DateTime().minusWeeks(6).toDate());
         reportSchedule.setEndDate(endDate.toDate());
-        reportSchedule.setStartDate(firstOfMonth.toDate());
+        reportSchedule.setStartDate(currentDayOfMonth.toDate());
         reportSchedule.setTimeOfDay(new DateTime(DateTimeZone.forID(userTimeZone.getID())).getMinuteOfDay());
         List<String> emailList = new ArrayList<String>();
         emailList.add("foo@inthinc.com");

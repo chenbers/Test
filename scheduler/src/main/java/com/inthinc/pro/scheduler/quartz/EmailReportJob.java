@@ -329,6 +329,8 @@ public class EmailReportJob extends QuartzJobBean {
         
         DateTime lastSentDateTime = reportSchedule.getLastDate() == null ? null : new DateTime(reportSchedule.getLastDate(),DateTimeZone.forID(person.getTimeZone().getID()));
 
+        Integer scheduleDayOfMonth = new DateTime(reportSchedule.getStartDate(),DateTimeZone.forID("UTC")).getDayOfMonth();
+        Integer currentDayOfMonth = currentDateTime.getDayOfMonth();
         DateTime startDateTime = new DateTime(reportSchedule.getStartDate(),DateTimeZone.forID(person.getTimeZone().getID()));
         DateTime endDateTime;
         if (reportSchedule.getEndDate() != null && reportSchedule.getEndDate().getTime() != 0l) {
@@ -409,7 +411,7 @@ public class EmailReportJob extends QuartzJobBean {
 
 
         // Rule 5:
-        if (reportSchedule.getOccurrence().equals(Occurrence.MONTHLY) && startDateTime.getDayOfMonth() != currentDateTime.getDayOfMonth()) {
+        if (reportSchedule.getOccurrence().equals(Occurrence.MONTHLY) && !scheduleDayOfMonth.equals(currentDayOfMonth)) {
             if (logger.isDebugEnabled()) {
                 logger.debug("Report Not Sent: Report is not scheduled to run on current day of month");
                 logger.debug("Name: " + reportSchedule.getName());
