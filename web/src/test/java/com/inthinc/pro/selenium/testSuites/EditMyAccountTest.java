@@ -16,9 +16,7 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
 public class EditMyAccountTest extends WebRallyTest {
 
-//* This test requires Admin user, set as a driver with assigned vehicle/device.
-
-
+    // * This test requires Admin user, set as a driver with assigned vehicle/device.
 
     private PageMyAccount myAccountPage;
     private RandomValues random;
@@ -39,8 +37,7 @@ public class EditMyAccountTest extends WebRallyTest {
 
         // 1. From the Edit My Account page,
         myAccountPage._link().myAccount().click();
-        String originalMeasurement = myAccountPage._text().measurement()
-                .getText();
+        String originalMeasurement = myAccountPage._text().measurement().getText();
         myAccountPage._button().edit().click();
 
         Measurement newMeasure = null;
@@ -55,9 +52,7 @@ public class EditMyAccountTest extends WebRallyTest {
             distanceDisplay = "miles";
             newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
         } else {
-            addError("Measurement",
-                    "Original Measurement has unexpected value of: "
-                            + originalMeasurement, ErrorLevel.FATAL);
+            addError("Measurement", "Original Measurement has unexpected value of: " + originalMeasurement, ErrorLevel.FATAL);
         }
         myAccountPage._select().measurement().select(newMeasure);
         myAccountPage._select().fuelEfficiency().select(newFuel);
@@ -66,19 +61,19 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._button().save().click();
         myAccountPage._text().measurement().validate(newMeasure.getText());
 
-        //TODO: Need to add vehicle/device and assign to driver in order to validate fuel ratio measurements.
+        // TODO: Need to add vehicle/device and assign to driver in order to validate fuel ratio measurements.
         // 3. Navigate to other pages throughout the UI.
-       // myAccountPage._link().liveFleet().click();
-       // PageLiveFleet liveFleet = new PageLiveFleet();
-       // liveFleet._link().entryVehicleByPosition().row(1).click();
-       // PageVehiclePerformance vPerform = new PageVehiclePerformance();
+        // myAccountPage._link().liveFleet().click();
+        // PageLiveFleet liveFleet = new PageLiveFleet();
+        // liveFleet._link().entryVehicleByPosition().row(1).click();
+        // PageVehiclePerformance vPerform = new PageVehiclePerformance();
 
         // 1. VERIFY - The display of distance (miles or kilometeres) throughout
         // the UI appears in the selected measurement setting.
         // goes to the vehicle performance page and checks the crashes per
         // million miles(/kilo) title
-       // vPerform._text().crashesPerMillionMilesTitle()
-         //       .validateContains(distanceDisplay);
+        // vPerform._text().crashesPerMillionMilesTitle()
+        // .validateContains(distanceDisplay);
 
         // TODO: add other pages to verify (original Rally instructions states
         // "pageS")
@@ -92,10 +87,8 @@ public class EditMyAccountTest extends WebRallyTest {
 
         // 1. From the Edit My Account page,
         myAccountPage._link().myAccount().click();
-        myAccountPage._text().measurement()
-                .getText();
-        String originalFuelRatio = myAccountPage._text().fuelEfficiency()
-                .getText();
+        myAccountPage._text().measurement().getText();
+        String originalFuelRatio = myAccountPage._text().fuelEfficiency().getText();
         myAccountPage._button().edit().click();
 
         Measurement newMeasure = null;
@@ -115,9 +108,7 @@ public class EditMyAccountTest extends WebRallyTest {
             newMeasure = Measurement.ENGLISH;
             newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
         } else {
-            addError("Fuel Ratio",
-                    "Original Fuel Ratio has unexpected value of: "
-                            + originalFuelRatio, ErrorLevel.FATAL);
+            addError("Fuel Ratio", "Original Fuel Ratio has unexpected value of: " + originalFuelRatio, ErrorLevel.FATAL);
         }
         myAccountPage._select().measurement().select(newMeasure);
         myAccountPage._select().fuelEfficiency().select(newFuel);
@@ -127,12 +118,12 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._text().measurement().validate(newMeasure);
         myAccountPage._text().fuelEfficiency().validate(newFuel);
 
-        //TODO: Need to add vehicle/device so it can be assigned to driver in order to validate fuel ratio on other pages
+        // TODO: Need to add vehicle/device so it can be assigned to driver in order to validate fuel ratio on other pages
         // 3. Navigate to other pages throughout the UI.
-       // myAccountPage._link().liveFleet().click();
-       // PageLiveFleet liveFleet = new PageLiveFleet();
-       // liveFleet._link().entryVehicleByPosition().row(1).click(); // brittle...
-      //  new PageVehiclePerformance();
+        // myAccountPage._link().liveFleet().click();
+        // PageLiveFleet liveFleet = new PageLiveFleet();
+        // liveFleet._link().entryVehicleByPosition().row(1).click(); // brittle...
+        // new PageVehiclePerformance();
 
         // 1. VERIFY - The display of distance (miles or kilometeres) throughout
         // the UI appears in the selected measurement setting.
@@ -197,11 +188,9 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._textField().phone2().type(phoneNumTwentyFive);
         myAccountPage._button().save().click();
 
-         myAccountPage._text().errorPhone1()
-                .validate("Must consist of up to 15 numeric characters");
-     
-        myAccountPage._text().errorPhone2()
-                .validate("Must consist of up to 15 numeric characters");
+        myAccountPage._text().errorPhone1().validate("Must consist of up to 15 numeric characters");
+
+        myAccountPage._text().errorPhone2().validate("Must consist of up to 15 numeric characters");
     }
 
     @Test
@@ -217,10 +206,8 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._textField().phone2().type(phoneNumShortTwo);
         myAccountPage._button().save().click();
 
-         myAccountPage._text().errorPhone1()
-                .validate("Must consist of up to 15 numeric characters");
-        myAccountPage._text().errorPhone2()
-                .validate("Must consist of up to 15 numeric characters");
+        myAccountPage._text().errorPhone1().validate("Must consist of up to 15 numeric characters");
+        myAccountPage._text().errorPhone2().validate("Must consist of up to 15 numeric characters");
 
     }
 
@@ -238,10 +225,8 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._textField().phone2().type(random.getSpecialString(10));
         myAccountPage._button().save().click();
 
-        myAccountPage._text().errorPhone1()
-                .validate("Must consist of up to 15 numeric characters");
-        myAccountPage._text().errorPhone2()
-                .validate("Must consist of up to 15 numeric characters");
+        myAccountPage._text().errorPhone1().validate("Must consist of up to 15 numeric characters");
+        myAccountPage._text().errorPhone2().validate("Must consist of up to 15 numeric characters");
     }
 
     @Test
@@ -252,8 +237,7 @@ public class EditMyAccountTest extends WebRallyTest {
         badTextMessageAddresses.add(random.getIntString(5) + "@domain.com"); // phone number is to short
         badTextMessageAddresses.add("8015551234 @domain.com"); // contains a space
         badTextMessageAddresses.add("801555\"1234\"@domain.com"); // has quotes inside
-        badTextMessageAddresses
-                .add(random.getSpecialString(10) + "@domain.com"); // Special Characters for number
+        badTextMessageAddresses.add(random.getSpecialString(10) + "@domain.com"); // Special Characters for number
         badTextMessageAddresses.add("801362judi@domain.com"); // contains letters
 
         // Rally: input
@@ -268,19 +252,17 @@ public class EditMyAccountTest extends WebRallyTest {
         for (String address : badTextMessageAddresses) {
             myAccountPage._textField().textMessage1().type(address);
             myAccountPage._textField().textMessage2().type(address); // NOTE: there might be an additional TC to test if
-                                                                     // textMessage1 is in an incorrect format by textMessage2
-                                                                     // is not (and vice versa)
+            // textMessage1 is in an incorrect format by textMessage2
+            // is not (and vice versa)
             myAccountPage._button().save().click(); // NOTE: IF one of these "saves" is successful, it will cause subsequent
-                                                    // iterations of this loop to FAIL (because we will NOT be on the Edit page
-                                                    // any longer)
+            // iterations of this loop to FAIL (because we will NOT be on the Edit page
+            // any longer)
 
             // Rally: Expected Result
             // An error message appears in red saying 'Incorrect format
             // (8015551212@tmomail.com)'
-            myAccountPage._text().errorText1()
-                    .validate("Incorrect format (8015551212@tmomail.com)");
-            myAccountPage._text().errorText2()
-                    .validate("Incorrect format (8015551212@tmomail.com)");
+            myAccountPage._text().errorText1().validate("Incorrect format (8015551212@tmomail.com)");
+            myAccountPage._text().errorText2().validate("Incorrect format (8015551212@tmomail.com)");
         }
 
     }
@@ -293,17 +275,15 @@ public class EditMyAccountTest extends WebRallyTest {
         // 2. Add or change the data in all fields.
         // 3. Click Save.
 
-        
         myAccountPage.loginProcess(USERNAME, PASSWORD);
-      
+
         myAccountPage._link().myAccount().click();
 
         // hang onto original values so the account can be returned to it's
         // original state
         String origLocal = myAccountPage._text().locale().getText();
         String origMeasure = myAccountPage._text().measurement().getText();
-        String origFuelEfficiency = myAccountPage._text().fuelEfficiency()
-                .getText();
+        String origFuelEfficiency = myAccountPage._text().fuelEfficiency().getText();
         String origEmail1 = myAccountPage._text().email1().getText();
         String origEmail2 = myAccountPage._text().email2().getText();
         String origPhone1 = myAccountPage._text().phone1().getText();
@@ -324,20 +304,15 @@ public class EditMyAccountTest extends WebRallyTest {
         /* Login Info */
         myAccountPage._select().locale().select(Locale.ENGLISH);
         myAccountPage._select().measurement().select(Measurement.ENGLISH);
-        myAccountPage._select().fuelEfficiency()
-                .select(Fuel_Ratio.ENGLISH_MILES_UK);
+        myAccountPage._select().fuelEfficiency().select(Fuel_Ratio.ENGLISH_MILES_UK);
 
         /* Contact Info */
-        myAccountPage._textField().email1()
-                .type("someUnusedEmail@test.com");
-        myAccountPage._textField().email2()
-                .type("anotherUnusedEmail@test.com");
+        myAccountPage._textField().email1().type("someUnusedEmail@test.com");
+        myAccountPage._textField().email2().type("anotherUnusedEmail@test.com");
         myAccountPage._textField().phone1().type("801-777-7777");
         myAccountPage._textField().phone2().type("801-999-9999");
-        myAccountPage._textField().textMessage1()
-                .type("8017779999@tmomail.net");
-        myAccountPage._textField().textMessage2()
-                .type("8019997777@tmomail.net");
+        myAccountPage._textField().textMessage1().type("8017779999@tmomail.net");
+        myAccountPage._textField().textMessage2().type("8019997777@tmomail.net");
 
         /* Red Flags */
         myAccountPage._select().information().select(RedFlagPrefs.TEXT1);
@@ -353,8 +328,7 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._text().userName().validate(USERNAME);
         myAccountPage._text().locale().validate(Locale.ENGLISH.getText());
         myAccountPage._text().measurement().validate("English");
-        myAccountPage._text().fuelEfficiency()
-                .validate("Miles Per Gallon (UK)");
+        myAccountPage._text().fuelEfficiency().validate("Miles Per Gallon (UK)");
 
         /* Account Info */
         myAccountPage._text().name().validate(origName);
@@ -362,18 +336,13 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._text().team().validate(origTeam);
 
         /* Red Flags */
-        myAccountPage._text().redFlagInfo()
-                .validate(RedFlagPrefs.TEXT1, ":", "");
-        myAccountPage._text().redFlagWarn()
-                .validate(RedFlagPrefs.EMAIL1, ":", "");
-        myAccountPage._text().redFlagCritical()
-                .validate(RedFlagPrefs.PHONE1, ":", "");
+        myAccountPage._text().redFlagInfo().validate(RedFlagPrefs.TEXT1, ":", "");
+        myAccountPage._text().redFlagWarn().validate(RedFlagPrefs.EMAIL1, ":", "");
+        myAccountPage._text().redFlagCritical().validate(RedFlagPrefs.PHONE1, ":", "");
 
         /* Contact Info */
-        myAccountPage._text().email1()
-                .validate("someUnusedEmail@test.com");
-        myAccountPage._text().email2()
-                .validate("anotherUnusedEmail@test.com");
+        myAccountPage._text().email1().validate("someUnusedEmail@test.com");
+        myAccountPage._text().email2().validate("anotherUnusedEmail@test.com");
         myAccountPage._text().phone1().validate("801-777-7777");
         myAccountPage._text().phone2().validate("801-999-9999");
         myAccountPage._text().textMessage1().validate("8017779999@tmomail.net");
@@ -402,15 +371,14 @@ public class EditMyAccountTest extends WebRallyTest {
         set_test_case("TC1272");
         myAccountPage.loginProcess(USERNAME, PASSWORD);
         myAccountPage._link().myAccount().click();
-        
-        
+
         myAccountPage._button().edit().click();
         myAccountPage._textField().email1().clear();
         myAccountPage._textField().email1().type("tina1960test.com");
         myAccountPage._button().save().click();
 
         myAccountPage._text().errorEmail1().validate("Incorrect format (jdoe@tiwipro.com)");
-       
+
         myAccountPage._textField().email1().clear();
         myAccountPage._textField().email1().type("tina1960@test.com");
         myAccountPage._button().save().click();
@@ -419,9 +387,9 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._button().edit().click();
         myAccountPage._textField().email2().type("tlc1960test");
         myAccountPage._button().save().click();
-       
+
         myAccountPage._text().errorEmail2().validate("Incorrect format (jdoe@tiwipro.com)");
-        
+
         myAccountPage._textField().email2().clear();
         myAccountPage._textField().email2().type("tlc1960@test.com");
         myAccountPage._button().save().click();
@@ -434,7 +402,7 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage.loginProcess(USERNAME, PASSWORD);
         myAccountPage._link().myAccount().click();
         /* Get original Values */
-        
+
         String originalUSERNAME = myAccountPage._text().userName().getText();
         String originalEmail1 = myAccountPage._text().email1().getText();
         String originalEmail2 = myAccountPage._text().email2().getText();
@@ -445,17 +413,13 @@ public class EditMyAccountTest extends WebRallyTest {
         String originalText1 = myAccountPage._text().textMessage1().getText();
         String originalText2 = myAccountPage._text().textMessage2().getText();
 
-        String originalCritical = myAccountPage._text().redFlagCritical()
-                .getText();
+        String originalCritical = myAccountPage._text().redFlagCritical().getText();
         String originalWarning = myAccountPage._text().redFlagWarn().getText();
-        String originalInformation = myAccountPage._text().redFlagInfo()
-                .getText();
+        String originalInformation = myAccountPage._text().redFlagInfo().getText();
 
         String originalLocale = myAccountPage._text().locale().getText();
-        String originalMeasurement = myAccountPage._text().measurement()
-                .getText();
-        String originalFuelRatio = myAccountPage._text().fuelEfficiency()
-                .getText();
+        String originalMeasurement = myAccountPage._text().measurement().getText();
+        String originalFuelRatio = myAccountPage._text().fuelEfficiency().getText();
 
         /* Edit button */
         myAccountPage._button().edit().click();
@@ -463,28 +427,20 @@ public class EditMyAccountTest extends WebRallyTest {
         /* Login Info */
         myAccountPage._select().locale().select(Locale.ENGLISH);
         myAccountPage._select().measurement().select(Measurement.METRIC);
-        myAccountPage._select().fuelEfficiency()
-                .select(Fuel_Ratio.METRIC_LITER_PER_KILO);
+        myAccountPage._select().fuelEfficiency().select(Fuel_Ratio.METRIC_LITER_PER_KILO);
 
         /* Contact Info */
         myAccountPage._textField().email1().type(random.getEmail());
         myAccountPage._textField().email2().type(random.getEmail());
         myAccountPage._textField().phone1().type(random.getPhoneNumber());
         myAccountPage._textField().phone2().type(random.getPhoneNumber());
-        myAccountPage._textField().textMessage1()
-                .type(random.getTextMessageNumber());
-        myAccountPage._textField().textMessage2()
-                .type(random.getTextMessageNumber());
+        myAccountPage._textField().textMessage1().type(random.getTextMessageNumber());
+        myAccountPage._textField().textMessage2().type(random.getTextMessageNumber());
 
         /* Red Flags */
-        myAccountPage
-                ._select()
-                .information()
-                .select(random.getEnum(RedFlagPrefs.TEXT1, originalInformation));
-        myAccountPage._select().warning()
-                .select(random.getEnum(RedFlagPrefs.TEXT1, originalWarning));
-        myAccountPage._select().critical()
-                .select(random.getEnum(RedFlagPrefs.TEXT1, originalCritical));
+        myAccountPage._select().information().select(random.getEnum(RedFlagPrefs.TEXT1, originalInformation));
+        myAccountPage._select().warning().select(random.getEnum(RedFlagPrefs.TEXT1, originalWarning));
+        myAccountPage._select().critical().select(random.getEnum(RedFlagPrefs.TEXT1, originalCritical));
 
         /* Cancel Changes */
         myAccountPage._button().cancel().click();
