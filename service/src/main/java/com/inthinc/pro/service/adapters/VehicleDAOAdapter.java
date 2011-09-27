@@ -34,6 +34,9 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
     @Autowired
     private VehicleReportDAO vehicleReportDAO;    
 	
+//    @Autowired
+//    private ConfiguratorDAO configuratorDAO;
+    
 	@Override
 	public List<Vehicle> getAll() {
         return vehicleDAO.getVehiclesInGroupHierarchy(getGroupID());	
@@ -142,5 +145,55 @@ public class VehicleDAOAdapter extends BaseDAOAdapter<Vehicle> {
 	 */
 	public void setVehicleReportDAO(VehicleReportDAO vehicleReportDAO) {
 		this.vehicleReportDAO = vehicleReportDAO;
-	}    
+	}
+
+//	public ConfiguratorDAO getConfiguratorDAO() {
+//		return configuratorDAO;
+//	}
+//
+//	public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
+//		this.configuratorDAO = configuratorDAO;
+//	}
+//
+//	@Override
+//	public Vehicle update(Vehicle vehicle) {
+//		updateDotSettingIfRequired(vehicle);
+//		return super.update(vehicle);
+//	}
+//	private void updateDotSettingIfRequired(Vehicle vehicle){
+//		if ( vehicle.getDot() != null){
+//			Map<Integer, String> settingMap = getSettingMap(vehicle.getDot());
+//			Integer userID = tiwiProPrincipal.getUser().getUserID();
+//			try {
+//				configuratorDAO.updateVehicleSettings(vehicle.getVehicleID(), settingMap, userID, "Web service update");
+//			} catch (EmptyResultSetException e) {
+//            
+//			}
+//		}
+//	}
+//
+//	@Override
+//	public Integer create(Vehicle vehicle) {
+//		Integer vehicleID = super.create(vehicle);
+//		if (vehicleID != null){
+//			vehicle.setVehicleID(vehicleID);
+//			createDotSettingIfRequired(vehicle);
+//		}
+//		return vehicleID;
+//	}
+//	private void createDotSettingIfRequired(Vehicle vehicle){
+//		if ( vehicle.getDot() != null){
+//			Map<Integer, String> settingMap =  getSettingMap(vehicle.getDot());
+//			Integer userID = tiwiProPrincipal.getUser().getUserID();
+//			try {
+//				configuratorDAO.setVehicleSettings(vehicle.getVehicleID(), settingMap, userID, "Web service create");
+//			} catch (EmptyResultSetException e) {
+//			}
+//		}
+//	}
+//	private Map<Integer,String> getSettingMap(VehicleDOTType vehicleDOTType){
+//		Map<Integer, String> settingMap = new HashMap<Integer, String>();
+//		settingMap.put(1261, ""+vehicleDOTType.getConfiguratorSetting());
+//		return settingMap;
+//	}
 }

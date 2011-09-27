@@ -33,6 +33,8 @@ import com.inthinc.pro.service.model.BatchResponse;
 public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter> implements DriverService {
     private static final Logger logger = Logger.getLogger(DriverServiceImpl.class);
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
+    //2011-08-29T08:31:25-0600
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'hh:mm:ssZ";
     static final Integer DEFAULT_PAST_TIMING = -30;
 
     @Override
@@ -209,4 +211,44 @@ public class DriverServiceImpl extends AbstractService<Driver, DriverDAOAdapter>
         return SIMPLE_DATE_FORMAT;
     }
 
+	@Override
+	public Response getTrips(Integer driverID, String fromDateTime,String toDateTime) {
+        Date fromDate = buildDateTimeFromString(fromDateTime);
+        Date toDate = buildDateTimeFromString(toDateTime);
+        if(!validDateRange(fromDate, toDate)) return  Response.status(Status.BAD_REQUEST).build();
+        
+        if(driverID != null && fromDate != null && toDate != null) {
+            long diff = toDate.getTime() - fromDate.getTime();
+            long diffDays = diff / (1000 * 60 * 60 * 24) ;
+            
+            if(diffDays <= 30L) {
+                List<Trip> trips =  this.getDao().getTrips(driverID, fromDate,toDate);
+                if(trips != null && !trips.isEmpty()) {
+                    return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
+                }
+            }
+            else {
+                return Response.status(Status.BAD_REQUEST).build();
+            }
+        }
+        return Response.status(Status.NOT_FOUND).build();
+	}
+    private Date buildDateTimeFromString(String strDate) {
+        if(strDate == null)
+            return null;
+        
+        DateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT); 
+        try
+        {
+            Date convertedDate = df.parse(strDate);           
+            return convertedDate;
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private boolean validDateRange(Date fromDate, Date toDate){
+    	return toDate.after(fromDate);
+    }
 }

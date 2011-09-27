@@ -1,5 +1,8 @@
 package com.inthinc.pro.service.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,6 +33,8 @@ import com.inthinc.pro.service.model.BatchResponse;
 public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapter> implements VehicleService {
 
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
+    //2011-08-29T08:31:25-0600
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'hh:mm:ssZ";
 
     private AddressLookup addressLookup;
 
@@ -202,5 +207,45 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
 
     public void setAddressLookup(AddressLookup addressLookup) {
         this.addressLookup = addressLookup;
+    }
+	@Override
+	public Response getTrips(Integer vehicleID, String fromDateTime,String toDateTime) {
+        Date fromDate = buildDateTimeFromString(fromDateTime);
+        Date toDate = buildDateTimeFromString(toDateTime);
+        if(!validDateRange(fromDate, toDate)) return  Response.status(Status.BAD_REQUEST).build();
+
+        if(vehicleID != null && fromDate != null && toDate != null) {
+            long diff = toDate.getTime() - fromDate.getTime();
+            long diffDays = diff / (1000 * 60 * 60 * 24) ;
+            
+            if(diffDays <= 30L) {
+                List<Trip> trips =  this.getDao().getTrips(vehicleID, fromDate,toDate);
+                if(trips != null && !trips.isEmpty()) {
+                    return Response.ok(new GenericEntity<List<Trip>>(trips) {}).build();
+                }
+            }
+            else {
+                return Response.status(Status.BAD_REQUEST).build();
+            }
+        }
+        return Response.status(Status.NOT_FOUND).build();
+	}
+    private Date buildDateTimeFromString(String strDate) {
+        if(strDate == null)
+            return null;
+        
+        DateFormat df = new SimpleDateFormat(DATE_TIME_FORMAT); 
+        try
+        {
+            Date convertedDate = df.parse(strDate);           
+            return convertedDate;
+        } catch (ParseException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private boolean validDateRange(Date fromDate, Date toDate){
+    	return toDate.after(fromDate);
     }
 }

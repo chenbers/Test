@@ -107,6 +107,21 @@ public interface DriverService {
     Response getLastTrips(@PathParam("driverID") Integer driverID);
     
     /**
+     * Service to get the trips of given driver that has been performed between a given date and today.
+     * @param driverID the Driver ID
+     * @param fromDateTime the startDate of the interval to search. This date must be max 30 days before today. 
+     * @param toDateTime the endDate of the interval to search. This date must be after the fromDateTime. 
+     * @returnWrapped List<Trip> the driver trips performed between a given date and today
+     * @HTTP HTTP 200 - OK if trips performed between a given date and today were found
+     * @HTTP HTTP 404 - NOT FOUND if no trips found 
+     * @HTTP HTTP 400 - BAD REQUEST if date is more than 30 days back from today 
+     */
+    @GET
+    @Path("/driver/{driverID}/trips/{fromDateTime}/{toDateTime}")
+    Response getTrips(@PathParam("driverID") Integer driverID, 
+                                 @PathParam("fromDateTime") String fromDateTime,
+                                 @PathParam("toDateTime") String toDateTime);
+    /**
      * Service to get the last location of given driverID.
      * @param driverID the Driver ID
      * @returnWrapped LastLocation the last driver location

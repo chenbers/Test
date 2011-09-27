@@ -99,6 +99,9 @@ public class DriverDAOAdapter extends BaseDAOAdapter<Driver> {
         return driverDAO.getTrips(driverID, startDate, today);
     }
 
+    public List<Trip> getTrips(Integer driverID, Date fromDateTime, Date toDateTime) {          
+        return driverDAO.getTrips(driverID, fromDateTime, toDateTime);
+    }
     public List<DriverLocation> getDriverLocations(Integer groupID) {
         return driverDAO.getDriverLocations(groupID);
     }
