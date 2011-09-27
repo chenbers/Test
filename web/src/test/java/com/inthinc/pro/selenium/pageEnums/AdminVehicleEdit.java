@@ -28,8 +28,7 @@ public enum AdminVehicleEdit implements SeleniumEnums {
     TXTFIELD_HARD_BRAKE(null, "edit-form:editVehicle-hardBrakeInput"),
     TXTFIELD_HARD_BUMP(null, "edit-form:editVehicle-hardVerticalInput"),
     TXTFIELD_UNSAFE_TURN(null, "edit-form:editVehicle-hardTurnInput"),
-    TXTFIELD_IDLING_THRESHOLD(null,
-            "edit-form:editVehicle-idlingThresholdInput"),
+    TXTFIELD_IDLING_THRESHOLD(null, "edit-form:editVehicle-idlingThresholdInput"),
 
     TXTFIELD_VIN("VIN:", "edit-form:editVehicle-vin"),
     TXTFIELD_MAKE("Make:", "edit-form:editVehicle-make"),
@@ -59,7 +58,7 @@ public enum AdminVehicleEdit implements SeleniumEnums {
     TEXT_VALUE_PRODUCT("Product:", "//div[@class='spacer']/../table[3]/tbody/tr[1]/td[2]"),
     TEXT_VALUE_ASSIGNED_DEVICE("Assigned Device:", "//div[@class='spacer']/../table[3]/tbody/tr[2]/td[2]"),
     
-    CHECKBOX_IDLE_MENTOR(""    ,"vehicleForm:vehicle-idleBuzzer","edit-form:editVehicle-idleBuzzer"),
+    CHECKBOX_IDLE_MENTOR("","vehicleForm:vehicle-idleBuzzer","edit-form:editVehicle-idleBuzzer"),
 
     ;
     private String text, url;
