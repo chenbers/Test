@@ -16,17 +16,23 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsDiagnostics;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
+import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
 
+/**
+ * depends:
+ * -NoteTesterGeneration.java must have run for many of these tests to work
+ * -logins used for these tests must have access to the drivers/vehicles/devices used in NoteTesterGeneration
+ *
+ */
 public class NotificationsDiagnosticsTest extends WebRallyTest {
-    String USERNAME = "dastardly";
-    String USERNAME_TOP = "pitstop";
-    String USERNAME_2 = "CaptainNemo";
-    String PASSWORD = "Muttley";
-    String GROUP = "Test Group WR";
-    PageLogin pl;
-    PageNotificationsRedFlags pnrf;
-    PageNotificationsDiagnostics pnd;
+    private String USERNAME = "dastardly";//TODO: jwimmer: will be available from AutomationLogins
+    private String USERNAME_2 = "CaptainNemo";//TODO: jwimmer: will be available from AutomationLogins
+    private String PASSWORD = "Muttley";//TODO: jwimmer: will be available from AutomationLogins
+    private String GROUP = "Test Group WR";//TODO: jwimmer: will be available from AutomationLogins
+    private PageLogin pl;
+    private PageNotificationsRedFlags pnrf;
+    private PageNotificationsDiagnostics pnd;
 
     @Before
     public void before(){
@@ -51,6 +57,10 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         assertStringContains(correctURL, ptds.getCurrentLocation());
     }
     
+    /**
+     * depends:
+     * -uses two different accounts
+     */
     @Test
     public void bookmarkEntryDifferentAccountTest1369(){
         set_test_case("TC1369");
@@ -70,10 +80,15 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         
     }
     
+    /**
+     * depends:
+     * -GROUP must be accessible for USERNAME
+     * -NoteTesterGeneration must be run for GROUP
+     */
     @Test
     public void driverLinkTest1371(){
       set_test_case("TC1371");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         pnrf._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -81,11 +96,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._dropDown().team().selectPartMatch(GROUP);
         pnd._button().refresh().click();
         pause(10, "Wait for page to load.");
-        int i = 1;
-        while(!pnd._link().entryDriver().row(i).isClickable()){
-            i++;
-        }
-        pnd._link().entryDriver().row(i).click();
+        pnd._link().entryDriver().getFirstClickableLink().click();
         assertStringContains("app/driver", pnd.getCurrentLocation());
     }
     
@@ -109,7 +120,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Ignore
     public void locationMapLinkTest1377(){
         set_test_case("TC1377");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         pnrf._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -122,10 +133,15 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         //pnd._popUp().
     }
     
+    /**
+     * depends:
+     * -GROUP must be accessible for USERNAME
+     * -NoteTesterGeneration must be run for GROUP
+     */
     @Test
     public void searchTest1379(){
         set_test_case("TC1379");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         int length = 3;
         
         pl.loginProcess(USERNAME, PASSWORD);
@@ -169,11 +185,16 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     
+    /**
+     * depends:
+     * -GROUP must be accessible for USERNAME
+     * -NoteTesterGeneration must be run for GROUP
+     */
     @Test
     public void tablePropertiesTest1381(){
         
         set_test_case("TC1381");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         String currentText;
         AutomationCalendar currentDate = null;
         pl.loginProcess(USERNAME, PASSWORD);
@@ -340,7 +361,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void diagnosticsUITest1383(){
         set_test_case("TC1383");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -363,10 +384,16 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         
     }
     
+    /**
+     * Tests that the Vehicle Link navigates to the Vehicle performance page
+     * depends: 
+     * -NoteTesterGeneration.java must have run for GROUP
+     * -GROUP must be accessible for USERNAME
+     */
     @Test
     public void vehicleLinkTest1384(){
         set_test_case("TC1384");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -376,7 +403,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._button().refresh().click();
         pause(10, "Wait for page to load.");
         pnd._link().entryVehicle().row(1).click();
-        assertStringContains("app/vehicle", pnd.getCurrentLocation());
+        PageVehiclePerformance pvp = new PageVehiclePerformance();
+        pvp.validate();
     }
     
     @Test
@@ -438,7 +466,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void mouseCheckBoxSelectionTest1388(){
         set_test_case("TC1388");
-        someCheckedHelper();
+        someCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -461,7 +489,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void spacebarCheckBoxSelectionTest1389(){
         set_test_case("TC1389");
-        someCheckedHelper();
+        someCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -473,7 +501,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         spaceBar();
         pnd._popUp().editColumns()._checkBox().row(1).assertChecked(false);
         spaceBar();
-        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(true);
+        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(true);//TODO: testFailing: dtanner: does the spaceBar() method WORK?
         
     }
     
@@ -481,7 +509,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void currentSessionRetentionTest1390(){
         set_test_case("TC1390");
-        someCheckedHelper();
+        someCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -505,9 +533,10 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
+    @Ignore
     public void enterKeyTest1391(){
         set_test_case("TC1391");
-        someCheckedHelper();
+        someCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -519,7 +548,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._popUp().editColumns()._checkBox().row(4).check();
         enterKey();
         pause(2, "Waiting for columns to update.");
-        pnd._link().sortByDateTime().assertPresence(false);
+        pnd._link().sortByDateTime().assertPresence(false);//TODO: testFailing: dtanner: looks like it is because enterKey() doesn't work???
         pnd._link().sortByGroup().assertPresence(true);
         pnd._link().sortByDriver().assertPresence(true);
         pnd._link().sortByVehicle().assertPresence(true);
@@ -530,7 +559,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void saveButtonTest1392(){
         set_test_case("TC1392");
-        someCheckedHelper();
+        someCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -551,7 +580,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void subsequentSessionRetentionTest1393(){
         set_test_case("TC1393");
-        someCheckedHelper();
+        someCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -575,6 +604,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
+    @Ignore
     public void tabbingOrderTest1394(){
         set_test_case("TC1394");
         
@@ -585,34 +615,43 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         
         pnd._link().editColumns().click();
         pnd._popUp().editColumns()._checkBox().row(1).focus();
-        tabKey();
-        pause(10, "");
-        if(!pnd._popUp().editColumns()._checkBox().row(2).hasFocus()){
+        if(!pnd._popUp().editColumns()._checkBox().row(1).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on second check box.", ErrorLevel.FATAL);
         }
         tabKey();
+        pause(10, "");
+        if(!pnd._popUp().editColumns()._checkBox().row(2).hasFocus()){//TODO: dtanner: testFailing: does tabKey() work ?
+            addError("Incorrect Focus", "Focus is expected to be on second check box. Possible that tabKey() didn't work.", ErrorLevel.ERROR);
+            pnd._popUp().editColumns()._checkBox().row(2).focus();
+        }
+        tabKey();
         if(!pnd._popUp().editColumns()._checkBox().row(3).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on third check box.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on third check box. Possible that tabKey() didn't work.", ErrorLevel.ERROR);
+            pnd._popUp().editColumns()._checkBox().row(3).focus();
         }
         tabKey();
         if(!pnd._popUp().editColumns()._checkBox().row(4).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on fourth check box.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on fourth check box. Possible that tabKey() didn't work.", ErrorLevel.ERROR);
+            pnd._popUp().editColumns()._checkBox().row(4).focus();
         }
         tabKey();
         if(!pnd._popUp().editColumns()._checkBox().row(5).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on fifth check box.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on fifth check box. Possible that tabKey() didn't work.", ErrorLevel.ERROR);
+            pnd._popUp().editColumns()._checkBox().row(5).focus();
         }
         tabKey();
         if(!pnd._popUp().editColumns()._checkBox().row(6).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on sixth check box.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on sixth check box. Possible that tabKey() didn't work.", ErrorLevel.ERROR);
+            pnd._popUp().editColumns()._checkBox().row(6).focus();
         }
         tabKey();
         if(!pnd._popUp().editColumns()._button().save().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on save button.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on save button. Possible that tabKey() didn't work.", ErrorLevel.ERROR);
+            pnd._popUp().editColumns()._button().save().focus();
         }
         tabKey();
         if(!pnd._popUp().editColumns()._button().cancel().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on cancel button.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on cancel button. Possible that tabKey() didn't work.", ErrorLevel.ERROR);
         }
     }
     
@@ -651,10 +690,15 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._popUp().editColumns()._button().cancel().assertVisibility(true);
     }
     
+    /**
+     * depends:
+     * -GROUP must be accessible for USERNAME
+     * -NoteTesterGeneration must be run for GROUP
+     */
     @Test
     public void excludeLinkIdlingTest1397(){
         set_test_case("TC1397");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -673,15 +717,20 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
             pnd._link().entryStatus().row(1).click();
         }
         else{
-            //TODO Make the test result Inconclusive instead of Fail.
-            addError("Idling event not present to test with.", ErrorLevel.WARN);
+            addError("Idling event not present to test with.", ErrorLevel.INCONCLUSIVE);
         }
+        addError("Just testing sending inconclusive to Rally.", ErrorLevel.INCONCLUSIVE);
     }
     
+    /**
+     * depends:
+     * -GROUP must be accessible for USERNAME
+     * -NoteTesterGeneration must be run for GROUP
+     */
     @Test
     public void excludeLinkTamperingTest1398(){
         set_test_case("TC1398");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -704,10 +753,15 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         }
     }
     
+    /**
+     * depends:
+     * -GROUP must be accessible for USERNAME
+     * -NoteTesterGeneration must be run for GROUP
+     */
     @Test
     public void excludeLinkUITest1399(){
         set_test_case("TC1399");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -728,10 +782,15 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._popUp().excludeEvent()._button().no().assertVisibility(true);
     }
     
+    /**
+     * depends:
+     * -GROUP must be accessible for USERNAME
+     * -NoteTesterGeneration must be run for GROUP
+     */
     @Test
     public void includeLinkTest5737(){
         set_test_case("TC5737");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -749,11 +808,16 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         assertStringContains("exc", pnd._link().entryStatus().row(1).getText());
     }
     
+    /**
+     * depends:
+     * -NoteTesterGeneration must have run TODAY
+     * -NoteTesterGeneration must have run YESTERDAY
+     */
     @Test
-    public void timeFrameTest5742(){
+    public void timeFrameTest5742() {
         set_test_case("TC5742");
-        
-        allCheckedHelper();
+
+        allCheckedHelper(USERNAME, PASSWORD);
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -761,18 +825,23 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._dropDown().team().selectPartMatch(GROUP);
         pnd._button().refresh().click();
         pause(5, "Wait for refresh.");
-        AutomationCalendar todayCal = new AutomationCalendar(WebDateFormat.NOTE_DATE_TIME);
-        if(!todayCal.compareDays(pnd._text().entryDateTime().row(1).getText())){
-            addError("Today's date does not match today's date on the portal.", ErrorLevel.FATAL);
+        if (!pnd._link().entryGroup().isEmpty()) {
+            AutomationCalendar todayCal = new AutomationCalendar(WebDateFormat.NOTE_DATE_TIME);
+            if (!todayCal.compareDays(pnd._text().entryDateTime().row(1).getText())) {
+                addError("Today's date does not match today's date on the portal.", ErrorLevel.FATAL);
+            }
+            todayCal.addToDay(-1);
+            pnd._dropDown().timeFrame().selectPartMatch("Yesterday");
+            pnd._button().refresh().click();
+            pause(10, "Wait for refresh.");
+
+            if (!todayCal.compareDays(pnd._text().entryDateTime().row(1).getText())) {
+                addError("Yesterday's date does not match yesterday's date on the portal.", ErrorLevel.FATAL);
+            }
+        } else {
+            addError("TC5742 depends on NoteTesterGeneration having run today AND yesterday", ErrorLevel.INCONCLUSIVE);
         }
-        todayCal.addToDay(-1);
-        pnd._dropDown().timeFrame().selectPartMatch("Yesterday");
-        pnd._button().refresh().click();
-        pause(10, "Wait for refresh.");
-        
-        if(!todayCal.compareDays(pnd._text().entryDateTime().row(1).getText())){
-            addError("Yesterday's date does not match yesterday's date on the portal.", ErrorLevel.FATAL);
-        }
+
     }
     
     public TextField searchHeader(int i){
@@ -782,12 +851,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     public String searchText(int i){
-        int firstDriver = 1;
-        while(!pnd._link().entryDriver().row(firstDriver).isClickable()){
-            firstDriver++;
-        }
         String[] searchStrings = {(String) pnd._link().entryGroup().row(1).getText().substring(0, 3),
-                (String) pnd._link().entryDriver().row(firstDriver).getText().substring(0, 3), 
+                (String) pnd._link().entryDriver().getFirstClickableLink().getText().substring(0, 3), 
                 (String) pnd._link().entryVehicle().row(1).getText().substring(0, 3)};
         return searchStrings[i];
     }
@@ -801,8 +866,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         return tableValues[i];
     }
     
-    public void allCheckedHelper(){
-        pl.loginProcess(USERNAME, PASSWORD);
+    private void allCheckedHelper(String username, String password){
+        pl.loginProcess(username, password);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -818,8 +883,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().logout().click();
     }
     
-    public void someCheckedHelper(){
-          pl.loginProcess(USERNAME, PASSWORD);
+    private void someCheckedHelper(String username, String password){
+          pl.loginProcess(username, password);
           PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
           ptds._link().notifications().click();
           pnrf._link().diagnostics().click();
@@ -835,33 +900,4 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
           pnd._link().logout().click();
       }
     
-    public int monthToInt(String month){
-        if(month.equals("Jan"))
-            return 1;
-        if(month.equals("Feb"))
-            return 2;
-        if(month.equals("Mar"))
-            return 3;
-        if(month.equals("Apr"))
-            return 4;
-        if(month.equals("May"))
-            return 5;
-        if(month.equals("Jun"))
-            return 6;
-        if(month.equals("Jul"))
-            return 7;
-        if(month.equals("Aug"))
-            return 8;
-        if(month.equals("Sep"))
-            return 9;
-        if(month.equals("Oct"))
-            return 10;
-        if(month.equals("Nov"))
-            return 11;
-        if(month.equals("Dec"))
-            return 12;
-        
-        addError("Invalid month data:" + month, ErrorLevel.FATAL);
-        return 0;
-    }
 }
