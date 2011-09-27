@@ -32,15 +32,19 @@ public interface ElementInterface {
     	public Boolean validateChecked(Boolean checked);
     }
     
-    public interface CheckableTable extends Iterable<Checkable>, TableBased<Checkable>  {
+    public interface TextFieldTableBased extends TableBased<TextField> {
+        public TextField row(int rowNumber);
+    }
+    
+    public interface CheckableTable extends TableBased<Checkable>  {
     	public Checkable row(int rowNumber);
     }
     
-    public interface ClickableTableBased extends Iterable<Clickable>, TableBased<Clickable>  {
+    public interface ClickableTableBased extends TableBased<Clickable>  {
         public Clickable row(int rowNumber);
     }
     
-    public interface ClickableTextTableBased extends Iterable<ClickableTextBased>, TableBased<ClickableTextBased>{
+    public interface ClickableTextTableBased extends TableBased<ClickableTextBased>{
         public TextLink row(int rowNumber);
     }
     
@@ -103,7 +107,8 @@ public interface ElementInterface {
          */
         public String getText(Integer optionNumber);
     }
-    public interface TableBased<T> {
+    
+    public interface TableBased<T> extends Iterable<T> {
         public T row(int rowNumber);
     }
     public interface TextBased extends ElementInterface {
@@ -141,7 +146,7 @@ public interface ElementInterface {
 	public TextLink getSuggestion(String fullName);
     }
     
-    public interface TextTableBased extends Iterable<TextBased>, TableBasedWithText  {
+    public interface TextTableBased extends TableBasedWithText  {
         public TextBased row(int rowNumber);
     }
     public interface Typeable extends TextBased {
