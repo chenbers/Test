@@ -37,7 +37,7 @@
 
         <h:inputHidden id="#{context}-itemValue" value="#{autocompleter.itemValue}" />
 
-        <div class="picker" onclick="setFocus(event, this)">
+        <div class="picker" onclick="setFocus(event, this)" id="#{context}-pickerDiv">
           <ui:repeat id="#{context}-picker-repeater" value="#{autocompleter.picked}" var="item">
             <span class="pick-item">
               <h:outputText value="#{item.label}" />
@@ -51,9 +51,10 @@
           <rich:suggestionbox for="#{context}-picker-input" suggestionAction="#{autocompleter.autocomplete}" 
           	var="suggestion" usingSuggestObjects="true" onobjectchange="updateItemValue(suggestion)" 
           	nothingLabel="Nothing found matching your input" 
-          	eventsQueue="pickerQueue" ignoreDupResponses="true">
+          	eventsQueue="pickerQueue" ignoreDupResponses="true"
+          	id="#{context}-suggestionBoxId">
             <h:column>
-              <h:outputText value="#{suggestion.label}" />
+              <h:outputText value="#{suggestion.label}" id="nameSuggestion"  />
             </h:column>
             <a4j:support event="onselect" action="#{autocompleter.addItem}" reRender="#{context}-pickerPanel" limitToList="true" oncomplete="changeComplete()" />
           </rich:suggestionbox>
