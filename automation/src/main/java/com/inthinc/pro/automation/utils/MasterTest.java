@@ -151,13 +151,17 @@ public class MasterTest {
         }
         return true;
     }
-
-    protected Boolean assertTrue(Boolean test, String error) {
+    
+    protected Boolean assertTrue(Boolean test, String error, ErrorLevel level) {
         if (!test) {
-            addError(error, ErrorLevel.FATAL);
+            addError(error, level);
             return false;
         }
-        return true;
+        return true;   
+    }
+
+    protected Boolean assertTrue(Boolean test, String error) {
+        return assertTrue(test, error, ErrorLevel.FATAL);
     }
 
     protected Boolean compare(Object expected, Object actual) {
