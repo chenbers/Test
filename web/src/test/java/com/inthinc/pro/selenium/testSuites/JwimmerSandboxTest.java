@@ -47,7 +47,7 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceTrips;
 import com.inthinc.pro.selenium.pageObjects.PageReportsVehicles;
 import com.thoughtworks.selenium.SeleniumException;
 
-
+@Ignore
 public class JwimmerSandboxTest extends WebTest 
 {
 
