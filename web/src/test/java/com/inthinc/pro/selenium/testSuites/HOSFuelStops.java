@@ -51,7 +51,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._button().add().click();
         //3. Generate Trailer Fuel Errors
         myFuelStopsAddEdit._textField().trailer().type("123");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         myFuelStopsAddEdit._button().bottomSave().click();
         
         myFuelStopsAddEdit._text().errorMaster().validate("1 error(s) occurred. Please verify all the data entered is correct.");
@@ -68,7 +68,7 @@ public class HOSFuelStops extends WebRallyTest {
         
         myFuelStopsAddEdit._textField().date().type(tomorrow);
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         myFuelStopsAddEdit._button().bottomSave().click();
         myFuelStopsAddEdit._text().errorMaster().validate("1 error(s) occurred. Please verify all the data entered is correct.");
         myFuelStopsAddEdit._text().errorDate().validate("Date/Time in the future is not valid.");
@@ -92,7 +92,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._textField().trailer().type("789");
         myFuelStopsAddEdit._textField().vehicleFuel().type("789");
         myFuelStopsAddEdit._textField().trailerFuel().type("789");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         myFuelStopsAddEdit._text().valueLocation().validatePresence(true);
         myFuelStopsAddEdit._button().topCancel().click();
         //TODO: verify that a new fuel entry was not added.
@@ -111,7 +111,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._textField().trailer().type("123");
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
         myFuelStopsAddEdit._textField().trailerFuel().type("123");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina"); //TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         myFuelStopsAddEdit._button().bottomSave().click();
         myFuelStops._text().valueVehicleFuel().row(1).validate("123.00 Gallons");
         myFuelStops._text().valueTrailerFuel().row(1).validate("123.00 Gallons");
@@ -124,15 +124,16 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops.loginProcess(USERNAME, PASSWORD);
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
-        myFuelStops._textField().vehicle().type("10840");
-        myFuelStops._textField().vehicle().getSuggestion("108406").click();
+        myFuelStops._textField().vehicle().type("10840");//TODO: needs a fake WaySmart with HOS?
+        myFuelStops._textField().vehicle().getSuggestion("108406").click();//TODO: needs a fake WaySmart with HOS?
         
         //Add Fuel Stop
         myFuelStops._button().add().click();
         myFuelStopsAddEdit._textField().trailer().type("123");
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
         myFuelStopsAddEdit._textField().trailerFuel().type("123");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().selectRandom();
+        System.out.println("selected text "+myFuelStopsAddEdit._dropDown().driver().getText());
         myFuelStopsAddEdit._button().bottomSave().click();
         pause(5,"wait to save new fuel stop");
         
@@ -291,7 +292,7 @@ public class HOSFuelStops extends WebRallyTest {
         pause(5,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("abcdefg");
         myFuelStopsAddEdit._textField().trailerFuel().type("abcdefg");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         pause(5,"");
         myFuelStopsAddEdit._button().topSave().click();
         
@@ -309,7 +310,7 @@ public class HOSFuelStops extends WebRallyTest {
         pause(5,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("&$#!");
         myFuelStopsAddEdit._textField().trailerFuel().type("&$#!");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         pause(5,"");
         myFuelStopsAddEdit._button().topSave().click();
                      
@@ -327,7 +328,7 @@ public class HOSFuelStops extends WebRallyTest {
         pause(5,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("0");
         myFuelStopsAddEdit._textField().trailerFuel().type("0");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         pause(5,"");
         myFuelStopsAddEdit._button().topSave().click();
         
@@ -346,7 +347,7 @@ public class HOSFuelStops extends WebRallyTest {
         pause(5,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("-1");
         myFuelStopsAddEdit._textField().trailerFuel().type("-1");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         pause(5,"");
         myFuelStopsAddEdit._button().topSave().click();
         
@@ -402,7 +403,7 @@ public class HOSFuelStops extends WebRallyTest {
         pause(5,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("1.5");
         myFuelStopsAddEdit._textField().trailerFuel().type("1.5");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         pause(5,"");
         myFuelStopsAddEdit._button().topSave().click();
         
@@ -433,7 +434,7 @@ public class HOSFuelStops extends WebRallyTest {
         pause(5,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("125");
         myFuelStopsAddEdit._textField().trailerFuel().type("125");
-        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");
+        myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         pause(5,"");
         myFuelStopsAddEdit._button().bottomSave().click();
         
