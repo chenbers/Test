@@ -11,8 +11,8 @@ public enum LoginEnum implements SeleniumEnums {
 
     USERNAME_FIELD("User Name:", "j_username", "//form[@id='loginForm']/table/tbody/tr[1]/td[2]/input"),
     PASSWORD_FIELD("Password:", "j_password", "//form[@id='loginForm']/table/tbody/tr[2]/td[2]/input"),
-    LOGIN_BUTTON("Log In", "loginLogin", "form[@id='loginForm']/table/tbody/tr[3]/td/button", "//button[@type='submit']"),
-    LOGIN_HEADER("Log In", "//div[@class='panel_title']/span", "//span[@class='login']"),
+    LOGIN_BUTTON("Log In", "loginLogin", "form[@id='loginForm']/table/tbody/tr[3]/td/button"),
+    LOGIN_HEADER("Log In", "//span[@class='login']"),
     
     FORGOT_USERNAME_LINK("Forgot your user name or password?", "//a[contains(@id,':loginForgotPassword')]", "//div/form/a"),
 
