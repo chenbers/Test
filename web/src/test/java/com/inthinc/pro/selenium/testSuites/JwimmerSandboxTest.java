@@ -72,15 +72,7 @@ public class JwimmerSandboxTest extends WebTest
 
 @Test
 public void sometest() {
-    ArrayList<String> stringsToTest = new ArrayList<String>();
-    stringsToTest.add("ff4");
-    stringsToTest.add("ie6");
-    stringsToTest.add("ie3l232ljl23");
-    stringsToTest.add("ie_8.3.4.3.");
-    stringsToTest.add("jason3232onoin232o43ino23i4no23in4o23in4o23i");
-    
-    for(String name: stringsToTest)
-        System.out.println(name+"  ===>  "+name.replaceAll("[0-9._]", ""));
+
 }
 
     @Test
