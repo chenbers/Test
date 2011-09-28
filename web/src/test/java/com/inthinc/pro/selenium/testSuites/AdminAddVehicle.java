@@ -19,7 +19,7 @@ public class AdminAddVehicle extends WebRallyTest {
     @Before
     public void before(){
         editVehicle = new PageAdminVehicleEdit();
-        values = new Unique(Addresses.QA);
+        values = new Unique(Addresses.getSilo(getAutomationPropertiesBean().getSilo()));
         editVehicle.loginProcess(username, password);
     }
     
@@ -40,8 +40,6 @@ public class AdminAddVehicle extends WebRallyTest {
         print(editVehicle._text().errorVIN().getText());
         editVehicle._textField().VIN().type(values.getUniqueValue(17, UniqueValues.VEHICLE_VIN));
         print(editVehicle._text().errorVIN().getText());
-        
-        
     }
     
     @Test

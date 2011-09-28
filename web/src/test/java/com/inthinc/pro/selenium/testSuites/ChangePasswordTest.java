@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
@@ -27,10 +28,13 @@ public class ChangePasswordTest extends WebTest {
 	private static String weakPassword = "123456";
 	private static String strongPassword = ")(*098poiPOI";
 	private static String initialPassword = "password";
+	private static String hashOfStringPASSWORD = "JcxjA4COcypWBgdB1+v4VXPdbUf9Nzv4QQ9a8uL3IuCI1JZpLy2J08SO2A9rsHGI";
 	
 	
 	public void updateUser(){
-		SiloService portalProxy = (new AutomationHessianFactory()).getPortalProxy(Addresses.QA);
+	    AutomationPropertiesBean apb = getAutomationPropertiesBean();
+	    Addresses address = Addresses.getSilo(apb.getSilo());
+		SiloService portalProxy = (new AutomationHessianFactory()).getPortalProxy(address);
 		portalProxy.updateUser(userID, user);
 	}
 	
@@ -45,7 +49,7 @@ public class ChangePasswordTest extends WebTest {
 	}
 	
 	public void resetUser(){
-		user.put("password", "JcxjA4COcypWBgdB1+v4VXPdbUf9Nzv4QQ9a8uL3IuCI1JZpLy2J08SO2A9rsHGI");
+		user.put("password", hashOfStringPASSWORD);
 		user.put("lastLogin", now);
 		user.put("passwordDT", now);
 		user.put("status", 1);
