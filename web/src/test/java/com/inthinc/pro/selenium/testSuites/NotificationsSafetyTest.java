@@ -1,14 +1,19 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.elements.ClickableText;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
@@ -16,17 +21,32 @@ import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
-
 public class NotificationsSafetyTest extends WebRallyTest {
-    String USERNAME = "dastardly";
-    String USERNAME_TOP = "pitstop";
-    String USERNAME_2 = "CaptainNemo";
-    String PASSWORD = "Muttley";
-    String GROUP = "Test Group WR";
+    private static String USERNAME;
+    private static String USERNAME_2;
+    private static String PASSWORD;
+    private static String PASSWORD_2;
+    private static String GROUP;
+    
     PageLogin pl;
     PageNotificationsRedFlags pnrf;
     PageNotificationsSafety pns;
 
+    @BeforeClass
+    public static void beforeClass(){
+        List<AutomationLogins> logins = AutomationLogins.getAllBy(LoginCapabilities.NoteTesterData);
+        if(logins.size() > 1){
+            USERNAME = logins.get(0).getUserName();
+            PASSWORD = logins.get(0).getPassword();
+            GROUP = logins.get(0).getGroup();
+            
+            USERNAME_2 = logins.get(1).getUserName();
+            PASSWORD_2 = logins.get(1).getPassword();
+            
+        }else{
+            addError("Account Error", "there are not enough accounts with NoteTesterData", ErrorLevel.FAIL);
+        }
+    }
     @Before
     public void before(){
         pl = new PageLogin();
@@ -42,7 +62,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().safety().click();
-        savePageLink();
+        savePageLink(); 
         String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
         openSavedPage();
@@ -61,7 +81,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         savePageLink();
         String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
-        pnrf.loginProcess(USERNAME_2, PASSWORD);
+        pnrf.loginProcess(USERNAME_2, PASSWORD_2);
         String team2 = ptds._text().teamName().getText();
         openSavedPage();
         assertStringContains(correctURL, ptds.getCurrentLocation());
@@ -81,16 +101,12 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pns._dropDown().team().selectPartMatch(GROUP);
         pns._button().refresh().click();
         pause(10, "Wait for page to load.");
-        int i = 1;
-        while(!pns._link().entryDriver().row(i).isClickable()){
-            i++;
-        }
-        pns._link().entryDriver().row(i).click();
+        pns._link().entryDriver().getFirstClickableLink().click();
         assertStringContains("app/driver", pns.getCurrentLocation());
     }
     
     @Test
-    public void emailTest1478(){
+    public void emailTest1478(){ 
         //set_test_case("TC1474");
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
@@ -168,130 +184,6 @@ public class NotificationsSafetyTest extends WebRallyTest {
         
     }
     
-    /*
-     * Compares the dates.
-     * 
-     * @param date1
-     * @param date2
-     * @return 0 if date1 = date2, -1 if date1 is BEFORE date2, 1 if date1 is AFTER date2.
-     */
-    public int cruddyCompareDates(String date1, String date2){
-        //Set up comparison values.
-        int month1 = monthToInt(date1.substring(0,3));
-        int month2 = monthToInt(date2.substring(0,3));
-        int day1;
-        int day2;
-        int year1;
-        int year2;
-        String dateStripped1;
-        String dateStripped2;
-        
-        if(date1.charAt(6) == ','){
-            day1 = Integer.parseInt(date1.substring(4,6));
-            year1 = Integer.parseInt(date1.substring(8,12));
-            dateStripped1 = date1.substring(13);
-        }
-        else{
-            day1 = Integer.parseInt(date1.substring(4,5));
-            year1 = Integer.parseInt(date1.substring(7,11));
-            dateStripped1 = date1.substring(12);
-        }
-        if(date2.charAt(6) == ','){
-            day2 = Integer.parseInt(date2.substring(4,6));
-            year2 = Integer.parseInt(date2.substring(8,12));
-            dateStripped2 = date2.substring(13);
-        }
-        else{
-            day2 = Integer.parseInt(date2.substring(4,5));
-            year2 = Integer.parseInt(date2.substring(7,11));
-            dateStripped2 = date2.substring(12);
-        }
-        
-        int hour1;
-        int hour2;
-        int minute1;
-        int minute2;
-        String meridian1;
-        String meridian2;
-        
-        if(dateStripped1.charAt(1) == ':'){
-            hour1 = Integer.parseInt(dateStripped1.substring(0,1));
-            minute1 = Integer.parseInt(dateStripped1.substring(2,4));
-            meridian1 = dateStripped1.substring(5,7);
-        }
-        else{
-            hour1 = Integer.parseInt(dateStripped1.substring(0,2));
-            minute1 = Integer.parseInt(dateStripped1.substring(3,5));
-            meridian1 = dateStripped1.substring(6,8);
-        }
-        if(dateStripped2.charAt(1) == ':'){
-            hour2 = Integer.parseInt(dateStripped2.substring(0,1));
-            minute2 = Integer.parseInt(dateStripped2.substring(2,4));
-            meridian2 = dateStripped2.substring(5,7);
-        }
-        else{
-            hour2 = Integer.parseInt(dateStripped2.substring(0,2));
-            minute2 = Integer.parseInt(dateStripped2.substring(3,5));
-            meridian2 = dateStripped2.substring(6,8);
-        }
-        
-        //Compare years.
-        if(year1 != year2){
-            if(year1 > year2)
-                return 1;
-            return -1;
-        }
-        
-        //Compare months.
-        if(month1 > month2){
-            return 1;
-        }
-        if(month2 > month1){
-            return -1;
-        }
-        
-        //Compare days.
-        if(day1 > day2){
-            return 1;
-        }
-        if(day2 > day1){
-            return -1;
-        }
-        
-        //Compare meridians.
-        if(meridian1.equals(meridian2)){}
-        else{
-            if(meridian1.equals("PM")){
-                return 1;
-            }
-            else{
-                return -1;
-            }
-        }
-        
-        //Compare hours.
-        if(hour1 > hour2){
-            if(hour1 == 12)
-                return -1;
-            return 1;
-        }
-        if(hour2 > hour1){
-            if(hour2 == 12)
-                return 1;
-            return -1;
-        }
-        
-        //Compare minutes.
-        if(minute1 > minute2){
-            return 1;
-        }
-        if(minute2 > minute1){
-            return -1;
-        }
-        
-        return 0;
-    }
-    
     @Test
     public void tablePropertiesTest1486(){
         
@@ -306,7 +198,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
 
         pns._dropDown().team().selectPartMatch(GROUP);
         pns._button().refresh().click();
-        pns._text().entryDateTime().row(1).waitForElement();
+        pns._text().entryDateTime().row(1).waitForElement();//TODO: testFailing: run manually.  what is the purpose of waitingFor row1 to show up?
         
         Iterator<TextBased> itr = pns._text().entryDateTime().iterator();
         if(itr.hasNext()){
@@ -495,7 +387,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pns._dropDown().team().selectPartMatch(GROUP);
         pns._button().refresh().click();
         pause(10, "Wait for page to load.");
-        pns._link().entryVehicle().row(1).click();
+        pns._link().entryVehicle().row(1).click();//TODO: testFailing: is there an entryVehicle on row1?
         assertStringContains("app/vehicle", pns.getCurrentLocation());
     }
     
@@ -593,7 +485,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         spaceBar();
         pns._popUp().editColumns()._checkBox().row(1).assertChecked(false);
         spaceBar();
-        pns._popUp().editColumns()._checkBox().row(1).assertChecked(true);
+        pns._popUp().editColumns()._checkBox().row(1).assertChecked(true);//TODO: testFailing: does spaceBar() work ?
         
     }
     
@@ -637,7 +529,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pns._popUp().editColumns()._checkBox().row(1).focus();
         pns._popUp().editColumns()._checkBox().row(1).uncheck();
         pns._popUp().editColumns()._checkBox().row(4).check();
-        enterKey();
+        enterKey();//TODO: testFailing: npe, does enterKey work?
         pause(2, "Waiting for columns to update.");
         pns._link().sortByDateTime().assertPresence(false);
         pns._link().sortByGroup().assertPresence(true);
@@ -660,7 +552,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pns._popUp().editColumns()._checkBox().row(1).uncheck();
         pns._popUp().editColumns()._checkBox().row(4).check();
         pns._popUp().editColumns()._button().save().click();
-        pns._link().sortByDateTime().assertPresence(false);
+        pns._link().sortByDateTime().assertPresence(false);//TODO: testFailing: run manually.  is sortByDateTime actually there?
         pns._link().sortByGroup().assertPresence(true);
         pns._link().sortByDriver().assertPresence(true);
         pns._link().sortByVehicle().assertPresence(true);
@@ -704,33 +596,36 @@ public class NotificationsSafetyTest extends WebRallyTest {
         
         pns._link().editColumns().click();
         pns._popUp().editColumns()._checkBox().row(1).focus();
+        if(!pns._popUp().editColumns()._checkBox().row(1).hasFocus()){
+            addError("Incorrect Focus", "Focus is expected to be on first check box. Possible indication that .focus() or .hasFocus() does not work.", ErrorLevel.FATAL);
+        }
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(2).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on second check box.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on second check box. Possible indication that tabKey() does not work.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(3).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on third check box.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on third check box. Possible indication that tabKey() does not work.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(4).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on fourth check box.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on fourth check box. Possible indication that tabKey() does not work.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(5).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on fifth check box.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on fifth check box. Possible indication that tabKey() does not work.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._checkBox().row(6).hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on sixth check box.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on sixth check box. Possible indication that tabKey() does not work.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._button().save().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on save button.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on save button. Possible indication that tabKey() does not work.", ErrorLevel.FATAL);
         }
         tabKey();
         if(!pns._popUp().editColumns()._button().cancel().hasFocus()){
-            addError("Incorrect Focus", "Focus is expected to be on cancel button.", ErrorLevel.FATAL);
+            addError("Incorrect Focus", "Focus is expected to be on cancel button. Possible indication that tabKey() does not work.", ErrorLevel.FATAL);
         }
     }
     
@@ -791,8 +686,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
             pns._link().entryStatus().row(1).click();
         }
         else{
-            //TODO Make the test result Inconclusive instead of Fail.
-            addError("Driving Style event not present to test with.", ErrorLevel.WARN);
+            addError("Driving Style event not present to test with.", ErrorLevel.INCONCLUSIVE);
         }
     }
     
@@ -818,7 +712,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
             pns._link().entryStatus().row(1).click();
         }
         else{
-            addError("Seat Belt event not present to test with.", ErrorLevel.WARN);
+            addError("Seat Belt event not present to test with.", ErrorLevel.INCONCLUSIVE);
         }
     }
     
@@ -844,7 +738,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
             pns._link().entryStatus().row(1).click();
         }
         else{
-            addError("Speeding event not present to test with.", ErrorLevel.WARN);
+            addError("Speeding event not present to test with.", ErrorLevel.INCONCLUSIVE);
         }
     }
     
@@ -858,7 +752,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pnrf._link().safety().click();
         
         pns._dropDown().team().selectPartMatch(GROUP);
-        pns._dropDown().statusFilter().select("included");
+        pns._dropDown().statusFilter().select("included");//TODO: testFailing: is "included" actually an option? run manually
         pns._button().refresh().click();
         pause(10, "Wait for page to load.");
         String date = pns._text().entryDateTime().row(1).getText();
@@ -889,7 +783,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pause(10, "Wait for page to load.");
         pns._link().entryStatus().row(1).click();
         pause(5, "Wait for event to re-include.");
-        assertStringContains("exc", pns._link().entryStatus().row(1).getText());
+        assertStringContains("exc", pns._link().entryStatus().row(1).getText());//TODO: testFailing: run manually.  did click put us someplace unexpected?  or were we not able to click?
     }
     
     @Test
@@ -905,7 +799,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pns._button().refresh().click();
         pause(5, "Wait for refresh.");
         AutomationCalendar todayCal = new AutomationCalendar(WebDateFormat.NOTE_DATE_TIME);
-        if(!todayCal.compareDays(pns._text().entryDateTime().row(1).getText())){
+        if(!todayCal.compareDays(pns._text().entryDateTime().row(1).getText())){//TODO: testFailing: NPE: getText() looks to be sending null?
             addError("Today's date does not match today's date on the portal.", ErrorLevel.FATAL);
         }
         todayCal.addToDay(-1);
@@ -926,25 +820,26 @@ public class NotificationsSafetyTest extends WebRallyTest {
     
     public String searchText(int i){
         int firstDriver = 1;
-        while(!pns._link().entryDriver().row(firstDriver).isClickable()){
+        ClickableText theFirstClickableDriver = pns._link().entryDriver().getFirstClickableLink();
+        while(!pns._link().entryDriver().row(firstDriver).isClickable()){//TODO: testFailing: same loop problem ? try iterator instead
             firstDriver++;
         }
         String[] searchStrings = {(String) pns._link().entryGroup().row(1).getText().substring(0, 3),
-                (String) pns._link().entryDriver().row(firstDriver).getText().substring(0, 3), 
+                (String) theFirstClickableDriver.getText().substring(0, 3), 
                 (String) pns._link().entryVehicle().row(1).getText().substring(0, 3)};
         return searchStrings[i];
     }
     
-    public String badSearchText(int i){
+    private String badSearchText(int i){
         return "ZZZZZZZZ";
     }
     
-    public TextTableLink searchValues(int i){
+    private TextTableLink searchValues(int i){
         TextTableLink[] tableValues = {pns._link().entryGroup(), pns._link().entryDriver(), pns._link().entryVehicle()};
         return tableValues[i];
     }
     
-    public void allCheckedHelper(){
+    private void allCheckedHelper(){
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -961,7 +856,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
         pns._link().logout().click();
     }
     
-    public void someCheckedHelper(){
+    private void someCheckedHelper(){
           pl.loginProcess(USERNAME, PASSWORD);
           PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
           ptds._link().notifications().click();
@@ -977,34 +872,4 @@ public class NotificationsSafetyTest extends WebRallyTest {
           pns._popUp().editColumns()._button().save().click();
           pns._link().logout().click();
       }
-    
-    public int monthToInt(String month){
-        if(month.equals("Jan"))
-            return 1;
-        if(month.equals("Feb"))
-            return 2;
-        if(month.equals("Mar"))
-            return 3;
-        if(month.equals("Apr"))
-            return 4;
-        if(month.equals("May"))
-            return 5;
-        if(month.equals("Jun"))
-            return 6;
-        if(month.equals("Jul"))
-            return 7;
-        if(month.equals("Aug"))
-            return 8;
-        if(month.equals("Sep"))
-            return 9;
-        if(month.equals("Oct"))
-            return 10;
-        if(month.equals("Nov"))
-            return 11;
-        if(month.equals("Dec"))
-            return 12;
-        
-        addError("Invalid month data:" + month, ErrorLevel.FATAL);
-        return 0;
-    }
 }
