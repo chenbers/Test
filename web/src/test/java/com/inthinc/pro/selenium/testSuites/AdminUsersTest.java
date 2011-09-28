@@ -3,32 +3,30 @@ package com.inthinc.pro.selenium.testSuites;
 import java.util.Iterator;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
-import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
-import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
-import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
-import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
-import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
-/*My Account test, compares the user account to the my account for accuracy*/
+/**
+ * AdminUsersTest compares the user account to the my account for accuracy
+ *
+ */
+@Ignore
 public class AdminUsersTest extends WebRallyTest {
-	
 	
 	private PageAdminUsers my;
 	private PageMyAccount myAccount;
 	private PageAdminUserDetails myAdminUserDetails;
-	private RandomValues random;
 	private String USERNAME = "tinaauto";
 	private String PASSWORD = "password";
 	
 	@Before
 	public void setupPage() {
-		random = new RandomValues();
 		my = new PageAdminUsers();
 		myAccount = new PageMyAccount();
 		myAdminUserDetails = new PageAdminUserDetails();

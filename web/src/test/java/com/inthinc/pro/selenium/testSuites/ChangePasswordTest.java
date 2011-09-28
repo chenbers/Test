@@ -14,6 +14,7 @@ import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 
+@Ignore
 public class ChangePasswordTest extends WebTest {
 	private static final Integer day = 60 * 60 * 24;
 	private static Long _120DaysAgo;

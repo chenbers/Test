@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
@@ -11,6 +12,7 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
+@Ignore
 public class LiveFleetTest extends WebRallyTest {
     String CORRECT_USERNAME = "dastardly";
     String CORRECT_USERNAME_TOP = "pitstop";

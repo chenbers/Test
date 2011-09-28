@@ -1,10 +1,12 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDevices;
 
+@Ignore
 public class ReportsDevices extends WebRallyTest {
 
     private String username = "danniauto";

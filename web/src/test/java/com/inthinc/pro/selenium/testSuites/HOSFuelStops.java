@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -9,7 +10,7 @@ import com.inthinc.pro.selenium.pageObjects.PageFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageFuelStopsAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
-
+@Ignore
 public class HOSFuelStops extends WebRallyTest {
     
     private PageMyAccount myAccount;

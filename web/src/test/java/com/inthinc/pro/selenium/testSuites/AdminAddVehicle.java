@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
@@ -13,6 +14,7 @@ import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.utils.Unique;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
 
+@Ignore
 public class AdminAddVehicle extends WebRallyTest {
     
     private static String username;

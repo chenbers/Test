@@ -1,16 +1,16 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
 import com.inthinc.pro.automation.device_emulation.WaysmartDevice;
 import com.inthinc.pro.automation.enums.Addresses;
 
-
+@Ignore
 public class HOSRuleSets extends WebRallyTest {
     
-
     @Before
     public void setupPage() {
     }

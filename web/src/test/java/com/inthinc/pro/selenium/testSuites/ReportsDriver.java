@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
@@ -11,6 +12,7 @@ import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
+@Ignore
 public class ReportsDriver extends WebRallyTest {
 
 	private String username = "danniauto";
@@ -22,8 +24,6 @@ public class ReportsDriver extends WebRallyTest {
 	private PageDriverPerformanceSpeed speeding = new PageDriverPerformanceSpeed();
 	private PageVehiclePerformance vehicle = new PageVehiclePerformance();
 	private PageAdminUsers admin = new PageAdminUsers();
-
-	
 	
 	@Test
 	public void DriverLink(){

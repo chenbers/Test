@@ -12,6 +12,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 
+@Ignore
 public class AdminUsers extends WebRallyTest {
 
 	private String username = "danniauto";

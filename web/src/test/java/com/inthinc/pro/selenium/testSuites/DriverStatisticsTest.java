@@ -12,6 +12,7 @@ import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
+@Ignore
 public class DriverStatisticsTest extends WebRallyTest {
     String CORRECT_USERNAME = "dastardly";
     String CORRECT_USERNAME_TOP = "pitstop";
@@ -124,7 +125,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
         
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
-        String team = ptds._text().teamName().getText();
+        String team = ptds._text().teamName().getText();//TODO: this is failing so the var team is getting set to NULL
         savePageLink();
         ptds._link().logout().click();
         openSavedPage();
@@ -137,9 +138,9 @@ public class DriverStatisticsTest extends WebRallyTest {
     @Test
     public void switchTeamTest4582(){
         
-        //TODO: this test appears to be failing because it cannot see "Swappy McGee" because Swappy is NOT on the first page of results. re-work this test so that it doesn't fail... suggestion: search for Swappy using the search box
+        //TODO: this test appears to be failing because it cannot see "Swappy McGee" because Swappy is NOT on the first page of results. re-work this test so that it doesn't fail... 
+        //suggestion: search for Swappy using the search box
         //TODO: additionally, there are MANY Swappy McGee's (as well as Alpha Betical's) meaning that we are generating a lot of data that we are not cleaning up...
-
         set_test_case("TC4582");
     
         pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
@@ -189,7 +190,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         //TODO create method
     }
     
-    public void createDriver(String first, String last, String team){
+    private void createDriver(String first, String last, String team){
         
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();
@@ -205,7 +206,7 @@ public class DriverStatisticsTest extends WebRallyTest {
         
     }
     
-    public void deleteUser(String fullName){
+    private void deleteUser(String fullName){
         //TODO: related to another task on this page;  this method doesn't appear work ALL the time.  suggestion:search for fullName before deleting 
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();

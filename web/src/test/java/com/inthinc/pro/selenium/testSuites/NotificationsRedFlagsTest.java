@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.testSuites;
 import java.util.Iterator;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.TextField;
@@ -15,7 +16,7 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
-
+@Ignore
 public class NotificationsRedFlagsTest extends WebRallyTest {
     String USERNAME = "dastardly";
     String USERNAME_TOP = "pitstop";

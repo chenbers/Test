@@ -1,11 +1,13 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
+@Ignore
 public class ChangePassword extends WebRallyTest {
 
     private PageMyAccount myAccountPage;

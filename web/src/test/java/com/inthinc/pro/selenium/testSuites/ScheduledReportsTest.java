@@ -1,7 +1,10 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import org.junit.Ignore;
+
 import com.inthinc.pro.selenium.util.GmailUtilities;
 
+@Ignore
 public class ScheduledReportsTest {
 	
 	public void email(){

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ClickableObject;
@@ -21,6 +22,7 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageReportsVehicles;
 
+@Ignore
 public class Reports_Vehicles extends WebRallyTest {
     private String username = "prime";
     private String password = "password";

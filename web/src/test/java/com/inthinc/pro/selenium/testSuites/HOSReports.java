@@ -1,15 +1,15 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.selenium.pageObjects.HOSRecordOfDutyStatus;
 import com.inthinc.pro.selenium.pageObjects.PageHOSReports;
 
-
+@Ignore
 public class HOSReports extends WebRallyTest {
     
- 
     private PageHOSReports myHOSReports;
     private String USERNAME = "tinaauto";
     private String PASSWORD = "password";

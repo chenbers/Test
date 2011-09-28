@@ -1,6 +1,7 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.utils.AutomationCalendar.TimeZones;
@@ -13,7 +14,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
 
-
+@Ignore
 public class AddEditUser extends WebRallyTest {
 	
 	private PageMyAccount myAccount;

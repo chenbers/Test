@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.testSuites;
 import java.util.Iterator;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
@@ -18,6 +19,7 @@ import com.inthinc.pro.selenium.pageObjects.PageNotificationsZones;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
+@Ignore
 public class NotificationsZonesTest extends WebRallyTest {
     String USERNAME = "dastardly";
     String USERNAME_2 = "CaptainNemo";
