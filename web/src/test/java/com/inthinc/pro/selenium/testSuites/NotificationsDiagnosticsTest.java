@@ -1,8 +1,10 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -10,6 +12,8 @@ import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
@@ -18,7 +22,6 @@ import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
-
 /**
  * depends:
  * -NoteTesterGeneration.java must have run for many of these tests to work
@@ -26,13 +29,31 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
  *
  */
 public class NotificationsDiagnosticsTest extends WebRallyTest {
-    private String USERNAME = "dastardly";//TODO: jwimmer: will be available from AutomationLogins
-    private String USERNAME_2 = "CaptainNemo";//TODO: jwimmer: will be available from AutomationLogins
-    private String PASSWORD = "Muttley";//TODO: jwimmer: will be available from AutomationLogins
-    private String GROUP = "Test Group WR";//TODO: jwimmer: will be available from AutomationLogins
+    private static String USERNAME;        
+    private static String USERNAME_2;    
+    private static String PASSWORD;          
+    private static String PASSWORD_2;        
+    private static String GROUP;          
+    
     private PageLogin pl;
     private PageNotificationsRedFlags pnrf;
     private PageNotificationsDiagnostics pnd;
+    
+    @BeforeClass
+    public static void beforeClass() {
+        List<AutomationLogins> logins = AutomationLogins.getAllBy(LoginCapabilities.NoteTesterData);
+        if(logins.size() > 1){
+            USERNAME = logins.get(0).getUserName();
+            PASSWORD = logins.get(0).getPassword();
+            GROUP = logins.get(0).getGroup();
+            
+            USERNAME_2 = logins.get(1).getUserName();
+            PASSWORD_2 = logins.get(1).getPassword();
+            
+        }else{
+            addError("Account Error", "there are not enough accounts with NoteTesterData", ErrorLevel.FAIL);
+        }     
+    }
 
     @Before
     public void before(){
@@ -72,7 +93,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         savePageLink();
         String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
-        pnrf.loginProcess(USERNAME_2, PASSWORD);
+        pnrf.loginProcess(USERNAME_2, PASSWORD_2);
         String team2 = ptds._text().teamName().getText();
         openSavedPage();
         assertStringContains(correctURL, ptds.getCurrentLocation());
@@ -719,7 +740,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         else{
             addError("Idling event not present to test with.", ErrorLevel.INCONCLUSIVE);
         }
-        addError("Just testing sending inconclusive to Rally.", ErrorLevel.INCONCLUSIVE);
     }
     
     /**
