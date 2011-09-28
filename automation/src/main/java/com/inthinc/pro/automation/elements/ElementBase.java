@@ -132,7 +132,7 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
     
     public Boolean isElementsPresent(ArrayList<SeleniumEnums> enums){
-        return checkElementsPresent(ErrorLevel.WARN, enums.toArray());
+        return checkElementsPresent(ErrorLevel.COMPARE, enums.toArray());
     }
     
     private Boolean checkElementsPresent(ErrorLevel errorLevel, Object... enums) {
