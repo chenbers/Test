@@ -83,7 +83,7 @@ public class MasterTest {
         errors.addError(errorName, Thread.currentThread().getStackTrace(), level);
     }
 
-    protected void addError(String errorName, String error, ErrorLevel level) {
+    protected static void addError(String errorName, String error, ErrorLevel level) {
         errors.addError(errorName, error, level);
     }
 
@@ -213,6 +213,7 @@ public class MasterTest {
     }
     
     public MasterTest pause(Integer timeout_in_secs, String reasonForPause) {
+        System.out.println("pausing for: "+reasonForPause);
         StackTraceElement element = Thread.currentThread().getStackTrace()[2];
         AutomationThread.pause(timeout_in_secs, reasonForPause, element);
         return this;
