@@ -1,27 +1,36 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
 import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
 import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
 import com.inthinc.pro.selenium.pageEnums.TAE.RedFlagPrefs;
-import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
-import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
 public class EditMyAccountTest extends WebRallyTest {
 
-    // * This test requires Admin user, set as a driver with assigned vehicle/device.
-
     private PageMyAccount myAccountPage;
     private RandomValues random;
-    private String USERNAME = "tinaauto";
-    private String PASSWORD = "password";
+    private static String USERNAME = "BADtinaauto";
+    private static String PASSWORD = "BADpassword";
+    
+    @BeforeClass
+    public static void beforeClass() {
+     // * This test requires any Admin user, set as a driver with assigned vehicle/device.
+        AutomationLogins login = AutomationLogins.getOneBy(EnumSet.of(LoginCapabilities.HasDevice, LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.RoleAdmin));
+        USERNAME = login.getUserName();
+        PASSWORD = login.getPassword();
+        addError("Login", USERNAME+"/"+PASSWORD, ErrorLevel.WARN);
+    }
 
     @Before
     public void setupPage() {
@@ -189,7 +198,6 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._button().save().click();
 
         myAccountPage._text().errorPhone1().validate("Must consist of up to 15 numeric characters");
-
         myAccountPage._text().errorPhone2().validate("Must consist of up to 15 numeric characters");
     }
 
@@ -274,13 +282,20 @@ public class EditMyAccountTest extends WebRallyTest {
         // 1. If necessary, click My Account then click Edit.
         // 2. Add or change the data in all fields.
         // 3. Click Save.
+        
+        String testData_email1 ="someUnusedEmail@test.com";
+        String testData_email2 = "anotherUnusedEmail@test.com";
+        String testData_phone1 = "801-777-7777";
+        String testData_phone2 = "801-999-9999";
+        String testData_txt1 = "8017779999@tmomail.net";
+        String testData_txt2 = "8019997777@tmomail.net";
+        
 
         myAccountPage.loginProcess(USERNAME, PASSWORD);
 
         myAccountPage._link().myAccount().click();
 
-        // hang onto original values so the account can be returned to it's
-        // original state
+        // hang onto original values so the account can be returned to it's original state
         String origLocal = myAccountPage._text().locale().getText();
         String origMeasure = myAccountPage._text().measurement().getText();
         String origFuelEfficiency = myAccountPage._text().fuelEfficiency().getText();
@@ -293,8 +308,7 @@ public class EditMyAccountTest extends WebRallyTest {
         String origInfo = myAccountPage._text().redFlagInfo().getText();
         String origWarn = myAccountPage._text().redFlagWarn().getText();
         String origCrit = myAccountPage._text().redFlagCritical().getText();
-        // these 3 can't be changed but hanging onto them allows us to test with
-        // different (any?) login
+        // these 3 can't be changed but hanging onto them allows us to test with different (any?) login
         String origName = myAccountPage._text().name().getText();
         String origGroup = myAccountPage._text().group().getText();
         String origTeam = myAccountPage._text().team().getText();
@@ -307,12 +321,12 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._select().fuelEfficiency().select(Fuel_Ratio.ENGLISH_MILES_UK);
 
         /* Contact Info */
-        myAccountPage._textField().email1().type("someUnusedEmail@test.com");
-        myAccountPage._textField().email2().type("anotherUnusedEmail@test.com");
-        myAccountPage._textField().phone1().type("801-777-7777");
-        myAccountPage._textField().phone2().type("801-999-9999");
-        myAccountPage._textField().textMessage1().type("8017779999@tmomail.net");
-        myAccountPage._textField().textMessage2().type("8019997777@tmomail.net");
+        myAccountPage._textField().email1().type(testData_email1);
+        myAccountPage._textField().email2().type(testData_email2);
+        myAccountPage._textField().phone1().type(testData_phone1);
+        myAccountPage._textField().phone2().type(testData_phone2);
+        myAccountPage._textField().textMessage1().type(testData_txt1);
+        myAccountPage._textField().textMessage2().type(testData_txt2);
 
         /* Red Flags */
         myAccountPage._select().information().select(RedFlagPrefs.TEXT1);
@@ -341,12 +355,12 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._text().redFlagCritical().validate(RedFlagPrefs.PHONE1, ":", "");
 
         /* Contact Info */
-        myAccountPage._text().email1().validate("someUnusedEmail@test.com");
-        myAccountPage._text().email2().validate("anotherUnusedEmail@test.com");
-        myAccountPage._text().phone1().validate("801-777-7777");
-        myAccountPage._text().phone2().validate("801-999-9999");
-        myAccountPage._text().textMessage1().validate("8017779999@tmomail.net");
-        myAccountPage._text().textMessage2().validate("8019997777@tmomail.net");
+        myAccountPage._text().email1().validate(testData_email1);
+        myAccountPage._text().email2().validate(testData_email2);
+        myAccountPage._text().phone1().validate(testData_phone1);
+        myAccountPage._text().phone2().validate(testData_phone2);
+        myAccountPage._text().textMessage1().validate(testData_txt1);
+        myAccountPage._text().textMessage2().validate(testData_txt2);
 
         // return account to original condition
         myAccountPage._button().edit().click();
@@ -374,26 +388,30 @@ public class EditMyAccountTest extends WebRallyTest {
 
         myAccountPage._button().edit().click();
         myAccountPage._textField().email1().clear();
-        myAccountPage._textField().email1().type("tina1960test.com");
+        String email_invalid_noAtSymbol = "tina1960test.com";
+        myAccountPage._textField().email1().type(email_invalid_noAtSymbol);
         myAccountPage._button().save().click();
 
         myAccountPage._text().errorEmail1().validate("Incorrect format (jdoe@tiwipro.com)");
 
         myAccountPage._textField().email1().clear();
-        myAccountPage._textField().email1().type("tina1960@test.com");
+        String email_valid = "tina1960@test.com";
+        myAccountPage._textField().email1().type(email_valid);
         myAccountPage._button().save().click();
-        myAccountPage._text().email1().validate("tina1960@test.com");
+        myAccountPage._text().email1().validate(email_valid);
 
         myAccountPage._button().edit().click();
-        myAccountPage._textField().email2().type("tlc1960test");
+        String email_invalid_NoTLD = "tlc1960test";
+        myAccountPage._textField().email2().type(email_invalid_NoTLD);
         myAccountPage._button().save().click();
 
         myAccountPage._text().errorEmail2().validate("Incorrect format (jdoe@tiwipro.com)");
 
         myAccountPage._textField().email2().clear();
-        myAccountPage._textField().email2().type("tlc1960@test.com");
+        String email_valid_2 ="tlc1960@test.com";
+        myAccountPage._textField().email2().type(email_valid_2);
         myAccountPage._button().save().click();
-        myAccountPage._text().email2().validate("tlc1960@test.com");
+        myAccountPage._text().email2().validate(email_valid_2);
     }
 
     @Test
@@ -420,15 +438,30 @@ public class EditMyAccountTest extends WebRallyTest {
         String originalLocale = myAccountPage._text().locale().getText();
         String originalMeasurement = myAccountPage._text().measurement().getText();
         String originalFuelRatio = myAccountPage._text().fuelEfficiency().getText();
+        
+        // these 3 can't be changed but hanging onto them allows us to test with different (any?) login
+        String origName = myAccountPage._text().name().getText();
+        String origGroup = myAccountPage._text().group().getText();
+        String origTeam = myAccountPage._text().team().getText();
 
         /* Edit button */
         myAccountPage._button().edit().click();
 
         /* Login Info */
         myAccountPage._select().locale().select(Locale.ENGLISH);
-        myAccountPage._select().measurement().select(Measurement.METRIC);
-        myAccountPage._select().fuelEfficiency().select(Fuel_Ratio.METRIC_LITER_PER_KILO);
-
+        //TODO: tina: review this section.  I put this in to ensure that it always picks a Different measurement/fuelratio than it had before
+        Measurement newMeasurement = Measurement.ENGLISH;
+        Fuel_Ratio newFuelRatio;
+        if(Measurement.ENGLISH.toString().equals(originalMeasurement)){
+            newMeasurement = Measurement.METRIC;
+            newFuelRatio = Fuel_Ratio.METRIC_LITER_PER_KILO;
+        } else {
+            newFuelRatio = Fuel_Ratio.ENGLISH_MILES_US;
+        }
+        myAccountPage._select().measurement().select(newMeasurement);
+        myAccountPage._select().fuelEfficiency().select(newFuelRatio);
+        //end tina: review section
+        
         /* Contact Info */
         myAccountPage._textField().email1().type(random.getEmail());
         myAccountPage._textField().email2().type(random.getEmail());
@@ -453,9 +486,9 @@ public class EditMyAccountTest extends WebRallyTest {
         myAccountPage._text().fuelEfficiency().validate(originalFuelRatio);
 
         /* Account Info */
-        myAccountPage._text().name().validate("Tina Test Automation Jr.");
-        myAccountPage._text().group().validate("Tina's Auto Team");
-        myAccountPage._text().team().validate("Tina's Auto Team");
+        myAccountPage._text().name().validate(origName);//TODO: tina: review: I updated this so that it doesn't depend on a specific account
+        myAccountPage._text().group().validate(origGroup);
+        myAccountPage._text().team().validate(origTeam);
 
         /* Red Flags */
         myAccountPage._text().redFlagInfo().validate(originalInformation);
