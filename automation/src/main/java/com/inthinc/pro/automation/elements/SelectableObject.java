@@ -1,12 +1,14 @@
 package com.inthinc.pro.automation.elements;
 
 import java.util.List;
+import java.util.Random;
 
 import com.inthinc.pro.automation.elements.ElementInterface.Selectable;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.SeleniumValueEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.utils.Id;
+import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Xpath;
 
 public class SelectableObject extends Text implements Selectable {
@@ -44,6 +46,12 @@ public class SelectableObject extends Text implements Selectable {
 	    public String getText(Integer optionNumber){
 	        return selenium.getSelectOptions(myEnum)[--optionNumber];
 	    }
+	    
+	    public SelectableObject selectRandom() {
+	        String[] allOptions =selenium.getSelectOptions(myEnum);
+	        int randomIndex = RandomValues.newOne().getInt(allOptions.length);
+	        return select(randomIndex);
+	    }
 
 	    @Override
 	    public SelectableObject select(Integer optionNumber) {
@@ -75,7 +83,6 @@ public class SelectableObject extends Text implements Selectable {
 	        selenium.click(xpath, Id.contains(Id.text(), partialMatch), matchNumber);
 	        return this;
 	    }
-	    
 	    
 	    private String getSelectIDAsXpath(){
 	    	List<String> ids = myEnum.getLocators();
