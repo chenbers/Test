@@ -3,6 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.selenium.pageEnums.MyAccountEnum;
 import com.inthinc.pro.selenium.pageEnums.PerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.VehiclePerformanceEnum;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
@@ -173,5 +174,11 @@ private String page = "vehicle";
 	public DriverPerformancePopUps _popUp() {
 		return new DriverPerformancePopUps();
 	}
-    
+    @Override
+    public PageVehiclePerformance validate() {
+        assertStringContains("app/vehicle", getCurrentLocation());
+        //TODO: it would be nice if every page had some level of "am I even on the right page" validation
+        _text().overallTitle().validate();
+        return this;
+    }
 }

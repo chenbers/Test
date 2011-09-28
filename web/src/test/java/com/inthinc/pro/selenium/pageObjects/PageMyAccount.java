@@ -379,11 +379,13 @@ public class PageMyAccount extends NavigationBar {
 		return this;
 	}
 
+	@Override
 	public PageMyAccount validate() {
 		page_titlesAndLabels_validate();
 		return this;
 	}
 
+	@Override
 	public String getExpectedPath() {
 		return MyAccountEnum.MY_ACCOUNT_URL.getURL();
 	}
