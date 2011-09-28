@@ -35,10 +35,19 @@ public abstract class AbstractPage extends MasterTest implements Page {
         }
     }
 
-    public Boolean verifyOnPage() { // TODO: dtanner or jwimmer: come up with a
-        // better name
+    public Boolean verifyOnPage() {
         ElementBase test = new ElementBase() {};
         return test.validateElementsPresent(checkMe);
+    }
+    
+    
+    /**
+     * Same as {@link #verifyOnPage()}, only does not add errors if NOT on page.
+     * @return true if on page
+     */
+    public Boolean isOnPage() {
+        ElementBase test = new ElementBase() {};
+        return test.isElementsPresent(checkMe);
     }
 
     @Override
