@@ -114,8 +114,8 @@ public class NoteTesterGeneration extends Thread{
     
     @Test
     public void generateTestData() {
+        System.out.println("generateTestData() running");
         main(null);
-        
     }
     
     public static void main(String[] args){
