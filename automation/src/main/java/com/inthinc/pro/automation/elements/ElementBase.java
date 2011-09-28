@@ -123,18 +123,27 @@ public class ElementBase extends MasterTest implements ElementInterface {
 
     @Override
     public Boolean validateElementsPresent(Object... enums) {
-        SeleniumEnumWrapper temp = myEnum;
-        for (Object enumerated : enums) {
-            setMyEnum((SeleniumEnums) enumerated);
-            assertTrue(isPresent(), myEnum.toString());
-        }
-        myEnum = temp;
-        return true;
+        return checkElementsPresent(ErrorLevel.FATAL, enums);
     }
 
     @Override
     public Boolean validateElementsPresent(ArrayList<SeleniumEnums> enums) {
         return validateElementsPresent(enums.toArray());
+    }
+    
+    public Boolean isElementsPresent(ArrayList<SeleniumEnums> enums){
+        return checkElementsPresent(ErrorLevel.WARN, enums.toArray());
+    }
+    
+    private Boolean checkElementsPresent(ErrorLevel errorLevel, Object... enums) {
+        SeleniumEnumWrapper temp = myEnum;
+        Boolean result = true;
+        for (Object enumerated : enums) {
+            setMyEnum((SeleniumEnums) enumerated);
+            result &= assertTrue(isPresent(), myEnum.toString(), errorLevel);
+        }
+        myEnum = temp;
+        return result;
     }
 
     protected ElementBase replaceNumber(Integer number) {
