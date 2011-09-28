@@ -92,7 +92,7 @@ public class PageLogin extends Masthead {
         new LoginTextFields().userName().type(username);
         new LoginTextFields().password().type(password);
         new LoginButtons().logIn().click();
-        if(verifyOnPage())
+        if(isOnPage())
             addError("Login Error", "browser is still on login page", ErrorLevel.FAIL);
         return this;
     }
