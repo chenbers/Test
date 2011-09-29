@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.interfaces.TextEnum;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
@@ -24,9 +23,7 @@ import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceTrips;
-import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageExecutiveDashboard;
-import com.inthinc.pro.selenium.pageObjects.PageReportsIdling;
 import com.inthinc.pro.selenium.pageObjects.PageLiveFleet;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
@@ -44,8 +41,6 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSeatBelt;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceSpeed;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformanceTrips;
-import com.inthinc.pro.selenium.pageObjects.PageReportsVehicles;
-import com.thoughtworks.selenium.SeleniumException;
 
 @Ignore
 public class JwimmerSandboxTest extends WebTest 
@@ -74,6 +69,7 @@ public class JwimmerSandboxTest extends WebTest
 public void sometest() {
 
 }
+
 
     @Test
     public void adminVehicle_smokeTest() {
