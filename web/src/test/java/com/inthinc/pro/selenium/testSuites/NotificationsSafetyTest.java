@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ClickableText;
@@ -21,6 +22,7 @@ import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsSafety;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
+@Ignore
 public class NotificationsSafetyTest extends WebRallyTest {
     private static String USERNAME;
     private static String USERNAME_2;
