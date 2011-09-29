@@ -132,15 +132,27 @@ public class ElementBase extends MasterTest implements ElementInterface {
     }
     
     public Boolean isElementsPresent(ArrayList<SeleniumEnums> enums){
-        return checkElementsPresent(ErrorLevel.COMPARE, enums.toArray());
+        return checkElementsPresent(null, enums.toArray());
     }
     
+    /**
+     * checkElementsPresent is a helper method to encapsulate checking to see if an element is present. This presents options to check for an element without requiring an error
+     * getting logged if the element is not present (many valid tests can be built using the fact that an element should NOT be present yet/anymore)
+     * 
+     * @param errorLevel
+     *            NOTE: if errorLevel is null, this is not an error
+     * @param enums
+     *            locators for the element in question
+     * @return true only if the element(s) are currently present
+     */
     private Boolean checkElementsPresent(ErrorLevel errorLevel, Object... enums) {
         SeleniumEnumWrapper temp = myEnum;
         Boolean result = true;
         for (Object enumerated : enums) {
             setMyEnum((SeleniumEnums) enumerated);
-            result &= assertTrue(isPresent(), myEnum.toString(), errorLevel);
+            result &= isPresent();
+            if (errorLevel != null)
+                assertTrue(isPresent(), myEnum.toString(), errorLevel);
         }
         myEnum = temp;
         return result;
