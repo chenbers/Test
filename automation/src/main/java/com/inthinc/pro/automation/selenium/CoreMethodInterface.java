@@ -1,6 +1,10 @@
 package com.inthinc.pro.automation.selenium;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Browsers;
@@ -82,7 +86,11 @@ public interface CoreMethodInterface extends Selenium {
     public CoreMethodInterface tabKey();
     public CoreMethodInterface enterKey();
 
-    Addresses getSilo();
-    Browsers getBrowser();
+    public Addresses getSilo();
+    public Browsers getBrowser();
+    
+    public List<WebElement> findElements(SeleniumEnumWrapper myEnum);
+    public WebElement findElement(SeleniumEnumWrapper myEnum);
+    public By getLocator(List<By> list);
     
 }

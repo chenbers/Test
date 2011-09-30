@@ -17,7 +17,6 @@ import org.apache.tools.ant.filters.StringInputStream;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverBackedSelenium;
 import org.openqa.selenium.WebElement;
 import org.springframework.beans.BeansException;
@@ -827,4 +826,37 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         return Thread.currentThread().getId();
     }
     
+    /**
+     * Returns the best locator string to use for this element.
+     * 
+     * @param myEnum
+     * @param replaceName
+     * @param replaceNumber
+     * @return the best locator string to use for this element, null if none are found in page
+     */
+    @Override
+    public By getLocator(List<By> list) {
+        for (By by: list){
+            try {
+                getWrappedDriver().findElement(by);
+                return by;
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        
+        return list.get(0);
+    }
+
+    @Override
+    public List<WebElement> findElements(SeleniumEnumWrapper myEnum) {
+        By by = getLocator(myEnum.getLocatorsForWebDriver());
+        return getWrappedDriver().findElements(by);
+    }
+
+    @Override
+    public WebElement findElement(SeleniumEnumWrapper myEnum) {
+        By by = getLocator(myEnum.getLocatorsForWebDriver());
+        return getWrappedDriver().findElement(by);
+    }
 }

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.By;
+
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 
 public class SeleniumEnumWrapper implements SeleniumEnums {
@@ -51,6 +53,20 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
                 locators.add(ID);
             }
         }
+        return locators;
+    }
+    
+    public List<By> getLocatorsForWebDriver() {
+        List<By> locators = new ArrayList<By>();
+        List<String> ids = getLocators();
+        for (String id: ids){
+            if (id.startsWith("//")){
+                locators.add(By.xpath(id));
+            } else if (!id.contains("=")){
+                locators.add(By.id(id));
+            }
+        }
+        
         return locators;
     }
 
