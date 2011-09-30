@@ -27,7 +27,7 @@ public interface CoreMethodInterface extends Selenium {
 	public CoreMethodInterface focus(SeleniumEnumWrapper myEnum);
 	public String getAttribute(SeleniumEnumWrapper myEnum, String attributeToGet);
 	public SeleniumEnumWrapper getEnum();
-	public ErrorCatcher getErrors();
+	public ErrorCatcher getErrorCatcher();
 	public String getLocator(SeleniumEnumWrapper myEnum);
 	public String getSelectedIndex(SeleniumEnumWrapper myEnum);
 	public String getSelectedLabel(SeleniumEnumWrapper myEnum);

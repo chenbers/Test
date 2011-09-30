@@ -64,7 +64,7 @@ public class ErrorCatcher implements InvocationHandler {
         }
     }
 
-    public CoreMethodInterface newInstance() {
+    public CoreMethodInterface newInstanceOfSelenium() {
         return (CoreMethodInterface) Proxy.newProxyInstance(delegate.getClass().getClassLoader(), getInterfaces(delegate.getClass()), this);
     }
 
@@ -226,10 +226,6 @@ public class ErrorCatcher implements InvocationHandler {
         return severity;
     }
 
-//    public Boolean isEmpty() {
-//        return errors.isEmpty();
-//    }
-    
     public Boolean hasFail(){
         return !severity.get(ErrorLevel.FAIL).isEmpty();
     }

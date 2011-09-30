@@ -57,17 +57,15 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private final static Logger logger = Logger.getLogger(CoreMethodLib.class);
     private ErrorCatcher errors;
     private SeleniumEnumWrapper myEnum;
-    //private final WebDriver driver; 
     private final Browsers browser;
     private final Addresses silo;
     
-    private volatile static HashMap<Long, CoreMethodLib> seleniumByThread = new HashMap<Long, CoreMethodLib>();
+    private volatile static HashMap<Long, CoreMethodInterface> seleniumByThread = new HashMap<Long, CoreMethodInterface>();
     private volatile static HashMap<Long, ErrorCatcher> errorCatcherByThread = new HashMap<Long, ErrorCatcher>();
     
     public CoreMethodLib(Browsers browser, Addresses silo) {
         super(browser.getDriver(), silo.getWebAddress());
         errors = new ErrorCatcher(this);
-        //driver = browser.getDriver();//TODO: jwimmer: this is opening the 2nd browser... which causes IE tests to fail
         this.browser = browser;
         this.silo = silo;
     }
@@ -196,7 +194,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     }
 
     @Override
-    public ErrorCatcher getErrors() {
+    public ErrorCatcher getErrorCatcher() {
         return errors;
     }
 
@@ -785,7 +783,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
         CoreMethodLib selenium;
         Long currentThread = getThreadID();
         if (seleniumByThread.containsKey(currentThread)){
-            return seleniumByThread.get(currentThread).getErrors().newInstance();
+            return seleniumByThread.get(currentThread);
         }
         try {
             AutomationPropertiesBean apb = AutomationProperties.getPropertyBean();
@@ -794,9 +792,9 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             logger.error(StackToString.toString(e));
             selenium = new CoreMethodLib(Browsers.FIREFOX, Addresses.QA);
         } 
-        seleniumByThread.put(currentThread, selenium);
-        errorCatcherByThread.put(currentThread, selenium.getErrors());
-        return seleniumByThread.get(currentThread).getErrors().newInstance();
+        seleniumByThread.put(currentThread, selenium.getErrorCatcher().newInstanceOfSelenium());
+        errorCatcherByThread.put(currentThread, seleniumByThread.get(currentThread).getErrorCatcher());
+        return seleniumByThread.get(currentThread);
     }
 
     public static void closeSeleniumThread() {
@@ -811,6 +809,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
                 logger.error(StackToString.toString(e));
         }
         seleniumByThread.remove(currentThread);
+        errorCatcherByThread.remove(currentThread);
     }
     
     public static ErrorCatcher getErrorCatcherThread() {
