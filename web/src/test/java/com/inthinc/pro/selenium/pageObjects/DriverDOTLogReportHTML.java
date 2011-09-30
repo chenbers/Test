@@ -1,7 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Text;
-import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.DriverDOTLogReportHTMLEnum;
 
 public class DriverDOTLogReportHTML {
@@ -71,43 +70,43 @@ public class DriverDOTLogReportHTML {
                     pageNumber.toString());
         }
 
-        public TextTable entryDateTime(Integer pageNumber, int rowNumber) {
-            return new TextTable(DriverDOTLogReportHTMLEnum.ENTRY_DATE_TIME,
+        public Text entryDateTime(Integer pageNumber, int rowNumber) {
+            return new Text(DriverDOTLogReportHTMLEnum.ENTRY_DATE_TIME,
                     pageNumber.toString(), 18 + 2 * rowNumber);
         }
 
-        public TextTable entryStatus(Integer pageNumber, int rowNumber) {
-            return new TextTable(DriverDOTLogReportHTMLEnum.ENTRY_STATUS,
+        public Text entryStatus(Integer pageNumber, int rowNumber) {
+            return new Text(DriverDOTLogReportHTMLEnum.ENTRY_STATUS,
                     pageNumber.toString(), 18 + 2 * rowNumber);
         }
 
-        public TextTable entryVehicle(Integer pageNumber, int rowNumber) {
-            return new TextTable(DriverDOTLogReportHTMLEnum.ENTRY_VEHICLE,
+        public Text entryVehicle(Integer pageNumber, int rowNumber) {
+            return new Text(DriverDOTLogReportHTMLEnum.ENTRY_VEHICLE,
                     pageNumber.toString(), 18 + 2 * rowNumber);
         }
 
-        public TextTable entryTrailer(Integer pageNumber, int rowNumber) {
-            return new TextTable(DriverDOTLogReportHTMLEnum.ENTRY_TRAILER,
+        public Text entryTrailer(Integer pageNumber, int rowNumber) {
+            return new Text(DriverDOTLogReportHTMLEnum.ENTRY_TRAILER,
                     pageNumber.toString(), 18 + 2 * rowNumber);
         }
 
-        public TextTable entryService(Integer pageNumber, int rowNumber) {
-            return new TextTable(DriverDOTLogReportHTMLEnum.ENTRY_SERVICE,
+        public Text entryService(Integer pageNumber, int rowNumber) {
+            return new Text(DriverDOTLogReportHTMLEnum.ENTRY_SERVICE,
                     pageNumber.toString(), 18 + 2 * rowNumber);
         }
 
-        public TextTable entryLocation(Integer pageNumber, int rowNumber) {
-            return new TextTable(DriverDOTLogReportHTMLEnum.ENTRY_LOCATION,
+        public Text entryLocation(Integer pageNumber, int rowNumber) {
+            return new Text(DriverDOTLogReportHTMLEnum.ENTRY_LOCATION,
                     pageNumber.toString(), 18 + 2 * rowNumber);
         }
 
-        public TextTable entryDetail(Integer pageNumber, int rowNumber) {
-            return new TextTable(DriverDOTLogReportHTMLEnum.ENTRY_DETAIL,
+        public Text entryDetail(Integer pageNumber, int rowNumber) {
+            return new Text(DriverDOTLogReportHTMLEnum.ENTRY_DETAIL,
                     pageNumber.toString(), 18 + 2 * rowNumber);
         }
 
-        public TextTable entryAddedBy(Integer pageNumber, int rowNumber) {
-            return new TextTable(DriverDOTLogReportHTMLEnum.ENTRY_ADDED_BY,
+        public Text entryAddedBy(Integer pageNumber, int rowNumber) {
+            return new Text(DriverDOTLogReportHTMLEnum.ENTRY_ADDED_BY,
                     pageNumber.toString(), 18 + 2 * rowNumber);
         }
     }

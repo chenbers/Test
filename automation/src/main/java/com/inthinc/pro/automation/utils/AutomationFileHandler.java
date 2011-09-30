@@ -79,18 +79,18 @@ public class AutomationFileHandler {
     }
     
     public static boolean downloadSvnDirectory(SVNURL source, String fileDir, File destination){
-        destination.deleteOnExit();
         ISVNAuthenticationManager authManager = new BasicAuthenticationManager("dtanner", RallyWebServices.password);
         
         DefaultSVNOptions options = SVNWCUtil.createDefaultOptions(true);
         SVNClientManager clientManager = SVNClientManager.newInstance(options, authManager);
         try {
-            destination.mkdirs();
-            destination.mkdir();
+            destination.getParentFile().mkdirs();
+            destination.createNewFile();
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(destination));
             SVNRepository repo = clientManager.createRepository(source, false);
             repo.getFile(fileDir, -1, null, bos);
             bos.flush();
+            destination.deleteOnExit();
             return true;
         } catch (SVNException e) {
             e.printStackTrace();

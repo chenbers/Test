@@ -18,6 +18,7 @@ import com.inthinc.pro.model.Group;
 import com.inthinc.pro.model.Person;
 import com.inthinc.pro.model.User;
 import com.inthinc.pro.model.Vehicle;
+import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
 
 public class HessianRequests {
@@ -284,6 +285,11 @@ public class HessianRequests {
     public Driver getDriverByPersonID(int personID) {
         return mapper.convertToModelObject(portalProxy.getDriverByPersonID(personID),
                 Driver.class);
+    }
+
+    public Zone getZone(Integer zoneID) {
+        return mapper.convertToModelObject(portalProxy.getZone(zoneID), Zone.class);
+        
     }
 
 }

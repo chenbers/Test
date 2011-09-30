@@ -27,7 +27,7 @@ public enum Addresses implements AddressInterface {
     
     STAGE_DIRECT("ec2-50-18-81-171.us-west-1.compute.amazonaws.com"),
 
-    DEV("dev-pro.inthinc.com", 8081, null, null, null, 8888, null),
+    DEV("dev-pro.inthinc.com", 8081, null, null, 7780, 8888, null),
 
     EC2("204.236.172.41", null, null, "stage.inthinc.com", null, null, null),
 

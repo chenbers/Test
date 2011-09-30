@@ -1,90 +1,112 @@
 package com.inthinc.pro.automation.device_emulation;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-
+import com.inthinc.pro.model.LatLng;
+import com.inthinc.pro.model.Zone;
+import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
+import com.inthinc.pro.model.zone.option.ZoneOption;
+import com.inthinc.pro.model.zone.option.type.OptionValue;
 
 public class ZoneManager {
-    
-    private int fileFormatVersion;
-    private int fileVersion;
-    private int nZones;
-    
 
-    public ZoneManager(byte[] zone) {
-//        LinkedList<byte> zoneList = new LinkedList<byte>();
-//        zoneList.addAll(Arrays.asList(zone));
-        
-        ByteArrayInputStream bab = new ByteArrayInputStream(zone);
-        fileFormatVersion |= bab.read();
-        fileFormatVersion <<= 8;
-        fileFormatVersion |= bab.read();
-        fileFormatVersion <<= 8;
-        fileFormatVersion |= bab.read();
-        fileFormatVersion <<= 8;
-        fileFormatVersion |= bab.read();
-        fileFormatVersion <<= 8;
-        System.out.println(fileFormatVersion);
+    private Integer fileFormatVersion;
+    private Integer fileVersion;
+    private Map<Integer, Zone> zones;
+
+    public ZoneManager(byte[] zoneArray) {
+        zones = new HashMap<Integer, Zone>();
+
+        ByteArrayInputStream bab = new ByteArrayInputStream(zoneArray);
+        fileFormatVersion = byteToInt(bab, 4);
+        fileVersion = byteToInt(bab, 4);
+        int nZones = byteToInt(bab, 4);
+        for (int i = 0; i < nZones; i++) {
+            Zone zone = new Zone();
+            zone.setZoneID(byteToInt(bab, 4));
+            bab.skip(4 * 3);
+            zone.setPoints(parseVertices(bab));
+            zone.setOptions(parseAttributes(bab));
+            zones.put(zone.getZoneID(), zone);
+//            break;
+        }
     }
-    
-    public int nextInt(){
-        
+
+    private List<LatLng> parseVertices(ByteArrayInputStream bais) {
+        int nVertices = byteToInt(bais, 2);
+        List<LatLng> pointList = new ArrayList<LatLng>();
+        double lat = 0.0;
+        double lng = 0.0;
+        for (; nVertices > 0; nVertices--) {
+            lng = (latLngInt(bais) / (double) 0xFFFFFF) * 360.0;
+            if (lng > 180.0) {
+                lng -= 360.0;
+            }
+            lat = 90.0 - ((latLngInt(bais) / (double) 0xFFFFFF) * 180.0);
+            pointList.add(new LatLng(lat, lng));
+        }
+        return pointList;
+    }
+
+    private Integer latLngInt(ByteArrayInputStream bais) {
+        return (bais.read() << 16) | (bais.read() << 8) | bais.read();
+    }
+
+    private List<ZoneOption> parseAttributes(ByteArrayInputStream bais) {
+        int nAttributes = byteToInt(bais, 2);
+        List<ZoneOption> attributes = new ArrayList<ZoneOption>();
+        for (; nAttributes > 0; nAttributes--) {
+            int id = byteToInt(bais, 1);
+            int size = 0;
+            if (id < 128) {
+                size = 1;
+            } else if (id < 192) {
+                size = 2;
+            } else if (id > 191) {
+                size = 4;
+            } else {
+                throw new IllegalArgumentException("No such ID as " + id);
+            }
+            int attribute = byteToInt(bais, size);
+            ZoneAvailableOption attributeType = ZoneAvailableOption.valueOf(id);
+            if (attributeType == null){
+                continue;
+            }
+            OptionValue value = ZoneAvailableOption.convertOptionValue(
+                    attributeType.getOptionType(), attribute);
+            attributes.add(new ZoneOption(attributeType, value));
+        }
+
+        return attributes;
+    }
+
+    //
+    // public void addVertices(ByteArrayInputStream bab) {
+    // Map<String, Float> vertex = new HashMap<String, Float>();
+    // vertex.put("longitude", byteToFloat(bab, 3));
+    // vertex.put("latitude", byteToFloat(bab, 3));
+    // System.out.println(vertex);
+    // vertices.add(vertex);
+    // }
+
+    private Integer byteToInt(ByteArrayInputStream bais, int numOfBytes) {
+        return byteToLong(bais, numOfBytes).intValue();
+    }
+
+    private Long byteToLong(ByteArrayInputStream bais, int numOfBytes) {
+        Long number = 0l;
+        for (int shift = 0; numOfBytes-- > 0 && shift < 64; shift += 8) {
+            number |= (bais.read() & 0xFF) << shift;
+        }
+        return number;
+    }
+
+    public int nextInt() {
+
         return 0;
     }
-
-    /**
-     * int File Format version 
-     * int File Version (per tiwipro group; incremented with each publish) 
-     * int nZones 
-     * for each Zone 
-     *      u32 zoneID 
-     *      u16 number of Vertices 
-     *          4*3 minLongitude, minLatitude, maxLongitude, maxLatitude (bounding box) 
-     *          nVertices*6 Vertices (3 byte longitude, 3 byte latitude) for each vertex 
-     *          u16 number of Attributes 
-     *              for each Attribute of this zone 
-     *              u8 AttributeID (0-127 for u8, 128-191 for u16, 192-255 for u32) 
-     *              u8 AttributeValue (e.g. maxSpeed) 
-     *              or u16 
-     *              or u32
-     * @param attrs
-     */
-    private void parseAttributes(byte[] attrs) {
-
-    }
-
-    /**
-     * Converts a 4 byte array of unsigned bytes to an long
-     * 
-     * @param b
-     *            an array of 4 unsigned bytes
-     * @return a long representing the unsigned int
-     */
-    public static final long unsignedIntToLong(byte[] b) {
-        long l = 0;
-        l |= b[0] & 0xFF;
-        l <<= 8;
-        l |= b[1] & 0xFF;
-        l <<= 8;
-        l |= b[2] & 0xFF;
-        l <<= 8;
-        l |= b[3] & 0xFF;
-        return l;
-    }
-
-    /**
-     * Converts a two byte array to an integer
-     * 
-     * @param b
-     *            a byte array of length 2
-     * @return an int representing the unsigned short
-     */
-    public static final int unsignedShortToInt(byte[] b) {
-        int i = 0;
-        i |= b[0] & 0xFF;
-        i <<= 8;
-        i |= b[1] & 0xFF;
-        return i;
-    }
-
 }

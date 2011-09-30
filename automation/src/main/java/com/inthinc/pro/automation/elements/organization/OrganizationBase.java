@@ -2,25 +2,82 @@ package com.inthinc.pro.automation.elements.organization;
 
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.List;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import com.inthinc.pro.automation.elements.Button;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
-import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.utils.MasterTest;
 
-public class OrganizationBase {
+public abstract class OrganizationBase extends MasterTest{
+
+
+
     
-    private final int[] structure;
+    protected final int[] structure;
     
-    private String type;
+    protected final OrganizationType type;
     
-    
-    public OrganizationBase(int[] parent, int position) {
-        structure = Arrays.copyOf(parent, parent.length + 1);
-        structure[parent.length] = position;
+    public static enum OrganizationType{
+        FLEET,
+        DIVISION,
+        TEAM,
+        USER,
+        DRIVER,
+        VEHICLE,
+        ;
+        
+        @Override 
+        public String toString(){
+            return this.name().toLowerCase();
+        }
     }
     
-    public OrganizationBase(SeleniumEnums anEnum){
+    
+    public OrganizationBase(int[] parent, int position, OrganizationType type) {
+        structure = Arrays.copyOf(parent, parent.length + 1);
+        structure[parent.length] = getFirstOfType(type);
+        this.type = type;
+    }
+    
+    public OrganizationBase(int[] parent, String name, OrganizationType type) {
+        structure = Arrays.copyOf(parent, parent.length + 1);
+        structure[parent.length] = getFirstByName(name, type);
+        this.type = type;
+    }
+    
+    public OrganizationBase(OrganizationType type){
         structure = new int[]{0};
+        this.type = type;
+    }
+    
+    private int getFirstOfType(OrganizationType type){
+        String xpath = "//td[contains(@id,'::"+type+":text')]";
+        return stripForPosition(xpath);
+    }
+    
+    private int stripForPosition(String xpath){
+        List<WebElement> matches = getSelenium().getWrappedDriver().findElements(By.xpath(xpath));
+        
+        String[] id = matches.get(0).getAttribute("id").split(":");
+        int position = 0;
+        for (int i = id.length-1;i>=0;i--){
+            try {
+                position = Integer.parseInt(id[i]);
+                break;
+            } catch (NumberFormatException e){
+                continue;
+            }
+        }
+        return position;
+    }
+    
+    public int getFirstByName(String name, OrganizationType type){
+        String xpath = "//td[contains(@id,'::"+type+":text')][text()='"+name+"']";
+        return stripForPosition(xpath);
     }
     
     private SeleniumEnumWrapper getID(String type){
@@ -30,15 +87,23 @@ public class OrganizationBase {
             writer.write(position + ":");
         }
         writer.write(":");
-        writer.write(this.type);
+        writer.write(this.type.toString());
+        writer.write(":");
         writer.write(type);
-        SeleniumEnumWrapper anEnum = new SeleniumEnumWrapper(null, writer.toString());
+        SeleniumEnumWrapper anEnum = new SeleniumEnumWrapper(this.type.toString(), writer.toString());
         return anEnum;
     }
     
-    private TextLink name(){
-        
-        return new TextLink(getID("name"));
+    public TextLink text(){
+        return new TextLink(getID("text"));
     }
-
+    
+    public Button arrow(){
+        return new Button(getID("handle"));
+    }
+    
+    public Button icon(){
+        return new Button(getID("icon"));
+    }
+    
 }

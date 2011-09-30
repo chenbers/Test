@@ -44,14 +44,12 @@
     
     
     public static void main(String[] args) {
-        System.out.println("public class CLASS_TO_RETURN {");
-        for (ENUM_TO_USE method : EnumSet
-                .allOf(ENUM_TO_USE.class)) {
-            System.out.println("public ClassToReturn "+ method.name().toLowerCase().replace("_", "") + "(){");
-            System.out.println("return new ClassToReturn(" + 
-            method.getClass().getSimpleName() + "." + method.name() + ");\n}");
+        for (AdminOrganizationEnum method : EnumSet
+                .allOf(AdminOrganizationEnum.class)) {
+            System.out.println("\tpublic Text "+ captalizeEnumName(method.name())+ "(){");
+            System.out.println("\t\treturn new Text(" + 
+            method.getClass().getSimpleName() + "." + method.name() + ");\n\t}\n");
         }
-        System.out.println("}");
     }
     
     

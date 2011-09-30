@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.caucho.hessian.io.HessianProtocolException;
+
 public interface MCMProxy{
     
         /**

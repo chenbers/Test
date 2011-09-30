@@ -19,6 +19,7 @@ import java.util.Map;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
 
+import com.caucho.hessian.io.HessianProtocolException;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
@@ -229,8 +230,13 @@ public abstract class Base {
         map.put("hardwareVersion", this.WMP);
         map.put("fileVersion", fileVersion);
         map.put("locale", locale.toString());
-        map.put("productVersion", this.productVersion);
-        return writeTiwiFile(fileName, mcmProxy.audioUpdate(this.imei, map));
+        map.put("productVersion", this.productVersion.getVersion());
+//        try{
+            return writeTiwiFile(fileName, mcmProxy.audioUpdate(this.imei, map));
+//        } catch (Exception e){
+//            logger.info(StackToString.toString(e));
+//        }
+//        return false;
     }
     
     
@@ -239,14 +245,14 @@ public abstract class Base {
         if (!fileName.startsWith("target")){
             String resourceFile = "target/test/resources/" + imei + "/" + "downloads/";
             lastDownload = resourceFile + fileName;
-            File folder = new File(resourceFile);
-            folder.mkdirs();
-            folder.mkdir();
+        } else {
+            lastDownload = fileName;
         }
         try {
             File destination = new File(lastDownload);
-            destination.deleteOnExit();
+            destination.getParentFile().mkdirs();
             destination.createNewFile();
+            destination.deleteOnExit();
             FileOutputStream fw = new FileOutputStream(destination);
             fw.write((byte[]) reply.get("f"));
             fw.close();

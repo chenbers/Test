@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 public enum AdminOrganizationEnum implements SeleniumEnums {
     
     TITLE("Admin - Organization", "//span[@class='admin']"),
+    DEFAULT_URL("/app/admin/organization"),
     
     HEADER_TOP_GROUP(null, "//ul[@id='grid_nav']/li[2]"),
     
@@ -12,7 +13,26 @@ public enum AdminOrganizationEnum implements SeleniumEnums {
     EDIT_BUTTON("Edit", "display-form:organizationView-groupViewEdit"),
     ADD("Add", "display-form:organizationView-groupViewAdd"),
     
+    TOP_SAVE(save,"display-form:groupEditPanelEdit"),
+    TOP_CANCEL(cancel,"display-form:groupEditPanelView"),
+    BOTTOM_SAVE(save,"display-form:organization-groupEditEditEdit"),
+    BOTTOM_CANCEL(cancel,"display-form:organization-groupEditEditView"),
+    
     EDIT_LINK("edit", "display-form:organization-vehicleSummaryEdit"),
+    
+    EDIT_PARENT_GROUP("Parent Group:", "display-form:parent_group"),
+    EDIT_GROUP_TYPE("Group Type:", "display-form:organization-group_type"),
+    EDIT_NAME("Name:","display-form:organization-group_name"),
+    EDIT_DESCRIPTION("Description:","//input[@id='display-form:organization-group_name']/../../../tr[2]/td[2]"),
+    EDIT_MANAGER("Manager:","display-form:organization-group_manager"),
+    EDIT_ADDRESS_1("Address 1:","display-form:organization-addr1"),
+    EDIT_ADDRESS_2("Address 2:","display-form:organization-addr2"),
+    EDIT_CITY("City:","display-form:organization-city"),
+    EDIT_STATE("State:","display-form:organization-state"),
+    EDIT_ZIP_CODE("Zip Code:","display-form:organization-zip"),
+    EDIT_FIND_ADDRESS("Find Address:","organization-groupEdit-addressTextBox"),
+    EDIT_LOCATE("Locate","display-form:organization-groupEdit-groupMapViewSearch"),
+    
     
     HEADER_SUMMARY(null, "//tr[1]/td/div[@class='add_section_title']"),
     HEADER_ADDRESS("Address", "//tr[2]/td/div[@class='add_section_title']"),
@@ -74,9 +94,6 @@ public enum AdminOrganizationEnum implements SeleniumEnums {
     
     VEHICLE_DEVICE_PRODUCT("Product:", "//span[@id='display-form:contentPanel']/div/table/tbody/tr[1]/td/table[4]/tbody/tr[1]/td[2]"),
     VEHICLE_ASSIGNED_DEVICE("Assigned Device:","//span[@id='display-form:contentPanel']/div/table/tbody/tr[1]/td/table[4]/tbody/tr[2]/td[2]"),
-    
-    
-    
     
     ;
     private String text, url;

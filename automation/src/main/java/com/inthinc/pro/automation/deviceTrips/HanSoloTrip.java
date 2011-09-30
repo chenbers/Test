@@ -290,22 +290,22 @@ public class HanSoloTrip extends Thread{
 //        imei = "DEVICEDOESNTEXIST";
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
 //        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1313106000;  // vehicleID=37706       deviceID=34506
-//        address=Addresses.QA;           initialTime = 1316471529;  // vehicleID=7293        deviceID=3753
-//        address=Addresses.STAGE;        initialTime = 1316471529;  // vehicleID=117441441   deviceID=117441936 
-        address=Addresses.PROD;         initialTime = 1316473598;  // vehicleID=1           deviceID=1
-        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.QA;           initialTime = 1316473598;  // vehicleID=7293        deviceID=3753
+//        address=Addresses.STAGE;        initialTime = 1316473598;  // vehicleID=117441441   deviceID=117441936 
+//        address=Addresses.PROD;         initialTime = 1316473598;  // vehicleID=1           deviceID=1
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.CHEVRON;      initialTime = 1316473598;  // vehicleID=117441441   deviceID=117441936
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.SCHLUMBERGER; initialTime = 1316473598;  // vehicleID=150994955   deviceID=150994955
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.WEATHORFORD;  initialTime = 1316471529;  // vehicleID=184549575   deviceID=184549735
+//        address=Addresses.WEATHORFORD;  initialTime = 1316473598;  // vehicleID=184549575   deviceID=184549735
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.TECK;         initialTime = 1316475023;  // vehicleID=251658249   deviceID=251658248
+//        address=Addresses.TECK;         initialTime = 1316473598;  // vehicleID=251658249   deviceID=251658248
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.BARRICK;      initialTime = 1316473598;  // vehicleID=83886085    deviceID=83886086
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.CINTAS;       initialTime = 1316471529;  // vehicleID=234881465   deviceID=234881624
-//        trip.hanSolosFirstTrip( imei, address, initialTime);
+        address=Addresses.CINTAS;       initialTime = 1316475667;  // vehicleID=234881465   deviceID=234881624
+        trip.hanSolosFirstTrip( imei, address, initialTime);
         
         
         

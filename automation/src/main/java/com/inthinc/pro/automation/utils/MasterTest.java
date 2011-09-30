@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.utils;
 
 import java.awt.event.KeyEvent;
+import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -280,6 +281,31 @@ public class MasterTest {
             return false;
         }
         return true;
+    }
+    
+    public static String capitalizeFirstLettersTokenizer ( final String s ) {
+        return capitalizeString(s, " ");
+    }
+    
+    private static String capitalizeString(final String s, final String split){
+        final StringTokenizer st = new StringTokenizer( s, split, true );
+        final StringBuilder sb = new StringBuilder();
+         
+        while ( st.hasMoreTokens() ) {
+            String token = st.nextToken();
+            token = String.format( "%s%s",
+                                    Character.toUpperCase(token.charAt(0)),
+                                    token.substring(1).toLowerCase() );
+            sb.append( token );
+        }
+            
+        return sb.toString();
+    }
+    
+    public static String captalizeEnumName(final String s){
+        String formatted = capitalizeString(s, "_").replace("_", "");
+        return Character.toLowerCase(formatted.charAt(0)) + formatted.substring(1);
+        
     }
 
 

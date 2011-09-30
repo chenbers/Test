@@ -208,7 +208,6 @@ public class ErrorCatcher implements InvocationHandler {
         if (level.equals(ErrorLevel.FATAL)){
             level = ErrorLevel.FAIL;
         }
-        assert(!level.equals(ErrorLevel.PASS) || !level.equals(ErrorLevel.FATAL));
         errors = severity.get(level);
         if (!errors.containsKey(name)) {
             add_error(name);
