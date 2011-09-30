@@ -80,7 +80,7 @@ public abstract class OrganizationBase extends MasterTest{
         return stripForPosition(xpath);
     }
     
-    private SeleniumEnumWrapper getID(String type){
+    protected SeleniumEnumWrapper getID(String type){
         StringWriter writer = new StringWriter();
         writer.write("display-form:tree:");
         for (int position:structure){
@@ -98,9 +98,6 @@ public abstract class OrganizationBase extends MasterTest{
         return new TextLink(getID("text"));
     }
     
-    public Button arrow(){
-        return new Button(getID("handle"));
-    }
     
     public Button icon(){
         return new Button(getID("icon"));

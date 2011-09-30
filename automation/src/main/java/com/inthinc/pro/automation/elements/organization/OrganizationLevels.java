@@ -1,5 +1,7 @@
 package com.inthinc.pro.automation.elements.organization;
 
+import com.inthinc.pro.automation.elements.Button;
+
 
 public class OrganizationLevels {
     
@@ -42,6 +44,11 @@ public class OrganizationLevels {
         public VehicleLevel getVehicle(String vehicleName){
             return new VehicleLevel(structure, vehicleName);
         }
+        
+
+        public Button arrow(){
+            return new Button(getID("handle"));
+        }
     }
     
     public class DivisionLevel extends OrganizationBase {
@@ -82,6 +89,10 @@ public class OrganizationLevels {
             return new TeamLevel(structure, teamName);
         }
         
+
+        public Button arrow(){
+            return new Button(getID("handle"));
+        }
     }
     
     public class FleetLevel extends OrganizationBase {
@@ -122,6 +133,10 @@ public class OrganizationLevels {
             return new TeamLevel(structure, teamName);
         }
         
+
+        public Button arrow(){
+            return new Button(getID("handle"));
+        }
     }
     
     
