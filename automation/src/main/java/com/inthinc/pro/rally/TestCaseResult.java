@@ -145,7 +145,7 @@ public class TestCaseResult extends RallyObject {
             }
             http.postObjects(RallyWebServices.TEST_CASE_RESULTS,
                     testCaseResults, true);
-            logger.info(testCaseResults.get(Fields.TEST_CASE.toString())+" verdict: "+testCaseResults.get(Fields.VERDICT.toString()));
+            logger.info(testCaseResults.get(TestCase.Fields.FORMATTED_ID.toString())+" verdict: "+testCaseResults.get(Fields.VERDICT.toString()));
             return http.getResults().getJSONObject(0);
         } catch (JSONException e) {
             logger.debug("The " + fieldFailed
