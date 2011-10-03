@@ -66,9 +66,9 @@ public class DeviceTests extends WebRallyTest {
             String svnPath = destPath.append("svnVersion/").toString();
             String hessianPath = destPath.append("hessianVersion/").toString();
     
-    
             TiwiProDevice tiwi;
-            for (Addresses silo : EnumSet.allOf(Addresses.class)) {
+//            for (Addresses silo : EnumSet.allOf(Addresses.class)) {
+            Addresses silo = Addresses.QA;
                 try{
                     tiwi = new TiwiProDevice("FAKEIMEIDEVICE", silo);
                     tiwi.set_WMP(17207);
@@ -79,7 +79,6 @@ public class DeviceTests extends WebRallyTest {
                         String hessianFile = hessianPath + "/" + fileName;
         
                         for (Locales locale : EnumSet.allOf(Locales.class)) {
-        
                             String url = "https://svn.iwiglobal.com/iwi/map_image/trunk/audio/"
                                     + locale.getFolder();
                             File dest = new File(svnFile);
@@ -93,9 +92,9 @@ public class DeviceTests extends WebRallyTest {
                         }
                     }
                 } catch(Exception e){
-                    continue;
+//                    continue;
                 }
-            }
+//            }
         }
     }
 }
