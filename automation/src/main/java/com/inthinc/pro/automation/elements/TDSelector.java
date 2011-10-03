@@ -31,7 +31,8 @@ public class TDSelector extends SelectableObject implements Selectable {
         super(anEnum);
     }
     
-    private void setMyEnum(){
+    @Override
+    public void setMyEnum(SeleniumEnums anEnum){
         String[] newIds = new String[myEnum.getIDs().length];
         for (int i=0;i<myEnum.getIDs().length;i++){
             String newId = "";
@@ -59,16 +60,21 @@ public class TDSelector extends SelectableObject implements Selectable {
     
     @Override
     public String getText(Integer optionNumber){
-        SeleniumEnumWrapper temp = new SeleniumEnumWrapper(myEnum);
-        
-        return selenium.getSelectOptions(myEnum)[--optionNumber];
+        return selenium.getText(addQualifier(optionNumber.toString()));
     }
     
-    private SeleniumEnumWrapper addQualifier(String qualifier, String td){
+    private SeleniumEnumWrapper addQualifier(String tr, String td){
         SeleniumEnumWrapper temp = new SeleniumEnumWrapper(myEnum);
         String[] ids = temp.getIDs();
         for (int i=0;i<ids.length;i++){
-            ids[i] += "/tr[" + qualifier + "]" + td;
+            if (!tr.isEmpty()){
+                ids[i] += "/tr["+tr+"]";
+            } else {
+                ids[i] += "/tr";
+            }
+            if (!td.isEmpty()){
+                ids[i] += "/td["+td+"]";
+            }
         }
         return temp;
     }
@@ -77,13 +83,13 @@ public class TDSelector extends SelectableObject implements Selectable {
         return addQualifier(qualifier, "");
     }
     
+    private SeleniumEnumWrapper addQualifier(){
+        return addQualifier("", "");
+    }
+    
+    @Override
     public SelectableObject selectRandom() {
-        String id = myEnum.getLocators().get(0);
-        SeleniumEnumWrapper temp = new SeleniumEnumWrapper(myEnum);
-        temp.replaceOldWithNew("###", "");
-        id = "//tr[contains(@id,'" + id + "')]";
-        temp.setID(id);
-        List<WebElement> elements = getSelenium().findElements(temp);
+        List<WebElement> elements = getSelenium().findElements(addQualifier());
         int randomIndex = RandomValues.newOne().getInt(elements.size());
         elements.get(randomIndex).click();
         return this;
@@ -91,36 +97,21 @@ public class TDSelector extends SelectableObject implements Selectable {
     
     @Override
     public SelectableObject select(Integer optionNumber) {
-        String id = myEnum.getLocators().get(0);
-        SeleniumEnumWrapper temp = new SeleniumEnumWrapper(myEnum);
-        temp.replaceOldWithNew("###", "");
-        id = "//tr[contains(@id,'" + id + "')]";
-        temp.setID(id);
-        List<WebElement> elements = getSelenium().findElements(temp);
+        List<WebElement> elements = getSelenium().findElements(addQualifier(optionNumber.toString()));
         elements.get(optionNumber).click();
         return this;
     }
 
     @Override
     public SelectableObject select(String desiredOption, Integer matchNumber) {
-        String id = myEnum.getLocators().get(0);
-        SeleniumEnumWrapper temp = new SeleniumEnumWrapper(myEnum);
-        temp.replaceOldWithNew("###", "");
-        id = "//tr[contains(@id,'" + id + "')]/td[text()='" + desiredOption+"']";
-        temp.setID(id);
-        List<WebElement> elements = getSelenium().findElements(temp);
+        List<WebElement> elements = getSelenium().findElements(addQualifier("", "text()='" + desiredOption+"'"));
         elements.get(matchNumber).click();
         return this;
     }
     
     @Override
     public SelectableObject selectPartMatch(String partialMatch, Integer matchNumber) {
-        String id = myEnum.getLocators().get(0);
-        SeleniumEnumWrapper temp = new SeleniumEnumWrapper(myEnum);
-        temp.replaceOldWithNew("###", "");
-        id = "//tr[contains(@id,'" + id + "')]/td[contains(text(),'" + partialMatch+"')]";
-        temp.setID(id);
-        List<WebElement> elements = getSelenium().findElements(temp);
+        List<WebElement> elements = getSelenium().findElements(addQualifier("", "contains(text(),'" + partialMatch+"')"));
         elements.get(matchNumber).click();
         return this;
     }
