@@ -134,6 +134,7 @@ public class TestCaseResult extends RallyObject {
      * Send the created testCaseResults to Rally
      */
     public JSONObject send_test_case_results() {
+        logger.info(" send_test_case_results() ");
         Fields fieldFailed = null;
         try {
             for (Fields field : EnumSet.allOf(Fields.class)) {
