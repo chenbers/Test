@@ -7,6 +7,8 @@ import com.inthinc.pro.automation.elements.TextDropDownLabel;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabel;
+import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.organization.OrganizationBase;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.DivisionLevel;
 import com.inthinc.pro.automation.elements.organization.OrganizationLevels.FleetLevel;
@@ -20,51 +22,56 @@ public class PageAdminOrganization extends AdminBar{
         checkMe.add(AdminOrganizationEnum.TITLE);
     }
     
-    public class PageAdminOrganizationLinks extends AdminBarLinks {}
+    public class PageAdminOrganizationLinks extends AdminBarLinks {
+        
+        public TextLink edit(){
+            return new TextLink(AdminOrganizationEnum.EDIT_LINK);
+        }
+    }
 
     public class PageAdminOrganizationTexts extends AdminBarTexts {
         
-        public TextFieldLabel editName(){
+        public Text editName(){
             return new TextFieldLabel(AdminOrganizationEnum.EDIT_NAME);
         }
         
-        public TextFieldLabel editDescription(){
+        public Text editDescription(){
             return new TextFieldLabel(AdminOrganizationEnum.EDIT_DESCRIPTION);
         }
         
-        public TextFieldLabel editAddress1(){
+        public Text editAddress1(){
             return new TextFieldLabel(AdminOrganizationEnum.EDIT_ADDRESS_1);
         }
         
-        public TextFieldLabel editAddress2(){
+        public Text editAddress2(){
             return new TextFieldLabel(AdminOrganizationEnum.EDIT_ADDRESS_2);
         }
         
-        public TextFieldLabel editCity(){
+        public Text editCity(){
             return new TextFieldLabel(AdminOrganizationEnum.EDIT_CITY);
         }
         
-        public TextFieldLabel editZipCode(){
+        public Text editZipCode(){
             return new TextFieldLabel(AdminOrganizationEnum.EDIT_ZIP_CODE);
         }
         
-        public TextFieldLabel editFindAddress(){
+        public Text editFindAddress(){
             return new TextFieldLabel(AdminOrganizationEnum.EDIT_FIND_ADDRESS);
         }
         
-        public TextDropDownLabel editParentGroup(){
+        public Text editParentGroup(){
             return new TextDropDownLabel(AdminOrganizationEnum.EDIT_PARENT_GROUP);
         }
         
-        public TextDropDownLabel editGroupType(){
+        public Text editGroupType(){
             return new TextDropDownLabel(AdminOrganizationEnum.EDIT_GROUP_TYPE);
         }
         
-        public TextDropDownLabel editManager(){
+        public Text editManager(){
             return new TextDropDownLabel(AdminOrganizationEnum.EDIT_MANAGER);
         }
         
-        public TextDropDownLabel editState(){
+        public Text editState(){
             return new TextDropDownLabel(AdminOrganizationEnum.EDIT_STATE);
         }
         
@@ -277,163 +284,163 @@ public class PageAdminOrganization extends AdminBar{
         }
         
         
-        public TextLabel labelGroupType(){
+        public Text labelGroupType(){
             return new TextLabel(AdminOrganizationEnum.GROUP_TYPE);
         }
 
-        public TextLabel labelBame(){
+        public Text labelBame(){
             return new TextLabel(AdminOrganizationEnum.NAME);
         }
 
-        public TextLabel labelDescription(){
+        public Text labelDescription(){
             return new TextLabel(AdminOrganizationEnum.DESCRIPTION);
         }
 
-        public TextLabel labelManager(){
+        public Text labelManager(){
             return new TextLabel(AdminOrganizationEnum.MANAGER);
         }
 
-        public TextLabel labelNumOfVehicles(){
+        public Text labelNumOfVehicles(){
             return new TextLabel(AdminOrganizationEnum.NUM_OF_VEHICLES);
         }
 
-        public TextLabel labelNumOfDrivers(){
+        public Text labelNumOfDrivers(){
             return new TextLabel(AdminOrganizationEnum.NUM_OF_DRIVERS);
         }
 
-        public TextLabel labelAddressOne(){
+        public Text labelAddressOne(){
             return new TextLabel(AdminOrganizationEnum.ADDRESS_ONE);
         }
 
-        public TextLabel labelAddressTwo(){
+        public Text labelAddressTwo(){
             return new TextLabel(AdminOrganizationEnum.ADDRESS_TWO);
         }
 
-        public TextLabel labelCity(){
+        public Text labelCity(){
             return new TextLabel(AdminOrganizationEnum.CITY);
         }
 
-        public TextLabel labelState(){
+        public Text labelState(){
             return new TextLabel(AdminOrganizationEnum.STATE);
         }
 
-        public TextLabel labelZipCode(){
+        public Text labelZipCode(){
             return new TextLabel(AdminOrganizationEnum.ZIP_CODE);
         }
 
-        public TextLabel labelFirstName(){
+        public Text labelFirstName(){
             return new TextLabel(AdminOrganizationEnum.FIRST_NAME);
         }
 
-        public TextLabel labelMiddleName(){
+        public Text labelMiddleName(){
             return new TextLabel(AdminOrganizationEnum.MIDDLE_NAME);
         }
 
-        public TextLabel labelLastName(){
+        public Text labelLastName(){
             return new TextLabel(AdminOrganizationEnum.LAST_NAME);
         }
 
-        public TextLabel labelSuffix(){
+        public Text labelSuffix(){
             return new TextLabel(AdminOrganizationEnum.SUFFIX);
         }
 
-        public TextLabel labelDob(){
+        public Text labelDob(){
             return new TextLabel(AdminOrganizationEnum.DOB);
         }
 
-        public TextLabel labelGender(){
+        public Text labelGender(){
             return new TextLabel(AdminOrganizationEnum.GENDER);
         }
 
-        public TextLabel labelDriverLicense(){
+        public Text labelDriverLicense(){
             return new TextLabel(AdminOrganizationEnum.DRIVER_LICENSE);
         }
 
-        public TextLabel labelDriverClass(){
+        public Text labelDriverClass(){
             return new TextLabel(AdminOrganizationEnum.DRIVER_CLASS);
         }
 
-        public TextLabel labelDriverState(){
+        public Text labelDriverState(){
             return new TextLabel(AdminOrganizationEnum.DRIVER_STATE);
         }
 
-        public TextLabel labelDriverExpiration(){
+        public Text labelDriverExpiration(){
             return new TextLabel(AdminOrganizationEnum.DRIVER_EXPIRATION);
         }
 
-        public TextLabel labelDriverStatus(){
+        public Text labelDriverStatus(){
             return new TextLabel(AdminOrganizationEnum.DRIVER_STATUS);
         }
 
-        public TextLabel labeldDriverVehicle(){
+        public Text labeldDriverVehicle(){
             return new TextLabel(AdminOrganizationEnum.DRIVER_VEHICLE);
         }
 
-        public TextLabel labelDriverDevice(){
+        public Text labelDriverDevice(){
             return new TextLabel(AdminOrganizationEnum.DRIVER_DEVICE);
         }
 
-        public TextLabel labelVehicleProduct(){
+        public Text labelVehicleProduct(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_PRODUCT);
         }
 
-        public TextLabel labelVehicleVin(){
+        public Text labelVehicleVin(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_VIN);
         }
 
-        public TextLabel labelVehicleMake(){
+        public Text labelVehicleMake(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_MAKE);
         }
 
-        public TextLabel labelVehicleModel(){
+        public Text labelVehicleModel(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_MODEL);
         }
 
-        public TextLabel labelVehicleYear(){
+        public Text labelVehicleYear(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_YEAR);
         }
 
-        public TextLabel labelVehicleColor(){
+        public Text labelVehicleColor(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_COLOR);
         }
 
-        public TextLabel labelVehicleZoneType(){
+        public Text labelVehicleZoneType(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_ZONE_TYPE);
         }
 
-        public TextLabel labelVehicleWeight(){
+        public Text labelVehicleWeight(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_WEIGHT);
         }
 
-        public TextLabel labelVehicleLicense(){
+        public Text labelVehicleLicense(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_LICENSE);
         }
 
-        public TextLabel labelVehicleState(){
+        public Text labelVehicleState(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_STATE);
         }
 
-        public TextLabel labelVehicleEcallPhone(){
+        public Text labelVehicleEcallPhone(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_ECALL_PHONE);
         }
 
-        public TextLabel labelVehicleId(){
+        public Text labelVehicleId(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_ID);
         }
 
-        public TextLabel labelVehicleStatus(){
+        public Text labelVehicleStatus(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_STATUS);
         }
 
-        public TextLabel labelVehicleDriver(){
+        public Text labelVehicleDriver(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_DRIVER);
         }
 
-        public TextLabel labelVehicleDeviceProduct(){
+        public Text labelVehicleDeviceProduct(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_DEVICE_PRODUCT);
         }
 
-        public TextLabel labelVehicleAssignedDevice(){
+        public Text labelVehicleAssignedDevice(){
             return new TextLabel(AdminOrganizationEnum.VEHICLE_ASSIGNED_DEVICE);
         }
     }
@@ -570,4 +577,30 @@ public class PageAdminOrganization extends AdminBar{
     public FleetLevel getFleet(){
         return new OrganizationLevels(). new FleetLevel();
     }
+    
+    public boolean isFleetTop(){
+        return getSelenium().isElementPresent("//td[@id='display-form:tree:0::fleet:text");
+    }
+    
+    public boolean isDivisionTop(){
+        return getSelenium().isElementPresent("//td[@id='display-form:tree:0::division:text");
+    }
+    
+    public boolean isTeamTop(){
+        return getSelenium().isElementPresent("//td[@id='display-form:tree:0::team:text");
+    }
+    
+    public OrganizationBase getTopLevel(){
+        OrganizationBase returnable = null;
+        if (isFleetTop()){
+            returnable = new OrganizationLevels().new FleetLevel();
+        } else if (isDivisionTop()){
+            returnable = new OrganizationLevels().new DivisionLevel();
+        } else if (isTeamTop()){
+            returnable = new OrganizationLevels().new TeamLevel();
+        }
+        return returnable;
+    }
+    
+    
 }

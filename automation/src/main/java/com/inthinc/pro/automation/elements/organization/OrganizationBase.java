@@ -14,9 +14,6 @@ import com.inthinc.pro.automation.utils.MasterTest;
 
 public abstract class OrganizationBase extends MasterTest{
 
-
-
-    
     protected final int[] structure;
     
     protected final OrganizationType type;
@@ -102,5 +99,4 @@ public abstract class OrganizationBase extends MasterTest{
     public Button icon(){
         return new Button(getID("icon"));
     }
-    
 }

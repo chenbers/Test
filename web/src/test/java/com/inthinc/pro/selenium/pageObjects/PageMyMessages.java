@@ -5,8 +5,10 @@ import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Selector;
 import com.inthinc.pro.automation.elements.Text;
+import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLink;
+import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.MyMessagesEnum;
 
 public class PageMyMessages extends NavigationBar {
@@ -44,20 +46,24 @@ public class PageMyMessages extends NavigationBar {
     }
     
     public class MyMessagesInboxButtons extends NavigationBarButtons {
-        public Button inboxButton(){
-            return new Button(MyMessagesEnum.INBOX_BUTTON);
+        public TextButton inbox(){
+            return new TextButton(MyMessagesEnum.INBOX_BUTTON);
         }
         
-        public Button composeButton(){
-            return new Button(MyMessagesEnum.COMPOSE_BUTTON);
+        public TextButton compose(){
+            return new TextButton(MyMessagesEnum.COMPOSE_BUTTON);
         }
         
-        public Button sentButton(){
-            return new Button(MyMessagesEnum.SENT_BUTTON);
+        public TextButton send(){
+            return new TextButton(MyMessagesEnum.SEND_BUTTON);
         }
         
-        public Button refreshButton(){
-            return new Button(MyMessagesEnum.REFRESH_BUTTON);
+        public TextButton sent(){
+            return new TextButton(MyMessagesEnum.SENT_BUTTON);
+        }
+        
+        public TextButton refresh(){
+            return new TextButton(MyMessagesEnum.REFRESH_BUTTON);
         } 
         
         public Button driverRemoveAll(){
@@ -107,38 +113,91 @@ public class PageMyMessages extends NavigationBar {
         public Button groupCopyAll(){
             return new Button(MyMessagesEnum.GROUP_COPY_ALL);
         }
+        
+        public TextButton sortBySentDate(){
+            return new TextButton(MyMessagesEnum.SENT_SORT);
+        }
     }
     
     public class MyMessagesText {
         
-        public Text driverHeader() {
+        public Text headerDriver() {
             return new Text(MyMessagesEnum.DRIVER_HEADER);
         }
         
-        public Text vehicleHeader() {
+        public Text headerVehicle() {
             return new Text(MyMessagesEnum.VEHICLE_HEADER);
         }
         
-        public Text groupHeader() {
+        public Text headerGroup() {
             return new Text(MyMessagesEnum.GROUP_HEADER);
         }
         
-        public Text composeMsgHeader() {
+        public Text headerComposeMsg() {
             return new Text(MyMessagesEnum.COMPOSE_MSG_HEADER);
         }
         
-        public Text sentItems() {
+        public Text labelSentItems() {
             return new Text(MyMessagesEnum.SENT_ITEMS);
         }
         
-        public Text numberOfMessages() {
+        public Text numberOfSentMessages() {
             return new Text(MyMessagesEnum.NUMBER_MESSAGES);
+        }
+        
+        public Text headerFrom(){
+            return new Text(MyMessagesEnum.FROM_HEADER);
+        }
+        
+        public Text headerMessage(){
+            return new Text(MyMessagesEnum.MESSAGE_HEADER);
+        }
+        
+        public Text headerTo(){
+            return new Text(MyMessagesEnum.TO_HEADER);
+        }
+        
+        public TextTable entryFrom(){
+            return new TextTable(MyMessagesEnum.FROM_NAME_TABLE);
+        }
+        
+        public TextTable entryTo(){
+            return new TextTable(MyMessagesEnum.TO_NAME_TABLE);
+        }
+        
+        public TextTable entryMessage(){
+            return new TextTable(MyMessagesEnum.MESSAGE_TABLE);
+        }
+        
+        public TextTable entrySent(){
+            return new TextTable(MyMessagesEnum.SENT_DATE_TABLE);
         }
     }
     
     public class MyMessagesSelectors {
-        public Selector drivers(){
+        
+        public Selector leftDrivers(){
             return new Selector(MyMessagesEnum.DRIVER_LEFT);
+        }
+        
+        public Selector leftVehicles(){
+            return new Selector(MyMessagesEnum.VEHICLE_LEFT);
+        }
+        
+        public Selector leftGroups(){
+            return new Selector(MyMessagesEnum.GROUP_LEFT);
+        }
+        
+        public Selector rightDrivers(){
+            return new Selector(MyMessagesEnum.DRIVER_LEFT);
+        }
+        
+        public Selector rightVehicles(){
+            return new Selector(MyMessagesEnum.VEHICLE_LEFT);
+        }
+        
+        public Selector rightGroups(){
+            return new Selector(MyMessagesEnum.GROUP_LEFT);
         }
     }
     
