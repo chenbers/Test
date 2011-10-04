@@ -15,7 +15,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
-import com.inthinc.pro.selenium.pageObjects.PageWaysmartReport;
+//import com.inthinc.pro.selenium.pageObjects.PageWaysmartReport;
 
 @Ignore
 public class VerifyPageObjectsTest extends WebRallyTest {
@@ -49,47 +49,47 @@ public class VerifyPageObjectsTest extends WebRallyTest {
 	    page._textField().editFindAddress().type("950 Laird Ave Salt Lake City");
 	    
 	}
-	@Test
-	public void pageWaysmartReport() {
-	    PageWaysmartReport page = new PageWaysmartReport();
-	    page.loginProcess(USERNAME, PASSWORD);
-	    page._link().reports().click();
-	    PageReportsDrivers driverReport = new PageReportsDrivers();
-        driverReport._link().waySmart().click();
-        
-	    ArrayList<String> desiredOptions = new ArrayList<String>();
-        desiredOptions.add(" Driving Time Violations Summary Report");
-        desiredOptions.add(" Driving Time Violations Detail Report");
-        desiredOptions.add(" Payroll Summary Report");
-
-        desiredOptions.add(" Payroll Report Driver Report");
-        desiredOptions.add(" Payroll Report Driver Sign off");
-        desiredOptions.add(" Ten Hour Day Violations");
-        desiredOptions.add(" Driver Hours");
-        desiredOptions.add(" Driver Performance per Group");
-        desiredOptions.add(" Driver Performance RYG per Group");
-
-        desiredOptions.add("Mileage By Vehicle");
-        desiredOptions.add("State Mileage By Vehicle");
-        desiredOptions.add("State Mileage By Vehicle - Road Status");
-        desiredOptions.add(">State Mileage Fuel By Vehicle");
-        desiredOptions.add("State Mileage By Month");
-        desiredOptions.add("Group Comparison By State/Province");
-        int i = 1;
-        for(String desiredOption: desiredOptions){            
-            page._dropDown().reportDropDown().select(i);
-            i++;
-            pause(5, "just pausing to manually inspect test");
-        }
-        page._dropDown().reportDropDown().select(2);
-        AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
-        calendar.addToDay(-1);
-        page._textField().stopDate().type(calendar);
-        calendar.addToDay(-10);
-        page._textField().startDate().type(calendar);
-        
-	    
-	}
+//	@Test
+//	public void pageWaysmartReport() {
+//	    PageWaysmartReport page = new PageWaysmartReport();
+//	    page.loginProcess(USERNAME, PASSWORD);
+//	    page._link().reports().click();
+//	    PageReportsDrivers driverReport = new PageReportsDrivers();
+//        driverReport._link().waySmart().click();
+//        
+//	    ArrayList<String> desiredOptions = new ArrayList<String>();
+//        desiredOptions.add(" Driving Time Violations Summary Report");
+//        desiredOptions.add(" Driving Time Violations Detail Report");
+//        desiredOptions.add(" Payroll Summary Report");
+//
+//        desiredOptions.add(" Payroll Report Driver Report");
+//        desiredOptions.add(" Payroll Report Driver Sign off");
+//        desiredOptions.add(" Ten Hour Day Violations");
+//        desiredOptions.add(" Driver Hours");
+//        desiredOptions.add(" Driver Performance per Group");
+//        desiredOptions.add(" Driver Performance RYG per Group");
+//
+//        desiredOptions.add("Mileage By Vehicle");
+//        desiredOptions.add("State Mileage By Vehicle");
+//        desiredOptions.add("State Mileage By Vehicle - Road Status");
+//        desiredOptions.add(">State Mileage Fuel By Vehicle");
+//        desiredOptions.add("State Mileage By Month");
+//        desiredOptions.add("Group Comparison By State/Province");
+//        int i = 1;
+//        for(String desiredOption: desiredOptions){            
+//            page._dropDown().reportDropDown().select(i);
+//            i++;
+//            pause(5, "just pausing to manually inspect test");
+//        }
+//        page._dropDown().reportDropDown().select(2);
+//        AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
+//        calendar.addToDay(-1);
+//        page._textField().stopDate().type(calendar);
+//        calendar.addToDay(-10);
+//        page._textField().startDate().type(calendar);
+//        
+//	    
+//	}
 	
 	public void allPages_navigateAndValidate_() {
 		//set_test_case("TC5255");
@@ -121,8 +121,8 @@ public class VerifyPageObjectsTest extends WebRallyTest {
 		my._link().reports().click();
 		PageReportsDrivers driverReport = new PageReportsDrivers();
 		driverReport._link().waySmart().click();
-        PageWaysmartReport waysmartReport = new PageWaysmartReport();
-        waysmartReport.validate();		
+//        PageWaysmartReport waysmartReport = new PageWaysmartReport();
+//        waysmartReport.validate();		
         
         
 //		Click Notifications.
