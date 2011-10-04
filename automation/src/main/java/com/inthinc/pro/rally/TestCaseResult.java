@@ -156,10 +156,10 @@ public class TestCaseResult extends RallyObject {
             return http.getResults().getJSONObject(0);
         } catch (JSONException e) {
             logger.info("JSONException: "+e);
-            logger.debug("The " + fieldFailed
+            logger.info("The " + fieldFailed
                     + " is missing from the test case results.");
-            logger.debug(PrettyJSON.toString(testCaseResults));
-            logger.debug(StackToString.toString(e));
+            logger.info(PrettyJSON.toString(testCaseResults));
+            logger.info(StackToString.toString(e));
         } catch(Exception e){
             logger.info("something bad happened with send_test_case_results() "+e);
         }
