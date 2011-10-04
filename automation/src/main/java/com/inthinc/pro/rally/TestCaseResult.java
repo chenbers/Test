@@ -143,7 +143,9 @@ public class TestCaseResult extends RallyObject {
                 fieldFailed = field;
                 if (field.required()) {
                     logger.info(" send_test_case_results() inside if");
+                    logger.info(" send_test_case_results() about to testCaseResults.get("+field.toString()+")");
                     testCaseResults.get(field.toString());
+                    logger.info(" send_test_case_results() finished testCaseResults.get("+field.toString()+")");
                 }
             }
             logger.info(" send_test_case_results() for loop complete");
