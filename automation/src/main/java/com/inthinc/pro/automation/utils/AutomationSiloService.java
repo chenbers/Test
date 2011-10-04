@@ -5,8 +5,10 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.device_emulation.DeviceZone;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper;
+import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;
 import com.inthinc.pro.dao.hessian.mapper.DeviceMapper;
 import com.inthinc.pro.dao.hessian.mapper.Mapper;
@@ -21,23 +23,19 @@ import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.Zone;
 import com.inthinc.pro.model.event.Event;
 
-public class HessianRequests {
+public class AutomationSiloService {
 
 	private final static Logger logger = Logger
-			.getLogger(HessianRequests.class);
+			.getLogger(AutomationSiloService.class);
 
 	private SiloService portalProxy;
 	private Mapper mapper = new DeviceMapper();
 	private DaoUtilEventMapper noteMapper = new DaoUtilEventMapper();
 	private AutomationHessianFactory hessian;
 
-	public HessianRequests(Addresses getItYourself) {
+	public AutomationSiloService(Addresses silo) {
 		hessian = new AutomationHessianFactory();
-		this.portalProxy = hessian.getPortalProxy(getItYourself);
-	}
-
-	public HessianRequests(SiloService portalProxy) {
-		this.portalProxy = portalProxy;
+		this.portalProxy = hessian.getPortalProxy(silo);
 	}
 
 	public Device createDevice(Device device) {
@@ -289,7 +287,10 @@ public class HessianRequests {
 
     public Zone getZone(Integer zoneID) {
         return mapper.convertToModelObject(portalProxy.getZone(zoneID), Zone.class);
-        
+    }
+    
+    public List<DeviceZone> getZonesByAccountID(Integer acctID){
+        return new ZoneHessianDAO().getMapper().convertToModelObject(portalProxy.getZonesByAcctID(acctID), DeviceZone.class);
     }
 
 }

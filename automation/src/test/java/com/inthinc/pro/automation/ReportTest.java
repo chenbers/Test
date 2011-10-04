@@ -11,7 +11,7 @@ import com.inthinc.pro.automation.enums.UniqueValues;
 import com.inthinc.pro.automation.enums.Values;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.AutomationThread;
-import com.inthinc.pro.automation.utils.HessianRequests;
+import com.inthinc.pro.automation.utils.AutomationSiloService;
 import com.inthinc.pro.automation.utils.ObjectReadWrite;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.automation.utils.Unique;
@@ -34,7 +34,7 @@ public class ReportTest {
 	
 	private static final String address = "ReportTest Stuff";
 	
-	private final HessianRequests portalHessian = new HessianRequests(portal);
+	private final AutomationSiloService portalHessian = new AutomationSiloService(portal);
 	private final SiloService portalProxy = new AutomationHessianFactory().getPortalProxy(portal);
 	private HashMap<Integer, HashMap<String, String>> drivers;
 	

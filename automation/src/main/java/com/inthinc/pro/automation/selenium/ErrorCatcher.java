@@ -44,7 +44,7 @@ public class ErrorCatcher implements InvocationHandler {
         delegate = null;
         severity = new HashMap<ErrorLevel, Map<String, Map<String, String>>>();
         for (ErrorLevel level: EnumSet.allOf(ErrorLevel.class)){
-            if (level.equals(ErrorLevel.FATAL) || level.equals(ErrorLevel.PASS)){
+            if (level.equals(ErrorLevel.FATAL)){
                 continue;
             }
             errors = new HashMap<String, Map<String, String>>();
@@ -56,7 +56,7 @@ public class ErrorCatcher implements InvocationHandler {
         this.delegate = delegate;
         severity = new HashMap<ErrorLevel, Map<String, Map<String, String>>>();
         for (ErrorLevel level: EnumSet.allOf(ErrorLevel.class)){
-            if (level.equals(ErrorLevel.FATAL) || level.equals(ErrorLevel.PASS)){
+            if (level.equals(ErrorLevel.FATAL)){
                 continue;
             }
             errors = new HashMap<String, Map<String, String>>();

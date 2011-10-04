@@ -9,8 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.HessianRequests;
-import com.inthinc.pro.dao.hessian.proserver.SiloService;
+import com.inthinc.pro.automation.utils.AutomationSiloService;
 import com.inthinc.pro.model.configurator.ProductType;
 
 
@@ -26,7 +25,7 @@ public class ScoringNoteProcessor {
 	private final Double agg_brake = 0.164130;
 	private final Double agg_accel = 0.0593694;
 
-	private HessianRequests hessian;
+	private AutomationSiloService hessian;
 	private ScoringNoteSorter processor = new ScoringNoteSorter();
 	
 	private Map<String, Double> scores;
@@ -42,13 +41,9 @@ public class ScoringNoteProcessor {
 	private double seatbeltscore;
 	private ProductType deviceType;
 	
-	public ScoringNoteProcessor(SiloService proxy) {
-		hessian = new HessianRequests(proxy);
-		scores = new TreeMap<String, Double>();
-	}
-	
+
 	public ScoringNoteProcessor(Addresses server){
-		hessian = new HessianRequests(server);
+		hessian = new AutomationSiloService(server);
 		scores = new TreeMap<String, Double>();
 	}
 	
@@ -65,7 +60,7 @@ public class ScoringNoteProcessor {
 	}
 	
 	public void changeServers(Addresses server){
-		hessian = new HessianRequests(server);
+		hessian = new AutomationSiloService(server);
 	}
 	
 	private void getVehicleNotes(Integer ID, Long start, Long stop){

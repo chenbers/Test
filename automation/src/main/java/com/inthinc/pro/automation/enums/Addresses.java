@@ -37,7 +37,9 @@ public enum Addresses implements AddressInterface {
 
     TEEN_QA("192.168.1.215"),
 
-    TEEN_PROD("my.tiwi.com"),
+    TEEN_PROD("my.tiwi.com"), 
+    
+    LDS("lds.inthinc.com"),
 
     // PROD_MCM_EC2("my.inthinc.com"),
     // PROD_MCM_PORT_EC2("prodMCMPort"),

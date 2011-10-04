@@ -19,7 +19,6 @@ import java.util.Map;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.log4j.Logger;
 
-import com.caucho.hessian.io.HessianProtocolException;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
@@ -86,14 +85,14 @@ public abstract class Base {
     protected String lastDownload;
     
     protected Addresses portal;
-    protected SpeedByStreet sbsModule;
+    protected Map<Integer, MapSection> sbsModule;
     
 
     public Base(String IMEI, Addresses server, Map<?, String> map, ProductType version) {
     	portal = server;
         Settings = new HashMap<DeviceProperties, String>();
         set_IMEI(IMEI, server, map, version);
-        sbsModule = new SpeedByStreet();
+        sbsModule = new HashMap<Integer, MapSection>();
     }
     
     private Base ackFwdCmds(List<HashMap<String, Object>> reply) {
@@ -106,8 +105,8 @@ public abstract class Base {
             Iterator<HashMap<String, Object>> itr = reply.iterator();
             while (itr.hasNext()) {
                 fwd = itr.next();
-                if (fwd.get("fwdID").equals(100)||fwd.get("fwdID").equals(1))
-                    continue;
+//                if (fwd.get("fwdID").equals(100)||fwd.get("fwdID").equals(1))
+//                    continue;
                 createAckNote(fwd);
             }
         }
