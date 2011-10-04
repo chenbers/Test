@@ -5,6 +5,7 @@ import java.util.EnumSet;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.AutomationLogins;
@@ -29,7 +30,6 @@ public class EditMyAccountTest extends WebRallyTest {
         AutomationLogins login = AutomationLogins.getOneBy(EnumSet.of(LoginCapabilities.HasDevice, LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.RoleAdmin));
         USERNAME = login.getUserName();
         PASSWORD = login.getPassword();
-        addError("Login", USERNAME+"/"+PASSWORD, ErrorLevel.WARN);
     }
 
     @Before
@@ -40,6 +40,7 @@ public class EditMyAccountTest extends WebRallyTest {
 
     @Test
     public void MeasurementValidation() {
+        addError("this error should stay here", ErrorLevel.FAIL);
         set_test_case("TC1275");
         // 0. login
         myAccountPage.loginProcess(USERNAME, PASSWORD);
@@ -77,7 +78,7 @@ public class EditMyAccountTest extends WebRallyTest {
         // liveFleet._link().entryVehicleByPosition().row(1).click();
         // PageVehiclePerformance vPerform = new PageVehiclePerformance();
 
-        // 1. VERIFY - The display of distance (miles or kilometeres) throughout
+        // 1. VERIFY - The display of distance (miles or kilometers) throughout
         // the UI appears in the selected measurement setting.
         // goes to the vehicle performance page and checks the crashes per
         // million miles(/kilo) title
@@ -238,6 +239,7 @@ public class EditMyAccountTest extends WebRallyTest {
     }
 
     @Test
+    @Ignore //until defect 6654 is fixed
     public void TextMsgFormatError() {
         set_test_case("TC1282");
         ArrayList<String> badTextMessageAddresses = new ArrayList<String>();
