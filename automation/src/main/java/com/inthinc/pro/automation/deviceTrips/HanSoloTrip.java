@@ -16,10 +16,6 @@ import org.json.JSONObject;
 import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.device_emulation.WaysmartDevice;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.utils.HessianRequests;
-import com.inthinc.pro.model.Device;
-import com.inthinc.pro.model.DeviceStatus;
-import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.rally.HTTPCommands;
 
 public class HanSoloTrip extends Thread{
@@ -251,29 +247,6 @@ public class HanSoloTrip extends Thread{
         
     }
     
-    public int createVehicle(Addresses server){
-        Vehicle vehicle = new Vehicle();
-        vehicle.setFullName("fakevehicleon"+server.name());
-        HessianRequests create = new HessianRequests(server);
-        vehicle.setGroupID(create.getGroupByName("Automated Team", create.getQAAccount().getAccountID()).getGroupID());
-        
-        return 0;
-    }
-    
-    public int createDevice(Addresses server){
-        Device device = new Device();
-        device.setFirmwareVersion(17207);
-        device.setImei("fakeimeion"+server.name());
-        device.setName("fakedeviceon"+server.name());
-        device.setPhone("8015559876");
-        device.setSim("9989898989998989");
-        device.setSerialNum("TP"+server.name());
-        device.setStatus(DeviceStatus.ACTIVE);
-        device.setWitnessVersion(51);
-        HessianRequests create = new HessianRequests(server);
-        device.setAccountID(create.getQAAccount().getAccountID());
-        return create.createDevice(device).getDeviceID();
-    }
     
 
     public void run() {
@@ -287,7 +260,7 @@ public class HanSoloTrip extends Thread{
         Integer initialTime = currentTime.intValue();
         Addresses address;
         String imei = "FAKEIMEIDEVICE"; address=Addresses.QA;
-//        imei = "DEVICEDOESNTEXIST";
+        imei = "DEVICEDOESNTEXIST";
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
 //        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1313106000;  // vehicleID=37706       deviceID=34506
 //        address=Addresses.QA;           initialTime = 1316473598;  // vehicleID=7293        deviceID=3753
@@ -304,7 +277,9 @@ public class HanSoloTrip extends Thread{
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.BARRICK;      initialTime = 1316473598;  // vehicleID=83886085    deviceID=83886086
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-        address=Addresses.CINTAS;       initialTime = 1316475667;  // vehicleID=234881465   deviceID=234881624
+//        address=Addresses.CINTAS;       initialTime = 1316475667;  // vehicleID=234881465   deviceID=234881624
+//        trip.hanSolosFirstTrip( imei, address, initialTime);
+//        address=Addresses.LDS;       //initialTime = 1316475667;  // vehicleID=234881465   deviceID=234881624
         trip.hanSolosFirstTrip( imei, address, initialTime);
         
         
