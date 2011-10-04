@@ -153,10 +153,13 @@ public class TestCaseResult extends RallyObject {
             logger.info(" send_test_case_results() http.results.length should be > 1 ??? length:"+http.getResults().length());
             return http.getResults().getJSONObject(0);
         } catch (JSONException e) {
+            logger.info("JSONException: "+e);
             logger.debug("The " + fieldFailed
                     + " is missing from the test case results.");
             logger.debug(PrettyJSON.toString(testCaseResults));
             logger.debug(StackToString.toString(e));
+        } catch(Exception e){
+            logger.info("something bad happened with send_test_case_results() "+e);
         }
         return testCaseResults;
     }
