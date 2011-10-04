@@ -1,8 +1,15 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
@@ -12,11 +19,10 @@ import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
-@Ignore
 public class ReportsDriver extends WebRallyTest {
 
-	private String username = "danniauto";
-	private String password = "password";
+	private static String username = "danniauto";
+	private static String password = "password";
 	private PageReportsDrivers driver = new PageReportsDrivers();
 	private PageDriverPerformance performance = new PageDriverPerformance();
 	private PageDriverPerformanceStyle style = new PageDriverPerformanceStyle();
@@ -25,6 +31,15 @@ public class ReportsDriver extends WebRallyTest {
 	private PageVehiclePerformance vehicle = new PageVehiclePerformance();
 	private PageAdminUsers admin = new PageAdminUsers();
 	
+	
+    @BeforeClass
+    public static void beforeClass() {
+        AutomationLogins login  = AutomationLogins.danni;
+        username = login.getUserName();
+        password = login.getPassword();
+              
+    }
+
 	@Test
 	public void DriverLink(){
 		set_test_case("TC1543");
@@ -153,6 +168,7 @@ public class ReportsDriver extends WebRallyTest {
 	@Test
 	 public void DriverReportSearch() {
 	  set_test_case("TC1560");
+	  String name = "Danni";
 	  
 	  PageReportsDrivers driver = new PageReportsDrivers();
 	  // 1- Login
@@ -163,7 +179,7 @@ public class ReportsDriver extends WebRallyTest {
 
 	  // 3- Start entering information for group/driver/vehicle in a text
 	  // field
-	  driver._textField().driverSearch().type("Danni");
+	  driver._textField().driverSearch().type(name);
 
 	  // 4- Remove focus
 	  driver._textField().groupSearch().focus();
@@ -172,7 +188,6 @@ public class ReportsDriver extends WebRallyTest {
 	  pause(15, "Let the page refresh to show results");
 
 	  // 6- Verify only that name shows on list
-	  String name = "Danni";
 	  boolean hasOnlyExpectedDrivernames = true;
 	  boolean hasThisRow = true;
 	  for (int i = 1; i < 10 && hasOnlyExpectedDrivernames && hasThisRow; i++) {
