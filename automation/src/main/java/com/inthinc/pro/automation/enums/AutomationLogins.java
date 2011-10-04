@@ -17,11 +17,12 @@ public enum AutomationLogins {
     autovehicle("autovehicle","passw0rd","AdminVehicleTests", null),//prime
     captnemo("CaptainNemo", "Muttley", "Test Group RW", EnumSet.of(LoginCapabilities.NoteTesterData)), //prime
     daisy1("Daisy1", "password","Tina's Auto Team", null),//prime
+    danni("danniauto", "password", "Top", EnumSet.of(LoginCapabilities.LoginExpire90, LoginCapabilities.PasswordExpire90, LoginCapabilities.PasswordRequireInitalChangeRequire, LoginCapabilities.HOSEnabled)),
     dastardly("dastardly", "Muttley","Test Group WR", EnumSet.of(LoginCapabilities.NoteTesterData)), //prime
     jesse1("jesse1", "password","Tina's Auto Team", null),//prime
     pitstop("pitstop", "Muttley","Top", EnumSet.of(LoginCapabilities.NoteTesterData)), //prime
     tinaauto("tinaauto", "password","Tina's Auto Team", EnumSet.of(LoginCapabilities.RoleAdmin ,LoginCapabilities.HasDevice, LoginCapabilities.HasVehicle, LoginCapabilities.IsDriver)),//prime    
-    whiplash("whiplash", "password","Test Group WR", null),//prime
+    whiplash("whiplash", "password","Test Group WR", null),//prime //TODO: bad credential?
     
     
     
