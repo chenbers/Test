@@ -21,8 +21,8 @@ public class EditMyAccountTest extends WebRallyTest {
 
     private PageMyAccount myAccountPage;
     private RandomValues random;
-    private static String USERNAME = "BADtinaauto";
-    private static String PASSWORD = "BADpassword";
+    private static String USERNAME = "tinaauto";
+    private static String PASSWORD = "password";
     
     @BeforeClass
     public static void beforeClass() {
@@ -40,7 +40,7 @@ public class EditMyAccountTest extends WebRallyTest {
 
     @Test
     public void MeasurementValidation() {
-        addError("this error should stay here", ErrorLevel.FAIL);
+        addError("intentionally failing this test to check for subsequent tests failing for THIS addError ", ErrorLevel.FAIL);
         set_test_case("TC1275");
         // 0. login
         myAccountPage.loginProcess(USERNAME, PASSWORD);
@@ -239,7 +239,7 @@ public class EditMyAccountTest extends WebRallyTest {
     }
 
     @Test
-    @Ignore //until defect 6654 is fixed
+    @Ignore //TODO: until defect 6654 is fixed
     public void TextMsgFormatError() {
         set_test_case("TC1282");
         ArrayList<String> badTextMessageAddresses = new ArrayList<String>();
