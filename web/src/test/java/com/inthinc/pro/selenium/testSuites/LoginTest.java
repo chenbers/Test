@@ -8,7 +8,7 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
-@Ignore
+//@Ignore
 public class LoginTest extends WebRallyTest {
     String BLOCK_TEXT = "Your access has been blocked. If you have any questions regarding this action, contact your organization's tiwiPRO system administrator.";
     String CORRECT_USERNAME = "dastardly";
@@ -145,6 +145,7 @@ public class LoginTest extends WebRallyTest {
         pl._textField().password().assertEquals("");
     }
     
+    @Ignore
     @Test
     public void tabOrderTest1249(){
         set_test_case("TC1249");

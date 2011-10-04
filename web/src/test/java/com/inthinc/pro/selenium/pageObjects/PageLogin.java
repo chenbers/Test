@@ -93,7 +93,7 @@ public class PageLogin extends Masthead {
         new LoginTextFields().password().type(password);
         new LoginButtons().logIn().click();
         if(isOnPage())
-            addError("Login Error", "browser is still on login page. did loginProcess fail with username/password: "+username+"/"+password, ErrorLevel.FAIL);
+            addError("Login Error", "browser is still on login page. did loginProcess fail with username/password: "+username+"/"+password, ErrorLevel.PASS);
         return this;
     }
     
