@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.device_emulation.WaysmartDevice;
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.rally.HTTPCommands;
+import com.inthinc.pro.automation.utils.HTTPCommands;
 
 public class HanSoloTrip extends Thread{
     private final static Logger logger = Logger.getLogger(HanSoloTrip.class);
@@ -260,7 +260,7 @@ public class HanSoloTrip extends Thread{
         Integer initialTime = currentTime.intValue();
         Addresses address;
         String imei = "FAKEIMEIDEVICE"; address=Addresses.QA;
-        imei = "DEVICEDOESNTEXIST";
+//        imei = "DEVICEDOESNTEXIST";
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
 //        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1313106000;  // vehicleID=37706       deviceID=34506
 //        address=Addresses.QA;           initialTime = 1316473598;  // vehicleID=7293        deviceID=3753
@@ -279,7 +279,7 @@ public class HanSoloTrip extends Thread{
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
 //        address=Addresses.CINTAS;       initialTime = 1316475667;  // vehicleID=234881465   deviceID=234881624
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.LDS;       //initialTime = 1316475667;  // vehicleID=234881465   deviceID=234881624
+        address=Addresses.LDS;       //initialTime = 1316475667;  // vehicleID=234881465   deviceID=234881624
         trip.hanSolosFirstTrip( imei, address, initialTime);
         
         

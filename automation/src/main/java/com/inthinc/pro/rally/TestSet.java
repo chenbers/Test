@@ -21,11 +21,11 @@ public class TestSet extends RallyObject {
 
 
 	public TestSet(String username, String password, RallyWebServices space) {
-		http = new HTTPCommands(username, password);
+		http = new RallyHTTP(username, password);
 		http.setWorkspace(space);
 	}
 
-	public TestSet(HTTPCommands http) {
+	public TestSet(RallyHTTP http) {
 		this.http = http;
 	}
 	

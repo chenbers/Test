@@ -2,9 +2,9 @@ package com.inthinc.pro.rally;
 
 public class RallyObject {
     
-    protected HTTPCommands http;
+    protected RallyHTTP http;
     
-    public HTTPCommands getHttp(){
+    public RallyHTTP getHttp(){
         return http;
     }
 

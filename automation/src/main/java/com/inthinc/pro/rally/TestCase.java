@@ -96,7 +96,7 @@ public class TestCase extends RallyObject {
 
     private JSONObject testCase;
 
-    public TestCase(HTTPCommands http) {
+    public TestCase(RallyHTTP http) {
         this.http = http;
         fields = new HashMap<Fields, Object>();
     }
@@ -109,7 +109,7 @@ public class TestCase extends RallyObject {
         this.http = tcr.getHttp();
     }
     public TestCase(String username, String password, RallyWebServices space) {
-        http = new HTTPCommands(username, password);
+        http = new RallyHTTP(username, password);
         http.setWorkspace(space);
         fields = new HashMap<Fields, Object>();
     }

@@ -1,14 +1,10 @@
 package com.inthinc.pro.rally;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
@@ -18,31 +14,26 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
-import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.inthinc.pro.automation.utils.HTTPCommands;
 import com.inthinc.pro.automation.utils.StackToString;
 
-public class HTTPCommands {
+public class RallyHTTP extends HTTPCommands {
     
-    public interface RallyFields{
-        
-    }
-    
-    private final static Logger logger = Logger.getLogger(HTTPCommands.class);
 
-    private HttpClient httpClient;
+    private final static Logger logger = Logger.getLogger(HTTPCommands.class);
+    
     private JSONObject queryResults, workspace;
     private String query;
 
     private RallyWebServices workingSpace;
 
-    private String response;
 
-    public HTTPCommands(String username, String password) {
+    public RallyHTTP(String username, String password) {
         httpClient = new HttpClient();
         httpClient.getHttpConnectionManager().getParams()
                 .setConnectionTimeout(10000);
@@ -50,39 +41,6 @@ public class HTTPCommands {
         httpClient.getState().setCredentials(
                 new AuthScope("rally1.rallydev.com", 443),
                 new UsernamePasswordCredentials(username, password));
-    }
-
-    /**
-     * Method httpRequest<br />
-     * <br />
-     * Using the given HttpMethod, execute it and get the status code<br />
-     * Depending on the status, print an error or success method, consume the body<br />
-     * then finally release the connection
-     * 
-     * @param method
-     * @throws IOException
-     * @throws HttpException
-     */
-    public void httpRequest(HttpMethod method) throws IOException,
-            HttpException {
-        response = null;
-        try {
-            int statusCode = httpClient.executeMethod(method);
-            if (statusCode != HttpStatus.SC_OK) {
-                logger.debug("POST method failed: " + method.getStatusLine());
-                response = getResponseBodyFromStream(method
-                        .getResponseBodyAsStream());
-            } else {
-                logger.debug("POST method succeeded: " + method.getStatusLine());
-                response = getResponseBodyFromStream(method
-                        .getResponseBodyAsStream());
-            }
-            method.releaseConnection();
-        } catch (URIException e) {
-            logger.fatal(method.getQueryString());
-            throw new URIException("Failed");
-        }
-
     }
 
     public void constructQuery(Integer startPosition, Integer pageSize)
@@ -113,10 +71,6 @@ public class HTTPCommands {
         query += "&pageSize=" + pageSize;
         query += "&fetch=" + fetch;
         logger.debug(query);
-    }
-
-    private String encodeURLQuery(String string) throws URIException {
-        return URIUtil.encodeQuery(string);
     }
 
     public String constructFilter(String filterString) throws URIException {
@@ -188,10 +142,10 @@ public class HTTPCommands {
             postJSON.put(request.getName(), item);
             String content = postJSON.toString();
             logger.debug(PrettyJSON.toString(postJSON));
-            
+
             PostMethod postRequest = new PostMethod(url);
-            RequestEntity requestEntity = new StringRequestEntity(
-                    content, "application/json", "UTF-8");
+            RequestEntity requestEntity = new StringRequestEntity(content,
+                    "application/json", "UTF-8");
             postRequest.setRequestEntity(requestEntity);
 
             httpRequest(postRequest);
@@ -220,8 +174,8 @@ public class HTTPCommands {
     }
 
     public void deleteObject(RallyWebServices type, String objectID) {
-        if (objectID.endsWith(".js")){
-            objectID = type.getValue() + "/" + objectID + ".js";    
+        if (objectID.endsWith(".js")) {
+            objectID = type.getValue() + "/" + objectID + ".js";
         }
         deleteObject(objectID);
     }
@@ -300,7 +254,7 @@ public class HTTPCommands {
     public JSONArray getResults() throws JSONException {
         try {
             return queryResults.getJSONArray("Results");
-        } catch (JSONException e){
+        } catch (JSONException e) {
             return new JSONArray().put(queryResults.getJSONObject("Object"));
         }
     }
@@ -315,20 +269,6 @@ public class HTTPCommands {
 
     public JSONObject getWorkspace() {
         return workspace;
-    }
-
-    public static String getResponseBodyFromStream(InputStream is) {
-        String str = "";
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            byte[] buffer = new byte[128];
-            int size = 0;
-            while ((size = is.read(buffer)) > 0) {
-                baos.write(buffer, 0, size);
-            }
-            str = new String(baos.toByteArray());
-        } catch (IOException ioe) {}
-        return str;
     }
 
     public String getQuery() {

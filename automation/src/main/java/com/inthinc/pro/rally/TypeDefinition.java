@@ -13,7 +13,7 @@ public class TypeDefinition extends RallyObject {
 
 		
 		public TypeDefinition(String username, String password){
-			http=new HTTPCommands(username, password);
+			http=new RallyHTTP(username, password);
 		}
 		
 		

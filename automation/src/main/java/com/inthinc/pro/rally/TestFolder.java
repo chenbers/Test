@@ -20,7 +20,7 @@ public class TestFolder extends RallyObject {
 	
 	
 	public TestFolder(String username, String password, RallyWebServices space){
-		http=new HTTPCommands(username, password);
+		http=new RallyHTTP(username, password);
 		http.setWorkspace(space);
 	}
 	

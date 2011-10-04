@@ -14,7 +14,7 @@ private final static Logger logger = Logger.getLogger(Project.class);
 
 	
 	public Project(String username, String password){
-		http=new HTTPCommands(username, password);
+		http=new RallyHTTP(username, password);
 	}
 	
 	public JSONObject getProject(String name, RallyWebServices space) {
