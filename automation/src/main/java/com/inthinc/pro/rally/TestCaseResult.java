@@ -149,7 +149,7 @@ public class TestCaseResult extends RallyObject {
             logger.info(" send_test_case_results() for loop complete");
             http.postObjects(RallyWebServices.TEST_CASE_RESULTS, testCaseResults, true);
             logger.info(" send_test_case_results() finished postObjects ");
-            logger.info(testCaseResults.get(TestCase.Fields.FORMATTED_ID.toString())+" verdict: "+testCaseResults.get(Fields.VERDICT.toString()));
+            logger.info(testCaseResults+" verdict: "+testCaseResults.get(Fields.VERDICT.toString()));
             logger.info(" send_test_case_results() http.results.length should be > 1 ??? length:"+http.getResults().length());
             return http.getResults().getJSONObject(0);
         } catch (JSONException e) {
