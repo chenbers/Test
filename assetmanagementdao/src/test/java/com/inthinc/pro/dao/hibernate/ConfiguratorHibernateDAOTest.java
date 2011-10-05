@@ -17,15 +17,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO;
+import com.inthinc.pro.configurator.model.VehicleSetting;
 import com.inthinc.pro.dao.jpa.ConfiguratorJPADAO;
-import com.inthinc.pro.domain.DesiredVehicleSetting;
-import com.inthinc.pro.model.configurator.VehicleSetting;
-import com.inthinc.pro.model.configurator.VehicleSettingHistory;
-import com.inthinc.pro.service.ActualVehicleSettingService;
-import com.inthinc.pro.service.DesiredVehicleSettingService;
-import com.inthinc.pro.service.VehicleService;
-import com.inthinc.pro.service.VehicleSettingHistoryService;
+import com.inthinc.pro.domain.settings.DesiredVehicleSetting;
+import com.inthinc.pro.domain.settings.VehicleSettingHistory;
 
 @ContextConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,31 +28,10 @@ public class ConfiguratorHibernateDAOTest {
 	private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 
 	@Autowired
-	private VehicleSettingHistoryService vehicleSettingHistoryService;
-	@Autowired
-	private ActualVehicleSettingService actualVehicleSettingService;
-	@Autowired
-	private DesiredVehicleSettingService desiredVehicleSettingService;
-	@Autowired
-	private VehicleService vehicleService;
-	@Autowired
-	private FwdCmdSpoolWSIridiumJDBCDAO fwdCmdSpoolWSIridiumJDBCDAO;
-	
 	private ConfiguratorJPADAO configuratorJPADAO;
 
 	@Before
 	public void setUp() throws Exception {
-		configuratorJPADAO = new ConfiguratorJPADAO();
-		configuratorJPADAO
-				.setVehicleSettingHistoryService(vehicleSettingHistoryService);
-		configuratorJPADAO
-				.setActualVehicleSettingService(actualVehicleSettingService);
-		configuratorJPADAO
-				.setDesiredVehicleSettingService(desiredVehicleSettingService);
-		configuratorJPADAO
-				.setVehicleService(vehicleService);
-		configuratorJPADAO.setFwdCmdSpoolWSIridiumJDBCDAO(fwdCmdSpoolWSIridiumJDBCDAO);
-		
 	}
 
 	@After
@@ -99,7 +73,6 @@ public class ConfiguratorHibernateDAOTest {
 	}
 	@Test
 	public void updateVehicleSettingsNoSettingsInMap(){
-		
 		Integer vehicleID = 2;
 		Map<Integer, String> setMap = new HashMap<Integer, String>();
 		Integer userID = 10087;
@@ -120,8 +93,24 @@ public class ConfiguratorHibernateDAOTest {
 		configuratorJPADAO.updateVehicleSettings(settings.get(157).getDesiredVehicleSettingID(), vehicleID, setMap, userID, reason);
 	}
 
-	public void setFwdCmdSpoolWSIridiumJDBCDAO(
-			FwdCmdSpoolWSIridiumJDBCDAO fwdCmdSpoolWSIridiumJDBCDAO) {
-		this.fwdCmdSpoolWSIridiumJDBCDAO = fwdCmdSpoolWSIridiumJDBCDAO;
+//	public void setFwdCmdSpoolWSIridiumJDBCDAO(
+//			FwdCmdSpoolWSIridiumJDBCDAO fwdCmdSpoolWSIridiumJDBCDAO) {
+//		this.fwdCmdSpoolWSIridiumJDBCDAO = fwdCmdSpoolWSIridiumJDBCDAO;
+//	}
+
+	public ConfiguratorJPADAO getConfiguratorJPADAO() {
+		return configuratorJPADAO;
 	}
+
+	public void setConfiguratorJPADAO(ConfiguratorJPADAO configuratorJPADAO) {
+		this.configuratorJPADAO = configuratorJPADAO;
+	}
+
+//	public void setFwdCmdSpoolWSHttpJDBCDAO(FwdCmdSpoolWSHttpJDBCDAO fwdCmdSpoolWSHttpJDBCDAO) {
+//		this.fwdCmdSpoolWSHttpJDBCDAO = fwdCmdSpoolWSHttpJDBCDAO;
+//	}
+//
+//	public void setDeviceService(DeviceService deviceService) {
+//		this.deviceService = deviceService;
+//	}
 }

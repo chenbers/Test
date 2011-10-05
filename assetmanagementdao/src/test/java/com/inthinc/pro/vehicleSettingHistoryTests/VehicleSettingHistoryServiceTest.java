@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.inthinc.pro.domain.VehicleSettingHistoryJPA;
+import com.inthinc.pro.domain.settings.VehicleSettingHistory;
 import com.inthinc.pro.service.VehicleSettingHistoryService;
 
 
@@ -20,8 +20,8 @@ public class VehicleSettingHistoryServiceTest {
 	
 	@Test
 	public void getVehicleSettingHistory(){
-		List<VehicleSettingHistoryJPA> history = vehicleSettingHistoryService.findAllHistory();
-        for (VehicleSettingHistoryJPA e : history)
+		List<VehicleSettingHistory> history = vehicleSettingHistoryService.findAllHistory();
+        for (VehicleSettingHistory e : history)
             System.out.println("Found history: " + e.toString());
 	}
 }

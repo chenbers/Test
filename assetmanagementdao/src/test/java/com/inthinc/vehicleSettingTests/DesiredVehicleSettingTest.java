@@ -14,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.inthinc.pro.domain.DesiredVehicleSetting;
+import com.inthinc.pro.domain.settings.DesiredVehicleSetting;
 import com.inthinc.pro.service.DesiredVehicleSettingService;
 
 

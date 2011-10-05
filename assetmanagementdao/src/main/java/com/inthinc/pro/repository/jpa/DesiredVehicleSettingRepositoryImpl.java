@@ -9,7 +9,7 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
-import com.inthinc.pro.domain.DesiredVehicleSetting;
+import com.inthinc.pro.domain.settings.DesiredVehicleSetting;
 import com.inthinc.pro.repository.DesiredVehicleSettingRepository;
 
 

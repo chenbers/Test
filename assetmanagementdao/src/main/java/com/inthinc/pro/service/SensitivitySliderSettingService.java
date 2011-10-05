@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.inthinc.pro.domain.SensitivitySliderValue;
+import com.inthinc.pro.domain.settings.SensitivitySliderValue;
 import com.inthinc.pro.repository.SensitivitySliderSettingRepository;
 
 @Service

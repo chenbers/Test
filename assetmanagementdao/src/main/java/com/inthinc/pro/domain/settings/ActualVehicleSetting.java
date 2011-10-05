@@ -1,4 +1,4 @@
-package com.inthinc.pro.domain;
+package com.inthinc.pro.domain.settings;
 
 import java.util.Date;
 
@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 @Entity
 @Table(name="actualVSet")
 public class ActualVehicleSetting {

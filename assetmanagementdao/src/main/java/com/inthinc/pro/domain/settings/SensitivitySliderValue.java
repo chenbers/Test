@@ -1,4 +1,4 @@
-package com.inthinc.pro.domain;
+package com.inthinc.pro.domain.settings;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.inthinc.pro.model.configurator.SliderType;
+import com.inthinc.pro.configurator.model.SliderType;
 
 @Entity
 @Table(name="sensitivitySliderValues",

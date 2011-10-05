@@ -7,6 +7,6 @@
 	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd         
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-  <import resource="classpath:/META-INF/spring/persistence-context.xml"/>
+<!--   <import resource="classpath:/META-INF/spring/persistence-context.xml"/> -->
 
 </beans>

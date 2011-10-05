@@ -3,9 +3,9 @@ package com.inthinc.pro.repository.jpa;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import com.inthinc.pro.repository.GenericRepository;
 

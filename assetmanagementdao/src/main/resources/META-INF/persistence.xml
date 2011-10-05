@@ -3,18 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
 	version="1.0">
-<!--     <persistence-unit name="DeviceSettingDefinitionService" -->
-<!--                       transaction-type="RESOURCE_LOCAL"> -->
-<!--         <class>domain.DeviceSettingDefinition</class> -->
-<!--         <properties> -->
-<!--             <property name="javax.persistence.jdbc.driver" -->
-<!--                       value="com.mysql.jdbc.Driver"/> -->
-<!--             <property name="javax.persistence.jdbc.url" -->
-<!--                 value="jdbc:mysql://tiwipro1.tiwipro.com:3306/centDB"/> -->
-<!--             <property name="javax.persistence.jdbc.user" value="bmiller"/> -->
-<!--             <property name="javax.persistence.jdbc.password" value="4monkey"/> -->
-<!--         </properties> -->
-<!--     </persistence-unit> -->
     <persistence-unit name="vehicleSettingsService"
                       transaction-type="RESOURCE_LOCAL">
         <properties>
@@ -25,21 +13,8 @@
             <property name="javax.persistence.jdbc.user" value="portalUser"/>
             <property name="javax.persistence.jdbc.password" value="portalPass"/>
 			<property name="hibernate.format_sql" value="true" />
-<!-- 			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" /> -->
 			<property name="hibernate.connection.charSet" value="UTF-8" />
+<!-- 			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" /> -->
         </properties>
     </persistence-unit>
-<!--     <persistence-unit name="SettingService" -->
-<!--                       transaction-type="RESOURCE_LOCAL"> -->
-<!--         <validation-mode>NONE</validation-mode> -->
-<!--         <properties> -->
-<!--         	<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/> -->
-<!--             <property name="javax.persistence.jdbc.driver" -->
-<!--                       value="com.mysql.jdbc.Driver"/> -->
-<!--             <property name="javax.persistence.jdbc.url" -->
-<!--                 	  value="jdbc:mysql://localhost:3306/deviceManagement"/> -->
-<!--             <property name="javax.persistence.jdbc.user" value="root"/> -->
-<!--             <property name="javax.persistence.jdbc.password" value="w1tness"/> -->
-<!--         </properties> -->
-<!--     </persistence-unit> -->
 </persistence>

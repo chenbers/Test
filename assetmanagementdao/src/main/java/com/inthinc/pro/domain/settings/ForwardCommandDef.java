@@ -1,4 +1,4 @@
-package com.inthinc.pro.domain;
+package com.inthinc.pro.domain.settings;
 
 public class ForwardCommandDef {
 

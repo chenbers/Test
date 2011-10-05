@@ -2,7 +2,7 @@ package com.inthinc.pro.repository;
 
 import java.util.List;
 
-import com.inthinc.pro.domain.ActualVehicleSetting;
+import com.inthinc.pro.domain.settings.ActualVehicleSetting;
 
 
 public interface ActualVehicleSettingRepository extends

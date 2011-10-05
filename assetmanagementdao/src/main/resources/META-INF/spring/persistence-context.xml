@@ -18,10 +18,11 @@
 	
 	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>   
 
 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="persistenceUnitName" value="vehicleSettingsService" />
-		<property name="dataSource" ref="dataSource" />
+		<property name="dataSource" ref="siloDB" />
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
 				<property name="database" value="MYSQL" />
@@ -31,37 +32,14 @@
 			</bean>
 		</property>
 	</bean>
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	<bean id="siloDB" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="${database.driverClassName}" />
 		<property name="url" value="${database.url}" />
 		<property name="username" value="${database.username}" />
 		<property name="password" value="${database.password}" />
 	</bean>
-
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
-	<!-- Forward Command Spoolers -->
-<!-- 	<bean id="iridiumForwardCommandSpooler" class="com.inthinc.pro.comm.iridium.IridiumForwardCommandSpooler"> -->
-<!-- 		<constructor-arg value="${iridium.host}"/> -->
-<!-- 		<constructor-arg value="${iridium.port}"/> -->
-<!-- 	</bean> -->
-	
-<!-- 	<bean id="httpForwardCommandSpooler" class="com.inthinc.pro.comm.http.HttpForwardCommandSpooler"> -->
-<!-- 		<property name="iridiumForwardCommandSpooler" ref="iridiumForwardCommandSpooler" /> -->
-<!-- 	</bean> -->
-
-<!-- 	<bean id="dummyForwardCommandSpooler" class="com.inthinc.pro.comm.DummyForwardCommandSpooler"> -->
-<!-- 	</bean> -->
-	
-	<bean id="tiwiproDS" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="${tiwiproDS.driverClassName}" />
-		<property name="url" value="${tiwiproDS.url}" />
-		<property name="username" value="${tiwiproDS.username}" />
-		<property name="password" value="${tiwiproDS.password}" />
-<!-- 		<property name="initialSize" value="${tiwiproDS.dbcp.initialSize}" /> -->
-<!-- 		<property name="maxActive" value="${tiwiproDS.dbcp.maxActive}" /> -->
-<!-- 		<property name="maxIdle" value="${tiwiproDS.dbcp.maxIdle}" /> -->
 	</bean>
 
 	<bean id="iridiumDS" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
@@ -71,11 +49,13 @@
 		<property name="password" value="${iridiumDS.password}" />
 	</bean>
 	
-	<bean id="fwdCmdSpoolWSHttpJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO">
-		<property name="dataSource" ref="tiwiproDS"/>
-	</bean>
-	<bean name="fwdCmdSpoolWSIridiumJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO">
-		<property name="dataSource" ref="tiwiproDS"/>
-	</bean>
+<!-- 	<bean id="fwdCmdSpoolWSHttpJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSHttpJDBCDAO"> -->
+<!-- 		<property name="dataSource" ref="siloDB"/> -->
+<!-- 	</bean> -->
+<!-- 	<bean name="fwdCmdSpoolWSIridiumJDBCDAO" class="com.inthinc.pro.dao.jdbc.FwdCmdSpoolWSIridiumJDBCDAO"> -->
+<!-- 		<property name="dataSource" ref="siloDB"/> -->
+<!-- 	</bean> -->
 
+	<bean name="configuratorJPADAO" class="com.inthinc.pro.dao.jpa.ConfiguratorJPADAO" >
+	</bean>
 </beans>

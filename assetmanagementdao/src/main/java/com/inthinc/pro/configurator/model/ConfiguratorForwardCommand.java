@@ -1,12 +1,12 @@
-package com.inthinc.pro.domain;
+package com.inthinc.pro.configurator.model;
 
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.inthinc.pro.model.BaseEnum;
+import com.inthinc.pro.domain.settings.ForwardCommandDef;
 
-public enum ConfiguratorForwardCommand implements BaseEnum{
+public enum ConfiguratorForwardCommand{
 	
 	VARIABLE_SPEED_LIMITS(85,new ForwardCommandDef[]{new ForwardCommandDef(2067,0)}),
 	HARDACCEL_SLIDER(157,new ForwardCommandDef[]{new ForwardCommandDef(2091,0)}),
@@ -46,9 +46,7 @@ public enum ConfiguratorForwardCommand implements BaseEnum{
 		return forwardCommands;
 	}
 
-	@Override
 	public Integer getCode() {
-		// TODO Auto-generated method stub
 		return settingID;
 	}
     private static final Map<Integer, ConfiguratorForwardCommand> lookup = new HashMap<Integer, ConfiguratorForwardCommand>();

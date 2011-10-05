@@ -1,4 +1,4 @@
-package com.inthinc.pro.domain;
+package com.inthinc.pro.domain.settings;
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="vsetHistory")
-public class VehicleSettingHistoryJPA {
+public class VehicleSettingHistory {
     
     @Id
 	@Column(name="vsetHistoryID")
@@ -23,6 +23,8 @@ public class VehicleSettingHistoryJPA {
     private String  newValue;
     private Date    modified;
     private String  reason;
+//    @ManyToOne(fetch=FetchType.LAZY)
+//    @JoinColumn(name="userID")
     private Integer userID;
    
     public Integer getSetHistoryID() {
@@ -73,18 +75,24 @@ public class VehicleSettingHistoryJPA {
     public void setReason(String reason) {
         this.reason = reason;
     }
-    public Integer getUserID() {
-        return userID;
-    }
-    public void setUserID(Integer userID) {
-        this.userID = userID;
-    }
 	@Override
 	public String toString() {
-		return "VehicleSettingHistory [setHistoryID=" + setHistoryID
+		return "VehicleSettingHistoryJPA [setHistoryID=" + setHistoryID
 				+ ", vehicleID=" + vehicleID + ", deviceID=" + deviceID
 				+ ", settingID=" + settingID + ", oldValue=" + oldValue
 				+ ", newValue=" + newValue + ", modified=" + modified
 				+ ", reason=" + reason + ", userID=" + userID + "]";
+	}
+//	public User getUser() {
+//		return user;
+//	}
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
+	public Integer getUserID() {
+		return userID;
+	}
+	public void setUserID(Integer userID) {
+		this.userID = userID;
 	}
 }

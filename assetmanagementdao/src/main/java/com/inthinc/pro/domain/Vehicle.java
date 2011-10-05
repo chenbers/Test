@@ -12,10 +12,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.inthinc.pro.model.State;
-import com.inthinc.pro.model.Status;
-import com.inthinc.pro.model.VehicleDOTType;
-import com.inthinc.pro.model.VehicleType;
+import com.inthinc.pro.configurator.model.Status;
+import com.inthinc.pro.configurator.model.VehicleDOTType;
+import com.inthinc.pro.configurator.model.VehicleType;
 
 @Entity
 @Table(name="vehicle")
@@ -38,8 +37,7 @@ public class Vehicle implements Serializable
     private String            VIN;                                    // 17 chars
     private Integer           weight;
     private String            license;
-    @Column(name = "stateID")
-    private State             state;
+    private Integer             stateID;
 //    private Integer           driverID;
 //    private Integer           deviceID;
     
@@ -189,15 +187,15 @@ public class Vehicle implements Serializable
         this.license = license;
     }
 
-    public State getState()
-    {
-        return state;
-    }
-
-    public void setState(State state)
-    {
-        this.state = state;
-    }
+//    public State getState()
+//    {
+//        return state;
+//    }
+//
+//    public void setState(State state)
+//    {
+//        this.state = state;
+//    }
 
 //    public Integer getDriverID()
 //    {
@@ -244,7 +242,7 @@ public class Vehicle implements Serializable
         VIN = vin;
         this.weight = weight;
         this.license = license;
-        this.state = state;
+//        this.state = state;
         this.dot = dot;
     }
 
@@ -286,7 +284,7 @@ public class Vehicle implements Serializable
     @Override
     public String toString() {
         return "Vehicle [VIN=" + VIN + ", color=" + color + ", groupID=" + groupID
-                + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", state=" + state + ", status=" + status + ", vehicleID=" + vehicleID
+                + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", stateID=" + stateID + ", status=" + status + ", vehicleID=" + vehicleID
                 + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + //", hos="+ hos+
                 ", dot="+dot+
                 ", ifta="+ifta+
@@ -345,5 +343,11 @@ public class Vehicle implements Serializable
 	}
 	public void setNewAggDate(Date newAggDate) {
 		this.newAggDate = newAggDate;
+	}
+	public Integer getStateID() {
+		return stateID;
+	}
+	public void setStateID(Integer stateID) {
+		this.stateID = stateID;
 	}
 }

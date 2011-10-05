@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.inthinc.pro.domain.DesiredVehicleSetting;
+import com.inthinc.pro.domain.settings.DesiredVehicleSetting;
 import com.inthinc.pro.repository.DesiredVehicleSettingRepository;
 
 
