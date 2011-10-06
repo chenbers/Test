@@ -18,8 +18,10 @@ public class AutomatedTest extends MasterTest{
 
     protected Boolean skip = false;
     private Verdicts testVerdict;
+    
+    private static final String buildNotFound = "Couldn't Get Build Number";
 
-    private String buildNumber;
+    private String buildNumber = buildNotFound;
     protected Long stopTime;
     protected CoreMethodInterface selenium;
     
@@ -42,7 +44,7 @@ public class AutomatedTest extends MasterTest{
             try {
                 // check error var for entries
                 setTestVerdict(errors.getHighestLevel());
-                if (buildNumber == null && selenium !=null){
+                if (buildNumber.equals(buildNotFound) && selenium !=null){
                     setBuildNumber(selenium.getText(webVersionID));
                 }
             } catch (Exception e) {
@@ -53,7 +55,7 @@ public class AutomatedTest extends MasterTest{
                 }
             }
         } else {
-            System.out.print(" skip ");
+            logger.info(" skip ");
         }
     }
 
