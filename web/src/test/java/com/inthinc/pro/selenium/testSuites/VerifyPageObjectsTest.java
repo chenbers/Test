@@ -91,6 +91,7 @@ public class VerifyPageObjectsTest extends WebRallyTest {
 //	    
 //	}
 	
+	@Ignore
 	public void allPages_navigateAndValidate_() {
 		//set_test_case("TC5255");
 //      Log in.
