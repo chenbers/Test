@@ -8,7 +8,6 @@ import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
-//@Ignore
 public class LoginTest extends WebRallyTest {
     String BLOCK_TEXT = "Your access has been blocked. If you have any questions regarding this action, contact your organization's tiwiPRO system administrator.";
     String CORRECT_USERNAME = "dastardly";
@@ -26,6 +25,7 @@ public class LoginTest extends WebRallyTest {
     }
     
     @Test
+    @Ignore //TODO: dependent upon a login that has EXPIRED
     public void accessBlockedTest1240() {
 
         set_test_case("TC1240");
@@ -145,7 +145,7 @@ public class LoginTest extends WebRallyTest {
         pl._textField().password().assertEquals("");
     }
     
-    @Ignore
+    //@Ignore  //TODO: run in cloud to determine if tabKey() is working in any tested configuration
     @Test
     public void tabOrderTest1249(){
         set_test_case("TC1249");
