@@ -134,25 +134,15 @@ public class TestCaseResult extends RallyObject {
      * Send the created testCaseResults to Rally
      */
     public JSONObject send_test_case_results() {
-        logger.info(" send_test_case_results() ");
         Fields fieldFailed = null;
         try {
-            logger.info(" send_test_case_results() inside try ");
             for (Fields field : EnumSet.allOf(Fields.class)) {
-                logger.info(" send_test_case_results() inside for");
                 fieldFailed = field;
                 if (field.required()) {
-                    logger.info(" send_test_case_results() inside if");
-                    logger.info(" send_test_case_results() about to testCaseResults.get("+field.toString()+")");
                     testCaseResults.get(field.toString());
-                    logger.info(" send_test_case_results() finished testCaseResults.get("+field.toString()+")");
                 }
             }
-            logger.info(" send_test_case_results() for loop complete");
             http.postObjects(RallyWebServices.TEST_CASE_RESULTS, testCaseResults, true);
-            logger.info(" send_test_case_results() finished postObjects ");
-            logger.info(testCaseResults+" verdict: "+testCaseResults.get(Fields.VERDICT.toString()));
-            logger.info(" send_test_case_results() http.results.length should be > 1 ??? length:"+http.getResults().length());
             return http.getResults().getJSONObject(0);
         } catch (JSONException e) {
             logger.info("JSONException: "+e);
