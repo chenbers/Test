@@ -1,15 +1,13 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
-import com.inthinc.pro.automation.utils.MasterTest.ErrorLevel;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
@@ -21,8 +19,8 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
 public class ReportsDriver extends WebRallyTest {
 
-    private static String username = "danniauto";
-    private static String password = "password";
+    private static String username;
+    private static String password;
     private PageReportsDrivers driver = new PageReportsDrivers();
     private PageDriverPerformance performance = new PageDriverPerformance();
     private PageDriverPerformanceStyle style = new PageDriverPerformanceStyle();
@@ -33,7 +31,8 @@ public class ReportsDriver extends WebRallyTest {
 
     @BeforeClass
     public static void beforeClass() {
-        AutomationLogins login = AutomationLogins.danni;
+        Set<LoginCapabilities> capabilities = Collections.emptySet();
+        AutomationLogins login = AutomationLogins.getOneBy(capabilities);
         username = login.getUserName();
         password = login.getPassword();
 
@@ -117,8 +116,10 @@ public class ReportsDriver extends WebRallyTest {
         driver._button().tools().click();
 
         // 4- Select Export to Excel
-        driver._button().exportExcel().click();
-
+        //driver._button().exportExcel().click(); //TODO: clicking the exportExcel link without handling the resulting "save file" dialog is problematic
+        driver._button().exportExcel().assertPresence(true);
+        driver._button().exportExcel().assertClickable(true);
+        //TODO: this test does nothing to validate that the excel file is generated correctly?
     }
 
     @Test
@@ -135,7 +136,10 @@ public class ReportsDriver extends WebRallyTest {
         driver._button().tools().click();
 
         // 4- Select Export to PDF
-        driver._button().exportPDF().click();
+        //driver._button().exportPDF().click();//TODO: clicking the exportPDF link without handling the resulting "save file" dialog is problematic
+        driver._button().exportPDF().assertPresence(true);
+        driver._button().exportPDF().assertClickable(true);
+        //TODO: this test does nothing to validate that the .PDF file is generated correctly?
 
     }
 
@@ -224,7 +228,7 @@ public class ReportsDriver extends WebRallyTest {
     }
 
     @Test
-    public void DriverReportSpeed() {
+    public void DriverReportSpeed() {//TODO: this is the only one failing manually
         set_test_case("TC1564");
 
         // 1- Login
