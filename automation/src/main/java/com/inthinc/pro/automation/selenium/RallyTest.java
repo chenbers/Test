@@ -57,6 +57,7 @@ public abstract class RallyTest extends AutomatedTest {
                 tcr.setNotes(getTestSet(), errors);
                 tcr.setDuration(stopTime - startTime);
 				tcr.send_test_case_results();
+				tcr = null;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
