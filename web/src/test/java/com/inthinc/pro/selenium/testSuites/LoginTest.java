@@ -196,12 +196,14 @@ public class LoginTest extends WebRallyTest {
     public void usernameIncorrectCaseTest1251() {
 
         set_test_case("TC1251");
-
         pl.loginProcess(BAD_CASE_USERNAME, CORRECT_PASSWORD);
-        pl._popUp().loginError()._text().message().assertEquals();
-        pl._popUp().loginError()._button().ok().click();
-        assertStringContains("login", pl.getCurrentLocation());
-        pl._textField().userName().assertEquals("");
-        pl._textField().password().assertEquals("");
+        addError("this test should fail for ONLY one reason (this being that reason", ErrorLevel.FATAL);//TODO: temporarily forcing this test to fail, remove after testing in the cloud
+        
+        
+//        pl._popUp().loginError()._text().message().assertEquals();
+//        pl._popUp().loginError()._button().ok().click();
+//        assertStringContains("login", pl.getCurrentLocation());
+//        pl._textField().userName().assertEquals("");
+//        pl._textField().password().assertEquals("");
     }
 }
