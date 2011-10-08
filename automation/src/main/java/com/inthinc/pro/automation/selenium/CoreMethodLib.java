@@ -61,7 +61,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     private final Addresses silo;
     
     private volatile static HashMap<Long, CoreMethodInterface> seleniumByThread = new HashMap<Long, CoreMethodInterface>();
-    private volatile static HashMap<Long, ErrorCatcher> errorCatcherByThread = new HashMap<Long, ErrorCatcher>();
     
     public CoreMethodLib(Browsers browser, Addresses silo) {
         super(browser.getDriver(), silo.getWebAddress());
@@ -793,7 +792,6 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             selenium = new CoreMethodLib(Browsers.FIREFOX, Addresses.QA);
         } 
         seleniumByThread.put(currentThread, selenium.getErrorCatcher().newInstanceOfSelenium());
-        errorCatcherByThread.put(currentThread, seleniumByThread.get(currentThread).getErrorCatcher());
         return seleniumByThread.get(currentThread);
     }
 
@@ -809,17 +807,8 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
                 logger.error(StackToString.toString(e));
         }
         seleniumByThread.remove(currentThread);
-        errorCatcherByThread.remove(currentThread);
     }
     
-    public static ErrorCatcher getErrorCatcherThread() {
-        Long currentThread = getThreadID();
-        if (errorCatcherByThread.containsKey(currentThread)) {
-            return errorCatcherByThread.get(currentThread);
-        }
-        errorCatcherByThread.put(currentThread, new ErrorCatcher());
-        return getErrorCatcherThread();
-    }
     
     private static long getThreadID(){
         return Thread.currentThread().getId();

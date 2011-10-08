@@ -21,7 +21,7 @@
 			</list>
 		</property>
 	</bean>
-	<bean id="automatedTest" class="com.inthinc.pro.automation.selenium.AutomatedTest"
+	<bean id="automatedTest" class="com.inthinc.pro.automation.test.Test"
 		scope="singleton">
 		<property name="automationPropertiesBean" ref="automationPropertiesBean"  />
 	</bean>

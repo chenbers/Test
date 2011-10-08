@@ -3,10 +3,10 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.After;
 import org.junit.Before;
 
-import com.inthinc.pro.automation.selenium.AutomatedTest;
+import com.inthinc.pro.automation.test.BrowserTest;
 import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
-public abstract class WebTest extends AutomatedTest {
+public abstract class WebTest extends BrowserTest {
 
 	public WebTest(){
 		super(MastheadEnum.VERSION);

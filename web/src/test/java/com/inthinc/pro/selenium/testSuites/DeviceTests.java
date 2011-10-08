@@ -5,25 +5,20 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.AutomationHessianFactory;
-import com.inthinc.pro.automation.utils.AutomationFileHandler;
-import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.utils.AutomationFileHandler;
+import com.inthinc.pro.automation.utils.AutomationHessianFactory;
+import com.inthinc.pro.automation.utils.StackToString;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 
-public class DeviceTests extends WebRallyTest {
+public class DeviceTests extends WebDeviceOnlyRallyTest {
     
-    @BeforeClass
-    public static void beforeClass(){
-        setAsDeviceTest();
-    }
 
     @Test
     public void forwardCommandLimit() {

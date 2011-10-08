@@ -19,8 +19,6 @@ public class MasterTest {
     private final static Logger logger = Logger.getLogger(MasterTest.class);
     
 
-    protected static ErrorCatcher errors = CoreMethodLib.getErrorCatcherThread();
-
     public static enum ErrorLevel {
         FATAL_ERROR(Verdicts.INCONCLUSIVE),
         FATAL(Verdicts.FAIL),
@@ -81,15 +79,15 @@ public class MasterTest {
     private CoreMethodInterface selenium;
 
     protected void addError(String errorName, ErrorLevel level) {
-        errors.addError(errorName, Thread.currentThread().getStackTrace(), level);
+        selenium.getErrorCatcher().addError(errorName, Thread.currentThread().getStackTrace(), level);
     }
 
-    protected static void addError(String errorName, String error, ErrorLevel level) {
-        errors.addError(errorName, error, level);
+    protected void addError(String errorName, String error, ErrorLevel level) {
+        selenium.getErrorCatcher().addError(errorName, error, level);
     }
 
     protected void addError(String errorName, Throwable stackTrace, ErrorLevel level) {
-        errors.addError(errorName, stackTrace, level);
+        selenium.getErrorCatcher().addError(errorName, stackTrace, level);
     }
 
     protected Boolean assertEquals(Object expected, Object actual) {
@@ -183,15 +181,13 @@ public class MasterTest {
     }
 
     protected ErrorCatcher getErrors() {
-        errors = CoreMethodLib.getErrorCatcherThread();
-        return errors;
+        return selenium.getErrorCatcher();
     }
 
     protected CoreMethodInterface getSelenium() {
         if (selenium == null) {
             selenium = CoreMethodLib.getSeleniumThread();
         }
-        errors = CoreMethodLib.getErrorCatcherThread();
         return selenium;
     }
 

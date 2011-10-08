@@ -3,14 +3,12 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.After;
 import org.junit.Before;
 
-import com.inthinc.pro.automation.test.BrowserRallyTest;
-import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
+import com.inthinc.pro.automation.test.DeviceOnlyRallyTest;
 
-public abstract class WebRallyTest extends BrowserRallyTest{
-	
-	public WebRallyTest(){
-		super(MastheadEnum.VERSION);
-	}
+public class WebDeviceOnlyRallyTest extends DeviceOnlyRallyTest {
+
+    public WebDeviceOnlyRallyTest() {
+    }
     
     @Before
     public void a_before(){
@@ -23,5 +21,5 @@ public abstract class WebRallyTest extends BrowserRallyTest{
         super.after();
         didTestFail();
     }
-    
+
 }

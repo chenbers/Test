@@ -46,7 +46,7 @@ public class NotificationsSafetyTest extends WebRallyTest {
             PASSWORD_2 = logins.get(1).getPassword();
             
         }else{
-            addError("Account Error", "there are not enough accounts with NoteTesterData", ErrorLevel.FAIL);
+            throw new AssertionError("Account Error, there are not enough accounts with NoteTesterData");
         }
     }
     @Before
