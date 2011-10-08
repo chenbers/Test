@@ -41,8 +41,6 @@ public class EditMyAccountTest extends WebRallyTest {
     @Test
     public void MeasurementValidation() {
         set_test_case("TC1275");
-        open("/login");
-        addError("intentionally failing this test to check for subsequent tests failing for THIS addError ", ErrorLevel.FATAL);
         // 0. login
         myAccountPage.loginProcess(USERNAME, PASSWORD);
 
