@@ -28,7 +28,6 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
  * -logins used for these tests must have access to the drivers/vehicles/devices used in NoteTesterGeneration
  *
  */
-@Ignore //TODO: un-ignore once rally vs hudson results but fixed
 public class NotificationsDiagnosticsTest extends WebRallyTest {
     private static String USERNAME;        
     private static String USERNAME_2;    
@@ -123,7 +122,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore
     public void emailTest1373(){
         set_test_case("TC1373");
         pl.loginProcess(USERNAME, PASSWORD);
@@ -139,7 +137,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore
     public void locationMapLinkTest1377(){
         set_test_case("TC1377");
         allCheckedHelper(USERNAME, PASSWORD);
@@ -161,7 +158,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
      * -NoteTesterGeneration must be run for GROUP
      */
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void searchTest1379(){
         set_test_case("TC1379");
         allCheckedHelper(USERNAME, PASSWORD);
@@ -214,7 +210,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
      * -NoteTesterGeneration must be run for GROUP
      */
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void tablePropertiesTest1381(){
         
         set_test_case("TC1381");
@@ -369,7 +364,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void toolsButtonTest1382(){
         set_test_case("TC1382");
         pl.loginProcess(USERNAME, PASSWORD);
@@ -384,7 +378,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void diagnosticsUITest1383(){
         set_test_case("TC1383");
         allCheckedHelper(USERNAME, PASSWORD);
@@ -417,7 +410,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
      * -GROUP must be accessible for USERNAME
      */
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void vehicleLinkTest1384(){
         set_test_case("TC1384");
         allCheckedHelper(USERNAME, PASSWORD);
@@ -435,7 +427,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void cancelChangesTest1386(){
         set_test_case("TC1386");
         pl.loginProcess(USERNAME, PASSWORD);
@@ -465,7 +456,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void cancelNoChangesTest1387(){
         set_test_case("TC1387");
         pl.loginProcess(USERNAME, PASSWORD);
@@ -493,7 +483,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void mouseCheckBoxSelectionTest1388(){
         set_test_case("TC1388");
         someCheckedHelper(USERNAME, PASSWORD);
@@ -517,7 +506,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void spacebarCheckBoxSelectionTest1389(){
         set_test_case("TC1389");
         someCheckedHelper(USERNAME, PASSWORD);
@@ -532,13 +520,12 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         spaceBar();
         pnd._popUp().editColumns()._checkBox().row(1).assertChecked(false);
         spaceBar();
-        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(true);//TODO: testFailing: dtanner: does the spaceBar() method WORK?
+        pnd._popUp().editColumns()._checkBox().row(1).assertChecked(true);
         
     }
     
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void currentSessionRetentionTest1390(){
         set_test_case("TC1390");
         someCheckedHelper(USERNAME, PASSWORD);
@@ -565,7 +552,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore
     public void enterKeyTest1391(){
         set_test_case("TC1391");
         someCheckedHelper(USERNAME, PASSWORD);
@@ -580,7 +566,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._popUp().editColumns()._checkBox().row(4).check();
         enterKey();
         pause(2, "Waiting for columns to update.");
-        pnd._link().sortByDateTime().assertPresence(false);//TODO: testFailing: dtanner: looks like it is because enterKey() doesn't work???
+        pnd._link().sortByDateTime().assertPresence(false);
         pnd._link().sortByGroup().assertPresence(true);
         pnd._link().sortByDriver().assertPresence(true);
         pnd._link().sortByVehicle().assertPresence(true);
@@ -589,7 +575,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void saveButtonTest1392(){
         set_test_case("TC1392");
         someCheckedHelper(USERNAME, PASSWORD);
@@ -611,7 +596,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void subsequentSessionRetentionTest1393(){
         set_test_case("TC1393");
         someCheckedHelper(USERNAME, PASSWORD);
@@ -638,7 +622,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore
     public void tabbingOrderTest1394(){
         set_test_case("TC1394");
         
@@ -654,7 +637,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         }
         tabKey();
         pause(10, "");
-        if(!pnd._popUp().editColumns()._checkBox().row(2).hasFocus()){//TODO: dtanner: testFailing: does tabKey() work ?
+        if(!pnd._popUp().editColumns()._checkBox().row(2).hasFocus()){
             addError("Incorrect Focus", "Focus is expected to be on second check box. Possible that tabKey() didn't work.", ErrorLevel.ERROR);
             pnd._popUp().editColumns()._checkBox().row(2).focus();
         }
@@ -690,7 +673,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     }
     
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void editColumnsUITest1395(){
         set_test_case("TC1395");
         pl.loginProcess(USERNAME, PASSWORD);
@@ -731,7 +713,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
      * -NoteTesterGeneration must be run for GROUP
      */
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void excludeLinkIdlingTest1397(){
         set_test_case("TC1397");
         allCheckedHelper(USERNAME, PASSWORD);
@@ -763,7 +744,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
      * -NoteTesterGeneration must be run for GROUP
      */
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void excludeLinkTamperingTest1398(){
         set_test_case("TC1398");
         allCheckedHelper(USERNAME, PASSWORD);
@@ -795,7 +775,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
      * -NoteTesterGeneration must be run for GROUP
      */
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void excludeLinkUITest1399(){
         set_test_case("TC1399");
         allCheckedHelper(USERNAME, PASSWORD);
@@ -825,7 +804,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
      * -NoteTesterGeneration must be run for GROUP
      */
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void includeLinkTest5737(){
         set_test_case("TC5737");
         allCheckedHelper(USERNAME, PASSWORD);
@@ -852,7 +830,6 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
      * -NoteTesterGeneration must have run YESTERDAY
      */
     @Test
-    @Ignore //TODO: only temporarily ignored
     public void timeFrameTest5742() {
         set_test_case("TC5742");
 
