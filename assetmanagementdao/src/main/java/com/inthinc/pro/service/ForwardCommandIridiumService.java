@@ -5,25 +5,25 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.inthinc.pro.domain.ForwardCommand;
-import com.inthinc.pro.repository.ForwardCommandRepository;
+import com.inthinc.pro.domain.ForwardCommandIridium;
+import com.inthinc.pro.repository.ForwardCommandIridiumRepository;
 
 @Service
-public class ForwardCommandService {
+public class ForwardCommandIridiumService {
     @Autowired
-    ForwardCommandRepository forwardCommandRepository;
+    ForwardCommandIridiumRepository forwardCommandIridiumRepository;
     
 	public Number getForwardCommandCount(){
-		return forwardCommandRepository.count();
+		return forwardCommandIridiumRepository.count();
 	}
 
-	public ForwardCommand getForwardCommandByID(Integer id){
-		return forwardCommandRepository.findByID(id);
+	public ForwardCommandIridium getForwardCommandByID(Integer id){
+		return forwardCommandIridiumRepository.findByID(id);
 	}
-	public List<ForwardCommand> getForwardCommandsByVehicleID(Integer vehicleID){
-		return forwardCommandRepository.getForwardCommandsByVehicleID(vehicleID);
+	public List<ForwardCommandIridium> getForwardCommandsByVehicleID(Integer vehicleID){
+		return forwardCommandIridiumRepository.getForwardCommandsByVehicleID(vehicleID);
 	}
-	public ForwardCommand queueForwardCommand(ForwardCommand forwardCommand){
+	public ForwardCommandIridium queueForwardCommand(ForwardCommandIridium forwardCommand){
 		/*
 		 * http
 		 * IF _intData = -1 THEN
@@ -62,6 +62,6 @@ public class ForwardCommandService {
 			END IF;
 
 		 */
-		return forwardCommandRepository.save(forwardCommand);
+		return forwardCommandIridiumRepository.save(forwardCommand);
 	}
 }

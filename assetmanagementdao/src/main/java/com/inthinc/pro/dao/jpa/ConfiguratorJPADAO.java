@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.inthinc.pro.configurator.model.SensitivitySliderValues;
 import com.inthinc.pro.configurator.model.VehicleSetting;
 import com.inthinc.pro.domain.Device;
 import com.inthinc.pro.domain.settings.DesiredVehicleSetting;
@@ -27,8 +26,6 @@ public class ConfiguratorJPADAO{
     private ForwardCommandHelper forwardCommandHelper;
     @Autowired
     private VehicleSettingHelper vehicleSettingHelper;
-    @Autowired
-    private SensitivitySliderHelper sensitivitySliderHelper;
     @Autowired
 	private VehicleSettingHistoryService vehicleSettingHistoryService;
 
@@ -64,10 +61,6 @@ public class ConfiguratorJPADAO{
 		forwardCommandHelper.queueForwardCommands(device, setMap);
 	}
 
-	public List<SensitivitySliderValues> getSensitivitySliderValues() {
-		List<SensitivitySliderValues> convertedSensitivitySliderValues = sensitivitySliderHelper.getSensitivitySliderValues();
-		return convertedSensitivitySliderValues;
-	}
 
 	public List<VehicleSettingHistory> getVehicleSettingsHistory(Integer vehicleID, Date startTime, Date endTime) {
 		List<VehicleSettingHistory> vehicleSettingHistories = vehicleSettingHistoryService.getVehicleSettingHistoryForVehicle(vehicleID, startTime, endTime);
@@ -113,8 +106,4 @@ public class ConfiguratorJPADAO{
 		this.vehicleSettingHelper = vehicleSettingHelper;
 	}
 
-	public void setSensitivitySliderHelper(
-			SensitivitySliderHelper sensitivitySliderHelper) {
-		this.sensitivitySliderHelper = sensitivitySliderHelper;
-	}
 }

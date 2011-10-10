@@ -39,7 +39,7 @@ public class DesiredVehicleSettingTest {
 		assertNotNull(createdDesiredVehicleSetting.getModified());
 //		assertNotNull(createdDesiredVehicleSetting.getDesiredVehicleSettingID());
 		Date modified = createdDesiredVehicleSetting.getModified();
-//		Integer id = createdDesiredVehicleSetting.getDesiredVehicleSettingID();
+		Integer id = createdDesiredVehicleSetting.getDesiredVehicleSettingID();
 		createdDesiredVehicleSetting = null;
 		try {
 			Thread.sleep(5000);//sleep so modified time is later than current modified time
@@ -47,7 +47,7 @@ public class DesiredVehicleSettingTest {
 			e.printStackTrace();
 		} 
 		DesiredVehicleSetting updateddvs = new DesiredVehicleSetting();
-//		updateddvs.setDesiredVehicleSettingID(id);
+		updateddvs.setDesiredVehicleSettingID(id);
 		updateddvs.setReason("Testing updateDesiredVehicleSetting");
 		updateddvs.setSettingID(8);
 		updateddvs.setUserID(10087); //jpatestuser

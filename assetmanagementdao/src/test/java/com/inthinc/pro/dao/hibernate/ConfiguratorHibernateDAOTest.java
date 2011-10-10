@@ -93,11 +93,6 @@ public class ConfiguratorHibernateDAOTest {
 		configuratorJPADAO.updateVehicleSettings(settings.get(157).getDesiredVehicleSettingID(), vehicleID, setMap, userID, reason);
 	}
 
-//	public void setFwdCmdSpoolWSIridiumJDBCDAO(
-//			FwdCmdSpoolWSIridiumJDBCDAO fwdCmdSpoolWSIridiumJDBCDAO) {
-//		this.fwdCmdSpoolWSIridiumJDBCDAO = fwdCmdSpoolWSIridiumJDBCDAO;
-//	}
-
 	public ConfiguratorJPADAO getConfiguratorJPADAO() {
 		return configuratorJPADAO;
 	}
@@ -105,12 +100,4 @@ public class ConfiguratorHibernateDAOTest {
 	public void setConfiguratorJPADAO(ConfiguratorJPADAO configuratorJPADAO) {
 		this.configuratorJPADAO = configuratorJPADAO;
 	}
-
-//	public void setFwdCmdSpoolWSHttpJDBCDAO(FwdCmdSpoolWSHttpJDBCDAO fwdCmdSpoolWSHttpJDBCDAO) {
-//		this.fwdCmdSpoolWSHttpJDBCDAO = fwdCmdSpoolWSHttpJDBCDAO;
-//	}
-//
-//	public void setDeviceService(DeviceService deviceService) {
-//		this.deviceService = deviceService;
-//	}
 }

@@ -4,8 +4,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.inthinc.pro.domain.settings.ForwardCommandDef;
-
 public enum ConfiguratorForwardCommand{
 	
 	VARIABLE_SPEED_LIMITS(85,new ForwardCommandDef[]{new ForwardCommandDef(2067,0)}),

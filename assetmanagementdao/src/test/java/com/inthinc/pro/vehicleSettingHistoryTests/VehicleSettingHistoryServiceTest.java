@@ -2,6 +2,7 @@ package com.inthinc.pro.vehicleSettingHistoryTests;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class VehicleSettingHistoryServiceTest {
 	private VehicleSettingHistoryService vehicleSettingHistoryService;
 	
 	@Test
+	@Ignore
 	public void getVehicleSettingHistory(){
 		List<VehicleSettingHistory> history = vehicleSettingHistoryService.findAllHistory();
         for (VehicleSettingHistory e : history)
