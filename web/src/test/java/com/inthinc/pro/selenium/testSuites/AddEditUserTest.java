@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.utils.AutomationCalendar.TimeZones;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
@@ -13,9 +15,7 @@ import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
-
-@Ignore
-public class AddEditUser extends WebRallyTest {
+public class AddEditUserTest extends WebRallyTest {
 	
 	private PageMyAccount myAccount;
 	private PageAddEditUser myAddEditUser;
@@ -32,6 +32,9 @@ public class AddEditUser extends WebRallyTest {
 		myAccount = new PageMyAccount();
 		myAdminUsers = new PageAdminUsers();
 		myAdminUserDetails = new PageAdminUserDetails();
+		AutomationLogins login = AutomationLogins.getOne();
+		USERNAME = login.getUserName();
+		PASSWORD = login.getPassword();
 	}
 	
 	@Test
