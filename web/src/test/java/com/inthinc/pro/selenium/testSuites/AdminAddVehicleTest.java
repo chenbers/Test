@@ -24,7 +24,7 @@ public class AdminAddVehicleTest extends WebRallyTest {
     
     @BeforeClass
     public static void beforeClass(){
-        AutomationLogins login = AutomationLogins.getOneBy(EnumSet.of(LoginCapabilities.RoleAdmin));
+        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.RoleAdmin);
         username = login.getUserName();
         password = login.getPassword();
     }

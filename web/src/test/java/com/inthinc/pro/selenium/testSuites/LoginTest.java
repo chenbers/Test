@@ -30,9 +30,9 @@ public class LoginTest extends WebRallyTest {
     
     @Test
     public void accessBlockedTest1240() {
-
+        set_defect("DE6705");
         set_test_case("TC1240");
-        AutomationLogins login = AutomationLogins.getOneBy(EnumSet.of(LoginCapabilities.StatusInactive));
+        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.StatusInactive);
         BLOCKED_USERNAME = login.getUserName();
         CORRECT_PASSWORD = login.getPassword();
         pl.loginProcess(BLOCKED_USERNAME, CORRECT_PASSWORD);

@@ -31,8 +31,7 @@ public class ReportsDriver extends WebRallyTest {
 
     @BeforeClass
     public static void beforeClass() {
-        Set<LoginCapabilities> capabilities = Collections.emptySet();
-        AutomationLogins login = AutomationLogins.getOneBy(capabilities);
+        AutomationLogins login = AutomationLogins.getOne();
         username = login.getUserName();
         password = login.getPassword();
 

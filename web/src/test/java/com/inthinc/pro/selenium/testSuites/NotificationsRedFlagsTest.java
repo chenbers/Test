@@ -1,8 +1,10 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -10,21 +12,39 @@ import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
-@Ignore
 public class NotificationsRedFlagsTest extends WebRallyTest {
-    String USERNAME = "dastardly";
-    String USERNAME_TOP = "pitstop";
-    String USERNAME_2 = "CaptainNemo";
-    String PASSWORD = "Muttley";
-    String GROUP = "Test Group WR";
+    private static String USERNAME = "dastardly";
+    private static String USERNAME_2 = "CaptainNemo";
+    private static String PASSWORD = "Muttley";
+    private static String PASSWORD_2 = "Muttley";
+    private static String GROUP = "Test Group WR";
+    
     PageLogin pl;
     PageNotificationsRedFlags pnrf;
+    
+    @BeforeClass
+    public static void beforeClass() {
+        List<AutomationLogins> logins = AutomationLogins.getAllBy(LoginCapabilities.NoteTesterData);
+        if(logins.size() > 1){
+            USERNAME = logins.get(0).getUserName();
+            PASSWORD = logins.get(0).getPassword();
+            GROUP = logins.get(0).getGroup();
+            
+            USERNAME_2 = logins.get(1).getUserName();
+            PASSWORD_2 = logins.get(1).getPassword();
+            
+        }else{
+            throw new AssertionError("Account Error, there are not enough accounts with NoteTesterData");
+        } 
+    }
 
     @Before
     public void before(){
@@ -59,7 +79,8 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         savePageLink();
         String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
-        pnrf.loginProcess(USERNAME_2, PASSWORD);
+
+        pnrf.loginProcess(USERNAME_2, PASSWORD_2);
         String team2 = ptds._text().teamName().getText();
         openSavedPage();
         assertStringContains(correctURL, ptds.getCurrentLocation());
@@ -70,8 +91,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void driverLinkTest1437(){
         set_test_case("TC1437");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -104,10 +124,9 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     }
     
     @Test
-    public void locationMapLinkTest1445(){
+    public void locationMapLinkTest1445(){//TODO: run this test... if it still does not work... refer to US3950!
         set_test_case("TC1445");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._dropDown().team().selectPartMatch(GROUP);
@@ -141,10 +160,9 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void searchTest1448(){
         set_test_case("TC1448");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         int length = 3;
         
-        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -184,138 +202,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         
     }
     
-    /*
-     * Compares the dates.
-     * 
-     * @param date1
-     * @param date2
-     * @return 0 if date1 = date2, -1 if date1 is BEFORE date2, 1 if date1 is AFTER date2.
-     */
-    public int cruddyCompareDates(String date1, String date2){
-        //Set up comparison values.
-        int month1 = monthToInt(date1.substring(0,3));
-        int month2 = monthToInt(date2.substring(0,3));
-        int day1;
-        int day2;
-        int year1;
-        int year2;
-        String dateStripped1;
-        String dateStripped2;
-        
-        if(date1.charAt(6) == ','){
-            day1 = Integer.parseInt(date1.substring(4,6));
-            year1 = Integer.parseInt(date1.substring(8,12));
-            dateStripped1 = date1.substring(13);
-        }
-        else{
-            day1 = Integer.parseInt(date1.substring(4,5));
-            year1 = Integer.parseInt(date1.substring(7,11));
-            dateStripped1 = date1.substring(12);
-        }
-        if(date2.charAt(6) == ','){
-            day2 = Integer.parseInt(date2.substring(4,6));
-            year2 = Integer.parseInt(date2.substring(8,12));
-            dateStripped2 = date2.substring(13);
-        }
-        else{
-            day2 = Integer.parseInt(date2.substring(4,5));
-            year2 = Integer.parseInt(date2.substring(7,11));
-            dateStripped2 = date2.substring(12);
-        }
-        
-        int hour1;
-        int hour2;
-        int minute1;
-        int minute2;
-        String meridian1;
-        String meridian2;
-        
-        if(dateStripped1.charAt(1) == ':'){
-            hour1 = Integer.parseInt(dateStripped1.substring(0,1));
-            minute1 = Integer.parseInt(dateStripped1.substring(2,4));
-            meridian1 = dateStripped1.substring(5,7);
-        }
-        else{
-            hour1 = Integer.parseInt(dateStripped1.substring(0,2));
-            minute1 = Integer.parseInt(dateStripped1.substring(3,5));
-            meridian1 = dateStripped1.substring(6,8);
-        }
-        if(dateStripped2.charAt(1) == ':'){
-            hour2 = Integer.parseInt(dateStripped2.substring(0,1));
-            minute2 = Integer.parseInt(dateStripped2.substring(2,4));
-            meridian2 = dateStripped2.substring(5,7);
-        }
-        else{
-            hour2 = Integer.parseInt(dateStripped2.substring(0,2));
-            minute2 = Integer.parseInt(dateStripped2.substring(3,5));
-            meridian2 = dateStripped2.substring(6,8);
-        }
-        
-        //Compare years.
-        if(year1 != year2){
-            if(year1 > year2)
-                return 1;
-            return -1;
-        }
-        
-        //Compare months.
-        if(month1 > month2){
-            return 1;
-        }
-        if(month2 > month1){
-            return -1;
-        }
-        
-        //Compare days.
-        if(day1 > day2){
-            return 1;
-        }
-        if(day2 > day1){
-            return -1;
-        }
-        
-        //Compare meridians.
-        if(meridian1.equals(meridian2)){}
-        else{
-            if(meridian1.equals("PM")){
-                return 1;
-            }
-            else{
-                return -1;
-            }
-        }
-        
-        //Compare hours.
-        if(hour1 > hour2){
-            if(hour1 == 12)
-                return -1;
-            return 1;
-        }
-        if(hour2 > hour1){
-            if(hour2 == 12)
-                return 1;
-            return -1;
-        }
-        
-        //Compare minutes.
-        if(minute1 > minute2){
-            return 1;
-        }
-        if(minute2 > minute1){
-            return -1;
-        }
-        
-        return 0;
-    }
-    
     @Test
     public void tablePropertiesTest1450(){
         
         set_test_case("TC1450");
-        allCheckedHelper();
+        allCheckedHelper(USERNAME, PASSWORD);
         String currentText;
         AutomationCalendar currentDate = null;
-        pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._dropDown().team().selectPartMatch(GROUP);
@@ -478,8 +371,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void redFlagsUITest1452(){
         set_test_case("TC1452");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -506,8 +398,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void vehicleLinkTest1453(){
         set_test_case("TC1453");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -584,8 +475,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void mouseCheckBoxSelectionTest1457(){
         set_test_case("TC1457");
-        someCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
@@ -607,8 +497,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void spacebarCheckBoxSelectionTest1458(){
         set_test_case("TC1458");
-        someCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
@@ -626,8 +515,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void currentSessionRetentionTest1459(){
         set_test_case("TC1459");
-        someCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
@@ -652,8 +540,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void enterKeyTest1460(){
         set_test_case("TC1460");
-        someCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
@@ -676,8 +563,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void saveButtonTest1461(){
         set_test_case("TC1461");
-        someCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
@@ -698,8 +584,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void subsequentSessionRetentionTest1462(){
         set_test_case("TC1462");
-        someCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
@@ -811,8 +696,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void excludeLinkCancelTest1465(){
         set_test_case("TC1465");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -833,8 +717,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void excludeLinkCrashTest1466(){
         set_test_case("TC1466");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -859,8 +742,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void excludeLinkEnterKeyTest1467(){
         set_test_case("TC1467");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -881,8 +763,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void excludeLinkDrivingStyleTest1468(){
         set_test_case("TC1468");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -907,8 +788,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void excludeLinkOKButtonTest1469(){
         set_test_case("TC1469");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -927,8 +807,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void excludeLinkSeatBeltTest1470(){
         set_test_case("TC1470");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -953,8 +832,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void excludeLinkSpeedingTest1471(){
         set_test_case("TC1471");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -979,8 +857,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void excludeLinkUITest1472(){
         set_test_case("TC1472");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -1002,8 +879,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     @Test
     public void includeLinkTest5739(){
         set_test_case("TC5739");
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         
@@ -1023,8 +899,7 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
     public void timeFrameTest5744(){
         set_test_case("TC5744");
         
-        allCheckedHelper();
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._dropDown().team().selectPartMatch(GROUP);
@@ -1044,13 +919,13 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         }
     }
     
-    public TextField searchHeader(int i){
+    private TextField searchHeader(int i){
         TextField[] searchHeaders = {pnrf._textField().group(), pnrf._textField().driver(), pnrf._textField().vehicle()};
 
         return searchHeaders[i];
     }
     
-    public String searchText(int i){
+    private String searchText(int i){
         int firstDriver = 1;
         while(!pnrf._link().entryDriver().row(firstDriver).isClickable()){
             firstDriver++;
@@ -1061,46 +936,16 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         return searchStrings[i];
     }
     
-    public String badSearchText(int i){
+    private String badSearchText(int i){
         return "ZZZZZZZZ";
     }
     
-    public TextTableLink searchValues(int i){
+    private TextTableLink searchValues(int i){
         TextTableLink[] tableValues = {pnrf._link().entryGroup(), pnrf._link().entryDriver(), pnrf._link().entryVehicle()};
         return tableValues[i];
     }
     
-    public int monthToInt(String month){
-        if(month.equals("Jan"))
-            return 1;
-        if(month.equals("Feb"))
-            return 2;
-        if(month.equals("Mar"))
-            return 3;
-        if(month.equals("Apr"))
-            return 4;
-        if(month.equals("May"))
-            return 5;
-        if(month.equals("Jun"))
-            return 6;
-        if(month.equals("Jul"))
-            return 7;
-        if(month.equals("Aug"))
-            return 8;
-        if(month.equals("Sep"))
-            return 9;
-        if(month.equals("Oct"))
-            return 10;
-        if(month.equals("Nov"))
-            return 11;
-        if(month.equals("Dec"))
-            return 12;
-        
-        addError("Invalid month data:" + month, ErrorLevel.FATAL);
-        return 0;
-    }
-    
-    public void allCheckedHelper(){
+    private void allCheckedHelper(String username, String password){
         pl.loginProcess(USERNAME, PASSWORD);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
@@ -1115,11 +960,11 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
         pnrf._popUp().editColumns()._checkBox().row(7).check();
         pnrf._popUp().editColumns()._checkBox().row(8).check();
         pnrf._popUp().editColumns()._button().save().click();
-        pnrf._link().logout();
+
     }
     
-    public void someCheckedHelper(){
-          pl.loginProcess(USERNAME, PASSWORD);
+    private void someCheckedHelper(String username, String password){
+          pl.loginProcess(username, password);
           PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
           ptds._link().notifications().click();
           PageNotificationsRedFlags pnrf = new PageNotificationsRedFlags();
@@ -1133,6 +978,6 @@ public class NotificationsRedFlagsTest extends WebRallyTest {
           pnrf._popUp().editColumns()._checkBox().row(7).uncheck();
           pnrf._popUp().editColumns()._checkBox().row(8).uncheck();
           pnrf._popUp().editColumns()._button().save().click();
-          pnrf._link().logout();
+          
     }
 }
