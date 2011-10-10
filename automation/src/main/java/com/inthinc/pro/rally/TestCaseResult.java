@@ -105,6 +105,7 @@ public class TestCaseResult extends RallyObject {
     private final static Logger logger = Logger.getLogger(TestCaseResult.class);
 
     private JSONObject testCaseResults;
+    private String notes;
     
 
     public TestCaseResult(String username, String password,
@@ -200,7 +201,8 @@ public class TestCaseResult extends RallyObject {
     }
 
     public void setNotes(String notes) {
-        setField(Fields.NOTES, notes);
+        this.notes += "; "+notes;
+        setField(Fields.NOTES, this.notes);
     }
 
     public void setTestCase(NameValuePair searchParams) {

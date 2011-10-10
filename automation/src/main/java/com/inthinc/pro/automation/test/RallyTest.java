@@ -96,6 +96,9 @@ public class RallyTest {
         testCase = formattedID;
         tcr.setTestCase(new NameValuePair(TestCase.Fields.FORMATTED_ID.toString(), formattedID));
     }
+    public void set_defect(String formattedID){
+        tcr.setNotes("  DefectID: "+formattedID);
+    }
     public String get_test_case(){
         return testCase;
     }

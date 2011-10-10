@@ -47,6 +47,10 @@ public class BrowserRallyTest extends BrowserTest implements RallyTestInterface 
     public void set_test_case(String formattedID) {
         rallyTest.set_test_case(formattedID);
     }
+    
+    public void set_defect(String formattedID) {
+        rallyTest.set_defect(formattedID);
+    }
 
     @Override
     public String get_test_case() {
