@@ -6,7 +6,13 @@ import org.junit.Before;
 import com.inthinc.pro.automation.test.BrowserTest;
 import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
+/**
+ * WebTest is an abstract class that can be extended for tests that do NOT get reported to Rally.
+ *
+ */
+
 public abstract class WebTest extends BrowserTest {
+
 
 	public WebTest(){
 		super(MastheadEnum.VERSION);

@@ -9,7 +9,7 @@ import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.HosReportsEnum;
-import com.inthinc.pro.selenium.pageObjects.NonDOTViolationsDetailReport.NonDOTViolationsDetailReportText;
+import com.inthinc.pro.selenium.pageObjects.HOSReportsNonDOTViolationsDetail.NonDOTViolationsDetailReportText;
 
 public class PageHOSReports extends HOSBar {
     
@@ -157,32 +157,32 @@ public class PageHOSReports extends HOSBar {
             return new HOSRecordOfDutyStatus();
         }    
         
-        public ViolationsSummaryReportHTML _violationsSummaryReportHTML(){
-            return new ViolationsSummaryReportHTML();
+        public HOSReportsViolationsSummaryHTML _violationsSummaryReportHTML(){
+            return new HOSReportsViolationsSummaryHTML();
         }
         
-        public ViolationsSummaryReportTable _violationsSummaryReportTable(){
-            return new ViolationsSummaryReportTable();
+        public HOSReportsViolationsSummaryTable _violationsSummaryReportTable(){
+            return new HOSReportsViolationsSummaryTable();
         }
         
-        public DriverDOTLogReportHTML _driverDOTLogReportHTML(){
-            return new DriverDOTLogReportHTML();
+        public HOSReportsDriverDOTLogHTML _driverDOTLogReportHTML(){
+            return new HOSReportsDriverDOTLogHTML();
         }
         
-        public DriverDOTLogReportTable _driverDOTLogReportTable(){
-            return new DriverDOTLogReportTable();
+        public HOSReportsDriverTODLogReportTable _driverDOTLogReportTable(){
+            return new HOSReportsDriverTODLogReportTable();
         }
         
-        public ViolationsDetailReportHTML _violationsDetailReportHTML(){
-            return new ViolationsDetailReportHTML();
+        public HOSReportsViolationsDetailHTML _violationsDetailReportHTML(){
+            return new HOSReportsViolationsDetailHTML();
         }
         
-        public ViolationsDetailReportTable _violationsDetailReportTable(){
-            return new ViolationsDetailReportTable();
+        public HOSReportsViolationsDetailTable _violationsDetailReportTable(){
+            return new HOSReportsViolationsDetailTable();
         }
         
-        public DOTTimeRemainingTable _DOTTimeRemainingTable(){
-            return new DOTTimeRemainingTable();
+        public HOSReportsDOTTimeRemainingTable _DOTTimeRemainingTable(){
+            return new HOSReportsDOTTimeRemainingTable();
         }
         
         public HOSZeroMilesTable _zeroMilesTable(){
@@ -193,12 +193,12 @@ public class PageHOSReports extends HOSBar {
             return new HOSEditsTable();
         }
         
-        public NonDOTViolationsSummaryReportHTML _nonDOTViolationsSummaryReportHTML(){
-            return new NonDOTViolationsSummaryReportHTML();
+        public HOSReportsNonDOTViolationsSummaryHTML _nonDOTViolationsSummaryReportHTML(){
+            return new HOSReportsNonDOTViolationsSummaryHTML();
         }
         
-        public NonDOTViolationsDetailReport _nonDOTViolationsDetailReportHTML(){
-            return new NonDOTViolationsDetailReport();
+        public HOSReportsNonDOTViolationsDetail _nonDOTViolationsDetailReportHTML(){
+            return new HOSReportsNonDOTViolationsDetail();
         }
     }
 }

@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.elements.SortHeader;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.DriverDOTLogReportTableEnum;
 
-public class DriverDOTLogReportTable {
+public class HOSReportsDriverTODLogReportTable {
 
     public class DriverDOTLogReportTableTexts {
         public TextTable entryDateTime() {

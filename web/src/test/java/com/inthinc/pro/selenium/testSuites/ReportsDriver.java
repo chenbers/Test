@@ -39,7 +39,7 @@ public class ReportsDriver extends WebRallyTest {
     }
 
     @Test
-    public void DriverLink() {
+    public void DriverLink() {//TODO: failed when ran manually
         set_test_case("TC1543");
 
         // 1- Login
@@ -118,7 +118,6 @@ public class ReportsDriver extends WebRallyTest {
         // 4- Select Export to Excel
         //driver._button().exportExcel().click(); //TODO: clicking the exportExcel link without handling the resulting "save file" dialog is problematic
         driver._button().exportExcel().assertPresence(true);
-        driver._button().exportExcel().assertClickable(true);
         //TODO: this test does nothing to validate that the excel file is generated correctly?
     }
 
@@ -138,7 +137,6 @@ public class ReportsDriver extends WebRallyTest {
         // 4- Select Export to PDF
         //driver._button().exportPDF().click();//TODO: clicking the exportPDF link without handling the resulting "save file" dialog is problematic
         driver._button().exportPDF().assertPresence(true);
-        driver._button().exportPDF().assertClickable(true);
         //TODO: this test does nothing to validate that the .PDF file is generated correctly?
 
     }

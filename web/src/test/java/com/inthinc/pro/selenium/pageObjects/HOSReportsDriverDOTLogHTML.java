@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.selenium.pageEnums.DriverDOTLogReportHTMLEnum;
 
-public class DriverDOTLogReportHTML {
+public class HOSReportsDriverDOTLogHTML {
     
     public DriverDOTLogReportHTMLTexts _text(){
         return new DriverDOTLogReportHTMLTexts();

@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.elements.SortHeader;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.DOTTimeRemainingTableEnum;
 
-public class DOTTimeRemainingTable {
+public class HOSReportsDOTTimeRemainingTable {
 
     public class DriverDOTLogReportHTMLTexts {
         public TextTable entryGroupName() {

@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.selenium.pageEnums.NonDOTViolationsDetailReportEnum;
 
-public class NonDOTViolationsDetailReport {
+public class HOSReportsNonDOTViolationsDetail {
     
     public NonDOTViolationsDetailReportText _text(){
         return new NonDOTViolationsDetailReportText();

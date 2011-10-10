@@ -5,7 +5,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.ViolationsSummaryReportTableEnum;
 
-public class ViolationsSummaryReportTable {
+public class HOSReportsViolationsSummaryTable {
 
     public class Links {
         public SortHeader sortCumulative_0_14() {

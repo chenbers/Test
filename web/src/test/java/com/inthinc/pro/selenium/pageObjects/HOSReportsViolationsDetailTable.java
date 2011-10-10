@@ -4,7 +4,7 @@ import com.inthinc.pro.automation.elements.SortHeader;
 import com.inthinc.pro.automation.elements.TextTable;
 import com.inthinc.pro.selenium.pageEnums.ViolationsDetailReportTableEnum;
 
-public class ViolationsDetailReportTable {
+public class HOSReportsViolationsDetailTable {
 
     public class ViolationsDetailReportTableTexts {
         public TextTable entryLocation() {

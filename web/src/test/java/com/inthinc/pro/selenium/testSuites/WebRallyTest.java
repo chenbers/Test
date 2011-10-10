@@ -20,8 +20,12 @@ public abstract class WebRallyTest extends BrowserRallyTest{
     @After
     @Override
     public void after(){
+        System.out.println("WebRallyTest.after");
+        System.out.println("get_test_case(): '"+get_test_case()+"'");
         super.after();
-        didTestFail();
+        if(get_test_case() == null || get_test_case().equals(""))   
+            logger.warn("This test did NOT have a testcase?!");
+        didTestFail(); 
     }
     
 }

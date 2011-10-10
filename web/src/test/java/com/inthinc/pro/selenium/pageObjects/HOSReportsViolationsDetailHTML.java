@@ -3,7 +3,7 @@ package com.inthinc.pro.selenium.pageObjects;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.selenium.pageEnums.ViolationsDetailReportHTMLEnum;
 
-public class ViolationsDetailReportHTML {
+public class HOSReportsViolationsDetailHTML {
 
     public class ViolationsDetailReportHTMLTexts {
         
