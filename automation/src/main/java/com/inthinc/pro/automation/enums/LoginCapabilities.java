@@ -38,6 +38,8 @@ public enum LoginCapabilities {
     HasVehicle(),
     HasDevice(),
     NoteTesterData(),
+    StatusInactive(false),
+    StatusActive(true),
     
     
     ;

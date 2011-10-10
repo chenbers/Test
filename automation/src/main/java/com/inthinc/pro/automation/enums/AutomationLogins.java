@@ -22,7 +22,7 @@ public enum AutomationLogins {
     jesse1("jesse1", "password","Tina's Auto Team", null),//prime
     pitstop("pitstop", "Muttley","Top", EnumSet.of(LoginCapabilities.NoteTesterData)), //prime
     tinaauto("tinaauto", "password","Tina's Auto Team", EnumSet.of(LoginCapabilities.RoleAdmin ,LoginCapabilities.HasDevice, LoginCapabilities.HasVehicle, LoginCapabilities.IsDriver)),//prime    
-    whiplash("whiplash", "password","Test Group WR", null),//prime //TODO: bad credential?
+    whiplash("whiplash", "Muttley","Test Group WR", EnumSet.of(LoginCapabilities.StatusInactive)),//prime
     
     
     
@@ -52,7 +52,7 @@ public enum AutomationLogins {
 	    if(capabilities != null)
 	        this.capabilites = capabilities;
 	    else
-	        this.capabilites = Collections.emptySet();
+	        this.capabilites = EnumSet.of(LoginCapabilities.StatusActive);
 	    
 	}
 	public String getUserName(){
@@ -83,9 +83,9 @@ public enum AutomationLogins {
 	    } else {
 	        System.out.println("AutomationLogins.getOneBy("+capabilities+") returning null! ");
 	        return null;//TODO: jwimmer: what is the best course of action if no matching accounts are found?
-	    }
-	    
+	    }  
 	}
+
 	public String getGroup() {
 	    return group;
 	}
