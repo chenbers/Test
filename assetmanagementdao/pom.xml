@@ -15,7 +15,7 @@
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<aspectj.version>1.6.11</aspectj.version>
-		<log4j.version>1.2.15</log4j.version>
+		<log4j.version>1.2.12</log4j.version>
 		<junit.version>4.7</junit.version>
 		<slf4j-version>1.6.1</slf4j-version>
 		<hibernate.core.version>3.6.4.Final</hibernate.core.version>
