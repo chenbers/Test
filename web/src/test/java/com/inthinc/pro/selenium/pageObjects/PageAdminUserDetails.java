@@ -89,5 +89,14 @@ public class PageAdminUserDetails extends AdminBar {
     public UserDetailsTextFields _textField() {
 	return new UserDetailsTextFields();
     }
+    
+    //Helper methods
+    public String getFullName(){
+        String firstname = this._text().values(AdminUserDetailsEnum.FIRST_NAME).getText();
+        String lastname = this._text().values(AdminUserDetailsEnum.LAST_NAME).getText();
+        String middlename = this._text().values(AdminUserDetailsEnum.MIDDLE_NAME).getText();
+        String suffix = this._text().values(AdminUserDetailsEnum.SUFFIX).getText();
+        return (firstname+" "+middlename+" "+lastname+" "+suffix).replace("  ", " ").trim();
+    }
 
 }
