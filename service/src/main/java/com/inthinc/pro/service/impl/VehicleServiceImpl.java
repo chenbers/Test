@@ -34,7 +34,7 @@ public class VehicleServiceImpl extends AbstractService<Vehicle, VehicleDAOAdapt
 
     private static final String SIMPLE_DATE_FORMAT = "yyyyMMdd";
     //2011-08-29T08:31:25-0600
-    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'hh:mm:ssZ";
+    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
     private AddressLookup addressLookup;
 
