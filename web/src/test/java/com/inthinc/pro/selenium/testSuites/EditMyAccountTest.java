@@ -26,8 +26,7 @@ public class EditMyAccountTest extends WebRallyTest {
     
     @BeforeClass
     public static void beforeClass() {
-     // * This test requires any Admin user, set as a driver with assigned vehicle/device.
-        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.HasDevice, LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.RoleAdmin);
+        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.RoleAdmin);
         USERNAME = login.getUserName();
         PASSWORD = login.getPassword();
     }

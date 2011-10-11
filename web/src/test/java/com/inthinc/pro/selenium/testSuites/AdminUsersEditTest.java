@@ -8,6 +8,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.enums.AccountCapabilities;
 import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
@@ -27,7 +28,7 @@ public class AdminUsersEditTest extends WebRallyTest {
 	
     @BeforeClass
     public static void beforeClass(){
-        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.RoleAdmin, AccountCapabilities.HOSEnabled);
+        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.RoleAdmin, AccountCapabilities.HOSEnabled, LoginCapabilities.IsDriver);
         username = login.getUserName();
         password = login.getPassword();
     }
@@ -514,18 +515,24 @@ public class AdminUsersEditTest extends WebRallyTest {
         //2- Click on Admin
         users._link().admin().click();
         users._link().editColumns().click();
-        users._popUp().editColumns()._checkBox().row(1).check();
+        int column_name = 1;
+        int column_userName = 21;
+        users._popUp().editColumns()._checkBox().row(column_name).check();
+        users._popUp().editColumns()._checkBox().row(column_userName).check();
         users._popUp().editColumns()._button().save().click();
         
         //3. Search and select driver
-        users._textField().search().type("tina");
+        users._textField().search().type(username);
         users._button().search().click();
+        
         boolean foundWhoIWasLookingFor = false;
-        Iterator<ClickableTextBased> itr = users._link().tableEntryUserFullName().iterator();
+        int rowNumber = 0;
+        Iterator<TextBased> itr = users._text().tableEntry(AdminUsersEntries.USER_NAME).iterator();
         while (itr.hasNext()){
-            ClickableTextBased nextRow = itr.next();
-            if (nextRow.getText().equals("Testing Tina Nilson")){
-                nextRow.click();
+            TextBased row = itr.next();
+            rowNumber++;
+            if (row.getText().equals(username)){
+                users._link().tableEntryUserFullName().row(rowNumber).click();
                 foundWhoIWasLookingFor = true;
                 break;
             }
