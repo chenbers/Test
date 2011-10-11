@@ -4,11 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.AutomationPropertiesBean;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.dao.hessian.proserver.SiloService;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
@@ -31,7 +34,7 @@ public class ChangePasswordTest extends WebTest {
 	private static String initialPassword = "password";
 	private static String hashOfStringPASSWORD = "JcxjA4COcypWBgdB1+v4VXPdbUf9Nzv4QQ9a8uL3IuCI1JZpLy2J08SO2A9rsHGI";
 	
-	
+    
 	public void updateUser(){
 	    AutomationPropertiesBean apb = getAutomationPropertiesBean();
 	    Addresses address = Addresses.getSilo(apb.getSilo());

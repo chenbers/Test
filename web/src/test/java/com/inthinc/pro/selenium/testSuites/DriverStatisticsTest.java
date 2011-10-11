@@ -1,9 +1,12 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
@@ -14,9 +17,10 @@ import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
 @Ignore
 public class DriverStatisticsTest extends WebRallyTest {
-    String CORRECT_USERNAME = "dastardly";
-    String CORRECT_USERNAME_TOP = "pitstop";
-    String CORRECT_PASSWORD = "Muttley";
+    private static String CORRECT_USERNAME = "dastardly";
+    private static String CORRECT_ADMIN_USERNAME = "pitstop";
+    private static String CORRECT_PASSWORD = "Muttley";
+    private static String CORRECT_ADMIN_PASSWORD = "Muttley";
     PageLogin pl;
     
     //TODO TC1698 (requires new window)
@@ -25,6 +29,16 @@ public class DriverStatisticsTest extends WebRallyTest {
     //TODO Finish TC4586 (requires mid-drive driver switch)
     //TODO Finish TC4625, 5515, 5516 (requires data)
 
+    @BeforeClass
+    public static void beforeClass() {
+        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.NoteTesterData);
+        CORRECT_USERNAME = login.getUserName();
+        CORRECT_PASSWORD = login.getPassword();
+        AutomationLogins admin = AutomationLogins.getOneBy(LoginCapabilities.RoleAdmin);
+        CORRECT_ADMIN_USERNAME = admin.getUserName();
+        CORRECT_ADMIN_PASSWORD = admin.getPassword();
+    }
+    
     @Before
     public void before(){
         pl = new PageLogin();
@@ -49,7 +63,7 @@ public class DriverStatisticsTest extends WebRallyTest {
     @Test
     public void createTest4506(){
         //set_test_case("TC4506");//TODO: when test is complete uncomment this line and remove @Ignore
-        pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
+        pl.loginProcess(CORRECT_ADMIN_USERNAME, CORRECT_ADMIN_PASSWORD);
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();
         PageAdminUsers pau = new PageAdminUsers();
@@ -73,7 +87,7 @@ public class DriverStatisticsTest extends WebRallyTest {
     @Test
     public void editTest4507(){
         //set_test_case("TC4507");//TODO: when test is complete uncomment this line and remove @Ignore
-        pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
+        pl.loginProcess(CORRECT_ADMIN_USERNAME, CORRECT_ADMIN_PASSWORD);
         createDriver("Alma", "Mater", "Top - Test Group WR");
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();
@@ -102,7 +116,7 @@ public class DriverStatisticsTest extends WebRallyTest {
     public void deleteTest4519(){
         //set_test_case("TC4519");//TODO: when test is complete uncomment this line and remove @Ignore
         
-        pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
+        pl.loginProcess(CORRECT_ADMIN_USERNAME, CORRECT_ADMIN_PASSWORD);
         createDriver("Alto", "Soprano", "Top - Test Group WR");
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();
@@ -137,17 +151,20 @@ public class DriverStatisticsTest extends WebRallyTest {
     
     @Test
     public void switchTeamTest4582(){
-        
-        //TODO: this test appears to be failing because it cannot see "Swappy McGee" because Swappy is NOT on the first page of results. re-work this test so that it doesn't fail... 
-        //suggestion: search for Swappy using the search box
-        //TODO: additionally, there are MANY Swappy McGee's (as well as Alpha Betical's) meaning that we are generating a lot of data that we are not cleaning up...
+        //TODO: jwimmer: verify that this test is working
+
         set_test_case("TC4582");
     
-        pl.loginProcess(CORRECT_USERNAME_TOP, CORRECT_PASSWORD);
+        pl.loginProcess(CORRECT_ADMIN_USERNAME, CORRECT_ADMIN_PASSWORD);
         createDriver("Swappy", "McGee", "Top - Test Group WR");
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();
         PageAdminUsers pau = new PageAdminUsers();
+        
+        //search for swappy to ensure that user is ON the page
+        pau._textField().search().type("Swappy McGee");
+        pau._button().search().click();
+        
         pau.getLinkByText("Swappy McGee").click();
         PageAdminUserDetails paud = new PageAdminUserDetails();
         paud._button().edit().click();
@@ -206,11 +223,13 @@ public class DriverStatisticsTest extends WebRallyTest {
         
     }
     
-    private void deleteUser(String fullName){
-        //TODO: related to another task on this page;  this method doesn't appear work ALL the time.  suggestion:search for fullName before deleting 
+    private void deleteUser(String fullName){ 
         PageExecutiveDashboard ped = new PageExecutiveDashboard();
         ped._link().admin().click();
         PageAdminUsers pau = new PageAdminUsers();
+        //TODO: jwimmer: verify that searching for fullname before clicking delete allows this helper method to work ALL the time
+        pau._textField().search().type(fullName);
+        pau._button().search().click();
         pau.getLinkByText(fullName).click();
         PageAdminUserDetails paud = new PageAdminUserDetails();
         paud._button().delete().click();

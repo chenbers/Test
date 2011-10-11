@@ -1,20 +1,30 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
-@Ignore
-public class ChangePassword extends WebRallyTest {
+public class PasswordChangeTest extends WebRallyTest {
 
     private PageMyAccount myAccountPage;
     private RandomValues random;
-    private String USERNAME = "tnilson";
-    private String PASSWORD = "password123";
+    private static String USERNAME = "";
+    private static String PASSWORD = "";
 
+    @BeforeClass
+    public static void beforeClass() {
+     // * This test requires any Admin user, set as a driver with assigned vehicle/device.
+        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.PasswordChanging);
+        USERNAME = login.getUserName();
+        PASSWORD = login.getPassword();
+    }
+    
     @Before
     public void setupPage() {
         random = new RandomValues();
@@ -94,29 +104,29 @@ public class ChangePassword extends WebRallyTest {
         myAccountPage.loginProcess(USERNAME, PASSWORD);
 
         // 1. Successfully change the password.
-        String password = random.getMixedString(10);
+        String randomPassword = random.getMixedString(10);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().change().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(PASSWORD);
-        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(password);
-        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(password);
+        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
+        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._button().change().click();
         myAccountPage._text().infoMessage().validate("Password successfully changed");
 
         // 2. Validate new password is successful.
-        myAccountPage.loginProcess(USERNAME, password);
+        myAccountPage.loginProcess(USERNAME, randomPassword);
 
         // 3. Reset password to original
         myAccountPage._link().myAccount().click();
         myAccountPage._button().change().click();
-        myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(password);
+        myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(PASSWORD);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(PASSWORD);
         myAccountPage._popUp().changeMyPassword()._button().change().click();
 
         // 4. Verify changes back to original password is successful.
         myAccountPage.loginProcess(USERNAME, PASSWORD);
-
+        myAccountPage._link().myAccount().click();
     }
 
     @Test
@@ -245,33 +255,20 @@ public class ChangePassword extends WebRallyTest {
 
         // 1. Change existing password to more than 12 characters and validate
         // error message.
-        String password = random.getMixedString(13);
+        String randomPassword = random.getMixedString(13);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().change().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(PASSWORD);
-        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(password);
-        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(password);
+        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
+        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._button().change().click();
         if (myAccountPage._popUp().changeMyPassword()._text().newPasswordError().validate("Must be 6 to 12 characters")) {
             myAccountPage._popUp().changeMyPassword()._button().cancel().click();
 
-            // 2. Verify no changes were made to password by logging in with
-            // original password.
-            myAccountPage.loginProcess(USERNAME, PASSWORD);
-
-            // 3. Reset password to original
-            myAccountPage._link().myAccount().click();
         }
-
-        myAccountPage._button().change().click();
-        myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(password);
-        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(PASSWORD);
-        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(PASSWORD);
-        myAccountPage._popUp().changeMyPassword()._button().change().click();
-
-        // 4. Verify changes back to original password is successful.
+        // 2. Verify no changes were made to password by logging in with
+        // original password.
         myAccountPage.loginProcess(USERNAME, PASSWORD);
-
         myAccountPage._link().myAccount().click();
 
     }
@@ -298,7 +295,7 @@ public class ChangePassword extends WebRallyTest {
         // 2. Verify no changes were made to password by logging in with
         // original password.
         myAccountPage.loginProcess(USERNAME, PASSWORD);
-
+        myAccountPage._link().myAccount().click();
     }
 
     // TODO: Add TC1297: Tabbing Order (need TAB key).
@@ -325,7 +322,7 @@ public class ChangePassword extends WebRallyTest {
         // 2. Verify no changes were made to password by logging in with
         // original password.
         myAccountPage.loginProcess(USERNAME, PASSWORD);
-
+        myAccountPage._link().myAccount().click();
     }
 
     @Test
@@ -336,29 +333,29 @@ public class ChangePassword extends WebRallyTest {
         myAccountPage.loginProcess(USERNAME, PASSWORD);
 
         // 1. Successfully change the password.
-        String password = random.getMixedString(10);
+        String randomPassword = random.getMixedString(10);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().change().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(PASSWORD);
-        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(password);
-        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(password);
+        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
+        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._button().change().click();
         myAccountPage._text().infoMessage().validate("Password successfully changed");
 
         // 2. Validate new password is successful and logs back into the portal.
-        myAccountPage.loginProcess(USERNAME, password);
+        myAccountPage.loginProcess(USERNAME, randomPassword);
 
         // 3. Reset password to original
         myAccountPage._link().myAccount().click();
         myAccountPage._button().change().click();
-        myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(password);
+        myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(PASSWORD);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(PASSWORD);
         myAccountPage._popUp().changeMyPassword()._button().change().click();
 
         // 4. Verify changes back to original password is successful.
         myAccountPage.loginProcess(USERNAME, PASSWORD);
-
+        myAccountPage._link().myAccount().click();
     }
 
     @Test
@@ -369,29 +366,29 @@ public class ChangePassword extends WebRallyTest {
         myAccountPage.loginProcess(USERNAME, PASSWORD);
 
         // 1. Successfully change the password using special characters.
-        String password = random.getSpecialString(10);
+        String randomPassword = random.getSpecialString(10);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().change().click();
         myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(PASSWORD);
-        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(password);
-        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(password);
+        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
+        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._button().change().click();
         myAccountPage._text().infoMessage().validate("Password successfully changed");
 
         // 2. Validate new password is successful and logs back into the portal.
-        myAccountPage.loginProcess(USERNAME, password);
+        myAccountPage.loginProcess(USERNAME, randomPassword);
 
         // 3. Reset password to original
         myAccountPage._link().myAccount().click();
         myAccountPage._button().change().click();
-        myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(password);
+        myAccountPage._popUp().changeMyPassword()._textField().currentPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(PASSWORD);
         myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(PASSWORD);
         myAccountPage._popUp().changeMyPassword()._button().change().click();
 
         // 4. Verify changes back to original password is successful.
         myAccountPage.loginProcess(USERNAME, PASSWORD);
-
+        myAccountPage._link().myAccount().click();
     }
 
     @Test
@@ -403,16 +400,17 @@ public class ChangePassword extends WebRallyTest {
 
         // 1. Open the Change Password pop-up and close without saving changes
         // by clicking on the X window control.
-        String password = random.getMixedString(10);
+        String randomPassword = random.getMixedString(10);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().change().click();
-        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(password);
-        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(password);
+        myAccountPage._popUp().changeMyPassword()._textField().newPassword().type(randomPassword);
+        myAccountPage._popUp().changeMyPassword()._textField().confirmNewPassword().type(randomPassword);
         myAccountPage._popUp().changeMyPassword()._button().close();
 
         // 2. Verify no changes were made to password by logging in with
         // original password.
         myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage._link().myAccount().click();
     }
 
 }

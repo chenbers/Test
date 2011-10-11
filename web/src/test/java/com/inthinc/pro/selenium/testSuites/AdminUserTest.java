@@ -3,11 +3,18 @@ package com.inthinc.pro.selenium.testSuites;
 import java.util.Iterator;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
+import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
+import com.inthinc.pro.automation.enums.AccountCapabilities;
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
+import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
@@ -16,15 +23,21 @@ import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
  * AdminUsersTest compares the user account to the my account for accuracy
  *
  */
-@Ignore
-public class AdminUsersTest extends WebRallyTest {
+public class AdminUserTest extends WebRallyTest {
 	
 	private PageAdminUsers my;
 	private PageMyAccount myAccount;
 	private PageAdminUserDetails myAdminUserDetails;
-	private String USERNAME = "tinaauto";
-	private String PASSWORD = "password";
-	
+	private static String USERNAME = "tinaauto";
+	private static String PASSWORD = "password";
+	private static AutomationLogins login;
+    
+	@BeforeClass
+    public static void beforeClass(){
+        login = AutomationLogins.getOne();
+        USERNAME = login.getUserName();
+        PASSWORD = login.getPassword();
+    }
 	@Before
 	public void setupPage() {
 		my = new PageAdminUsers();
@@ -43,17 +56,32 @@ public class AdminUsersTest extends WebRallyTest {
 	public void AccountInformation(){
 	  	set_test_case("TC1266");
 				
-		my = new PageAdminUsers ();
+		my = new PageAdminUsers();
 		
 		my.loginProcess(USERNAME, PASSWORD);
 		my._link().admin().click();
+		
+		//ensure that username column is available before searching
+		//if(my._link().sortByColumn(AdminUsersEntries.USER_NAME).isVisible()){//TODO: checking for isVisible getting false negatives? occasionally nullPointer's?
+    		my._link().editColumns().click();
+    		int userNameCheckboxIndex = 21; //TODO: depends on column number, name, order never changing... 
+    		my._popUp().editColumns()._checkBox().row(userNameCheckboxIndex).check();
+    		my._popUp().editColumns()._button().save().click();
+		//}
+    		
+		//search for this username (this ensures that it will be on the first page of the table)
+		my._textField().search().type(login.getUserName());
+		my._button().search().click();
+		
+		Iterator<TextBased> iter = my._text().tableEntry(AdminUsersEntries.USER_NAME).iterator();
+		int rowNumber = 0;
 		boolean clicked = false;
-		Iterator<ClickableTextBased> iter = my._link().tableEntryUserName().iterator();
 		while(iter.hasNext()&&!clicked){
-		    ClickableTextBased username = iter.next();
+		    TextBased username = iter.next();
+		    rowNumber++;
 		    
-		    if(username.getText().equalsIgnoreCase("Tina Test Automation Jr.")){
-		        username.click();
+		    if(username.getText().equalsIgnoreCase(login.getUserName())){
+		        my._link().tableEntryUserFullName().row(rowNumber).click();
 		        clicked = true;
 		    }
 		}
@@ -104,7 +132,8 @@ public class AdminUsersTest extends WebRallyTest {
         myAccount._link().myAccount().click();
                
         /*compare Account info */
-        myAccount._text().name().validate(firstname +" "+ middlename+" "+lastname+" "+suffix);
+        String expectedName = (firstname +" "+ middlename+" "+lastname+" "+suffix).replace("  ", " ").trim();
+        myAccount._text().name().validate(expectedName);
         myAccount._text().group().validate(group);
         myAccount._text().team().validate(team);
                

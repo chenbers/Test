@@ -31,10 +31,9 @@ public class PageAdminUsers extends AdminTables {
 
     public class AdminUsersLinks extends AdminTablesLinks {
 
-        public TextTableLink tableEntryUserName() {
+        public TextTableLink tableEntryUserFullName() {
             return new TextTableLink(AdminBarEnum.TABLE_ENTRIES, page, AdminUsersEntries.FULL_NAME);
         }
-
         public TextLink sortByColumn(AdminUsersEntries column) {
             return new TextLink(AdminBarEnum.TABLE_HEADERS, page, column);
         }

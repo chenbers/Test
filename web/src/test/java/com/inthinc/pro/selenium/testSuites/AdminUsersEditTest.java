@@ -1,29 +1,39 @@
 package com.inthinc.pro.selenium.testSuites;
 
+import java.util.EnumSet;
 import java.util.Iterator;
 
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
+import com.inthinc.pro.automation.enums.AccountCapabilities;
+import com.inthinc.pro.automation.enums.AutomationLogins;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 
-@Ignore
-public class AdminUsers extends WebRallyTest {
+public class AdminUsersEditTest extends WebRallyTest {
 
-	private String username = "danniauto";
-	private String password = "password";
+	private static String username = "danniauto";
+	private static String password = "password";
 	private PageAdminUsers users = new PageAdminUsers();
 	private PageAddEditUser edituser = new PageAddEditUser();
 	private PageAdminUserDetails details = new PageAdminUserDetails();
 	
+    @BeforeClass
+    public static void beforeClass(){
+        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.RoleAdmin, AccountCapabilities.HOSEnabled);
+        username = login.getUserName();
+        password = login.getPassword();
+    }
 	
 	@Test
-	@Ignore
+	//@Ignore
 	public void usersNameLink(){
 		set_test_case("TC764");//TODO: if this test is ready to run in hudson, uncomment this line;  if not add @ignore
 		
@@ -34,14 +44,14 @@ public class AdminUsers extends WebRallyTest {
 		users._link().admin().click();
 		
 		//3- Take note of the top user's name
-		String fullname = users._link().tableEntryUserName().row(1).getText();
+		String fullname = users._link().tableEntryUserFullName().row(1).getText();
 		
 		//4- Click on the top name
-		users._link().tableEntryUserName().row(1).click();
+		users._link().tableEntryUserFullName().row(1).click();
 		
 		//5- Verify the page is the correct page
 		  String firstName = details._text().values(AdminUserDetailsEnum.FIRST_NAME).getText();
-		  String middleName =details._text().values(AdminUserDetailsEnum.MIDDLE_NAME).getText();
+		  String middleName = details._text().values(AdminUserDetailsEnum.MIDDLE_NAME).getText();
 		  String lastName = details._text().values(AdminUserDetailsEnum.LAST_NAME).getText();
 		  String suffix = details._text().values(AdminUserDetailsEnum.SUFFIX).getText();
 		  assertEquals(fullname, (firstName +" "+middleName +" "+lastName +" "+suffix).replace("  ", " ").trim());
@@ -92,9 +102,9 @@ public class AdminUsers extends WebRallyTest {
 		boolean hasThisRow = true;
 		//TODO: this test might benefit from users._link().tableEntryUserName().iterator()
 		for (int i = 1; i < 10 && hasOnlyExpectedUsernames && hasThisRow; i++){
-			hasThisRow = users._link().tableEntryUserName().row(i).isPresent();
+			hasThisRow = users._link().tableEntryUserFullName().row(i).isPresent();
 			if(hasThisRow){
-				hasOnlyExpectedUsernames &= users._link().tableEntryUserName().row(i).validateContains(name);
+				hasOnlyExpectedUsernames &= users._link().tableEntryUserFullName().row(i).validateContains(name);
 				
 			}
 		}
@@ -111,7 +121,7 @@ public class AdminUsers extends WebRallyTest {
 		users._link().admin().click();
 		
 		//3- Take note of what information shows in the columns
-		boolean originallyHadGroupColumnName = users._link().tableEntryUserName().row(1).isPresent();
+		boolean originallyHadGroupColumnName = users._link().tableEntryUserFullName().row(1).isPresent();
 		boolean originallyHadGroupColumnEmpID = users._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
 		boolean originallyHadGroupColumnDOB = users._text().tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
 		boolean originallyHadGroupColumnLicense = users._text().tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1).isPresent();
@@ -128,7 +138,7 @@ public class AdminUsers extends WebRallyTest {
 		users._popUp().editColumns()._button().cancel().click();
 		
 		//7- Verify nothing has changed
-		if (originallyHadGroupColumnName != users._link().tableEntryUserName().row(1).isPresent()) {
+		if (originallyHadGroupColumnName != users._link().tableEntryUserFullName().row(1).isPresent()) {
             addError("expected line to remain the same", ErrorLevel.FAIL);
         }
 		if (originallyHadGroupColumnEmpID != users._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
@@ -153,7 +163,7 @@ public class AdminUsers extends WebRallyTest {
 		users._link().admin().click();
 		
 		//3- Take note of what information shows in the columns
-		boolean originallyHadGroupColumnName = users._link().tableEntryUserName().row(1).isPresent();
+		boolean originallyHadGroupColumnName = users._link().tableEntryUserFullName().row(1).isPresent();
 		boolean originallyHadGroupColumnEmpID = users._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
 		boolean originallyHadGroupColumnDOB = users._text().tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
 		boolean originallyHadGroupColumnLicense = users._text().tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1).isPresent();
@@ -165,7 +175,7 @@ public class AdminUsers extends WebRallyTest {
 		users._popUp().editColumns()._button().cancel().click();
 		
 		//6- Verify nothing has changed
-		if (originallyHadGroupColumnName != users._link().tableEntryUserName().row(1).isPresent()) {
+		if (originallyHadGroupColumnName != users._link().tableEntryUserFullName().row(1).isPresent()) {
             addError("something", ErrorLevel.FAIL);
         }
 		if (originallyHadGroupColumnEmpID != users._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent()) {
@@ -190,7 +200,7 @@ public class AdminUsers extends WebRallyTest {
 		users._link().admin().click();
 		
 		//3- Take note of what information shows in the columns
-		boolean originallyHadGroupColumnName = users._link().tableEntryUserName().row(1).isPresent();
+		boolean originallyHadGroupColumnName = users._link().tableEntryUserFullName().row(1).isPresent();
 		boolean originallyHadGroupColumnEmpID = users._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
 		boolean originallyHadGroupColumnDOB = users._text().tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
 		boolean originallyHadGroupColumnLicense = users._text().tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1).isPresent();
@@ -264,7 +274,7 @@ public class AdminUsers extends WebRallyTest {
 		users._link().admin().click();
 		
 		//3- Take note of what information shows in the columns
-		boolean originallyHadGroupColumnName = users._link().tableEntryUserName().row(1).isPresent();
+		boolean originallyHadGroupColumnName = users._link().tableEntryUserFullName().row(1).isPresent();
 		boolean originallyHadGroupColumnEmpID = users._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
 		boolean originallyHadGroupColumnDOB = users._text().tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
 		boolean originallyHadGroupColumnLicense = users._text().tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1).isPresent();
@@ -318,7 +328,7 @@ public class AdminUsers extends WebRallyTest {
 		users._link().admin().click();
 		
 		//3- Take note of what information shows in the columns
-		boolean originallyHadGroupColumnName = users._link().tableEntryUserName().row(1).isPresent();
+		boolean originallyHadGroupColumnName = users._link().tableEntryUserFullName().row(1).isPresent();
 		boolean originallyHadGroupColumnEmpID = users._text().tableEntry(AdminUsersEntries.EMPLOYEE_ID).row(1).isPresent();
 		boolean originallyHadGroupColumnDOB = users._text().tableEntry(AdminUsersEntries.DOB_MAIN).row(1).isPresent();
 		boolean originallyHadGroupColumnLicense = users._text().tableEntry(AdminUsersEntries.LICENSE_NUMBER).row(1).isPresent();
@@ -511,7 +521,7 @@ public class AdminUsers extends WebRallyTest {
         users._textField().search().type("tina");
         users._button().search().click();
         boolean foundWhoIWasLookingFor = false;
-        Iterator<ClickableTextBased> itr = users._link().tableEntryUserName().iterator();
+        Iterator<ClickableTextBased> itr = users._link().tableEntryUserFullName().iterator();
         while (itr.hasNext()){
             ClickableTextBased nextRow = itr.next();
             if (nextRow.getText().equals("Testing Tina Nilson")){
