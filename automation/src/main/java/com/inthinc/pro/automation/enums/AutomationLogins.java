@@ -20,10 +20,10 @@ public enum AutomationLogins {
     
     akumer("akumer","password","Top", AutoAccounts.prime, null),
     autovehicle("autovehicle","passw0rd","AdminVehicleTests", AutoAccounts.prime, null),
-    captnemo("CaptainNemo", "Muttley", "Test Group RW", AutoAccounts.prime, null),
-    noteTesterData01("noteTester01", "password", "Test Group WR", AutoAccounts.prime, LoginCapabilities.NoteTesterData),
-    daisy1("Daisy1", "password","Tina's Auto Team", AutoAccounts.prime, null),
-    danni("danniauto", "password", "Top",  AccountCapabilities.LoginExpire90, AccountCapabilities.PasswordExpire90, AccountCapabilities.PasswordRequireInitalChangeRequire, AccountCapabilities.HOSEnabled),
+    CaptainNemo("CaptainNemo", "Muttley", "Test Group RW", AutoAccounts.prime, null),
+    noteTester01("noteTester01", "password", "Test Group WR", AutoAccounts.prime, LoginCapabilities.NoteTesterData),
+    Daisy1("Daisy1", "password","Tina's Auto Team", AutoAccounts.prime, null),
+    danniauto("danniauto", "password", "Top",  AccountCapabilities.LoginExpire90, AccountCapabilities.PasswordExpire90, AccountCapabilities.PasswordRequireInitalChangeRequire, AccountCapabilities.HOSEnabled),
     dastardly("dastardly", "Muttley","Test Group WR", AutoAccounts.prime, LoginCapabilities.NoteTesterData), 
     hosDriver00("hosDriver00","password", "Top", AutoAccounts.prime, AccountCapabilities.LoginExpire90, AccountCapabilities.PasswordExpire90, AccountCapabilities.PasswordRequireInitalChangeRequire, AccountCapabilities.HOSEnabled, LoginCapabilities.IsDriver),
     hosDriver01("hosDriver01","password", "Top", AccountCapabilities.LoginExpire90, AccountCapabilities.PasswordExpire90, AccountCapabilities.PasswordRequireInitalChangeRequire, AccountCapabilities.HOSEnabled, LoginCapabilities.IsDriver),
@@ -32,7 +32,9 @@ public enum AutomationLogins {
     tinaauto("tinaauto", "password","Tina's Auto Team", AutoAccounts.prime, LoginCapabilities.RoleAdmin ,LoginCapabilities.HasDevice, LoginCapabilities.HasVehicle, LoginCapabilities.IsDriver),    
     whiplash("whiplash", "Muttley","Test Group WR", AutoAccounts.prime, LoginCapabilities.StatusInactive),
     
-    
+    passwordchanger00("passwordchanger00", "password", "Top", AutoAccounts.prime, LoginCapabilities.PasswordChanging),
+    passwordchanger01("passwordchanger01", "password", "Top", AutoAccounts.prime, LoginCapabilities.PasswordChanging),
+    passwordchanger02("passwordchanger02", "password", "Top", AutoAccounts.prime, LoginCapabilities.PasswordChanging),
     
     
     
@@ -91,6 +93,27 @@ public enum AutomationLogins {
 	    }
 	    return results;
 	}
+	
+    public static List<AutomationLogins> getAllBy(String groupName) {
+        ArrayList<AutomationLogins> results = new ArrayList<AutomationLogins>();
+        for (AutomationLogins item : EnumSet.allOf(AutomationLogins.class)) {
+            if (item.getGroup().equals(groupName)) {
+                results.add(item);
+            }
+        }
+        return results;
+    }
+
+    public static AutomationLogins getOneBy(String groupName) {
+        List<AutomationLogins> allMatching = getAllBy(groupName);
+        if (!allMatching.isEmpty()) {
+            int loginIndex = RandomUtils.nextInt(allMatching.size());
+            return allMatching.get(loginIndex);
+        } else {
+            System.out.println("AutomationLogins.getOneBy(" + groupName + ") returning null! ");
+            return null;// TODO: jwimmer: what is the best course of action if no matching accounts are found?
+        }
+    }
 
 	public static AutomationLogins getOneBy(Capabilities... capabilities) {
 	    List<AutomationLogins> allMatching = getAllBy(capabilities);

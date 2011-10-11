@@ -9,6 +9,7 @@ public enum LoginCapabilities implements AutoCapabilities  {
     NoteTesterData(),
     StatusInactive(false),
     StatusActive(true),
+    PasswordChanging(true),
     
     
     ;
