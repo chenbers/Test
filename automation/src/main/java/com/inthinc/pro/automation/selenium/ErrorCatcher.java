@@ -39,8 +39,11 @@ public class ErrorCatcher implements InvocationHandler {
     private Map<String, Map<String, String>> errors;
     private Map<String, String> errorList;
     private final CoreMethodLib delegate;
+    private Long startTime;
+    private Long DEFAULT_TEST_TIMEOUT = 5*60L;
     
     public ErrorCatcher(){
+        startTime = System.currentTimeMillis()/1000;
         delegate = null;
         severity = new HashMap<ErrorLevel, Map<String, Map<String, String>>>();
         for (ErrorLevel level: EnumSet.allOf(ErrorLevel.class)){
@@ -53,6 +56,7 @@ public class ErrorCatcher implements InvocationHandler {
     }
 
     public ErrorCatcher(CoreMethodLib delegate) {
+        startTime = System.currentTimeMillis()/1000;
         this.delegate = delegate;
         severity = new HashMap<ErrorLevel, Map<String, Map<String, String>>>();
         for (ErrorLevel level: EnumSet.allOf(ErrorLevel.class)){
@@ -95,7 +99,9 @@ public class ErrorCatcher implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object result = null;
         try {
-            logger.debug("before method " + method.getName());
+            if(startTime+DEFAULT_TEST_TIMEOUT  < currentTime() )
+                addError("Test timed out", "Test timed out on "+delegate, ErrorLevel.FATAL);
+            logger.info("before method " + method.getName());
             result = method.invoke(delegate, args);
         } catch (InvocationTargetException e) {
             sortErrors(e.getCause(), method, args);
@@ -309,5 +315,8 @@ public class ErrorCatcher implements InvocationHandler {
             stringWriter.write(StringUtils.repeat(newLine, 1));
         }
         return stringWriter.toString();
+    }
+    public static Long currentTime(){
+        return System.currentTimeMillis()/1000;
     }
 }
