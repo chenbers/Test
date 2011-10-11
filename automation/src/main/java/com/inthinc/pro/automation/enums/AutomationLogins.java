@@ -119,7 +119,6 @@ public enum AutomationLogins {
 	    List<AutomationLogins> allMatching = getAllBy(capabilities);
 	    if(!allMatching.isEmpty()){
 	        int loginIndex = RandomUtils.nextInt(allMatching.size());
-	        System.out.println("AutomationLogins.getOneBy("+capabilities+") returning "+allMatching.get(loginIndex));
 	        return allMatching.get(loginIndex);
 	    } else {
 	        System.out.println("AutomationLogins.getOneBy("+capabilities+") returning null! ");
