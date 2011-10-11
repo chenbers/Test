@@ -40,7 +40,7 @@ public class ErrorCatcher implements InvocationHandler {
     private Map<String, String> errorList;
     private final CoreMethodLib delegate;
     private Long startTime;
-    private Long DEFAULT_TEST_TIMEOUT = 5*60L;
+    private Long DEFAULT_TEST_TIMEOUT = 10*60L;
     
     public ErrorCatcher(){
         startTime = System.currentTimeMillis()/1000;
@@ -100,7 +100,7 @@ public class ErrorCatcher implements InvocationHandler {
         Object result = null;
         try {
             if(startTime+DEFAULT_TEST_TIMEOUT  < currentTime() )
-                addError("Test timed out", "Test timed out on "+delegate, ErrorLevel.FATAL);
+                addError("Test timed out", "Test timed out after "+(currentTime()-startTime)+" seconds", ErrorLevel.FATAL);
             logger.debug("before method " + method.getName());
             result = method.invoke(delegate, args);
         } catch (InvocationTargetException e) {
