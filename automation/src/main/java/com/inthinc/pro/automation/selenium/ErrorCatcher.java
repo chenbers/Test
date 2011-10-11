@@ -101,7 +101,7 @@ public class ErrorCatcher implements InvocationHandler {
         try {
             if(startTime+DEFAULT_TEST_TIMEOUT  < currentTime() )
                 addError("Test timed out", "Test timed out on "+delegate, ErrorLevel.FATAL);
-            logger.info("before method " + method.getName());
+            logger.debug("before method " + method.getName());
             result = method.invoke(delegate, args);
         } catch (InvocationTargetException e) {
             sortErrors(e.getCause(), method, args);
