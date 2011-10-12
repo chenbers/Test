@@ -12,6 +12,7 @@ import java.util.TimeZone;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
@@ -22,7 +23,6 @@ import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.hos.model.RuleSetType;
 import com.inthinc.pro.dao.mock.MockHOSDAO;
 import com.inthinc.pro.model.Address;
-import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
 import com.inthinc.pro.model.VehicleDOTType;
@@ -569,6 +569,120 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         assertEquals("Vehicle 2 odometer", MockHOSDAO.MOCK_VEHICLE_ID2*100l, vehicle2Info.getStartOdometer());
     }
 
+    private static final long ONE_HOUR = 3600000L;
+    @Test
+    public void originalTimeChange() {
+        DDLDataSet ddlTestData = new DDLDataSet(testCaseName[0]);
+        HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
+        
+        ddlCriteria.setHosDAO(new MockHOSDAO());
+        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID1, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID1, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID1+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null, VehicleDOTType.DOT));
+        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID2, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID2, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID2+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null, VehicleDOTType.DOT));
+        
+        LocalDate localDate = new LocalDate(new DateTime().minusDays(1));
+        DateTime day = localDate.toDateTimeAtStartOfDay();
+        LocalDate localDate2 = new LocalDate(new DateTime());
+        DateTime day2 = localDate2.toDateTimeAtStartOfDay();
+        
+        List<HOSRecAdjusted> logListForDay = new ArrayList<HOSRecAdjusted>();
+        logListForDay.add(new HOSRecAdjusted("1",HOSStatus.ON_DUTY, day.toDate(), TimeZone.getTimeZone("US/Mountain"), day.toDate(),60l,0,8,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        logListForDay.add(new HOSRecAdjusted("2",HOSStatus.DRIVING, day.plusHours(2).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(2).toDate(),60l,8,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        logListForDay.add(new HOSRecAdjusted("3",HOSStatus.OFF_DUTY, day.plusHours(3).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(3).toDate(),60l,12,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        logListForDay.add(new HOSRecAdjusted("4",HOSStatus.ON_DUTY_OCCUPANT, day.plusHours(4).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(4).toDate(),60l,16,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+        logListForDay.add(new HOSRecAdjusted("5",HOSStatus.OFF_DUTY_OCCUPANT, day.plusHours(5).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(5).toDate(),60l,20,4,false,"","",60l,RuleSetType.US_OIL, 0));
+        logListForDay.add(new HOSRecAdjusted("6",HOSStatus.ON_DUTY, day.plusHours(6).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(6).toDate(),1080l,24,72,false,"","",1080l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+
+        List<HOSRecAdjusted> expOriginalLogListForDay = new ArrayList<HOSRecAdjusted>();
+        expOriginalLogListForDay.add(new HOSRecAdjusted("1",HOSStatus.ON_DUTY, day.toDate(), TimeZone.getTimeZone("US/Mountain"), day.toDate(),60l,0,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        expOriginalLogListForDay.add(new HOSRecAdjusted("2",HOSStatus.DRIVING, day.plusHours(1).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(1).toDate(),60l,8,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        expOriginalLogListForDay.add(new HOSRecAdjusted("3",HOSStatus.OFF_DUTY, day.plusHours(2).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(2).toDate(),60l,12,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        expOriginalLogListForDay.add(new HOSRecAdjusted("4",HOSStatus.ON_DUTY_OCCUPANT, day.plusHours(3).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(3).toDate(),60l,16,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+        expOriginalLogListForDay.add(new HOSRecAdjusted("5",HOSStatus.OFF_DUTY_OCCUPANT, day.plusHours(4).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(4).toDate(),60l,20,4,false,"","",60l,RuleSetType.US_OIL, 0));
+        expOriginalLogListForDay.add(new HOSRecAdjusted("6",HOSStatus.ON_DUTY, day.plusHours(5).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(5).toDate(),1140l,24,72,false,"","",1080l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+        
+        List<HOSRecAdjusted> expCorrectedLogListForDay = new ArrayList<HOSRecAdjusted>();
+        expCorrectedLogListForDay.add(new HOSRecAdjusted("1",HOSStatus.ON_DUTY, day.toDate(), TimeZone.getTimeZone("US/Mountain"), day.toDate(),60l,0,8,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        expCorrectedLogListForDay.add(new HOSRecAdjusted("2",HOSStatus.DRIVING, day.plusHours(2).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(2).toDate(),60l,8,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        expCorrectedLogListForDay.add(new HOSRecAdjusted("3",HOSStatus.OFF_DUTY, day.plusHours(3).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(3).toDate(),60l,12,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID1));
+        expCorrectedLogListForDay.add(new HOSRecAdjusted("4",HOSStatus.ON_DUTY_OCCUPANT, day.plusHours(4).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(4).toDate(),60l,16,4,false,"","",60l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+        expCorrectedLogListForDay.add(new HOSRecAdjusted("5",HOSStatus.OFF_DUTY_OCCUPANT, day.plusHours(5).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(5).toDate(),60l,20,4,false,"","",60l,RuleSetType.US_OIL, 0));
+        expCorrectedLogListForDay.add(new HOSRecAdjusted("6",HOSStatus.ON_DUTY, day.plusHours(6).toDate(), TimeZone.getTimeZone("US/Mountain"), day.plusHours(6).toDate(),1080l,24,72,false,"","",1080l,RuleSetType.US_OIL, MockHOSDAO.MOCK_VEHICLE_ID2));
+        
+        // matching hosRecords
+        List<HOSRecord> hosRecordList = new ArrayList<HOSRecord>();
+        for (HOSRecAdjusted rec : logListForDay) {
+            long vehicleOdometer = rec.getVehicleID() * 100l;
+            HOSRecord hosRecord = new HOSRecord(Integer.valueOf(rec.getId()), ddlTestData.driver.getDriverID(), 
+                    rec.getRuleType(), rec.getVehicleID(), rec.getVehicleID()+"", true, 
+                    vehicleOdometer, rec.getLogTimeDate(), rec.getLogTimeDate(), rec.getLogTimeZone(), rec.getStatus(), HOSOrigin.DEVICE, "test location", 0f, 0f, 1000l,
+                    "", "", true, true, "EDITOR", false, 0f, 0f);
+            hosRecord.setOriginalLogTime(new Date(hosRecord.getLogTime().getTime() - ONE_HOUR));
+            hosRecordList.add(hosRecord);
+        }
+
+        Interval interval = new Interval(day.toDateTime(DateTimeZone.getDefault()), day2.toDateTime(DateTimeZone.getDefault()));
+
+        ddlCriteria.initCriteriaList(interval, hosRecordList, 
+                null, 
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group, "", new Address());
+        
+        dump("DDL", 66, ddlCriteria.getCriteriaList(), FormatType.PDF);
+        
+        HosDailyDriverLog hosDailyDriverLog = (HosDailyDriverLog)ddlCriteria.getCriteriaList().get(0).getMainDataset().get(0);
+
+        List<HOSRecAdjusted> originalList =  hosDailyDriverLog.getOriginalGraphList();
+        assertEquals("list size ", expOriginalLogListForDay.size(), originalList.size());
+        int i = 0;
+        for (HOSRecAdjusted original : originalList) {
+            HOSRecAdjusted expected = expOriginalLogListForDay.get(i++);
+            assertEquals("adjusted time", expected.getAdjustedTime(), original.getAdjustedTime());
+            assertEquals("status", expected.getStatus(), original.getStatus());
+        }
+
+        List<HOSRecAdjusted> correctedList =  hosDailyDriverLog.getCorrectedGraphList();
+        assertEquals("list size ", expCorrectedLogListForDay.size(), correctedList.size());
+        i = 0;
+        for (HOSRecAdjusted corrected : correctedList) {
+            HOSRecAdjusted expected = expCorrectedLogListForDay.get(i++);
+            assertEquals("adjusted time", expected.getAdjustedTime(), corrected.getAdjustedTime());
+            assertEquals("status", expected.getStatus(), corrected.getStatus());
+        }
+        
+        // move driving record to previous day
+        HOSRecord hosRecord = hosRecordList.get(1);
+        hosRecord.setLogTime(new DateTime(hosRecord.getLogTime()).minusDays(1).toDate());
+        expCorrectedLogListForDay.remove(1);
+
+        interval = new Interval(day.toDateTime(DateTimeZone.getDefault()).minusDays(1), day2.toDateTime(DateTimeZone.getDefault()));
+        
+        ddlCriteria.initCriteriaList(interval, hosRecordList, 
+                null, 
+                ddlTestData.hosOccupantLogList, ddlTestData.driver, ddlTestData.account, ddlTestData.group, "", new Address());
+        
+        dump("DDL", 77, ddlCriteria.getCriteriaList(), FormatType.PDF);
+        
+        hosDailyDriverLog = (HosDailyDriverLog)ddlCriteria.getCriteriaList().get(1).getMainDataset().get(0);
+        
+        originalList =  hosDailyDriverLog.getOriginalGraphList();
+        assertEquals("list size ", expOriginalLogListForDay.size(), originalList.size());
+        i = 0;
+        for (HOSRecAdjusted original : originalList) {
+            HOSRecAdjusted expected = expOriginalLogListForDay.get(i++);
+            assertEquals(i + " adjusted time", expected.getAdjustedTime(), original.getAdjustedTime());
+            assertEquals(i + " status", expected.getStatus(), original.getStatus());
+        }
+
+        correctedList =  hosDailyDriverLog.getCorrectedGraphList();
+        assertEquals("list size ", expCorrectedLogListForDay.size(), correctedList.size());
+        i = 0;
+        for (HOSRecAdjusted corrected : correctedList) {
+            HOSRecAdjusted expected = expCorrectedLogListForDay.get(i++);
+            assertEquals(i + " adjusted time", expected.getAdjustedTime(), corrected.getAdjustedTime());
+            assertEquals(i + " status", expected.getStatus(), corrected.getStatus());
+        }
+        
+    }
+    
     class ExpectedRecap {
         
         // all

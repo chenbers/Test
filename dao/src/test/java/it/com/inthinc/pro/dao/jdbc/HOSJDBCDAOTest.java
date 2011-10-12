@@ -175,7 +175,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         expectedHosRecord.setOriginalLogTime(hosRecordDate);
         expectedHosRecord.setOriginalLocation(INITIAL_LOCATION);
 
-        String ignoreFields[] = { "originalLogTime"};
+        String ignoreFields[] = {};
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
     }
@@ -540,6 +540,35 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
             
     }
 
-  
+    @Test
+    public void originalTimeTest() {
+        
+        // case with a vehicle
+        HOSDAO hosDAO = new HOSJDBCDAO();
+        ((HOSJDBCDAO)hosDAO).setDataSource(new ITDataSource().getRealDataSource());
 
+        GroupData testGoodGroupData = itData.teamGroupData.get(ITData.GOOD);
+        Driver testGoodDriver = fetchDriver(testGoodGroupData.driver.getDriverID());
+        Vehicle testGoodVehicle = testGoodGroupData.vehicle;
+        
+        Date hosRecordDate = new Date();
+        HOSRecord hosRecord = createMinimalHosRecord(hosDAO, testGoodDriver, hosRecordDate, testGoodVehicle.getVehicleID(), 34.0f,45.0f);
+        HOSRecord editHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
+        
+        // change the date
+        Date newHosRecordDate = new Date(hosRecordDate.getTime()-60000l);   // one minute earlier
+        editHosRecord.setLogTime(newHosRecordDate);
+        editHosRecord.setEditUserID(itData.districtUser.getUserID());
+        hosDAO.update(editHosRecord);
+
+        HOSRecord expectedHosRecord = constructExpectedHosRecord(editHosRecord, testGoodDriver, testGoodVehicle);
+        expectedHosRecord.setEditUserName(itData.districtUser.getUsername());
+        expectedHosRecord.setEditUserID(itData.districtUser.getUserID());
+        expectedHosRecord.setOriginalLogTime(hosRecordDate);
+
+        String ignoreFields[] = { "originalLocation", "serviceID", "trailerID"};
+        HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
+        Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
+    }
+  
 }

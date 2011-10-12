@@ -62,9 +62,10 @@ public class HOSUtil {
             HOSStatus status = (hosRec.getEdited() && hosRec.getOriginalStatus() != null) ? hosRec.getOriginalStatus() : hosRec.getStatus(); 
             if (status  == null || !status.isGraphable() || hosRec.getDeleted())
                 continue;
+//System.out.println("LogTime: " + hosRec.getLogTime() + " OriginalTime: " + hosRec.getOriginalLogTime());            
             HOSRecAdjusted hosDDLRec = new HOSRecAdjusted(hosRec.getHosLogID().toString(), 
                     status,
-                    hosRec.getLogTime(),
+                    hosRec.getOriginalLogTime() == null ? hosRec.getLogTime() : hosRec.getOriginalLogTime(),
                     hosRec.getTimeZone());
             
             hosDDLRec.setEdited(false);
@@ -76,6 +77,8 @@ public class HOSUtil {
             adjustedList.add(hosDDLRec);
 
         }
+        
+        Collections.sort(adjustedList);
         Collections.reverse(adjustedList);
         return new HOSAdjustedList(adjustedList);
 
