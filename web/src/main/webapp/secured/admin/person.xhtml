@@ -59,27 +59,27 @@
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_first}" /></td>
-                            <td><h:outputText value="#{personBean.item.first}" /></td>
+                            <td><h:outputText value="#{personBean.item.first}" id="first" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_middle}" /></td>
-                            <td><h:outputText value="#{personBean.item.middle}" /></td>
+                            <td><h:outputText value="#{personBean.item.middle}" id="middle" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_last}" /></td>
-                            <td><h:outputText value="#{personBean.item.last}" /></td>
+                            <td><h:outputText value="#{personBean.item.last}" id="last" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_suffix}" /></td>
-                            <td><h:outputText value="#{personBean.item.suffix}" /></td>
+                            <td><h:outputText value="#{personBean.item.suffix}" id="suffix" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_dob}" /></td>
-                            <td><h:outputText value="#{personBean.item.dob}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" /></h:outputText></td>
+                            <td><h:outputText value="#{personBean.item.dob}" id="dob"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" /></h:outputText></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_gender}" /></td>
-                            <td><h:outputText value="#{messages[personBean.item.gender]}" /></td>
+                            <td><h:outputText value="#{messages[personBean.item.gender]}" id="gender"/></td>
                           </tr>
                         </table>
                         <ui:fragment rendered="#{personBean.item.driverSelected}">
@@ -91,53 +91,53 @@
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_license}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.license}" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.license}" id="license"/></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_licenseClass}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.licenseClass}" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.licenseClass}" id="licenseClass" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_state}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.state.name}" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.state.name}" id="name" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_expiration}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.expiration}"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" /></h:outputText></td>
+                            <td><h:outputText value="#{personBean.item.driver.expiration}" id="expiration"><f:convertDateTime pattern="#{messages.dateFormat}" timeZone="UTC" /></h:outputText></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_certifications}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.certifications}" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.certifications}"  id="certifications"/></td>
                           </tr>
 	                      <ui:fragment rendered="#{personBean.accountIsHOS}">
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_dot}" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.dot == null ? '' : messages[personBean.item.driver.dot]}" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.dot == null ? '' : messages[personBean.item.driver.dot]}" id="dot" /></td>
     	                  </tr>
 						  </ui:fragment>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_team}" /></td>
-                            <td><h:outputText value="#{personBean.item.team.name}" /></td>
+                            <td><h:outputText value="#{personBean.item.team.name}" id="teamName" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_status}" /></td>
-                            <td><c:set var="status" value="status#{personBean.item.driver.status.code}" /><h:outputText value="#{messages[status]}" /></td>
+                            <td><c:set var="status" value="status#{personBean.item.driver.status.code}" /><h:outputText value="#{messages[status]}" id="status" /></td>
                           </tr>
                         </table>
 
                         <div class="spacer"></div>
 
-                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_rfidInformation}"/></div>
+                        <div class="add_section_title"><h:outputText value="#{messages.editPerson_rfidInformation}"  id="rfid"/></div>
                   
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                            <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_rfid_barcode}:" /></td>
-                            <td><h:outputText value="#{personBean.item.driver.barcode}" /></td>
+                            <td><h:outputText value="#{personBean.item.driver.barcode}" id="barcode" /></td>
                           </tr>
                           <tr>
-                            <td width="100"><h:outputText value="#{messages.editPerson_driver_rfid1}:" /></td>
+                            <td width="100"><h:outputText value="#{messages.editPerson_driver_rfid1}:"  /></td>
                             <td>
-                              <h:outputText value="#{personBean.item.driver.rfid1}">
+                              <h:outputText value="#{personBean.item.driver.rfid1}" id="rfid1">
                                 <f:converter converterId="HexConverter" />
                               </h:outputText>
                             </td>
@@ -145,7 +145,7 @@
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_rfid2}:" /></td>
                             <td>
-                              <h:outputText value="#{personBean.item.driver.rfid2}">
+                              <h:outputText value="#{personBean.item.driver.rfid2}" id="rfid2">
                                 <f:converter converterId="HexConverter" />
                               </h:outputText>
                             </td>
@@ -158,25 +158,25 @@
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                            <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerType}:" /></td>
-                            <td><h:outputText value="#{personBean.item.cellblock.provider.name}" /></td>
+                            <td><h:outputText value="#{personBean.item.cellblock.provider.name}" id="providerName" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerUsername}:" /></td>
                             <td>
-                              <h:outputText value="#{personBean.item.cellblock.providerUser}">
+                              <h:outputText value="#{personBean.item.cellblock.providerUser}" id="providerUser">
                               </h:outputText>
                             </td>
                           </tr>                          
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerCellPhone}:" /></td>
                             <td>
-                              <h:outputText value="#{personBean.item.cellblock.cellPhone}">
+                              <h:outputText value="#{personBean.item.cellblock.cellPhone}"  id="cellPhone">
                               </h:outputText>
                             </td>
                           </tr>
                            <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_driver_providerCellStatus}:" /></td>
-                            <td><h:outputText value="#{messages[personBean.item.cellblock.cellStatus]}" /></td>
+                            <td><h:outputText value="#{messages[personBean.item.cellblock.cellStatus]}"  id="cellStatus" /></td>
                           </tr>
                         </table>
                         
@@ -192,31 +192,31 @@
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="150"><h:outputText value="#{messages.editPerson_empid}" /></td>
-                            <td><h:outputText value="#{personBean.item.empid}" /></td>
+                            <td><h:outputText value="#{personBean.item.empid}" id="empid" /></td>
                           </tr>
                           <tr>
                             <td width="150"><h:outputText value="#{messages.editPerson_reportsTo}" /></td>
-                            <td><h:outputText value="#{personBean.item.reportsTo}" /></td>
+                            <td><h:outputText value="#{personBean.item.reportsTo}" id="reportsTo" /></td>
                           </tr>
                           <tr>
                             <td width="150"><h:outputText value="#{messages.editPerson_title}" /></td>
-                            <td><h:outputText value="#{personBean.item.title}" /></td>
+                            <td><h:outputText value="#{personBean.item.title}" id="title" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_locale}" /></td>
-                            <td><h:outputText value="#{personBean.item.locale.displayName}" /></td>
+                            <td><h:outputText value="#{personBean.item.locale.displayName}" id="locale" /></td>
                           </tr>
                           <tr>
                             <td width="150"><h:outputText value="#{messages.editPerson_timeZone}" /></td>
-                            <td><h:outputText value="#{personBean.item.timeZone.ID}" /></td>
+                            <td><h:outputText value="#{personBean.item.timeZone.ID}" id="timeZone" /></td>
                           </tr>
                           <tr>
                             <td width="150"><h:outputText value="#{messages.editPerson_user_measurementType}" /></td>
-                            <td><h:outputText value="#{messages[personBean.item.user.person.measurementType]}" /></td>
+                            <td><h:outputText value="#{messages[personBean.item.user.person.measurementType]}" id="measurementType" /></td>
                           </tr>
                           <tr>
                             <td width="150"><h:outputText value="#{messages.editPerson_user_fuelEfficiencyType}" /></td>
-                            <td><h:outputText value="#{messages[personBean.item.user.person.fuelEfficiencyType]}" /></td>
+                            <td><h:outputText value="#{messages[personBean.item.user.person.fuelEfficiencyType]}"  id="fuelEfficiencyType" /></td>
                           </tr>
                         </table>
 
@@ -229,16 +229,16 @@
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_username}" /></td>
-                            <td><h:outputText value="#{personBean.item.user.username}" /></td>
+                            <td><h:outputText value="#{personBean.item.user.username}" id="username" /></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_group}" /></td>
-                            <td><h:outputText value="#{personBean.item.group.name}" /></td>
+                            <td><h:outputText value="#{personBean.item.group.name}"  id="groupName"/></td>
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_role}" /></td>
                             <td>
-                               <rich:dataList var="role" value="#{personBean.item.roleNames}" rows="20" type="disc" title="Roles">
+                               <rich:dataList var="role" value="#{personBean.item.roleNames}" rows="20" type="disc" title="Roles" id="roles">
 
                 					<h:outputText value="#{role}"/><br/>
  
@@ -248,7 +248,7 @@
                           </tr>
                           <tr>
                             <td width="100"><h:outputText value="#{messages.editPerson_user_status}" /></td>
-                            <td><c:set var="status" value="status#{personBean.item.user.status.code}" /><h:outputText value="#{messages[status]}" /></td>
+                            <td><c:set var="status" value="status#{personBean.item.user.status.code}" /><h:outputText value="#{messages[status]}" id="userStatus" /></td>
                           </tr>
                           
                         </table>
@@ -261,48 +261,48 @@
                         <table width="370" border="0" cellspacing="2" cellpadding="4" align="center">
                           <tr>
                             <td width="120"><h:outputText value="#{messages.editPerson_priEmail}" /></td>
-                            <td><a href="mailto:#{personBean.item.priEmail}"><h:outputText value="#{personBean.item.priEmail}" /></a></td>
+                            <td><a href="mailto:#{personBean.item.priEmail}"><h:outputText value="#{personBean.item.priEmail}"  id="priEmail" /></a></td>
                           </tr>
                           <tr>
                             <td width="120"><h:outputText value="#{messages.editPerson_secEmail}" /></td>
-                            <td><a href="mailto:#{personBean.item.secEmail}"><h:outputText value="#{personBean.item.secEmail}" /></a></td>
+                            <td><a href="mailto:#{personBean.item.secEmail}"><h:outputText value="#{personBean.item.secEmail}" id="secEmail" /></a></td>
                           </tr>
                           <tr>
                             <td width="120"><h:outputText value="#{messages.editPerson_priText}" /></td>
-                            <td><h:outputText value="#{personBean.item.priText}" /></td>
+                            <td><h:outputText value="#{personBean.item.priText}" id="priText" /></td>
                           </tr>
                           <tr>
                             <td width="120"><h:outputText value="#{messages.editPerson_secText}" /></td>
-                            <td><h:outputText value="#{personBean.item.secText}" /></td>
+                            <td><h:outputText value="#{personBean.item.secText}" id="secText" /></td>
                           </tr>
                           <tr>
                             <td width="120"><h:outputText value="#{messages.editPerson_priPhone }" /></td>
-                            <td><h:outputText value="#{personBean.item.priPhone}" converter="PhoneNumberConverter" /></td>
+                            <td><h:outputText value="#{personBean.item.priPhone}" converter="PhoneNumberConverter" id="priPhone" /></td>
                           </tr>
                           <tr>
                             <td width="120"><h:outputText value="#{messages.editPerson_secPhone}" /></td>
-                            <td><h:outputText value="#{personBean.item.secPhone}" converter="PhoneNumberConverter" /></td>
+                            <td><h:outputText value="#{personBean.item.secPhone}" converter="PhoneNumberConverter" id="secPhone" /></td>
                           </tr>
                           <tr>
                             <td width="120"><h:graphicImage value="/images/ico_info.png" width="16" height="16" />
                             <rich:spacer width="5px"></rich:spacer>
                             <h:outputText value="#{messages.myAccount_information}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.info}" />
-                            <td><h:outputText value="#{messages[alertText]}" /></td>
+                            <td><h:outputText value="#{messages[alertText]}"  id="info"/></td>
                           </tr>
                           <tr>
                             <td width="120"><h:graphicImage value="/images/ico_warning.png" width="16" height="16" />
                             <rich:spacer width="5px"></rich:spacer>
                             <h:outputText value="#{messages.myAccount_warning}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.warn}" />
-                            <td><h:outputText value="#{messages[alertText]}" /></td>
+                            <td><h:outputText value="#{messages[alertText]}" id="warning" /></td>
                           </tr>
                           <tr>
                             <td width="120"><h:graphicImage value="/images/ico_critical.png" width="16" height="16" />
                             <rich:spacer width="5px"></rich:spacer>
                             <h:outputText value="#{messages.myAccount_critical}" /></td>
                             <c:set var="alertText" value="myAccount_alertText#{personBean.item.crit}" />
-                            <td><h:outputText value="#{messages[alertText]}" /></td>
+                            <td><h:outputText value="#{messages[alertText]}" id="critical" /></td>
                           </tr>
                         </table>
 
