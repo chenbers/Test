@@ -1,15 +1,14 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.Calendar;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Selector;
 import com.inthinc.pro.automation.elements.Text;
-import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.HosReportsEnum;
-import com.inthinc.pro.selenium.pageObjects.HOSReportsNonDOTViolationsDetail.NonDOTViolationsDetailReportText;
 
 public class PageHOSReports extends HOSBar {
     
@@ -63,15 +62,24 @@ public class PageHOSReports extends HOSBar {
             return new Text(HosReportsEnum.GROUP_LABEL);
         }
     }
-    public class HOSReportsTextFields extends HOSBarTextFields{
-        public TextField startDate(){
-            return new TextField(HosReportsEnum.START_DATE);
+    public class HOSReportsTextFields extends HOSBarTextFields{}
+    
+    public HosReportsDateSelectors _dateSelector(){
+        return new HosReportsDateSelectors();
+    }
+    
+    public class HosReportsDateSelectors{
+        
+        public Calendar startDate(){
+            return new Calendar(HosReportsEnum.START_DATE);
         }
         
-        public TextField stopDate(){
-            return new TextField(HosReportsEnum.STOP_DATE);
+        public Calendar stopDate(){
+            return new Calendar(HosReportsEnum.STOP_DATE);
         }
+
     }
+    
     public class HOSReportsButtons extends HOSBarButtons{
         
         public Button groupDownArrow(){

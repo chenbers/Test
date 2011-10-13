@@ -13,7 +13,7 @@ public enum HOSDriverLogsEditEnum implements SeleniumEnums {
     CANCEL_TOP(cancel, "edit-form:editHosLogCancel1"),
     CANCEL_BOTTOM(cancel, "edit-form:editHosLogCancel2"),
     
-    DATE("Date:", "edit-form:editHosLog_dateTimeInputDate"),
+    DATE("Date:", "edit-form:editHosLog_dateTime"),
     TIME_CHANGER("Time:", "edit-form:hosEdit_***"),
     STATUS("Status", "edit-form:editHosLog_status"),
     TRAILER("Trailer:", "edit-form:editHosLog_trailer"),

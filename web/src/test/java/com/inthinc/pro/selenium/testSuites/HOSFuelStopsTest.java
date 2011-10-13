@@ -10,14 +10,12 @@ import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
-import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageFuelStopsAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
-import com.inthinc.pro.selenium.pageObjects.PageUserDetails;
 
 public class HOSFuelStopsTest extends WebRallyTest {
     
@@ -94,9 +92,8 @@ public class HOSFuelStopsTest extends WebRallyTest {
         
         AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
         calendar.addToDay(1);
-        String tomorrow = calendar.toString();
         
-        myFuelStopsAddEdit._textField().date().type(tomorrow);
+        myFuelStopsAddEdit._dateSelector().date().click(calendar);
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
         myFuelStopsAddEdit._dropDown().driver().select(driverFullName);
         myFuelStopsAddEdit._button().bottomSave().click();
@@ -196,7 +193,6 @@ public class HOSFuelStopsTest extends WebRallyTest {
         
         //Edit row one
         myFuelStops._link().valueEdit().row(1).click();
-        myFuelStopsAddEdit._textField().date().type("");
         myFuelStopsAddEdit._textField().trailer().clear();
         myFuelStopsAddEdit._textField().trailer().type("456");
         myFuelStopsAddEdit._textField().vehicleFuel().clear();
@@ -227,7 +223,6 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._button().refresh().click();
         
         myFuelStops._link().valueEdit().row(1).click();
-        myFuelStopsAddEdit._textField().date().type("");
         myFuelStopsAddEdit._textField().trailer().type("456");
         pause(2,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("456");
@@ -547,6 +542,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
         //1. Get vehicle and click on Add
         myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
         myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        pause(5, "Wait for propogation");
               
         //2. Verify Edit Link is available for current date range
         myFuelStops._link().valueEdit().row(1).validateClickable(true);
@@ -554,16 +550,19 @@ public class HOSFuelStopsTest extends WebRallyTest {
         //3. Change date range to be outside the IFTA Aggregation
         AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
         calendar.addToDay(-25);
-        myFuelStops._textField().dateStop().type(calendar);
-        myFuelStops._button().refresh().click();                
+        myFuelStops._dateSelector().dateStop().click(calendar);
+        pause(2, "Wait for propogation");
+//        myFuelStops._button().refresh().click();                
         
         calendar.addToDay(-25);
-        myFuelStops._textField().dateStart().type(calendar);
+        myFuelStops._dateSelector().dateStart().click(calendar);
+        pause(2, "Wait for propogation");
         myFuelStops._button().refresh().click();
+        pause(2, "Wait for propogation");
               
         //4. Verify Edit Link is not clickable
         if(myFuelStops._link().valueEdit().row(1).isPresent())
-            myFuelStops._link().valueEdit().row(1).validateClickable(false);//TODO: failing this line, still clickable?  in FF the link is still clickable, it looks as though the dateStart and dateStop fields are updating, but I think it might JUST be the DISPLAYED value, since the search results are not restricted to those new values... pageObject problem?
+            myFuelStops._link().valueEdit().row(1).validateClickable(false);
         
               
     }

@@ -1,5 +1,6 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Calendar;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
@@ -103,9 +104,6 @@ public class PageFuelStopsAddEdit extends HOSBar {
     }
     public class FuelStopsAddEditTextFields extends HOSBarTextFields{
         
-        public TextField date(){
-            return new TextField(FuelStopsEditEnum.DATE_BOX);
-        }
         
         public TextField trailer(){
             return new TextField(FuelStopsEditEnum.TRAILER_FIELD);
@@ -117,6 +115,17 @@ public class PageFuelStopsAddEdit extends HOSBar {
         
         public TextField trailerFuel(){
             return new TextField(FuelStopsEditEnum.TRAILER_FUEL_FIELD);
+        }
+    }
+    
+    public FuelStopsAddEditDateSelectors _dateSelector(){
+        return new FuelStopsAddEditDateSelectors();
+    }
+    
+    public class FuelStopsAddEditDateSelectors{
+
+        public Calendar date(){
+            return new Calendar(FuelStopsEditEnum.DATE_BOX);
         }
     }
     public class FuelStopsAddEditButtons extends HOSBarButtons{

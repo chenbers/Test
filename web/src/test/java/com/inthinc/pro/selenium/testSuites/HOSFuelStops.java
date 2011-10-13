@@ -1,7 +1,6 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.utils.AutomationCalendar;
@@ -10,7 +9,7 @@ import com.inthinc.pro.selenium.pageObjects.PageFuelStops;
 import com.inthinc.pro.selenium.pageObjects.PageFuelStopsAddEdit;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
-@Ignore
+//@Ignore
 public class HOSFuelStops extends WebRallyTest {
     
     private PageMyAccount myAccount;
@@ -65,9 +64,8 @@ public class HOSFuelStops extends WebRallyTest {
         
         AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
         calendar.addToDay(1);
-        String tomorrow = calendar.toString();
         
-        myFuelStopsAddEdit._textField().date().type(tomorrow);
+        myFuelStopsAddEdit._dateSelector().date().click(calendar);
         myFuelStopsAddEdit._textField().vehicleFuel().type("123");
         myFuelStopsAddEdit._dropDown().driver().select("123 Tina");//TODO: silo/account/login problem: fails if driver 123 Tina doesn't exist
         myFuelStopsAddEdit._button().bottomSave().click();
@@ -140,7 +138,6 @@ public class HOSFuelStops extends WebRallyTest {
         
         //Edit row one
         myFuelStops._link().valueEdit().row(1).click();
-        myFuelStopsAddEdit._textField().date().type("");
         myFuelStopsAddEdit._textField().trailer().clear();
         myFuelStopsAddEdit._textField().trailer().type("456");
         myFuelStopsAddEdit._textField().vehicleFuel().clear();
@@ -168,7 +165,6 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._textField().vehicle().type("10840");
         myFuelStops._textField().vehicle().getSuggestion("108406").click();
         myFuelStops._link().valueEdit().row(1).click();
-        myFuelStopsAddEdit._textField().date().type("");
         myFuelStopsAddEdit._textField().trailer().type("456");
         pause(2,"");
         myFuelStopsAddEdit._textField().vehicleFuel().type("456");
@@ -462,6 +458,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStops._popUp().delete()._button().delete().click();
               
     } 
+    
     @Test
     public void IftaDateRange() {
         set_test_case("TC5701");
@@ -480,12 +477,15 @@ public class HOSFuelStops extends WebRallyTest {
         //3. Change date range to be outside the IFTA Aggregation
         AutomationCalendar calendar = new AutomationCalendar(WebDateFormat.DATE_RANGE_FIELDS);
         calendar.addToDay(-25);
-        myFuelStops._textField().dateStop().type(calendar);
-        myFuelStops._button().refresh().click();                
+        myFuelStops._dateSelector().dateStop().click(calendar);
+        pause(2, "wait for propogation");
+//        myFuelStops._button().refresh().click();                
         
         calendar.addToDay(-25);
-        myFuelStops._textField().dateStart().type(calendar);
+        myFuelStops._dateSelector().dateStart().click(calendar);
+        pause(2, "wait for propogation");
         myFuelStops._button().refresh().click();
+        pause(2, "wait for propogation");
         
               
         //4. Verify Edit Link is not clickable

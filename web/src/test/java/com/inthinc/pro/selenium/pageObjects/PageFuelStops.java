@@ -1,11 +1,11 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.Calendar;
 import com.inthinc.pro.automation.elements.CheckBox;
 import com.inthinc.pro.automation.elements.CheckBoxTable;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
-import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldLabel;
 import com.inthinc.pro.automation.elements.TextFieldSuggestions;
 import com.inthinc.pro.automation.elements.TextLink;
@@ -113,14 +113,6 @@ public class PageFuelStops extends HOSBar {
 
     public class FuelStopsTextFields extends HOSBarTextFields {
 
-        public TextField dateStart() {
-            return new TextField(FuelStopsEnum.DATE_START_BOX);
-        }
-
-        public TextField dateStop() {
-            return new TextField(FuelStopsEnum.DATE_STOP_BOX);
-        }
-
         public TextFieldSuggestions vehicle() {
             return new TextFieldSuggestions(FuelStopsEnum.VEHICLE_TEXT_FIELD, FuelStopsEnum.VEHICLE_SUGGESTION_BOX);
         }
@@ -213,6 +205,21 @@ public class PageFuelStops extends HOSBar {
 
     public FuelStopsTextFields _textField() {
         return new FuelStopsTextFields();
+    }
+    
+    public FuelStopsDateSelectors _dateSelector(){
+        return new FuelStopsDateSelectors();
+    }
+    
+    public class FuelStopsDateSelectors{
+
+        public Calendar dateStart() {
+            return new Calendar(FuelStopsEnum.DATE_START_BOX);
+        }
+
+        public Calendar dateStop() {
+            return new Calendar(FuelStopsEnum.DATE_STOP_BOX);
+        }
     }
 
 }

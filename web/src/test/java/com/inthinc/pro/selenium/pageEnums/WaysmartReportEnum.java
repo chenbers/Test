@@ -45,20 +45,17 @@ public enum WaysmartReportEnum implements SeleniumEnums{
 
     @Override
     public String getText() {
-        // TODO Auto-generated method stub
-        return null;
+        return text;
     }
 
     @Override
     public String[] getIDs() {
-        // TODO Auto-generated method stub
-        return null;
+        return IDs;
     }
 
     @Override
     public String getURL() {
-        // TODO Auto-generated method stub
-        return null;
+        return url;
     }
 
 }

@@ -119,7 +119,7 @@ public class PageAdminUsers extends AdminTables {
                 return this;
             }
         }
-        addError("clickFullNameMatching("+column+", "+value+")", ErrorLevel.ERROR);
+        addError("clickFullNameMatching("+column+", "+value+")", ErrorLevel.FATAL);
         return this;
     }
     

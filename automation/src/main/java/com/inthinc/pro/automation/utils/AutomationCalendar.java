@@ -435,6 +435,10 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         date = GregorianCalendar.getInstance();
     }
     
+    public WebDateFormat getFormat(){
+        return rawEnum;
+    }
+    
     public static AutomationCalendar now(){
         return new AutomationCalendar();
     }
@@ -634,6 +638,18 @@ public class AutomationCalendar extends MasterTest implements Comparable<Calenda
         changeMinutesTo(0);
         changeSecondsTo(0);
         changeHourseTo(0);
+    }
+    
+    public int getMonth(){
+        return this.date.get(Calendar.MONTH);
+    }
+    
+    public int getWeekOfMonth(){
+        return this.date.get(Calendar.WEEK_OF_MONTH);
+    }
+    
+    public int getDayOfWeek(){
+        return this.date.get(Calendar.DAY_OF_WEEK);
     }
 
 }

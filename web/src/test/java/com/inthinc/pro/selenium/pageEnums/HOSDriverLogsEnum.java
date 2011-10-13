@@ -12,8 +12,8 @@ public enum HOSDriverLogsEnum implements SeleniumEnums {
     DRIVER_SUGGESTION(null, "hos-table-form:driverSuggestionBoxId:suggest"),
     
     
-    START_FIELD("Date Range:", "hos-table-form:hosTable_startCalendarInputDate"),
-    STOP_FIELD(null, "hos-table-form:hosTable_endCalendarInputDate"),
+    START_FIELD("Date Range:", "hos-table-form:hosTable_startCalendar"),
+    STOP_FIELD(null, "hos-table-form:hosTable_endCalendar"),
     DATE_ERROR(null, "hos-table-form:hosTable_dateError"),
     
     REFRESH("Refresh", "hos-table-form:hosTable_refresh"),

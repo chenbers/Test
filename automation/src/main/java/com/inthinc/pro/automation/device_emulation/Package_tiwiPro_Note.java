@@ -196,9 +196,16 @@ public class Package_tiwiPro_Note implements NoteBuilder{
         Iterator<Integer> keys = attrs.keySet().iterator();
         
         while( keys.hasNext()){
-    
-            int key = keys.next();
-            int value = attrs.get(key);
+            int key=0;
+            int value=0;
+            try {
+
+                key = keys.next();
+                value = attrs.get(key);
+            } catch (NullPointerException e){
+                logger.info("Key: " + key);
+                continue;
+            }
             
             if ( key < 128 ){
                 bos.write( key   & 0xFF );

@@ -1,10 +1,10 @@
 package com.inthinc.pro.selenium.pageObjects;
 
 import com.inthinc.pro.automation.elements.Button;
+import com.inthinc.pro.automation.elements.Calendar;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextButton;
 import com.inthinc.pro.automation.elements.TextDateFieldLabel;
-import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextFieldSuggestions;
 import com.inthinc.pro.automation.elements.TextLinkTableHeader;
 import com.inthinc.pro.automation.elements.TextTable;
@@ -111,15 +111,22 @@ public class PageHOSDriverLogs extends HOSBar {
         public TextFieldSuggestions driver() {
             return new TextFieldSuggestions(HOSDriverLogsEnum.DRIVER_FIELD, HOSDriverLogsEnum.DRIVER_SUGGESTION);
         }
-        
-        public TextField startDate() {
-            return new TextField(HOSDriverLogsEnum.START_FIELD);
+    }
+    
+    
+    public DriverLogsSelectors _dateSelector(){
+        return new DriverLogsSelectors();
+    }
+    
+    public class DriverLogsSelectors{
+        public Calendar startDate() {
+            return new Calendar(HOSDriverLogsEnum.START_FIELD);
         }
         
-        public TextField stopDate() {
-            return new TextField(HOSDriverLogsEnum.STOP_FIELD);
+        public Calendar stopDate() {
+            return new Calendar(HOSDriverLogsEnum.STOP_FIELD);
         }
-        
+
     }
 
     public class PageHOSDriverLogsButtons extends HOSBarButtons {

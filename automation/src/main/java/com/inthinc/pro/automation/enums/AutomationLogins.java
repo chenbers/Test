@@ -10,6 +10,7 @@ import java.util.Set;
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.log4j.Logger;
 
+import com.inthinc.pro.automation.interfaces.Capabilities;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.mysql.jdbc.log.Log;
 

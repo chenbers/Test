@@ -1,10 +1,10 @@
 package com.inthinc.pro.selenium.pageObjects;
 
+import com.inthinc.pro.automation.elements.Calendar;
 import com.inthinc.pro.automation.elements.DropDown;
 import com.inthinc.pro.automation.elements.Selector;
 import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextDateFieldLabel;
-import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextLabelDropDown;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.selenium.pageEnums.WaysmartReportEnum;
@@ -51,15 +51,24 @@ public class PageReportsWaysmart extends ReportsBar {
         }
         
     }
-    public class WaysmartReportTextFields extends NavigationBarTextFields{
-        public TextField startDate(){
-            return new TextField(WaysmartReportEnum.START_DATE);
+    public class WaysmartReportTextFields extends NavigationBarTextFields{}
+    
+
+    
+    public WaysmartReportDateSelectors _dateSelector(){
+        return new WaysmartReportDateSelectors();
+    }
+    
+    public class WaysmartReportDateSelectors{
+        public Calendar startDate(){
+            return new Calendar(WaysmartReportEnum.START_DATE);
         }
     
-        public TextField stopDate(){
-            return new TextField(WaysmartReportEnum.STOP_DATE);
+        public Calendar stopDate(){
+            return new Calendar(WaysmartReportEnum.STOP_DATE);
         }
     }
+
     
     public class WaysmartReportDropDowns extends NavigationBarDropDowns{
         

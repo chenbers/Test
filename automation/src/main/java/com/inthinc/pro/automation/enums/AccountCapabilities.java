@@ -1,5 +1,7 @@
 package com.inthinc.pro.automation.enums;
 
+import com.inthinc.pro.automation.interfaces.AutoCapabilities;
+
 public enum AccountCapabilities implements AutoCapabilities {
 
 	//Account capabilities
