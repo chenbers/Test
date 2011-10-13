@@ -98,7 +98,7 @@
     <a4j:outputPanel  id="#{context}_paramsPanel">
         <a4j:region id="#{context}_paramsRegion">
             <ul id="grid_nav" style="margin: 0;">
-                <ui:repeat value="#{params.selectedCriteria}" var="criteria">
+                <ui:repeat id="timeframe" value="#{params.selectedCriteria}" var="criteria">
                 <h:outputText rendered="#{criteria eq 'TIMEFRAME'}">
                     <li class="l">   
                     <ui:include src="/includes/component/dateRange.xhtml" >
