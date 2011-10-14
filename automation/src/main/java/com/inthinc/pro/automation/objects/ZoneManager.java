@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.objects;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.inthinc.pro.automation.models.DeviceZone;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.zone.option.ZoneAvailableOption;
 import com.inthinc.pro.model.zone.option.ZoneOption;

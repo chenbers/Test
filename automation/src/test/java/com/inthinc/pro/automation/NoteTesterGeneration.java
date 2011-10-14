@@ -2,8 +2,8 @@ package com.inthinc.pro.automation;
 
 import org.junit.Test;
 
-import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.objects.TiwiProDevice;
 
 public class NoteTesterGeneration extends Thread{
     private TiwiProDevice tiwi1;

@@ -1,15 +1,13 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
 import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
@@ -21,27 +19,21 @@ public class EditMyAccountTest extends WebRallyTest {
 
     private PageMyAccount myAccountPage;
     private RandomValues random;
-    private static String USERNAME = "tinaauto";
-    private static String PASSWORD = "password";
+    private AutomationUser login;
     
-    @BeforeClass
-    public static void beforeClass() {
-        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.RoleAdmin);
-        USERNAME = login.getUserName();
-        PASSWORD = login.getPassword();
-    }
 
     @Before
     public void setupPage() {
         random = new RandomValues();
         myAccountPage = new PageMyAccount();
+        login = users.getOneBy(LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.RoleAdmin);
     }
 
     @Test
     public void MeasurementValidation() {
         set_test_case("TC1275");
         // 0. login
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
 
         // 1. From the Edit My Account page,
         myAccountPage._link().myAccount().click();
@@ -50,14 +42,11 @@ public class EditMyAccountTest extends WebRallyTest {
 
         Measurement newMeasure = null;
         Fuel_Ratio newFuel = null;
-        String distanceDisplay = null;
         if (compare(Measurement.ENGLISH, originalMeasurement)) {
             newMeasure = Measurement.METRIC;
-            distanceDisplay = "kilometers";
             newFuel = Fuel_Ratio.METRIC_KILO_PER_LITER;
         } else if (compare(Measurement.METRIC, originalMeasurement)) {
             newMeasure = Measurement.ENGLISH;
-            distanceDisplay = "miles";
             newFuel = Fuel_Ratio.ENGLISH_MILES_UK;
         } else {
             addError("Measurement", "Original Measurement has unexpected value of: " + originalMeasurement, ErrorLevel.FATAL);
@@ -91,7 +80,7 @@ public class EditMyAccountTest extends WebRallyTest {
     public void FuelRatioValidation() {
         set_test_case("TC1273");
         // 0. login
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
 
         // 1. From the Edit My Account page,
         myAccountPage._link().myAccount().click();
@@ -149,7 +138,7 @@ public class EditMyAccountTest extends WebRallyTest {
         /*
          * 1. If necessary, click My Account then click Edit. 2. Clear all possible fields. 3. Click Save.
          */
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
         myAccountPage._link().myAccount().click();
 
         myAccountPage._button().edit().click();
@@ -188,7 +177,7 @@ public class EditMyAccountTest extends WebRallyTest {
         // 1. From the Edit My Account page, enter more than 10 characters in
         // the Phone 1 and Phone 2 text fields.
         // 2. Click Save.
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().edit().click();
 
@@ -206,7 +195,7 @@ public class EditMyAccountTest extends WebRallyTest {
         String phoneNumShortOne = random.getIntString(1);
         String phoneNumShortTwo = random.getIntString(2);
 
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().edit().click();
         myAccountPage._textField().phone1().type(phoneNumShortOne);
@@ -225,7 +214,7 @@ public class EditMyAccountTest extends WebRallyTest {
         // 1. From the Edit My Account page, enter special characters (e.g. &,
         // ^, $) in the Phone 1 and Phone 2 text fields.
         // 2. Click Save.
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().edit().click();
         myAccountPage._textField().phone1().type(random.getSpecialString(10));
@@ -253,7 +242,7 @@ public class EditMyAccountTest extends WebRallyTest {
         // DOES NOT conform to the address attributes listed in Note 1 below in
         // the Text Message 1 and Text Message 2 text fields.
         // 2. Click Save.
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
         myAccountPage._link().myAccount().click();
         myAccountPage._button().edit().click();
 
@@ -291,7 +280,7 @@ public class EditMyAccountTest extends WebRallyTest {
         String testData_txt2 = "8019997777@tmomail.net";
         
 
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
 
         myAccountPage._link().myAccount().click();
 
@@ -339,7 +328,7 @@ public class EditMyAccountTest extends WebRallyTest {
 
         /* Verify Changes Display */
         /* Login Info */
-        myAccountPage._text().userName().validate(USERNAME);
+        myAccountPage._text().userName().validate(login.getUsername());
         myAccountPage._text().locale().validate(Locale.ENGLISH.getText());
         myAccountPage._text().measurement().validate("English");
         myAccountPage._text().fuelEfficiency().validate("Miles Per Gallon (UK)");
@@ -383,7 +372,7 @@ public class EditMyAccountTest extends WebRallyTest {
     @Test
     public void EmailFormatError() {
         set_test_case("TC1272");
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
         myAccountPage._link().myAccount().click();
 
         myAccountPage._button().edit().click();
@@ -417,11 +406,10 @@ public class EditMyAccountTest extends WebRallyTest {
     @Test
     public void CancelButton_Changes() {
         set_test_case("TC1271");
-        myAccountPage.loginProcess(USERNAME, PASSWORD);
+        myAccountPage.loginProcess(login);
         myAccountPage._link().myAccount().click();
         /* Get original Values */
 
-        String originalUSERNAME = myAccountPage._text().userName().getText();
         String originalEmail1 = myAccountPage._text().email1().getText();
         String originalEmail2 = myAccountPage._text().email2().getText();
 
@@ -480,7 +468,7 @@ public class EditMyAccountTest extends WebRallyTest {
 
         /* Verify Changes did not take effect */
         /* Login Info */
-        myAccountPage._text().userName().validate(USERNAME);
+        myAccountPage._text().userName().validate(login.getUsername());
         myAccountPage._text().locale().validate(originalLocale);
         myAccountPage._text().measurement().validate(originalMeasurement);
         myAccountPage._text().fuelEfficiency().validate(originalFuelRatio);

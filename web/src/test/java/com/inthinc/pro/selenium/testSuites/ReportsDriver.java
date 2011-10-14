@@ -1,13 +1,9 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.Collections;
-import java.util.Set;
-
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.AutomationLogins;
-import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageEnums.TAE.TimeDuration;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageDriverPerformance;
@@ -19,8 +15,6 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
 public class ReportsDriver extends WebRallyTest {
 
-    private static String username;
-    private static String password;
     private PageReportsDrivers driver = new PageReportsDrivers();
     private PageDriverPerformance performance = new PageDriverPerformance();
     private PageDriverPerformanceStyle style = new PageDriverPerformanceStyle();
@@ -28,13 +22,13 @@ public class ReportsDriver extends WebRallyTest {
     private PageDriverPerformanceSpeed speeding = new PageDriverPerformanceSpeed();
     private PageVehiclePerformance vehicle = new PageVehiclePerformance();
     private PageAdminUsers admin = new PageAdminUsers();
+    
+    private AutomationUser login;
+    
 
-    @BeforeClass
-    public static void beforeClass() {
-        AutomationLogins login = AutomationLogins.getOne();
-        username = login.getUserName();
-        password = login.getPassword();
-
+    @Before
+    public void before() {
+        login = users.getOne();
     }
 
     @Test
@@ -42,7 +36,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1543");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -61,7 +55,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1545");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -85,7 +79,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1547");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -106,7 +100,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1548");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -125,7 +119,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1549");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -145,7 +139,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1553");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -171,7 +165,7 @@ public class ReportsDriver extends WebRallyTest {
 
         PageReportsDrivers driver = new PageReportsDrivers();
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -202,7 +196,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1562");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -229,7 +223,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1564");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -256,7 +250,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1569");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -279,7 +273,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1571");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -334,7 +328,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1572");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -383,7 +377,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1573");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -401,7 +395,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1575");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -496,7 +490,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1577");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -557,7 +551,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1578");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();
@@ -607,7 +601,7 @@ public class ReportsDriver extends WebRallyTest {
         driver._link().logout().click();
 
         // 9- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 10- Click back on reports link
         driver._link().reports().click();
@@ -651,7 +645,7 @@ public class ReportsDriver extends WebRallyTest {
         set_test_case("TC1580");
 
         // 1- Login
-        driver.loginProcess(username, password);
+        driver.loginProcess(login);
 
         // 2- Click on Reports link
         driver._link().reports().click();

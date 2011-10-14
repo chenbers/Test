@@ -3,13 +3,6 @@ package com.inthinc.pro.selenium.testSuites;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.utils.RandomValues;
-import com.inthinc.pro.selenium.pageEnums.TAE.Fuel_Ratio;
-import com.inthinc.pro.selenium.pageEnums.TAE.Locale;
-import com.inthinc.pro.selenium.pageEnums.TAE.Measurement;
-import com.inthinc.pro.selenium.pageEnums.TAE.RedFlagPrefs;
-import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
-
 public class GainReportsTest extends WebRallyTest {
 
 	//private PageReportsWaysmart waySmartReportsPage;

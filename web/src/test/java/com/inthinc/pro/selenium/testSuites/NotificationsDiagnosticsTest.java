@@ -5,15 +5,14 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
 import com.inthinc.pro.automation.elements.TextField;
 import com.inthinc.pro.automation.elements.TextTableLink;
-import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
@@ -29,11 +28,8 @@ import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
  *
  */
 public class NotificationsDiagnosticsTest extends WebRallyTest {
-    private static String USERNAME;        
-    private static String USERNAME_2;    
-    private static String PASSWORD;          
-    private static String PASSWORD_2;        
-    private static String GROUP;          
+    private AutomationUser user1, user2;
+    private String GROUP;          
     
     private PageLogin pl;
     private PageNotificationsRedFlags pnrf;
@@ -41,22 +37,20 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     
     @BeforeClass
     public static void beforeClass() {
-        List<AutomationLogins> logins = AutomationLogins.getAllBy(LoginCapabilities.NoteTesterData);
-        if(logins.size() > 1){
-            USERNAME = logins.get(0).getUserName();
-            PASSWORD = logins.get(0).getPassword();
-            GROUP = logins.get(0).getGroup();
-            
-            USERNAME_2 = logins.get(1).getUserName();
-            PASSWORD_2 = logins.get(1).getPassword();
-            
-        }else{
-            throw new AssertionError("Account Error, there are not enough accounts with NoteTesterData");
-        }     
     }
 
     @Before
     public void before(){
+        List<AutomationUser> logins = users.getAllBy(LoginCapabilities.NoteTesterData);
+        if(logins.size() > 1){
+            user1 = logins.get(0);
+            GROUP = user1.getGroupName();
+            
+            user2 = logins.get(1);
+            
+        }else{
+            throw new AssertionError("Account Error, there are not enough accounts with NoteTesterData");
+        }     
         pl = new PageLogin();
         pnrf = new PageNotificationsRedFlags();
         pnd = new PageNotificationsDiagnostics();
@@ -66,7 +60,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     public void bookmarkEntryTest1368(){
         set_test_case("TC1368");
 
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -74,7 +68,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
         openSavedPage();
-        pnrf.loginProcess(USERNAME, PASSWORD);
+        pnrf.loginProcess(user1);
         assertStringContains(correctURL, ptds.getCurrentLocation());
     }
 
@@ -87,14 +81,14 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     public void bookmarkEntryDifferentAccountTest1369() {
         set_test_case("TC1369");
 
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
         savePageLink();
         String correctURL = pnrf.getCurrentLocation();
         pnrf._link().logout().click();
-        pnrf.loginProcess(USERNAME_2, PASSWORD_2);
+        pnrf.loginProcess(user2);
         openSavedPage();
         assertStringContains(correctURL, ptds.getCurrentLocation());
         pnd.verifyOnPage();
@@ -109,8 +103,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void driverLinkTest1371(){
       set_test_case("TC1371");
-        allCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
+        pl.loginProcess(user1);
         pnrf._link().notifications().click();
         pnrf._link().diagnostics().click();
         
@@ -124,7 +118,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void emailTest1373(){
         set_test_case("TC1373");
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         pnrf._link().notifications().click();
         pnrf._link().diagnostics().click();
         
@@ -139,8 +133,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void locationMapLinkTest1377(){
         set_test_case("TC1377");
-        allCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
+        pl.loginProcess(user1);
         pnrf._link().notifications().click();
         pnrf._link().diagnostics().click();
         
@@ -160,10 +154,10 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void searchTest1379(){
         set_test_case("TC1379");
-        allCheckedHelper(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
         int length = 3;
         
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -213,10 +207,10 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     public void tablePropertiesTest1381(){
         
         set_test_case("TC1381");
-        allCheckedHelper(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
         String currentText;
         AutomationCalendar currentDate = null;
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -366,7 +360,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void toolsButtonTest1382(){
         set_test_case("TC1382");
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -380,8 +374,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void diagnosticsUITest1383(){
         set_test_case("TC1383");
-        allCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -412,8 +406,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void vehicleLinkTest1384(){
         set_test_case("TC1384");
-        allCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -429,7 +423,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void cancelChangesTest1386(){
         set_test_case("TC1386");
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -458,7 +452,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void cancelNoChangesTest1387(){
         set_test_case("TC1387");
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -485,8 +479,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void mouseCheckBoxSelectionTest1388(){
         set_test_case("TC1388");
-        someCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -508,8 +502,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void spacebarCheckBoxSelectionTest1389(){
         set_test_case("TC1389");
-        someCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -528,8 +522,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void currentSessionRetentionTest1390(){
         set_test_case("TC1390");
-        someCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -554,8 +548,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void enterKeyTest1391(){
         set_test_case("TC1391");
-        someCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -577,8 +571,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void saveButtonTest1392(){
         set_test_case("TC1392");
-        someCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -598,8 +592,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void subsequentSessionRetentionTest1393(){
         set_test_case("TC1393");
-        someCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        someCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -609,7 +603,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._popUp().editColumns()._checkBox().row(4).check();
         pnd._popUp().editColumns()._button().save().click();
         pnd._link().logout().click();
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
         
@@ -625,7 +619,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     public void tabbingOrderTest1394(){
         set_test_case("TC1394");
         
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -675,7 +669,7 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void editColumnsUITest1395(){
         set_test_case("TC1395");
-        pl.loginProcess(USERNAME, PASSWORD);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -715,8 +709,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void excludeLinkIdlingTest1397(){
         set_test_case("TC1397");
-        allCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -746,8 +740,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void excludeLinkTamperingTest1398(){
         set_test_case("TC1398");
-        allCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -777,8 +771,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void excludeLinkUITest1399(){
         set_test_case("TC1399");
-        allCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -806,8 +800,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     @Test
     public void includeLinkTest5737(){
         set_test_case("TC5737");
-        allCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -833,8 +827,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
     public void timeFrameTest5742() {
         set_test_case("TC5742");
 
-        allCheckedHelper(USERNAME, PASSWORD);
-        pl.loginProcess(USERNAME, PASSWORD);
+        allCheckedHelper(user1);
+        pl.loginProcess(user1);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -882,8 +876,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         return tableValues[i];
     }
     
-    private void allCheckedHelper(String username, String password){
-        pl.loginProcess(username, password);
+    private void allCheckedHelper(AutomationUser user){
+        pl.loginProcess(user);
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         ptds._link().notifications().click();
         pnrf._link().diagnostics().click();
@@ -899,8 +893,8 @@ public class NotificationsDiagnosticsTest extends WebRallyTest {
         pnd._link().logout().click();
     }
     
-    private void someCheckedHelper(String username, String password){
-          pl.loginProcess(username, password);
+    private void someCheckedHelper(AutomationUser user){
+          pl.loginProcess(user);
           PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
           ptds._link().notifications().click();
           pnrf._link().diagnostics().click();

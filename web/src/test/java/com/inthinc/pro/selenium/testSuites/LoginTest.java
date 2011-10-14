@@ -1,26 +1,19 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.EnumSet;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageObjects.PageLogin;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
 public class LoginTest extends WebRallyTest {
     String BLOCK_TEXT = "Your access has been blocked. If you have any questions regarding this action, contact your organization's tiwiPRO system administrator.";
-    String CORRECT_USERNAME = "dastardly";
-    String BLOCKED_USERNAME = "";
-    String CORRECT_PASSWORD = "Muttley";
     String INCORRECT_USERNAME = "notarealusername";
     String INCORRECT_PASSWORD = "abcdef";
-    String BAD_CASE_USERNAME = "DASTARDLY";
-    String BAD_CASE_PASSWORD = "mUTTley";
     PageLogin pl;
 
     @Before
@@ -32,10 +25,8 @@ public class LoginTest extends WebRallyTest {
     public void accessBlockedTest1240() {
         set_defect("DE6705");
         set_test_case("TC1240");
-        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.StatusInactive);
-        BLOCKED_USERNAME = login.getUserName();
-        CORRECT_PASSWORD = login.getPassword();
-        pl.loginProcess(BLOCKED_USERNAME, CORRECT_PASSWORD);
+        AutomationUser login = users.getOneBy(LoginCapabilities.StatusInactive);
+        pl.loginProcess(login);
         pl._popUp().loginError()._text().message().assertEquals(BLOCK_TEXT);
         pl._popUp().loginError()._button().ok().click();
         assertStringContains("login", pl.getCurrentLocation());
@@ -60,15 +51,17 @@ public class LoginTest extends WebRallyTest {
     @Test
     public void bookmarkPageTest1242() {
         set_test_case("TC1242");
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        AutomationUser user = users.getOneBy(LoginCapabilities.StatusActive, LoginCapabilities.TeamLevelLogin);
+        pl.loginProcess(user);
         savePageLink();
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         String team = ptds._text().teamName().getText();
+        assertEquals(user.getTeamName(), team);
         
         pl._link().logout().click();
         
         openSavedPage();
-        pl.loginProcess(CORRECT_USERNAME, CORRECT_PASSWORD);
+        pl.loginProcess(user);
         assertStringContains("dashboard", pl.getCurrentLocation());
 
         ptds._link().myAccount().click();
@@ -81,8 +74,9 @@ public class LoginTest extends WebRallyTest {
         set_test_case("TC1243");
         //NOTE!  This test must be the main window!
         pl.openLogout();
-        pl._textField().userName().type(CORRECT_USERNAME);
-        pl._textField().password().type(CORRECT_PASSWORD);
+        AutomationUser user = users.getOneBy(LoginCapabilities.StatusActive, LoginCapabilities.TeamLevelLogin);
+        pl._textField().userName().type(user.getUsername());// Type valid username
+        pl._textField().password().type(user.getPassword());// Type valid password
         pl._textField().userName().focus();
         enterKey();
 
@@ -90,6 +84,7 @@ public class LoginTest extends WebRallyTest {
 
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         String team = ptds._text().teamName().getText();
+        assertEquals(user.getTeamName(), team);
         ptds._link().myAccount().click();
         PageMyAccount pma = new PageMyAccount();
         pma._text().team().assertEquals(team);
@@ -100,7 +95,8 @@ public class LoginTest extends WebRallyTest {
 
         set_test_case("TC1245");
 
-        pl.loginProcess(CORRECT_USERNAME, INCORRECT_PASSWORD);
+        AutomationUser user = users.getOneBy(LoginCapabilities.StatusActive);
+        pl.loginProcess(user.getUsername(), INCORRECT_PASSWORD);
         pl._popUp().loginError()._text().message().assertEquals();
         pl._popUp().loginError()._button().ok().click();
         assertStringContains("login", pl.getCurrentLocation());
@@ -113,7 +109,8 @@ public class LoginTest extends WebRallyTest {
 
         set_test_case("TC1246");
 
-        pl.loginProcess(INCORRECT_USERNAME, CORRECT_PASSWORD);
+        AutomationUser user = users.getOneBy(LoginCapabilities.StatusActive);
+        pl.loginProcess(INCORRECT_USERNAME, user.getPassword());
         pl._popUp().loginError()._text().message().assertEquals();
         pl._popUp().loginError()._button().ok().click();
         assertStringContains("login", pl.getCurrentLocation());
@@ -126,14 +123,16 @@ public class LoginTest extends WebRallyTest {
         set_test_case("TC1247");
 
         pl.openLogout();
-        pl._textField().userName().type(CORRECT_USERNAME);// Type valid username
-        pl._textField().password().type(CORRECT_PASSWORD);// Type valid password
+        AutomationUser user = users.getOneBy(LoginCapabilities.StatusActive, LoginCapabilities.TeamLevelLogin);
+        pl._textField().userName().type(user.getUsername());// Type valid username
+        pl._textField().password().type(user.getPassword());// Type valid password
         pl._button().logIn().click();
 
         assertStringContains("dashboard", pl.getCurrentLocation());
 
         PageTeamDashboardStatistics ptds = new PageTeamDashboardStatistics();
         String team = ptds._text().teamName().getText();
+        assertEquals(user.getTeamName(), team);
         ptds._link().myAccount().click();
         PageMyAccount pma = new PageMyAccount();
         pma._text().team().assertEquals(team);
@@ -143,8 +142,8 @@ public class LoginTest extends WebRallyTest {
     public void passwordIncorrectCaseTest1248() {
 
         set_test_case("TC1248");
-
-        pl.loginProcess(CORRECT_USERNAME, BAD_CASE_PASSWORD);
+        AutomationUser user = users.getOneBy(LoginCapabilities.StatusActive);
+        pl.loginProcess(user.getUsername(), switchCase(user.getPassword()));
         pl._popUp().loginError()._text().message().assertEquals();
         pl._popUp().loginError()._button().ok().click();
         assertStringContains("login", pl.getCurrentLocation());
@@ -152,7 +151,7 @@ public class LoginTest extends WebRallyTest {
         pl._textField().password().assertEquals("");
     }
     
-    //@Ignore  //TODO: run in cloud to determine if tabKey() is working in non-firefox configurations
+    @Ignore  //TODO: run in cloud to determine if tabKey() is working in non-firefox configurations
     @Test
     public void tabOrderTest1249(){
         set_test_case("TC1249");
@@ -203,7 +202,8 @@ public class LoginTest extends WebRallyTest {
     public void usernameIncorrectCaseTest1251() {
 
         set_test_case("TC1251");
-        pl.loginProcess(BAD_CASE_USERNAME, CORRECT_PASSWORD);        
+        AutomationUser user = users.getOneBy(LoginCapabilities.StatusActive);
+        pl.loginProcess(switchCase(user.getUsername()), user.getPassword());        
        
         pl._popUp().loginError()._text().message().assertEquals();
         pl._popUp().loginError()._button().ok().click();

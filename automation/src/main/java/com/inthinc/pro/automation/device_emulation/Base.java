@@ -23,6 +23,7 @@ import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.enums.Locales;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
 import com.inthinc.pro.automation.interfaces.MCMProxy;
+import com.inthinc.pro.automation.models.MapSection;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.automation.utils.SHA1Checksum;

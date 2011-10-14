@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.objects;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,6 +9,9 @@ import org.apache.log4j.Logger;
 import com.inthinc.hos.model.HOSStatus;
 import com.inthinc.pro.automation.deviceEnums.Ways_SAT_EVENT;
 import com.inthinc.pro.automation.deviceEnums.WaysmartProps;
+import com.inthinc.pro.automation.device_emulation.Base;
+import com.inthinc.pro.automation.device_emulation.NoteBuilder;
+import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note;
 import com.inthinc.pro.automation.device_emulation.Package_Waysmart_Note.Direction;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;

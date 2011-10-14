@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.models;
 
 import java.util.Map;
 

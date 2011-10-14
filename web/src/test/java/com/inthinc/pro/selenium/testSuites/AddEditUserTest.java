@@ -1,15 +1,12 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.AutomationLogins;
-import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.AutomationCalendar.TimeZones;
 import com.inthinc.pro.automation.utils.RandomValues;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
-import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
@@ -22,8 +19,7 @@ public class AddEditUserTest extends WebRallyTest {
 	private PageAdminUserDetails myAdminUserDetails;
 	private PageAdminUsers myAdminUsers;
 	private RandomValues random;
-	private String USERNAME = "tinaauto";
-	private String PASSWORD = "password";
+	private AutomationUser login;
 	 
 	@Before
 	public void setupPage() {
@@ -32,17 +28,15 @@ public class AddEditUserTest extends WebRallyTest {
 		myAccount = new PageMyAccount();
 		myAdminUsers = new PageAdminUsers();
 		myAdminUserDetails = new PageAdminUserDetails();
-		AutomationLogins login = AutomationLogins.getOne();
-		USERNAME = login.getUserName();
-		PASSWORD = login.getPassword();
+		login = users.getOne(); 
 	}
 	
 	@Test
-	public void EmployeeIDUpperCase() {
+	public void employeeIDUpperCase() {
 		set_test_case("TC5626");
 		
 		//.0 Login
-		myAccount.loginProcess(USERNAME, PASSWORD);
+		myAccount.loginProcess(login);
 		myAccount._link().admin().click();
 											
 		//.1 Search for USERNAME in table and click the USERNAME link.
@@ -79,7 +73,7 @@ public class AddEditUserTest extends WebRallyTest {
 			myAdminUsers._link().tableEntryUserFullName().row(1).click();
 			
 			//.2b Validate employee id displays in Upper case.		
-			myAdminUserDetails._text().values(AdminUserDetailsEnum.EMP_ID).validate(string.toUpperCase());
+			myAdminUserDetails._text().values(AdminUsersEntries.EMPLOYEE_ID).validate(string.toUpperCase());
 			myAdminUserDetails._button().edit().click();
 		}
 		myAddEditUser._button().cancelBottom().click();
@@ -88,11 +82,11 @@ public class AddEditUserTest extends WebRallyTest {
 	}
 	
 	@Test
-    public void DuplicateEmployeeIDError() {
+    public void duplicateEmployeeIDError() {
         set_test_case("TC5704");
         
         //.0 Login
-        	myAccount.loginProcess(USERNAME, PASSWORD);
+        	myAccount.loginProcess(login);
         	myAccount._link().admin ().click();
 	
         //.1 Search for Employee ID in column and save the id to be used while creating a new user.

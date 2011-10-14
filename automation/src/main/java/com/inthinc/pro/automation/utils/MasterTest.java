@@ -1,6 +1,7 @@
 package com.inthinc.pro.automation.utils;
 
 import java.awt.event.KeyEvent;
+import java.io.StringWriter;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -10,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import com.inthinc.pro.automation.enums.SeleniumEnumWrapper;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
 import com.inthinc.pro.automation.interfaces.TextEnum;
+import com.inthinc.pro.automation.objects.AutomationUsers;
 import com.inthinc.pro.automation.selenium.CoreMethodInterface;
 import com.inthinc.pro.automation.selenium.CoreMethodLib;
 import com.inthinc.pro.automation.selenium.ErrorCatcher;
@@ -17,6 +19,8 @@ import com.inthinc.pro.rally.TestCaseResult.Verdicts;
 
 public class MasterTest {
     private final static Logger logger = Logger.getLogger(MasterTest.class);
+    
+    protected final static AutomationUsers users = AutomationUsers.getUsers();
     
 
     public static enum ErrorLevel {
@@ -302,6 +306,18 @@ public class MasterTest {
         String formatted = capitalizeString(s, "_").replace("_", "");
         return Character.toLowerCase(formatted.charAt(0)) + formatted.substring(1);
         
+    }
+    
+    public static String switchCase(final String s){
+        StringWriter writer = new StringWriter();
+        for (Character c : s.toCharArray()){
+            if(Character.isUpperCase(c)){
+                writer.write(Character.toLowerCase(c));
+            } else {
+                writer.write(Character.toUpperCase(c));
+            }
+        }
+        return writer.toString();
     }
 
 

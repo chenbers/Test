@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.objects;
 
 import com.inthinc.pro.automation.deviceEnums.Heading;
 

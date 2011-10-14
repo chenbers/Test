@@ -13,10 +13,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
-import com.inthinc.pro.automation.device_emulation.WaysmartDevice;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.objects.TiwiProDevice;
+import com.inthinc.pro.automation.objects.WaysmartDevice;
 import com.inthinc.pro.automation.utils.HTTPCommands;
+import com.inthinc.pro.rally.PrettyJSON;
 
 public class HanSoloTrip extends Thread{
     private final static Logger logger = Logger.getLogger(HanSoloTrip.class);
@@ -143,31 +144,32 @@ public class HanSoloTrip extends Thread{
             String query = "sensor=false&origin=" + URLEncoder.encode(origin, "UTF-8") + "&destination=" + URLEncoder.encode(destination, "UTF-8") + "";
             URL request = new URL(googleMapsApi + "?" + query);
             sendRequestResults = sendRequest(request);
-            logger.debug("sendRequest(" + request + ") returns " + sendRequestResults);
-            JSONObject workspace = new JSONObject();
-            JSONArray routes = workspace.getJSONArray("routes");
-            JSONArray legs = routes.getJSONObject(0).getJSONArray("legs");
-            JSONArray steps = legs.getJSONObject(0).getJSONArray("steps");
-            for (int i = 0; i < steps.length(); i++) {
-                double lat = steps.getJSONObject(i).getJSONObject("end_location").getDouble("lat");
-                double lng = steps.getJSONObject(i).getJSONObject("end_location").getDouble("lng");
-                int time_delta = steps.getJSONObject(i).getJSONObject("duration").getInt("value");
-                if (device instanceof WaysmartDevice)
-                    ((WaysmartDevice) device).update_location(lat, lng, time_delta);
-                else if (device instanceof TiwiProDevice)
-                    ((TiwiProDevice) device).update_location(lat, lng, time_delta);
-                else
-                    throw new IllegalArgumentException("generateTrip requires device to be either a WaysmartDevice or a TiwiProDevice");
-            }
+            logger.info("sendRequest(" + request + ") returns " + sendRequestResults);
+//            logger.info(PrettyJSON.toString(sendRequestResults));
+//            JSONObject workspace = new JSONObject();
+//            JSONArray routes = workspace.getJSONArray("routes");
+//            JSONArray legs = routes.getJSONObject(0).getJSONArray("legs");
+//            JSONArray steps = legs.getJSONObject(0).getJSONArray("steps");
+//            for (int i = 0; i < steps.length(); i++) {
+//                double lat = steps.getJSONObject(i).getJSONObject("end_location").getDouble("lat");
+//                double lng = steps.getJSONObject(i).getJSONObject("end_location").getDouble("lng");
+//                int time_delta = steps.getJSONObject(i).getJSONObject("duration").getInt("value");
+//                if (device instanceof WaysmartDevice)
+//                    ((WaysmartDevice) device).update_location(lat, lng, time_delta);
+//                else if (device instanceof TiwiProDevice)
+//                    ((TiwiProDevice) device).update_location(lat, lng, time_delta);
+//                else
+//                    throw new IllegalArgumentException("generateTrip requires device to be either a WaysmartDevice or a TiwiProDevice");
+//            }
 
         } catch (UnsupportedEncodingException uee) {
             logger.error("generateTrips couldn't encode either origin: " + origin + "; or destination: " + destination + ";");
         } catch (MalformedURLException murle) {
             logger.error("MalformedURLExcpetion: " + murle);
             murle.printStackTrace();
-        } catch (JSONException jsone) {
-            logger.debug(sendRequestResults);
-            jsone.printStackTrace();
+//        } catch (JSONException jsone) {
+//            logger.debug(sendRequestResults);
+//            jsone.printStackTrace();
         }
     }
     private static String sendRequest(URL request) {
@@ -255,6 +257,7 @@ public class HanSoloTrip extends Thread{
     }
     
     public static void main(String[] args){
+//        generateTrip("Vancouver Canada", "Abbotsford Canada", new TiwiProDevice("0000"));
         HanSoloTrip trip = new HanSoloTrip();
         Long currentTime = System.currentTimeMillis()/1000;
         Integer initialTime = currentTime.intValue();
@@ -263,32 +266,32 @@ public class HanSoloTrip extends Thread{
 //        imei = "DEVICEDOESNTEXIST";
 //        imei = "011596000100366";     address=Addresses.TEEN_PROD;
 //        imei = "javadeviceindavidsaccount"; address=Addresses.QA;   initialTime = 1313106000;  // vehicleID=37706       deviceID=34506
-//        address=Addresses.QA;           initialTime = 1316473598;  // vehicleID=7293        deviceID=3753
-//        address=Addresses.STAGE;        initialTime = 1316473598;  // vehicleID=117441441   deviceID=117441936 
-//        address=Addresses.PROD;         initialTime = 1316473598;  // vehicleID=1           deviceID=1
+//        address=Addresses.QA;           initialTime = 1317730000;  // vehicleID=7293        deviceID=3753
+//        address=Addresses.STAGE;        initialTime = 1317730000;  // vehicleID=117441441   deviceID=117441936 
+//        address=Addresses.PROD;         initialTime = 1317730000;  // vehicleID=1           deviceID=1
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.CHEVRON;      initialTime = 1316473598;  // vehicleID=117441441   deviceID=117441936
+//        address=Addresses.CHEVRON;      initialTime = 1317730000;  // vehicleID=117441441   deviceID=117441936
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.SCHLUMBERGER; initialTime = 1316473598;  // vehicleID=150994955   deviceID=150994955
+//        address=Addresses.SCHLUMBERGER; initialTime = 1317730000;  // vehicleID=150994955   deviceID=150994955
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.WEATHORFORD;  initialTime = 1316473598;  // vehicleID=184549575   deviceID=184549735
+//        address=Addresses.WEATHORFORD;  initialTime = 1317730000;  // vehicleID=184549575   deviceID=184549735
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.TECK;         initialTime = 1316473598;  // vehicleID=251658249   deviceID=251658248
+//        address=Addresses.TECK;         initialTime = 1317730000;  // vehicleID=251658249   deviceID=251658248
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.BARRICK;      initialTime = 1316473598;  // vehicleID=83886085    deviceID=83886086
+//        address=Addresses.BARRICK;      initialTime = 1317730000;  // vehicleID=83886085    deviceID=83886086
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-//        address=Addresses.CINTAS;       initialTime = 1316475667;  // vehicleID=234881465   deviceID=234881624
+//        address=Addresses.CINTAS;       initialTime = 1317730000;  // vehicleID=234881465   deviceID=234881624
 //        trip.hanSolosFirstTrip( imei, address, initialTime);
-        address=Addresses.LDS;       //initialTime = 1316475667;  // vehicleID=234881465   deviceID=234881624
+        address=Addresses.LDS;       initialTime = 1317921311;  // vehicleID=100663298   deviceID=100663298
         trip.hanSolosFirstTrip( imei, address, initialTime);
         
         
         
 //        011596000074009
-        String satIMEI;
-        String mcmID;
-        String vehicleID;
-        int accountID;
+//        String satIMEI;
+//        String mcmID;
+//        String vehicleID;
+//        int accountID;
         
 //        satIMEI = "626546911105880"; mcmID = "MCM39731"; address=Addresses.QA; initialTime = 1316471529; vehicleID=7284; accountID=3;//deviceID=3763
 //        satIMEI = "778899663322114"; mcmID = "MCMFAKE"; address=Addresses.QA; initialTime = 1316471529; vehicleID="dddd"; accountID=3;//deviceID=3763

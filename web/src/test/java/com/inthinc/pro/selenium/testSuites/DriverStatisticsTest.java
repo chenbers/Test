@@ -5,8 +5,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
@@ -17,10 +17,10 @@ import com.inthinc.pro.selenium.pageObjects.PageTeamDashboardStatistics;
 
 @Ignore
 public class DriverStatisticsTest extends WebRallyTest {
-    private static String CORRECT_USERNAME = "dastardly";
-    private static String CORRECT_ADMIN_USERNAME = "pitstop";
-    private static String CORRECT_PASSWORD = "Muttley";
-    private static String CORRECT_ADMIN_PASSWORD = "Muttley";
+    private static String CORRECT_USERNAME;
+    private static String CORRECT_ADMIN_USERNAME;
+    private static String CORRECT_PASSWORD;
+    private static String CORRECT_ADMIN_PASSWORD;
     PageLogin pl;
     
     //TODO TC1698 (requires new window)
@@ -31,11 +31,11 @@ public class DriverStatisticsTest extends WebRallyTest {
 
     @BeforeClass
     public static void beforeClass() {
-        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.NoteTesterData);
-        CORRECT_USERNAME = login.getUserName();
+        AutomationUser login = users.getOneBy(LoginCapabilities.NoteTesterData);
+        CORRECT_USERNAME = login.getUsername();
         CORRECT_PASSWORD = login.getPassword();
-        AutomationLogins admin = AutomationLogins.getOneBy(LoginCapabilities.RoleAdmin);
-        CORRECT_ADMIN_USERNAME = admin.getUserName();
+        AutomationUser admin = users.getOneBy(LoginCapabilities.RoleAdmin);
+        CORRECT_ADMIN_USERNAME = admin.getUsername();
         CORRECT_ADMIN_PASSWORD = admin.getPassword();
     }
     

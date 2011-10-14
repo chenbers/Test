@@ -155,11 +155,10 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
      */
     @Override
     public CoreMethodLib focus(SeleniumEnumWrapper myEnum) {
-        String element = getLocator(myEnum);
+        By element = getLocator(myEnum.getLocatorsForWebDriver());
 
-        WebElement parent = getWrappedDriver().findElement(By.xpath(idToXpath(element)));
-        ((JavascriptExecutor) getWrappedDriver()).executeScript("return arguments[0].focus();", parent);
-
+        WebElement elementToFocusOn = getWrappedDriver().findElement(element);
+        ((JavascriptExecutor) getWrappedDriver()).executeScript("return arguments[0].focus();", elementToFocusOn);
         return this;
     }
 
@@ -761,11 +760,14 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
     @Override
     public CoreMethodInterface tabKey() {
         WebElement first = getActiveElement();
-        first.sendKeys(Keys.TAB);
-        WebElement second = getActiveElement();
-        if (first.equals(second)){
+        if (browser == Browsers.INTERNET_EXPLORER){
+            first.sendKeys(Keys.TAB);
+        }
+        
+        else {
             KeyCommands.typeKey(KeyEvent.VK_TAB);
         }
+        AutomationThread.pause(500l);
         
         return this;
     }
@@ -804,7 +806,7 @@ public class CoreMethodLib extends WebDriverBackedSelenium implements CoreMethod
             logger.debug("Selenium already closed.");
         }catch(Exception e){
             if(!e.getMessage().contains("session") && !e.getMessage().contains("does not exist"))
-                logger.error(StackToString.toString(e));
+                logger.debug(StackToString.toString(e));
         }
         seleniumByThread.remove(currentThread);
     }

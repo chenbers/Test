@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.openqa.selenium.By;
 
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.interfaces.TextEnum;
 
 public class SeleniumEnumWrapper implements SeleniumEnums {
 
@@ -33,6 +34,11 @@ public class SeleniumEnumWrapper implements SeleniumEnums {
         if (myEnum.getText() != null) {
             text = new String(myEnum.getText());
         }
+    }
+    
+    public SeleniumEnumWrapper(TextEnum myEnum){
+        name = myEnum.toString();
+        setID(myEnum.getText());
     }
 
     @Override

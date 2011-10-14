@@ -1,7 +1,7 @@
 package com.inthinc.pro.automation.deviceTrips;
 
-import com.inthinc.pro.automation.device_emulation.TiwiProDevice;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.objects.TiwiProDevice;
 
 public class CaptainNemoTrip extends Thread{
     private TiwiProDevice tiwi;

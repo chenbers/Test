@@ -1,4 +1,4 @@
-package com.inthinc.pro.automation.device_emulation;
+package com.inthinc.pro.automation.objects;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,8 +18,12 @@ import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.FwdCmdStatus;
 import com.inthinc.pro.automation.deviceEnums.TiwiGenerals.ViolationFlags;
 import com.inthinc.pro.automation.deviceEnums.TiwiNoteTypes;
 import com.inthinc.pro.automation.deviceEnums.TiwiProps;
+import com.inthinc.pro.automation.device_emulation.Base;
+import com.inthinc.pro.automation.device_emulation.NoteBuilder;
+import com.inthinc.pro.automation.device_emulation.Package_tiwiPro_Note;
 import com.inthinc.pro.automation.enums.Addresses;
 import com.inthinc.pro.automation.interfaces.DeviceProperties;
+import com.inthinc.pro.automation.models.MapSection;
 import com.inthinc.pro.automation.utils.AutomationFileHandler;
 import com.inthinc.pro.automation.utils.AutomationHessianFactory;
 import com.inthinc.pro.automation.utils.SHA1Checksum;

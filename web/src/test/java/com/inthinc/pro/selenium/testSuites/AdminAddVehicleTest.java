@@ -1,38 +1,30 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.EnumSet;
-
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.Addresses;
-import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.enums.UniqueValues;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.Unique;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicleEdit;
 
+@Ignore
 public class AdminAddVehicleTest extends WebRallyTest {
-    
-    private static String username;
-    private static String password;
+
+    private AutomationUser login;
     
     private PageAdminVehicleEdit editVehicle;
     private Unique values;
     
-    @BeforeClass
-    public static void beforeClass(){
-        AutomationLogins login = AutomationLogins.getOneBy(LoginCapabilities.RoleAdmin);
-        username = login.getUserName();
-        password = login.getPassword();
-    }
     @Before
     public void before(){
         editVehicle = new PageAdminVehicleEdit();
+        login = users.getOneBy(LoginCapabilities.RoleAdmin);
         values = new Unique(Addresses.getSilo(getAutomationPropertiesBean().getSilo()));
-        editVehicle.loginProcess(username, password);
+        editVehicle.loginProcess(login);
     }
     
     @Test

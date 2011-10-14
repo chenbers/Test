@@ -6,8 +6,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.enums.AccountCapabilities;
-import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.utils.AutomationCalendar;
 import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
@@ -20,20 +20,16 @@ import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 public class HOSFuelStopsTest extends WebRallyTest {
     
     private PageMyAccount myAccount;
-    private PageAdminUsers users;
+    private PageAdminUsers usersPage;
     private PageAdminUserDetails userDetails;
     
     private PageFuelStops myFuelStops; 
     private PageFuelStopsAddEdit myFuelStopsAddEdit;
-    private static String USERNAME = "tnilson";
-    private static String PASSWORD = "password123";
-    private static AutomationLogins login;
+    private static AutomationUser login;
     
     @BeforeClass
     public static void beforeClass() {
-        login = AutomationLogins.getOneBy(AccountCapabilities.HOSEnabled, LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.HasWaySmart, LoginCapabilities.RoleAdmin);
-        USERNAME = login.getUserName();
-        PASSWORD = login.getPassword();
+        login = users.getOneBy(AccountCapabilities.HOSEnabled, LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.HasWaySmart, LoginCapabilities.RoleAdmin);
     }
     
     @Before
@@ -49,13 +45,13 @@ public class HOSFuelStopsTest extends WebRallyTest {
         set_test_case("TC5627");
 
         // 0.Login
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         
         //0.1.Determine driver's full name to use in driver dropdown
         myFuelStops._link().admin().click();
-        users = new PageAdminUsers();
-        users.search(USERNAME);
-        users.clickFullNameMatching(AdminUsersEntries.USER_NAME, USERNAME);
+        usersPage = new PageAdminUsers();
+        usersPage.search(login.getUsername());
+        usersPage.clickFullNameMatching(AdminUsersEntries.USER_NAME, login.getUsername());
         
         userDetails = new PageAdminUserDetails();
         String driverFullName = userDetails.getFullName();
@@ -64,8 +60,8 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._link().hosFuelStops().click();
         
         //1.Selected vehicle id and click on Add        
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
         myFuelStops._button().add().click();
                
         //2.Generate Driver and Vehicle Fuel Errors
@@ -107,13 +103,13 @@ public class HOSFuelStopsTest extends WebRallyTest {
     @Test
     public void CancelAddFuelStop() {
         set_test_case("TC5628");
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
        
         //0.1.Determine driver's full name to use in driver dropdown
         myFuelStops._link().admin().click();
-        users = new PageAdminUsers();
-        users.search(USERNAME);
-        users.clickFullNameMatching(AdminUsersEntries.USER_NAME, USERNAME);
+        usersPage = new PageAdminUsers();
+        usersPage.search(login.getUsername());
+        usersPage.clickFullNameMatching(AdminUsersEntries.USER_NAME, login.getUsername());
         
         userDetails = new PageAdminUserDetails();
         String driverFullName = userDetails.getFullName();
@@ -121,8 +117,8 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
       //1.Selected vehicle id and click on Add        
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
         myFuelStops._button().add().click();
         
         myFuelStopsAddEdit._text().valueVehicle().validatePresence(true);
@@ -140,13 +136,13 @@ public class HOSFuelStopsTest extends WebRallyTest {
     @Test
     public void AddFuelStop() {
         set_test_case("TC5631");
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         
         //0.1.Determine driver's full name to use in driver dropdown
         myFuelStops._link().admin().click();
-        users = new PageAdminUsers();
-        users.search(USERNAME);
-        users.clickFullNameMatching(AdminUsersEntries.USER_NAME, USERNAME);
+        usersPage = new PageAdminUsers();
+        usersPage.search(login.getUsername());
+        usersPage.clickFullNameMatching(AdminUsersEntries.USER_NAME, login.getUsername());
         
         userDetails = new PageAdminUserDetails();
         String driverFullName = userDetails.getFullName();
@@ -154,8 +150,8 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
         //Selected vehicle id and click on Add        
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
         myFuelStops._button().add().click();
         
 
@@ -173,13 +169,13 @@ public class HOSFuelStopsTest extends WebRallyTest {
     @Test
     public void CancelEditFuelStop() {
         set_test_case("TC5632");
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
         
         //Selected vehicle id and click on Add        
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
         
         //Add Fuel Stop
         myFuelStops._button().add().click();
@@ -209,7 +205,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
     @Test
     public void EditFuelStop() {
         set_test_case("TC5630");
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         myAccount._link().myAccount().click();
         myAccount._button().edit().click();
         myAccount._select().measurement().select("English");
@@ -218,8 +214,8 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
       //Selected vehicle id and click on Add        
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
         myFuelStops._button().refresh().click();
         
         myFuelStops._link().valueEdit().row(1).click();
@@ -238,12 +234,12 @@ public class HOSFuelStopsTest extends WebRallyTest {
     @Test
     public void CancelDeleteFuelStop() {
         set_test_case("TC5633");
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
         //Selected vehicle id and click on Add        
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
 
         myFuelStops._checkBox().entryCheckBox().row(1).check();
         myFuelStops._button().delete().click();
@@ -258,12 +254,12 @@ public class HOSFuelStopsTest extends WebRallyTest {
     @Test
     public void DeleteFuelStop() {
         set_test_case("TC5629");
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
         //Selected vehicle id and click on Add        
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
 
         myFuelStops._checkBox().entryCheckBox().row(1).check();
         myFuelStops._button().delete().click();
@@ -275,7 +271,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
     public void EditColumns() {
         set_test_case("TC5702");
         //0. Login
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
         
@@ -304,7 +300,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
     public void VehicleField() {
         set_test_case("TC5700");
         //0. Login
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
         
@@ -314,14 +310,14 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._textField().vehicle().validate("");
        
         //2. Enter a valid TIWI ID - should not offer suggestions
-        AutomationLogins tiwiLogin = AutomationLogins.getOneBy(login.getAccount(), LoginCapabilities.HasTiwiPro);
-        myFuelStops._textField().vehicle().type(tiwiLogin.getUserName());
+        AutomationUser tiwiLogin = users.getOneBy(login.getAccount(), LoginCapabilities.HasTiwiPro);
+        myFuelStops._textField().vehicle().type(tiwiLogin.getUsername());
         myFuelStops._textField().vehicle().getSuggestion(1).validate("No vehicles found");
         
         //3. Enter a valid MCM ID - select from suggestions
         myFuelStops._textField().vehicle().clear();
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
         myFuelStops._textField().vehicle().validatePresence(true);
                 
     }
@@ -330,12 +326,12 @@ public class HOSFuelStopsTest extends WebRallyTest {
     public void FuelFields() {
         set_test_case("TC5703") ;
         //0. Login
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         //0.1.Determine driver's full name to use in driver dropdown
         myFuelStops._link().admin().click();
-        users = new PageAdminUsers();
-        users.search(USERNAME);
-        users.clickFullNameMatching(AdminUsersEntries.USER_NAME, USERNAME);
+        usersPage = new PageAdminUsers();
+        usersPage.search(login.getUsername());
+        usersPage.clickFullNameMatching(AdminUsersEntries.USER_NAME, login.getUsername());
         
         userDetails = new PageAdminUserDetails();
         String driverFullName = userDetails.getFullName();
@@ -351,8 +347,8 @@ public class HOSFuelStopsTest extends WebRallyTest {
     
         //1. Get vehicle and click on Add
         //Selected vehicle id and click on Add        
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
         
         pause(5,"");
         myFuelStops._button().add().click();
@@ -496,8 +492,8 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
         pause(5,"");
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
         myFuelStops._button().add().click();
         
         myFuelStopsAddEdit._textField().trailer().type("125");
@@ -520,8 +516,8 @@ public class HOSFuelStopsTest extends WebRallyTest {
         
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
        
         myFuelStops._text().valueVehicleFuel().row(1).validate("33.02 Gallons");
         myFuelStops._text().valueTrailerFuel().row(1).validate("33.02 Gallons");
@@ -535,13 +531,13 @@ public class HOSFuelStopsTest extends WebRallyTest {
     public void IftaDateRange() {
         set_test_case("TC5701");
         //0. Login
-        myFuelStops.loginProcess(USERNAME, PASSWORD);
+        myFuelStops.loginProcess(login);
         myFuelStops._link().hos().click();
         myFuelStops._link().hosFuelStops().click();
     
         //1. Get vehicle and click on Add
-        myFuelStops._textField().vehicle().type(USERNAME.substring(0, USERNAME.length()-1));
-        myFuelStops._textField().vehicle().getSuggestion(USERNAME).click();
+        myFuelStops._textField().vehicle().type(login.getUsername().substring(0, login.getUsername().length()-1));
+        myFuelStops._textField().vehicle().getSuggestion(login.getUsername()).click();
         pause(5, "Wait for propogation");
               
         //2. Verify Edit Link is available for current date range

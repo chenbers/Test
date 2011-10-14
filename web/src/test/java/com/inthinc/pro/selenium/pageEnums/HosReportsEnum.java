@@ -11,8 +11,8 @@ public enum HosReportsEnum implements SeleniumEnums {
     
     REPORT_DROP_DOWN(null, "hosReports_form:hosReports-report"),
     
-    START_DATE("Date Range:", "//input[contains(@id,'hosReports_startCalendarInputDate']"),
-    STOP_DATE(null, "//input[contains(@id,'hosReports_endCalendarInputDate']"),
+    START_DATE("Date Range:", "hosReports_form:timeframe:0:hosReports_startCalendar"),
+    STOP_DATE(null, "hosReports_form:timeframe:0:hosReports_endCalendar"),
     
     TABLE("Table", "hosReports_form:hosReports_tableIcon"),
     HTML("HTML", "hosReports_form:hosReports_htmlIcon"),

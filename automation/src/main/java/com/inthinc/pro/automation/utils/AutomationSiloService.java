@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.inthinc.pro.automation.device_emulation.DeviceZone;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.models.DeviceZone;
 import com.inthinc.pro.backing.dao.mapper.DaoUtilEventMapper;
 import com.inthinc.pro.dao.hessian.ZoneHessianDAO;
 import com.inthinc.pro.dao.hessian.exceptions.EmptyResultSetException;

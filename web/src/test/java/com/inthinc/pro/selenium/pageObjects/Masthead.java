@@ -12,6 +12,7 @@ import com.inthinc.pro.automation.elements.Text;
 import com.inthinc.pro.automation.elements.TextLink;
 import com.inthinc.pro.automation.elements.TextLinkNewWindow;
 import com.inthinc.pro.automation.interfaces.SeleniumEnums;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.automation.selenium.AbstractPage;
 import com.inthinc.pro.selenium.pageEnums.MastheadEnum;
 
@@ -97,13 +98,17 @@ public abstract class Masthead extends AbstractPage {
 		return this;
 	}
 	
-	protected class MastheadButtons {
+	public Masthead loginProcess(AutomationUser login){
+	    return loginProcess(login.getUsername(), login.getPassword());
+	}
+	
+	public class MastheadButtons {
 	}
 
-	protected class MastheadDropDowns {
+	public class MastheadDropDowns {
 	}
 
-	protected class MastheadLinks {
+	public class MastheadLinks {
 		public TextLinkNewWindow help() {
 			return new TextLinkNewWindow(MastheadEnum.HELP);
 		}
@@ -133,10 +138,10 @@ public abstract class Masthead extends AbstractPage {
 		}
 	}
 
-	protected class MastheadTextFields {
+	public class MastheadTextFields {
 	}
 
-	protected class MastheadTexts {
+	public class MastheadTexts {
 		public Text copyright() {
 			return new Text(MastheadEnum.COPYRIGHT);
 		}

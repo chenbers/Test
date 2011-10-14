@@ -4,16 +4,18 @@ import com.inthinc.pro.automation.interfaces.AutoCapabilities;
 
 public enum LoginCapabilities implements AutoCapabilities  {    
     //Login Capabilities
-    RoleAdmin(),
-    IsDriver(),
-    HasVehicle(),
-    HasWaySmart(),
-    HasTiwiPro(),
-    NoteTesterData(),
+    RoleAdmin,
+    IsDriver,
+    HasVehicle,
+    HasWaySmart,
+    HasTiwiPro,
+    NoteTesterData,
     StatusInactive(false),
     StatusActive(true),
-    PasswordChanging(true),
-    
+    PasswordChanging(true), 
+    RoleHOS,
+    DOT,
+    TeamLevelLogin,
     
     ;
     private Integer intValue;

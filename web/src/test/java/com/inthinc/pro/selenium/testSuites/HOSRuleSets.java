@@ -5,8 +5,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.automation.deviceTrips.HanSoloTrip;
-import com.inthinc.pro.automation.device_emulation.WaysmartDevice;
 import com.inthinc.pro.automation.enums.Addresses;
+import com.inthinc.pro.automation.objects.WaysmartDevice;
 
 @Ignore
 public class HOSRuleSets extends WebRallyTest {

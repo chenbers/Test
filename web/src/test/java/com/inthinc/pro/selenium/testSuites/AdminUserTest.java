@@ -3,19 +3,14 @@ package com.inthinc.pro.selenium.testSuites;
 import java.util.Iterator;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.elements.ElementInterface.Checkable;
-import com.inthinc.pro.automation.elements.ElementInterface.ClickableTextBased;
 import com.inthinc.pro.automation.elements.ElementInterface.TextBased;
-import com.inthinc.pro.automation.enums.AccountCapabilities;
-import com.inthinc.pro.automation.enums.AutomationLogins;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
-import com.inthinc.pro.selenium.pageEnums.AdminUserDetailsEnum;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageEnums.AdminTables.AdminUsersEntries;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails;
+import com.inthinc.pro.selenium.pageObjects.PageAdminUserDetails.UserDetailsTexts;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 
@@ -28,18 +23,11 @@ public class AdminUserTest extends WebRallyTest {
 	private PageAdminUsers my;
 	private PageMyAccount myAccount;
 	private PageAdminUserDetails myAdminUserDetails;
-	private static String USERNAME = "tinaauto";
-	private static String PASSWORD = "password";
-	private static AutomationLogins login;
+	private AutomationUser login;
     
-	@BeforeClass
-    public static void beforeClass(){
-        login = AutomationLogins.getOne();
-        USERNAME = login.getUserName();
-        PASSWORD = login.getPassword();
-    }
 	@Before
 	public void setupPage() {
+        login = users.getOneBy(LoginCapabilities.RoleAdmin);
 		my = new PageAdminUsers();
 		myAccount = new PageMyAccount();
 		myAdminUserDetails = new PageAdminUserDetails();
@@ -53,78 +41,79 @@ public class AdminUserTest extends WebRallyTest {
 	 */
 	
 	@Test
-	public void AccountInformation(){
+	public void accountInformation(){
 	  	set_test_case("TC1266");
 				
-		my = new PageAdminUsers();
-		
-		my.loginProcess(USERNAME, PASSWORD);
+		my.loginProcess(login);
 		my._link().admin().click();
 		
 		//ensure that username column is available before searching
-		//if(my._link().sortByColumn(AdminUsersEntries.USER_NAME).isVisible()){//TODO: checking for isVisible getting false negatives? occasionally nullPointer's?
+		if(my._link().sortByColumn(AdminUsersEntries.USER_NAME).isPresent()){
     		my._link().editColumns().click();
-    		int userNameCheckboxIndex = 21; //TODO: depends on column number, name, order never changing... 
-    		my._popUp().editColumns()._checkBox().row(userNameCheckboxIndex).check();
+    		my._popUp().editColumns()._checkBox().row(AdminUsersEntries.USER_NAME.getPosition()).check();
     		my._popUp().editColumns()._button().save().click();
-		//}
+		}
     		
 		//search for this username (this ensures that it will be on the first page of the table)
-		my._textField().search().type(login.getUserName());
+		my._textField().search().type(login.getUsername());
 		my._button().search().click();
 		
 		Iterator<TextBased> iter = my._text().tableEntry(AdminUsersEntries.USER_NAME).iterator();
 		int rowNumber = 0;
 		boolean clicked = false;
+		pause(1, "Looking for a login");
 		while(iter.hasNext()&&!clicked){
 		    TextBased username = iter.next();
 		    rowNumber++;
 		    
-		    if(username.getText().equalsIgnoreCase(login.getUserName())){
+		    if(username.getText().equalsIgnoreCase(login.getUsername())){
 		        my._link().tableEntryUserFullName().row(rowNumber).click();
 		        clicked = true;
 		    }
 		}
-		if(!clicked)
-		    addError("couldn't find user name", ErrorLevel.FAIL);
+		if(!clicked) {
+		    addError("couldn't find user name", ErrorLevel.FATAL);
+		}
 	
 		
-	/*User Info*/
+		/*User Info*/
 		
-		String firstname =myAdminUserDetails._text().values(AdminUserDetailsEnum.FIRST_NAME).getText();
-		String middlename =myAdminUserDetails._text().values(AdminUserDetailsEnum.MIDDLE_NAME).getText();
-		String lastname =myAdminUserDetails._text().values(AdminUserDetailsEnum.LAST_NAME).getText();
-		String suffix =myAdminUserDetails._text().values(AdminUserDetailsEnum.SUFFIX).getText();
+		UserDetailsTexts _text = myAdminUserDetails._text();
+        String firstname =_text.values(AdminUsersEntries.FIRST_NAME).getText();
+		String middlename =_text.values(AdminUsersEntries.MIDDLE_NAME).getText();
+		String lastname =_text.values(AdminUsersEntries.LAST_NAME).getText();
+		String suffix =_text.values(AdminUsersEntries.SUFFIX).getText();
 		
 		
-	/*Driver Info*/
+		/*Driver Info*/
 		
-        String team =myAdminUserDetails._text().values(AdminUserDetailsEnum.TEAM).getText();
+        String team =_text.values(AdminUsersEntries.TEAM).getText();
+        print(team);
         
-     /*Employee Info*/
+        /*Employee Info*/
       
-        String locale = myAdminUserDetails._text().values(AdminUserDetailsEnum.LOCALE).getText();
-        String measurement =myAdminUserDetails._text().values(AdminUserDetailsEnum.MEASUREMENT).getText();
-        String fuelratio =myAdminUserDetails._text().values(AdminUserDetailsEnum.FUEL_EFFICIENCY_RATIO).getText();
+        String locale = _text.values(AdminUsersEntries.LOCALE).getText();
+        String measurement =_text.values(AdminUsersEntries.MEASUREMENT).getText();
+        String fuelratio =_text.values(AdminUsersEntries.FUEL_RATIO).getText();
 
       
-     /* Login Info*/
+        /* Login Info*/
        
-        String loginname =myAdminUserDetails._text().values(AdminUserDetailsEnum.USER_NAME).getText();
-        String group =myAdminUserDetails._text().values(AdminUserDetailsEnum.GROUP).getText();
+        String loginname =_text.values(AdminUsersEntries.USER_NAME).getText();
+        String group =_text.values(AdminUsersEntries.GROUP).getText();
                
-      /*Notifications*/
+        /*Notifications*/
         
-        String mailone =myAdminUserDetails._text().values(AdminUserDetailsEnum.EMAIL_1).getText();
-        String mailtwo =myAdminUserDetails._text().values(AdminUserDetailsEnum.EMAIL_2).getText();
-        String textone =myAdminUserDetails._text().values(AdminUserDetailsEnum.TEXT_1).getText();
-        String texttwo =myAdminUserDetails._text().values(AdminUserDetailsEnum.TEXT_2).getText();
-        String phoneone =myAdminUserDetails._text().values(AdminUserDetailsEnum.PHONE_1).getText();
+        String mailone =_text.values(AdminUsersEntries.EMAIL_1).getText();
+        String mailtwo =_text.values(AdminUsersEntries.EMAIL_2).getText();
+        String textone =_text.values(AdminUsersEntries.TEXT_MESSAGE_1).getText();
+        String texttwo =_text.values(AdminUsersEntries.TEXT_MESSAGE_2).getText();
+        String phoneone =_text.values(AdminUsersEntries.PHONE_1).getText();
        
-        String phonetwo =myAdminUserDetails._text().values(AdminUserDetailsEnum.PHONE_2).getText();
-        String information =myAdminUserDetails._text().values(AdminUserDetailsEnum.INFORMATION).getText();
-        String warning =myAdminUserDetails._text().values(AdminUserDetailsEnum.WARNING).getText();
-        String critical =myAdminUserDetails._text().values(AdminUserDetailsEnum.CRITICAL).getText();
+        String phonetwo =_text.values(AdminUsersEntries.PHONE_2).getText();
+        String information =_text.values(AdminUsersEntries.INFORMATION).getText();
+        String warning =_text.values(AdminUsersEntries.WARNING).getText();
+        String critical =_text.values(AdminUsersEntries.CRITICAL).getText();
         
                 
         /*click into My Account to compare*/
