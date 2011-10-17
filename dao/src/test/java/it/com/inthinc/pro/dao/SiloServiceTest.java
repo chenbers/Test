@@ -1301,7 +1301,7 @@ public class SiloServiceTest {
             }
         }
         // TODO: make sure all of these fields should be in ignore List
-        String ignoreFields[] = { "modified" , "warrantyStart", "warrantyStop"};
+        String ignoreFields[] = { "modified" , "warrantyStart", "warrantyStop", "dot"};
         for (Vehicle vehicle : vehicleList) {
             if (vehicle.getGroupID().equals(groupID)) {
                 Vehicle returnedVehicle = vehicleDAO.findByID(vehicle.getVehicleID());
