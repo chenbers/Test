@@ -161,12 +161,12 @@
 		</a4j:form>
 		<a4j:form id="logsForm">
 			<h:panelGroup rendered="#{hosBean.selectedOperation == '3'}">
-			<rich:dataTable rows="25" value="#{hosBean.logsRecords}" var="record" id="logResultTable" align="left" width="100%">
+			<rich:dataTable rows="25" value="#{hosBean.fullLogsRecords}" var="record" id="logResultTable" align="left" width="100%">
 			 	<f:facet name="header">
 			 		<h:outputText value="#{hosBean.driverName} - HOS LOGS" />
             	</f:facet>
-            	<rich:columns value="#{hosBean.logsColumnHeaders}" var="col" index="index" id="column#{index}" 
-	             			sortBy="#{record[index].sort}" sortOrder="#{hosBean.logsSortOrder[col]}"> 
+            	<rich:columns value="#{hosBean.fullLogsColumnHeaders}" var="col" index="index" id="column#{index}" 
+	             			sortBy="#{record[index].sort}" sortOrder="#{hosBean.fullLogsSortOrder[col]}"> 
                 	<f:facet name="header">
 						<h:outputText value="#{col}" />
 					</f:facet>

@@ -57,6 +57,10 @@ public class HOSBean extends BaseBean {
     List<List<Result>> logsRecords;
     Map<String, Object> logsSortOrder;
 
+    List<String> fullLogsColumnHeaders;
+    List<List<Result>> fullLogsRecords;
+    Map<String, Object> fullLogsSortOrder;
+    
     MinutesRemainingData minutesRemainingData ;
     
     String selectedOperation;
@@ -227,6 +231,7 @@ public class HOSBean extends BaseBean {
 
         List<HOSRec> recList = HOSUtil.getRecListFromLogList(hosRecordList, dateRange.getEndDate(), !(driverDOTType.equals(RuleSetType.NON_DOT)));
         logsRecords = getLogDisplayList(recList);
+        fullLogsRecords = getFullLogDisplayList(hosRecordList);
         
         
     }
@@ -237,7 +242,38 @@ public class HOSBean extends BaseBean {
         }
         return logsRecords;
     }
+    public List<List<Result>> getFullLogDisplayList(List<HOSRecord> recList) {
+        logsRecords = new ArrayList<List<Result>> ();
+        for (HOSRecord rec : recList) {
+            logsRecords.add(getFullLogDisplayRow(rec));
+        }
+        return logsRecords;
+    }
 
+
+    private List<Result> getFullLogDisplayRow(HOSRecord rec) {
+        List<Result> row = new ArrayList<Result>();
+        DateTime dateTime = new DateTime(rec.getLogTime(), driverTimeZone);
+        row.add(new Result(dateFormatter.print(dateTime), rec.getLogTime()));
+        row.add(new Result(rec.getDriverDotType().getName(), rec.getDriverDotType().getName()));
+        row.add(new Result(rec.getStatus().getName(), rec.getStatus().getName()));
+        row.add(new Result(rec.getOrigin().getName(), rec.getOrigin().getName()));
+        row.add(new Result(rec.getEdited().toString(), rec.getEdited()));
+        if (rec.getOriginalLogTime() != null && rec.getOriginalLogTime().getTime() != 0l) {
+            DateTime originalDateTime = new DateTime(rec.getOriginalLogTime(), driverTimeZone);
+            row.add(new Result(dateFormatter.print(originalDateTime), rec.getOriginalLogTime()));
+        }
+        else {
+            row.add(new Result("", new Date(0l)));
+        }
+        if (rec.getOriginalStatus() != null) {
+            row.add(new Result(rec.getOriginalStatus().getName(), rec.getOriginalStatus().getName()));
+        }
+        else {
+            row.add(new Result(rec.getStatus().getName(), rec.getStatus().getName()));
+        }
+        return row;
+    }
 
     private List<Result> getLogDisplayRow(HOSRec rec) {
         List<Result> row = new ArrayList<Result>();
@@ -322,6 +358,22 @@ public class HOSBean extends BaseBean {
         }
         return logsColumnHeaders;
     }
+    public List<String> getFullLogsColumnHeaders() {
+        if (fullLogsColumnHeaders == null) {
+            fullLogsColumnHeaders = new ArrayList<String>();
+            fullLogsColumnHeaders.add("Log Date");
+            fullLogsColumnHeaders.add("Rule Set");
+            fullLogsColumnHeaders.add("Status");
+            fullLogsColumnHeaders.add("Origin");
+            fullLogsColumnHeaders.add("Edited");
+            fullLogsColumnHeaders.add("Original Date");
+            fullLogsColumnHeaders.add("Original Status");
+            
+        }
+        return fullLogsColumnHeaders;
+    }
+
+
 
     public Map<String, Object> getSortOrder() {
         if (sortOrder == null) {
@@ -337,8 +389,24 @@ public class HOSBean extends BaseBean {
             for (String col : getLogsColumnHeaders())
                 logsSortOrder.put(col, Ordering.UNSORTED);
         }
-        return sortOrder;
+        return logsSortOrder;
     }
+    public Map<String, Object> getFullLogsSortOrder() {
+        if (fullLogsSortOrder == null) {
+            fullLogsSortOrder = new HashMap<String, Object>();
+            for (String col : getFullLogsColumnHeaders())
+                fullLogsSortOrder.put(col, Ordering.UNSORTED);
+        }
+        return fullLogsSortOrder;
+    }
+    public List<List<Result>> getFullLogsRecords() {
+        return fullLogsRecords;
+    }
+
+    public void setFullLogsRecords(List<List<Result>> fullLogsRecords) {
+        this.fullLogsRecords = fullLogsRecords;
+    }
+
     
     private List<HOSRecord> getFilteredList(List<HOSRecord> hosRecords, List<HOSStatus> hosStatusFilterList) {
         List<HOSRecord> filteredList = new ArrayList<HOSRecord>();
