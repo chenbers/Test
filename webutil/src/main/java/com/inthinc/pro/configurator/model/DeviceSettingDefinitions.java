@@ -11,7 +11,7 @@ import com.inthinc.pro.model.configurator.DeviceSettingDefinition;
 
 public class DeviceSettingDefinitions implements BaseAppEntity {
 
-    private static Map<String, DeviceSettingDefinitionBean> deviceSettingDefinitions;
+    private static Map<String, DeviceSettingDefinitionBean> deviceSettingDefinitionsMap;
     private static List<DeviceSettingDefinitionBean> deviceSettingDefinitionsList;
     
 	private ConfiguratorDAO configuratorDAO;
@@ -19,14 +19,14 @@ public class DeviceSettingDefinitions implements BaseAppEntity {
     public void init(){
 
         List<DeviceSettingDefinition> dsdList = configuratorDAO.getDeviceSettingDefinitions();  
-        deviceSettingDefinitions = new HashMap<String,DeviceSettingDefinitionBean>();
+        deviceSettingDefinitionsMap = new HashMap<String,DeviceSettingDefinitionBean>();
         
         for(DeviceSettingDefinition dsd : dsdList){
             
         	DeviceSettingDefinitionBean dsdBean = new DeviceSettingDefinitionBean(dsd);
-            deviceSettingDefinitions.put(dsd.getSettingID().toString(), dsdBean);
+            deviceSettingDefinitionsMap.put(dsd.getSettingID().toString(), dsdBean);
         }
-        deviceSettingDefinitionsList = new ArrayList<DeviceSettingDefinitionBean>(deviceSettingDefinitions.values());
+        deviceSettingDefinitionsList = new ArrayList<DeviceSettingDefinitionBean>(deviceSettingDefinitionsMap.values());
     }
 
     public void setConfiguratorDAO(ConfiguratorDAO configuratorDAO) {
@@ -34,17 +34,16 @@ public class DeviceSettingDefinitions implements BaseAppEntity {
     }
 
     public static DeviceSettingDefinitionBean getDeviceSettingDefinition(Integer settingID){
-    	
-    	return deviceSettingDefinitions.get(settingID);
+    	return deviceSettingDefinitionsMap.get(settingID.toString());
     }
     
     public static List<DeviceSettingDefinitionBean> getDeviceSettingDefinitions(){
         
         return deviceSettingDefinitionsList;
     }
-    public Map<String, DeviceSettingDefinitionBean> getDeviceSettingDefinitionsMap(){
+    public static Map<String, DeviceSettingDefinitionBean> getDeviceSettingDefinitionsMap(){
         
-        return deviceSettingDefinitions;
+        return deviceSettingDefinitionsMap;
     }
     
 }

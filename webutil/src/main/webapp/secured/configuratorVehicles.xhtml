@@ -103,11 +103,31 @@ function setHighlight(element, errors) {
                     	<h:outputText styleClass="headerText" value="#{vehicleSettingsBean.selectedVehicleSetting.desired[setting.settingID]}" />
 					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
 					</h:panelGrid>					
-  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{not setting.hasChoices and setting.include}">
+   				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{(setting.varType.name eq 'double')  and setting.include}">
+					 	<rich:inplaceInput id="double-input"  value="#{vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value}" 
+					 				 showControls="true" selectOnEdit="true" 
+					 				 converter="ConfiguratorDoubleConverter" validator="#{setting.validate}" >
+					 		<a4j:support event="onviewactivated" ajaxSingle="true"/>
+						</rich:inplaceInput>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+ 					 		<rich:message id="double-message" for="double-input" style="color:red" rendered="true" value="ok"/>
+					</h:panelGrid>					
+  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{(setting.varType.name eq 'integer') and setting.include}">
+					 	<rich:inplaceInput id="integer-input"  value="#{vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value}" 
+					 				 showControls="true" selectOnEdit="true" 
+					 				 converter="ConfiguratorIntegerConverter" validator="#{setting.validate}" >
+					 		<a4j:support event="onviewactivated" ajaxSingle="true"/>
+						</rich:inplaceInput>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+ 					 		<rich:message id="integer-message" for="integer-input" style="color:red" rendered="true" value="ok"/>
+					</h:panelGrid>					
+
+  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" 
+  				 			rendered="#{(setting.varType.name ne 'integer') and (setting.varType.name ne 'double') and not setting.hasChoices and setting.include}">
 					 	<rich:inplaceInput id="input"  value="#{vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value}" 
 					 				 showControls="true" selectOnEdit="true" 
-					 				 style="background-color:#{setting.errorColor[vehicleSettingsBean.editedDesiredValues.editableValues[setting.settingID].value]}"
-					 				 validator="#{deviceSettingDefinitions.deviceSettingDefinitionsMap[setting.settingIDKey].validate}" >
+					 				 validator="#{setting.validate}" >
+<!--					 				 validator="#{deviceSettingDefinitions.deviceSettingDefinitionsMap[setting.settingIDKey].validate}" >-->
 					 		<a4j:support event="onviewactivated" ajaxSingle="true" oncomplete="setHighlight(this,#{!empty facesContext.maximumSeverity});"/>
 
 						</rich:inplaceInput>

@@ -246,18 +246,38 @@ function buildPage(configurationData){
                     <f:facet name="header">
                     	<h:outputText styleClass="headerText" value="Setting" />
                     </f:facet>
-  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{not setting.hasChoices}">
-					 	<rich:inplaceInput id="input-#{setting.settingIDKey}"  value="#{configuratorBean.selectedConfiguration.editedDesiredValues.editableValues[setting.settingID].value}" 
+  				 	<ui:param id="settingID" name="settingID" value="#{setting.settingIDKey}"/>
+  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{setting.varType.name eq 'double'}">
+					 	<rich:inplaceInput id="double-input"  value="#{configuratorBean.selectedConfiguration.editedDesiredValues.editableValues[setting.settingID].value}" 
 					 				 showControls="true" selectOnEdit="true" 
-					 				 style="background-color:#{setting.errorColor[configuratorBean.selectedConfiguration.editedDesiredValues.editableValues[setting.settingID].value]}"
-					 				 validator="#{setting.validate}" >
-					 		<a4j:support event="onviewactivated" ajaxSingle="true" oncomplete="setHighlight(#{rkv},'input-#{setting.settingIDKey}','message-#{setting.settingIDKey}');"/>
+					 				 converter="ConfiguratorDoubleConverter" validator="#{setting.validate}" >
+					 		<a4j:support event="onviewactivated" ajaxSingle="true"/>
 						</rich:inplaceInput>
 					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
- 					 		<rich:message id="message-#{setting.settingIDKey}" for="input-#{setting.settingIDKey}" style="color:red" rendered="true" value="ok"/>
+ 					 		<rich:message id="double-message" for="double-input" style="color:red" rendered="true" value="ok"/>
+					</h:panelGrid>					
+  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{setting.varType.name eq 'integer'}">
+					 	<rich:inplaceInput id="integer-input"  value="#{configuratorBean.selectedConfiguration.editedDesiredValues.editableValues[setting.settingID].value}" 
+					 				 showControls="true" selectOnEdit="true" 
+					 				 converter="ConfiguratorIntegerConverter" validator="#{setting.validate}" >
+					 		<a4j:support event="onviewactivated" ajaxSingle="true"/>
+						</rich:inplaceInput>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+ 					 		<rich:message id="integer-message" for="integer-input" style="color:red" rendered="true" value="ok"/>
+					</h:panelGrid>					
+  				 	<h:panelGrid  columns="3" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" 
+  				 				rendered="#{(setting.varType.name ne 'integer') and (setting.varType.name ne 'double') and not setting.hasChoices}">
+
+					 	<rich:inplaceInput id="input"  value="#{configuratorBean.selectedConfiguration.editedDesiredValues.editableValues[setting.settingID].value}" 
+					 				 showControls="true" selectOnEdit="true" 
+					 				 validator="#{setting.validate}" >
+					 		<a4j:support event="onviewactivated" ajaxSingle="true" />
+						</rich:inplaceInput>
+					 		<h:outputText  value="#{setting.unit.name}"></h:outputText>
+ 					 		<rich:message id="message" for="input" style="color:red" rendered="true" value="ok"/>
 					</h:panelGrid>					
 				 	<h:panelGrid columns="2" title="#{setting.description}.  #{setting.varType.name} - min:#{setting.min},max:#{setting.max}" rendered="#{setting.hasChoices}">
-					 	<rich:inplaceSelect id="select-#{setting.settingID}" name="#{setting.settingID}-#{index}" 
+					 	<rich:inplaceSelect id="select" name="#{setting.settingID}-#{index}" 
 					 						value="#{configuratorBean.selectedConfiguration.editedDesiredValues.editableValues[setting.settingID].value}">
 	
 							<f:selectItems value="#{choiceSelectItems.selectItems[setting.settingID]}" />

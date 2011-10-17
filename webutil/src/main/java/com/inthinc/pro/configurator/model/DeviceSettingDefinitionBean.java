@@ -88,7 +88,8 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 
 		if (!deviceSettingDefinition.validate((String)value)){
-			throw new ValidatorException(new FacesMessage("."));
+			String message = deviceSettingDefinition.getValidationMessage();
+			throw new ValidatorException(new FacesMessage(message));
 		}
 	}
 	@Override
@@ -103,5 +104,10 @@ public class DeviceSettingDefinitionBean implements Comparable<DeviceSettingDefi
 		public String get(Object key) {
 			return validate((String) key)?"white":"pink";
 		}
+	}
+	@Override
+	public String toString() {
+		return "DeviceSettingDefinitionBean [deviceSettingDefinition="
+				+ deviceSettingDefinition + ", errorColor=" + errorColor + "]";
 	}
 }

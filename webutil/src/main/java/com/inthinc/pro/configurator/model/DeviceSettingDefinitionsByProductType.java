@@ -10,7 +10,7 @@ import com.inthinc.pro.model.configurator.ProductType;
 
 public class DeviceSettingDefinitionsByProductType {
 
-    //For comparison
+	//For comparison
     private Map<ProductType, Map<Integer,DeviceSettingDefinitionBean>> deviceSettings;
     private Map<ProductType, Map<Integer,DeviceSettingDefinitionBean>> ignoredSettings;
     private Map<ProductType, List<DeviceSettingDefinitionBean>> deviceSettingLists;
@@ -129,9 +129,5 @@ public class DeviceSettingDefinitionsByProductType {
     	Collections.sort(iss);
     	
     	return iss;
-    }
-    public boolean validValue(Integer settingID, String value){
-        
-        return DeviceSettingDefinitions.getDeviceSettingDefinition(settingID).validate(value);
     }
 }

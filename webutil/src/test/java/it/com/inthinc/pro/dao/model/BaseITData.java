@@ -163,7 +163,7 @@ public abstract class BaseITData {
         String name = ((idx == null) ? "" : idx) + "Vehicle" + (driverID == null ? "NO_DRIVER" : group.getName());
         Vehicle vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, name, "Make", "Model", 2000, "Red", 
                     VehicleType.LIGHT, "VIN_" + deviceID, 1000, "UT " + group.getGroupID(), 
-                    States.getStateByAbbrev("UT"), VehicleDOTType.NON_DOT);
+                    States.getStateByAbbrev("UT"));
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
         vehicle.setVehicleID(vehicleID);
         
