@@ -1,23 +1,34 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.inthinc.pro.automation.enums.AccountCapabilities;
+import com.inthinc.pro.automation.enums.LoginCapabilities;
+import com.inthinc.pro.automation.interfaces.Capabilities;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageObjects.HOSRecordOfDutyStatus;
 import com.inthinc.pro.selenium.pageObjects.PageHOSReports;
 
-@Ignore
-public class HOSReports extends WebRallyTest {
+public class HOSReportsTest extends WebRallyTest {
     
     private PageHOSReports myHOSReports;
-    private String USERNAME = "tinaauto";
-    private String PASSWORD = "password";
+    private static String USERNAME = "tinaauto";
+    private static String PASSWORD = "password";
 
+    @BeforeClass
+    public static void beforeClass() {
+        
+        AutomationUser login =  users.getOneBy((Capabilities)AccountCapabilities.HOSEnabled, (Capabilities)LoginCapabilities.IsDriver);
+        USERNAME = login.getUsername();
+        PASSWORD = login.getPassword();
+    }
+    
     @Before
     public void setupPage() {
         myHOSReports = new PageHOSReports();
-        
     }
 
     @Test
