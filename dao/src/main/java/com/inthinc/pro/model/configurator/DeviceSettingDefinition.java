@@ -124,7 +124,9 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
         
         return validationMode.validate(value);
     }
-    
+	public String getValidationMessage() {
+		return validationMode.getExceptionMessage();
+	}
     public DeviceSettingDefinition() {
         super();
         validationMode = new RangeValidationMode();
@@ -135,6 +137,7 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
     protected interface ValidationMode {
         
         public boolean validate(String value);
+        public String getExceptionMessage();
     }
     protected class ChoiceValidationMode implements ValidationMode{
         
@@ -144,6 +147,11 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
             
             return getChoices().contains(value);
         }
+
+		@Override
+		public String getExceptionMessage() {
+			return "Value must be one of the available choices";
+		}
     }
     protected class RangeValidationMode implements ValidationMode{
         
@@ -153,6 +161,11 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
 
             return getVarType().validateValue(getMin(), getMax(), value);
         }
+
+		@Override
+		public String getExceptionMessage() {
+			return "Value must be in the range "+getMin()+" and "+getMax();
+		}
     }
     protected class RegexValidationMode implements ValidationMode{
 
@@ -164,6 +177,21 @@ public class DeviceSettingDefinition implements Comparable<DeviceSettingDefiniti
 			Matcher matcher = regex.matcher(value);
 			return matcher.matches();
 		}
+
+		@Override
+		public String getExceptionMessage() {
+			return "Value must match "+regex.pattern();
+		}
     	
     }
+	@Override
+	public String toString() {
+		return "DeviceSettingDefinition [settingID=" + settingID + ", name="
+				+ name + ", description=" + description + ", category="
+				+ category + ", varType=" + varType + ", unit=" + unit
+				+ ", choices=" + choices + ", min=" + min + ", max=" + max
+				+ ", visibility=" + visibility + ", ignore=" + ignore
+				+ ", productMask=" + productMask + ", regex=" + regex
+				+ ", validationMode=" + validationMode + "]";
+	}
 }
