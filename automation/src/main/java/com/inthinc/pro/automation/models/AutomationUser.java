@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.inthinc.pro.automation.enums.AccountCapabilities;
 import com.inthinc.pro.automation.enums.AutoAccounts;
+import com.inthinc.pro.automation.enums.DriverCapabilities;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
 import com.inthinc.pro.automation.interfaces.Capabilities;
 import com.inthinc.pro.model.Driver;
@@ -15,6 +16,7 @@ public class AutomationUser{
     
     private final Set<LoginCapabilities> loginSpecs;
     private final Set<AccountCapabilities> accountSpecs;
+    private final Set<DriverCapabilities> driverSpecs;
     private final Person personPart;
     private final User userPart;
     private final Driver driverPart;
@@ -28,17 +30,13 @@ public class AutomationUser{
         driverPart = new Driver();
         loginSpecs = new HashSet<LoginCapabilities>();
         accountSpecs = new HashSet<AccountCapabilities>();
+        driverSpecs = new HashSet<DriverCapabilities>();
     }
     
 
     public AutomationUser(AutoAccounts account) {
         this();
         this.account = account;
-    }
-    
-    public AutomationUser(AccountCapabilities accountSpec){
-        this();
-        accountSpecs.add(accountSpec);
     }
     
     public AutomationUser setupUser(String username, String password, String groupName){
@@ -64,6 +62,13 @@ public class AutomationUser{
         return this;
     }
     
+    public AutomationUser addDriverCapabilities(DriverCapabilities ...abilities){
+        for (DriverCapabilities ability : abilities){
+            driverSpecs.add(ability);
+        }
+        return this;
+    }
+    
     public AutomationUser addAccountCapabilities(AccountCapabilities ...abilities){
         for (AccountCapabilities ability : abilities){
             accountSpecs.add(ability);
@@ -82,6 +87,7 @@ public class AutomationUser{
         Set<Capabilities> temp = new HashSet<Capabilities>();
         temp.addAll(loginSpecs);
         temp.addAll(accountSpecs);
+        temp.addAll(driverSpecs);
         return temp;
     }
     

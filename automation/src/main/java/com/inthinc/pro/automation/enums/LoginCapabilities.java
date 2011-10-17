@@ -5,6 +5,7 @@ import com.inthinc.pro.automation.interfaces.AutoCapabilities;
 public enum LoginCapabilities implements AutoCapabilities  {    
     //Login Capabilities
     RoleAdmin,
+    RoleHOS,
     IsDriver,
     HasVehicle,
     HasWaySmart,
@@ -13,7 +14,6 @@ public enum LoginCapabilities implements AutoCapabilities  {
     StatusInactive(false),
     StatusActive(true),
     PasswordChanging(true), 
-    RoleHOS,
     DOT,
     TeamLevelLogin,
     

@@ -11,6 +11,7 @@ public enum AutoAccounts {
             AccountCapabilities.PasswordExpireNever,
             AccountCapabilities.PasswordMinStrengthNone,
             AccountCapabilities.PasswordRequireInitialChangeNone), 
+    QA, 
             
             
     ;
