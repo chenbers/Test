@@ -1,37 +1,32 @@
 package com.inthinc.pro.selenium.testSuites;
 
-import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.utils.AutomationCalendar;
-import com.inthinc.pro.automation.utils.AutomationCalendar.WebDateFormat;
+import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageObjects.PageAddEditUser;
 import com.inthinc.pro.selenium.pageObjects.PageAdminOrganization;
 import com.inthinc.pro.selenium.pageObjects.PageAdminUsers;
 import com.inthinc.pro.selenium.pageObjects.PageAdminVehicles;
-import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageMyAccount;
 import com.inthinc.pro.selenium.pageObjects.PageNotificationsRedFlags;
-//import com.inthinc.pro.selenium.pageObjects.PageWaysmartReport;
+import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 
 @Ignore
 public class VerifyPageObjectsTest extends WebRallyTest {
-	
-	private String USERNAME="jwimmer";
-	private String PASSWORD="password";
+    private AutomationUser login;
 
 	@Before
 	public void setupPage() {
-		
+		login = users.getOne();
 	}
+	
 	@Test
 	public void pageOrgPage() {
 	    
 	    PageAdminOrganization page = new PageAdminOrganization();
-	    page.loginProcess(USERNAME, PASSWORD);
+	    page.loginProcess(login);
 	    page._link().admin().click();
 	    page._link().adminOrganization().click();
 //	    page.getFleet().getUser("Albina Gregoric").text().click();
@@ -49,6 +44,7 @@ public class VerifyPageObjectsTest extends WebRallyTest {
 	    page._textField().editFindAddress().type("950 Laird Ave Salt Lake City");
 	    
 	}
+	
 //	@Test
 //	public void pageWaysmartReport() {
 //	    PageWaysmartReport page = new PageWaysmartReport();
@@ -91,12 +87,11 @@ public class VerifyPageObjectsTest extends WebRallyTest {
 //	    
 //	}
 	
-	@Ignore
 	public void allPages_navigateAndValidate_() {
 		//set_test_case("TC5255");
 //      Log in.
 		PageMyAccount my = new PageMyAccount();
-		my.loginProcess(USERNAME, PASSWORD);
+		my.loginProcess(login);
 
 //		Click Reports.
 //		my._link().reports().click();
