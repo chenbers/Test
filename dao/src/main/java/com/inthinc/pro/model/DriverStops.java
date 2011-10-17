@@ -135,7 +135,6 @@ public class DriverStops extends BaseEntity {
         DriverStops d = new DriverStops();
         DriverStops dsri = null;
         
-        int roundTrip = 0;
         long arriveTime = 0;
         long departTime = 0;
         int lowIdle = 0;

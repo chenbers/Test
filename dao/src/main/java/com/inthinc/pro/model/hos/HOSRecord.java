@@ -426,6 +426,15 @@ public class HOSRecord extends BaseEntity implements Comparable<HOSRecord>{
         "\"" + editUserName + "\"," +
         deleted + "),");
     }
+    public void dump3 () {
+        System.out.println("new HOSRecord(" +
+        hosLogID + "," + 
+        driverID + "," +
+        "new Date(" + new Date(logTime.getTime()) + "l)," +
+        "TimeZone.getTimeZone(\"" + timeZone.getID() + "\")," +
+        "HOSStatus." + status.getName() + "," +
+        deleted + "),");
+    }
     @Override
     public int compareTo(HOSRecord o) {
         // natural order is log time descending (most recent first)

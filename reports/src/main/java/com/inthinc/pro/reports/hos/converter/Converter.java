@@ -10,6 +10,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.inthinc.hos.util.DateUtil;
 import com.inthinc.pro.dao.util.MathUtil;
 import com.inthinc.pro.dao.util.MeasurementConversionUtil;
 import com.inthinc.pro.model.MeasurementType;
@@ -20,8 +21,8 @@ public class Converter {
         
         DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm").withLocale(locale);
         
-        
-        DateTime dateTime = new DateTime(date.getTime(), DateTimeZone.forTimeZone(timeZone == null ? TimeZone.getDefault() : timeZone));
+        long minutes = DateUtil.milliSecondsToMinutes(date.getTime());
+        DateTime dateTime = new DateTime(new Date(minutes * DateUtil.MILLISECONDS_IN_MINUTE), DateTimeZone.forTimeZone(timeZone == null ? TimeZone.getDefault() : timeZone));
         return fmt.print(dateTime).trim();
     }
 
