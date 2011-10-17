@@ -59,7 +59,7 @@ public class HOSFuelStops extends WebRallyTest {
         myFuelStopsAddEdit._button().bottomSave().click();
         
         myFuelStopsAddEdit._text().errorMaster().validate("1 error(s) occurred. Please verify all the data entered is correct.");
-        myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle or Trailer fuel required.");  
+        myFuelStopsAddEdit._text().errorBothVehicleAndTrailerFuel().validate("Vehicle or Trailer fuel required.");  
         myFuelStopsAddEdit._button().bottomCancel().click();
         
         //4. Generate Date/Time in Future error
