@@ -1,30 +1,20 @@
 package com.inthinc.pro.selenium.testSuites;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.inthinc.pro.automation.enums.AccountCapabilities;
 import com.inthinc.pro.automation.enums.LoginCapabilities;
-import com.inthinc.pro.automation.interfaces.Capabilities;
 import com.inthinc.pro.automation.models.AutomationUser;
 import com.inthinc.pro.selenium.pageObjects.HOSRecordOfDutyStatus;
 import com.inthinc.pro.selenium.pageObjects.PageHOSReports;
 
+
 public class HOSReportsTest extends WebRallyTest {
     
     private PageHOSReports myHOSReports;
-    private static String USERNAME = "tinaauto";
-    private static String PASSWORD = "password";
+    private AutomationUser login;
 
-    @BeforeClass
-    public static void beforeClass() {
-        
-        AutomationUser login =  users.getOneBy((Capabilities)AccountCapabilities.HOSEnabled, (Capabilities)LoginCapabilities.IsDriver);
-        USERNAME = login.getUsername();
-        PASSWORD = login.getPassword();
-    }
+
     
     @Before
     public void setupPage() {
@@ -36,7 +26,8 @@ public class HOSReportsTest extends WebRallyTest {
         set_test_case("TC5644");
 
         // 0.Login
-        myHOSReports.loginProcess(USERNAME, PASSWORD);
+        login = users.getOneBy(LoginCapabilities.IsDriver, LoginCapabilities.HasVehicle, LoginCapabilities.RoleAdmin, LoginCapabilities.HasWaySmart, LoginCapabilities.RoleHOS);
+        myHOSReports.loginProcess(login);
         myHOSReports._link().hos().click();
         myHOSReports._link().hosReports().click();
         myHOSReports._dropDown().report().select(2);
@@ -51,8 +42,11 @@ public class HOSReportsTest extends WebRallyTest {
         
         report._text().valueRuleSet(1).waitForElement();
         report._text().valueDriverName(1).validate("US 7  Day");
+        pause(2,"");
         report._text().valueRuleSet(1).validate("US 7 Day");
-        report._text().valueCarrrier(1).validate("new automation");
+        report._text().valueCarrrier(1).validate("Tina's Division");
+        //report._text().valueDate(1).validate("");
+        report._text().valueHomeTerminal(1).validate("946 W 630 S, Pleasant Grove, UT");
         
         
      }
