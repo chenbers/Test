@@ -50,6 +50,7 @@ public class BrowserRallyTest extends BrowserTest implements RallyTestInterface 
     
     public void set_defect(String formattedID) {
         rallyTest.set_defect(formattedID);
+        addError("This TestCase is linked to Defect: "+formattedID, ErrorLevel.WARN);
     }
 
     @Override
