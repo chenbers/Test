@@ -616,8 +616,8 @@ public class SiloServiceTest {
         assignDevicesToVehicles(team1Group.getGroupID());
         System.out.println("Admin - vehicles done");
 
-
-        waysmartDOTTypeForwardCommandCheck(team2Group.getGroupID());
+// Removing - not sure if this is still a valid test.
+//        waysmartDOTTypeForwardCommandCheck(team2Group.getGroupID());
 
        // person
         persons(acctID, team1Group.getGroupID());
