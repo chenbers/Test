@@ -1922,7 +1922,7 @@ public class SiloServiceTest {
         findByKeyExpectNoResult(deviceDAO, "BAD_DEVICE");
         VehicleHessianDAO vehicleDAO = new VehicleHessianDAO();
         vehicleDAO.setSiloService(siloService);
-        findByKey(vehicleDAO, vehicleList.get(0), vehicleList.get(0).getVIN(), new String[] { "modified", "warrantyStart", "warrantyStop" });
+        findByKey(vehicleDAO, vehicleList.get(0), vehicleList.get(0).getVIN(), new String[] { "modified", "warrantyStart", "warrantyStop", "dot" });
         findByKeyExpectNoResult(vehicleDAO, "BAD_VEHICLE");
     }
 
