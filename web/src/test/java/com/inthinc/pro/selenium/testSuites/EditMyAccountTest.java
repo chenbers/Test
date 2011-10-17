@@ -406,6 +406,7 @@ public class EditMyAccountTest extends WebRallyTest {
     @Test
     public void CancelButton_Changes() {
         set_test_case("TC1271");
+        set_defect("DE6454");
         myAccountPage.loginProcess(login);
         myAccountPage._link().myAccount().click();
         /* Get original Values */
@@ -437,7 +438,6 @@ public class EditMyAccountTest extends WebRallyTest {
 
         /* Login Info */
         myAccountPage._select().locale().select(Locale.ENGLISH);
-        //TODO: tina: review this section.  I put this in to ensure that it always picks a Different measurement/fuelratio than it had before
         Measurement newMeasurement = Measurement.ENGLISH;
         Fuel_Ratio newFuelRatio;
         if(Measurement.ENGLISH.toString().equals(originalMeasurement)){
@@ -448,7 +448,6 @@ public class EditMyAccountTest extends WebRallyTest {
         }
         myAccountPage._select().measurement().select(newMeasurement);
         myAccountPage._select().fuelEfficiency().select(newFuelRatio);
-        //end tina: review section
         
         /* Contact Info */
         myAccountPage._textField().email1().type(random.getEmail());
