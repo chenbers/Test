@@ -79,7 +79,7 @@ public class HOSFuelStopsTest extends WebRallyTest {
         myFuelStopsAddEdit._button().bottomSave().click();
         
         myFuelStopsAddEdit._text().errorMaster().validate("1 error(s) occurred. Please verify all the data entered is correct.");
-        myFuelStopsAddEdit._text().errorVehicleFuel().validate("Vehicle or Trailer fuel required.");  //TODO: davidTanner: errorVehicleFuel().validate() does not appear to work??? i.e. as I observe this test running the error message IS displayed but the test framework does NOT pick it up
+        myFuelStopsAddEdit._text().errorBothVehicleAndTrailerFuel().validate("Vehicle or Trailer fuel required.");  
         myFuelStopsAddEdit._button().bottomCancel().click();
         
         //4. Generate Date/Time in Future error
