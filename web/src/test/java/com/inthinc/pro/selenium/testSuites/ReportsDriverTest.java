@@ -13,7 +13,7 @@ import com.inthinc.pro.selenium.pageObjects.PageDriverPerformanceStyle;
 import com.inthinc.pro.selenium.pageObjects.PageReportsDrivers;
 import com.inthinc.pro.selenium.pageObjects.PageVehiclePerformance;
 
-public class ReportsDriver extends WebRallyTest {
+public class ReportsDriverTest extends WebRallyTest {
 
     private PageReportsDrivers driver = new PageReportsDrivers();
     private PageDriverPerformance performance = new PageDriverPerformance();
@@ -32,7 +32,7 @@ public class ReportsDriver extends WebRallyTest {
     }
 
     @Test
-    public void DriverLink() {//TODO: failed when ran manually
+    public void DriverLink() {
         set_test_case("TC1543");
 
         // 1- Login
