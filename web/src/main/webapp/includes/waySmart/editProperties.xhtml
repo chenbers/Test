@@ -31,10 +31,7 @@
               </td>
               
               <td>                     
-<!--                                 
-                <h:selectBooleanCheckbox id="editVehicle-DOT" value="#{vehiclesBean.item.dot}" onchange="checkMultiple(this)"/>
- -->                
-				<h:selectOneMenu value="#{vehiclesBean.item.dot}" id="editVehicle-DOT" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
+				<h:selectOneMenu value="#{vehiclesBean.item.dotVehicleType}" id="editVehicle-DOT" onchange="checkMultiple(this)" converter="SimpleBeanConverter">
                       <f:selectItems value="#{vehiclesBean.dotTypes}" />
 				</h:selectOneMenu>
               </td>

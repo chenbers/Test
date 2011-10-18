@@ -259,7 +259,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         final VehicleView vehicleView = new VehicleView();
         vehicleView.bean = this;
         BeanUtils.copyProperties(vehicle, vehicleView);
-        vehicleView.setDot(vehicle.getDot());
         vehicleView.setOldGroupID(vehicle.getGroupID());
         vehicleView.setOldDriverID(vehicle.getDriverID());
         vehicleView.setSelected(false);
@@ -298,12 +297,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
                 return MessageUtil.getMessageString(vehicle.getStatus().toString());
             return null;
         }
-//        else if (column.equals("vtype"))
-//        {
-//            if (vehicle.getVtype() != null)
-//                return MessageUtil.getMessageString(vehicle.getVtype().toString());
-//            return null;
-//        }
         else if (column.equals("deviceID"))
         {
             if(vehicle.getDevice() != null)
@@ -364,10 +357,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         vehicle.setStatus(Status.ACTIVE);
         //TODO decide how to create add item
         VehicleView vehicleView = createVehicleView(vehicle);
-//        if(batchEditProductChoice != null){
-//            createSettingManagerForCreateItem();
-//            vehicleView.setEditableVehicleSettings(vehicleSettingManagers.get(-1).associateSettings(-1));
-//        }
         return vehicleView;
     }
 
@@ -777,7 +766,7 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         }
         public VehicleView(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, Integer year, String color, VehicleType vtype, String vin, Integer weight,
                 String license, State state) {
-            super(vehicleID, groupID, status, name, make, model, year, color, vtype, vin, weight, license, state, VehicleDOTType.NON_DOT);
+            super(vehicleID, groupID, status, name, make, model, year, color, vtype, vin, weight, license, state);
         }
         
         public void initForwardCommandDefs() {
@@ -803,30 +792,6 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
             if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null) return ProductType.UNKNOWN;
             return editableVehicleSettings.getProductType();
         }
-        
-        @Override
-        public VehicleDOTType getDot() {
-            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null || 
-            			editableVehicleSettings.getProductType() != ProductType.WAYSMART){
-        		VehicleDOTType dot = super.getDot();
-        		if(dot==null) return VehicleDOTType.NON_DOT;
-        		return dot;
-            }
-            return VehicleDOTType.getFromSetting(((WaySmartEditableVehicleSettings)editableVehicleSettings).getDotVehicleType());
-        }
-
-        @Override
-        public void setDot(VehicleDOTType dot) {
-            super.setDot(dot);
-
-            if(editableVehicleSettings == null ||editableVehicleSettings.getProductType() == null || editableVehicleSettings.getProductType() != ProductType.WAYSMART)
-                return;
-            
-            int settingValue  = dot.getConfiguratorSetting();
-            ((WaySmartEditableVehicleSettings)editableVehicleSettings).setDotVehicleType(settingValue);
-        }
-
-
         @Override
         public Integer getWeight()
         {
@@ -939,6 +904,19 @@ public class VehiclesBean extends BaseAdminBean<VehiclesBean.VehicleView> implem
         	return MessageUtil.getMessageString(getStatus().toString());
         }
 
+        public VehicleDOTType getDotVehicleType(){
+        	if(editableVehicleSettings instanceof WaySmartEditableVehicleSettings){
+        		return VehicleDOTType.getFromSetting(((WaySmartEditableVehicleSettings)editableVehicleSettings).getDotVehicleType());
+        	}
+        	return null;
+        }
+        
+        public void setDotVehicleType(VehicleDOTType vehicleDOTType){
+           	if(editableVehicleSettings instanceof WaySmartEditableVehicleSettings){
+        		((WaySmartEditableVehicleSettings)editableVehicleSettings).setDotVehicleType(vehicleDOTType.getConfiguratorSetting());
+        	}
+        	
+        }
     }
-
+    
 }

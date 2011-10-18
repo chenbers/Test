@@ -1,9 +1,6 @@
 package com.inthinc.pro.backing;
 
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
-
-import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.VehiclesBean.VehicleView;
 import com.inthinc.pro.model.Status;
@@ -15,7 +12,8 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
     @Override
     protected BaseAdminBean<VehicleView> getAdminBean()
     {
-        BaseAdminBean<VehicleView> vehiclesBean = (BaseAdminBean<VehicleView>) applicationContext.getBean("vehiclesBean");
+        @SuppressWarnings("unchecked")
+		BaseAdminBean<VehicleView> vehiclesBean = (BaseAdminBean<VehicleView>) applicationContext.getBean("vehiclesBean");
         return vehiclesBean;
     }
 
@@ -74,5 +72,4 @@ public class VehiclesBeanTest extends BaseAdminBeanTest<VehiclesBean.VehicleView
         setProductType(adminBean,null);
 
     }
-    
 }

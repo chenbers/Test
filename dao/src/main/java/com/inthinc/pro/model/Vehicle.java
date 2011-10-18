@@ -1,7 +1,6 @@
 package com.inthinc.pro.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import com.inthinc.pro.dao.annotations.Column;
 import com.inthinc.pro.dao.annotations.ID;
@@ -36,22 +35,11 @@ public class Vehicle extends BaseEntity
     
     private Integer           odometer;
     
-    private VehicleDOTType    dot;
     private Boolean           ifta;
     
     public Vehicle()
     {
         super();
-    }
-
-    public VehicleDOTType getDot() {
-//        if (dot == null)
-//            return VehicleDOTType.NON_DOT;
-        return dot;
-    }
-
-    public void setDot(VehicleDOTType dot) {
-        this.dot = dot;
     }
 
     public Boolean getIfta() {
@@ -214,7 +202,7 @@ public class Vehicle extends BaseEntity
 
     public Vehicle(Integer vehicleID, Integer groupID, Status status, String name, String make, String model, 
             Integer year, String color,
-            VehicleType vtype, String vin, Integer weight, String license, State state, VehicleDOTType dot)
+            VehicleType vtype, String vin, Integer weight, String license, State state/*, VehicleDOTType dot*/)
     {
         super();
         this.vehicleID = vehicleID;
@@ -230,7 +218,6 @@ public class Vehicle extends BaseEntity
         this.weight = weight;
         this.license = license;
         this.state = state;
-        this.dot = dot;
     }
 
     public Status getStatus()
@@ -273,7 +260,6 @@ public class Vehicle extends BaseEntity
         return "Vehicle [VIN=" + VIN + ", color=" + color + ", deviceID=" + deviceID + ", driverID=" + driverID + ", groupID=" + groupID
                 + ", license=" + license + ", make=" + make + ", model=" + model + ", name=" + name + ", state=" + state + ", status=" + status + ", vehicleID=" + vehicleID
                 + ", vtype=" + vtype + ", weight=" + weight + ", year=" + year + //", hos="+ hos+
-                ", dot="+dot+
                 ", ifta="+ifta+
                "]";
     }

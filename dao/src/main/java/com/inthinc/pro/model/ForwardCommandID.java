@@ -179,11 +179,13 @@ public interface ForwardCommandID
     // expects 15 values for speed limits 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75
     // so for example if alarm should sound at 3 over the speed limit we would pass in
     // 8 13 18 23 28 33 38 43 48 53 58 63 68 73 78
-
     public static Integer DMM_SET_HARD_ACCEL = 2091;
     public static Integer DMM_SET_HARD_BRAKE = 2092;
     public static Integer DMM_SET_HARD_TURN = 2093;
     public static Integer DMM_SET_HARD_VERT = 2094;
 
     public static Integer AUTO_LOGOFF = 2146;		// set integer data to 900 for on and 0 for off
+    
+    public static Integer UPDATE_CONFIGURATION = 2178; // used by configurator to get a device to call reqset()
+	public static Integer DUMP_CONFIGURATION   = 2179; // used by configurator to send all settings.
 }

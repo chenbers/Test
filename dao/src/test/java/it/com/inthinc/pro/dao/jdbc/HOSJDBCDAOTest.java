@@ -106,7 +106,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
 
         HOSRecord expectedHosRecord = constructExpectedHosRecord(hosRecord, testDriver, testVehicle);
 
-        String ignoreFields[] = { "originalLogTime"};
+        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT"};
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
         
     }
@@ -132,7 +132,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         HOSRecord expectedHosRecord = constructExpectedHosRecord(hosRecord, testDriver, testVehicle);
         expectedHosRecord.setDeleted(true);
 
-        String ignoreFields[] = { "originalLogTime"};
+        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT"};
 
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
         
@@ -175,7 +175,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         expectedHosRecord.setOriginalLogTime(hosRecordDate);
         expectedHosRecord.setOriginalLocation(INITIAL_LOCATION);
 
-        String ignoreFields[] = {};
+        String ignoreFields[] = {"vehicleIsDOT"};
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
     }
@@ -204,7 +204,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         expectedHosRecord.setDeleted(true);
         expectedHosRecord.setChangedCnt(2);
 
-        String ignoreFields[] = { "originalLogTime"};
+        String ignoreFields[] = { "originalLogTime", "vehicleIsDOT"};
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
 
@@ -480,7 +480,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         expectedHosRecord.setTripReportFlag(false);
         expectedHosRecord.setTruckGallons(34.0f);
         expectedHosRecord.setVehicleID((vehicle == null) ? 0 : vehicle.getVehicleID());
-        expectedHosRecord.setVehicleIsDOT((vehicle == null || vehicle.getDot() == null) ? false : vehicle.getDot().equals(VehicleDOTType.DOT));
+//        expectedHosRecord.setVehicleIsDOT((vehicle == null || vehicle.getDot() == null) ? false : vehicle.getDot().equals(VehicleDOTType.DOT));
         expectedHosRecord.setVehicleLicense((vehicle == null) ? "" : vehicle.getLicense());
         expectedHosRecord.setVehicleName((vehicle == null) ? "" : vehicle.getName());
         expectedHosRecord.setVehicleOdometer(0l);
@@ -566,7 +566,7 @@ public class HOSJDBCDAOTest extends BaseJDBCTest{
         expectedHosRecord.setEditUserID(itData.districtUser.getUserID());
         expectedHosRecord.setOriginalLogTime(hosRecordDate);
 
-        String ignoreFields[] = { "originalLocation", "serviceID", "trailerID"};
+        String ignoreFields[] = { "originalLocation", "serviceID", "trailerID","vehicleIsDOT"};
         HOSRecord foundHosRecord = hosDAO.findByID(hosRecord.getHosLogID());
         Util.compareObjects(expectedHosRecord, foundHosRecord, ignoreFields);
     }

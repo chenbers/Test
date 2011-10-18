@@ -144,11 +144,11 @@
          <a4j:actionparam value="mi" converter="MeasurementTextConverter"/>
       </h:outputFormat>
     </rich:column>    
-    <rich:column id="DOT" rendered="#{vehiclesBean.tableColumns['DOT'].visible}" filterValue="#{vehiclesBean.filterValues['DOT']}" sortBy="#{item.dot}">
+    <rich:column id="DOT" rendered="#{vehiclesBean.tableColumns['DOT'].visible}" filterValue="#{vehiclesBean.filterValues['DOT']}" sortBy="#{messages[item.dotVehicleType]}">
       <f:facet name="header">
 		<h:outputText value="#{messages.vehiclesHeader_DOT}" />    
       </f:facet>
-      <h:outputText value="#{messages[item.dot]}" />
+      <h:outputText value="#{messages[item.dotVehicleType]}" />
     </rich:column>
     <rich:column id="ePhone" rendered="#{vehiclesBean.tableColumns['ephone'].visible}" filterValue="#{vehiclesBean.filterValues['ephone']}" sortBy="#{item.editableVehicleSettings.ephone}">
       <f:facet name="header">

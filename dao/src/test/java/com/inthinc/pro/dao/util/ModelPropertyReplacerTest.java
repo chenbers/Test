@@ -10,7 +10,6 @@ import org.junit.Test;
 import com.inthinc.pro.model.LastLocation;
 import com.inthinc.pro.model.LatLng;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleDOTType;
 
 public class ModelPropertyReplacerTest {
 	private LatLng controlLatLng;
@@ -124,18 +123,15 @@ public class ModelPropertyReplacerTest {
 	public void vehicleTest(){
 		 
 		Vehicle controlVehicle = new Vehicle();
-		controlVehicle.setDot(VehicleDOTType.PROMPT_FOR_DOT_TRIP);
 		controlVehicle.setColor("red");
 		
 		Vehicle originalVehicle = new Vehicle();
-		originalVehicle.setDot(VehicleDOTType.PROMPT_FOR_DOT_TRIP);
 
 		Vehicle replaceVehicle = new Vehicle();
 		replaceVehicle.setColor("red");
 		ModelPropertyReplacer.compareAndReplace(originalVehicle, replaceVehicle);
 		
 		assertEquals(controlVehicle.getColor(),originalVehicle.getColor());
-		assertEquals(controlVehicle.getDot(),originalVehicle.getDot());
 	}
 	
 }

@@ -583,7 +583,7 @@ public class DataGenForStressTesting {
         VehicleType vtype = VehicleType.valueOf(Util.randomInt(0, 2));
         Vehicle vehicle = new Vehicle(0, group.getGroupID(), Status.ACTIVE, make + "_" + model+"_"+deviceID , make, model, Util.randomInt(1995, 2009), "Red", 
                     vtype, "VIN_" + deviceID, 1000, "UT " +deviceID, 
-                    States.getStateByAbbrev("UT"), VehicleDOTType.NON_DOT);
+                    States.getStateByAbbrev("UT"));
         Integer vehicleID = vehicleDAO.create(group.getGroupID(), vehicle);
         vehicle.setVehicleID(vehicleID);
         

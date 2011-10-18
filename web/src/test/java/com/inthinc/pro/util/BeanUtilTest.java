@@ -12,7 +12,6 @@ import org.springframework.beans.FatalBeanException;
 import com.inthinc.pro.model.State;
 import com.inthinc.pro.model.Status;
 import com.inthinc.pro.model.Vehicle;
-import com.inthinc.pro.model.VehicleDOTType;
 import com.inthinc.pro.model.VehicleType;
 
 public class BeanUtilTest{
@@ -28,7 +27,6 @@ public class BeanUtilTest{
             vehicle1.setColor("red");
             vehicle1.setCreated(new Date());
             vehicle1.setDeviceID(100);
-            vehicle1.setDot(VehicleDOTType.DOT);
             vehicle1.setDriverID(100);
             vehicle1.setGroupID(101);
             vehicle1.setIfta(false);
@@ -58,7 +56,6 @@ public class BeanUtilTest{
             vehicle2.setColor("blue");
             vehicle2.setCreated(null);
             vehicle2.setDeviceID(100);
-            vehicle2.setDot(null);
             vehicle2.setDriverID(100);
             vehicle2.setGroupID(101);
             vehicle2.setIfta(false);

@@ -528,8 +528,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
         
         ddlCriteria.setHosDAO(new MockHOSDAO());
-        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID1, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID1, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID1+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null, VehicleDOTType.DOT));
-        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID2, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID2, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID2+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null, VehicleDOTType.DOT));
+        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID1, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID1, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID1+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
+        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID2, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID2, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID2+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
         
         LocalDate localDate = new LocalDate(new DateTime());
         DateTime day = localDate.toDateTimeAtStartOfDay();
@@ -589,8 +589,8 @@ public class HosDriverDailyLogReportCriteriaTest extends BaseUnitTest{
         HosDailyDriverLogReportCriteria ddlCriteria = new HosDailyDriverLogReportCriteria(Locale.US, Boolean.FALSE);
         
         ddlCriteria.setHosDAO(new MockHOSDAO());
-        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID1, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID1, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID1+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null, VehicleDOTType.DOT));
-        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID2, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID2, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID2+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null, VehicleDOTType.DOT));
+        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID1, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID1, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID1+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
+        ddlCriteria.getVehicleMap().put(MockHOSDAO.MOCK_VEHICLE_ID2, new Vehicle(MockHOSDAO.MOCK_VEHICLE_ID2, 1, Status.ACTIVE, MockHOSDAO.MOCK_VEHICLE_ID2+"", "", "", 2000, "", VehicleType.HEAVY, "", null, null, null));
         
         LocalDate localDate = new LocalDate(new DateTime().minusDays(1));
         DateTime day = localDate.toDateTimeAtStartOfDay();

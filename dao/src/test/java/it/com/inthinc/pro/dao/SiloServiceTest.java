@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -617,7 +618,7 @@ public class SiloServiceTest {
         System.out.println("Admin - vehicles done");
 
 // Removing - not sure if this is still a valid test.
-//        waysmartDOTTypeForwardCommandCheck(team2Group.getGroupID());
+        waysmartDOTTypeForwardCommandCheck(team2Group.getGroupID());
 
        // person
         persons(acctID, team1Group.getGroupID());
@@ -1282,7 +1283,7 @@ public class SiloServiceTest {
         // create
         for (int i = 0; i < VEHICLE_COUNT; i++) {
             Vehicle vehicle = new Vehicle(0, groupID, Status.INACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, VehicleType.valueOf(Util.randomInt(0,
-                    VehicleType.values().length - 1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, randomState(), VehicleDOTType.NON_DOT);
+                    VehicleType.values().length - 1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, randomState());
 //            vehicle.setHos((i == 0));   // set just 1st to hos 
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
             assertNotNull(vehicleID);
@@ -1349,7 +1350,7 @@ public class SiloServiceTest {
         // create
         for (int i = 0; i < VEHICLE_COUNT; i++) {
             Vehicle vehicle = new Vehicle(0, groupID, Status.ACTIVE, "Vehicle " + i, "Make " + i, "Model " + i, 2000 + i, "COLOR " + i, VehicleType.valueOf(Util.randomInt(0,
-                    VehicleType.values().length - 1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, randomState(), VehicleDOTType.NON_DOT);
+                    VehicleType.values().length - 1)), "VIN_" + groupID + "_" + i, 1000, "License " + i, randomState());
             Integer vehicleID = vehicleDAO.create(groupID, vehicle);
             assertNotNull(vehicleID);
             vehicle.setVehicleID(vehicleID);
@@ -1696,7 +1697,7 @@ public class SiloServiceTest {
         driverDAO.setSiloService(siloService);
         PersonHessianDAO personDAO = new PersonHessianDAO();
         personDAO.setSiloService(siloService);
-        // year time frame from today back
+         // year time frame from today back
         Date endDate = new Date();
         Date startDate = DateUtil.getDaysBackDate(endDate, 365);
         List<Person> groupPersonList = personDAO.getPeopleInGroupHierarchy(groupID);
@@ -1766,6 +1767,12 @@ public class SiloServiceTest {
         vehicleDAO.setSiloService(siloService);
         DeviceHessianDAO deviceDAO = new DeviceHessianDAO();
         deviceDAO.setSiloService(siloService);
+        ConfiguratorHessianDAO configuratorDAO = new ConfiguratorHessianDAO();
+        configuratorDAO.setSiloService(siloService);
+        UserHessianDAO userDAO = new UserHessianDAO();
+        userDAO.setSiloService(siloService);
+        User user = userDAO.findByUserName(SPEEDRACER);
+
         vehicleDAO.setDeviceDAO(deviceDAO);
         List<Vehicle> groupVehicles = vehicleDAO.getVehiclesInGroupHierarchy(groupID);
 
@@ -1775,23 +1782,25 @@ public class SiloServiceTest {
         
         vehicleDAO.setVehicleDevice(vehicleID, wsdeviceID);
         
-        Vehicle vehicle = vehicleDAO.findByID(vehicleID);
-        
-        vehicle.setDot(VehicleDOTType.PROMPT_FOR_DOT_TRIP);
-        vehicleDAO.update(vehicle);
-        
-        
+//		Replace this with updating configurator ssetting update
+//        Vehicle vehicle = vehicleDAO.findByID(vehicleID);
+//        
+//        vehicle.setDot(VehicleDOTType.PROMPT_FOR_DOT_TRIP);
+//        vehicleDAO.update(vehicle);
+        Map<Integer, String> settingsMap = new HashMap<Integer, String>();
+        settingsMap.put(1261, ""+VehicleDOTType.PROMPT_FOR_DOT_TRIP.getConfiguratorSetting());
+        configuratorDAO.updateVehicleSettings(vehicleID, settingsMap, user.getUserID(), "Testing DOT forward commands");
         List<ForwardCommand> queuedCommands = deviceDAO.getForwardCommands(wsdeviceID, ForwardCommandStatus.STATUS_QUEUED);
         assertTrue("queued forward commands exist", queuedCommands.size()>0);
         boolean found = false;
         for (ForwardCommand forwardCommand : queuedCommands) {
-            if (forwardCommand.getCmd().equals(ForwardCommandID.DOT_PROMPT_BY_TRIP)) 
+            if (forwardCommand.getCmd().equals(ForwardCommandID.DOT_PROMPT_BY_TRIP) || 
+            		forwardCommand.getCmd().equals(ForwardCommandID.UPDATE_CONFIGURATION)	) 
                 found = true;
         }
         
-        assertTrue("expected forward command " + ForwardCommandID.DOT_PROMPT_BY_TRIP + " not found vehicleID: " + vehicleID + " wsdeviceID: " + wsdeviceID, found);
-
-        
+        assertTrue("expected forward commands " + ForwardCommandID.DOT_PROMPT_BY_TRIP + " or " + ForwardCommandID.UPDATE_CONFIGURATION +
+        		"not found vehicleID: " + vehicleID + " wsdeviceID: " + wsdeviceID, found);
         
     }
 

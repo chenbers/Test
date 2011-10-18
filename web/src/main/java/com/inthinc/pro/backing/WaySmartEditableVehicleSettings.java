@@ -4,9 +4,9 @@ import com.inthinc.pro.model.configurator.ProductType;
 
 public class WaySmartEditableVehicleSettings extends EditableVehicleSettings {
 	
-	private Double speedLimit;
-	private Double speedBuffer;
-	private Double severeSpeed;
+	private Double  speedLimit;
+	private Double  speedBuffer;
+	private Double  severeSpeed;
 	private Integer hardAcceleration;
 	private Integer hardBrake;
 	private Integer hardTurn;

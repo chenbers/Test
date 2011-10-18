@@ -18,8 +18,6 @@ import javax.faces.validator.ValidatorException;
 import org.springframework.beans.BeanUtils;
 
 import com.inthinc.pro.backing.filtering.ColumnFiltering;
-import com.inthinc.pro.backing.model.VehicleSettingManager;
-import com.inthinc.pro.backing.model.VehicleSettingsFactory;
 import com.inthinc.pro.backing.model.supportData.AdminCacheBean;
 import com.inthinc.pro.backing.model.supportData.CacheItemMap;
 import com.inthinc.pro.backing.model.supportData.DeviceMap;
@@ -97,12 +95,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
     private List<Vehicle> chooseVehicleItems;
     private String chooseVehicleSearchKeyword;
     private String chosenVehicleID;
-    
-    // Stuff to do with vehicleSettings for the device
-    private VehicleSettingsFactory vehicleSettingsFactory;
-    private VehicleSettingManager vehicleSettingManager;
-
-    
+        
     public void setDeviceDAO(DeviceDAO deviceDAO)
     {
         this.deviceDAO = deviceDAO;
@@ -482,8 +475,6 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         vehicleDAO.setVehicleDevice(device.getVehicleID(), device.getDeviceID());
         setVehicleDevice(device.getVehicleID(), device.getDeviceID());
         device.setOldVehicleID(device.getVehicleID());
-        //Create configurator settings record if it doesn't exist
-        updateSettingsRecord(device);
     }
 
     private void setVehicleDevice(Integer vehicleID, Integer deviceID)
@@ -491,15 +482,7 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
         Vehicle vehicle = (Vehicle)adminCacheBean.getAsset("vehicles", vehicleID);
         vehicle.setDeviceID(deviceID);
     }
-    private void updateSettingsRecord(DeviceView device){
-        //Only want to do this if they aren't set to something else already
-        VehicleSetting vehicleSetting = vehicleSettingsFactory.getVehicleSetting(device.getVehicleID());
-        if((vehicleSetting == null) || vehicleSetting.settingsAreEmpty()){
-            vehicleSettingManager = vehicleSettingsFactory.getSettingManager(device.getProductVersion(), device.getVehicleID(), device.getDeviceID());
-            EditableVehicleSettings editableVehicleSettings = vehicleSettingManager.createDefaultValues(device.getVehicleID());
-            vehicleSettingManager.setVehicleSettings(device.getVehicleID(), editableVehicleSettings, this.getUserID(), "Assigning new vehicle");
-        }
-     }
+
     @Override
     protected String getDisplayRedirect()
     {
@@ -696,13 +679,5 @@ public class DevicesBean extends BaseAdminBean<DevicesBean.DeviceView>
 
     public void setChosenVehicleID(String chosenVehicleID) {
         this.chosenVehicleID = chosenVehicleID;
-    }
-
-    public VehicleSettingsFactory getVehicleSettingsFactory() {
-        return vehicleSettingsFactory;
-    }
-
-    public void setVehicleSettingsFactory(VehicleSettingsFactory vehicleSettingsFactory) {
-        this.vehicleSettingsFactory = vehicleSettingsFactory;
     }
 }
