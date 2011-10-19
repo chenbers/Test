@@ -69,7 +69,12 @@ public class ConfigurationExtractor {
     	}
     }
     private boolean settingIsDouble(Integer settingID){
-    	VarType varType = DeviceSettingDefinitions.getDeviceSettingDefinition(settingID).getVarType();
+    	DeviceSettingDefinitionBean dsdb = DeviceSettingDefinitions.getDeviceSettingDefinition(settingID);
+    	if (dsdb == null) {
+    		logger.warn("Setting with settingID "+settingID+" is being used, but is not in the settingDef table.");
+    		return false;
+    	}
+    	VarType varType = dsdb.getVarType();
     	return VarType.VTDOUBLE.equals(varType);
     }
     private Double normalizeNumber(String number){

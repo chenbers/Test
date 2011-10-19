@@ -3,6 +3,7 @@ package com.inthinc.pro.backing;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.inthinc.pro.backing.configurator.ConfiguratorBean;
+import com.inthinc.pro.configurator.model.DeviceSettingDefinitionBean;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitions;
 import com.inthinc.pro.configurator.model.DeviceSettingDefinitionsByProductType;
 import com.inthinc.pro.configurator.model.VehicleSettings;
@@ -118,7 +120,12 @@ public class ConfiguratorTest {
     	}
     }
     private boolean settingIsDouble(Integer settingID){
-    	VarType varType = DeviceSettingDefinitions.getDeviceSettingDefinition(settingID).getVarType();
+    	DeviceSettingDefinitionBean dsdb = DeviceSettingDefinitions.getDeviceSettingDefinition(settingID);
+    	if (dsdb == null) {
+    		assertNull("Setting with settingID "+settingID+" is being used, but is not in the settingDef table.",dsdb);
+    		return false;
+    	}
+    	VarType varType = dsdb.getVarType();
     	return VarType.VTDOUBLE.equals(varType);
     }
     private String normalizeNumber(String number){
@@ -151,5 +158,9 @@ public class ConfiguratorTest {
     	
     	assertTrue(settingIsDouble(14));
     	
+    }
+    @Test
+    public void nonExistentSettingTest(){
+    	settingIsDouble(777777);
     }
 }
