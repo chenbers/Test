@@ -1,4 +1,4 @@
-package com.inthinc.pro.vehicleSettingHistoryTests;
+package com.inthinc.pro.service;
 
 import java.util.List;
 

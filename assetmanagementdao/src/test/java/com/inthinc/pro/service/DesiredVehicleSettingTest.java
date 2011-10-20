@@ -1,4 +1,4 @@
-package com.inthinc.vehicleSettingTests;
+package com.inthinc.pro.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -33,7 +33,7 @@ public class DesiredVehicleSettingTest {
 		dvs.setUserID(10087); //jpatestuser
 		dvs.setValue("20");
 		dvs.setVehicleID(2);
-		dvs.setDeviceID(2);
+//		dvs.setDeviceID(2);
 		DesiredVehicleSetting createdDesiredVehicleSetting = desiredVehicleSettingService.createDesiredVehicleSetting(dvs);
 		assertNotNull(createdDesiredVehicleSetting);
 		assertNotNull(createdDesiredVehicleSetting.getModified());
@@ -53,7 +53,7 @@ public class DesiredVehicleSettingTest {
 		updateddvs.setUserID(10087); //jpatestuser
 		updateddvs.setValue("15");
 		updateddvs.setVehicleID(2);
-		updateddvs.setDeviceID(2);
+//		updateddvs.setDeviceID(2);
 		DesiredVehicleSetting updatedDesiredVehicleSetting = desiredVehicleSettingService.updateDesiredVehicleSetting(updateddvs);
 		assertNotNull(updatedDesiredVehicleSetting);
 		assertEquals("15", updatedDesiredVehicleSetting.getValue());

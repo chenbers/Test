@@ -1,4 +1,4 @@
-package com.inthinc.pro.dao.hibernate;
+package com.inthinc.pro.dao.jpa;
 
 import java.text.DateFormat;
 import java.text.ParseException;

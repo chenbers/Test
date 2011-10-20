@@ -69,6 +69,18 @@ public class ActualVehicleSetting {
 		this.vehicleSettingHistoryID = vehicleSettingHistoryID;
 	}
 	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof ActualVehicleSetting)) return false;
+		ActualVehicleSetting otheravs = (ActualVehicleSetting) other;
+		if (!settingID.equals(otheravs.getSettingID())) return false;
+		if (!vehicleID.equals(otheravs.getVehicleID())) return false;
+		return true;
+	}
+	@Override
+	public int hashCode() {
+		return (vehicleID<<14)+settingID;
+	}
+	@Override
 	public String toString() {
 		return "ActualVehicleSetting [actualVehicleSettingID="
 				+ actualVehicleSettingID + ", settingID=" + settingID

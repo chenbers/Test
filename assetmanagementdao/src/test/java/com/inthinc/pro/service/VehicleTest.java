@@ -1,4 +1,4 @@
-package com.inthinc.vehicleSettingTests;
+package com.inthinc.pro.service;
 
 import static org.junit.Assert.assertNotNull;
 

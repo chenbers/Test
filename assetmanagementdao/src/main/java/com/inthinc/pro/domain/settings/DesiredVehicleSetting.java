@@ -20,7 +20,7 @@ public class DesiredVehicleSetting {
 	private Integer desiredVehicleSettingID;
 	private Integer settingID;
 	private Integer vehicleID;
-	private Integer deviceID;
+//	private Integer deviceID;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
 	private String value;
@@ -46,12 +46,12 @@ public class DesiredVehicleSetting {
 	public void setVehicleID(Integer vehicleID) {
 		this.vehicleID = vehicleID;
 	}
-	public Integer getDeviceID() {
-		return deviceID;
-	}
-	public void setDeviceID(Integer deviceID) {
-		this.deviceID = deviceID;
-	}
+//	public Integer getDeviceID() {
+//		return deviceID;
+//	}
+//	public void setDeviceID(Integer deviceID) {
+//		this.deviceID = deviceID;
+//	}
 	public Date getModified() {
 		return modified;
 	}
@@ -77,10 +77,22 @@ public class DesiredVehicleSetting {
 		this.userID = userID;
 	}
 	@Override
+	public boolean equals(Object other) {
+		if (!(other instanceof DesiredVehicleSetting)) return false;
+		DesiredVehicleSetting otherdvs = (DesiredVehicleSetting) other;
+		if (!settingID.equals(otherdvs.getSettingID())) return false;
+		if (!vehicleID.equals(otherdvs.getVehicleID())) return false;
+		return true;
+	}
+	@Override
+	public int hashCode() {
+		return (vehicleID<<14)+settingID;
+	}
+	@Override
 	public String toString() {
 		return "DesiredVehicleSetting [desiredVehicleSettingID="
 				+ desiredVehicleSettingID + ", settingID=" + settingID
-				+ ", vehicleID=" + vehicleID + ", deviceID=" + deviceID
+				+ ", vehicleID=" + vehicleID 
 				+ ", modified=" + modified + ", value=" + value + ", reason="
 				+ reason + ", userID=" + userID + "]";
 	}

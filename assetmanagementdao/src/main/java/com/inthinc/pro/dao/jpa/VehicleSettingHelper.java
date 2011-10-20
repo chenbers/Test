@@ -55,7 +55,7 @@ public class VehicleSettingHelper {
 		for (Integer settingID : setMap.keySet()){
 			DesiredVehicleSetting dvs = new DesiredVehicleSetting();
 			dvs.setDesiredVehicleSettingID(desiredVehicleSettingID);
-			dvs.setDeviceID(deviceID);
+//			dvs.setDeviceID(deviceID);
 			dvs.setModified(date);
 			dvs.setReason(reason);
 			dvs.setSettingID(settingID);
